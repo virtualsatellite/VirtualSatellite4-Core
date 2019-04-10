@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ This file is part of the VirSat project.
+ Copyright (c) 2008-2015
+ German Aerospace Center (DLR), Simulation and Software Technology, Germany
+ All rights reserved
+-->
+
+<plugin>
+
+   <extension-point id="ConceptImageContribution" name="Concept Image Contribution" schema="schema/de.dlr.sc.virsat.model.edit.concept.image.contribution.exsd"/>
+   <extension-point id="ConceptMigrator" name="Concept Migrator" schema="schema/de.dlr.sc.virsat.model.edit.concept.migrator.exsd"/>
+   <extension-point id="ConceptTypeFactoryCaBeanRegistration" name="Concept Type Factory CategoryAssignment Bean Registration" schema="schema/ConceptTypeFactoryCaBeanRegistration.exsd"/>
+   <extension-point id="ConceptTypeFactorySeiBeanRegistration" name="Concept Type Factory Sei Bean Registration" schema="schema/ConceptTypeFactorySeiBeanRegistration.exsd"/>
+   <extension-point id="TypeInstanceSetterProvider" name="typeInstanceSetterProvider" schema="schema/de.dlr.sc.virsat.model.edit.typeInstanceSetterProvider.exsd"/>
+ 
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6"
+            class="de.dlr.sc.virsat.model.dvlm.provider.DVLMItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/s"
+            class="de.dlr.sc.virsat.model.dvlm.structural.provider.StructuralItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/g"
+            class="de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/c"
+            class="de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/r"
+            class="de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/u"
+            class="de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp"
+            class="de.dlr.sc.virsat.model.dvlm.categories.provider.CategoriesItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd"
+            class="de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppi"
+            class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.PropertyinstancesItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/qudv"
+            class="de.dlr.sc.virsat.model.dvlm.qudv.provider.QudvItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/calc"
+            class="de.dlr.sc.virsat.model.dvlm.calculation.provider.CalculationItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/i"
+            class="de.dlr.sc.virsat.model.dvlm.inheritance.provider.InheritanceItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated dvlm -->
+      <factory
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/dmf"
+            class="de.dlr.sc.virsat.model.dvlm.dmf.provider.DmfItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemFontProvider"/>
+   </extension>
+</plugin>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="CommandLineArguments" name="CommandLineArguments" schema="schema/CommandLineArguments.exsd"/>
+   
+   <extension
+         point="de.dlr.sc.virsat.external.lib.commons.cli.CommandLineArguments">
+     <clArgs
+           command="superUser">
+     </clArgs>
+     <clArgs
+            attribute="user"
+            command="forcedUser">
+     </clArgs>
+   </extension>>
+</plugin>
+    

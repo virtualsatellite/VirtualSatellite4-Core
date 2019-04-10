@@ -1,0 +1,97 @@
+<!--
+Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License 2.0 which is available at
+http://www.eclipse.org/legal/epl-2.0.
+
+SPDX-License-Identifier: EPL-2.0
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>de.dlr.sc.virsat.target</artifactId>
+	<packaging>eclipse-plugin</packaging>
+
+	<parent>
+		<artifactId>de.dlr.sc.virsat</artifactId>
+		<groupId>de.dlr.sc.virsat</groupId>
+		<version>4.8.0-SNAPSHOT</version>
+		<relativePath>../maven/pom.xml</relativePath>
+	</parent>
+
+	<profiles>
+		<profile>
+			<id>target</id>
+			<build>
+				<plugins>
+					<!-- The call to OverTarget for regenerating the target platform file -->
+					<plugin>
+						<groupId>org.eclipse.xtext</groupId>
+						<artifactId>xtext-maven-plugin</artifactId>
+						<version>2.12.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<languages>
+								<language>
+									<setup>de.dlr.sc.overtarget.language.OvertargetStandaloneSetup</setup>
+									<outputConfigurations>
+										<outputConfiguration>
+											<overrideExistingResources>true</overrideExistingResources>
+											<outputDirectory>/</outputDirectory>
+										</outputConfiguration>
+									</outputConfigurations>
+								</language>
+							</languages>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>de.dlr.sc.overtarget</groupId>
+								<artifactId>de.dlr.sc.overtarget.language</artifactId>
+								<version>4.8.0-SNAPSHOT</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>product</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.9</version>
+						<executions>
+							<execution>
+								<id>attach-artifacts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attach-artifact</goal>
+								</goals>
+								<configuration>
+									<artifacts>
+										<artifact>
+											<file>virsat.target</file>
+											<type>target</type>
+											<classifier>virsat</classifier>
+										</artifact>
+									</artifacts>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project> 

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Graphiti Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.graphiti.test;singleton:=true
+Bundle-Version: 4.8.0.qualifier
+Fragment-Host: de.dlr.sc.virsat.graphiti
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.eclipse.emf.ecore,
+ org.junit,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.concept.unittest.util,
+ de.dlr.sc.virsat.project
+Export-Package: de.dlr.sc.virsat.graphiti.test
+Bundle-Vendor: DLR (German Aerospace Center)
+Automatic-Module-Name: de.dlr.sc.virsat.graphiti.test

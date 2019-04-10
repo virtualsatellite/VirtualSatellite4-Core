@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Data Model UI
+Bundle-SymbolicName: de.dlr.sc.virsat.model.ui;singleton:=true
+Bundle-Version: 4.8.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.model.ui.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: de.dlr.sc.virsat.model.edit;visibility:=reexport,
+ org.eclipse.core.runtime,
+ org.eclipse.osgi,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.core.expressions,
+ org.eclipse.emf.common.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.model.ui.editor.input,
+ de.dlr.sc.virsat.model.ui.handler,
+ de.dlr.sc.virsat.model.ui.preferences,
+ de.dlr.sc.virsat.model.ui.propertyinstance.util,
+ de.dlr.sc.virsat.model.ui.provider
+Automatic-Module-Name: de.dlr.sc.virsat.model.ui

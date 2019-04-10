@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.build.feature"
+      label="VirSat Core Project Builder Feature"
+      version="4.8.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      VirSat Builder Feature
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2016
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.commands"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="org.eclipse.ui"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.build"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.build.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

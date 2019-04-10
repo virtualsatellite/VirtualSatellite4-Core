@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.uiengine.feature"
+      label="VirSat Core Generic UI Engine and Editor Feature"
+      version="4.8.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      VirSat UI Engine Feature
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2015
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
+      <import plugin="de.dlr.sc.virsat.model.ui"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="org.eclipse.core.databinding.property"/>
+      <import plugin="org.eclipse.emf.databinding"/>
+      <import plugin="org.eclipse.emf.databinding.edit"/>
+      <import plugin="org.eclipse.jface.databinding"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.forms" version="3.6.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.emf.databinding" version="1.4.0.v20150601-0402"/>
+      <import feature="org.eclipse.emf.databinding.edit" version="1.4.0.v20150601-0402"/>
+      <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.commons"/>
+      <import plugin="de.dlr.sc.virsat.build"/>
+      <import plugin="de.dlr.sc.virsat.build.ui"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.apache.poi"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import feature="de.dlr.sc.virsat.build.feature" version="4.8.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.uiengine.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.qudv.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.jfreechart"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.nebula.widgets.gallery"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

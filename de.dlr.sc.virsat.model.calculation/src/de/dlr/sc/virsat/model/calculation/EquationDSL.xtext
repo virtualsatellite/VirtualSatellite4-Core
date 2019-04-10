@@ -1,0 +1,184 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+ grammar de.dlr.sc.virsat.model.calculation.EquationDSL with org.eclipse.xtext.common.Terminals
+
+import "http://www.virsat.sc.dlr.de/dvlm/v6/g" as General
+import "http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppi" as PropertyInstances
+import "http://www.virsat.sc.dlr.de/dvlm/v6/calc" as Calc
+import "http://www.virsat.sc.dlr.de/dvlm/v6/s" as Structural
+import "http://www.virsat.sc.dlr.de/dvlm/v6/cp" as Categories
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+EquationSection returns Calc::EquationSection: 
+	imports+=Import*
+	equations+=Equation* 
+;
+ 
+Import returns Calc::Import:
+	'Import:' importedNamespace=[General::IInstance|QualifiedName] ';'
+;
+ 
+Equation returns Calc::Equation:
+	result=EquationResult '=' expression=AdditionAndSubtraction ';'  
+;
+
+EquationResult returns Calc::IEquationResult:
+ 	TypeInstanceResult | EquationIntermediateResult
+;
+
+TypeInstanceResult returns Calc::IEquationResult: 
+	{Calc::TypeInstanceResult}
+	'Ref:' reference=[Categories::ATypeInstance | QualifiedName]
+;
+
+EquationIntermediateResult returns Calc::IEquationResult:
+	{Calc::EquationIntermediateResult} 
+	'Calc:' name=ID
+;
+
+AdditionAndSubtraction returns Calc::AExpression:
+    MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)* 
+;
+ 
+MultiplicationAndDivision returns Calc::AExpression:
+ 	PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
+;
+ 
+PowerFunction returns Calc::AExpression:
+ 	AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
+;
+
+Parenthesis returns Calc::AOpRightExpression:
+	{Calc::Parenthesis}
+	operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
+;
+ 
+AExpression returns Calc::AExpression:
+	ALiteral |
+	ReferencedInput  |
+ 	Parenthesis  |
+ 	Function |
+ 	AAdvancedFunction
+;
+
+ReferencedInput returns Calc::ReferencedInput: 
+	reference=[Calc::IEquationInput|QualifiedName]
+;
+
+ALiteral returns Calc::ALiteral: 
+	NumberLiteral |
+	ValueE |
+	ValuePi
+;
+
+Function returns Calc::AExpression:
+	{Calc::Function}
+	operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+;
+
+AAdvancedFunction returns Calc::AExpression:
+	AdvancedFunction | SetFunction
+;
+
+AdvancedFunction returns Calc::AExpression:
+	{Calc::AdvancedFunction}
+	operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+;
+
+SetFunction returns Calc::AExpression:
+	{Calc::SetFunction}
+	operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
+;
+
+NumberLiteral returns Calc::NumberLiteral:
+	{Calc::NumberLiteral}
+	value = NumberLiteralString  
+;
+
+QualifiedName returns ecore::EString:
+	ID ('.' ID)*
+;
+
+NumberLiteralString returns ecore::EString:
+	'-'? INT ('.' INT)?	
+;
+ValuePi returns Calc::ValuePi:
+	{Calc::ValuePi}
+	'pi'
+;
+
+ValueE returns Calc::ValueE:
+	{Calc::ValueE}
+	'e'
+;
+
+enum OperatorPlus returns Calc::MathOperator :
+	PLUS = '+'
+;
+
+enum OperatorMinus returns Calc::MathOperator :
+	MINUS = '-'
+;
+
+enum OperatorMultiply returns Calc::MathOperator :
+	MULTIPLY = '*'
+;
+
+enum OperatorDivide returns Calc::MathOperator :
+	DIVIDE = '/'
+;
+
+enum OperatorPower returns Calc::MathOperator :
+	POWER = '^'
+;
+
+enum OperatorCos returns Calc::MathOperator :
+	COS = 'cos'
+;
+
+enum OperatorSin returns Calc::MathOperator :
+	SIN = 'sin'
+;
+
+enum OperatorTan returns Calc::MathOperator :
+	TAN = 'tan'
+;
+
+enum OperatorAtan returns Calc::MathOperator :
+	ATAN = 'atan'
+;
+
+enum OperatorAcos returns Calc::MathOperator :
+	ACOS = 'acos'
+;
+
+enum OperatorAsin returns Calc::MathOperator :
+	ASIN = 'asin'
+;
+
+enum OperatorSqrt returns Calc::MathOperator :
+	SQRT = 'sqrt'
+;
+
+enum OperatorLog returns Calc::MathOperator :
+	LOG = 'log'
+;
+
+enum OperatorLn returns Calc::MathOperator :
+	LN = 'ln'
+;
+
+enum OperatorExp returns Calc::MathOperator :
+	EXP = 'exp'
+;
+
+enum OperatorLd returns Calc::MathOperator :
+	LD = 'ld'
+;

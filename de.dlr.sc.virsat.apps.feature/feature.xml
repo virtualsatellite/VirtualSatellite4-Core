@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.apps.feature"
+      label="VirSat Core Model Apps Feature"
+      version="4.8.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      VirSat Apps Feature
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2016
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
+      <import plugin="org.eclipse.core.commands"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
+      <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.pde" version="3.11.2.v20160212-1500"/>
+      <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.apps"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.apps.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.&#xD;&#xA;&#xD;&#xA;This program and the accompanying materials are made available under the&#xD;&#xA;terms of the Eclipse Public License 2.0 which is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-2.0.&#xD;&#xA;&#xD;&#xA;SPDX-License-Identifier: EPL-2.0"
+    modelDirectory="/de.dlr.sc.virsat.model/src-gen" editDirectory="/de.dlr.sc.virsat.model.edit/src-gen"
+    editorDirectory="/de.dlr.sc.virsat.model.editor/src-gen" modelPluginID="de.dlr.sc.virsat.model"
+    templateDirectory="de.dlr.sc.virsat.model/templates" dynamicTemplates="true" modelName="DVLM"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testsDirectory="/de.dlr.sc.virsat.model.test/src-gen"
+    importerID="org.eclipse.emf.importer.ecore" containmentProxies="true" complianceLevel="8.0"
+    copyrightFields="false" testsPluginID="de.dlr.sc.virsat.model.test" fontProviders="true"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>dvlm.ecore</foreignModel>
+  <genPackages prefix="DVLM" basePackage="de.dlr.sc.virsat.model" disposableProviderFactory="true"
+      ecorePackage="dvlm.ecore#/">
+    <genClasses ecoreClass="dvlm.ecore#//Repository">
+      <genFeatures property="Readonly" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference dvlm.ecore#//Repository/rootEntities"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference dvlm.ecore#//Repository/roleManagement"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference dvlm.ecore#//Repository/unitManagement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//Repository/activeConcepts"/>
+    </genClasses>
+    <nestedGenPackages prefix="Structural" basePackage="de.dlr.sc.virsat.model.dvlm"
+        disposableProviderFactory="true" ecorePackage="dvlm.ecore#//structural">
+      <genClasses image="false" ecoreClass="dvlm.ecore#//structural/IApplicableFor">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//structural/IApplicableFor/applicableFor"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//structural/IApplicableFor/isApplicableForAll"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//structural/IApplicableFor/cardinality"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//structural/StructuralElement">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//structural/StructuralElement/isRootStructuralElement"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//structural/StructuralElementInstance">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/type"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/relationInstances"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/children"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/parent"/>
+        <genOperations ecoreOperation="dvlm.ecore#//structural/StructuralElementInstance/getDeepChildren"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//structural/GeneralRelation">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//structural/GeneralRelation/referencedType"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//structural/RelationInstance">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//structural/RelationInstance/type"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//structural/RelationInstance/references"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="General" basePackage="de.dlr.sc.virsat.model.dvlm"
+        disposableProviderFactory="true" ecorePackage="dvlm.ecore#//general">
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IName">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IName/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IDescription">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IDescription/description"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IUuid">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IUuid/uuid"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IQualifiedName">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IQualifiedName/name"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IQualifiedName/fullQualifiedName"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IQualifiedName/shortName"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IComment">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//general/IComment/comment"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IAssignedDiscipline">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//general/IAssignedDiscipline/assignedDiscipline"/>
+        <genOperations ecoreOperation="dvlm.ecore#//general/IAssignedDiscipline/getContainedIAssignedDisciplines"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//general/IInstance">
+        <genOperations ecoreOperation="dvlm.ecore#//general/IInstance/getFullQualifiedInstanceName"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Concepts" basePackage="de.dlr.sc.virsat.model.dvlm"
+        disposableProviderFactory="true" ecorePackage="dvlm.ecore#//concepts">
+      <genClasses ecoreClass="dvlm.ecore#//concepts/Concept">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/Concept/categories"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/Concept/structuralElements"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/Concept/relations"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/version"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/DMF"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/displayName"/>
+        <genOperations ecoreOperation="dvlm.ecore#//concepts/Concept/getNonAbstractCategories"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//concepts/ConceptImport">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/ConceptImport/importedNamespace"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//concepts/IActiveConcept">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/IActiveConcept/active"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//concepts/IImports">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/IImports/imports"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//concepts/IConceptTypeDefinition"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Roles" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
+        ecorePackage="dvlm.ecore#//roles">
+      <genClasses ecoreClass="dvlm.ecore#//roles/RoleManagement">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//roles/RoleManagement/disciplines"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//roles/Discipline">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//roles/Discipline/user"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Units" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
+        ecorePackage="dvlm.ecore#//units">
+      <genClasses ecoreClass="dvlm.ecore#//units/UnitManagement">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//units/UnitManagement/systemOfUnit"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Types" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
+        ecorePackage="dvlm.ecore#//types">
+      <genDataTypes ecoreDataType="dvlm.ecore#//types/Uuid"/>
+      <genDataTypes ecoreDataType="dvlm.ecore#//types/URI"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Categories" basePackage="de.dlr.sc.virsat.model.dvlm"
+        disposableProviderFactory="true" ecorePackage="dvlm.ecore#//categories">
+      <genClasses image="false" ecoreClass="dvlm.ecore#//categories/ATypeDefinition"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//categories/ATypeInstance">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//categories/ATypeInstance/type"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/ATypeInstance/getCategoryAssignmentContainer"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//categories/Category">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/Category/properties"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/Category/isAbstract"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//categories/Category/extendsCategory"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllProperties"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/isExtensionOf">
+          <genParameters ecoreParameter="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition"/>
+        </genOperations>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllEquationDefinitions"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getCardinality"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//categories/CategoryAssignment">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/CategoryAssignment/propertyInstances"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//categories/ICategoryAssignmentContainer">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/ICategoryAssignmentContainer/categoryAssignments"/>
+      </genClasses>
+      <nestedGenPackages prefix="Propertydefinitions" basePackage="de.dlr.sc.virsat.model.dvlm.categories"
+          disposableProviderFactory="true" ecorePackage="dvlm.ecore#//categories/propertydefinitions">
+        <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/AProperty">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/AProperty/arrayModifier"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/ComposedProperty">
+          <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/ComposedProperty/type"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/ComposedProperty/quantityKindName"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/ComposedProperty/unitName"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/ReferenceProperty">
+          <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/ReferenceProperty/referenceType"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/IIntrinsicTypeProperty">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/IIntrinsicTypeProperty/defaultValue"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/AQudvTypeProperty">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/AQudvTypeProperty/quantityKindName"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/AQudvTypeProperty/unitName"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/IntProperty"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/FloatProperty"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/StringProperty"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/BooleanProperty"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/EnumProperty">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/EnumProperty/values"/>
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/EnumProperty/defaultValue"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/EnumValueDefinition">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/EnumValueDefinition/value"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/ResourceProperty"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/StaticArrayModifier">
+          <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/StaticArrayModifier/arraySize"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/IArrayModifier"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/DynamicArrayModifier"/>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Propertyinstances" basePackage="de.dlr.sc.virsat.model.dvlm.categories"
+          disposableProviderFactory="true" ecorePackage="dvlm.ecore#//categories/propertyinstances">
+        <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertyinstances/IUnitPropertyInstance">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/IUnitPropertyInstance/unit"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertyinstances/APropertyInstance"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ValuePropertyInstance">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertyinstances/ValuePropertyInstance/value"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance">
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/getValueToBaseUnit"/>
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit">
+            <genParameters ecoreParameter="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value"/>
+          </genOperations>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ReferencePropertyInstance">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/ReferencePropertyInstance/reference"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ComposedPropertyInstance">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/ComposedPropertyInstance/typeInstance"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ArrayInstance">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/ArrayInstance/arrayInstances"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance">
+          <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/resourceUri"/>
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri">
+            <genParameters ecoreParameter="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri"/>
+          </genOperations>
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/getUri"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/EnumUnitPropertyInstance">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/EnumUnitPropertyInstance/value"/>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Qudv" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
+        ecorePackage="dvlm.ecore#//qudv">
+      <genClasses image="false" ecoreClass="dvlm.ecore#//qudv/AUnit" labelFeature="#//dvlm/qudv/AUnit/symbol">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AUnit/symbol"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AUnit/description"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AUnit/definitionURI"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/AUnit/quantityKind"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/UnitFactor" labelFeature="#//dvlm/qudv/UnitFactor/exponent">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/UnitFactor/exponent"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/UnitFactor/unit"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//qudv/AConversionBasedUnit"
+          labelFeature="#//dvlm/qudv/AUnit/symbol">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AConversionBasedUnit/isInvertible"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/AConversionBasedUnit/referenceUnit"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/LinearConversionUnit" labelFeature="#//dvlm/qudv/AUnit/symbol">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/LinearConversionUnit/factor"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/AffineConversionUnit" labelFeature="#//dvlm/qudv/AUnit/symbol">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AffineConversionUnit/factor"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AffineConversionUnit/offset"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/PrefixedUnit" labelFeature="#//dvlm/qudv/AUnit/symbol">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/PrefixedUnit/prefix"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/SimpleUnit" labelFeature="#//dvlm/qudv/AUnit/symbol"/>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/DerivedUnit" labelFeature="#//dvlm/qudv/AUnit/symbol">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/DerivedUnit/factor"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/Prefix" labelFeature="#//dvlm/qudv/Prefix/symbol">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/Prefix/symbol"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/Prefix/factor"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//qudv/AQuantityKind" labelFeature="#//dvlm/qudv/AQuantityKind/symbol">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AQuantityKind/symbol"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AQuantityKind/description"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/AQuantityKind/definitionURI"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/QuantityKind">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/QuantityKind/general"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/SimpleQuantityKind" labelFeature="#//dvlm/qudv/AQuantityKind/symbol"/>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/DerivedQuantityKind" labelFeature="#//dvlm/qudv/AQuantityKind/symbol">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/DerivedQuantityKind/factor"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/SystemOfUnits">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/SystemOfUnits/symbol"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/SystemOfUnits/description"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/SystemOfUnits/definitionURI"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/SystemOfUnits/prefix"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/SystemOfUnits/unit"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/SystemOfUnits/baseUnit"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/SystemOfUnits/systemOfQuantities"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/SystemOfQuantities">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/SystemOfQuantities/symbol"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/SystemOfQuantities/description"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/SystemOfQuantities/definitionURI"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//qudv/SystemOfQuantities/quantityKind"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/SystemOfQuantities/dimension"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/Dimension">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/Dimension/symbolicExpression"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/Dimension/factor"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/DimensionFactor">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/DimensionFactor/exponent"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/DimensionFactor/baseDimension"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//qudv/QuantityKindFactor" labelFeature="#//dvlm/qudv/QuantityKindFactor/exponent">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//qudv/QuantityKindFactor/exponent"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//qudv/QuantityKindFactor/quantityKind"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Calculation" basePackage="de.dlr.sc.virsat.model.dvlm"
+        disposableProviderFactory="true" ecorePackage="dvlm.ecore#//calculation">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="dvlm.ecore#//calculation/MathOperator">
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/PLUS"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/MINUS"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/MULTIPLY"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/DIVIDE"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/POWER"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/COS"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/SIN"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/TAN"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/ATAN"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/ACOS"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/ASIN"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/SQRT"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/LOG"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/LN"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/EXP"/>
+        <genEnumLiterals ecoreEnumLiteral="dvlm.ecore#//calculation/MathOperator/LD"/>
+      </genEnums>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IEquationDefinitionSectionContainer">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/IEquationDefinitionSectionContainer/equationDefinitions"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IEquationSectionContainer">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/IEquationSectionContainer/equationSection"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/EquationSection">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/EquationSection/imports"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/EquationSection/equations"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/EquationSection/serializedStatements"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/Import">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/Import/importedNamespace"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/Equation">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/Equation/expression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/Equation/result"/>
+        <genFeatures property="None" createChild="false" propertyCategory="" propertyDescription=""
+            ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/Equation/resultText"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/Equation/definition"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/EquationDefinition">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/EquationDefinition/expression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/EquationDefinition/result"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IEquationResult"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IEquationDefinitionResult"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IEquationInput"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IEquationDefinitionInput"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/EquationIntermediateResult">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/EquationIntermediateResult/name"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/TypeInstanceResult">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/TypeInstanceResult/reference"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/TypeDefinitionResult">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/TypeDefinitionResult/reference"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/AExpression"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/ALeftOpRightExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/ALeftOpRightExpression/left"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/ALeftOpRightExpression/operator"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/ALeftOpRightExpression/right"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/AOpRightExpression">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/AOpRightExpression/operator"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/AOpRightExpression/right"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/AdditionAndSubtraction"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/MultiplicationAndDivision"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/PowerFunction"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/Function"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/AAdvancedFunction">
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/AAdvancedFunction/operator"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/AdvancedFunction">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//calculation/AdvancedFunction/inputs"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/SetFunction">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/SetFunction/typeDefinition"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/SetFunction/filterName"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/SetFunction/depth"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/Parenthesis"/>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/ALiteral"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/ValuePi"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/ValueE"/>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/NumberLiteral">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//calculation/NumberLiteral/value"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/ReferencedInput">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/ReferencedInput/reference"/>
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/ReferencedInput/definition"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//calculation/ReferencedDefinitionInput">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//calculation/ReferencedDefinitionInput/reference"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//calculation/IQualifiedEquationObject"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Inheritance" basePackage="de.dlr.sc.virsat.model.dvlm"
+        disposableProviderFactory="true" ecorePackage="dvlm.ecore#//inheritance">
+      <genClasses image="false" ecoreClass="dvlm.ecore#//inheritance/ICanInheritFrom">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//inheritance/ICanInheritFrom/canInheritFrom"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//inheritance/ICanInheritFrom/isCanInheritFromAll"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//inheritance/IInheritsFrom">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//inheritance/IInheritsFrom/superSeis"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//inheritance/IInheritanceLink">
+        <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference dvlm.ecore#//inheritance/IInheritanceLink/superTis"/>
+        <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//inheritance/IInheritanceLink/isInherited"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="dvlm.ecore#//inheritance/IOverridableInheritanceLink">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//inheritance/IOverridableInheritanceLink/override"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Dmf" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
+        ecorePackage="dvlm.ecore#//dmf">
+      <genClasses image="false" ecoreClass="dvlm.ecore#//dmf/DObject"/>
+      <genClasses ecoreClass="dvlm.ecore#//dmf/DObjectContainer">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//dmf/DObjectContainer/objects"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//dmf/UnresolveableDObject"/>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.dlr.sc.virsat.model.ui.preferences.page.VirSatWorkbenchPreferencePage"
+            id="de.dlr.sc.virsat.model.ui.preferencePage.virsat"
+            name="Virtual Satellite">
+         <keywordReference
+               id="de.dlr.sc.virsat.model.ui.keyword.virsat">
+         </keywordReference>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="de.dlr.sc.virsat.model.ui.keyword.virsat"
+            label="Virtual Satellite VirSat">
+      </keyword>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.dlr.sc.virsat.model.ui.preferences.initializer.PreferenceInitializerVirSatRounding">
+      </initializer>
+      <initializer
+            class="de.dlr.sc.virsat.model.ui.preferences.initializer.PreferenceInitializerVirSatEditorAutoOpen">
+      </initializer>
+   </extension>
+
+</plugin>

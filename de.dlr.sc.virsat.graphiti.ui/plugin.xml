@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<!-- Plugin.XML Protected Region Start -->
+	<extension
+		 point="org.eclipse.ui.newWizards">
+		 <wizard
+         category="de.dlr.sc.virsat.project.ui.category.newWizard.virsat"
+         class="de.dlr.sc.virsat.graphiti.ui.wizards.DiagramWizard"
+         hasPages="true"
+         icon="resources/icons/diagram.gif"
+         id="de.dlr.sc.virsat.graphiti.ui.DiagramWizard"
+         name="VirSat Diagram">
+		 </wizard>
+	</extension>
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

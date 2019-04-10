@@ -1,0 +1,297 @@
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.dlr.sc.virsat</groupId>
+	<artifactId>de.dlr.sc.virsat</artifactId>
+	<version>4.8.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<tycho-version>1.0.0</tycho-version>
+		<tycho-extras-version>1.0.0</tycho-extras-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<build.version>4.8.0</build.version>
+		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
+		<build.folder.target>../builds</build.folder.target>
+		<build.folder.p2>p2</build.folder.p2>
+		<build.folder.bin>bin</build.folder.bin>
+		<build.folder.target.bin>../builds/${build.folder.bin}</build.folder.target.bin>
+		<build.folder.target.p2>../builds/${build.folder.p2}</build.folder.target.p2>
+		<build.folder.type>test</build.folder.type>
+		<build.file.zip>VirSat_Core_Test.zip</build.file.zip>
+		<build.deploy.release>false</build.deploy.release>
+
+		<!-- Sonar Code Coverage -->
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.jacoco.version>0.7.7.201606060606</sonar.jacoco.version>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>deployUnsecured</id>
+			<properties>
+				<build.folder.target>U:/Confidential/VirSat/VirSat_Jenkins_Deploy/</build.folder.target>
+				<build.folder.target.bin>U:/Confidential/VirSat/VirSat_Jenkins_Deploy/${build.folder.bin}</build.folder.target.bin>
+				<build.folder.target.p2>U:/Confidential/VirSat/VirSat_Jenkins_Deploy/${build.folder.p2}</build.folder.target.p2>
+			</properties>
+		</profile>
+		<profile>
+			<id>deployBackuped</id>
+			<properties>
+				<build.folder.target>P:/VirSat/VirSat_Jenkins_Deploy/</build.folder.target>
+				<build.folder.target.bin>P:/VirSat/VirSat_Jenkins_Deploy/${build.folder.bin}</build.folder.target.bin>
+				<build.folder.target.p2>P:/VirSat/VirSat_Jenkins_Deploy/${build.folder.p2}</build.folder.target.p2>
+			</properties>
+		</profile>
+		<profile>
+			<id>development</id>
+			<properties>
+				<build.qualifier>'d'yyyyMMddHHmm</build.qualifier>
+				<build.folder.type>development</build.folder.type>
+				<build.file.win32>VirSat_Core_Development_Win32.zip</build.file.win32>
+				<build.file.linux>VirSat_Core_Development_Linux.tar.gz</build.file.linux>
+			</properties>
+		</profile>
+		<profile>
+			<id>integration</id>
+			<properties>
+				<build.qualifier>'i'yyyyMMddHHmm</build.qualifier>
+				<build.folder.type>integration/${build.version}</build.folder.type>
+				<build.file.win32>VirSat_Core_Integration_${build.version}_Win32.zip</build.file.win32>
+				<build.file.linux>VirSat_Core_Integration_${build.version}_Linux.tar.gz</build.file.linux>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<build.deploy.release>true</build.deploy.release>
+				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
+				<build.folder.type>release/${build.version}/${BUILD_ID}</build.folder.type>
+				<build.file.win32>VirSat_Core_Release_${build.version}_${BUILD_ID}_Win32.zip</build.file.win32>
+				<build.file.linux>VirSat_Core_Release_${build.version}_${BUILD_ID}_Linux.tar.gz</build.file.linux>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-versions-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<!-- executions> <execution> <id>versions</id> <phase>validate</phase> 
+					<goals> <goal>update-pom</goal> </goals> </execution> </executions -->
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<showWarnings>true</showWarnings>
+					<useProjectSettings>false</useProjectSettings>
+				</configuration>
+			</plugin>
+
+			<!-- The surefire plugin enables the unit test runs -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<!-- Let the tests run for 6 minutes max. If time is exceeded kill the 
+						process. Apparently something is wrong -->
+					<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<showEclipseLog>true</showEclipseLog>
+					<testFailureIgnore>true</testFailureIgnore>
+					<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
+					<useUIHarness>false</useUIHarness>
+				</configuration>
+			</plugin>
+
+			<!-- Enabling use of jacoco -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${sonar.jacoco.version}</version>
+				<configuration>
+					<append>true</append>
+					<!-- Where to put jacoco coverage report -->
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<format>${build.qualifier}</format>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.0.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>8.8</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<configuration>
+							<configLocation>checkStylesDefinition.xml</configLocation>
+							<propertyExpansion>samedir=.</propertyExpansion>
+							<encoding>UTF-8</encoding>
+							<consoleOutput>true</consoleOutput>
+							<failsOnError>true</failsOnError>
+							<linkXRef>false</linkXRef>
+							<!-- violationSeverity>warning</violationSeverity -->
+						</configuration>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Enabling the use of Spotbugs plugin -->
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>3.1.3</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.spotbugs</groupId>
+						<artifactId>spotbugs</artifactId>
+						<version>3.1.3</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+					<includeFilterFile>spotbugs-include.xml</includeFilterFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+					<target>
+						<artifact>
+							<groupId>de.dlr.sc.virsat</groupId>
+							<artifactId>de.dlr.sc.virsat.target</artifactId>
+							<version>4.8.0-SNAPSHOT</version>
+							<classifier>virsat</classifier>
+						</artifact>
+					</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.eclipse.tycho.extras</groupId>
+										<artifactId>tycho-document-bundle-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>javadoc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-checkstyle-plugin</artifactId>
+										<versionRange>[2.6,)</versionRange>
+										<goals>
+											<goal>check</goal>
+											<goal>checkstyle</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+									<comment>source:
+										extension(com.basistech.m2e.code.quality.checkstyle_1.0.0.201705301746)</comment>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project> 

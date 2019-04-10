@@ -1,0 +1,40 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+ Concept de.dlr.sc.virsat.model.extension.visualisation displayname "Visualization" version 1.3 description "Concept that defines visualisation properties" {
+	Category Visualisation {
+		Applicable For All;
+		Cardinality 1;
+		
+		EnumProperty shape values [ 
+			NONE=1,
+			BOX=2,
+			SPHERE=3,
+			CYLINDER=4,
+			CONE=5,
+			GEOMETRY=6
+		] 
+		default 		NONE;  
+		
+		Resource geometryFile description "STL File";
+		FloatProperty radius default 0 quantityKind "Length" unit "Meter";
+		FloatProperty sizeX default 0 quantityKind "Length" unit "Meter";
+		FloatProperty sizeY default 0 quantityKind "Length" unit "Meter";
+		FloatProperty sizeZ default 0 quantityKind "Length" unit "Meter";
+		IntProperty color default 16777215; // 0xFFFFFF, white
+		FloatProperty transparency default 0;
+		FloatProperty positionX default 0 quantityKind "Length" unit "Meter";
+		FloatProperty positionY default 0 quantityKind "Length" unit "Meter";
+		FloatProperty positionZ default 0 quantityKind "Length" unit "Meter";
+		FloatProperty rotationX default 0 quantityKind "Angle" unit "Degree";
+		FloatProperty rotationY default 0 quantityKind "Angle" unit "Degree";
+		FloatProperty rotationZ default 0 quantityKind "Angle" unit "Degree";
+	}
+}
+

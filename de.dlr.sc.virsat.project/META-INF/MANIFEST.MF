@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Project Resources
+Bundle-SymbolicName: de.dlr.sc.virsat.project;singleton:=true
+Bundle-Version: 4.8.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.project.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.commons,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.transaction;visibility:=reexport,
+ org.eclipse.emf.workspace;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.emf.edapt.migration,
+ org.eclipse.emf.edapt.history,
+ org.eclipse.emf.workspace;visibility:=reexport,
+ org.eclipse.emf.compare,
+ com.google.guava
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.editingDomain,
+ de.dlr.sc.virsat.project.editingDomain.commands,
+ de.dlr.sc.virsat.project.editingDomain.util,
+ de.dlr.sc.virsat.project.markers,
+ de.dlr.sc.virsat.project.resources,
+ de.dlr.sc.virsat.project.resources.command,
+ de.dlr.sc.virsat.project.resources.dmf,
+ de.dlr.sc.virsat.project.structure,
+ de.dlr.sc.virsat.project.structure.command
+Automatic-Module-Name: de.dlr.sc.virsat.project

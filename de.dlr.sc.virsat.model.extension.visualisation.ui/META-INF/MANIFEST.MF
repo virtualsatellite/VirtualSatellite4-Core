@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Visualization UI
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.visualisation.ui;singleton:=true
+Bundle-Version: 4.8.0.qualifier
+Require-Bundle: de.dlr.sc.virsat.model.extension.visualisation,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.transaction,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui,
+ org.eclipse.jface.databinding,
+ org.eclipse.core.databinding.property,
+ org.eclipse.emf.databinding.edit,
+ de.dlr.sc.virsat.external.lib.protobuf
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: de.dlr.sc.virsat.model.extension.visualisation.ui.calculations
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-Activator: de.dlr.sc.virsat.model.extension.visualisation.ui.Activator
+Import-Package: vtk
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.visualisation.ui

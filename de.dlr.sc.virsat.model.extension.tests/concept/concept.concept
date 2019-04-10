@@ -1,0 +1,134 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+Concept de.dlr.sc.virsat.model.extension.tests hasDMF description "A pure test concept to check that everything is working as expected" { 
+	
+	StructuralElement TestStructuralElement description "StructuralElement for testing code generator" {
+		IsRootStructuralElement;
+		Inherits From All;
+		Applicable For All;
+	 
+	}
+
+	StructuralElement TestStructuralElementOther description "Another StructuralElement for bean structural element instance helper" {
+		Inherits From All; 
+		Applicable For All;  
+	} 
+	
+	/**
+	 * A test Category to test all of the various property Types
+	 */ 
+	Category TestCategoryAllProperty  description "TestCategory for testing all property Types once" {
+		Applicable For All;
+		
+		StringProperty testString;
+		IntProperty testInt; 
+		FloatProperty testFloat quantityKind "Mass" unit "Kilogram";      
+		BooleanProperty testBool;
+		Resource testResource;        
+		EnumProperty testEnum values [LOW = 15, MEDIUM = 20, HIGH = 25, INCREDIBLE = 30];
+	}  
+	
+	/**
+	 * A test Category to test the concept of an composed type
+	 */
+	Category TestCategoryComposition {
+		Applicable For All;
+		Type testSubCategory of Category TestCategoryAllProperty;
+	}
+	  
+	/** 
+	 * A test Category to test the concept of an composed type
+	 */
+	Category TestCategoryReference { 
+		Applicable For All;
+		Reference testRefCategory of Type TestCategoryAllProperty;
+		Reference testRefProperty of Type TestCategoryAllProperty.testString;
+	} 
+	 
+	/** 
+	 * A test Category to test the concept arrays on intrinsic data types
+	 */
+	Category TestCategoryIntrinsicArray {
+		Applicable For All;
+		StringProperty testStringArrayDynamic[];
+		StringProperty testStringArrayStatic[4];   
+	}
+	
+	/**
+	 * A test Category to test the concept arrays of composed data types
+	 */
+	Category TestCategoryCompositionArray {
+		Applicable For All; 
+		Type testCompositionArrayDynamic[] of Category TestCategoryAllProperty;
+		Type testCompositionArrayStatic[4] of Category TestCategoryAllProperty;
+	}
+	 
+	/**
+	 * A test Category to test the concept arrays of references to other types
+	 */
+	Category TestCategoryReferenceArray {
+		Applicable For All;
+		Reference testCategoryReferenceArrayDynamic[] of Type TestCategoryAllProperty;
+		Reference testCategoryReferenceArrayStatic[4] of Type TestCategoryAllProperty;
+		
+		Reference testPropertyReferenceArrayDynamic[] of Type TestCategoryAllProperty.testString;
+		Reference testPropertyReferenceArrayStatic[4] of Type TestCategoryAllProperty.testString;
+	}
+	
+	/**
+	 * two test Categories for the CA Bean helper tests
+	 */
+	 Category TestCategoryBeanA {
+	 	Applicable For All;
+	 }
+	 
+	 Category TestCategoryBeanB {
+	 	Applicable For All;
+	 }
+	 
+	 Category TestCategoryBeanAbstract {
+	 	Applicable For All;
+	 	IsAbstract;
+	 }
+	 
+	 Category TestCategoryBeanConcrete extends TestCategoryBeanAbstract {
+	 	Applicable For All;	
+	 } 
+	 
+	 /**
+	 * Categories using the extension mechanism
+	 */
+	 Category TestCategoryBase {
+	 	Applicable For All;
+	 	Type testArray[] of Category TestCategoryBase;
+	 	IntProperty testBaseProperty;
+	 	Reference testReference of Type TestCategoryBase;
+	 }
+	 
+	 Category TestCategoryExtends extends TestCategoryBase {
+	 	IntProperty testExtendsProperty;
+	 }
+	 
+	 
+	 /* Categories with composed properties */
+	 Category TestParameter { 
+		Applicable For All;
+		FloatProperty defaultValue default 0;
+	}
+	
+	
+	 Category TestMassParameters {
+		Applicable For All;
+		Cardinality 1;
+				 
+		Type mass of Category TestParameter quantityKind "Mass";
+	}
+}
+

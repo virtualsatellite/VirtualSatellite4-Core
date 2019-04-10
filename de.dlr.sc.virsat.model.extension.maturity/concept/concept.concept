@@ -1,0 +1,43 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+Concept de.dlr.sc.virsat.model.extension.maturity displayname "Design Maturity" description "Maturity Concept for Products and Parts" version 1.1 {
+	
+	Category Maturity description "Category to describe the maturity of a part or product" {
+		Applicable For All;
+		Cardinality 1;
+		
+		EnumProperty level values [ 
+			READY_TO_BE_USED=1,
+			HAS_TO_BE_MODIFIED=2,
+			HAS_TO_BE_DEVELOPED=3
+		] 
+		default 		HAS_TO_BE_DEVELOPED 
+		quantityKind 	"Dimensionless" 
+		unit 			"No Unit" 
+		description 	"Maturity Level within the project";  
+		
+		EnumProperty trl values [
+			TRL_1=1,
+			TRL_2=2,
+			TRL_3=3,
+			TRL_4=4,
+			TRL_5=5, 
+			TRL_6=6,
+			TRL_7=7,
+			TRL_8=8,
+			TRL_9=9
+		] 
+		default TRL_1 
+		quantityKind "Dimensionless" 
+		unit "No Unit" 
+		description "ECSS Technology Readiness Level of the part/product";  
+	}
+}
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.&#xD;&#xA;&#xD;&#xA;This program and the accompanying materials are made available under the&#xD;&#xA;terms of the Eclipse Public License 2.0 which is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-2.0.&#xD;&#xA;&#xD;&#xA;SPDX-License-Identifier: EPL-2.0"
+    modelDirectory="/de.dlr.sc.virsat.model.extension.tests/src-dmf" editDirectory="/de.dlr.sc.virsat.model.extension.tests.edit/src-dmf"
+    editorDirectory="/de.dlr.sc.virsat.model.extension.tests.editor/src-dmf" modelPluginID="de.dlr.sc.virsat.model.extension.tests"
+    modelName="Concept" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="/de.dlr.sc.virsat.model.extension.tests.tests/src-dmf" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>/de.dlr.sc.virsat.model.extension.tests/concept/concept.ecore</foreignModel>
+  <genPackages prefix="Tests" basePackage="de.dlr.sc.virsat.model.extension.tests"
+      resource="XMI" disposableProviderFactory="true" ecorePackage="concept.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="concept.ecore#//EnumTestEnum">
+      <genEnumLiterals ecoreEnumLiteral="concept.ecore#//EnumTestEnum/LOW"/>
+      <genEnumLiterals ecoreEnumLiteral="concept.ecore#//EnumTestEnum/MEDIUM"/>
+      <genEnumLiterals ecoreEnumLiteral="concept.ecore#//EnumTestEnum/HIGH"/>
+      <genEnumLiterals ecoreEnumLiteral="concept.ecore#//EnumTestEnum/INCREDIBLE"/>
+    </genEnums>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryAllProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryAllProperty/testString"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryAllProperty/testInt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryAllProperty/testFloat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryAllProperty/testBool"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryAllProperty/testResource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryAllProperty/testEnum"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryComposition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryComposition/testSubCategory"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryReference/testRefCategory"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryIntrinsicArray">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryIntrinsicArray/testStringArrayDynamic"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryIntrinsicArray/testStringArrayStatic"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryCompositionArray">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryCompositionArray/testCompositionArrayDynamic"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryCompositionArray/testCompositionArrayStatic"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryReferenceArray">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryReferenceArray/testCategoryReferenceArrayDynamic"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryReferenceArray/testCategoryReferenceArrayStatic"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryBeanA"/>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryBeanB"/>
+    <genClasses image="false" ecoreClass="concept.ecore#//TestCategoryBeanAbstract"/>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryBeanConcrete"/>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryBase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryBase/testArray"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryBase/testBaseProperty"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference concept.ecore#//TestCategoryBase/testReference"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCategoryExtends">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCategoryExtends/testExtendsProperty"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestParameter/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestMassParameters">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference concept.ecore#//TestMassParameters/mass"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

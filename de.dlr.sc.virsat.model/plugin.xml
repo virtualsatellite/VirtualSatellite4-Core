@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension-point id="Concept" name="Model Concept Extension" schema="schema/Concept.exsd"/>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6"
+            class="de.dlr.sc.virsat.model.dvlm.DVLMPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/s"
+            class="de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/g"
+            class="de.dlr.sc.virsat.model.dvlm.general.GeneralPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/c"
+            class="de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/r"
+            class="de.dlr.sc.virsat.model.dvlm.roles.RolesPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/u"
+            class="de.dlr.sc.virsat.model.dvlm.units.UnitsPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/t"
+            class="de.dlr.sc.virsat.model.dvlm.types.TypesPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp"
+            class="de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd"
+            class="de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppi"
+            class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/qudv"
+            class="de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/calc"
+            class="de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/i"
+            class="de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dvlm -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dvlm/v6/dmf"
+            class="de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage"
+            genModel="model/dvlm.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.edapt.migrators">
+      <migrator
+            path="model/dvlm.history">
+      </migrator>
+   </extension>
+  
+</plugin>

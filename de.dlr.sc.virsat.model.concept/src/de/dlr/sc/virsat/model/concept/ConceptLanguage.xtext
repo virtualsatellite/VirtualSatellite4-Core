@@ -1,0 +1,390 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+ 
+grammar de.dlr.sc.virsat.model.concept.ConceptLanguage with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.virsat.sc.dlr.de/dvlm/v6"  
+import "http://www.virsat.sc.dlr.de/dvlm/v6/s" as Structural
+import "http://www.virsat.sc.dlr.de/dvlm/v6/r" as Rights
+import "http://www.virsat.sc.dlr.de/dvlm/v6/u" as Units
+import "http://www.virsat.sc.dlr.de/dvlm/v6/c" as Concepts
+import "http://www.virsat.sc.dlr.de/dvlm/v6/t" as Types
+import "http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd" as PropertyDefinitions
+import "http://www.virsat.sc.dlr.de/dvlm/v6/cp" as Categories
+import "http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppi" as PropertyInstances
+import "http://www.virsat.sc.dlr.de/dvlm/v6/g" as General
+import "http://www.virsat.sc.dlr.de/dvlm/v6/calc" as Calc
+
+Concept returns Concepts::Concept:
+	{Concepts::Concept}
+	'Concept' name=QualifiedName
+	(
+		('displayname' displayName=EString)? & 
+		('version' version=Version)? &
+		('description' description=EString)? &
+		(DMF?='hasDMF')?
+	)
+	'{'
+		(imports+=ConceptImport)* 
+		(structuralElements+=StructuralElement)*
+		(relations+=ARelation)*
+		(categories+=Category)*
+	'}';
+
+// ***************************************************************************************
+// Structural Elements and Relations
+// ***************************************************************************************
+
+StructuralElement returns Structural::StructuralElement:
+	{Structural::StructuralElement}
+	'StructuralElement' name=ID
+	(('shortname' shortName=ID)? &
+	('description' description=EString)? )
+	'{'
+		((isRootStructuralElement?='IsRootStructuralElement'';')? &
+		('Inherits' 'From' (('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All') ';')? &
+		('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		('Cardinality' cardinality=INT ';')? )
+	'}'
+;
+
+GeneralRelation returns Structural::GeneralRelation:
+	{Structural::GeneralRelation}
+	'GeneralRelation' name=ID
+	('description' description=EString)?
+	'{'
+		'Referenced' 'Type' referencedType=[Structural::StructuralElement|QualifiedName]';'
+		('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
+		('Cardinality' cardinality=INT ';')?
+	'}'
+;
+
+ARelation returns Structural::GeneralRelation:
+	GeneralRelation 
+;
+
+// ***************************************************************************************
+// The Properties
+// ***************************************************************************************
+
+Category returns Categories::Category:
+	{Categories::Category}
+	'Category' name=ID 
+	(('extends' extendsCategory=[Categories::Category|QualifiedName])? &
+	('shortname' shortName=ID)? &
+	('description' description=EString)? )
+	'{'
+		((isAbstract?='IsAbstract'';')? &
+		('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		('Cardinality' cardinality=INT ';')? )
+		
+		(properties+=AProperty)*
+		(equationDefinitions+=EquationDefinition)*
+	'}';
+
+ConceptImport returns Concepts::ConceptImport:
+	{Concepts::ConceptImport}
+   'Import' importedNamespace = QualifiedNameWithWildcard
+   ';'
+;
+
+// ***************************************************************************************
+// The Properties
+// ***************************************************************************************
+
+AProperty returns PropertyDefinitions::AProperty:
+	ComposedProperty |
+	IntProperty |
+	FloatProperty |
+	StringProperty |
+	BooleanProperty |
+	EnumProperty |
+	ReferenceProperty |
+	ResourceProperty
+;
+
+ArrayModifier returns PropertyDefinitions::IArrayModifier:
+	DynmaicArrayModifier | StaticArrayModifier
+;
+
+DynmaicArrayModifier returns PropertyDefinitions::DynamicArrayModifier:
+	{PropertyDefinitions::DynamicArrayModifier}
+	'[' ']'
+;
+
+StaticArrayModifier returns PropertyDefinitions::StaticArrayModifier:
+	'[' arraySize=INT ']'
+;
+
+ComposedProperty returns PropertyDefinitions::ComposedProperty:
+	{PropertyDefinitions::ComposedProperty}
+	'Type' name=ID (arrayModifier=ArrayModifier)?
+	'of' 'Category' type=[Categories::Category|QualifiedName]
+	(('description' description=EString)? &
+	('quantityKind' quantityKindName = EString)? &
+	('unit' unitName = EString)? )
+	';'
+	;
+
+IntProperty returns PropertyDefinitions::IntProperty:
+	{PropertyDefinitions::IntProperty}
+	'IntProperty' name=ID (arrayModifier=ArrayModifier)?
+	(('description' description=EString)? &
+	('default' defaultValue=IntLiteralString)? &
+	('quantityKind' quantityKindName = EString)? &
+	('unit' unitName = EString)? )
+	';'
+	;
+
+FloatProperty returns PropertyDefinitions::FloatProperty:
+	{PropertyDefinitions::FloatProperty}
+	'FloatProperty' name=ID (arrayModifier=ArrayModifier)?
+	(('description' description=EString)? &
+	('default' defaultValue=FloatLiteralString)? &
+	('quantityKind' quantityKindName = EString)? &
+	('unit' unitName = EString)? )
+	';'
+	;
+
+StringProperty returns PropertyDefinitions::StringProperty:
+	{PropertyDefinitions::StringProperty}
+	'StringProperty' name=ID (arrayModifier=ArrayModifier)?
+	(('description' description=EString)? &
+	('default' defaultValue=EString)?)
+	';'
+	;
+
+BooleanProperty returns PropertyDefinitions::BooleanProperty:
+	'BooleanProperty' name=ID (arrayModifier=ArrayModifier)?
+	(('description' description=EString)? &
+	('default' defaultValue=BooleanLiteralString)? )
+	';'
+	;
+
+EnumProperty returns PropertyDefinitions::EnumProperty:
+	'EnumProperty' name=ID (arrayModifier=ArrayModifier)?
+	(('description' description=EString)? &
+	('quantityKind' quantityKindName = EString)? &
+	('unit' unitName = EString)? &
+	('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']') &
+	('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])? )
+	';'
+	;
+
+EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
+	name=ID '='	value=(EString | FloatLiteralString)
+;
+
+ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
+	'Reference' name=ID (arrayModifier=ArrayModifier)?
+	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+	('description' description=EString)?
+	';'
+	;
+
+ResourceProperty returns PropertyDefinitions::ResourceProperty:
+	'Resource' name=ID (arrayModifier=ArrayModifier)?
+	('description' description=EString)?
+	';'
+	;
+
+
+// ***************************************************************************************
+// Calculation
+// ***************************************************************************************
+
+EquationDefinition returns Calc::EquationDefinition:
+	result=EquationDefinitionResult '=' expression=AdditionAndSubtraction ';'  
+;
+
+EquationDefinitionResult returns Calc::IEquationDefinitionResult:
+ 	TypeDefinitionResult | EquationIntermediateResult
+;
+
+TypeDefinitionResult returns Calc::IEquationDefinitionResult: 
+	{Calc::TypeDefinitionResult}
+	'Ref:' reference=[Categories::ATypeDefinition | QualifiedName]
+;
+
+EquationIntermediateResult returns Calc::IEquationDefinitionResult:
+	{Calc::EquationIntermediateResult} 
+	'Calc:' name=ID
+;
+
+AdditionAndSubtraction returns Calc::AExpression:
+    MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)* 
+;
+ 
+MultiplicationAndDivision returns Calc::AExpression:
+ 	PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
+;
+ 
+PowerFunction returns Calc::AExpression:
+ 	AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
+;
+
+Parenthesis returns Calc::AOpRightExpression:
+	{Calc::Parenthesis}
+	operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
+;
+ 
+AExpression returns Calc::AExpression:
+	ALiteral |
+	ReferencedDefinitionInput  |
+ 	Parenthesis  |
+ 	Function |
+ 	AAdvancedFunction
+;
+
+ReferencedDefinitionInput returns Calc::ReferencedDefinitionInput: 
+	reference=[Calc::IEquationDefinitionInput|QualifiedName]
+;
+
+ALiteral returns Calc::ALiteral: 
+	NumberLiteral |
+	ValueE |
+	ValuePi
+;
+
+Function returns Calc::AExpression:
+	{Calc::Function}
+	operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+;
+
+AAdvancedFunction returns Calc::AExpression:
+	AdvancedFunction | SetFunction
+;
+
+AdvancedFunction returns Calc::AExpression:
+	{Calc::AdvancedFunction}
+	operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+;
+
+SetFunction returns Calc::AExpression:
+	{Calc::SetFunction}
+	operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
+;
+
+NumberLiteral returns Calc::NumberLiteral:
+	{Calc::NumberLiteral}
+	value = FloatLiteralString  
+;
+
+ValuePi returns Calc::ValuePi:
+	{Calc::ValuePi}
+	'pi'
+;
+
+ValueE returns Calc::ValueE:
+	{Calc::ValueE}
+	'e'
+;
+
+enum OperatorPlus returns Calc::MathOperator :
+	PLUS = '+'
+;
+
+enum OperatorMinus returns Calc::MathOperator :
+	MINUS = '-'
+;
+
+enum OperatorMultiply returns Calc::MathOperator :
+	MULTIPLY = '*'
+;
+
+enum OperatorDivide returns Calc::MathOperator :
+	DIVIDE = '/'
+;
+
+enum OperatorPower returns Calc::MathOperator :
+	POWER = '^'
+;
+
+enum OperatorCos returns Calc::MathOperator :
+	COS = 'cos'
+;
+
+enum OperatorSin returns Calc::MathOperator :
+	SIN = 'sin'
+;
+
+enum OperatorTan returns Calc::MathOperator :
+	TAN = 'tan'
+;
+
+enum OperatorAtan returns Calc::MathOperator :
+	ATAN = 'atan'
+;
+
+enum OperatorAcos returns Calc::MathOperator :
+	ACOS = 'acos'
+;
+
+enum OperatorAsin returns Calc::MathOperator :
+	ASIN = 'asin'
+;
+
+enum OperatorSqrt returns Calc::MathOperator :
+	SQRT = 'sqrt'
+;
+
+enum OperatorLog returns Calc::MathOperator :
+	LOG = 'log'
+;
+
+enum OperatorLn returns Calc::MathOperator :
+	LN = 'ln'
+;
+
+enum OperatorExp returns Calc::MathOperator :
+	EXP = 'exp'
+;
+
+enum OperatorLd returns Calc::MathOperator :
+	LD = 'ld'
+;
+
+// ***************************************************************************************
+// General Expressions
+// ***************************************************************************************
+ 
+Version returns ecore::EString:
+	INT ('.' INT)*	
+;
+ 
+EInt returns ecore::EInt:
+	'-'? INT;
+
+IntLiteralString returns ecore::EString:
+	'-'? INT?	
+;
+
+FloatLiteralString returns ecore::EString:
+	'-'? INT ('.' INT)?	
+;
+
+BooleanLiteralString returns ecore::EString:
+	'true'|'false'	
+;
+
+EString returns ecore::EString:
+	STRING;
+
+QualifiedNameWithWildcard:
+  QualifiedName '.*'?
+;
+
+QualifiedName:
+	ID ('.' ID)*
+;
+	
+
+

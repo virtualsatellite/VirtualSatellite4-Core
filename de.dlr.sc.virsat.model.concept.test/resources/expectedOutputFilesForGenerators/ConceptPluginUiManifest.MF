@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Model Extension Concept UI
+Bundle-SymbolicName: de.dlr.sc.virsat.concept.example;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: de.dlr.sc.virsat.concept.example,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.transaction,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+
