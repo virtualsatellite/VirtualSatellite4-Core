@@ -23,6 +23,8 @@
 		<build.folder.target>../builds</build.folder.target>
 		<build.folder.p2>p2</build.folder.p2>
 		<build.folder.bin>bin</build.folder.bin>
+		<build.folder.target.secured>../deploy/secured</build.folder.target.secured>
+		<build.folder.target.unsecured>../deploy/unsecured</build.folder.target.unsecured>
 		<build.folder.target.bin>../builds/${build.folder.bin}</build.folder.target.bin>
 		<build.folder.target.p2>../builds/${build.folder.p2}</build.folder.target.p2>
 		<build.folder.type>test</build.folder.type>
@@ -40,17 +42,17 @@
 		<profile>
 			<id>deployUnsecured</id>
 			<properties>
-				<build.folder.target>U:/Confidential/VirSat/VirSat_Jenkins_Deploy/</build.folder.target>
-				<build.folder.target.bin>U:/Confidential/VirSat/VirSat_Jenkins_Deploy/${build.folder.bin}</build.folder.target.bin>
-				<build.folder.target.p2>U:/Confidential/VirSat/VirSat_Jenkins_Deploy/${build.folder.p2}</build.folder.target.p2>
+				<build.folder.target>${build.folder.target.unsecured}/</build.folder.target>
+				<build.folder.target.bin>${build.folder.target.unsecured}/${build.folder.bin}</build.folder.target.bin>
+				<build.folder.target.p2>${build.folder.target.unsecured}/${build.folder.p2}</build.folder.target.p2>
 			</properties>
 		</profile>
 		<profile>
 			<id>deployBackuped</id>
 			<properties>
-				<build.folder.target>P:/VirSat/VirSat_Jenkins_Deploy/</build.folder.target>
-				<build.folder.target.bin>P:/VirSat/VirSat_Jenkins_Deploy/${build.folder.bin}</build.folder.target.bin>
-				<build.folder.target.p2>P:/VirSat/VirSat_Jenkins_Deploy/${build.folder.p2}</build.folder.target.p2>
+				<build.folder.target>${build.folder.target.secured}</build.folder.target>
+				<build.folder.target.bin>${build.folder.target.secured}/${build.folder.bin}</build.folder.target.bin>
+				<build.folder.target.p2>${build.folder.target.secured}/${build.folder.p2}</build.folder.target.p2>
 			</properties>
 		</profile>
 		<profile>
@@ -76,9 +78,9 @@
 			<properties>
 				<build.deploy.release>true</build.deploy.release>
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
-				<build.folder.type>release/${build.version}/${BUILD_ID}</build.folder.type>
-				<build.file.win32>VirSat_Core_Release_${build.version}_${BUILD_ID}_Win32.zip</build.file.win32>
-				<build.file.linux>VirSat_Core_Release_${build.version}_${BUILD_ID}_Linux.tar.gz</build.file.linux>
+				<build.folder.type>release/${build.version}/${TRAVIS_BUILD_NUMBER}</build.folder.type>
+				<build.file.win32>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Win32.zip</build.file.win32>
+				<build.file.linux>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Linux.tar.gz</build.file.linux>
 			</properties>
 		</profile>
 	</profiles>

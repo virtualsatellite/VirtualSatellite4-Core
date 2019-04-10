@@ -98,7 +98,6 @@ Germany
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
       <feature id="org.eclipse.team.svn"/>
-      <feature id="org.polarion.eclipse.team.svn.connector"/>
       <feature id="org.eclipse.ocl"/>
       <feature id="org.eclipse.emf.compare"/>
       <feature id="org.eclipse.xtext.xbase.lib"/>
