@@ -73,7 +73,7 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P development,deployUnsecured -B -V | tee maven.log
+      - mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for warnings:"
       - cat maven.log
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
@@ -91,7 +91,7 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P development,deployUnsecured -B -V | tee maven.log
+      - mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for warnings:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
@@ -162,7 +162,7 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P integration,deployUnsecured -B -V | tee maven.log
+      - mvn clean install -P integration,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for warnings:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
@@ -233,7 +233,7 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P release,deployBackuped -B -V | tee maven.log
+      - mvn clean install -P release,deployBackuped,product -B -V | tee maven.log
       - echo "Check for warnings:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
