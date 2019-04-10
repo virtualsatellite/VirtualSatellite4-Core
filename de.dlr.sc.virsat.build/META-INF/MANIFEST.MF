@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Project Builder
+Bundle-SymbolicName: de.dlr.sc.virsat.build;singleton:=true
+Bundle-Version: 4.8.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.build.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.build.marker.util,
+ de.dlr.sc.virsat.build.validator,
+ de.dlr.sc.virsat.build.validator.core,
+ de.dlr.sc.virsat.build.validator.external,
+ de.dlr.sc.virsat.inheritance
+Automatic-Module-Name: de.dlr.sc.virsat.build

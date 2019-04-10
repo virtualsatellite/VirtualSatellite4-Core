@@ -1,0 +1,164 @@
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.dlr.sc.virsat</groupId>
+	<artifactId>de.dlr.sc.virsat</artifactId>
+	<version>4.8.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<profiles>
+		<profile>
+			<!-- Build profile for regenerating the target platform -->
+			<id>target</id>
+			<properties>
+				<build.src>tmodel-src</build.src>
+			</properties>
+			<modules>
+				<module>../de.dlr.sc.virsat.target</module>
+			</modules>
+		</profile>
+		<profile>
+			<!-- Build profile for building the main product -->
+			<id>product</id>
+			<properties>
+				<build.src>src</build.src>
+			</properties>
+			<modules>
+				<module>../de.dlr.sc.virsat.target</module>
+				<module>../de.dlr.sc.virsat.target.feature</module>
+
+				<module>../de.dlr.sc.virsat.branding.ui</module>
+				<module>../de.dlr.sc.virsat.branding.feature</module>
+
+				<module>../de.dlr.sc.virsat.javadoc.api</module>
+				<module>../de.dlr.sc.virsat.javadoc.api.feature</module>
+
+				<module>../de.dlr.sc.virsat.license.feature</module>
+
+				<module>../de.dlr.sc.virsat.external.lib.feature</module>
+				<module>../de.dlr.sc.virsat.external.lib</module>
+				<module>../de.dlr.sc.virsat.external.lib.apache.poi</module>
+				<module>../de.dlr.sc.virsat.external.lib.spotbugs</module>
+				<module>../de.dlr.sc.virsat.external.lib.commons.cli</module>
+				<module>../de.dlr.sc.virsat.external.lib.commons.math</module>
+				<module>../de.dlr.sc.virsat.external.lib.jfreechart</module>
+				<module>../de.dlr.sc.virsat.external.lib.protobuf</module>
+				<module>../de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
+				<module>../de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>
+				<module>../de.dlr.sc.virsat.external.lib.zmq.linux.x86_64</module>
+				<module>../de.dlr.sc.virsat.external.lib.zmq.win32.x86_64</module>
+				<module>../de.dlr.sc.virsat.external.lib.z3</module>
+				<module>../de.dlr.sc.virsat.external.lib.nebula.incubation</module>
+
+				<module>../de.dlr.sc.virsat.model</module>
+				<module>../de.dlr.sc.virsat.model.edit</module>
+				<module>../de.dlr.sc.virsat.model.edit.test</module>
+				<module>../de.dlr.sc.virsat.model.ui</module>
+				<module>../de.dlr.sc.virsat.model.test</module>
+				<module>../de.dlr.sc.virsat.model.feature</module>
+
+				<module>../de.dlr.sc.virsat.model.calculation</module>
+				<module>../de.dlr.sc.virsat.model.calculation.feature</module>
+				<module>../de.dlr.sc.virsat.model.calculation.tests</module>
+				<module>../de.dlr.sc.virsat.model.calculation.ide</module>
+				<module>../de.dlr.sc.virsat.model.calculation.ui</module>
+
+				<module>../de.dlr.sc.virsat.commons</module>
+				<module>../de.dlr.sc.virsat.commons.ui</module>
+				<module>../de.dlr.sc.virsat.commons.feature</module>
+				<module>../de.dlr.sc.virsat.commons.test</module>
+
+				<module>../de.dlr.sc.virsat.build</module>
+				<module>../de.dlr.sc.virsat.build.feature</module>
+				<module>../de.dlr.sc.virsat.build.test</module>
+				<module>../de.dlr.sc.virsat.build.ui</module>
+
+				<module>../de.dlr.sc.virsat.apps</module>
+				<module>../de.dlr.sc.virsat.apps.test</module>
+				<module>../de.dlr.sc.virsat.apps.feature</module>
+				<module>../de.dlr.sc.virsat.apps.ui</module>
+
+				<module>../de.dlr.sc.virsat.uiengine.ui</module>
+				<module>../de.dlr.sc.virsat.uiengine.feature</module>
+
+				<module>../de.dlr.sc.virsat.model.concept</module>
+				<module>../de.dlr.sc.virsat.model.concept.ide</module>
+				<module>../de.dlr.sc.virsat.model.concept.ui</module>
+				<module>../de.dlr.sc.virsat.model.concept.test</module>
+				<module>../de.dlr.sc.virsat.model.concept.feature</module>
+
+				<module>../de.dlr.sc.virsat.project</module>
+				<module>../de.dlr.sc.virsat.project.ui</module>
+				<module>../de.dlr.sc.virsat.qudv.ui</module>
+				<module>../de.dlr.sc.virsat.project.test</module>
+				<module>../de.dlr.sc.virsat.project.feature</module>
+
+				<module>../de.dlr.sc.virsat.graphiti</module>
+				<module>../de.dlr.sc.virsat.graphiti.ui</module>
+				<module>../de.dlr.sc.virsat.graphiti.test</module>
+				<module>../de.dlr.sc.virsat.graphiti.feature</module>
+
+				<module>../de.dlr.sc.virsat.svn</module>
+				<module>../de.dlr.sc.virsat.svn.ui</module>
+				<module>../de.dlr.sc.virsat.svn.test</module>
+				<module>../de.dlr.sc.virsat.svn.feature</module>
+
+				<module>../de.dlr.sc.virsat.concept.unittest.util</module>
+				<module>../de.dlr.sc.virsat.test</module>
+				<module>../de.dlr.sc.virsat.test.feature</module>
+
+				<!-- Now we finally build the products: oh yes we build it! -->
+				<module>../de.dlr.sc.virsat.dependencies.feature</module>
+				<module>../de.dlr.sc.virsat.docs.feature</module>
+				<module>../de.dlr.sc.virsat.product</module>
+				<module>../de.dlr.sc.virsat.p2updatesite</module>
+				<module>../de.dlr.sc.virsat.model.concept.p2updatesite</module>
+
+				<module>../de.dlr.sc.virsat.model.extension.maturity</module>
+				<module>../de.dlr.sc.virsat.model.extension.maturity.test</module>
+				<module>../de.dlr.sc.virsat.model.extension.maturity.ui</module>
+				<module>../de.dlr.sc.virsat.model.extension.maturity.feature</module>
+
+				<!-- The Extension for Common EGS-CC based Product Structure -->
+				<module>../de.dlr.sc.virsat.model.extension.ps</module>
+				<module>../de.dlr.sc.virsat.model.extension.ps.test</module>
+				<module>../de.dlr.sc.virsat.model.extension.ps.ui</module>
+				<module>../de.dlr.sc.virsat.model.extension.ps.feature</module>
+
+
+				<!-- The Extension for general Mass Budget Feature -->
+				<module>../de.dlr.sc.virsat.model.extension.budget.mass</module>
+				<module>../de.dlr.sc.virsat.model.extension.budget.mass.test</module>
+				<module>../de.dlr.sc.virsat.model.extension.budget.mass.ui</module>
+				<module>../de.dlr.sc.virsat.model.extension.budget.mass.feature</module>
+
+				<!-- Extension for Visualization -->
+				<module>../de.dlr.sc.virsat.model.extension.visualisation</module>
+				<module>../de.dlr.sc.virsat.model.extension.visualisation.test</module>
+				<module>../de.dlr.sc.virsat.model.extension.visualisation.ui</module>
+				<module>../de.dlr.sc.virsat.model.extension.visualisation.feature</module>
+
+				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
+					and Bean Model -->
+				<module>../de.dlr.sc.virsat.model.extension.tests</module>
+				<module>../de.dlr.sc.virsat.model.extension.tests.test</module>
+				<module>../de.dlr.sc.virsat.model.extension.tests.edit</module>
+				<module>../de.dlr.sc.virsat.model.extension.tests.edit.test</module>
+				<module>../de.dlr.sc.virsat.model.extension.tests.ui</module>
+				<module>../de.dlr.sc.virsat.model.extension.tests.feature</module>
+
+				<!-- Performance Tests -->
+				<module>../de.dlr.sc.virsat.performance.test</module>
+
+				<!-- SWTBot UI Tests -->
+				<module>../de.dlr.sc.virsat.swtbot.test</module>
+			</modules>
+		</profile>
+	</profiles>
+</project> 

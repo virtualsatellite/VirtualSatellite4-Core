@@ -1,0 +1,213 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+package de.dlr.sc.virsat.model.dvlm.calculation.impl;
+
+
+import de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage;
+import de.dlr.sc.virsat.model.dvlm.calculation.IEquationInput;
+
+import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
+import java.util.Collection;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>IEquation Input</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.IEquationInputImpl#getSuperTis <em>Super Tis</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.IEquationInputImpl#isIsInherited <em>Is Inherited</em>}</li>
+ * </ul>
+ *
+ * @generated
+ */
+public abstract class IEquationInputImpl extends MinimalEObjectImpl.Container implements IEquationInput {
+	/**
+	 * The cached value of the '{@link #getSuperTis() <em>Super Tis</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSuperTis()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<IInheritanceLink> superTis;
+	/**
+	 * The default value of the '{@link #isIsInherited() <em>Is Inherited</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsInherited()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_INHERITED_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #isIsInherited() <em>Is Inherited</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsInherited()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isInherited = IS_INHERITED_EDEFAULT;
+
+	/**
+	 * *********************************
+	 * VirSat Specific Code Generation
+	 * *********************************
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected IEquationInputImpl() {
+		super();
+		
+	}
+	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return CalculationPackage.Literals.IEQUATION_INPUT;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<IInheritanceLink> getSuperTis() {
+		if (superTis == null) {
+			superTis = new EObjectResolvingEList<IInheritanceLink>(IInheritanceLink.class, this, CalculationPackage.IEQUATION_INPUT__SUPER_TIS);
+		 
+		
+		}
+		return superTis;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsInherited() {
+		return isInherited;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsInherited(boolean newIsInherited) {
+		boolean oldIsInherited = isInherited;
+		isInherited = newIsInherited;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CalculationPackage.IEQUATION_INPUT__IS_INHERITED, oldIsInherited, isInherited));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case CalculationPackage.IEQUATION_INPUT__SUPER_TIS:
+				return getSuperTis();
+			case CalculationPackage.IEQUATION_INPUT__IS_INHERITED:
+				return isIsInherited();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case CalculationPackage.IEQUATION_INPUT__SUPER_TIS:
+				getSuperTis().clear();
+				getSuperTis().addAll((Collection<? extends IInheritanceLink>)newValue);
+				return;
+			case CalculationPackage.IEQUATION_INPUT__IS_INHERITED:
+				setIsInherited((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case CalculationPackage.IEQUATION_INPUT__SUPER_TIS:
+				getSuperTis().clear();
+				return;
+			case CalculationPackage.IEQUATION_INPUT__IS_INHERITED:
+				setIsInherited(IS_INHERITED_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case CalculationPackage.IEQUATION_INPUT__SUPER_TIS:
+				return superTis != null && !superTis.isEmpty();
+			case CalculationPackage.IEQUATION_INPUT__IS_INHERITED:
+				return isInherited != IS_INHERITED_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (isInherited: ");
+		result.append(isInherited);
+		result.append(')');
+		return result.toString();
+	}
+
+} //IEquationInputImpl

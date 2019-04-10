@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.intro">
+      <intro
+            class="de.dlr.sc.virsat.branding.ui.intro.IntroPart"
+            icon="resources/images/Branding/VirSat16.gif"
+            id="de.dlr.sc.virsat.branding.ui.intro">
+      </intro>
+      <introProductBinding
+            introId="de.dlr.sc.virsat.branding.ui.intro"
+            productId="de.dlr.sc.virsat.branding.ui.VirSat_Core">
+      </introProductBinding>
+   </extension>
+  
+   <extension
+         id="VirSat_Core"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="VirSat 4 - Core">
+         <property
+               name="windowImages"
+               value="resources/images/Branding/VirSat16.gif,resources/images/Branding/VirSat32.gif,resources/images/Branding/VirSat48.gif,resources/images/Branding/VirSat64.gif,resources/images/Branding/VirSat128.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="Virtual Satellite 4 - DVLM Core&#x0A;&#x0A;Version 4.8.0&#x0A;&#x0A;Copyright 2019 - Simulation and Software Technology (DLR)&#x0A;&#x0A;German Aerospace Center (DLR) e.V.&#x0A;Lilienthalplatz 7&#x0A;38108 Braunschweig&#x0A;Germany">
+         </property>
+         <property
+               name="aboutImage"
+               value="resources/images/Branding/Configuration.gif">
+         </property>
+         <property
+               name="appName"
+               value="VirSat 4 - Core">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,280,230,15">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="808080">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="5,260,230,20">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+</plugin>

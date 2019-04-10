@@ -1,0 +1,7 @@
+/builds/
+**/workspace/
+**/target/
+**/temp/
+**/*._trace
+**/*.xtendbin
+/bin/

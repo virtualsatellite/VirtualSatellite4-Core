@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Concept IDE Tools IDE
+Bundle-SymbolicName: de.dlr.sc.virsat.model.concept.ide;singleton:=true
+Bundle-Version: 4.8.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.dlr.sc.virsat.model.concept,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime
+Export-Package: de.dlr.sc.virsat.model.concept.ide.contentassist.antlr,
+ de.dlr.sc.virsat.model.concept.ide.contentassist.antlr.internal
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.dlr.sc.virsat.model.concept.ide
+

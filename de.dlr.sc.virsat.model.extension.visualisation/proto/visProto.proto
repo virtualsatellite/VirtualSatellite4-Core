@@ -1,0 +1,90 @@
+syntax="proto2";
+package de.dlr.sc.visproto;
+
+message VisualisationMessage
+{
+	oneof type 
+	{
+		SceneGraph sceneGraph 						= 1;
+		GeometryFile geometryFile					= 2;
+		VisualisationRequest visualisationRequest	= 3;
+		HandshakeRequest handshakeRequest			= 4;
+		HandshakeReply handshakeReply				= 5;
+	}
+}
+
+message SceneGraph
+{
+	required SceneGraphNode node 		= 1;
+}
+
+message SceneGraphNode
+{
+	optional Vector3 position    		= 1;
+	optional Vector3 orientation 		= 2; 
+	required string ID 			  		= 3;
+	required int32 color		  		= 4 [default=0];
+	optional float opacity 		  		= 5;
+	repeated SceneGraphNode children 	= 6;
+	oneof type
+	{
+		Cone cone						= 7;
+		Box box							= 8;
+		Ball ball						= 9;
+		Cylinder cylinder				= 10;
+		None none						= 11;
+		Geometry geometry				= 12;
+	}
+}
+
+message Vector3
+{
+	required double x 					= 1 [default=0];
+	required double y 					= 2 [default=0];
+	required double z 					= 3 [default=0];
+}
+
+message Geometry
+{
+	required string originFilepath		= 1;
+}
+
+message Box
+{
+	required float x					= 1;
+	required float y					= 2;
+	required float z					= 3;
+}
+
+message Ball
+{
+	required float radius				= 1;
+}
+
+message Cone
+{
+	required float radius				= 1;
+	required float height				= 2;
+}
+
+message Cylinder
+{
+	required float radius				= 1;
+	required float height				= 2;
+}
+
+message None
+{
+
+}
+
+message GeometryFile
+{
+	required string nodeID				= 1;
+	required bytes fileContent			= 2;
+}
+
+message VisualisationRequest {}
+
+message HandshakeRequest {}
+message HandshakeReply {}

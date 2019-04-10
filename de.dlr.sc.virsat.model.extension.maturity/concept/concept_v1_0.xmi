@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v4/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v4/cp/cppd" name="de.dlr.sc.virsat.model.extension.maturity" description="Maturity Concept for Products and Parts">
+  <categories name="Maturity" description="Category to describe the maturity of a part or product" isApplicableForAll="true" cardinality="1">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="level" description="Maturity Level within the project" quantityKindName="Dimensionless" unitName="No Unit" defaultValue="//@categories.0/@properties.0/@values.2">
+      <values name="READY_TO_BE_USED" value="1"/>
+      <values name="HAS_TO_BE_MODIFIED" value="2"/>
+      <values name="HAS_TO_BE_DEVELOPED" value="3"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="trl" description="ECSS Technology Readiness Level of the part/product" quantityKindName="Dimensionless" unitName="No Unit" defaultValue="//@categories.0/@properties.1/@values.0">
+      <values name="TRL_1" value="1"/>
+      <values name="TRL_2" value="2"/>
+      <values name="TRL_3" value="3"/>
+      <values name="TRL_4" value="4"/>
+      <values name="TRL_5" value="5"/>
+      <values name="TRL_6" value="6"/>
+      <values name="TRL_7" value="7"/>
+      <values name="TRL_8" value="8"/>
+      <values name="TRL_9" value="9"/>
+    </properties>
+  </categories>
+</dvlm_c:Concept>

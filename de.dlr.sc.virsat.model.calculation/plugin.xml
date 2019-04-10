@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="de.dlr.sc.virsat.model.calculation.setFunction" name="setFunction" schema="schema/de.dlr.sc.virsat.model.calculation.setFunction.exsd"/>
+   <extension
+         id="de.dlr.sc.virsat.model.calculation.compute.builder"
+         name="VirSat Equation Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="de.dlr.sc.virsat.model.calculation.compute.IncrementalEquationBuilder" />
+      </builder>
+   </extension>
+   <extension
+         id="defaultCalculationExpressionExtender"
+         name="Default Calculation Expression Extender"
+         point="de.dlr.sc.virsat.model.edit.TypeInstanceSetterProvider">
+      <typeInstanceSetterProvider
+            class="de.dlr.sc.virsat.model.calculation.compute.DefaultExpressionExtender"
+            priority="0">
+      </typeInstanceSetterProvider>
+   </extension>
+   <extension
+         id="summaryFunction"
+         name="Summary Function"
+         point="de.dlr.sc.virsat.model.calculation.setFunction">
+      <setFunction
+      		name="summary"
+            class="de.dlr.sc.virsat.model.calculation.compute.extensions.OpSummary">
+      </setFunction>
+   </extension>
+   <extension
+         id="meanFunction"
+         name="Mean Function"
+         point="de.dlr.sc.virsat.model.calculation.setFunction">
+      <setFunction
+            name="mean"
+            class="de.dlr.sc.virsat.model.calculation.compute.extensions.OpMean">
+      </setFunction>
+   </extension>
+   <extension
+         id="maxFunction"
+         name="Max Function"
+         point="de.dlr.sc.virsat.model.calculation.setFunction">
+      <setFunction
+      		name="max"
+            class="de.dlr.sc.virsat.model.calculation.compute.extensions.OpMax">
+      </setFunction>
+   </extension>
+   <extension
+         id="minFunction"
+         name="Min Function"
+         point="de.dlr.sc.virsat.model.calculation.setFunction">
+      <setFunction
+      		name="min"
+            class="de.dlr.sc.virsat.model.calculation.compute.extensions.OpMin">
+      </setFunction>
+   </extension>
+   <extension
+         id="countFunction"
+         name="Count Function"
+         point="de.dlr.sc.virsat.model.calculation.setFunction">
+      <setFunction
+      		name="count"
+            class="de.dlr.sc.virsat.model.calculation.compute.extensions.OpCount">
+      </setFunction>
+   </extension>
+   <extension
+         id="de.dlr.sc.virsat.model.calculation.marker"
+         name="VirSat Equation Problem Marker"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="de.dlr.sc.virsat.problem.marker">
+      </super>
+   </extension>
+   <extension
+         id="de.dlr.sc.virsat.model.calculation.problem.cyclic"
+         name="VirSat Cyclic Equation Marker"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="de.dlr.sc.virsat.model.calculation.marker">
+      </super>
+   </extension>
+   <extension
+         id="de.dlr.sc.virsat.model.calculation.problem.evaluation"
+         name="VirSat Equation Evaluation Marker"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="de.dlr.sc.virsat.model.calculation.marker">
+      </super>
+   </extension>
+   <extension
+         id="de.dlr.sc.virsat.model.calculation.problem.evaluation.outOfDate"
+         name="VirSat Equation Evaluation Out Of Date Marker"
+         point="org.eclipse.core.resources.markers">
+      <persistent
+            value="true">
+      </persistent>
+      <super
+            type="de.dlr.sc.virsat.model.calculation.problem.evaluation">
+      </super>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.project.markerHelper">
+      <markerHelper
+            markerHelper="de.dlr.sc.virsat.model.calculation.marker.VirSatEquationMarkerHelper"
+            markerType="de.dlr.sc.virsat.model.calculation.marker">
+      </markerHelper>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.project.markerHelper">
+      <markerHelper
+            markerHelper="de.dlr.sc.virsat.model.calculation.marker.VirSatEquationMarkerHelper"
+            markerType="de.dlr.sc.virsat.model.calculation.problem.cyclic">
+      </markerHelper>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.project.markerHelper">
+      <markerHelper
+            markerHelper="de.dlr.sc.virsat.model.calculation.marker.VirSatEquationMarkerHelper"
+            markerType="de.dlr.sc.virsat.model.calculation.problem.evaluation">
+      </markerHelper>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.project.markerHelper">
+      <markerHelper
+            markerHelper="de.dlr.sc.virsat.model.calculation.marker.VirSatEquationMarkerHelper"
+            markerType="de.dlr.sc.virsat.model.calculation.problem.evaluation.outOfDate">
+      </markerHelper>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.build.DvlmValidator">
+      <dvlmValidator>
+         <seiValidator
+               class="de.dlr.sc.virsat.model.calculation.validator.UnitPropertyValueValidator"
+               id="de.dlr.sc.virsat.model.calculation.validator.UnitAndValueSetWithQK">
+         </seiValidator>
+      </dvlmValidator>
+   </extension>
+</plugin>

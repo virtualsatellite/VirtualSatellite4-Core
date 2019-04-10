@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="de.dlr.sc.virsat.model.concept.generator" name="Generator Settings" schema="schema/generator.exsd"/>
+   <extension
+         id="de.dlr.sc.virsat.model.concept.resourceAccessBuilder"
+         name="VirSat IDE Tools Plugin Resource Access Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            callOnEmptyDelta="true"
+            hasNature="false">
+         <run
+               class="de.dlr.sc.virsat.model.concept.builder.resources.ResourceAccessBuilder">
+         </run>
+      </builder>
+   </extension>
+
+</plugin>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="de.dlr.sc.virsat.project.resourceMigrator" name="resourceMigrator" schema="schema/de.dlr.sc.virsat.project.resourceMigrator.exsd"/>
+   <extension-point id="de.dlr.sc.virsat.project.markerHelper" name="markerHelper" schema="schema/de.dlr.sc.virsat.project.markerHelper.exsd"/>
+    <extension
+         id="nature"
+         name="VirSat Project Structure Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature">
+         </run>
+      </runtime>
+      <builder
+            id="de.dlr.sc.virsat.build.validator">
+      </builder>
+      <builder
+            id="de.dlr.sc.virsat.build.inheritance">
+      </builder>
+      <builder
+            id="de.dlr.sc.virsat.model.calculation.compute.builder">
+      </builder>
+   </extension>
+    <extension
+          id="de.dlr.sc.virsat.problem.marker"
+          name="General VirSat Problem Marker"
+          point="org.eclipse.core.resources.markers">
+       <persistent
+             value="true">
+       </persistent>
+       <super
+             type="org.eclipse.core.resources.problemmarker">
+       </super>
+       <attribute
+             name="IdentifierType">
+       </attribute>
+       <attribute
+             name="IdentifierValue">
+       </attribute>
+       <attribute
+             name="SnippetProperty">
+       </attribute>
+    </extension>
+    <extension
+          id="de.dlr.sc.virsat.problem.marker.testmarker"
+          name="VirSat Test Marker"
+          point="org.eclipse.core.resources.markers">
+       <persistent
+             value="true">
+       </persistent>
+       <super
+             type="de.dlr.sc.virsat.problem.marker">
+       </super>
+    </extension>
+    <extension
+          point="de.dlr.sc.virsat.project.markerHelper">
+       <markerHelper
+             markerHelper="de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper"
+             markerType="de.dlr.sc.virsat.problem.marker">
+       </markerHelper>
+    </extension>
+    <extension
+          point="de.dlr.sc.virsat.project.markerHelper">
+       <markerHelper
+             markerHelper="de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper"
+             markerType="de.dlr.sc.virsat.problem.marker.testmarker">
+       </markerHelper>
+    </extension>
+ 	
+</plugin>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+   <extension-point id="qudvUnitWizard" name="QUDV Unit Wizard" schema="schema/qudvUnitWizard.exsd"/>
+   <extension-point id="qudvQuantityKindWizard" name="QUDV Qunatity Kind Wizard" schema="schema/qudvQuantityKindWizard.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.dlr.virsat.datastore.ecore.qudvcategory"
+            name="Virtual Satellite QUDV">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            category="de.dlr.virsat.global.category.import.virsat"
+            class="de.dlr.sc.virsat.qudv.ui.wizards.QudvImportWizard"
+            icon="resources/UnitManagement.gif"
+            id="de.dlr.virsat.qudv.ui.wizards.QudvImportWizard"
+            name="QUDV Import Wizard">
+      </wizard>
+      <category
+            id="de.dlr.virsat.global.category.import.virsat"
+            name="VirSat">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <wizard
+            category="de.dlr.virsat.global.category.export.virsat"
+            class="de.dlr.sc.virsat.qudv.ui.wizards.QudvExportWizard"
+            icon="resources/UnitManagement.gif"
+            id="de.dlr.virsat.qudv.ui.wizards.QudvExportWizard"
+            name="QUDV Export Wizard">
+      </wizard>
+      <category
+            id="de.dlr.virsat.global.category.export.virsat"
+            name="VirSat">
+      </category>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.qudv.ui.qudvUnitWizard">
+      <wizard
+            class="de.dlr.sc.virsat.qudv.ui.wizards.SimpleUnitWizard"
+            icon="resources/unit_underline.gif"
+            id="de.dlr.sc.virsat.qudv.ui.SimpleUnitWizard"
+            name="QUDV Simple Unit Wizard">
+      </wizard>
+      <wizard
+            class="de.dlr.sc.virsat.qudv.ui.wizards.ConversionBasedUnitWizard"
+            icon="resources/unit_underline.gif"
+            id="de.dlr.sc.virsat.qudv.ui.conversionBasedUnitWizard"
+            name="QUDV Conversion Based Unit Wizard">
+      </wizard>
+      <wizard
+            class="de.dlr.sc.virsat.qudv.ui.wizards.DerivedUnitWizard"
+            icon="resources/unit_underline.gif"
+            id="de.dlr.sc.virsat.qudv.ui.derivedUnitWizard"
+            name="QUDV Derived Unit Wizard">
+      </wizard>
+      <wizard
+            class="de.dlr.sc.virsat.qudv.ui.wizards.PrefixedUnitWizard"
+            icon="resources/unit_underline.gif"
+            id="de.dlr.sc.virsat.qudv.ui.PrefixedUnitWizard"
+            name="QUDV Prefixed Unit Wizard">
+      </wizard>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.qudv.ui.qudvQuantityKindWizard">
+      <wizard
+            class="de.dlr.sc.virsat.qudv.ui.wizards.SimpleQuantityKindWizard"
+            icon="resources/unit_underline.gif"
+            id="de.dlr.sc.virsat.qudv.ui.SimpleQuantityKindWizard"
+            name="QUDV Simple Quantity Kind Wizard">
+      </wizard>
+      <wizard
+            class="de.dlr.sc.virsat.qudv.ui.wizards.DerivedQuantityKindWizard"
+            icon="resources/unit_underline.gif"
+            id="de.dlr.sc.virsat.qudv.ui.DerivedQuantityKindWizard"
+            name="QUDV Derived Quantity Kind Wizard">
+      </wizard>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
+      <editorSection
+            id="de.dlr.sc.virsat.uiengine.ui.editorSection.Units"
+            topRanking="10">
+      </editorSection>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+      <uiSnippet
+            id="de.dlr.sc.virsat.qudv.ui.uiSnippetUnitManagement"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.Units"
+            snippet="de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetUnitManagement">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.qudv.ui.uiSnippetQuantityKindManagement"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.Units"
+            snippet="de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetQuantityKindManagement">
+      </uiSnippet>
+   </extension>
+
+
+
+</plugin>

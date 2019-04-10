@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Commons
+Bundle-SymbolicName: de.dlr.sc.virsat.commons
+Bundle-Version: 4.8.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.commons.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.commons,
+ de.dlr.sc.virsat.commons.datastructures,
+ de.dlr.sc.virsat.commons.debug
+Automatic-Module-Name: de.dlr.sc.virsat.commons

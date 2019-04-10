@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="help/api_docs.xml"
+            primary="true">
+      </toc>
+   </extension>
+   <extension
+         point="org.eclipse.pde.core.javadoc">
+      <javadoc
+            archive="false"
+            path="help/api-docs/javadoc">
+<plugin
+               id="de.dlr.sc.virsat">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.apps">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.apps.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.branding.feature">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.branding.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.build">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.build.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.commons">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.commons.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.apache.poi">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.commons.cli">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.commons.math">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.feature">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.jfreechart">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.protobuf">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.vtk">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.z3">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.external.lib.zmq">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.graphiti">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.graphiti.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.calculation">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.calculation.ide">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.calculation.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.edit">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.budget.mass">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.budget.mass.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.maturity">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.maturity.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.ps">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.ps.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.visualisation">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.extension.visualisation.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.model.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.project">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.project.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.qudv.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.svn">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.svn.ui">
+         </plugin>
+<plugin
+               id="de.dlr.sc.virsat.uiengine.ui">
+         </plugin>
+      </javadoc>
+   </extension>
+</plugin>

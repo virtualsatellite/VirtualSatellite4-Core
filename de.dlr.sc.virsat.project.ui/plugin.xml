@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="de.dlr.sc.virsat.project.ui.category.newWizard.virsat"
+            name="%newWizardCategory">
+      </category>
+      <wizard
+            category="de.dlr.sc.virsat.project.ui.category.newWizard.virsat"
+            class="de.dlr.sc.virsat.project.ui.wizard.VirSatProjectWizard"
+            icon="resources/icons/VirSat_Project_DataBase.gif"
+            id="de.dlr.sc.virsat.project.ui.newProjectWizard"
+            name="%newProjectWizard"
+            preferredPerspectives="de.dlr.sc.virsat.branding.ui.default.perspective"
+            project="true">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="resources/icons/VirSat_Project_DataBase.gif"
+            id="de.dlr.sc.virsat.project.nature.image"
+            natureId="de.dlr.sc.virsat.project.nature">
+      </image>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="de.dlr.sc.virsat.project.ui.view.catgeory.virsat.core"
+            class="de.dlr.sc.virsat.project.ui.navigator.VirSatNavigator"
+            icon="resources/icons/VirSat_Navigator_Label.gif"
+            id="de.dlr.sc.virsat.project.ui.navigator.view"
+            name="VirSat Navigator"
+            restorable="true">
+      </view>
+      <category
+            id="de.dlr.sc.virsat.project.ui.view.catgeory.virsat.core"
+            name="VirSat">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="de.dlr.sc.virsat.project.ui.navigator.contentProvider.VirSatStructuralElementInstanceFolderContentProvider"
+            id="de.dlr.sc.virsat.navigator.structuralElementInstance.folder.content"
+            labelProvider="de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatStructuralElementInstanceFolderLabelProvider"
+            name="VirSat - SEI Documents Folder"
+            priority="highest"
+            providesSaveables="false">
+         <possibleChildren>
+            <instanceof
+                  value="org.eclipse.core.resources.IResource">
+            </instanceof>
+         </possibleChildren>
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IFile">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IFolder">
+               </instanceof>
+            </or>
+         </triggerPoints>
+         <dropAssistant
+               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.VirSatStructuralElementInstanceFolderDropAdapterAssistant"
+               id="de.dlr.sc.virsat.project.ui.dropAssistant1">
+            <possibleDropTargets>
+               <instanceof
+                     value="org.eclipse.core.resources.IResource">
+               </instanceof></possibleDropTargets>
+         </dropAssistant>
+      </navigatorContent>
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="de.dlr.sc.virsat.project.ui.navigator.contentProvider.VirSatWorkspaceContentProvider"
+            id="de.dlr.sc.virsat.navigator.workspace.content"
+            labelProvider="de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatWorkspaceLabelProvider"
+            name="VirSat - Workspace Tree"
+            priority="normal"
+            providesSaveables="false">
+         <possibleChildren>
+            <instanceof
+                  value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+            </instanceof>
+         </possibleChildren>
+         <triggerPoints>
+            <instanceof
+                  value="org.eclipse.core.resources.IWorkspaceRoot">
+            </instanceof>
+         </triggerPoints>
+      </navigatorContent>
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="de.dlr.sc.virsat.project.ui.navigator.contentProvider.VirSatProjectContentProvider"
+            id="de.dlr.sc.virsat.navigator.project.content"
+            labelProvider="de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatProjectLabelProvider"
+            name="VirSat - Project Tree"
+            priority="normal"
+            providesSaveables="false">
+         <possibleChildren>
+            <or>
+               <instanceof
+                     value="de.dlr.sc.virsat.model.dvlm.roles.RoleManagement">
+               </instanceof>
+            <instanceof
+                  value="de.dlr.sc.virsat.model.dvlm.Repository">
+            </instanceof>
+            <instanceof
+                  value="de.dlr.sc.virsat.model.dvlm.units.UnitManagement">
+            </instanceof>
+            <instanceof
+                  value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
+            </instanceof>
+            <instanceof
+                  value="de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment">
+            </instanceof>
+            <instanceof
+                  value="de.dlr.sc.virsat.model.dvlm.roles.Discipline">
+            </instanceof>
+            </or>
+         </possibleChildren>
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="de.dlr.sc.virsat.model.dvlm.Repository">
+               </instanceof>
+               <instanceof
+                     value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
+               </instanceof>
+               <instanceof
+                     value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+               </instanceof>
+            </or>
+         </triggerPoints>
+         <dropAssistant
+               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMObjectDropAdapterAssistant"
+               id="de.dlr.sc.virsat.project.ui.navigator.dropAssistant">
+            <possibleDropTargets></possibleDropTargets>
+         </dropAssistant>
+         <commonSorter
+               class="de.dlr.sc.virsat.project.ui.navigator.commonSorter.VirSatNavigatorSeiSorter">
+            <parentExpression>
+               <or>
+                  <instanceof
+                        value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
+                  </instanceof>
+                  <instanceof
+                        value="de.dlr.sc.virsat.model.dvlm.Repository">
+                  </instanceof>
+               </or></parentExpression>
+         </commonSorter>
+      </navigatorContent>
+      <actionProvider
+            class="de.dlr.sc.virsat.project.ui.navigator.actionProvider.VirSatNavigatorActionProvider"
+            id="de.dlr.sc.virsat.project.ui.navigator.actionProvider">
+         <enablement>
+            <or></or>
+         </enablement>
+      </actionProvider>
+      <navigatorContent
+            activeByDefault="false"
+            contentProvider="de.dlr.sc.virsat.project.ui.navigator.contentProvider.ConceptConcentProvider"
+            id="de.dlr.sc.virsat.navigator.project.content.concept"
+            labelProvider="de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatProjectLabelProvider"
+            name="VirSat - Concepts"
+            priority="normal"
+            providesSaveables="false">
+         <possibleChildren>
+            <or>
+               <instanceof
+                     value="de.dlr.sc.virsat.model.dvlm.Repository">
+               </instanceof>
+            </or>
+         </possibleChildren>
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="de.dlr.sc.virsat.model.dvlm.Repository">
+               </instanceof>
+            </or>
+         </triggerPoints>
+         <dropAssistant
+               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMObjectDropAdapterAssistant"
+               id="de.dlr.sc.virsat.project.ui.navigator.dropAssistant">
+            <possibleDropTargets></possibleDropTargets>
+         </dropAssistant>
+      </navigatorContent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="de.dlr.sc.virsat.project.ui.navigator.view">
+         <popupMenu
+               allowsPlatformContributions="true"
+               id="de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu">
+            <insertionPoint
+                  name="virsat.datamodel"
+                  separator="true">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.new" separator="true"/>
+<insertionPoint
+                  name="group.goto"/>
+<insertionPoint
+                  name="group.open" separator="true"/>
+<insertionPoint
+                  name="group.openWith"/>
+<insertionPoint
+                  name="group.edit" separator="true"/>
+<insertionPoint
+                  name="group.show" separator="true"/>
+<insertionPoint
+                  name="group.reorganize"/>
+<insertionPoint
+                  name="group.port" separator="true"/>
+<insertionPoint
+                  name="group.generate" separator="true"/>
+<insertionPoint
+                  name="group.search" separator="true"/>
+<insertionPoint
+                  name="group.build" separator="true"/>
+<insertionPoint
+                  name="additions" separator="true"/>
+<insertionPoint
+                  name="group.properties" separator="true"/> 
+            
+         </popupMenu>
+      </viewer>
+      <viewerContentBinding
+            viewerId="de.dlr.sc.virsat.project.ui.navigator.view">
+         <includes>
+            <contentExtension
+                  isRoot="false"
+                  pattern="de.dlr.sc.virsat.navigator.project.content.concept">
+            </contentExtension>
+          	<contentExtension
+                  isRoot="false"
+                  pattern="de.dlr.sc.virsat.navigator.structuralElementInstance.folder.content">
+            </contentExtension>
+            <contentExtension
+                  isRoot="true"
+                  pattern="de.dlr.sc.virsat.navigator.workspace.content">
+            </contentExtension>
+            <contentExtension
+                  isRoot="false"
+                  pattern="de.dlr.sc.virsat.navigator.project.content">
+            </contentExtension>
+            <contentExtension
+                  isRoot="true"
+                  pattern="de.dlr.sc.virsat.project.ui.navigator.LinkHelper">
+            </contentExtension>
+         </includes>
+     </viewerContentBinding>
+      <viewerActionBinding
+            viewerId="de.dlr.sc.virsat.project.ui.navigator.view">
+    
+       
+         <includes>
+          <actionExtension
+                  pattern="de.dlr.sc.virsat.project.ui.navigator.*">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.*">
+            </actionExtension>
+         </includes>
+              <excludes>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.UndoRedoActionProvider">
+            </actionExtension>
+         </excludes>
+      </viewerActionBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="de.dlr.sc.virsat.project.ui.command.removeSystemComponent"
+            name="Remove System Component">
+      </command>
+      <command
+            id="de.dlr.sc.virsat.model.editor.command.openCustomEditor"
+            name="Open Editor">
+      </command>
+      <command
+            description="Open New Wizard to create a new VirSat project."
+            id="de.dlr.sc.virsat.project.ui.command.newVirSatProject"
+            name="New VirSat Project">
+      </command>
+      <command
+            description="Migrate a concept to the newest versiona available in the repository"
+            id="de.dlr.sc.virsat.project.ui.command.migrateToLatest"
+            name="Migrate To Latest">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.dlr.sc.virsat.project.ui.navigator.handler.DeleteStructuralElementInstanceHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with variable="selection">
+               <iterate ifEmpty="false">
+                 <instanceof value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance"/>
+               </iterate>
+            </with>
+         </activeWhen>
+         <enabledWhen>
+            <with variable="selection">
+               <iterate>
+                 <test
+                	forcePluginActivation="true"
+                 	property="de.dlr.sc.virsat.project.ui.navigator.commandStack.isRemoveStructuralElementInstanceAllowed">
+                 </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.dlr.sc.virsat.project.ui.navigator.handler.DeleteCategoryAssignmentHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with variable="selection">
+               <iterate ifEmpty="false">
+                 <instanceof value="de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment"/>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.dlr.sc.virsat.project.ui.wizard.handler.OpenNewProjectWizardHandler"
+            commandId="de.dlr.sc.virsat.project.ui.command.newVirSatProject">
+      </handler>
+      <handler
+            class="de.dlr.sc.virsat.project.ui.migrator.handler.MigrateConceptToLatestHandler"
+            commandId="de.dlr.sc.virsat.project.ui.command.migrateToLatest">
+      </handler>
+      <handler commandId="org.eclipse.ui.edit.cut" class="de.dlr.sc.virsat.project.ui.navigator.handler.CutStructuralElementInstanceHandler">
+         <activeWhen>
+            <with variable="selection">
+               <iterate ifEmpty="false">
+                 <test
+                       property="de.dlr.sc.virsat.project.ui.navigator.commandStack.cut">
+                 </test>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler commandId="org.eclipse.ui.edit.copy" class="de.dlr.sc.virsat.project.ui.navigator.handler.CopyStructuralElementInstanceHandler">
+         <activeWhen>
+            <with variable="selection">
+               <iterate>
+                  <test
+                        property="de.dlr.sc.virsat.project.ui.navigator.commandStack.copy">
+                  </test>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler commandId="org.eclipse.ui.edit.paste" class="de.dlr.sc.virsat.project.ui.navigator.handler.PasteStructuralElementInstanceHandler">
+         <activeWhen>
+            <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                  <test
+                     forcePluginActivation="true"
+                     property="de.dlr.sc.virsat.project.ui.navigator.commandStack.paste">
+                  </test>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.dlr.sc.virsat.project.ui.editingDomain.handler.RefreshCommandHandler"
+            commandId="org.eclipse.ui.file.refresh">
+         <activeWhen>
+            <with
+                  variable="activePartId">
+               <or>
+                  <equals
+                        value="de.dlr.sc.virsat.project.ui.navigator.view">
+                  </equals>
+               </or>
+            </with>
+         </activeWhen>
+         </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+          <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.new">
+         <separator
+               name="categories"
+               visible="true">
+         </separator>
+         <separator
+               name="structuralElements"
+               visible="true">
+         </separator>
+         <separator
+               name="concepts"
+               visible="true">
+         </separator>       
+      </menuContribution>
+                <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.open">
+          <command
+               commandId="de.dlr.sc.virsat.model.editor.command.openCustomEditor"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.edit">
+         <command
+               commandId="org.eclipse.ui.edit.cut"
+               style="push"
+               tooltip="Cut">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.copy"
+               style="push"
+               tooltip="Copy">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.paste"
+               style="push"
+               tooltip="Paste">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               style="push"
+               tooltip="Delete">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.undo"
+               style="push"
+               tooltip="Undo">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.redo"
+               style="push"
+               tooltip="Redo">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:de.dlr.sc.virsat.project.ui.navigator.view">
+         <command
+               commandId="de.dlr.sc.virsat.project.ui.command.newVirSatProject"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.file.refresh"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.reorganize">
+         <command
+               commandId="de.dlr.sc.virsat.project.ui.command.migrateToLatest"
+               style="push">
+            <visibleWhen>
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="de.dlr.sc.virsat.model.dvlm.concepts.Concept">
+                        </instanceof>
+                     </or>
+                  </iterate>
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.ui.file.refresh"
+               style="push"
+               tooltip="Refresh">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="de.dlr.sc.virsat.project.ui.navigator.propertyTester.RemoveStructuralElementInstanceTester"
+            id="de.dlr.sc.virsat.project.ui.navigator.commandStack.RemoveStructuralElementInstanceTester"
+            namespace="de.dlr.sc.virsat.project.ui.navigator.commandStack"
+            properties="isRemoveStructuralElementInstanceAllowed"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="de.dlr.sc.virsat.project.ui.navigator.propertyTester.WritePermissionTester"
+            id="de.dlr.sc.virsat.project.ui.navigator.commandStack.WritePermissionTester"
+            namespace="de.dlr.sc.virsat.project.ui.navigator.commandStack"
+            properties="hasWritePermission"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="de.dlr.sc.virsat.project.ui.navigator.propertyTester.ClipboardTester"
+            id="de.dlr.sc.virsat.project.ui.navigator.commandStack.clipBoardTester"
+            namespace="de.dlr.sc.virsat.project.ui.navigator.commandStack"
+            properties="cut,copy,paste"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.linkHelper">
+            <linkHelper
+            	class="de.dlr.sc.virsat.project.ui.navigator.EditorInputLinkHelper"
+            	id="de.dlr.sc.virsat.project.ui.navigator.LinkHelper">
+         		<editorInputEnablement>
+            		<or>
+            			<adapt
+                     	type="org.eclipse.ui.part.FileEditorInput">
+               			</adapt>
+               			<instanceof
+                     		value="org.eclipse.ui.part.FileEditorInput">
+               			</instanceof>
+                  <adapt
+                        type="org.eclipse.emf.common.ui.URIEditorInput">
+                  </adapt>
+                  <instanceof
+                        value="org.eclipse.emf.common.ui.URIEditorInput">
+                  </instanceof>
+            		</or>
+            	</editorInputEnablement>
+      		</linkHelper>
+            
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="de.dlr.sc.virsat.project.ui.perspective.CorePerspective"
+            icon="resources/icons/VirSat_Perspective_Core_Label.gif"
+            id="de.dlr.sc.virsat.branding.ui.default.perspective"
+            name="VirSat - Core">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="de.dlr.sc.virsat.project.ui.command.newVirSatProject"
+            disabledIcon="resources/icons/VirSat_Project_DataBase_Disabled.gif"
+            icon="resources/icons/VirSat_Project_DataBase.gif">
+      </image>
+      <image
+            commandId="de.dlr.sc.virsat.model.editor.command.openCustomEditor"
+            disabledIcon="resources/icons/VirSat_Component_Edit_Disabled.png"
+            icon="resources/icons/VirSat_Component_Edit.png">
+      </image>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.project.resourceMigrator">
+      <resourceMigrator
+            class="de.dlr.sc.virsat.project.ui.resources.DVLMDataSetMigrationQuestion"
+            name="DVLMMigrator">
+      </resourceMigrator>
+   </extension>
+</plugin>

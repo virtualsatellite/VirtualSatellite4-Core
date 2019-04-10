@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v4/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v4/cp/cppd" name="de.dlr.sc.virsat.model.extension.visualisation" description="Concept that defines visualisation properties">
+  <categories name="Visualisation" isApplicableForAll="true" cardinality="1">
+    <properties xsi:type="dvlm_cppd:StringProperty" name="shape" defaultValue="NONE"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="radius" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeX" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeY" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeZ" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:IntProperty" name="color" defaultValue="16777215"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="transparency" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionX" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionY" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionZ" quantityKindName="Length" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationX" quantityKindName="Angle" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationY" quantityKindName="Angle" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationZ" quantityKindName="Angle" defaultValue="0"/>
+  </categories>
+</dvlm_c:Concept>

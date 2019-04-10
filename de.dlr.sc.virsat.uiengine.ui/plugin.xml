@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension-point id="EditorUiSnippets" name="EditorUiSnippets" schema="schema/EditorUiSnippets.exsd"/>
+   <extension-point id="EditorSection" name="EditorSection" schema="schema/EditorSection.exsd"/>
+
+    <extension point="org.eclipse.ui.editors">
+      <editor
+            class="de.dlr.sc.virsat.uiengine.ui.editor.GenericEditor"
+            contributorClass="de.dlr.sc.virsat.uiengine.ui.editor.GenericActionBarContributor"
+            extensions="dvlm"
+            icon="icons/VirSat_Component_Edit.png"
+            id="de.dlr.sc.virsat.model.DVLM.Structural.presentation.CustomEditorID"
+            matchingStrategy="de.dlr.sc.virsat.uiengine.ui.editor.GenericEditorMatchingStrategy"
+            name="VirSat Generic Editor">
+      </editor>
+   </extension>
+ 
+   <extension
+         point="org.eclipse.ui.handlers">
+        <handler
+            class="de.dlr.sc.virsat.uiengine.ui.handler.OpenCustomEditorHandler"
+            commandId="de.dlr.sc.virsat.model.editor.command.openCustomEditor">
+      	<enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <iterate>
+                     <instanceof
+                           value="org.eclipse.emf.ecore.EObject">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <not>
+                        <instanceof
+                              value="de.dlr.sc.virsat.model.dvlm.calculation.EquationSection">
+                        </instanceof>
+                     </not>
+                  </iterate>
+                  <iterate>
+                     <not>
+                        <instanceof
+                              value="de.dlr.sc.virsat.model.dvlm.calculation.Equation">
+                        </instanceof>
+                     </not>
+                  </iterate>
+                  <count
+                        value="1">
+                  </count>
+               </and>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
+      <editorSection
+            id="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            topRanking="1">
+      </editorSection>
+      <editorSection
+            id="de.dlr.sc.virsat.uiengine.ui.editorSection.Others"
+            topRanking="10000">
+      </editorSection>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetUuid"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIUuid">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetName"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIName">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetOrigin"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIInheritanceLink">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetDisciplineAssignment"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIDisciplineAssignment">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetInheritance"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIInheritsFrom">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetOrderingInSei"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetOrderingSeis">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetOrderingInRepo"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetOrderingRepo">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetActiveConcepts"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetActiveConcepts">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetRoleManagement"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetRoleManagement">
+      </uiSnippet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="de.dlr.sc.virsat.project.ui.view.VirSat"
+            class="de.dlr.sc.virsat.uieingine.ui.palette.ConceptPaletteView"
+            icon="icons/VirSat_Component_Edit.png"
+            id="de.dlr.sc.virsat.uiengine.ui.palette"
+            name="Concept Palette"
+            restorable="true">
+      </view>
+   </extension>
+</plugin>

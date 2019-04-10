@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	 <propertyTester
+	    id="de.dlr.sc.virsat.model.extension.maturity.ui.propertyTester.conceptEnabledTester"
+	    type="org.eclipse.emf.ecore.EObject"
+	    namespace="de.dlr.sc.virsat.model.extension.maturity.ui.propertyTester"
+	    properties="conceptEnabled"
+	    class="de.dlr.sc.virsat.model.extension.maturity.propertyTester.ConceptEnabledTester">
+	  </propertyTester>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptImageContribution">
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.maturity"
+		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.maturity.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.maturity.Maturity"
+		pathToImage="resources/icons/Maturity.gif">
+	</conceptImage>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+	<command
+		id="de.dlr.sc.virsat.model.extension.maturity.ui.command.AddMaturity"
+		name="Add Maturity">
+	</command>
+	</extension>
+	<extension point="org.eclipse.ui.commandImages">
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.maturity.ui.command.AddMaturity"
+	      disabledIcon="resources/icons/Maturity_disabled.gif"
+	      icon="resources/icons/Maturity.gif">
+	</image>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+	<handler
+		class="de.dlr.sc.virsat.model.extension.maturity.ui.handler.AddMaturityHandler"
+		commandId="de.dlr.sc.virsat.model.extension.maturity.ui.command.AddMaturity">
+	</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+		     allPopups="false"
+		     locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=concepts">
+		     <menu
+		        id="de.dlr.sc.virsat.model.extension.maturity.menu" 
+		        label="Design Maturity"
+		        icon="resources/icons/de.dlr.sc.virsat.model.extension.maturity.gif"
+		        tooltip="Maturity Concept for Products and Parts">
+		        <separator
+		            name="categories"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="structuralElements"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="tools"
+		            visible="true">
+			    </separator>
+		        <separator
+		        	name="additions"
+		            visible="true">
+		    	</separator>
+		    	<visibleWhen
+					checkEnabled="true">
+					<with
+						variable="selection">
+						<iterate
+							ifEmpty="false"
+							operator="and">
+							<test 
+								property="de.dlr.sc.virsat.model.extension.maturity.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>		
+						</iterate>
+					</with>
+				</visibleWhen>
+			</menu>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.extension.maturity.menu?after=categories">
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.maturity.ui.command.AddMaturity"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.maturity.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.extension.maturity.menu?after=structuralElements">
+		</menuContribution>
+	</extension>
+	<extension
+	       point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
+	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.maturity.ui.Section"
+	          topRanking="1000">
+	    </editorSection>
+	 </extension>	
+	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.maturity.table.uiSnippetMaturity"
+		      section="de.dlr.sc.virsat.model.extension.maturity.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.maturity.ui.snippet.UiSnippetTableMaturity">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.maturity.section.uiSnippetMaturity"
+		      section="de.dlr.sc.virsat.model.extension.maturity.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.maturity.ui.snippet.UiSnippetSectionMaturity">
+		</uiSnippet>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>
