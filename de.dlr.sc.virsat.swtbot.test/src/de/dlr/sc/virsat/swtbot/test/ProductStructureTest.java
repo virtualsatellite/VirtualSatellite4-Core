@@ -80,9 +80,13 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		bot.button("Delete Element").click();
 		closeDialog("Finish");
 		
+		waitForEditingDomainAndUiThread();
+		
 		SWTBotTreeItem configurationTree = repositoryNavigatorItem.getNode("CT: ConfigurationTree");
 		assertNotNull(configurationTree);
 		assertEquals(2, configurationTree.getItems().length);
+		
+		waitForEditingDomainAndUiThread();
 		
 		SWTBotTreeItem aocs = configurationTree.getNode("EC: NewAOCS");
 		assertNotNull(aocs);
