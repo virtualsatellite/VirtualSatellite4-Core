@@ -19,9 +19,11 @@
 			<properties>
 				<build.src>tmodel-src</build.src>
 			</properties>
+
 			<modules>
-				<module>../de.dlr.sc.virsat.target</module>
+				<module>de.dlr.sc.virsat.target</module>
 			</modules>
+
 		</profile>
 		<profile>
 			<!-- Build profile for building the main product -->
@@ -73,7 +75,6 @@
 				<module>de.dlr.sc.virsat.commons.ui</module>
 				<module>de.dlr.sc.virsat.commons.feature</module>
 				<module>de.dlr.sc.virsat.commons.test</module>
-
 				<module>de.dlr.sc.virsat.build</module>
 				<module>de.dlr.sc.virsat.build.feature</module>
 				<module>de.dlr.sc.virsat.build.test</module>
@@ -112,7 +113,6 @@
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>
 				<module>de.dlr.sc.virsat.test.feature</module>
-
 				<!-- Now we finally build the products: oh yes we build it! -->
 				<module>de.dlr.sc.virsat.dependencies.feature</module>
 				<module>de.dlr.sc.virsat.docs.feature</module>

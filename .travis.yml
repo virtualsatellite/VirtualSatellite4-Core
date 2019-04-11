@@ -41,6 +41,12 @@ env:
   # API Token for access to github
   # ---------------------------------------------
   - secure: WKqYhD1XNjIJbJLsOa6HMJl2JDO+6p4W4Fnzs02bxpgTnkfYIRs8i0fVNnKfldUj+7JLNO2s2SZy362Cp1NI8hoP9NMYw44+noQ8FKEC9OjFYrAOgM6knji53SVvJcqJFMvexaudv593Lep27rdf2PJefXsPD7s13zI5rcF4yxsPC9iiK+FnBXQn1UvhF669NyhSaCmqaS59ROhiXWLqQH0HOflhGxA22oBd0LPYOCneh0pVxx0Rmcp7cmlYV8oh8UuG4/0vKECd4TTKAPdsQa/Oiv++BvpV8RaVZ9fLVvbquzM3ZjDjhju/b5CyErQB3SYiDEqjZFvybnp3o+wm/TeejdTm0B+H/v8brDwWRqqPUo463YiQ6INhkEAr1tZWwbpXJzI/orqLO1+31GgBgmUe10/pj9SivobtVxWdgVigD7qxWU9xt2aNRJxfmG5bWFmjppkrldGLeTD+q6OHoRxV7tRsF9H7WiZ6r/Wx9izHKtdslHqFsv5HKOdg6z/Yltolqtkzb6p5Qr60UnHjEBTJdLT+Jq8KRNxMRowcLQw7iiKu1/PS3YetXtJ1erQ3LN4/CaOUHF1n3H8huRYUY5nn5OE7+PBox2MgVy9zC4FKio0iA6MOMy9VwGWWIi1Ihs8CFyJRK7By2KBulq6u9RfqyG3PlVYVGFfiQEORyJs=
+  # ---------------------------------------------
+  # Setup Overtarget Repository and Version
+  # ---------------------------------------------
+  - OVERTARGET_VERSION=1.1.0.r201903120902
+  - OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
+  - OVERTARGET_GROUP=de.dlr.sc.overtarget
 
 before_script:
   # --------------------------------------------------
@@ -52,6 +58,13 @@ before_script:
   # Startup the metacity window manager
   # -----------------------------------
   - metacity --sm-disable --replace 2> metacity.err &
+  # -------------------------------------------------------------------
+  # create adirectory for Overtarget and try to receive language plugin
+  # -------------------------------------------------------------------
+  - mkdir -p ./OverTarget
+  - curl -o ./Overtarget "$OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar"
+  - mvn install:install-file -Dfile=./Overtarget/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
+  
 
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash)
@@ -73,9 +86,10 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
       - mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
-      - echo "Check for warnings:"
-      - cat maven.log
+      - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
