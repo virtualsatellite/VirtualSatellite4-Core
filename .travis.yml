@@ -62,7 +62,7 @@ before_script:
   # create adirectory for Overtarget and try to receive language plugin
   # -------------------------------------------------------------------
   - mkdir -p ./OverTarget
-  - curl -L -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
+  - curl -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
   - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
   
 
@@ -90,7 +90,7 @@ jobs:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
+      - travis_wait 45 mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
