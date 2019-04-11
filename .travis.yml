@@ -62,7 +62,7 @@ before_script:
   # create adirectory for Overtarget and try to receive language plugin
   # -------------------------------------------------------------------
   - mkdir -p ./OverTarget
-  - curl -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
+  - curl -L -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
   - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
   
 
@@ -86,7 +86,6 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - set -e
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
@@ -95,7 +94,6 @@ jobs:
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
-      - set +e
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.
     # Development job only. Feature jobs are not deployed.
