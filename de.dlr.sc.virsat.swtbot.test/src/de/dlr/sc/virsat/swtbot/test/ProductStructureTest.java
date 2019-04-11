@@ -73,7 +73,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		bot.button("Duplicate").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Rename").click();
-		bot.text().setText("New AOCS");
+		bot.text().setText("NewAOCS");
 		bot.tree(1).getTreeItem("EC: NewAOCS").select();
 		bot.button("Add New Element").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
