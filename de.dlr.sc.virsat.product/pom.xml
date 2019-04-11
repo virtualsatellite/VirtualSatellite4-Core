@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-SPDX-License-Identifier: EPL-2.0
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -24,89 +21,104 @@ SPDX-License-Identifier: EPL-2.0
 	<artifactId>de.dlr.sc.virsat.product</artifactId>
 	<packaging>eclipse-repository</packaging>
 	<name>de.dlr.sc.virsat.product</name>
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<activation>
+				<property>
+					<name>build.folder.deploy</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<build.folder.application>VirSatCoreBinary</build.folder.application>
+				<build.folder.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
+				<build.file.win32.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.win32}</build.file.win32.fullpath>
+				<build.file.linux.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.linux}</build.file.linux.fullpath>
+			</properties>
 
-	<properties>
-		<build.folder.application>VirSatCoreBinary</build.folder.application>
-		<build.folder.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
-		<build.file.win32.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.win32}</build.file.win32.fullpath>
-		<build.file.linux.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.linux}</build.file.linux.fullpath>
-	</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.3</version>
+						<executions>
+							<execution>
+								<id>attach-artifacts</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attach-artifact</goal>
+								</goals>
+								<configuration>
+									<artifacts>
+										<artifact>
+											<file>../de.dlr.sc.virsat.target/virsat.target</file>
+											<type>target</type>
+											<classifier>virsat</classifier>
+										</artifact>
+									</artifacts>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.3</version>
-				<executions>
-					<execution> 
-						<id>attach-artifacts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
-								<artifact>
-									<file>../de.dlr.sc.virsat.target/virsat.target</file>
-									<type>target</type>
-									<classifier>virsat</classifier>
-								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-p2-director-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<executions>
+							<execution>
+								<!-- install the product using the p2 director -->
+								<id>materialize-products</id>
+								<goals>
+									<goal>materialize-products</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-p2-director-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<executions>
-					<execution>
-						<!-- install the product using the p2 director -->
-						<id>materialize-products</id>
-						<goals>
-							<goal>materialize-products</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<configuration>
+									<target>
+										<fail
+											message="Cannot Release!!! Release folder already exists !!! Potential overwrite to ${build.folder.fullpath} !!!">
+											<condition>
+												<and>
+													<equals arg1="${build.deploy.release}" arg2="true" />
+													<available file="${build.folder.fullpath}"
+														type="dir" />
+												</and>
+											</condition>
+										</fail>
 
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<configuration>
-							<target>
-								<fail
-									message="Cannot Release!!! Release folder already exists !!! Potential overwrite to ${build.folder.fullpath} !!!">
-									<condition>
-										<and>
-											<equals arg1="${build.deploy.release}" arg2="true" />
-											<available file="${build.folder.fullpath}" type="dir" />
-										</and>
-									</condition>
-								</fail>
+										<!-- ANT Script Start -->
+										<mkdir dir="${build.folder.fullpath}" />
 
-								<!-- ANT Script Start -->
-								<mkdir dir="${build.folder.fullpath}"/>
-								
-								<delete file="${build.file.win32.fullpath}" />
-								<delete file="${build.file.linux.fullpath}" />
-								
-								<zip destfile="${build.file.win32.fullpath}" basedir="./target/products/de.dlr.virsat.core.product/win32/win32/x86_64" />
-								<tar destfile="${build.file.linux.fullpath}" basedir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" compression="gzip"/>
-								<!-- ANT Script Stop -->
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+										<delete file="${build.file.win32.fullpath}" />
+										<delete file="${build.file.linux.fullpath}" />
+
+										<zip destfile="${build.file.win32.fullpath}"
+											basedir="./target/products/de.dlr.virsat.core.product/win32/win32/x86_64" />
+										<tar destfile="${build.file.linux.fullpath}"
+											basedir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64"
+											compression="gzip" />
+										<!-- ANT Script Stop -->
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project> 
