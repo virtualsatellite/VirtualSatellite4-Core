@@ -4,11 +4,11 @@ Virtual Satellite is a DLR open source software for model based systems engineer
 
 ## Project Status
 
-Status [![Build Status](https://travis-ci.org/DLR-SC/Overtarget.svg?branch=development)](https://travis-ci.org/DLR-SC/Overtarget) [![Coverage Status](https://codecov.io/gh/DLR-SC/overtarget/branch/development/graph/badge.svg)](https://codecov.io/gh/DLR-SC/overtarget) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/overtarget.svg)](https://sourceforge.net/projects/virtualsatellite/files/development/) for *Development* build.
+Status [![Build Status](https://travis-ci.com/virtualsatellite/VirtualSatellite4-Core.svg?branch=development)](https://travis-ci.com/virtualsatellite/VirtualSatellite4-Core) [![Coverage Status](https://codecov.io/gh/DLR-SC/overtarget/branch/development/graph/badge.svg)](https://codecov.io/gh/DLR-SC/overtarget) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/virtualsatellite.svg)](https://sourceforge.net/projects/virtualsatellite/files/development/) for *Development* build.
 
-Status [![Build Status](https://travis-ci.org/DLR-SC/Overtarget.svg?branch=integration)](https://travis-ci.org/DLR-SC/Overtarget) [![Coverage Status](https://codecov.io/gh/DLR-SC/Overtarget/branch/integration/graph/badge.svg)](https://codecov.io/gh/DLR-SC/Overtarget) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/overtarget.svg)](https://sourceforge.net/projects/virtualsatellite/files/integration/) for *Integration* build.
+Status [![Build Status](https://travis-ci.com/virtualsatellite/VirtualSatellite4-Core.svg?branch=integration)](https://travis-ci.com/virtualsatellite/VirtualSatellite4-Core) [![Coverage Status](https://codecov.io/gh/DLR-SC/Overtarget/branch/integration/graph/badge.svg)](https://codecov.io/gh/DLR-SC/Overtarget) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/virtualsatellite.svg)](https://sourceforge.net/projects/virtualsatellite/files/integration/) for *Integration* build.
 
-Status [![Build Status](https://travis-ci.org/DLR-SC/Overtarget.svg?branch=master)](https://travis-ci.org/DLR-SC/Overtarget) [![Coverage Status](https://codecov.io/gh/DLR-SC/Overtarget/branch/master/graph/badge.svg)](https://codecov.io/gh/DLR-SC/Overtarget) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/overtarget.svg)](https://sourceforge.net/projects/virtualsatellite/files/release/) for *Master* build.
+Status [![Build Status](https://travis-ci.com/virtualsatellite/VirtualSatellite4-Core?branch=master)](https://travis-ci.com/virtualsatellite/VirtualSatellite4-Core) [![Coverage Status](https://codecov.io/gh/DLR-SC/Overtarget/branch/master/graph/badge.svg)](https://codecov.io/gh/DLR-SC/Overtarget) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/virtualsatellite.svg)](https://sourceforge.net/projects/virtualsatellite/files/release/) for *Master* build.
 
 ## Purpose
 
