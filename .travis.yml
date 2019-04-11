@@ -89,8 +89,8 @@ jobs:
       - set -e
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
-      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - travis_wait 45 mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
