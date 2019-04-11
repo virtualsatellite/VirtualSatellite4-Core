@@ -83,6 +83,9 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		SWTBotTreeItem configurationTree = repositoryNavigatorItem.getNode("CT: ConfigurationTree");
 		assertNotNull(configurationTree);
 		assertEquals(2, configurationTree.getItems().length);
+		
+		waitForEditingDomainAndUiThread();
+		
 		SWTBotTreeItem aocs = configurationTree.getNode("EC: New AOCS");
 		assertNotNull(aocs);
 		aocs.expand();
