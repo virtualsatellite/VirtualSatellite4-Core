@@ -27,6 +27,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -56,6 +58,11 @@ public class ASwtBotTestCase {
 	protected static final String PROJECTNAME = "SWTBotTestProject";
 	protected IProject project;
 	
+	@Rule 
+	public TestName testMethodName = new TestName();
+	
+	private int captureNumber = 1;
+	
 	@Before
 	public void before() throws Exception {
 		bot = new SWTWorkbenchBot();
@@ -74,10 +81,26 @@ public class ASwtBotTestCase {
 	
 	@After
 	public void tearDown() throws CoreException {
+		generateScreenshot();
 		bot.closeAllEditors();
 		ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECTNAME).delete(true, null);
 	}
 	
+	/**
+	 * Generates a screenshot with an internally generated name
+	 */
+	protected void generateScreenshot() {
+		String fileName = generateScreenshotFileName();
+		bot.captureScreenshot(fileName);
+	}
+	
+	/**
+	 * Generates a screenshot filename
+	 * @return a screenshot filename
+	 */
+	protected String generateScreenshotFileName() {
+		return "./swtbot/" + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + captureNumber++ + ".png";
+	}
 	
 	/**
 	 * Clicks on a combo box
