@@ -99,7 +99,7 @@ public class ASwtBotTestCase {
 	 * @return a screenshot filename
 	 */
 	protected String generateScreenshotFileName() {
-		return "./swtbot/" + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + captureNumber++ + ".png";
+		return "./../swtbot/" + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + captureNumber++ + ".png";
 	}
 	
 	/**
