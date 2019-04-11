@@ -6,3 +6,4 @@
 **/*.xtendbin
 /bin/
 /deploy/
+/swtbot/
