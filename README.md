@@ -12,7 +12,7 @@ Status [![Build Status](https://travis-ci.org/DLR-SC/Overtarget.svg?branch=maste
 
 ## Purpose
 
-
+Virtual Satellite 4 is the new evolution of MBSE. With a customizable data model it can be tailored to the various needs of individual engineering tasks and project requirements. Rather than the historic approach of trying to create the data model and system engineering language that can handle all possible tasks, the new approach focuses on necessities leading to simple and easy to use applications. The data model of a Virtual Satellite 4 application can be extended by a concept. Such a concept is a set of data model extensions plus functionality to provide corresponding user interfaces and further functionality.
 
 ## Requirements 
 
@@ -43,7 +43,9 @@ For creating a new release, create a tag starting with *Release_* on the *master
 
 ## Provided Features
 
-
+- Basic modeling concepts such as product structures, mass budgeting, visualization, etc.
+- Core engines such as Calculcation Engine, UI Engine, etc.
+- Xtext based Concept IDE Tools for creating new concepts, including code generators
 
 ## Downloads and Deployment
 
