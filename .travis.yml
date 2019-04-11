@@ -86,6 +86,7 @@ jobs:
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
+      - set -e
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
@@ -94,6 +95,7 @@ jobs:
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+      - set +e
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.
     # Development job only. Feature jobs are not deployed.
