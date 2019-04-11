@@ -74,7 +74,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Rename").click();
 		bot.text().setText("New AOCS");
-		bot.tree(1).getTreeItem("EC: New AOCS").select();
+		bot.tree(1).getTreeItem("EC: NewAOCS").select();
 		bot.button("Add New Element").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Delete Element").click();
@@ -84,9 +84,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		assertNotNull(configurationTree);
 		assertEquals(2, configurationTree.getItems().length);
 		
-		waitForEditingDomainAndUiThread();
-		
-		SWTBotTreeItem aocs = configurationTree.getNode("EC: New AOCS");
+		SWTBotTreeItem aocs = configurationTree.getNode("EC: NewAOCS");
 		assertNotNull(aocs);
 		aocs.expand();
 		assertNotNull(aocs.getNode("EC: RW1"));
