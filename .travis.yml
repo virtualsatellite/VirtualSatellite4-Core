@@ -65,7 +65,14 @@ before_script:
   - curl -L -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
   - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
   
-
+after_failure:
+  - mkdir -p -m 700 /tmp/.sourceforge_ssh
+  - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
+  - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
+  - ssh-add /tmp/.sourceforge_ssh/id_ed25519
+  - rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbotshots/
+        
+  
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash)
 
