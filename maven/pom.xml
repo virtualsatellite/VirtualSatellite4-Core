@@ -83,6 +83,38 @@
 				<build.file.linux>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Linux.tar.gz</build.file.linux>
 			</properties>
 		</profile>
+		<profile>
+			<id>spotbugs</id>
+			<build>
+				<plugins><!-- Enabling the use of Spotbugs plugin -->
+					<plugin>
+						<groupId>com.github.spotbugs</groupId>
+						<artifactId>spotbugs-maven-plugin</artifactId>
+						<version>3.1.3</version>
+						<dependencies>
+							<dependency>
+								<groupId>com.github.spotbugs</groupId>
+								<artifactId>spotbugs</artifactId>
+								<version>3.1.3</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+							<includeFilterFile>spotbugs-include.xml</includeFilterFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>verify</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<build>
@@ -187,33 +219,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- Enabling the use of Spotbugs plugin -->
-			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>3.1.3</version>
-				<dependencies>
-					<dependency>
-						<groupId>com.github.spotbugs</groupId>
-						<artifactId>spotbugs</artifactId>
-						<version>3.1.3</version>
-					</dependency>
-				</dependencies>
-				<configuration>
-					<excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-					<includeFilterFile>spotbugs-include.xml</includeFilterFile>
-				</configuration>
-				<executions>
-					<execution>
-						<id>verify</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
