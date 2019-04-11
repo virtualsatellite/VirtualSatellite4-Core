@@ -66,6 +66,7 @@ before_script:
   - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
   
 after_failure:
+  - eval "$(ssh-agent -s)"
   - mkdir -p -m 700 /tmp/.sourceforge_ssh
   - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
   - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
