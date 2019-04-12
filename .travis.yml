@@ -81,6 +81,7 @@ after_failure:
   - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
   - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
   - ssh-add /tmp/.sourceforge_ssh/id_ed25519
+  - ls -l $TRAVIS_BUILD_DIR/swtbot/
   - rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbotshots/
         
   
