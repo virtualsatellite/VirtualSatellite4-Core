@@ -75,17 +75,6 @@ public class DVLMFilteredContainingResolvingEListTest {
 
 	@Test
 	public void testAddIntDVLMOBJECT() {
-		int i = 2;
-		
-		while (i < 3) {
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 		seiRoot.getChildren().add(0, seiAccept);
 		seiRoot.getChildren().add(0, seiFail);
 		
