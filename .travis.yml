@@ -29,7 +29,7 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
-# - name: build-test
+#- name: build-test
 - name: build-assemble-deploy
 
 env:
@@ -311,11 +311,17 @@ jobs:
         skip_cleanup: true
         script: #
         - rsync -e ssh -avP --delete $TRAVIS_BUILD_DIR/deploy/unsecured/p2/VirSat4_Core_Application/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/development/
+        on:
+          repo: virtualsatellite/VirtualSatellite4-Core
+          branch: development
+      - provider: script
+        skip_cleanup: true
+        script: #
         - rsync -e ssh -avP --delete $TRAVIS_BUILD_DIR/deploy/unsecured/p2/VirSat4_Dvlm_ConceptIDE/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/development/
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: development
-    
+      
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Integration.
     #------------------------------------------------------------
