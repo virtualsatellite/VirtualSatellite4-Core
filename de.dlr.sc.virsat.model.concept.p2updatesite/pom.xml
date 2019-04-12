@@ -23,12 +23,6 @@
 	<profiles>
 		<profile>
 			<id>deploy</id>
-			<activation>
-				<property>
-					<name>build.folder.deploy</name>
-					<value>true</value>
-				</property>
-			</activation>
 			<properties>
 				<build.folder.application>VirSat4_Dvlm_ConceptIDE</build.folder.application>
 				<build.folder.fullpath>${build.folder.target.p2}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>

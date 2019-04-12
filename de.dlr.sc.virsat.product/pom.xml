@@ -24,12 +24,6 @@
 	<profiles>
 		<profile>
 			<id>deploy</id>
-			<activation>
-				<property>
-					<name>build.folder.deploy</name>
-					<value>true</value>
-				</property>
-			</activation>
 			<properties>
 				<build.folder.application>VirSatCoreBinary</build.folder.application>
 				<build.folder.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>

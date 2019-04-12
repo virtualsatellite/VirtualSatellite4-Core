@@ -36,14 +36,12 @@
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.jacoco.version>0.7.7.201606060606</sonar.jacoco.version>
- 		<skipTests>true</skipTests>
- 	</properties>
-
- 	<profiles>
+		<skipTests>true</skipTests>
+	</properties>
+	<profiles>
 		<profile>
 			<id>deployUnsecured</id>
 			<properties>
-				<build.folder.deploy>true</build.folder.deploy>
 				<build.folder.target>${build.folder.target.unsecured}/</build.folder.target>
 				<build.folder.target.bin>${build.folder.target.unsecured}/${build.folder.bin}</build.folder.target.bin>
 				<build.folder.target.p2>${build.folder.target.unsecured}/${build.folder.p2}</build.folder.target.p2>
@@ -52,7 +50,6 @@
 		<profile>
 			<id>deployBackuped</id>
 			<properties>
-				<build.folder.deploy>true</build.folder.deploy>
 				<build.folder.target>${build.folder.target.secured}</build.folder.target>
 				<build.folder.target.bin>${build.folder.target.secured}/${build.folder.bin}</build.folder.target.bin>
 				<build.folder.target.p2>${build.folder.target.secured}/${build.folder.p2}</build.folder.target.p2>
