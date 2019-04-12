@@ -99,43 +99,44 @@ jobs:
   include:
    
     # -----------------------------------------------------
-    # Build and Test - Checkstyle Jobs
+    # Build and Test - SpotBugs Jobs
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
       if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
-      name: Build and Test - Checkstyle - Development and Features
+      name: Build and Test - SpotBugs - Development and Features
       script:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P development,checkstyle,product -B -V | tee maven.log
+      - mvn install -P development,spotbugs,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
     # ----------------------------
     # --- Integration Branches
     - stage: build-test
       if: branch = integration
-      name: Build and Test - Checkstyle - Integration
+      name: Build and Test - SpotBugs - Integration
       script:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P integration,checkstyle,product -B -V | tee maven.log
+      - mvn install -P integration,spotbugs,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
     # ----------------------------
     # --- Release Tags
     - stage: build-test
       if: tag =~ /^Release/
-      name: Build and Test - Checkstyle - Release
+      name: Build and Test - SpotBugs - Release
       script:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P release,checkstyle,product -B -V | tee maven.log
+      - mvn install -P release,spotbugs,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+   
     
     # -----------------------------------------------------
     # Build and Test - Surefire Jobs
@@ -183,43 +184,44 @@ jobs:
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)  
 
     # -----------------------------------------------------
-    # Build and Test - SpotBugs Jobs
+    # Build and Test - Checkstyle Jobs
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
       if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
-      name: Build and Test - SpotBugs - Development and Features
+      name: Build and Test - Checkstyle - Development and Features
       script:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P development,spotbugs,product -B -V | tee maven.log
+      - mvn install -P development,checkstyle,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
     # ----------------------------
     # --- Integration Branches
     - stage: build-test
       if: branch = integration
-      name: Build and Test - SpotBugs - Integration
+      name: Build and Test - Checkstyle - Integration
       script:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P integration,spotbugs,product -B -V | tee maven.log
+      - mvn install -P integration,checkstyle,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
     # ----------------------------
     # --- Release Tags
     - stage: build-test
       if: tag =~ /^Release/
-      name: Build and Test - SpotBugs - Release
+      name: Build and Test - Checkstyle - Release
       script:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P release,spotbugs,product -B -V | tee maven.log
+      - mvn install -P release,checkstyle,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+
 
     # -----------------------------------------------------------
     # -----------------------------------------------------------
