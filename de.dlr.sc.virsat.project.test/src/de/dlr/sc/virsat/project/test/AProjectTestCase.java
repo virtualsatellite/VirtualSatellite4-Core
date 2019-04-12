@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.project.Activator;
@@ -34,7 +36,9 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  */
 public abstract class AProjectTestCase {
 
-	protected static final String TEST_PROJECT_NAME = "testProject"; 
+	protected static final String TEST_PROJECT_NAME = "testProject";
+	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
+	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE = "true"; 
 	protected IProject testProject;
 	protected VirSatTransactionalEditingDomain editingDomain;
 	protected Repository repository;
@@ -60,14 +64,26 @@ public abstract class AProjectTestCase {
 		return project;
 	}
 	
+	@Rule 
+	public TestName testMethodName = new TestName();
+	
 	@Before
 	public void setUp() throws CoreException {
+		if (JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE.equalsIgnoreCase(System.getenv(JUNIT_DEBUG_PROJECT_TEST_CASE))) {
+			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - setUp()");
+		}
+
 		testProject = createTestProject(TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName());
+		
 		//addEditingDomain();
 	}
 	
 	@After
 	public void tearDown() throws CoreException {
+		if (JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE.equalsIgnoreCase(System.getenv(JUNIT_DEBUG_PROJECT_TEST_CASE))) {
+			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - tearDown()");
+		}
+
 		// Make sure all projects that were created get removed again
 		for (IProject project : testProjects) {
 			project.delete(true, null);
