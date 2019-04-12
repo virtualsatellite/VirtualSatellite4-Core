@@ -29,7 +29,8 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
-- name: clean-install
+- name: build-test
+- name: build-assemble-deploy
 
 env:
   global:
@@ -47,6 +48,7 @@ env:
   - OVERTARGET_VERSION=1.1.0.r201903120902
   - OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
   - OVERTARGET_GROUP=de.dlr.sc.overtarget
+  - JUNIT_DEBUG_PROJECT_TEST_CASE=true
   - SWTBOT_SCREENSHOT=true
 
 before_script:
@@ -67,29 +69,166 @@ before_script:
   - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
   
 after_failure:
+  # ---------------------------------------
+  # Show the debug output of Surefire Junit
+  # ---------------------------------------
+  - cat $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.test/target/surefire-reports/de.dlr.sc.virsat.test.ProjectAllTest-output.txt
+  # --------------------------------------
+  # Start the ssh agent
+  # --------------------------------------
   - eval "$(ssh-agent -s)"
+  # ----------------------------------------
+  # Decrypt the key for accessign the 
+  # deployment store and add it to ssh-agent
+  # then try to deploy the screenshots from 
+  # SWTBot to see what happened 
+  # ----------------------------------------
   - mkdir -p -m 700 /tmp/.sourceforge_ssh
   - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
   - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
   - ssh-add /tmp/.sourceforge_ssh/id_ed25519
+  - ls -l $TRAVIS_BUILD_DIR/swtbot/
   - rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
         
   
-#after_success:
+after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 
 jobs:
   include:
+   
+    # -----------------------------------------------------
+    # Build and Test - Checkstyle Jobs
+    # -----------------------------------------------------
+    # --- Development and Feature Branches
+    - stage: build-test
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      name: Build and Test - Checkstyle - Development and Features
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P development,checkstyle,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+    # ----------------------------
+    # --- Integration Branches
+    - stage: build-test
+      if: branch = integration
+      name: Build and Test - Checkstyle - Integration
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P integration,checkstyle,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+    # ----------------------------
+    # --- Release Tags
+    - stage: build-test
+      if: tag =~ /^Release/
+      name: Build and Test - Checkstyle - Release
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P release,checkstyle,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+    
+    # -----------------------------------------------------
+    # Build and Test - Surefire Jobs
+    # -----------------------------------------------------
+    # --- Development and Feature Branches
+    - stage: build-test
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      name: Build and Test - Surefire - Development and Features
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P development,surefire,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - echo "Check for failed test cases:"
+      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+    # ----------------------------
+    # --- Integration Branches
+    - stage: build-test
+      if: branch = integration
+      name: Build and Test - Surefire - Integration
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P integration,surefire,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - echo "Check for failed test cases:"
+      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+    # ----------------------------
+    # --- Release Tags
+    - stage: build-test
+      if: tag =~ /^Release/
+      name: Build and Test - Surefire - Release
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P release,surefire,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - echo "Check for failed test cases:"
+      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)  
+
+    # -----------------------------------------------------
+    # Build and Test - SpotBugs Jobs
+    # -----------------------------------------------------
+    # --- Development and Feature Branches
+    - stage: build-test
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      name: Build and Test - SpotBugs - Development and Features
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P development,spotbugs,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+    # ----------------------------
+    # --- Integration Branches
+    - stage: build-test
+      if: branch = integration
+      name: Build and Test - SpotBugs - Integration
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P integration,spotbugs,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+    # ----------------------------
+    # --- Release Tags
+    - stage: build-test
+      if: tag =~ /^Release/
+      name: Build and Test - SpotBugs - Release
+      script:
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P release,spotbugs,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
+      - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+
     # -----------------------------------------------------------
-    # Build job for general feature builds that do not deploy 
-    # any artifacts nor create releases and tags, this is
-    # applicable for master branches as well, they should only 
-    # deploy when tagged.
-    #------------------------------------------------------------
-    - stage: clean-install
+    # -----------------------------------------------------------
+    # Here are the jobs for the assemble and deploy stage
+    # -----------------------------------------------------------
+    # --- The Job for feature branches only. Assemble the product, but don't deploy
+    - stage: build-assemble-deploy
       if: branch NOT IN (integration, development, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
-      name: Clean Install Feature Build
+      name: Build-Assemble-Deploy - Feature
       script:
       # -------------------------------------------------------
       # call the maven build and store the output in a log file
@@ -98,28 +237,27 @@ jobs:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn clean install -P development,deployUnsecured,product,spotbugs -B -V | tee maven.log
+      - mvn install -P development,javadoc,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - echo "Check for failed test cases:"
-      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.
-    # Development job only. Feature jobs are not deployed.
     #------------------------------------------------------------
-    - stage: clean-install
+    - stage: build-assemble-deploy
       if: branch = development
-      name: Clean Install Deploy Development
+      name: Build-Assemble-Deploy - Development
       script:
       # -------------------------------------------------------
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P development,deployUnsecured,product -B -V | tee maven.log
-      - echo "Check for warnings:"
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P development,javadoc,deployUnsecured,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - echo "Check for failed test cases:"
-      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       before_deploy:
         # --------------------------------------
         # Start the ssh agent
@@ -175,22 +313,24 @@ jobs:
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: development
+    
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Integration.
     #------------------------------------------------------------
-    - stage: clean-install
+    - stage: build-assemble-deploy
       if: branch = integration
-      name: Clean Install Deploy Integration
+      name: Build-Assemble-Deploy - Integration
       script:
       # -------------------------------------------------------
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P integration,deployUnsecured,product -B -V | tee maven.log
-      - echo "Check for warnings:"
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P integration,javadoc,deployUnsecured,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - echo "Check for failed test cases:"
-      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       before_deploy:
         # --------------------------------------
         # Start the ssh agent
@@ -246,22 +386,24 @@ jobs:
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: integration
+    
     # -----------------------------------------------------------
     # Deploy Jobs for secured Releases.
     #------------------------------------------------------------
-    - stage: clean-install
+    - stage: build-assemble-deploy
       if: tag =~ /^Release/
-      name: Clean Install Deploy Release
+      name: Build-Assemble-Deploy - Release
       script:
       # -------------------------------------------------------
       # call the maven build and store the output in a log file
       # use this log file to analyze it for compiler warnings
       # -------------------------------------------------------
-      - mvn clean install -P release,deployBackuped,product -B -V | tee maven.log
-      - echo "Check for warnings:"
+      - mvn clean compile -P development,target -B -V | tee maven.log
+      - echo "Check for Maven Problems on Overtarget:"
+      - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      - mvn install -P release,javadoc,deployBackuped,product -B -V | tee maven.log
+      - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - echo "Check for failed test cases:"
-      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       before_deploy:
         # --------------------------------------
         # Start the ssh agent
@@ -293,7 +435,7 @@ jobs:
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           tags: true
-      # ---------------------------------------------
+      # ---------------------------------------------   
       # push build to sourceforge repo for deployment
       # ---------------------------------------------    
       - provider: script
