@@ -222,7 +222,7 @@ jobs:
     # --- The Job for feature branches only. Assemble the product, but don't deploy
     - stage: build-assemble-deploy
       if: branch NOT IN (integration, development, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
-      name: Buikd-Assemble-Deploy - Feature
+      name: Build-Assemble-Deploy - Feature
       script:
       # -------------------------------------------------------
       # call the maven build and store the output in a log file
@@ -231,7 +231,7 @@ jobs:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P development,deployUnsecured,product -B -V | tee maven.log
+      - mvn install -P development,javadoc,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 
@@ -249,7 +249,7 @@ jobs:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P development,deployUnsecured,product -B -V | tee maven.log
+      - mvn install -P development,javadoc,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       before_deploy:
@@ -322,7 +322,7 @@ jobs:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P integration,deployUnsecured,product -B -V | tee maven.log
+      - mvn install -P integration,javadoc,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       before_deploy:
@@ -395,7 +395,7 @@ jobs:
       - mvn clean compile -P development,target -B -V | tee maven.log
       - echo "Check for Maven Problems on Overtarget:"
       - (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      - mvn install -P release,deployBackuped,product -B -V | tee maven.log
+      - mvn install -P release,javadoc,deployBackuped,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       before_deploy:
