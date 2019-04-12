@@ -69,6 +69,9 @@ public abstract class AProjectTestCase {
 	@After
 	public void tearDown() throws CoreException {
 		// Make sure all projects that were created get removed again
+		if (editingDomain != null) {
+			editingDomain.dispose();
+		}
 		for (IProject project : testProjects) {
 			project.delete(true, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
