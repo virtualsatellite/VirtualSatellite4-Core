@@ -48,6 +48,7 @@ env:
   - OVERTARGET_VERSION=1.1.0.r201903120902
   - OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
   - OVERTARGET_GROUP=de.dlr.sc.overtarget
+  - JUNIT_DEBUG_PROJECT_TEST_CASE=true
 
 before_script:
   # --------------------------------------------------
@@ -67,6 +68,10 @@ before_script:
   - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
   
 after_failure:
+  # ---------------------------------------
+  # Show the debug output of Surefire Junit
+  # ---------------------------------------
+  - cat $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.test/target/surefire-reports/de.dlr.sc.virsat.test.ProjectAllTest-output.txt
   # --------------------------------------
   # Start the ssh agent
   # --------------------------------------

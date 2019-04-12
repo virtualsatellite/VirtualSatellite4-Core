@@ -151,6 +151,7 @@
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/labelProvider/package-summary.html" label="de.dlr.sc.virsat.project.ui.labelProvider"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/migrator/handler/package-summary.html" label="de.dlr.sc.virsat.project.ui.migrator.handler"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/navigator/package-summary.html" label="de.dlr.sc.virsat.project.ui.navigator"/>
+<topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/navigator/commonSorter/package-summary.html" label="de.dlr.sc.virsat.project.ui.navigator.commonSorter"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/navigator/contentProvider/package-summary.html" label="de.dlr.sc.virsat.project.ui.navigator.contentProvider"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/navigator/dropAssist/package-summary.html" label="de.dlr.sc.virsat.project.ui.navigator.dropAssist"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/project/ui/navigator/handler/package-summary.html" label="de.dlr.sc.virsat.project.ui.navigator.handler"/>
@@ -170,6 +171,7 @@
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/uiengine/ui/editor/snippets/package-summary.html" label="de.dlr.sc.virsat.uiengine.ui.editor.snippets"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/uiengine/ui/editor/snippets/tableimpl/package-summary.html" label="de.dlr.sc.virsat.uiengine.ui.editor.snippets.tableimpl"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/uiengine/ui/handler/package-summary.html" label="de.dlr.sc.virsat.uiengine.ui.handler"/>
+<topic href="help/api-docs/javadoc/de/dlr/sc/virsat/uiengine/ui/wizard/package-summary.html" label="de.dlr.sc.virsat.uiengine.ui.wizard"/>
 <topic href="help/api-docs/javadoc/de/dlr/sc/visproto/package-summary.html" label="de.dlr.sc.visproto"/>
 <topic href="help/api-docs/javadoc/org/apache/commons/cli/package-summary.html" label="org.apache.commons.cli"/>
 <topic href="help/api-docs/javadoc/org/apache/commons/math3/package-summary.html" label="org.apache.commons.math3"/>
