@@ -49,6 +49,9 @@ import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
  */
 public class ASwtBotTestCase {
 
+	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
+	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
+	
 	private static final int WAIT_BEFORE_SYNCING_UI_THREAD_100 = 100;
 	
 	protected SWTWorkbenchBot bot;
@@ -81,7 +84,10 @@ public class ASwtBotTestCase {
 	
 	@After
 	public void tearDown() throws CoreException {
-		generateScreenshot();
+		if (ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE.equalsIgnoreCase(System.getenv(ENV_VARIABLE_SWTBOT_SCREENSHOT))) {
+			generateScreenshot();
+		}
+		
 		bot.closeAllEditors();
 		ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECTNAME).delete(true, null);
 	}

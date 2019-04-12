@@ -47,6 +47,7 @@ env:
   - OVERTARGET_VERSION=1.1.0.r201903120902
   - OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
   - OVERTARGET_GROUP=de.dlr.sc.overtarget
+  - SWTBOT_SCREENSHOT=true
 
 before_script:
   # --------------------------------------------------
