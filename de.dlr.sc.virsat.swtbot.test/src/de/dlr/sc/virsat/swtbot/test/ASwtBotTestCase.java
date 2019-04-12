@@ -109,6 +109,15 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Expands a single navigator item
+	 * @param item the item toe expand
+	 */
+	protected void expand(SWTBotTreeItem item) {
+		item.expand();
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
 	 * Clicks on a combo box
 	 * @param comboboxLabel the label of the combobox
 	 * @author bell_Er

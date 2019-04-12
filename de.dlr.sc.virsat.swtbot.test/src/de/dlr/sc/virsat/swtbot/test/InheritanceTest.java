@@ -74,17 +74,20 @@ public class InheritanceTest extends ASwtBotTestCase {
 
 		// change the super document
 		rename(document, "NewDocument");	
+		
 		propagateInheritance();
-		elementConfiguration.expand();
+		expand(elementConfiguration);
+		waitForEditingDomainAndUiThread();
+		
 		SWTBotTreeItem newDocument = openEditor(elementConfiguration.getNode("D: NewDocument"));
 		assertText("NewDocument", bot.textWithLabel(NAME));
 		//Make change in sub sei
 		renameField(Document.PROPERTY_DOCUMENTNAME, "NewName");
 		save();
 		assertTrue(bot.checkBoxWithLabel(Document.PROPERTY_DOCUMENTNAME).isChecked());
-
-		elementOccurence.expand();
-	
+		
+		expand(elementOccurence);
+		
 		assertText("NewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
 		openEditor(document);

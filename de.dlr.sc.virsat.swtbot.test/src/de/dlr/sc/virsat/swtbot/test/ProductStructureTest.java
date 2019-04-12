@@ -56,10 +56,10 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		closeDialog("Finish");
 		
 		SWTBotTreeItem configurationTree = repositoryNavigatorItem.getNode("AT: New AssemblyTree");
-		configurationTree.expand();
+		expand(configurationTree);
 		SWTBotTreeItem configurationTreeDomain = configurationTree.getNode("EO: BATTERY");
 		assertNotNull(configurationTreeDomain);
-		configurationTreeDomain.expand();
+		expand(configurationTreeDomain);
 		SWTBotTreeItem elementDefinition = configurationTreeDomain.getNode("EO: RW1");
 		assertNotNull(elementDefinition);
 		int elements = configurationTreeDomain.getItems().length;
@@ -90,7 +90,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		
 		SWTBotTreeItem aocs = configurationTree.getNode("EC: NewAOCS");
 		assertNotNull(aocs);
-		aocs.expand();
+		expand(aocs);
 		assertNotNull(aocs.getNode("EC: RW1"));
 		assertNotNull(aocs.getNode("EC: RW2"));
 		assertNotNull(aocs.getNode("EC: ElementConfiguration"));
