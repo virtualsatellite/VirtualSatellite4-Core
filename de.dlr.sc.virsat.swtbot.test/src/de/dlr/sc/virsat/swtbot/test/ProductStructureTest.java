@@ -26,12 +26,10 @@ public class ProductStructureTest extends ASwtBotTestCase {
 	private static final int THREE = 3; 
 	private SWTBotTreeItem repositoryNavigatorItem;
 	
-	SWTBotTreeItem configurationTree;
-	SWTBotTreeItem aocs;
-	SWTBotTreeItem rw1;
-	SWTBotTreeItem rw2;
-
-	static final String NAME = "Name";
+	private SWTBotTreeItem configurationTree;
+	private SWTBotTreeItem aocs;
+	private SWTBotTreeItem rw1;
+	private SWTBotTreeItem rw2;
 	
 	@Before
 	public void before() throws Exception {
@@ -45,8 +43,8 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		rename(rw1, "RW1");
 		rw2 = addElement(ElementConfiguration.class, conceptPs, aocs);
 		rename(rw2, "RW2");
-
 	}
+	
 	@Test
 	public void generateProductTest() {
 		configurationTree.contextMenu().menu("Product Structure").menu("Generate Product Wizard").click();
@@ -56,40 +54,45 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		bot.text().setText("BATTERY");
 		renameField("Assembly Tree Name", "New AssemblyTree");
 		closeDialog("Finish");
-		SWTBotTreeItem	configurationTree = repositoryNavigatorItem.getNode("AT: New AssemblyTree");
-		configurationTree.expand();
+		
+		SWTBotTreeItem configurationTree = repositoryNavigatorItem.getNode("AT: New AssemblyTree");
+		expand(configurationTree);
 		SWTBotTreeItem configurationTreeDomain = configurationTree.getNode("EO: BATTERY");
 		assertNotNull(configurationTreeDomain);
-		configurationTreeDomain.expand();
+		expand(configurationTreeDomain);
 		SWTBotTreeItem elementDefinition = configurationTreeDomain.getNode("EO: RW1");
 		assertNotNull(elementDefinition);
 		int elements = configurationTreeDomain.getItems().length;
 		assertEquals(THREE, elements);
 	}	
+	
 	@Test
 	public void configureProductTest() {
-		
 		configurationTree.contextMenu().menu("Product Structure").menu("Configure Product Wizard").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Duplicate").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Rename").click();
-		bot.text().setText("New AOCS");
-		bot.tree(1).getTreeItem("EC: New AOCS").select();
+		bot.text().setText("NewAOCS");
+		bot.tree(1).getTreeItem("EC: NewAOCS").select();
 		bot.button("Add New Element").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Delete Element").click();
-		
 		closeDialog("Finish");
-		SWTBotTreeItem	configurationTree = repositoryNavigatorItem.getNode("CT: ConfigurationTree");
+		
+		waitForEditingDomainAndUiThread();
+		
+		SWTBotTreeItem configurationTree = repositoryNavigatorItem.getNode("CT: ConfigurationTree");
 		assertNotNull(configurationTree);
 		assertEquals(2, configurationTree.getItems().length);
-		SWTBotTreeItem	aocs = configurationTree.getNode("EC: New AOCS");
+		
+		waitForEditingDomainAndUiThread();
+		
+		SWTBotTreeItem aocs = configurationTree.getNode("EC: NewAOCS");
 		assertNotNull(aocs);
-		aocs.expand();
+		expand(aocs);
 		assertNotNull(aocs.getNode("EC: RW1"));
 		assertNotNull(aocs.getNode("EC: RW2"));
 		assertNotNull(aocs.getNode("EC: ElementConfiguration"));
-		
 	}
 }

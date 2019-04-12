@@ -21,37 +21,6 @@ SPDX-License-Identifier: EPL-2.0
 	<property environment="env"/>
 	
 	<!-- =====================================================
-		 Task: Setup Network Drives
-	     ===================================================== -->
-	<target name="setupNwDrives" >
-		<description>Connect the P and U drive for jenkins with injected credentials</description>
-		<echo>net use P: \\bsscfs01\Projects /user:${env.NW_USER} ${env.NW_PASS}</echo>
-		<echo>net use U: \\bsscfs01\Unsecured /user:${env.NW_USER} ${env.NW_PASS}</echo>
-		<exec executable="net">
-			<arg line="use P: \\bsscfs01\Projects /user:${env.NW_USER} ${env.NW_PASS}"/>
-		</exec>
-		<exec executable="net">
-			<arg line="use U: \\bsscfs01\Unsecured /user:${env.NW_USER} ${env.NW_PASS}"/>
-		</exec>
-		<exec executable="net">
-			<arg line="use"/>
-		</exec>
-	</target>
-
-	<!-- =====================================================
-		 Task: tear Down Network Drives
-	     ===================================================== -->
-	<target name="tearDownNwDrives">
-		<description>Disconnect the P and U drive for jenkins </description>
-		<exec executable="net">
-			<arg line="use P: /Delete /Yes"/>
-		</exec>
-		<exec executable="net">
-			<arg line="use U: /Delete /Yes"/>
-		</exec>
-	</target>
-
-	<!-- =====================================================
 		 Task: flushAll
 	     ===================================================== -->
 	<target name="flushAll">

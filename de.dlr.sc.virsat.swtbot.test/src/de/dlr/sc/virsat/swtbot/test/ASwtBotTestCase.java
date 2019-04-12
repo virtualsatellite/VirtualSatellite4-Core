@@ -27,6 +27,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -47,6 +49,9 @@ import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
  */
 public class ASwtBotTestCase {
 
+	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
+	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
+	
 	private static final int WAIT_BEFORE_SYNCING_UI_THREAD_100 = 100;
 	
 	protected SWTWorkbenchBot bot;
@@ -55,6 +60,11 @@ public class ASwtBotTestCase {
 	
 	protected static final String PROJECTNAME = "SWTBotTestProject";
 	protected IProject project;
+	
+	@Rule 
+	public TestName testMethodName = new TestName();
+	
+	private int captureNumber = 1;
 	
 	@Before
 	public void before() throws Exception {
@@ -74,10 +84,38 @@ public class ASwtBotTestCase {
 	
 	@After
 	public void tearDown() throws CoreException {
+		if (ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE.equalsIgnoreCase(System.getenv(ENV_VARIABLE_SWTBOT_SCREENSHOT))) {
+			generateScreenshot();
+		}
+		
 		bot.closeAllEditors();
 		ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECTNAME).delete(true, null);
 	}
 	
+	/**
+	 * Generates a screenshot with an internally generated name
+	 */
+	protected void generateScreenshot() {
+		String fileName = generateScreenshotFileName();
+		bot.captureScreenshot(fileName);
+	}
+	
+	/**
+	 * Generates a screenshot filename
+	 * @return a screenshot filename
+	 */
+	protected String generateScreenshotFileName() {
+		return "./../swtbot/" + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + captureNumber++ + ".png";
+	}
+	
+	/**
+	 * Expands a single navigator item
+	 * @param item the item toe expand
+	 */
+	protected void expand(SWTBotTreeItem item) {
+		item.expand();
+		waitForEditingDomainAndUiThread();
+	}
 	
 	/**
 	 * Clicks on a combo box

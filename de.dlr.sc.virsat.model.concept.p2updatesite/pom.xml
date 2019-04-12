@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-SPDX-License-Identifier: EPL-2.0
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -23,46 +20,56 @@ SPDX-License-Identifier: EPL-2.0
 
 	<artifactId>de.dlr.sc.virsat.model.concept.p2updatesite</artifactId>
 	<packaging>eclipse-repository</packaging>
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<activation>
+				<property>
+					<name>build.folder.deploy</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<build.folder.application>VirSat4_Dvlm_ConceptIDE</build.folder.application>
+				<build.folder.fullpath>${build.folder.target.p2}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
+			</properties>
 
-	<properties>
-		<build.folder.application>VirSat4_Dvlm_ConceptIDE</build.folder.application>
-		<build.folder.fullpath>${build.folder.target.p2}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
-	</properties>
-
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<configuration>
-							<!-- ANT Script Start -->
-							<target>
-								<fail
-									message="Cannot Release!!! Release folder already exists !!! Potential overwrite to ${build.folder.fullpath} !!!">
-									<condition>
-										<and>
-											<equals arg1="${build.deploy.release}" arg2="true" />
-											<available file="${build.folder.fullpath}" type="dir" />
-										</and>
-									</condition>
-								</fail>
-								<delete dir="${build.folder.fullpath}" />
-								<copy todir="${build.folder.fullpath}">
-									<fileset dir="./target/repository">
-									</fileset>
-								</copy>
-							</target>
-							<!-- ANT Script Stop -->
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<configuration>
+									<!-- ANT Script Start -->
+									<target>
+										<fail
+											message="Cannot Release!!! Release folder already exists !!! Potential overwrite to ${build.folder.fullpath} !!!">
+											<condition>
+												<and>
+													<equals arg1="${build.deploy.release}" arg2="true" />
+													<available file="${build.folder.fullpath}"
+														type="dir" />
+												</and>
+											</condition>
+										</fail>
+										<delete dir="${build.folder.fullpath}" />
+										<copy todir="${build.folder.fullpath}">
+											<fileset dir="./target/repository">
+											</fileset>
+										</copy>
+									</target>
+									<!-- ANT Script Stop -->
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project> 

@@ -727,15 +727,21 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	
 	@Override
 	public void dispose() {
-		((IWorkspaceCommandStack) commandStack).getOperationHistory().removeOperationHistoryListener(historyListener);
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(initWorkSpaceChangeListener());
-		
-		// Remove all resources from the dirty state
-		getResourceSet().getResources().forEach((res) -> {
-			isResourceDirty.remove(res);
-		});
-		
-		isDisposed = true;
+		if (!isDisposed) {
+			synchronized (accumulatedResourceChangeEvents) {
+				accumulatedResourceChangeEvents.clear();
+			}
+			
+			((IWorkspaceCommandStack) commandStack).getOperationHistory().removeOperationHistoryListener(historyListener);
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(initWorkSpaceChangeListener());
+			
+			// Remove all resources from the dirty state
+			getResourceSet().getResources().forEach((res) -> {
+				isResourceDirty.remove(res);
+			});
+			
+			isDisposed = true;
+		}
 		
 		// Call the dispose method of the ResourceSet
 		super.dispose();

@@ -5,3 +5,5 @@
 **/*._trace
 **/*.xtendbin
 /bin/
+/deploy/
+/swtbot/
