@@ -103,19 +103,22 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 	}
 
-	@Test
-	public void testStalledTest() {
-		int i = 2;
-		
-		while (i < 3) {
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+//	@Test
+//	/**
+//	 * The purpose of this test case is to see how surefire reacts when a test case gets stuck
+//	 */
+//	public void testStalledTest() {
+//		int i = 2;
+//		
+//		while (i < 3) {
+//			try {
+//				Thread.sleep(10000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	
 	@Test
