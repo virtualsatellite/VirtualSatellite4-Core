@@ -29,7 +29,7 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
-- name: build-test
+# - name: build-test
 - name: build-assemble-deploy
 
 env:
