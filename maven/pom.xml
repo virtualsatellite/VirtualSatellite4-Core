@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat</artifactId>
-	<version>4.8.0-SNAPSHOT</version>
+	<version>4.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -18,7 +18,7 @@
 		<tycho-extras-version>1.0.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.8.0</build.version>
+		<build.version>4.9.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<build.folder.target>../builds</build.folder.target>
 		<build.folder.p2>p2</build.folder.p2>
@@ -268,7 +268,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.8.0-SNAPSHOT</version>
+							<version>4.9.0-SNAPSHOT</version>
 							<classifier>virsat</classifier>
 						</artifact>
 					</target>
