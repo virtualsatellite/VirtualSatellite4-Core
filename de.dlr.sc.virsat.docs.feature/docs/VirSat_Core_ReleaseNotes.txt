@@ -1,7 +1,32 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.9.0 (23rd April 2019)
+----------------------------------
+
+New Features:
+	Transition to Open Source at https://github.com/virtualsatellite/VirtualSatellite4-Core #1 #3 #4 #5 Release
+
+Release 4.8.0 (22nd February 2018)
+----------------------------------
+
+New Features:
+	Open Source Compliance #662 Release
+	API Improvements for the AppEngine #635 #634 #633 Feature
+	
+Usability Updates:
+	Copy & Pasting a SEI now directly assigns the discipline to the person doing the paste #609 Comfort/Usability
+	Selecting a concept in the add concept dialogue now also selects all dependencies #644 Comfort/Usability
+	Added DrillDown button in inheritance section #631 Comfort/Usability
+
+Fixed Bugs:
+	Fixed issue of deadlock / race condition freezing VirSat #648 Bug
+	Fixed issue where concept generator did not generate migrator tests correctly #647 Bug
+	Fixed issue of having a NullPointerException when getting all bean children of a SEI #637 Bug
+	Fixed issue where automatic name generation for copy & pasted objects did not behave correctly #616 Bug UIEngine
+
 Release 4.7.0 (2nd July 2018)
+----------------------------------
 
 New Features:
 	Improved the Product Structure Wizzard - #558 Feature
@@ -33,8 +58,6 @@ Fixed Bugs:
 	Fixed issue of having NullPointerException in certain cases refreshing the Graphiti Diagram Editor - #538 Bug
 	Fixed issue of having NPE tyring to get list of abstract CAs from bean - #511 Bug
 	
-VirSat Core Release Notes
--------------------------
 
 Release 4.6.0 (16th January 2018)
 ----------------------------------
