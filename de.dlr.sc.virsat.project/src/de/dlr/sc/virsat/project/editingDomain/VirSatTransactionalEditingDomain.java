@@ -740,7 +740,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			
 			synchronized (accumulatedResourceChangeEvents) {
 				doFireNotifyResourceEvent(accumulatedResourceChangeEvents, EVENT_CHANGED);
-				clearResourceEventListener();
+				clearAccumulatedRecourceChangeEvents();
 			}
 			
 			((IWorkspaceCommandStack) commandStack).getOperationHistory().removeOperationHistoryListener(historyListener);

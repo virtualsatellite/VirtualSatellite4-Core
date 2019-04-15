@@ -84,6 +84,7 @@ public abstract class AProjectTestCase {
 		}
 
 		if (editingDomain != null) {
+			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
 			editingDomain.dispose();
 		}
 		
