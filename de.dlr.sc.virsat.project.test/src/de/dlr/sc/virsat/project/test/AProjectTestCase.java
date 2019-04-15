@@ -85,12 +85,13 @@ public abstract class AProjectTestCase {
 		}
 
 		// Make sure all projects that were created get removed again
-		if (editingDomain != null) {
-			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
-		}
 		for (IProject project : testProjects) {
 			project.delete(true, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+		}
+		// Clean up any fired events for clean successive test cases
+		if (editingDomain != null) {
+			VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
 		}
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}

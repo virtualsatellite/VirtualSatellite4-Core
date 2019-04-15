@@ -631,8 +631,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 						if (!accumulatedResourceChangeEvents.isEmpty()) {
 							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Firing accumulated event changes."));
 							doFireNotifyResourceEvent(accumulatedResourceChangeEvents, EVENT_CHANGED);
-							accumulatedResourceChangeEvents.clear();
-							accumulatedResourceChangeEvents.notifyAll();
+							clearAccumulatedRecourceChangeEvents();
 						}
 					}
 				} else {
@@ -665,6 +664,16 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to trigger listener attached to Editing Domain! ", e));
 			}
 		});
+	}
+	
+	/**
+	 * Clears the list of accumulated change events and notifies all waiting objects
+	 */
+	public static void clearAccumulatedRecourceChangeEvents() {
+		synchronized (accumulatedResourceChangeEvents) {
+			accumulatedResourceChangeEvents.clear();
+			accumulatedResourceChangeEvents.notifyAll();			
+		}
 	}
 	
 	/**
