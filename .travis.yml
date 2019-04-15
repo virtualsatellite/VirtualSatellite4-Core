@@ -92,6 +92,9 @@ after_failure:
         
   
 after_success:
+  # ---------------------------------------
+  # Upload the coverage report to codecov
+  # ---------------------------------------
   - bash <(curl -s https://codecov.io/bash)
 
 
