@@ -95,6 +95,7 @@ SPDX-License-Identifier: EPL-2.0
 			<substitution expression="&lt;version&gt;${version.new}-SNAPSHOT&lt;/version&gt;" />
 			<fileset dir=".">
 				<include name="maven/pom.xml" />
+				<include name="pom.xml" />
 			</fileset>
 		</replaceregexp>
 
