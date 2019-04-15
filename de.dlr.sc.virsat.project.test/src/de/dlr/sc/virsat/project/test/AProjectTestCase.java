@@ -84,11 +84,16 @@ public abstract class AProjectTestCase {
 			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - tearDown()");
 		}
 
+		if (editingDomain != null) {
+			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
+		}
+		
 		// Make sure all projects that were created get removed again
 		for (IProject project : testProjects) {
 			project.delete(true, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
 		}
+		
 		// Clean up any fired events for clean successive test cases
 		if (editingDomain != null) {
 			VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
