@@ -51,10 +51,6 @@ For creating a new release, create a tag starting with *Release_* on the *master
 
 Deployments are done using GitHub Releases as well as sourceforge: [![Download virtualsatellite](https://sourceforge.net/sflogo.php?type=13&group_id=3065053)](https://sourceforge.net/projects/virtualsatellite/files/)
 
-## Software Engineering Requirements
-
-This project follows DLR Software Engineering Requirements for application class 1 as documented in the [Checklist](se_checklist_app_class_1.md).
- 
 ## Contribution
 
 To contribute to this project follow the given steps:
