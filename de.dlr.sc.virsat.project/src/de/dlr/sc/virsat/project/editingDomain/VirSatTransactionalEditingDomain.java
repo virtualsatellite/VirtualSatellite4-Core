@@ -728,10 +728,6 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	@Override
 	public void dispose() {
 		if (!isDisposed) {
-			synchronized (accumulatedResourceChangeEvents) {
-				accumulatedResourceChangeEvents.clear();
-			}
-			
 			((IWorkspaceCommandStack) commandStack).getOperationHistory().removeOperationHistoryListener(historyListener);
 			ResourcesPlugin.getWorkspace().removeResourceChangeListener(initWorkSpaceChangeListener());
 			

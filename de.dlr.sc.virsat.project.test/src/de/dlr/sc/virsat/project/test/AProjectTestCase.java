@@ -86,7 +86,7 @@ public abstract class AProjectTestCase {
 
 		// Make sure all projects that were created get removed again
 		if (editingDomain != null) {
-			editingDomain.dispose();
+			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
 		}
 		for (IProject project : testProjects) {
 			project.delete(true, null);
