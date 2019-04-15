@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -85,7 +84,7 @@ public abstract class AProjectTestCase {
 		}
 
 		if (editingDomain != null) {
-			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
+			editingDomain.dispose();
 		}
 		
 		// Make sure all projects that were created get removed again
@@ -93,12 +92,6 @@ public abstract class AProjectTestCase {
 			project.delete(true, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
 		}
-		
-		// Clean up any fired events for clean successive test cases
-		if (editingDomain != null) {
-			VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
-		}
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 	/**
 	 * Creates the editing domain
