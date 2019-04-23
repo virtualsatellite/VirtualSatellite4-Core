@@ -97,6 +97,7 @@ SPDX-License-Identifier: EPL-2.0
 				</sourcefiles>
 			</structure>
 			<html destdir="${projectDir}/target/jacocoreport" />
+			<xml destfile="${projectDir}/target/jacocoreport/jacoco.xml" encoding="UTF-8" />
 		</jacoco:report>
 	</target>
 
