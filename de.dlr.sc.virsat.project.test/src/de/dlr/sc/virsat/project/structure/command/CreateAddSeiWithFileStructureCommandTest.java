@@ -90,6 +90,7 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		
 		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
 		rsEd.getCommandStack().execute(cmd);
+		rsEd.saveAll();
 		
 		repo = rs.getRepository();
 	}
