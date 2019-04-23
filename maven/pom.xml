@@ -34,8 +34,6 @@
 		<!-- Sonar Code Coverage -->
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
-		<sonar.jacoco.version>0.7.7.201606060606</sonar.jacoco.version>
 		<skipTests>true</skipTests>
 	</properties>
 	<profiles>
@@ -208,16 +206,18 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${sonar.jacoco.version}</version>
-				<configuration>
-					<append>true</append>
-					<!-- Where to put jacoco coverage report -->
-					<destFile>${sonar.jacoco.reportPath}</destFile>
-				</configuration>
+				<version>0.8.3</version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
