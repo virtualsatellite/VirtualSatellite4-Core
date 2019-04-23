@@ -21,11 +21,11 @@ SPDX-License-Identifier: EPL-2.0
 	<property environment="env"/>
 
 	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-		<classpath path="${user.home}/.ant/lib/jacocoant.jar"/>
+		<classpath path="${user.home}/.ant/lib/jacoco.jar"/>
 	</taskdef>
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath path="${user.home}/.ant/lib/ant-contrib-0.6.jar"/>
+		<classpath path="${user.home}/.ant/lib/ant-contrib.jar"/>
 	</taskdef>
 
 	<!-- =====================================================
@@ -33,9 +33,9 @@ SPDX-License-Identifier: EPL-2.0
 	     ===================================================== -->
 	<target name="jacocoPrepareDependencies" description="Install Jacoco Dependencies">
 		<mkdir dir="${user.home}/.ant/lib"/>
-		<get dest="${user.home}/.ant/jacoco.zip" src="http://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.3/jacoco-0.8.3.zip"/>
-		<get dest="${user.home}/.ant/ant-contrib.zip" src="https://downloads.sourceforge.net/project/ant-contrib/ant-contrib/ant-contrib-0.6/ant-contrib-0.6-bin.zip"/>
-		<unzip overwrite="no" src="${user.home}/.ant/jacoco.zip" dest="${user.home}/.ant/">
+		<get dest="${user.home}/.ant/lib/jacoco.jar" src="http://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
+		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+		<!--unzip overwrite="no" src="${user.home}/.ant/jacoco.zip" dest="${user.home}/.ant/">
 			<patternset>
 				<include name="lib/"/>
 			</patternset>
@@ -44,7 +44,7 @@ SPDX-License-Identifier: EPL-2.0
 			<patternset>
 				<include name="lib/"/>
 			</patternset>
-		</unzip>
+		</unzip-->
 	</target>
 
 	<target name="jacocoReport">
