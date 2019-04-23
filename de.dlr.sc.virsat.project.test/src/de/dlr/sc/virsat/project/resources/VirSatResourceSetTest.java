@@ -460,9 +460,10 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	@Test
 	public void testHasWritePermissionNormalUser() {
 		VirSatResourceSet rs = VirSatResourceSet.getResourceSet(testProject, false);
-		TransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
+		VirSatTransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
 		rsEd.getCommandStack().execute(cmd);
+		rsEd.saveAll();
 
 		createThreeSeisWithDifferentDisciplines();
 		setNormalUser();
