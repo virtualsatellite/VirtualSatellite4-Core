@@ -73,7 +73,7 @@ SPDX-License-Identifier: EPL-2.0
 		     ===================================================== -->
 		<input message="Please enter the new Version Number (e.g.: 4.0.3):" 
 			addproperty="version.new" 
-			defaultvalue="4.0.3" />
+			defaultvalue="${version}" />
 		<property name="version.new.qualified">${version.new}.qualifier</property>
 
 		<!-- =====================================================
