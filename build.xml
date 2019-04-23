@@ -27,7 +27,7 @@ SPDX-License-Identifier: EPL-2.0
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath path="${user.home}/.ant/lib/ant-contrib-0.6.jar"/>
 	</taskdef>
-	
+
 	<!-- =====================================================
 		 Task: Create Jacoco Reports
 	     ===================================================== -->
@@ -35,13 +35,21 @@ SPDX-License-Identifier: EPL-2.0
 		<mkdir dir="${user.home}/.ant/lib"/>
 		<get dest="${user.home}/.ant/jacoco.zip" src="http://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.3/jacoco-0.8.3.zip"/>
 		<get dest="${user.home}/.ant/ant-contrib.zip" src="https://downloads.sourceforge.net/project/ant-contrib/ant-contrib/ant-contrib-0.6/ant-contrib-0.6-bin.zip"/>
-		<unzip overwrite="no" src="${user.home}/.ant/jacoco.zip" dest="${user.home}/.ant/ "/>
-		<unzip overwrite="no" src="${user.home}/.ant/ant-contrib.zip" dest="${user.home}/.ant/" />
+		<unzip overwrite="no" src="${user.home}/.ant/jacoco.zip" dest="${user.home}/.ant/">
+			<patternset>
+				<include name="lib/"/>
+			</patternset>
+		</unzip>
+		<unzip overwrite="no" src="${user.home}/.ant/ant-contrib.zip" dest="${user.home}/.ant/">
+			<patternset>
+				<include name="lib/"/>
+			</patternset>
+		</unzip>
 	</target>
 
 	<target name="jacocoReport">
 		<description>Create Jacoco Report over all projects</description>
-		
+
 		<foreach target="jacocoReportProject" param="projectDir">
 			<path>
 				<dirset dir="." casesensitive="yes">

@@ -168,6 +168,7 @@ jobs:
       - echo "Check for failed test cases:"
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       - ant jacocoPrepareDependencies
+      - ls -la ~/.ant/lib
       - ant jacocoReport
       - bash <(curl -s https://codecov.io/bash)
     # ----------------------------
