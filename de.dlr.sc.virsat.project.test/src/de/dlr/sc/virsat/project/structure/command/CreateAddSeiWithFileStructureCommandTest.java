@@ -148,6 +148,8 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		Command cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei1);
 		rsEd.getCommandStack().execute(cmd);
 		
+		rsEd.saveAll();
+		
 		// Create the actual command to test
 		cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, sei1, sei2);
 		rsEd.getCommandStack().execute(cmd);
