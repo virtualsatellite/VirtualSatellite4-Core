@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	 <propertyTester
+	    id="de.dlr.sc.virsat.model.extension.budget.mass.ui.propertyTester.conceptEnabledTester"
+	    type="org.eclipse.emf.ecore.EObject"
+	    namespace="de.dlr.sc.virsat.model.extension.budget.mass.ui.propertyTester"
+	    properties="conceptEnabled"
+	    class="de.dlr.sc.virsat.model.extension.budget.mass.propertyTester.ConceptEnabledTester">
+	  </propertyTester>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptImageContribution">
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.mass"
+		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.budget.mass.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters"
+		pathToImage="resources/icons/AMassParameters.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.mass.MassEquipment"
+		pathToImage="resources/icons/MassEquipment.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.mass.MassSummary"
+		pathToImage="resources/icons/MassSummary.gif">
+	</conceptImage>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassEquipment"
+		name="Add MassEquipment">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassSummary"
+		name="Add MassSummary">
+	</command>
+	</extension>
+	<extension point="org.eclipse.ui.commandImages">
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassEquipment"
+	      disabledIcon="resources/icons/MassEquipment_disabled.gif"
+	      icon="resources/icons/MassEquipment.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassSummary"
+	      disabledIcon="resources/icons/MassSummary_disabled.gif"
+	      icon="resources/icons/MassSummary.gif">
+	</image>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.mass.ui.handler.AddMassEquipmentHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassEquipment">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.mass.ui.handler.AddMassSummaryHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassSummary">
+	</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+		     allPopups="false"
+		     locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=concepts">
+		     <menu
+		        id="de.dlr.sc.virsat.model.extension.budget.mass.menu" 
+		        label="Mass Budget"
+		        icon="resources/icons/de.dlr.sc.virsat.model.extension.budget.mass.gif"
+		        tooltip="Mass Budget Concept">
+		        <separator
+		            name="categories"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="structuralElements"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="tools"
+		            visible="true">
+			    </separator>
+		        <separator
+		        	name="additions"
+		            visible="true">
+		    	</separator>
+		    	<visibleWhen
+					checkEnabled="true">
+					<with
+						variable="selection">
+						<iterate
+							ifEmpty="false"
+							operator="and">
+							<test 
+								property="de.dlr.sc.virsat.model.extension.budget.mass.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>		
+						</iterate>
+					</with>
+				</visibleWhen>
+			</menu>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.mass.menu?after=categories">
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassEquipment"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.budget.mass.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassSummary"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.budget.mass.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.mass.menu?after=structuralElements">
+		</menuContribution>
+	</extension>
+	<extension
+	       point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
+	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
+	          topRanking="1000">
+	    </editorSection>
+	 </extension>	
+	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uiSnippetMassEquipment"
+		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableMassEquipment">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.section.uiSnippetMassEquipment"
+		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetSectionMassEquipment">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uiSnippetMassSummary"
+		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableMassSummary">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.section.uiSnippetMassSummary"
+		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetSectionMassSummary">
+		</uiSnippet>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Calculation
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-Version: 4.9.0.qualifier
+Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation; singleton:=true
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Require-Bundle: de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.commons,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.external.lib.commons.math,
+ org.eclipse.osgi,
+ org.eclipse.equinox.common,
+ org.eclipse.xtext,
+ org.eclipse.xtext.util,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.common.types,
+ org.antlr.runtime,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.eclipse.xtext.xbase,
+ org.eclipse.xtend.lib,
+ de.dlr.sc.virsat.build
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.dlr.sc.virsat.model.calculation,
+ de.dlr.sc.virsat.model.calculation.compute,
+ de.dlr.sc.virsat.model.calculation.compute.extensions,
+ de.dlr.sc.virsat.model.calculation.compute.problem,
+ de.dlr.sc.virsat.model.calculation.formatting,
+ de.dlr.sc.virsat.model.calculation.generator,
+ de.dlr.sc.virsat.model.calculation.marker,
+ de.dlr.sc.virsat.model.calculation.parser.antlr,
+ de.dlr.sc.virsat.model.calculation.parser.antlr.internal,
+ de.dlr.sc.virsat.model.calculation.resource,
+ de.dlr.sc.virsat.model.calculation.scoping,
+ de.dlr.sc.virsat.model.calculation.serializer,
+ de.dlr.sc.virsat.model.calculation.services,
+ de.dlr.sc.virsat.model.calculation.validation
+Bundle-Activator: de.dlr.sc.virsat.model.calculation.Activator
+Import-Package: org.apache.log4j
+Automatic-Module-Name: de.dlr.sc.virsat.model.calculation

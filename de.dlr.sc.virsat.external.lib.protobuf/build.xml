@@ -1,0 +1,24 @@
+<project name="protobuf" default="buildProtobufSources" basedir=".">
+	<description>
+       		To build the protobuf sources for the external library plugin
+    </description>
+
+	<target name="buildProtobufSources" >
+		<delete dir="temp/protobuf"/>
+		<mkdir dir="temp/protobuf"/>
+
+		<copy todir="temp\protobuf\com\google\protobuf">
+			<fileset dir="externalSrc\protobuf-3.4.0\java\core\src\main\java\com\google\protobuf"/>
+		</copy>
+		
+		<exec executable="externalTool\protoc-3.4.0-win32\bin\protoc">
+			<arg line="externalSrc\protobuf-3.4.0\src\google\protobuf\descriptor.proto --java_out=temp/protobuf -IexternalSrc\protobuf-3.4.0\src"/>
+		</exec>
+
+		<javac srcdir="temp/protobuf"></javac>
+		<jar destfile="externalLib/protobuf.jar" basedir="temp/protobuf"/>
+	</target>
+	<target name="jarrrr" >
+						<jar destfile="externalLib/protobuf.jar" basedir="temp/protobuf"/>
+		</target>
+</project>

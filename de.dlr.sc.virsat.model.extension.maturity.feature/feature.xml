@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.model.extension.maturity.feature"
+      label="VirSat Core Model Extension Maturity Feature"
+      version="4.9.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      DLR SC VirSat Maturity Concept
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2015
+
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="de.dlr.sc.virsat.build"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.ps"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.maturity"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.maturity.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

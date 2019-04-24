@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.branding.feature"
+      label="VirSat Core Branding Feature"
+      version="4.9.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      Branding Feature
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2016
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.intro"/>
+      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.branding.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

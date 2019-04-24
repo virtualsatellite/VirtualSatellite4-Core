@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Graphiti
+Bundle-SymbolicName: de.dlr.sc.virsat.graphiti; singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ org.eclipse.graphiti;visibility:=reexport,
+ org.eclipse.core.resources,
+ org.eclipse.equinox.registry,
+ org.eclipse.ui.workbench
+Export-Package: de.dlr.sc.virsat.graphiti.diagram,
+ de.dlr.sc.virsat.graphiti.util,
+ de.dlr.sc.virsat.graphiti
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Bundle-Activator: de.dlr.sc.virsat.graphiti.Activator
+Automatic-Module-Name: de.dlr.sc.virsat.graphiti

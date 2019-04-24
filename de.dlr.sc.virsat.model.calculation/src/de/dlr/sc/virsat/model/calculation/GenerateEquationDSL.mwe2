@@ -1,0 +1,90 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+module de.dlr.sc.virsat.model.calculation.GenerateEquationDSL
+
+
+import org.eclipse.xtext.xtext.generator.*
+import org.eclipse.xtext.xtext.generator.model.project.*
+import org.eclipse.emf.mwe.utils.*
+
+var rootPath = ".."
+var projectName = "de.dlr.sc.virsat.model.calculation"
+
+Workflow {
+	
+	bean = StandaloneSetup {
+		registerGeneratedEPackage = "de.dlr.sc.virsat.model.dvlm.general.GeneralPackage"
+		registerGeneratedEPackage = "de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage"
+		registerGeneratedEPackage = "de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage"
+	}
+	
+	component = XtextGenerator {
+		configuration = {
+			project = StandardProjectConfig {
+				baseName = "${projectName}"
+				rootPath = rootPath
+				
+				genericIde = {
+					enabled = true
+				}
+				
+				eclipsePlugin = {
+					enabled = true
+				}
+				
+				createEclipseMetaData = true
+			}
+			code = {
+				encoding = "windows-1252"
+				fileHeader = 
+"/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/"
+			}
+		}
+		language = StandardLanguage {
+			name = "${projectName}.EquationDSL"
+			fileExtensions = "dvlmeq"
+		
+			referencedResource = "platform:/resource/de.dlr.sc.virsat.model/model/dvlm.genmodel"
+			
+			serializer = {
+				generateStub = false
+			}
+			validator = {
+				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+			}
+			
+			// the Ecore2Xtext specific terminal converter
+			fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment2 auto-inject {}
+		
+			// outline API 
+            fragment = ui.outline.QuickOutlineFragment2 auto-inject {}
+		
+			// provides the necessary bindings for java types integration
+			fragment = types.TypesGeneratorFragment2 auto-inject {}
+			
+			// generates the required bindings only if the grammar inherits from Xbase
+			fragment = xbase.XbaseGeneratorFragment2 auto-inject {}
+			
+			// generates the required bindings only if the grammar inherits from Xtype
+			fragment = xbase.XtypeGeneratorFragment2 auto-inject {}
+		
+			// provides a compare view
+            fragment = ui.compare.CompareFragment2 auto-inject {}
+		}
+	}
+}

@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Graphiti Ui
+Bundle-SymbolicName: de.dlr.sc.virsat.graphiti.ui; singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Require-Bundle: de.dlr.sc.virsat.graphiti,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ org.eclipse.ui,
+ org.eclipse.gef;visibility:=reexport,
+ org.eclipse.ui.views.properties.tabbed;visibility:=reexport,
+ org.eclipse.graphiti.ui;visibility:=reexport,
+ org.eclipse.graphiti.mm,
+ org.eclipse.emf.workspace
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: DLR (German Aerospace Center)
+Export-Package: de.dlr.sc.virsat.graphiti.ui.diagram.editor,
+ de.dlr.sc.virsat.graphiti.ui.diagram.feature
+Bundle-Activator: de.dlr.sc.virsat.graphiti.ui.Activator
+Automatic-Module-Name: de.dlr.sc.virsat.graphiti.ui

@@ -1,0 +1,217 @@
+VirSat Core Release Notes
+-------------------------
+
+Release 4.9.0 (23rd April 2019)
+----------------------------------
+
+New Features:
+	Transition to Open Source at https://github.com/virtualsatellite/VirtualSatellite4-Core #1 #3 #4 #5 Release
+
+Release 4.8.0 (22nd February 2018)
+----------------------------------
+
+New Features:
+	Open Source Compliance #662 Release
+	API Improvements for the AppEngine #635 #634 #633 Feature
+	
+Usability Updates:
+	Copy & Pasting a SEI now directly assigns the discipline to the person doing the paste #609 Comfort/Usability
+	Selecting a concept in the add concept dialogue now also selects all dependencies #644 Comfort/Usability
+	Added DrillDown button in inheritance section #631 Comfort/Usability
+
+Fixed Bugs:
+	Fixed issue of deadlock / race condition freezing VirSat #648 Bug
+	Fixed issue where concept generator did not generate migrator tests correctly #647 Bug
+	Fixed issue of having a NullPointerException when getting all bean children of a SEI #637 Bug
+	Fixed issue where automatic name generation for copy & pasted objects did not behave correctly #616 Bug UIEngine
+
+Release 4.7.0 (2nd July 2018)
+----------------------------------
+
+New Features:
+	Improved the Product Structure Wizzard - #558 Feature
+	Added Linux support for VirSat - #160 Build
+	
+Usability Updates:
+	Improved error/warning icons on visualisation editor - #598 Comfort/Usability
+	Improved ditor forms appearance in Linux build - #589 Comfort/Usability
+	Added concept icons to the Concept Palette - #565 Comfort/Usability
+	Improved Filtering of names in ReferenceSelectionDialogue - #560 Comfort/Usability
+	Improved naming of Concept Palette items - #559 Comfort/Usability
+	Added auto opening of an editor after creating a new element - #358 Comfort/UsabilityNiceToHave
+
+Fixed Bugs:
+	Fixed issue where DomainRoundView shows update request for the own domain - #625 Bug
+    Fixed issue where dangling references of child SEIs were considered dangling references of the parent SEI - #623 Bug
+	Fixed issue where NavigatorSorting not working in some cases - #612 Bug
+	Fixed issue where Copy-paste of Visualisation-containing SEI does not update VTK view - #608 Bug
+	Fixed issue of having Wrong rotation units in Visualisation - #605 Bug
+	Fixed issue where InheritanceCopier can go into infinite loop when inheriting from multiple elements in different orders - #603 Bug
+	Fixed issue where Array elements with index >= 10 have incorrect sorting in table snippets - #602 Bug UIEngine
+	Fixed issue where of not set default unit for intrinsic arrays - #601 Bug
+	Fixed issue of having an NPE when opening editor with a CA not being available - #595 Bug
+	Fixed issue of having incorrect navigation of markers - #587 Bug
+	Fixed issue in Visualisation: don't process notification from geometryFile if the shape is not geometry - #573 Bug
+	Fixed issue in Visualisation: Category Assignment cannot be deleted while VtkView is open - #557 Bug
+	VirSat Visualisation should be scaled to base units - #553 Bug
+	Fixed issue of Beans List not handling null references and nulls - #539 Bug
+	Fixed issue of having NullPointerException in certain cases refreshing the Graphiti Diagram Editor - #538 Bug
+	Fixed issue of having NPE tyring to get list of abstract CAs from bean - #511 Bug
+	
+
+Release 4.6.0 (16th January 2018)
+----------------------------------
+
+New Features:
+    Updated Target Platform to Eclipse 4.7 Oxygen - #466 Build Comfort/Usability Feature NiceToHave Release
+    Added support of STL model files to visualisation - #457 Feature
+    Added support for the calculation engine to check correctness of quantity kinds - #423 Feature
+
+
+Usability Updates:
+    Improved migrator to correctly migrate Visualization concept and data from version 1.0 to 1.1 - #454 BugComfort/Usability
+    Added Drop Down menu for Visualization shapes in table editors - #450 BugComfort/Usability
+    Added double click action for opening Editor for properties - #417 BugComfort/Usability UIEngine
+    Added validation in category assignment editor to avoid writing non numeric values - #413 Bug Feature
+    Improved APPs API to access documents folder of Structural Element Instances (SEIs) - #495 Comfort/UsabilityFeatureImportant
+    Improved APPs API to get all super StructuralBeans from a given StructuralBean - #452 Important
+    Improved APPs API to get all deep children of a given StructuralBean - #533 Comfort/Usability
+    Improved APPs API to get parent StructuralBean for a given StructuralBean - #533 Comfort/Usability
+    Improved APPs API to get the first category assignment of a given Type - #522 NiceToHave Quality
+    Improved APPs API to delete StructuralElementInstances - #487 Comfort/Usability Quality
+    Improved APPs API to get and set the unit of value beans - #426 NiceToHave
+    Added indication to show whether a value is set by user or calculated - #388 Comfort/Usability Important
+    Improved display of 'No Unit' from [u] to just [ ] - #508 Comfort/UsabilityEasyFix
+    Added validation to point to resources with no document - #493 Comfort/Usability EasyFix
+    Added default units for visualization category - #490 EasyFix Feature
+    Added full qualified name of objects in inheritance table to improve identification - #484 Comfort/Usability
+    Improved file and content change handling of STL model in the visualization - #475 Feature
+    Added support for XY Plots as used in CLaVa prototype - #462 Feature
+    Changed visualization shape type from string to enum - #448 Comfort/Usability
+    Improved JavaDoc feature and added missing dependencies - #445 Build Comfort/Usability Quality
+    Added a Protobuf-Protocol debug client for visualisation - #465 Feature
+    Added a Concept Palette for creating CategoryAssignments and StructuralElementInstances by simple drag and drop - #433 NiceToHaveUIEngine
+    Improved ordering of tables and snippets in editors - #431 Comfort/UsabilityFeature
+    Added a Validator to check that a unit value has always both value and unit being set - #422 Comfort/Usability
+    Improved Enum Properties to now support an empty selection - #421 Quality UIEngine
+    Added a Warning when deleting a Category Assignment that is used or referenced by a calculation - #394 Comfort/Usability
+    Improved naming of copied elements adding suffixes such as "_1" "_2" etc. - #393 Comfort/Usability
+    Added "Drill down" button for array of references in Category Assignment editor - #371 Comfort/Usability NiceToHave
+    Improved greying out Remove Button below CA tables if action is not valid - #321 Comfort/Usability NiceToHave
+    Improved Structure of Navigator Context-Menu to separate contributions from individual concepts -  #304 Comfort/Usability Feature NiceToHave
+    Improved Tree Sorting which can now be specified by the concept - #276 Comfort/Usability
+    Added Drag & Drop capabilities into editor for setting references etc. - #245 Comfort/Usability
+    Added Copy and Paste for CategoryAssignments in generic editor - #28 Comfort/Usability Feature
+
+
+Fixed Bugs:
+    Fixed issue with Xtext editor dealing with Not a Number NaN values - #537 Bug
+    Fixed issue with updating array tables in the editor - #536 Bug
+    Fixed issue regarding activation policy of QUDV plugin - #523 Bug
+    Fixed issue on pixel format when opening 3d Vtk viewer - #510 Bug
+    Fixed issue in the editing domain regarding empty selections - #506 Bug EasyFix
+    Fixed issue in 3D visualization when no geometry file is set - #494 Bug
+    Fixed issue with concept generators now setting correct imports for inherited categories - #492 Bug Concept IDE
+    Fixed issue with high CPU load in visualization - #485 Bug
+    Fixed issue in visualization missing some processing requests from clients - #481 Bug
+    Fixed issue on BeanPropertyResource regarding null values - #480 Bug
+    Fixed issue in visualization now also processing changes on root level - #473 Bug Important
+    Fixed issue in visualization where the server was sending out duplicate messages - #469 Bug
+    Fixed issue when getting non abstract categories from concept not actually having categories - #455 Bug
+    Fixed dependencies for UI engine to Eclipse Nebula project and widgets - #451 Bug NiceToHave Quality Release UIEngine
+    Fixed dependencies regarding core product build - #438 Bug Build Important Release
+    Fixed issue creating Runtime Exception due to equation with cyclic dependencies - #434 Bug
+    Fixed issue when loading VTK libraries for visualization - #518 Important
+    Fixed issue with Null Pointer Exception when setting reference of BeanReferenceProperty to null - #516 Comfort/Usability
+    Fixed issue on visualization resending scenegraphs to clients - #509 EasyFix
+    Fixed issue in visualization regarding delays of send-queue - #505 Comfort/Usability
+    Fixed issue in ResourceProeprty now correctly triggering all updates - #478 Comfort/Usability
+    Fixed issue re-opening the equation editor left with no content - #436 Quality
+    Fixed issue raising an exception in the equation editor when saving content - #435 Quality
+	
+	
+Release 4.5.0 (31st July 2017)
+----------------------------------
+
+New Features:
+    Added Potential and Voltage to the initial QUDV model - #342 Feature
+    Added Graphiti support for graphical modeling - #363, #334 Feature
+    Added generic Excel export support for editor tables - #346 Feature NiceToHave Comfort/Usability
+    Implemented Data Model Extension for Mass Budget Concept - #349 Feature
+    Implemented Data Model Extension for Maturity Concept -  #344 Feature
+    Extended Visualization Extension to support Version Comparison and Animation - #271 Feature
+    Implemented inheritance for Equations - #351 Feature
+    Concept Language now supports inheritance for Categories - #275 Feature Concept IDE DVLM
+    Concept Language now supports setting default QUDV unit - #341 Feature Concept IDE
+    Concept Language now supports Ecore Model Generation - #364 Feature DVLM
+    Concept Language now supports Enum Properties - #344, #406 Feature DVLM Concept IDE
+    Implemented support for automatic concept migration - #352 Feature
+    Upgraded DVLM Data Model to version V4 - #381 Release
+
+Usability Updates:
+    Simplified update of missing concepts in Manifest.MF of APPS - #336 Comfort/Usability
+    Automatically expanding next level in Navigator when new child element is created - #166 NiceToHave
+    Disabled Product Structure Wizard if the repository is not owned by the user - #310 Quality Comfort/Usability
+    Improved icons for properties - #376 NiceToHave Comfort/Usability
+    Added warning icon in RoleManagement for duplicate Disciplines - #322 NiceToHave Comfort/Usability
+    Unified naming conventions in Navigator and Editor - #187 NiceToHave Comfort/Usability
+    Improved labeling of referenced objects in Editor - #278, #400 Comfort/Usability
+    Implemented automatic updating after APP execution - #248, #332 Comfort/Usability
+    Implemented check boxes for Adding/Removing Category Assignments with Cardinality 1 - #391 Comfort/Usability
+    Improved labeling of Array Properties in Category Assignment table - #372 UIEngine
+    Improved Calculation Outline view icons - #368 NiceToHave Comfort/Usability
+    Implemented flag for hiding column "Name" for relevant Category Assignments - #392 Comfort/Usability
+    Concept Language is now compatible for new work flow from XText v2.9 - #59 NiceToHave
+    Implemented general context menu functionality in Editor - #409 UIEngine NiceToHave Feature Comfort/Usability
+    Displayed, calculated values can now be rounded to a desired precision - #343 NiceToHave Feature/ omfort/Usability
+    
+    
+Fixed Bugs:
+    Fixed issue where the name of a StructuralElementInstance is not editable when pulling an assigned discipline change - #317 Bug
+    Fixed issue where equations did not update in the correct order - #353 Bug
+    Investigated and fixed issue of editors receiving too many update notifications - #312, #400 Bug
+    Fixed issues of getting an error when using non-numerical symbols in the QUDV Wizards - #327, #324, #326 Bug
+    Fixed issue of Navigator collapsing upon adding a new root element - #315, #359 Bug
+    Investigated and fixed issue when automatically migrating a data set checked out from an SVN - #320 DVLMBug
+    Disabled deletion of Quantity Kinds that are referenced by other Quantity Kinds or Units - #323 Bug
+    Fixed issue of getting an exception from closing the 3D visualization view - #339 Bug
+    Investigated and fixed issue of Inheritance mechanism for ComposedPropertyInstances - #347 Bug
+    Fixed issue of clashing names when having same named properties in one concept - #152 Bug
+    Fixed issue where CategoryAssignments with cardinality 1 were not inherited -  #341, #357 Bug
+    Fixed issue of non-updating UI in Array Tables - #383 Bug
+    Fixed issue of getting an error when opening the equation editor on an unsaved Category Assignment - #387 Bug
+    Fixed issue where opening a visualization view without a project in the Navigator caused an exception - #337 Bug
+    Fixed issue where Visualization did not update after pulling an SVN Update - #365, #384 Bug
+    Fixed issue where cardinality restrictions were not correctly considered in Arrays - #377 Bug
+    Selecting a resource in the resource property dialog now automatically updates the documents folder - #425 Bug Comfort/Usability
+    Fixed issue of resource properties losing URI information on editing - #430 Bug
+    Fixed issue where Units in Category Assignments were not copied - #404 Bug
+    Calculation Engine now gets triggered on Unit changes - #399 Bug
+    Array Entries can now be deleted from the navigator without causing an exception - #386 Bug
+    Fixed exceptions on closing VirSat with unsaved resources - #373, #416 Bug
+    Fixed issue where using drill down on a UnitValuePropertyInstance opened the wrong editor - #412 Bug
+
+
+Release 4.4.0 (28th February 2017)
+----------------------------------
+
+New Features:
+    Product Structure Tree Wizard - #XX NiceToHave Feature
+    Concept Language does now support cardinality - #72 NiceToHave Feature
+
+Usability Updates:
+    Calculation table now shows name of calculated property instead of UUID - #303 Important Comfort/Usability
+    Improve Editor Tab Appearance - #284 NiceToHave Comfort/Usability
+    The containment of a Structural Element Instance (SEI) within the tree is shown in the Editor - #283 NiceToHave Comfort/Usability
+    Concepts in navigator are not shown anymore, user can decide to reactivate them for display - #277 Comfort/Usability
+    Gray out Drill Down Button in Editor if nothing is selected - #247 Comfort/Usability
+    Inherited Category Assignments (CAs) cannot be renamed anymore - #219 Comfort/Usability NiceToHave
+    Properties in the VirSat Navigator are now displayed with their values and correct names - #182 NiceToHave
+    
+Fixed Bugs:
+    Fixed issue with drag and drop actions in the VirSat Navigator - #293 Comfort/Usability
+    Investigated and fixed issue on productive S2tep data set on validating reference properties - #295 Bug
+    Repository Editor is now showing Buttons to Launch an App and to Edit an App - #294 Bug
+    Fixed crash with Editor trying to open a document from a category assignment (CA) where no file is attached yet - #289 Bug
+
+    

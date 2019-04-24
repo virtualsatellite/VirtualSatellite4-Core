@@ -1,0 +1,299 @@
+<!--
+Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License 2.0 which is available at
+http://www.eclipse.org/legal/epl-2.0.
+
+SPDX-License-Identifier: EPL-2.0
+-->
+
+<project name="VirSat Core" default="updateVersions" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+	<description>
+  	  Additional Build Preparations for VirSat
+  	</description>
+
+	<property name="version">4.9.0</property>
+
+	<property name="version.pattern.qualified">[\s]?[0-9]+\.[0-9]+\.[0-9]+\.qualifier</property>
+	<property name="version.pattern">[\s]?[0-9]+\.[0-9]+\.[0-9]+</property>
+	<property name="m2.directory">${user.home}/.m2/</property>
+	<property environment="env"/>
+
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="${user.home}/.ant/lib/jacoco.jar"/>
+	</taskdef>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath path="${user.home}/.ant/lib/ant-contrib.jar"/>
+	</taskdef>
+
+	<!-- =====================================================
+		 Task: Create Jacoco Reports
+	     ===================================================== -->
+	<target name="jacocoPrepareDependencies" description="Install Jacoco Dependencies">
+		<mkdir dir="${user.home}/.ant/lib"/>
+		<get dest="${user.home}/.ant/lib/jacoco.jar" src="http://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
+		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+	</target>
+
+	<target name="jacocoReport">
+		<description>Create Jacoco Report over all projects</description>
+		<foreach target="jacocoReportProject" param="projectDir">
+			<path>
+				<dirset dir="." casesensitive="yes">
+					<include name="de.dlr.sc.virsat.*"/>
+					<exclude name="de.dlr.sc.virsat.*ui"/>
+					<exclude name="de.dlr.sc.virsat.*feature"/>
+					<exclude name="de.dlr.sc.virsat.*ide"/>
+					<exclude name="de.dlr.sc.virsat.*test*"/>
+					<exclude name="de.dlr.sc.virsat.external.*"/>
+					<exclude name="de.dlr.sc.virsat.*product"/>
+					<exclude name="de.dlr.sc.virsat.*p2updatesite"/>
+				</dirset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="jacocoReportProject">
+		<description>Create single Jacoco Report for each project</description>
+		<echo>Creating Jacoco Report for: ${projectDir}</echo>
+		<jacoco:report>
+			<executiondata>
+				<fileset dir="." >
+					<include name="**/jacoco.exec"/>
+				</fileset>
+			</executiondata>
+			<structure name="Jacoco Report for ${projectDir}">
+				<classfiles>
+					<fileset dir="${projectDir}/target/classes">
+						<include name="**/*"/>
+						<exclude name="**/*Test*.class" />
+						<exclude name="**/model/extension/**/A*.class" />
+						<exclude name="**/parser/antlr/**/*.class" />
+						<exclude name="**/serializer/*SemanticSequencer.class" />
+						<exclude name="**/serializer/*SyntacticSequencer.class" />
+						<exclude name="**/services/*GrammarAccess*.class" />
+						<exclude name="**/*Activator.class" />
+						<exclude name="**/*ManifestMf*.class" />
+						<exclude name="**/*PluginXml*.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/impl/*Impl.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*Switch.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*Provider.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*AdapterFactory.class" />
+						<exclude name="de/dlr/sc/virsat/commons/debug/*.class" />
+					</fileset>
+					<fileset dir="${projectDir}/target/classes">
+						<include name="de/dlr/sc/virsat/model/**/DVLM*.class" />
+					</fileset>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${projectDir}/src" erroronmissingdir="no" />
+					<fileset dir="${projectDir}/src-gen" erroronmissingdir="no" />
+					<fileset dir="${projectDir}/xtend-gen" erroronmissingdir="no" />
+				</sourcefiles>
+			</structure>
+			<html destdir="${projectDir}/target/jacocoreport" />
+			<xml destfile="${projectDir}/target/jacocoreport/jacoco.xml" encoding="UTF-8" />
+		    <check failonviolation="false">
+		        <rule element="BUNDLE">
+		        	<limit counter="INSTRUCTION" value="COVEREDRATIO" minimum="65%"/>
+		        	<limit counter="LINE" value="COVEREDRATIO" minimum="65%"/>
+		        	<limit counter="BRANCH" value="COVEREDRATIO" minimum="55%"/>
+		        	<limit counter="METHOD" value="COVEREDRATIO" minimum="65%"/>
+		            <limit counter="CLASS" value="COVEREDRATIO" minimum="80%"/>
+		        </rule>
+		        <rule element="METHOD">
+		        	<limit counter="COMPLEXITY" value="TOTALCOUNT" maximum="20"/>
+		        </rule>
+		    </check>
+		</jacoco:report>
+	</target>
+
+	<!-- =====================================================
+		 Task: flushAll
+	     ===================================================== -->
+	<target name="flushAll">
+		<description>Call this target to flush all relevant information before starting the build</description>
+		<antcall target="flushBuilds">
+		</antcall>
+		<antcall target="flushJavaDocAPI">
+		</antcall>
+		<antcall target="flushM2Repository">
+		</antcall>
+	</target>
+
+	<!-- =====================================================
+		 Task: flushM2Repository 
+	     ===================================================== -->
+	<target name="flushM2Repository">
+		<description>Call this target to flush pending virsat dependencies in mavens m2 repository</description>
+		<delete includeemptydirs="true" verbose="true" failonerror="false">
+			<fileset dir="${m2.directory}" includes="**/de.dlr.sc.virsat*/**"/>
+		</delete>
+	</target>
+
+	<!-- =====================================================
+		 Task: flushBuilds
+	     ===================================================== -->
+	<target name="flushBuilds">
+		<description>Call this target to flush builds folder for deployment</description>
+		<delete includeemptydirs="true" verbose="true" failonerror="false">
+			<fileset dir="builds" includes="**/*"/>
+		</delete>
+	</target>
+
+	<!-- =====================================================
+		 Task: flushJavaDocAPI
+	     ===================================================== -->
+	<target name="flushJavaDocAPI">
+		<description>Call this target to flush builds folder for deployment</description>
+		<delete includeemptydirs="true" verbose="true" failonerror="false">
+			<fileset dir="de.dlr.sc.virsat.javadoc.api/help/api-docs/javadoc" includes="**/*"/>
+		</delete>
+	</target>
+
+	<!-- =====================================================
+		 Task: updateVersion 
+	     ===================================================== -->
+	<target name="updateVersions">
+
+		<!-- =====================================================
+		     Task: updateVersion - Ask for new Version String
+		     ===================================================== -->
+		<input message="Please enter the new Version Number (e.g.: 4.0.3):" 
+			addproperty="version.new" 
+			defaultvalue="${version}" />
+		<property name="version.new.qualified">${version.new}.qualifier</property>
+
+		<!-- =====================================================
+		     Task: updateVersion - Self Update build.xml
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;property name=&quot;version&quot;&gt;${version.pattern}&lt;/property&gt;" />
+			<substitution expression="&lt;property name=&quot;version&quot;&gt;${version.new}&lt;/property&gt;" />
+			<fileset dir=".">
+				<include name="build.xml" />
+			</fileset>
+		</replaceregexp>
+
+		<!-- =====================================================
+		     Task: updateVersion - Update master pom
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;version&gt;${version.pattern}-SNAPSHOT&lt;/version&gt;" />
+			<substitution expression="&lt;version&gt;${version.new}-SNAPSHOT&lt;/version&gt;" />
+			<fileset dir=".">
+				<include name="maven/pom.xml" />
+				<include name="pom.xml" />
+			</fileset>
+		</replaceregexp>
+
+		<!-- =====================================================
+		     Task: updateVersion - Update Build Version in POM for deployment
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;build.version&gt;${version.pattern}&lt;/build.version&gt;" />
+			<substitution expression="&lt;build.version&gt;${version.new}&lt;/build.version&gt;" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/pom.xml" />
+			</fileset>
+		</replaceregexp>
+
+		<!-- =====================================================
+		     Task: updateVersion - Update Build Version in POM for deployment
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;version&gt;${version.pattern}-SNAPSHOT&lt;/version&gt;" />
+			<substitution expression="&lt;version&gt;${version.new}-SNAPSHOT&lt;/version&gt;" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/pom.xml" />
+			</fileset>
+		</replaceregexp>
+
+
+		<!-- =====================================================
+		     Task: updateVersion - Update all MANIFEST.MF
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="Bundle-Version:${version.pattern.qualified}" />
+			<substitution expression="Bundle-Version: ${version.new.qualified}" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/META-INF/MANIFEST.MF" />
+			</fileset>
+		</replaceregexp>
+
+		<!-- =====================================================
+		     Task: updateVersion - Update all feature.xml
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="version=&quot;${version.pattern.qualified}&quot;" />
+			<substitution expression="version=&quot;${version.new.qualified}&quot;" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/feature.xml" />
+			</fileset>
+		</replaceregexp>
+
+		<!-- =====================================================
+	     Task: updateVersion - Update Category p2 Versions
+	     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="version=&quot;${version.pattern.qualified}&quot;" />
+			<substitution expression="version=&quot;${version.new.qualified}&quot;" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/category.xml" />
+			</fileset>
+		</replaceregexp>
+		<replaceregexp byline="true">
+			<regexp pattern="${version.pattern.qualified}\.jar" />
+			<substitution expression="${version.new.qualified}.jar" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/category.xml" />
+			</fileset>
+		</replaceregexp>
+		<replaceregexp byline="true">
+			<regexp pattern="&lt;updatesite.release.version&gt;${version.pattern}&lt;/updatesite.release.version&gt;" />
+			<substitution expression="&lt;updatesite.release.version&gt;${version.new}&lt;/updatesite.release.version&gt;" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/updateSitePom/pom.xml" />
+			</fileset>
+		</replaceregexp>
+
+
+		<!-- =====================================================
+		     Task: updateVersion - Update Product Version
+		     ===================================================== -->
+		<replaceregexp byline="true">
+			<regexp pattern="version=&quot;${version.pattern.qualified}&quot;" />
+			<substitution expression="version=&quot;${version.new.qualified}&quot;" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/*.product" />
+			</fileset>
+		</replaceregexp>
+		<replaceregexp byline="true">
+			<regexp pattern="Version${version.pattern}" />
+			<substitution expression="Version ${version.new}" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/*.product" />
+			</fileset>
+		</replaceregexp>
+		<replaceregexp byline="true">
+			<regexp pattern="Version${version.pattern}" />
+			<substitution expression="Version ${version.new}" />
+			<fileset dir=".">
+				<exclude name="de.dlr.sc.**/target/"/>
+				<include name="de.dlr.sc.**/**/plugin.xml" />
+			</fileset>
+		</replaceregexp>
+
+	</target>
+</project>

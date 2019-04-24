@@ -1,0 +1,38 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+  Concept de.dlr.sc.virsat.model.extension.budget.mass displayname "Mass Budget" description "Mass Budget Concept" version 1.1 {
+	 
+	Category AMassParameters description "Definition of the equipment mass" {
+		IsAbstract;
+		FloatProperty mass description "The Equipment mass" default 0.0 quantityKind "Mass" unit "Kilogram";
+		FloatProperty massWithMargin description "The equipment mass plus the safety margin" default 0.0 quantityKind "Mass" unit "Kilogram";
+		FloatProperty massMargin description "The actual amount of margin mass" default 0.0 quantityKind "Mass" unit "Kilogram";
+		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
+	}
+	
+	Category MassEquipment extends AMassParameters description "Definition of the equipment mass" {
+		Applicable For All;
+		Cardinality 1;   
+		
+		Ref:AMassParameters.massWithMargin = AMassParameters.mass * (1 + AMassParameters.margin);
+		Ref:AMassParameters.massMargin = AMassParameters.massWithMargin - AMassParameters.mass;
+	} 
+	
+	Category MassSummary extends AMassParameters description "Summary of all nested equipment masses" {
+		Applicable For All;
+		Cardinality 1;
+		
+		Ref:AMassParameters.mass = summary{AMassParameters.mass};
+		Ref:AMassParameters.massWithMargin = summary{AMassParameters.massWithMargin};
+		Ref:AMassParameters.massMargin = AMassParameters.massWithMargin - AMassParameters.mass;
+		Ref:AMassParameters.margin = AMassParameters.massMargin / AMassParameters.mass;
+	} 
+}
+

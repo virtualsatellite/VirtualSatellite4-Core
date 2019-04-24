@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+	<concept
+	          id="de.dlr.sc.virsat.model.extension.ps"
+	          version="1.1"
+	          xmi="concept/concept.xmi">
+	    </concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="de.dlr.sc.virsat.model.extension.ps"
+				class="de.dlr.sc.virsat.model.extension.ps.validator.StructuralElementInstanceValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.ps.Document"
+			caBean="de.dlr.sc.virsat.model.extension.ps.model.Document">
+		</CategoryAssignmentBean>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ProductTree"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ProductTree">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ProductTreeDomain"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ElementDefinition"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ConfigurationTree"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.AssemblyTree"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ElementOccurence"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ProductStorage"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ProductStorage">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ProductStorageDomain"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ProductStorageDomain">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.ps.ElementRealization"
+			seiBean="de.dlr.sc.virsat.model.extension.ps.model.ElementRealization">
+		</StructuralElementInstanceBean>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.ps"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.extension.ps.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.ps"
+		version="1.1"
+		class="de.dlr.sc.virsat.model.extension.ps.migrator.Migrator1v1"
+		xmi="concept/concept_v1_1.xmi">
+	</migrator>
+</extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

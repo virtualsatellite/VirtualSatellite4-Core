@@ -1,0 +1,10 @@
+/builds/
+**/workspace/
+**/target/
+**/temp/
+**/*._trace
+**/*.xtendbin
+/bin/
+/deploy/
+/swtbot/
+/report/

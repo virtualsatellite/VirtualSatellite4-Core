@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Calculation UI
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-Version: 4.9.0.qualifier
+Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.calculation,
+ de.dlr.sc.virsat.model.calculation.ide,
+ de.dlr.sc.virsat.commons,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.build.ui,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ org.eclipse.ui,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare,
+ org.eclipse.core.expressions,
+ org.eclipse.xtend.lib;resolution:=optional,
+ org.eclipse.ui.editors
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.dlr.sc.virsat.model.calculation.ui.contentassist,
+ de.dlr.sc.virsat.model.calculation.ui.internal,
+ de.dlr.sc.virsat.model.calculation.ui.labeling,
+ de.dlr.sc.virsat.model.calculation.ui.quickfix,
+ de.dlr.sc.virsat.model.calculation.ui.views
+Bundle-Activator: de.dlr.sc.virsat.model.calculation.ui.internal.CalculationActivator
+Automatic-Module-Name: de.dlr.sc.virsat.model.calculation.ui

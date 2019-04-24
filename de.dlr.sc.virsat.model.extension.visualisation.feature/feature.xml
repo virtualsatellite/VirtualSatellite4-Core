@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.model.extension.visualisation.feature"
+      label="VirSat Core Model Extension Visualisation Feature"
+      version="4.9.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      VirSat Visualisation Concept
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2016
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="de.dlr.sc.virsat.build"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.visualisation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.visualisation.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.protobuf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.zmq.linux.x86_64"
+         os="linux"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.zmq.win32.x86_64"
+         os="win32"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.vtk.linux.x86_64"
+         os="linux"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.vtk.win32.x86_64"
+         os="win32"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

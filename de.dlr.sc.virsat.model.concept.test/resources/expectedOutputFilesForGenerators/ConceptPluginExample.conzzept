@@ -1,0 +1,14 @@
+Concept de.dlr.sc.virsat.concept.example description "Example Concept for Interface Architecture" 
+{
+	
+	Category InterfaceEnd {
+	}	
+	
+	Category Interface {
+		Reference ifEndFrom of Type InterfaceEnd;
+		Reference ifEndTo of Type InterfaceEnd;
+	
+	}
+}
+
+

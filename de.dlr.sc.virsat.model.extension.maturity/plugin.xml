@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+	<concept
+	          id="de.dlr.sc.virsat.model.extension.maturity"
+	          version="1.1"
+	          xmi="concept/concept.xmi">
+	    </concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="de.dlr.sc.virsat.model.extension.maturity"
+				class="de.dlr.sc.virsat.model.extension.maturity.validator.StructuralElementInstanceValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.maturity.Maturity"
+			caBean="de.dlr.sc.virsat.model.extension.maturity.model.Maturity">
+		</CategoryAssignmentBean>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.maturity"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.extension.maturity.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.maturity"
+		version="1.1"
+		class="de.dlr.sc.virsat.model.extension.maturity.migrator.Migrator1v1"
+		xmi="concept/concept_v1_1.xmi">
+	</migrator>
+</extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Performance Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.performance.test
+Bundle-Version: 4.9.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.junit,
+ de.dlr.sc.virsat.apps,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.extension.tests,
+ de.dlr.sc.virsat.project,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.concept.unittest.util
+Automatic-Module-Name: de.dlr.sc.virsat.performance.test

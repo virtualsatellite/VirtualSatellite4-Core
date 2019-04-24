@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core QUDV UI
+Bundle-SymbolicName: de.dlr.sc.virsat.qudv.ui;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.osgi,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jface,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.project
+Export-Package: de.dlr.sc.virsat.qudv.ui.wizards
+Bundle-ClassPath: .
+Bundle-Activator: de.dlr.sc.virsat.qudv.ui.Activator
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.dlr.sc.virsat.qudv.ui

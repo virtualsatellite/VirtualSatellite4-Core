@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+    <extension
+            point="org.eclipse.ui.editors">
+        <editor
+              class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+              contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+              default="true"
+              extensions="concept"
+              icon="resources/icons/VirSatGeneratorActive.png"
+              id="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+              name="ConceptLanguage Editor">
+        </editor>
+    </extension>
+    <extension
+        point="org.eclipse.ui.handlers">
+        <handler
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+            commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
+            <activeWhen>
+                <reference
+                    definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+        <handler
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+            commandId="de.dlr.sc.virsat.model.concept.ConceptLanguage.validate">
+         <activeWhen>
+            <reference
+                    definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+            </reference>
+         </activeWhen>
+      	</handler>
+      	<!-- copy qualified name -->
+        <handler
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+            commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
+            <activeWhen>
+				<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened" />
+            </activeWhen>
+        </handler>
+        <handler
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+            commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
+            <activeWhen>
+            	<and>
+            		<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.XtextEditor.opened" />
+	                <iterate>
+						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+					</iterate>
+				</and>
+            </activeWhen>
+        </handler>
+    </extension>
+    <extension point="org.eclipse.core.expressions.definitions">
+        <definition id="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+            <and>
+                <reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+                <with variable="activeEditor">
+                    <test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
+                        value="de.dlr.sc.virsat.model.concept.ConceptLanguage" 
+                        forcePluginActivation="true"/>
+                </with>        
+            </and>
+        </definition>
+        <definition id="de.dlr.sc.virsat.model.concept.ConceptLanguage.XtextEditor.opened">
+            <and>
+                <reference definitionId="isXtextEditorActive"/>
+                <with variable="activeEditor">
+                    <test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
+                        value="de.dlr.sc.virsat.model.concept.ConceptLanguage" 
+                        forcePluginActivation="true"/>
+                </with>        
+            </and>
+        </definition>
+    </extension>
+    <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+            name="ConceptLanguage">
+            <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+        </page>
+        <page
+            category="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage.coloring"
+            name="Syntax Coloring">
+            <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+        </page>
+        <page
+            category="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage.templates"
+            name="Templates">
+            <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+        </page>
+    </extension>
+    <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+            name="ConceptLanguage">
+            <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+        </page>
+    </extension>
+    <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"
+            label="ConceptLanguage"/>
+    </extension>
+    <extension
+      point="org.eclipse.ui.menus">
+   <menuContribution
+         allPopups="false"
+         locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+      <command
+            commandId="de.dlr.sc.virsat.model.concept.ui.addResourceBuilder"
+            style="push">
+         <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+                  <iterate>
+                     <not>
+                        <test
+                              forcePluginActivation="true"
+                              property="de.dlr.sc.virsat.model.concept.ui.isEnabled">
+                        </test>
+                     </not>
+                  </iterate>
+               </and>
+            </visibleWhen>
+      </command>
+      <command
+            commandId="de.dlr.sc.virsat.model.concept.ui.removeResourceBuilder"
+            style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+                  <iterate>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.dlr.sc.virsat.model.concept.ui.isEnabled">
+                     </test>
+                  </iterate>
+               </and>
+            </visibleWhen>
+      </command>
+   </menuContribution>
+</extension>
+<extension
+      point="org.eclipse.core.expressions.propertyTesters">
+   <propertyTester
+         class="de.dlr.sc.virsat.model.concept.ui.propertyTester.TestResourceBuilderEnabled"
+         id="de.dlr.sc.virsat.model.concept.ui.ResourceBuilderTester"
+         namespace="de.dlr.sc.virsat.model.concept.ui"
+         properties="isEnabled"
+         type="java.lang.Object">
+   </propertyTester>
+</extension>
+    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Trigger expensive validation"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage.validate"
+            name="Validate">
+      </command>
+      	<command
+	      defaultHandler="de.dlr.sc.virsat.model.concept.ui.handlers.AddResourceBuilder"
+	      id="de.dlr.sc.virsat.model.concept.ui.addResourceBuilder"
+	      name="Add Resource Builder">
+	</command>
+		<command
+		      defaultHandler="de.dlr.sc.virsat.model.concept.ui.handlers.RemoveResourceBuilder"
+		      id="de.dlr.sc.virsat.model.concept.ui.removeResourceBuilder"
+		      name="Remove Resource Builder">
+		</command>
+	
+      <!-- copy qualified name -->
+      <command
+            id="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+            categoryId="org.eclipse.ui.category.edit"
+            description="Copy the qualified name for the selected element"
+            name="Copy Qualified Name">
+      </command>
+      <command
+            id="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+            categoryId="org.eclipse.ui.category.edit"
+            description="Copy the qualified name for the selected element"
+            name="Copy Qualified Name">
+      </command>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+             <command
+                 commandId="de.dlr.sc.virsat.model.concept.ConceptLanguage.validate"
+                 style="push"
+                 tooltip="Trigger expensive validation">
+            <visibleWhen checkEnabled="false">
+                <reference
+                    definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+                </reference>
+            </visibleWhen>
+         </command>  
+         </menuContribution>
+         <!-- copy qualified name -->
+         <menuContribution locationURI="popup:#TextEditorContext?after=copy">
+         	<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName" 
+         		style="push" tooltip="Copy Qualified Name">
+            	<visibleWhen checkEnabled="false">
+                	<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened" />
+            	</visibleWhen>
+         	</command>  
+         </menuContribution>
+         <menuContribution locationURI="menu:edit?after=copy">
+         	<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+            	style="push" tooltip="Copy Qualified Name">
+            	<visibleWhen checkEnabled="false">
+                	<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened" />
+            	</visibleWhen>
+         	</command>  
+         </menuContribution>
+         <menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName" 
+				style="push" tooltip="Copy Qualified Name">
+         		<visibleWhen checkEnabled="false">
+	            	<and>
+	            		<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.XtextEditor.opened" />
+						<iterate>
+							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+						</iterate>
+					</and>
+				</visibleWhen>
+			</command>
+         </menuContribution>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+				<visibleWhen checkEnabled="false">
+                	<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+                	</reference>
+            	</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	 <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="de.dlr.sc.virsat.model.concept.ui.commands.AddResourceBuilderCommand"
+            name="Resource Builder Enabled">
+             <state
+	        	 class="org.eclipse.ui.handlers.RegistryToggleState:false"
+	        	 id="org.eclipse.ui.commands.toggleState">
+   			</state>
+      </command>
+   </extension>
+ 
+	<extension point="org.eclipse.ui.handlers">
+	    <handler
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+            commandId="org.eclipse.xtext.ui.editor.FindReferences">
+            <activeWhen>
+                <reference
+                    definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+    </extension>   
+
+<!-- adding resource factories -->
+
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="concept">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+        <resourceServiceProvider
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+            uriExtension="concept">
+        </resourceServiceProvider>
+    </extension>
+
+
+	<!-- marker definitions for de.dlr.sc.virsat.model.concept.ConceptLanguage -->
+	<extension
+	        id="conceptlanguage.check.fast"
+	        name="ConceptLanguage Problem"
+	        point="org.eclipse.core.resources.markers">
+	    <super type="org.eclipse.xtext.ui.check.fast"/>
+	    <persistent value="true"/>
+	</extension>
+	<extension
+	        id="conceptlanguage.check.normal"
+	        name="ConceptLanguage Problem"
+	        point="org.eclipse.core.resources.markers">
+	    <super type="org.eclipse.xtext.ui.check.normal"/>
+	    <persistent value="true"/>
+	</extension>
+	<extension
+	        id="conceptlanguage.check.expensive"
+	        name="ConceptLanguage Problem"
+	        point="org.eclipse.core.resources.markers">
+	    <super type="org.eclipse.xtext.ui.check.expensive"/>
+	    <persistent value="true"/>
+	</extension>
+
+   <extension
+         point="org.eclipse.xtext.builder.participant">
+      <participant
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+            fileExtensions="concept"
+            >
+      </participant>
+   </extension>
+   <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            category="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage.compiler.preferencePage"
+            name="Compiler">
+            <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+        </page>
+    </extension>
+    <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            category="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="de.dlr.sc.virsat.model.concept.ConceptLanguage.compiler.propertyPage"
+            name="Compiler">
+            <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+        </page>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
+			<command
+				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
+				id="de.dlr.sc.virsat.model.concept.ConceptLanguage.OpenGeneratedCode"
+				style="push">
+					<visibleWhen checkEnabled="false">
+						<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened" />
+					</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
+				<activeWhen>
+					<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened" />
+				</activeWhen>
+		</handler>
+	</extension>
+
+	<!-- Quick Outline -->
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler 
+			class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
+			<activeWhen>
+				<reference
+					definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Open the quick outline."
+			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+			name="Quick Outline">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.open">
+			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+				style="push"
+				tooltip="Open Quick Outline">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+    <!-- quickfix marker resolution generator for de.dlr.sc.virsat.model.concept.ConceptLanguage -->
+    <extension
+            point="org.eclipse.ui.ide.markerResolution">
+        <markerResolutionGenerator
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+            markerType="de.dlr.sc.virsat.model.concept.ui.conceptlanguage.check.fast">
+            <attribute
+                name="FIXABLE_KEY"
+                value="true">
+            </attribute>
+        </markerResolutionGenerator>
+        <markerResolutionGenerator
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+            markerType="de.dlr.sc.virsat.model.concept.ui.conceptlanguage.check.normal">
+            <attribute
+                name="FIXABLE_KEY"
+                value="true">
+            </attribute>
+        </markerResolutionGenerator>
+        <markerResolutionGenerator
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+            markerType="de.dlr.sc.virsat.model.concept.ui.conceptlanguage.check.expensive">
+            <attribute
+                name="FIXABLE_KEY"
+                value="true">
+            </attribute>
+        </markerResolutionGenerator>
+    </extension>
+   	<!-- Rename Refactoring -->
+	<extension point="org.eclipse.ui.handlers">
+		<handler 
+			class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+			<activeWhen>
+				<reference
+					definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+    <extension point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+         <command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference
+                     definitionId="de.dlr.sc.virsat.model.concept.ConceptLanguage.Editor.opened">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+	    <page
+	        category="de.dlr.sc.virsat.model.concept.ConceptLanguage"
+	        class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+	        id="de.dlr.sc.virsat.model.concept.ConceptLanguage.refactoring"
+	        name="Refactoring">
+	        <keywordReference id="de.dlr.sc.virsat.model.concept.ui.keyword_ConceptLanguage"/>
+	    </page>
+	</extension>
+
+  <extension point="org.eclipse.compare.contentViewers">
+    <viewer id="de.dlr.sc.virsat.model.concept.ConceptLanguage.compare.contentViewers"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+            extensions="concept">
+    </viewer>
+  </extension>
+  <extension point="org.eclipse.compare.contentMergeViewers">
+    <viewer id="de.dlr.sc.virsat.model.concept.ConceptLanguage.compare.contentMergeViewers"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+            extensions="concept" label="ConceptLanguage Compare">
+     </viewer>
+  </extension>
+  <extension point="org.eclipse.ui.editors.documentProviders">
+    <provider id="de.dlr.sc.virsat.model.concept.ConceptLanguage.editors.documentProviders"
+            class="de.dlr.sc.virsat.model.concept.ui.ConceptLanguageExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+            extensions="concept">
+    </provider>
+  </extension>
+  <extension point="org.eclipse.team.core.fileTypes">
+    <fileTypes
+            extension="concept"
+            type="text">
+    </fileTypes>
+  </extension>
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <wizard
+           category="de.dlr.sc.virsat.model.concept.ui.category"
+           class="de.dlr.sc.virsat.model.concept.ui.wizard.ConceptProjectWizard"
+           icon="resources/icons/study.gif"
+           id="de.dlr.sc.virsat.model.concept.ui.newConceptWizard"
+           name="VirSat Model Extension Concept Wizard"
+           project="true">
+     </wizard>
+     <category
+           id="de.dlr.sc.virsat.model.concept.ui.category"
+           name="VirSat Model Extension Concept">
+     </category>
+  </extension>
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           allPopups="false"
+           locationURI="toolbar:org.eclipse.ui.main.toolbar">
+        <toolbar
+              id="de.dlr.sc.virsat.model.concept.ui.toolbar"
+              label="DVLM Concept Generator">
+           <command
+                 commandId="de.dlr.sc.virsat.model.concept.ui.command.toggle.generators"
+                 disabledIcon="resources/icons/VirSatGeneratorActive_Disabled.png"
+                 icon="resources/icons/VirSatGeneratorActive.png"
+                 style="toggle"
+                 tooltip="Concept code generator is enabled when button is pressed.">
+           </command>
+        </toolbar>
+     </menuContribution>
+     <menuContribution
+           allPopups="false"
+           locationURI="toolbar:de.dlr.sc.virsat.model.concept.ConceptLanguage">
+        <command
+              commandId="de.dlr.sc.virsat.model.concept.ui.command.toggle.generators"
+              disabledIcon="resources/icons/VirSatGeneratorActive_Disabled.png"
+              icon="resources/icons/VirSatGeneratorActive.png"
+              style="toggle"
+              tooltip="Concept code generator is enabled when button is pressed.">
+        </command>
+     </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           description="Concept code generator is enabled when button is pressed."
+           id="de.dlr.sc.virsat.model.concept.ui.command.toggle.generators"
+           name="Enable Generators">
+        <state
+              class="org.eclipse.ui.handlers.RegistryToggleState:true"
+              id="org.eclipse.ui.commands.toggleState">
+        </state>
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.ui.handlers">
+     <handler
+           class="de.dlr.sc.virsat.model.concept.ui.handler.ToggleGeneratorHandler"
+           commandId="de.dlr.sc.virsat.model.concept.ui.command.toggle.generators">
+     </handler>
+  </extension>
+  <extension
+        point="de.dlr.sc.virsat.model.concept.generator">
+     <generatorEnablement
+           class="de.dlr.sc.virsat.model.concept.ui.handler.ToggleGeneratorHandler">
+     </generatorEnablement>
+  </extension>
+  <extension
+        id="id1"
+        point="org.eclipse.core.resources.builders">
+     <builder
+           callOnEmptyDelta="true"
+           hasNature="true"
+           isConfigurable="true"
+           supportsConfigurations="true">
+        <run
+              class="de.dlr.sc.virsat.model.concept.builder.resources.ResourceAccessBuilder">
+        </run>
+     </builder>
+  </extension>
+</plugin>

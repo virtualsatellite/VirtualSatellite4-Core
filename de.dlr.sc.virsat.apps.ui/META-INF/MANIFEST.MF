@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Apps UI
+Bundle-SymbolicName: de.dlr.sc.virsat.apps.ui;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.apps.ui.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.workbench,
+ org.eclipse.jface,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.debug.core,
+ de.dlr.sc.virsat.apps,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.apps.ui,
+ de.dlr.sc.virsat.apps.ui.handler
+Automatic-Module-Name: de.dlr.sc.virsat.apps.ui

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Data Model Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.model.test;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: DLR (German Aerospace Center)
+Fragment-Host: de.dlr.sc.virsat.model
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.emf.ecore.xmi,
+ org.junit,
+ org.eclipse.core.resources
+Bundle-ActivationPolicy: lazy
+Export-Package: de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util,
+ de.dlr.sc.virsat.model.dvlm.categories.util,
+ de.dlr.sc.virsat.model.dvlm.types.impl,
+ de.dlr.sc.virsat.model.test
+Automatic-Module-Name: de.dlr.sc.virsat.model.test

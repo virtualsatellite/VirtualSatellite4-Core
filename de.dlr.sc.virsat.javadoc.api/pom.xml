@@ -1,0 +1,69 @@
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>de.dlr.sc.virsat</artifactId>
+		<groupId>de.dlr.sc.virsat</groupId>
+		<version>4.9.0-SNAPSHOT</version>
+		<relativePath>../maven/pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>de.dlr.sc.virsat.javadoc.api</artifactId>
+	<name>de.dlr.sc.virsat.javadoc.api</name>
+	<packaging>eclipse-plugin</packaging>
+
+	<properties>
+		<platform.api>org.eclipse.platform.doc.isv/reference/api</platform.api>
+	</properties>
+	<profiles>
+		<profile>
+			<id>javadoc</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-document-bundle-plugin</artifactId>
+						<version>${tycho-extras-version}</version>
+						<executions>
+							<execution>
+								<id>eclipse-javadoc</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.basedir}/help/api-docs/javadoc</outputDirectory>
+									<tocFile>${project.basedir}/help/api_docs.xml</tocFile>
+									<tocOptions>
+										<mainLabel>VirSat Core API JavaDoc Compilation</mainLabel>
+									</tocOptions>
+									<javadocOptions>
+										<additionalArguments>
+											<additionalArgument>${javadoc-args}</additionalArgument>
+											<additionalArgument>
+												-link
+												http://docs.oracle.com/javase/8/docs/api/
+											</additionalArgument>
+											<additionalArgument>
+												-linkoffline
+												../../${platform.api}
+												http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/api/
+											</additionalArgument>
+											<additionalArgument>-public</additionalArgument>
+										</additionalArguments>
+									</javadocOptions>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

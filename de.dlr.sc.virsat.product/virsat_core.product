@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.9.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
+      <text>
+         Virtual Satellite 4 - DVLM Core
+
+Version 4.9.0
+
+Copyright 2019 - Simulation and Software Technology (DLR)
+
+German Aerospace Center (DLR) e.V.
+Lilienthalplatz 7
+38108 Braunschweig
+Germany
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-console -consoleLog
+      </programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat16.gif" i32="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat32.gif" i48="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat48.gif" i64="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat64.gif" i128="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat128.gif"/>
+
+   <splash
+      location="de.dlr.sc.virsat.branding.ui"
+      startupProgressRect="5,280,230,15"
+      startupMessageRect="5,260,230,20"
+      startupForegroundColor="808080" />
+   <launcher name="VirSat4_Core">
+      <win useIco="true">
+         <ico path="../de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat_MultiRes.ico"/>
+         <bmp
+            winSmallHigh="resources/launcherIcons/DLR16_32.bmp"
+            winSmallLow="resources/launcherIcons/DLR16_8.bmp"
+            winMediumHigh="resources/launcherIcons/DLR32_32.bmp"
+            winMediumLow="resources/launcherIcons/DLR32_8.bmp"
+            winLargeHigh="resources/launcherIcons/DLR48_32.bmp"
+            winLargeLow="resources/launcherIcons/DLR48_8.bmp"/>
+      </win>
+   </launcher>
+
+   <intro introId="de.dlr.sc.virsat.branding.ui.intro"/>
+
+   <vm>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="de.dlr.sc.virsat.branding.feature"/>
+      <feature id="de.dlr.sc.virsat.commons.feature"/>
+      <feature id="de.dlr.sc.virsat.license.feature"/>
+      <feature id="de.dlr.sc.virsat.model.feature"/>
+      <feature id="de.dlr.sc.virsat.model.calculation.feature"/>
+      <feature id="de.dlr.sc.virsat.project.feature"/>
+      <feature id="de.dlr.sc.virsat.uiengine.feature"/>
+      <feature id="de.dlr.sc.virsat.build.feature"/>
+      <feature id="de.dlr.sc.virsat.apps.feature"/>
+      <feature id="de.dlr.sc.virsat.svn.feature"/>
+      <feature id="de.dlr.sc.virsat.dependencies.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.ps.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.maturity.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature"/>
+      <feature id="de.dlr.sc.virsat.docs.feature"/>
+      <feature id="de.dlr.sc.virsat.external.lib.feature"/>
+      <feature id="org.eclipse.platform"/>
+      <feature id="org.eclipse.pde"/>
+      <feature id="org.eclipse.help"/>
+      <feature id="org.eclipse.jdt"/>
+      <feature id="org.eclipse.emf.common"/>
+      <feature id="org.eclipse.emf.common.ui"/>
+      <feature id="org.eclipse.emf.databinding.edit"/>
+      <feature id="org.eclipse.emf.edit"/>
+      <feature id="org.eclipse.emf.edit.ui"/>
+      <feature id="org.eclipse.emf.transaction"/>
+      <feature id="org.eclipse.emf.ecore"/>
+      <feature id="org.eclipse.emf.edapt.runtime.feature"/>
+      <feature id="org.eclipse.emf.workspace"/>
+      <feature id="org.eclipse.emf.databinding"/>
+      <feature id="org.eclipse.emf.validation"/>
+      <feature id="org.eclipse.ecf.core.feature"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
+      <feature id="org.eclipse.team.svn"/>
+      <feature id="org.eclipse.ocl"/>
+      <feature id="org.eclipse.emf.compare"/>
+      <feature id="org.eclipse.xtext.xbase.lib"/>
+      <feature id="org.eclipse.xtext.xbase"/>
+      <feature id="org.eclipse.xtext.runtime"/>
+      <feature id="org.eclipse.rcp"/>
+      <feature id="org.eclipse.e4.rcp"/>
+      <feature id="org.eclipse.equinox.p2.core.feature"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature"/>
+      <feature id="org.eclipse.equinox.executable"/>
+      <feature id="org.eclipse.draw2d"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+   </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
+
+</product>

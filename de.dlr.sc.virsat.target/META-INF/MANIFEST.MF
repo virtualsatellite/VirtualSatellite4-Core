@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Target
+Bundle-SymbolicName: de.dlr.sc.virsat.target
+Bundle-Version: 4.9.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Eclipse-ExtensibleAPI: true
+Automatic-Module-Name: de.dlr.sc.virsat.target
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

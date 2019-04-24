@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            class="de.dlr.sc.virsat.build.ui.decorator.VirSatResourceMarkerDecorator"
+            id="de.dlr.sc.virsat.build.ui.ProblemMarkerDecorator"
+            label="ProblemMarkerDecorator"
+            lightweight="true"
+            location="BOTTOM_LEFT"
+            state="true">
+      </decorator>
+   </extension>
+
+</plugin>

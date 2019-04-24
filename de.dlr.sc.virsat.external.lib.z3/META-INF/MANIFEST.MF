@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Library Microsoft Z3
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.z3;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Bundle-NativeCode: externalLib/win32/x64/z3-4.5.0-x64/bin/msvcp110.dll;
+ externalLib/win32/x64/z3-4.5.0-x64/bin/msvcr110.dll;
+ externalLib/win32/x64/z3-4.5.0-x64/bin/vcomp110.dll;
+ externalLib/win32/x64/z3-4.5.0-x64/bin/libz3.dll;
+ externalLib/win32/x64/z3-4.5.0-x64/bin/libz3java.dll;
+ externalLib/win32/x64/z3-4.5.0-x64/bin/Microsoft.Z3.dll;
+ osname=Win32; processor=x86_64
+Bundle-ClassPath: externalLib/win32/x64/z3-4.5.0-x64/bin/com.microsoft.z3.jar,
+ .
+Bundle-Activator: de.dlr.sc.virsat.fdir.external.lib.z3.Activator
+Export-Package: com.microsoft.z3,
+ com.microsoft.z3.enumerations
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.z3

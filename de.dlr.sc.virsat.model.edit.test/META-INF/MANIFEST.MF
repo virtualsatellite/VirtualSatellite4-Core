@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Data Model Edit Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.model.edit.test;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: DLR (German Aerospace Center)
+Fragment-Host: de.dlr.sc.virsat.model.edit
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: de.dlr.sc.virsat.model.edit.test
+Require-Bundle: org.junit,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.emf.transaction
+Automatic-Module-Name: de.dlr.sc.virsat.model.edit.test

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit Linux
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-NativeCode: native_lib/zmq/libjzmq.so;
+ native_lib/zmq/libzmq.so.5;
+ osname=linux; processor=x86_64
+Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) )
+Eclipse-BundleShape: dir
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-ClassPath: native_lib/zmq/zmq.jar,
+ .
+Export-Package: org.zeromq
+Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64.Activator
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64

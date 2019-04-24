@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Visualization
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.visualisation;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.build,
+ de.dlr.sc.virsat.external.lib.protobuf
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-ExtensibleApi: true
+Export-Package: de.dlr.sc.virsat.model.extension.visualisation,
+ de.dlr.sc.virsat.model.extension.visualisation.comparison,
+ de.dlr.sc.virsat.model.extension.visualisation.delta,
+ de.dlr.sc.virsat.model.extension.visualisation.model,
+ de.dlr.sc.virsat.model.extension.visualisation.shape,
+ de.dlr.sc.virsat.model.extension.visualisation.treemanager,
+ de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking,
+ de.dlr.sc.virsat.model.extension.visualisation.validator,
+ de.dlr.sc.visproto,
+ proto
+Bundle-ClassPath: localLib/visProtocol.jar,
+ .
+Bundle-Activator: de.dlr.sc.virsat.model.extension.visualisation.Activator
+Bundle-ActivationPolicy: lazy
+Import-Package: org.zeromq
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.visualisation
