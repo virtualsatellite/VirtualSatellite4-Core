@@ -7,8 +7,8 @@ http://www.eclipse.org/legal/epl-2.0.
 
 SPDX-License-Identifier: EPL-2.0
 -->
-	
-<project name="VirSat Core" default="updateVersions" basedir=".">
+
+<project name="VirSat Core" default="updateVersions" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
 	<description>
   	  Additional Build Preparations for VirSat
   	</description>
@@ -19,7 +19,93 @@ SPDX-License-Identifier: EPL-2.0
 	<property name="version.pattern">[\s]?[0-9]+\.[0-9]+\.[0-9]+</property>
 	<property name="m2.directory">${user.home}/.m2/</property>
 	<property environment="env"/>
-	
+
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="${user.home}/.ant/lib/jacoco.jar"/>
+	</taskdef>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath path="${user.home}/.ant/lib/ant-contrib.jar"/>
+	</taskdef>
+
+	<!-- =====================================================
+		 Task: Create Jacoco Reports
+	     ===================================================== -->
+	<target name="jacocoPrepareDependencies" description="Install Jacoco Dependencies">
+		<mkdir dir="${user.home}/.ant/lib"/>
+		<get dest="${user.home}/.ant/lib/jacoco.jar" src="http://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
+		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+	</target>
+
+	<target name="jacocoReport">
+		<description>Create Jacoco Report over all projects</description>
+		<foreach target="jacocoReportProject" param="projectDir">
+			<path>
+				<dirset dir="." casesensitive="yes">
+					<include name="de.dlr.sc.virsat.*"/>
+					<exclude name="de.dlr.sc.virsat.*ui"/>
+					<exclude name="de.dlr.sc.virsat.*feature"/>
+					<exclude name="de.dlr.sc.virsat.*ide"/>
+					<exclude name="de.dlr.sc.virsat.*test"/>
+					<exclude name="de.dlr.sc.virsat.external.*"/>
+					<exclude name="de.dlr.sc.virsat.*product"/>
+					<exclude name="de.dlr.sc.virsat.*p2updatesite"/>
+				</dirset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="jacocoReportProject">
+		<description>Create single Jacoco Report for each project</description>
+		<echo>Creating Jacoco Report for: ${projectDir}</echo>
+		<jacoco:report>
+			<executiondata>
+				<fileset dir="." >
+					<include name="**/jacoco.exec"/>
+				</fileset>
+			</executiondata>
+			<structure name="Jacoco Report for ${projectDir}">
+				<classfiles>
+					<fileset dir="${projectDir}/target/classes">
+						<include name="**/*"/>
+						<exclude name="**/*Test*.class" />
+						<exclude name="**/model/extension/**/A*.class" />
+						<exclude name="**/parser/antlr/**/*.class" />
+						<exclude name="**/serializer/*SemanticSequencer.class" />
+						<exclude name="**/serializer/*SyntacticSequencer.class" />
+						<exclude name="**/services/*GrammarAccess*.class" />
+						<exclude name="**/*Activator.class" />
+						<exclude name="**/*ManifestMf*.class" />
+						<exclude name="**/*PluginXml*.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/impl/*Impl.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*Switch.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*Provider.class" />
+						<include name="de/dlr/sc/virsat/model/**/DVLM*.class" />
+					</fileset>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${projectDir}/src" erroronmissingdir="no" />
+					<fileset dir="${projectDir}/src-gen" erroronmissingdir="no" />
+					<fileset dir="${projectDir}/xtend-gen" erroronmissingdir="no" />
+				</sourcefiles>
+			</structure>
+			<html destdir="${projectDir}/target/jacocoreport" />
+			<xml destfile="${projectDir}/target/jacocoreport/jacoco.xml" encoding="UTF-8" />
+		    <check failonviolation="false">
+		        <rule element="BUNDLE">
+		        	<limit counter="INSTRUCTION" value="COVEREDRATIO" minimum="65%"/>
+		        	<limit counter="LINE" value="COVEREDRATIO" minimum="65%"/>
+		        	<limit counter="BRANCH" value="COVEREDRATIO" minimum="55%"/>
+		        	<limit counter="METHOD" value="COVEREDRATIO" minimum="65%"/>
+		            <limit counter="CLASS" value="COVEREDRATIO" minimum="80%"/>
+		        </rule>
+		        <rule element="METHOD">
+		        	<limit counter="COMPLEXITY" value="TOTALCOUNT" maximum="20"/>
+		        </rule>
+		    </check>
+		</jacoco:report>
+	</target>
+
 	<!-- =====================================================
 		 Task: flushAll
 	     ===================================================== -->
@@ -86,7 +172,7 @@ SPDX-License-Identifier: EPL-2.0
 				<include name="build.xml" />
 			</fileset>
 		</replaceregexp>
-		
+
 		<!-- =====================================================
 		     Task: updateVersion - Update master pom
 		     ===================================================== -->

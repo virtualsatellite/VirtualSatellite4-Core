@@ -20,6 +20,7 @@ addons:
   apt:
     packages:
     - metacity
+    - ant
 
 install:
 - true
@@ -89,14 +90,6 @@ after_failure:
   - ssh-add /tmp/.sourceforge_ssh/id_ed25519
   - ls -l $TRAVIS_BUILD_DIR/swtbot/
   - rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
-        
-  
-after_success:
-  # ---------------------------------------
-  # Upload the coverage report to codecov
-  # ---------------------------------------
-  - bash <(curl -s https://codecov.io/bash)
-
 
 jobs:
   include:
@@ -157,6 +150,10 @@ jobs:
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+      - ant jacocoPrepareDependencies
+      - ant jacocoReport 2>&1 | tee ant.log
+      - (grep -n "Rule violated" ant.log || exit 0 && exit 1;)
+      - bash <(curl -s https://codecov.io/bash)
     # ----------------------------
     # --- Integration Branches
     - stage: build-test
@@ -171,6 +168,12 @@ jobs:
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+      - ant jacocoPrepareDependencies
+      - ls -la ~/.ant/lib
+      - ant jacocoReport 2>&1 | tee ant.log
+      - cat ant.log
+      - (grep -n "Rule violated" ant.log || exit 0 && exit 1;)
+      - bash <(curl -s https://codecov.io/bash)
     # ----------------------------
     # --- Release Tags
     - stage: build-test
@@ -184,7 +187,11 @@ jobs:
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       - echo "Check for failed test cases:"
-      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)  
+      - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
+      - ant jacocoPrepareDependencies
+      - ant jacocoReport 2>&1 | tee ant.log
+      - (grep -n "Rule violated" ant.log || exit 0 && exit 1;)
+      - bash <(curl -s https://codecov.io/bash)  
 
     # -----------------------------------------------------
     # Build and Test - Checkstyle Jobs
