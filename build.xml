@@ -46,7 +46,7 @@ SPDX-License-Identifier: EPL-2.0
 					<exclude name="de.dlr.sc.virsat.*ui"/>
 					<exclude name="de.dlr.sc.virsat.*feature"/>
 					<exclude name="de.dlr.sc.virsat.*ide"/>
-					<exclude name="de.dlr.sc.virsat.*test"/>
+					<exclude name="de.dlr.sc.virsat.*test*"/>
 					<exclude name="de.dlr.sc.virsat.external.*"/>
 					<exclude name="de.dlr.sc.virsat.*product"/>
 					<exclude name="de.dlr.sc.virsat.*p2updatesite"/>
@@ -80,6 +80,10 @@ SPDX-License-Identifier: EPL-2.0
 						<exclude name="de/dlr/sc/virsat/model/**/impl/*Impl.class" />
 						<exclude name="de/dlr/sc/virsat/model/**/*Switch.class" />
 						<exclude name="de/dlr/sc/virsat/model/**/*Provider.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*AdapterFactory.class" />
+						<exclude name="de/dlr/sc/virsat/commons/debug/*.class" />
+					</fileset>
+					<fileset dir="${projectDir}/target/classes">
 						<include name="de/dlr/sc/virsat/model/**/DVLM*.class" />
 					</fileset>
 				</classfiles>
