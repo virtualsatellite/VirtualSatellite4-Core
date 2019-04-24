@@ -111,22 +111,99 @@ public class Shape {
 			return false;
 		}
 		Shape other = (Shape) obj;
+		
 		return (this.id.equals(other.id)
 				&& this.shape == other.shape
-				&& this.positionX == other.positionX
-				&& this.positionY == other.positionY
-				&& this.positionZ == other.positionZ
-				&& this.rotationX == other.rotationX
-				&& this.rotationY == other.rotationY
-				&& this.rotationZ == other.rotationZ
 				&& this.color == other.color
+				&& equalsPosition(this, other)
+				&& equalsRotation(this, other)
 				&& this.transparency == other.transparency
+				&& equalsBoxSizes(this, other)
+				&& equalsSphereSizes(this, other)
+				&& equalsConeSizes(this, other)
+				&& equalsCylinderSizes(this, other)
 				&& (this.geometryFile == other.geometryFile || this.shape != VisualisationShape.GEOMETRY)
-				&& (this.sizeX == other.sizeX || this.shape != VisualisationShape.BOX)
-				&& (this.sizeY == other.sizeY || (this.shape != VisualisationShape.BOX && this.shape != VisualisationShape.CONE && this.shape != VisualisationShape.CYLINDER))
-				&& (this.sizeZ == other.sizeZ || this.shape != VisualisationShape.BOX)
-				&& (this.radius == other.radius || (this.shape != VisualisationShape.SPHERE && this.shape != VisualisationShape.CONE && this.shape != VisualisationShape.CYLINDER))
 				);
+	}
+	
+	/**
+	 * Use this method to check for equal positions
+	 * @param left the left shape
+	 * @param right the right shape
+	 * @return true in case the values are equal
+	 */
+	private static boolean equalsPosition(Shape left, Shape right) {
+		return (left.positionX == right.positionX
+				&& left.positionY == right.positionY
+				&& left.positionZ == right.positionZ);
+	}
+	
+	/**
+	 * Use this method to check for equal rotation
+	 * @param left the left shape
+	 * @param right the right shape
+	 * @return true in case the values are equal
+	 */
+	private static boolean equalsRotation(Shape left, Shape right) {
+		return (left.rotationX == right.rotationX
+				&& left.rotationY == right.rotationY
+				&& left.rotationZ == right.rotationZ);
+	}
+	
+	/**
+	 * Use this method to check for equal sizes in case both are a box
+	 * @param left the left shape
+	 * @param right the right shape
+	 * @return true in case the relevant values are equal or in case unequal things are compared e.g. box vs. cyclinder
+	 */
+	private static boolean equalsBoxSizes(Shape left, Shape right) {
+		if (left.shape == VisualisationShape.BOX && right.shape == VisualisationShape.BOX) {
+			return (left.sizeX == right.sizeX 
+					&& left.sizeY == right.sizeY
+					&& left.sizeZ == right.sizeZ);
+		}
+		return true;
+	}
+	
+	/**
+	 * Use this method to check for equal sizes in case both are a cone
+	 * @param left the left shape
+	 * @param right the right shape
+	 * @return true in case the relevant values are equal or in case unequal things are compared e.g. box vs. cyclinder
+	 */
+	private static boolean equalsConeSizes(Shape left, Shape right) {
+		if (left.shape == VisualisationShape.CONE && right.shape == VisualisationShape.CONE) {
+			return (left.sizeY == right.sizeY
+					&& left.radius == right.radius);
+		}
+		return true;
+	}
+	
+	/**
+	 * Use this method to check for equal sizes in case both are a cylinder
+	 * @param left the left shape
+	 * @param right the right shape
+	 * @return true in case the relevant values are equal or in case unequal things are compared e.g. box vs. cyclinder
+	 */
+	private static boolean equalsCylinderSizes(Shape left, Shape right) {
+		if (left.shape == VisualisationShape.CYLINDER && right.shape == VisualisationShape.CYLINDER) {
+			return (left.sizeY == right.sizeY
+					&& left.radius == right.radius);
+		}
+		return true;
+	}
+	
+	/**
+	 * Use this method to check for equal sizes in case both are a Sphere
+	 * @param left the left shape
+	 * @param right the right shape
+	 * @return true in case the relevant values are equal or in case unequal things are compared e.g. box vs. cyclinder
+	 */
+	private static boolean equalsSphereSizes(Shape left, Shape right) {
+		if (left.shape == VisualisationShape.SPHERE && right.shape == VisualisationShape.SPHERE) {
+			return (left.radius == right.radius);
+		}
+		return true;
 	}
 	
 	@Override
