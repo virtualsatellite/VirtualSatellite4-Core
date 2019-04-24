@@ -73,11 +73,11 @@ public class DiagramHelper {
 	 */
 	
 	public static StructuralElementInstance getOwningStructuralElementInstance(EObject graphitiObject) {
-		if (graphitiObject.eResource() == null) {
+		Resource resource = graphitiObject.eResource();
+		if (resource == null) {
 			return null;
 		}
 		
-		Resource resource = graphitiObject.eResource();
 		URI resourceUri = resource.getURI();
 		
 		// Check if we can go at least 2 levels up + we have the resource prefix
@@ -132,8 +132,7 @@ public class DiagramHelper {
 	 * @param businessObject the business object
 	 * @return the associated eObject if there is one
 	 */
-	
-	private static EObject getEObject(Object businessObject) {
+	public static EObject getEObject(Object businessObject) {
 		if (businessObject instanceof EObject) {
 			return (EObject) businessObject;
 		} else if (businessObject instanceof ABeanCategoryAssignment) {

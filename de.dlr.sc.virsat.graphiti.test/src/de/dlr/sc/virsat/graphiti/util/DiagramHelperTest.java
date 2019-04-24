@@ -9,7 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.util;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.resources.IFile;
@@ -23,6 +25,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
@@ -124,5 +130,21 @@ public class DiagramHelperTest extends AProjectTestCase {
 		});
 		
 		assertFalse(DiagramHelper.hasBothWritePermission(businessObject, diagram));
+	}
+	
+	@Test
+	public void testGetEObject() {
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		assertEquals(sei, DiagramHelper.getEObject(sei));
+		
+		BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
+		assertEquals(sei, DiagramHelper.getEObject(beanSei));
+		
+		CategoryAssignment ca = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		BeanCategoryAssignment beanCa = new BeanCategoryAssignment();
+		beanCa.setATypeInstance(ca);
+		assertEquals(ca, DiagramHelper.getEObject(ca));
+		
+		assertNull(DiagramHelper.getEObject("test"));
 	}
 }
