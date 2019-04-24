@@ -23,6 +23,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
@@ -42,12 +44,19 @@ public class DiagramHelperTest extends AProjectTestCase {
 	private static final String UUID = "ea816464-cea3-4db7-ae91-31d37c60a63c";
 	
 	private VirSatResourceSet resSet;
+	private Diagram diagram;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		resSet = VirSatResourceSet.getResourceSet(testProject, false);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
+		
+		diagram = Graphiti.getPeCreateService().createDiagram("test", "testDiagram", true);
+		IFolder diagramFolder = testProject.getFolder("data/ise_" + UUID + "/documents");  
+		IFile diagramFile = diagramFolder.getFile("testDiagram" + "." + "test");  
+		URI uri = URI.createPlatformResourceURI(diagramFile.getFullPath().toString(), true);
+		DiagramHelper.createDiagram(uri, diagram, resSet);
 	}
 	
 	@After
@@ -57,25 +66,19 @@ public class DiagramHelperTest extends AProjectTestCase {
 	}
 	
 	@Test
-	public void testHasDiagramWritePermission() {
-		Diagram diagram = Graphiti.getPeCreateService().createDiagram("test", "testDiagram", true);
-		IFolder diagramFolder = testProject.getFolder("data/ise_" + UUID + "/documents");  
-		IFile diagramFile = diagramFolder.getFile("testDiagram" + "." + "test");  
-		URI uri = URI.createPlatformResourceURI(diagramFile.getFullPath().toString(), true);
-		DiagramHelper.createDiagram(uri, diagram, resSet);
-		
+	public void testHasDiagramWritePermission() {		
 		UserRegistry.getInstance().setSuperUser(false);
 		
 		// No owning SEI -> always have permission
 		assertTrue(DiagramHelper.hasDiagramWritePermission(diagram));
 		
 		// Owning sei for which we have no rights -> no permissions
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setUuid(new VirSatUuid(UUID));
+		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		owningSei.setUuid(new VirSatUuid(UUID));
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				resSet.getAndAddStructuralElementInstanceResource(sei);
+				resSet.getAndAddStructuralElementInstanceResource(owningSei);
 			}
 		});
 		assertFalse(DiagramHelper.hasDiagramWritePermission(diagram));
@@ -83,5 +86,43 @@ public class DiagramHelperTest extends AProjectTestCase {
 		// Owning sei for which we have rights -> have permissions
 		UserRegistry.getInstance().setSuperUser(true);
 		assertTrue(DiagramHelper.hasDiagramWritePermission(diagram));
+	}
+	
+	private static final String USER_NAME = "hans";
+	private static final int VALIDITY_DAY = 365;
+	
+	@Test
+	public void testHasBothWritePermission() {
+		UserRegistry.getInstance().setSuperUser(false);
+		UserRegistry.getInstance().setUser(USER_NAME, VALIDITY_DAY);
+		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+		discipline.setUser(USER_NAME);
+		
+		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		owningSei.setUuid(new VirSatUuid(UUID));
+		owningSei.setAssignedDiscipline(discipline);
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				resSet.getAndAddStructuralElementInstanceResource(owningSei);
+			}
+		});
+		
+		StructuralElementInstance businessObject = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		
+		assertFalse(DiagramHelper.hasBothWritePermission(businessObject, diagram));
+		
+		businessObject.setAssignedDiscipline(discipline);
+		
+		assertTrue(DiagramHelper.hasBothWritePermission(businessObject, diagram));
+		
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				owningSei.setAssignedDiscipline(null);
+			}
+		});
+		
+		assertFalse(DiagramHelper.hasBothWritePermission(businessObject, diagram));
 	}
 }

@@ -153,7 +153,6 @@ public class DiagramHelper {
 	 */
 	
 	public static boolean hasBothWritePermission(Object businessObject, EObject graphitiObject) {
-		
 		EObject eObject = getEObject(businessObject);
 		
 		if (eObject == null) {
