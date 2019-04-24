@@ -35,26 +35,17 @@ SPDX-License-Identifier: EPL-2.0
 		<mkdir dir="${user.home}/.ant/lib"/>
 		<get dest="${user.home}/.ant/lib/jacoco.jar" src="http://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
 		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
-		<!--unzip overwrite="no" src="${user.home}/.ant/jacoco.zip" dest="${user.home}/.ant/">
-			<patternset>
-				<include name="lib/"/>
-			</patternset>
-		</unzip>
-		<unzip overwrite="no" src="${user.home}/.ant/ant-contrib.zip" dest="${user.home}/.ant/">
-			<patternset>
-				<include name="lib/"/>
-			</patternset>
-		</unzip-->
 	</target>
 
 	<target name="jacocoReport">
 		<description>Create Jacoco Report over all projects</description>
-
 		<foreach target="jacocoReportProject" param="projectDir">
 			<path>
 				<dirset dir="." casesensitive="yes">
 					<include name="de.dlr.sc.virsat.*"/>
+					<exclude name="de.dlr.sc.virsat.*ui"/>
 					<exclude name="de.dlr.sc.virsat.*feature"/>
+					<exclude name="de.dlr.sc.virsat.*ide"/>
 					<exclude name="de.dlr.sc.virsat.*test"/>
 					<exclude name="de.dlr.sc.virsat.external.*"/>
 					<exclude name="de.dlr.sc.virsat.*product"/>
@@ -63,7 +54,6 @@ SPDX-License-Identifier: EPL-2.0
 			</path>
 		</foreach>
 	</target>
-
 
 	<target name="jacocoReportProject">
 		<description>Create single Jacoco Report for each project</description>
@@ -80,7 +70,6 @@ SPDX-License-Identifier: EPL-2.0
 						<include name="**/*"/>
 						<exclude name="**/*Test*.class" />
 						<exclude name="**/model/extension/**/A*.class" />
-						<exclude name="**/ui/**/*.class" />
 						<exclude name="**/parser/antlr/**/*.class" />
 						<exclude name="**/serializer/*SemanticSequencer.class" />
 						<exclude name="**/serializer/*SyntacticSequencer.class" />
@@ -88,6 +77,10 @@ SPDX-License-Identifier: EPL-2.0
 						<exclude name="**/*Activator.class" />
 						<exclude name="**/*ManifestMf*.class" />
 						<exclude name="**/*PluginXml*.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/impl/*Impl.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*Switch.class" />
+						<exclude name="de/dlr/sc/virsat/model/**/*Provider.class" />
+						<include name="de/dlr/sc/virsat/model/**/DVLM*.class" />
 					</fileset>
 				</classfiles>
 				<sourcefiles encoding="UTF-8">
@@ -98,6 +91,18 @@ SPDX-License-Identifier: EPL-2.0
 			</structure>
 			<html destdir="${projectDir}/target/jacocoreport" />
 			<xml destfile="${projectDir}/target/jacocoreport/jacoco.xml" encoding="UTF-8" />
+		    <check failonviolation="false">
+		        <rule element="BUNDLE">
+		        	<limit counter="INSTRUCTION" value="COVEREDRATIO" minimum="65%"/>
+		        	<limit counter="LINE" value="COVEREDRATIO" minimum="65%"/>
+		        	<limit counter="BRANCH" value="COVEREDRATIO" minimum="55%"/>
+		        	<limit counter="METHOD" value="COVEREDRATIO" minimum="65%"/>
+		            <limit counter="CLASS" value="COVEREDRATIO" minimum="80%"/>
+		        </rule>
+		        <rule element="METHOD">
+		        	<limit counter="COMPLEXITY" value="TOTALCOUNT" maximum="20"/>
+		        </rule>
+		    </check>
 		</jacoco:report>
 	</target>
 
