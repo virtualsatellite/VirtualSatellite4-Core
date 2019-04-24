@@ -15,7 +15,7 @@
 		<relativePath>../maven/pom.xml</relativePath>
 		<groupId>de.dlr.sc.virsat</groupId>
 		<artifactId>de.dlr.sc.virsat</artifactId>
-		<version>4.8.0-SNAPSHOT</version>
+		<version>4.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.dlr.sc.virsat.product</artifactId>

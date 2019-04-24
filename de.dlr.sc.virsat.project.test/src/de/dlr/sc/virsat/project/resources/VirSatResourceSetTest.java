@@ -420,7 +420,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	 */
 	private void createThreeSeisWithDifferentDisciplines() {
 		VirSatResourceSet rs = VirSatResourceSet.getResourceSet(testProject, false);
-		TransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
+		VirSatTransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		RoleManagement rm = rs.getRoleManagement();
 		Discipline myDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		myDiscipline.setName("MyDiscipline");
@@ -435,7 +435,9 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		
 		Repository repo = rs.getRepository();
 		rsEd.getCommandStack().execute(CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei1));
+		rsEd.saveAll();
 		rsEd.getCommandStack().execute(CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei2));
+		rsEd.saveAll();
 		rsEd.getCommandStack().execute(CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei3));
 	}
 	
@@ -460,9 +462,10 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	@Test
 	public void testHasWritePermissionNormalUser() {
 		VirSatResourceSet rs = VirSatResourceSet.getResourceSet(testProject, false);
-		TransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
+		VirSatTransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
 		rsEd.getCommandStack().execute(cmd);
+		rsEd.saveAll();
 
 		createThreeSeisWithDifferentDisciplines();
 		setNormalUser();

@@ -299,7 +299,6 @@ public class ExpressionHelper {
 	private List<ATypeInstance> getSetFunctionInput(SetFunction object) {
 		ATypeDefinition typeDefinition = object.getTypeDefinition();
 		String filterName = object.getFilterName();
-		
 		boolean filterForName = filterName != null && !filterName.equals("");
 		
 		// Grab the structural element instance the set function belongs to
@@ -308,49 +307,16 @@ public class ExpressionHelper {
 			return new ArrayList<>();
 		}
 		
-		List<ATypeInstance> inputs = new ArrayList<>();
-		
-		// Ok first we check for child seis that compute the set function for them and
-		// their children. That sei and the corresponding sub tree can then ignored in
-		// the further search for inputs.
-		
-		Set<StructuralElementInstance> childrenWithSetFunction = new HashSet<>();
-		
-		// TODO: Properly deal with child set functions in the case of depth limitations
-		if (object.getDepth() == -1) {
-			List<StructuralElementInstance> children = sei.getChildren();
-			for (StructuralElementInstance child : children) {
-				VirSatEcoreUtil.getAllContentsOfType(child.eResource(), Equation.class, true).forEachRemaining(eObject -> {
-					Equation equation = (Equation) eObject;
-					
-					// Check if the expression computes the same set function but for the child sei
-					
-					AExpression expression = equation.getExpression();
-					if (expression instanceof SetFunction && !childrenWithSetFunction.contains(getStructuralElementInstance(expression))) {
-						boolean equals = equalSetFunctions(object, (SetFunction) expression);
-						boolean isTypeInstanceResult = equation.getResult() instanceof TypeInstanceResult;
-						if (equals && isTypeInstanceResult) {
-							TypeInstanceResult result = (TypeInstanceResult) equation.getResult();
-							inputs.add(result.getReference());
-							childrenWithSetFunction.add(child);
-							childrenWithSetFunction.addAll(child.getDeepChildren());
-						}
-					}
-				});
-			}
-		}
-		
 		// Find all applicable instances that are directly or indirectly contained by the sei
 		List<EObject> containers = new ArrayList<>();
 		containers.add(sei);
-		if (object.getDepth() > 0) {
-			containers.addAll(StructuralElementInstanceHelper.getDeepChildren(sei, object.getDepth(), 0));
-		} else if (object.getDepth() == -1) {
-			containers.addAll(sei.getDeepChildren());
-		}
+		containers.addAll(StructuralElementInstanceHelper.getDeepChildren(sei, object.getDepth(), 0));
 		
+		// Find all child seis that also compute the set function
+		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, object);
+		
+		List<ATypeInstance> inputs = new ArrayList<>();
 		TreeIterator<Object> treeIter = EcoreUtil.getAllProperContents(containers, true);
-		
 		while (treeIter.hasNext()) {
 			Object potentialATypeInstance = treeIter.next();
 			if (potentialATypeInstance instanceof ATypeInstance) {
@@ -365,22 +331,10 @@ public class ExpressionHelper {
 					if (aTypeInstance instanceof ComposedPropertyInstance) {
 						aTypeInstance = ((ComposedPropertyInstance) aTypeInstance).getTypeInstance();
 					}
-
-					if (!filterForName) {
-						// If we dont have any filtering options we can just add the type instance
+					
+					boolean correctName = !filterForName || hasCorrectName(aTypeInstance, filterName);
+					if (correctName) {
 						inputs.add(aTypeInstance);
-					} else if (aTypeInstance instanceof IName) {
-						// If we have a named type instance we need to check for its name
-						IName name = (IName) aTypeInstance;
-						if (name.getName().equals(filterName)) {
-							inputs.add(aTypeInstance);
-						}
-					} else if (aTypeInstance.eContainer() != null && aTypeInstance.eContainer() instanceof IName) {
-						// If the type instance itself doesnt have a name, we have to check its container
-						IName name = (IName) aTypeInstance.eContainer();
-						if (name.getName().equals(filterName)) {
-							inputs.add(aTypeInstance);
-						}
 					}
 				}
 			}
@@ -401,6 +355,63 @@ public class ExpressionHelper {
 		}
 		
 		return inputs;
+	}
+	
+	/**
+	 * Gets child seis that compute the set function for them and
+	 * their children. That sei and the corresponding sub tree can then ignored in
+	 * the further search for inputs.
+	 * @param sei the sei of the set function we want the inputs for
+	 * @param setFunction the set function
+	 * @return all child seis that compute the same set function for their sub trees
+	 */
+	private Set<StructuralElementInstance> getChildrenWithSetFunction(StructuralElementInstance sei, SetFunction setFunction) {
+		Set<StructuralElementInstance> childrenWithSetFunction = new HashSet<>();
+		
+		// TODO: Properly deal with child set functions in the case of depth limitations
+		if (setFunction.getDepth() == -1) {
+			List<StructuralElementInstance> children = sei.getChildren();
+			for (StructuralElementInstance child : children) {
+				VirSatEcoreUtil.getAllContentsOfType(child.eResource(), Equation.class, true).forEachRemaining(eObject -> {
+					Equation equation = (Equation) eObject;
+					
+					// Check if the expression computes the same set function but for the child sei
+					AExpression expression = equation.getExpression();
+					if (expression instanceof SetFunction && !childrenWithSetFunction.contains(getStructuralElementInstance(expression))) {
+						boolean equals = equalSetFunctions(setFunction, (SetFunction) expression);
+						boolean isTypeInstanceResult = equation.getResult() instanceof TypeInstanceResult;
+						if (equals && isTypeInstanceResult) {
+							childrenWithSetFunction.add(child);
+							childrenWithSetFunction.addAll(child.getDeepChildren());
+						}
+					}
+				});
+			}
+		}
+		
+		return childrenWithSetFunction;
+	}
+	
+	/**
+	 * Checks if the given input has a correct name. This can either be the typeinstance itself,
+	 * or the container type instance if the typeinstance itself is not a named object
+	 * @param aTypeInstance the typeinstance to check
+	 * @param filterName the name to filter for
+	 * @return true iff the name is correct
+	 */
+	private boolean hasCorrectName(ATypeInstance aTypeInstance, String filterName) {
+		if (aTypeInstance instanceof IName) {
+			// If we have a named type instance we need to check for its name
+			IName name = (IName) aTypeInstance;
+			return name.getName().equals(filterName);
+		} else if (aTypeInstance.eContainer() != null && aTypeInstance.eContainer() instanceof IName) {
+			// If the type instance itself doesnt have a name, we have to check its container
+			IName name = (IName) aTypeInstance.eContainer();
+			return name.getName().equals(filterName);
+		}
+		
+		// This is not a named object, yet we require a specific name, therefore the name is not correct
+		return false;
 	}
 	
 	/**

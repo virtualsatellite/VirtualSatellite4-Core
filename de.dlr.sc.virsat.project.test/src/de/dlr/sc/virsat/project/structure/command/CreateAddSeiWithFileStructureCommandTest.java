@@ -90,6 +90,7 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		
 		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
 		rsEd.getCommandStack().execute(cmd);
+		rsEd.saveAll();
 		
 		repo = rs.getRepository();
 	}
@@ -146,6 +147,8 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		// Create file structure and everything for parent sei
 		Command cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei1);
 		rsEd.getCommandStack().execute(cmd);
+		
+		rsEd.saveAll();
 		
 		// Create the actual command to test
 		cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, sei1, sei2);
