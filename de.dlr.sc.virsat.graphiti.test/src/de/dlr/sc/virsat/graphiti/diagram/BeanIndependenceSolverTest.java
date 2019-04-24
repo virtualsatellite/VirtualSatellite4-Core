@@ -51,7 +51,7 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  *
  */
 @SuppressWarnings("restriction")
-public class BeanIndependenceSolverTest  extends AProjectTestCase {
+public class BeanIndependenceSolverTest extends AProjectTestCase {
 
 	private static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	private static final String UUID = "ea816464-cea3-4db7-ae91-31d37c60a63c";
@@ -91,7 +91,7 @@ public class BeanIndependenceSolverTest  extends AProjectTestCase {
 	}
 
 	@Test
-	public void solveIndependence() throws CoreException, IOException { 	
+	public void testSolveIndependence() throws CoreException, IOException { 	
 		// test getConcept
 		Concept concept = DiagramHelper.getConcept(editingDomain, CONCEPT_ID_EGSCC);
 		assertEquals(concept, conceptEgscc);

@@ -12,14 +12,17 @@ package de.dlr.sc.virsat.model.calculation.compute.extensions;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.function.Acos;
 import org.apache.commons.math3.analysis.function.Asin;
 import org.apache.commons.math3.analysis.function.Atan;
 import org.apache.commons.math3.analysis.function.Cos;
 import org.apache.commons.math3.analysis.function.Divide;
 import org.apache.commons.math3.analysis.function.Exp;
+import org.apache.commons.math3.analysis.function.Identity;
 import org.apache.commons.math3.analysis.function.Log;
 import org.apache.commons.math3.analysis.function.Log10;
+import org.apache.commons.math3.analysis.function.Minus;
 import org.apache.commons.math3.analysis.function.Power;
 import org.apache.commons.math3.analysis.function.Sin;
 import org.apache.commons.math3.analysis.function.Sqrt;
@@ -76,7 +79,6 @@ public class NumberLiteralResultHelper {
 	 * @return the result of the calculation
 	 */
 	public NumberLiteralResult applyMathOperator(MathOperator operator, NumberLiteralResult rhsResult) {
-		NumberLiteral resultLiteral = CalculationFactory.eINSTANCE.createNumberLiteral();
 		NumberLiteralResultHelper rhsHelper = new NumberLiteralResultHelper(rhsResult);
 		
 		double doubleResult = 0;
@@ -101,13 +103,14 @@ public class NumberLiteralResultHelper {
 			resultBaseQuantityKinds = QudvUnitHelper.getInstance().mergeMaps(lhsBaseQuantityKinds, rhsBaseQuantityKinds, QudvCalcMethod.ADD);
 		} else if (operator.equals(MathOperator.DIVIDE)) {
 			Divide divide = new Divide();
-			doubleResult = divide.value(values [0], values [1]);
+			doubleResult = divide.value(values[0], values[1]);
 			resultBaseQuantityKinds = QudvUnitHelper.getInstance().mergeMaps(lhsBaseQuantityKinds, rhsBaseQuantityKinds, QudvCalcMethod.SUBTRACT);
 		} else if (operator.equals(MathOperator.POWER)) {
 			Power power = new Power(values[1]);
 			doubleResult = power.value(values[0]);
 		} 
 		
+		NumberLiteral resultLiteral = CalculationFactory.eINSTANCE.createNumberLiteral();
 		resultLiteral.setValue(Double.toString(doubleResult));
 		return new NumberLiteralResult(resultLiteral, resultBaseQuantityKinds);
 	}
@@ -118,77 +121,95 @@ public class NumberLiteralResultHelper {
 	 * @return the result of the calculation
 	 */
 	public NumberLiteralResult applyMathOperator(MathOperator operator) {
-		NumberLiteral resultLiteral = CalculationFactory.eINSTANCE.createNumberLiteral();
-
 		double doubleResult = 0;
 		Map<AQuantityKind, Double> resultBaseQuantityKinds = new HashMap<>();
 		resultBaseQuantityKinds.putAll(numberLiteralResult.getQuantityKinds());
 		
-		if (operator.equals(MathOperator.COS)) {
-			Cos cos = new Cos();
-			doubleResult = cos.value(this.getValue());
-		} else if (operator.equals(MathOperator.SIN)) {
-			Sin sin = new Sin();
-			doubleResult = sin.value(this.getValue());
-		} else if (operator.equals(MathOperator.TAN)) {
-			Tan tan = new Tan();
-			doubleResult = tan.value(this.getValue());
-		} else if (operator.equals(MathOperator.ATAN)) {
-			Atan atan = new Atan();
-			doubleResult = atan.value(this.getValue());
-		} else if (operator.equals(MathOperator.ACOS)) {
-			if (this.getValue() < -1 || this.getValue() > 1) {
-				doubleResult = Double.NaN;
-			} else {
-				Acos acos = new Acos();
-				doubleResult = acos.value(this.getValue());
-			}
-		} else if (operator.equals(MathOperator.ASIN)) {
-			if (this.getValue() < -1 || this.getValue() > 1) {
-				doubleResult = Double.NaN;
-			} else {
-				Asin asin = new Asin();
-				doubleResult = asin.value(this.getValue());	
-			}
-		} else if (operator.equals(MathOperator.SQRT)) {
-			if (this.getValue() < 0) {
-				doubleResult = Double.NaN;
-			} else {
-				Sqrt sqrt = new Sqrt();
-				doubleResult = sqrt.value(this.getValue());
+		boolean inRange = inRange(operator);
+		if (inRange) {
+			UnivariateFunction function = getFunction(operator);
+			doubleResult = function.value(this.getValue());
+		} else {
+			doubleResult = Double.NaN;
+		}
+		
+		// Compute the updated quantity kinds
+		switch (operator) {
+			case SQRT:
 				resultBaseQuantityKinds.replaceAll((qk, factor) -> factor / 2);
-			}
-		} else if (operator.equals(MathOperator.LOG)) {
-			if (this.getValue() > 0) {
-				doubleResult = Math.log10(this.getValue());
-			} else {
-				doubleResult = Double.NaN;
-			}
-		} else if (operator.equals(MathOperator.LD)) {
-			if (this.getValue() > 0) {
-				Log10 log = new Log10();
-				doubleResult = log.value(this.getValue()) / log.value(2);
-			} else {
-				doubleResult = Double.NaN;
-			}
-		} else if (operator.equals(MathOperator.LN)) {
-			if (this.getValue() > 0) {
-				Log log = new Log();
-				doubleResult = log.value(this.getValue());
-			} else {
-				doubleResult = Double.NaN;
-			}
-		} else if (operator.equals(MathOperator.EXP)) {
-			Exp exp = new Exp();
-			doubleResult = exp.value(this.getValue());
-		} else if (operator.equals(MathOperator.PLUS)) {
-			doubleResult = this.getValue();
-		} else if (operator.equals(MathOperator.MINUS)) {
-			doubleResult = (-1.0) * this.getValue();
+				break;
+			default:
+				break;
 		}
 
+		NumberLiteral resultLiteral = CalculationFactory.eINSTANCE.createNumberLiteral();
 		resultLiteral.setValue(Double.toString(doubleResult));
 		return new NumberLiteralResult(resultLiteral, resultBaseQuantityKinds);	
+	}
+	
+	/**
+	 * Checks if the value is in the range of the operator
+	 * @param operator the operator
+	 * @return true iff the range is in the range of the operator
+	 */
+	private boolean inRange(MathOperator operator) {
+		switch (operator) {
+			case ACOS:
+			case ASIN:
+				return this.getValue() >= -1 && this.getValue() <= 1;
+			case SQRT:
+				return this.getValue() >= 0;
+			case LOG:
+			case LD:
+			case LN:
+				return this.getValue() > 0;
+			default:
+				return true;
+		}
+	}
+	
+	/**
+	 * Converts a given math operator to the respective computation routine
+	 * @param operator the math operator
+	 * @return the computation to evaluate the operator
+	 */
+	private UnivariateFunction getFunction(MathOperator operator) {
+		switch (operator) {
+			case COS:
+				return new Cos();
+			case SIN:
+				return new Sin();
+			case TAN:
+				return new Tan();
+			case ATAN:
+				return new Atan();
+			case ACOS:
+				return new Acos();
+			case ASIN:
+				return new Asin();
+			case SQRT:
+				return new Sqrt();
+			case LOG:
+				return new Log10();
+			case LD:
+				return new UnivariateFunction() {
+					@Override
+					public double value(double input) {
+						Log10 log = new Log10();
+						return log.value(input) / log.value(2);
+					}
+				};
+			case LN:
+				return new Log();
+			case EXP:
+				return new Exp();
+			case PLUS:
+				return new Identity();
+			case MINUS:
+				return new Minus();
+			default:
+				throw new RuntimeException("Cannot convert Math Operator: " +  operator + " to univariate function!");
+		}
 	}
 	
 	/**
