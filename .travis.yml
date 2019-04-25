@@ -473,4 +473,5 @@ jobs:
         - rsync -e ssh -avP $TRAVIS_BUILD_DIR/deploy/secured/p2/VirSat4_Dvlm_ConceptIDE/release/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/release/
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
+          tags: true
                     
