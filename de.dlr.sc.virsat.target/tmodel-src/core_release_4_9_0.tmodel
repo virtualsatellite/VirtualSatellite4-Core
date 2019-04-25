@@ -1,6 +1,7 @@
 TargetLibrary core_release_4_9_0 {
+	Variable BUILD_ID = "x"
 	
-	RepositoryLocation VirSat4CoreIntegration url "https://sourceforge.net/projects/virtualsatellite/files/release/4.9.0/x"{	
+	RepositoryLocation VirSat4CoreIntegration url "https://sourceforge.net/projects/virtualsatellite/files/release/4.9.0/" + BUILD_ID {	
 		Unit de.dlr.sc.virsat.apps.feature.feature.group version 4.6.0.r201801260833;
 		Unit de.dlr.sc.virsat.branding.feature.feature.group version 4.6.0.r201801260833;
 		Unit de.dlr.sc.virsat.build.feature.feature.group version 4.6.0.r201801260833;
