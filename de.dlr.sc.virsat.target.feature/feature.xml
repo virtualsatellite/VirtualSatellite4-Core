@@ -4,7 +4,6 @@
       label="VirSat Core Target Feature"
       version="4.9.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
-      plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
@@ -20,8 +19,11 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
-    <requires>
-      <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
+   <includes
+         id="de.dlr.sc.virsat.license.feature"
+         version="0.0.0"/>
+
+   <requires>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
    </requires>
 
