@@ -1,6 +1,5 @@
 TargetLibrary core_integration {
-	
-	RepositoryLocation VirSat4CoreIntegration url "https://sourceforge.net/projects/virtualsatellite/files/integration/4.9.0"{	
+	RepositoryLocation VirSat4CoreIntegration url "https://sourceforge.net/projects/virtualsatellite/files/VirtualSatellite4-Core/integration/4.9.0/"{	
 		Unit de.dlr.sc.virsat.apps.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.branding.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.build.feature.feature.group version newest;
