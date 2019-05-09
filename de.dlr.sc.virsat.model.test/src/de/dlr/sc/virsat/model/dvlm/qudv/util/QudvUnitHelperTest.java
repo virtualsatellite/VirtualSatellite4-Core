@@ -513,9 +513,9 @@ public class QudvUnitHelperTest {
 		AQuantityKind mass = qudvHelper.createSimpleQuantityKind("mass", "M", "heavy Mass", "http://mass.virsat.dlr.de");
 		AQuantityKind time = qudvHelper.createSimpleQuantityKind("Time", "T", "timeQK", "");
 		
-		HashMap<AQuantityKind, Double> factorMap = new HashMap<AQuantityKind, Double>();
-		HashMap<AQuantityKind, Double> forceBaseMap = new HashMap<AQuantityKind, Double>();
-		HashMap<AQuantityKind, Double> accelerationBaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> factorMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> forceBaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> accelerationBaseMap = new HashMap<AQuantityKind, Double>();
 		
 		// some coefficient 
 		final Double M2 = -2.0;
@@ -597,7 +597,7 @@ public class QudvUnitHelperTest {
 		map2.put(electricCurrent, 4.2);
 		
 		//now merge the maps and make some checks
-		HashMap<AQuantityKind, Double> mergedMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> mergedMap = new HashMap<AQuantityKind, Double>();
 		mergedMap = qudvHelper.mergeMaps(map1, map2, QudvUnitHelper.QudvCalcMethod.ADD);
 		
 		//check if all four keys are present
@@ -991,5 +991,17 @@ public class QudvUnitHelperTest {
 		
 		String stringRepresentationDouble = qudvHelper.convertToString(qkMap);
 		assertEquals("Correct representation", "T^-3.5 ", stringRepresentationDouble);
+	}
+	
+	@Test
+	public void testGetUndefinedQK() {
+		assertEquals(QudvUnitHelper.UNDEFINED_QK_NAME, qudvHelper.getUndefinedQK().getName());
+	}
+	
+	@Test
+	public void testCreateUndefinedQKMap() {
+		Map<AQuantityKind, Double> undefinedQKMap = qudvHelper.createUndefinedQKMap();
+		assertEquals(1, undefinedQKMap.size());
+		assertEquals(1, undefinedQKMap.get(qudvHelper.getUndefinedQK()), TEST_EPSILON);
 	}
 }

@@ -68,9 +68,9 @@ public class NumberLiteralResultHelperTest {
 		assertEquals("Value Computation correct", "800.0", resultMultiply.getNumberLiteral().getValue());
 		assertEquals("Value Computation correct", "2.0", resultDivide.getNumberLiteral().getValue());
 		
-		assertEquals("Quantity Kind Compuation correct", Double.NaN, resultPlus.getQuantityKinds().get(QudvUnitHelper.getInstance().getUndefinedQK()), EPSILON);
+		assertEquals("Quantity Kind Compuation correct", 1d, resultPlus.getQuantityKinds().get(QudvUnitHelper.getInstance().getUndefinedQK()), EPSILON);
 		assertNull("Quantity Kind Compuation correct", resultPlus.getQuantityKinds().get(qk));
-		assertEquals("Quantity Kind Compuation correct", Double.NaN, resultMinus.getQuantityKinds().get(QudvUnitHelper.getInstance().getUndefinedQK()), EPSILON);
+		assertEquals("Quantity Kind Compuation correct", 1d, resultMinus.getQuantityKinds().get(QudvUnitHelper.getInstance().getUndefinedQK()), EPSILON);
 		assertNull("Quantity Kind Compuation correct", resultMinus.getQuantityKinds().get(qk));
 		final double EXPECTED_QUANTITY_KINDS_POTENCY = 3d;
 		assertEquals("Quantity Kind Compuation correct", EXPECTED_QUANTITY_KINDS_POTENCY, resultMultiply.getQuantityKinds().get(qk), EPSILON);

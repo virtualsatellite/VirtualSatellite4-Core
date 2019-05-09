@@ -1351,9 +1351,9 @@ public class QudvUnitHelper {
 		}
 
 		boolean flag = false;
-		HashMap<AQuantityKind, Double> outputQKbaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> outputQKbaseMap = new HashMap<AQuantityKind, Double>();
 		outputQKbaseMap = getBaseQuantityKinds(unit2QK); 
-		HashMap<AQuantityKind, Double> inputQKbaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> inputQKbaseMap = new HashMap<AQuantityKind, Double>();
 		inputQKbaseMap = getBaseQuantityKinds(unit1QK);
 		
 		//now the only thing left to do is comparing the input and output map
@@ -1406,8 +1406,8 @@ public class QudvUnitHelper {
 	 * @param qk the QuantityKind of which you want to know the base quantity kind
 	 * @return a HashMap with base QuantityKinds
 	 */
-	public HashMap<AQuantityKind, Double> getBaseQuantityKinds(AQuantityKind qk) {
-		HashMap<AQuantityKind, Double> myMap = new HashMap<AQuantityKind, Double>();
+	public Map<AQuantityKind, Double> getBaseQuantityKinds(AQuantityKind qk) {
+		Map<AQuantityKind, Double> myMap = new HashMap<AQuantityKind, Double>();
 		
 		if (qk instanceof DerivedQuantityKind) {
 			DerivedQuantityKind dqk = (DerivedQuantityKind) qk;
@@ -1448,7 +1448,12 @@ public class QudvUnitHelper {
 	 * @param calcMethod QudvCalcMethod defines if exponents should be added or subtracted
 	 * @return the merged Map of QuantityKinds with matching exponents
 	 */
-	public HashMap<AQuantityKind, Double> mergeMaps(Map<AQuantityKind, Double> map1, Map<AQuantityKind, Double> map2, QudvCalcMethod calcMethod) {
+	public Map<AQuantityKind, Double> mergeMaps(Map<AQuantityKind, Double> map1, Map<AQuantityKind, Double> map2, QudvCalcMethod calcMethod) {
+		// Merging a map with the undefined QK with any other map also yields a map containing only the undefined QK
+		if (map1.get(getUndefinedQK()) != null || map2.get(getUndefinedQK()) != null) {
+			return createUndefinedQKMap();
+		}
+		
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
 
 		//include elements from the first map and add or subtract values of the second map if they exist
@@ -1507,7 +1512,7 @@ public class QudvUnitHelper {
 	 */
 	public Map<AQuantityKind, Double> createUndefinedQKMap() {
 		Map<AQuantityKind, Double> undefinedQKMap = new HashMap<>();
-		undefinedQKMap.put(getUndefinedQK(), Double.NaN);
+		undefinedQKMap.put(getUndefinedQK(), 1d);
 		return undefinedQKMap;
 	}
 	
