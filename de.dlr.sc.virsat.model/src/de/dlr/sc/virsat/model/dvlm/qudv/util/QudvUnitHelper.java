@@ -1501,6 +1501,10 @@ public class QudvUnitHelper {
 	public static final String UNDEFINED_QK_NAME = "Undefined"; 
 	private AQuantityKind undefinedQuantityKind;
 	
+	/**
+	 * Creates a map containing the undefined QK only
+	 * @return a map containing the undefined QK only
+	 */
 	public Map<AQuantityKind, Double> createUndefinedQKMap() {
 		Map<AQuantityKind, Double> undefinedQKMap = new HashMap<>();
 		undefinedQKMap.put(getUndefinedQK(), Double.NaN);
