@@ -76,5 +76,11 @@ public class NumberLiteralResultHelperTest {
 		assertEquals("Quantity Kind Compuation correct", EXPECTED_QUANTITY_KINDS_POTENCY, resultMultiply.getQuantityKinds().get(qk), EPSILON);
 		assertEquals("Quantity Kind Compuation correct", -1d, resultDivide.getQuantityKinds().get(qk), EPSILON);
 		assertEquals("Quantity Kind Compuation correct", 1, resultSqrt.getQuantityKinds().get(qk), EPSILON);
+		
+		quantityKindsRHS.put(qk, 1d);
+		resultPlus = numLitResultHelperLHS.applyMathOperator(MathOperator.PLUS, numberLiteralResultRHS);
+		resultMinus = numLitResultHelperLHS.applyMathOperator(MathOperator.MINUS, numberLiteralResultRHS);
+		assertEquals("Quantity Kind Compuation correct", 1d, resultPlus.getQuantityKinds().get(qk), EPSILON);
+		assertEquals("Quantity Kind Compuation correct", 1d, resultMinus.getQuantityKinds().get(qk), EPSILON);
 	}
 }
