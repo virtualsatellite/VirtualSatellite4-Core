@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
 import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.QudvCalcMethod;
 
 /**
  * Qudv Unit Helper Test class  
@@ -610,6 +611,9 @@ public class QudvUnitHelperTest {
 		assertEquals(4.2f, mergedMap.get(electricCurrent), TEST_EPSILON);
 		assertEquals(2.0, mergedMap.get(temperature), TEST_EPSILON);
 		
+		// merging a map with the undefined qk with any other map yields again the map with the undefined qk
+		Map<AQuantityKind, Double> undefinedQKMap = qudvHelper.createUndefinedQKMap();
+		assertEquals(undefinedQKMap, qudvHelper.mergeMaps(undefinedQKMap, map1, QudvCalcMethod.ADD));
 	}
 	
 	@Test
