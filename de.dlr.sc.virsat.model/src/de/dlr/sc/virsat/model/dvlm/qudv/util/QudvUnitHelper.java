@@ -24,10 +24,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.ExtendedMetaData;
-
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.AffineConversionUnit;
@@ -43,7 +43,6 @@ import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
-import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
 /**
@@ -383,7 +382,7 @@ public class QudvUnitHelper {
 		return systemOfUnits;
 	}
 		
-	final String dimensionlessQKname = "Dimensionless"; 
+	static final String DIMENSIONLESS_QK_NAME = "Dimensionless"; 
 	
 	AQuantityKind dimensionlessQK;
 	AQuantityKind length;
@@ -447,7 +446,7 @@ public class QudvUnitHelper {
 		factorMap.clear();	
 
 		//create the 8 SI base QuantityKinds as reference in the helper class	
-		dimensionlessQK = createSimpleQuantityKind(dimensionlessQKname, "U", "dimensionlessQK", "");
+		dimensionlessQK = createSimpleQuantityKind(DIMENSIONLESS_QK_NAME, "U", "dimensionlessQK", "");
 		length = createSimpleQuantityKind("Length", "L", "lengthQK", "");
 		mass = createSimpleQuantityKind("Mass", "M", "massQK", "");
 		time = createSimpleQuantityKind("Time", "T", "timeQK", "");
@@ -1326,7 +1325,7 @@ public class QudvUnitHelper {
 			return false;
 		}
 		
-		if (unitQK.getName().equals(dimensionlessQKname)) {
+		if (unitQK.getName().equals(DIMENSIONLESS_QK_NAME)) {
 			return true;
 		}
 		
@@ -1352,9 +1351,9 @@ public class QudvUnitHelper {
 		}
 
 		boolean flag = false;
-		HashMap<AQuantityKind, Double> outputQKbaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> outputQKbaseMap = new HashMap<AQuantityKind, Double>();
 		outputQKbaseMap = getBaseQuantityKinds(unit2QK); 
-		HashMap<AQuantityKind, Double> inputQKbaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> inputQKbaseMap = new HashMap<AQuantityKind, Double>();
 		inputQKbaseMap = getBaseQuantityKinds(unit1QK);
 		
 		//now the only thing left to do is comparing the input and output map
@@ -1377,13 +1376,13 @@ public class QudvUnitHelper {
 			//if on map is empty we have to check for the special case of dimensionless
 			if (map1.isEmpty()) {
 				for (AQuantityKind key: map2.keySet()) {
-					if (key.getName().equals(dimensionlessQKname)) {
+					if (key.getName().equals(DIMENSIONLESS_QK_NAME)) {
 						areSame = true;
 					}
 				}
 			} else if (map2.isEmpty()) {
 				for (AQuantityKind key: map1.keySet()) {
-					if (key.getName().equals(dimensionlessQKname)) {
+					if (key.getName().equals(DIMENSIONLESS_QK_NAME)) {
 						areSame = true;
 					}
 				}
@@ -1407,8 +1406,8 @@ public class QudvUnitHelper {
 	 * @param qk the QuantityKind of which you want to know the base quantity kind
 	 * @return a HashMap with base QuantityKinds
 	 */
-	public HashMap<AQuantityKind, Double> getBaseQuantityKinds(AQuantityKind qk) {
-		HashMap<AQuantityKind, Double> myMap = new HashMap<AQuantityKind, Double>();
+	public Map<AQuantityKind, Double> getBaseQuantityKinds(AQuantityKind qk) {
+		Map<AQuantityKind, Double> myMap = new HashMap<AQuantityKind, Double>();
 		
 		if (qk instanceof DerivedQuantityKind) {
 			DerivedQuantityKind dqk = (DerivedQuantityKind) qk;
@@ -1449,7 +1448,12 @@ public class QudvUnitHelper {
 	 * @param calcMethod QudvCalcMethod defines if exponents should be added or subtracted
 	 * @return the merged Map of QuantityKinds with matching exponents
 	 */
-	public HashMap<AQuantityKind, Double> mergeMaps(Map<AQuantityKind, Double> map1, Map<AQuantityKind, Double> map2, QudvCalcMethod calcMethod) {
+	public Map<AQuantityKind, Double> mergeMaps(Map<AQuantityKind, Double> map1, Map<AQuantityKind, Double> map2, QudvCalcMethod calcMethod) {
+		// Merging a map with the undefined QK with any other map also yields a map containing only the undefined QK
+		if (map1.get(getUndefinedQK()) != null || map2.get(getUndefinedQK()) != null) {
+			return createUndefinedQKMap();
+		}
+		
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
 
 		//include elements from the first map and add or subtract values of the second map if they exist
@@ -1490,13 +1494,40 @@ public class QudvUnitHelper {
 		//remove elements which are dimensionless, because they don't have any influence
 		for (Iterator<Map.Entry<AQuantityKind, Double>> iter = merged.entrySet().iterator(); iter.hasNext();) {
 			Map.Entry<AQuantityKind, Double> entry = iter.next();
-			if (entry.getKey().getName().equals(dimensionlessQKname)) {
+			if (entry.getKey().getName().equals(DIMENSIONLESS_QK_NAME)) {
 				iter.remove();
 				//break; // if we only want to remove the first match.
 			}
 		}
 		
 		return merged;
+	}
+	
+	public static final String UNDEFINED_QK_NAME = "Undefined"; 
+	private AQuantityKind undefinedQuantityKind;
+	
+	/**
+	 * Creates a map containing the undefined QK only
+	 * @return a map containing the undefined QK only
+	 */
+	public Map<AQuantityKind, Double> createUndefinedQKMap() {
+		Map<AQuantityKind, Double> undefinedQKMap = new HashMap<>();
+		undefinedQKMap.put(getUndefinedQK(), 1d);
+		return undefinedQKMap;
+	}
+	
+	/**
+	 * Gets the QK representing the Undefined Quantity Kind.
+	 * Intended to be used for operations on incompatible quantity kinds.
+	 * Example: Performing an addition where the summands have differing quantity kinds.
+	 * @return the undefined QK
+	 */
+	public AQuantityKind getUndefinedQK() {
+		if (undefinedQuantityKind == null) {
+			undefinedQuantityKind = createSimpleQuantityKind(UNDEFINED_QK_NAME, "UNDEFINED", "undefinedQK", "");
+		}
+		
+		return undefinedQuantityKind;
 	}
 	
 	/**
