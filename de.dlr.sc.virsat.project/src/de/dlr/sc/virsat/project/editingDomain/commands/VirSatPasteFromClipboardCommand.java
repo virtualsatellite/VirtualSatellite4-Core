@@ -132,7 +132,16 @@ public class VirSatPasteFromClipboardCommand  extends CompoundCommand {
 				@Override
 				protected Command createCommand() {
 					Collection<?> copiedCollection = copyCommand.getResult();
-					changeDisciplineByCopy(realOwner, copiedCollection);
+					
+					// Ensure that the discipline is updated so that all copied objects
+					// belong to the discipline of the realOwner
+					changeDisciplineByOwner(realOwner, copiedCollection);
+					for (Object copiedObject : copiedCollection) {
+						if (copiedObject instanceof StructuralElementInstance) {
+							changeDisciplineByOwner(realOwner, ((StructuralElementInstance) copiedObject).getDeepChildren());
+						}
+					}
+					
 					DVLMCopiedNameHelper dcnh = new DVLMCopiedNameHelper();
 					if (realOwner instanceof StructuralElementInstance) {
 						if (VirSatClipboardCommandHelper.isCollectionSei(copiedCollection)) {
@@ -197,11 +206,11 @@ public class VirSatPasteFromClipboardCommand  extends CompoundCommand {
 	}
 	
 	/**
-	 * Private method that check which discipline the object has into which we are pasting and set it in the Copy.
+	 * Private method that checks which discipline the object that we are pasting into has and sets it in the Copy.
 	 * @param realOwner the object into which we are pasting
 	 * @param copiedCollection copied Objects
 	 */
-	private static void changeDisciplineByCopy(EObject realOwner, Collection<?> copiedCollection) {
+	private static void changeDisciplineByOwner(EObject realOwner, Collection<?> copiedCollection) {
 		if (realOwner instanceof IAssignedDiscipline) {
 			IAssignedDiscipline assignedDiscipline = (IAssignedDiscipline) realOwner;
 			Discipline discipline = assignedDiscipline.getAssignedDiscipline();
