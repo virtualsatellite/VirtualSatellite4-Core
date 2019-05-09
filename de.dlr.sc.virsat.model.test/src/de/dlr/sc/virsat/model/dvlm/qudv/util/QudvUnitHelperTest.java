@@ -614,6 +614,7 @@ public class QudvUnitHelperTest {
 		// merging a map with the undefined qk with any other map yields again the map with the undefined qk
 		Map<AQuantityKind, Double> undefinedQKMap = qudvHelper.createUndefinedQKMap();
 		assertEquals(undefinedQKMap, qudvHelper.mergeMaps(undefinedQKMap, map1, QudvCalcMethod.ADD));
+		assertEquals(undefinedQKMap, qudvHelper.mergeMaps(map2, undefinedQKMap, QudvCalcMethod.SUBTRACT));
 	}
 	
 	@Test
