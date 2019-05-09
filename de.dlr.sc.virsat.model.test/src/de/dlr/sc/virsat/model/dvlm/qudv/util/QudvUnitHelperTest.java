@@ -463,7 +463,7 @@ public class QudvUnitHelperTest {
 	@Test
 	public void haveSameQuantityKindWithMapTest() {
 		//make some simple quantityKinds
-		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(qudvHelper.dimensionlessQKname, "U", "dimensionlessQK", "");
+		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(QudvUnitHelper.DIMENSIONLESS_QK_NAME, "U", "dimensionlessQK", "");
 		AQuantityKind length = qudvHelper.createSimpleQuantityKind("length", "L", "long John", "http://length.virsat.dlr.de");
 		AQuantityKind mass = qudvHelper.createSimpleQuantityKind("mass", "M", "heavy Mass", "http://mass.virsat.dlr.de");
 		AQuantityKind time = qudvHelper.createSimpleQuantityKind("Time", "T", "timeQK", "");
@@ -567,7 +567,7 @@ public class QudvUnitHelperTest {
 	@Test
 	public void isDimensionlessTest() {
 		//make some simple quantityKinds
-		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(qudvHelper.dimensionlessQKname, "U", "dimensionlessQK", "");
+		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(QudvUnitHelper.DIMENSIONLESS_QK_NAME, "U", "dimensionlessQK", "");
 		AQuantityKind length = qudvHelper.createSimpleQuantityKind("length", "L", "long John", "http://length.virsat.dlr.de");
 		AUnit m = qudvHelper.createSimpleUnit("metre", "m", "meters are used to measure lengths", "http://meters.virsat.dlr.de", length);
 		AUnit unitWithoutQK = qudvHelper.createSimpleUnit("noUnit", "nU", "", "", null);
