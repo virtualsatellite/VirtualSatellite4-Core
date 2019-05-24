@@ -215,7 +215,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("*");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* SPDX-License-Identifier: EPL-2.0");
+    _builder.append("* SPDX-License-Identifier: EPL-2.0 ");
     _builder.newLine();
     _builder.append(" ");
     _builder.append("*******************************************************************************/");
