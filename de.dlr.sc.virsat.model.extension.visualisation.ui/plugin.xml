@@ -130,6 +130,15 @@
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	 <propertyTester
+	    id="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester.conceptEnabledTester"
+	    type="de.dlr.sc.virsat.project.resources.VirSatProjectResource"
+	    namespace="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester"
+	    properties="conceptEnabled"
+	    class="de.dlr.sc.virsat.model.extension.visualisation.propertyTester.ConceptEnabledTester">
+	  </propertyTester>
+	</extension>
 <extension point="org.eclipse.ui.commands">
 	<command
              description="Creates a standard folder in the Repository to store Delta Models"
@@ -357,21 +366,25 @@
 				checkEnabled="true">
 				<with
 					variable="selection">
-     <and>
-        <iterate
-              ifEmpty="false"
-              operator="and">
-           <instanceof
-                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
-           </instanceof>
-        </iterate>
-        <count
-              value="1">
-        </count>
-     </and>
+				     <and>
+				        <iterate
+				              ifEmpty="false"
+				              operator="and">
+				           <instanceof
+				                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+				           </instanceof>
+							<test 
+								property="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>	
+				        </iterate>
+				        <count
+				              value="1">
+				        </count>
+				     </and>
 				</with>
 			</visibleWhen>
-			
 		</command>
 		<command
 			commandId="de.dlr.sc.virsat.visualisation.ui.compareModelGeometry"
@@ -380,18 +393,23 @@
 				checkEnabled="true">
 				<with
 					variable="selection">
-     <and>
-        <iterate
-              ifEmpty="false"
-              operator="and">
-           <instanceof
-                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
-           </instanceof>
-        </iterate>
-        <count
-              value="1">
-        </count>
-     </and>
+				     <and>
+				        <iterate
+				              ifEmpty="false"
+				              operator="and">
+				           <instanceof
+				                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+				           </instanceof>
+							<test 
+								property="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>	
+				        </iterate>
+				        <count
+				              value="1">
+				        </count>
+				     </and>
 				</with>
 			</visibleWhen>
 			
@@ -407,21 +425,25 @@
 				checkEnabled="true">
 				<with
 					variable="selection">
-     <and>
-        <iterate
-              ifEmpty="false"
-              operator="and">
-           <instanceof
-                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
-           </instanceof>
-        </iterate>
-        <count
-              value="1">
-        </count>
-     </and>
+				     <and>
+				        <iterate
+				              ifEmpty="false"
+				              operator="and">
+				           <instanceof
+				                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+				           </instanceof>
+							<test 
+								property="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>	           
+				        </iterate>
+				        <count
+				              value="1">
+				        </count>
+				     </and>
 				</with>
 			</visibleWhen>
-			
 		</command>
 		<separator
            name="de.dlr.sc.virsat.visualisation.ui.animation"
@@ -434,21 +456,25 @@
 				checkEnabled="true">
 				<with
 					variable="selection">
-     <and>
-        <iterate
-              ifEmpty="false"
-              operator="and">
-           <instanceof
-                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
-		 </instanceof>
-        </iterate>
-        <count
-              value="1">
-        </count>
-     </and>
+				     <and>
+				        <iterate
+				              ifEmpty="false"
+				              operator="and">
+				           	<instanceof
+				                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+							</instanceof>
+							<test 
+								property="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>							
+				        </iterate>
+				        <count
+				              value="1">
+				        </count>
+				     </and>
 				</with>
 			</visibleWhen>
-			
 		</command>
 		</menuContribution>
 	</extension>
