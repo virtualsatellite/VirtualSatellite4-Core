@@ -272,7 +272,6 @@ public class VtkClientView extends ViewPart {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				VtkTreeManager.getInstance().initGui();
 				if (!StartManagers.startVis(currentlySelectedProject, currentDeltaModel)) {
 					Label errorLabel = new Label("Please open a project before opening this view");
 					awt.add(errorLabel);
@@ -280,9 +279,7 @@ public class VtkClientView extends ViewPart {
 					awt.add(VtkTreeManager.getInstance());
 					VtkTreeManager.getInstance().initGui();
 				}
-				
 			}
-
 		});
 	}
 	/**
