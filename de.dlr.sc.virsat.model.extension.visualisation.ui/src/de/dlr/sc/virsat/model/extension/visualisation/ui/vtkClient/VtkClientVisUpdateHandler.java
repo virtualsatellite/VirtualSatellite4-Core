@@ -117,7 +117,7 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 			}
 			
 			VtkTreeManager.getInstance().checkIdAndCreateAxes(uuid);
-			VtkTreeManager.getInstance().highlightObject(uuid);
+			VtkTreeManager.getInstance().highlightIfSelectedObject(uuid);
 		}
 		
 	}
