@@ -140,10 +140,10 @@
 	  </propertyTester>
 	</extension>
 <extension point="org.eclipse.ui.commands">
-	<command
+		<command
              description="Creates a standard folder in the Repository to store Delta Models"
              id="de.dlr.sc.virsat.visualisation.ui.createDeltaModelFolder"
-             name="Create Delta Model Foldder">
+             name="Create Delta Model Folder">
        </command>
        <command
              description="Create a Delta Model for with parameter heat map"
@@ -306,59 +306,39 @@
        </handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
-	 <menuContribution
-           allPopups="false"
-           locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-        <menu
-              id="de.dlr.sc.virsat.apps.ui.menu.visiualization"
-              label="Visualization"
-              tooltip="VirSatVisualization">
-           <separator
-                 name="core">
-           </separator>
-           <command
-                 commandId="de.dlr.sc.virsat.visualisation.ui.createDeltaModelFolder"
-                 style="push">
-           </command>
-           <separator
-                 name="comparisons"
-                 visible="true">
-           </separator>
-           <command
-                 commandId="de.dlr.sc.virsat.visualisation.ui.compareModelProperty"
-                 style="push">
-           </command>
-           <command
-                 commandId="de.dlr.sc.virsat.visualisation.ui.compareModelGeometry"
-                 style="push">
-           </command>
-           <separator
-                 name="colormap"
-                 visible="true">
-           </separator>
-           <command
-                 commandId="de.dlr.sc.virsat.visualisation.ui.colorMapParameter"
-                 style="push">
-           </command>
-           <separator
-                 name="animation"
-                 visible="true">
-           </separator>
-           <command
-                 commandId="de.dlr.sc.virsat.visualisation.ui.animation"
-                 style="push">
-           </command>
-           <separator
-                 name="additions">
-           </separator>
-        </menu>
-     </menuContribution>
      <menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=additions">
      <separator
            name="de.dlr.sc.virsat.visualisation.ui.comparison"
            visible="true">
      </separator>
+		<command
+			commandId="de.dlr.sc.virsat.visualisation.ui.createDeltaModelFolder"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+				     <and>
+				        <iterate
+				              ifEmpty="false"
+				              operator="and">
+				           <instanceof
+				                 value="de.dlr.sc.virsat.project.resources.VirSatProjectResource">
+				           </instanceof>
+							<test 
+								property="de.dlr.sc.virsat.model.extension.visualisation.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>	
+				        </iterate>
+				        <count
+				              value="1">
+				        </count>
+				     </and>
+				</with>
+			</visibleWhen>
+		</command>
 		<command
 			commandId="de.dlr.sc.virsat.visualisation.ui.compareModelProperty"
 			style="push">
