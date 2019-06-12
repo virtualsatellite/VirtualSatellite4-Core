@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
 import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.QudvCalcMethod;
 
 /**
  * Qudv Unit Helper Test class  
@@ -463,7 +464,7 @@ public class QudvUnitHelperTest {
 	@Test
 	public void haveSameQuantityKindWithMapTest() {
 		//make some simple quantityKinds
-		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(qudvHelper.dimensionlessQKname, "U", "dimensionlessQK", "");
+		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(QudvUnitHelper.DIMENSIONLESS_QK_NAME, "U", "dimensionlessQK", "");
 		AQuantityKind length = qudvHelper.createSimpleQuantityKind("length", "L", "long John", "http://length.virsat.dlr.de");
 		AQuantityKind mass = qudvHelper.createSimpleQuantityKind("mass", "M", "heavy Mass", "http://mass.virsat.dlr.de");
 		AQuantityKind time = qudvHelper.createSimpleQuantityKind("Time", "T", "timeQK", "");
@@ -513,9 +514,9 @@ public class QudvUnitHelperTest {
 		AQuantityKind mass = qudvHelper.createSimpleQuantityKind("mass", "M", "heavy Mass", "http://mass.virsat.dlr.de");
 		AQuantityKind time = qudvHelper.createSimpleQuantityKind("Time", "T", "timeQK", "");
 		
-		HashMap<AQuantityKind, Double> factorMap = new HashMap<AQuantityKind, Double>();
-		HashMap<AQuantityKind, Double> forceBaseMap = new HashMap<AQuantityKind, Double>();
-		HashMap<AQuantityKind, Double> accelerationBaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> factorMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> forceBaseMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> accelerationBaseMap = new HashMap<AQuantityKind, Double>();
 		
 		// some coefficient 
 		final Double M2 = -2.0;
@@ -567,7 +568,7 @@ public class QudvUnitHelperTest {
 	@Test
 	public void isDimensionlessTest() {
 		//make some simple quantityKinds
-		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(qudvHelper.dimensionlessQKname, "U", "dimensionlessQK", "");
+		AQuantityKind dimensionlessQK = qudvHelper.createSimpleQuantityKind(QudvUnitHelper.DIMENSIONLESS_QK_NAME, "U", "dimensionlessQK", "");
 		AQuantityKind length = qudvHelper.createSimpleQuantityKind("length", "L", "long John", "http://length.virsat.dlr.de");
 		AUnit m = qudvHelper.createSimpleUnit("metre", "m", "meters are used to measure lengths", "http://meters.virsat.dlr.de", length);
 		AUnit unitWithoutQK = qudvHelper.createSimpleUnit("noUnit", "nU", "", "", null);
@@ -597,7 +598,7 @@ public class QudvUnitHelperTest {
 		map2.put(electricCurrent, 4.2);
 		
 		//now merge the maps and make some checks
-		HashMap<AQuantityKind, Double> mergedMap = new HashMap<AQuantityKind, Double>();
+		Map<AQuantityKind, Double> mergedMap = new HashMap<AQuantityKind, Double>();
 		mergedMap = qudvHelper.mergeMaps(map1, map2, QudvUnitHelper.QudvCalcMethod.ADD);
 		
 		//check if all four keys are present
@@ -610,6 +611,10 @@ public class QudvUnitHelperTest {
 		assertEquals(4.2f, mergedMap.get(electricCurrent), TEST_EPSILON);
 		assertEquals(2.0, mergedMap.get(temperature), TEST_EPSILON);
 		
+		// merging a map with the undefined qk with any other map yields again the map with the undefined qk
+		Map<AQuantityKind, Double> undefinedQKMap = qudvHelper.createUndefinedQKMap();
+		assertEquals(undefinedQKMap, qudvHelper.mergeMaps(undefinedQKMap, map1, QudvCalcMethod.ADD));
+		assertEquals(undefinedQKMap, qudvHelper.mergeMaps(map2, undefinedQKMap, QudvCalcMethod.SUBTRACT));
 	}
 	
 	@Test
@@ -991,5 +996,17 @@ public class QudvUnitHelperTest {
 		
 		String stringRepresentationDouble = qudvHelper.convertToString(qkMap);
 		assertEquals("Correct representation", "T^-3.5 ", stringRepresentationDouble);
+	}
+	
+	@Test
+	public void testGetUndefinedQK() {
+		assertEquals(QudvUnitHelper.UNDEFINED_QK_NAME, qudvHelper.getUndefinedQK().getName());
+	}
+	
+	@Test
+	public void testCreateUndefinedQKMap() {
+		Map<AQuantityKind, Double> undefinedQKMap = qudvHelper.createUndefinedQKMap();
+		assertEquals(1, undefinedQKMap.size());
+		assertEquals(1, undefinedQKMap.get(qudvHelper.getUndefinedQK()), TEST_EPSILON);
 	}
 }
