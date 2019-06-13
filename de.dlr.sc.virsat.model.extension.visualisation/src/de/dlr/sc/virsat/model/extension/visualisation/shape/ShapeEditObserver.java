@@ -16,12 +16,12 @@ import java.util.Map;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 import de.dlr.sc.virsat.model.extension.visualisation.model.VisualisationListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Observer class which should be called on changes from visualisation side (Vista) and update the DVLM model
@@ -42,7 +42,7 @@ public class ShapeEditObserver implements IShapeEditObserver {
 	 */
 	private void updateVisualisationBeanFromShape(Visualisation visualisationBean, Shape shape) {
 		CategoryAssignment underlyingCa = visualisationBean.getTypeInstance();
-		TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(underlyingCa);
+		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(underlyingCa);
 
 		disableNotificationsFromVisualisationListener(underlyingCa); //to avoid notification loop
 		
@@ -53,7 +53,7 @@ public class ShapeEditObserver implements IShapeEditObserver {
 			}
 		};
 				
-		ed.getCommandStack().execute(editVisualisationCaCommand);
+		ed.getVirSatCommandStack().executeNoUndo(editVisualisationCaCommand);
 		
 		enableNotificationsFromVisualisationListener(underlyingCa);
 	}
