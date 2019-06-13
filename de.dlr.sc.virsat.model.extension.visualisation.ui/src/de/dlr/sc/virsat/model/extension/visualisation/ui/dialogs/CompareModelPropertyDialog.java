@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.visualisation.ui.dialogs;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -135,7 +136,7 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 	@Override
 	protected boolean validateInput() {
 		boolean inputsValid = super.validateInput();
-		if (inputsValid && selectedProperty != null) {
+		if (inputsValid && selectedPropertyFQN != null) {
 			inputsValid = true;
 		} else {
 			setMessage("Select the Model to compare to and select the property to be used for the heat map!",
@@ -153,7 +154,7 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 		return true;
 	}
 
-	private AQudvTypeProperty selectedProperty;
+	private String selectedPropertyFQN;
 
 	@Override
 	protected void okPressed() {
@@ -173,29 +174,30 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 			Object object = selection.getFirstElement();
 			if (object instanceof ComposedProperty) {
 				ComposedProperty cp = (ComposedProperty) object;
+				
 				Category category = cp.getType();
-				AQudvTypeProperty property = category.getAllProperties().stream()
+				boolean hasQudvTypeProperty = category.getAllProperties().stream()
 						.filter(p -> p instanceof AQudvTypeProperty).map(p -> (AQudvTypeProperty) p).findFirst()
-						.orElse(null);
-				if (property != null) {
-					selectedProperty = property;
+						.isPresent();
+				if (hasQudvTypeProperty) {
+					selectedPropertyFQN = cp.getFullQualifiedName();
 				} else {
-					selectedProperty = null;
+					selectedPropertyFQN = null;
 				}
 			} else if (object instanceof AQudvTypeProperty) {
-				selectedProperty = (AQudvTypeProperty) object;
+				selectedPropertyFQN = ((AQudvTypeProperty) object).getFullQualifiedName();
 			} else {
-				selectedProperty = null;
+				selectedPropertyFQN = null;
 			}
 		}
 	}
 
 	/**
-	 * The property that was selected by the user
+	 * The FQN of the property that was selected by the user
 	 * 
 	 * @return null in case no property was selected
 	 */
-	public AQudvTypeProperty getComparisonProjectProperty() {
-		return selectedProperty;
+	public String getComparisonProjectPropertyFQN() {
+		return selectedPropertyFQN;
 	}
 }
