@@ -407,6 +407,11 @@ public class VtkTreeManager extends vtkPanel {
 		actor.GetProperty().SetOpacity(1 - node.getOpacity());
 	}
 
+	/**
+	 * Updates the highlighting bounding box for the node if it is a selected object
+	 * @param node to check if selected and update bounding box of
+	 * @param parent vtk actor of the node parent
+	 */
 	private void updateHighlightedObjectIfSelected(SceneGraphNode node, ActorVtk parent) {
 		ActorVtk actor = actorMap.get(node.getID());
 
