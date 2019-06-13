@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -57,47 +57,16 @@ public class CompareModelProperty extends ACompareModelAlgorithm {
 		subMonitor.setTaskName("Comparing models on specific property");
 		VisualisationDeltaModel vdm = new VisualisationDeltaModel();
 		
-		Map<String, UnitValuePropertyInstance> mapOfBaseVpis = new HashMap<>();
-		Map<String, UnitValuePropertyInstance> mapOfCompareVpis = new HashMap<>();
-		
-		Set<String> changedSeiUUids = new HashSet<>();
-		
 		subMonitor.subTask("Finding specific property in base model");
-		// Find all correct property instances in the baseProject
-		EcoreUtil.getAllContents(baseRepo.getRootEntities(), true).forEachRemaining((object) -> {
-			if (object instanceof ComposedPropertyInstance) {													
-				ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
-				String fqn = cpi.getType().getFullQualifiedName();		
-								
-				if (fqn.equals(propertyFqn)) {
-					CategoryAssignment ca = cpi.getTypeInstance();
-					UnitValuePropertyInstance uvpi = (UnitValuePropertyInstance) ca.getPropertyInstances().get(0);
-					
-					ICategoryAssignmentContainer cac = uvpi.getCategoryAssignmentContainer();	
-					mapOfBaseVpis.put(cac.getUuid().toString(), uvpi);				
-				} 
-			}
-		});
+		Map<String, UnitValuePropertyInstance> mapOfBaseVpis = computeMapContainerIDToPropertyInstance(baseRepo, propertyFqn);
 		subMonitor.worked(1);
 
 		subMonitor.subTask("Finding specific property in comparison model");
-		// Find all correct property instances in the compareProject
-		EcoreUtil.getAllContents(compareRepo.getRootEntities(), true).forEachRemaining((object) -> {
-			if (object instanceof ComposedPropertyInstance) {													
-				ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
-				String fqn = cpi.getType().getFullQualifiedName();		
-								
-				if (fqn.equals(propertyFqn)) {
-					CategoryAssignment ca = cpi.getTypeInstance();
-					UnitValuePropertyInstance uvpi = (UnitValuePropertyInstance) ca.getPropertyInstances().get(0);
-					
-					ICategoryAssignmentContainer cac = uvpi.getCategoryAssignmentContainer();	
-					mapOfCompareVpis.put(cac.getUuid().toString(), uvpi);				
-				} 
-			}
-		});
+		Map<String, UnitValuePropertyInstance> mapOfCompareVpis = computeMapContainerIDToPropertyInstance(compareRepo, propertyFqn);
 		subMonitor.worked(1);
-
+		
+		Set<String> changedSeiUUids = new HashSet<>();
+		
 		subMonitor.subTask("Find differences from base to compare model");
 		// Now compare each property and update the DeltaModel
 		for (String keyUuids : mapOfBaseVpis.keySet()) {
@@ -157,5 +126,43 @@ public class CompareModelProperty extends ACompareModelAlgorithm {
 		subMonitor.done();
 		
 		return vdm;
+	}
+	
+	/**
+	 * Returns a map of all SEIs in the repo that contain a property instance of specified property name mapping to these propertz instances
+	 * @param repo the repository
+	 * @param propertyFqn fully qualified name of the property to search for
+	 * @return the computed map
+	 */
+	private Map<String, UnitValuePropertyInstance> computeMapContainerIDToPropertyInstance(Repository repo, String propertyFqn) {
+		Map<String, UnitValuePropertyInstance> mapContainerIDToPropertyInstance = new HashMap<>();
+		EcoreUtil.getAllContents(repo.getRootEntities(), true).forEachRemaining((object) -> {
+			if (object instanceof APropertyInstance) {
+				APropertyInstance pi = (APropertyInstance) object;
+				String fqn = pi.getType().getFullQualifiedName();
+				
+				if (fqn.equals(propertyFqn)) {
+					UnitValuePropertyInstance uvpi = null;
+					
+					if (object instanceof ComposedPropertyInstance) {
+						ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
+						
+						uvpi = cpi.getTypeInstance().getPropertyInstances().stream()
+								.filter(p -> p instanceof UnitValuePropertyInstance)
+								.map(p -> (UnitValuePropertyInstance) p)
+								.findFirst().orElse(null);
+					} else if (object instanceof UnitValuePropertyInstance) {
+						uvpi = (UnitValuePropertyInstance) object;
+					}
+					
+					if (uvpi != null) {
+						ICategoryAssignmentContainer cac = uvpi.getCategoryAssignmentContainer();
+						mapContainerIDToPropertyInstance.put(cac.getUuid().toString(), uvpi);
+					}
+				}
+			}
+		});
+		
+		return mapContainerIDToPropertyInstance;
 	}
 }
