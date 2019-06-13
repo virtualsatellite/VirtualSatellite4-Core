@@ -65,17 +65,14 @@ public class CompareModelProperty extends ACompareModelAlgorithm {
 		subMonitor.subTask("Finding specific property in base model");
 		// Find all correct property instances in the baseProject
 		EcoreUtil.getAllContents(baseRepo.getRootEntities(), true).forEachRemaining((object) -> {
-			if (object instanceof ComposedPropertyInstance) {													
-				ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
-				String fqn = cpi.getType().getFullQualifiedName();		
-								
+			if (object instanceof UnitValuePropertyInstance) {
+				UnitValuePropertyInstance uvpi = (UnitValuePropertyInstance) object;
+				String fqn = uvpi.getType().getFullQualifiedName();
+				
 				if (fqn.equals(propertyFqn)) {
-					CategoryAssignment ca = cpi.getTypeInstance();
-					UnitValuePropertyInstance uvpi = (UnitValuePropertyInstance) ca.getPropertyInstances().get(0);
-					
-					ICategoryAssignmentContainer cac = uvpi.getCategoryAssignmentContainer();	
-					mapOfBaseVpis.put(cac.getUuid().toString(), uvpi);				
-				} 
+					ICategoryAssignmentContainer cac = uvpi.getCategoryAssignmentContainer();
+					mapOfBaseVpis.put(cac.getUuid().toString(), uvpi);
+				}
 			}
 		});
 		subMonitor.worked(1);

@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.dlr.sc.virsat.model.concept.provider.DVLMConceptsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
@@ -46,13 +48,17 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 
 	/**
 	 * Constructor for the simple comparison dialog
-	 * @param parentShell the parent shell in which to create the dialog
-	 * @param vsProject The virSatProject which is the baseline project for the comparison.
+	 * 
+	 * @param parentShell
+	 *            the parent shell in which to create the dialog
+	 * @param vsProject
+	 *            The virSatProject which is the baseline project for the
+	 *            comparison.
 	 */
 	public CompareModelPropertyDialog(Shell parentShell, VirSatProjectResource vsProject) {
 		super(parentShell, vsProject);
 	}
-	
+
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
@@ -60,30 +66,33 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout layout = new GridLayout(1, false);
 		container.setLayout(layout);
-	
+
 		createPropertySelection(container);
-		
+
 		return area;
 	}
 
 	private TreeViewer viewerProperty;
-	
+
 	/**
 	 * Creates the dialog are where to select the correct property
-	 * @param container the container in which to create it
+	 * 
+	 * @param container
+	 *            the container in which to create it
 	 */
 	private void createPropertySelection(Composite container) {
 		Label labelProjectCompareTo = new Label(container, SWT.NONE);
 		labelProjectCompareTo.setText("Comapre property:");
 
 		viewerProperty = new TreeViewer(container);
-		
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 		adapterFactory.addAdapterFactory(new DVLMConceptsItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new DVLMCategoriesItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new GeneralItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		
+
 		viewerProperty.setContentProvider(new VirSatTransactionalAdapterFactoryContentProvider(adapterFactory) {
 			@Override
 			public Object[] getElements(Object rootObject) {
@@ -96,30 +105,31 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 			}
 		});
 		viewerProperty.setLabelProvider(new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory));
-		
+
 		IProject project = baseProject.getWrappedProject();
 		Repository repo = VirSatResourceSet.getResourceSet(project).getRepository();
-	
+
 		viewerProperty.setInput(repo.getActiveConcepts());
-	
+
 		GridData gridDataViewer = new GridData();
 		gridDataViewer.grabExcessHorizontalSpace = true;
 		gridDataViewer.grabExcessVerticalSpace = true;
 		gridDataViewer.horizontalAlignment = GridData.FILL;
 		gridDataViewer.verticalAlignment = GridData.FILL;
 		gridDataViewer.heightHint = VIEWER_HEIGHT;
-		
+
 		viewerProperty.getControl().setLayoutData(gridDataViewer);
 		viewerProperty.addSelectionChangedListener((obj) -> {
 			extractUserSelection();
 			validateInput();
 		});
-		
+
 		viewerProperty.expandToLevel(2);
 	}
-	
+
 	/**
 	 * This method validates the inputs
+	 * 
 	 * @return returns true in case inputs are valid
 	 */
 	@Override
@@ -128,22 +138,23 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 		if (inputsValid && selectedProperty != null) {
 			inputsValid = true;
 		} else {
-			setMessage("Select the Model to compare to and select the property to be used for the heat map!", IMessageProvider.ERROR);
+			setMessage("Select the Model to compare to and select the property to be used for the heat map!",
+					IMessageProvider.ERROR);
 		}
 
 		getButton(IDialogConstants.OK_ID).setEnabled(inputsValid);
 		return inputsValid;
 	}
-	
+
 	private static final int VIEWER_HEIGHT = 300;
-	
+
 	@Override
 	protected boolean isResizable() {
 		return true;
 	}
-	
-	private ComposedProperty selectedProperty;
-	
+
+	private AQudvTypeProperty selectedProperty;
+
 	@Override
 	protected void okPressed() {
 		extractUserSelection();
@@ -151,29 +162,40 @@ public class CompareModelPropertyDialog extends CompareModelDialog {
 	}
 
 	/**
-	 * This method takes the suer input and stores it in class internal variables
+	 * This method takes the super input and stores it in class internal variables
 	 */
 	@Override
 	protected void extractUserSelection() {
 		super.extractUserSelection();
-		
-		// Store the property that was selected
-		IStructuredSelection selection2 = (IStructuredSelection) viewerProperty.getSelection();
-		if (!selection2.isEmpty()) {
-			Object object = selection2.getFirstElement();
+
+		IStructuredSelection selection = (IStructuredSelection) viewerProperty.getSelection();
+		if (!selection.isEmpty()) {
+			Object object = selection.getFirstElement();
 			if (object instanceof ComposedProperty) {
-				selectedProperty = (ComposedProperty) selection2.getFirstElement();	
+				ComposedProperty cp = (ComposedProperty) object;
+				Category category = cp.getType();
+				AQudvTypeProperty property = category.getAllProperties().stream()
+						.filter(p -> p instanceof AQudvTypeProperty).map(p -> (AQudvTypeProperty) p).findFirst()
+						.orElse(null);
+				if (property != null) {
+					selectedProperty = property;
+				} else {
+					selectedProperty = null;
+				}
+			} else if (object instanceof AQudvTypeProperty) {
+				selectedProperty = (AQudvTypeProperty) object;
 			} else {
 				selectedProperty = null;
 			}
 		}
 	}
-	
+
 	/**
 	 * The property that was selected by the user
+	 * 
 	 * @return null in case no property was selected
 	 */
-	public ComposedProperty getComparisonProjectProperty() {
+	public AQudvTypeProperty getComparisonProjectProperty() {
 		return selectedProperty;
 	}
 }

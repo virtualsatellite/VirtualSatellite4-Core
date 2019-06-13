@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.model.extension.visualisation.comparison.CompareModelProperty;
@@ -64,7 +64,7 @@ public class CompareModelPropertyHandler extends AbstractHandler implements IHan
 				
 				if (dialog.open() == Window.OK) {
 					VirSatProjectResource vsCompareProject = dialog.getComparisonProjectResource();
-					ComposedProperty property  = dialog.getComparisonProjectProperty();
+					AQudvTypeProperty property  = dialog.getComparisonProjectProperty();
 					
 					if (vsCompareProject != null && property != null) {
 						new ProgressMonitorDialog(shell).run(true, false, (pm) -> {
