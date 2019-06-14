@@ -27,6 +27,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -53,6 +55,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IViewSite;
@@ -60,6 +63,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.part.ViewPart;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
+import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIo;
+import de.dlr.sc.virsat.model.extension.visualisation.treemanager.StartManagers;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.handler.CreateDeltaModelFolderHandler;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkClientVisUpdateHandler;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkTreeManager;
@@ -67,11 +75,6 @@ import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatProjectLabelProvider;
-import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
-import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIo;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.StartManagers;
 
 /**
  * Creates the visualisation view
@@ -121,6 +124,7 @@ public class VtkClientView extends ViewPart {
 	private Map<StructuralElementInstance, Boolean> filteredRootSeisToVisualise = null;
 	
 	private IProject currentlySelectedProject = null;
+	private IResourceChangeListener projectListener;
 	private VisualisationDeltaModel currentDeltaModel = null;
 	
 	/**
@@ -186,6 +190,8 @@ public class VtkClientView extends ViewPart {
 
 	@Override
 	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(projectListener);
+		
 		swtAwtComposite.dispose();
 		northButtonComposite.dispose();
 		diagramComposite.dispose();
@@ -199,6 +205,7 @@ public class VtkClientView extends ViewPart {
 		swtAwtComposite = null;
 		northButtonComposite = null;
 		diagramComposite = null;
+		projectListener = null;
 		StartManagers.stopVis();
 		VtkTreeManager.getInstance().clearVtkTreeManager();
 		super.dispose();
@@ -333,23 +340,8 @@ public class VtkClientView extends ViewPart {
 				return "UNKNOWN ELEMENT";
 			}
 		});
-
-		
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		List<IProject> allProjects = VirSatProjectCommons.getAllVirSatProjects(workspace);
-		
-		if (!allProjects.isEmpty()) {
-			projectCombo.setInput(allProjects);
-			projectCombo.setSelection(new StructuredSelection(allProjects.get(0)));		
-			currentlySelectedProject = allProjects.get(0);
-		
-		}
-		
-		currentDeltaModel = null;
-		
 		
 		projectCombo.addSelectionChangedListener(new ISelectionChangedListener() {
-			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
@@ -363,6 +355,38 @@ public class VtkClientView extends ViewPart {
 				}
 			}
 		});
+		
+		projectListener = new IResourceChangeListener() {
+			@Override
+			public void resourceChanged(IResourceChangeEvent event) {
+				Display.getDefault().asyncExec(() -> {
+					setProjectComboInput();
+				});
+			}
+		};
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(projectListener);
+		
+		setProjectComboInput();
+	}
+	
+	/**
+	 * Sets the input for the project combo box
+	 */
+	private void setProjectComboInput() {
+		currentDeltaModel = null;
+		
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		List<IProject> allProjects = VirSatProjectCommons.getAllVirSatProjects(workspace);
+		projectCombo.setInput(allProjects);
+		
+		if (!allProjects.isEmpty()) {
+			if (currentlySelectedProject == null) {
+				currentlySelectedProject = allProjects.get(0);
+			} 
+			projectCombo.setSelection(new StructuredSelection(currentlySelectedProject));
+		} else {
+			currentlySelectedProject = null;
+		}
 	}
 	
 	/**
