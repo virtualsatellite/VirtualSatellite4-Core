@@ -724,7 +724,6 @@ public class VtkTreeManager extends vtkPanel {
 	 * @param uuid ID which might belong to a visualized object
 	 */
 	public void checkIdAndCreateAxes(String uuid) {
-		
 		if (uuid != null) {
 			if (actorMap.containsKey(uuid)) {
 				selectedActor = actorMap.get(uuid);
@@ -741,8 +740,6 @@ public class VtkTreeManager extends vtkPanel {
 				
 			}
 		}
-		
-		
 	}
 
 	/**

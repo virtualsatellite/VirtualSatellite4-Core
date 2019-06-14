@@ -58,7 +58,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 				mNode = visualisationMessage.getSceneGraph().getNode();
 				VtkTreeManager visMan = VtkTreeManager.getInstance();
 				visMan.clearInvalidActors();
-				visMan.clearNewActors();
 				visMan.forceSceneryUpdate(mNode);
 				updateVisualisationScene();
 			}
@@ -80,7 +79,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		// render the scene
 		
 		visMan.Render();
-		
 	}
 
 	/**
