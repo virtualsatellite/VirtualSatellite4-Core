@@ -350,6 +350,7 @@ public class VtkClientView extends ViewPart {
 					currentlySelectedProject = newProject;
 					setDeltaComboInput();
 					
+					VtkTreeManager.getInstance().clearNewActors();
 					StartManagers.stopVis();
 					StartManagers.startVis(currentlySelectedProject, currentDeltaModel);
 				}
