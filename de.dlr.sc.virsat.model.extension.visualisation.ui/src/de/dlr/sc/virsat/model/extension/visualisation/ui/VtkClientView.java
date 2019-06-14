@@ -290,10 +290,11 @@ public class VtkClientView extends ViewPart {
 				drawColourMapValue(gc, fileExtension, width, height);
 				canvasBottom.drawBackground(gc, 0, 0, width, height);
 			}
-			parentComposite.layout(true, true);
+			
 		} else {
 			disposeBottomPanel();
 		}
+		parentComposite.layout(true, true);
 		
 	}
 	
