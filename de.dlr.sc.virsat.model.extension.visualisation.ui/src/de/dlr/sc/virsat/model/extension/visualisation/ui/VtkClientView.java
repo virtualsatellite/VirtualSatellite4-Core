@@ -367,6 +367,7 @@ public class VtkClientView extends ViewPart {
 		};
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(projectListener);
 		
+		currentDeltaModel = null;
 		setProjectComboInput();
 	}
 	
@@ -374,8 +375,6 @@ public class VtkClientView extends ViewPart {
 	 * Sets the input for the project combo box
 	 */
 	private void setProjectComboInput() {
-		currentDeltaModel = null;
-		
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		List<IProject> allProjects = VirSatProjectCommons.getAllVirSatProjects(workspace);
 		projectCombo.setInput(allProjects);
@@ -383,10 +382,12 @@ public class VtkClientView extends ViewPart {
 		if (!allProjects.isEmpty()) {
 			if (currentlySelectedProject == null) {
 				currentlySelectedProject = allProjects.get(0);
+				currentDeltaModel = null;
 			} 
 			projectCombo.setSelection(new StructuredSelection(currentlySelectedProject));
 		} else {
 			currentlySelectedProject = null;
+			currentDeltaModel = null;
 		}
 	}
 	
