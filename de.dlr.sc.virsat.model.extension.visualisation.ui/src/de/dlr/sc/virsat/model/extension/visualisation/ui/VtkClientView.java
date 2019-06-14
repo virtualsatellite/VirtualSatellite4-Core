@@ -162,9 +162,9 @@ public class VtkClientView extends ViewPart {
 		canvasBottom = new Canvas(bottemComposite, SWT.NONE);
 		canvasBottom.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 
-		createNorthButtonControls();
+		createNorthButtonPanel();
 		createVtkPanel(parent);
-		createBottomLegendArea(EXT_INITIAL);
+		createBottomLegendPanel(EXT_INITIAL);
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -214,7 +214,7 @@ public class VtkClientView extends ViewPart {
 	/**
 	 * Create buttons and checkboxes
 	 */
-	private void createNorthButtonControls() {
+	private void createNorthButtonPanel() {
 		createProjectCombo();
 		createDeltaCombo();
 
@@ -280,7 +280,7 @@ public class VtkClientView extends ViewPart {
 	 * Create the bottom area
 	 * @param fileExtension the file extension of the comparison model
 	 */
-	protected void createBottomLegendArea(String fileExtension) {
+	protected void createBottomLegendPanel(String fileExtension) {
 		Image image = loadLegend(selectLegend(fileExtension));
 		
 		int width = image.getBounds().width;
@@ -517,12 +517,12 @@ public class VtkClientView extends ViewPart {
 						IFile selectedDeltaModelFile = (IFile) selectedDeltaModelObject;
 						String ext = selectedDeltaModelFile.getFileExtension();
 						if (ext != null) {
-							createBottomLegendArea(ext);
+							createBottomLegendPanel(ext);
 						} else {
-							createBottomLegendArea(EXT_INITIAL);
+							createBottomLegendPanel(EXT_INITIAL);
 						}
 					} else {
-						createBottomLegendArea(EXT_INITIAL);
+						createBottomLegendPanel(EXT_INITIAL);
 					}
 				}
 			}
@@ -716,7 +716,7 @@ public class VtkClientView extends ViewPart {
 			public void handleEvent(Event event) {
 				int numOfProject = listAnimationProjectSelected.size();
 				if (numOfProject > 1 && numOfProject == (listAnimationDeltaModel.size() + 1)) {
-					createBottomLegendArea(EXT_COMPARE_GEO);
+					createBottomLegendPanel(EXT_COMPARE_GEO);
 					for (int i = 1; i < numOfProject; i++) {
 						StartManagers.stopVis();
 						StartManagers.startVis(listAnimationProjectSelected.get(i).getWrappedProject(),
