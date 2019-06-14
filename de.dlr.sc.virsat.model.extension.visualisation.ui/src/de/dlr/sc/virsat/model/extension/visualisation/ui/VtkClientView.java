@@ -304,6 +304,9 @@ public class VtkClientView extends ViewPart {
 	 * @return the legend
 	 */
 	protected String selectLegend(String fileExtension) {
+		if (fileExtension.contains(EXT_COMPARE_COLORMAP)) {
+			return COMPARE_COLORMAP_DIAGRAM_FILE;
+		}
 		switch (fileExtension) {
 			case EXT_COMPARE_GEO:
 				return COMPARE_GEO_DIAGRAM_FILE;
@@ -313,9 +316,6 @@ public class VtkClientView extends ViewPart {
 	
 			case EXT_INITIAL:
 				return COMPARE_INITIAL_FILE;
-	
-			case EXT_COMPARE_COLORMAP:
-				return COMPARE_COLORMAP_DIAGRAM_FILE;
 	
 			default:
 				return null;
