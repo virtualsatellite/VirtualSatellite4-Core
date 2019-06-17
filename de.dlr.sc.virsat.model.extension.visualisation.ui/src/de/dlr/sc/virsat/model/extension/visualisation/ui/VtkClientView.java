@@ -95,7 +95,7 @@ public class VtkClientView extends ViewPart {
 	private static final int COLORMAP_DIAGRAM_VALUE_DIGITLA = 10;
 
 	private static final String NO_DELTA_MODEL_TO_VISUALISE = "No Delta";
-	private static final String ANIMATION_LIST = "Animation List";
+	private static final String ANIMATION_LIST = "Animation Deltas";
 	private static final int ANIMATION_SLEEP_TIME = 1000;
 
 	private static VtkClientView vtkViewer = null;
@@ -115,8 +115,7 @@ public class VtkClientView extends ViewPart {
 	private Canvas canvasBottom = null;
 	protected Composite parentComposite = null;
 
-	private List<VirSatProjectResource> listAnimationProjectSelected = new ArrayList<VirSatProjectResource>();
-	private List<VisualisationDeltaModel> listAnimationDeltaModel = new ArrayList<VisualisationDeltaModel>();
+	private Map<IProject, VisualisationDeltaModel> animationProjectDeltas = new HashMap<>();
 	private Map<StructuralElementInstance, Boolean> filteredRootSeisToVisualise = null;
 
 	private IProject currentlySelectedProject = null;
@@ -464,9 +463,8 @@ public class VtkClientView extends ViewPart {
 		animationProjectCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof VirSatProjectResource) {
-					VirSatProjectResource resource = (VirSatProjectResource) element;
-					return resource.getWrappedProject().getName();
+				if (element instanceof IProject) {
+					return ((IProject) element).getName();
 				} else if (element.equals(ANIMATION_LIST)) {
 					return (String) element;
 				}
@@ -479,27 +477,44 @@ public class VtkClientView extends ViewPart {
 		animationProjectCombo.setInput(dropDownItems);
 		animationProjectCombo.setSelection(new StructuredSelection(ANIMATION_LIST));
 
+		animationProjectCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
+				Object selection = structuredSelection.getFirstElement();
+				if (selection instanceof IProject) {
+					IProject project = (IProject) selection;
+					projectCombo.setSelection(new StructuredSelection(project));
+
+					VisualisationDeltaModel delta = animationProjectDeltas.get(project);
+					currentDeltaModel = delta;
+					
+					createBottomLegendPanel(EXT_COMPARE_GEO);
+					StartManagers.stopVis();
+					StartManagers.startVis(currentlySelectedProject, currentDeltaModel);
+				}
+			}
+		});
+		
 	}
 
 	/**
 	 * Fill animation project combo viewer with selected project
-	 * 
-	 * @param listAniProSelected
-	 *            selected projects for animation
-	 * @param listAniDeltaModel
-	 *            list of VisualisationDeltaModel for visualization
+	 * @param projectVersions selected projects for animation. Size should be at least 2
+	 * @param projectDeltas list of VisualisationDeltaModel corresponding to changes between projects. Size should be size of projects - 1
 	 */
-	public void setAnimationProjectComboInput(List<VirSatProjectResource> listAniProSelected,
-			List<VisualisationDeltaModel> listAniDeltaModel) {
-		listAnimationProjectSelected.clear();
-		listAnimationDeltaModel.clear();
-		listAnimationProjectSelected = listAniProSelected;
-		listAnimationDeltaModel = listAniDeltaModel;
-
-		List<Object> dropDownItems = new ArrayList<>();
+	public void setAnimationProjectComboInput(List<VirSatProjectResource> projectVersions, List<VisualisationDeltaModel> projectDeltas) {
+		animationProjectDeltas.clear();
+		List<Object> dropDownItems = new ArrayList<>();		
 		dropDownItems.add(ANIMATION_LIST);
-		dropDownItems.addAll(listAniProSelected);
 
+		for (int i = 0; i < projectDeltas.size(); i++) {
+			IProject project = projectVersions.get(i + 1).getWrappedProject();
+			animationProjectDeltas.put(project, projectDeltas.get(i));
+			dropDownItems.add(project);
+		}
+		
 		animationProjectCombo.setInput(dropDownItems);
 		animationProjectCombo.setSelection(new StructuredSelection(ANIMATION_LIST));
 	}
@@ -749,18 +764,15 @@ public class VtkClientView extends ViewPart {
 
 			@Override
 			public void handleEvent(Event event) {
-				int numOfProject = listAnimationProjectSelected.size();
-				if (numOfProject > 1 && numOfProject == (listAnimationDeltaModel.size() + 1)) {
-					createBottomLegendPanel(EXT_COMPARE_GEO);
-					for (int i = 1; i < numOfProject; i++) {
-						StartManagers.stopVis();
-						StartManagers.startVis(listAnimationProjectSelected.get(i).getWrappedProject(),
-								listAnimationDeltaModel.get(i - 1));
-						sleep(ANIMATION_SLEEP_TIME);
-					}
-
+				@SuppressWarnings("unchecked")
+				List<Object> animationDropDownContent = (List<Object>) animationProjectCombo.getInput();
+				Object animationSelection = ((IStructuredSelection) animationProjectCombo.getSelection()).getFirstElement();
+				int currentIndex = animationDropDownContent.indexOf(animationSelection);
+				
+				for (int i = currentIndex + 1; i < animationDropDownContent.size(); i++) {
+					animationProjectCombo.setSelection(new StructuredSelection(animationDropDownContent.get(i)));
+					sleep(ANIMATION_SLEEP_TIME);
 				}
-
 			}
 		});
 	}
