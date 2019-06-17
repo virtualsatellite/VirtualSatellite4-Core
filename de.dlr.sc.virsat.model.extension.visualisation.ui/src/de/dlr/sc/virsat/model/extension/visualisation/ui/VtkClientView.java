@@ -85,7 +85,6 @@ public class VtkClientView extends ViewPart {
 	private static final String EXT_COMPARE_COLORMAP = "vcmm";
 	private static final String COLOR_MAP_FILE_EXT_SPLIT = "_";
 
-	private static final String COMPARE_INITIAL_FILE = "/resources/images/diagram_initial.png";
 	private static final String COMPARE_GEO_DIAGRAM_FILE = "/resources/images/diagram_compare_geo.png";
 	private static final String COMPARE_PARAMETER_DIAGRAM_FILE = "/resources/images/diagram_compare_para.png";
 	private static final String COMPARE_COLORMAP_DIAGRAM_FILE = "/resources/images/diagram_colormap.png";
@@ -114,6 +113,7 @@ public class VtkClientView extends ViewPart {
 	private ComboViewer animationProjectCombo = null;
 	private Button animationRunButton = null;
 	private Canvas canvasBottom = null;
+	protected Composite parentComposite = null;
 
 	private Map<IProject, VisualisationDeltaModel> animationProjectDeltas = new HashMap<>();
 	private Map<StructuralElementInstance, Boolean> filteredRootSeisToVisualise = null;
@@ -148,22 +148,18 @@ public class VtkClientView extends ViewPart {
 		final int COUNT_VIEW_BUTTONS = 10;
 
 		parent.setLayout(new GridLayout(1, true));
+		parentComposite = parent;
 		northButtonComposite = new Composite(parent, SWT.NONE);
 		northButtonComposite.setLayout(new GridLayout(COUNT_VIEW_BUTTONS, false));
 		northButtonComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
 
 		swtAwtComposite = new Composite(parent, SWT.EMBEDDED);
 		swtAwtComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+	
 
-		bottemComposite = new Composite(parent, SWT.NONE);
-		bottemComposite.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, true, false));
-
-		canvasBottom = new Canvas(bottemComposite, SWT.NONE);
-		canvasBottom.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-
-		createNorthButtonControls();
+		createNorthButtonPanel();
 		createVtkPanel(parent);
-		createBottomLegendArea(EXT_INITIAL);
+		createBottomLegendPanel(EXT_INITIAL);
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -192,17 +188,16 @@ public class VtkClientView extends ViewPart {
 	public void dispose() {
 		swtAwtComposite.dispose();
 		northButtonComposite.dispose();
-		bottemComposite.dispose();
 		filterRootElementsButton.dispose();
 		frontButton.dispose();
 		sideButton.dispose();
 		topButton.dispose();
 		checkBoxLocalAxesEnables.dispose();
 		checkBoxGlobalAxesEnables.dispose();
-		canvasBottom.dispose();
+		disposeBottomPanel();
 		swtAwtComposite = null;
 		northButtonComposite = null;
-		bottemComposite = null;
+		
 		StartManagers.stopVis();
 		VtkTreeManager.getInstance().clearVtkTreeManager();
 		super.dispose();
@@ -213,7 +208,7 @@ public class VtkClientView extends ViewPart {
 	/**
 	 * Create buttons and checkboxes
 	 */
-	private void createNorthButtonControls() {
+	private void createNorthButtonPanel() {
 		createProjectCombo();
 		createDeltaCombo();
 
@@ -279,19 +274,56 @@ public class VtkClientView extends ViewPart {
 	 * Create the bottom area
 	 * @param fileExtension the file extension of the comparison model
 	 */
-	protected void createBottomLegendArea(String fileExtension) {
-		Image image = loadLegend(selectLegend(fileExtension));
+	protected void createBottomLegendPanel(String fileExtension) {
+		Image image = loadLegend(parentComposite, selectLegend(fileExtension));
 		
-		int width = image.getBounds().width;
-		int height = image.getBounds().height;
-		canvasBottom.setSize(width, height);
-		canvasBottom.setBackgroundImage(image);
-		
-		if (fileExtension.contains(EXT_COMPARE_COLORMAP)) {
-			GC gc = new GC(image);
-			drawColourMapValue(gc, fileExtension, width, height);
-			canvasBottom.drawBackground(gc, 0, 0, width, height);
+		if (image != null) {
+			initBottomPanel(parentComposite);
+			int width = image.getBounds().width;
+			int height = image.getBounds().height;
+			canvasBottom.setSize(width, height);
+			canvasBottom.setBackgroundImage(image);
+			
+			if (fileExtension.contains(EXT_COMPARE_COLORMAP)) {
+				GC gc = new GC(image);
+				drawColourMapValue(gc, fileExtension, width, height);
+				canvasBottom.drawBackground(gc, 0, 0, width, height);
+			}
+			
+		} else {
+			disposeBottomPanel();
 		}
+		parentComposite.layout(true, true);
+		
+	}
+	
+	
+	/**
+	 * Create panel if needed
+	 * @param parent the parent element
+	 */
+	protected void initBottomPanel(final Composite parent) {
+		if (bottemComposite == null) {
+			bottemComposite = new Composite(parent, SWT.NONE);
+			bottemComposite.setLayoutData(new GridData(GridData.BEGINNING, GridData.END, true, false));
+
+			canvasBottom = new Canvas(bottemComposite, SWT.NONE);
+			canvasBottom.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+		}
+	}
+	
+	
+	/**
+	 * dispose the bottom panel if existed
+	 */
+	protected void disposeBottomPanel() {
+		if (bottemComposite != null) {
+			bottemComposite.dispose();
+			canvasBottom.dispose();
+			bottemComposite = null;
+			canvasBottom = null;
+		}
+		
 	}
 
 
@@ -314,7 +346,7 @@ public class VtkClientView extends ViewPart {
 				return COMPARE_PARAMETER_DIAGRAM_FILE;
 	
 			case EXT_INITIAL:
-				return COMPARE_INITIAL_FILE;
+				return null;
 	
 			default:
 				return null;
@@ -323,13 +355,16 @@ public class VtkClientView extends ViewPart {
 
 	/**
 	 * Load the current legend
+	 * @param parent the parent element
 	 * @param legendFile the legend file path
 	 * @return the image file
 	 */
-	protected Image loadLegend(String legendFile) {
+	protected Image loadLegend(final Composite parent, String legendFile) {
 		Image image = null;
 		try {
-			image = new Image(canvasBottom.getDisplay(), Activator.getFileFromPlugin(legendFile).openStream());
+			if (legendFile != null) {
+				image = new Image(parent.getDisplay(), Activator.getFileFromPlugin(legendFile).openStream());
+			}
 		} catch (IOException e) {
 			Activator.getDefault().getLog()
 					.log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to load image", e));
@@ -455,7 +490,7 @@ public class VtkClientView extends ViewPart {
 					VisualisationDeltaModel delta = animationProjectDeltas.get(project);
 					currentDeltaModel = delta;
 					
-					createBottomLegendArea(EXT_COMPARE_GEO);
+					createBottomLegendPanel(EXT_COMPARE_GEO);
 					StartManagers.stopVis();
 					StartManagers.startVis(currentlySelectedProject, currentDeltaModel);
 				}
@@ -532,12 +567,12 @@ public class VtkClientView extends ViewPart {
 						IFile selectedDeltaModelFile = (IFile) selectedDeltaModelObject;
 						String ext = selectedDeltaModelFile.getFileExtension();
 						if (ext != null) {
-							createBottomLegendArea(ext);
+							createBottomLegendPanel(ext);
 						} else {
-							createBottomLegendArea(EXT_INITIAL);
+							createBottomLegendPanel(EXT_INITIAL);
 						}
 					} else {
-						createBottomLegendArea(EXT_INITIAL);
+						createBottomLegendPanel(EXT_INITIAL);
 					}
 				}
 			}
