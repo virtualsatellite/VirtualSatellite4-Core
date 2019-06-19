@@ -68,7 +68,7 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 	 * Method to set up the Uuid Text
 	 */
 	private void setUpText() {
-		
+
 		Display display = Display.getCurrent();
 		Color darkGray = display.getSystemColor(SWT.COLOR_DARK_GRAY);
 		Color gray = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
@@ -76,6 +76,7 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 		textUuid.setEditable(false);
 		textUuid.setBackground(gray);
 		textUuid.setForeground(darkGray);
+
 		GridData gridData = createDefaultGridData();
 	    gridData.horizontalSpan = 1;
 	    textUuid.setLayoutData(gridData);
