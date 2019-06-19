@@ -1,0 +1,27 @@
+= Virtual Satellite User Manual
+Doc Writer <doc.writer@example.org>
+v1.0, 2014-09-09
+:example-caption!:
+:appversion: 4.9.0
+
+This is a user manual for an example project.
+
+:numbered:
+
+== Introduction
+
+This project does something.
+We just haven't decided what that is yet.
+
+== Attributes
+
+.Built-in
+asciidoctor-version:: {asciidoctor-version}
+safe-mode-name:: {safe-mode-name}
+docdir:: {docdir}
+docfile:: {docfile}
+imagesdir:: {imagesdir}
+
+.Custom
+sourcedir:: {sourcedir}
+

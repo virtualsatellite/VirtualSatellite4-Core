@@ -1,28 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<relativePath>../maven/pom.xml</relativePath>
+		<groupId>de.dlr.sc.virsat</groupId>
+		<artifactId>de.dlr.sc.virsat</artifactId>
+		<version>4.9.0-SNAPSHOT</version>
+	</parent>
 
-SPDX-License-Identifier: EPL-2.0
--->
+	<artifactId>de.dlr.sc.virsat.docs.feature</artifactId>
+	<packaging>eclipse-feature</packaging>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	<name>de.dlr.sc.virsat.docs.feature</name>
 
-  <parent>
-    <relativePath>../maven/pom.xml</relativePath>
-    <groupId>de.dlr.sc.virsat</groupId>
-    <artifactId>de.dlr.sc.virsat</artifactId>
-    <version>4.9.0-SNAPSHOT</version>
-  </parent>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<asciidoctor.maven.plugin.version>2.0.0-RC.1</asciidoctor.maven.plugin.version>
+		<asciidoctorj.pdf.version>1.5.0-alpha.17</asciidoctorj.pdf.version>
+		<asciidoctorj.version>2.0.0</asciidoctorj.version>
+		<jruby.version>9.2.7.0</jruby.version>
+	</properties>
 
-  <artifactId>de.dlr.sc.virsat.docs.feature</artifactId>
-  <packaging>eclipse-feature</packaging>
-   
-  <name>de.dlr.sc.virsat.docs.feature</name>
+	<build>
+		<defaultGoal>process-resources</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>${asciidoctor.maven.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-pdf</artifactId>
+						<version>${asciidoctorj.pdf.version}</version>
+					</dependency>
+					<!-- Comment this section to use the default jruby artifact provided 
+						by the plugin -->
+					<dependency>
+						<groupId>org.jruby</groupId>
+						<artifactId>jruby-complete</artifactId>
+						<version>${jruby.version}</version>
+					</dependency>
+					<!-- Comment this section to use the default AsciidoctorJ artifact provided 
+						by the plugin -->
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj</artifactId>
+						<version>${asciidoctorj.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<sourceDirectory>src/docs/</sourceDirectory>
+					<!-- Attributes common to all output formats -->
+					<attributes>
+						<sourcedir>${project.build.sourceDirectory}</sourcedir>
+					</attributes>
+					<outputDirectory>${project.basedir}/docs</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-pdf-doc</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>pdf</backend>
+							<!-- Since 1.5.0-alpha.9 PDF back-end can use 'rouge' as well as 'coderay' 
+								for source highlighting -->
+							<!-- Due to a known issue on windows, it is recommended to use 'coderay' 
+								until an new version of 'rouge' is released. see discussions: https://github.com/asciidoctor/asciidoctor-maven-examples/pull/58 
+								https://github.com/asciidoctor/asciidoctorj-pdf/issues/3 https://github.com/jneen/rouge/issues/661 -->
+							<sourceHighlighter>coderay</sourceHighlighter>
+							<attributes>
+								<icons>font</icons>
+								<pagenums />
+								<toc />
+								<idprefix />
+								<idseparator>-</idseparator>
+							</attributes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project> 
