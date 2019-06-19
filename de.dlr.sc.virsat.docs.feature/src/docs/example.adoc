@@ -1,27 +1,50 @@
-= Virtual Satellite User Manual
-Doc Writer <doc.writer@example.org>
-v1.0, 2014-09-09
-:example-caption!:
+= Virtual Satellite 4 Core - User Manual
+Philipp M. Fischer <philipp.fischer@dlr.de>
+Sascha Müller <sa.mueller@dlr.de>
+v1.0, 2019-06-19
+
+
+:toc:
+
+ifndef::imagesdir::[:imagesdir: images]
 :appversion: 4.9.0
 
-This is a user manual for an example project.
+Virtual Satellite - User Manual
+User Manual for Virtual Satellite 4 Core
 
 :numbered:
 
-== Introduction
+== System Requirements 
 
-This project does something.
-We just haven't decided what that is yet.
+Virtual Satellite is currently supporting two operating	systems. The product is mainly based on Java and Eclipse Technology.
 
-== Attributes
+The first variant is build for Windows 7 64 bit operating systems. A Java 8 Runtime is required.
 
-.Built-in
-asciidoctor-version:: {asciidoctor-version}
-safe-mode-name:: {safe-mode-name}
-docdir:: {docdir}
-docfile:: {docfile}
-imagesdir:: {imagesdir}
+The second variant is build for Linux 64 bit systems. A Java 8 Runtime is required. Some dependencies to C and C++ libraries are	build on a Suse Linux Enterprise Distribution (SLED). A recompilation for other distributions is probably needed.
 
-.Custom
-sourcedir:: {sourcedir}
+== Installation
+
+Installing Virtual Satellite is as easy as possible. Provided that a Java Runtime environment is installed to your system. The given instructions are meant for a windows system. Installation steps on linux are very similar.
+
+. Download the Virtual Satellite zip file from the GitHub releases section. 
++
+image::chapterInstallation/DownloadGitHubRelease.png[Download Virtual Satellite zip from GitHub releases.]
+
+. Store the zip file to the folder of your choice (e.g.: C:\VirtualSatellite\) and unzip it here.
++
+image::chapterInstallation/Unzip.png[Unzip Virtual Satellite.]
+
+. Dive into the unzipped sub-folder and Execute the VirSat4_Core.exe file.
++
+image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzipped sub-folder.]
+
+== First Steps
+
+== License & Copyright
+
+Copyright (c) 2008-2019 German Aerospace Center (DLR),
+Simulation and Software Technology, Germany.
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ .
+		
 
