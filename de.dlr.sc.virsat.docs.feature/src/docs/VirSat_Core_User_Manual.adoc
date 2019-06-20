@@ -40,6 +40,87 @@ image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzi
 
 == First Steps
 
+TBD
+
+== Setting up the infrastructure
+
+TBD
+
+=== Architecture Overview
+
+TBD
+
+=== Sharing and committing a new project
+
+TBD
+
+=== Loading and updating from a shared project
+
+TBD
+
+== Modeling with Virtual Satellite
+
+TBD
+
+=== General modeling
+
+TBD
+
+==== Quantities, Units, Dimensions and Values
+
+TBD
+
+==== User Rights Management
+
+TBD
+
+=== Modeling Concepts
+
+TBD
+
+==== Activating a concept
+
+TBD
+
+==== Modeling with the concept palette
+
+TBD
+
+==== Extended product structures - Inheritance and Configuration Control
+
+TBD
+
+==== Product mass summaries
+
+TBD
+
+=== Advanced Modeling
+
+TBD
+
+==== Adjusting Calculations
+
+TBD
+
+==== Using Apps
+
+TBD
+
+==== Developing a Concept
+
+TBD
+
+== Special commands
+
+TBD
+
+=== Enforce user rights
+
+TBD
+
+=== Enforce super user rights
+
+
 == License & Copyright
 
 Copyright (c) 2008-2019 German Aerospace Center (DLR),
