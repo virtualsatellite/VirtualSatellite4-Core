@@ -28,15 +28,15 @@ Installing Virtual Satellite is as easy as possible. Provided that a Java Runtim
 
 . Download the Virtual Satellite zip file from the GitHub releases section. 
 +
-image::chapterInstallation/DownloadGitHubRelease.png[Download Virtual Satellite zip from GitHub releases.]
+image::chapterInstallation/DownloadGitHubRelease.png[Download Virtual Satellite zip from GitHub releases., scaledwidth="75%",float="right",align="center"]
 
 . Store the zip file to the folder of your choice (e.g.: C:\VirtualSatellite\) and unzip it here.
 +
-image::chapterInstallation/Unzip.png[Unzip Virtual Satellite.]
+image::chapterInstallation/Unzip.png[Unzip Virtual Satellite., scaledwidth="75%",float="right",align="center"]
 
 . Dive into the unzipped sub-folder and Execute the VirSat4_Core.exe file.
 +
-image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzipped sub-folder.]
+image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzipped sub-folder., scaledwidth="75%",float="right",align="center"]
 
 == First Steps
 
