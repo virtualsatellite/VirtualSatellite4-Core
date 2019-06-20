@@ -12,15 +12,26 @@ package de.dlr.sc.virsat.model.ui;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
+import org.eclipse.e4.ui.css.swt.theme.IThemeManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 
 /**
  * The activator class controls the plug-in life cycle
  */
+@SuppressWarnings("restriction") //Discouraged access to theme control - API may change in the future
 public class Activator extends AbstractUIPlugin {
+
+	private static final String SUPER_USER_THEME_ID = "de.dlr.sc.virsat.branding.ui.themesuperuser";
 
 	// The plug-in ID
 	private static String pluginId;
@@ -43,6 +54,24 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		setPluginId(getDefault().getBundle().getSymbolicName());
+		if (UserRegistry.getInstance().isSuperUser()) {
+			setSuperUserTheme();
+		}
+	}
+
+	/**
+	 * Changes Eclipse theme to SuperUser theme
+	 */
+	private void setSuperUserTheme() {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		BundleContext context = bundle.getBundleContext();
+		ServiceReference<?> ref = context.getServiceReference(IThemeManager.class.getName());
+		IThemeManager manager = (IThemeManager) context.getService(ref);
+		IThemeEngine engine =
+				manager.getEngineForDisplay(PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null
+						? Display.getCurrent()
+						: PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay());
+		engine.setTheme(SUPER_USER_THEME_ID, false);
 	}
 
 	/**

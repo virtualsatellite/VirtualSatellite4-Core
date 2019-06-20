@@ -11,7 +11,8 @@ Require-Bundle: de.dlr.sc.virsat.model.edit;visibility:=reexport,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.core.expressions,
- org.eclipse.emf.common.ui
+ org.eclipse.emf.common.ui,
+ org.eclipse.e4.ui.css.swt.theme
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
