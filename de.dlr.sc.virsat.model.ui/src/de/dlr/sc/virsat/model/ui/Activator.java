@@ -11,13 +11,18 @@ package de.dlr.sc.virsat.model.ui;
 
 import java.net.URL;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
 import org.eclipse.e4.ui.css.swt.theme.IThemeManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -63,15 +68,19 @@ public class Activator extends AbstractUIPlugin {
 	 * Changes Eclipse theme to SuperUser theme
 	 */
 	private void setSuperUserTheme() {
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-		BundleContext context = bundle.getBundleContext();
-		ServiceReference<?> ref = context.getServiceReference(IThemeManager.class.getName());
-		IThemeManager manager = (IThemeManager) context.getService(ref);
-		IThemeEngine engine =
-				manager.getEngineForDisplay(PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null
-						? Display.getCurrent()
-						: PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay());
-		engine.setTheme(SUPER_USER_THEME_ID, false);
+        new UIJob("Setting SuperUser theme") {
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+        		Bundle bundle = FrameworkUtil.getBundle(getClass());
+        		BundleContext context = bundle.getBundleContext();
+        		ServiceReference<?> ref = context.getServiceReference(IThemeManager.class.getName());
+        		IThemeManager manager = (IThemeManager) context.getService(ref);
+        		Display display = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
+        		IThemeEngine engine = manager.getEngineForDisplay(display);
+        		engine.setTheme(SUPER_USER_THEME_ID, false);
+                return Status.OK_STATUS;
+            }
+        }.run(new NullProgressMonitor());
 	}
 
 	/**
