@@ -1,0 +1,137 @@
+= Virtual Satellite 4 Core - User Manual
+Philipp M. Fischer <philipp.fischer@dlr.de>
+Sascha Müller <sa.mueller@dlr.de>
+v1.0, 2019-06-19
+
+
+:toc:
+
+ifndef::imagesdir::[:imagesdir: images]
+:appversion: 4.9.0
+
+Virtual Satellite - User Manual
+User Manual for Virtual Satellite 4 Core
+
+:numbered:
+
+== System Requirements 
+
+Virtual Satellite is currently supporting two operating	systems. The product is mainly based on Java and Eclipse Technology.
+
+The first variant is build for Windows 7 64 bit operating systems. A Java 8 Runtime is required.
+
+The second variant is build for Linux 64 bit systems. A Java 8 Runtime is required. Some dependencies to C and C++ libraries are	build on a Suse Linux Enterprise Distribution (SLED). A recompilation for other distributions is probably needed.
+
+== Installation
+
+Installing Virtual Satellite is as easy as possible. Provided that a Java Runtime environment is installed to your system. The given instructions are meant for a windows system. Installation steps on linux are very similar.
+
+. Download the Virtual Satellite zip file from the GitHub releases section. 
++
+image::chapterInstallation/DownloadGitHubRelease.png[Download Virtual Satellite zip from GitHub releases., scaledwidth="75%",float="right",align="center"]
+
+. Store the zip file to the folder of your choice (e.g.: C:\VirtualSatellite\) and unzip it here.
++
+image::chapterInstallation/Unzip.png[Unzip Virtual Satellite., scaledwidth="75%",float="right",align="center"]
+
+. Dive into the unzipped sub-folder and Execute the VirSat4_Core.exe file.
++
+image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzipped sub-folder., scaledwidth="75%",float="right",align="center"]
+
+. Once Virtual Satellite is started it should appear to you as in the image below. Now press the link "Start modeling now".
++
+image::chapterInstallation/VirtualSatelliteStarted.png[The Virtual Satellite 4 Application., scaledwidth="75%",float="right",align="center"]
+
+Done. You installed and successfully started Virtual Satellite.
+
+== First Steps
+
+TBD
+
+== Setting up the infrastructure
+
+TBD
+
+=== Architecture Overview
+
+TBD
+
+=== Sharing and committing a new project
+
+TBD
+
+=== Loading and updating from a shared project
+
+TBD
+
+== Modeling with Virtual Satellite
+
+TBD
+
+=== General modeling
+
+TBD
+
+==== Quantities, Units, Dimensions and Values
+
+TBD
+
+==== User Rights Management
+
+TBD
+
+=== Modeling Concepts
+
+TBD
+
+==== Activating a concept
+
+TBD
+
+==== Modeling with the concept palette
+
+TBD
+
+==== Extended product structures - Inheritance and Configuration Control
+
+TBD
+
+==== Product mass summaries
+
+TBD
+
+=== Advanced Modeling
+
+TBD
+
+==== Adjusting Calculations
+
+TBD
+
+==== Using Apps
+
+TBD
+
+==== Developing a Concept
+
+TBD
+
+== Special commands
+
+TBD
+
+=== Enforce user rights
+
+TBD
+
+=== Enforce super user rights
+
+
+== License & Copyright
+
+Copyright (c) 2008-2019 German Aerospace Center (DLR),
+Simulation and Software Technology, Germany.
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ .
+		
+
