@@ -1,50 +1,63 @@
-= Virtual Satellite 4 Core - User Manual
-Philipp M. Fischer <philipp.fischer@dlr.de>
-Sascha Müller <sa.mueller@dlr.de>
-v1.0, 2019-06-19
+= Virtual Satellite 4 Core: User Manual
+:doctype: book 
+:imagesdir: images
+:title-logo-image: images/title/VirtualSatellite_Modelling_4k.jpg
+:toc: 
 
+Read carefully and learn
 
-:toc:
+:sectnums:
 
-ifndef::imagesdir::[:imagesdir: images]
-:appversion: 4.9.0
+== Getting Started
 
-Virtual Satellite - User Manual
-User Manual for Virtual Satellite 4 Core
+=== System Requirements 
 
-:numbered:
+Virtual Satellite is based on Java and Eclipse Technology. It currently supports the following operating system configurations
 
-== System Requirements 
+. Windows 7 64bit with Java 8 runtime environment
+. Linux 64 bit with Java 8 runtime environment
 
-Virtual Satellite is currently supporting two operating	systems. The product is mainly based on Java and Eclipse Technology.
+[WARNING] 
+.Linux compilation issues
+==== 
+Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A recompilation when using other distributions is probably needed. This concerns e.g. the visualization functionality absed on the Visualization Toolkit (VTK).
+====
 
-The first variant is build for Windows 7 64 bit operating systems. A Java 8 Runtime is required.
+=== Installation
 
-The second variant is build for Linux 64 bit systems. A Java 8 Runtime is required. Some dependencies to C and C++ libraries are	build on a Suse Linux Enterprise Distribution (SLED). A recompilation for other distributions is probably needed.
+Installing Virtual Satellite is as easy as possible. Provided that a Java Runtime environment is installed to your system. Follow the steps below to install Virtual Satellite on a windows system: 
 
-== Installation
+NOTE: Installation steps on linux are very similar.
 
-Installing Virtual Satellite is as easy as possible. Provided that a Java Runtime environment is installed to your system. The given instructions are meant for a windows system. Installation steps on linux are very similar.
+{counter2:step:0}
+[%header,cols="1,4,4"] 
+|===
 
-. Download the Virtual Satellite zip file from the GitHub releases section. 
-+
-image::chapterInstallation/DownloadGitHubRelease.png[Download Virtual Satellite zip from GitHub releases., scaledwidth="75%",float="right",align="center"]
+|Step
+|Task
+|Image
 
-. Store the zip file to the folder of your choice (e.g.: C:\VirtualSatellite\) and unzip it here.
-+
-image::chapterInstallation/Unzip.png[Unzip Virtual Satellite., scaledwidth="75%",float="right",align="center"]
+|{counter:step}
+|Download the Virtual Satellite zip file from the GitHub releases section.
+|image:chapterInstallation/DownloadGitHubRelease.png[Download]
 
-. Dive into the unzipped sub-folder and Execute the VirSat4_Core.exe file.
-+
-image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzipped sub-folder., scaledwidth="75%",float="right",align="center"]
+|{counter:step}
+|Store the zip file to the folder of your choice (e.g.: C:\VirtualSatellite\) and unzip it here.
+|image:chapterInstallation/Unzip.png[Unzip]
 
-. Once Virtual Satellite is started it should appear to you as in the image below. Now press the link "Start modeling now".
-+
-image::chapterInstallation/VirtualSatelliteStarted.png[The Virtual Satellite 4 Application., scaledwidth="75%",float="right",align="center"]
+|{counter:step}
+|Dive into the unzipped sub-folder and Execute the VirSat4_Core.exe file.
+|image:chapterInstallation/Execute.png[Execute]
+
+|{counter:step}
+|Once Virtual Satellite is started it should appear to you as in the image below. Now press the link "Start modeling now".
+|image:chapterInstallation/VirtualSatelliteStarted.png[Started]
+
+|===
 
 Done. You installed and successfully started Virtual Satellite.
 
-== First Steps
+=== First Steps
 
 TBD
 
@@ -126,12 +139,17 @@ TBD
 
 === Enforce super user rights
 
-
+[colophone]
 == License & Copyright
 
-Copyright (c) 2008-2019 German Aerospace Center (DLR),
-Simulation and Software Technology, Germany.
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| Travis CI Job Number: | {buildnr}
+|=== 
 
-This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ .
-		
+Copyright (c) 2008-2019 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
 
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.
