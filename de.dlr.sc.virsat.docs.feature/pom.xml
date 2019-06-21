@@ -6,8 +6,7 @@
 	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
 	EPL-2.0 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -23,13 +22,8 @@
 	<name>de.dlr.sc.virsat.docs.feature</name>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 		<asciidoctor.maven.plugin.version>2.0.0-RC.1</asciidoctor.maven.plugin.version>
-		<asciidoctorj.pdf.version>1.5.0-alpha.17</asciidoctorj.pdf.version>
-		<asciidoctorj.version>2.0.0</asciidoctorj.version>
-		<jruby.version>9.2.7.0</jruby.version>
+		<asciidoctorj.pdf.version>1.5.0-alpha.18</asciidoctorj.pdf.version>
 	</properties>
 
 	<build>
@@ -45,28 +39,20 @@
 						<artifactId>asciidoctorj-pdf</artifactId>
 						<version>${asciidoctorj.pdf.version}</version>
 					</dependency>
-					<!-- Comment this section to use the default jruby artifact provided 
-						by the plugin -->
-					<dependency>
-						<groupId>org.jruby</groupId>
-						<artifactId>jruby-complete</artifactId>
-						<version>${jruby.version}</version>
-					</dependency>
-					<!-- Comment this section to use the default AsciidoctorJ artifact provided 
-						by the plugin -->
-					<dependency>
-						<groupId>org.asciidoctor</groupId>
-						<artifactId>asciidoctorj</artifactId>
-						<version>${asciidoctorj.version}</version>
-					</dependency>
 				</dependencies>
 				<configuration>
 					<sourceDirectory>src/docs/</sourceDirectory>
 					<!-- Attributes common to all output formats -->
-					<attributes>
-						<sourcedir>${project.build.sourceDirectory}</sourcedir>
-					</attributes>
 					<outputDirectory>${project.basedir}/docs</outputDirectory>
+					<resources>
+						<resource>
+							<directory>src/docs</directory>
+							<excludes>
+								<exclude>images/**/*</exclude>
+								<exclude>images</exclude>
+							</excludes>
+						</resource>
+					</resources>
 				</configuration>
 				<executions>
 					<execution>
@@ -77,18 +63,10 @@
 						</goals>
 						<configuration>
 							<backend>pdf</backend>
-							<!-- Since 1.5.0-alpha.9 PDF back-end can use 'rouge' as well as 'coderay' 
-								for source highlighting -->
-							<!-- Due to a known issue on windows, it is recommended to use 'coderay' 
-								until an new version of 'rouge' is released. see discussions: https://github.com/asciidoctor/asciidoctor-maven-examples/pull/58 
-								https://github.com/asciidoctor/asciidoctorj-pdf/issues/3 https://github.com/jneen/rouge/issues/661 -->
 							<sourceHighlighter>coderay</sourceHighlighter>
 							<attributes>
-								<icons>font</icons>
 								<pagenums />
 								<toc />
-								<idprefix />
-								<idseparator>-</idseparator>
 							</attributes>
 						</configuration>
 					</execution>
