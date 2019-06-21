@@ -38,6 +38,12 @@ image::chapterInstallation/Unzip.png[Unzip Virtual Satellite., scaledwidth="75%"
 +
 image::chapterInstallation/Execute.png[Execute Virtual Satellite 4 from the unzipped sub-folder., scaledwidth="75%",float="right",align="center"]
 
+. Once Virtual Satellite is started it should appear to you as in the image below. Now press the link "Start modeling now".
++
+image::chapterInstallation/VirtualSatelliteStarted.png[The Virtual Satellite 4 Application., scaledwidth="75%",float="right",align="center"]
+
+Done. You installed and successfully started Virtual Satellite.
+
 == First Steps
 
 TBD
