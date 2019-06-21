@@ -1,10 +1,10 @@
 = Virtual Satellite 4 Core: User Manual
-:doctype: book 
 :imagesdir: images
 :title-logo-image: images/title/VirtualSatellite_Modelling_4k.jpg
 :toc: 
 
-Read carefully and learn
+[quote, Philipp M. Fischer]
+It has been a long way to get here and it will be an even harder way to go on. Thanks to everyone who contributed so far.
 
 :sectnums:
 
@@ -30,7 +30,7 @@ Installing Virtual Satellite is as easy as possible. Provided that a Java Runtim
 NOTE: Installation steps on linux are very similar.
 
 {counter2:step:0}
-[%header,cols="1,4,4"] 
+[%header,cols="1,4,5"] 
 |===
 
 |Step
