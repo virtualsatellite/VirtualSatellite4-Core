@@ -64,7 +64,7 @@ Now where you successfully installed Virtual Satellite to your computer it is ab
 
 NOTE: In this example we work locally on your computer, there is no need for a subversion service or similar. 
 
-{counter2:step:0}
+:step: 0
 [%header,cols=">8,62a,40a"] 
 |===
 
@@ -104,9 +104,73 @@ NOTE: In case you don't see the _Welcome Screen_ as shown in the image, it is po
 NOTE: In case _views_ get lost, you can always reset the _perspective_ by right-click image:chapterFirstSteps/BtnCorePerspective.png[Icon Core Perspective] then menu:Context[Reset] 
 |image:chapterFirstSteps/Perspective.png[Perspective]
 
+|{counter:step}.
+|Open the dialog for creating a new project by pressing the marked icon in the _navigator_. 
+
+NOTE: Alternatively you can the _new_ dialog from the main-menu following menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat[VirSat Project] and press btn:[Next>].
+|image:chapterFirstSteps/BtnOpenProject.png[Open project]
+
+|{counter:step}.
+|In the _New Project_ dialog type in a name for your project (e.g. `MySatellite`). Press btn:[Finish] to create the new project. 
+|image:chapterFirstSteps/NewProjectDialog.png[New Project Dialog]
+
+|{counter:step}.
+|Now open the _Repository_ from the _Navigator_ view by double-clicking menu:MySatellite[Repository]. 
+|image:chapterFirstSteps/OpenRepository.png[New Project Dialog]
+
+|{counter:step}.
+|The _Repository Editor_ will open in the _Editing_ area. Scroll down to the _table Section for: Active Concepts_. Here click on btn:[Add from Registry]. 
+|image:chapterFirstSteps/RepositoryEditor.png[New Project Dialog]
+
+|{counter:step}.
+|Select the following two _Concepts_ in the dialog by ticking the check-box. Then press btn:[OK] to activate the _Concepts_. 
+
+. The _Concept_ for Product Structures _de.dlr.sc.virsat.model.extension.ps_.
+. The _Concept_ for Design Maturity _de.dlr.sc.virsat.model.extension.maturity_.
+
+NOTE: The numbers in the brackets after the _Concept_ name denote the version of the _Concept_.
+
+NOTE: _Concepts_ can refer to each other. E.g. the Design Maturity _Concept_ requires the Product Structures _Concept_. In case you only pick the second one, Virtual Satellite will automatically activate all required ones as well.
+
+|image:chapterFirstSteps/ConceptDialog.png[Concept Dialog]
+
+|{counter:step}.
+|Go back to the _Navigator_ view and right-click on _Repository_. Now select menu:Context[Product Structures > Add ProductTree]. 
+|image:chapterFirstSteps/CreateProductTree.png[Create Product Tree]
+
+|{counter:step}.
+|Now right-click on the newly generated item _PT: ProductTree_. Now select menu:Context[Product Structures > Add ProductTreeDomain]. 
+|image:chapterFirstSteps/productTreeDomain.png[Create Product Tree Domain]
+
+|{counter:step}.
+|Double-click on the newly generated _PTD: ProductTreeDomain_ item to open it in the _Editor_. In the Editor change the name to e.g. `AOCS` (Attitude and Orbit Control System) as shown in the image.
+
+NOTE: The ribbon tab of the _Editor_ changes from "PTD: ..." to "+*PTD: ...". The extra *+ shows that there are unsaved changes.
+
+TIP: Save your work frequently since most changes are kept in memory and not on your hard-drive. You can easily save your work by pressing kbd:[CTRL+S] from within the current _Editor_ or by menu:File[Save]. You should use kbd:[CTRL+SHIFT+S] or menuFile:[Save All] to save all _Editors_ and chnages.
+|image:chapterFirstSteps/ProductTreeDomainEditor.png[Product Tree Domain Editor]
+
+|{counter:step}.
+|Create an _Element Definition_ in the _PTD: AOCS_ similar as in the steps before. Name it `RW` (Reaction Wheel).
+
+TIP: You can also use the _Concept Pallete_ and *drag* the _Element Definition_ item to the _PTD: AOCS_ in the _Navigator_ *and drop* it.
+|image:chapterFirstSteps/AddedElementDefinition.png[Added Element Definition]
+
+|{counter:step}.
+|After modeling the _Structural Element Instances_ it is now time to add some design information. Go back to the _Navigator_ view and right-click on the newly created _ED: RW_. Select menu:Context[Design Maturity > Add Maturity]. After this double-click on the _ED: RW_ to open it in the _Editor_.
+
+TIP: The whole _Conceptual Data Model_ (CDM) is based on _Structural Elements_ and _Category Definitions_. At runtime the _CDM_ is used to create the _System Model_. Now _Structural Element Instances_ and _Category Assignments_ are instantiated.   
+|image:chapterFirstSteps/AddMaturity.png[Add Maturity]
+
+|{counter:step}.
+|In the editor scroll-down to _Section for: Maturity_. Click into the upper table to change the level _Enum Property_ to `READY_TO_BE_USED=1` and the trl _Enum Property_ to `TRL_9=9`.  
+
+NOTE: Opening the _Editor_ on the _Structural Element Instance_ gives access to all _Category Assignments_. Double-clicking an individual _Category Assignment_ in the _Navigator_ opens and individual _Editor_ for it. You can also open this individual _Editor_ by selecting the _Category Assignment_ in the table in the _Editor_ and press btn:[Drill-Down].
+|image:chapterFirstSteps/EditorMaturity.png[Maturity Editor]
 
 |===
 
+Well Done. You successfully created your very first model using Virtual Satellite. With this first hands-on experience you learned the first important steps to use this software. Continue reading the next chapters to learn how to use it in real system engineering scenarios. 
 
 == Setting up the infrastructure
 
