@@ -1,7 +1,8 @@
 = Virtual Satellite 4 Core: User Manual
 :imagesdir: images
 :title-logo-image: images/title/VirtualSatellite_Modelling_4k.jpg
-:toc: 
+:toc:
+:experimental:  
 
 [quote, Philipp M. Fischer]
 It has been a long way to get here and it will be an even harder way to go on. Thanks to everyone who contributed so far.
@@ -20,7 +21,7 @@ Virtual Satellite is based on Java and Eclipse Technology. It currently supports
 [WARNING] 
 .Linux compilation issues
 ==== 
-Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A recompilation when using other distributions is probably needed. This concerns e.g. the visualization functionality absed on the Visualization Toolkit (VTK).
+Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A re-compilation when using other distributions is probably needed. This concerns e.g. the visualization functionality based on the Visualization Toolkit (VTK).
 ====
 
 === Installation
@@ -30,27 +31,27 @@ Installing Virtual Satellite is as easy as possible. Provided that a Java Runtim
 NOTE: Installation steps on linux are very similar.
 
 {counter2:step:0}
-[%header,cols="1,4,5"] 
+[%header,cols=">8,62a,40a"] 
 |===
 
 |Step
 |Task
 |Image
 
-|{counter:step}
-|Download the Virtual Satellite zip file from the GitHub releases section.
+|{counter:step}.
+|Download the Virtual Satellite zip-file from the GitHub releases section.
 |image:chapterInstallation/DownloadGitHubRelease.png[Download]
 
-|{counter:step}
-|Store the zip file to the folder of your choice (e.g.: C:\VirtualSatellite\) and unzip it here.
-|image:chapterInstallation/Unzip.png[Unzip]
+|{counter:step}.
+|Store the zip file to the folder of your choice (e.g.: `C:\VirtualSatellite\`) and unzip it here.
+|image:chapterInstallation/UnZip.png[Unzip]
 
-|{counter:step}
-|Dive into the unzipped sub-folder and Execute the VirSat4_Core.exe file.
+|{counter:step}.
+|Dive into the unzipped sub-folder and Execute the `VirSat4_Core.exe` file.
 |image:chapterInstallation/Execute.png[Execute]
 
-|{counter:step}
-|Once Virtual Satellite is started it should appear to you as in the image below. Now press the link "Start modeling now".
+|{counter:step}.
+|Once Virtual Satellite is started it should appear as shown in the image. Now press the link btn:[Start modeling now!].
 |image:chapterInstallation/VirtualSatelliteStarted.png[Started]
 
 |===
@@ -59,7 +60,53 @@ Done. You installed and successfully started Virtual Satellite.
 
 === First Steps
 
-TBD
+Now where you successfully installed Virtual Satellite to your computer it is about time to get started using it. This chapter provides some first steps to learn some basic functionality to work with this software.
+
+NOTE: In this example we work locally on your computer, there is no need for a subversion service or similar. 
+
+{counter2:step:0}
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Dive into the folder where you installed Virtual Satellite and and Execute the `VirSat4_Core.exe` file.
+|image:chapterFirstSteps/Execute.png[Execute]
+
+|{counter:step}.
+|The OSGI Console will open up and a Splash screen will be displayed showing the start-up progress.
+
+NOTE: Details to the Equinox OSGI Console will be explained later in chapter <<Equinox OSGI Console>>.
+|image:chapterFirstSteps/SplashAndOSGI.png[Splash Screen and OSGI Console]
+
+|{counter:step}.
+|During start-up, Virtual Satellite will ask for the workspace folder. Choose a folder you prefer or stick with the default one. This workspace folder is used to store the files of your project locally. 
+
+NOTE: You can also choose different folders for different projects. And you can change between these folders later.
+|image:chapterFirstSteps/ChooseWorkspace.png[Execute]
+
+|{counter:step}.
+|After a while you will see the _Welcome Screen_ of Virtual Satellite, Press the link btn:[Start Modelling now!]. This will open the Virtual Satellite _perspective_. 
+
+NOTE: In case you don't see the _Welcome Screen_ as shown in the image, it is possible that you already started Virtual Satellite and closed it. To open the _Welcome Screen_ again open the menu:Help[Welcome].
+|image:chapterFirstSteps/VirtualSatelliteStarted.png[Started]
+
+|{counter:step}.
+|The three important _views_ of the _perspective_ are:
+
+. The _Navigator_ to the left (blue dashed box).
+. The _Editing_ area in the middle which is currently empty (green dashed box).
+. the _Concept Palette_ to the right (orange dashed box).
+
+NOTE: In case _views_ get lost, you can always reset the _perspective_ by right-click image:chapterFirstSteps/BtnCorePerspective.png[Icon Core Perspective] then menu:Context[Reset] 
+|image:chapterFirstSteps/Perspective.png[Perspective]
+
+
+|===
+
 
 == Setting up the infrastructure
 
@@ -129,7 +176,7 @@ TBD
 
 TBD
 
-== Special commands
+== Advanced Functionality
 
 TBD
 
@@ -138,6 +185,12 @@ TBD
 TBD
 
 === Enforce super user rights
+
+TBD
+
+=== Equinox OSGI Console
+
+TBD
 
 [colophone]
 == License & Copyright
