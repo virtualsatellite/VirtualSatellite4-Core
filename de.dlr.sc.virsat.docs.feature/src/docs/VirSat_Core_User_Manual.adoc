@@ -192,19 +192,83 @@ TBD
 
 == Modeling with Virtual Satellite
 
-TBD
+
+Learn here about the out of the box available modeling capabilities supported by Virtual Satellite.
+In this chapter you will learn about concepts, how to work with them, how to interact with the data model,
+and which default concepts are delivered to you by the Core. 
 
 === General modeling
 
-TBD
+Virtual Satellite supplies a core modeling language. 
+Amongst other advanced capabilities, it allows storing various peripheral information such as user rights and unit management.
+The modeling language can be extended by _concepts_, which represent specific engineering processes or knowledge domains.
 
-==== Quantities, Units, Dimensions and Values
-
-TBD
+NOTE: For example activating the _de.dlr.sc.virsat.model.extension.ps_ concept extends the modeling language by allowing modeling of complex product structures including product trees and product configurations.
 
 ==== User Rights Management
 
-TBD
+Having multiple users manipulate the data model concurrently may lead to merge conflicts.
+To avoid such issues, Virtual Satellite provides a rights management system.
+It defines which user is allowed to manipulate a certain model element.
+The association between a user and the modifiable elements is called a _Discipline_. +
+A _Discipline_ can be assigned a user name and likewise model elements can be assigned a _Discipline_.
+Then only users logged in with that specified user name are allowed to modify those elements.
+Disciplines are managed in the _Role Management_.
+By default when a new project is created, the _Role Management_ will contain exactly one _Discipline_ called *System*.
+
+In this section you will learn how to:
+
+* Create a new Discipline
+* Assign a Discipline to a model element
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Editor_ for the _Role Management_ from the _Navigator_ view by double-clicking menu:MySatellite[Role Management]. 
+|image:chapterModeling/OpenRoleManagement.png[Opening the role management editor]
+
+|{counter:step}.
+|Press the button *Add Discipline* to insert a new _Discipline_ called _New Discipline_ and that is initially associated with your own user name.
+
+TIP: _Disciplines_ can be removed by selecting a _Discipline_ and then pressing the *Remove Discipline* button.
+
+|image:chapterModeling/AddDiscipline.png[Adding a discpline]
+
+|{counter:step}.
+|Select the newly created _Discipline_ in the _Discipline Name_ column and change it to *RepositoryManager*.
+Then select the _Discipline_ in the _User Name_ column and change it to *OtherUsername*.
+
+|image:chapterModeling/EditUserName.png[Changing properties of a Discipline]
+
+|{counter:step}.
+|We will now assign the discipline to the _Repository_. 
+To do this, open the _Repository_ from the _Navigator_.
+Then select the combo box listing *Discipline: System* and choose the entry *Discipline: RepositoryManagener*.
+Finally press the button *Assign Discipline* button.
+
+TIP: You can assign a _Discipline_ to an element and all sub elements by pressing the *Assign Discipline Recursive* button.
+
+|image:chapterModeling/AssignDiscipline.png[Assigning a Discipline]
+
+|{counter:step}.
+|All editable fields will be no longer be editable and shown as greyed out.
+
+WARNING: This includes the _Discipline_ field. 
+Once you assign a _Discipline_ only the associated user can return the ownership!
+
+|image:chapterModeling/Uneditable.png[The repository can longer be edited]
+
+|===
+
+==== Quantities, Units, Dimensions and Values
+
+image:chapterModeling/OpenUnitManagement.png[Opening the unit management editor]
 
 === Modeling Concepts
 
