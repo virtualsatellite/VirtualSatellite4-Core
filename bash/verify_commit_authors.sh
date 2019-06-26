@@ -51,6 +51,7 @@ echo "[Info] "
 
 cat ./known_authors.txt
 
+echo "[Info] "
 echo "[Info] ------------------------------------"
 echo "[Info] Verify against known_authors file"
 echo "[Info] ------------------------------------"
