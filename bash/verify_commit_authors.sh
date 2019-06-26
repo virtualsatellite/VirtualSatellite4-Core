@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 echo "[Info] ------------------------------------"
 echo "[Info] Verify commit authors"
 echo "[Info] ------------------------------------"
