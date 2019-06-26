@@ -6,11 +6,35 @@ echo "[Info] "
 
 echo "[Info] Create commit_authors.txt file..."
 
-git log development... --pretty=format:"%an" | sort | uniq > commit_authors.txt
+git log development... --pretty=format:"%an" | sort | uniq > ./commit_authors.txt
 
-echo "[Info] Verify against known_authers.txt file"
+echo "[Info] ------------------------------------"
+echo "[Info] List of Commits and authors"
+echo "[Info] ------------------------------------"
+echo "[Info] "
 
-if grep -v -F -f ./known_authors.txt commit_authors.txt
+git --no-pager log development... --pretty=format:"%h - %an"
+
+echo "[Info] ------------------------------------"
+echo "[Info] List of Commit Authors"
+echo "[Info] ------------------------------------"
+echo "[Info] "
+
+cat ./commit_authors.txt
+
+echo "[Info] ------------------------------------"
+echo "[Info] List of Known Authors"
+echo "[Info] ------------------------------------"
+echo "[Info] "
+
+cat ./known_authors.txt
+
+echo "[Info] ------------------------------------"
+echo "[Info] Verify against known_authors file"
+echo "[Info] ------------------------------------"
+echo "[Info] "
+
+if grep -v -F -f ./known_authors.txt ./commit_authors.txt
 then
 	echo "[WARN] Unknown authors in commit history."
 	exit 21
