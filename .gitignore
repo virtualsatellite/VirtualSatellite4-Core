@@ -9,3 +9,5 @@
 /deploy/
 /swtbot/
 /report/
+/commit_authors.txt
+/id_ed25519
