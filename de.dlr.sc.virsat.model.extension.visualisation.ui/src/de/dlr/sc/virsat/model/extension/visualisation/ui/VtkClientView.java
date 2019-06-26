@@ -27,6 +27,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -53,6 +55,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IViewSite;
@@ -60,6 +63,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.part.ViewPart;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
+import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIo;
+import de.dlr.sc.virsat.model.extension.visualisation.treemanager.StartManagers;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.handler.CreateDeltaModelFolderHandler;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkClientVisUpdateHandler;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkTreeManager;
@@ -67,11 +75,6 @@ import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatProjectLabelProvider;
-import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
-import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIo;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.StartManagers;
 
 /**
  * Creates the visualisation view
@@ -95,7 +98,7 @@ public class VtkClientView extends ViewPart {
 	private static final int COLORMAP_DIAGRAM_VALUE_DIGITLA = 10;
 
 	private static final String NO_DELTA_MODEL_TO_VISUALISE = "No Delta";
-	private static final String ANIMATION_LIST = "Animation List";
+	private static final String ANIMATION_LIST = "Animation Deltas";
 	private static final int ANIMATION_SLEEP_TIME = 1000;
 
 	private static VtkClientView vtkViewer = null;
@@ -115,11 +118,11 @@ public class VtkClientView extends ViewPart {
 	private Canvas canvasBottom = null;
 	protected Composite parentComposite = null;
 
-	private List<VirSatProjectResource> listAnimationProjectSelected = new ArrayList<VirSatProjectResource>();
-	private List<VisualisationDeltaModel> listAnimationDeltaModel = new ArrayList<VisualisationDeltaModel>();
+	private Map<IProject, VisualisationDeltaModel> animationProjectDeltas = new HashMap<>();
 	private Map<StructuralElementInstance, Boolean> filteredRootSeisToVisualise = null;
 
 	private IProject currentlySelectedProject = null;
+	private IResourceChangeListener projectListener;
 	private VisualisationDeltaModel currentDeltaModel = null;
 
 	/**
@@ -187,6 +190,8 @@ public class VtkClientView extends ViewPart {
 
 	@Override
 	public void dispose() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(projectListener);
+		
 		swtAwtComposite.dispose();
 		northButtonComposite.dispose();
 		filterRootElementsButton.dispose();
@@ -199,6 +204,7 @@ public class VtkClientView extends ViewPart {
 		swtAwtComposite = null;
 		northButtonComposite = null;
 		
+		projectListener = null;
 		StartManagers.stopVis();
 		VtkTreeManager.getInstance().clearVtkTreeManager();
 		super.dispose();
@@ -424,21 +430,8 @@ public class VtkClientView extends ViewPart {
 				return "UNKNOWN ELEMENT";
 			}
 		});
-
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		List<IProject> allProjects = VirSatProjectCommons.getAllVirSatProjects(workspace);
-
-		if (!allProjects.isEmpty()) {
-			projectCombo.setInput(allProjects);
-			projectCombo.setSelection(new StructuredSelection(allProjects.get(0)));
-			currentlySelectedProject = allProjects.get(0);
-
-		}
-
-		currentDeltaModel = null;
-
+		
 		projectCombo.addSelectionChangedListener(new ISelectionChangedListener() {
-
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
@@ -447,11 +440,45 @@ public class VtkClientView extends ViewPart {
 					currentlySelectedProject = newProject;
 					setDeltaComboInput();
 
+					VtkTreeManager.getInstance().clearNewActors();
 					StartManagers.stopVis();
 					StartManagers.startVis(currentlySelectedProject, currentDeltaModel);
 				}
 			}
 		});
+		
+		projectListener = new IResourceChangeListener() {
+			@Override
+			public void resourceChanged(IResourceChangeEvent event) {
+				Display.getDefault().asyncExec(() -> {
+					setProjectComboInput();
+				});
+			}
+		};
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(projectListener);
+		
+		currentDeltaModel = null;
+		setProjectComboInput();
+	}
+	
+	/**
+	 * Sets the input for the project combo box
+	 */
+	private void setProjectComboInput() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		List<IProject> allProjects = VirSatProjectCommons.getAllVirSatProjects(workspace);
+		projectCombo.setInput(allProjects);
+		
+		if (!allProjects.isEmpty()) {
+			if (currentlySelectedProject == null) {
+				currentlySelectedProject = allProjects.get(0);
+				currentDeltaModel = null;
+			} 
+			projectCombo.setSelection(new StructuredSelection(currentlySelectedProject));
+		} else {
+			currentlySelectedProject = null;
+			currentDeltaModel = null;
+		}
 	}
 
 	/**
@@ -464,9 +491,8 @@ public class VtkClientView extends ViewPart {
 		animationProjectCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof VirSatProjectResource) {
-					VirSatProjectResource resource = (VirSatProjectResource) element;
-					return resource.getWrappedProject().getName();
+				if (element instanceof IProject) {
+					return ((IProject) element).getName();
 				} else if (element.equals(ANIMATION_LIST)) {
 					return (String) element;
 				}
@@ -479,27 +505,44 @@ public class VtkClientView extends ViewPart {
 		animationProjectCombo.setInput(dropDownItems);
 		animationProjectCombo.setSelection(new StructuredSelection(ANIMATION_LIST));
 
+		animationProjectCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection structuredSelection = (IStructuredSelection) event.getSelection();
+				Object selection = structuredSelection.getFirstElement();
+				if (selection instanceof IProject) {
+					IProject project = (IProject) selection;
+					projectCombo.setSelection(new StructuredSelection(project));
+
+					VisualisationDeltaModel delta = animationProjectDeltas.get(project);
+					currentDeltaModel = delta;
+					
+					createBottomLegendPanel(EXT_COMPARE_GEO);
+					StartManagers.stopVis();
+					StartManagers.startVis(currentlySelectedProject, currentDeltaModel);
+				}
+			}
+		});
+		
 	}
 
 	/**
 	 * Fill animation project combo viewer with selected project
-	 * 
-	 * @param listAniProSelected
-	 *            selected projects for animation
-	 * @param listAniDeltaModel
-	 *            list of VisualisationDeltaModel for visualization
+	 * @param projectVersions selected projects for animation. Size should be at least 2
+	 * @param projectDeltas list of VisualisationDeltaModel corresponding to changes between projects. Size should be size of projects - 1
 	 */
-	public void setAnimationProjectComboInput(List<VirSatProjectResource> listAniProSelected,
-			List<VisualisationDeltaModel> listAniDeltaModel) {
-		listAnimationProjectSelected.clear();
-		listAnimationDeltaModel.clear();
-		listAnimationProjectSelected = listAniProSelected;
-		listAnimationDeltaModel = listAniDeltaModel;
-
-		List<Object> dropDownItems = new ArrayList<>();
+	public void setAnimationProjectComboInput(List<VirSatProjectResource> projectVersions, List<VisualisationDeltaModel> projectDeltas) {
+		animationProjectDeltas.clear();
+		List<Object> dropDownItems = new ArrayList<>();		
 		dropDownItems.add(ANIMATION_LIST);
-		dropDownItems.addAll(listAniProSelected);
 
+		for (int i = 0; i < projectDeltas.size(); i++) {
+			IProject project = projectVersions.get(i + 1).getWrappedProject();
+			animationProjectDeltas.put(project, projectDeltas.get(i));
+			dropDownItems.add(project);
+		}
+		
 		animationProjectCombo.setInput(dropDownItems);
 		animationProjectCombo.setSelection(new StructuredSelection(ANIMATION_LIST));
 	}
@@ -749,18 +792,15 @@ public class VtkClientView extends ViewPart {
 
 			@Override
 			public void handleEvent(Event event) {
-				int numOfProject = listAnimationProjectSelected.size();
-				if (numOfProject > 1 && numOfProject == (listAnimationDeltaModel.size() + 1)) {
-					createBottomLegendPanel(EXT_COMPARE_GEO);
-					for (int i = 1; i < numOfProject; i++) {
-						StartManagers.stopVis();
-						StartManagers.startVis(listAnimationProjectSelected.get(i).getWrappedProject(),
-								listAnimationDeltaModel.get(i - 1));
-						sleep(ANIMATION_SLEEP_TIME);
-					}
-
+				@SuppressWarnings("unchecked")
+				List<Object> animationDropDownContent = (List<Object>) animationProjectCombo.getInput();
+				Object animationSelection = ((IStructuredSelection) animationProjectCombo.getSelection()).getFirstElement();
+				int currentIndex = animationDropDownContent.indexOf(animationSelection);
+				
+				for (int i = currentIndex + 1; i < animationDropDownContent.size(); i++) {
+					animationProjectCombo.setSelection(new StructuredSelection(animationDropDownContent.get(i)));
+					sleep(ANIMATION_SLEEP_TIME);
 				}
-
 			}
 		});
 	}

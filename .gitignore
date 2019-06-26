@@ -4,6 +4,7 @@
 **/temp/
 **/*._trace
 **/*.xtendbin
+/**/*.pdf
 /bin/
 /deploy/
 /swtbot/

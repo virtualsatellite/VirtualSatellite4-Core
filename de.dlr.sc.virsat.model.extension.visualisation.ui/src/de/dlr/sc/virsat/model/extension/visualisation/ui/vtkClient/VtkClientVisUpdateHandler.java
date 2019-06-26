@@ -76,6 +76,8 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		for (vtkProp newActor : visMan.getNewActors()) {
 			visMan.GetRenderer().AddActor(newActor);
 		}
+		VtkTreeManager.getInstance().clearNewActors();
+		
 		// render the scene
 		
 		visMan.Render();

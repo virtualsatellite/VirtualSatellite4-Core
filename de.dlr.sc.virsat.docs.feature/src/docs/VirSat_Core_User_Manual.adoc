@@ -1,0 +1,274 @@
+= Virtual Satellite 4 Core: User Manual
+:imagesdir: images
+:title-logo-image: images/title/VirtualSatellite_Modelling_4k.jpg
+:toc:
+:experimental:  
+
+[quote, Philipp M. Fischer]
+It has been a long way to get here and it will be an even harder way to go on. Thanks to everyone who contributed so far.
+
+:sectnums:
+
+== Getting Started
+
+Learn about basic requirements of Virtual Satellite, how it is installed and begin your first modeling. It probably takes less than 15 minutes until you have your first item modeled.  
+
+=== System Requirements 
+
+Virtual Satellite is based on Java and Eclipse Technology. It currently supports the following operating system configurations
+
+. Windows 7 64bit with Java 8 runtime environment
+. Linux 64 bit with Java 8 runtime environment
+
+[WARNING] 
+.Linux compilation issues
+==== 
+Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A re-compilation when using other distributions is probably needed. This concerns e.g. the visualization functionality based on the Visualization Toolkit (VTK).
+====
+
+=== Installation
+
+Installing Virtual Satellite is as easy as possible. Provided that a Java Runtime environment is installed to your system. Follow the steps below to install Virtual Satellite on a windows system: 
+
+NOTE: Installation steps on linux are very similar.
+
+{counter2:step:0}
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Download the Virtual Satellite zip-file from the GitHub releases section.
+|image:chapterInstallation/DownloadGitHubRelease.png[Download]
+
+|{counter:step}.
+|Store the zip file to the folder of your choice (e.g.: `C:\VirtualSatellite\`) and unzip it here.
+|image:chapterInstallation/UnZip.png[Unzip]
+
+|{counter:step}.
+|Dive into the unzipped sub-folder and Execute the `VirSat4_Core.exe` file.
+|image:chapterInstallation/Execute.png[Execute]
+
+|{counter:step}.
+|Once Virtual Satellite is started it should appear as shown in the image. Now press the link btn:[Start modeling now!].
+|image:chapterInstallation/VirtualSatelliteStarted.png[Started]
+
+|===
+
+Done. You installed and successfully started Virtual Satellite.
+
+=== First Steps
+
+Now where you successfully installed Virtual Satellite to your computer it is about time to get started using it. This chapter provides some first steps to learn some basic functionality to work with this software.
+
+NOTE: In this example we work locally on your computer, there is no need for a subversion service or similar. 
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Dive into the folder where you installed Virtual Satellite and and Execute the `VirSat4_Core.exe` file.
+|image:chapterFirstSteps/Execute.png[Execute]
+
+|{counter:step}.
+|The OSGI Console will open up and a Splash screen will be displayed showing the start-up progress.
+
+NOTE: Details to the Equinox OSGI Console will be explained later in chapter <<Equinox OSGI Console>>.
+|image:chapterFirstSteps/SplashAndOSGI.png[Splash Screen and OSGI Console]
+
+|{counter:step}.
+|During start-up, Virtual Satellite will ask for the workspace folder. Choose a folder you prefer or stick with the default one. This workspace folder is used to store the files of your project locally. 
+
+NOTE: You can also choose different folders for different projects. And you can change between these folders later.
+|image:chapterFirstSteps/ChooseWorkspace.png[Execute]
+
+|{counter:step}.
+|After a while you will see the _Welcome Screen_ of Virtual Satellite, Press the link btn:[Start Modelling now!]. This will open the Virtual Satellite _perspective_. 
+
+NOTE: In case you don't see the _Welcome Screen_ as shown in the image, it is possible that you already started Virtual Satellite and closed it. To open the _Welcome Screen_ again open the menu:Help[Welcome].
+|image:chapterFirstSteps/VirtualSatelliteStarted.png[Started]
+
+|{counter:step}.
+|The three important _views_ of the _perspective_ are:
+
+. The _Navigator_ to the left (blue dashed box).
+. The _Editing_ area in the middle which is currently empty (green dashed box).
+. the _Concept Palette_ to the right (orange dashed box).
+
+NOTE: In case _views_ get lost, you can always reset the _perspective_ by right-click image:chapterFirstSteps/BtnCorePerspective.png[Icon Core Perspective] then menu:Context[Reset] 
+|image:chapterFirstSteps/Perspective.png[Perspective]
+
+|{counter:step}.
+|Open the dialog for creating a new project by pressing the marked icon in the _navigator_. 
+
+NOTE: Alternatively you can the _new_ dialog from the main-menu following menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat[VirSat Project] and press btn:[Next>].
+|image:chapterFirstSteps/BtnOpenProject.png[Open project]
+
+|{counter:step}.
+|In the _New Project_ dialog type in a name for your project (e.g. `MySatellite`). Press btn:[Finish] to create the new project. 
+|image:chapterFirstSteps/NewProjectDialog.png[New Project Dialog]
+
+|{counter:step}.
+|Now open the _Repository_ from the _Navigator_ view by double-clicking menu:MySatellite[Repository]. 
+|image:chapterFirstSteps/OpenRepository.png[New Project Dialog]
+
+|{counter:step}.
+|The _Repository Editor_ will open in the _Editing_ area. Scroll down to the _table Section for: Active Concepts_. Here click on btn:[Add from Registry]. 
+|image:chapterFirstSteps/RepositoryEditor.png[New Project Dialog]
+
+|{counter:step}.
+|Select the following two _Concepts_ in the dialog by ticking the check-box. Then press btn:[OK] to activate the _Concepts_. 
+
+. The _Concept_ for Product Structures _de.dlr.sc.virsat.model.extension.ps_.
+. The _Concept_ for Design Maturity _de.dlr.sc.virsat.model.extension.maturity_.
+
+NOTE: The numbers in the brackets after the _Concept_ name denote the version of the _Concept_.
+
+NOTE: _Concepts_ can refer to each other. E.g. the Design Maturity _Concept_ requires the Product Structures _Concept_. In case you only pick the second one, Virtual Satellite will automatically activate all required ones as well.
+
+|image:chapterFirstSteps/ConceptDialog.png[Concept Dialog]
+
+|{counter:step}.
+|Go back to the _Navigator_ view and right-click on _Repository_. Now select menu:Context[Product Structures > Add ProductTree]. 
+|image:chapterFirstSteps/CreateProductTree.png[Create Product Tree]
+
+|{counter:step}.
+|Now right-click on the newly generated item _PT: ProductTree_. Now select menu:Context[Product Structures > Add ProductTreeDomain]. 
+|image:chapterFirstSteps/productTreeDomain.png[Create Product Tree Domain]
+
+|{counter:step}.
+|Double-click on the newly generated _PTD: ProductTreeDomain_ item to open it in the _Editor_. In the Editor change the name to e.g. `AOCS` (Attitude and Orbit Control System) as shown in the image.
+
+NOTE: The ribbon tab of the _Editor_ changes from "PTD: ..." to "+*PTD: ...". The extra *+ shows that there are unsaved changes.
+
+TIP: Save your work frequently since most changes are kept in memory and not on your hard-drive. You can easily save your work by pressing kbd:[CTRL+S] from within the current _Editor_ or by menu:File[Save]. You should use kbd:[CTRL+SHIFT+S] or menuFile:[Save All] to save all _Editors_ and chnages.
+|image:chapterFirstSteps/ProductTreeDomainEditor.png[Product Tree Domain Editor]
+
+|{counter:step}.
+|Create an _Element Definition_ in the _PTD: AOCS_ similar as in the steps before. Name it `RW` (Reaction Wheel).
+
+TIP: You can also use the _Concept Pallete_ and *drag* the _Element Definition_ item to the _PTD: AOCS_ in the _Navigator_ *and drop* it.
+|image:chapterFirstSteps/AddedElementDefinition.png[Added Element Definition]
+
+|{counter:step}.
+|After modeling the _Structural Element Instances_ it is now time to add some design information. Go back to the _Navigator_ view and right-click on the newly created _ED: RW_. Select menu:Context[Design Maturity > Add Maturity]. After this double-click on the _ED: RW_ to open it in the _Editor_.
+
+TIP: The whole _Conceptual Data Model_ (CDM) is based on _Structural Elements_ and _Category Definitions_. At runtime the _CDM_ is used to create the _System Model_. Now _Structural Element Instances_ and _Category Assignments_ are instantiated.   
+|image:chapterFirstSteps/AddMaturity.png[Add Maturity]
+
+|{counter:step}.
+|In the editor scroll-down to _Section for: Maturity_. Click into the upper table to change the level _Enum Property_ to `READY_TO_BE_USED=1` and the trl _Enum Property_ to `TRL_9=9`.  
+
+NOTE: Opening the _Editor_ on the _Structural Element Instance_ gives access to all _Category Assignments_. Double-clicking an individual _Category Assignment_ in the _Navigator_ opens and individual _Editor_ for it. You can also open this individual _Editor_ by selecting the _Category Assignment_ in the table in the _Editor_ and press btn:[Drill-Down].
+|image:chapterFirstSteps/EditorMaturity.png[Maturity Editor]
+
+|===
+
+Well Done. You successfully created your very first model using Virtual Satellite. With this first hands-on experience you learned the first important steps to use this software. Continue reading the next chapters to learn how to use it in real system engineering scenarios. 
+
+== Setting up the infrastructure
+
+TBD
+
+=== Architecture Overview
+
+TBD
+
+=== Sharing and committing a new project
+
+TBD
+
+=== Loading and updating from a shared project
+
+TBD
+
+== Modeling with Virtual Satellite
+
+TBD
+
+=== General modeling
+
+TBD
+
+==== Quantities, Units, Dimensions and Values
+
+TBD
+
+==== User Rights Management
+
+TBD
+
+=== Modeling Concepts
+
+TBD
+
+==== Activating a concept
+
+TBD
+
+==== Modeling with the concept palette
+
+TBD
+
+==== Extended product structures - Inheritance and Configuration Control
+
+TBD
+
+==== Product mass summaries
+
+TBD
+
+=== Advanced Modeling
+
+TBD
+
+==== Adjusting Calculations
+
+TBD
+
+==== Using Apps
+
+TBD
+
+==== Developing a Concept
+
+TBD
+
+== Advanced Functionality
+
+TBD
+
+=== Enforce user rights
+
+TBD
+
+=== Enforce super user rights
+
+TBD
+
+=== Equinox OSGI Console
+
+TBD
+
+[colophone]
+== License & Copyright
+
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| Travis CI Job Number: | {buildnr}
+|=== 
+
+Copyright (c) 2008-2019 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.
