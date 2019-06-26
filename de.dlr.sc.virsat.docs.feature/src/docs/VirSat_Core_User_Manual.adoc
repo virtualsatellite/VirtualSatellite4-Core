@@ -290,7 +290,24 @@ In this section you will learn how to:
 ===== Unit Management
 
 The _Unit Management_ is the central hub for managing _Quantity Kinds_ and _Units_.
-In the following you will create a new simple _Quanitity Kind_ and a new simple _Unit_ for it.
+The QUDV supports two sorts of _Quantity Kinds_:
+
+Simple Quantity Kinds:: A _Simple Quantity Kind_ is not based on another _Quantity Kind_.
+NOTE: An example for this in the SI unit system is mass.
+Derived Quantity Kinds:: A _Derived Quantity Kind_ is defined as a composition of other _Quantity Kinds_. 
+Each quantity is equipped with a factor stating its involvement.
++
+NOTE: An example for this in the SI unit system is speed, 
+which is composed over the quantities _Length_ with factor 1 and _Time_ with factor -1. 
+
+In the same fashion QUDV supports the following sorts of _Units_:
+
+Simple Unit:: TBD
+Conversion Based Unit:: TBD
+Derived Unit:: TBD
+Prefixed Unit:: TBD
+
+In the following you will create a new _Simple Quanitity Kind_ and a new _Simple Unit_ for it.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -337,6 +354,9 @@ You can now find your created _Unit_ in the *Unit Management* section.
 |===
 
 You have created your first own _Unit_ on the basis of your own _Quantity Kind_!
+You can remove a created _Quantity Kind_ or _Unit_ by going to the _Unit Management_,
+selecting the desired _Quantity Kind_ or _Unit_ then press *Remove Quantity Kind* or *Remove Unit*.
+Likewise, editing existing an existing _Quantity Kind_ or _Units_ can be done by pressing *Edit Quantity Kind* or *Edit Unit*.
 
 ===== QUDV Wizard
 
