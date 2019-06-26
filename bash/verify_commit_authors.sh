@@ -27,16 +27,16 @@ echo "[Info] ------------------------------------"
 echo "[Info] "
 
 git fetch origin development development:development
-git --no-pager log development... --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreenbold blue)<%aN>%Creset" --abbrev-commit --reverse
+git log development... --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
 
-echo ""
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commits and authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git --no-pager log development... --pretty=format:"%h - %aN"
+git --no-pager log development... --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%aN>%Creset" --abbrev-commit --reverse
 
+echo ""
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commit Authors"
 echo "[Info] ------------------------------------"
