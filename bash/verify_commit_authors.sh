@@ -56,7 +56,7 @@ echo "[Info] Verify against known_authors file"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-if [grep -v -F -f ./known_authors.txt ./commit_authors.txt ]  ; then
+if [ grep -v -F -f ./known_authors.txt ./commit_authors.txt ]  ; then
 	
 	echo "[WARN] Unknown authors in commit history."
 	
