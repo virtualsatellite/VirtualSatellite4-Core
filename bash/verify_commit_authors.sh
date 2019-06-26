@@ -7,6 +7,12 @@ echo "[Info] Verify commit authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+echo "[Info] ------------------------------------"
+echo "[Info] Show current branches"
+echo "[Info] ------------------------------------"
+
+git branch -a
+
 echo "[Info] Create commit_authors.txt file..."
 
 git log origin/development... --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
