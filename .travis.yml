@@ -68,6 +68,7 @@ before_script:
   # Run aquicks anity check if all commits are
   # handed in by known users
   #---------------------------------------------
+  - chmod 700 ./bash/verify_commit_authors.sh known_authors.txt
   - ./bash/verify_commit_authors.sh known_authors.txt
   # -------------------------------------------------------------------
   # create adirectory for Overtarget and try to receive language plugin
