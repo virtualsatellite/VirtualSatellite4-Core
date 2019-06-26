@@ -9,14 +9,14 @@ echo "[Info] "
 
 echo "[Info] Create commit_authors.txt file..."
 
-git log development... --pretty=format:"%an" | sort | uniq > ./commit_authors.txt
+git log origin/development... --pretty=format:"%an" | sort | uniq > ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commits and authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git --no-pager log development... --pretty=format:"%h - %an"
+git --no-pager log origin/development... --pretty=format:"%h - %an"
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commit Authors"
