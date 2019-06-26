@@ -12,6 +12,7 @@ echo "[Info] Get the full history"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+git fetch origin development development:development
 git fetch --unshallow
 
 echo "[Info] ------------------------------------"
@@ -20,16 +21,20 @@ echo "[Info] ------------------------------------"
 
 git branch -a
 
-echo "[Info] Create commit_authors.txt file..."
+echo "[Info] ------------------------------------"
+echo "[Info] Create commit authors file"
+echo "[Info] ------------------------------------"
+echo "[Info] "
 
-git log origin/development... --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
+git fetch origin development development:development
+git log development... --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commits and authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git --no-pager log origin/development... --pretty=format:"%h - %aN"
+git --no-pager log development... --pretty=format:"%h - %aN"
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commit Authors"
