@@ -55,9 +55,15 @@ echo "[Info] Verify against known_authors file"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-if grep -v -F -f ./known_authors.txt ./commit_authors.txt
-then
+if [grep -v -F -f ./known_authors.txt ./commit_authors.txt ]  ; then
+	
 	echo "[WARN] Unknown authors in commit history."
+	
+	if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
+    	curl -H "Authorization: token ${GITHUB_API_TOKEN}" -X POST \
+		-d "{\"body\": \":warning: Unknown authors in commit History :warning:\"}" \
+		"https://api.github.com/repos/${TRAVIS_REPO_SLUG}/issues/${TRAVIS_PULL_REQUEST}/comments"
+    fi
 	exit 21
 else
 	echo "[OK] Only known authors in commit history."
