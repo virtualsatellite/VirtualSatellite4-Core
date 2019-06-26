@@ -8,6 +8,13 @@ echo "[Info] ------------------------------------"
 echo "[Info] "
 
 echo "[Info] ------------------------------------"
+echo "[Info] Get the full history"
+echo "[Info] ------------------------------------"
+echo "[Info] "
+
+git fetch --unshallow
+
+echo "[Info] ------------------------------------"
 echo "[Info] Show current branches"
 echo "[Info] ------------------------------------"
 
