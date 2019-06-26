@@ -266,9 +266,51 @@ Once you assign a _Discipline_ only the associated user can return the ownership
 
 |===
 
+TIP: In the event that the rights management needs to be bypassed,
+Virtual Satellite can be started with the -superUser flag to gain super user rights.
+
 ==== Quantities, Units, Dimensions and Values
 
-image:chapterModeling/OpenUnitManagement.png[Opening the unit management editor]
+Values without a physical dimension carry little meaning. 
+They need to be considered within their engineering context, 
+
+NOTE: For example the statement "the mass is 5" is ambiguous and not meaningful.
+However, the information "the mass is 5kg" is something that can be worked with.
+
+To establish a solid foundation for well-defined and consistent unities,
+Virtual Satellite provides an implementation of the  Quantities, Units, Dimensions and Values (QUDV)
+
+In this section you will learn how to:
+
+* Create a new Quantity Kind
+* Create a new Unit
+* Assign a unit to a engineering property
+* Export a QUDV Model
+* Import a QUDV Model
+
+===== Unit Management
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Editor_ for the _Unit Management_ from the _Navigator_ view by double-clicking menu:MySatellite[Unit Management]. 
+|image:chapterModeling/OpenUnitManagement.png[Opening the unit management editor]
+
+|===
+
+===== Assigning Units
+
+TBD
+
+===== QUDV Wizard
+
+TBD
 
 === Modeling Concepts
 
