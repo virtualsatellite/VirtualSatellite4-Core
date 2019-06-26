@@ -278,17 +278,19 @@ NOTE: For example the statement "the mass is 5" is ambiguous and not meaningful.
 However, the information "the mass is 5kg" is something that can be worked with.
 
 To establish a solid foundation for well-defined and consistent unities,
-Virtual Satellite provides an implementation of the  Quantities, Units, Dimensions and Values (QUDV)
+Virtual Satellite provides an implementation of the Quantities, Units, Dimensions and Values (QUDV)
 
 In this section you will learn how to:
 
-* Create a new Quantity Kind
-* Create a new Unit
-* Assign a unit to a engineering property
+* Create a new _Quantity Kind_
+* Create a new _Unit_
 * Export a QUDV Model
 * Import a QUDV Model
 
 ===== Unit Management
+
+The _Unit Management_ is the central hub for managing _Quantity Kinds_ and _Units_.
+In the following you will create a new simple _Quanitity Kind_ and a new simple _Unit_ for it.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -302,11 +304,39 @@ In this section you will learn how to:
 |Open the _Editor_ for the _Unit Management_ from the _Navigator_ view by double-clicking menu:MySatellite[Unit Management]. 
 |image:chapterModeling/OpenUnitManagement.png[Opening the unit management editor]
 
+|{counter:step}.
+|Scroll to the *Quantity Kind Management* Section and press the *Add Quantity Kind* button. 
+|image:chapterModeling/AddQuantityKind.png[Adding a new quantity kind]
+
+|{counter:step}.
+|Select the *QUDV Simple Quantity Kind Wizard* option in the *Available wizards* drop-down list.
+Then press *Next*. 
+|image:chapterModeling/QuantityWizardSelection.png[Selecting the quantity kind wizard]
+
+|{counter:step}.
+|Set the name to *MyQuantityKind* and fill out the other fields by data of your choosing.
+Then press *Finish*. 
+You can now find your created _Quantity Kind_ in the *Quantity Kind Management* section.
+|image:chapterModeling/SimpleQuantityKindWizard.png[Simple quantity kind wizard]
+
+|{counter:step}.
+|Scroll to the *Unit Management* Section and press the *Add Unit* button. 
+|image:chapterModeling/AddUnit.png[Adding a unit]
+
+|{counter:step}.
+|Select the *QUDV Simple Unit Wizard* option in the *Available wizards* drop-down list.
+Then press *Next*. 
+|image:chapterModeling/UnitWizardSelection.png[Selecting the quantity kind wizard]
+
+|{counter:step}.
+|Set the name to *MyUnit* and fill out the other fields by some data.
+Then press *Finish*. 
+You can now find your created _Unit_ in the *Unit Management* section.
+|image:chapterModeling/SimpleUnitWizard.png[Simple unit wizard]
+
 |===
 
-===== Assigning Units
-
-TBD
+You have created your first own _Unit_ on the basis of your own _Quantity Kind_!
 
 ===== QUDV Wizard
 
