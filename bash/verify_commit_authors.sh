@@ -51,17 +51,14 @@ if [ ! -v $TRAVIS_PULL_REQUEST ]; then
   	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
   	IS_PULL_REQUEST="true"
   	
-	echo "[Debug] Step 1"
-  	curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}'
-	echo "[Debug] Step 2"
-  	$(curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}')
 	echo "[Debug] Step 3"
-  	curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}' | jq '.user.login'
+  	curl "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq '.user.login'
   	
-  	PULL_REQUEST_AUTHOR=$(curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}' | jq --raw-output '.user.login')
+  	PULL_REQUEST_AUTHOR=$(curl "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq --raw-output '.user.login')
+  	
   	echo "[Info] Pull Request Author ${PULL_REQUEST_AUTHOR}"
   	grep -Fq ${PULL_REQUEST_AUTHOR} ./known_authors.txt
-  	PULL_REQUEST_AUTHOR_UNKNOWN=$?
+  	PULL_REQUEST_AUTHOR_KNOWN=$?
   fi 
 fi
 
@@ -142,7 +139,7 @@ if [ "$IS_PULL_REQUEST" = "true" ]; then
 		REVIEW_STATUS="REQUEST_CHANGES"
 		REPORT+=$':warn: The author of the Pull Request has no CLA :warn: \n'
 	else
-		REPORT+=$':heavy_check_mark: The author of the pull :heavy_check_mark: \n'	
+		REPORT+=$':heavy_check_mark: The author of the pull has a CLA :heavy_check_mark: \n'	
 	fi
 else
 	REPORT+=$'This is not a Pull Request \n'
