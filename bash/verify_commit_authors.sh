@@ -142,22 +142,24 @@ else
 	REPORT+=$'This is not a Pull Request \n'
 fi
 
-echo "[Info] "
-echo "[Info] ------------------------------------"
-echo "[Info] Create Pull Request Review"
-echo "[Info] ------------------------------------"
-echo "[Info] "
-	
-	
-if [ "$IS_PULL_REQUEST" == "true" ] ; then
-  #  Prepare the body for the review replace the \n with escaped ones
-  BODY=$(echo "${REPORT}" | sed -z 's/\n/\\n/g') 
-  
-  # Write a review and ask for changes
-  curl -s -o /dev/null --show-error -H "Authorization: token ${GITHUB_API_TOKEN}" -X POST \
-  -d "{\"commit_id\": \"${TRAVIS_COMMIT}\", \"body\": \"${BODY}\", \"event\": \"${REVIEW_STATUS}\"}" \
-  "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
-fi
+# This idea does not work with PR from a fork
+# TravisCI will not decypher the secret needed
+# to add the review.
+# echo "[Info] "
+# echo "[Info] ------------------------------------"
+# echo "[Info] Create Pull Request Review"
+# echo "[Info] ------------------------------------"
+# echo "[Info] "
+# 	
+# if [ "$IS_PULL_REQUEST" == "true" ] ; then
+#  #  Prepare the body for the review replace the \n with escaped ones
+#  BODY=$(echo "${REPORT}" | sed -z 's/\n/\\n/g') 
+#  
+#  # Write a review and ask for changes
+#  curl -s -o /dev/null --show-error -H "Authorization: token ${GITHUB_API_TOKEN}" -X POST \
+#  -d "{\"commit_id\": \"${TRAVIS_COMMIT}\", \"body\": \"${BODY}\", \"event\": \"${REVIEW_STATUS}\"}" \
+#  "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
+# fi
 
 echo "${REPORT}"
 if [ "$REVIEW_STATUS" == "APPROVE" ] ; then
