@@ -50,6 +50,14 @@ if [ ! -v $TRAVIS_PULL_REQUEST ]; then
   if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
   	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
   	IS_PULL_REQUEST="true"
+  	
+	echo "[Debug] Step 1"
+  	curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}'
+	echo "[Debug] Step 2"
+  	$(curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}')
+	echo "[Debug] Step 3"
+  	curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}' | jq '.user.login'
+  	
   	PULL_REQUEST_AUTHOR=$(curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}' | jq --raw-output '.user.login')
   	echo "[Info] Pull Request Author ${PULL_REQUEST_AUTHOR}"
   	grep -Fq ${PULL_REQUEST_AUTHOR} ./known_authors.txt
