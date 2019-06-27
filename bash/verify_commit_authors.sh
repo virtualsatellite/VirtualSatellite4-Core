@@ -99,7 +99,7 @@ UNKNOWN_AUTHORS=$(grep -v -Fq -f ./known_authors.txt ./commit_authors.txt)
 
 echo "[Info] "
 echo "[Info] ------------------------------------"
-echo "[Info] generate Analysis Report"
+echo "[Info] Generate Analysis Report"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
