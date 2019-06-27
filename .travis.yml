@@ -32,6 +32,7 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
+- name: verify
 - name: build-test
 - name: build-assemble-deploy
 
@@ -100,7 +101,7 @@ jobs:
     # Run a quicksanity check if all commits are
     # handed in by known users
     #---------------------------------------------
-    - stage: build-test
+    - stage: verify
       name: Verify - Authors Sanity Check
       script:
       - chmod 700 ./bash/verify_commit_authors.sh known_authors.txt
