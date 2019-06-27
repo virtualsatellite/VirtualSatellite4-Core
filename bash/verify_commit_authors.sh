@@ -17,9 +17,9 @@ echo "[Info] "
 if [ -f $(git rev-parse --git-dir)/shallow ]; then
 	echo "[Info] Current repository is shallow"
 	echo "[Info] Need to unshallow"
-	git fetch origin development development:development
+	git fetch origin development:development
 	git fetch --unshallow
-else
+elsegit show
 	echo "[Info] Current repository is not shallow"
 fi
 
@@ -72,7 +72,7 @@ echo "[Info] List of Commits and Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git --no-pager log development... --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%aN>%Creset" --abbrev-commit --reverse
+
 
 echo ""
 echo "[Info] ------------------------------------"
