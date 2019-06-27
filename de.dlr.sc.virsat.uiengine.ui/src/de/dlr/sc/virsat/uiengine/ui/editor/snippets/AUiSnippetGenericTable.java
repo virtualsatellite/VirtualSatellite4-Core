@@ -173,7 +173,11 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		// Get the registered images for decorating the actions
 		Image categoryImage = getTableLabelProvider().getColumnImage(type, 0);
 		ImageDescriptor categoryImageDescriptor = ImageDescriptor.createFromImage(categoryImage);
-		ImageDescriptor openEditorImageDescriptor = site.getService(ICommandImageService.class).getImageDescriptor(Activator.COMMAND_ID_OPEN_EDITOR);
+		ImageDescriptor openEditorImageDescriptor = null;
+		
+		if (site != null) {
+			openEditorImageDescriptor = site.getService(ICommandImageService.class).getImageDescriptor(Activator.COMMAND_ID_OPEN_EDITOR);
+		}
 		
 		actionAddCategory = new Action(BUTTON_ADD_TEXT + getTypeInformation(), categoryImageDescriptor) {
 			@Override
@@ -358,8 +362,10 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 		
-		IEditorSite edSite = (IEditorSite) site;
-		edSite.registerContextMenu(GenericEditor.EDITOR_ID + "#" + id, menuMgr, viewer, false);
+		if (site != null) {
+			IEditorSite edSite = (IEditorSite) site;
+			edSite.registerContextMenu(GenericEditor.EDITOR_ID + "#" + id, menuMgr, viewer, false);
+		}
 		
 		columnViewer.addSelectionChangedListener((selectionChangedEvent) -> {
 			updateActionEnabledState(editingDomain);
@@ -376,7 +382,9 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 			public void focusGained(FocusEvent e) {
 				if (getSelection().isEmpty()) {
 					Object viewerInput = columnViewer.getInput();
-					site.getSelectionProvider().setSelection(new StructuredSelection(viewerInput));
+					if (site != null) {
+						site.getSelectionProvider().setSelection(new StructuredSelection(viewerInput));
+					}
 				}
 			}
 		});
