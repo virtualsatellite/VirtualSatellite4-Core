@@ -107,39 +107,39 @@ echo "[Info] "
 # in case of one test failing, set it to REQUEST_CHANGES
 REVIEW_STATUS="APPROVE"
 
-REPORT=$'Author Verification Report \n'
-REPORT+=$'---------------------------\n\n'
+REPORT=$'[Info] Author Verification Report \n'
+REPORT+=$'[Info] ---------------------------\n'
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
-	REPORT+=$':x: Some Authors in commit History without CLA :x: \n'
+	REPORT+=$'[Warn] SERIOUS: Some Authors in commit History without CLA! \n'
 else
-	REPORT+=$':heavy_check_mark: All Authors in commit history with CLA. :heavy_check_mark: \n'	
+	REPORT+=$'[Info] OK:      All Authors in commit history with CLA. \n'	
 fi
 
 if [ $CHANGED_MAILMAP -ne 0 ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
-	REPORT+=$':warning: .mailmap file has been changed :warning: \n'
+	REPORT+=$'[Warn] WARNING: <.mailmap> file has been changed!  \n'
 else
-	REPORT+=$':heavy_check_mark: .mailmap file is not modified :heavy_check_mark: \n'	
+	REPORT+=$'[Info] OK:      <.mailmap> file is not modified. \n'	
 fi
 
 if [ $CHANGED_KNOWN_AUTHORS -ne 0 ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
-	REPORT+=$':warning: known_authors.txt file has been changed :warning: \n'
+	REPORT+=$'[Warn] WARNING: <known_authors.txt> file has been changed! \n'
 else
-	REPORT+=$':heavy_check_mark: .known_authors file is not modified :heavy_check_mark: \n'	
+	REPORT+=$'[Info] OK:      <known_authors.txt> file is not modified. \n'	
 fi
 
 if [ "$IS_PULL_REQUEST" = "true" ]; then
 	if [ $PULL_REQUEST_AUTHOR_KNOWN -ne 0 ] ; then
 		REVIEW_STATUS="REQUEST_CHANGES"
-		REPORT+=$':warning: The author of the Pull Request has no CLA :warning: \n'
+		REPORT+=$'[Warn] SERIOUS: The author of the Pull Request has no CLA! \n'
 	else
-		REPORT+=$':heavy_check_mark: The author of the pull has a CLA :heavy_check_mark: \n'	
+		REPORT+=$'[Info] OK:      The author of the pull has a CLA. \n'	
 	fi
 else
-	REPORT+=$'This is not a Pull Request \n'
+	REPORT+=$'[Info] OK:      This is not a Pull Request, thus no author to be ckecked. \n'
 fi
 
 # This idea does not work with PR from a fork
