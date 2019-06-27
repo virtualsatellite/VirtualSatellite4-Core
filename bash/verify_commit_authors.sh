@@ -46,8 +46,8 @@ CHANGED_KNOWN_AUTHORS=$?
 # Detect Travis CI Pull Request to find out the name of the author
 IS_PULL_REQUEST="false"
 if [ ! -v $TRAVIS_PULL_REQUEST ]; then 
- 	echo "[Info] Detected TravisCI Pull Request Variable"
-  if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
+  echo "[Info] Detected TravisCI Pull Request Variable value: ${TRAVIS_PULL_REQUEST}"
+  if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
   	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
   	IS_PULL_REQUEST="true"
   	PULL_REQUEST_AUTHOR=$(curl 'https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}' | jq --raw-output '.user.login')
