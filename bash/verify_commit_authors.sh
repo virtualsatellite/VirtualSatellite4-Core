@@ -51,7 +51,7 @@ if [ ! -v $TRAVIS_PULL_REQUEST ]; then
   	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
   	IS_PULL_REQUEST="true"
   	
-  	PULL_REQUEST_AUTHOR=$(curl "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq --raw-output '.user.login')
+  	PULL_REQUEST_AUTHOR=$(curl -s --show-error "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq --raw-output '.user.login')
   	
   	echo "[Info] Pull Request Author: ${PULL_REQUEST_AUTHOR}"
   	grep -Fq ${PULL_REQUEST_AUTHOR} ./known_authors.txt
@@ -150,24 +150,24 @@ echo "[Info] "
 	
 	
 if [ "$IS_PULL_REQUEST" == "true" ] ; then
-    # Prepare the body for the review replace the \n with escaped ones
-    BODY=$(echo "${REPORT}" | sed -z 's/\n/\\n/g') 
-		
-		# Write a review and ask for changes
-		curl -H "Authorization: token ${GITHUB_API_TOKEN}" -X POST \
-		-d "{\"commit_id\": \"${TRAVIS_COMMIT}\", \"body\": \"${BODY}\", \"event\": \"${REVIEW_STATUS}\"}" \
-		"https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
+  #  Prepare the body for the review replace the \n with escaped ones
+  BODY=$(echo "${REPORT}" | sed -z 's/\n/\\n/g') 
+  
+  # Write a review and ask for changes
+  curl -s -o /dev/null --show-error -H "Authorization: token ${GITHUB_API_TOKEN}" -X POST \
+  -d "{\"commit_id\": \"${TRAVIS_COMMIT}\", \"body\": \"${BODY}\", \"event\": \"${REVIEW_STATUS}\"}" \
+  "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
 fi
 
 echo "${REPORT}"
 if [ "$REVIEW_STATUS" == "APPROVE" ] ; then
   echo "[Info] ------------------------------------"
-	echo "[Info] Report does not show anomalies"
+  echo "[Info] Report does not show anomalies"
   echo "[Info] ------------------------------------"
 se
-	echo "[Warn] ------------------------------------"
+  echo "[Warn] ------------------------------------"
   echo "[Warn] Report shows anomalies!"
-	echo "[Warn] ------------------------------------"
+  echo "[Warn] ------------------------------------"
   exit 1
 fi
 
