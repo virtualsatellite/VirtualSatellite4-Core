@@ -119,14 +119,14 @@ fi
 
 if [ $CHANGED_MAILMAP -ne 0 ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
-	REPORT+=$':warn: .mailmap file has been changed :warn: \n'
+	REPORT+=$':warning: .mailmap file has been changed :warning: \n'
 else
 	REPORT+=$':heavy_check_mark: .mailmap file is not modified :heavy_check_mark: \n'	
 fi
 
 if [ $CHANGED_KNOWN_AUTHORS -ne 0 ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
-	REPORT+=$':warn: known_authors.txt file has been changed :warn: \n'
+	REPORT+=$':warning: known_authors.txt file has been changed :warning: \n'
 else
 	REPORT+=$':heavy_check_mark: .known_authors file is not modified :heavy_check_mark: \n'	
 fi
@@ -134,7 +134,7 @@ fi
 if [ "$IS_PULL_REQUEST" = "true" ]; then
 	if [ $PULL_REQUEST_AUTHOR_KNOWN -ne 0 ] ; then
 		REVIEW_STATUS="REQUEST_CHANGES"
-		REPORT+=$':warn: The author of the Pull Request has no CLA :warn: \n'
+		REPORT+=$':warning: The author of the Pull Request has no CLA :warning: \n'
 	else
 		REPORT+=$':heavy_check_mark: The author of the pull has a CLA :heavy_check_mark: \n'	
 	fi
