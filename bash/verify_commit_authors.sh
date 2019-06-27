@@ -164,7 +164,7 @@ if [ "$REVIEW_STATUS" == "APPROVE" ] ; then
   echo "[Info] ------------------------------------"
   echo "[Info] Report does not show anomalies"
   echo "[Info] ------------------------------------"
-se
+else
   echo "[Warn] ------------------------------------"
   echo "[Warn] Report shows anomalies!"
   echo "[Warn] ------------------------------------"
