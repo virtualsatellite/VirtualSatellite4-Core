@@ -110,6 +110,12 @@ REVIEW_STATUS="APPROVE"
 REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
+CR='\033[0;31m' # Red Color
+CY='\033[1;33m' # Yellow Color
+CG='\033[1;32m' # Green Color
+CN='\033[0m'    # Reset Color
+
+
 if [ -z "$UNKNOWN_AUTHORS" ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
 	REPORT+=$'[Warn] SERIOUS: Some Authors in commit History without CLA! \n'
@@ -161,15 +167,17 @@ fi
 #  "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
 # fi
 
-echo "${REPORT}"
+COLORED_REPORT=$(echo "${REPORT}" | sed -e "s/SERIOUS/\\${CR}SERIOUS\\${CN}/g" | sed -e "s/WARNING/\\${CY}WARNING\\${CN}/g" | sed -e "s/OK/\\${CG}OK\\${CN}/g")
+
+echo -e "${COLORED_REPORT}"
 if [ "$REVIEW_STATUS" == "APPROVE" ] ; then
-  echo "[Info] ------------------------------------"
-  echo "[Info] Report does not show anomalies"
-  echo "[Info] ------------------------------------"
+  echo    "[Info] ------------------------------------"
+  echo -e "[Info] ${CR}Report does not show anomalies!${CN}"
+  echo    "[Info] ------------------------------------"
 else
-  echo "[Warn] ------------------------------------"
-  echo "[Warn] Report shows anomalies!"
-  echo "[Warn] ------------------------------------"
+  echo    "[Warn] ------------------------------------"
+  echo -e "[Warn] ${CR}Report shows anomalies!${CN}"
+  echo    "[Warn] ------------------------------------"
   exit 1
 fi
 
