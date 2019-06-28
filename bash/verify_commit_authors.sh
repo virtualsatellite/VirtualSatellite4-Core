@@ -95,9 +95,8 @@ echo "[Info] "
 
 cat ./known_authors.txt
 
-echo ""
 echo "[Info] ------------------------------------"
-echo "[Info] Verify against known_authors file"
+echo "[Info] List of unknown Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
@@ -131,7 +130,7 @@ else
 	REPORT+=$"[Info] Using STRICT fail rules \n"
 fi
 
-if [ -z "$UNKNOWN_AUTHORS" ]; then
+if [ "$UNKNOWN_AUTHORS" != "" ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
 	REPORT+=$"[Warn] SERIOUS: Some Authors in commit History without CLA!...(REQUEST_CHANGES) \n"
 else
