@@ -5,6 +5,8 @@ echo "[Info] Verify commit authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+printenv
+
 echo "[Info] ------------------------------------"
 echo "[Info] Get the full history"
 echo "[Info] and prepare local git repo"
