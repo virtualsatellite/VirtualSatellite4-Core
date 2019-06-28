@@ -192,7 +192,6 @@ TBD
 
 == Modeling with Virtual Satellite
 
-
 Learn here about the out of the box available modeling capabilities supported by Virtual Satellite.
 In this chapter you will learn about concepts, how to work with them, how to interact with the data model,
 and which default concepts are delivered to you by the Core. 
@@ -210,9 +209,13 @@ NOTE: For example activating the _de.dlr.sc.virsat.model.extension.ps_ concept e
 Having multiple users manipulate the data model concurrently may lead to merge conflicts.
 To avoid such issues, Virtual Satellite provides a rights management system.
 It defines which user is allowed to manipulate a certain model element.
-The association between a user and the modifiable elements is called a _Discipline_. +
-A _Discipline_ can be assigned a user name and likewise model elements can be assigned a _Discipline_.
+The association between a user and the modifiable elements is called a _Discipline_.
 Then only users logged in with that specified user name are allowed to modify those elements.
+A _Discipline_ has two properties:
+
+Discipline name:: The name of the _Discipline_ which should be unique.
+User name:: Only users logged in with that specified user name will be associated with the _Discipline_.
+
 Disciplines are managed in the _Role Management_.
 By default when a new project is created, the _Role Management_ will contain exactly one _Discipline_ called *System*.
 
@@ -278,8 +281,7 @@ NOTE: For example the statement "the mass is 5" is ambiguous and not meaningful.
 However, the information "the mass is 5kg" is something that can be worked with.
 
 To establish a solid foundation for well-defined and consistent unities,
-Virtual Satellite provides an implementation of the Quantities, Units, Dimensions and Values (QUDV)
-
+Virtual Satellite provides an implementation of the Quantities, Units, Dimensions and Values (QUDV).
 In this section you will learn how to:
 
 * Create a new _Quantity Kind_
@@ -290,22 +292,38 @@ In this section you will learn how to:
 ===== Unit Management
 
 The _Unit Management_ is the central hub for managing _Quantity Kinds_ and _Units_.
+By default, when you create a new project the _Unit Management_ will be populated by a default QUDV
+model supplied by Virtual Satellite.
+Further _Quantity Kinds_ and _Units_ required in the project can then be defined.
 The QUDV supports two sorts of _Quantity Kinds_:
 
 Simple Quantity Kinds:: A _Simple Quantity Kind_ is not based on another _Quantity Kind_.
-NOTE: An example for this in the SI unit system is mass.
-Derived Quantity Kinds:: A _Derived Quantity Kind_ is defined as a composition of other _Quantity Kinds_. 
-Each quantity is equipped with a factor stating its involvement.
 +
-NOTE: An example for this in the SI unit system is speed, 
-which is composed over the quantities _Length_ with factor 1 and _Time_ with factor -1. 
+NOTE: An example for this in the SI unit system is _Mass_.
+Derived Quantity Kinds:: A _Derived Quantity Kind_ is defined as a composition of other _Quantity Kinds_. 
+Each quantity is equipped with a *factor* stating its involvement.
++
+NOTE: An example for this in the SI unit system is _Speed_, 
+which is composed over the quantities _Length_ with *factor* of 1 and _Time_ with a *factor* of -1. 
 
-In the same fashion QUDV supports the following sorts of _Units_:
+In the same fashion, the Virtual Satellite implementation of QUDV supports the following sorts of _Units_:
 
-Simple Unit:: TBD
-Conversion Based Unit:: TBD
-Derived Unit:: TBD
-Prefixed Unit:: TBD
+Simple Unit:: A _Simple Unit_ is not based on another _Unit_.
++
+NOTE: An example for this in the SI unit system is _Second_.
+Conversion Based Unit:: A _Conversion Based Unit_ is defined by conversion of a reference _Unit_.
+The conversion can be described with a *factor* and an *offset*.
++
+NOTE: An example for this in the SI unit system is _Degree Celsius_,
+which is defined in reference to _Kelvin_ with a *factor* of 1 and an *offset* of 273.15.
+Derived Unit:: A _Derived Unit_ is defined as a composition of other _Units_.
++
+NOTE: An example for this in the SI unit system is _Velocity_, 
+which is composed of the _Units_ _Metre_ with a *factor* of 1 and _Second_ with a *factor* of -1.
+Prefixed Unit:: A _Prefixed Unit_ is defined by a referenced _Unit_ and an added prefix.
++
+NOTE: An example for this in the SI unit system is _Milli Second_,
+which prefixes the _Unit_ _Second_ with the prefix _Milli_.
 
 In the following you will create a new _Simple Quanitity Kind_ and a new _Simple Unit_ for it.
 
@@ -358,9 +376,49 @@ You can remove a created _Quantity Kind_ or _Unit_ by going to the _Unit Managem
 selecting the desired _Quantity Kind_ or _Unit_ then press *Remove Quantity Kind* or *Remove Unit*.
 Likewise, editing existing an existing _Quantity Kind_ or _Units_ can be done by pressing *Edit Quantity Kind* or *Edit Unit*.
 
-===== QUDV Wizard
+===== QUDV Wizards
 
-TBD
+If you have defined a QUDV model to your liking, you can transfer it between different projects
+using the QUDV wizards. Virtual Satellite provides an export and an import wizard for QUDV models.
+Both wizards can be found in the *VirSat* category.
+In the following you will export a QUDV system and re-import it.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _QUDV Export Wizard_ by selecting menu:File[Export] and choosing *QUDV Export Wizard* from the *VirSat* category.
+Then select *Next*. 
+|image:chapterModeling/QUDVExportWizardSelection.png[Selecting the QUDV export wizard]
+
+|{counter:step}.
+|Tick the checkbox for the _Unit Management_ model you wish to export.
+Then select an export destination by pressing *Browse*.
+Finally press *Finish*. 
+|image:chapterModeling/QUDVExportWizard.png[The QUDV export wizard]
+
+|{counter:step}.
+|Open the _QUDV Import Wizard_ by selecting menu:File[Import] and choosing *QUDV Import Wizard* from the *VirSat* category.
+Then select *Next*. 
+|image:chapterModeling/QUDVImportWizardSelection.png[Selecting the QUDV import wizard]
+
+|{counter:step}.
+|Select an import destination by pressing *Browse*.
+Tick the checkbox for the QUDV model you wish to import.
+Then press *Next*. 
+|image:chapterModeling/QUDVImportWizard.png[The QUDV import wizard, source selection]
+
+|{counter:step}.
+|Tick the checkbox for the QUDV model you wish to overwrite.
+Finally press *Finish*. 
+|image:chapterModeling/QUDVImportWizardTargetSelection.png[The QUDV import wizard, target selection]
+
+|===
 
 === Modeling Concepts
 
