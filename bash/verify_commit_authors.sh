@@ -51,6 +51,8 @@ if [ ! -v $TRAVIS_PULL_REQUEST ]; then
   	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
   	IS_PULL_REQUEST="true"
   	
+  	curl --show-error "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}"
+  	
   	PULL_REQUEST_API_CALL=$(curl -s --show-error "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}")
   	
   	PULL_REQUEST_AUTHOR=$(echo "${PULL_REQUEST_API_CALL}" | jq --raw-output '.user.login')
