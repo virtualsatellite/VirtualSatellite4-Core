@@ -19,8 +19,8 @@ if [ -f $(git rev-parse --git-dir)/shallow ]; then
 	echo "[Info] Need to unshallow"
 	git fetch origin development:development
 	git fetch --unshallow
-elsegit show
-	echo "[Info] Current repository is not shallow"
+else
+  echo "[Info] Current repository is not shallow"
 fi
 
 echo "[Info] ------------------------------------"
@@ -140,50 +140,50 @@ if [ "$PULL_REQUEST_AUTHOR_ASSOCIATION" != "MEMBER" ]; then
 	REVIEW_STATUS_WARNINGS="APPROVED"
 fi
 
-if [ -z "$CHANGED_TRAVIS" ]; then
+if [ $CHANGED_TRAVIS -ne 0 ]; then
 	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$'[Warn] WARNING: <.travis.yml> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n'
+	REPORT+=$"[Warn] WARNING: <.travis.yml> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
 else
-	REPORT+=$'[Info] OK:      <.travis.yml> file is not modified....(APPROVED) \n'	
+	REPORT+=$"[Info] OK:      <.travis.yml> file is not modified....(APPROVED) \n"	
 fi
 
-if [ -z "$CHANGED_VCA" ]; then
+if [ $CHANGED_VCA -ne 0 ]; then
 	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$'[Warn] WARNING: <verify_commit_authors.sh> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n'
+	REPORT+=$"[Warn] WARNING: <verify_commit_authors.sh> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
 else
-	REPORT+=$'[Info] OK:      <verify_commit_authors.sh> file is not modified....(APPROVED) \n'	
+	REPORT+=$"[Info] OK:      <verify_commit_authors.sh> file is not modified....(APPROVED) \n"
 fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
-	REPORT+=$'[Warn] SERIOUS: Some Authors in commit History without CLA!...(REQUEST_CHANGES) \n'
+	REPORT+=$"[Warn] SERIOUS: Some Authors in commit History without CLA!...(REQUEST_CHANGES) \n"
 else
-	REPORT+=$'[Info] OK:      All Authors in commit history with CLA....(APPROVED) \n'	
+	REPORT+=$"[Info] OK:      All Authors in commit history with CLA....(APPROVED) \n"	
 fi
 
 if [ $CHANGED_MAILMAP -ne 0 ]; then
 	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$'[Warn] WARNING: <.mailmap> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n'
+	REPORT+=$"[Warn] WARNING: <.mailmap> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
 else
-	REPORT+=$'[Info] OK:      <.mailmap> file is not modified....(APPROVED) \n'	
+	REPORT+=$"[Info] OK:      <.mailmap> file is not modified....(APPROVED) \n"	
 fi
 
 if [ $CHANGED_KNOWN_AUTHORS -ne 0 ]; then
 	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$'[Warn] WARNING: <known_authors.txt> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n'
+	REPORT+=$"[Warn] WARNING: <known_authors.txt> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
 else
-	REPORT+=$'[Info] OK:      <known_authors.txt> file is not modified....(APPROVED) \n'	
+	REPORT+=$"[Info] OK:      <known_authors.txt> file is not modified....(APPROVED) \n"	
 fi
 
 if [ "$IS_PULL_REQUEST" = "true" ]; then
 	if [ $PULL_REQUEST_AUTHOR_KNOWN -ne 0 ] ; then
 		REVIEW_STATUS="REQUEST_CHANGES"
-		REPORT+=$'[Warn] SERIOUS: The author of the Pull Request has no CLA!...(REQUEST_CHANGES) \n'
+		REPORT+=$"[Warn] SERIOUS: The author of the Pull Request has no CLA!...(REQUEST_CHANGES) \n"
 	else
-		REPORT+=$'[Info] OK:      The author of the pull has a CLA....(APPROVED) \n'	
+		REPORT+=$"[Info] OK:      The author of the pull has a CLA....(APPROVED) \n"	
 	fi
 else
-	REPORT+=$'[Info] OK:      This is not a Pull Request, thus no author to be ckecked....(APPROVED) \n'
+	REPORT+=$"[Info] OK:      This is not a Pull Request, thus no author to be ckecked....(APPROVED) \n"
 fi
 
 # This idea does not work with PR from a fork
