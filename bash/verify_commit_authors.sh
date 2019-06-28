@@ -43,23 +43,24 @@ echo "[Info] Checking known_authors.txt"
 git diff --quiet development known_authors.txt
 CHANGED_KNOWN_AUTHORS=$?
 
-# Detect Travis CI Pull Request to find out the name of the author
-IS_PULL_REQUEST="false"
+echo "[Info] ------------------------------------"
+echo "[Info] Fork detection"
+echo "[Info] ------------------------------------"
+
+# Now checking if we are on normal PR or on a forked PR
+# we usually assume we are on a fork
+IS_FORK="true"
 if [ ! -v $TRAVIS_PULL_REQUEST ]; then 
-  echo "[Info] Detected TravisCI Pull Request Variable value: ${TRAVIS_PULL_REQUEST}"
-  if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-  	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
-  	IS_PULL_REQUEST="true"
-  	
-  	PULL_REQUEST_API_CALL=$(curl -s --show-error "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}")
-  	
-  	PULL_REQUEST_AUTHOR=$(echo "${PULL_REQUEST_API_CALL}" | jq --raw-output '.user.login')
-  	PULL_REQUEST_AUTHOR_ASSOCIATION=$(echo "${PULL_REQUEST_API_CALL}" | jq --raw-output '.author_association')
-  	
-  	echo "[Info] Pull Request Author: ${PULL_REQUEST_AUTHOR} (Association: ${PULL_REQUEST_AUTHOR_ASSOCIATION})"
-  	grep -Fq ${PULL_REQUEST_AUTHOR} ./known_authors.txt
-  	PULL_REQUEST_AUTHOR_KNOWN=$?
-  fi 
+	echo "[Info] Running on Travis CI"
+	echo "[Info] Repo Slug: ${TRAVIS_REPO_SLUG}"
+	echo "[Info] PR   Slug: ${TRAVIS_PULL_REQUEST_SLUG}"
+
+	if [ "$TRAVIS_REPO_SLUG" ==  "$TRAVIS_PULL_REQUEST_SLUG" ]; then
+		echo "[Info] PR is not issued from a fork!"
+		IS_FORK="false"
+	fi
+else
+	echo "[Info] Not running on Travis CI"
 fi
 
 echo "[Info] ------------------------------------"
@@ -121,8 +122,11 @@ REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
 REVIEW_STATUS_WARNINGS="REQUEST_CHANGES"
-if [ "$PULL_REQUEST_AUTHOR_ASSOCIATION" == "MEMBER" ]; then
+if [ $IS_FORK == "true" ]; then
 	REVIEW_STATUS_WARNINGS="APPROVE"
+	REPORT+=$"[Info] Running on a PR fork, setting STRICT fail rules \n"
+else
+	REPORT+=$"[Info] Running on a normal PR, setting RELAXED fail rules \n"
 fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
@@ -146,43 +150,13 @@ else
 	REPORT+=$"[Info] OK:      <known_authors.txt> file is not modified....(APPROVE) \n"	
 fi
 
-if [ "$IS_PULL_REQUEST" == "true" ]; then
-	if [ $PULL_REQUEST_AUTHOR_KNOWN -ne 0 ] ; then
-		REVIEW_STATUS="REQUEST_CHANGES"
-		REPORT+=$"[Warn] SERIOUS: The author of the Pull Request has no CLA!...(REQUEST_CHANGES) \n"
-	else
-		REPORT+=$"[Info] OK:      The author of the pull has a CLA....(APPROVE) \n"	
-	fi
-else
-	REPORT+=$"[Info] OK:      This is not a Pull Request, thus no author to be ckecked....(APPROVE) \n"
-fi
-
-# This idea does not work with PR from a fork
-# TravisCI will not decypher the secret needed
-# to add the review.
-# echo "[Info] "
-# echo "[Info] ------------------------------------"
-# echo "[Info] Create Pull Request Review"
-# echo "[Info] ------------------------------------"
-# echo "[Info] "
-# 	
-# if [ "$IS_PULL_REQUEST" == "true" ] ; then
-#  #  Prepare the body for the review replace the \n with escaped ones
-#  BODY=$(echo "${REPORT}" | sed -z 's/\n/\\n/g') 
-#  
-#  # Write a review and ask for changes
-#  curl -s -o /dev/null --show-error -H "Authorization: token ${GITHUB_API_TOKEN}" -X POST \
-#  -d "{\"commit_id\": \"${TRAVIS_COMMIT}\", \"body\": \"${BODY}\", \"event\": \"${REVIEW_STATUS}\"}" \
-#  "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
-# fi
-
 COLORED_REPORT=$(echo "${REPORT}" | sed -e "s/SERIOUS/\\${CR}SERIOUS\\${CN}/g" | sed -e "s/WARNING/\\${CY}WARNING\\${CN}/g" | sed -e "s/OK/\\${CG}OK\\${CN}/g")
 COLORED_REPORT=$(echo "${COLORED_REPORT}" | sed -e "s/REQUEST_CHANGES/\\${CR}REQUEST_CHANGES\\${CN}/g" | sed -e "s/APPROVE/\\${CG}APPROVE\\${CN}/g")
 
 echo -e "${COLORED_REPORT}"
 if [ "$REVIEW_STATUS" == "APPROVE" ] ; then
   echo    "[Info] ------------------------------------"
-  echo -e "[Info] ${CR}Report does not show anomalies!${CN}"
+  echo -e "[Info] ${CG}Report does not show anomalies!${CN}"
   echo    "[Info] ------------------------------------"
 else
   echo    "[Warn] ------------------------------------"
