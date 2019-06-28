@@ -1,4 +1,4 @@
-# Virtual Satellite 4 - CORE
+# Virtual Satellite ONE - CORE
 
 Virtual Satellite is a DLR open source software for model based systems engineering (MBSE).
 
