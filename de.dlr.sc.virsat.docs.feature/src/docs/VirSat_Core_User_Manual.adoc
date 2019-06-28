@@ -271,6 +271,7 @@ Once you assign a _Discipline_ only the associated user can return the ownership
 
 TIP: In the event that the rights management needs to be bypassed,
 Virtual Satellite can be started with the -superUser flag to gain super user rights.
+For further information, check out <<Enforce super user rights>>.
 
 ==== Quantities, Units, Dimensions and Values
 
@@ -349,7 +350,7 @@ Then press *Next*.
 |image:chapterModeling/QuantityWizardSelection.png[Selecting the quantity kind wizard]
 
 |{counter:step}.
-|Set the name to *MyQuantityKind* and fill out the other fields by data of your choosing.
+|Set the name to ´MyQuantityKind´ and fill out the other fields by data of your choosing.
 Then press *Finish*. 
 You can now find your created _Quantity Kind_ in the *Quantity Kind Management* section.
 |image:chapterModeling/SimpleQuantityKindWizard.png[Simple quantity kind wizard]
@@ -364,7 +365,7 @@ Then press *Next*.
 |image:chapterModeling/UnitWizardSelection.png[Selecting the quantity kind wizard]
 
 |{counter:step}.
-|Set the name to *MyUnit* and fill out the other fields by some data.
+|Set the name to ´MyUnit´ and fill out the other fields by some data.
 Then press *Finish*. 
 You can now find your created _Unit_ in the *Unit Management* section.
 |image:chapterModeling/SimpleUnitWizard.png[Simple unit wizard]
@@ -411,12 +412,12 @@ Then select *Next*.
 |Select an import destination by pressing *Browse*.
 Tick the checkbox for the QUDV model you wish to import.
 Then press *Next*. 
-|image:chapterModeling/QUDVImportWizard.png[The QUDV import wizard, source selection]
+|image:chapterModeling/QUDVImportWizard.png[The source selection in the QUDV import wizard]
 
 |{counter:step}.
 |Tick the checkbox for the QUDV model you wish to overwrite.
 Finally press *Finish*. 
-|image:chapterModeling/QUDVImportWizardTargetSelection.png[The QUDV import wizard, target selection]
+|image:chapterModeling/QUDVImportWizardTargetSelection.png[The target selection in the QUDV import wizard]
 
 |===
 
