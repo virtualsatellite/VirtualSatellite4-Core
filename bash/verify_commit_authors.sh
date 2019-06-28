@@ -49,15 +49,17 @@ echo "[Info] ------------------------------------"
 
 # Now checking if we are on normal PR or on a forked PR
 # we usually assume we are on a fork
-IS_FORK="true"
+STRICT_RULES="true"
 if [ ! -v $TRAVIS_PULL_REQUEST ]; then 
 	echo "[Info] Running on Travis CI"
 	echo "[Info] Repo Slug: ${TRAVIS_REPO_SLUG}"
 	echo "[Info] PR   Slug: ${TRAVIS_PULL_REQUEST_SLUG}"
 
 	if [ "$TRAVIS_REPO_SLUG" ==  "$TRAVIS_PULL_REQUEST_SLUG" ]; then
-		echo "[Info] PR is not issued from a fork!"
-		IS_FORK="false"
+		echo "[Info] Building a local PR, RELAXED rules apply!"
+		STRICT_RULES="false"
+	else
+		echo "[Info] Building either a fork PR or a branch, STRICT rules apply!"
 	fi
 else
 	echo "[Info] Not running on Travis CI"
@@ -122,32 +124,32 @@ REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
 REVIEW_STATUS_WARNINGS="REQUEST_CHANGES"
-if [ $IS_FORK != "true" ]; then
+if [ $STRICT_RULES != "true" ]; then
 	REVIEW_STATUS_WARNINGS="APPROVE"
-	REPORT+=$"[Info] Running on a normal PR, setting RELAXED fail rules \n"
+	REPORT+=$"[Info] Using RELAXED fail rules \n"
 else
-	REPORT+=$"[Info] Running on a PR fork, setting STRICT fail rules \n"
+	REPORT+=$"[Info] Using STRICT fail rules \n"
 fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
 	REPORT+=$"[Warn] SERIOUS: Some Authors in commit History without CLA!...(REQUEST_CHANGES) \n"
 else
-	REPORT+=$"[Info] OK:      All Authors in commit history with CLA....(APPROVE) \n"	
+	REPORT+=$"[Info] OK:      All Authors in commit history with CLA........(APPROVE) \n"
 fi
 
 if [ $CHANGED_MAILMAP -ne 0 ]; then
 	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$"[Warn] WARNING: <.mailmap> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
+	REPORT+=$"[Warn] WARNING: <.mailmap> file has been changed!.............(${REVIEW_STATUS_WARNINGS}) \n"
 else
-	REPORT+=$"[Info] OK:      <.mailmap> file is not modified....(APPROVE) \n"	
+	REPORT+=$"[Info] OK:      <.mailmap> file is not modified...............(APPROVE) \n"	
 fi
 
 if [ $CHANGED_KNOWN_AUTHORS -ne 0 ]; then
 	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$"[Warn] WARNING: <known_authors.txt> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
+	REPORT+=$"[Warn] WARNING: <known_authors.txt> file has been changed!....(${REVIEW_STATUS_WARNINGS}) \n"
 else
-	REPORT+=$"[Info] OK:      <known_authors.txt> file is not modified....(APPROVE) \n"	
+	REPORT+=$"[Info] OK:      <known_authors.txt> file is not modified......(APPROVE) \n"	
 fi
 
 COLORED_REPORT=$(echo "${REPORT}" | sed -e "s/SERIOUS/\\${CR}SERIOUS\\${CN}/g" | sed -e "s/WARNING/\\${CY}WARNING\\${CN}/g" | sed -e "s/OK/\\${CG}OK\\${CN}/g")
