@@ -30,6 +30,21 @@ echo "[Info] ------------------------------------"
 git branch -a
 
 echo "[Info] ------------------------------------"
+echo "[Info] Analyse build system integrity"
+echo "[Info] ------------------------------------"
+
+echo "[Info] Checking .travis.yml"
+
+git diff --quiet development .travis.yml
+CHANGED_TRAVIS=$?
+
+echo "[Info] Checking ./bash/verify_commit_authors.sh"
+
+git diff --quiet development ./bash/verify_commit_authors.sh
+CHANGED_VCA=$?
+
+
+echo "[Info] ------------------------------------"
 echo "[Info] Analyse authors integrity"
 echo "[Info] ------------------------------------"
 
@@ -51,9 +66,12 @@ if [ ! -v $TRAVIS_PULL_REQUEST ]; then
   	echo "[Info] Detected TravisCI Pull Request is  ${TRAVIS_PULL_REQUEST}"
   	IS_PULL_REQUEST="true"
   	
-  	PULL_REQUEST_AUTHOR=$(curl -s --show-error "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq --raw-output '.user.login')
+  	PULL_REQUEST_API_CALL=$(curl -s --show-error "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}")
   	
-  	echo "[Info] Pull Request Author: ${PULL_REQUEST_AUTHOR}"
+  	PULL_REQUEST_AUTHOR=$(echo "${PULL_REQUEST_API_CALL}" | jq --raw-output '.user.login')
+  	PULL_REQUEST_AUTHOR_ASSOCIATION=$(echo "${PULL_REQUEST_API_CALL}" | jq --raw-output '.author_association')
+  	
+  	echo "[Info] Pull Request Author: ${PULL_REQUEST_AUTHOR} (Association: ${PULL_REQUEST_AUTHOR_ASSOCIATION})"
   	grep -Fq ${PULL_REQUEST_AUTHOR} ./known_authors.txt
   	PULL_REQUEST_AUTHOR_KNOWN=$?
   fi 
@@ -117,7 +135,24 @@ REVIEW_STATUS="APPROVE"
 REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
+REVIEW_STATUS_WARNINGS="REQUEST_CHANGES"
+if [ "$PULL_REQUEST_AUTHOR_ASSOCIATION" != "MEMBER" ]; then
+	REVIEW_STATUS_WARNINGS="APPROVED"
+fi
 
+if [ -z "$CHANGED_TRAVIS" ]; then
+	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
+	REPORT+=$'[Warn] WARNING: <.travis.yml> file has been changed! \n'
+else
+	REPORT+=$'[Info] OK:      <.travis.yml> file is not modified!. \n'	
+fi
+
+if [ -z "$CHANGED_VCA" ]; then
+	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
+	REPORT+=$'[Warn] WARNING: <verify_commit_authors.sh> file has been changed! \n'
+else
+	REPORT+=$'[Info] OK:      <verify_commit_authors.sh> file is not modified!. \n'	
+fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
 	REVIEW_STATUS="REQUEST_CHANGES"
@@ -127,14 +162,14 @@ else
 fi
 
 if [ $CHANGED_MAILMAP -ne 0 ]; then
-	REVIEW_STATUS="REQUEST_CHANGES"
+	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
 	REPORT+=$'[Warn] WARNING: <.mailmap> file has been changed!  \n'
 else
 	REPORT+=$'[Info] OK:      <.mailmap> file is not modified. \n'	
 fi
 
 if [ $CHANGED_KNOWN_AUTHORS -ne 0 ]; then
-	REVIEW_STATUS="REQUEST_CHANGES"
+	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
 	REPORT+=$'[Warn] WARNING: <known_authors.txt> file has been changed! \n'
 else
 	REPORT+=$'[Info] OK:      <known_authors.txt> file is not modified. \n'	
