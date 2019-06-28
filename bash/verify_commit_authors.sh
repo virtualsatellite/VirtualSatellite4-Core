@@ -30,21 +30,6 @@ echo "[Info] ------------------------------------"
 git branch -a
 
 echo "[Info] ------------------------------------"
-echo "[Info] Analyse build system integrity"
-echo "[Info] ------------------------------------"
-
-echo "[Info] Checking .travis.yml"
-
-git diff --quiet development .travis.yml
-CHANGED_TRAVIS=$?
-
-echo "[Info] Checking ./bash/verify_commit_authors.sh"
-
-git diff --quiet development ./bash/verify_commit_authors.sh
-CHANGED_VCA=$?
-
-
-echo "[Info] ------------------------------------"
 echo "[Info] Analyse authors integrity"
 echo "[Info] ------------------------------------"
 
@@ -136,22 +121,8 @@ REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
 REVIEW_STATUS_WARNINGS="REQUEST_CHANGES"
-if [ "$PULL_REQUEST_AUTHOR_ASSOCIATION" != "MEMBER" ]; then
+if [ "$PULL_REQUEST_AUTHOR_ASSOCIATION" == "MEMBER" ]; then
 	REVIEW_STATUS_WARNINGS="APPROVED"
-fi
-
-if [ $CHANGED_TRAVIS -ne 0 ]; then
-	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$"[Warn] WARNING: <.travis.yml> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
-else
-	REPORT+=$"[Info] OK:      <.travis.yml> file is not modified....(APPROVED) \n"	
-fi
-
-if [ $CHANGED_VCA -ne 0 ]; then
-	REVIEW_STATUS="${REVIEW_STATUS_WARNINGS}"
-	REPORT+=$"[Warn] WARNING: <verify_commit_authors.sh> file has been changed!...(${REVIEW_STATUS_WARNINGS}) \n"
-else
-	REPORT+=$"[Info] OK:      <verify_commit_authors.sh> file is not modified....(APPROVED) \n"
 fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
@@ -175,7 +146,7 @@ else
 	REPORT+=$"[Info] OK:      <known_authors.txt> file is not modified....(APPROVED) \n"	
 fi
 
-if [ "$IS_PULL_REQUEST" = "true" ]; then
+if [ "$IS_PULL_REQUEST" == "true" ]; then
 	if [ $PULL_REQUEST_AUTHOR_KNOWN -ne 0 ] ; then
 		REVIEW_STATUS="REQUEST_CHANGES"
 		REPORT+=$"[Warn] SERIOUS: The author of the Pull Request has no CLA!...(REQUEST_CHANGES) \n"
