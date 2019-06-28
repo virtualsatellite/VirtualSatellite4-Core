@@ -422,11 +422,39 @@ Finally press *Finish*.
 
 === Modeling Concepts
 
-TBD
+Virtual Satellite provides an extension mechanism to customize the core modeling language to project-specific needs. Concepts allow creating new types that can be used in Virtual Satellite models. Virtual Satellite ships basic concepts to a model systems, such as the Concept _de.dlr.sc.virsat.model.extension.ps_, enabling to model complex product structures. 
 
-==== Activating a concept
+NOTE: To create your own Concepts see Section <<Developing a Concept>>.
 
-TBD
+==== Activating a Concept
+
+To activate Concepts, it is necessary to have a Virtual Satellite project. Such a project can be created by clicking the satellite icon in the VirSat Navigator or by right-clicking New > Project then select the folder _VirSat_ and select _VirSat Project_.
+
+Once you have a Virtual Satellite Project (in this documentation called MySatellite) follow the next steps to activate Concepts:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the editor for the _Repository_ from the navigator view by double-clicking menu:MySatellite[Repository]. 
+|image:chapterModeling/OpenRepository.png[Opening the repository editor]
+
+|{counter:step}.
+|The _Repository Editor_ will open in the _Editing_ area. Scroll down to the _table Section for: Active Concepts_. Here click on btn:[Add from Registry]. 
+|image:chapterModeling/RepositoryEditor.png[Select concept to activate]
+
+|{counter:step}.
+|Select the Concept to be activated and press the _OK_ button.
+|
+
+|===
+
+The concept is now activated.
 
 ==== Modeling with the concept palette
 
