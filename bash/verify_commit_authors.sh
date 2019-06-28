@@ -122,11 +122,11 @@ REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
 REVIEW_STATUS_WARNINGS="REQUEST_CHANGES"
-if [ $IS_FORK == "true" ]; then
+if [ $IS_FORK != "true" ]; then
 	REVIEW_STATUS_WARNINGS="APPROVE"
-	REPORT+=$"[Info] Running on a PR fork, setting STRICT fail rules \n"
-else
 	REPORT+=$"[Info] Running on a normal PR, setting RELAXED fail rules \n"
+else
+	REPORT+=$"[Info] Running on a PR fork, setting STRICT fail rules \n"
 fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
