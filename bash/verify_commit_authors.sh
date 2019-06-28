@@ -124,9 +124,9 @@ REPORT+=$'[Info] ---------------------------\n'
 REVIEW_STATUS_WARNINGS="REQUEST_CHANGES"
 if [ $IS_FORK == "true" ]; then
 	REVIEW_STATUS_WARNINGS="APPROVE"
-	REPORT+=$"[Info] OK:      Running on a PR fork, setting STRICT fail rules \n"
+	REPORT+=$"[Info] Running on a PR fork, setting STRICT fail rules \n"
 else
-	REPORT+=$"[Info] OK:      Running on a normal PR, setting RELAXED fail rules \n"
+	REPORT+=$"[Info] Running on a normal PR, setting RELAXED fail rules \n"
 fi
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
@@ -156,7 +156,7 @@ COLORED_REPORT=$(echo "${COLORED_REPORT}" | sed -e "s/REQUEST_CHANGES/\\${CR}REQ
 echo -e "${COLORED_REPORT}"
 if [ "$REVIEW_STATUS" == "APPROVE" ] ; then
   echo    "[Info] ------------------------------------"
-  echo -e "[Info] ${CR}Report does not show anomalies!${CN}"
+  echo -e "[Info] ${CG}Report does not show anomalies!${CN}"
   echo    "[Info] ------------------------------------"
 else
   echo    "[Warn] ------------------------------------"
