@@ -72,7 +72,7 @@ echo "[Info] List of Commits and Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-
+git --no-pager log development... --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%aN>%Creset" --abbrev-commit --reverse
 
 echo ""
 echo "[Info] ------------------------------------"
@@ -95,7 +95,14 @@ echo "[Info] Verify against known_authors file"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-UNKNOWN_AUTHORS=$(grep -v -Fq -f ./known_authors.txt ./commit_authors.txt)
+UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors.txt ./commit_authors.txt)
+
+CR='\033[0;31m' # Red Color
+CY='\033[1;33m' # Yellow Color
+CG='\033[1;32m' # Green Color
+CN='\033[0m'    # Reset Color
+
+echo -e "${CR}${UNKNOWN_AUTHORS}${CN}"
 
 echo "[Info] "
 echo "[Info] ------------------------------------"
@@ -110,10 +117,6 @@ REVIEW_STATUS="APPROVE"
 REPORT=$'[Info] Author Verification Report \n'
 REPORT+=$'[Info] ---------------------------\n'
 
-CR='\033[0;31m' # Red Color
-CY='\033[1;33m' # Yellow Color
-CG='\033[1;32m' # Green Color
-CN='\033[0m'    # Reset Color
 
 
 if [ -z "$UNKNOWN_AUTHORS" ]; then
