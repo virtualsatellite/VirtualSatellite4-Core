@@ -7,9 +7,9 @@ Bundle-Activator: de.dlr.sc.virsat.requirements.plugin.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
- de.dlr.sc.virsat.test,
  de.dlr.sc.virsat.requirements.tracing.test,
  de.dlr.sc.virsat.requirements.tracing.model.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.test
+Export-Package: de.dlr.sc.virsat.requirements.test

@@ -23,7 +23,6 @@ import de.dlr.sc.virsat.requirements.tracing.traceModel.tests.TraceModelAllTests
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-				de.dlr.sc.virsat.test.ProjectAllTest.class,
 				ProjectAllTests.class,
 				TraceModelAllTests.class
 				})
