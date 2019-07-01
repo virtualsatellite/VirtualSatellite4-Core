@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated TraceModel -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMModelWizardID"
+            name="%_UI_TMModelWizard_label"
+            class="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/TMModelFile.gif">
+         <description>%_UI_TMModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated TraceModel -->
+      <editor
+            id="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMEditorID"
+            name="%_UI_TMEditor_label"
+            icon="icons/full/obj16/TMModelFile.gif"
+            extensions="tm"
+            class="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMEditor"
+            contributorClass="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMActionBarContributor">
+      </editor>
+   </extension>
+</plugin>

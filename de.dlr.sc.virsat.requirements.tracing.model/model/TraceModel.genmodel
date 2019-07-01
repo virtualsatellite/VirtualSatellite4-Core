@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.dlr.sc.virsat.requirements.tracing.model/src-gen"
+    editDirectory="/de.dlr.sc.virsat.requirements.tracing.model.edit/src-gen" editorDirectory="/de.dlr.sc.virsat.requirements.tracing.model.editor/src-gen"
+    modelPluginID="de.dlr.sc.virsat.requirements.tracing.model" modelName="TraceModel"
+    modelPluginClass="" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    editPluginID="de.dlr.sc.virsat.requirements.tracing.model.edit" editorPluginID="de.dlr.sc.virsat.requirements.tracing.model.editor"
+    usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>TraceModel.ecore</foreignModel>
+  <genPackages prefix="TM" basePackage="de.dlr.sc.virsat.requirements.tracing" disposableProviderFactory="true"
+      ecorePackage="TraceModel.ecore#/">
+    <genClasses ecoreClass="TraceModel.ecore#//TraceElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//TraceElement/sourceTraceElement"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//TraceElement/targetTraceElement"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TraceModel.ecore#//TraceElement/ValidationEngineName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TraceModel.ecore#//TraceElement/Description"/>
+    </genClasses>
+    <genClasses ecoreClass="TraceModel.ecore#//TraceabilityLinkContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TraceModel.ecore#//TraceabilityLinkContainer/traceElements"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

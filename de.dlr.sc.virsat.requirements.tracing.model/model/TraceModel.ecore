@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="traceModel" nsURI="http://www.virsat.sc.dlr.de/requirements/tracing/"
+    nsPrefix="tm">
+  <eClassifiers xsi:type="ecore:EClass" name="TraceElement" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//general/IUuid ../../de.dlr.sc.virsat.model/model/dvlm.ecore#//general/IName">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceTraceElement" upperBound="10"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetTraceElement" upperBound="10"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ValidationEngineName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TraceabilityLinkContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traceElements" upperBound="-1"
+        eType="#//TraceElement" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

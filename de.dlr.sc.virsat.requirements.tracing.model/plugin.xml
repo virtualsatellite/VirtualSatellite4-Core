@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated TraceModel -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/requirements/tracing/"
+            class="de.dlr.sc.virsat.requirements.tracing.traceModel.TMPackage"
+            genModel="model/TraceModel.genmodel"/>
+   </extension>
+
+</plugin>

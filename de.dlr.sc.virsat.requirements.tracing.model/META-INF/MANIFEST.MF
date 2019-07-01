@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Requirements Model Plugin
+Bundle-SymbolicName: de.dlr.sc.virsat.requirements.tracing.model;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ de.dlr.sc.virsat.model;visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.dlr.sc.virsat.requirements.tracing.traceModel,
+ de.dlr.sc.virsat.requirements.tracing.traceModel.impl,
+ de.dlr.sc.virsat.requirements.tracing.traceModel.util
+Automatic-Module-Name: de.dlr.sc.virsat.requirements.tracing.model
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-Localization: plugin
