@@ -128,7 +128,7 @@
 				<!-- Projects for Virtual Satellite Requirements Handling -->
 				<module>de.dlr.sc.virsat.requirements</module>
 				<module>de.dlr.sc.virsat.requirements.ui</module>
-				<module>de.dlr.sc.virsat.requirements.feature</module>
+				<module>de.dlr.sc.virsat.requirements.ui.feature</module>
 				<module>de.dlr.sc.virsat.requirements.test</module>
 				<module>de.dlr.sc.virsat.requirements.test.feature</module>
 
