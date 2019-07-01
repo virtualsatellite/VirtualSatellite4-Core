@@ -124,6 +124,13 @@
 				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.ui</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
+				
+				<!-- Projects for Virtual Satellite Requirements Handling -->
+				<module>de.dlr.sc.virsat.requirements</module>
+				<module>de.dlr.sc.virsat.requirements.ui</module>
+				<module>de.dlr.sc.virsat.requirements.feature</module>
+				<module>de.dlr.sc.virsat.requirements.test</module>
+				<module>de.dlr.sc.virsat.requirements.test.feature</module>
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
 				<module>de.dlr.sc.virsat.model.extension.ps</module>
@@ -143,6 +150,7 @@
 				<module>de.dlr.sc.virsat.model.extension.visualisation.test</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.ui</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.feature</module>
+
 
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->

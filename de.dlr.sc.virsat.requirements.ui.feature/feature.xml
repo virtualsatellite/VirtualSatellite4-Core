@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.requirements.ui.feature"
+      label="VirSat Requirements UI Feature"
+      version="4.9.0.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature"
+      license-feature-version="4.9.0.qualifier">
+
+   <description>
+      This feature contains general user interface components for the requirements plugins
+   </description>
+
+   <copyright>
+      Copyright 2019
+by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import feature="de.dlr.sc.virsat.requirements.branding.feature" version="4.9.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.requirements.docs.feature" version="4.9.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.requirements.target.feature" version="4.9.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.requirements.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

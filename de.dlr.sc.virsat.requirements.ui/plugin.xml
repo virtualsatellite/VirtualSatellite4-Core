@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.rmf.reqif10.pror.editor.presentation.Reqif10Editor"
+            contributorClass="org.eclipse.rmf.reqif10.pror.editor.presentation.Reqif10ActionBarContributor"
+            default="true"
+            icon="resources/images/Requirements16.gif"
+            extensions="reqif"
+            id="org.eclipse.rmf.reqif10.presentation.Reqif10EditorID"
+            name="%_UI_Reqif10Editor_label">
+      </editor>
+   </extension>
+</plugin>
