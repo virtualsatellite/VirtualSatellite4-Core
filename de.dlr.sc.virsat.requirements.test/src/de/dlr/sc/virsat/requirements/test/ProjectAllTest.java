@@ -12,6 +12,9 @@ package de.dlr.sc.virsat.requirements.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import de.dlr.sc.virsat.requirements.tracing.test.ProjectAllTests;
+import de.dlr.sc.virsat.requirements.tracing.traceModel.tests.TraceModelAllTests;
+
 /**
  * 
  * @author fisc_ph
@@ -21,6 +24,8 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 				de.dlr.sc.virsat.test.ProjectAllTest.class,
+				ProjectAllTests.class,
+				TraceModelAllTests.class
 				})
 
 /**

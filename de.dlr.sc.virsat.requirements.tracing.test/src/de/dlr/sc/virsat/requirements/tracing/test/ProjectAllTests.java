@@ -39,12 +39,12 @@ import junit.framework.JUnit4TestAdapter;
  * Test Collection
  *
  */
-public class AllTests {
+public class ProjectAllTests {
 
 	/**
 	 * Constructor
 	 */
-	private AllTests() {
+	private ProjectAllTests() {
 	}
 	
 	/**
@@ -52,6 +52,6 @@ public class AllTests {
 	 * @return Executable JUnit Tests
 	 */
 	public static junit.framework.Test suite() {
-		return new JUnit4TestAdapter(AllTests.class);
+		return new JUnit4TestAdapter(ProjectAllTests.class);
 	}	
 }
