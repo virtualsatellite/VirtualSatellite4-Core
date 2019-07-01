@@ -27,6 +27,11 @@ Apache Commons Math
 JFreeChart
 
  * License: GNU Lesser General Public Licence (LGPL), 2.1
+ 
+ 
+Requirements Modeling Framework
+
+ * License: Eclipse Public License, 1.0
 
 Nebula Widgets Incubation
 
