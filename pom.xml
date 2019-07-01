@@ -136,6 +136,13 @@
 				<module>de.dlr.sc.virsat.requirements.tracing.model.edit</module>
 				<module>de.dlr.sc.virsat.requirements.tracing.model.editor</module>
 				<module>de.dlr.sc.virsat.requirements.tracing.model.tests</module>
+				
+				<module>de.dlr.sc.virsat.requirements.tracing</module>
+				<module>de.dlr.sc.virsat.requirements.tracing.builder</module>
+				<module>de.dlr.sc.virsat.requirements.tracing.feature</module>
+				<module>de.dlr.sc.virsat.requirements.tracing.ui</module>
+				<module>de.dlr.sc.virsat.requirements.tracing.validation</module>
+				<module>de.dlr.sc.virsat.requirements.tracing.test</module>
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
 				<module>de.dlr.sc.virsat.model.extension.ps</module>

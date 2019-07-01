@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.dlr.sc.virsat.requirements.tracing.builder.TraceBuilder"
+         name="VirSat Requirements Trace Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            callOnEmptyDelta="true"
+            hasNature="true">
+         <run
+               class="de.dlr.sc.virsat.requirements.tracing.builder.TraceBuilder">
+         </run>
+         </builder>
+   </extension>
+   <extension id="de.dlr.sc.virsat.requirements.tracing.builder.TraceNature" name="VirSat Requirements Trace Nature" point="org.eclipse.core.resources.natures">
+		<runtime>
+		<run class="de.dlr.sc.virsat.requirements.tracing.builder.TraceNature" />
+	</runtime>
+	<builder id="de.dlr.sc.virsat.requirements.tracing.builder.TraceBuilder"/>
+   </extension>
+
+
+</plugin>

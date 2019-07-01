@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Requirements Tracing UI
+Bundle-SymbolicName: de.dlr.sc.virsat.requirements.tracing.ui;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Automatic-Module-Name: de.dlr.sc.virsat.requirements.tracing.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: de.dlr.sc.virsat.requirements.tracing.ui.Activator
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.commands,
+ org.eclipse.core.runtime,
+ de.dlr.sc.virsat.requirements.tracing.builder,
+ org.eclipse.jface,
+ org.eclipse.ui,
+ org.eclipse.core.expressions,
+ de.dlr.sc.virsat.requirements.ui,
+ de.dlr.sc.virsat.requirements.tracing.model,
+ org.eclipse.rmf.reqif10,
+ de.dlr.sc.virsat.requirements.tracing,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.edit.ui,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui
+Export-Package: de.dlr.sc.virsat.requirements.tracing.ui,
+ de.dlr.sc.virsat.requirements.tracing.ui.impl

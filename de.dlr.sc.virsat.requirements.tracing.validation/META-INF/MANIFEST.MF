@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Requirements Trace Validation
+Bundle-SymbolicName: de.dlr.sc.virsat.requirements.tracing.validation;singleton:=true
+Bundle-Version: 4.9.0.qualifier
+Automatic-Module-Name: de.dlr.sc.virsat.requirements.tracing.validation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.rmf.reqif10,
+ de.dlr.sc.virsat.requirements.tracing.model,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.requirements.tracing,
+ de.dlr.sc.virsat.requirements.ui
+Export-Package: de.dlr.sc.virsat.requirements.tracing.validation,
+ de.dlr.sc.virsat.requirements.tracing.validation.engines
