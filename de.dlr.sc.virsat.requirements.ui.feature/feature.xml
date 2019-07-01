@@ -22,8 +22,8 @@ by German Aerospace Center (DLR e.V.)
    </license>
 
    <requires>
-      <import feature="de.dlr.sc.virsat.requirements.docs.feature" version="4.9.0.qualifier"/>
-      <import feature="de.dlr.sc.virsat.requirements.target.feature" version="4.9.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.docs.feature" version="4.9.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.target.feature" version="4.9.0.qualifier"/>
    </requires>
 
    <plugin
