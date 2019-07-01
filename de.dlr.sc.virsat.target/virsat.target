@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="virsat" sequenceNumber="2">
-<locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.nebula.widgets.gallery.feature.feature.group" version="1.0.0.201812241324"/>
-<repository location="https://download.eclipse.org/nebula/releases/latest/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="3.3.2.201709090201"/>
-<unit id="org.eclipse.emf.edapt.runtime.feature.feature.group" version="1.3.0.201801260923"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170609-0928"/>
-<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.11.0.201706061339"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
-<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
-<unit id="org.eclipse.graphiti.sdk.feature.feature.group" version="0.14.0.201705161212"/>
-<unit id="org.eclipse.jdt.source.feature.group" version="3.13.4.v20180330-0919"/>
-<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.3.0.v20170607-1133"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.4.v20180330-0640"/>
-<unit id="org.eclipse.platform.sdk" version="4.7.3.M20180330-0640"/>
-<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.6.0.201706141832"/>
-<unit id="org.eclipse.swtbot.feature.group" version="2.6.0.201706141832"/>
-<unit id="org.eclipse.team.svn.feature.group" version="4.0.5.I20170425-1700"/>
-<unit id="org.eclipse.xtext.sdk.feature.group" version="2.12.0.v20170519-1412"/>
-<repository location="http://download.eclipse.org/releases/oxygen/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rmf.reqif10.feature.feature.group" version="0.13.0.201509161042"/>
-<unit id="org.eclipse.rmf.reqif10.pror.feature.feature.group" version="0.13.0.201509161042"/>
-<repository location="http://download.eclipse.org/rmf/updates/releases/"/>
-</location>
-</locations>
-<environment>
-<os>win32</os>
-<ws>win32</ws>
-<arch>x86_64</arch>
-<nl>de_DE</nl>
-</environment>
-<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-</target>
+		<?pde version="3.8"?><target name="virsat" sequenceNumber="1">
+		<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.nebula.widgets.gallery.feature.feature.group" version="1.0.0.201812241324"/>
+		<repository location="https://download.eclipse.org/nebula/releases/latest/"/>
+		</location>              
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.rmf.reqif10.feature.feature.group" version="0.13.0.201509161042"/>
+		<unit id="org.eclipse.rmf.reqif10.pror.feature.feature.group" version="0.13.0.201509161042"/>
+		<repository location="http://download.eclipse.org/rmf/updates/releases/"/>
+		</location>              
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+		<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
+		</location>              
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="3.3.2.201709090201"/>
+		<unit id="org.eclipse.emf.edapt.runtime.feature.feature.group" version="1.3.0.201801260923"/>
+		<unit id="org.eclipse.emf.sdk.feature.group" version="2.13.0.v20170609-0928"/>
+		<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.11.0.201706061339"/>
+		<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
+		<unit id="org.eclipse.graphiti.sdk.feature.feature.group" version="0.14.0.201705161212"/>
+		<unit id="org.eclipse.jdt.source.feature.group" version="3.13.4.v20180330-0919"/>
+		<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.3.0.v20170607-1133"/>
+		<unit id="org.eclipse.pde.source.feature.group" version="3.13.4.v20180330-0640"/>
+		<unit id="org.eclipse.platform.sdk" version="4.7.3.M20180330-0640"/>
+		<unit id="org.eclipse.team.svn.feature.group" version="4.0.5.I20170425-1700"/>
+		<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.6.0.201706141832"/>
+		<unit id="org.eclipse.swtbot.feature.group" version="2.6.0.201706141832"/>
+		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.12.0.v20170519-1412"/>
+		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
+		<repository location="http://download.eclipse.org/releases/oxygen/"/>
+		</location>              
+		</locations>
+		<environment>
+		<os>win32</os>
+		<ws>win32</ws>
+		<arch>x86_64</arch>
+		<nl>de_DE</nl> 
+		</environment>
+		<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+		</target>
