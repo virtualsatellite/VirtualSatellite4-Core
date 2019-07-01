@@ -76,23 +76,14 @@ after_failure:
   # Show the debug output of Surefire Junit
   # ---------------------------------------
   - cat $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.test/target/surefire-reports/de.dlr.sc.virsat.test.ProjectAllTest-output.txt
-  # --------------------------------------
-  # Start the ssh agent
-  # --------------------------------------
-  - eval "$(ssh-agent -s)"
   # ----------------------------------------
   # Decrypt the key for accessign the 
   # deployment store and add it to ssh-agent
   # then try to deploy the screenshots from 
   # SWTBot to see what happened 
   # ----------------------------------------
-  - mkdir -p -m 700 /tmp/.sourceforge_ssh
-  - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
-  - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
-  - ssh-add /tmp/.sourceforge_ssh/id_ed25519
-  - ls -l $TRAVIS_BUILD_DIR/swtbot/
-  - rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
-
+  - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u SWTBOT 
+  
 jobs:
   include:
    
@@ -271,18 +262,6 @@ jobs:
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       before_deploy:
-        # --------------------------------------
-        # Start the ssh agent
-        # --------------------------------------
-        - eval "$(ssh-agent -s)"
-        # ----------------------------------------
-        # Decrypt the key for accessign the 
-        # deployment store and add it to ssh-agent
-        # ----------------------------------------
-        - mkdir -p -m 700 /tmp/.sourceforge_ssh
-        - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
-        - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
-        - ssh-add /tmp/.sourceforge_ssh/id_ed25519
         # -----------------------------------------------------------
         # Update the development tag beforehand
         # And send it back to the origin, otherwise travis will 
@@ -320,14 +299,7 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: #
-        - rsync -e ssh -avP --delete $TRAVIS_BUILD_DIR/deploy/unsecured/p2/VirSat4_Core_Application/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/development/
-        on:
-          repo: virtualsatellite/VirtualSatellite4-Core
-          branch: development
-      - provider: script
-        skip_cleanup: true
-        script: #
-        - rsync -e ssh -avP --delete $TRAVIS_BUILD_DIR/deploy/unsecured/p2/VirSat4_Dvlm_ConceptIDE/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/development/
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u DEVELOPMENT
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: development
@@ -350,18 +322,6 @@ jobs:
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
       before_deploy:
-        # --------------------------------------
-        # Start the ssh agent
-        # --------------------------------------
-        - eval "$(ssh-agent -s)"
-        # ----------------------------------------
-        # Decrypt the key for accessign the 
-        # deployment store and add it to ssh-agent
-        # ----------------------------------------
-        - mkdir -p -m 700 /tmp/.sourceforge_ssh
-        - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
-        - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
-        - ssh-add /tmp/.sourceforge_ssh/id_ed25519
         # -----------------------------------------------------------
         # Update the development tag beforehand
         # And send it back to the origin, otherwise travis will 
@@ -399,14 +359,7 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: # 
-        - rsync -e ssh -avP $TRAVIS_BUILD_DIR/deploy/unsecured/p2/VirSat4_Core_Application/integration/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/integration/
-        on:
-          repo: virtualsatellite/VirtualSatellite4-Core
-          branch: integration
-      - provider: script
-        skip_cleanup: true
-        script: # 
-        - rsync -e ssh -avP $TRAVIS_BUILD_DIR/deploy/unsecured/p2/VirSat4_Dvlm_ConceptIDE/integration/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/integration/
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u INTEGRATION
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: integration
@@ -428,19 +381,6 @@ jobs:
       - mvn install -P release,javadoc,deploy,deployBackuped,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-      before_deploy:
-        # --------------------------------------
-        # Start the ssh agent
-        # --------------------------------------
-        - eval "$(ssh-agent -s)"
-        # ----------------------------------------
-        # Decrypt the key for accessign the 
-        # deployment store and add it to ssh-agent
-        # ----------------------------------------
-        - mkdir -p -m 700 /tmp/.sourceforge_ssh
-        - openssl aes-256-cbc -K $encrypted_9c25c12f834a_key -iv $encrypted_9c25c12f834a_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
-        - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
-        - ssh-add /tmp/.sourceforge_ssh/id_ed25519
       deploy:
         # -----------------------------------------------------------
         # Now attach the release to the Release Tag.
@@ -465,14 +405,7 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: # 
-        - rsync -e ssh -avP $TRAVIS_BUILD_DIR/deploy/secured/p2/VirSat4_Core_Application/release/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/release/
-        on:
-          repo: virtualsatellite/VirtualSatellite4-Core
-          tags: true
-      - provider: script
-        skip_cleanup: true
-        script: # 
-        - rsync -e ssh -avP $TRAVIS_BUILD_DIR/deploy/secured/p2/VirSat4_Dvlm_ConceptIDE/release/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/release/
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u RELEASE
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           tags: true
