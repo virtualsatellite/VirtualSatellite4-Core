@@ -9,6 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
+import java.util.List;
+
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
@@ -21,4 +29,28 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  */
 public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends AUiSnippetTableRequirementTypeAttributesRequirementAttribute implements IUiSnippet {
+
+	
+	@Override
+	protected void setUpTableViewer(EditingDomain editingDomain, FormToolkit toolkit) {
+		super.setUpTableViewer(editingDomain, toolkit);
+		
+		List<?> tableObjects = getTableObjects();
+		
+		// Sort the array entries by their index
+		columnViewer.setComparator(new ViewerComparator() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				int lhsIndex = tableObjects.indexOf(e1);
+				int rhsIndex = tableObjects.indexOf(e2);
+				return Integer.compare(lhsIndex, rhsIndex);
+			}
+		});
+	}
+	
+	@Override
+	protected List<APropertyInstance> getTableObjects() {
+		return getArrayInstance(model).getArrayInstances();
+	}
+	
 }
