@@ -13,6 +13,7 @@
 package de.dlr.sc.virsat.requirements.util.test;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.resources.IFile;
@@ -83,6 +84,22 @@ public class ReqIFUtilTest {
 		assertTrue(ReqIFUtil.isReqIF(reqIFFIle));
 		assertFalse(ReqIFUtil.isReqIF(otherFile));
 		assertFalse(ReqIFUtil.isReqIF(fileURIwithoutExtension));
+		
+	}
+	
+	@Test
+	public void testIsReqIFFileWithNullArgument() {
+		
+		assertFalse(ReqIFUtil.isReqIF((URI) null));
+		assertFalse(ReqIFUtil.isReqIF((IFile) null));
+		
+	}
+	
+	@Test
+	public void testConstructor() {
+		
+		ReqIFUtil testExtension = new ReqIFUtilTestExtension();
+		assertNotNull(testExtension);
 		
 	}
 
