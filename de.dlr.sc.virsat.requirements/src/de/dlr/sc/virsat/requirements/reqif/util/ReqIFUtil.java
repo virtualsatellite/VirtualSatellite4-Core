@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.requirements.ui.reqif.util;
+package de.dlr.sc.virsat.requirements.reqif.util;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.URI;
