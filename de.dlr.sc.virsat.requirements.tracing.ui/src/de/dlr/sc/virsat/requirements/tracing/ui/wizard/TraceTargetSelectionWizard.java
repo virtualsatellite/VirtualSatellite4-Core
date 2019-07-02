@@ -15,8 +15,8 @@ import org.eclipse.rmf.reqif10.SpecHierarchy;
 import org.eclipse.ui.IWorkbench;
 
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TMFactory;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMFactory;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 import de.dlr.sc.virsat.requirements.ui.reqif.reader.IReqIFReader;
 import de.dlr.sc.virsat.requirements.ui.reqif.reader.impl.DefaultReqIFValueParser;

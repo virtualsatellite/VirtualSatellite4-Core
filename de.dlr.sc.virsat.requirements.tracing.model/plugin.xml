@@ -10,7 +10,7 @@
       <!-- @generated TraceModel -->
       <package
             uri="http://www.virsat.sc.dlr.de/requirements/tracing/"
-            class="de.dlr.sc.virsat.requirements.tracing.traceModel.TMPackage"
+            class="de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMPackage"
             genModel="model/TraceModel.genmodel"/>
    </extension>
 

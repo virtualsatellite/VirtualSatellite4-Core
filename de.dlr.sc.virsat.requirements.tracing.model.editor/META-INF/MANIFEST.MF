@@ -4,11 +4,11 @@ Bundle-Name: VirSat Requirements Model Editor Plugin
 Bundle-SymbolicName: de.dlr.sc.virsat.requirements.tracing.model.editor;singleton:=true
 Bundle-Version: 4.9.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TraceModelEditorPlugin$Implementation
+Bundle-Activator: de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation.TraceModelEditorPlugin$Implementation
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.dlr.sc.virsat.requirements.tracing.traceModel.presentation
+Export-Package: de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  de.dlr.sc.virsat.requirements.tracing.model.edit;visibility:=reexport,

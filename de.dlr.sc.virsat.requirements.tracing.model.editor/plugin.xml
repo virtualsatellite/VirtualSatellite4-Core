@@ -12,9 +12,9 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMModelWizardID"
+            id="de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation.TMModelWizardID"
             name="%_UI_TMModelWizard_label"
-            class="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMModelWizard"
+            class="de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation.TMModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
             icon="icons/full/obj16/TMModelFile.gif">
          <description>%_UI_TMModelWizard_description</description>
@@ -25,12 +25,12 @@
    <extension point="org.eclipse.ui.editors">
       <!-- @generated TraceModel -->
       <editor
-            id="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMEditorID"
+            id="de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation.TMEditorID"
             name="%_UI_TMEditor_label"
             icon="icons/full/obj16/TMModelFile.gif"
             extensions="tm"
-            class="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMEditor"
-            contributorClass="de.dlr.sc.virsat.requirements.tracing.traceModel.presentation.TMActionBarContributor">
+            class="de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation.TMEditor"
+            contributorClass="de.dlr.sc.virsat.requirements.tracing.model.traceModel.presentation.TMActionBarContributor">
       </editor>
    </extension>
 </plugin>

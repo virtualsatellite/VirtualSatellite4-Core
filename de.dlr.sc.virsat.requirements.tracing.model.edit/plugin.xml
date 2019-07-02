@@ -10,7 +10,7 @@
       <!-- @generated TraceModel -->
       <factory
             uri="http://www.virsat.sc.dlr.de/requirements/tracing/"
-            class="de.dlr.sc.virsat.requirements.tracing.traceModel.provider.TMItemProviderAdapterFactory"
+            class="de.dlr.sc.virsat.requirements.tracing.model.traceModel.provider.TMItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.requirements.tracing.validation;
 
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 
 /**
  * Interface for validation engines

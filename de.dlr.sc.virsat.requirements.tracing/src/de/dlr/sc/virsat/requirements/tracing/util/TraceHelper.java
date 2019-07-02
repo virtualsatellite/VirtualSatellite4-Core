@@ -27,9 +27,9 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.rmf.reqif10.SpecHierarchy;
 
 import de.dlr.sc.virsat.requirements.tracing.Activator;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TMFactory;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMFactory;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
 
 /**
  * @author Tobias Franz tobias.franz@dlr.de

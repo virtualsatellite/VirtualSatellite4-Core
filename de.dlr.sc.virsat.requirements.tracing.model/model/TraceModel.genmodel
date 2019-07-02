@@ -9,8 +9,8 @@
     usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm" operationReflection="true"
     importOrganizing="true">
   <foreignModel>TraceModel.ecore</foreignModel>
-  <genPackages prefix="TM" basePackage="de.dlr.sc.virsat.requirements.tracing" disposableProviderFactory="true"
-      ecorePackage="TraceModel.ecore#/">
+  <genPackages prefix="TM" basePackage="de.dlr.sc.virsat.requirements.tracing.model"
+      disposableProviderFactory="true" ecorePackage="TraceModel.ecore#/">
     <genClasses ecoreClass="TraceModel.ecore#//TraceElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//TraceElement/sourceTraceElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TraceModel.ecore#//TraceElement/targetTraceElement"/>

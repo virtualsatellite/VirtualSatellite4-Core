@@ -12,7 +12,7 @@ package de.dlr.sc.virsat.requirements.tracing.ui.wizard;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.ui.wizard.page.TraceArtifactSelectionPage;
 
 /**

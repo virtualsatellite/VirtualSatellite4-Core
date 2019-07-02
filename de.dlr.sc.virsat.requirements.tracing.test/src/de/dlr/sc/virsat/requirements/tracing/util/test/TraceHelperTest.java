@@ -35,9 +35,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TMFactory;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMFactory;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
 import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 
 /**

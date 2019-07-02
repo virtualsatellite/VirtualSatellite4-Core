@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.rmf.reqif10.SpecObject;
 
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
 import de.dlr.sc.virsat.requirements.tracing.validation.engines.InspectionWarningEngine;
 
 /**

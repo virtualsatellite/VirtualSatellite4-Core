@@ -18,7 +18,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.rmf.reqif10.SpecObject;
 
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.validation.IHistoryBased;
 import de.dlr.sc.virsat.requirements.tracing.validation.IValidationEngine;
 

@@ -20,7 +20,7 @@ import org.eclipse.rmf.reqif10.SpecHierarchy;
 import org.eclipse.rmf.reqif10.SpecObject;
 
 import de.dlr.sc.virsat.model.dvlm.general.IName;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 import de.dlr.sc.virsat.requirements.tracing.validation.Activator;
 import de.dlr.sc.virsat.requirements.tracing.validation.IHistoryBased;

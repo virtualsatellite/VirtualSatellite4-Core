@@ -41,10 +41,10 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.requirements.tracing.builder.TraceNature;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMFactory;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
 import de.dlr.sc.virsat.requirements.tracing.test.mockup.TestValidationEngine;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TMFactory;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
 
 /**
  * @author fran_tb

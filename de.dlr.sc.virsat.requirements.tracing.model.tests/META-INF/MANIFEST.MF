@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.dlr.sc.virsat.requirements.tracing.traceModel.tests
+Export-Package: de.dlr.sc.virsat.requirements.tracing.model.traceModel.tests
 Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.requirements.tracing.model;visibility:=reexport,
  de.dlr.sc.virsat.model;visibility:=reexport,

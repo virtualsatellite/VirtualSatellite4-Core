@@ -31,7 +31,7 @@ import org.eclipse.rmf.reqif10.SpecObject;
 
 import de.dlr.sc.virsat.requirements.reqif.util.ReqIFUtil;
 import de.dlr.sc.virsat.requirements.tracing.builder.history.RequirementsHistoryComparator;
-import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
+import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
 import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 import de.dlr.sc.virsat.requirements.tracing.validation.TracedArtifactRequirementValidator;
 
