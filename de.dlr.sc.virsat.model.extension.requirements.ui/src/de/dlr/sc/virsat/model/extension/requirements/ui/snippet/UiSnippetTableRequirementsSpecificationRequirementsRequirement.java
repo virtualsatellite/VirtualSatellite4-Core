@@ -97,16 +97,20 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement exte
 				String columnName = "";
 				for (RequirementType requirementType : requirementTypes) {
 				
-					String name = requirementType.getAttributes().get(i).getName();
+					String name = "";
+					if (requirementType.getAttributes().size() > i) {
+						name = requirementType.getAttributes().get(i).getName();
+						
+						//Add separator if column is used for different attributes
+						if (!columnName.equals("") && !columnName.equals(name)) {
+							columnName += COLUMN_ATTRIBUTE_SEPARATOR;
+						}
 					
-					//Add separator if column is used for different attributes
-					if (!columnName.equals("") && !columnName.equals(name)) {
-						columnName += COLUMN_ATTRIBUTE_SEPARATOR;
+						if (requirementType.getAttributes().size() > i && !columnName.equals(name)) {
+							columnName += name;
+						}
 					}
-				
-					if (requirementType.getAttributes().size() > i && !columnName.equals(name)) {
-						columnName += name;
-					}
+
 				}
 				createDefaultColumn(columnName);
 				
