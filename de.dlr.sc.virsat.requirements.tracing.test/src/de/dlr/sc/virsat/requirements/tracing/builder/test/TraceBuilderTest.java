@@ -14,6 +14,8 @@ package de.dlr.sc.virsat.requirements.tracing.builder.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,7 +56,7 @@ public class TraceBuilderTest extends AProjectTestCase {
 	public static final String TEST_REQUIREMENTS_MODEL = "TestReqs.reqif";
 	public static final String TEST_TRACE_MODEL = "TestReqs.tm";
 	public static final String REQUIREMENTS_ELEMENT_NAME = "ReqElement";
-	public static final String REQUIREMENTS_ELEMENT_CHANGED_NAME = "ReqElement_Changed";
+	public static final String REQUIREMENTS_ELEMENT_CHANGED_NAME = "ReqElement_Changed1";
 
 	protected TraceNature nature;
 
@@ -99,14 +101,16 @@ public class TraceBuilderTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testFullBuild() throws CoreException {
+	public void testFullBuildWithoutChange() throws CoreException {
 
 		TestValidationEngine.getTraceTargets().clear();
 		TestValidationEngine.getChangedRequirementsElements().clear();
 		
 		testProject.build(IncrementalProjectBuilder.FULL_BUILD, TraceNature.BUILDER_TRACE_ID, null, null);
+		testProject.build(IncrementalProjectBuilder.FULL_BUILD, TraceNature.BUILDER_TRACE_ID, null, null);
 
 		List<EObject> traceTargets = TestValidationEngine.getTraceTargets();
+		List<EObject> changedFiles = TestValidationEngine.getChangedRequirementsElements();
 		EObject testTarget = traceTargets.get(0);
 		EObject resolvedTarget = null;
 		if (testTarget.eIsProxy()) {
@@ -116,11 +120,12 @@ public class TraceBuilderTest extends AProjectTestCase {
 		}
 		assertTrue("Trace target not idenfied as target", ((StructuralElementInstance) resolvedTarget).getUuid()
 				.equals(targetStructuralElementInstance.getUuid()));
+		assertTrue("Wrong requirement idenfied as changed", changedFiles.size() == 0);
 	}
 	
-	
+
 	@Test
-	public void testInvcrementalBuild() throws CoreException {
+	public void testIncrementalBuildWithoutChange() throws CoreException, IOException {
 
 		TestValidationEngine.getTraceTargets().clear();
 		TestValidationEngine.getChangedRequirementsElements().clear();
@@ -128,6 +133,7 @@ public class TraceBuilderTest extends AProjectTestCase {
 		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, TraceNature.BUILDER_TRACE_ID, null, null);
 
 		List<EObject> traceTargets = TestValidationEngine.getTraceTargets();
+		List<EObject> changedFiles = TestValidationEngine.getChangedRequirementsElements();
 		EObject testTarget = traceTargets.get(0);
 		EObject resolvedTarget = null;
 		if (testTarget.eIsProxy()) {
@@ -137,6 +143,42 @@ public class TraceBuilderTest extends AProjectTestCase {
 		}
 		assertTrue("Trace target not idenfied as target", ((StructuralElementInstance) resolvedTarget).getUuid()
 				.equals(targetStructuralElementInstance.getUuid()));
+		assertTrue("Wrong requirement idenfied as changed", changedFiles.size() == 0);
+	}
+	
+	@Test
+	public void testIncrementalBuildWithChange() throws CoreException, IOException {
+
+		TestValidationEngine.getTraceTargets().clear();
+		TestValidationEngine.getChangedRequirementsElements().clear();
+		
+		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, TraceNature.BUILDER_TRACE_ID, null, null);
+		
+		//Do some modification
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				testTracedRequirementElement.setLongName(REQUIREMENTS_ELEMENT_CHANGED_NAME);
+			}
+		});
+		testTracedRequirementElement.eResource().setModified(true);
+		testTracedRequirementElement.eResource().save(Collections.EMPTY_MAP);
+		
+		testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, TraceNature.BUILDER_TRACE_ID, null, null);
+
+		List<EObject> traceTargets = TestValidationEngine.getTraceTargets();
+		List<EObject> changedFiles = TestValidationEngine.getChangedRequirementsElements();
+		EObject testTarget = traceTargets.get(0);
+		EObject resolvedTarget = null;
+		if (testTarget.eIsProxy()) {
+			resolvedTarget = EcoreUtil.resolve(testTarget, repository);
+		} else {
+			resolvedTarget = testTarget;
+		}
+		assertTrue("Trace target not idenfied as target", ((StructuralElementInstance) resolvedTarget).getUuid()
+				.equals(targetStructuralElementInstance.getUuid()));
+		assertTrue("Requirement not idenfied as changed", testTracedRequirementElement.getIdentifier()
+				.equals(((SpecObject) changedFiles.get(0)).getIdentifier()));
 	}
 
 
