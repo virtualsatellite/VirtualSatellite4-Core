@@ -12,7 +12,7 @@ package de.dlr.sc.virsat.requirements.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import de.dlr.sc.virsat.requirements.tracing.test.ProjectAllTests;
+import de.dlr.sc.virsat.requirements.tracing.test.AllTests;
 import de.dlr.sc.virsat.requirements.tracing.traceModel.tests.TraceModelAllTests;
 
 /**
@@ -23,12 +23,12 @@ import de.dlr.sc.virsat.requirements.tracing.traceModel.tests.TraceModelAllTests
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-				ProjectAllTests.class,
+				AllTests.class,
 				TraceModelAllTests.class
 				})
 
 /**
  * Test Class
  */
-public class ProjectAllTest {   
+public class AllTest {   
 }

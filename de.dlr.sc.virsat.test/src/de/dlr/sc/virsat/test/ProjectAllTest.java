@@ -42,7 +42,7 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.model.extension.visualisation.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.visualisation.test.AllTestsGen.class,
 				de.dlr.sc.virsat.graphiti.test.AllTests.class,
-				de.dlr.sc.virsat.requirements.test.ProjectAllTest.class
+				de.dlr.sc.virsat.requirements.test.AllTest.class
 				})
 
 /**
