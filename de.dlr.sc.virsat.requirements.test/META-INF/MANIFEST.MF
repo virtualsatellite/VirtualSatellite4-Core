@@ -8,7 +8,9 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  de.dlr.sc.virsat.requirements.tracing.test,
- de.dlr.sc.virsat.requirements.tracing.model.tests
+ de.dlr.sc.virsat.requirements.tracing.model.tests,
+ de.dlr.sc.virsat.requirements,
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.test

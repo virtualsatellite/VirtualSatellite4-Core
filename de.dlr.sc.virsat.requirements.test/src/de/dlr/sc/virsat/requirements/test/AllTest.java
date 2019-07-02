@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 
 import de.dlr.sc.virsat.requirements.tracing.test.AllTests;
 import de.dlr.sc.virsat.requirements.tracing.traceModel.tests.TraceModelAllTests;
+import de.dlr.sc.virsat.requirements.util.test.ReqIFUtilTest;
 
 /**
  * 
@@ -24,7 +25,8 @@ import de.dlr.sc.virsat.requirements.tracing.traceModel.tests.TraceModelAllTests
 
 @Suite.SuiteClasses({
 				AllTests.class,
-				TraceModelAllTests.class
+				TraceModelAllTests.class,
+				ReqIFUtilTest.class
 				})
 
 /**
