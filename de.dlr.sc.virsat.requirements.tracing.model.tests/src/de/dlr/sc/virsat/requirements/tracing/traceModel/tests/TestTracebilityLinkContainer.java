@@ -14,10 +14,14 @@ package de.dlr.sc.virsat.requirements.tracing.traceModel.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.requirements.tracing.traceModel.TMFactory;
+import de.dlr.sc.virsat.requirements.tracing.traceModel.TMPackage;
 import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
 
@@ -45,6 +49,25 @@ public class TestTracebilityLinkContainer {
 		
 		assertEquals("First element correct", container.getTraceElements().get(0), testElement1);
 		assertEquals("Second element correct", container.getTraceElements().get(1), testElement2);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGenericMethods() {
+		testElement1 = TMFactory.eINSTANCE.createTraceElement();
+		testElement2 = TMFactory.eINSTANCE.createTraceElement();
+		
+		
+		TraceabilityLinkContainer container = TMFactory.eINSTANCE.createTraceabilityLinkContainer();
+		container.eUnset(TMPackage.eINSTANCE.getTraceabilityLinkContainer_TraceElements());
+		if (!container.eIsSet(TMFactory.eINSTANCE.getTMPackage().getTraceabilityLinkContainer_TraceElements())) {
+			List<TraceElement> traceList = new ArrayList<TraceElement>();
+			traceList.add(testElement1);
+			container.eSet(TMPackage.eINSTANCE.getTraceabilityLinkContainer_TraceElements(), traceList);
+		}
+		
+		assertEquals("First element correct", ((List<TraceElement>) container.eGet(TMPackage.eINSTANCE.getTraceabilityLinkContainer_TraceElements())).get(0), testElement1);
+		
 	}
 	
 	
