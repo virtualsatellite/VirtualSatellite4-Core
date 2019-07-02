@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Model Extension Concept UI
+Bundle-Name: VirSat Model Extension Requirements UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.requirements.ui;singleton:=true
 Bundle-Version: 4.9.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.requirements,
@@ -18,3 +18,4 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.requirements,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.ui
+Bundle-Vendor: DLR (German Aerospace Center)

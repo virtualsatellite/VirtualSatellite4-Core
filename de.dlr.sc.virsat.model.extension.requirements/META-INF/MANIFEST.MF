@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Model Extension Concept
+Bundle-Name: VirSat Model Extension Requirements
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.requirements;singleton:=true
 Bundle-Version: 4.9.0.qualifier
 Bundle-Vendor: German Aerospace Center (DLR)
