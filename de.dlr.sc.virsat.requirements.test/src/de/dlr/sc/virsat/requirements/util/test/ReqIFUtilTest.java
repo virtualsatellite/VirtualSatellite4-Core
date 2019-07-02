@@ -65,9 +65,11 @@ public class ReqIFUtilTest {
 		
 		URI reqIFURI = URI.createFileURI(TEST_FILENAME + "." + REQ_IF_FILE_EXTENSION);
 		URI otherURI = URI.createFileURI(TEST_FILENAME + "." + OTHER_FILE_EXTENSION);
+		URI fileURIwithoutExtension = URI.createFileURI(TEST_FILENAME);
 		
 		assertTrue(ReqIFUtil.isReqIF(reqIFURI));
 		assertFalse(ReqIFUtil.isReqIF(otherURI));
+		assertFalse(ReqIFUtil.isReqIF(fileURIwithoutExtension));
 		
 	}
 	
@@ -76,9 +78,11 @@ public class ReqIFUtilTest {
 		
 		IFile reqIFFIle = project.getFile(TEST_FILENAME + "." + REQ_IF_FILE_EXTENSION);
 		IFile otherFile = project.getFile(TEST_FILENAME + "." + OTHER_FILE_EXTENSION);
+		IFile fileURIwithoutExtension = project.getFile(TEST_FILENAME);
 		
 		assertTrue(ReqIFUtil.isReqIF(reqIFFIle));
 		assertFalse(ReqIFUtil.isReqIF(otherFile));
+		assertFalse(ReqIFUtil.isReqIF(fileURIwithoutExtension));
 		
 	}
 
