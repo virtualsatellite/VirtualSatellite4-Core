@@ -71,8 +71,6 @@ public class TestTraceElement {
 		if (!testTrace.eIsSet(GeneralPackage.eINSTANCE.getIUuid_Uuid())) {
 			testTrace.eSet(GeneralPackage.eINSTANCE.getIUuid_Uuid(), uuid);
 		}
-
-		testTrace.setUuid(uuid);
 		
 		assertEquals("Name correctly added", testTrace.eGet(GeneralPackage.eINSTANCE.getIName_Name()), TEST_NAME);
 		assertEquals("Description correctly added", testTrace.eGet(TMPackage.eINSTANCE.getTraceElement_Description()), TEST_DESCRIPTION);
