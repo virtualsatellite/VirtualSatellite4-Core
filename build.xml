@@ -47,7 +47,6 @@ SPDX-License-Identifier: EPL-2.0
 					<exclude name="de.dlr.sc.virsat.*feature"/>
 					<exclude name="de.dlr.sc.virsat.*ide"/>
 					<exclude name="de.dlr.sc.virsat.*test*"/>
-					<exclude name="de.dlr.sc.virsat.*tests*"/>
 					<exclude name="de.dlr.sc.virsat.*editor*"/>
 					<exclude name="de.dlr.sc.virsat.external.*"/>
 					<exclude name="de.dlr.sc.virsat.*product"/>
