@@ -111,6 +111,10 @@ Germany
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.eclipse.draw2d"/>
+      <feature id="org.eclipse.rmf.reqif10.feature"/>
+      <feature id="org.eclipse.rmf.reqif10.pror.feature"/>
+      <feature id="de.dlr.sc.virsat.requirements.tracing.feature"/>
+      <feature id="de.dlr.sc.virsat.requirements.ui.feature"/>
    </features>
 
    <configurations>
