@@ -79,10 +79,10 @@ SPDX-License-Identifier: EPL-2.0
 						<exclude name="**/*Activator.class" />
 						<exclude name="**/*ManifestMf*.class" />
 						<exclude name="**/*PluginXml*.class" />
-						<exclude name="de/dlr/sc/virsat/model/**/impl/*Impl.class" />
-						<exclude name="de/dlr/sc/virsat/model/**/*Switch.class" />
-						<exclude name="de/dlr/sc/virsat/model/**/*Provider.class" />
-						<exclude name="de/dlr/sc/virsat/model/**/*AdapterFactory.class" />
+						<exclude name="de/dlr/sc/virsat/**/model/**/impl/*Impl.class" />
+						<exclude name="de/dlr/sc/virsat/**/model/**/*Switch.class" />
+						<exclude name="de/dlr/sc/virsat/**/model/**/*Provider.class" />
+						<exclude name="de/dlr/sc/virsat/**/model/**/*AdapterFactory.class" />
 						<exclude name="de/dlr/sc/virsat/commons/debug/*.class" />
 					</fileset>
 					<fileset dir="${projectDir}/target/classes">
