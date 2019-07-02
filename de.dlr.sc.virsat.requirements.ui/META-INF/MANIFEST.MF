@@ -10,4 +10,5 @@ Require-Bundle: org.eclipse.rmf.reqif10.pror.editor
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.requirements.ui.reqif.reader,
  de.dlr.sc.virsat.requirements.ui.reqif.reader.impl,
+ de.dlr.sc.virsat.requirements.ui.reqif.util,
  de.dlr.sc.virsat.requirements.ui.wizard

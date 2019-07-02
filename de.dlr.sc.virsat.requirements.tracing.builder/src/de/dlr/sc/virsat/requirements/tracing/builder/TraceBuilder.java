@@ -29,11 +29,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.rmf.reqif10.SpecObject;
 
-import de.dlr.sc.virsat.requirements.reqif.util.ReqIFUtil;
 import de.dlr.sc.virsat.requirements.tracing.builder.history.RequirementsHistoryComparator;
 import de.dlr.sc.virsat.requirements.tracing.traceModel.TraceabilityLinkContainer;
 import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 import de.dlr.sc.virsat.requirements.tracing.validation.TracedArtifactRequirementValidator;
+import de.dlr.sc.virsat.requirements.ui.reqif.util.ReqIFUtil;
 
 /**
  * @author Tobias Franz tobias.franz@dlr.de
