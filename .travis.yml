@@ -154,7 +154,7 @@ jobs:
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       - ant jacocoPrepareDependencies
       - ant jacocoReport 2>&1 | tee ant.log
-      - (grep -n "\[\(violated\|FAILED\)\]" ant.log || exit 0 && exit 1;)
+      - (grep -n "Rule violated\|BUILD FAILED" ant.log || exit 0 && exit 1;)
       - bash <(curl -s https://codecov.io/bash)
     # ----------------------------
     # --- Integration Branches
@@ -172,7 +172,7 @@ jobs:
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       - ant jacocoPrepareDependencies
       - ant jacocoReport 2>&1 | tee ant.log
-      - (grep -n "\[\(violated\|FAILED\)\]" ant.log || exit 0 && exit 1;)
+      - (grep -n "Rule violated\|BUILD FAILED" ant.log || exit 0 && exit 1;)
       - bash <(curl -s https://codecov.io/bash)
     # ----------------------------
     # --- Release Tags
@@ -190,7 +190,7 @@ jobs:
       - (grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
       - ant jacocoPrepareDependencies
       - ant jacocoReport 2>&1 | tee ant.log
-      - (grep -n "\[\(violated\|FAILED\)\]" ant.log || exit 0 && exit 1;)
+      - (grep -n "Rule violated\|BUILD FAILED" ant.log || exit 0 && exit 1;)
       - bash <(curl -s https://codecov.io/bash)  
 
     # -----------------------------------------------------
