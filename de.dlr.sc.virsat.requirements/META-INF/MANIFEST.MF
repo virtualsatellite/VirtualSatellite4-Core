@@ -6,3 +6,7 @@ Bundle-Version: 4.9.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.requirements
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
+Export-Package: de.dlr.sc.virsat.requirements.reqif.util
+Require-Bundle: org.eclipse.rmf.reqif10.pror,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime

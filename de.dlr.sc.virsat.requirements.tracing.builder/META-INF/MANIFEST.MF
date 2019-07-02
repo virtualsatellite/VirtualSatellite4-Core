@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.requirements.ui,
  org.eclipse.emf.edit.ui,
  de.dlr.sc.virsat.requirements.tracing,
- de.dlr.sc.virsat.requirements.tracing.validation
+ de.dlr.sc.virsat.requirements.tracing.validation,
+ de.dlr.sc.virsat.requirements
 Bundle-Activator: de.dlr.sc.virsat.requirements.tracing.builder.Activator
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.requirements.tracing.builder,
