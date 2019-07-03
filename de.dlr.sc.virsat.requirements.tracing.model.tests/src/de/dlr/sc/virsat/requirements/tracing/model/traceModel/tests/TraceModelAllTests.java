@@ -24,7 +24,8 @@ import junit.textui.TestRunner;
 
 @SuiteClasses({
 	TestTraceElement.class,
-	TestTracebilityLinkContainer.class
+	TestTracebilityLinkContainer.class,
+	TraceModelEditTests.class
 				})
 
 /**

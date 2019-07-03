@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.junit;visibility:=reexport,
- org.eclipse.rmf.reqif10
+ org.eclipse.rmf.reqif10,
+ de.dlr.sc.virsat.requirements.tracing.model.edit
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.tracing.model.tests
