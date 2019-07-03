@@ -86,6 +86,7 @@ SPDX-License-Identifier: EPL-2.0
 					</fileset>
 					<fileset dir="${projectDir}/target/classes">
 						<include name="de/dlr/sc/virsat/model/**/DVLM*.class" />
+						<include name="de/dlr/sc/virsat/model/**/TM*.class" />
 					</fileset>
 				</classfiles>
 				<sourcefiles encoding="UTF-8">
