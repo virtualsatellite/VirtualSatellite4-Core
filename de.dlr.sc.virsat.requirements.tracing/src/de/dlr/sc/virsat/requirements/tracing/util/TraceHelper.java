@@ -36,12 +36,12 @@ import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkCo
  *
  */
 public class TraceHelper {
-	
+
 	/**
 	 * To protect the constructor
 	 */
 	protected TraceHelper() {
-		
+
 	}
 
 	public static final String TRACE_MODEL_EXTENSION = "tm";
@@ -79,7 +79,6 @@ public class TraceHelper {
 		return null;
 	}
 
-
 	/**
 	 * Validates if the given resources is a trace model
 	 * 
@@ -89,13 +88,15 @@ public class TraceHelper {
 	 */
 	public static boolean isTraceModel(IFile file) {
 		boolean isTraceModel = false;
-		String fileExtension = file.getFileExtension();
-		if (fileExtension != null && fileExtension.equals(TRACE_MODEL_EXTENSION)) {
-			isTraceModel = true;
+		if (file != null) {
+			String fileExtension = file.getFileExtension();
+			if (fileExtension != null && fileExtension.equals(TRACE_MODEL_EXTENSION)) {
+				isTraceModel = true;
+			}
 		}
 		return isTraceModel;
 	}
-	
+
 	/**
 	 * Validates if the given resources is a trace model
 	 * 

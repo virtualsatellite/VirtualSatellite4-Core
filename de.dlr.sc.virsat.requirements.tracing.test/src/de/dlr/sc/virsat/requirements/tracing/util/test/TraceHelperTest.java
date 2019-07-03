@@ -14,6 +14,7 @@ package de.dlr.sc.virsat.requirements.tracing.util.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -54,6 +56,7 @@ public class TraceHelperTest {
 
 	public static final String TEST_REQUIREMENTS_MODEL = "ReactionWheel.reqif";
 	public static final String TEST_TRACE_MODEL = "ReactionWheel.tm";
+	public static final String TEST_WRONG_TRACE_MODEL = "WrongTraceModel.tm";
 	public static final String TEST_PROJECT = "testBaseProject";
 
 	URI reqURI;
@@ -63,6 +66,9 @@ public class TraceHelperTest {
 	Resource resourceRequirements;
 	SpecHierarchy testRequirementElement;
 
+	IFile testWrongTraceFile;
+	Resource testWrongTraceResource;
+	
 	ResourceSet testResSet;
 	IProject project;
 
@@ -97,6 +103,12 @@ public class TraceHelperTest {
 		// Create a trace element
 		testTraceToTestRequirement = TMFactory.eINSTANCE.createTraceElement();
 		testTraceToTestRequirement.getSourceTraceElement().add(testRequirementElement);
+		
+		// Create missformated trace model
+		testWrongTraceFile = project.getFile(TEST_WRONG_TRACE_MODEL);
+		testWrongTraceResource = testResSet
+				.createResource(URI.createPlatformResourceURI(testWrongTraceFile.getFullPath().toString(), true));
+		testWrongTraceResource.getContents().add(TMFactory.eINSTANCE.createTraceElement());
 
 	}
 
@@ -149,7 +161,10 @@ public class TraceHelperTest {
 		assertEquals(true, TraceHelper.isTraceModel(uriFileTraceModel));
 		assertEquals(false, TraceHelper.isTraceModel(fileRequirements));
 		assertEquals(false, TraceHelper.isTraceModel(uriFileRequirements));
+		assertEquals(false, TraceHelper.isTraceModel((URI) null));
+		assertEquals(false, TraceHelper.isTraceModel((IFile) null));
 
+		
 	}
 
 	@Test
@@ -175,7 +190,7 @@ public class TraceHelperTest {
 	}
 
 	@Test
-	public void testGetTraceModel() {
+	public void testGetTraceModel() throws IOException, CoreException {
 
 		TraceHelper.persistTraceElement(testTraceToTestRequirement);
 
@@ -188,7 +203,19 @@ public class TraceHelperTest {
 		EObject traceModelRootFromTraceResource = TraceHelper.getTraceModel(traceModelRootFromRequirement.eResource());
 		assertEquals("Resource parameter can also be a trace resource",
 				testTraceToTestRequirement.eResource().getURI(), traceModelRootFromTraceResource.eResource().getURI());
-
+		
+		TraceHelper.getIResourceValue(traceModelRootFromTraceResource).delete(true, null);
+		assertNull("Return value for non-existing should be null", TraceHelper.getTraceModel(traceModelRootFromRequirement.eResource()));
+		assertNull("Return value for wrong formated trace model should be null", TraceHelper.getTraceModel(testWrongTraceResource));
+	}
+	
+	@Test
+	public void testProtectedConstructor() {
+		
+		TraceHelper testHelper = new TraceHelperTestExtension();
+		
+		assertNotNull(testHelper);
+		
 	}
 
 }
