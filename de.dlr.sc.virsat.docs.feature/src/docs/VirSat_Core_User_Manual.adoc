@@ -473,9 +473,56 @@ TBD
 
 TBD
 
-==== Adjusting Calculations
+==== Adjusting Equations
 
-TBD
+Mathematical dependencies between numeric properties are described by Equations.
+An equation has on the left-hand side a variable and on the right hand-side a mathematical calculation.
+Whenever a change in the model occurs, Virtual Satellite re-checks the equations and updates the left-hand side
+variable according to the result of the calculation of the right-hand side.
+A variable whose value is determined by an equation is a calculated variable.
+Such variables are not editable and marked by a calculator symbol image:chapterAdvancedModeling/VirSatCalculated.png[Indication for a variable being calculated by VirSat].
+
+The Equations in Virtual Satellite are not hard-coded, but explicit parts of the model.
+They can be freely edited using the Equation Editor.
+In many cases, editing equations is not necessary since a concept may come with its own default equations model.
+
+NOTE: Example Equation: `Ref: massWithMargin = mass * margin;`
+Here `massWithMargin` is a calculated variable.
+Whenever `mass` or `margin` change, `massWithMargin` is recalculated.
+
+In this section you will learn how to:
+
+* Open the Equation Editor
+* Edit an Equation
+* Create a new equation
+
+An equation can be defined in the <<Equation Editor>>.
+The editor is available in any CategoryAssignment that possesses at least a numeric property.
+Every equation follows the format `TYPE: CALCULATED_VARIABLE = CALCULATION;` where
+
+* `TYPE` is either `Ref` or `Calc`. 
+`Ref`, short for reference, is used when referencing an element of the data model.
+`Calc`, short for intermediate calculation, is used when creating an intermediate variable.
+The variable is not part of the data model and thus also not persistently stored.
+This type of equation can be used to simplify equations and remove redundant terms.
+* `CALCULATED_VARIABLE` is the name of the property that will be calculated.
+It is also possible to pass a full qualified name to reference non-local properties.
+* `CALCULATION` is a mathematical expression using operators such as `*, +, -, /, sin(...), cos(...)`.
+Inputs of a calculation are other properties, specified by their name.
+It is also possible to pass full qualified names to reference non-local properties.
+
+Concepts may also provide customized extensions for the calculation engine.
+This includes allowing the use of other objects than properties for input and outputs,
+defining new mathematical functions, and so on.
+
+===== Equation Editor
+
+In the following, we will modify the equations of the <<Product mass summaries>> concept 
+to include an additional top-level system margin and ignore the mass of a specified subsystem.
+
+===== Advanced Functions 
+
+===== Calculation Builder
 
 ==== Using Apps
 
