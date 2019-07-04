@@ -23,7 +23,7 @@ COMMAND=$0
 
 # this method gives some little usage info
 printUsage() {
-    echo "usage: ${COMMAND} -t [surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
+    echo "usage: ${COMMAND} -j [surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
 }
 
 callMavenSurefire() {
