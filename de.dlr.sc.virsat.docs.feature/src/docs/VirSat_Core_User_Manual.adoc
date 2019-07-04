@@ -519,6 +519,46 @@ defining new mathematical functions, and so on.
 
 In the following, we will modify the equations of the <<Product mass summaries>> concept 
 to include an additional top-level system margin and ignore the mass of a specified subsystem.
+You will need a VirSat project (called MySatellite in the following) with the 
+<<Extended product structures - Inheritance and Configuration Control>> concept and the 
+<<Product mass summaries>> concept both activated.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Create a data model consisting of a ConfigurationTree as the root with two child ElementConfigurations.
+Attach a MassEquipment to each ElementConfiguration and a MassSummary to the ConfigurationTree. 
+|image:chapterAdvancedModeling/OpenRepository.png[Opening the repository editor]
+
+|{counter:step}.
+|Create a data model consisting of a ConfigurationTree as the root with two child ElementConfigurations.
+Attach a MassEquipment to each ElementConfiguration and a MassSummary to the ConfigurationTree. 
+|image:chapterAdvancedModeling/EquationEditorDataModel.png[Setting up a data model with equations]
+
+|{counter:step}.
+|Set the mass value of the first ElementConfiguration to 10 and the mass value of the second ElementConfiguration to 15.
+Leave the margins at 20.
+|image:chapterAdvancedModeling/EquationEditorDataModelValues.png[Setting input values for equations]
+
+|{counter:step}.
+Save (kbd:[CTRL+S]) and then open the Editor of the MassSummary of ConfigurationTree.
+The massWithMargin value should show 30.
+Next open the EquationEditor by pressing the Edit Equations button.
+|image:chapterAdvancedModeling/EquationEditorOpen.png[Opening the equation editor]
+
+|{counter:step}.
+|Create a new equation `Calc: systemMargin = 0.1`. This creates a new intermediate variable called systemMargin with value 0.1.
+Modify the equation of  massWithMargin by adding the factor  `(1 + systemMargin)`.
+After saving (kbd:[CTRL+S]) the value of massWithMargin should update to 33.
+|image:chapterAdvancedModeling/EquationEditorEditingEquations.png[Editing equations]
+
+|===
 
 ===== Advanced Functions 
 
