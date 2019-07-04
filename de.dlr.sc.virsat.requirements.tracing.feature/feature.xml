@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.dlr.sc.virsat.requirements.tracing.feature"
-      label="VirSat Requirements Tracing Feature"
+      label="VirSat Core Requirements Tracing Feature"
       version="4.9.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"

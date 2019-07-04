@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.dlr.sc.virsat.requirements.ui.feature"
-      label="VirSat Requirements UI Feature"
+      label="VirSat Core Requirements UI Feature"
       version="4.9.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"

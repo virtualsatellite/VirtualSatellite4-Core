@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Requirements UI
+Bundle-Name: VirSat Core Requirements UI
 Bundle-SymbolicName: de.dlr.sc.virsat.requirements.ui;singleton:=true
 Bundle-Version: 4.9.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.ui

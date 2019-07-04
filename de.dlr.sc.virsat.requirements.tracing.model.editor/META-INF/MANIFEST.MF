@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Requirements Model Editor Plugin
+Bundle-Name: VirSat Core Requirements Trace Model Editor Plugin
 Bundle-SymbolicName: de.dlr.sc.virsat.requirements.tracing.model.editor;singleton:=true
 Bundle-Version: 4.9.0.qualifier
 Bundle-ClassPath: .

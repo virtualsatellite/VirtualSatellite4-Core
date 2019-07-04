@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.dlr.sc.virsat.requirements.test.feature"
-      label="Virsat Requirements Tests Feature"
+      label="Virsat Core Requirements Tests Feature"
       version="4.9.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       license-feature="de.dlr.sc.virsat.license.feature">

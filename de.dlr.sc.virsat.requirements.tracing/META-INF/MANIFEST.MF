@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Requirements Tracing
+Bundle-Name: VirSat Core Requirements Tracing
 Bundle-SymbolicName: de.dlr.sc.virsat.requirements.tracing
 Bundle-Version: 4.9.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.tracing
