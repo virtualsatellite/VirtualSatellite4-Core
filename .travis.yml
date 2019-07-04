@@ -82,7 +82,7 @@ after_failure:
   # then try to deploy the screenshots from 
   # SWTBot to see what happened 
   # ----------------------------------------
-  - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u SWTBOT 
+  - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u swtbot 
   
 jobs:
   include:
@@ -249,7 +249,7 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: #
-        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u DEVELOPMENT
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u development
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: development
@@ -359,7 +359,7 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: # 
-        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u INTEGRATION
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u integration
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: integration
@@ -405,7 +405,7 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: # 
-        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u RELEASE
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u release
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           tags: true

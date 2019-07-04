@@ -29,7 +29,7 @@ sourceforgeDecryptSecret() {
 
 # this method gives some little usage info
 printUsage() {
-    echo "usage: ${COMMAND} -k SECRET -i SECRET -u [SWTBOT|DEVELOPMENT|INTEGRATION|RELEASE]"
+    echo "usage: ${COMMAND} -k SECRET -i SECRET -u [swtbot|development|integration|release]"
 }
 
 uploadSwtBot() {
@@ -84,16 +84,16 @@ sourceforgeDecryptSecret
 
 # Decide what to upload
 case $UPLOAD in
-    SWTBOT )           	uploadSwtBot
+    swtbot )           	uploadSwtBot
     					exit
                         ;;
-    DEVELOPMENT )      	uploadDevelopment
+    development )      	uploadDevelopment
     					exit
                         ;;
-    INTEGRATION )      	uploadIntegration
+    integration )      	uploadIntegration
     					exit
                         ;;
-    RELEASE )      		uploadRelease
+    release )      		uploadRelease
     					exit
                         ;;
     * )                 usage
