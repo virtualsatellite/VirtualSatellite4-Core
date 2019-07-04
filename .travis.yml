@@ -243,6 +243,16 @@ jobs:
       - mvn install -P development,javadoc,deploy,deployUnsecured,product -B -V | tee maven.log
       - echo "Check for Maven Problems on Product:"
       - (grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+      # ---------------------------------------------
+      # Just for testing
+      # ---------------------------------------------    
+      - provider: script
+        skip_cleanup: true
+        script: #
+        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u DEVELOPMENT
+        on:
+          repo: virtualsatellite/VirtualSatellite4-Core
+          branch: development
 
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.
@@ -290,16 +300,6 @@ jobs:
         prerelease: true
         overwrite: true
         target_commitish: $TRAVIS_COMMIT
-        on:
-          repo: virtualsatellite/VirtualSatellite4-Core
-          branch: development
-      # ---------------------------------------------
-      # push build to sourceforge repo for deployment
-      # ---------------------------------------------    
-      - provider: script
-        skip_cleanup: true
-        script: #
-        - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u DEVELOPMENT
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: development

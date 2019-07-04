@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.swtbot.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
@@ -66,8 +65,6 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		assertNotNull(elementDefinition);
 		int elements = configurationTreeDomain.getItems().length;
 		assertEquals(THREE, elements);
-		
-		fail("See if deploy works as expected...");
 	}	
 	
 	@Test
