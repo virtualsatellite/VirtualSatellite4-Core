@@ -70,10 +70,10 @@ while [ "$1" != "" ]; do
         -u | --upload ) 		shift
                                 UPLOAD=$1
                                 ;;
-        -h | --help )           usage
+        -h | --help )           printUsage
                                 exit
                                 ;;
-        * )                     usage
+        * )                     printUsage
                                 exit 1
     esac
     shift
@@ -96,6 +96,6 @@ case $UPLOAD in
     release )      		uploadRelease
     					exit
                         ;;
-    * )                 usage
+    * )                 printUsage
                         exit 1
 esac

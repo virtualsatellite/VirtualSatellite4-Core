@@ -89,10 +89,10 @@ while [ "$1" != "" ]; do
         -p | --profile )    	shift
                                 MAVEN_PROFILE=$1
                                 ;;
-        -h | --help )           usage
+        -h | --help )           printUsage
                                 exit
                                 ;;
-        * )                     usage
+        * )                     printUsage
                                 exit 1
     esac
     shift
@@ -102,7 +102,7 @@ case $MAVEN_PROFILE in
     development )       ;;
     integration )       ;;
     release )           ;;
-    * )                 usage
+    * )                 printUsage
                         exit 1
 esac
 
@@ -120,6 +120,6 @@ case $TRAVIS_JOB in
     assemble )      	callMavenAssemble
     					exit
                         ;;
-    * )                 usage
+    * )                 printUsage
                         exit 1
 esac
