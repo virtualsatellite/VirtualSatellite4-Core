@@ -423,13 +423,13 @@ Finally press *Finish*.
 
 === Modeling Concepts
 
-Virtual Satellite provides an extension mechanism to customize the core modeling language to project-specific needs. Concepts allow creating new types that can be used in Virtual Satellite models. Virtual Satellite ships basic concepts to a model systems, such as the Concept _de.dlr.sc.virsat.model.extension.ps_, enabling to model complex product structures. 
+Virtual Satellite provides an extension mechanism to customize the system modeling to project-specific needs. Concepts allow the creation of new types that can be used in Virtual Satellite models. Virtual Satellite ships basic concepts to a model systems, such as the Concept _de.dlr.sc.virsat.model.extension.ps_. This concept enables to model complex product structures. 
 
 NOTE: To create your own Concepts see Section <<Developing a Concept>>.
 
 ==== Activating a Concept
 
-To activate Concepts, it is necessary to have a Virtual Satellite project. Such a project can be created by clicking the satellite icon in the VirSat Navigator or by right-clicking New > Project then select the folder _VirSat_ and select _VirSat Project_.
+To activate Concepts, it is necessary to have a Virtual Satellite project in the navigator. A new project can be created by clicking the satellite icon in the VirSat Navigator or by right-clicking New > Project then select the folder _VirSat_ and select _VirSat Project_.
 
 Once you have a Virtual Satellite Project (in this documentation called MySatellite) follow the next steps to activate Concepts:
 
@@ -459,7 +459,42 @@ The concept is now activated.
 
 ==== Modeling with the concept palette
 
-TBD
+After you activated a concept, you can add instances of its elements to the system model. This can be done either with the context menu ( Right-click an element in the navigator, click on the concept name and select the element to be added ) or with the _Concept Palette_ on the right side of the editor.
+
+NOTE: If you try to add an element from the context menu but do not have the rights to add it at the current location (see <<User Rights Management>> ) or the element is not applicable for the current element then the menu is grayed-out.
+
+Follow the next steps to add concept elements from a concept palette:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Concept elements can be added to the system model by selecting them from the _Concept Palette_. The palette is located right to the editor section.
+|image:chapterModeling/ConceptPalette.PNG[The Concept Palette]
+
+|{counter:step}.
+|To select elements from the palette you have to expand the containing concept. To create a basic structure for your system model, you can e.g. expand the _ProductStructure_ concept.
+|image:chapterModeling/ConceptPaletteExpanded.PNG[The ProductStructure section of the Concept Palette]
+
+|{counter:step}.
+|From the concept section in the palette you can select concept elements and then *drag* them into the navigator section.
+|image:chapterModeling/ConceptPaletteDragElement.PNG[Drag an element from the palette]
+
+|{counter:step}.
+|*Drop* the element at the desired location in the system model. 
+
+NOTE: If you do not have the rights to add the element at the selected location or it is not applicable, then the courser will indicate that.
+
+NOTE: Concepts that are not activated for a project are still shown in the _Concept Palette_, but you cannot add them to the project. The courser will always show that dropping the element is blocked.
+
+|image:chapterModeling/ConceptPaletteDropElement.PNG[Drop an element in the VirSat Navigator]
+
+|===
 
 ==== Extended product structures - Inheritance and Configuration Control
 
