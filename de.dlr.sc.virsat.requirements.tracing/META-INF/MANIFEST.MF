@@ -6,6 +6,7 @@ Bundle-Version: 4.9.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.tracing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
+Eclipse-ExtensibleAPI: true
 Require-Bundle: org.eclipse.emf,
  org.eclipse.emf.common,
  org.eclipse.jface,
@@ -14,8 +15,8 @@ Require-Bundle: org.eclipse.emf,
  org.eclipse.emf.edit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.requirements.tracing.model,
- org.eclipse.rmf.reqif10
+ org.eclipse.rmf.reqif10,
+ de.dlr.sc.virsat.requirements.tracing.model
 Export-Package: de.dlr.sc.virsat.requirements.tracing,
  de.dlr.sc.virsat.requirements.tracing.util
 Bundle-Activator: de.dlr.sc.virsat.requirements.tracing.Activator

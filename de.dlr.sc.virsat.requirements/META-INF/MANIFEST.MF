@@ -4,6 +4,7 @@ Bundle-Name: VirSat Core Requirements Project
 Bundle-SymbolicName: de.dlr.sc.virsat.requirements
 Bundle-Version: 4.9.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.requirements
+Eclipse-ExtensibleAPI: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Export-Package: de.dlr.sc.virsat.requirements.reqif.util

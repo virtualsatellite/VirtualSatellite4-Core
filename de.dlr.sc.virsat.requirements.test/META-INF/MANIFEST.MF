@@ -1,15 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Core Requirements Test Plugin
+Bundle-Name: VirSat Core Requirements Project Test
 Bundle-SymbolicName: de.dlr.sc.virsat.requirements.test
 Bundle-Version: 4.9.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
+Fragment-Host: de.dlr.sc.virsat.requirements;bundle-version="0.0.1"
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
- de.dlr.sc.virsat.requirements.tracing.test,
- de.dlr.sc.virsat.requirements.tracing.model.tests,
- de.dlr.sc.virsat.requirements,
  org.eclipse.core.resources
+Import-Package:  de.dlr.sc.virsat.requirements.tracing.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.dlr.sc.virsat.requirements.test
 Export-Package: de.dlr.sc.virsat.requirements.test

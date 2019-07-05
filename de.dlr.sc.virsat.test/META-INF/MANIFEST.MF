@@ -22,7 +22,10 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.budget.mass,
  de.dlr.sc.virsat.model.extension.tests.edit,
  de.dlr.sc.virsat.model.extension.maturity,
- de.dlr.sc.virsat.requirements
+ de.dlr.sc.virsat.requirements,
+ de.dlr.sc.virsat.requirements.tracing,
+ de.dlr.sc.virsat.requirements.tracing.builder,
+ de.dlr.sc.virsat.requirements.tracing.validation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -42,6 +45,9 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.svn.test,
-  de.dlr.sc.virsat.requirements.test
+ de.dlr.sc.virsat.requirements.test,
+ de.dlr.sc.virsat.requirements.tracing.test,
+ de.dlr.sc.virsat.requirements.tracing.builder.test,
+ de.dlr.sc.virsat.requirements.tracing.validation.test
 Export-Package: de.dlr.sc.virsat.test
 Automatic-Module-Name: de.dlr.sc.virsat.test
