@@ -46,6 +46,7 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.requirements.tracing.test.AllTests.class,
 				de.dlr.sc.virsat.requirements.tracing.validation.test.AllTests.class,
 				de.dlr.sc.virsat.requirements.tracing.builder.test.AllTests.class,
+				de.dlr.sc.virsat.requirements.tracing.model.traceModel.tests.AllTests.class
 				})
 
 /**

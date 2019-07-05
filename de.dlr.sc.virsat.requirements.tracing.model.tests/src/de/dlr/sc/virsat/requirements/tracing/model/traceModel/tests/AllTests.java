@@ -34,7 +34,7 @@ import junit.textui.TestRunner;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TraceModelAllTests extends TestSuite {
+public class AllTests extends TestSuite {
 	
 	/**
 	 * main method
@@ -49,7 +49,7 @@ public class TraceModelAllTests extends TestSuite {
 	 * @return the test suite
 	 */
 	public static Test suite() {
-		TestSuite suite = new TraceModelAllTests("TraceModel Tests");
+		TestSuite suite = new AllTests("TraceModel Tests");
 		return suite;
 	}
 
@@ -57,7 +57,7 @@ public class TraceModelAllTests extends TestSuite {
 	 * Constructor
 	 * @param name the name of the test cases
 	 */
-	public TraceModelAllTests(String name) {
+	public AllTests(String name) {
 		super(name);
 	}
 

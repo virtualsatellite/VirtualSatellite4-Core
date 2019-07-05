@@ -256,4 +256,11 @@ by German Aerospace Center (DLR e.V.)
          fragment="true"
          unpack="false"/>
 
+   <plugin
+         id="de.dlr.sc.virsat.requirements.tracing.model.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
