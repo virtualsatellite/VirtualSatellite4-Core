@@ -475,15 +475,15 @@ TBD
 
 ==== Adjusting Equations
 
-Mathematical dependencies between numeric properties are described by Equations.
+Mathematical dependencies between numeric properties are described by _Equations_.
 An equation has on the left-hand side a variable and on the right hand-side a mathematical calculation.
 Whenever a change in the model occurs, Virtual Satellite re-checks the equations and updates the left-hand side
 variable according to the result of the calculation of the right-hand side.
 A variable whose value is determined by an equation is a calculated variable.
 Such variables are not editable and marked by a calculator symbol image:chapterAdvancedModeling/VirSatCalculated.png[Indication for a variable being calculated by VirSat].
 
-The Equations in Virtual Satellite are not hard-coded, but explicit parts of the model.
-They can be freely edited using the Equation Editor.
+The equations in Virtual Satellite are not hard-coded, but explicit parts of the model.
+They can be freely edited using the _Equation Editor_.
 In many cases, editing equations is not necessary since a concept may come with its own default equations model.
 
 NOTE: Example Equation: `Ref: massWithMargin = mass * margin;`
@@ -517,8 +517,9 @@ defining new mathematical functions, and so on.
 
 ===== Equation Editor
 
+The Equation Editor is a textual editor and the main tool for editing equations.
 In the following, we will modify the equations of the <<Product mass summaries>> concept 
-to include an additional top-level system margin and ignore the mass of a specified subsystem.
+to include an additional top-level system margin.
 You will need a VirSat project (called MySatellite in the following) with the 
 <<Extended product structures - Inheritance and Configuration Control>> concept and the 
 <<Product mass summaries>> concept both activated.
@@ -534,11 +535,6 @@ You will need a VirSat project (called MySatellite in the following) with the
 |{counter:step}.
 |Create a data model consisting of a ConfigurationTree as the root with two child ElementConfigurations.
 Attach a MassEquipment to each ElementConfiguration and a MassSummary to the ConfigurationTree. 
-|image:chapterAdvancedModeling/OpenRepository.png[Opening the repository editor]
-
-|{counter:step}.
-|Create a data model consisting of a ConfigurationTree as the root with two child ElementConfigurations.
-Attach a MassEquipment to each ElementConfiguration and a MassSummary to the ConfigurationTree. 
 |image:chapterAdvancedModeling/EquationEditorDataModel.png[Setting up a data model with equations]
 
 |{counter:step}.
@@ -547,7 +543,7 @@ Leave the margins at 20.
 |image:chapterAdvancedModeling/EquationEditorDataModelValues.png[Setting input values for equations]
 
 |{counter:step}.
-Save (kbd:[CTRL+S]) and then open the Editor of the MassSummary of ConfigurationTree.
+|Save (kbd:[CTRL+S]) and then open the Editor of the MassSummary of ConfigurationTree.
 The massWithMargin value should show 30.
 Next open the EquationEditor by pressing the Edit Equations button.
 |image:chapterAdvancedModeling/EquationEditorOpen.png[Opening the equation editor]
@@ -556,13 +552,63 @@ Next open the EquationEditor by pressing the Edit Equations button.
 |Create a new equation `Calc: systemMargin = 0.1`. This creates a new intermediate variable called systemMargin with value 0.1.
 Modify the equation of  massWithMargin by adding the factor  `(1 + systemMargin)`.
 After saving (kbd:[CTRL+S]) the value of massWithMargin should update to 33.
+
+TIP: You can also delete equations by removing them in the Equation Editor.
+This way you can manually override any calculated values.
+
 |image:chapterAdvancedModeling/EquationEditorEditingEquations.png[Editing equations]
 
 |===
 
-===== Advanced Functions 
+===== Aggregation Functions 
+
+In addition to the usual mathematical functions with fixed number of inputs, Virtual Satellite supports _aggregation functions_.
+Aggregation functions are intended to apply operations such as summing up all elements, calculating the mean, etc. on a set of inputs.
+The input set can be specified either by explicitly listing all inputs or an input type.
+
+NOTE: An example use of an aggregation function is the expression `summary(AMassParameters.massWithMargins)` 
+from the <<Product mass summaries>> concept, which sums up all massWithMargin values of categories of type AMassParameter. 
+
+Calling an aggregation function on N specific number of instances can be achieved via the following syntax:
+
+....
+aggregationFunction { propertyInstanceName1, ..., propertyInstanceNameN }
+....
+
+Alternatively, calling an aggregation function on a instance type achieved via the syntax
+
+....
+aggregationFunction(propertyName, nameFilter, depth)
+....
+
+where
+
+* *nameFilter* is optional and filters out all Categories that do not confirm to the nameFilter
+* *depth* is optional and limits the aggregation depth. The value -1 represents limitless aggregation and is set by default.
+
+Concepts may define new aggregation functions as necessary and may also allow other objects than properties to be used
+as aggregation inputs. By default Virtual Satellite CORE comes with a set of aggregation functions, namely:
+
+summary:: `summary` sums up all elements in the set. Returns 0 for empty sets.
+mean:: `mean` computes the average over the set. Returns NaN for empty set.
+Max:: `max` computes the maximum value over the set. Returns NaN for empty sets.
+Min:: `min` computes the minimum value over the set. Returns NaN for empty sets.
+Count:: `count` counts the number of elements in the set. Returns 0 for empty sets.
 
 ===== Calculation Builder
+
+The automatic calculation updates are performed via the _Calculation Builder_. 
+The builder executes by default whenever there is a change in the data model.
+Should it be desired for the builder to not execute automatically, it can be turned off
+by toggling the option menu:Project[Build Automatically].
+In the same menue, manual builds can also be triggered via menu:Project[Build All].
+
+Just like all other data model changes, the builder is subject to the rights management.
+Should a value be updated and a calculated variable require an update, which cannot
+be performed due to lack of rights, a `Computed value is out of date` warning is issued instead.
+A proposed update order for to resolve these warnings can be obtained from the _Domain Round View_.
+The view can be opened via menu:Window[Show View > Other > VirSat > Domain Round].
+By selecting a project in the _Navigator_, the view will then show a proposed update order to resolve calculation dependencies.
 
 ==== Using Apps
 
