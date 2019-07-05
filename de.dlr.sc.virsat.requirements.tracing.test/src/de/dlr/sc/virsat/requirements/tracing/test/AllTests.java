@@ -13,11 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.requirements.tracing.builder.test.RequirementsHistoryComparatorTest;
-import de.dlr.sc.virsat.requirements.tracing.builder.test.TraceBuilderTest;
-import de.dlr.sc.virsat.requirements.tracing.builder.test.TraceNatureTest;
 import de.dlr.sc.virsat.requirements.tracing.util.test.TraceHelperTest;
-import de.dlr.sc.virsat.requirements.tracing.validation.test.InspectionWarningEngineTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -26,12 +22,7 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	TraceHelperTest.class,
-	DVLMContentProviderTest.class,
-	TraceNatureTest.class,
-	RequirementsHistoryComparatorTest.class,
-	InspectionWarningEngineTest.class,
-	TraceBuilderTest.class
+	TraceHelperTest.class
 				})
 
 /**
