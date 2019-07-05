@@ -41,7 +41,7 @@ printUsage() {
 	echo " release          Maven profile for release builds. Fails to overwrite deployments."
 	echo ""
 	echo "Copyright by DLR (German Aerospace Center)"
-travis.yml}
+}
 
 callMavenSurefire() {
 	echo "Maven - Surefire - ${MAVEN_PROFILE}"
