@@ -176,8 +176,6 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: bash bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u development
-        on:
-          repo: virtualsatellite/VirtualSatellite4-Core
 
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.
