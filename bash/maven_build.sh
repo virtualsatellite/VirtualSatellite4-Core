@@ -41,7 +41,7 @@ printUsage() {
 	echo " release          Maven profile for release builds. Fails to overwrite deployments."
 	echo ""
 	echo "Copyright by DLR (German Aerospace Center)"
-}
+travis.yml}
 
 callMavenSurefire() {
 	echo "Maven - Surefire - ${MAVEN_PROFILE}"
@@ -56,7 +56,7 @@ callMavenSurefire() {
 	echo "Ant jacoco Reports"
 	ant jacocoPrepareDependencies
 	ant jacocoReport 2>&1 | tee ant.log
-	(grep -n "Rule violated" ant.log || exit 0 && exit 1;)
+	(grep -n "\(Rule violated\|BUILD FAILED\)" ant.log || exit 0 && exit 1;)
 	echo "CodeCov"
 	bash <(curl -s https://codecov.io/bash)
 }
