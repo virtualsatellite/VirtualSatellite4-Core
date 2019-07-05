@@ -12,7 +12,7 @@ package de.dlr.sc.virsat.requirements.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import de.dlr.sc.virsat.requirements.util.test.ReqIFUtilTest;
+import de.dlr.sc.virsat.requirements.util.ReqIFUtilTest;
 
 /**
  * 

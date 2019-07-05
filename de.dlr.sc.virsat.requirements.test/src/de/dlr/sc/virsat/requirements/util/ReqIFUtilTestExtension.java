@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.util.test;
+package de.dlr.sc.virsat.requirements.util;
 
 import de.dlr.sc.virsat.requirements.reqif.util.ReqIFUtil;
 
