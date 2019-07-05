@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+    <extension
+         id="de.dlr.sc.virsat.requirements.tracing.test.mockup.TestValidationEngine"
+         name="TestValidationEngine"
+         point="de.dlr.sc.virsat.requirements.tracing.validation.IValidationEngine">
+      <ValidationEngine
+            class="de.dlr.sc.virsat.requirements.tracing.builder.test.mockup.TestValidationEngine"
+            id="de.dlr.sc.virsat.requirements.tracing.test.mockup.TestValidationEngine"
+            name="TestValidationEngine">
+      </ValidationEngine>
+   </extension>
+
+</fragment>
