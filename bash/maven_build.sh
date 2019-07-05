@@ -23,7 +23,24 @@ COMMAND=$0
 
 # this method gives some little usage info
 printUsage() {
-    echo "usage: ${COMMAND} -j [surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
+	echo "usage: ${COMMAND} -j [surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
+	echo ""
+	echo "Options:"
+	echo " -j, --jobs <jobname>	    The name of the Travis-CI job to be build."
+	echo " -p, --profile <profile>  The name of the maven profile to be build."
+	echo ""
+	echo "Jobname:"
+	echo " surefire      To run all surefire tests including junit and swtbot."
+	echo " spotbugs      To run spotbugs static code analysis."
+	echo " checkstyle    To run checkstyle for testing style guidelines."
+	echo " assemble      To run full assemble including the java docs build."
+	echo ""
+	echo "Profile:"
+	echo " development      Maven profile for development and feature builds."
+	echo " integration      Maven profile for integration builds."
+	echo " release          Maven profile for release builds. Fails to overwrite deployments."
+	echo ""
+	echo "Copyright by DLR (German Aerospace Center)"
 }
 
 callMavenSurefire() {
@@ -54,7 +71,7 @@ callMavenSpotbugs() {
 	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 }
 
-callMavenChecksyle() {
+callMavenCheckstyle() {
 	echo "Maven - Checkstyle - ${MAVEN_PROFILE}"
 	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
