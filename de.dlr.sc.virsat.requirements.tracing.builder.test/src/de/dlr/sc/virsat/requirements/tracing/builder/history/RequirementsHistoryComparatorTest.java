@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.tracing.builder.test;
+package de.dlr.sc.virsat.requirements.tracing.builder.history;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,8 +36,6 @@ import org.eclipse.rmf.reqif10.SpecObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import de.dlr.sc.virsat.requirements.tracing.builder.history.RequirementsHistoryComparator;
 
 /**
  * @author fran_tb

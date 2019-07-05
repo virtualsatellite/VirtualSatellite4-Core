@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.requirements.tracing.util.test.TraceHelperTest;
+import de.dlr.sc.virsat.requirements.tracing.util.TraceHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**

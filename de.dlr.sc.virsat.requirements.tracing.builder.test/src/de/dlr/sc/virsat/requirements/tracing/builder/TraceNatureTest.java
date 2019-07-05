@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.tracing.builder.test;
+package de.dlr.sc.virsat.requirements.tracing.builder;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
-import de.dlr.sc.virsat.requirements.tracing.builder.TraceNature;
 
 /**
  * @author fran_tb

@@ -10,9 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.tracing.util.test;
-
-import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
+package de.dlr.sc.virsat.requirements.tracing.util;
 
 /**
  * @author fran_tb

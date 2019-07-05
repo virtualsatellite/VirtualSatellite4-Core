@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.tracing.validation.test;
+package de.dlr.sc.virsat.requirements.tracing.validation.engines;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -43,7 +43,6 @@ import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 import de.dlr.sc.virsat.requirements.tracing.validation.IHistoryBased;
 import de.dlr.sc.virsat.requirements.tracing.validation.IValidationEngine;
-import de.dlr.sc.virsat.requirements.tracing.validation.engines.InspectionWarningEngine;
 
 /**
  * @author fran_tb

@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.tracing.util.test;
+package de.dlr.sc.virsat.requirements.tracing.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +40,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMFactory;
 import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
-import de.dlr.sc.virsat.requirements.tracing.util.TraceHelper;
 
 /**
  * @author fran_tb

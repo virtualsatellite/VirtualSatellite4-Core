@@ -13,6 +13,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.requirements.tracing.builder.TraceBuilderTest;
+import de.dlr.sc.virsat.requirements.tracing.builder.TraceNatureTest;
+import de.dlr.sc.virsat.requirements.tracing.builder.history.RequirementsHistoryComparatorTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**

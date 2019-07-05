@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.requirements.tracing.builder.test;
+package de.dlr.sc.virsat.requirements.tracing.builder;
 
 import static org.junit.Assert.assertTrue;
 
@@ -40,11 +40,10 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
-import de.dlr.sc.virsat.requirements.tracing.builder.TraceNature;
+import de.dlr.sc.virsat.requirements.tracing.builder.test.mockup.TestValidationEngine;
 import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TMFactory;
 import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceElement;
 import de.dlr.sc.virsat.requirements.tracing.model.traceModel.TraceabilityLinkContainer;
-import de.dlr.sc.virsat.requirements.tracing.builder.test.mockup.TestValidationEngine;
 
 /**
  * @author fran_tb
