@@ -10,5 +10,6 @@ Fragment-Host: de.dlr.sc.virsat.requirements.tracing.builder
 Require-Bundle: org.junit,
  org.eclipse.emf,
  de.dlr.sc.virsat.project
+Import-Package: de.dlr.sc.virsat.project.test
 Export-Package: de.dlr.sc.virsat.requirements.tracing.builder.test
 Bundle-ActivationPolicy: lazy

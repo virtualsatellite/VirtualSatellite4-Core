@@ -10,4 +10,5 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.emf,
  org.junit,
  de.dlr.sc.virsat.project
+Import-Package: de.dlr.sc.virsat.project.test
 Export-Package: de.dlr.sc.virsat.requirements.tracing.validation.test
