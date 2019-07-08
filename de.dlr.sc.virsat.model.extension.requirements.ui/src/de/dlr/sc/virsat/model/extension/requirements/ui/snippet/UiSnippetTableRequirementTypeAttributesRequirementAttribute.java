@@ -12,11 +12,16 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 import java.util.List;
 
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
@@ -31,6 +36,33 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends AUiSnippetTableRequirementTypeAttributesRequirementAttribute implements IUiSnippet {
 
 	
+	private static final String COLUMN_TEXT_NAME = "Name";
+	private static final String NAME_ENUMERATION_PROPERTY = "enumeration";
+	
+	/* (non-Javadoc)
+	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable#createTableColumns(org.eclipse.emf.edit.domain.EditingDomain)
+	 */
+	@Override
+	protected void createTableColumns(EditingDomain editingDomain) {
+		TableViewerColumn colName = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_NAME);
+		
+		//we know that createDefaultColumn returns tableViewerColumn so we cast it to tableViewerColumn
+		colName.setEditingSupport(new EStringCellEditingSupport(editingDomain, (TableViewer) columnViewer, GeneralPackage.Literals.INAME__NAME));
+		
+		for (AProperty property : categoryModel.getAllProperties()) {
+			
+			//Do not show the enumeration property in the table
+			if (!property.getName().equals(NAME_ENUMERATION_PROPERTY)) {
+				TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
+				colProperty.getColumn().setToolTipText(property.getDescription());
+				colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
+			}
+			
+		}
+
+	}
+
+	// Show attributes in the order of their creation
 	@Override
 	protected void setUpTableViewer(EditingDomain editingDomain, FormToolkit toolkit) {
 		super.setUpTableViewer(editingDomain, toolkit);
