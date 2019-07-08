@@ -62,7 +62,7 @@ Done. You installed and successfully started Virtual Satellite.
 
 === First Steps
 
-Now where you successfully installed Virtual Satellite to your computer it is about time to get started using it. This chapter provides some first steps to learn some basic functionality to work with this software.
+Now when you successfully installed Virtual Satellite to your computer it is about time to get started using it. This chapter provides some first steps to learn some basic functionality to work with this software.
 
 NOTE: In this example we work locally on your computer, there is no need for a subversion service or similar. 
 
@@ -109,7 +109,7 @@ NOTE: In case _views_ get lost, you can always reset the _perspective_ by right-
 |{counter:step}.
 |Open the dialog for creating a new project by pressing the marked icon in the _navigator_. 
 
-NOTE: Alternatively you can the _new_ dialog from the main-menu following menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat[VirSat Project] and press btn:[Next>].
+NOTE: Alternatively you can use the _new_ dialog from the main-menu following menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat[VirSat Project] and press btn:[Next>].
 |image:chapterFirstSteps/BtnOpenProject.png[Open project]
 
 |{counter:step}.
@@ -118,11 +118,11 @@ NOTE: Alternatively you can the _new_ dialog from the main-menu following menu:F
 
 |{counter:step}.
 |Now open the _Repository_ from the _Navigator_ view by double-clicking menu:MySatellite[Repository]. 
-|image:chapterFirstSteps/OpenRepository.png[New Project Dialog]
+|image:chapterFirstSteps/OpenRepository.png[Open Repository]
 
 |{counter:step}.
 |The _Repository Editor_ will open in the _Editing_ area. Scroll down to the _table Section for: Active Concepts_. Here click on btn:[Add from Registry]. 
-|image:chapterFirstSteps/RepositoryEditor.png[New Project Dialog]
+|image:chapterFirstSteps/RepositoryEditor.png[Repository Editor]
 
 |{counter:step}.
 |Select the following two _Concepts_ in the dialog by ticking the check-box. Then press btn:[OK] to activate the _Concepts_. 
@@ -142,7 +142,7 @@ NOTE: _Concepts_ can refer to each other. E.g. the Design Maturity _Concept_ req
 
 |{counter:step}.
 |Now right-click on the newly generated item _PT: ProductTree_. Now select menu:Context[Product Structures > Add ProductTreeDomain]. 
-|image:chapterFirstSteps/productTreeDomain.png[Create Product Tree Domain]
+|image:chapterFirstSteps/ProductTreeDomain.png[Create Product Tree Domain]
 
 |{counter:step}.
 |Double-click on the newly generated _PTD: ProductTreeDomain_ item to open it in the _Editor_. In the Editor change the name to e.g. `AOCS` (Attitude and Orbit Control System) as shown in the image.
