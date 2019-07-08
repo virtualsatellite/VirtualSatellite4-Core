@@ -218,6 +218,8 @@ NOTE: If the specified SVN location does not exist, you will get a notification 
 
 |===
 
+Now your project is connected to an SVN repository, you can *Commit* and *Update* it (see the section below), and you can give its URL to your collaborators.
+
 === Loading and updating from a shared project
 
 TBD
