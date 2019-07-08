@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.budget.mass,
  de.dlr.sc.virsat.model.extension.tests.edit,
  de.dlr.sc.virsat.model.extension.maturity,
- de.dlr.sc.virsat.model.extension.mechanical
+ de.dlr.sc.virsat.model.extension.mechanical,
+ de.dlr.sc.virsat.model.extension.requirements
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -42,6 +43,7 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.extension.visualisation.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
- de.dlr.sc.virsat.svn.test
+ de.dlr.sc.virsat.svn.test,
+ de.dlr.sc.virsat.model.extension.requirements.test
 Export-Package: de.dlr.sc.virsat.test
 Automatic-Module-Name: de.dlr.sc.virsat.test
