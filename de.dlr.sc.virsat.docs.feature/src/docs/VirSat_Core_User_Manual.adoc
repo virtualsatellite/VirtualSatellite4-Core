@@ -132,7 +132,7 @@ NOTE: Alternatively you can use the _new_ dialog from the main-menu following me
 
 NOTE: The numbers in the brackets after the _Concept_ name denote the version of the _Concept_.
 
-NOTE: _Concepts_ can refer to each other. E.g. the Design Maturity _Concept_ requires the Product Structures _Concept_. In case you only pick the second one, Virtual Satellite will automatically activate all required ones as well.
+NOTE: _Concepts_ can require other concepts. If you select a concept, all its required concepts are also selected.
 
 |image:chapterFirstSteps/ConceptDialog.png[Concept Dialog]
 
@@ -184,7 +184,39 @@ TBD
 
 === Sharing and committing a new project
 
-TBD
+Virtual Satellite uses SVN for collaborative work. In order to work on a project with other people, you need to store it in an SVN repository.
+This section shows how to share a local project to an SVN repository.
+
+TODO: Installing SVN connector
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Project Explorer_ tab in the _Navigator_ view. 
+|image:chapterSettingUpInfrastructure/ProjectExplorer.png[Opening Project Explorer]
+
+|{counter:step}.
+|In the context menu of your project select menu:Context[Team > Share Project...].
+|image:chapterSettingUpInfrastructure/ShareProject.png[Share Project]
+
+|{counter:step}.
+|In the _Share Project Wizard_ enter the desired URL in your SVN repository, provide credentials for SVN and press btn:[Finish].
+
+NOTE: If the specified SVN location does not exist, you will get a notification "Location information has been specified incorrectly. Keep location anyway?". Answering btn:[OK] creates the location.
+
+|image:chapterSettingUpInfrastructure/ShareProjectDialog.png[Share Project Dialog]
+
+|{counter:step}.
+|Next you will see a commit dialog where you can optionally write a commit message. Press btn:[OK] to commit your project to SVN.
+|image:chapterSettingUpInfrastructure/Commit.png[Commit Dialog]
+
+|===
 
 === Loading and updating from a shared project
 
