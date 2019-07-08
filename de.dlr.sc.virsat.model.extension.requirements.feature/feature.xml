@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.dlr.sc.virsat.model.extension.requirements.feature"
-      label="Feature"
-	  version="1.0.0.qualifier"
-	  plugin="de.dlr.sc.virsat.branding.ui"
+      label="VirSat Model Extension Requirements Feature"
+      version="4.9.1.qualifier"
+      plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 
 <description>
