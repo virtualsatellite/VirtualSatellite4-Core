@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
@@ -23,8 +24,10 @@ import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
+import org.hamcrest.core.StringStartsWith;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -145,11 +148,25 @@ public class ASwtBotTestCase {
 	 */
 	protected SWTBotTreeItem openEditor(SWTBotTreeItem item) {
 		SWTBotTreeItem newItem = item.doubleClick();
+		waitForEditor(item);
 		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 		return newItem;
 		
 	}
+	
+	/**
+	 * Waits for the editor of the passed item to open.
+	 * The editor is identified using the name of the item,
+	 * so it cant distinguish between editors of items with the same name!
+	 * @param item the item whose editor we are waiting for
+	 */
+	protected void waitForEditor(SWTBotTreeItem item) {
+		String label = item.getText();
+		Matcher<IEditorReference> matcher = withPartName(StringStartsWith.startsWith(label + " -> "));
+		bot.waitUntil(Conditions.waitForEditor(matcher));
+	}
+	
 	/**
 	 * closes the dialog and waits
 	 * @param buttonName the name of the button which closes the dialog
@@ -404,7 +421,7 @@ public class ASwtBotTestCase {
 	protected SWTBotSection getSWTBotSection(String sectionName) {
 		@SuppressWarnings("unchecked")
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
-		SWTBotSection composite = new SWTBotSection((Section) bot.widget(matcher, 0), matcher);
+		SWTBotSection composite = new SWTBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
 	}
 	
