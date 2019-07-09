@@ -185,9 +185,31 @@ TBD
 === Sharing and committing a new project
 
 Virtual Satellite uses SVN for collaborative work. In order to work on a project with other people, you need to store it in an SVN repository.
-This section shows how to share a local project to an SVN repository.
+First of all, you need to install an SVN connector.
 
-TODO: Installing SVN connector
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open menu:Window[Preferences].
+|image:chapterSettingUpInfrastructure/Preferences.png[Preferences]
+
+|{counter:step}.
+|Select menu:Team[SVN], open the tab _SVN Connector_ and press btn:[Get Connectors...]
+|image:chapterSettingUpInfrastructure/GetSvnConnectors.png[Get SVN Connectors]
+
+|{counter:step}.
+|Choose one of the connectors in the list, press btn:[Finish] and follow the installation steps - accept the user agreement, agree to the unsigned content and restart Virtual Satellite.
+|image:chapterSettingUpInfrastructure/Connectors.png[Connectors]
+
+|===
+
+After the restart you can share your project.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
