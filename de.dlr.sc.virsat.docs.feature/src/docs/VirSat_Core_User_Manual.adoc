@@ -526,7 +526,7 @@ NOTE: If you do not have the rights to add the element at the selected location 
 
 NOTE: Concepts that are not activated for a project are still shown in the _Concept Palette_, but you cannot add them to the project. The courser will always show that dropping the element is blocked.
 
-|image:chapterModeling/ConceptPaletteDropElement.PNG[Drop an element in the VirSat Navigator]
+|image:chapterModeling/ConceptPaletteDropElement.png[Drop an element in the VirSat Navigator]
 
 |===
 
