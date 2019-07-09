@@ -509,15 +509,15 @@ Follow the next steps to add concept elements from a concept palette:
 
 |{counter:step}.
 |Concept elements can be added to the system model by selecting them from the _Concept Palette_. The palette is located right to the editor section.
-|image:chapterModeling/ConceptPalette.PNG[The Concept Palette]
+|image:chapterModeling/ConceptPalette.png[The Concept Palette]
 
 |{counter:step}.
 |To select elements from the palette you have to expand the containing concept. To create a basic structure for your system model, you can e.g. expand the _ProductStructure_ concept.
-|image:chapterModeling/ConceptPaletteExpanded.PNG[The ProductStructure section of the Concept Palette]
+|image:chapterModeling/ConceptPaletteExpanded.png[The ProductStructure section of the Concept Palette]
 
 |{counter:step}.
 |From the concept section in the palette you can select concept elements and then *drag* them into the navigator section.
-|image:chapterModeling/ConceptPaletteDragElement.PNG[Drag an element from the palette]
+|image:chapterModeling/ConceptPaletteDragElement.png[Drag an element from the palette]
 
 |{counter:step}.
 |*Drop* the element at the desired location in the system model. 
