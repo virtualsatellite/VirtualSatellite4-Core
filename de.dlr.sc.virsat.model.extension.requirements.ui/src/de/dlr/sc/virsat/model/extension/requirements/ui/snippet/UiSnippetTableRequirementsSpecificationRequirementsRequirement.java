@@ -9,8 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
@@ -81,7 +83,10 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
 
 	protected PropertyInstanceValueSwitch valueSwitch = PreferencedPropertyInstanceValueSwitchFactory.createInstance();
 	protected EsfMarkerImageProvider emip = new EsfMarkerImageProvider();
-
+	
+	protected TableViewerColumn colStatus = null;
+	protected List<TableViewerColumn> attColumns;
+	
 	/**
 	 * 
 	 */
@@ -138,6 +143,7 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
 							Command cmd = InitializeRequirementCommand.create(
 									(TransactionalEditingDomain) editingDomain, newRequirement, selectedTypeInstance);
 							editingDomain.getCommandStack().execute(cmd);
+							refreshTable(editingDomain);
 						}
 					} else {
 						Command cmd = createDeleteCommand(editingDomain, affectedObjects);
@@ -165,10 +171,15 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
 	protected void createTableColumns(EditingDomain editingDomain) {
 
 		// Status column
-		TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_STATUS);
-		colProperty.setEditingSupport(createEditingSupport(editingDomain,
-				categoryModel.getProperties().get(REQUIREMENT_STATUS_PROPERTY_NUMBER)));
-		colProperty.getColumn().setWidth(TYPE_COLUMN_WIDTH);
+		if (colStatus == null) {
+			colStatus = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_STATUS);
+			colStatus.setEditingSupport(createEditingSupport(editingDomain,
+					categoryModel.getProperties().get(REQUIREMENT_STATUS_PROPERTY_NUMBER)));
+			colStatus.getColumn().setWidth(TYPE_COLUMN_WIDTH);
+			
+			//initialize list for attribute column
+			attColumns = new ArrayList<>();
+		}
 
 		if (model instanceof CategoryAssignment) {
 			RequirementsSpecification requirementsSpecification = new RequirementsSpecification(
@@ -203,8 +214,12 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
 					}
 
 				}
-				createDefaultColumn(columnName);
-
+				
+				if (attColumns.size() > i) {
+					attColumns.get(i).getColumn().setText(columnName);
+				} else {
+					attColumns.add((TableViewerColumn) createDefaultColumn(columnName));
+				}
 			}
 		}
 
@@ -300,6 +315,16 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
 		}
 
 		return attributValue;
+	}
+	
+	/**
+	 * Refresh the table if a requirement with new type was added
+	 * @param editingDomain the editing domain
+	 */
+	protected void refreshTable(EditingDomain editingDomain) {
+		createTableColumns(editingDomain);
+		ITableLabelProvider labelProvider = getTableLabelProvider();
+		columnViewer.setLabelProvider(labelProvider);
 	}
 
 }
