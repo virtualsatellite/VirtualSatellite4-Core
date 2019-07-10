@@ -240,11 +240,45 @@ NOTE: If the specified SVN location does not exist, you will get a notification 
 
 |===
 
-Now your project is connected to an SVN repository, you can *Commit* and *Update* it (see the section below), and you can give its URL to your collaborators.
+Now your project is connected to an SVN repository, you can *Commit* and *Update* it (see <<Updating and committing a shared project>>), and you can give its URL to your collaborators.
 
-=== Loading and updating from a shared project
+=== Loading a project from SVN
 
-TBD
+If you want to load a project from SVN to work with it in Virtual Satellite, follow the steps below.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Click on the btn:[Open Perspective] button in the top right corner and open the _SVN Repository Exploring_ perspective. 
+|image:chapterSettingUpInfrastructure/SvnPerspective.png[SVN Perspective]
+
+|{counter:step}.
+|In the _SVN Repositories_ view click btn:[New Repository Location] and enter the URL of your project and your SVN credentials.
+|image:chapterSettingUpInfrastructure/AddSvnRepository.png[Add SVN Repository]
+
+|{counter:step}.
+|Press menu:Context[Check Out] in the context menu of your repository.
+
+NOTE: You need to check out a folder that directly contains *data* folder. You may need to expand some intermediate folders to get there.
+
+|image:chapterSettingUpInfrastructure/Checkout.png[Check Out]
+
+|{counter:step}.
+|Go back to the _VirSat - Core_ perspective, and in the _Navigator_ view you will see a project that you just checked out.
+|image:chapterSettingUpInfrastructure/CheckoutDone.png[Checked out Project]
+
+|===
+
+
+=== Updating and committing a shared project
+
+TODO
 
 == Modeling with Virtual Satellite
 
