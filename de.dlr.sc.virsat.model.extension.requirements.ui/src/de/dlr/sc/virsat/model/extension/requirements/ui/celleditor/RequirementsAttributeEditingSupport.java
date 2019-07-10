@@ -12,10 +12,12 @@
  */
 package de.dlr.sc.virsat.model.extension.requirements.ui.celleditor;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
+import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementAttributeCommand;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
@@ -45,6 +48,10 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 
 	protected final VirSatTransactionalEditingDomain domain;
 
+	public static final String[] BOOL_LITERALS = { Boolean.FALSE.toString(), Boolean.TRUE.toString() };
+	private static final int NOT_SET = -1;
+
+	private ColumnViewer viewer;
 	private CellEditor editor;
 
 	/**
@@ -59,7 +66,7 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
 		this.attributeIndex = attIndex;
 		this.domain = (VirSatTransactionalEditingDomain) editingDomain;
-		editor = new TextCellEditor((Composite) viewer.getControl());
+		this.viewer = viewer;
 	}
 
 	/*
@@ -69,7 +76,163 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
-		return editor;
+		RequirementAttribute attDef = getAttributeDefinition(element);
+		switch (attDef.getType()) {
+			case RequirementAttribute.TYPE_String_NAME:
+				editor = new TextCellEditor((Composite) viewer.getControl());
+				return editor;
+	
+			case RequirementAttribute.TYPE_Boolean_NAME:
+				editor = new ComboBoxCellEditor((Composite) viewer.getControl(), BOOL_LITERALS);
+				return editor;
+	
+			default:
+				editor = new TextCellEditor((Composite) viewer.getControl());
+				return editor;
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.
+	 * APropertyCellEditingSupport#getValue(java.lang.Object)
+	 */
+	@Override
+	protected Object getValue(Object element) {
+		RequirementAttribute attDef = getAttributeDefinition(element);
+		switch (attDef.getType()) {
+			case RequirementAttribute.TYPE_String_NAME:
+				return super.getValue(element);
+	
+			case RequirementAttribute.TYPE_Boolean_NAME:
+				return getBooleanValue((String) super.getValue(element));
+	
+			default:
+				return super.getValue(element);
+		}
+	}
+
+	/**
+	 * Transform the boolean string to an integer
+	 * 
+	 * @param stringValue
+	 *            the boolean string
+	 * @return the integer value
+	 */
+	protected Integer getBooleanValue(String stringValue) {
+		for (int i = 0; i <= 1; i++) {
+			if (stringValue.equals(BOOL_LITERALS[i])) {
+				return i;
+			}
+		}
+		return NOT_SET;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.
+	 * APropertyCellEditingSupport#setValue(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	protected void setValue(Object element, Object userInputValue) {
+		RequirementAttribute attDef = getAttributeDefinition(element);
+		switch (attDef.getType()) {
+			case RequirementAttribute.TYPE_String_NAME:
+				super.setValue(element, userInputValue);
+				break;
+	
+			case RequirementAttribute.TYPE_Boolean_NAME:
+				setBooleanValue(element, userInputValue);
+				break;
+	
+			case RequirementAttribute.TYPE_Integer_NAME:
+				setIntegerValue(element, userInputValue);
+				break;
+				
+			case RequirementAttribute.TYPE_Real_NAME:
+				setRealValue(element, userInputValue);
+				break;
+	
+			default:
+				super.setValue(element, userInputValue);
+				break;
+		}
+	}
+
+	/**
+	 * Transform the user input to a boolean-string value
+	 * 
+	 * @param element
+	 *            the editor subject
+	 * @param userInputValue
+	 *            the user input
+	 */
+	protected void setBooleanValue(Object element, Object userInputValue) {
+		if (userInputValue instanceof Integer) {
+			int comboBoxIndex = (Integer) userInputValue;
+			if ((comboBoxIndex >= 0) && (comboBoxIndex <= 1)) {
+				String booleanLiteral = BOOL_LITERALS[comboBoxIndex];
+				super.setValue(element, booleanLiteral);
+			}
+		}
+	}
+
+	/**
+	 * Transform the user input to a integer-string value
+	 * 
+	 * @param element
+	 *            the editor subject
+	 * @param userInputValue
+	 *            the user input
+	 */
+	protected void setIntegerValue(Object element, Object userInputValue) {
+		Integer newValue = null;
+		if (userInputValue instanceof Integer) {
+			newValue = (Integer) userInputValue;
+
+		} else if (userInputValue instanceof String) {
+			try {
+				newValue = Integer.parseInt((String) userInputValue);
+			} catch (NumberFormatException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+						"Requirements UI: The user input value is not of type Integer!"));
+			}
+		}
+
+		if (newValue != null) {
+			super.setValue(element, newValue + "");
+		}
+	}
+	
+	/**
+	 * Transform the user input to a integer-string value
+	 * 
+	 * @param element
+	 *            the editor subject
+	 * @param userInputValue
+	 *            the user input
+	 */
+	protected void setRealValue(Object element, Object userInputValue) {
+		Double newValue = null;
+		if (userInputValue instanceof Double) {
+			newValue = (Double) userInputValue;
+
+		} else if (userInputValue instanceof String) {
+			try {
+				userInputValue = ((String) userInputValue).replaceAll(",", ".");
+				newValue = Double.parseDouble((String) userInputValue);
+			} catch (NumberFormatException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+						"Requirements UI: The user input value is not of type Real/Double!"));
+			}
+		}
+
+		if (newValue != null) {
+			super.setValue(element, newValue + "");
+		}
 	}
 
 	@Override
@@ -109,6 +272,20 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		CategoryAssignmentHelper attributeInstanceHelper = new CategoryAssignmentHelper(
 				attributeInstance.getTypeInstance());
 		return attributeInstanceHelper.getPropertyInstance(AttributeValue.PROPERTY_VALUE);
+	}
+
+	/**
+	 * Get the attribute definition of the current editor element
+	 * 
+	 * @param element
+	 *            the editor element
+	 * @return the attribute definition
+	 */
+	protected RequirementAttribute getAttributeDefinition(Object element) {
+		ComposedPropertyInstance cpi = (ComposedPropertyInstance) element;
+		Requirement requirement = new Requirement(cpi.getTypeInstance());
+
+		return requirement.getReqType().getAttributes().get(attributeIndex);
 	}
 
 	/**
