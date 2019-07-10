@@ -244,8 +244,6 @@ Now your project is connected to an SVN repository, you can *Commit* and *Update
 
 === Loading a project from SVN
 
-If you want to load a project from SVN to work with it in Virtual Satellite, follow the steps below.
-
 :step: 0
 [%header,cols=">8,62a,40a"] 
 |===
@@ -263,7 +261,7 @@ If you want to load a project from SVN to work with it in Virtual Satellite, fol
 |image:chapterSettingUpInfrastructure/AddSvnRepository.png[Add SVN Repository]
 
 |{counter:step}.
-|Press menu:Context[Check Out] in the context menu of your repository.
+|Press menu:Context[Check Out] on your repository.
 
 NOTE: You need to check out a folder that directly contains *data* folder. You may need to expand some intermediate folders to get there.
 
