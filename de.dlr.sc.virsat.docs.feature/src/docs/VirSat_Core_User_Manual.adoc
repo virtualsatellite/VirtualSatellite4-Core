@@ -20,6 +20,12 @@ Virtual Satellite is based on Java and Eclipse Technology. It currently supports
 . Windows 7 64bit with Java 8 runtime environment
 . Linux 64 bit with Java 8 runtime environment
 
+[WARNING]
+.Use 64 bit Java JRE
+====
+Virtual Satellite does not execute on a Java 32 bit runtime environment.
+====
+
 [WARNING] 
 .Linux compilation issues
 ==== 
@@ -756,7 +762,13 @@ TBD
 
 ==== Developing a Concept
 
-TBD
+The modular data model allows to develop concepts by yourself. This enables you to add new data into
+the system engineering process whenever it is needed. Developing a concept can happen in various stages.
+1. It is possible to just create new structural elements or categories for modelling using the generic
+systems engineering language (GSEL) and generate all necessary code with it. 2. It is possible to tweak all
+the automatically generated code.
+
+NOTE: Developing the concept is not intended for the standard user. Therefore please consult the Virtual Satellite developers manual for further information.
 
 == Advanced Functionality
 
