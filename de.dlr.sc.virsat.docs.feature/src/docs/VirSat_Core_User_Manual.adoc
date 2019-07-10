@@ -276,7 +276,14 @@ NOTE: You need to check out a folder that directly contains *data* folder. You m
 
 === Updating and committing a shared project
 
-TODO
+To get the most recent changes from the repository, press menu:Context[Update Project from Repository] in _Navigator_.
+To upload your changes to the repository, press menu:Context[Commit Project to Repository] and optionally provide a commit message in the dialog that pops up.
+
+TIP: There are also icons for committing and updating in the icon bar of the _Navigator_.
+
+NOTE: Whenever you commit and update, you do it for the whole project.
+
+|image:chapterSettingUpInfrastructure/Committing.png[Committing and Updating]
 
 == Modeling with Virtual Satellite
 
