@@ -180,17 +180,20 @@ NOTE: Opening the _Editor_ on the _Structural Element Instance_ gives access to 
 
 Well Done. You successfully created your very first model using Virtual Satellite. With this first hands-on experience you learned the first important steps to use this software. Continue reading the next chapters to learn how to use it in real system engineering scenarios. 
 
-== Setting up the infrastructure
-
-TBD
-
-=== Architecture Overview
-
-TBD
-
-=== Sharing and committing a new project
+== Collaborative work on a shared project
 
 Virtual Satellite uses SVN for collaborative work. In order to work on a project with other people, you need to store it in an SVN repository.
+This section describes how to set up and work with a shared project.
+
+=== Workflow Overview
+
+The collaborative workflow of Virtual Satellite is shown below. First someone has to create a project in Virtual Satellite locally and share it to an SVN repository.
+Then all the collaborators can load it and work with it as described in the following subsections.
+
+image:chapterSettingUpInfrastructure/Workflow.png[Workflow]
+
+=== Sharing a new project to SVN
+
 First of all, you need to install an SVN connector.
 
 :step: 0
