@@ -191,7 +191,9 @@ This section describes how to set up and work with a shared project.
 The collaborative workflow of Virtual Satellite is shown below. First someone has to create a project in Virtual Satellite locally and share it to an SVN repository.
 Then all the collaborators can load it and work with it as described in the following subsections.
 
-image:chapterSettingUpInfrastructure/Workflow.png[Workflow]
+.Collaboration Workflow Overview
+[#WorkflowOverview]
+image::chapterSettingUpInfrastructure/Workflow.png[Colaboration Workflow Overview]
 
 === Sharing a new project to SVN
 
@@ -624,6 +626,8 @@ There are several aspects where these product structures should support:
 . They are intended to help with configuration control issues.
 . They should help to avoid data redundancies by inheritance mechanisms.
 
+===== General introduction to extended product structures
+
 The product structures concept delivers capabilities to structure the system design. 
 Besides classical decomposition into one product tree, the concept delivers four different type of trees.
 Each of these trees reflect a different view to the system in the context of its development.
@@ -680,6 +684,29 @@ Now we get three real star trackers delivered from the supplier.
 We assign the serial numbers to their representation in the storage.
 From the storage we assign two of them into the _Assembly Tree_.
 Now we know which star trackers are actually built into the spacecraft. 
+
+===== Extended product structures and inheritance by example
+
+The Figure "<<InheritanceExample>>" explains how Inheritance works together with the Extended Product structures.
+Imagine a _Product Tree_ in which one reaction wheel is defined as an equipment. 
+Together with this equipment a calibration curve as given by a supplier specification is stored.
+This reaction wheel is instantiated as _RW1_ in the _Configuration Tree_.
+Here it inherits the calibration curve of the reaction wheel as defined in the _Product Tree_.
+The _Assembly Tree_ also instantiates a reaction wheel which is inheriting from the one from the _Configuration Tree_.
+Thus it will first inherit the same calibration curve as it has once been specified in the _Product Tree_.
+Now the supplier delivers two reaction wheels from which one has to select for the actual spacecraft.
+Therefore two instances of the reaction wheel are created in the _Storage_ called _RW_A_ and _RW_B_. 
+Both of them initially inherit the calibration curve from the specification in the _Product Tree_.
+But measurements showed that the calibration curves are different in reality. 
+Hence the calibration curves are now adjusted in the _Storage_.
+It becomes clearly visible, that one calibration curve is far off and the other one is somewhat ok.
+The reaction wheel with the calibration curve which is ok, is now the one that should be used in the actual spacecraft.
+Therefore the _RW1_ in the _Assembly Tree_ has to additionally inherit from the _RW_A_ in the _Storage_.
+The calibration curve in the of _RW1_ now reflects the reality of the actually used reaction wheel called _RW_A_.
+
+.Example of Extended Product Structures and Inheritance
+[#InheritanceExample]
+image::chapterExtendedProductStructures/TreeInheritanceExample.png[Tree Inheritance Example]
 
 ==== Product mass summaries
 
