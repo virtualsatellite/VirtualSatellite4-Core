@@ -708,6 +708,166 @@ The calibration curve in the of _RW1_ now reflects the reality of the actually u
 [#InheritanceExample]
 image::chapterExtendedProductStructures/TreeInheritanceExample.png[Tree Inheritance Example]
 
+===== Using the Extended Product Structures concept in Virtual Satellite
+
+The previous chapters explained how to use product structures in general and how the inheritance mechanisms works.
+This chapter takes a closer look how to actually use it in Virtual Satellite. 
+Additionally to what has been explained before, this chapter will also highlight some of the flexibilities in modeling product structures which have not yet been addressed.
+This concerns e.g. the option to create not just one _Product Tree_ but several if needed.
+
+To get started create a simple project as explained in <<First Steps>>. 
+Then activate the following two concepts as explained in <<Activating a Concept>>:
+
+. `de.dlr.sc.virsat.model.extension.ps` - The extended product structures concept
+. `de.dlr.sc.virsat.model.extension.budget.mass` - A mass budget concept
+
+In the following tutorial a complex example of a star tracker equipment is realized.
+In this example a _Product Tree_ with one star tracker will be created.
+Following, the _Configuration Tree_ will be instantiated with two star trackers.
+Two _Assembly Trees_ will be derived from the _Configuration Tree_.
+A mass will be modeled to these star trackers.
+Then, five star trackers will be modeled in the storage, with actual weighed mass.
+Due to some fictive fluctuations in the weight, four of them have to be selected for the actual assemblies.
+
+====== Setting up the product structures
+
+First the product structures have to be set up. Follow the given steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+| Model the _Product Tree_:
+
+. Start modeling the _Navigator_.
+. Add a _Product Tree_ as root element and name it `StarExplorer`.
+. Nest a _Product Tree Domain_ into it and call it `AOCS`.
+. Add the Star Tracker equipment into it by modeling an _Element Definition_ and name it `ST`.
+
+Your _Product Tree_ should now look like the one in the image.
+
+TIP: In Virtual Satellite you are not restricted to one single _Product Tree_.
+You are free to model as many _Product Trees_ as you need to organize your data.
+
+|image:chapterExtendedProductStructures/ProductTreeST.png[The Product Tree]
+
+|{counter:step}.
+| Model the _Configuration Tree_ using the _Wizard_:
+
+. Right click the _Product Tree_ called `StarExplorer` in the _Navigator_.
+. Follow the context-menu menu:Context[Product Structure > Generate Product Wizard] to open the _Wizard_.
+. In the Wizard select the _Element Configuration_ called `ST`.
+Then press the btn:[Duplicate] button to copy it.
+Remember the configuration has two instances of the star tracker.
+. Select the first star tracker and press the btn:[Rename] button and set the name to `ST1`.
+. Select the other star tracker, press the btn:[Rename] button and call it `ST2`.
+. Finally set the *Configuration Tree Name* to `StarExplorerConfig`.
+
+The _Wizard_ should look like this.
+
+|image:chapterExtendedProductStructures/ConfigurationTreeWizard.png[The Configuration Tree Wizard]
+
+|{counter:step}.
+| Finally create the _Configuration Tree_ by pressing the btn:[Finish] button in the _Wizard_.
+
+The _Navigator_ will show up like this. 
+
+TIP: You can model the _Configuration Tree_ without the Wizard as well. But you will have to perform a lot more modeling steps such as setting inheritance links.
+
+|image:chapterExtendedProductStructures/ConfigurationTreeST.png[The Configuration Tree in the Navigator]
+
+|{counter:step}.
+| Now, model the _Assembly Trees_ using the _Wizard_:
+
+. Right click the _Configuration Tree_ called `StarExplorerConfig` in the _Navigator_.
+. Follow the context-menu menu:Context[Product Structure > Generate Product Wizard] to open the _Wizard_.
+. Finally set the *Assembly Tree Name* to `StarExplorer1`.
+. Press the btn:[Finish] to create the first _Assembly Tree_
+
+Repeat the steps to create the second _Assembly Tree_ and call it `StarExplorer2`.
+The product structures in the _Navigator_ should now look like this.
+
+|image:chapterExtendedProductStructures/AssemblyTreesST.png[The two Assembly Trees]
+
+|===
+
+Well done, the product structures for our spacecraft is prepared.
+At the moment we don't yet need the _Storage_.
+The next part explains how data inherits in this product structure and how this inheritance can be broken.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+| First the mass has to be modeled in the _Product Tree_:
+
+. Traverse the _Product Tree_ in the _Navigator_ down to the _Element Definition_ called `ST`.
+. Model a _Mass Equipment_ from the mass budget concept here.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+
+After saving the _Mass Equipment_ will appear on the star trackers in the _Configuration Tree_ and _Assembly Trees_ as well.
+
+NOTE: The _Mass Equipment_ will not be inherited if the data is not saved.
+Once the data is saved, the eclipse builder will call the inheritance builder to update all relevant data.
+
+|image:chapterExtendedProductStructures/InheritedMassEquipment.png[InheritedMassEquipment]
+
+|{counter:step}.
+| Add some weight to the star tracker:
+
+. Traverse the _Product Tree_ in the _Navigator_ down to the _Element Definition_ called `ST`.
+. Select the _Mass Equipment_ and double-click to open it in the _Editor.
+. In the _Editor scroll down to the field called *mass* and set a value of `1.5kg`.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+
+The mass of 1.5kg now gets propagated to all inheriting star trackers.
+
+TIP: The name of the editor in the top tabulator helps you to navigate. 
+The name indicates where the _Mass Equipment_ resides that is currently open.
+
+|image:chapterExtendedProductStructures/EditorSetMassEquipment.png[Set the Mass Equipment on the star tracker]
+
+|{counter:step}.
+| Add a _Mass Summary_ to the _Configuration Tree_ and inspect it in one of the assemblies:
+
+. Traverse the _Configuration Tree_ in the _Navigator_ down to the _Element Configuration_ called `AOCS`.
+. Model a _Mass Summary_ from the mass budget concept here.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+. Now, traverse the _Assembly Tree_ in the _Navigator_ called `StarExplorer1` down to the _Element Occurrence_ called `AOCS`.
+. Double-click the `AOCS` to open it in the _Editor_.
+. Open the _Mass Equipment_ from the _Product Tree_ as well.
+. Change the mass in the _Mass Equipment_ to `1.6kg`.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+
+Inspect how the summary of the _Assembly Tree_ is affected because the mass of the star tracker changes.
+
+|image:chapterExtendedProductStructures/EditorMassSummary.png[Observe the Mass Summary in the Assembly Tree]
+
+|===
+
+
+====== Basic inheritance of data
+
+In this product structure example we now have one star tracker camera, which is instantiated six times in the _Configuration_ and _Assembly Trees_.
+Now it is time to model a mass to these star trackers, but not to every individual one. 
+This following example will show how the inheritance mechanism helps to model the mass in one place and use it in all the other star trackers as well:
+
+
+
+
+
+  
+
 ==== Product mass summaries
 
 TBD
@@ -857,14 +1017,14 @@ A proposed update order for to resolve these warnings can be obtained from the _
 The view can be opened via menu:Window[Show View > Other > VirSat > Domain Round].
 By selecting a project in the _Navigator_, the view will then show a proposed update order to resolve calculation dependencies.
 
-==== Using Apps
+==== Using and Developing Apps
 
 In MBSE it is very important not just to model a system, but to also make use of the modeled data.
 In most cases reasonable Input and Output from and to other sources is required same as some on-the-fly analysis of the current data.
 Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
 The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
 
-NOTE: Create an example project as you have seen in the chapters before you continue with this tutorial.
+NOTE: Create an example project as you have seen in the chapter "<<First Steps>>" before you continue with this tutorial.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
