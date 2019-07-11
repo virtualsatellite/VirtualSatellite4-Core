@@ -748,11 +748,16 @@ TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape
 |{counter:step}.
 |To see the visualisation you need to open the _3D Viewer_ view menu:Window[Show View › Other › VirSat › 3D Viewer].
 
-TIP: To open a view you can use a combination kbd:[ALT+SHIFT+Q], kbd:[Q].
+TIP: You can use a combination kbd:[ALT+SHIFT+Q], kbd:[Q] to open a view.
 
 NOTE: Alternatively you can open the _3D Viewer_ by switching to the _VirSat - Visualisation_ perspective.
 
 |image:chapterModeling/VisView.png[3D View]
+
+|{counter:step}.
+|If you want to model a more complex shape (e.g. a thruster with a nozzle), you need to split a component into subcomponents and assign each one a separate _Visualisation_ category.
+In this case you can add a NONE shape to the root of the component to position the whole thing.
+|image:chapterModeling/VisComposite.png[3D View]
 
 |===
 
