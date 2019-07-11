@@ -766,10 +766,9 @@ By selecting a project in the _Navigator_, the view will then show a proposed up
 ==== Using Apps
 
 In MBSE it is very important not just to model a system, but to also make use of the modeled data.
-In most cases reasonable Input and Output from and to other sources is required same as some on-the-fly analysis
-of the current data. Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic
-App interface based on the Java programming language. The following steps explain how you can activate the Apps and
-how you can create your first individual program on your data model.
+In most cases reasonable Input and Output from and to other sources is required same as some on-the-fly analysis of the current data.
+Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
+The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
 
 NOTE: Create an example project as you have seen in the chapters before you continue with this tutorial.
 
@@ -822,13 +821,14 @@ INFO: You can also execute the App in the Java debugger.
 
 ==== Developing a Concept
 
-The modular data model allows to develop concepts by yourself. This enables you to add new data into
-the system engineering process whenever it is needed. Developing a concept can happen in various stages.
-1. It is possible to just create new structural elements or categories for modelling using the generic
-systems engineering language (GSEL) and generate all necessary code with it. 2. It is possible to tweak all
-the automatically generated code.
+The modular data model allows to develop concepts by yourself.
+This enables you to add new data into the system engineering process whenever it is needed.
+Developing a concept can happen in various stages.
+1. It is possible to just create new structural elements or categories for modeling using the generic systems engineering language (GSEL) and generate all necessary code with it.
+2. It is possible to tweak all the automatically generated code.
 
-NOTE: Developing the concept is not intended for the standard user. Therefore please consult the Virtual Satellite developers manual for further information.
+NOTE: Developing the concept is not intended for the standard user.
+Therefore please consult the Virtual Satellite developers manual for further information.
 
 == Advanced Functionality
 
@@ -840,8 +840,9 @@ TIP: The ini file is an intrinsic feature of Eclipse. If you want to learn more 
 
 === Enforce user rights
 
-In certain cases it is necessary to start Virtual Satellite as a different user. This can be done by changing the
-`VirSat4_Core.ini` file. Open the file in a text editor of your choice and add the parameter `-forceUser <name>` as given in the example below.
+In certain cases it is necessary to start Virtual Satellite as a different user.
+This can be done by changing the `VirSat4_Core.ini` file.
+Open the file in a text editor of your choice and add the parameter `-forceUser <name>` as given in the example below.
 
 NOTE: Make sure that the `-forceUSer ...` is set before the virtual machine arguments in this file.
 
@@ -864,13 +865,16 @@ C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
 
 === Enforce super user rights
 
-Virtual Satellite allows you to get super user rights. Super user rights actually means that the rights management is turned off. In consequence Virtual Satellite does not stop you anymore from changing information in
-case you are not allowed to do this. Gaining super user rights can be done by changing the
-`VirSat4_Core.ini` file. Open the file in a text editor of your choice and add the parameter `-superUser` as given in the example below.
+Virtual Satellite allows you to get super user rights.
+Super user rights actually means that the rights management is turned off.
+In consequence Virtual Satellite does not stop you anymore from changing information in
+case you are not allowed to do this. Gaining super user rights can be done by changing the `VirSat4_Core.ini` file.
+Open the file in a text editor of your choice and add the parameter `-superUser` as given in the example below.
 
 NOTE: Make sure that the `-superUser` is set before the virtual machine arguments in this file.
 
-WARNING: Playing around with super user rights can easily corrupt your system data. Be sure about what you are doing in case you are using this parameter.
+WARNING: Playing around with super user rights can easily corrupt your system data.
+Be sure about what you are doing in case you are using this parameter.
 
 .VirSat4_Core.ini
 ----
@@ -889,7 +893,8 @@ C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
 
 === Equinox OSGI Console
 
-The OSGI console of eclipse can be very helpful in case things does not work as expected. Therefore it is often activated in Virtual Satellite projects. 
+The OSGI console of eclipse can be very helpful in case things does not work as expected.
+Therefore it is often activated in Virtual Satellite projects. 
 In case you don't like it, you can turn it off by removing the parameter `-console` and `-consoleLog` from the `VirSat4_Core.ini` file.
 
 .VirSat4_Core.ini
@@ -904,8 +909,9 @@ plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.551.v20171108-1834
 <1> This parameter is responsible for the interactive OSGI console.
 <2> This parameter us responsible for logging into the OSGI console.
 
-TIP: The OSGI console is an intrinsic feature of eclipse. It is very powerful and can help to track to problems. If you want
-to know more about it, search for `eclipse OSGI console` in the internet.
+TIP: The OSGI console is an intrinsic feature of eclipse.
+It is very powerful and can help to track to problems.
+If you want to know more about it, search for `eclipse OSGI console` in the internet.
 
 
 [colophone]
