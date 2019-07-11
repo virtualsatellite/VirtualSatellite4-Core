@@ -972,24 +972,27 @@ Therefore please consult the Virtual Satellite developers manual for further inf
 == Advanced Functionality
 
 Most of the advanced functionality that is shown here concerns changing settings in the ini file. 
-E.g. it allows to gain super user rights or it allows to activate the OSGI console which is very useful for debugging purposes.
+E.g. it allows to gain super user rights or to activate the OSGI console which is useful for debugging.
 
 TIP: The ini file is an intrinsic feature of Eclipse. If you want to learn more about it and other feature connected to it, search for `eclipse.ini` in the internet.
 
 
 === Enforce user rights
 
-In certain cases it is necessary to start Virtual Satellite as a different user.
+By default you open Virtual Satellite with your normal system user name. However, in certain cases you may want to start Virtual Satellite as a different user.
 This can be done by changing the `VirSat4_Core.ini` file.
-Open the file in a text editor of your choice and add the parameter `-forceUser <name>` as given in the example below.
+Open the file in a text editor and add the parameter `-forcedUser <name>` as given in the example below.
 
-NOTE: Make sure that the `-forceUSer ...` is set before the virtual machine arguments in this file.
+NOTE: The user name should be on the next line following `-forcedUser` line.
+
+NOTE: Make sure that the `-forcedUser` is set before the virtual machine arguments in this file.
 
 WARNING: Playing around with user rights can easily corrupt your system data. Be sure about what you are doing in case you are using this parameter.
 
 .VirSat4_Core.ini
 ----
--forcedUser Mr_Code // <1>
+-forcedUser
+Mr_Code // <1>
 -startup
 plugins/org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar
 --launcher.library
@@ -1006,9 +1009,8 @@ C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
 
 Virtual Satellite allows you to get super user rights.
 Super user rights actually means that the rights management is turned off.
-In consequence Virtual Satellite does not stop you anymore from changing information in
-case you are not allowed to do this. Gaining super user rights can be done by changing the `VirSat4_Core.ini` file.
-Open the file in a text editor of your choice and add the parameter `-superUser` as given in the example below.
+In consequence, Virtual Satellite does not stop you anymore from changing information in
+case you are not allowed to do this. Gaining super user rights can be done by adding `-superUser` parameter in the `VirSat4_Core.ini` file.
 
 NOTE: Make sure that the `-superUser` is set before the virtual machine arguments in this file.
 
@@ -1032,8 +1034,8 @@ C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
 
 === Equinox OSGI Console
 
-The OSGI console of eclipse can be very helpful in case things does not work as expected.
-Therefore it is often activated in Virtual Satellite projects. 
+The OSGI console of eclipse can be very helpful in case things do not work as expected.
+Therefore, it is often activated in Virtual Satellite projects. 
 In case you don't like it, you can turn it off by removing the parameter `-console` and `-consoleLog` from the `VirSat4_Core.ini` file.
 
 .VirSat4_Core.ini
