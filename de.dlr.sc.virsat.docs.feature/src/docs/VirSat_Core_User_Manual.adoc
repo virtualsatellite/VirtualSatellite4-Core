@@ -2,6 +2,7 @@
 :imagesdir: images
 :title-logo-image: images/title/VirtualSatellite_Modelling_4k.jpg
 :toc:
+:toclevels: 3
 :experimental:  
 
 [quote, Philipp M. Fischer]
@@ -99,7 +100,7 @@ NOTE: You can also choose different folders for different projects. And you can 
 |{counter:step}.
 |After a while you will see the _Welcome Screen_ of Virtual Satellite, Press the link btn:[Start Modelling now!]. This will open the Virtual Satellite _perspective_. 
 
-NOTE: In case you don't see the _Welcome Screen_ as shown in the image, it is possible that you already started Virtual Satellite and closed it. To open the _Welcome Screen_ again open the menu:Help[Welcome].
+NOTE: In case you don't see the _Welcome Screen_ as shown in the image, it is possible that you already started Virtual Satellite and closed it. To open the _Welcome Screen_ again follow the menu menu:Help[Welcome].
 |image:chapterFirstSteps/VirtualSatelliteStarted.png[Started]
 
 |{counter:step}.
@@ -205,15 +206,18 @@ First of all, you need to install an SVN connector.
 |Image
 
 |{counter:step}.
-|Open menu:Window[Preferences].
+|Open from the main menu menu:Window[Preferences].
 |image:chapterSettingUpInfrastructure/Preferences.png[Preferences]
 
 |{counter:step}.
-|Select menu:Team[SVN], open the tab _SVN Connector_ and press btn:[Get Connectors...]
+|in the preference dialog navigate to menu:Team[SVN], open the tab _SVN Connector_ and press btn:[Get Connectors...]
 |image:chapterSettingUpInfrastructure/GetSvnConnectors.png[Get SVN Connectors]
 
 |{counter:step}.
 |Choose one of the connectors in the list, press btn:[Finish] and follow the installation steps - accept the user agreement, agree to the unsigned content and restart Virtual Satellite.
+
+TIP: Due to license restrictions we cannot ship the connectors. For Virtual Satellite to correctly operate we recommend to use the `svnkit`.
+
 |image:chapterSettingUpInfrastructure/Connectors.png[Connectors]
 
 |===
@@ -351,15 +355,15 @@ In this section you will learn how to:
 |image:chapterModeling/OpenRoleManagement.png[Opening the role management editor]
 
 |{counter:step}.
-|Press the button *Add Discipline* to insert a new _Discipline_ called _New Discipline_ and that is initially associated with your own user name.
+|Press the button btn:[Add Discipline] to insert a new _Discipline_ called _New Discipline_ and that is initially associated with your own user name.
 
-TIP: _Disciplines_ can be removed by selecting a _Discipline_ and then pressing the *Remove Discipline* button.
+TIP: _Disciplines_ can be removed by selecting a _Discipline_ and then pressing the btn:[Remove Discipline] button.
 
 |image:chapterModeling/AddDiscipline.png[Adding a discpline]
 
 |{counter:step}.
-|Select the newly created _Discipline_ in the _Discipline Name_ column and change it to *RepositoryManager*.
-Then select the _Discipline_ in the _User Name_ column and change it to *OtherUsername*.
+|Select the newly created _Discipline_ in the _Discipline Name_ column and change it to  `RepositoryManager`.
+Then select the _Discipline_ in the _User Name_ column and change it to `OtherUsername`.
 
 |image:chapterModeling/EditUserName.png[Changing properties of a Discipline]
 
@@ -367,9 +371,9 @@ Then select the _Discipline_ in the _User Name_ column and change it to *OtherUs
 |We will now assign the discipline to the _Repository_. 
 To do this, open the _Repository_ from the _Navigator_.
 Then select the combo box listing *Discipline: System* and choose the entry *Discipline: RepositoryManagener*.
-Finally press the button *Assign Discipline* button.
+Finally press the btn:[Assign Discipline] button.
 
-TIP: You can assign a _Discipline_ to an element and all sub elements by pressing the *Assign Discipline Recursive* button.
+TIP: You can assign a _Discipline_ to an element and all sub elements by pressing the btn:[Assign Discipline Recursive] button.
 
 |image:chapterModeling/AssignDiscipline.png[Assigning a Discipline]
 
@@ -384,7 +388,7 @@ Once you assign a _Discipline_ only the associated user can return the ownership
 |===
 
 TIP: In the event that the rights management needs to be bypassed,
-Virtual Satellite can be started with the -superUser flag to gain super user rights.
+Virtual Satellite can be started with the `-superUser` flag to gain super user rights.
 For further information, check out <<Enforce super user rights>>.
 
 ==== Quantities, Units, Dimensions and Values
@@ -455,32 +459,32 @@ In the following you will create a new _Simple Quanitity Kind_ and a new _Simple
 |image:chapterModeling/OpenUnitManagement.png[Opening the unit management editor]
 
 |{counter:step}.
-|Scroll to the *Quantity Kind Management* Section and press the *Add Quantity Kind* button. 
+|Scroll to the *Quantity Kind Management* Section and press the btn:[Add Quantity Kind] button. 
 |image:chapterModeling/AddQuantityKind.png[Adding a new quantity kind]
 
 |{counter:step}.
 |Select the *QUDV Simple Quantity Kind Wizard* option in the *Available wizards* drop-down list.
-Then press *Next*. 
+Then press btn:[Next]. 
 |image:chapterModeling/QuantityWizardSelection.png[Selecting the quantity kind wizard]
 
 |{counter:step}.
-|Set the name to ´MyQuantityKind´ and fill out the other fields by data of your choosing.
-Then press *Finish*. 
+|Set the name to `MyQuantityKind` and fill out the other fields by data of your choosing.
+Then press btn:[Finish]. 
 You can now find your created _Quantity Kind_ in the *Quantity Kind Management* section.
 |image:chapterModeling/SimpleQuantityKindWizard.png[Simple quantity kind wizard]
 
 |{counter:step}.
-|Scroll to the *Unit Management* Section and press the *Add Unit* button. 
+|Scroll to the *Unit Management* Section and press the btn:[Add Unit] button. 
 |image:chapterModeling/AddUnit.png[Adding a unit]
 
 |{counter:step}.
 |Select the *QUDV Simple Unit Wizard* option in the *Available wizards* drop-down list.
-Then press *Next*. 
+Then press btn:[Next]. 
 |image:chapterModeling/UnitWizardSelection.png[Selecting the quantity kind wizard]
 
 |{counter:step}.
 |Set the name to ´MyUnit´ and fill out the other fields by some data.
-Then press *Finish*. 
+Then press btn:[Finish]. 
 You can now find your created _Unit_ in the *Unit Management* section.
 |image:chapterModeling/SimpleUnitWizard.png[Simple unit wizard]
 
@@ -488,8 +492,8 @@ You can now find your created _Unit_ in the *Unit Management* section.
 
 You have created your first own _Unit_ on the basis of your own _Quantity Kind_!
 You can remove a created _Quantity Kind_ or _Unit_ by going to the _Unit Management_,
-selecting the desired _Quantity Kind_ or _Unit_ then press *Remove Quantity Kind* or *Remove Unit*.
-Likewise, editing existing an existing _Quantity Kind_ or _Units_ can be done by pressing *Edit Quantity Kind* or *Edit Unit*.
+selecting the desired _Quantity Kind_ or _Unit_ then press btn:[Remove Quantity Kind] or btn:[Remove Unit].
+Likewise, editing existing an existing _Quantity Kind_ or _Units_ can be done by pressing btn:[Edit Quantity Kind] or btn:[Edit Unit].
 
 ===== QUDV Wizards
 
@@ -508,29 +512,29 @@ In the following you will export a QUDV system and re-import it.
 
 |{counter:step}.
 |Open the _QUDV Export Wizard_ by selecting menu:File[Export] and choosing *QUDV Export Wizard* from the *VirSat* category.
-Then select *Next*. 
+Then select btn:[Next]. 
 |image:chapterModeling/QUDVExportWizardSelection.png[Selecting the QUDV export wizard]
 
 |{counter:step}.
 |Tick the checkbox for the _Unit Management_ model you wish to export.
-Then select an export destination by pressing *Browse*.
-Finally press *Finish*. 
+Then select an export destination by pressing btn:[Browse].
+Finally press btn:[Finish]. 
 |image:chapterModeling/QUDVExportWizard.png[The QUDV export wizard]
 
 |{counter:step}.
 |Open the _QUDV Import Wizard_ by selecting menu:File[Import] and choosing *QUDV Import Wizard* from the *VirSat* category.
-Then select *Next*. 
+Then select btn:[Next]. 
 |image:chapterModeling/QUDVImportWizardSelection.png[Selecting the QUDV import wizard]
 
 |{counter:step}.
-|Select an import destination by pressing *Browse*.
+|Select an import destination by pressing btn:[Browse].
 Tick the checkbox for the QUDV model you wish to import.
-Then press *Next*. 
+Then press btn:[Next]. 
 |image:chapterModeling/QUDVImportWizard.png[The source selection in the QUDV import wizard]
 
 |{counter:step}.
 |Tick the checkbox for the QUDV model you wish to overwrite.
-Finally press *Finish*. 
+Finally press btn:[Finish]. 
 |image:chapterModeling/QUDVImportWizardTargetSelection.png[The target selection in the QUDV import wizard]
 
 |===
@@ -564,7 +568,7 @@ Once you have a Virtual Satellite Project (in this documentation called MySatell
 |image:chapterModeling/RepositoryEditor.png[Select concept to activate]
 
 |{counter:step}.
-|Select the Concept to be activated and press the _OK_ button.
+|Select the Concept to be activated and press the btn:[OK] button.
 |
 
 |===
@@ -761,7 +765,60 @@ By selecting a project in the _Navigator_, the view will then show a proposed up
 
 ==== Using Apps
 
-TBD
+In MBSE it is very important not just to model a system, but to also make use of the modeled data.
+In most cases reasonable Input and Output from and to other sources is required same as some on-the-fly analysis
+of the current data. Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic
+App interface based on the Java programming language. The following steps explain how you can activate the Apps and
+how you can create your first individual program on your data model.
+
+NOTE: Create an example project as you have seen in the chapters before you continue with this tutorial.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|In the _Navigator_ double click on the Repository to open it in the _Editor_.
+|image:chapterApps/OpenTheRepository.png[Open the Repository]
+
+|{counter:step}.
+|In the _Editor_ scroll down to the section _VirSat Apps_. Here you have to press the button btn:[Activate/ Update Apps].
+
+NOTE: Technically the project will be transformed into an eclispe plugin project in the background. This may take a while. 
+
+|image:chapterApps/ActivateApps.png[Activating the Apps]
+
+|{counter:step}.
+|After the Apps are activated press the button btn:[Add App] to add a new exmaple app.
+|image:chapterApps/AddApp.png[Add a new example App]
+
+|{counter:step}.
+|Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. The example accesses the repository and prints all units stored in the unit management. 
+
+NOTE: The Apps provide a complete Java in the background. This means, that you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
+
+|image:chapterApps/AppEditor.png[The App opened in a Java Editor]
+
+|{counter:step}.
+|Back in the Repository Editor you can now execute the App by pressing the btn:[Run APP] button. You have to select the App in the list before.
+
+TIP: You can also execute the App in the editor by the context menu menu:Context[Run Ass > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
+
+INFO: You can also execute the App in the Java debugger.
+
+|image:chapterApps/AppEditor.png[Execute the App]
+
+|{counter:step}.
+|As soon as the App is executed it will create some output in the _Console_ view.
+|image:chapterApps/AppOutput.png[App output in the console view]
+
+
+|===
+ 
 
 ==== Developing a Concept
 
