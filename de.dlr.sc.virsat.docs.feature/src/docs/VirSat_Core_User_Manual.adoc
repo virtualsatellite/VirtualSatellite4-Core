@@ -616,7 +616,70 @@ NOTE: Concepts that are not activated for a project are still shown in the _Conc
 
 ==== Extended product structures - Inheritance and Configuration Control
 
-TBD
+Virtual Satellite Core delivers a concept for extended product structures.
+These product structures are highly related to other product structures as they are currently used in MBSE in the space domain.
+There are several aspects where these product structures should support:
+
+. They are intended to help with the engineering process.
+. They are intended to help with configuration control issues.
+. They should help to avoid data redundancies by inheritance mechanisms.
+
+The product structures concept delivers capabilities to structure the system design. 
+Besides classical decomposition into one product tree, the concept delivers four different type of trees.
+Each of these trees reflect a different view to the system in the context of its development.
+Information which is entered into one of the trees in an early development stage, can be reused in anotehr tree in a later stage.
+The concept uses Virtual Satellite's intrinsic inheritance functionality for this purpose.
+The four different trees are called: *Product Tree*, *Configuration Tree*, *Assembly Tree* and *Storage*.
+
+Product Tree::
+This is the first tree in the development process.
+Here engineers usually define one of the equipments they want to use in the design.
+The data stored here is usually data as it is provided by the supplier.
+
+TIP: E.g.: This tree is used to model one star tracker of a given type and store the information which is equal for all actual implementations of it.
+
+Configuration Tree::
+This is the second tree usually defined in the development process.
+This tree is used to reflect the actual configuration of a spacecraft.
+The data stored here is usually information which is associated to each individual instance of an equipment.
+All information of an equipment in the _product tree_ is inherited here.
+Information can be overridden here if necessary.  
+
+TIP: E.g.: Information about the position of an equipment in the spacecraft is stored here, whereas the size of the equipment can already be defined in the _Product Tree_.
+
+TIP: E.g.: Here is the place to model every instance of the star tracker such as ST1 and ST2.
+
+Assembly Tree::
+These are the third trees usually defined in the development process.
+One of these trees reflect how one spacecraft conforming to the _Configuration Tree_ is built.
+The data stored here is usually information which is specific to the actual sapcecraft built.
+All information of an equipment in the _configuration tree_ is inherited here.
+Information can be overridden here if necessary.  
+
+TIP: There is not necessarily one _Assembly Tree_! Satellite constellations are a typical use-case for multiple _Assembly Trees_.
+
+TIP: E.g.: Information about the ID of a spacecraft should be stored here.
+Also slight modifications to the configuration can be reflected here.
+
+NOTE: The _Assembly Tree_ also combines information from the storage.
+E.g. an equipment in the storage may have a unique serial number.
+Once plugged into the _Assembly Tree_ the serial number will be finally overridden with the one from the equipment in the _Storage_
+
+Storage::
+This is the last tree usually defined in the development process.
+This tree is used to combine the reality with the virtual representation of the system.
+The data stored here is usually information which is unique to the actual equipment. 
+All information of an equipment in the _product tree_ is inherited here.
+Information can be overridden here if necessary.  
+Data defined here is finally inherited into the _Assembly Tree_
+
+TIP: The _Storage_ is usually the place to save information such as real life measurements or serial numbers.
+
+NOTE: E.g. in the storage we create three instances of the star trackers which inherit from the one defined in the _Product Tree_.
+Now we get three real star trackers delivered from the supplier.
+We assign the serial numbers to their representation in the storage.
+From the storage we assign two of them into the _Assembly Tree_.
+Now we know which star trackers are actually built into the spacecraft. 
 
 ==== Product mass summaries
 
