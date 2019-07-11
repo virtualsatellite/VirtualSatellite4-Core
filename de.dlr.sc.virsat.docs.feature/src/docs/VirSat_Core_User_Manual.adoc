@@ -712,6 +712,10 @@ image::chapterExtendedProductStructures/TreeInheritanceExample.png[Tree Inherita
 
 TBD
 
+=== 3D Visualisation
+
+TBD (Andrii)
+
 === Advanced Modeling
 
 TBD
