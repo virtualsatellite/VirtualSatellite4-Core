@@ -741,7 +741,7 @@ This section describes how to do it.
 
 NOTE: Position and rotation parameters are relative to the center of a parent node (if there is a parent node with Visualisation attached). Root components are positioned relative to the origin.
 
-TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape and click btn:[Select / Upload File] to use it. Only STL format is supported. In this case size parameters will be ignored.
+TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape and click btn:[Select / Upload File] to use it. In this case size parameters will be ignored. Only STL is supported currently.
 
 |image:chapterModeling/VisParams.png[Visualisation Parameters]
 
