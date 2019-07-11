@@ -714,7 +714,47 @@ TBD
 
 === 3D Visualisation
 
-TBD (Andrii)
+In Virtual Satellite it is possible to add geometric information to the model and visualise it.
+
+image:chapterModeling/VisDemo.png[Visualisation Demo]
+
+This section describes how to do it.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Activate the _Visualisation_ concept (see <<Activating a Concept>>).
+|image:chapterModeling/AddVisConcept.png[Add Visualisation Concept]
+
+|{counter:step}.
+|Now you can add _Visualisation_ category to the components in the _Navigator_ with menu:Context[Visualisation > Add Visualisation].
+|image:chapterModeling/AddVis.png[Add Visualisation Category]
+
+|{counter:step}.
+|Double-click this newly created _Visualisation_ to open it in the _Editor_. Here you can pick a shape (e.g. a cylinder or a box) and set various parameters related to the size, position and orientation of the node.
+
+NOTE: Position and rotation parameters are relative to the center of a parent node (if there is a parent node with Visualisation attached). Root components are positioned relative to the origin.
+
+TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape and click btn:[Select / Upload File] to use it. Only STL format is supported. In this case size parameters will be ignored.
+
+|image:chapterModeling/VisParams.png[Visualisation Parameters]
+
+|{counter:step}.
+|To see the visualisation you need to open the _3D Viewer_ view menu:Window[Show View › Other › VirSat › 3D Viewer].
+
+TIP: To open a view you can use a combination kbd:[ALT+SHIFT+Q], kbd:[Q].
+
+NOTE: Alternatively you can open the _3D Viewer_ by switching to the _VirSat - Visualisation_ perspective.
+
+|image:chapterModeling/VisView.png[3D View]
+
+|===
 
 === Advanced Modeling
 
@@ -860,11 +900,11 @@ By selecting a project in the _Navigator_, the view will then show a proposed up
 ==== Using Apps
 
 In MBSE it is very important not just to model a system, but to also make use of the modeled data.
-In most cases reasonable Input and Output from and to other sources is required same as some on-the-fly analysis of the current data.
+In most cases reasonable Input and Output from and to other sources is required, same as some on-the-fly analysis of the current data.
 Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
 The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
 
-NOTE: Create an example project as you have seen in the chapters before you continue with this tutorial.
+NOTE: Create an example project (see <<First Steps>>) before you continue with this tutorial.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -886,20 +926,20 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |image:chapterApps/ActivateApps.png[Activating the Apps]
 
 |{counter:step}.
-|After the Apps are activated press the button btn:[Add App] to add a new exmaple app.
+|After the Apps are activated, press the button btn:[Add App] to add a new exmaple app.
 |image:chapterApps/AddApp.png[Add a new example App]
 
 |{counter:step}.
-|Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. The example accesses the repository and prints all units stored in the unit management. 
+|Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. This example App accesses the repository and prints all units stored in the unit management. 
 
-NOTE: The Apps provide a complete Java in the background. This means, that you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
+NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
 
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
 |{counter:step}.
 |Back in the Repository Editor you can now execute the App by pressing the btn:[Run APP] button. You have to select the App in the list before.
 
-TIP: You can also execute the App in the editor by the context menu menu:Context[Run Ass > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
+TIP: You can also execute the App in the editor by the context menu menu:Context[Run As > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
 
 INFO: You can also execute the App in the Java debugger.
 
@@ -1009,7 +1049,7 @@ If you want to know more about it, search for `eclipse OSGI console` in the inte
 
 
 [colophone]
-== License & Copyright
+== Legal
 
 |===
 | Product Version:      | {revnumber}
