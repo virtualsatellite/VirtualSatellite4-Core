@@ -800,6 +800,13 @@ Well done, the product structures for our spacecraft is prepared.
 At the moment we don't yet need the _Storage_.
 The next part explains how data inherits in this product structure and how this inheritance can be broken.
 
+
+====== Basic inheritance of data
+
+In this product structure example we now have one star tracker camera, which is instantiated six times in the _Configuration_ and _Assembly Trees_.
+Now it is time to model a mass to these star trackers, but not to every individual one. 
+This following example will show how the inheritance mechanism helps to model the mass in one place and use it in all the other star trackers as well:
+
 :step: 0
 [%header,cols=">8,62a,40a"] 
 |===
@@ -856,25 +863,62 @@ Inspect how the summary of the _Assembly Tree_ is affected because the mass of t
 |===
 
 
-====== Basic inheritance of data
+==== Equipment mass and mass summaries concept
 
-In this product structure example we now have one star tracker camera, which is instantiated six times in the _Configuration_ and _Assembly Trees_.
-Now it is time to model a mass to these star trackers, but not to every individual one. 
-This following example will show how the inheritance mechanism helps to model the mass in one place and use it in all the other star trackers as well:
+TBD
 
-
-
-
-
-  
-
-==== Product mass summaries
+==== Product maturity concept
 
 TBD
 
 === 3D Visualisation
 
-TBD (Andrii)
+In Virtual Satellite it is possible to add geometric information to the model and visualise it.
+
+image::chapterModeling/VisDemo.png[Visualisation Demo]
+
+This section describes how to do it.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Activate the _Visualisation_ concept (see <<Activating a Concept>>).
+|image:chapterModeling/AddVisConcept.png[Add Visualisation Concept]
+
+|{counter:step}.
+|Now you can add _Visualisation_ category to the components in the _Navigator_ with menu:Context[Visualisation > Add Visualisation].
+|image:chapterModeling/AddVis.png[Add Visualisation Category]
+
+|{counter:step}.
+|Double-click this newly created _Visualisation_ to open it in the _Editor_. Here you can pick a shape (e.g. a cylinder or a box) and set various parameters related to the size, position and orientation of the node.
+
+NOTE: Position and rotation parameters are relative to the center of a parent node (if there is a parent node with Visualisation attached). Root components are positioned relative to the origin.
+
+TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape and click btn:[Select / Upload File] to use it. In this case size parameters will be ignored. Only STL is supported currently.
+
+|image:chapterModeling/VisParams.png[Visualisation Parameters]
+
+|{counter:step}.
+|To see the visualisation you need to open the _3D Viewer_ view menu:Window[Show View › Other › VirSat › 3D Viewer].
+
+TIP: You can use a combination kbd:[ALT+SHIFT+Q], kbd:[Q] to open a view.
+
+NOTE: Alternatively you can open the _3D Viewer_ by switching to the _VirSat - Visualisation_ perspective.
+
+|image:chapterModeling/VisView.png[3D View]
+
+|{counter:step}.
+|If you want to model a more complex shape (e.g. a thruster with a nozzle), you need to split a component into subcomponents and assign each one a separate _Visualisation_ category.
+In this case you can add a NONE shape to the root of the component to position the whole thing.
+|image:chapterModeling/VisComposite.png[3D View]
+
+|===
 
 === Advanced Modeling
 
@@ -1020,11 +1064,11 @@ By selecting a project in the _Navigator_, the view will then show a proposed up
 ==== Using and Developing Apps
 
 In MBSE it is very important not just to model a system, but to also make use of the modeled data.
-In most cases reasonable Input and Output from and to other sources is required same as some on-the-fly analysis of the current data.
+In most cases reasonable Input and Output from and to other sources is required, same as some on-the-fly analysis of the current data.
 Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
 The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
 
-NOTE: Create an example project as you have seen in the chapter "<<First Steps>>" before you continue with this tutorial.
+NOTE: Create an example project (see <<First Steps>>) before you continue with this tutorial.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -1046,20 +1090,20 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |image:chapterApps/ActivateApps.png[Activating the Apps]
 
 |{counter:step}.
-|After the Apps are activated press the button btn:[Add App] to add a new exmaple app.
+|After the Apps are activated, press the button btn:[Add App] to add a new exmaple app.
 |image:chapterApps/AddApp.png[Add a new example App]
 
 |{counter:step}.
-|Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. The example accesses the repository and prints all units stored in the unit management. 
+|Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. This example App accesses the repository and prints all units stored in the unit management. 
 
-NOTE: The Apps provide a complete Java in the background. This means, that you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
+NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
 
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
 |{counter:step}.
 |Back in the Repository Editor you can now execute the App by pressing the btn:[Run APP] button. You have to select the App in the list before.
 
-TIP: You can also execute the App in the editor by the context menu menu:Context[Run Ass > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
+TIP: You can also execute the App in the editor by the context menu menu:Context[Run As > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
 
 INFO: You can also execute the App in the Java debugger.
 
@@ -1087,24 +1131,27 @@ Therefore please consult the Virtual Satellite developers manual for further inf
 == Advanced Functionality
 
 Most of the advanced functionality that is shown here concerns changing settings in the ini file. 
-E.g. it allows to gain super user rights or it allows to activate the OSGI console which is very useful for debugging purposes.
+E.g. it allows to gain super user rights or to activate the OSGI console which is useful for debugging.
 
 TIP: The ini file is an intrinsic feature of Eclipse. If you want to learn more about it and other feature connected to it, search for `eclipse.ini` in the internet.
 
 
 === Enforce user rights
 
-In certain cases it is necessary to start Virtual Satellite as a different user.
+By default you open Virtual Satellite with your normal system user name. However, in certain cases you may want to start Virtual Satellite as a different user.
 This can be done by changing the `VirSat4_Core.ini` file.
-Open the file in a text editor of your choice and add the parameter `-forceUser <name>` as given in the example below.
+Open the file in a text editor and add the parameter `-forcedUser <name>` as given in the example below.
 
-NOTE: Make sure that the `-forceUSer ...` is set before the virtual machine arguments in this file.
+NOTE: The user name should be on the next line following `-forcedUser` line.
+
+NOTE: Make sure that the `-forcedUser` is set before the virtual machine arguments in this file.
 
 WARNING: Playing around with user rights can easily corrupt your system data. Be sure about what you are doing in case you are using this parameter.
 
 .VirSat4_Core.ini
 ----
--forcedUser Mr_Code // <1>
+-forcedUser
+Mr_Code // <1>
 -startup
 plugins/org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar
 --launcher.library
@@ -1121,9 +1168,8 @@ C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
 
 Virtual Satellite allows you to get super user rights.
 Super user rights actually means that the rights management is turned off.
-In consequence Virtual Satellite does not stop you anymore from changing information in
-case you are not allowed to do this. Gaining super user rights can be done by changing the `VirSat4_Core.ini` file.
-Open the file in a text editor of your choice and add the parameter `-superUser` as given in the example below.
+In consequence, Virtual Satellite does not stop you anymore from changing information in
+case you are not allowed to do this. Gaining super user rights can be done by adding `-superUser` parameter in the `VirSat4_Core.ini` file.
 
 NOTE: Make sure that the `-superUser` is set before the virtual machine arguments in this file.
 
@@ -1147,8 +1193,8 @@ C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
 
 === Equinox OSGI Console
 
-The OSGI console of eclipse can be very helpful in case things does not work as expected.
-Therefore it is often activated in Virtual Satellite projects. 
+The OSGI console of eclipse can be very helpful in case things do not work as expected.
+Therefore, it is often activated in Virtual Satellite projects. 
 In case you don't like it, you can turn it off by removing the parameter `-console` and `-consoleLog` from the `VirSat4_Core.ini` file.
 
 .VirSat4_Core.ini
@@ -1169,7 +1215,7 @@ If you want to know more about it, search for `eclipse OSGI console` in the inte
 
 
 [colophone]
-== License & Copyright
+== Legal - License & Copyright
 
 |===
 | Product Version:      | {revnumber}
