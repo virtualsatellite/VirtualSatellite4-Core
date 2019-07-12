@@ -792,17 +792,24 @@ public class InheritanceCopier implements IInheritanceCopier {
 	
 	/**
 	 * Clean the links of the contained type instances in a structural element instance that have no valid link
+	 * Cleaning means if the current subSei has a typeInstance which is linked to a typeInstance , that is not
+	 * contained in one of the superSeis anymore, then it has to be removed from the subSei.
 	 * @param sei the structural element instance to be cleaned
 	 */
 	public void cleanSuperTis(StructuralElementInstance sei) {
 		List<StructuralElementInstance> superSeis = sei.getSuperSeis();
 		
+		// First step is to get all type instances from all superSeis
 		Set<IInheritanceLink> allSuperTis = new HashSet<>();
 		for (StructuralElementInstance superSei : superSeis) {
 			Set<IInheritanceLink> superTis = getAllTypeInstances(superSei);
 			allSuperTis.addAll(superTis);
 		}
 		
+		// Now get all the type instances in the subSei
+		// And loop over all the current typeInstances
+		// rather than removing we only keep the ones which 
+		// are present in the superSei
 		Set<IInheritanceLink> childTypeInstances = getAllTypeInstances(sei);
 		for (IInheritanceLink childTi : childTypeInstances) {
 			childTi.getSuperTis().retainAll(allSuperTis);

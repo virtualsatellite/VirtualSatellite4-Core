@@ -1487,6 +1487,10 @@ public class InheritanceCopierTest {
 		assertFalse("Update was done before, now all superSeis are updated, but no additional information was transferred with this", ic.needsUpdateInOrder(seiEo1RwI));
 	}
 	
+	/**
+	 * Test if a type instance link is removed, if there is no
+	 * is no inheritance link between the seis
+	 */
 	@Test
 	public void testCleanSuperTisInvalidLink() {
 		seiEo1RwI.getSuperSeis().clear();
@@ -1501,6 +1505,10 @@ public class InheritanceCopierTest {
 		assertTrue("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis().isEmpty());
 	}
 	
+	/**
+	 * test that the type instance link is maintained in case
+	 * there is also a link between the seis
+	 */
 	@Test
 	public void testCleanSuperTisValidLink() {
 		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
@@ -1514,9 +1522,12 @@ public class InheritanceCopierTest {
 		assertThat("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis(), hasItems(superIfe));
 	}
 	
+	/**
+	 * Test that type instance links from two sources are correctly maintained. 
+	 * First keep both links, then remove an invalid one
+	 */
 	@Test
 	public void testCleanSuperTisValidAndInvalidLink() {
-		seiEo1RwI.getSuperSeis().remove(seiEcRwI);
 		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
 		CategoryAssignment superIfe1 = attachInterfaceEnd(seiEcRwI, "IfeSuper1");
 		CategoryAssignment superIfe2 = attachInterfaceEnd(seiErRwA, "IfeSuper2");
@@ -1525,6 +1536,15 @@ public class InheritanceCopierTest {
 		ife.getSuperTis().add(superIfe2);
 		
 		InheritanceCopier ic = new InheritanceCopier();
+		
+		// the links between the seis are correct, nothing should be deleted
+		ic.cleanSuperTis(seiEo1RwI);
+		
+		assertThat("Super TIs with valid links have been correctly retained", ife.getSuperTis(), hasItem(superIfe1));
+		assertThat("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis(), hasItems(superIfe2));
+		
+		// invalidate one of the links, make sure the links for the type isnatnces get updated correctly
+		seiEo1RwI.getSuperSeis().remove(seiEcRwI);
 		ic.cleanSuperTis(seiEo1RwI);
 		
 		assertThat("Super TIs with valid links have been correctly retained", ife.getSuperTis(), not(hasItem(superIfe1)));
