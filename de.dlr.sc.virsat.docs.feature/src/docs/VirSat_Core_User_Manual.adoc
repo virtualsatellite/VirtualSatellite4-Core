@@ -961,7 +961,7 @@ in the system decomposition. It provides the following properties:
 * `massWithMargin` is a calculated property describing the mass with the margin and is defined as `mass * (1 + margin)`. The default unit is `kg`.
 * `massMargin` is a the mass margin and is defined as `massWithMargin - mass`. Default unit is `kg`.
 
-MassSummary::MassSummary models mass budegt summaries of sub-systems or systems. It should be usually placed abovce nodes with MassEquipments.
+MassSummary::MassSummary models mass budegt summaries of sub-systems or systems. It should be usually placed above nodes with MassEquipments.
 It provides the following properties:
 
 * `mass` is a calculated property summing up over all masses contained in the sub-tree. The default unit is `kg`.
@@ -990,7 +990,22 @@ according to <<Activating a Concept>>.
 
 |{counter:step}.
 |Now you can add _MassEquipment_ category to ElementConfiguration1 from the _Navigator_ with menu:Context[MassBudget > Add MassEquipment].
+In the same manner, add an _MassEquipment_ category to ElementConfiguration2.
 |image:chapterModeling/MassConceptAddEquipmentMass.png[Adding an equipment mass]
+
+|{counter:step}.
+|Set the mass of ElementConfiguration1 to `10kg` and of ElementConfiguration2 to `20kg`. 
+Also change the margin of ElementConfiguration2 to `10%`.
+Finally, save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+|image:chapterModeling/MassConceptAddEquipmentMass.png[Configuring masses]
+
+|{counter:step}.
+|Add a _MassSummary_ category to ConfigurationTree from the _Navigator_ with menu:Context[MassBudget > Add MassSummary].
+Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+Now, in the _Navigator_ double click on ConfigurationTree and scroll to the MassSummary section.
+Here you can find a budget breakdown.
+|image:chapterModeling/MassConceptBudget.png[Insepcting the mass budegt breakdown]
+
 
 |===
 
