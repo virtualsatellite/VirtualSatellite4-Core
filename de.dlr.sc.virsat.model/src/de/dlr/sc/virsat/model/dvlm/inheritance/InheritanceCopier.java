@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.dvlm.inheritance;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -299,6 +301,20 @@ public class InheritanceCopier implements IInheritanceCopier {
 				// a new eObject of that type and set the link accordingly
 				IInheritanceLink subIInheritanceLink = getInheritedIInheritanceLinkFor(superIInheritanceLink, subSei);
 				if (subIInheritanceLink == null) {
+					// In case we try to copy/inherit a Category Assignment we have to first check,
+					// if the Category is applicable for the target SEI type. If not we do not create
+					// a copy at all. The data model would prevent such a CA to be attached as well,
+					// but all the copying logic is not needed here at might create dangling references
+					// since such an object would be cached in the copier.
+					if (superIInheritanceLink instanceof CategoryAssignment && superIInheritanceLink.eContainer() instanceof StructuralElementInstance) {
+						if (!applicableForCheck.isValidObject(superIInheritanceLink)) {
+							return null;
+						}
+					}
+					
+					// All other objects are copied and handled as usual. PIs of a non-applicable CA will
+					// not get copied, since they are nested to the CA, and the copying of the features will
+					// not get called.
 					subIInheritanceLink = (IInheritanceLink) super.createCopy(superEObject);
 				} 
 
@@ -315,29 +331,6 @@ public class InheritanceCopier implements IInheritanceCopier {
 			}
 		
 			return subEObject;
-		}
-		
-		@Override
-		public EObject copy(EObject superObject) {
-			boolean updateExistingCopy = keySet().contains(superObject);
-			
-			// In case we try to copy/inherit a Category Assignment we have to first check,
-			// if the Category is applicable for the target SEI type. If not we do not create
-			// a copy at all. The data model would prevent such a CA to be attached as well,
-			// but all the copying logic is not needed here at might create dangling references
-			// since such an object would be cached in the copier.
-			if (!updateExistingCopy) {
-				if (superObject instanceof CategoryAssignment && superObject.eContainer() instanceof StructuralElementInstance) {
-					if (!applicableForCheck.isValidObject(superObject)) {
-						return null;
-					}
-				}
-			}
-			
-			// All other objects are copied and handled as usual. PIs of a non-applicable CA will
-			// not get copied, since they are nested to the CA, and the copying of the features will
-			// not get called.
-			return super.copy(superObject);
 		}
 		
 		private StructuralElementInstance subSei;
@@ -381,6 +374,8 @@ public class InheritanceCopier implements IInheritanceCopier {
 		return new LinkedList<CategoryAssignment>(copiedCas);
 	}
 	
+	private Map<IInheritanceLink, IInheritanceLink> cachedIInheritanceLinks = new HashMap<>();
+	
 	/**
 	 *
 	 * This method is used by creating copies of objects. The Idea is to ask the Sub SEI if it already
@@ -401,7 +396,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @return an existing type instance in the SubSEI which has a link to the given TypeInstance or null in case it does not yet exist
 	 */
 	protected IInheritanceLink getInheritedIInheritanceLinkFor(IInheritanceLink superIInheritanceLink, StructuralElementInstance subSei) {
-
+		// If not try to find the copy by a common ancestor
 		Set<IInheritanceLink> rootTisSuper = getRootSuperTypeInstance(superIInheritanceLink);
 		
 		// Loop over all objects and see if the current sub SEI contains a TypeInstance which has a link to the super SEI's type instance
