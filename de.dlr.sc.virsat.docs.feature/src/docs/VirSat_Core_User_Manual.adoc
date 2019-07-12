@@ -1011,7 +1011,39 @@ Here you can find a budget breakdown.
 
 ==== Product maturity concept
 
-Virtual Satellite provides means to add element maturities to the system model.
+Virtual Satellite provides means to add element maturities to the system model. Maturities can be used to evaluate the technical development level of the different components of a system. The concept is based on the https://www.nasa.gov/directorates/heo/scan/engineering/technology/txt_accordion1.html[Technical Readiness Level]. Its assessment can be done following NASA's guide: https://www.gao.gov/assets/680/679006.pdf[TRL Assessment Guide].
+
+The Maturity concept in Virtual Satellite allows to add maturity properties to all system elements and provides an overview of the level of child elements.
+
+To start modeling maturities in Virtual Satellite follow these steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Activate the _Maturity_ concept (see <<Activating a Concept>>).
+|image:chapterModeling/AddMaturityConcept.png[Add Maturity Concept]
+
+|{counter:step}.
+|You can add maturity parameters to a system element by 1) using the context menu, right-click -> Design Maturity -> Add Maturity 2) By dragging the Maturity element from the Concept Palette 3) Or by checking the _Maturity_ check box in the editor section of a system element.
+|image:chapterModeling/ActivateMaturityParameters.png[Add Maturity parameters]
+
+|{counter:step}.
+|Set the maturity value of the element from the dropdown box.
+|image:chapterModeling/SetParameterValue.png[Set maturity parameter value]
+
+|===
+
+To get a summary of the different maturity values of the system, the section shows a hierarchical list of the maturity values of all child elements.
+
+image:chapterModeling/MaturityOverview.png[Maturity overview]
+
+Elements can be collapsed or expanded and the values can be exported to Excel. 
 
 === 3D Visualisation
 
