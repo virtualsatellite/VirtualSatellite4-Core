@@ -42,8 +42,8 @@ public class InheritanceCopierIntegrationTest extends InheritanceCopierTest {
 		// the Interface End shows up in all other trees.
 		// Additionally write a fictive serial n.umber to the Interface End
 		// Check that the values inherited are ok as well.
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
+		CategoryAssignment caIeEdRw = attachInterfaceEnd(seiEdRw, "RwIe");
+		setInterfaceEndSn(caIeEdRw, TEST_VAL_1);
 		
 		InheritanceCopier ic = new InheritanceCopier();
 		
@@ -62,8 +62,8 @@ public class InheritanceCopierIntegrationTest extends InheritanceCopierTest {
 		CategoryAssignment caIeErRwA = seiErRwA.getCategoryAssignments().get(0);
 		CategoryAssignment caIeEo1RwI = seiEo1RwI.getCategoryAssignments().get(0);
 		CategoryAssignment caIeEo1RwII = seiEo1RwII.getCategoryAssignments().get(0);
-		CategoryAssignment caIeEo2RwI = seiEo1RwI.getCategoryAssignments().get(0);
-		CategoryAssignment caIeEo2RwII = seiEo1RwII.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEo2RwI = seiEo2RwI.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEo2RwII = seiEo2RwII.getCategoryAssignments().get(0);
 
 		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
 		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
@@ -85,15 +85,10 @@ public class InheritanceCopierIntegrationTest extends InheritanceCopierTest {
 		// Additionally check that the existing CAs have not been exchanged instance wise.
 		
 		attachSpecification(seiErRwA, "Spec");
+		setInterfaceEndSn(caIeEdRw, TEST_VAL_2);
+		setInterfaceEndSn(caIeEcRwI, TEST_VAL_3);
 		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
+		((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).setOverride(true);
 		
 		ic.updateAllInOrder(repo, new NullProgressMonitor());
 		
@@ -113,28 +108,50 @@ public class InheritanceCopierIntegrationTest extends InheritanceCopierTest {
 		assertSame("Instance has not been changed", caIeEo2RwI, seiEo2RwI.getCategoryAssignments().get(0));
 		assertSame("Instance has not been changed", caIeEo2RwII, seiEo2RwII.getCategoryAssignments().get(0));
 		
-		assertEquals("Value has changed in the CT",                      TEST_VAL_3, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
-		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
-		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_2, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
-		assertEquals("Value should be the same as for the RW in the CT", TEST_VAL_3, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
-		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
-		assertEquals("Value should be the same as for the RW in the CT", TEST_VAL_3, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
-		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value has changed in the CT",                             TEST_VAL_3, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should same as from PT. ER owerwrites CT in EO1",   TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the CT",        TEST_VAL_3, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
 		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEr = (ValuePropertyInstance) copiedCaEr.getPropertyInstances().get(0);
+		// Step 3 - Remove the override from the CT so it should flip back to the value of the ED
+		// Set a  new value to the ER and set it to Override so it won't flip back
+		// This value should than be seen in the EO1
+		setInterfaceEndSn(caIeEdRw, TEST_VAL_2);
+		setInterfaceEndSn(caIeErRwA, TEST_VAL_1);
 		
-		assertEquals("The serial number should be updated in the realization", TEST_VAL_2, copiedSnEr.getValue());
+		((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).setOverride(false);
+		((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).setOverride(true);
 		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value has been changed",                                  TEST_VAL_1, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should same as from ER. ER owerwrites CT in EO1",   TEST_VAL_1, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the CT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
 		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
+		// Step 4 - Now change the update order of the EO1RW
+		// we want to first inherit from the ER and then from the EC
+		// Thus the EC should overwrite the value of the ER
 		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Realization", TEST_VAL_2, copiedSnEo.getValue());
+		seiEo1RwI.getSuperSeis().clear();
+		seiEo1RwI.getSuperSeis().add(seiErRwA);
+		seiEo1RwI.getSuperSeis().add(seiEcRwI);
+
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value has been changed",                                  TEST_VAL_1, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should same as from PT. EC owerwrites ER in EO1",   TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the CT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
 	}
 	
 	@Test 
