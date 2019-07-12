@@ -75,57 +75,57 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  */
 public class InheritanceCopierTest {
 
-	private Repository repo;
-	private Concept concept;
+	protected Repository repo;
+	protected Concept concept;
 
-	private Category catSpec;
+	protected Category catSpec;
 	
-	private Category catIft;
+	protected Category catIft;
 
-	private CategoryAssignment caIftMil;
-	private CategoryAssignment caIftCan;
+	protected CategoryAssignment caIftMil;
+	protected CategoryAssignment caIftCan;
 
-	private Category catIfe;
-	private AProperty catIfeSn;
+	protected Category catIfe;
+	protected AProperty catIfeSn;
 	
-	private Category catIf;
-	private ReferenceProperty catIfIfe1;
-	private ReferenceProperty catIfIfe2;
-	private ReferenceProperty catIfIft;
+	protected Category catIf;
+	protected ReferenceProperty catIfIfe1;
+	protected ReferenceProperty catIfIfe2;
+	protected ReferenceProperty catIfIft;
 	
-	private StructuralElementInstance seiTc;
+	protected StructuralElementInstance seiTc;
 	
-	private StructuralElementInstance seiEdSc;
-	private StructuralElementInstance seiEdRw;
-	private StructuralElementInstance seiEdObc;
+	protected StructuralElementInstance seiEdSc;
+	protected StructuralElementInstance seiEdRw;
+	protected StructuralElementInstance seiEdObc;
 	
-	private StructuralElementInstance seiEcSc;
-	private StructuralElementInstance seiEcRwI;
-	private StructuralElementInstance seiEcRwII;
-	private StructuralElementInstance seiEcObc;
+	protected StructuralElementInstance seiEcSc;
+	protected StructuralElementInstance seiEcRwI;
+	protected StructuralElementInstance seiEcRwII;
+	protected StructuralElementInstance seiEcObc;
 	
-	private StructuralElementInstance seiEo1Sc;
-	private StructuralElementInstance seiEo1RwI;
-	private StructuralElementInstance seiEo1RwII;
-	private StructuralElementInstance seiEo1Obc;
+	protected StructuralElementInstance seiEo1Sc;
+	protected StructuralElementInstance seiEo1RwI;
+	protected StructuralElementInstance seiEo1RwII;
+	protected StructuralElementInstance seiEo1Obc;
 
-	private StructuralElementInstance seiEo2Sc;
-	private StructuralElementInstance seiEo2RwI;
-	private StructuralElementInstance seiEo2RwII;
-	private StructuralElementInstance seiEo2Obc;
+	protected StructuralElementInstance seiEo2Sc;
+	protected StructuralElementInstance seiEo2RwI;
+	protected StructuralElementInstance seiEo2RwII;
+	protected StructuralElementInstance seiEo2Obc;
 	
-	private StructuralElementInstance seiErRwA;
+	protected StructuralElementInstance seiErRwA;
 
 	
-	private StructuralElement seTc; // TypesContainer
-	private StructuralElement seEd;
-	private StructuralElement seEc;
-	private StructuralElement seEo;
-	private StructuralElement seEr;
+	protected StructuralElement seTc; // TypesContainer
+	protected StructuralElement seEd;
+	protected StructuralElement seEc;
+	protected StructuralElement seEo;
+	protected StructuralElement seEr;
 	
-	private RoleManagement rm; 
-	private Discipline dA;
-	private Discipline dB;
+	protected RoleManagement rm; 
+	protected Discipline dA;
+	protected Discipline dB;
 	
 	/**
 	 * Builds the PT Test Data
@@ -1165,7 +1165,7 @@ public class InheritanceCopierTest {
 		assertEquals("Value is correct", TEST_VAL_1, copiedSnEr.getValue());
 		assertEquals("Value is correct", TEST_VAL_1, copiedSnEo.getValue());
 		
-		attachSpecification(seiErRwA, "Speck");
+		attachSpecification(seiErRwA, "Spec");
 		
 		// Everything correct until here :-D
 		
@@ -1371,7 +1371,7 @@ public class InheritanceCopierTest {
 		assertFalse("Update is done", ic.needsUpdateInOrder(seiEo2RwII));
 		assertFalse("Update is done", ic.needsUpdateInOrder(seiErRwA));
 		
-		attachSpecification(seiErRwA, "Speck");
+		attachSpecification(seiErRwA, "Spec");
 		
 		assertFalse("Specification of Ralization is not applicable for Occurence, hence no update needed", ic.needsUpdateInOrder(seiEo1RwI));
 		
@@ -1394,173 +1394,6 @@ public class InheritanceCopierTest {
 		assertFalse("Update is not needed since the Configuration is not the last inherited", ic.needsUpdateInOrder(seiEo1RwI));
 	}
 	
-	@Test 
-	public void testUpdateAllInOrderRepo() {
-		final String TEST_VAL_1 = "1234";
-		final String TEST_VAL_2 = "2345";
-		final String TEST_VAL_3 = "3456";
-		
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		ic.updateAllInOrder(repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		
-		attachSpecification(seiErRwA, "Speck");
-		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
-		
-		ic.updateAllInOrder(repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should have two Cas", 2, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEr = (ValuePropertyInstance) copiedCaEr.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be updated in the realization", TEST_VAL_2, copiedSnEr.getValue());
-		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
-		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Realization", TEST_VAL_2, copiedSnEo.getValue());
-	}
-	
-	@Test 
-	public void testUpdateInOrderFromOccurence() {
-		final String TEST_VAL_1 = "1234";
-		final String TEST_VAL_2 = "2345";
-		final String TEST_VAL_3 = "3456";
-		
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		ic.updateInOrderFrom(seiEo1RwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwI.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		attachSpecification(seiErRwA, "Speck");
-		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
-		
-		ic.updateInOrderFrom(seiEo1RwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should have two Cas", 2, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwI.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEr = (ValuePropertyInstance) copiedCaEr.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be updated in the realization", TEST_VAL_2, copiedSnEr.getValue());
-		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
-		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Realization", TEST_VAL_2, copiedSnEo.getValue());
-	}
-	
-	@Test 
-	public void testUpdateInOrderFromConfiguration() {
-		final String TEST_VAL_1 = "1234";
-		final String TEST_VAL_2 = "2345";
-		final String TEST_VAL_3 = "3456";
-		
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		ic.updateInOrderFrom(seiEcRwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo2RwI.getCategoryAssignments().size());
-
-		assertEquals("Should be no Ca", 0, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		CategoryAssignment specCa = attachSpecification(seiErRwA, "Speck");
-		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
-		
-		ic.updateInOrderFrom(seiEcRwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo2RwI.getCategoryAssignments().size());
-
-		assertEquals("Should be the Specification Ca", 1, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		assertEquals("The Realization should ony have the Specification Ca", specCa, copiedCaEr);
-		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
-		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Configuration since the Realization is not touched", TEST_VAL_3, copiedSnEo.getValue());
-	}
 	
 	@SuppressWarnings("unused")
 	@Test
