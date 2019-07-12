@@ -1064,7 +1064,12 @@ In this case you can add a NONE shape to the root of the component to position t
 
 === Advanced Modeling
 
-TBD
+Most users will only required modeling techniques from the section <<General Modeling>>.
+However, there may be projects where further extensions or behavior adjustments of Virtual Satellite are desired.
+This can include adjusting the default equations in concepts, writing additional small programs - Apps - that allow
+Virtual Satellite to output data for example into Excel.
+While a common end user may never be exposed to the deeper workings of these functionalities,
+users administering repositories may find a need for them. 
 
 ==== Adjusting Equations
 
