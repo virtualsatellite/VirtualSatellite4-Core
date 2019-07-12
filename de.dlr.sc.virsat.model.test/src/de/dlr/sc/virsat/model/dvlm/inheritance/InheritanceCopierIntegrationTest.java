@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  * @author fisc_ph
  *
  */
-public class InheritanceCopierIntegrationTest extends InheritanceCopierTest {
+public class InheritanceCopierIntegrationTest extends AInheritanceCopierTest {
 	
 	/**
 	 * This test case checks the whole update logic starting from a PT
@@ -154,6 +154,151 @@ public class InheritanceCopierIntegrationTest extends InheritanceCopierTest {
 		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
 	}
 	
+	
+	/**
+	 * new test case that reproduces the behavior in reference to the issue:
+	 * https://github.com/virtualsatellite/VirtualSatellite4-Core/issues/132
+	 * This test should assure, that diamond inheritance is copying the data
+	 * according to the order in the inheritance to the super SEIs.
+	 * In this case we have an EC and an ER that inherits from an ED.
+	 * The EO inherits from both the EC and the ER. Depending on the order, either
+	 * the EC or the ER should overwrite. 
+	 * <br>
+	 * In this case a cardinality of one is additionally set. This reproduces
+	 * the issue detected with the mass equipments
+	 */
+	@Test 
+	public void testUpdateAllInOrderFromRepoWithCardinalityOne() {
+		
+		final String TEST_VAL_1 = "1234";
+		final String TEST_VAL_2 = "2345";
+		
+		seiEo1RwI.getSuperSeis().clear();
+		seiEo1RwI.getSuperSeis().add(seiEcRwI);
+		
+		// Change the Category for the IFE to a cardinality of one
+		// this creates a case where there are virtually copied two IFEs from
+		// the EC and the ER into the EO. Nevertheless the code should detect,
+		// that they have the same ancestor in the ED and therefore it is no copy,
+		// Thus not breaking the cardinality check.
+		catIfe.setCardinality(1);
+		
+		// Step 1 - Attach an Interface End to the RW in the PT
+		// Call the update on the whole repository and make sure
+		// the Interface End shows up in all other trees.
+		// Additionally write a fictive serial n.umber to the Interface End
+		// Check that the values inherited are ok as well.
+		CategoryAssignment caIeEdRw = attachInterfaceEnd(seiEdRw, "RwIe");
+		setInterfaceEndSn(caIeEdRw, TEST_VAL_1);
+		
+		InheritanceCopier ic = new InheritanceCopier();
+		
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+	
+		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
+		assertEquals("Should be a single Ca", 1, seiEcRwII.getCategoryAssignments().size());
+		assertEquals("Should be a single Ca", 1, seiErRwA.getCategoryAssignments().size());
+		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
+		assertEquals("Should be a single Ca", 1, seiEo1RwII.getCategoryAssignments().size());
+		assertEquals("Should be a single Ca", 1, seiEo2RwI.getCategoryAssignments().size());
+		assertEquals("Should be a single Ca", 1, seiEo2RwII.getCategoryAssignments().size());
+
+		CategoryAssignment caIeEcRwI = seiEcRwI.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEcRwII = seiEcRwII.getCategoryAssignments().get(0);
+		CategoryAssignment caIeErRwA = seiErRwA.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEo1RwI = seiEo1RwI.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEo1RwII = seiEo1RwII.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEo2RwI = seiEo2RwI.getCategoryAssignments().get(0);
+		CategoryAssignment caIeEo2RwII = seiEo2RwII.getCategoryAssignments().get(0);
+
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT", TEST_VAL_1, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
+
+		// Step 2 - Remove the override from the CT so it should flip back to the value of the ED
+		// Set a  new value to the ER and set it to Override so it won't flip back
+		// This value should than be seen in the EO1
+		setInterfaceEndSn(caIeEdRw, TEST_VAL_2);
+		setInterfaceEndSn(caIeErRwA, TEST_VAL_1);
+		
+		((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).setOverride(true);
+		
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value has been changed",                                  TEST_VAL_1, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the CT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
+		
+		// step 3 - this is all just preparation until now.
+		// Now add the inheritance link for the EO to also inherit from the ER
+		
+		assertEquals("There is only one super ti", 1, caIeEo1RwI.getSuperTis().size());
+		assertEquals("CA from CT is first super ti",  caIeEcRwI, caIeEo1RwI.getSuperTis().get(0));
+		
+		seiEo1RwI.getSuperSeis().add(seiErRwA);
+		
+		assertEquals("Make sure the CT is in first place", seiEcRwI, seiEo1RwI.getSuperSeis().get(0));
+		assertEquals("Make sure the ER is in second place", seiErRwA, seiEo1RwI.getSuperSeis().get(1));
+
+		ic = new InheritanceCopier();
+		
+		ic.updateInOrderFrom(seiEo1RwI, repo, new NullProgressMonitor());
+		
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value has been changed",                                  TEST_VAL_1, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PS",        TEST_VAL_1, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
+	
+		assertEquals("CA from CT is first super ti",  caIeEcRwI, caIeEo1RwI.getSuperTis().get(0));
+		assertEquals("CA from ER is second super ti", caIeErRwA, caIeEo1RwI.getSuperTis().get(1));
+		
+		// step 4 -change the order 
+		
+		seiEo1RwI.getSuperSeis().clear();
+		seiEo1RwI.getSuperSeis().add(seiErRwA);
+		seiEo1RwI.getSuperSeis().add(seiEcRwI);
+		
+		assertEquals("Make sure the ER is in first place", seiErRwA, seiEo1RwI.getSuperSeis().get(0));
+		assertEquals("Make sure the CT is in second place", seiEcRwI, seiEo1RwI.getSuperSeis().get(1));
+
+		ic = new InheritanceCopier();
+		
+		ic.updateInOrderFrom(seiEo1RwI, repo, new NullProgressMonitor());
+		
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEcRwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value has been changed",                                  TEST_VAL_1, ((ValuePropertyInstance) caIeErRwA.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PS",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo1RwII.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwI.getPropertyInstances().get(0)).getValue());
+		assertEquals("Value should be the same as for the RW in the PT",        TEST_VAL_2, ((ValuePropertyInstance) caIeEo2RwII.getPropertyInstances().get(0)).getValue());
+
+		assertEquals("CA from ER is first super ti",  caIeErRwA, caIeEo1RwI.getSuperTis().get(0));
+		assertEquals("CA from EC is second super ti", caIeEcRwI, caIeEo1RwI.getSuperTis().get(1));
+	}
+	
+	/**
+	 * new test case that reproduces the behavior in reference to the issue:
+	 * https://github.com/virtualsatellite/VirtualSatellite4-Core/issues/132
+	 * This test should assure, that diamond inheritance is copying the data
+	 * according to the order in the inheritance to the super SEIs.
+	 * In this case we have an EC and an ER that inherits from an ED.
+	 * The EO inherits from both the EC and the ER. Depending on the order, either
+	 * the EC or the ER should overwrite. 
+	 * <br>
+	 * This test does not yet reproduce the problem encountered with the mass equipment
+	 */
 	@Test 
 	public void testUpdateAllInOrderFromRepo() {
 		

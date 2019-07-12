@@ -200,6 +200,10 @@ public class InheritanceCopier implements IInheritanceCopier {
 			// reference was copied to, and then references this copied target. But we have
 			// not actually copied this object. Therefore we have to lift all potential
 			// objects into this cache.
+			// This also means, if a new superSei is set to a sei, there are no subTis yet, that
+			// have a link to a superTi, therefore there is nothing to be loaded to the cache.
+			// These objects have to placed into the cache once they are created. This is a an internal
+			// functionality of the ecore copier.
 			Set<StructuralElementInstance> potentiallyReferencedTreeSeis = getReferencesInTree(subSei);
 			potentiallyReferencedTreeSeis.add(subSei);
 			
@@ -362,7 +366,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	};
 	
 	/**
-	 * Use this method to recieve the CAs the subSei should update from the SuperSei
+	 * Use this method to receive the CAs the subSei should update from the SuperSei.
 	 * @param subSei Element which we want to update later on
 	 * @param superSei One of the Element it inherits from
 	 * @return List of the copied CAs from the superSei 
@@ -386,6 +390,12 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * the canUpdate method the behavior needs to be slightly different. If we hand back an already copied
 	 * CA from the SubSEI the update method would copy the features into it. For this case we expect some new 
 	 * CAs, hence this method should return null, triggering the copy method to create some new objects.
+	 * <br>
+	 * <b>Long Story Short</b>: This method checks if a Ti of the subSei and the superSei have a common ancestor. If
+	 * yes, the one in the subSei is regarded as a copy of the TI in sueprSei. This can happen in case of multi
+	 * inheritance with diamond inheritance. In this case, only the superTi of the Ti in the subSei needs to be
+	 * updated.
+	 * 
 	 * @param superIInheritanceLink The type instance for which a new copy or an existing one in the SubSEI should be created/updated
 	 * @param subSei The sub SEI where the inheritance should copy to
 	 * @return an existing type instance in the SubSEI which has a link to the given TypeInstance or null in case it does not yet exist
