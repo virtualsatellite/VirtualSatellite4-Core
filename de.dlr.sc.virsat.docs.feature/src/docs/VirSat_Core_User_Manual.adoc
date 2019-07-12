@@ -1011,7 +1011,7 @@ Here you can find a budget breakdown.
 
 ==== Product maturity concept
 
-TBD
+Virtual Satellite provides means to add element maturities to the system model.
 
 === 3D Visualisation
 
