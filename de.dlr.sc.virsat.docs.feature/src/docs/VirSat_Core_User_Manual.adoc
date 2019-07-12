@@ -865,7 +865,49 @@ Inspect how the summary of the _Assembly Tree_ is affected because the mass of t
 
 ==== Equipment mass and mass summaries concept
 
-TBD
+Masses and mass budgets can be modeled with the `de.dlr.sc.virsat.model.extension.mass.budget` concept.
+The concept contains two main categories:
+
+MassEquipment::MassEquipment models the mass of an equipment or sub-equipment. It should usually only be at leaf nodes
+in the system decomposition. It provides the following properties:
+
+* `mass` describes the equipment mass. The default value is `0` and the unit is `kg`.
+* `margin` describes the margin that should be taken. The default value is `20` measured in `%`.
+* `massWithMargin` is a calculated property describing the mass with the margin and is defined as `mass * (1 + margin)`. The default unit is `kg`.
+* `massMargin` is a the mass margin and is defined as `massWithMargin - mass`. Default unit is `kg`.
+
+MassSummary::MassSummary models mass budegt summaries of sub-systems or systems. It should be usually placed abovce nodes with MassEquipments.
+It provides the following properties:
+
+* `mass` is a calculated property summing up over all masses contained in the sub-tree. The default unit is `kg`.
+* `massWithMargin` is a calulcated property summing up over all masses with margin contained in the sub-tree. The default unit is `kg`.
+* `massMargin` is a calculated property defined as `massWithMargin - mass`. The default unit is `kg`.
+* `margin` is a calculated property giving the average margin and is defined as `masMargin / mass`. It is measured in `%`.
+
+In the following we will create a mass budget. Create a project - in the following called `MySatellite` - and activate the following concepts
+
+* `de.dlr.sc.virsat.model.extension.mass.budget`
+* `de.dlr.sc.virsat.model.extension.ps`
+
+according to <<Activating a Concept>>.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|For the system, create a Configuration Tree with two ElementConfigurations, called ElementConfiguration1 and ElementConfiguration2.
+|image:chapterModeling/MassConceptSystem.png[MySatellite system]
+
+|{counter:step}.
+|Now you can add _MassEquipment_ category to ElementConfiguration1 from the _Navigator_ with menu:Context[MassBudget > Add MassEquipment].
+|image:chapterModeling/MassConceptAddEquipmentMass.png[Adding an equipment mass]
+
+|===
 
 ==== Product maturity concept
 
