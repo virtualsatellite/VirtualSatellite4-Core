@@ -12,11 +12,9 @@ package de.dlr.sc.virsat.model.dvlm.inheritance;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -373,8 +371,6 @@ public class InheritanceCopier implements IInheritanceCopier {
 		
 		return new LinkedList<CategoryAssignment>(copiedCas);
 	}
-	
-	private Map<IInheritanceLink, IInheritanceLink> cachedIInheritanceLinks = new HashMap<>();
 	
 	/**
 	 *
