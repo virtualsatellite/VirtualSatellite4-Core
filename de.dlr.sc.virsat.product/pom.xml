@@ -25,7 +25,7 @@
 		<profile>
 			<id>deploy</id>
 			<properties>
-				<build.folder.application>VirSatCoreBinary</build.folder.application>
+				<build.folder.application>VirSat4_Core_Application</build.folder.application>
 				<build.folder.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
 				<build.file.win32.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.win32}</build.file.win32.fullpath>
 				<build.file.linux.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.linux}</build.file.linux.fullpath>
