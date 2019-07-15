@@ -290,19 +290,20 @@ public class InheritanceCopier implements IInheritanceCopier {
 			EObject subEObject = null;
 			
 			// In case that we want to create a copy of a CategroyAssignment or one of the PropertyInstances from
-			// our SuperType we should carefully check if the derived CAs or PIs already exist.
+			// the SuperSei we should carefully check if the derived CAs or PIs already exist.
 			if (superEObject instanceof IInheritanceLink) {
 				IInheritanceLink superIInheritanceLink = (IInheritanceLink) superEObject;
 
 				// Here we will ask, if the subSei has already an IInheritanceLink that is linked, therefore derived from the one we
 				// just want to copy. In case an object with the link already exists, we don't need to copy it, otherwise we will create
-				// a new eObject of that type and set the link accordingly
+				// a new eObject of that type and set the link accordingly. In Diamond inheritance cases, it can also happen that the 
+				// CA or PI in the SubSei si already inherited but maybe by a different path to the common parent.
 				IInheritanceLink subIInheritanceLink = getInheritedIInheritanceLinkFor(superIInheritanceLink, subSei);
 				if (subIInheritanceLink == null) {
 					// In case we try to copy/inherit a Category Assignment we have to first check,
 					// if the Category is applicable for the target SEI type. If not we do not create
 					// a copy at all. The data model would prevent such a CA to be attached as well,
-					// but all the copying logic is not needed here at might create dangling references
+					// but all the copying logic is not needed here and might create dangling references
 					// since such an object would be cached in the copier.
 					if (superIInheritanceLink instanceof CategoryAssignment && superIInheritanceLink.eContainer() instanceof StructuralElementInstance) {
 						if (!applicableForCheck.isValidObject(superIInheritanceLink)) {
@@ -382,8 +383,8 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * CA from the SubSEI the update method would copy the features into it. For this case we expect some new 
 	 * CAs, hence this method should return null, triggering the copy method to create some new objects.
 	 * <br>
-	 * <b>Long Story Short</b>: This method checks if a Ti of the subSei and the superSei have a common ancestor. If
-	 * yes, the one in the subSei is regarded as a copy of the TI in sueprSei. This can happen in case of multi
+	 * <b>Long Story Short</b>: This method checks if a Ti of the sub SEI and the super SEI have a common ancestor. If
+	 * yes, the one in the subSei is regarded as a copy of the TI in sueprSei. This can happen in case of multi-
 	 * inheritance with diamond inheritance. In this case, only the superTi of the Ti in the subSei needs to be
 	 * updated.
 	 * 
