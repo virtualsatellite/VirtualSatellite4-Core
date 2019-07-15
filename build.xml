@@ -196,8 +196,8 @@ SPDX-License-Identifier: EPL-2.0
 			<regexp pattern="&lt;build.version&gt;${version.pattern}&lt;/build.version&gt;" />
 			<substitution expression="&lt;build.version&gt;${version.new}&lt;/build.version&gt;" />
 			<fileset dir=".">
-				<exclude name="de.dlr.sc.**/target/"/>
-				<include name="de.dlr.sc.**/**/pom.xml" />
+				<exclude name="**/target/"/>
+				<include name="**/pom.xml" />
 			</fileset>
 		</replaceregexp>
 
