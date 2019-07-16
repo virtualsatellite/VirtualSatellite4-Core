@@ -937,14 +937,35 @@ Simply *drag* the `ST` from the _Product Tree_ and drop it into the table of the
 `ST_D` is kept in the _Product Storage_ as a spare.
 
 . Traverse the _Navigator_ down to the `ST1` of `StarExplorer1`.
-. Double-click the 'ST1' to open it in the _Editor_.
+. Double-click the `ST1` to open it in the _Editor_.
 . Scroll down to the section called *Inheritance*.
 . Add a second inheritance referencing to the `ST_A` in the _Product Storage_.
 . Press kbd:[CTRL+S] to save all changes, and to update all inherited data.
-
+. Repeat the steps to assign the other star tracker as well.
 
 |image:chapterExtendedProductStructures/ProductStorageST5.png[Product Storage with five equipment]
 
+|{counter:step}.
+| Now the changes can be observed in the `Assembly Tree` for the 'StarExplorer1' and `StarExplorer2`.
+
+. Traverse the _Navigator_ down to the `AOCS` of `StarExplorer1`.
+. Double-click the `AOCS` to open it in the _Editor_.
+. Scroll down to the section *MassSummary*.
+
+You can now see the impact of the star trackers from the `Product Storage`.
+
+|image:chapterExtendedProductStructures/AssemblyTreeInheritedMassesFromStorage.png[Product Storage with five equipment]
+
+NOTE: You can also change the order of inheritance in the inheritance section.
+E.g. if you set the link to an `Element Configuration` into second place, it's values will override the ones from the `Element Realization` from the 'Product Storage'.
+
+TIP: You can specify as many inheritance links as you which.
+This can be useful, when e.g. stereotyping certain equipment.
+
+TIP: You can also use *drag & drop* again to set the inheritance links.
+
+
+You finalized the tutorial for the extended product structures. 
 
 |===
 
