@@ -956,6 +956,9 @@ You can now see the impact of the star trackers from the `Product Storage`.
 
 |image:chapterExtendedProductStructures/AssemblyTreeInheritedMassesFromStorage.png[Product Storage with five equipment]
 
+|===
+
+
 NOTE: You can also change the order of inheritance in the inheritance section.
 E.g. if you set the link to an `Element Configuration` into second place, it's values will override the ones from the `Element Realization` from the 'Product Storage'.
 
@@ -967,7 +970,6 @@ TIP: You can also use *drag & drop* again to set the inheritance links.
 
 You finalized the tutorial for the extended product structures. 
 
-|===
 
 ==== Equipment mass and mass summaries concept
 
