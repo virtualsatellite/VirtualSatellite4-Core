@@ -115,7 +115,7 @@ public class UiSnippetSectionVisualisation extends AUiSnippetSectionVisualisatio
 			public void handleEvent(Event event) {
 				ColorDialog colorDialog = new ColorDialog(textPropertyValue.getShell());
 				RGB rgbColor = colorDialog.open();
-				if (colorDialog != null) {
+				if (rgbColor != null) {
 					int intColor = CalculateColor.calculateRGBToInt(rgbColor.red, rgbColor.green, rgbColor.blue);
 					textPropertyValue.setText(String.valueOf(intColor));
 					textPropertyValue.setBackground(new Color(null, rgbColor));

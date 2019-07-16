@@ -10,41 +10,27 @@
 package de.dlr.sc.virsat.model.extension.visualisation.ui.dialogs;
 
 import java.io.IOException;
-import java.util.List;
-import org.eclipse.core.resources.IProject;
+
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import de.dlr.sc.virsat.model.concept.provider.DVLMConceptsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
-import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.ui.contentProvider.VirSatTransactionalAdapterFactoryContentProvider;
-import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.Activator;
+import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 
 /**
  * Standard dialog for color map and selecting a parameter
  *@author liu_yg
  */
 public class ColorMapPropertyDialog extends TitleAreaDialog {	
+	
+	private QudvPropertySelectionPart propertySelectionPart;
+	protected VirSatProjectResource baseProject;
 	
 	/**
 	 * Constructor for the dialog
@@ -55,8 +41,6 @@ public class ColorMapPropertyDialog extends TitleAreaDialog {
 		super(parentShell);
 		this.baseProject = vsProject;
 	}
-	
-	protected VirSatProjectResource baseProject;
 
 	@Override
 	public void create() {
@@ -70,71 +54,19 @@ public class ColorMapPropertyDialog extends TitleAreaDialog {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "ColorMapParameterdialog: Failed to load image", e));
 		}	
 	}
-
 	
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		GridLayout layout = new GridLayout(1, false);
-		container.setLayout(layout);
-	
-		createPropertySelection(container);
+		
+		propertySelectionPart = new QudvPropertySelectionPart(area, baseProject) {
+			@Override
+			public void validateProperty() {
+				validateInput();
+			}
+		};
 		
 		return area;
-	}
-
-	private TreeViewer viewerProperty;
-	
-	/**
-	 * Creates the dialog are where to select the correct property
-	 * @param container the container in which to create it
-	 */
-	private void createPropertySelection(Composite container) {
-		Label labelProjectCompareTo = new Label(container, SWT.NONE);
-		labelProjectCompareTo.setText("Choose parameter for Color Map:");
-
-		viewerProperty = new TreeViewer(container);
-		
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-		adapterFactory.addAdapterFactory(new DVLMConceptsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMCategoriesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new GeneralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		
-		viewerProperty.setContentProvider(new VirSatTransactionalAdapterFactoryContentProvider(adapterFactory) {
-			@Override
-			public Object[] getElements(Object rootObject) {
-				if (rootObject instanceof List) {
-					@SuppressWarnings("rawtypes")
-					List list = (List) rootObject;
-					return list.toArray();
-				}
-				return super.getElements(rootObject);
-			}
-		});
-		viewerProperty.setLabelProvider(new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory));
-		
-		IProject project = baseProject.getWrappedProject();
-		Repository repo = VirSatResourceSet.getResourceSet(project).getRepository();
-	
-		viewerProperty.setInput(repo.getActiveConcepts());
-	
-		GridData gridDataViewer = new GridData();
-		gridDataViewer.grabExcessHorizontalSpace = true;
-		gridDataViewer.grabExcessVerticalSpace = true;
-		gridDataViewer.horizontalAlignment = GridData.FILL;
-		gridDataViewer.verticalAlignment = GridData.FILL;
-		gridDataViewer.heightHint = VIEWER_HEIGHT;
-		
-		viewerProperty.getControl().setLayoutData(gridDataViewer);
-		viewerProperty.addSelectionChangedListener((obj) -> {
-			extractUserSelection();
-			validateInput();
-		});
-		
-		viewerProperty.expandToLevel(2);
 	}
 	
 	/**
@@ -143,7 +75,7 @@ public class ColorMapPropertyDialog extends TitleAreaDialog {
 	 */
 	protected boolean validateInput() {
 		boolean inputsValid = false;
-		if (selectedProperty != null) {
+		if (getComparisonProjectPropertyFQN() != null) {
 			inputsValid = true;
 		} else {
 			setMessage("Select the parameter to be used for the heat map!", IMessageProvider.ERROR);
@@ -152,43 +84,17 @@ public class ColorMapPropertyDialog extends TitleAreaDialog {
 		return inputsValid;
 	}
 	
-	private static final int VIEWER_HEIGHT = 300;
-	
 	@Override
 	protected boolean isResizable() {
 		return true;
 	}
 	
-	private ComposedProperty selectedProperty;
-	
-	@Override
-	protected void okPressed() {
-		extractUserSelection();
-		super.okPressed();
-	}
-	
 	/**
-	 * This method takes the suer input and stores it in class internal variables	 
-	*/
-	protected void extractUserSelection() {
-		
-		// Store the property that was selected
-		IStructuredSelection selection = (IStructuredSelection) viewerProperty.getSelection();
-		if (!selection.isEmpty()) {
-			Object object = selection.getFirstElement();
-			if (object instanceof ComposedProperty) {
-				selectedProperty = (ComposedProperty) selection.getFirstElement();	
-			} else {
-				selectedProperty = null;
-			}
-		}
-	}	
-	
-	/**
-	 * The property that was selected by the user
+	 * The FQN of the property that was selected by the user
+	 * 
 	 * @return null in case no property was selected
 	 */
-	public ComposedProperty getProjectProperty() {
-		return selectedProperty;
+	public String getComparisonProjectPropertyFQN() {
+		return propertySelectionPart.getComparisonProjectPropertyFQN();
 	}
 }

@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -29,10 +28,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import de.dlr.sc.virsat.model.extension.visualisation.ui.Activator;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.project.ui.navigator.contentProvider.VirSatWorkspaceContentProvider;
 import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatWorkspaceLabelProvider;
-import de.dlr.sc.virsat.model.extension.visualisation.ui.Activator;
 
 /**
  * Simple Dialog to select projects for animation
@@ -41,6 +40,12 @@ import de.dlr.sc.virsat.model.extension.visualisation.ui.Activator;
  */
 public class AnimationDialog extends TitleAreaDialog {
 
+	protected static final int VIEWER_HEIGHT = 150;
+	
+	protected List<VirSatProjectResource> listProjectSelected = new ArrayList<VirSatProjectResource>();
+	private TableViewer viewerProjectSelected;
+	private ProjectSelectionPart projectSelectionPart;
+	
 	/**
 	 * Constructor for the simple comparison dialog
 	 * @param parentShell the parent shell in which to create the dialog
@@ -48,11 +53,6 @@ public class AnimationDialog extends TitleAreaDialog {
 	public AnimationDialog(Shell parentShell) {
 		super(parentShell);
 	}
-	
-	protected List<VirSatProjectResource> listProjectSelected = new ArrayList<VirSatProjectResource>();
-	private TableViewer viewerProject;
-	private TableViewer viewerProjectSelected;
-
 
 	@Override
 	public void create() {
@@ -70,51 +70,27 @@ public class AnimationDialog extends TitleAreaDialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		GridLayout layout = new GridLayout(1, false);
-		container.setLayout(layout);
+		
+		projectSelectionPart = new ProjectSelectionPart(area) {
+			@Override
+			public void validateProject() {
+				validateInput();
+			}
+			
+			@Override
+			public void extractUserSelection() {
+				super.extractUserSelection();
+				addSelection();
+			}
+		};
 		
 		Composite container2 = new Composite(area, SWT.NONE);
 		container2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout layout2 = new GridLayout(1, false);
 		container2.setLayout(layout2);
-	
-		createProjectSelection(container);
 		createProjectSelected(container2);
 		
 		return area;
-	}
-
-	protected static final int VIEWER_HEIGHT = 150;
-
-	/**
-	 * Creates the dialog area where to select the project
-	 * @param container the main container where to create the dialog area
-	 */
-	private void createProjectSelection(Composite container) {
-		Label labelProjectCompareTo = new Label(container, SWT.NONE);
-		labelProjectCompareTo.setText("Selecte projects for animation:");
-	
-		viewerProject = new TableViewer(container);
-		viewerProject.setContentProvider(new VirSatWorkspaceContentProvider());
-		viewerProject.setLabelProvider(new VirSatWorkspaceLabelProvider());
-		
-		viewerProject.setInput(ResourcesPlugin.getWorkspace().getRoot());
-	
-		GridData gridDataViewer = new GridData();
-		gridDataViewer.grabExcessHorizontalSpace = true;
-		gridDataViewer.grabExcessVerticalSpace = true;
-		gridDataViewer.horizontalAlignment = GridData.FILL;
-		gridDataViewer.verticalAlignment = GridData.FILL;
-		gridDataViewer.heightHint = VIEWER_HEIGHT;
-		
-		viewerProject.getControl().setLayoutData(gridDataViewer);
-		viewerProject.addSelectionChangedListener((obj) -> {
-			extractUserSelectionInSelection();
-			addSelection();
-			validateInput();
-		});
 	}
 	
 	/**
@@ -138,7 +114,6 @@ public class AnimationDialog extends TitleAreaDialog {
 		
 		viewerProjectSelected.getControl().setLayoutData(gridDataViewer);
 		viewerProjectSelected.addSelectionChangedListener((obj) -> {
-			extractUserSelectionInSelected();
 			deleteSelection();
 			validateInput();
 		});
@@ -151,10 +126,10 @@ public class AnimationDialog extends TitleAreaDialog {
 	 */
 	protected boolean validateInput() {
 		boolean inputsValid = false;
+		
 		if (listProjectSelected.size() > 1) {
 			inputsValid = true;
 			setMessage("Selections are all fine!", IMessageProvider.INFORMATION);
-			
 		} else {
 			setMessage("Select the Model to animation!", IMessageProvider.ERROR);
 		}
@@ -163,47 +138,16 @@ public class AnimationDialog extends TitleAreaDialog {
 		return inputsValid;
 	}
 
-	private VirSatProjectResource selectedProject;
-
 	@Override
 	protected boolean isResizable() {
 		return true;
 	}
-
-	@Override
-	protected void okPressed() {
-		super.okPressed();
-	}
-
-	/**
-	 * This method takes the suer input and stores it in class internal variables
-	 */
-	protected void extractUserSelectionInSelection() {
-		// First store the content that was selected
-		// Store the project that was selected
-		IStructuredSelection selection = (IStructuredSelection) viewerProject.getSelection();
-		if (!selection.isEmpty()) {
-			selectedProject = (VirSatProjectResource) selection.getFirstElement();
-		}
-	} 
-	/**
-	 * This method takes the suer input and store it in class internal variables
-	 */
-	protected void extractUserSelectionInSelected() {
-		// First store the content that was selected
-		// Store the project that was selected
-		IStructuredSelection selection = (IStructuredSelection) viewerProjectSelected.getSelection();
-		if (!selection.isEmpty()) {
-			selectedProject = (VirSatProjectResource) selection.getFirstElement();
-		}
-	} 
 	
 	/**
 	 * This method stores the selected project into animation list
 	 */
 	protected void addSelection() {
-		// First store the content that was selected
-		// Store the project that was selected	
+		VirSatProjectResource selectedProject = projectSelectionPart.getProjectResource();
 		if (!listProjectSelected.contains(selectedProject)) {
 			listProjectSelected.add(selectedProject);	
 			viewerProjectSelected.add(selectedProject);
@@ -211,13 +155,17 @@ public class AnimationDialog extends TitleAreaDialog {
 	}
 	
 	/**
-	 * This method delete the selected project into animation list
+	 * This method delete the selected project in the animation list
 	 */
 	protected void deleteSelection() {
-		// First store the content that was selected
-		// Remove the project that was selected
-		listProjectSelected.remove(selectedProject);
-		viewerProjectSelected.remove(selectedProject);		
+		IStructuredSelection selection = (IStructuredSelection) viewerProjectSelected.getSelection();
+
+		if (!selection.isEmpty()) {
+			VirSatProjectResource selectedProject = (VirSatProjectResource) selection.getFirstElement();
+			
+			listProjectSelected.remove(selectedProject);
+			viewerProjectSelected.remove(selectedProject);	
+		}
 	}
 
 	/**

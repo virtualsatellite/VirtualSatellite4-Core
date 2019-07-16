@@ -69,7 +69,11 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	
 	@Override
 	protected String getSectionDescription() {
-		return SECTION_DESCRIPTION_PREFIX + UserRegistry.getInstance().getUserName();
+		String user = UserRegistry.getInstance().getUserName();
+		if (UserRegistry.getInstance().isSuperUser()) {
+			user = user + " (Super User)";
+		}
+		return SECTION_DESCRIPTION_PREFIX + user;
 	}
 
 	@Override

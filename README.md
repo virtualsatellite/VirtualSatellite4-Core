@@ -17,15 +17,15 @@ Virtual Satellite 4 is the new evolution of MBSE. With a customizable data model
 ## Requirements 
 
 Virtual Satellite is based on Java / Eclipse and provides an installable feature with plug-ins for your personal eclipse IDE. The following infrastructure is required:
- - Java Development Kit (JDK) 8
- - Eclipse Oxygen or newer
-   - Including Checkstyle
-   - Including Spotbugs
-   - Including M2E
- - Maven 3
- - Windows 7 or Linux Computer
+ - Java Development Kit (JDK) 8 - 64 bit
+ - Windows 7 or Linux Computer - 64 bit
 
-## Quickstart
+## Quickstart for users
+
+If you just want to use Virtual Satellite feel free to download it from the [Releases](https://github.com/virtualsatellite/VirtualSatellite4-Core/releases) section here on GitHub.
+A manual is provided as PDF in the upcoming distributions from version 4.10.x onwards. The latest changes on the manual is written in ascii doc and can be found here: [de.dlr.sc.virsat.docs.feature/src/docs/VirSat_Core_User_Manual.adoc](de.dlr.sc.virsat.docs.feature/src/docs/VirSat_Core_User_Manual.adoc)
+
+## Quickstart for developers
 
 1. Open your Eclipse and switch to the Git Perspective.
 2. Clone this repository.

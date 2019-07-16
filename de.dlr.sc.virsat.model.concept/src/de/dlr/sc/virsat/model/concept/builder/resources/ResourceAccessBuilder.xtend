@@ -146,14 +146,15 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		 * This method creates the string that should be written into the
 		 */
 		def createManifestAccessClass(String packageName, Attributes attributes) '''
-			/**
-			 * This file is part of the VirSat project.
+			/*******************************************************************************
+			 * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
 			 *
-			 * Copyright (c) 2008-2017
-			 * German Aerospace Center (DLR), Simulation and Software Technology, Germany
-			 * All rights reserved
-			 * 
-			 */
+			 * This program and the accompanying materials are made available under the
+			 * terms of the Eclipse Public License 2.0 which is available at
+			 * http://www.eclipse.org/legal/epl-2.0.
+			 *
+			 * SPDX-License-Identifier: EPL-2.0
+			 *******************************************************************************/
 			package «packageName»;
 			
 			public class ManifestMf {
@@ -220,14 +221,15 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		 * This method creates the string that should be written into the
 		 */
 		def createPluginXmlAccessClass(String packageName, Node node) '''
-			/**
-			 * This file is part of the VirSat project.
+			/*******************************************************************************
+			 * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
 			 *
-			 * Copyright (c) 2008-2017
-			 * German Aerospace Center (DLR), Simulation and Software Technology, Germany
-			 * All rights reserved
-			 * 
-			 */
+			 * This program and the accompanying materials are made available under the
+			 * terms of the Eclipse Public License 2.0 which is available at
+			 * http://www.eclipse.org/legal/epl-2.0.
+			 *
+			 * SPDX-License-Identifier: EPL-2.0
+			 *******************************************************************************/
 			package «packageName»;
 			public class PluginXml {
 				public static class commands {

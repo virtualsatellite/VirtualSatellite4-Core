@@ -1,0 +1,17 @@
+extends: default
+running_content:
+  start_at: toc
+header:
+  height: 0.75in
+  line_height: 1
+  recto_content:
+    center: '{document-title}'
+  verso_content:
+    center: '{document-title}'
+footer:
+  height: 0.75in
+  line_height: 1
+  recto_content:
+    right: '{chapter-title} | *{page-number}*'
+  verso_content:
+    left: '*{page-number}* | {document-title}'

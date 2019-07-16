@@ -1,0 +1,1409 @@
+= Virtual Satellite 4 Core: User Manual
+:imagesdir: images
+:title-logo-image: images/title/VirtualSatellite_Modelling_4k.jpg
+:toc:
+:toclevels: 3
+:experimental:  
+
+[quote, Philipp M. Fischer]
+It has been a long way to get here and it will be an even harder way to go on. Thanks to everyone who contributed so far.
+
+:sectnums:
+
+== Getting Started
+
+Learn about basic requirements of Virtual Satellite, how it is installed and begin your first modeling. It probably takes less than 15 minutes until you have your first item modeled.  
+
+=== System Requirements 
+
+Virtual Satellite is based on Java and Eclipse Technology. It currently supports the following operating system configurations
+
+. Windows 7 64bit with Java 8 runtime environment
+. Linux 64 bit with Java 8 runtime environment
+
+[WARNING]
+.Use 64 bit Java JRE
+====
+Virtual Satellite does not execute on a Java 32 bit runtime environment.
+====
+
+[WARNING] 
+.Linux compilation issues
+==== 
+Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A re-compilation when using other distributions is probably needed. This concerns e.g. the visualization functionality based on the Visualization Toolkit (VTK).
+====
+
+=== Installation
+
+Installing Virtual Satellite is as easy as possible. Provided that a Java Runtime environment is installed to your system. Follow the steps below to install Virtual Satellite on a windows system: 
+
+NOTE: Installation steps on linux are very similar.
+
+{counter2:step:0}
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Download the Virtual Satellite zip-file from the GitHub releases section.
+|image:chapterInstallation/DownloadGitHubRelease.png[Download]
+
+|{counter:step}.
+|Store the zip file to the folder of your choice (e.g.: `C:\VirtualSatellite\`) and unzip it here.
+|image:chapterInstallation/UnZip.png[Unzip]
+
+|{counter:step}.
+|Dive into the unzipped sub-folder and Execute the `VirSat4_Core.exe` file.
+|image:chapterInstallation/Execute.png[Execute]
+
+|{counter:step}.
+|Once Virtual Satellite is started it should appear as shown in the image. Now press the link btn:[Start modeling now!].
+|image:chapterInstallation/VirtualSatelliteStarted.png[Started]
+
+|===
+
+Done. You installed and successfully started Virtual Satellite.
+
+=== First Steps
+
+Now when you successfully installed Virtual Satellite to your computer it is about time to get started using it. This chapter provides some first steps to learn some basic functionality to work with this software.
+
+NOTE: In this example we work locally on your computer, there is no need for a subversion service or similar. 
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Dive into the folder where you installed Virtual Satellite and and Execute the `VirSat4_Core.exe` file.
+|image:chapterFirstSteps/Execute.png[Execute]
+
+|{counter:step}.
+|The OSGI Console will open up and a Splash screen will be displayed showing the start-up progress.
+
+NOTE: Details to the Equinox OSGI Console will be explained later in chapter <<Equinox OSGI Console>>.
+|image:chapterFirstSteps/SplashAndOSGI.png[Splash Screen and OSGI Console]
+
+|{counter:step}.
+|During start-up, Virtual Satellite will ask for the workspace folder. Choose a folder you prefer or stick with the default one. This workspace folder is used to store the files of your project locally. 
+
+NOTE: You can also choose different folders for different projects. And you can change between these folders later.
+|image:chapterFirstSteps/ChooseWorkspace.png[Execute]
+
+|{counter:step}.
+|After a while you will see the _Welcome Screen_ of Virtual Satellite, Press the link btn:[Start Modelling now!]. This will open the Virtual Satellite _perspective_. 
+
+NOTE: In case you don't see the _Welcome Screen_ as shown in the image, it is possible that you already started Virtual Satellite and closed it. To open the _Welcome Screen_ again follow the menu menu:Help[Welcome].
+|image:chapterFirstSteps/VirtualSatelliteStarted.png[Started]
+
+|{counter:step}.
+|The three important _views_ of the _perspective_ are:
+
+. The _Navigator_ to the left (blue dashed box).
+. The _Editing_ area in the middle which is currently empty (green dashed box).
+. the _Concept Palette_ to the right (orange dashed box).
+
+NOTE: In case _views_ get lost, you can always reset the _perspective_ by right-click image:chapterFirstSteps/BtnCorePerspective.png[Icon Core Perspective] then menu:Context[Reset] 
+|image:chapterFirstSteps/Perspective.png[Perspective]
+
+|{counter:step}.
+|Open the dialog for creating a new project by pressing the marked icon in the _navigator_. 
+
+NOTE: Alternatively you can use the _new_ dialog from the main-menu following menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat[VirSat Project] and press btn:[Next>].
+|image:chapterFirstSteps/BtnOpenProject.png[Open project]
+
+|{counter:step}.
+|In the _New Project_ dialog type in a name for your project (e.g. `MySatellite`). Press btn:[Finish] to create the new project. 
+|image:chapterFirstSteps/NewProjectDialog.png[New Project Dialog]
+
+|{counter:step}.
+|Now open the _Repository_ from the _Navigator_ view by double-clicking menu:MySatellite[Repository]. 
+|image:chapterFirstSteps/OpenRepository.png[Open Repository]
+
+|{counter:step}.
+|The _Repository Editor_ will open in the _Editing_ area. Scroll down to the _table Section for: Active Concepts_. Here click on btn:[Add from Registry]. 
+|image:chapterFirstSteps/RepositoryEditor.png[Repository Editor]
+
+|{counter:step}.
+|Select the following two _Concepts_ in the dialog by ticking the check-box. Then press btn:[OK] to activate the _Concepts_. 
+
+. The _Concept_ for Product Structures _de.dlr.sc.virsat.model.extension.ps_.
+. The _Concept_ for Design Maturity _de.dlr.sc.virsat.model.extension.maturity_.
+
+NOTE: The numbers in the brackets after the _Concept_ name denote the version of the _Concept_.
+
+NOTE: _Concepts_ can require other concepts. If you select a concept, all its required concepts are also selected.
+
+|image:chapterFirstSteps/ConceptDialog.png[Concept Dialog]
+
+|{counter:step}.
+|Go back to the _Navigator_ view and right-click on _Repository_. Now select menu:Context[Product Structures > Add ProductTree]. 
+|image:chapterFirstSteps/CreateProductTree.png[Create Product Tree]
+
+|{counter:step}.
+|Now right-click on the newly generated item _PT: ProductTree_. Now select menu:Context[Product Structures > Add ProductTreeDomain]. 
+|image:chapterFirstSteps/ProductTreeDomain.png[Create Product Tree Domain]
+
+|{counter:step}.
+|Double-click on the newly generated _PTD: ProductTreeDomain_ item to open it in the _Editor_. In the Editor change the name to e.g. `AOCS` (Attitude and Orbit Control System) as shown in the image.
+
+NOTE: The ribbon tab of the _Editor_ changes from "PTD: ..." to "+*PTD: ...". The extra *+ shows that there are unsaved changes.
+
+TIP: Save your work frequently since most changes are kept in memory and not on your hard-drive. You can easily save your work by pressing kbd:[CTRL+S] from within the current _Editor_ or by menu:File[Save]. You should use kbd:[CTRL+SHIFT+S] or menuFile:[Save All] to save all _Editors_ and chnages.
+|image:chapterFirstSteps/ProductTreeDomainEditor.png[Product Tree Domain Editor]
+
+|{counter:step}.
+|Create an _Element Definition_ in the _PTD: AOCS_ similar as in the steps before. Name it `RW` (Reaction Wheel).
+
+TIP: You can also use the _Concept Pallete_ and *drag* the _Element Definition_ item to the _PTD: AOCS_ in the _Navigator_ *and drop* it.
+|image:chapterFirstSteps/AddedElementDefinition.png[Added Element Definition]
+
+|{counter:step}.
+|After modeling the _Structural Element Instances_ it is now time to add some design information. Go back to the _Navigator_ view and right-click on the newly created _ED: RW_. Select menu:Context[Design Maturity > Add Maturity]. After this double-click on the _ED: RW_ to open it in the _Editor_.
+
+TIP: The whole _Conceptual Data Model_ (CDM) is based on _Structural Elements_ and _Category Definitions_. At runtime the _CDM_ is used to create the _System Model_. Now _Structural Element Instances_ and _Category Assignments_ are instantiated.   
+|image:chapterFirstSteps/AddMaturity.png[Add Maturity]
+
+|{counter:step}.
+|In the editor scroll-down to _Section for: Maturity_. Click into the upper table to change the level _Enum Property_ to `READY_TO_BE_USED=1` and the trl _Enum Property_ to `TRL_9=9`.  
+
+NOTE: Opening the _Editor_ on the _Structural Element Instance_ gives access to all _Category Assignments_. Double-clicking an individual _Category Assignment_ in the _Navigator_ opens and individual _Editor_ for it. You can also open this individual _Editor_ by selecting the _Category Assignment_ in the table in the _Editor_ and press btn:[Drill-Down].
+|image:chapterFirstSteps/EditorMaturity.png[Maturity Editor]
+
+|===
+
+Well Done. You successfully created your very first model using Virtual Satellite. With this first hands-on experience you learned the first important steps to use this software. Continue reading the next chapters to learn how to use it in real system engineering scenarios. 
+
+== Collaborative work on a shared project
+
+Virtual Satellite uses SVN for collaborative work. In order to work on a project with other people, you need to store it in an SVN repository.
+This section describes how to set up and work with a shared project.
+
+=== Workflow Overview
+
+The collaborative workflow of Virtual Satellite is shown below. First someone has to create a project in Virtual Satellite locally and share it to an SVN repository.
+Then all the collaborators can load it and work with it as described in the following subsections.
+
+.Collaboration Workflow Overview
+[#WorkflowOverview]
+image::chapterSettingUpInfrastructure/Workflow.png[Colaboration Workflow Overview]
+
+=== Sharing a new project to SVN
+
+First of all, you need to install an SVN connector.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open from the main menu menu:Window[Preferences].
+|image:chapterSettingUpInfrastructure/Preferences.png[Preferences]
+
+|{counter:step}.
+|in the preference dialog navigate to menu:Team[SVN], open the tab _SVN Connector_ and press btn:[Get Connectors...]
+|image:chapterSettingUpInfrastructure/GetSvnConnectors.png[Get SVN Connectors]
+
+|{counter:step}.
+|Choose one of the connectors in the list, press btn:[Finish] and follow the installation steps - accept the user agreement, agree to the unsigned content and restart Virtual Satellite.
+
+TIP: Due to license restrictions we cannot ship the connectors. For Virtual Satellite to correctly operate we recommend to use the `svnkit`.
+
+|image:chapterSettingUpInfrastructure/Connectors.png[Connectors]
+
+|===
+
+After the restart you can share your project.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Project Explorer_ tab in the _Navigator_ view. 
+|image:chapterSettingUpInfrastructure/ProjectExplorer.png[Opening Project Explorer]
+
+|{counter:step}.
+|In the context menu of your project select menu:Context[Team > Share Project...].
+|image:chapterSettingUpInfrastructure/ShareProject.png[Share Project]
+
+|{counter:step}.
+|In the _Share Project Wizard_ enter the desired URL in your SVN repository, provide credentials for SVN and press btn:[Finish].
+
+NOTE: If the specified SVN location does not exist, you will get a notification "Location information has been specified incorrectly. Keep location anyway?". Answering btn:[OK] creates the location.
+
+|image:chapterSettingUpInfrastructure/ShareProjectDialog.png[Share Project Dialog]
+
+|{counter:step}.
+|Next you will see a commit dialog where you can optionally write a commit message. Press btn:[OK] to commit your project to SVN.
+|image:chapterSettingUpInfrastructure/Commit.png[Commit Dialog]
+
+|===
+
+Now your project is connected to an SVN repository, you can *Commit* and *Update* it (see <<Updating and committing a shared project>>), and you can give its URL to your collaborators.
+
+=== Loading a project from SVN
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Click on the btn:[Open Perspective] button in the top right corner and open the _SVN Repository Exploring_ perspective. 
+|image:chapterSettingUpInfrastructure/SvnPerspective.png[SVN Perspective]
+
+|{counter:step}.
+|In the _SVN Repositories_ view click btn:[New Repository Location] and enter the URL of your project and your SVN credentials.
+|image:chapterSettingUpInfrastructure/AddSvnRepository.png[Add SVN Repository]
+
+|{counter:step}.
+|Press menu:Context[Check Out] on your repository.
+
+NOTE: You need to check out a folder that directly contains *data* folder. You may need to expand some intermediate folders to get there.
+
+|image:chapterSettingUpInfrastructure/Checkout.png[Check Out]
+
+|{counter:step}.
+|Go back to the _VirSat - Core_ perspective, and in the _Navigator_ view you will see a project that you just checked out.
+|image:chapterSettingUpInfrastructure/CheckoutDone.png[Checked out Project]
+
+|===
+
+
+=== Updating and committing a shared project
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|To get the most recent changes from the repository, press menu:Context[Update Project from Repository] in _Navigator_. To upload your changes to the repository, press menu:Context[Commit Project to Repository] and optionally provide a commit message in the dialog that pops up.
+
+TIP: There are also icons for committing and updating in the icon bar of the _Navigator_.
+
+NOTE: Whenever you commit and update, you do it for the whole project.
+
+|image:chapterSettingUpInfrastructure/Committing.png[Committing and Updating]
+
+|===
+
+== Modeling with Virtual Satellite
+
+Learn here about the out of the box available modeling capabilities supported by Virtual Satellite.
+In this chapter you will learn about concepts, how to work with them, how to interact with the data model,
+and which default concepts are delivered to you by the Core. 
+
+=== General modeling
+
+Virtual Satellite supplies a core modeling language. 
+Amongst other advanced capabilities, it allows storing various peripheral information such as user rights and unit management.
+The modeling language can be extended by _concepts_, which represent specific engineering processes or knowledge domains.
+
+NOTE: For example activating the _de.dlr.sc.virsat.model.extension.ps_ concept extends the modeling language by allowing modeling of complex product structures including product trees and product configurations.
+
+==== User Rights Management
+
+Having multiple users manipulate the data model concurrently may lead to merge conflicts.
+To avoid such issues, Virtual Satellite provides a rights management system.
+It defines which user is allowed to manipulate a certain model element.
+The association between a user and the modifiable elements is called a _Discipline_.
+Then only users logged in with that specified user name are allowed to modify those elements.
+A _Discipline_ has two properties:
+
+Discipline name:: The name of the _Discipline_ which should be unique.
+User name:: Only users logged in with that specified user name will be associated with the _Discipline_.
+
+Disciplines are managed in the _Role Management_.
+By default when a new project is created, the _Role Management_ will contain exactly one _Discipline_ called *System*.
+
+In this section you will learn how to:
+
+* Create a new Discipline
+* Assign a Discipline to a model element
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Editor_ for the _Role Management_ from the _Navigator_ view by double-clicking menu:MySatellite[Role Management]. 
+|image:chapterModeling/OpenRoleManagement.png[Opening the role management editor]
+
+|{counter:step}.
+|Press the button btn:[Add Discipline] to insert a new _Discipline_ called _New Discipline_ and that is initially associated with your own user name.
+
+TIP: _Disciplines_ can be removed by selecting a _Discipline_ and then pressing the btn:[Remove Discipline] button.
+
+|image:chapterModeling/AddDiscipline.png[Adding a discpline]
+
+|{counter:step}.
+|Select the newly created _Discipline_ in the _Discipline Name_ column and change it to  `RepositoryManager`.
+Then select the _Discipline_ in the _User Name_ column and change it to `OtherUsername`.
+
+|image:chapterModeling/EditUserName.png[Changing properties of a Discipline]
+
+|{counter:step}.
+|We will now assign the discipline to the _Repository_. 
+To do this, open the _Repository_ from the _Navigator_.
+Then select the combo box listing *Discipline: System* and choose the entry *Discipline: RepositoryManagener*.
+Finally press the btn:[Assign Discipline] button.
+
+TIP: You can assign a _Discipline_ to an element and all sub elements by pressing the btn:[Assign Discipline Recursive] button.
+
+|image:chapterModeling/AssignDiscipline.png[Assigning a Discipline]
+
+|{counter:step}.
+|All editable fields will be no longer be editable and shown as greyed out.
+
+WARNING: This includes the _Discipline_ field. 
+Once you assign a _Discipline_ only the associated user can return the ownership!
+
+|image:chapterModeling/Uneditable.png[The repository can longer be edited]
+
+|===
+
+TIP: In the event that the rights management needs to be bypassed,
+Virtual Satellite can be started with the `-superUser` flag to gain super user rights.
+For further information, check out <<Enforce super user rights>>.
+
+==== Quantities, Units, Dimensions and Values
+
+Values without a physical dimension carry little meaning. 
+They need to be considered within their engineering context, 
+
+NOTE: For example the statement "the mass is 5" is ambiguous and not meaningful.
+However, the information "the mass is 5kg" is something that can be worked with.
+
+To establish a solid foundation for well-defined and consistent unities,
+Virtual Satellite provides an implementation of the Quantities, Units, Dimensions and Values (QUDV).
+In this section you will learn how to:
+
+* Create a new _Quantity Kind_
+* Create a new _Unit_
+* Export a QUDV Model
+* Import a QUDV Model
+
+===== Unit Management
+
+The _Unit Management_ is the central hub for managing _Quantity Kinds_ and _Units_.
+By default, when you create a new project the _Unit Management_ will be populated by a default QUDV
+model supplied by Virtual Satellite.
+Further _Quantity Kinds_ and _Units_ required in the project can then be defined.
+The QUDV supports two sorts of _Quantity Kinds_:
+
+Simple Quantity Kinds:: A _Simple Quantity Kind_ is not based on another _Quantity Kind_.
++
+NOTE: An example for this in the SI unit system is _Mass_.
+Derived Quantity Kinds:: A _Derived Quantity Kind_ is defined as a composition of other _Quantity Kinds_. 
+Each quantity is equipped with a *factor* stating its involvement.
++
+NOTE: An example for this in the SI unit system is _Speed_, 
+which is composed over the quantities _Length_ with *factor* of 1 and _Time_ with a *factor* of -1. 
+
+In the same fashion, the Virtual Satellite implementation of QUDV supports the following sorts of _Units_:
+
+Simple Unit:: A _Simple Unit_ is not based on another _Unit_.
++
+NOTE: An example for this in the SI unit system is _Second_.
+Conversion Based Unit:: A _Conversion Based Unit_ is defined by conversion of a reference _Unit_.
+The conversion can be described with a *factor* and an *offset*.
++
+NOTE: An example for this in the SI unit system is _Degree Celsius_,
+which is defined in reference to _Kelvin_ with a *factor* of 1 and an *offset* of 273.15.
+Derived Unit:: A _Derived Unit_ is defined as a composition of other _Units_.
++
+NOTE: An example for this in the SI unit system is _Velocity_, 
+which is composed of the _Units_ _Metre_ with a *factor* of 1 and _Second_ with a *factor* of -1.
+Prefixed Unit:: A _Prefixed Unit_ is defined by a referenced _Unit_ and an added prefix.
++
+NOTE: An example for this in the SI unit system is _Milli Second_,
+which prefixes the _Unit_ _Second_ with the prefix _Milli_.
+
+In the following you will create a new _Simple Quanitity Kind_ and a new _Simple Unit_ for it.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Editor_ for the _Unit Management_ from the _Navigator_ view by double-clicking menu:MySatellite[Unit Management]. 
+|image:chapterModeling/OpenUnitManagement.png[Opening the unit management editor]
+
+|{counter:step}.
+|Scroll to the *Quantity Kind Management* Section and press the btn:[Add Quantity Kind] button. 
+|image:chapterModeling/AddQuantityKind.png[Adding a new quantity kind]
+
+|{counter:step}.
+|Select the *QUDV Simple Quantity Kind Wizard* option in the *Available wizards* drop-down list.
+Then press btn:[Next]. 
+|image:chapterModeling/QuantityWizardSelection.png[Selecting the quantity kind wizard]
+
+|{counter:step}.
+|Set the name to `MyQuantityKind` and fill out the other fields by data of your choosing.
+Then press btn:[Finish]. 
+You can now find your created _Quantity Kind_ in the *Quantity Kind Management* section.
+|image:chapterModeling/SimpleQuantityKindWizard.png[Simple quantity kind wizard]
+
+|{counter:step}.
+|Scroll to the *Unit Management* Section and press the btn:[Add Unit] button. 
+|image:chapterModeling/AddUnit.png[Adding a unit]
+
+|{counter:step}.
+|Select the *QUDV Simple Unit Wizard* option in the *Available wizards* drop-down list.
+Then press btn:[Next]. 
+|image:chapterModeling/UnitWizardSelection.png[Selecting the quantity kind wizard]
+
+|{counter:step}.
+|Set the name to ´MyUnit´ and fill out the other fields by some data.
+Then press btn:[Finish]. 
+You can now find your created _Unit_ in the *Unit Management* section.
+|image:chapterModeling/SimpleUnitWizard.png[Simple unit wizard]
+
+|===
+
+You have created your first own _Unit_ on the basis of your own _Quantity Kind_!
+You can remove a created _Quantity Kind_ or _Unit_ by going to the _Unit Management_,
+selecting the desired _Quantity Kind_ or _Unit_ then press btn:[Remove Quantity Kind] or btn:[Remove Unit].
+Likewise, editing existing an existing _Quantity Kind_ or _Units_ can be done by pressing btn:[Edit Quantity Kind] or btn:[Edit Unit].
+
+===== QUDV Wizards
+
+If you have defined a QUDV model to your liking, you can transfer it between different projects
+using the QUDV wizards. Virtual Satellite provides an export and an import wizard for QUDV models.
+Both wizards can be found in the *VirSat* category.
+In the following you will export a QUDV system and re-import it.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _QUDV Export Wizard_ by selecting menu:File[Export] and choosing *QUDV Export Wizard* from the *VirSat* category.
+Then select btn:[Next]. 
+|image:chapterModeling/QUDVExportWizardSelection.png[Selecting the QUDV export wizard]
+
+|{counter:step}.
+|Tick the checkbox for the _Unit Management_ model you wish to export.
+Then select an export destination by pressing btn:[Browse].
+Finally press btn:[Finish]. 
+|image:chapterModeling/QUDVExportWizard.png[The QUDV export wizard]
+
+|{counter:step}.
+|Open the _QUDV Import Wizard_ by selecting menu:File[Import] and choosing *QUDV Import Wizard* from the *VirSat* category.
+Then select btn:[Next]. 
+|image:chapterModeling/QUDVImportWizardSelection.png[Selecting the QUDV import wizard]
+
+|{counter:step}.
+|Select an import destination by pressing btn:[Browse].
+Tick the checkbox for the QUDV model you wish to import.
+Then press btn:[Next]. 
+|image:chapterModeling/QUDVImportWizard.png[The source selection in the QUDV import wizard]
+
+|{counter:step}.
+|Tick the checkbox for the QUDV model you wish to overwrite.
+Finally press btn:[Finish]. 
+|image:chapterModeling/QUDVImportWizardTargetSelection.png[The target selection in the QUDV import wizard]
+
+|===
+
+=== Modeling Concepts
+
+Virtual Satellite provides an extension mechanism to customize the system modeling to project-specific needs. Concepts allow the creation of new types that can be used in Virtual Satellite models. Virtual Satellite ships basic concepts to a model systems, such as the Concept _de.dlr.sc.virsat.model.extension.ps_. This concept enables to model complex product structures. 
+
+NOTE: To create your own Concepts see Section <<Developing a Concept>>.
+
+==== Activating a Concept
+
+To activate Concepts, it is necessary to have a Virtual Satellite project in the navigator. A new project can be created by clicking the satellite icon in the VirSat Navigator or by right-clicking New > Project then select the folder _VirSat_ and select _VirSat Project_.
+
+Once you have a Virtual Satellite Project (in this documentation called MySatellite) follow the next steps to activate Concepts:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the editor for the _Repository_ from the navigator view by double-clicking menu:MySatellite[Repository]. 
+|image:chapterModeling/OpenRepository.png[Opening the repository editor]
+
+|{counter:step}.
+|The _Repository Editor_ will open in the _Editing_ area. Scroll down to the _table Section for: Active Concepts_. Here click on btn:[Add from Registry]. 
+|image:chapterModeling/RepositoryEditor.png[Select concept to activate]
+
+|{counter:step}.
+|Select the Concept to be activated and press the btn:[OK] button.
+|
+
+|===
+
+The concept is now activated.
+
+==== Modeling with the concept palette
+
+After you activated a concept, you can add instances of its elements to the system model. This can be done either with the context menu ( Right-click an element in the navigator, click on the concept name and select the element to be added ) or with the _Concept Palette_ on the right side of the editor.
+
+NOTE: If you try to add an element from the context menu but do not have the rights to add it at the current location (see <<User Rights Management>> ) or the element is not applicable for the current element then the menu is grayed-out.
+
+Follow the next steps to add concept elements from a concept palette:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Concept elements can be added to the system model by selecting them from the _Concept Palette_. The palette is located right to the editor section.
+|image:chapterModeling/ConceptPalette.png[The Concept Palette]
+
+|{counter:step}.
+|To select elements from the palette you have to expand the containing concept. To create a basic structure for your system model, you can e.g. expand the _ProductStructure_ concept.
+|image:chapterModeling/ConceptPaletteExpanded.png[The ProductStructure section of the Concept Palette]
+
+|{counter:step}.
+|From the concept section in the palette you can select concept elements and then *drag* them into the navigator section.
+|image:chapterModeling/ConceptPaletteDragElement.png[Drag an element from the palette]
+
+|{counter:step}.
+|*Drop* the element at the desired location in the system model. 
+
+NOTE: If you do not have the rights to add the element at the selected location or it is not applicable, then the courser will indicate that.
+
+NOTE: Concepts that are not activated for a project are still shown in the _Concept Palette_, but you cannot add them to the project. The courser will always show that dropping the element is blocked.
+
+|image:chapterModeling/ConceptPaletteDropElement.png[Drop an element in the VirSat Navigator]
+
+|===
+
+==== Extended product structures - Inheritance and Configuration Control
+
+Virtual Satellite Core delivers a concept for extended product structures.
+These product structures are highly related to other product structures as they are currently used in MBSE in the space domain.
+There are several aspects where these product structures should support:
+
+. They are intended to help with the engineering process.
+. They are intended to help with configuration control issues.
+. They should help to avoid data redundancies by inheritance mechanisms.
+
+===== General introduction to extended product structures
+
+The product structures concept delivers capabilities to structure the system design. 
+Besides classical decomposition into one product tree, the concept delivers four different type of trees.
+Each of these trees reflect a different view to the system in the context of its development.
+Information which is entered into one of the trees in an early development stage, can be reused in anotehr tree in a later stage.
+The concept uses Virtual Satellite's intrinsic inheritance functionality for this purpose.
+The four different trees are called: *Product Tree*, *Configuration Tree*, *Assembly Tree* and *Product Storage*.
+
+Product Tree::
+This is the first tree in the development process.
+Here engineers usually define one of the equipments they want to use in the design.
+The data stored here is usually data as it is provided by the supplier.
+
+TIP: E.g.: This tree is used to model one star tracker of a given type and store the information which is equal for all actual implementations of it.
+
+Configuration Tree::
+This is the second tree usually defined in the development process.
+This tree is used to reflect the actual configuration of a spacecraft.
+The data stored here is usually information which is associated to each individual instance of an equipment.
+All information of an equipment in the _product tree_ is inherited here.
+Information can be overridden here if necessary.  
+
+TIP: E.g.: Information about the position of an equipment in the spacecraft is stored here, whereas the size of the equipment can already be defined in the _Product Tree_.
+
+TIP: E.g.: Here is the place to model every instance of the star tracker such as ST1 and ST2.
+
+Assembly Tree::
+These are the third trees usually defined in the development process.
+One of these trees reflect how one spacecraft conforming to the _Configuration Tree_ is built.
+The data stored here is usually information which is specific to the actual sapcecraft built.
+All information of an equipment in the _configuration tree_ is inherited here.
+Information can be overridden here if necessary.  
+
+TIP: There is not necessarily one _Assembly Tree_! Satellite constellations are a typical use-case for multiple _Assembly Trees_.
+
+TIP: E.g.: Information about the ID of a spacecraft should be stored here.
+Also slight modifications to the configuration can be reflected here.
+
+NOTE: The _Assembly Tree_ also combines information from the _Product Storage_.
+E.g. an equipment in the _Product Storage_ may have a unique serial number.
+Once plugged into the _Assembly Tree_ the serial number will be finally overridden with the one from the equipment in the _Product Storage_
+
+Product Storage::
+This is the last tree usually defined in the development process.
+This tree is used to combine the reality with the virtual representation of the system.
+The data stored here is usually information which is unique to the actual equipment. 
+All information of an equipment in the _product tree_ is inherited here.
+Information can be overridden here if necessary.  
+Data defined here is finally inherited into the _Assembly Tree_
+
+TIP: The _Product Storage_ is usually the place to save information such as real life measurements or serial numbers.
+
+NOTE: E.g. in the _Product Storage_ we create three instances of the star trackers which inherit from the one defined in the _Product Tree_.
+Now we get three real star trackers delivered from the supplier.
+We assign the serial numbers to their representation in the _Product Storage_.
+From the _Product Storage_ we assign two of them into the _Assembly Tree_.
+Now we know which star trackers are actually built into the spacecraft. 
+
+===== Extended product structures and inheritance by example
+
+The Figure "<<InheritanceExample>>" explains how Inheritance works together with the Extended Product structures.
+Imagine a _Product Tree_ in which one reaction wheel is defined as an equipment. 
+Together with this equipment a calibration curve as given by a supplier specification is stored.
+This reaction wheel is instantiated as _RW1_ in the _Configuration Tree_.
+Here it inherits the calibration curve of the reaction wheel as defined in the _Product Tree_.
+The _Assembly Tree_ also instantiates a reaction wheel which is inheriting from the one from the _Configuration Tree_.
+Thus it will first inherit the same calibration curve as it has once been specified in the _Product Tree_.
+Now the supplier delivers two reaction wheels from which one has to select for the actual spacecraft.
+Therefore two instances of the reaction wheel are created in the _Product Storage_ called _RW_A_ and _RW_B_. 
+Both of them initially inherit the calibration curve from the specification in the _Product Tree_.
+But measurements showed that the calibration curves are different in reality. 
+Hence the calibration curves are now adjusted in the _Product Storage_.
+It becomes clearly visible, that one calibration curve is far off and the other one is somewhat ok.
+The reaction wheel with the calibration curve which is ok, is now the one that should be used in the actual spacecraft.
+Therefore the _RW1_ in the _Assembly Tree_ has to additionally inherit from the _RW_A_ in the _Product Storage_.
+The calibration curve in the of _RW1_ now reflects the reality of the actually used reaction wheel called _RW_A_.
+
+.Example of Extended Product Structures and Inheritance
+[#InheritanceExample]
+image::chapterExtendedProductStructures/TreeInheritanceExample.png[Tree Inheritance Example]
+
+===== Using the Extended Product Structures concept in Virtual Satellite
+
+The previous chapters explained how to use product structures in general and how the inheritance mechanisms works.
+This chapter takes a closer look how to actually use it in Virtual Satellite. 
+Additionally to what has been explained before, this chapter will also highlight some of the flexibilities in modeling product structures which have not yet been addressed.
+This concerns e.g. the option to create not just one _Product Tree_ but several if needed.
+
+To get started create a simple project as explained in <<First Steps>>. 
+Then activate the following two concepts as explained in <<Activating a Concept>>:
+
+. `de.dlr.sc.virsat.model.extension.ps` - The extended product structures concept
+. `de.dlr.sc.virsat.model.extension.budget.mass` - A mass budget concept
+
+In the following tutorial a complex example of a star tracker equipment is realized.
+In this example a _Product Tree_ with one star tracker will be created.
+Following, the _Configuration Tree_ will be instantiated with two star trackers.
+Two _Assembly Trees_ will be derived from the _Configuration Tree_.
+A mass will be modeled to these star trackers.
+Then, five star trackers will be modeled in the _Product Storage_, with actual weighed mass.
+Due to some fictive fluctuations in the weight, four of them have to be selected for the actual assemblies.
+
+====== Setting up the product structures
+
+First the product structures have to be set up. Follow the given steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+| Model the _Product Tree_:
+
+. Start modeling the _Navigator_.
+. Add a _Product Tree_ as root element and name it `StarExplorer`.
+. Nest a _Product Tree Domain_ into it and call it `AOCS`.
+. Add the Star Tracker equipment into it by modeling an _Element Definition_ and name it `ST`.
+
+Your _Product Tree_ should now look like the one in the image.
+
+TIP: In Virtual Satellite you are not restricted to one single _Product Tree_.
+You are free to model as many _Product Trees_ as you need to organize your data.
+
+|image:chapterExtendedProductStructures/ProductTreeST.png[The Product Tree]
+
+|{counter:step}.
+| Model the _Configuration Tree_ using the _Wizard_:
+
+. Right click the _Product Tree_ called `StarExplorer` in the _Navigator_.
+. Follow the context-menu menu:Context[Product Structure > Generate Product Wizard] to open the _Wizard_.
+. In the Wizard select the _Element Configuration_ called `ST`.
+Then press the btn:[Duplicate] button to copy it.
+Remember the configuration has two instances of the star tracker.
+. Select the first star tracker and press the btn:[Rename] button and set the name to `ST1`.
+. Select the other star tracker, press the btn:[Rename] button and call it `ST2`.
+. Finally set the *Configuration Tree Name* to `StarExplorerConfig`.
+
+The _Wizard_ should look like this.
+
+|image:chapterExtendedProductStructures/ConfigurationTreeWizard.png[The Configuration Tree Wizard]
+
+|{counter:step}.
+| Finally create the _Configuration Tree_ by pressing the btn:[Finish] button in the _Wizard_.
+
+The _Navigator_ will show up like this. 
+
+TIP: You can model the _Configuration Tree_ without the Wizard as well. But you will have to perform a lot more modeling steps such as setting inheritance links.
+
+|image:chapterExtendedProductStructures/ConfigurationTreeST.png[The Configuration Tree in the Navigator]
+
+|{counter:step}.
+| Now, model the _Assembly Trees_ using the _Wizard_:
+
+. Right click the _Configuration Tree_ called `StarExplorerConfig` in the _Navigator_.
+. Follow the context-menu menu:Context[Product Structure > Generate Product Wizard] to open the _Wizard_.
+. Finally set the *Assembly Tree Name* to `StarExplorer1`.
+. Press the btn:[Finish] to create the first _Assembly Tree_
+
+Repeat the steps to create the second _Assembly Tree_ and call it `StarExplorer2`.
+The product structures in the _Navigator_ should now look like this.
+
+|image:chapterExtendedProductStructures/AssemblyTreesST.png[The two Assembly Trees]
+
+|===
+
+Well done, the product structures for our spacecraft is prepared.
+At the moment we don't yet need the _Product Storage_.
+The next part explains how data inherits in this product structure and how this inheritance can be broken.
+
+
+====== Basic inheritance of data
+
+In this product structure example we now have one star tracker camera, which is instantiated six times in the _Configuration_ and _Assembly Trees_.
+Now it is time to model a mass to these star trackers, but not to every individual one. 
+This following example will show how the inheritance mechanism helps to model the mass in one place and use it in all the other star trackers as well:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+| First the mass has to be modeled in the _Product Tree_:
+
+. Traverse the _Product Tree_ in the _Navigator_ down to the _Element Definition_ called `ST`.
+. Model a _Mass Equipment_ from the mass budget concept here.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+
+After saving the _Mass Equipment_ will appear on the star trackers in the _Configuration Tree_ and _Assembly Trees_ as well.
+
+NOTE: The _Mass Equipment_ will not be inherited if the data is not saved.
+Once the data is saved, the eclipse builder will call the inheritance builder to update all relevant data.
+
+|image:chapterExtendedProductStructures/InheritedMassEquipment.png[InheritedMassEquipment]
+
+|{counter:step}.
+| Add some weight to the star tracker:
+
+. Traverse the _Product Tree_ in the _Navigator_ down to the _Element Definition_ called `ST`.
+. Select the _Mass Equipment_ and double-click to open it in the _Editor.
+. In the _Editor scroll down to the field called *mass* and set a value of `1.5kg`.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+
+The mass of 1.5kg now gets propagated to all inheriting star trackers.
+
+TIP: The name of the editor in the top tabulator helps you to navigate. 
+The name indicates where the _Mass Equipment_ resides that is currently open.
+
+|image:chapterExtendedProductStructures/EditorSetMassEquipment.png[Set the Mass Equipment on the star tracker]
+
+|{counter:step}.
+| Add a _Mass Summary_ to the _Configuration Tree_ and inspect it in one of the assemblies:
+
+. Traverse the _Configuration Tree_ in the _Navigator_ down to the _Element Configuration_ called `AOCS`.
+. Model a _Mass Summary_ from the mass budget concept here.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+. Now, traverse the _Assembly Tree_ in the _Navigator_ called `StarExplorer1` down to the _Element Occurrence_ called `AOCS`.
+. Double-click the `AOCS` to open it in the _Editor_.
+. Open the _Mass Equipment_ from the _Product Tree_ as well.
+. Change the mass in the _Mass Equipment_ to `1.6kg`.
+. Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+
+Inspect how the summary of the _Assembly Tree_ is affected because the mass of the star tracker changes.
+
+|image:chapterExtendedProductStructures/EditorMassSummary.png[Observe the Mass Summary in the Assembly Tree]
+
+|===
+
+====== Multi-inheritance with Storage Equipment
+
+After the _Product_, _Configuration_ and _Assembly Trees_ have been modeled, it is about time to create some _Product Storage_ equipment.
+As in the example before, the idea is to be able to model the real equipment which have been delivered.
+This is needed to store equipment individual information, such as specific calibration curves or serial numbers.
+In this example we stick with the mass. 
+We assume that for the four star tracker we need in the assembly, we ordered five parts.
+All parts will be weighed and their actual mass will be noted down.
+We finally pick the four which have the lowest mass and add them to the _Assembly Trees_. 
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+| First a new root one equipment has to be modeled in the _Product Storage_ and typed by the equipment in the _Product Structure_ 
+
+. Create a new root _Product Storage_ element in the _Navigator_. Follow the context menu menu:Context[Product Structure > Add Product Storage].
+. Create a nested _Product Storage Domain_ as a child to the _Product Storage_ and name it `AOCS`.
+. Create a nested _Element Realization_ as a child to the _Product Structure Domain_ called `AOCS` and call it `ST_A`.
+
+The first equipment in the storage can now represent a real equipment.
+Still it needs to be typed and later copied to represent the amount needed.
+
+|image:chapterExtendedProductStructures/ProductStorageST.png[The Product Storage with one Element Realization]
+
+|{counter:step}.
+| Now the `ST_A` needs to by typed with the `ST` from the _Product Tree_.  
+
+. Double-Click the _Element Realization_ called `ST_A` to open it in the _Editor_.
+. Scroll down to the table section called *Inheritance*.
+. Under the table press the button btn:[Add Inheritance].
+. In the dialog select the _Product Tree_ called `StarExplorer` in the tree to the left side.
+. After the right list updated, select the _Element Definition_ called `ST`.
+. Press the button btn:[OK].
+. Save the changes by pressing kbd:[CTRL+S]. 
+
+The `ST_A` is now typed by the 'ST' from the _Product Tree_.
+The _Element Definition_ `ST` shows up in the table of the *Inheritance* section.
+The _Mass Equipment_ category is inherited to the `ST_A` as expected.
+
+NOTE: To remove the inheritance, select the element in the table and press the btn:[Remove Inheritance] button.
+
+TIP: You can also use *drag & drop* to model the inheritance.
+Simply *drag* the `ST` from the _Product Tree_ and drop it into the table of the *Inheritance* section of the `ST_A`.
+
+|image:chapterExtendedProductStructures/InheritanceReferenceDialog.png[Dialog for setting the Inheritance]
+
+|{counter:step}.
+| Now the `ST_A` needs to be copied and weights need to be assigned.
+
+. Select the 'ST_A' and press kbd:[CTRL+C].
+. Select the _Product Storage Domain_ called `AOCS` and press kbd:[CTRL+V] four times.
+. Rename the copied equipment to `ST_B`, `ST_C`, `ST_D` and `ST_E`. 
+. Adjust the mass of `ST_A` to `1.592kg`.
+. Adjust the mass of `ST_B` to `1.599kg`.
+. Adjust the mass of `ST_C` to `1.594kg`.
+. Adjust the mass of `ST_D` to `1.604kg`.
+. Adjust the mass of `ST_E` to `1.602kg`.
+. Press kbd:[CTRL+SHIFT+S] to save all changes.
+
+
+|image:chapterExtendedProductStructures/ProductStorageST5.png[Product Storage with five equipment]
+
+|{counter:step}.
+| It is time to plug the equipment from the _Product Storage_ into the _Assembly Trees_.
+`ST_A` and `ST_E` will be assigned to `StarExplorer1`.
+`ST_B` and `ST_C` will be assigned to `StarExplorer2`.
+`ST_D` is kept in the _Product Storage_ as a spare.
+
+. Traverse the _Navigator_ down to the `ST1` of `StarExplorer1`.
+. Double-click the 'ST1' to open it in the _Editor_.
+. Scroll down to the section called *Inheritance*.
+. Add a second inheritance referencing to the `ST_A` in the _Product Storage_.
+. Press kbd:[CTRL+S] to save all changes, and to update all inherited data.
+
+
+|image:chapterExtendedProductStructures/ProductStorageST5.png[Product Storage with five equipment]
+
+
+|===
+
+==== Equipment mass and mass summaries concept
+
+Masses and mass budgets can be modeled with the `de.dlr.sc.virsat.model.extension.mass.budget` concept.
+The concept contains two main categories:
+
+MassEquipment::MassEquipment models the mass of an equipment or sub-equipment. It should usually only be at leaf nodes
+in the system decomposition. It provides the following properties:
+
+* `mass` describes the equipment mass. The default value is `0` and the unit is `kg`.
+* `margin` describes the margin that should be taken. The default value is `20` measured in `%`.
+* `massWithMargin` is a calculated property describing the mass with the margin and is defined as `mass * (1 + margin)`. The default unit is `kg`.
+* `massMargin` is a the mass margin and is defined as `massWithMargin - mass`. Default unit is `kg`.
+
+MassSummary::MassSummary models mass budegt summaries of sub-systems or systems. It should be usually placed above nodes with MassEquipments.
+It provides the following properties:
+
+* `mass` is a calculated property summing up over all masses contained in the sub-tree. The default unit is `kg`.
+* `massWithMargin` is a calulcated property summing up over all masses with margin contained in the sub-tree. The default unit is `kg`.
+* `massMargin` is a calculated property defined as `massWithMargin - mass`. The default unit is `kg`.
+* `margin` is a calculated property giving the average margin and is defined as `masMargin / mass`. It is measured in `%`.
+
+In the following we will create a mass budget. Create a project - in the following called `MySatellite` - and activate the following concepts
+
+* `de.dlr.sc.virsat.model.extension.mass.budget`
+* `de.dlr.sc.virsat.model.extension.ps`
+
+according to <<Activating a Concept>>.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|For the system, create a Configuration Tree with two ElementConfigurations, called ElementConfiguration1 and ElementConfiguration2.
+|image:chapterModeling/MassConceptSystem.png[MySatellite system]
+
+|{counter:step}.
+|Now you can add _MassEquipment_ category to ElementConfiguration1 from the _Navigator_ with menu:Context[MassBudget > Add MassEquipment].
+In the same manner, add an _MassEquipment_ category to ElementConfiguration2.
+|image:chapterModeling/MassConceptAddEquipmentMass.png[Adding an equipment mass]
+
+|{counter:step}.
+|Set the mass of ElementConfiguration1 to `10kg` and of ElementConfiguration2 to `20kg`. 
+Also change the margin of ElementConfiguration2 to `10%`.
+Finally, save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+|image:chapterModeling/MassConceptAddEquipmentMass.png[Configuring masses]
+
+|{counter:step}.
+|Add a _MassSummary_ category to ConfigurationTree from the _Navigator_ with menu:Context[MassBudget > Add MassSummary].
+Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
+Now, in the _Navigator_ double click on ConfigurationTree and scroll to the MassSummary section.
+Here you can find a budget breakdown.
+|image:chapterModeling/MassConceptBudget.png[Insepcting the mass budegt breakdown]
+
+
+|===
+
+==== Product maturity concept
+
+Virtual Satellite provides means to add element maturities to the system model. Maturities can be used to evaluate the technical development level of the different components of a system. The concept is based on the https://www.nasa.gov/directorates/heo/scan/engineering/technology/txt_accordion1.html[Technical Readiness Level]. Its assessment can be done following NASA's guide: https://www.gao.gov/assets/680/679006.pdf[TRL Assessment Guide].
+
+The Maturity concept in Virtual Satellite allows to add maturity properties to all system elements and provides an overview of the level of child elements.
+
+To start modeling maturities in Virtual Satellite follow these steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Activate the _Maturity_ concept (see <<Activating a Concept>>).
+|image:chapterModeling/AddMaturityConcept.png[Add Maturity Concept]
+
+|{counter:step}.
+|You can add maturity parameters to a system element by 1) using the context menu, right-click -> Design Maturity -> Add Maturity 2) By dragging the Maturity element from the Concept Palette 3) Or by checking the _Maturity_ check box in the editor section of a system element.
+|image:chapterModeling/ActivateMaturityParameters.png[Add Maturity parameters]
+
+|{counter:step}.
+|Set the maturity value of the element from the dropdown box.
+|image:chapterModeling/SetParameterValue.png[Set maturity parameter value]
+
+|===
+
+To get a summary of the different maturity values of the system, the section shows a hierarchical list of the maturity values of all child elements.
+
+image:chapterModeling/MaturityOverview.png[Maturity overview]
+
+Elements can be collapsed or expanded and the values can be exported to Excel. 
+
+=== 3D Visualisation
+
+In Virtual Satellite it is possible to add geometric information to the model and visualise it.
+
+image::chapterModeling/VisDemo.png[Visualisation Demo]
+
+This section describes how to do it.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Activate the _Visualisation_ concept (see <<Activating a Concept>>).
+|image:chapterModeling/AddVisConcept.png[Add Visualisation Concept]
+
+|{counter:step}.
+|Now you can add _Visualisation_ category to the components in the _Navigator_ with menu:Context[Visualisation > Add Visualisation].
+|image:chapterModeling/AddVis.png[Add Visualisation Category]
+
+|{counter:step}.
+|Double-click this newly created _Visualisation_ to open it in the _Editor_. Here you can pick a shape (e.g. a cylinder or a box) and set various parameters related to the size, position and orientation of the node.
+
+NOTE: Position and rotation parameters are relative to the center of a parent node (if there is a parent node with Visualisation attached). Root components are positioned relative to the origin.
+
+TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape and click btn:[Select / Upload File] to use it. In this case size parameters will be ignored. Only STL is supported currently.
+
+|image:chapterModeling/VisParams.png[Visualisation Parameters]
+
+|{counter:step}.
+|To see the visualisation you need to open the _3D Viewer_ view menu:Window[Show View › Other › VirSat › 3D Viewer].
+
+TIP: You can use a combination kbd:[ALT+SHIFT+Q], kbd:[Q] to open a view.
+
+NOTE: Alternatively you can open the _3D Viewer_ by switching to the _VirSat - Visualisation_ perspective.
+
+|image:chapterModeling/VisView.png[3D View]
+
+|{counter:step}.
+|If you want to model a more complex shape (e.g. a thruster with a nozzle), you need to split a component into subcomponents and assign each one a separate _Visualisation_ category.
+In this case you can add a NONE shape to the root of the component to position the whole thing.
+|image:chapterModeling/VisComposite.png[3D View]
+
+|===
+
+=== Advanced Modeling
+
+Most users will only required modeling techniques from the section <<General Modeling>>.
+However, there may be projects where further extensions or behavior adjustments of Virtual Satellite are desired.
+This can include adjusting the default equations in concepts, writing additional small programs - Apps - that allow
+Virtual Satellite to output data for example into Excel.
+While a common end user may never be exposed to the deeper workings of these functionalities,
+users administering repositories may find a need for them. 
+
+==== Adjusting Equations
+
+Mathematical dependencies between numeric properties are described by _Equations_.
+An equation has on the left-hand side a variable and on the right hand-side a mathematical calculation.
+Whenever a change in the model occurs, Virtual Satellite re-checks the equations and updates the left-hand side
+variable according to the result of the calculation of the right-hand side.
+A variable whose value is determined by an equation is a calculated variable.
+Such variables are not editable and marked by a calculator symbol image:chapterAdvancedModeling/VirSatCalculated.png[Indication for a variable being calculated by VirSat].
+
+The equations in Virtual Satellite are not hard-coded, but explicit parts of the model.
+They can be freely edited using the _Equation Editor_.
+In many cases, editing equations is not necessary since a concept may come with its own default equations model.
+
+NOTE: Example Equation: `Ref: massWithMargin = mass * margin;`
+Here `massWithMargin` is a calculated variable.
+Whenever `mass` or `margin` change, `massWithMargin` is recalculated.
+
+In this section you will learn how to:
+
+* Open the Equation Editor
+* Edit an Equation
+* Create a new equation
+
+An equation can be defined in the <<Equation Editor>>.
+The editor is available in any CategoryAssignment that possesses at least a numeric property.
+Every equation follows the format `TYPE: CALCULATED_VARIABLE = CALCULATION;` where
+
+* `TYPE` is either `Ref` or `Calc`. 
+`Ref`, short for reference, is used when referencing an element of the data model.
+`Calc`, short for intermediate calculation, is used when creating an intermediate variable.
+The variable is not part of the data model and thus also not persistently stored.
+This type of equation can be used to simplify equations and remove redundant terms.
+* `CALCULATED_VARIABLE` is the name of the property that will be calculated.
+It is also possible to pass a full qualified name to reference non-local properties.
+* `CALCULATION` is a mathematical expression using operators such as `*, +, -, /, sin(...), cos(...)`.
+Inputs of a calculation are other properties, specified by their name.
+It is also possible to pass full qualified names to reference non-local properties.
+
+Concepts may also provide customized extensions for the calculation engine.
+This includes allowing the use of other objects than properties for input and outputs,
+defining new mathematical functions, and so on.
+
+===== Equation Editor
+
+The Equation Editor is a textual editor and the main tool for editing equations.
+In the following, we will modify the equations of the <<Product mass summaries>> concept 
+to include an additional top-level system margin.
+You will need a VirSat project (called MySatellite in the following) with the 
+<<Extended product structures - Inheritance and Configuration Control>> concept and the 
+<<Product mass summaries>> concept both activated.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Create a data model consisting of a ConfigurationTree as the root with two child ElementConfigurations.
+Attach a MassEquipment to each ElementConfiguration and a MassSummary to the ConfigurationTree. 
+|image:chapterAdvancedModeling/EquationEditorDataModel.png[Setting up a data model with equations]
+
+|{counter:step}.
+|Set the mass value of the first ElementConfiguration to 10 and the mass value of the second ElementConfiguration to 15.
+Leave the margins at 20.
+|image:chapterAdvancedModeling/EquationEditorDataModelValues.png[Setting input values for equations]
+
+|{counter:step}.
+|Save (kbd:[CTRL+S]) and then open the Editor of the MassSummary of ConfigurationTree.
+The massWithMargin value should show 30.
+Next open the EquationEditor by pressing the Edit Equations button.
+|image:chapterAdvancedModeling/EquationEditorOpen.png[Opening the equation editor]
+
+|{counter:step}.
+|Create a new equation `Calc: systemMargin = 0.1`. This creates a new intermediate variable called systemMargin with value 0.1.
+Modify the equation of  massWithMargin by adding the factor  `(1 + systemMargin)`.
+After saving (kbd:[CTRL+S]) the value of massWithMargin should update to 33.
+
+TIP: You can also delete equations by removing them in the Equation Editor.
+This way you can manually override any calculated values.
+
+|image:chapterAdvancedModeling/EquationEditorEditingEquations.png[Editing equations]
+
+|===
+
+===== Aggregation Functions 
+
+In addition to the usual mathematical functions with fixed number of inputs, Virtual Satellite supports _aggregation functions_.
+Aggregation functions are intended to apply operations such as summing up all elements, calculating the mean, etc. on a set of inputs.
+The input set can be specified either by explicitly listing all inputs or an input type.
+
+NOTE: An example use of an aggregation function is the expression `summary(AMassParameters.massWithMargins)` 
+from the <<Product mass summaries>> concept, which sums up all massWithMargin values of categories of type AMassParameter. 
+
+Calling an aggregation function on N specific number of instances can be achieved via the following syntax:
+
+....
+aggregationFunction { propertyInstanceName1, ..., propertyInstanceNameN }
+....
+
+Alternatively, calling an aggregation function on a instance type achieved via the syntax
+
+....
+aggregationFunction(propertyName, nameFilter, depth)
+....
+
+where
+
+* *nameFilter* is optional and filters out all Categories that do not confirm to the nameFilter
+* *depth* is optional and limits the aggregation depth. The value -1 represents limitless aggregation and is set by default.
+
+Concepts may define new aggregation functions as necessary and may also allow other objects than properties to be used
+as aggregation inputs. By default Virtual Satellite CORE comes with a set of aggregation functions, namely:
+
+summary:: `summary` sums up all elements in the set. Returns 0 for empty sets.
+mean:: `mean` computes the average over the set. Returns NaN for empty set.
+Max:: `max` computes the maximum value over the set. Returns NaN for empty sets.
+Min:: `min` computes the minimum value over the set. Returns NaN for empty sets.
+Count:: `count` counts the number of elements in the set. Returns 0 for empty sets.
+
+===== Calculation Builder
+
+The automatic calculation updates are performed via the _Calculation Builder_. 
+The builder executes by default whenever there is a change in the data model.
+Should it be desired for the builder to not execute automatically, it can be turned off
+by toggling the option menu:Project[Build Automatically].
+In the same menue, manual builds can also be triggered via menu:Project[Build All].
+
+Just like all other data model changes, the builder is subject to the rights management.
+Should a value be updated and a calculated variable require an update, which cannot
+be performed due to lack of rights, a `Computed value is out of date` warning is issued instead.
+A proposed update order for to resolve these warnings can be obtained from the _Domain Round View_.
+The view can be opened via menu:Window[Show View > Other > VirSat > Domain Round].
+By selecting a project in the _Navigator_, the view will then show a proposed update order to resolve calculation dependencies.
+
+==== Using and Developing Apps
+
+In MBSE it is very important not just to model a system, but to also make use of the modeled data.
+In most cases reasonable Input and Output from and to other sources is required, same as some on-the-fly analysis of the current data.
+Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
+The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
+
+NOTE: Create an example project (see <<First Steps>>) before you continue with this tutorial.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|In the _Navigator_ double click on the Repository to open it in the _Editor_.
+|image:chapterApps/OpenTheRepository.png[Open the Repository]
+
+|{counter:step}.
+|In the _Editor_ scroll down to the section _VirSat Apps_. Here you have to press the button btn:[Activate/ Update Apps].
+
+NOTE: Technically the project will be transformed into an eclispe plugin project in the background. This may take a while. 
+
+|image:chapterApps/ActivateApps.png[Activating the Apps]
+
+|{counter:step}.
+|After the Apps are activated, press the button btn:[Add App] to add a new exmaple app.
+|image:chapterApps/AddApp.png[Add a new example App]
+
+|{counter:step}.
+|Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. This example App accesses the repository and prints all units stored in the unit management. 
+
+NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
+
+|image:chapterApps/AppEditor.png[The App opened in a Java Editor]
+
+|{counter:step}.
+|Back in the Repository Editor you can now execute the App by pressing the btn:[Run APP] button. You have to select the App in the list before.
+
+TIP: You can also execute the App in the editor by the context menu menu:Context[Run As > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
+
+INFO: You can also execute the App in the Java debugger.
+
+|image:chapterApps/AppEditor.png[Execute the App]
+
+|{counter:step}.
+|As soon as the App is executed it will create some output in the _Console_ view.
+|image:chapterApps/AppOutput.png[App output in the console view]
+
+
+|===
+ 
+
+==== Developing a Concept
+
+The modular data model allows to develop concepts by yourself.
+This enables you to add new data into the system engineering process whenever it is needed.
+Developing a concept can happen in various stages.
+1. It is possible to just create new structural elements or categories for modeling using the generic systems engineering language (GSEL) and generate all necessary code with it.
+2. It is possible to tweak all the automatically generated code.
+
+NOTE: Developing the concept is not intended for the standard user.
+Therefore please consult the Virtual Satellite developers manual for further information.
+
+== Advanced Functionality
+
+Most of the advanced functionality that is shown here concerns changing settings in the ini file. 
+E.g. it allows to gain super user rights or to activate the OSGI console which is useful for debugging.
+
+TIP: The ini file is an intrinsic feature of Eclipse. If you want to learn more about it and other feature connected to it, search for `eclipse.ini` in the internet.
+
+
+=== Enforce user rights
+
+By default you open Virtual Satellite with your normal system user name. However, in certain cases you may want to start Virtual Satellite as a different user.
+This can be done by changing the `VirSat4_Core.ini` file.
+Open the file in a text editor and add the parameter `-forcedUser <name>` as given in the example below.
+
+NOTE: The user name should be on the next line following `-forcedUser` line.
+
+NOTE: Make sure that the `-forcedUser` is set before the virtual machine arguments in this file.
+
+WARNING: Playing around with user rights can easily corrupt your system data. Be sure about what you are doing in case you are using this parameter.
+
+.VirSat4_Core.ini
+----
+-forcedUser
+Mr_Code // <1>
+-startup
+plugins/org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.551.v20171108-1834
+-console
+-consoleLog
+-vm // <2>
+C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
+----
+<1> Force Virtual Satellite to start with the user named `Mr_Code`.
+<2> The virtual machine arguments which should be at the end of the file.
+
+=== Enforce super user rights
+
+Virtual Satellite allows you to get super user rights.
+Super user rights actually means that the rights management is turned off.
+In consequence, Virtual Satellite does not stop you anymore from changing information in
+case you are not allowed to do this. Gaining super user rights can be done by adding `-superUser` parameter in the `VirSat4_Core.ini` file.
+
+NOTE: Make sure that the `-superUser` is set before the virtual machine arguments in this file.
+
+WARNING: Playing around with super user rights can easily corrupt your system data.
+Be sure about what you are doing in case you are using this parameter.
+
+.VirSat4_Core.ini
+----
+-superUser // <1>
+-startup
+plugins/org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.551.v20171108-1834
+-console
+-consoleLog
+-vm // <2>
+C:\Program Files\Java\jdk1.8.0_202\bin\javaw.exe
+----
+<1> Force Virtual Satellite to start with the super user rights.
+<2> The virtual machine arguments which should be at the end of the file.
+
+=== Equinox OSGI Console
+
+The OSGI console of eclipse can be very helpful in case things do not work as expected.
+Therefore, it is often activated in Virtual Satellite projects. 
+In case you don't like it, you can turn it off by removing the parameter `-console` and `-consoleLog` from the `VirSat4_Core.ini` file.
+
+.VirSat4_Core.ini
+----
+-startup
+plugins/org.eclipse.equinox.launcher_1.4.0.v20161219-1356.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.1.551.v20171108-1834
+-console // <1>
+-consoleLog // <2>
+----
+<1> This parameter is responsible for the interactive OSGI console.
+<2> This parameter us responsible for logging into the OSGI console.
+
+TIP: The OSGI console is an intrinsic feature of eclipse.
+It is very powerful and can help to track to problems.
+If you want to know more about it, search for `eclipse OSGI console` in the internet.
+
+
+[colophone]
+== Legal - License & Copyright
+
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| Travis CI Job Number: | {buildnr}
+|=== 
+
+Copyright (c) 2008-2019 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.

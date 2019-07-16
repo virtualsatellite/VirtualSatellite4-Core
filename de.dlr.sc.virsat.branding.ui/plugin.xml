@@ -52,6 +52,18 @@
                name="preferenceCustomization"
                value="plugin_customization.ini">
          </property>
+         <property
+               name="cssTheme"
+               value="org.eclipse.e4.ui.css.theme.e4_default">
+         </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.e4.ui.css.swt.theme">
+      <theme
+            basestylesheeturi="css/theme-super-user.css"
+            id="de.dlr.sc.virsat.branding.ui.themesuperuser"
+            label="SuperUserTheme">
+      </theme>
    </extension>
 </plugin>

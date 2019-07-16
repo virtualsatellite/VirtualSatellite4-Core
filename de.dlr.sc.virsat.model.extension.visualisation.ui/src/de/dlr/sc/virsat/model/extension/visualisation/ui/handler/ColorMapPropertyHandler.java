@@ -30,15 +30,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
-import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.model.extension.visualisation.comparison.ModelPropertyColorMap;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIo;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.VtkClientView;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.dialogs.ColorMapPropertyDialog;
+import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * This handler creates the Visualization delta models used for color map
@@ -63,14 +62,14 @@ public class ColorMapPropertyHandler extends AbstractHandler implements IHandler
 				ColorMapPropertyDialog dialog = new ColorMapPropertyDialog(shell, vsBaseProject);
 				
 				if (dialog.open() == Window.OK) {
-					ComposedProperty property = dialog.getProjectProperty(); 
-					if (vsBaseProject != null && property != null) {
+					String propertyFQN = dialog.getComparisonProjectPropertyFQN(); 
+					if (vsBaseProject != null && propertyFQN != null) {
 						new ProgressMonitorDialog(shell).run(true, false, (pm) -> {
 							try {
 								Repository vsBaseRepo = VirSatResourceSet.getResourceSet(vsBaseProject.getWrappedProject()).getRepository();
 
 								ModelPropertyColorMap compareModelPropertyColorMap = new ModelPropertyColorMap(pm);
-								VisualisationDeltaModel deltaModel = compareModelPropertyColorMap.colorMap(vsBaseRepo, property.getFullQualifiedName());
+								VisualisationDeltaModel deltaModel = compareModelPropertyColorMap.colorMap(vsBaseRepo, propertyFQN);
 								
 								double max = compareModelPropertyColorMap.getColorMapMaxValue();
 								double min = compareModelPropertyColorMap.getColorMapMinValue();		

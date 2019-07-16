@@ -9,7 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.visualisation.comparison;
 
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
 import org.junit.Before;
@@ -26,13 +29,11 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestMassParameters;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.ColorDelta;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
-
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Test cases to verify the comparison algorithm
@@ -106,6 +107,15 @@ public class CompareModelPropertyTest extends AConceptTestCase {
 		
 		propertyFqn = "de.dlr.sc.virsat.model.extension.tests.TestMassParameters.mass";
 		
+		TestCategoryAllProperty testCaBat = new TestCategoryAllProperty(conceptTest);
+		TestCategoryAllProperty testCaObc = new TestCategoryAllProperty(conceptTest);
+		
+		ecBat.add(testCaBat);
+		ecObc.add(testCaObc);
+		
+		testCaBat.setTestFloat(TEST_MASS_BAT);
+		testCaObc.setTestFloat(TEST_MASS_OBC);
+		
 		repo2 = DVLMFactory.eINSTANCE.createRepository();
 		repo2.getActiveConcepts().add(conceptPs);
 		repo2.getActiveConcepts().add(conceptVis);
@@ -133,6 +143,26 @@ public class CompareModelPropertyTest extends AConceptTestCase {
 		assertEquals("There are no clone shapes", 0, vdm.cloneShapeDeltas.size());
 		assertEquals("There are no ghost shapes", 0, vdm.ghostShapeDeltas.size());
 		
+		assertEquals("There are some delta colors", COLOR_DELTA_SIZE, vdm.colorDeltas.size());
+		
+		final ColorDelta EXPECTED_CD_1 = new ColorDelta(ecBat.getUuid(), ACompareModelAlgorithm.COLOR_GREY);
+		final ColorDelta EXPECTED_CD_2 = new ColorDelta(ecObc.getUuid(), ACompareModelAlgorithm.COLOR_GREY);
+		final ColorDelta EXPECTED_CD_3 = new ColorDelta(ecSc.getUuid(), ACompareModelAlgorithm.COLOR_GREY);
+		
+		// Both models are equals, thus the delta model should change all visualized parts to become grey
+		assertThat("Make sure both ColorDeltas are contained in the list of processed deltas", vdm.colorDeltas.values(), hasItems(EXPECTED_CD_1, EXPECTED_CD_2, EXPECTED_CD_3));
+	}
+	
+	@Test
+	public void testCompareBothStudiesEqualQudvPropertyInstance() {
+		final String propertyFqn = TestCategoryAllProperty.FULL_QUALIFIED_CATEGORY_NAME + "." + TestCategoryAllProperty.PROPERTY_TESTFLOAT;
+		
+		final int COLOR_DELTA_SIZE = 3;
+		
+		VisualisationDeltaModel vdm = new CompareModelProperty(new NullProgressMonitor()).compare(repo, repo2, propertyFqn);
+		
+		assertEquals("There are no clone shapes", 0, vdm.cloneShapeDeltas.size());
+		assertEquals("There are no ghost shapes", 0, vdm.ghostShapeDeltas.size());
 		assertEquals("There are some delta colors", COLOR_DELTA_SIZE, vdm.colorDeltas.size());
 		
 		final ColorDelta EXPECTED_CD_1 = new ColorDelta(ecBat.getUuid(), ACompareModelAlgorithm.COLOR_GREY);

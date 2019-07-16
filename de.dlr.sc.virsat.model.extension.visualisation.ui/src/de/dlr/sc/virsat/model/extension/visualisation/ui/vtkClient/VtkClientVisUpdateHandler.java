@@ -58,7 +58,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 				mNode = visualisationMessage.getSceneGraph().getNode();
 				VtkTreeManager visMan = VtkTreeManager.getInstance();
 				visMan.clearInvalidActors();
-				visMan.clearNewActors();
 				visMan.forceSceneryUpdate(mNode);
 				updateVisualisationScene();
 			}
@@ -77,10 +76,11 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		for (vtkProp newActor : visMan.getNewActors()) {
 			visMan.GetRenderer().AddActor(newActor);
 		}
+		VtkTreeManager.getInstance().clearNewActors();
+		
 		// render the scene
 		
 		visMan.Render();
-		
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 			}
 			
 			VtkTreeManager.getInstance().checkIdAndCreateAxes(uuid);
-			VtkTreeManager.getInstance().highlightObject(uuid);
+			VtkTreeManager.getInstance().highlightIfSelectedObject(uuid);
 		}
 		
 	}

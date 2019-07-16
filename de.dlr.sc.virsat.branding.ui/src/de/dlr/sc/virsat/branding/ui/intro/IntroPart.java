@@ -81,7 +81,7 @@ public class IntroPart implements IIntroPart {
     	outerContainer.addListener(SWT.Resize, new Listener() {
     		public void handleEvent(Event event) {
     			Rectangle rect = outerContainer.getClientArea();
-    			ImageDescriptor backgroundImageDesc = Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/images/WelcomeScreen/BIROS_block.jpg");
+    			ImageDescriptor backgroundImageDesc = Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/images/WelcomeScreen/VirtualSatellite_Modelling_4k.jpg");
     			Image backgroundImage = backgroundImageDesc.createImage();
     			GC gc = new GC(backgroundImage);
     			gc.setAntialias(SWT.ON);
@@ -125,7 +125,7 @@ public class IntroPart implements IIntroPart {
     	
     	//adding some style text for a welcome header	
     	StyledText welcomeText = new StyledText(outerContainer, SWT.NULL);
-    	welcomeText.setText("Welcome to the Virtual Satellite DVLM Prototype");
+    	welcomeText.setText("Welcome to the Virtual Satellite 4");
     	
     	final int FONT_SIZE_32 = 32;
     	final int FONT_SIZE_18 = 18;
@@ -221,7 +221,7 @@ public class IntroPart implements IIntroPart {
 				IIntroPart welcomePart = PlatformUI.getWorkbench().getIntroManager().getIntro();
 				PlatformUI.getWorkbench().getIntroManager().closeIntro(welcomePart);
 			} catch (Exception ex) {
-				Activator.getDefault().getLog().log(new Status(Status.ERROR, "BrandingPlugin", "Login command not found or perspective not found"));
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, "BrandingPlugin", "Perspective not found"));
 			}
 		}
 

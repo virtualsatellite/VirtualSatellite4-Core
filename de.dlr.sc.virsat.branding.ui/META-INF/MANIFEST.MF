@@ -10,5 +10,6 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui.workbench,
  org.eclipse.core.runtime,
  org.eclipse.ui.intro,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.e4.ui.css.swt.theme
 Automatic-Module-Name: de.dlr.sc.virsat.branding.ui
