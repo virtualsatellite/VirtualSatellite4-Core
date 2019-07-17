@@ -180,14 +180,10 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 				Object validator = childConfigElement.createExecutableExtension("class");
 				if (validator instanceof IStructuralElementInstanceValidator) {
 					IStructuralElementInstanceValidator seiValidator = (IStructuralElementInstanceValidator) validator;
-					if (!seiValidators.contains(seiValidator)) {
-						seiValidators.add(seiValidator);
-					}
+					seiValidators.add(seiValidator);
 				} else if (validator instanceof IRepositoryValidator) {
 					IRepositoryValidator repoValidator = (IRepositoryValidator) validator;
-					if (!repoValidators.contains(repoValidator)) {
-						repoValidators.add(repoValidator);
-					}	
+					repoValidators.add(repoValidator);
 				}
 			} catch (CoreException e) {
 				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VirSatValidatorBuilder: Could not resolve validator through extension point", e));

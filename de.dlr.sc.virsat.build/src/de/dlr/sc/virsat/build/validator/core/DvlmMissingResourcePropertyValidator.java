@@ -10,15 +10,15 @@
 
 package de.dlr.sc.virsat.build.validator.core;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
@@ -47,15 +47,12 @@ public class DvlmMissingResourcePropertyValidator extends ADvlmCoreValidator imp
 		});
 	
 		for (ResourcePropertyInstance iResourceProperty : iResProps) {
-			String resourceUri = iResourceProperty.getResourceUri();
-			String root = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-			if (resourceUri != null) {
-		    	File resourceFile = new File(root + "/" + resourceUri);
+			BeanPropertyResource beanPropertyResource = new BeanPropertyResource(iResourceProperty);
+			IFile resourceFile = beanPropertyResource.getFile();
 			
-		    	if (!resourceFile.exists()) {
-		    		vvmHelper.createDVLMValidationMarker(IMarker.SEVERITY_WARNING, "The file \'" + resourceFile.getName() + "\' does not exist.", iResourceProperty);
-		    		validationSuccessful = false;
-		    	}
+			if (resourceFile != null && !resourceFile.exists()) {
+		    	vvmHelper.createDVLMValidationMarker(IMarker.SEVERITY_WARNING, "The file \'" + resourceFile.getName() + "\' does not exist.", iResourceProperty);
+		    	validationSuccessful = false;
 		    }
 		}
 		

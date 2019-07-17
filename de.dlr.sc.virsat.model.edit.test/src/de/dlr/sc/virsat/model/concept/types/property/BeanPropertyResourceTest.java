@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.junit.After;
@@ -39,8 +40,7 @@ public class BeanPropertyResourceTest extends ABeanPropertyTest {
 	public void setUp() throws Exception {
 		super.setUp();
 		rpi = PropertyinstancesFactory.eINSTANCE.createResourcePropertyInstance();
-		beanProperty = new BeanPropertyResource();
-		beanProperty.setTypeInstance(rpi);
+		beanProperty = new BeanPropertyResource(rpi);
 		UserRegistry.getInstance().setSuperUser(true);
 	}
 
@@ -101,8 +101,7 @@ public class BeanPropertyResourceTest extends ABeanPropertyTest {
 		assertEquals("HashCodes are identical", rpi.hashCode(), beanProperty.hashCode());
 		
 		ResourcePropertyInstance vpi2 = PropertyinstancesFactory.eINSTANCE.createResourcePropertyInstance();
-		BeanPropertyResource beanProperty2 = new BeanPropertyResource();
-		beanProperty2.setTypeInstance(vpi2);
+		BeanPropertyResource beanProperty2 = new BeanPropertyResource(vpi2);
 		
 		assertNotSame("Hash Codes are not the same", beanProperty2.hashCode(), beanProperty.hashCode());
 		
@@ -113,12 +112,19 @@ public class BeanPropertyResourceTest extends ABeanPropertyTest {
 	@Test
 	public void testEqualsObject() {
 		ResourcePropertyInstance vpi2 = PropertyinstancesFactory.eINSTANCE.createResourcePropertyInstance();
-		BeanPropertyResource beanProperty2 = new BeanPropertyResource();
-		beanProperty2.setTypeInstance(vpi2);
+		BeanPropertyResource beanProperty2 = new BeanPropertyResource(vpi2);
 
 		assertNotSame("Beans are not the same", beanProperty2, beanProperty);
 		
 		beanProperty2.setTypeInstance(rpi);
 		assertEquals("Beans are identical", beanProperty2, beanProperty);
+	}
+	
+	@Test
+	public void testGetFile() {
+		final String TEST_STRING = "/resources/file[3].xls";
+		rpi.setResourceUri(TEST_STRING);
+		IFile file = beanProperty.getFile();
+		assertEquals("Got a correct file", "L" + TEST_STRING, file.toString());
 	}
 }

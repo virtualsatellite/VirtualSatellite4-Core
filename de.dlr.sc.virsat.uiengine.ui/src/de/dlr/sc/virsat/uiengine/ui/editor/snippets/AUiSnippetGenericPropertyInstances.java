@@ -28,14 +28,10 @@ import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
@@ -79,6 +75,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.ide.IDE;
 
 import de.dlr.sc.virsat.build.marker.ui.MarkerImageProvider;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -705,11 +702,8 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-
-				// Now get the Uri and create the IFile from it
-				URI resourceUri = propertyInstance.getUri();
-				IPath resourcePath = new Path(resourceUri.toPlatformString(true));
-				IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(resourcePath);
+				BeanPropertyResource beanPropertyResource = new BeanPropertyResource(propertyInstance);
+				IFile resourceFile = beanPropertyResource.getFile();
 
 				// Now try to identify the standard editor for this file and
 				// open it

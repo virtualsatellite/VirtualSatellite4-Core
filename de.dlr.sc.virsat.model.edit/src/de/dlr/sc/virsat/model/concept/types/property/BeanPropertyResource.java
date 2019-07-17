@@ -9,6 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -26,6 +30,21 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
  */
 public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> implements IBeanProperty<ResourcePropertyInstance, URI> {
 
+	/**
+	 * Default constructor
+	 */
+	public BeanPropertyResource() {
+		
+	}
+	
+	/**
+	 * Standard constructor
+	 * @param rpi the resource property instance
+	 */
+	public BeanPropertyResource(ResourcePropertyInstance rpi) {
+		this.ti = rpi;
+	}
+	
 	/**
 	 * this method set an specified value
 	 * @param ed editing domain
@@ -77,5 +96,19 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	@Override
 	public void unset() {
 		ti.setUri(null);
+	}
+
+	/**
+	 * Gets the file referenced by the URI
+	 * @return the file
+	 */
+	public IFile getFile() {
+		URI resourceUri = ti.getUri();
+		if (resourceUri != null) {
+			IPath resourcePath = new Path(resourceUri.toPlatformString(true));
+			return ResourcesPlugin.getWorkspace().getRoot().getFile(resourcePath);
+		}
+		
+		return null;
 	}
 }
