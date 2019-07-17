@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
@@ -66,5 +67,32 @@ public abstract class ABeanUnitProperty<V_TYPE> extends ABeanObject<UnitValuePro
 	@Override
 	public Command setUnit(EditingDomain ed, String unitName) {
 		return new PropertyInstanceHelper().setUnit(ed, ti, unitName);
+	}
+	
+	/**
+	 * Creates a command that sets the value and unit of this bean to the value and
+	 * unit to the other passed bean
+	 * @param ed the editing domain
+	 * @param other another bean of the same type
+	 * @return a command to set value + unit to the value + unit of the other bean
+	 */
+	public Command setValueWithUnit(EditingDomain ed, ABeanUnitProperty<V_TYPE> other) {
+		CompoundCommand cmdSetValueAndUnit = new CompoundCommand();
+		Command cmdSetValue = setValue(ed, other.getValue());
+		Command cmdSetUnit = setUnit(ed, other.getUnit());
+		
+		cmdSetValueAndUnit.getCommandList().add(cmdSetValue);
+		cmdSetValueAndUnit.getCommandList().add(cmdSetUnit);
+		
+		return cmdSetValueAndUnit;
+	}
+	
+	/**
+	 * Sets the value and unit of this bean to the value and unit of the other bean
+	 * @param other another bean of the same type
+	 */
+	public void setValueWithUnit(ABeanUnitProperty<V_TYPE> other) {
+		setValue(other.getValue());
+		setUnit(other.getUnit());
 	}
 }
