@@ -126,5 +126,8 @@ public class BeanPropertyResourceTest extends ABeanPropertyTest {
 		rpi.setResourceUri(TEST_STRING);
 		IFile file = beanProperty.getFile();
 		assertEquals("Got a correct file", "L" + TEST_STRING, file.toString());
+		
+		rpi.setResourceUri(null);
+		assertNull("Got a null and didnt crash", beanProperty.getFile());
 	}
 }

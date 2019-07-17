@@ -82,13 +82,12 @@ public class DvlmMissingResourcePropertyValidatorTest extends ABuilderTest {
 		//create a temp local file in a document folder of seiedObc 
 		String root = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		String filePath = seiEdObc.eResource().getURI().toPlatformString(true).replace("StructuralElement.dvlm", "documents/newFile.txt");
-		try {
-			fileNewDocument = new File(root + "/" + filePath);
-            fileNewDocument.createNewFile();
-        } catch (IOException io) {
-            io.printStackTrace();
-        }	
 		
+		fileNewDocument = new File(root + "/" + filePath);
+        fileNewDocument.createNewFile();
+		
+        ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+        
 		//set resource property with file path
 		URI platFormUri = URI.createPlatformResourceURI(filePath, false);
 		rpi.setUri(platFormUri);
@@ -103,6 +102,7 @@ public class DvlmMissingResourcePropertyValidatorTest extends ABuilderTest {
 		
 		// now delete locally created file
 		fileNewDocument.delete();
+        ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 		
 		// now again check for dvlm validator marker, there should be one warning against missing uploaded  document
 		assertFalse("validator finds missing file", seiValidator.validate(seiEdObc));
