@@ -26,7 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 public class BeanPropertyFloat extends ABeanUnitProperty<Double> {
 
 	/**
-	 * standard Constructor
+	 * Standard Constructor
 	 */
 	public BeanPropertyFloat() {
 	}
