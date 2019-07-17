@@ -40,22 +40,22 @@ public class CommitMessageDialog extends Dialog {
 	
 	
 	private String title;
-	private String message;
-	private String defaultCommitMessage;
+	private String dialogMessage;
+	private String commitMessage;
 	private Text text;
 
 	/**
 	 * @param parentShell the parent shell of the dialog
 	 * @param dialogTitle the title string
-	 * @param dialogMessage the commit message 
+	 * @param dialogMessage message to display in the dialog
 	 * @param proposedComment the default proposed text of the commit message 
 	 */
 	public CommitMessageDialog(Shell parentShell, String dialogTitle, String dialogMessage, String proposedComment) {
 		super(parentShell);
 		this.title = dialogTitle;
-		message = dialogMessage;
+		this.dialogMessage = dialogMessage;
 		if (proposedComment != null) {
-			defaultCommitMessage = proposedComment;
+			commitMessage = proposedComment;
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class CommitMessageDialog extends Dialog {
 
 		Label label = new Label(composite, SWT.WRAP);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true));
-		label.setText(message);
+		label.setText(dialogMessage);
 
 		IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
 		String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
@@ -99,11 +99,11 @@ public class CommitMessageDialog extends Dialog {
 		textLayoutData.heightHint = convertHeightInCharsToPixels(FOUR_LINES_HEIGHT);
 		text.setLayoutData(textLayoutData);
 
-		if (defaultCommitMessage == null) {
+		if (commitMessage == null) {
 			combo.select(0);
 			templateChanged(combo);
 		} else {
-			text.setText(defaultCommitMessage);
+			text.setText(commitMessage);
 		}
 
 		text.setFocus();
@@ -119,15 +119,21 @@ public class CommitMessageDialog extends Dialog {
 	 */
 	private void templateChanged(Combo templateCombo) {
 		String template = templateCombo.getText();
-		String commitMessage = template.replaceAll(TEMPLATE_USER_NAME, UserRegistry.getInstance().getUserName());
+		commitMessage = template.replaceAll(TEMPLATE_USER_NAME, UserRegistry.getInstance().getUserName());
 		text.setText(commitMessage);
 	}
 
+	@Override
+	protected void okPressed() {
+		commitMessage = text.getText();
+		super.okPressed();
+	}
+	
 	/**
 	 * @return the commit message
 	 */
 	public String getCommitMessage() {
-		return text.getText();
+		return commitMessage;
 	}
 }
 
