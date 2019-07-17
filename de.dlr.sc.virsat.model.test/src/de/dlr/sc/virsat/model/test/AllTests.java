@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptTest;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelperTest;
 import de.dlr.sc.virsat.model.dvlm.exception.DVLMMissingTypeExceptionTest;
 import de.dlr.sc.virsat.model.dvlm.general.IInstanceTest;
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopierIntegrationTest;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopierTest;
 import de.dlr.sc.virsat.model.dvlm.list.DVLMFilteredContainingResolvingEListTest;
 import de.dlr.sc.virsat.model.dvlm.list.DVLMFilteredResolvingEListTest;
@@ -80,6 +81,7 @@ import junit.framework.JUnit4TestAdapter;
 				ResourcePropertyInstanceTest.class,
 				UnitValuePropertyInstanceTest.class,
 				InheritanceCopierTest.class,
+				InheritanceCopierIntegrationTest.class,
 				ATypeInstanceTest.class,
 				UserRegistryTest.class,
 				RightsHelperTest.class,
