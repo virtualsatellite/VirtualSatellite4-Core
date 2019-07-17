@@ -49,7 +49,8 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 	public void setUp() throws Exception {
 		super.setUp();
 		uvpi = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
-		beanProperty = new BeanPropertyFloat(uvpi);
+		beanProperty = new BeanPropertyFloat();
+		beanProperty.setTypeInstance(uvpi);
 		UserRegistry.getInstance().setSuperUser(true);
 	}
 
@@ -240,26 +241,5 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		beanProperty.setUnit("Gargl");
 		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", uvpi.getUnit().getName());
 		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", beanProperty.getUnit());
-	}
-	
-	@Test
-	public void testSetValueWithUnit() {
-		setUpRepo();
-		
-		UnitValuePropertyInstance uvpiOther = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
-		BeanPropertyFloat other = new BeanPropertyFloat(uvpiOther);
-		
-		boolean changed;
-		
-		beanProperty.setUnit("Kilogram");
-		assertEquals("Unit has been set correctly", "Kilogram", uvpi.getUnit().getName());
-		
-		changed = beanProperty.setUnit("Gram");
-		assertTrue("The unit has been changed", changed);
-		assertEquals("Unit has been changed correctly", "Gram", uvpi.getUnit().getName());
-
-		changed = beanProperty.setUnit("Gargl");
-		assertFalse("The unit has not been changed", changed);
-		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", uvpi.getUnit().getName());
 	}
 }
