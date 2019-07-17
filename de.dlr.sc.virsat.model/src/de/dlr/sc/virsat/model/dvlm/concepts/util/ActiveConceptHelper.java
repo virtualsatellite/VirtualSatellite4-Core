@@ -20,8 +20,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
-import com.google.common.collect.Lists;
-
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -527,7 +525,8 @@ public class ActiveConceptHelper {
 		// now build the name
 		boolean isFirst = true;
 		String concatenatedFullQualifiedName = "";
-		for (String namePart : Lists.reverse(nameParts)) {
+		Collections.reverse(nameParts);
+		for (String namePart : nameParts) {
 			String nonNullNamePart;
 			if (namePart == null) {
 				nonNullNamePart = UNSET_NAME_PART;
