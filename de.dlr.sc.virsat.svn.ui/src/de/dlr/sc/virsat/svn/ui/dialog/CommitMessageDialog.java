@@ -54,9 +54,7 @@ public class CommitMessageDialog extends Dialog {
 		super(parentShell);
 		this.title = dialogTitle;
 		this.dialogMessage = dialogMessage;
-		if (proposedComment != null) {
-			commitMessage = proposedComment;
-		}
+		this.commitMessage = proposedComment;
 	}
 	
 	@Override
