@@ -36,75 +36,75 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ResourceProper
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 
-
 /**
- * TestCase for missing uploaded document
- * test validator to inform user when uploaded file is no longer available
+ * TestCase for missing uploaded document test validator to inform user when
+ * uploaded file is no longer available
  * 
  * @author desh_me
  *
  */
 
 public class DvlmMissingResourcePropertyValidatorTest extends ABuilderTest {
-	
+
 	protected Category cDocument;
 	protected CategoryAssignment caDocument;
-	
+
 	protected ResourceProperty rp;
 	protected ResourcePropertyInstance rpi;
-	
+
 	protected URI resourceUri;
 	protected IPath resourcePath;
 	protected File fileNewDocument;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-	
-		// Adding a Document category 
+
+		// Adding a Document category
 		cDocument = CategoriesFactory.eINSTANCE.createCategory();
 		cDocument.setName("Document");
 		cDocument.getApplicableFor().add(se);
 
-		//Adding a resource property to document		
+		// Adding a resource property to document
 		rp = PropertydefinitionsFactory.eINSTANCE.createResourceProperty();
 		ip.setName("DocumentResourceProperty");
 		rpi = PropertyinstancesFactory.eINSTANCE.createResourcePropertyInstance();
 		rpi.setType(rp);
-		
-		//this will attach a new document to seiObc
+
+		// this will attach a new document to seiObc
 		caDocument = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 		caDocument.setType(cDocument);
 		caDocument.setName("newDoc");
 		caDocument.getPropertyInstances().add(rpi);
-		seiEdObc.getCategoryAssignments().add(caDocument);	
-		
-		//create a temp local file in a document folder of seiedObc 
+		seiEdObc.getCategoryAssignments().add(caDocument);
+
+		// create a temp local file in a document folder of seiedObc
 		String root = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		String filePath = seiEdObc.eResource().getURI().toPlatformString(true).replace("StructuralElement.dvlm", "documents/newFile.txt");
-		
+
 		fileNewDocument = new File(root + "/" + filePath);
-        fileNewDocument.createNewFile();
-		
-        ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-        
-		//set resource property with file path
+		fileNewDocument.createNewFile();
+
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+
+		// set resource property with file path
 		URI platFormUri = URI.createPlatformResourceURI(filePath, false);
 		rpi.setUri(platFormUri);
-	}	
-	
+	}
+
 	@Test
 	public void testValidateOnMissingDocument() throws CoreException, IOException {
 		// first check for no dvlm validator marker
 		assertEquals("There are no markers yet", 0, fileObc.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		IStructuralElementInstanceValidator seiValidator = new DvlmMissingResourcePropertyValidator();
 		assertTrue("validator brings no error", seiValidator.validate(seiEdObc));
-		
+
 		// now delete locally created file
 		fileNewDocument.delete();
-        ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-		
-		// now again check for dvlm validator marker, there should be one warning against missing uploaded  document
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+
+		// now again check for dvlm validator marker, there should be one warning
+		// against missing uploaded document
 		assertFalse("validator finds missing file", seiValidator.validate(seiEdObc));
 		assertEquals("There is a marker now", 1, fileObc.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 	}
