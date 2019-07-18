@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
@@ -139,6 +140,15 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
 		RequirementAttribute attDef = getAttributeDefinition(element);
+	
+		APropertyInstance attributeInstance = getPropertyInstance(element);
+
+		if (attributeInstance.eResource() == null) {
+			// Requirement attribute instance is not saved in file yet
+			ComposedPropertyInstance cpi = (ComposedPropertyInstance) element;
+			persistValueContainerAttribute(attributeInstance, cpi.getTypeInstance());
+		}
+
 		switch (attDef.getType()) {
 			case RequirementAttribute.TYPE_String_NAME:
 				super.setValue(element, userInputValue);
@@ -151,7 +161,7 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 			case RequirementAttribute.TYPE_Integer_NAME:
 				setIntegerValue(element, userInputValue);
 				break;
-				
+	
 			case RequirementAttribute.TYPE_Real_NAME:
 				setRealValue(element, userInputValue);
 				break;
@@ -206,7 +216,7 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 			super.setValue(element, newValue + "");
 		}
 	}
-	
+
 	/**
 	 * Transform the user input to a integer-string value
 	 * 
@@ -243,7 +253,7 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		if (attributeIndex >= requirement.getReqType().getAttributes().size()) {
 			return null;
 		}
-		
+
 		RequirementAttribute attributeDef = requirement.getReqType().getAttributes().get(attributeIndex);
 
 		APropertyInstance instance = null;
@@ -253,11 +263,10 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 			}
 		}
 		if (instance == null) {
-			// Requirement attribute instance does not exist yet, create one
+			// Requirement attribute instance does not exist yet, create one...
+			// But don't add it to the model yet, otherwise we will trigger a notification
+			// that disturbs UI (Focus loss)
 			AttributeValue newAttributeInstance = new AttributeValue(getConcept());
-			Command command = InitializeRequirementAttributeCommand.create(domain, attributeDef, requirement,
-					newAttributeInstance);
-			domain.getCommandStack().execute(command);
 			instance = getPropertyInstance(newAttributeInstance);
 		}
 
@@ -276,6 +285,20 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		CategoryAssignmentHelper attributeInstanceHelper = new CategoryAssignmentHelper(
 				attributeInstance.getTypeInstance());
 		return attributeInstanceHelper.getPropertyInstance(AttributeValue.PROPERTY_VALUE);
+	}
+
+	/**
+	 * Persist a the value's containing attribute instance
+	 * @param attributeInstance the attribute instance
+	 * @param caRequirement the requirement in which the attribute should be added
+	 */
+	protected void persistValueContainerAttribute(APropertyInstance attributeInstance,
+			CategoryAssignment caRequirement) {
+		Requirement requirement = new Requirement(caRequirement);
+		AttributeValue newAttributeInstance = new AttributeValue((CategoryAssignment) attributeInstance.eContainer());
+		Command command = InitializeRequirementAttributeCommand.create(domain,
+				requirement.getReqType().getAttributes().get(attributeIndex), requirement, newAttributeInstance);
+		domain.getCommandStack().execute(command);
 	}
 
 	/**
