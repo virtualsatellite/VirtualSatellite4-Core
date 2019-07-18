@@ -3,8 +3,9 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 
 	Category RequirementsSpecification {
 		Applicable For All;
-		StringProperty fileName;
-		Type requirements [] of Category Requirement;
+		
+		Resource exportFile;
+		Type requirements [] of Category RequirementObject;
 		Type typeDefinitions [] of Category RequirementType;
 	}	
 	

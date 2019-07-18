@@ -39,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeEditingSupport;
@@ -114,11 +115,13 @@ public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
 					(CategoryAssignment) model);
 
 			// Find all necessary requirement types
-			for (Requirement requirement : requirementsSpecification.getRequirements()) {
-				RequirementType requirementType = requirement.getReqType();
-				requirementTypes.add(requirementType);
-				if (requirementType.getAttributes().size() > maxNumberAttributes) {
-					maxNumberAttributes = requirementType.getAttributes().size();
+			for (RequirementObject requirement : requirementsSpecification.getRequirements()) {
+				if (requirement instanceof Requirement) {
+					RequirementType requirementType = ((Requirement) requirement).getReqType();
+					requirementTypes.add(requirementType);
+					if (requirementType.getAttributes().size() > maxNumberAttributes) {
+						maxNumberAttributes = requirementType.getAttributes().size();
+					}
 				}
 			}
 

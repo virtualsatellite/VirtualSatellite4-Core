@@ -240,6 +240,10 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		ComposedPropertyInstance cpi = (ComposedPropertyInstance) element;
 		Requirement requirement = new Requirement(cpi.getTypeInstance());
 
+		if (attributeIndex >= requirement.getReqType().getAttributes().size()) {
+			return null;
+		}
+		
 		RequirementAttribute attributeDef = requirement.getReqType().getAttributes().get(attributeIndex);
 
 		APropertyInstance instance = null;

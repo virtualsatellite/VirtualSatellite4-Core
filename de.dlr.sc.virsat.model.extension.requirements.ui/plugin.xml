@@ -445,6 +445,11 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionRequirementsSpecification">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsSpecificationRequirementsRequirementGroup"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsSpecificationRequirementsRequirementGroup">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsSpecificationRequirementsRequirement"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsSpecificationRequirementsRequirement">
@@ -566,5 +571,75 @@
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
+<extension
+         point="org.eclipse.ui.commands">
+		 <command
+		       id="de.dlr.sc.virsat.model.extension.requirements.ui.AddReqIFNature"
+		       name="Add ReqIF Nature">
+		 </command>
+		 <command
+		       id="de.dlr.sc.virsat.model.extension.requirements.ui.RemoveReqIFNature"
+		       name="Remove ReqIF Nature">
+		 </command>
+  	</extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+         allPopups="false"
+         locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+      <command
+            commandId="de.dlr.sc.virsat.model.extension.requirements.ui.AddReqIFNature"
+            style="push">
+         <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+                    <iterate>
+                    <not>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.dlr.sc.virsat.model.extension.requirements.ui.isEnabled">
+                     </test>
+                     </not>
+                  </iterate>
+               </and>
+            </visibleWhen>
+      </command>
+      <command
+            commandId="de.dlr.sc.virsat.model.extension.requirements.ui.RemoveReqIFNature"
+            style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+                   <iterate>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.dlr.sc.virsat.model.extension.requirements.ui.isEnabled">
+                     </test>
+                  </iterate>
+               </and>
+            </visibleWhen>
+      </command>
+      </menuContribution>
+   </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
