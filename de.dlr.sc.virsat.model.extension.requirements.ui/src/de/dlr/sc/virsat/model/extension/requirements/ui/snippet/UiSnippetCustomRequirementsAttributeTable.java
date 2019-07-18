@@ -128,7 +128,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			ArrayInstance array = (ArrayInstance) helper.getPropertyInstance(arrayInstanceID);
 			List<APropertyInstance> arrayInstances = array.getArrayInstances();
 
-			//Some ugly casting is necessary here because beans cannot be used as the CA might also be a RequirementObject...
+			// Some ugly casting is necessary here because beans cannot be used as the array
+			// property can be in different CAs
 			for (APropertyInstance arrayInstance : arrayInstances) {
 				if (arrayInstance instanceof ComposedPropertyInstance) {
 					CategoryAssignment reqObject = ((ComposedPropertyInstance) arrayInstance).getTypeInstance();
