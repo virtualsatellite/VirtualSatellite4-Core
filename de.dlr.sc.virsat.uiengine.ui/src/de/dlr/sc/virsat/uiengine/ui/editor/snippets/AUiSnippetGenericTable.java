@@ -215,8 +215,6 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		columnViewer = createColumnViewer(toolkit);
 		columnViewer.setContentProvider(getTableContentProvider());
 		
-		setupTableViewerKeyboardNavigation((TableViewer) columnViewer);
-		
 		createTableColumns(editingDomain);
 		
 		ITableLabelProvider labelProvider = getTableLabelProvider();
@@ -280,7 +278,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		table.setData("org.eclipse.swtbot.widget.key", "table" + categoryId);
 		return new TableViewer(table);
 	}
-	
+
 	/**
 	 * Add a focus manager to the table viewer to navigate throw the table by using keyboard commands such as TAB
 	 * @param tableViewer the table viewer
@@ -305,9 +303,8 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 				| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
 				| ColumnViewerEditor.TABBING_VERTICAL 
 				| ColumnViewerEditor.KEYBOARD_ACTIVATION);
-		
 	}
-
+	
 	/**
 	 * this abstract method can be implemented to get the label provider
 	 * @return the table label provider
