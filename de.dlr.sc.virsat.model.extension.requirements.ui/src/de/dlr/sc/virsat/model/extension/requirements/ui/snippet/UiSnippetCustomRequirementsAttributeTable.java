@@ -40,9 +40,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
@@ -237,8 +238,15 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 							Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
 					dialog.setInput(model.eResource());
 
-					// select root sei here
-					dialog.setInitialSelection(VirSatEcoreUtil.getRootContainer(model));
+					// select first config collection 
+					for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
+							.getRootEntities()) {
+						if (sei.getType().getFullQualifiedName().equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
+							dialog.setInitialSelection(sei);
+							break;
+						}
+					}
+					
 					dialog.setAllowMultiple(false);
 					dialog.setDoubleClickSelects(true);
 
