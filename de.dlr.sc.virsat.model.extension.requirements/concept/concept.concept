@@ -1,6 +1,10 @@
 Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 1.0 
 {
 
+	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
+		IsRootStructuralElement;
+	}
+
 	Category RequirementsSpecification {
 		Applicable For All;
 		
@@ -10,7 +14,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	}	
 	
 	Category RequirementsConfiguration {
-		Applicable For All;
+		Applicable For [ RequirementsConfigurationCollection];
 		StringProperty fileName;
 		Type typeDefinitions [] of Category RequirementType;
 	}

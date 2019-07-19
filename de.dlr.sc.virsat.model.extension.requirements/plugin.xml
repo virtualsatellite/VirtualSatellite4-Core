@@ -54,6 +54,12 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral">
 		</CategoryAssignmentBean>
 	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection"
+			seiBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection">
+		</StructuralElementInstanceBean>
+	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
 	<migrator

@@ -9,7 +9,7 @@
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
   </categories>
-  <categories name="RequirementsConfiguration" isApplicableForAll="true">
+  <categories name="RequirementsConfiguration" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
     <properties xsi:type="dvlm_cppd:StringProperty" name="fileName"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="typeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
@@ -58,4 +58,5 @@
     </properties>
   </categories>
   <categories name="EnumerationLiteral"/>
+  <structuralElements name="RequirementsConfigurationCollection" description="Storage for configuration elements of requirements" isRootStructuralElement="true"/>
 </dvlm_c:Concept>
