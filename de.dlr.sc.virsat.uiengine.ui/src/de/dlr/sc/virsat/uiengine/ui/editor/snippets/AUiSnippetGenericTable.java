@@ -116,7 +116,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	public static final String BUTTON_REMOVE_TEXT = "Remove ";
 	public static final String BUTTON_EDIT_TEXT = "Drill-Down";
 	
-	public static final int MOUSE_EVENT_CLICK_BUTTON = 3;
+	public static final int MOUSE_EVENT_RIGHT_CLICK_BUTTON = 3;
 	
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
@@ -217,6 +217,8 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		
 		createTableColumns(editingDomain);
 		
+		setupTableViewerKeyboardNavigation((TableViewer) columnViewer);
+		
 		ITableLabelProvider labelProvider = getTableLabelProvider();
 		columnViewer.setLabelProvider(labelProvider);
 		
@@ -290,7 +292,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		    protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
 		        if (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION) {
 		            EventObject source = event.sourceEvent;
-		            if (source instanceof MouseEvent && ((MouseEvent) source).button == MOUSE_EVENT_CLICK_BUTTON) {
+		            if (source instanceof MouseEvent && ((MouseEvent) source).button == MOUSE_EVENT_RIGHT_CLICK_BUTTON) {
 		            	return false;
 		            }
 		                
