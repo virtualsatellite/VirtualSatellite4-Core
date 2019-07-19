@@ -132,16 +132,17 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			// Some ugly casting is necessary here because beans cannot be used as the array
 			// property can be in different CAs
 			for (APropertyInstance arrayInstance : arrayInstances) {
-				if (arrayInstance instanceof ComposedPropertyInstance) {
-					CategoryAssignment reqObject = ((ComposedPropertyInstance) arrayInstance).getTypeInstance();
-					if (((Category) reqObject.getType()).getFullQualifiedName()
-							.equals(Requirement.FULL_QUALIFIED_CATEGORY_NAME)) {
-						RequirementType requirementType = (new Requirement(reqObject)).getReqType();
+				CategoryAssignment reqObject = ((ComposedPropertyInstance) arrayInstance).getTypeInstance();
+				if (((Category) reqObject.getType()).getFullQualifiedName()
+						.equals(Requirement.FULL_QUALIFIED_CATEGORY_NAME)) {
+					RequirementType requirementType = (new Requirement(reqObject)).getReqType();
+					if (requirementType != null) {
 						requirementTypes.add(requirementType);
 						if (requirementType.getAttributes().size() > maxNumberAttributes) {
 							maxNumberAttributes = requirementType.getAttributes().size();
 						}
 					}
+
 				}
 			}
 
@@ -238,28 +239,34 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 							Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
 					dialog.setInput(model.eResource());
 
-					// select first config collection 
+					// select first config collection
 					for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
 							.getRootEntities()) {
-						if (sei.getType().getFullQualifiedName().equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
+						if (sei.getType().getFullQualifiedName()
+								.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
 							dialog.setInitialSelection(sei);
 							break;
 						}
 					}
-					
+
 					dialog.setAllowMultiple(false);
 					dialog.setDoubleClickSelects(true);
 
 					if (dialog.open() == Dialog.OK) {
 						Object selection = dialog.getFirstResult();
 						if (selection instanceof CategoryAssignment) {
-							CategoryAssignment selectedTypeInstance = (CategoryAssignment) selection;
-							Command cmd = InitializeRequirementCommand.create(
-									(TransactionalEditingDomain) editingDomain, newRequirement, selectedTypeInstance);
-							editingDomain.getCommandStack().execute(cmd);
-							refreshTable(editingDomain);
+							initializeRequirement(editingDomain, (CategoryAssignment) selection, newRequirement);
+						} else if (selection instanceof StructuralElementInstance) {
+							List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
+									.getNestedCategoryAssignments((StructuralElementInstance) selection,
+											RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
+							if (reqTypesOfSelection.size() > 0) {
+								initializeRequirement(editingDomain, reqTypesOfSelection.get(0), newRequirement);
+							}
 						}
 					} else {
+
+						// Clean up
 						Command cmd = createDeleteCommand(editingDomain, affectedObjects);
 						editingDomain.getCommandStack().execute(cmd);
 					}
@@ -273,6 +280,25 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			});
 			checkWriteAccess(buttonAdd);
 		}
+	}
+
+	/**
+	 * Initialize a new requirement from a given requirement type
+	 * 
+	 * @param editingDomain
+	 *            the editing domain
+	 * @param requirementType
+	 *            the req type
+	 * @param newRequirement
+	 *            the new requirment
+	 */
+	protected void initializeRequirement(EditingDomain editingDomain, CategoryAssignment requirementType,
+			CategoryAssignment newRequirement) {
+		CategoryAssignment selectedTypeInstance = (CategoryAssignment) requirementType;
+		Command cmd = InitializeRequirementCommand.create((TransactionalEditingDomain) editingDomain, newRequirement,
+				selectedTypeInstance);
+		editingDomain.getCommandStack().execute(cmd);
+		refreshTable(editingDomain);
 	}
 
 }
