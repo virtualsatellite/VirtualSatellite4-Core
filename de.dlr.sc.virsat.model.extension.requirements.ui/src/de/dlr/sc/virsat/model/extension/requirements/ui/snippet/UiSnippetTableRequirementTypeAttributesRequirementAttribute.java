@@ -12,15 +12,21 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 import java.util.List;
 
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeTypeEnumerationEditingSupport;
+import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeDefinitionTableLabelProvider;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
@@ -37,7 +43,10 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 
 	
 	private static final String COLUMN_TEXT_NAME = "Name";
+	private static final String NAME_TYPE_PROPERTY = "type";
 	private static final String NAME_ENUMERATION_PROPERTY = "enumeration";
+	
+	private FormToolkit toolKit;
 	
 	/* (non-Javadoc)
 	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable#createTableColumns(org.eclipse.emf.edit.domain.EditingDomain)
@@ -49,19 +58,22 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 		//we know that createDefaultColumn returns tableViewerColumn so we cast it to tableViewerColumn
 		colName.setEditingSupport(new EStringCellEditingSupport(editingDomain, (TableViewer) columnViewer, GeneralPackage.Literals.INAME__NAME));
 		
-		for (AProperty property : categoryModel.getAllProperties()) {
-			
-			//Do not show the enumeration property in the table
-			if (!property.getName().equals(NAME_ENUMERATION_PROPERTY)) {
-				TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
-				colProperty.getColumn().setToolTipText(property.getDescription());
-				colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
-			}
-			
-		}
+		//Type property table
+		EnumProperty typeProp = (EnumProperty) ActiveConceptHelper.getProperty(categoryModel, NAME_TYPE_PROPERTY);
+		TableViewerColumn colType = (TableViewerColumn) createDefaultColumn(typeProp.getName());
+		colType.setEditingSupport(new RequirementsAttributeTypeEnumerationEditingSupport(toolKit, editingDomain, columnViewer, typeProp));
+		colType.getColumn().setToolTipText(typeProp.getDescription());
+		
+		//Enumeration containment property
+		AProperty enumerationTypeProp = ActiveConceptHelper.getProperty(categoryModel, NAME_ENUMERATION_PROPERTY);
+		TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn("");
+		colProperty.getColumn().setToolTipText(enumerationTypeProp.getDescription());
+		colProperty.setEditingSupport(createEditingSupport(editingDomain, enumerationTypeProp));
+		
 
 	}
 
+	
 	// Show attributes in the order of their creation
 	@Override
 	protected void setUpTableViewer(EditingDomain editingDomain, FormToolkit toolkit) {
@@ -80,9 +92,33 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 		});
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable#getTableLabelProvider()
+	 */
+	@Override
+	protected ITableLabelProvider getTableLabelProvider() {
+		return new RequirementsAttributeDefinitionTableLabelProvider(adapterFactory);
+	}
+
+
 	@Override
 	protected List<APropertyInstance> getTableObjects() {
 		return getArrayInstance(model).getArrayInstances();
 	}
+	
+
+
+	/* (non-Javadoc)
+	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSectionSnippet#createSectionBody(org.eclipse.ui.forms.widgets.FormToolkit, java.lang.String, java.lang.String, int)
+	 */
+	@Override
+	public Composite createSectionBody(FormToolkit toolkit, String sectionHeading, String sectionDescription,
+			int numberColumns) {
+		this.toolKit = toolkit;
+		return super.createSectionBody(toolkit, sectionHeading, sectionDescription, numberColumns);
+	}
+	
+	
 	
 }

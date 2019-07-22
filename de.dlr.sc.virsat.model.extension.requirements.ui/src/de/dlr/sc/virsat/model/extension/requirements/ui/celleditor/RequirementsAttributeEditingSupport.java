@@ -12,6 +12,9 @@
  */
 package de.dlr.sc.virsat.model.extension.requirements.ui.celleditor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -29,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
+import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
@@ -86,6 +90,12 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 			case RequirementAttribute.TYPE_Boolean_NAME:
 				editor = new ComboBoxCellEditor((Composite) viewer.getControl(), BOOL_LITERALS);
 				return editor;
+				
+			case RequirementAttribute.TYPE_Enumeration_NAME:
+				List<String> comboItems = new ArrayList<String>();
+				attDef.getEnumeration().getLiterals().forEach(literal -> comboItems.add(literal.getName()));
+				editor = new ComboBoxCellEditor((Composite) viewer.getControl(), comboItems.toArray(new String[0]));
+				return editor;
 	
 			default:
 				editor = new TextCellEditor((Composite) viewer.getControl());
@@ -109,6 +119,9 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 	
 			case RequirementAttribute.TYPE_Boolean_NAME:
 				return getBooleanValue((String) super.getValue(element));
+				
+			case RequirementAttribute.TYPE_Enumeration_NAME:
+				return getEnumerationValue((String) super.getValue(element), attDef);
 	
 			default:
 				return super.getValue(element);
@@ -126,6 +139,21 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		for (int i = 0; i <= 1; i++) {
 			if (stringValue.equals(BOOL_LITERALS[i])) {
 				return i;
+			}
+		}
+		return NOT_SET;
+	}
+	 
+	/**
+	 * Get the integer value of the enumeration
+	 * @param stringValue the enumeration's string
+	 * @param attDef the enumeration
+	 * @return the index
+	 */
+	protected Integer getEnumerationValue(String stringValue, RequirementAttribute attDef) {
+		for (EnumerationLiteral literal : attDef.getEnumeration().getLiterals()) {
+			if (literal.getName().equals(stringValue)) {
+				return attDef.getEnumeration().getLiterals().indexOf(literal);
 			}
 		}
 		return NOT_SET;
@@ -166,6 +194,9 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 				setRealValue(element, userInputValue);
 				break;
 	
+			case RequirementAttribute.TYPE_Enumeration_NAME:
+				setEnumerationValue(element, userInputValue, attDef);
+				
 			default:
 				super.setValue(element, userInputValue);
 				break;
@@ -243,6 +274,16 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 		if (newValue != null) {
 			super.setValue(element, newValue + "");
 		}
+	}
+	
+	/**
+	 * Set the value of the selected enumeration literal's index
+	 * @param element the element
+	 * @param userInputValue the user input
+	 * @param attDef the attrbute definition
+	 */
+	protected void setEnumerationValue(Object element, Object userInputValue, RequirementAttribute attDef) {
+		super.setValue(element, attDef.getEnumeration().getLiterals().get((int) userInputValue).getName());
 	}
 
 	@Override
