@@ -108,7 +108,7 @@ public class CustomCommitAction extends CommitAction {
         if (commitMessageDialog.open() == 0) {
         	//we trick the commit operation with provide twice an empty array of resources for the nonSelectedResources and the treatAsEdit entry
         	IResource[] emptyResourcesArray = new Resource[0];
-        	CompositeOperation op = commitUtility.getCompositeCommitOperation(this.getSelectedResources(), emptyResourcesArray, emptyResourcesArray, commitMessageDialog.getValue(), false, this.getShell(), this.getTargetPart(), true);			
+        	CompositeOperation op = commitUtility.getCompositeCommitOperation(this.getSelectedResources(), emptyResourcesArray, emptyResourcesArray, commitMessageDialog.getCommitMessage(), false, this.getShell(), this.getTargetPart(), true);			
 
         	this.runScheduled(op);
 			

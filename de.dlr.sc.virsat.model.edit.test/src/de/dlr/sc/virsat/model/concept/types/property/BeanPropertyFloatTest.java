@@ -49,8 +49,7 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 	public void setUp() throws Exception {
 		super.setUp();
 		uvpi = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
-		beanProperty = new BeanPropertyFloat();
-		beanProperty.setTypeInstance(uvpi);
+		beanProperty = new BeanPropertyFloat(uvpi);
 		UserRegistry.getInstance().setSuperUser(true);
 	}
 
@@ -60,7 +59,7 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 	}
 
 	@Test
-	public void testSetValueEditingDomainLong() {
+	public void testSetValueEditingDomainDouble() {
 		final double TEST_FLOAT = 22.56;
 		final String TEST_STRING = "22.56";
 		
@@ -71,7 +70,7 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 	}
 
 	@Test
-	public void testSetValueLong() {
+	public void testSetValueDouble() {
 		final double TEST_FLOAT = 20.56;
 		final String TEST_STRING = "20.56";
 		
@@ -241,5 +240,48 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		beanProperty.setUnit("Gargl");
 		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", uvpi.getUnit().getName());
 		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", beanProperty.getUnit());
+	}
+	
+	@Test
+	public void testSetValueWithUnit() {
+		setUpRepo();
+		
+		UnitValuePropertyInstance uvpiOther = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
+		uvpiOther.setType(propertyOne);
+		BeanPropertyFloat other = new BeanPropertyFloat(uvpiOther);
+		
+		beanProperty.setUnit("Gram");
+		beanProperty.setValue(0d);
+		
+		other.setUnit("Kilogram");
+		other.setValue(1d);
+		
+		beanProperty.setValueWithUnit(other);
+		
+		final double EPSILON = 0.001;
+		assertEquals("Unit has been set correctly", other.getUnit(), beanProperty.getUnit());
+		assertEquals("Value has been set correctly", other.getValue(), beanProperty.getValue(), EPSILON);
+	}
+	
+	@Test
+	public void testSetValueWithUnitEditingDomain() {
+		setUpRepo();
+		
+		UnitValuePropertyInstance uvpiOther = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
+		uvpiOther.setType(propertyOne);
+		BeanPropertyFloat other = new BeanPropertyFloat(uvpiOther);
+		
+		beanProperty.setUnit("Gram");
+		beanProperty.setValue(0d);
+		
+		other.setUnit("Kilogram");
+		other.setValue(1d);
+		
+		Command cmd = beanProperty.setValueWithUnit(ed, other);
+		cmd.execute();
+		
+		final double EPSILON = 0.001;
+		assertEquals("Unit has been set correctly", other.getUnit(), beanProperty.getUnit());
+		assertEquals("Value has been set correctly", other.getValue(), beanProperty.getValue(), EPSILON);
 	}
 }

@@ -7,8 +7,7 @@ Bundle-ClassPath: .
 Require-Bundle: de.dlr.sc.virsat.external.lib.commons.cli,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport,
- com.google.guava
+ org.eclipse.emf.ecore.xmi;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Localization: plugin

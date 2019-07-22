@@ -11,11 +11,11 @@ package de.dlr.sc.virsat.svn.ui.dialog;
 
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -36,33 +36,28 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 public class CommitMessageDialog extends Dialog {
 	
 	public static final String TEMPLATE_USER_NAME = "@user";
+	public static final int FOUR_LINES_HEIGHT = 4;
+	
 	
 	private String title;
-	private String message;
-	private String value;
+	private String dialogMessage;
+	private String commitMessage;
 	private Text text;
 
 	/**
-	 * public constructor
 	 * @param parentShell the parent shell of the dialog
 	 * @param dialogTitle the title string
-	 * @param dialogMessage the commit message 
+	 * @param dialogMessage message to display in the dialog
 	 * @param proposedComment the default proposed text of the commit message 
 	 */
 	public CommitMessageDialog(Shell parentShell, String dialogTitle, String dialogMessage, String proposedComment) {
 		super(parentShell);
 		this.title = dialogTitle;
-		message = dialogMessage;
-		if (proposedComment != null) {
-			value = proposedComment;
-		}
-
+		this.dialogMessage = dialogMessage;
+		this.commitMessage = proposedComment;
 	}
 	
-	/**
-	 * method to configure the shell of the dialog
-	 * @param shell the shell
-	 */
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		if (title != null) {
@@ -70,39 +65,20 @@ public class CommitMessageDialog extends Dialog {
 		}
 	}
 
-	/**
-	 * method which creates the buttons of the dialog
-	 * @param parent the composite where to add the buttons
-	 */
-	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-
-		text.setFocus();
-		if (value != null) {
-			text.setText(value);
-			text.selectAll();
-		}
-	}
-
-	// CHECKSTYLE:OFF
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 
-		composite.setLayout(null);
-		composite.setSize(400, 200);
-		
 		Label label = new Label(composite, SWT.WRAP);
-		label.setText(message);
-		label.setBounds(12, 6, 360, 14);
-		label.setFont(parent.getFont());
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true));
+		label.setText(dialogMessage);
 
 		IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
 		String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
 		
 		Combo combo = new Combo(composite, SWT.READ_ONLY);
-		combo.setBounds(12, 24, 347, 14);
 		combo.setItems(templates);
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		combo.addSelectionListener(new SelectionListener() {
 			@Override
@@ -117,61 +93,45 @@ public class CommitMessageDialog extends Dialog {
 		});
 		
 		text = new Text(composite, SWT.MULTI | SWT.WRAP | SWT.BORDER);
-		text.setBounds(12, 52, 347, 102);
+		GridData textLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		textLayoutData.heightHint = convertHeightInCharsToPixels(FOUR_LINES_HEIGHT);
+		text.setLayoutData(textLayoutData);
 
-		text.setFocus();
-		
-		if (value == null) {
+		if (commitMessage == null) {
 			combo.select(0);
 			templateChanged(combo);
+		} else {
+			text.setText(commitMessage);
 		}
-		
-		text.setText(value);
+
+		text.setFocus();
 		text.selectAll(); 
 
-		applyDialogFont(composite);
 		return composite;
 	}
-	// CHECKSTYLE:ON
 
 	/**
 	 * Method for reacting to a change in the template combo box. 
 	 * Fills in the selected template into the text box.
-	 * @param templateCombo the template combo box where a changes has occured
+	 * @param templateCombo the template combo box where a changes has occurred
 	 */
 	private void templateChanged(Combo templateCombo) {
 		String template = templateCombo.getText();
-		value = template.replaceAll(TEMPLATE_USER_NAME, UserRegistry.getInstance().getUserName());
-		text.setText(value);
+		commitMessage = template.replaceAll(TEMPLATE_USER_NAME, UserRegistry.getInstance().getUserName());
+		text.setText(commitMessage);
+	}
+
+	@Override
+	protected void okPressed() {
+		commitMessage = text.getText();
+		super.okPressed();
 	}
 	
 	/**
-	 * method for the code whcih will be executed when the user presses the button
-	 * @param buttonId the ID of the button
+	 * @return the commit message
 	 */
-	protected void buttonPressed(int buttonId) {
-		if (buttonId == IDialogConstants.OK_ID) {
-			value = text.getText();
-		} else {
-			value = null;
-		}
-		super.buttonPressed(buttonId);
-	}
-
-	/**
-	 * getter method to retrieve the text
-	 * @return Text the text
-	 */
-	public Text getText() {
-		return text;
-	}
-
-	/**
-	 * getter method to retrieve the value 
-	 * @return String value 
-	 */
-	public String getValue() {
-		return value;
+	public String getCommitMessage() {
+		return commitMessage;
 	}
 }
 

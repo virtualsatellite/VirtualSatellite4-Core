@@ -16,6 +16,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
 /**
  * Class to wrap FloatPropertyInstances
@@ -25,7 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 public class BeanPropertyFloat extends ABeanUnitProperty<Double> {
 
 	/**
-	 * standard Constructor
+	 * Standard Constructor
 	 */
 	public BeanPropertyFloat() {
 	}
@@ -85,7 +86,7 @@ public class BeanPropertyFloat extends ABeanUnitProperty<Double> {
 	public Command setValueAsBaseUnit(EditingDomain ed, double inputValue) {
 		AUnit unit = ti.getUnit();
 		if (unit != null) {
-			double convertedValue = de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.getInstance().convertFromBaseUnitToTargetUnit(unit, inputValue);
+			double convertedValue = QudvUnitHelper.getInstance().convertFromBaseUnitToTargetUnit(unit, inputValue);
 			return setValue(ed, convertedValue);		
 		}
 		return setValue(ed, inputValue);		
