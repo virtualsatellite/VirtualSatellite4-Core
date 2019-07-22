@@ -19,12 +19,15 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
+import de.dlr.sc.virsat.model.extension.mechanical.migrator.Migrator0v1Test;
+
 /**
  * 
  */
 @RunWith(Suite.class)
 
 @SuiteClasses({
+	Migrator0v1Test.class,
 				})
 
 /**
