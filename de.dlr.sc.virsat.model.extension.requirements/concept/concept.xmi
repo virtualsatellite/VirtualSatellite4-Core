@@ -49,6 +49,7 @@
       <values name="Integer" value="3"/>
       <values name="Real" value="4"/>
       <values name="String" value="5"/>
+      <values name="Identifier" value="6"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="enumeration" type="de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition"/>
   </categories>

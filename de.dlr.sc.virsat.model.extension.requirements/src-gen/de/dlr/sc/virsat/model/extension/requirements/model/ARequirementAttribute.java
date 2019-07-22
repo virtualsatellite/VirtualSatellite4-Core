@@ -62,6 +62,7 @@ public abstract class ARequirementAttribute extends ABeanCategoryAssignment impl
 	public static final String TYPE_Integer_NAME = "Integer";
 	public static final String TYPE_Real_NAME = "Real";
 	public static final String TYPE_String_NAME = "String";
+	public static final String TYPE_Identifier_NAME = "Identifier";
 	// Type enumeration values
 	public static final String TYPE_Boolean_VALUE = "0";
 	public static final String TYPE_Date_VALUE = "1";
@@ -69,6 +70,7 @@ public abstract class ARequirementAttribute extends ABeanCategoryAssignment impl
 	public static final String TYPE_Integer_VALUE = "3";
 	public static final String TYPE_Real_VALUE = "4";
 	public static final String TYPE_String_VALUE = "5";
+	public static final String TYPE_Identifier_VALUE = "6";
 	
 	
 	// *****************************************************************

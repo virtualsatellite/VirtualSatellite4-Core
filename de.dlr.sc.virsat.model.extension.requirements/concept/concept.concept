@@ -53,7 +53,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category RequirementAttribute description "Attribute definition for requirements"{
 		
-		EnumProperty  type values [Boolean = 0, Date = 1, Enumeration = 2, Integer= 3, Real= 4, String = 5] default String;
+		EnumProperty  type values [Boolean = 0, Date = 1, Enumeration = 2, Integer= 3, Real= 4, String = 5, Identifier = 6] default String;
 		Type enumeration of Category EnumerationDefinition;
 		
 	}
