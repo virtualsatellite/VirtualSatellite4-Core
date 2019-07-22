@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.model.extension.mechanical.feature"
+      label="VirSat Model Extension Mechanical Engineering Feature"
+      version="4.9.1.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      plugin="de.dlr.sc.virsat.branding.ui"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      DLR SC VirSat Mechanical Engineering Concept
+ German Aerospace Center (DLR e.V.)
+ Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2019
+ by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.mechanical"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.mechanical.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
