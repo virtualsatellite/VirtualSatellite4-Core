@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
+import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
  * This class creates the JSON representation of a product structure tree.
@@ -38,7 +39,22 @@ public class CatiaExporter {
 	 * @param elementDefinitions the element definitions
 	 * @return the json representation
 	 */
+	@SuppressWarnings("unchecked")
 	public JSONArray transformParts(Collection<ElementDefinition> elementDefinitions) {
-		return null;
+		JSONArray jsonParts = new JSONArray();
+		
+		for (ElementDefinition ed : elementDefinitions) {
+			Visualisation vis = ed.getFirst(Visualisation.class);
+			
+			if (vis != null) {
+				JSONObject jsonPart = new JSONObject();
+				jsonParts.add(jsonPart);
+			
+				jsonPart.put(CatiaProperties.NAME, ed.getName());
+				jsonPart.put(CatiaProperties.UUID, ed.getUuid());
+			}
+		}
+		
+		return jsonParts;
 	}
 }
