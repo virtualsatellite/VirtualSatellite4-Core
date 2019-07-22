@@ -50,6 +50,7 @@
 				<module>de.dlr.sc.virsat.external.lib.commons.cli</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
+				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>
