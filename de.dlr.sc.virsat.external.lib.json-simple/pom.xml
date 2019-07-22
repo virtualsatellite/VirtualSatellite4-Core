@@ -18,7 +18,7 @@ SPDX-License-Identifier: EPL-2.0
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.external.lib.json-simple</artifactId>
-	<name>de.dlr.sc.virsat.external.lib.jso-simple</name>
+	<name>de.dlr.sc.virsat.external.lib.json-simple</name>
 	<packaging>eclipse-plugin</packaging>
 
 
