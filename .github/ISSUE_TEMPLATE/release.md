@@ -1,3 +1,12 @@
+---
+name: Release
+about: Create a Release for a new Version of Virtual Satellite
+title: 'Release Version 4.x.x '
+labels: release
+assignees: ''
+
+---
+
 Virtual Satellite Release Version 4.x.x
 
 This ticket captures all release related work of the VirtualSatellite4-Core release
