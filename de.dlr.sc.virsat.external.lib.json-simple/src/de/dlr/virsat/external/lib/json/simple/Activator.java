@@ -13,7 +13,6 @@ import de.dlr.sc.virsat.external.lib.LibPlugin;
 
 /**
  * The plugin root class which is the entry point for the OSGi bundle activation
- * @author fisc_ph
  *
  */
 public class Activator extends LibPlugin {
