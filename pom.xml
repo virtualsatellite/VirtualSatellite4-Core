@@ -125,6 +125,11 @@
 				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.ui</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
+				
+				<module>de.dlr.sc.virsat.model.extension.mechanical</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.test</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.ui</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
 				<module>de.dlr.sc.virsat.model.extension.ps</module>
