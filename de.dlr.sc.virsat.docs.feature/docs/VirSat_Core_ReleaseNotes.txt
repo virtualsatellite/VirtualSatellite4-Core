@@ -1,6 +1,16 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.9.1 (15th July 2019)
+----------------------------------
+
+New Features:
+		
+Usability Updates:
+	
+Fixed Bugs:
+	Fixed issue with multi-inheritance (diamond inheritance) and categories with cardinality one
+
 Release 4.9.0 (23rd April 2019)
 ----------------------------------
 

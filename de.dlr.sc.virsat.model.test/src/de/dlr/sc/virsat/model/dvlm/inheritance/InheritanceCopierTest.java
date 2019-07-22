@@ -28,12 +28,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.calculation.AExpression;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
@@ -47,20 +43,14 @@ import de.dlr.sc.virsat.model.dvlm.calculation.TypeInstanceResult;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
-import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
-import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -70,372 +60,9 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 /**
  * Test Cases for the inheritance functionality
  * 
- * @author fisc_ph
- *
  */
-public class InheritanceCopierTest {
-
-	private Repository repo;
-	private Concept concept;
-
-	private Category catSpec;
+public class InheritanceCopierTest extends AInheritanceCopierTest {
 	
-	private Category catIft;
-
-	private CategoryAssignment caIftMil;
-	private CategoryAssignment caIftCan;
-
-	private Category catIfe;
-	private AProperty catIfeSn;
-	
-	private Category catIf;
-	private ReferenceProperty catIfIfe1;
-	private ReferenceProperty catIfIfe2;
-	private ReferenceProperty catIfIft;
-	
-	private StructuralElementInstance seiTc;
-	
-	private StructuralElementInstance seiEdSc;
-	private StructuralElementInstance seiEdRw;
-	private StructuralElementInstance seiEdObc;
-	
-	private StructuralElementInstance seiEcSc;
-	private StructuralElementInstance seiEcRwI;
-	private StructuralElementInstance seiEcRwII;
-	private StructuralElementInstance seiEcObc;
-	
-	private StructuralElementInstance seiEo1Sc;
-	private StructuralElementInstance seiEo1RwI;
-	private StructuralElementInstance seiEo1RwII;
-	private StructuralElementInstance seiEo1Obc;
-
-	private StructuralElementInstance seiEo2Sc;
-	private StructuralElementInstance seiEo2RwI;
-	private StructuralElementInstance seiEo2RwII;
-	private StructuralElementInstance seiEo2Obc;
-	
-	private StructuralElementInstance seiErRwA;
-
-	
-	private StructuralElement seTc; // TypesContainer
-	private StructuralElement seEd;
-	private StructuralElement seEc;
-	private StructuralElement seEo;
-	private StructuralElement seEr;
-	
-	private RoleManagement rm; 
-	private Discipline dA;
-	private Discipline dB;
-	
-	/**
-	 * Builds the PT Test Data
-	 */
-	private void buildPT() {
-		seiEdSc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEdRw = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEdObc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		seiEdSc.setName("Ed_SC");
-		seiEdRw.setName("Ed_RW");
-		seiEdObc.setName("Ed_Obc");
-
-		seiEdSc.setType(seEd);
-		seiEdRw.setType(seEd);
-		seiEdObc.setType(seEd);
-
-		seiEdSc.getChildren().add(seiEdRw);
-		seiEdSc.getChildren().add(seiEdObc);
-	}
-
-	/**
-	 * Builds the CT Test Data
-	 */
-	private void buildCT() {
-		seiEcSc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEcRwI = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEcRwII = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEcObc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		seiEcSc.setName("Ec_SC");
-		seiEcRwI.setName("Ec_RWI");
-		seiEcRwII.setName("Ec_RWII");
-		seiEcObc.setName("Ec_Obc");
-
-		seiEcSc.setType(seEc);
-		seiEcRwI.setType(seEc);
-		seiEcRwII.setType(seEc);
-		seiEcObc.setType(seEc);
-
-		seiEcSc.getChildren().add(seiEcRwI);
-		seiEcSc.getChildren().add(seiEcRwII);
-		seiEcSc.getChildren().add(seiEcObc);
-
-		seiEcSc.getSuperSeis().add(seiEdSc);
-		seiEcRwI.getSuperSeis().add(seiEdRw);
-		seiEcRwII.getSuperSeis().add(seiEdRw);
-		seiEcObc.getSuperSeis().add(seiEdObc);
-	}
-
-	/**
-	 * Builds the AT Test Data
-	 */
-	private void buildATs() {
-		seiEo1Sc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEo1RwI = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEo1RwII = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEo1Obc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		seiEo1Sc.setName("Eo1_SC");
-		seiEo1RwI.setName("Eo1_RWI");
-		seiEo1RwII.setName("Eo1_RWII");
-		seiEo1Obc.setName("Eo_1Obc");
-
-		seiEo1Sc.setType(seEo);
-		seiEo1RwI.setType(seEo);
-		seiEo1RwII.setType(seEo);
-		seiEo1Obc.setType(seEo);
-
-		seiEo1Sc.getChildren().add(seiEo1RwI);
-		seiEo1Sc.getChildren().add(seiEo1RwII);
-		seiEo1Sc.getChildren().add(seiEo1Obc);
-		
-		seiEo1Sc.getSuperSeis().add(seiEcSc);
-		seiEo1RwI.getSuperSeis().add(seiEcRwI);
-		seiEo1RwII.getSuperSeis().add(seiEcRwII);
-		seiEo1Obc.getSuperSeis().add(seiEcObc);
-
-		// Now construct the StructuralElements to represent the AssemblyTree
-		seiEo2Sc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEo2RwI = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEo2RwII = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiEo2Obc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		seiEo2Sc.setName("Eo2_SC");
-		seiEo2RwI.setName("Eo2_RWI");
-		seiEo2RwII.setName("Eo2_RWII");
-		seiEo2Obc.setName("Eo2_Obc");
-
-		seiEo2Sc.setType(seEo);
-		seiEo2RwI.setType(seEo);
-		seiEo2RwII.setType(seEo);
-		seiEo2Obc.setType(seEo);
-
-		seiEo2Sc.getChildren().add(seiEo2RwI);
-		seiEo2Sc.getChildren().add(seiEo2RwII);
-		seiEo2Sc.getChildren().add(seiEo2Obc);
-		
-		seiEo2Sc.getSuperSeis().add(seiEcSc);
-		seiEo2RwI.getSuperSeis().add(seiEcRwI);
-		seiEo2RwII.getSuperSeis().add(seiEcRwII);
-		seiEo2Obc.getSuperSeis().add(seiEcObc);
-	}
-
-	@After
-	public void tearDown() {
-		UserRegistry.getInstance().setSuperUser(false);
-	}
-	
-	@Before
-	public void setUp() throws Exception {
-		UserRegistry.getInstance().setSuperUser(true);
-		repo = DVLMFactory.eINSTANCE.createRepository();
-		
-		// Build StructuralElement concept for this test. will consist of Definitions and Configurations
-		seTc = StructuralFactory.eINSTANCE.createStructuralElement();
-		seEd = StructuralFactory.eINSTANCE.createStructuralElement();
-		seEc = StructuralFactory.eINSTANCE.createStructuralElement();
-		seEo = StructuralFactory.eINSTANCE.createStructuralElement();
-		seEr = StructuralFactory.eINSTANCE.createStructuralElement();
-		
-		seEd.setName("TypesContainer");
-		seEd.setName("Definition");
-		seEc.setName("Configuration");
-		seEo.setName("Occurrence");
-		seEr.setName("Realization");
-		
-		seEc.getCanInheritFrom().add(seEd);
-		seEo.getCanInheritFrom().add(seEc);
-		seEo.getCanInheritFrom().add(seEr);
-		seEr.getCanInheritFrom().add(seEd);
-		
-		seEd.getApplicableFor().add(seEd);
-		seEc.getApplicableFor().add(seEc);
-		seEo.getApplicableFor().add(seEo);
-		
-		// Now construct the instances for the StructuralElements for the ProductTree
-		buildPT();
-		
-		// Now construct the StructuralElements to represent the ConfigurationTree
-		buildCT();
-
-		// Now construct the StructuralElements to represent the AssemblyTree
-		buildATs();
-		
-		// Create the Types Container for the InterfaceTypes
-		seiTc = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiTc.setName("TypesContainer");
-		seiTc.setType(seTc);
-		
-		// Create SEI to represent a Realization 
-		seiErRwA = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiErRwA.setName("RwA");
-		seiErRwA.setType(seEr);
-
-		seiErRwA.getSuperSeis().add(seiEdRw);
-		seiEo1RwI.getSuperSeis().add(seiErRwA);
-		
-		// Build up the Specification Category
-		catSpec = CategoriesFactory.eINSTANCE.createCategory();
-		catSpec.setName("Specification");
-		catSpec.getApplicableFor().add(seEr);
-
-		// Build up the InterfaceTypes
-		catIft = CategoriesFactory.eINSTANCE.createCategory();
-		catIft.setName("InterfaceType");
-		catIft.getApplicableFor().add(seTc);
-
-		// Build up the InterfaceTypes
-		caIftMil = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-		caIftMil.setType(catIft);
-		caIftMil.setName("Ift_Mil");
-		seiTc.getCategoryAssignments().add(caIftMil);
-		
-		caIftCan = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-		caIftCan.setType(catIft);
-		caIftCan.setName("Ift_Can");
-		seiTc.getCategoryAssignments().add(caIftCan);
-		
-		// Build up a simple Category for the test case that represents an InterfaceEnd
-		catIfe = CategoriesFactory.eINSTANCE.createCategory();
-		catIfeSn = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
-		catIfe.setName("InterfacEnd");
-		catIfeSn.setName("SerialNumber");
-	
-		catIfe.getProperties().add(catIfeSn);
-		catIfe.setIsApplicableForAll(true);
-		
-		// Build up a simple Category for the test case that represents an InterfaceEnd
-		catIf = CategoriesFactory.eINSTANCE.createCategory();
-		catIfIfe1 = PropertydefinitionsFactory.eINSTANCE.createReferenceProperty();
-		catIfIfe2 = PropertydefinitionsFactory.eINSTANCE.createReferenceProperty();
-		catIfIft = PropertydefinitionsFactory.eINSTANCE.createReferenceProperty();
-		catIf.setName("Interface");
-		catIfIfe1.setName("InterfaceEnd1");
-		catIfIfe2.setName("InterfaceEnd2");
-		catIfIft.setName("InterfaceType");
-		
-		catIfIfe1.setReferenceType(catIfe);
-		catIfIfe2.setReferenceType(catIfe);
-		catIfIft.setReferenceType(catIft);
-	
-		catIf.getProperties().add(catIfIfe1);
-		catIf.getProperties().add(catIfIfe2);
-		catIf.getProperties().add(catIfIft);
-		
-		catIf.getApplicableFor().add(seEc);
-		catIf.getApplicableFor().add(seEo);
-		catIf.getApplicableFor().add(seEr);
-		
-		repo = DVLMFactory.eINSTANCE.createRepository();
-		concept = ConceptsFactory.eINSTANCE.createConcept();
-		
-		concept.getStructuralElements().add(seEd);
-		concept.getStructuralElements().add(seEc);
-		concept.getStructuralElements().add(seEr);
-		concept.getStructuralElements().add(seEo);
-		concept.getStructuralElements().add(seTc);
-		
-		concept.getCategories().add(catIf);
-		concept.getCategories().add(catIft);
-		concept.getCategories().add(catIfe);
-		concept.getCategories().add(catSpec);
-		
-		repo.getActiveConcepts().add(concept);
-		
-		repo.getRootEntities().add(seiTc);
-		repo.getRootEntities().add(seiEcSc);
-		repo.getRootEntities().add(seiEdSc);
-		repo.getRootEntities().add(seiEo1Sc);
-		repo.getRootEntities().add(seiEo2Sc);
-		repo.getRootEntities().add(seiErRwA);
-	}
-	
-	/**
-	 * Use this method to attach a CA to define an interface to a given SEI
-	 * @param sei the SEI to attach the IF to
-	 * @param instanceName the name of the IF Instance
-	 * @param caIfe1 the CA representing the first IFE
-	 * @param caIfe2 the CA representing the second IFE
-	 * @param caIft the CA representing the Interface Type IFT
-	 * @return a CA of the IF that was just added to the SEI
-	 */
-	public CategoryAssignment attachInterface(StructuralElementInstance sei, String instanceName, CategoryAssignment caIfe1, CategoryAssignment caIfe2, CategoryAssignment caIft) {
-		CategoryAssignment caIf = new CategoryInstantiator().generateInstance(catIf, instanceName);
-		ReferencePropertyInstance piIfe1 = (ReferencePropertyInstance) caIf.getPropertyInstances().get(0);
-		ReferencePropertyInstance piIfe2 = (ReferencePropertyInstance) caIf.getPropertyInstances().get(1);
-		ReferencePropertyInstance piIft = (ReferencePropertyInstance) caIf.getPropertyInstances().get(2);
-		
-		piIfe1.setReference(caIfe1);
-		piIfe2.setReference(caIfe2);
-		
-		piIft.setReference(caIft);
-		
-		sei.getCategoryAssignments().add(caIf);
-		
-		return caIf;
-	}
-
-	/**
-	 * Method to add a CA representing a IFE to the given SEI
-	 * @param sei the SEI to add the new IFE to
-	 * @param instanceName the Instance name of the IFE to be added
-	 * @return A CA representing the just generated IFE
-	 */
-	public CategoryAssignment attachInterfaceEnd(StructuralElementInstance sei, String instanceName) {
-		CategoryAssignment caIfe = new CategoryInstantiator().generateInstance(catIfe, instanceName);
-		
-		sei.getCategoryAssignments().add(caIfe);
-		
-		return caIfe;
-	}		
-	
-	/**
-	 * Method to attach a Specification to a Realization
-	 * @param sei the SEI representing a Realization
-	 * @param specName the name of the Specification
-	 * @return the CA representing the Specification
-	 */
-	public CategoryAssignment attachSpecification(StructuralElementInstance sei, String specName) {
-		CategoryAssignment caSpec = new CategoryInstantiator().generateInstance(catSpec, specName);
-		
-		sei.getCategoryAssignments().add(caSpec);
-		
-		return caSpec;
-	}		
-	
-	/**
-	 * Method to set SerialNumber Property of Interface End 
-	 * @param ca CA of a InterfaceEnd 
-	 * @param serialNumber Property to be set
-	 * @return VPI with newly set serialNumber
-	 */
-	public ValuePropertyInstance setInterfaceEndSn(CategoryAssignment ca, String serialNumber) {
-		ValuePropertyInstance vpi = (ValuePropertyInstance) ca.getPropertyInstances().get(0);
-		
-		vpi.setValue(serialNumber);
-		return vpi;
-	}
-	
-	/**
-	 * Method to get SerialNumber Property of Interface End 
-	 * @param ca CA of a InterfaceEnd 
-	 * @return serialNumber to be returned
-	 */
-	public String getInterfaceEndSn(CategoryAssignment ca) {
-		ValuePropertyInstance vpi = (ValuePropertyInstance) ca.getPropertyInstances().get(0);
-		
-		return vpi.getValue();
-	}
 	
 	/**
 	 * This method helps to update an SEI and directly check the needs update method along the call
@@ -1165,7 +792,7 @@ public class InheritanceCopierTest {
 		assertEquals("Value is correct", TEST_VAL_1, copiedSnEr.getValue());
 		assertEquals("Value is correct", TEST_VAL_1, copiedSnEo.getValue());
 		
-		attachSpecification(seiErRwA, "Speck");
+		attachSpecification(seiErRwA, "Spec");
 		
 		// Everything correct until here :-D
 		
@@ -1371,7 +998,7 @@ public class InheritanceCopierTest {
 		assertFalse("Update is done", ic.needsUpdateInOrder(seiEo2RwII));
 		assertFalse("Update is done", ic.needsUpdateInOrder(seiErRwA));
 		
-		attachSpecification(seiErRwA, "Speck");
+		attachSpecification(seiErRwA, "Spec");
 		
 		assertFalse("Specification of Ralization is not applicable for Occurence, hence no update needed", ic.needsUpdateInOrder(seiEo1RwI));
 		
@@ -1394,173 +1021,6 @@ public class InheritanceCopierTest {
 		assertFalse("Update is not needed since the Configuration is not the last inherited", ic.needsUpdateInOrder(seiEo1RwI));
 	}
 	
-	@Test 
-	public void testUpdateAllInOrderRepo() {
-		final String TEST_VAL_1 = "1234";
-		final String TEST_VAL_2 = "2345";
-		final String TEST_VAL_3 = "3456";
-		
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		ic.updateAllInOrder(repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		
-		attachSpecification(seiErRwA, "Speck");
-		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
-		
-		ic.updateAllInOrder(repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should have two Cas", 2, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEr = (ValuePropertyInstance) copiedCaEr.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be updated in the realization", TEST_VAL_2, copiedSnEr.getValue());
-		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
-		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Realization", TEST_VAL_2, copiedSnEo.getValue());
-	}
-	
-	@Test 
-	public void testUpdateInOrderFromOccurence() {
-		final String TEST_VAL_1 = "1234";
-		final String TEST_VAL_2 = "2345";
-		final String TEST_VAL_3 = "3456";
-		
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		ic.updateInOrderFrom(seiEo1RwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwI.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		attachSpecification(seiErRwA, "Speck");
-		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
-		
-		ic.updateInOrderFrom(seiEo1RwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should have two Cas", 2, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwI.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEr = (ValuePropertyInstance) copiedCaEr.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be updated in the realization", TEST_VAL_2, copiedSnEr.getValue());
-		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
-		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Realization", TEST_VAL_2, copiedSnEo.getValue());
-	}
-	
-	@Test 
-	public void testUpdateInOrderFromConfiguration() {
-		final String TEST_VAL_1 = "1234";
-		final String TEST_VAL_2 = "2345";
-		final String TEST_VAL_3 = "3456";
-		
-		CategoryAssignment ca = attachInterfaceEnd(seiEdRw, "RwIe");
-		setInterfaceEndSn(ca, TEST_VAL_1);
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		ic.updateInOrderFrom(seiEcRwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo2RwI.getCategoryAssignments().size());
-
-		assertEquals("Should be no Ca", 0, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		CategoryAssignment specCa = attachSpecification(seiErRwA, "Speck");
-		
-		CategoryAssignment copiedCaEd = seiEdRw.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEd, TEST_VAL_2);
-		
-		CategoryAssignment copiedCaEc = seiEcRwI.getCategoryAssignments().get(0);
-		setInterfaceEndSn(copiedCaEc, TEST_VAL_3);
-		
-		ValuePropertyInstance copiedSnEc = (ValuePropertyInstance) copiedCaEc.getPropertyInstances().get(0);
-		copiedSnEc.setOverride(true);
-		
-		ic.updateInOrderFrom(seiEcRwI, repo, new NullProgressMonitor());
-		
-		assertEquals("Should be a single Ca", 1, seiEcRwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
-		assertEquals("Should be a single Ca", 1, seiEo2RwI.getCategoryAssignments().size());
-
-		assertEquals("Should be the Specification Ca", 1, seiErRwA.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEcRwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo1RwII.getCategoryAssignments().size());
-		assertEquals("Should be no Ca", 0, seiEo2RwII.getCategoryAssignments().size());
-		
-		CategoryAssignment copiedCaEr = seiErRwA.getCategoryAssignments().get(0);
-		assertEquals("The Realization should ony have the Specification Ca", specCa, copiedCaEr);
-		
-		CategoryAssignment copiedCaEc2 = seiEcRwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEc2 = (ValuePropertyInstance) copiedCaEc2.getPropertyInstances().get(0);
-		
-		assertEquals("The serial number should be not be updated in the configuration", TEST_VAL_3, copiedSnEc2.getValue());
-		
-		CategoryAssignment copiedCaEo = seiEo1RwI.getCategoryAssignments().get(0);
-		ValuePropertyInstance copiedSnEo = (ValuePropertyInstance) copiedCaEo.getPropertyInstances().get(0);
-		
-		assertEquals("The Occurence should inherit the value from the Configuration since the Realization is not touched", TEST_VAL_3, copiedSnEo.getValue());
-	}
 	
 	@SuppressWarnings("unused")
 	@Test
@@ -1654,6 +1114,10 @@ public class InheritanceCopierTest {
 		assertFalse("Update was done before, now all superSeis are updated, but no additional information was transferred with this", ic.needsUpdateInOrder(seiEo1RwI));
 	}
 	
+	/**
+	 * Test if a type instance link is removed, if there is no
+	 * is no inheritance link between the seis
+	 */
 	@Test
 	public void testCleanSuperTisInvalidLink() {
 		seiEo1RwI.getSuperSeis().clear();
@@ -1668,6 +1132,10 @@ public class InheritanceCopierTest {
 		assertTrue("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis().isEmpty());
 	}
 	
+	/**
+	 * test that the type instance link is maintained in case
+	 * there is also a link between the seis
+	 */
 	@Test
 	public void testCleanSuperTisValidLink() {
 		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
@@ -1681,9 +1149,12 @@ public class InheritanceCopierTest {
 		assertThat("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis(), hasItems(superIfe));
 	}
 	
+	/**
+	 * Test that type instance links from two sources are correctly maintained. 
+	 * First keep both links, then remove an invalid one
+	 */
 	@Test
 	public void testCleanSuperTisValidAndInvalidLink() {
-		seiEo1RwI.getSuperSeis().remove(seiEcRwI);
 		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
 		CategoryAssignment superIfe1 = attachInterfaceEnd(seiEcRwI, "IfeSuper1");
 		CategoryAssignment superIfe2 = attachInterfaceEnd(seiErRwA, "IfeSuper2");
@@ -1692,29 +1163,52 @@ public class InheritanceCopierTest {
 		ife.getSuperTis().add(superIfe2);
 		
 		InheritanceCopier ic = new InheritanceCopier();
+		
+		// the links between the seis are correct, nothing should be deleted
+		ic.cleanSuperTis(seiEo1RwI);
+		
+		assertThat("Super TIs with valid links have been correctly retained", ife.getSuperTis(), hasItem(superIfe1));
+		assertThat("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis(), hasItems(superIfe2));
+		
+		// invalidate one of the links, make sure the links for the type isnatnces get updated correctly
+		seiEo1RwI.getSuperSeis().remove(seiEcRwI);
 		ic.cleanSuperTis(seiEo1RwI);
 		
 		assertThat("Super TIs with valid links have been correctly retained", ife.getSuperTis(), not(hasItem(superIfe1)));
 		assertThat("Super TIs with invalid links have been correctly cleaned", ife.getSuperTis(), hasItems(superIfe2));
 	}
 	
+	/**
+	 * test case to make sure that tis which are inherited, but do not longer
+	 * have a link to a super ti get delete correctly. Therefore this test
+	 * has an interface which is referencing an interface end which gets deleted.
+	 * The reference from that interface has to disappear as well
+	 */
 	@Test
-	public void testCleanCas() {
-		seiEo1RwI.getSuperSeis().clear();
-		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
-		ife.setIsInherited(true);
-		
-		CategoryAssignment caIf = attachInterface(seiEo1RwI, "If", ife, ife, caIftMil);
-		
+	public void testCleanCasIfNoSuperTi() {
+		// Create an Ife and an IF which is referencing that IFE twice.
+		CategoryAssignment ecIfe = attachInterfaceEnd(seiEo1RwI, "Ife");
+		CategoryAssignment eoIfe = attachInterfaceEnd(seiEo1RwI, "Ife");
+		eoIfe.getSuperTis().add(ecIfe);
+		eoIfe.setIsInherited(true);
+		CategoryAssignment caIf = attachInterface(seiEo1RwI, "If", eoIfe, eoIfe, caIftMil);
 		ReferencePropertyInstance rpi = (ReferencePropertyInstance) caIf.getPropertyInstances().get(0);
 		
-		assertEquals("Reference to Interface end is set", rpi.getReference(), ife);
+		assertEquals("Reference to Interface end is set", rpi.getReference(), eoIfe);
 		
+		// running the clean should not change anything. The ife seems to be modeled in the EO
 		InheritanceCopier ic = new InheritanceCopier();
 		ic.cleanCas(seiEo1RwI);
 		
-		assertThat("Inherited Cas with invalid links have been correctly removed", seiEo1RwI.getCategoryAssignments(), not(hasItem(ife)));
-		assertNull("Referenced to Interface end has been correctly deleted", rpi.getReference());
+		assertThat("That Ca Still exists", seiEo1RwI.getCategoryAssignments(), hasItem(eoIfe));
+		assertEquals("Reference to Interface end still exists", eoIfe, rpi.getReference());
+		
+		// now remove the super ti. since the sub ti is set as inherited it should be removed
+		eoIfe.getSuperTis().clear();
+		ic.cleanCas(seiEo1RwI);
+		
+		assertThat("Inherited Cas with invalid links have been correctly removed", seiEo1RwI.getCategoryAssignments(), not(hasItem(eoIfe)));
+		assertNull("Reference to Interface end has been correctly deleted", rpi.getReference());
 	}
 	
 	@Test

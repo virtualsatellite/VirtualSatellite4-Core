@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.dependencies.feature"
       label="VirSat Core Dependencies Feature"
-      version="4.9.0.qualifier"
+      version="4.9.1.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
