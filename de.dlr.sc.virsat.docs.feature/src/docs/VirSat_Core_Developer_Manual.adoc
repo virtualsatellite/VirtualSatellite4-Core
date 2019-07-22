@@ -39,6 +39,31 @@ NOTE: The Developers IDE supports newer Java versions same as eclipse. Neverthel
 
 === Different Ways to Develop Virtual Satellite
 
+Virtual Satellite offers three different ways to be a developer. 
+All of them require different sets of skills and offer different ways of contributing.
+
+The first set is called *Virtual Satellite App Developer*.
+Developing an App is described in the User Manual.
+Apps are usually programmed directly within a project and contain project specific processing of the modeled data.
+Apps can be developed directly from within Virtual Satellite and do not require special setup.
+
+The second way is called the *Virtual Satellite Concept Developer*. 
+A Concept is an extension to the Virtual Satellite Conceptual Data Model (CDM).
+A Concept offers new ways of modeling to the user. 
+These new ways are usually process specific, meaning depending on your understanding of modeling a spacecraft.
+Once a Concept is developed it can be deployed and installed into any Virtual Satellite instance.
+Thus a Concept can be easily shared and reused across projects.
+Developing a concept requires some programming skills and requires to install the Virtual Satellite Developer IDE.
+A Concept is developed based on the Concept Language which is an xtext implementation of our Generic Systems Engineering Language (GSEL).
+This xtext language is an easy to use entry point to create new modeling items.
+Code generators create all neccessary code to get started.
+More advanced developers can override this generated code for further detailed modifications.
+
+The third way is called *Virtual Satellite Infrastructure Developers*.
+infrastructure Developers work on the core and basis of Virtual Satellite.
+This requires a high knowledge of Virtual Satellite, Eclipse and Java.
+It also requires to install the Virtual Satellite Developer IDE.
+
 === The Modular Conceptual Data Model
 
 === Virtual Satellite / Eclipse IDE Installation
