@@ -53,21 +53,23 @@ public class CatiaExporterTest extends AConceptTestCase {
 		JSONArray jsonParts = (JSONArray) jsonRoot.get(CatiaProperties.PARTS);		
 		JSONObject jsonProductRoot = (JSONObject) jsonRoot.get(CatiaProperties.PRODUCTS);
 		
-		assertTrue(jsonParts.isEmpty());
-		assertNull(jsonProductRoot);
+		assertTrue("There should be no part created", jsonParts.isEmpty());
+		assertNull("There should be no product created", jsonProductRoot);
 	}
 	
 	@Test
 	public void testTransformParts() {
+		// Test transformation if there is no attached visualization
 		ElementDefinition ed = new ElementDefinition(conceptPS);
 		List<ElementDefinition> eds = new ArrayList<>();
 		eds.add(ed);
-		
+	
 		CatiaExporter catiaExporter = new CatiaExporter();
 		JSONArray jsonParts = catiaExporter.transformParts(eds);
 		
-		assertTrue(jsonParts.isEmpty());
+		assertTrue("There should be no part created", jsonParts.isEmpty());
 		
+		// Test transformation with attached visualization
 		Visualisation visualisation = new Visualisation(conceptVis);
 		ed.add(visualisation);
 		
@@ -77,8 +79,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		JSONObject jsonPart = (JSONObject) jsonParts.get(0);
 		
-		assertEquals(ed.getName(), jsonPart.get(CatiaProperties.NAME));
-		assertEquals(ed.getUuid(), jsonPart.get(CatiaProperties.UUID));
+		assertEquals("Name should be copied", ed.getName(), jsonPart.get(CatiaProperties.NAME));
+		assertEquals("UUID should be copied", ed.getUuid(), jsonPart.get(CatiaProperties.UUID));
 	}
 	
 	@Test
@@ -88,7 +90,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 		CatiaExporter catiaExporter = new CatiaExporter();
 		JSONObject jsonElement = catiaExporter.transformElement(ed);
 		
-		assertEquals(ed.getName(), jsonElement.get(CatiaProperties.NAME));
-		assertEquals(ed.getUuid(), jsonElement.get(CatiaProperties.UUID));
+		assertEquals("Name should be copied", ed.getName(), jsonElement.get(CatiaProperties.NAME));
+		assertEquals("UUID should be copied", ed.getUuid(), jsonElement.get(CatiaProperties.UUID));
 	}
 }
