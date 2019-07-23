@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaExporterTest;
+import de.dlr.sc.virsat.model.extension.mechanical.validator.StructuralElementInstanceValidatorTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -26,7 +27,9 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({	CatiaExporterTest.class
+@SuiteClasses({
+	StructuralElementInstanceValidatorTest.class,
+	CatiaExporterTest.class
 				})
 
 /**
