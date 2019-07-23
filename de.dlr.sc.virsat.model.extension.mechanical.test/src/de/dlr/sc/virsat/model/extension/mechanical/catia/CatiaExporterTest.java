@@ -50,8 +50,6 @@ public class CatiaExporterTest extends AConceptTestCase {
 		CatiaExporter catiaExporter = new CatiaExporter();
 		JSONObject jsonRoot = catiaExporter.transform(ct);
 		
-		assertEquals(2, jsonRoot.keySet().size());
-		
 		JSONArray jsonParts = (JSONArray) jsonRoot.get(CatiaProperties.PARTS);		
 		JSONObject jsonProductRoot = (JSONObject) jsonRoot.get(CatiaProperties.PRODUCTS);
 		
