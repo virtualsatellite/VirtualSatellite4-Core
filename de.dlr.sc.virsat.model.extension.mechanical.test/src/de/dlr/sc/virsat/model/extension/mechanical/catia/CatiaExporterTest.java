@@ -80,4 +80,15 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertEquals(ed.getName(), jsonPart.get(CatiaProperties.NAME));
 		assertEquals(ed.getUuid(), jsonPart.get(CatiaProperties.UUID));
 	}
+	
+	@Test
+	public void testTransformElement() {
+		ElementDefinition ed = new ElementDefinition(conceptPS);
+		
+		CatiaExporter catiaExporter = new CatiaExporter();
+		JSONObject jsonElement = catiaExporter.transformElement(ed);
+		
+		assertEquals(ed.getName(), jsonElement.get(CatiaProperties.NAME));
+		assertEquals(ed.getUuid(), jsonElement.get(CatiaProperties.UUID));
+	}
 }

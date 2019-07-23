@@ -10,10 +10,12 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
@@ -30,8 +32,13 @@ public class CatiaExporter {
 	 * @param configurationTree the configuration tree
 	 * @return the json root object
 	 */
+	@SuppressWarnings("unchecked")
 	public JSONObject transform(ConfigurationTree configurationTree) {
 		JSONObject json = new JSONObject();
+		
+		// TODO Get the Element definitions
+		json.put(CatiaProperties.PARTS, transformParts(Collections.emptySet())); 
+		
 		return json;
 	}
 	
@@ -44,18 +51,28 @@ public class CatiaExporter {
 	public JSONArray transformParts(Collection<ElementDefinition> elementDefinitions) {
 		JSONArray jsonParts = new JSONArray();
 		
-		for (ElementDefinition ed : elementDefinitions) {
-			Visualisation vis = ed.getFirst(Visualisation.class);
+		for (ElementDefinition elementDefinition : elementDefinitions) {
+			Visualisation vis = elementDefinition.getFirst(Visualisation.class);
 			
 			if (vis != null) {
-				JSONObject jsonPart = new JSONObject();
+				JSONObject jsonPart = transformElement(elementDefinition);
 				jsonParts.add(jsonPart);
-			
-				jsonPart.put(CatiaProperties.NAME, ed.getName());
-				jsonPart.put(CatiaProperties.UUID, ed.getUuid());
 			}
 		}
 		
 		return jsonParts;
+	}
+	
+	/**
+	 * Creates a JSON object for a single virtual satellite element
+	 * @param element the element definition
+	 * @return the JSON object
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject transformElement(IBeanStructuralElementInstance element) {
+		JSONObject jsonElement = new JSONObject();
+		jsonElement.put(CatiaProperties.NAME, element.getName());
+		jsonElement.put(CatiaProperties.UUID, element.getUuid());
+		return jsonElement;
 	}
 }
