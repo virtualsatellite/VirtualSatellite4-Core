@@ -17,7 +17,6 @@ import org.json.simple.JSONObject;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
@@ -43,19 +42,19 @@ public class CatiaExporter {
 	}
 	
 	/**
-	 * Creates the JSON representation for a collection of element definitions
-	 * @param elementDefinitions the element definitions
+	 * Creates the JSON representation for a collection of parts
+	 * @param parts the parts to transform
 	 * @return the json representation
 	 */
 	@SuppressWarnings("unchecked")
-	public JSONArray transformParts(Collection<ElementDefinition> elementDefinitions) {
+	public JSONArray transformParts(Collection<? extends IBeanStructuralElementInstance> parts) {
 		JSONArray jsonParts = new JSONArray();
 		
-		for (ElementDefinition elementDefinition : elementDefinitions) {
-			Visualisation vis = elementDefinition.getFirst(Visualisation.class);
+		for (IBeanStructuralElementInstance part : parts) {
+			Visualisation vis = part.getFirst(Visualisation.class);
 			
 			if (vis != null) {
-				JSONObject jsonPart = transformElement(elementDefinition);
+				JSONObject jsonPart = transformElement(part);
 				jsonParts.add(jsonPart);
 			}
 		}
