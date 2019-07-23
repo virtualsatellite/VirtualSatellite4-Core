@@ -107,13 +107,13 @@ public class StructuralElementInstanceHelperTest {
 		seiA.getSuperSeis().add(seiB);
 
 		superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiA);
-		assertTrue(superSeis.size() == 1);
+		assertEquals(1, superSeis.size());
 		assertThat(superSeis, hasItem(seiB));
 		
 		seiB.getSuperSeis().add(seiC1);
 		
 		superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiA);
-		assertTrue(superSeis.size() == 2);
+		assertEquals(2, superSeis.size());
 		assertThat(superSeis, hasItems(seiB, seiC1));
 
 		seiB.getSuperSeis().add(seiC2);
