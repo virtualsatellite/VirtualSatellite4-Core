@@ -12,8 +12,8 @@ package de.dlr.sc.virsat.model.extension.mechanical.catia;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
@@ -31,9 +31,8 @@ public class CatiaExporter {
 	 * @param configurationTree the configuration tree
 	 * @return the json root object
 	 */
-	@SuppressWarnings("unchecked")
-	public JSONObject transform(ConfigurationTree configurationTree) {
-		JSONObject json = new JSONObject();
+	public JsonObject transform(ConfigurationTree configurationTree) {
+		JsonObject json = new JsonObject();
 		
 		// TODO Get the Element definitions
 		json.put(CatiaProperties.PARTS, transformParts(Collections.emptySet())); 
@@ -46,15 +45,14 @@ public class CatiaExporter {
 	 * @param parts the parts to transform
 	 * @return the json representation
 	 */
-	@SuppressWarnings("unchecked")
-	public JSONArray transformParts(Collection<? extends IBeanStructuralElementInstance> parts) {
-		JSONArray jsonParts = new JSONArray();
+	public JsonArray transformParts(Collection<? extends IBeanStructuralElementInstance> parts) {
+		JsonArray jsonParts = new JsonArray();
 		
 		for (IBeanStructuralElementInstance part : parts) {
 			Visualisation vis = part.getFirst(Visualisation.class);
 			
 			if (vis != null) {
-				JSONObject jsonPart = transformElement(part);
+				JsonObject jsonPart = transformElement(part);
 				jsonParts.add(jsonPart);
 			}
 		}
@@ -67,9 +65,8 @@ public class CatiaExporter {
 	 * @param element the element definition
 	 * @return the JSON object
 	 */
-	@SuppressWarnings("unchecked")
-	public JSONObject transformElement(IBeanStructuralElementInstance element) {
-		JSONObject jsonElement = new JSONObject();
+	public JsonObject transformElement(IBeanStructuralElementInstance element) {
+		JsonObject jsonElement = new JsonObject();
 		jsonElement.put(CatiaProperties.NAME, element.getName());
 		jsonElement.put(CatiaProperties.UUID, element.getUuid());
 		return jsonElement;
