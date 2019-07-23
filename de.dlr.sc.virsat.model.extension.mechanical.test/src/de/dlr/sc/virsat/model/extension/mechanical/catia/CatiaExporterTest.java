@@ -16,10 +16,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -48,26 +49,28 @@ public class CatiaExporterTest extends AConceptTestCase {
 		ConfigurationTree ct = new ConfigurationTree(conceptPS);
 		
 		CatiaExporter catiaExporter = new CatiaExporter();
-		JSONObject jsonRoot = catiaExporter.transform(ct);
+		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
-		JSONArray jsonParts = (JSONArray) jsonRoot.get(CatiaProperties.PARTS);		
-		JSONObject jsonProductRoot = (JSONObject) jsonRoot.get(CatiaProperties.PRODUCTS);
+		JsonArray jsonParts = (JsonArray) jsonRoot.get(CatiaProperties.PARTS);		
+		JsonObject jsonProductRoot = (JsonObject) jsonRoot.get(CatiaProperties.PRODUCTS);
 		
-		assertTrue(jsonParts.isEmpty());
-		assertNull(jsonProductRoot);
+		assertTrue("There should be no part created", jsonParts.isEmpty());
+		assertNull("There should be no product created", jsonProductRoot);
 	}
 	
 	@Test
 	public void testTransformParts() {
+		// Test transformation if there is no attached visualization
 		ElementDefinition ed = new ElementDefinition(conceptPS);
 		List<ElementDefinition> eds = new ArrayList<>();
 		eds.add(ed);
-		
+	
 		CatiaExporter catiaExporter = new CatiaExporter();
-		JSONArray jsonParts = catiaExporter.transformParts(eds);
+		JsonArray jsonParts = catiaExporter.transformParts(eds);
 		
-		assertTrue(jsonParts.isEmpty());
+		assertTrue("There should be no part created", jsonParts.isEmpty());
 		
+		// Test transformation with attached visualization
 		Visualisation visualisation = new Visualisation(conceptVis);
 		ed.add(visualisation);
 		
@@ -75,10 +78,10 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		assertEquals(1, jsonParts.size());
 		
-		JSONObject jsonPart = (JSONObject) jsonParts.get(0);
+		JsonObject jsonPart = (JsonObject) jsonParts.get(0);
 		
-		assertEquals(ed.getName(), jsonPart.get(CatiaProperties.NAME));
-		assertEquals(ed.getUuid(), jsonPart.get(CatiaProperties.UUID));
+		assertEquals("Name should be copied", ed.getName(), jsonPart.get(CatiaProperties.NAME));
+		assertEquals("UUID should be copied", ed.getUuid(), jsonPart.get(CatiaProperties.UUID));
 	}
 	
 	@Test
@@ -86,9 +89,9 @@ public class CatiaExporterTest extends AConceptTestCase {
 		ElementDefinition ed = new ElementDefinition(conceptPS);
 		
 		CatiaExporter catiaExporter = new CatiaExporter();
-		JSONObject jsonElement = catiaExporter.transformElement(ed);
+		JsonObject jsonElement = catiaExporter.transformElement(ed);
 		
-		assertEquals(ed.getName(), jsonElement.get(CatiaProperties.NAME));
-		assertEquals(ed.getUuid(), jsonElement.get(CatiaProperties.UUID));
+		assertEquals("Name should be copied", ed.getName(), jsonElement.get(CatiaProperties.NAME));
+		assertEquals("UUID should be copied", ed.getUuid(), jsonElement.get(CatiaProperties.UUID));
 	}
 }

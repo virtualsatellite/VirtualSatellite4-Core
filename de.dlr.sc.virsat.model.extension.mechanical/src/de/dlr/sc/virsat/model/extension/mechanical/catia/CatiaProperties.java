@@ -28,4 +28,28 @@ public class CatiaProperties {
 	
 	public static final String UUID = "uuid";
 	public static final String NAME = "name";
+	
+	public static final String PART_SHAPE = "shape";
+	public static final String PART_STL_PATH = "STL_path";
+	public static final String PART_COLOR = "color";
+	public static final String PART_RADIUS = "radius";
+	public static final String PART_LENGTH_X = "lengthX";
+	public static final String PART_LENGTH_Y = "lengthY";
+	public static final String PART_LENGTH_Z = "lengthZ";
+
+	public static final String PRODUCT_REFERENCE_NAME = "partName";
+	public static final String PRODUCT_ED_UUID = "uuidED";
+	
+	public static final String PRODUCT_POS_X = "posX";
+	public static final String PRODUCT_POS_Y = "posY";
+	public static final String PRODUCT_POS_Z = "posZ";
+	
+	public static final String PRODUCT_ROT_X = "rotX";
+	public static final String PRODUCT_ROT_Y = "rotY";
+	public static final String PRODUCT_ROT_Z = "rotZ";
+	
+	public static final String PRODUCT_SHAPE = "shape";
+	
+	public static final String PRODUCT_CHILDREN = "children";
+
 }
