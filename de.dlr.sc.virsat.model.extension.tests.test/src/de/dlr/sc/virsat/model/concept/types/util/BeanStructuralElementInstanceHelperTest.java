@@ -157,7 +157,7 @@ public class BeanStructuralElementInstanceHelperTest extends AConceptTestCase {
 	}
 	
 	@Test
-	public void testGetAllSuperBeanSeisList() {
+	public void testGetAllSuperBeanSeisSet() {
 		TestStructuralElement rootElement = new TestStructuralElement(concept);
 		TestStructuralElement super1 = new TestStructuralElement(concept);
 		TestStructuralElement super2 = new TestStructuralElement(concept);

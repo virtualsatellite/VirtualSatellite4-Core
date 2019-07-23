@@ -457,7 +457,7 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		List<TestStructuralElement> superSeiBeans = tse.getSuperSeis(TestStructuralElement.class);
 		assertEquals("Correct amount of super Sei beans", 2, superSeiBeans.size());
-		assertThat("List ahs correct elements of super Sei Benas", superSeiBeans, hasItems(superTse1, superTse2));
+		assertThat("List has correct elements of super Sei Beans", superSeiBeans, hasItems(superTse1, superTse2));
 	}
 
 	@Test
@@ -472,7 +472,7 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		Set<TestStructuralElement> superSeiBeans = tse.getAllSuperSeis(TestStructuralElement.class);
 		assertEquals("Correct amount of super Sei beans", 2, superSeiBeans.size());
-		assertThat("List has correct elements of super Sei Benas", superSeiBeans, hasItems(superTse1, superTse2));
+		assertThat("List has correct elements of super Sei Beans", superSeiBeans, hasItems(superTse1, superTse2));
 	}
 	
 	@Test
