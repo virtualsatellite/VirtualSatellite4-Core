@@ -111,6 +111,7 @@ Germany
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.eclipse.draw2d"/>
+      <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature"/>
    </features>
 
    <configurations>
