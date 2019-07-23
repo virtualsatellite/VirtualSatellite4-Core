@@ -9,7 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.ps.util;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -21,6 +23,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
@@ -34,6 +37,7 @@ import de.dlr.sc.virsat.model.extension.ps.Activator;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -256,5 +260,11 @@ public class ProductStructureHelper {
 			} 
 		}
 		ed.getCommandStack().execute(cmd);
+	}
+	
+	public static Set<ElementDefinition> getAllElementDefinitions(IBeanStructuralElementInstance beanRoot) {
+		Set<ElementDefinition> elementDefinitions = new HashSet<>();
+		
+		return elementDefinitions;
 	}
 }	

@@ -31,7 +31,8 @@ public class CatiaExporter {
 	 * @return the json root object
 	 */
 	public JSONObject transform(ConfigurationTree configurationTree) {
-		return null;
+		JSONObject json = new JSONObject();
+		return json;
 	}
 	
 	/**

@@ -10,6 +10,12 @@
 package de.dlr.sc.virsat.model.extension.ps.util.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import static org.hamcrest.CoreMatchers.hasItem;
+
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -27,11 +33,13 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
-import de.dlr.sc.virsat.model.extension.ps.util.ProductStructureHelper;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
+import de.dlr.sc.virsat.model.extension.ps.util.ProductStructureHelper;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
@@ -222,4 +230,51 @@ public class ProductStructureHelperTest extends AProjectTestCase {
 		assertEquals(seiAT.getChildren().size(), 2);
 	}
 
+	@Test
+	public void testGetAllElementDefinitionsConfigurationTree() {
+		ConfigurationTree ct = new ConfigurationTree(conceptEgscc);
+		
+		Set<ElementDefinition> elementDefinitions = ProductStructureHelper.getAllElementDefinitions(ct);
+		
+		assertTrue(elementDefinitions.isEmpty());
+		
+		ElementConfiguration ec1 = new ElementConfiguration(conceptEgscc);
+		ElementConfiguration ec2 = new ElementConfiguration(conceptEgscc);
+		ct.add(ec1);
+		ct.add(ec2);
+		
+		ElementDefinition ed = new ElementDefinition(conceptEgscc);
+		ec1.addSuperSei(ed);
+		
+		elementDefinitions = ProductStructureHelper.getAllElementDefinitions(ct);
+		
+		assertEquals(1, elementDefinitions.size());
+		assertThat(elementDefinitions, hasItem(ed));
+	}
+	
+	@Test
+	public void testGetAllElementDefinitionsAssemblyTree() {
+		AssemblyTree at = new AssemblyTree(conceptEgscc);
+		
+		Set<ElementDefinition> elementDefinitions = ProductStructureHelper.getAllElementDefinitions(at);
+		
+		assertTrue(elementDefinitions.isEmpty());
+		
+		ElementOccurence eo = new ElementOccurence(conceptEgscc);
+		at.add(eo);
+		
+		ElementRealization er = new ElementRealization(conceptEgscc);
+		ElementConfiguration ec = new ElementConfiguration(conceptEgscc);
+		eo.addSuperSei(er);
+		eo.addSuperSei(ec);
+		
+		ElementDefinition ed = new ElementDefinition(conceptEgscc);
+		ec.addSuperSei(ed);
+		er.addSuperSei(ed);
+		
+		elementDefinitions = ProductStructureHelper.getAllElementDefinitions(ct);
+		
+		assertEquals(1, elementDefinitions.size());
+		assertThat(elementDefinitions, hasItem(ed));
+	}
 }

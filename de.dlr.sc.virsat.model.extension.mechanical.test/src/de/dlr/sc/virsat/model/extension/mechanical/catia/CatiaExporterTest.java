@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -51,14 +52,11 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		assertEquals(2, jsonRoot.keySet().size());
 		
-		JSONArray jsonParts = (JSONArray) jsonRoot.get(CatiaProperties.PARTS);
-		JSONObject jsonProducts = (JSONObject) jsonRoot.get(CatiaProperties.PRODUCTS);
+		JSONArray jsonParts = (JSONArray) jsonRoot.get(CatiaProperties.PARTS);		
+		JSONObject jsonProductRoot = (JSONObject) jsonRoot.get(CatiaProperties.PRODUCTS);
 		
 		assertTrue(jsonParts.isEmpty());
-		
-		assertEquals(1, jsonProducts.size());
-		assertEquals(ct.getName(), jsonProducts.get(CatiaProperties.NAME));
-		assertEquals(ct.getUuid(), jsonProducts.get(CatiaProperties.UUID));
+		assertNull(jsonProductRoot);
 	}
 	
 	@Test
