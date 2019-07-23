@@ -81,6 +81,9 @@ public class RequirementsAttributeDefinitionTableLabelProvider extends VirSatTra
 	 * @return the type string
 	 */
 	protected String getAttributeTypeLabel(RequirementAttribute attDef) {
+		if (attDef == null || attDef.getType() == null) {
+			return "";
+		}
 		if (attDef.getType().equals(RequirementAttribute.TYPE_Enumeration_NAME)) {
 			return attDef.getEnumeration().getName();
 		} else {
