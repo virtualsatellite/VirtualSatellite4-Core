@@ -15,7 +15,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
@@ -35,10 +34,6 @@ public class CatiaHelperTest {
 
 	public static final int NUMBER_OBJECTS = 4; // Three elements with UUID and the root product element
 
-	@Before
-	public void setUp() {
-
-	}
 
 	@Test
 	public void testGetListOfAllJSONElements() {
