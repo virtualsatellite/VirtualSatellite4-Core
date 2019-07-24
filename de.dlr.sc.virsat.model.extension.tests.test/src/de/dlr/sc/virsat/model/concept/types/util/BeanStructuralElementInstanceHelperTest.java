@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -130,12 +131,13 @@ public class BeanStructuralElementInstanceHelperTest extends AConceptTestCase {
 		assertEquals("The child has proper parent", rootElement.getStructuralElementInstance(), child.getParentSeiBean().getStructuralElementInstance());
 		assertEquals("The grandchild has proper parent", child.getStructuralElementInstance(), grandChild.getParentSeiBean().getStructuralElementInstance());
 	}
-	
+
 	@Test
-	public void testGetAllSuperBeanSeisList() {
+	public void testGetSuperBeanSeisList() {
 		TestStructuralElement rootElement = new TestStructuralElement(concept);
 		TestStructuralElement super1 = new TestStructuralElement(concept);
 		TestStructuralElement super2 = new TestStructuralElement(concept);
+		TestStructuralElement superSuper = new TestStructuralElement(concept);
 		TestStructuralElementOther superOther1 = new TestStructuralElementOther(concept);
 		TestStructuralElementOther superOther2 = new TestStructuralElementOther(concept);
 
@@ -143,10 +145,33 @@ public class BeanStructuralElementInstanceHelperTest extends AConceptTestCase {
 		rootElement.addSuperSei(super2);
 		rootElement.addSuperSei(superOther1);
 		rootElement.addSuperSei(superOther2);
+		super1.addSuperSei(superSuper);
 		
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
-		List<TestStructuralElement> filteredSupers = bseiHelper.getAllSuperBeanSeis(rootElement.getStructuralElementInstance(), TestStructuralElement.class);
-		List<TestStructuralElementOther> filteredSuperOther = bseiHelper.getAllSuperBeanSeis(rootElement.getStructuralElementInstance(), TestStructuralElementOther.class);
+		List<TestStructuralElement> filteredSupers = bseiHelper.getSuperBeanSeis(rootElement.getStructuralElementInstance(), TestStructuralElement.class);
+		List<TestStructuralElementOther> filteredSuperOther = bseiHelper.getSuperBeanSeis(rootElement.getStructuralElementInstance(), TestStructuralElementOther.class);
+		
+		assertEquals("Correct number of elements", 2, filteredSupers.size());
+		assertThat("Correct elements", filteredSupers, hasItems(super1, super2));
+		assertThat("Correct elements", filteredSuperOther, hasItems(superOther1, superOther2));
+	}
+	
+	@Test
+	public void testGetAllSuperBeanSeisSet() {
+		TestStructuralElement rootElement = new TestStructuralElement(concept);
+		TestStructuralElement super1 = new TestStructuralElement(concept);
+		TestStructuralElement super2 = new TestStructuralElement(concept);
+		TestStructuralElementOther superOther1 = new TestStructuralElementOther(concept);
+		TestStructuralElementOther superOther2 = new TestStructuralElementOther(concept);
+
+		rootElement.addSuperSei(super1);
+		rootElement.addSuperSei(superOther2);
+		super1.addSuperSei(super2);
+		super1.addSuperSei(superOther1);
+		
+		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
+		Set<TestStructuralElement> filteredSupers = bseiHelper.getAllSuperBeanSeis(rootElement.getStructuralElementInstance(), TestStructuralElement.class);
+		Set<TestStructuralElementOther> filteredSuperOther = bseiHelper.getAllSuperBeanSeis(rootElement.getStructuralElementInstance(), TestStructuralElementOther.class);
 		
 		assertEquals("Correct number of elements", 2, filteredSupers.size());
 		assertThat("Correct elements", filteredSupers, hasItems(super1, super2));

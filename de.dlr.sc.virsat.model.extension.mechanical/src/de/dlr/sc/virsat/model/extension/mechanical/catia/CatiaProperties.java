@@ -9,47 +9,60 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
+import com.github.cliftonlabs.json_simple.JsonKey;
+
 /**
  * Defines the keys to access Catia properties
  *
  */
 
-public class CatiaProperties {
+public enum CatiaProperties implements JsonKey {
+	PARTS("Parts"),
+	PRODUCTS("Products"),
+	
+	UUID("uuid"),
+	NAME("name"),
+	
+	PART_SHAPE("shape"),
+	PART_STL_PATH("STL_path"),
+	PART_COLOR("color"),
+	PART_RADIUS("radius"),
+	PART_LENGTH_X("lengthX"),
+	PART_LENGTH_Y("lengthY"),
+	PART_LENGTH_Z("lengthZ"),
+
+	PRODUCT_REFERENCE_NAME("partName"),
+	PRODUCT_ED_UUID("uuidED"),
+	
+	PRODUCT_POS_X("posX"),
+	PRODUCT_POS_Y("posY"),
+	PRODUCT_POS_Z("posZ"),
+	
+	PRODUCT_ROT_X("rotX"),
+	PRODUCT_ROT_Y("rotY"),
+	PRODUCT_ROT_Z("rotZ"),
+	
+	PRODUCT_SHAPE("shape"),
+	
+	PRODUCT_CHILDREN("children");
+	
+	private final String property;
 	
 	/**
-	 * Private constructor
+	 * Standard constructor
+	 * @param property the property
 	 */
-	private CatiaProperties() {
-		
+	CatiaProperties(String property) {
+		this.property = property;
 	}
 	
-	public static final String PARTS = "Parts";
-	public static final String PRODUCTS = "Products";
-	
-	public static final String UUID = "uuid";
-	public static final String NAME = "name";
-	
-	public static final String PART_SHAPE = "shape";
-	public static final String PART_STL_PATH = "STL_path";
-	public static final String PART_COLOR = "color";
-	public static final String PART_RADIUS = "radius";
-	public static final String PART_LENGTH_X = "lengthX";
-	public static final String PART_LENGTH_Y = "lengthY";
-	public static final String PART_LENGTH_Z = "lengthZ";
+	@Override
+	public String getKey() {
+		return property;
+	}
 
-	public static final String PRODUCT_REFERENCE_NAME = "partName";
-	public static final String PRODUCT_ED_UUID = "uuidED";
-	
-	public static final String PRODUCT_POS_X = "posX";
-	public static final String PRODUCT_POS_Y = "posY";
-	public static final String PRODUCT_POS_Z = "posZ";
-	
-	public static final String PRODUCT_ROT_X = "rotX";
-	public static final String PRODUCT_ROT_Y = "rotY";
-	public static final String PRODUCT_ROT_Z = "rotZ";
-	
-	public static final String PRODUCT_SHAPE = "shape";
-	
-	public static final String PRODUCT_CHILDREN = "children";
-
+	@Override
+	public Object getValue() {
+		return null;
+	}
 }
