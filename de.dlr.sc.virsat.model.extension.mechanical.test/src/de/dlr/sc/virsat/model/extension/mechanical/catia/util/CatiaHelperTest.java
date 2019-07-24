@@ -34,20 +34,25 @@ public class CatiaHelperTest {
 
 	public static final int NUMBER_OBJECTS = 4; // Three elements with UUID and the root product element
 
+	public static final int INDEX_ELEMENT_1 = 0;
+	public static final int INDEX_ELEMENT_2 = 2;
+	public static final int INDEX_ELEMENT_3 = 3;
 
 	@Test
 	public void testGetListOfAllJSONElements() {
 
-		JsonObject rootObject = createJsonObjectWithProductandConfiguration();
+		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
 
 		List<JsonObject> objects = CatiaHelper.getListOfAllJSONElements(rootObject);
 
-		assertEquals("Number of found obejcts does not match expected", NUMBER_OBJECTS, objects.size());
+		assertEquals("Number of found objects does not match expected", NUMBER_OBJECTS, objects.size());
 
-		assertEquals("Number of found obejcts does not match expected", ELEMENT_1_UUID,
-				objects.get(0).get(CatiaProperties.UUID.getKey()));
-		assertEquals("Number of found obejcts does not match expected", ELEMENT_2_UUID,
-				objects.get(2).get(CatiaProperties.UUID.getKey()));
+		assertEquals("Number of found objects does not match expected", ELEMENT_1_UUID,
+				objects.get(INDEX_ELEMENT_1).get(CatiaProperties.UUID.getKey()));
+		assertEquals("Number of found objects does not match expected", ELEMENT_2_UUID,
+				objects.get(INDEX_ELEMENT_2).get(CatiaProperties.UUID.getKey()));
+		assertEquals("Number of found objects does not match expected", ELEMENT_3_UUID,
+				objects.get(INDEX_ELEMENT_3).get(CatiaProperties.UUID.getKey()));
 
 		assertNotNull("Elements in the list should not be null", objects.get(0));
 
@@ -58,7 +63,7 @@ public class CatiaHelperTest {
 	 * 
 	 * @return an initial JSON object
 	 */
-	protected JsonObject createJsonObjectWithProductandConfiguration() {
+	protected JsonObject createJsonObjectWithProductAndConfiguration() {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
 		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), ELEMENT_1_UUID);
