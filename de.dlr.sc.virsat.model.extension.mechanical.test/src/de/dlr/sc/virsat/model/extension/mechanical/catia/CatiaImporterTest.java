@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;
@@ -90,6 +91,84 @@ public class CatiaImporterTest extends AConceptTestCase {
 		
 	}
 	
+	
+	
+	@Test
+	public void testMapJSONtoSEIWithNoUnmappedJSONObject() {
+		
+		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
+		
+		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(), elementConfigurationReactionWheel1.getUuid());
+		
+		JsonObject rootObject = new JsonObject();
+		JsonArray partArray = new JsonArray();
+		JsonArray productArray = new JsonArray();
+		partArray.add(jsonObjectReactionWheelDefinition);
+		productArray.add(jsonObjectReactionWheel1Configuration);
+		rootObject.put(CatiaProperties.PARTS.getKey(), partArray);
+		rootObject.put(CatiaProperties.PRODUCTS.getKey(), productArray);
+		
+		CatiaImporter importer = new CatiaImporter();
+		List<JsonObject> unmappedElements = importer.mapJSONtoSEI(rootObject, configurationTree);
+		
+		assertEquals("Check that there are no umappable elements in the imported JSON", 0, unmappedElements.size());
+		
+	}
+	
+
+	@Test
+	public void testMapJSONtoSEIWithUnmappedJSONPart() {
+		
+		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
+		
+		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(), elementConfigurationReactionWheel1.getUuid());
+		
+		JsonObject rootObject = new JsonObject();
+		JsonArray partArray = new JsonArray();
+		JsonArray productArray = new JsonArray();
+		partArray.add(jsonObjectReactionWheelDefinition);
+		productArray.add(jsonObjectReactionWheel1Configuration);
+		
+		rootObject.put(CatiaProperties.PARTS.getKey(), partArray);
+		rootObject.put(CatiaProperties.PRODUCTS.getKey(), productArray);
+		
+		//Create new unmapped element
+		JsonObject unmappedJsonObject = new JsonObject();
+		unmappedJsonObject.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
+		partArray.add(unmappedJsonObject);
+		CatiaImporter importer = new CatiaImporter();
+		List<JsonObject> unmappedElements = importer.mapJSONtoSEI(rootObject, configurationTree);
+		
+		assertEquals("Check that there are no umappable elements in the imported JSON", 1, unmappedElements.size());
+		
+		assertEquals("Expected unmapped part not found", unmappedJsonObject, unmappedElements.get(0));
+		
+	}
+	
+	@Test
+	public void testMapJSONtoSEIWithUnmappedJSONProduct() {
+		
+		JsonObject rootObject = createMappedJsonObjectWithProductandConfiguration();
+		
+		//Create new unmapped element
+		JsonObject unmappedJsonObject = new JsonObject();
+		unmappedJsonObject.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
+		JsonArray productArray = rootObject.getCollection(CatiaProperties.PRODUCTS);
+		productArray.add(unmappedJsonObject);
+		
+		CatiaImporter importer = new CatiaImporter();
+		List<JsonObject> unmappedElements = importer.mapJSONtoSEI(rootObject, configurationTree);
+		
+		assertEquals("Check that there are no umappable elements in the imported JSON", 1, unmappedElements.size());
+		
+		assertEquals("Expected unmapped product not found", unmappedJsonObject, unmappedElements.get(0));
+		
+	}
+	
 	/**
 	 * Create test scenario with inheritance 
 	 */
@@ -145,22 +224,28 @@ public class CatiaImporterTest extends AConceptTestCase {
 
 	}
 	
-	@Test
-	public void testMapJSONtoSEIWithNoUnmappedJSONObject() {
+	
+	/**
+	 * Create a simple mapped JSON object with parts and products that are mapped to elements in the test trees
+	 * @return the JSON root object
+	 */
+	protected JsonObject createMappedJsonObjectWithProductandConfiguration() {
 		
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID, elementReactionWheelDefinition.getUuid());
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
+		
+		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(), elementConfigurationReactionWheel1.getUuid());
 		
 		JsonObject rootObject = new JsonObject();
 		JsonArray partArray = new JsonArray();
+		JsonArray productArray = new JsonArray();
 		partArray.add(jsonObjectReactionWheelDefinition);
-		rootObject.put(CatiaProperties.PARTS, partArray);
+		productArray.add(jsonObjectReactionWheel1Configuration);
+		rootObject.put(CatiaProperties.PARTS.getKey(), partArray);
+		rootObject.put(CatiaProperties.PRODUCTS.getKey(), productArray);
 		
-		CatiaImporter importer = new CatiaImporter();
-		List<JsonObject> unmappedElements = importer.mapJSONtoSEI(rootObject, configurationTree);
-		
-		assertEquals("Check that there are no umappable elements in the imported JSON", 0, unmappedElements.size());
-		
+		return rootObject;
 	}
 
 }
