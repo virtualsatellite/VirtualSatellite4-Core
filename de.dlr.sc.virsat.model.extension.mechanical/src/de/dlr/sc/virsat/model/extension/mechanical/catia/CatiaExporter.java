@@ -9,9 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import org.eclipse.emf.common.util.URI;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
@@ -27,8 +31,16 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 public class CatiaExporter {
 	
+	private String geometryFilesPath;
 	
-	
+	/**
+	 * Sets the path where all the geometry files are supposed to be (this class doesn't copy files)
+	 * @param geometryFilesPath 
+	 */
+	public void setGeometryFilesPath(String geometryFilesPath) {
+		this.geometryFilesPath = geometryFilesPath;
+	}
+
 	/**
 	 * Main method that creates the JSON representation of a configuration tree
 	 * @param configurationTree the configuration tree
@@ -126,6 +138,15 @@ public class CatiaExporter {
 		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), vis.getRotationYBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), vis.getRotationZBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), vis.getShape());
+		
+		if (vis.getShape().equals(Visualisation.SHAPE_GEOMETRY_NAME)) {
+			URI geometryUri = vis.getGeometryFile();
+			if (geometryUri != null) {
+				String geometryFileName = geometryUri.lastSegment();
+				Path filePath = Paths.get(geometryFilesPath, geometryFileName);
+				jsonProduct.put(CatiaProperties.PRODUCT_STL_PATH.getKey(), filePath.toString());
+			}
+		}
 	}
 
 	/**

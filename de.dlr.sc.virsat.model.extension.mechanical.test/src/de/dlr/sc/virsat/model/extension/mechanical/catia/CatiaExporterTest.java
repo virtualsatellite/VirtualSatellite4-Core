@@ -10,12 +10,14 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -140,6 +142,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertEquals(ROTATION_Z, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
 
 		assertEquals(Visualisation.SHAPE_BOX_NAME, jsonProductRoot.getString(CatiaProperties.PRODUCT_SHAPE));
+		assertFalse(jsonProductRoot.containsKey(CatiaProperties.PRODUCT_STL_PATH.getKey()));
 
 		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		assertTrue(children.isEmpty());
@@ -162,7 +165,13 @@ public class CatiaExporterTest extends AConceptTestCase {
 		final double ROTATION_Y = 45;
 		final double ROTATION_Z = 90;
 		
-		visualisation.setShape(Visualisation.SHAPE_BOX_NAME);
+		final String GEOMETRY_FILES_EXPORT_DESTINATION = "X:\\whatever";
+		final String GEOMETRY_FILE_NAME = "test.stl";
+		final String EXPECTED_GEOMETRY_FILE_PATH = GEOMETRY_FILES_EXPORT_DESTINATION + "\\" + GEOMETRY_FILE_NAME;
+		final URI GEOMETRY_FILE_URI = URI.createPlatformResourceURI(GEOMETRY_FILE_NAME, false);
+		
+		visualisation.setShape(Visualisation.SHAPE_GEOMETRY_NAME);
+		visualisation.setGeometryFile(GEOMETRY_FILE_URI);
 		visualisation.setPositionX(POSITION_X);
 		visualisation.setPositionY(POSITION_Y);
 		visualisation.setPositionZ(POSITION_Z);
@@ -172,6 +181,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 		visualisation.setRotationZ(ROTATION_Z);
 		
 		CatiaExporter catiaExporter = new CatiaExporter();
+		catiaExporter.setGeometryFilesPath(GEOMETRY_FILES_EXPORT_DESTINATION);
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
@@ -199,7 +209,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertEquals(ROTATION_X, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
 		assertEquals(ROTATION_Y, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
 		assertEquals(ROTATION_Z, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
-		assertEquals(Visualisation.SHAPE_BOX_NAME, subProduct.getString(CatiaProperties.PRODUCT_SHAPE));
+		assertEquals(Visualisation.SHAPE_GEOMETRY_NAME, subProduct.getString(CatiaProperties.PRODUCT_SHAPE));
+		assertEquals(EXPECTED_GEOMETRY_FILE_PATH, subProduct.getString(CatiaProperties.PRODUCT_STL_PATH));
 	}
-
 }
