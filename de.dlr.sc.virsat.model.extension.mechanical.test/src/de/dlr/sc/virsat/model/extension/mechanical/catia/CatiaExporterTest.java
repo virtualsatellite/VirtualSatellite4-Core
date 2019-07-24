@@ -133,19 +133,19 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		assertTrue("There should be no part created", jsonParts.isEmpty());
 		
-		assertEquals(POSITION_X, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_X), EPSILON);
-		assertEquals(POSITION_Y, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Y), EPSILON);
-		assertEquals(POSITION_Z, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Z), EPSILON);
+		assertEquals("The X position should be copied", POSITION_X, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_X), EPSILON);
+		assertEquals("The Y position should be copied", POSITION_Y, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Y), EPSILON);
+		assertEquals("The Z position should be copied", POSITION_Z, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Z), EPSILON);
 		
-		assertEquals(ROTATION_X, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
-		assertEquals(ROTATION_Y, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
-		assertEquals(ROTATION_Z, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
+		assertEquals("The X rotation should be copied", ROTATION_X, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
+		assertEquals("The Y rotation should be copied", ROTATION_Y, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
+		assertEquals("The Z rotation should be copied", ROTATION_Z, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
 
-		assertEquals(Visualisation.SHAPE_BOX_NAME, jsonProductRoot.getString(CatiaProperties.PRODUCT_SHAPE));
-		assertFalse(jsonProductRoot.containsKey(CatiaProperties.PRODUCT_STL_PATH.getKey()));
+		assertEquals("The Shape should be copied", Visualisation.SHAPE_BOX_NAME, jsonProductRoot.getString(CatiaProperties.PRODUCT_SHAPE));
+		assertFalse("There should be no geometry file", jsonProductRoot.containsKey(CatiaProperties.PRODUCT_STL_PATH.getKey()));
 
 		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		assertTrue(children.isEmpty());
+		assertTrue("There should be no children", children.isEmpty());
 	}
 
 	@Test
@@ -184,32 +184,35 @@ public class CatiaExporterTest extends AConceptTestCase {
 		catiaExporter.setGeometryFilesPath(GEOMETRY_FILES_EXPORT_DESTINATION);
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
+		// Check that the configuration tree was transformed correctly
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		
 		assertTrue("There should be no part created", jsonParts.isEmpty());
 		
-		assertEquals(0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_X), EPSILON);
-		assertEquals(0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Y), EPSILON);
-		assertEquals(0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Z), EPSILON);
+		assertEquals("The X position should be initialized with 0", 0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_X), EPSILON);
+		assertEquals("The Y position should be initialized with 0", 0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Y), EPSILON);
+		assertEquals("The Z position should be initialized with 0", 0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_POS_Z), EPSILON);
 		
-		assertEquals(0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
-		assertEquals(0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
-		assertEquals(0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
-		assertEquals(Visualisation.SHAPE_NONE_NAME, jsonProductRoot.getString(CatiaProperties.PRODUCT_SHAPE));
+		assertEquals("The X rotation should be initialized with 0", 0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
+		assertEquals("The Y rotation should be initialized with 0", 0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
+		assertEquals("The Z rotation should be initialized with 0", 0, jsonProductRoot.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
+		assertEquals("The Shape should be copied", Visualisation.SHAPE_NONE_NAME, jsonProductRoot.getString(CatiaProperties.PRODUCT_SHAPE));
 
 		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		assertEquals(1, children.size());
+		assertEquals("The child element should be copied", 1, children.size());
+		
+		// Check that the element configuration was transformed correctly
 		JsonObject subProduct = children.getMap(0);
 		
-		assertEquals(POSITION_X, subProduct.getDouble(CatiaProperties.PRODUCT_POS_X), EPSILON);
-		assertEquals(POSITION_Y, subProduct.getDouble(CatiaProperties.PRODUCT_POS_Y), EPSILON);
-		assertEquals(POSITION_Z, subProduct.getDouble(CatiaProperties.PRODUCT_POS_Z), EPSILON);
+		assertEquals("The X position should be copied", POSITION_X, subProduct.getDouble(CatiaProperties.PRODUCT_POS_X), EPSILON);
+		assertEquals("The Y position should be copied", POSITION_Y, subProduct.getDouble(CatiaProperties.PRODUCT_POS_Y), EPSILON);
+		assertEquals("The Z position should be copied", POSITION_Z, subProduct.getDouble(CatiaProperties.PRODUCT_POS_Z), EPSILON);
 		
-		assertEquals(ROTATION_X, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
-		assertEquals(ROTATION_Y, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
-		assertEquals(ROTATION_Z, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
-		assertEquals(Visualisation.SHAPE_GEOMETRY_NAME, subProduct.getString(CatiaProperties.PRODUCT_SHAPE));
-		assertEquals(EXPECTED_GEOMETRY_FILE_PATH, subProduct.getString(CatiaProperties.PRODUCT_STL_PATH));
+		assertEquals("The X rotation should be copied", ROTATION_X, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_X), EPSILON);
+		assertEquals("The Y rotation should be copied", ROTATION_Y, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_Y), EPSILON);
+		assertEquals("The Z rotation should be copied", ROTATION_Z, subProduct.getDouble(CatiaProperties.PRODUCT_ROT_Z), EPSILON);
+		assertEquals("The Shape should be copied", Visualisation.SHAPE_GEOMETRY_NAME, subProduct.getString(CatiaProperties.PRODUCT_SHAPE));
+		assertEquals("The Geometry should be copied", EXPECTED_GEOMETRY_FILE_PATH, subProduct.getString(CatiaProperties.PRODUCT_STL_PATH));
 	}
 }
