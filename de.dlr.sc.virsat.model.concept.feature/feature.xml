@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.concept.feature"
       label="VirSat Core Model Concept IDE Tools Feature"
-      version="4.9.0.qualifier"
+      version="4.9.1.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.model.concept"
       license-feature="de.dlr.sc.virsat.license.feature">
