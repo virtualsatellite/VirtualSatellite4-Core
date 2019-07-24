@@ -20,7 +20,6 @@ import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaProperties;
 
 /**
  * A util class for accesing the CATIA JSON files
- * @author fran_tb
  *
  */
 public class CatiaHelper {
@@ -34,20 +33,20 @@ public class CatiaHelper {
 	 * Iterate through the JSON file and search for all children of the element
 	 * the object itself is not contained
 	 * 
-	 * @param rootObiect
+	 * @param rootObject
 	 *            the root element
 	 * @return a list of all elements within the current JSON Object
 	 */
-	public static List<JsonObject> getListOfAllJSONElements(JsonObject rootObiect) {
+	public static List<JsonObject> getListOfAllJSONElements(JsonObject rootObject) {
 		List<JsonObject> jsonObjects = new ArrayList<>();
 
-		JsonArray partArray = rootObiect.getCollection(CatiaProperties.PARTS);
+		JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
 		if (partArray != null) {
 			jsonObjects = partArray.stream().map(object -> (JsonObject) object)
 					.collect(Collectors.toList());
 		}
 		
-		JsonObject rootProduct = rootObiect.getMap(CatiaProperties.PRODUCTS);
+		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
 		if (rootProduct != null) {
 			jsonObjects.add(rootProduct);
 			JsonArray productArray = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
