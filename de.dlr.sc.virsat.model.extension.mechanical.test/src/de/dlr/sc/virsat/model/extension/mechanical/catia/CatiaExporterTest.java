@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,7 +168,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		final String GEOMETRY_FILES_EXPORT_DESTINATION = "X:\\whatever";
 		final String GEOMETRY_FILE_NAME = "test.stl";
-		final String EXPECTED_GEOMETRY_FILE_PATH = GEOMETRY_FILES_EXPORT_DESTINATION + "\\" + GEOMETRY_FILE_NAME;
+		final String EXPECTED_GEOMETRY_FILE_PATH = GEOMETRY_FILES_EXPORT_DESTINATION + File.separator + GEOMETRY_FILE_NAME;
 		final URI GEOMETRY_FILE_URI = URI.createPlatformResourceURI(GEOMETRY_FILE_NAME, false);
 		
 		visualisation.setShape(Visualisation.SHAPE_GEOMETRY_NAME);
