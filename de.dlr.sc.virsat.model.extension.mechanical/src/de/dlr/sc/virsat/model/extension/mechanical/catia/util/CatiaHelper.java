@@ -19,7 +19,7 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaProperties;
 
 /**
- * A util class for accesing the CATIA JSON files
+ * A util class for accessing the CATIA JSON files
  *
  */
 public class CatiaHelper {
@@ -30,7 +30,7 @@ public class CatiaHelper {
 	private CatiaHelper() { };
 	
 	/**
-	 * Iterate through the JSON file and search for all children of the element
+	 * Iterate through the JSON file and search for all children of the element,
 	 * the object itself is not contained
 	 * 
 	 * @param rootObject
@@ -40,11 +40,38 @@ public class CatiaHelper {
 	public static List<JsonObject> getListOfAllJSONElements(JsonObject rootObject) {
 		List<JsonObject> jsonObjects = new ArrayList<>();
 
-		JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
-		if (partArray != null) {
-			jsonObjects = partArray.stream().map(object -> (JsonObject) object)
-					.collect(Collectors.toList());
+		jsonObjects.addAll(getListOfAllJSONParts(rootObject));
+		jsonObjects.addAll(getListOfAllJSONProducts(rootObject));
+		
+		return jsonObjects;
+	}
+	
+	/**
+	 * Method that returns all parts within a JSON object
+	 * 
+	 * @param rootObject the root object
+	 * @return a list containing all parts within the JSON object
+	 */
+	public static List<JsonObject> getListOfAllJSONParts(JsonObject rootObject) {
+		if (rootObject != null) {
+			JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
+			if (partArray != null) {
+				return partArray.stream().map(object -> (JsonObject) object)
+						.collect(Collectors.toList());
+			} 
 		}
+		return new ArrayList<JsonObject>();
+	}
+	
+	
+	/**
+	 * Method that returns all products within a JSON object
+	 * 
+	 * @param rootObject the root object
+	 * @return a list containing all products within the JSON object
+	 */
+	public static List<JsonObject> getListOfAllJSONProducts(JsonObject rootObject) {
+		List<JsonObject> jsonObjects = new ArrayList<>();
 		
 		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
 		if (rootProduct != null) {
@@ -53,15 +80,15 @@ public class CatiaHelper {
 			
 			if (productArray != null) {
 				for (int i = 0; i < productArray.size(); i++) {
-					JsonObject childProduct = (JsonObject) productArray.get(i);
+					JsonObject childProduct = productArray.getMap(i);
 					jsonObjects.add(childProduct);
-					jsonObjects.addAll(getListOfAllJSONElements(childProduct));
+					jsonObjects.addAll(getListOfAllJSONProducts(childProduct));
 				}
 			}
 		}
 		
-		
 		return jsonObjects;
 	}
+	
 
 }
