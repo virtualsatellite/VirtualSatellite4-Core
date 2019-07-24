@@ -35,7 +35,7 @@ public class CatiaExporter {
 		JsonObject json = new JsonObject();
 		
 		// TODO Get the Element definitions
-		json.put(CatiaProperties.PARTS, transformParts(Collections.emptySet())); 
+		json.put(CatiaProperties.PARTS.getKey(), transformParts(Collections.emptySet())); 
 		
 		return json;
 	}
@@ -67,8 +67,8 @@ public class CatiaExporter {
 	 */
 	public JsonObject transformElement(IBeanStructuralElementInstance element) {
 		JsonObject jsonElement = new JsonObject();
-		jsonElement.put(CatiaProperties.NAME, element.getName());
-		jsonElement.put(CatiaProperties.UUID, element.getUuid());
+		jsonElement.put(CatiaProperties.NAME.getKey(), element.getName());
+		jsonElement.put(CatiaProperties.UUID.getKey(), element.getUuid());
 		return jsonElement;
 	}
 }

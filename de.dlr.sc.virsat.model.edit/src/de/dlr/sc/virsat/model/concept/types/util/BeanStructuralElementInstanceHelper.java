@@ -9,9 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.util;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
@@ -20,6 +23,7 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanc
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 
 /**
  * This class encapsulates some functionality that helps handling structural element instances on the level of beans
@@ -50,7 +54,7 @@ public class BeanStructuralElementInstanceHelper {
 	 * @return a list of Beans of the given type that wrap the matching SEIs
 	 */
 	@SuppressWarnings("unchecked")
-	public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> wrapAllBeanSeisOfType(List<StructuralElementInstance> subSeis, Class<SEI_TYPE> beanSeiClazz) {	
+	public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> wrapAllBeanSeisOfType(Collection<StructuralElementInstance> subSeis, Class<SEI_TYPE> beanSeiClazz) {	
 		List<SEI_TYPE> beanSeis = new LinkedList<>();
 
 		BeanStructuralElementInstanceFactory beanSeiFactory = new BeanStructuralElementInstanceFactory();
@@ -104,14 +108,26 @@ public class BeanStructuralElementInstanceHelper {
 	}
 
 	/**
-	 * This method hands back all the super Bean SEIs of a given type from which the current one inherits from
+	 * This method hands back all the super Bean SEIs of a given type from which the current one inherits directly
 	 * @param sei the SEI for which to get all the inherited Beans
 	 * @param beanSeiClazz the type of Bean to look for
 	 * @param <SEI_TYPE> the Generic Type which has to be subclass of IBeanStructuralElementInstance
 	 * @return a list of all beans from which the current one inherits from filtered by the given type
 	 */
-	public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getAllSuperBeanSeis(StructuralElementInstance sei, Class<SEI_TYPE> beanSeiClazz) {
+	public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getSuperBeanSeis(StructuralElementInstance sei, Class<SEI_TYPE> beanSeiClazz) {
 		List<SEI_TYPE> beanSeis = wrapAllBeanSeisOfType(sei.getSuperSeis(), beanSeiClazz);
 		return Collections.unmodifiableList(beanSeis);
+	}
+
+	/**
+	 * This method hands back all the super Bean SEIs of a given type from which the current one inherits directly or indirectly
+	 * @param sei the SEI for which to get all the inherited Beans
+	 * @param beanSeiClazz the type of Bean to look for
+	 * @param <SEI_TYPE> the Generic Type which has to be subclass of IBeanStructuralElementInstance
+	 * @return a list of all beans from which the current one inherits from filtered by the given type
+	 */
+	public <SEI_TYPE extends IBeanStructuralElementInstance> Set<SEI_TYPE> getAllSuperBeanSeis(StructuralElementInstance sei, Class<SEI_TYPE> beanSeiClazz) {
+		Set<SEI_TYPE> beanSeis = new HashSet<>(wrapAllBeanSeisOfType(StructuralElementInstanceHelper.getAllSuperSeis(sei), beanSeiClazz));
+		return Collections.unmodifiableSet(beanSeis);
 	}
 }

@@ -51,8 +51,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
-		JsonArray jsonParts = (JsonArray) jsonRoot.get(CatiaProperties.PARTS);		
-		JsonObject jsonProductRoot = (JsonObject) jsonRoot.get(CatiaProperties.PRODUCTS);
+		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
+		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		
 		assertTrue("There should be no part created", jsonParts.isEmpty());
 		assertNull("There should be no product created", jsonProductRoot);
@@ -80,8 +80,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		JsonObject jsonPart = (JsonObject) jsonParts.get(0);
 		
-		assertEquals("Name should be copied", ed.getName(), jsonPart.get(CatiaProperties.NAME));
-		assertEquals("UUID should be copied", ed.getUuid(), jsonPart.get(CatiaProperties.UUID));
+		assertEquals("Name should be copied", ed.getName(), jsonPart.getString(CatiaProperties.NAME));
+		assertEquals("UUID should be copied", ed.getUuid(), jsonPart.getString(CatiaProperties.UUID));
 	}
 	
 	@Test
@@ -91,7 +91,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonElement = catiaExporter.transformElement(ed);
 		
-		assertEquals("Name should be copied", ed.getName(), jsonElement.get(CatiaProperties.NAME));
-		assertEquals("UUID should be copied", ed.getUuid(), jsonElement.get(CatiaProperties.UUID));
+		assertEquals("Name should be copied", ed.getName(), jsonElement.getString(CatiaProperties.NAME));
+		assertEquals("UUID should be copied", ed.getUuid(), jsonElement.getString(CatiaProperties.UUID));
 	}
 }

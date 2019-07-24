@@ -10,12 +10,16 @@
 package de.dlr.sc.virsat.model.dvlm.structural.util;
 
 
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,17 +36,13 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  */
 public class StructuralElementInstanceHelperTest {
 
+	private StructuralElementInstance seiA;
+	private StructuralElementInstance seiB;
+	private StructuralElementInstance seiC1;
+	private StructuralElementInstance seiC2;
+
 	@Before
 	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void testGetRoot() {
-		
 		StructuralElement seA = StructuralFactory.eINSTANCE.createStructuralElement();
 		StructuralElement seB = StructuralFactory.eINSTANCE.createStructuralElement();
 		StructuralElement seC = StructuralFactory.eINSTANCE.createStructuralElement();
@@ -51,19 +51,31 @@ public class StructuralElementInstanceHelperTest {
 		seB.setName("seB");
 		seC.setName("seC");
 		
+		seA.setIsApplicableForAll(true);
 		seB.setIsApplicableForAll(true);
 		seC.setIsApplicableForAll(true);
 
-		StructuralElementInstance seiA = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance seiB = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance seiC1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance seiC2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seA.setIsCanInheritFromAll(true);
+		seB.setIsCanInheritFromAll(true);
+		seC.setIsCanInheritFromAll(true);
+
+		seiA = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seiB = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seiC1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seiC2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		
 		seiA.setType(seA);
 		seiB.setType(seB);
 		seiC1.setType(seC);
 		seiC2.setType(seC);
-		
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testGetRoot() {
 		seiA.getChildren().add(seiB);
 		seiA.getChildren().add(seiC1);
 		seiC1.getChildren().add(seiC2);
@@ -76,27 +88,6 @@ public class StructuralElementInstanceHelperTest {
 
 	@Test
 	public void testGetStructuralElementInstances() {
-		StructuralElement seA = StructuralFactory.eINSTANCE.createStructuralElement();
-		StructuralElement seB = StructuralFactory.eINSTANCE.createStructuralElement();
-		StructuralElement seC = StructuralFactory.eINSTANCE.createStructuralElement();
-		
-		seA.setName("seA");
-		seB.setName("seB");
-		seC.setName("seC");
-		
-		seB.setIsApplicableForAll(true);
-		seC.setIsApplicableForAll(true);
-
-		StructuralElementInstance seiA = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance seiB = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance seiC1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance seiC2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		seiA.setType(seA);
-		seiB.setType(seB);
-		seiC1.setType(seC);
-		seiC2.setType(seC);
-		
 		seiA.getChildren().add(seiB);
 		seiA.getChildren().add(seiC1);
 		seiA.getChildren().add(seiC2);
@@ -106,5 +97,29 @@ public class StructuralElementInstanceHelperTest {
 		
 		assertThat("ListB has correct contents", listB, allOf(hasItems(seiB), not(hasItems(seiC1, seiC2))));
 		assertThat("ListC has correct contents", listC, allOf(not(hasItems(seiB)), hasItems(seiC1, seiC2)));
+	}
+	
+	@Test
+	public void testGetAllSuperSeis() {
+		Set<StructuralElementInstance> superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiA);
+		assertTrue(superSeis.isEmpty());
+		
+		seiA.getSuperSeis().add(seiB);
+
+		superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiA);
+		assertEquals(1, superSeis.size());
+		assertThat(superSeis, hasItem(seiB));
+		
+		seiB.getSuperSeis().add(seiC1);
+		
+		superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiA);
+		assertEquals(2, superSeis.size());
+		assertThat(superSeis, hasItems(seiB, seiC1));
+
+		seiB.getSuperSeis().add(seiC2);
+		
+		superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiB);
+		assertEquals(2, superSeis.size());
+		assertThat(superSeis, hasItems(seiC1, seiC2));
 	}
 }
