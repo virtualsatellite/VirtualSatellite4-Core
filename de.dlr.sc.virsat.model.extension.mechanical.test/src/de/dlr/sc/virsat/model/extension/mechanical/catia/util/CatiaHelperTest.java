@@ -10,10 +10,11 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -28,15 +29,15 @@ import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaProperties;
  */
 public class CatiaHelperTest {
 
-	public static final String ELEMENT_1_UUID = UUID.randomUUID().toString();
-	public static final String ELEMENT_2_UUID = UUID.randomUUID().toString();
-	public static final String ELEMENT_3_UUID = UUID.randomUUID().toString();
+	public static final String ELEMENT_PART_UUID = UUID.randomUUID().toString();
+	public static final String ELEMENT_PRODUCT_0_UUID = UUID.randomUUID().toString();
+	public static final String ELEMENT_PRODUCT_1_UUID = UUID.randomUUID().toString();
+	public static final String ELEMENT_ROOT_PRODUCT_UUID = UUID.randomUUID().toString();
 
-	public static final int NUMBER_OBJECTS = 4; // Three elements with UUID and the root product element
+	public static final int NUMBER_OBJECTS = 4; 
+	public static final int NUMBER_PARTS = 1; 
+	public static final int NUMBER_PRODUCTS = 3; 
 
-	public static final int INDEX_ELEMENT_1 = 0;
-	public static final int INDEX_ELEMENT_2 = 2;
-	public static final int INDEX_ELEMENT_3 = 3;
 
 	@Test
 	public void testGetListOfAllJSONElements() {
@@ -44,17 +45,53 @@ public class CatiaHelperTest {
 		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
 
 		List<JsonObject> objects = CatiaHelper.getListOfAllJSONElements(rootObject);
+		List<String> foundUUIDs = objects.stream().map(
+				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				.collect(Collectors.toList());
 
+		
 		assertEquals("Number of found objects does not match expected", NUMBER_OBJECTS, objects.size());
 
-		assertEquals("Number of found objects does not match expected", ELEMENT_1_UUID,
-				objects.get(INDEX_ELEMENT_1).get(CatiaProperties.UUID.getKey()));
-		assertEquals("Number of found objects does not match expected", ELEMENT_2_UUID,
-				objects.get(INDEX_ELEMENT_2).get(CatiaProperties.UUID.getKey()));
-		assertEquals("Number of found objects does not match expected", ELEMENT_3_UUID,
-				objects.get(INDEX_ELEMENT_3).get(CatiaProperties.UUID.getKey()));
+		assertTrue("Element 1 not found", foundUUIDs.contains(ELEMENT_PART_UUID));
+		assertTrue("Element 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_0_UUID));
+		assertTrue("Element 3 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
+		assertTrue("Element 4 not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
 
-		assertNotNull("Elements in the list should not be null", objects.get(0));
+	}
+	
+	@Test
+	public void testGetListOfAllJSONParts() {
+
+		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
+
+		List<JsonObject> objects = CatiaHelper.getListOfAllJSONParts(rootObject);
+		List<String> foundUUIDs = objects.stream().map(
+				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				.collect(Collectors.toList());
+
+		
+		assertEquals("Number of found objects does not match expected", NUMBER_PARTS, objects.size());
+
+		assertTrue("Element 1 not found", foundUUIDs.contains(ELEMENT_PART_UUID));
+
+	}
+	
+	@Test
+	public void testGetListOfAllJSONProducts() {
+
+		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
+
+		List<JsonObject> objects = CatiaHelper.getListOfAllJSONProducts(rootObject);
+		List<String> foundUUIDs = objects.stream().map(
+				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				.collect(Collectors.toList());
+
+		
+		assertEquals("Number of found objects does not match expected", NUMBER_PRODUCTS, objects.size());
+
+		assertTrue("Product 1 not found", foundUUIDs.contains(ELEMENT_PRODUCT_0_UUID));
+		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
+		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
 
 	}
 
@@ -66,19 +103,20 @@ public class CatiaHelperTest {
 	protected JsonObject createJsonObjectWithProductAndConfiguration() {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), ELEMENT_1_UUID);
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), ELEMENT_PART_UUID);
 		JsonArray partArray = new JsonArray();
 		partArray.add(jsonObjectReactionWheelDefinition);
 
 		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(), ELEMENT_2_UUID);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(), ELEMENT_PRODUCT_0_UUID);
 		JsonObject jsonObjectReactionWheel2Configuration = new JsonObject();
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.UUID.getKey(), ELEMENT_3_UUID);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.UUID.getKey(), ELEMENT_PRODUCT_1_UUID);
 		JsonArray productArray = new JsonArray();
 		productArray.add(jsonObjectReactionWheel1Configuration);
 		productArray.add(jsonObjectReactionWheel2Configuration);
 
 		JsonObject rootProduct = new JsonObject();
+		rootProduct.put(CatiaProperties.UUID.getKey(), ELEMENT_ROOT_PRODUCT_UUID);
 		rootProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), productArray);
 
 		JsonObject rootObject = new JsonObject();
