@@ -10,12 +10,14 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 
-import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
-import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * This class imports a JSON representation of a product tree
@@ -28,10 +30,10 @@ public class CatiaImporter {
 	 * 
 	 * @param jsonObject
 	 *            the Json Object
-	 * @param productTree
-	 *            the product tree
+	 * @param mapJSONtoSEI
+	 *            the mapping of JSON elements to the existing trees
 	 */
-	public void transform(JsonObject jsonObject, ProductTree productTree) {
+	public void transform(JsonObject jsonObject, Map<String, StructuralElementInstance> mapJSONtoSEI) {
 
 	}
 
@@ -39,16 +41,35 @@ public class CatiaImporter {
 	 * Map the imported JSON elements to existing model elements in the Virtual
 	 * Satellite model and return the ones for which no mapping can be found
 	 * 
-	 * @param jsonContent the JSON content to be imported
-	 * @param configurationTree the configuration tree the imported JSON should be mapped to
-	 * @return a collection of elements that could not be mapped
+	 * @param jsonContent
+	 *            the JSON content to be imported
+	 * @param existingTree
+	 *            a tree element the imported JSON should be mapped to
+	 * @return a map of existing tree elements to their UUID in the JSON file
 	 */
-	public List<JsonObject> mapJSONtoSEI(JsonObject jsonContent, ConfigurationTree configurationTree) {
-		
+	public Map<String, StructuralElementInstance> mapJSONtoSEI(JsonObject jsonContent,
+			IBeanStructuralElementInstance existingTree) {
+
+		Map<String, StructuralElementInstance> mapUUIDtoExisitingElement = new HashMap<String, StructuralElementInstance>();
+
+		return mapUUIDtoExisitingElement;
+
+	}
+
+	
+	/**
+	 * Method to get all unmapped JSON elements that do not have a repesentation in the existing trees
+	 * @param jsonRoot the JSON root element to look for
+	 * @param mapJSONtoSEI the Map of SEIs to JSONObjects created by method {@link #mapJSONtoSEI(JsonObject, IBeanStructuralElementInstance)} 
+	 * @return a list of unmapped elements
+	 */
+	public List<JsonObject> getUnmappedJSONObjects(JsonObject jsonRoot,
+			Map<String, StructuralElementInstance> mapJSONtoSEI) {
+
 		List<JsonObject> unmappedElements = new ArrayList<>();
 		
 		return unmappedElements;
-
+		
 	}
 
 }
