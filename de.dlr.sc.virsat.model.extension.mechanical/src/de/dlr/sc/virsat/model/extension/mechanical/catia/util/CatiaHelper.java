@@ -20,7 +20,6 @@ import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaProperties;
 
 /**
  * A util class for accesing the CATIA JSON files
- * @author fran_tb
  *
  */
 public class CatiaHelper {
