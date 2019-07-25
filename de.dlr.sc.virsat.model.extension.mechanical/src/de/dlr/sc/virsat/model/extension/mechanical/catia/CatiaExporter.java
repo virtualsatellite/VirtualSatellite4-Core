@@ -13,15 +13,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
@@ -32,6 +37,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 public class CatiaExporter {
 	
 	private String geometryFilesPath;
+	private Set<IBeanStructuralElementInstance> parts;
 	
 	/**
 	 * Sets the path where all the geometry files are supposed to be (this class doesn't copy files)
@@ -42,20 +48,20 @@ public class CatiaExporter {
 	}
 
 	/**
-	 * Main method that creates the JSON representation of a configuration tree
-	 * @param configurationTree the configuration tree
+	 * Main method that creates the JSON representation of a tree
+	 * @param root the root of the tree
 	 * @return the json root object
 	 */
-	public JsonObject transform(ConfigurationTree configurationTree) {
+	public JsonObject transform(IBeanStructuralElementInstance root) {
+		parts = new HashSet<>();
 		JsonObject json = new JsonObject();
 
-		JsonObject jsonProducts = transformProduct(configurationTree);
+		JsonObject jsonProducts = transformProduct(root);
 		if (jsonProducts != null) {
 			json.put(CatiaProperties.PRODUCTS.getKey(), jsonProducts); 
 		}
 		
-		// TODO Get the Element definitions
-		json.put(CatiaProperties.PARTS.getKey(), transformParts(Collections.emptySet())); 
+		json.put(CatiaProperties.PARTS.getKey(), transformParts(parts)); 
 		
 		return json;
 	}
@@ -69,16 +75,32 @@ public class CatiaExporter {
 		JsonArray jsonParts = new JsonArray();
 		
 		for (IBeanStructuralElementInstance part : parts) {
-			Visualisation vis = part.getFirst(Visualisation.class);
-			
-			if (vis != null) {
-				JsonObject jsonPart = transformElement(part);
-				jsonParts.add(jsonPart);
-			}
+			JsonObject jsonPart = transformPart(part);
+			jsonParts.add(jsonPart);
 		}
 		
 		return jsonParts;
 	}
+
+	/**
+	 * Transforms a part bean into json oblect
+	 * @param part bean with Visualisation attached
+	 * @return json object for the part
+	 */
+	public JsonObject transformPart(IBeanStructuralElementInstance part) {
+		JsonObject jsonPart = transformElement(part);
+
+		Visualisation vis = part.getFirst(Visualisation.class);
+		
+		if (vis != null) {
+			fillPartVisualisationFields(vis, jsonPart);
+		} else {
+			fillPartDummyVisualisationFields(jsonPart);
+		}
+		
+		return jsonPart;
+	}
+	
 	
 	/**
 	 * Creates a JSON object for a single virtual satellite element
@@ -103,14 +125,18 @@ public class CatiaExporter {
 		JsonObject jsonProduct = transformElement(productBean);
 		
 		if (vis != null) {
-			fillVisualisationFields(vis, jsonProduct);
+			fillProductVisualisationFields(vis, jsonProduct);
 		} else if (hasDeepVisualisation(productBean)) {
-			fillDummyVisualisationFields(jsonProduct);
+			fillProductDummyVisualisationFields(jsonProduct);
 		} else {
 			return null;
 		}
 		
-		//TODO check part
+		IBeanStructuralElementInstance part = getPartForProduct(productBean);
+		parts.add(part);
+		
+		jsonProduct.put(CatiaProperties.PRODUCT_ED_UUID.getKey(), part.getUuid());
+		jsonProduct.put(CatiaProperties.PRODUCT_REFERENCE_NAME.getKey(), part.getName());
 		
 		List<IBeanStructuralElementInstance> subProducts = productBean.getChildren(IBeanStructuralElementInstance.class);
 		JsonArray children = new JsonArray();
@@ -126,11 +152,56 @@ public class CatiaExporter {
 	}
 
 	/**
+	 * @param productBean 
+	 * @return corresponding part bean for the given product
+	 */
+	private IBeanStructuralElementInstance getPartForProduct(IBeanStructuralElementInstance productBean) {
+		InheritanceCopier ic = new InheritanceCopier();
+		List<StructuralElementInstance> orderedSuperSeis = ic.getSuperSeisInheritanceOrder(productBean.getStructuralElementInstance());
+
+		List<Visualisation> orderedSuperVisualisations = orderedSuperSeis.stream()
+				.map(x -> new BeanStructuralElementInstance(x))
+				.flatMap(x -> x.getAll(Visualisation.class).stream())
+				.collect(Collectors.toList());
+		
+		if (orderedSuperVisualisations.isEmpty()) {
+			return productBean;
+		}
+		
+		IBeanStructuralElementInstance partBean = orderedSuperVisualisations.get(0).getParent();
+		Collections.reverse(orderedSuperVisualisations);
+		
+		for (Visualisation superVisualisation : orderedSuperVisualisations) {
+			if (overridesAnyPartValue(superVisualisation)) {
+				partBean = superVisualisation.getParent();
+				break;
+			}
+		}
+		
+		return partBean;
+	}
+
+	/**
+	 * Checks if the given visualisation bean overrides any values that go into json part
+	 * @param visualisation 
+	 * @return true iff part information is overriden
+	 */
+	private boolean overridesAnyPartValue(Visualisation visualisation) {
+		return visualisation.getSizeXBean().getTypeInstance().isOverride()
+				|| visualisation.getSizeYBean().getTypeInstance().isOverride()
+				|| visualisation.getSizeZBean().getTypeInstance().isOverride()
+				|| visualisation.getRadiusBean().getTypeInstance().isOverride()
+				|| visualisation.getColorBean().getTypeInstance().isOverride()
+				|| visualisation.getShapeBean().getTypeInstance().isOverride()
+				|| visualisation.getGeometryFileBean().getTypeInstance().isOverride();
+	}
+
+	/**
 	 * Fill Visualisation fields in the given jsonProduct from the given visualisation bean
 	 * @param vis visualisation bean
 	 * @param jsonProduct 
 	 */
-	private void fillVisualisationFields(Visualisation vis, JsonObject jsonProduct) {
+	private void fillProductVisualisationFields(Visualisation vis, JsonObject jsonProduct) {
 		jsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), vis.getPositionXBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), vis.getPositionYBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), vis.getPositionZBean().getValueToBaseUnit());
@@ -153,7 +224,7 @@ public class CatiaExporter {
 	 * Fill Visualisation fields in the given jsonProduct with zeroes and shape none
 	 * @param jsonProduct 
 	 */
-	private void fillDummyVisualisationFields(JsonObject jsonProduct) {
+	private void fillProductDummyVisualisationFields(JsonObject jsonProduct) {
 		jsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), 0);
 		jsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), 0);
 		jsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), 0);
@@ -163,6 +234,44 @@ public class CatiaExporter {
 		jsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), Visualisation.SHAPE_NONE_NAME);
 	}
 
+	/**
+	 * Fill Visualisation fields in the given jsonPart from the given visualisation bean
+	 * @param vis visualisation bean
+	 * @param jsonPart 
+	 */
+	private void fillPartVisualisationFields(Visualisation vis, JsonObject jsonPart) {
+		jsonPart.put(CatiaProperties.PART_LENGTH_X.getKey(), vis.getSizeXBean().getValueToBaseUnit());
+		jsonPart.put(CatiaProperties.PART_LENGTH_Y.getKey(), vis.getSizeYBean().getValueToBaseUnit());
+		jsonPart.put(CatiaProperties.PART_LENGTH_Z.getKey(), vis.getSizeZBean().getValueToBaseUnit());
+		jsonPart.put(CatiaProperties.PART_RADIUS.getKey(), vis.getRadiusBean().getValueToBaseUnit());
+		jsonPart.put(CatiaProperties.PART_COLOR.getKey(), vis.getColor());
+		
+		jsonPart.put(CatiaProperties.PART_SHAPE.getKey(), vis.getShape());
+		
+		if (vis.getShape().equals(Visualisation.SHAPE_GEOMETRY_NAME)) {
+			URI geometryUri = vis.getGeometryFile();
+			if (geometryUri != null) {
+				String geometryFileName = geometryUri.lastSegment();
+				Path filePath = Paths.get(geometryFilesPath, geometryFileName);
+				jsonPart.put(CatiaProperties.PART_STL_PATH.getKey(), filePath.toString());
+			}
+		}
+	}
+
+	/**
+	 * Fill Visualisation fields in the given jsonPart with zeroes
+	 * @param jsonPart 
+	 */
+	private void fillPartDummyVisualisationFields(JsonObject jsonPart) {
+		jsonPart.put(CatiaProperties.PART_LENGTH_X.getKey(), 0);
+		jsonPart.put(CatiaProperties.PART_LENGTH_Y.getKey(), 0);
+		jsonPart.put(CatiaProperties.PART_LENGTH_Z.getKey(), 0);
+		jsonPart.put(CatiaProperties.PART_RADIUS.getKey(), 0);
+		jsonPart.put(CatiaProperties.PART_COLOR.getKey(), 0);
+		
+		jsonPart.put(CatiaProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_NONE_NAME);
+	}
+	
 	/**
 	 * @param productBean 
 	 * @return true if this bean has a deep child with visualisation
