@@ -187,8 +187,10 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertNotNull("EC is in parts", ecPart);
 		
 		assertJsonPartEqualsVisualisation(ecPart, visualisation);
-		//Dummy visualisation part
-		assertJsonPartEqualsVisualisation(ctPart, new Visualisation(conceptVis));
+
+		Visualisation dummyVisualisation = new Visualisation(conceptVis);
+		dummyVisualisation.setColor(0);
+		assertJsonPartEqualsVisualisation(ctPart, dummyVisualisation);
 	}
 
 	@Test

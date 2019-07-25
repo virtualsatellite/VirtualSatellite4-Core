@@ -226,7 +226,7 @@ public class CatiaExporter {
 		jsonPart.put(CatiaProperties.PART_RADIUS.getKey(), 0);
 		jsonPart.put(CatiaProperties.PART_COLOR.getKey(), 0);
 		
-		jsonPart.put(CatiaProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_GEOMETRY_NAME);
+		jsonPart.put(CatiaProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_NONE_NAME);
 	}
 	
 	/**
