@@ -16,6 +16,7 @@ TargetLibrary core_development {
 		Unit de.dlr.sc.virsat.model.extension.ps.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.tests.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.visualisation.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.mechanical.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.project.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.svn.feature.feature.group version newest;

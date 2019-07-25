@@ -50,6 +50,7 @@
 				<module>de.dlr.sc.virsat.external.lib.commons.cli</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
+				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>
@@ -124,6 +125,11 @@
 				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.ui</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
+				
+				<module>de.dlr.sc.virsat.model.extension.mechanical</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.test</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.ui</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
 				<module>de.dlr.sc.virsat.model.extension.ps</module>

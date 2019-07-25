@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.types.structural;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -168,9 +169,15 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	@Override
     public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getSuperSeis(Class<SEI_TYPE> beanSeiClazz) {
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
+		return bseiHelper.getSuperBeanSeis(sei, beanSeiClazz);
+	}
+
+	@Override
+    public <SEI_TYPE extends IBeanStructuralElementInstance> Set<SEI_TYPE> getAllSuperSeis(Class<SEI_TYPE> beanSeiClazz) {
+		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
 		return bseiHelper.getAllSuperBeanSeis(sei, beanSeiClazz);
 	}
-	
+    
 	@Override
 	public String getUuid() {
 		return sei.getUuid().toString();

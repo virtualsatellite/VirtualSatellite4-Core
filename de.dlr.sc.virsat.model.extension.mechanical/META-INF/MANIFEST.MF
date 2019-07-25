@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Model Extension Mechanical Engineering
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.mechanical;singleton:=true
+Bundle-Version: 4.9.1.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.build,
+ de.dlr.sc.virsat.external.lib.json-simple,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.model.extension.visualisation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.mechanical
