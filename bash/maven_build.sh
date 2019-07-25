@@ -58,7 +58,7 @@ callMavenSurefire() {
 	ant jacocoReport 2>&1 | tee ant.log
 	(grep -n "\(Rule violated\|BUILD FAILED\)" ant.log || exit 0 && exit 1;)
 	echo "CodeCov"
-	exec <(curl -s https://codecov.io/bash)
+	bash <(curl -s https://codecov.io/bash)
 }
 
 callMavenSpotbugs() {
