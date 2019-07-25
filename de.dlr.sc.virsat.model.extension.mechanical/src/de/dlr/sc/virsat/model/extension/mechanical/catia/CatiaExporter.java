@@ -16,14 +16,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
@@ -45,15 +48,15 @@ public class CatiaExporter {
 	}
 
 	/**
-	 * Main method that creates the JSON representation of a configuration tree
-	 * @param configurationTree the configuration tree
+	 * Main method that creates the JSON representation of a tree
+	 * @param root the root of the tree
 	 * @return the json root object
 	 */
-	public JsonObject transform(ConfigurationTree configurationTree) {
+	public JsonObject transform(IBeanStructuralElementInstance root) {
 		parts = new HashSet<>();
 		JsonObject json = new JsonObject();
 
-		JsonObject jsonProducts = transformProduct(configurationTree);
+		JsonObject jsonProducts = transformProduct(root);
 		if (jsonProducts != null) {
 			json.put(CatiaProperties.PRODUCTS.getKey(), jsonProducts); 
 		}
@@ -148,9 +151,49 @@ public class CatiaExporter {
 		return jsonProduct;
 	}
 
+	/**
+	 * @param productBean 
+	 * @return corresponding part bean for the given product
+	 */
 	private IBeanStructuralElementInstance getPartForProduct(IBeanStructuralElementInstance productBean) {
-		//todo get proper part
-		return productBean;
+		InheritanceCopier ic = new InheritanceCopier();
+		List<StructuralElementInstance> orderedSuperSeis = ic.getSuperSeisInheritanceOrder(productBean.getStructuralElementInstance());
+
+		List<Visualisation> orderedSuperVisualisations = orderedSuperSeis.stream()
+				.map(x -> new BeanStructuralElementInstance(x))
+				.flatMap(x -> x.getAll(Visualisation.class).stream())
+				.collect(Collectors.toList());
+		
+		if (orderedSuperVisualisations.isEmpty()) {
+			return productBean;
+		}
+		
+		IBeanStructuralElementInstance partBean = orderedSuperVisualisations.get(0).getParent();
+		Collections.reverse(orderedSuperVisualisations);
+		
+		for (Visualisation superVisualisation : orderedSuperVisualisations) {
+			if (overridesAnyPartValue(superVisualisation)) {
+				partBean = superVisualisation.getParent();
+				break;
+			}
+		}
+		
+		return partBean;
+	}
+
+	/**
+	 * Checks if the given visualisation bean overrides any values that go into json part
+	 * @param visualisation 
+	 * @return true iff part information is overriden
+	 */
+	private boolean overridesAnyPartValue(Visualisation visualisation) {
+		return visualisation.getSizeXBean().getTypeInstance().isOverride()
+				|| visualisation.getSizeYBean().getTypeInstance().isOverride()
+				|| visualisation.getSizeZBean().getTypeInstance().isOverride()
+				|| visualisation.getRadiusBean().getTypeInstance().isOverride()
+				|| visualisation.getColorBean().getTypeInstance().isOverride()
+				|| visualisation.getShapeBean().getTypeInstance().isOverride()
+				|| visualisation.getGeometryFileBean().getTypeInstance().isOverride();
 	}
 
 	/**

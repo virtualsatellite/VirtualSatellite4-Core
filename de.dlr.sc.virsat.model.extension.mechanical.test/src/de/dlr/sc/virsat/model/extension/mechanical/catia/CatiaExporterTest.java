@@ -16,9 +16,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.Arrays;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
@@ -28,14 +26,14 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
@@ -48,19 +46,44 @@ public class CatiaExporterTest extends AConceptTestCase {
 	private static final double EPSILON = 10e-6;
 	private Concept conceptPS;
 	private Concept conceptVis;
+	private ConfigurationTree ct;
+	private ElementConfiguration ec;
+	private ElementDefinition ed;
+	private ElementOccurence eo;
+	private ElementRealization er;
+	private Visualisation visualisation;
+	
+	private CatiaExporter catiaExporter;
 	
 	@Before
 	public void setUp() {
 		conceptPS = loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId());
 		conceptVis = loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.visualisation.Activator.getPluginId());
 		UserRegistry.getInstance().setSuperUser(true);
+
+		ct = new ConfigurationTree(conceptPS);
+		ct.setName("ConfigurationTree");
+
+		ec = new ElementConfiguration(conceptPS);
+		ec.setName("ElementConfiguration");
+		
+		ed = new ElementDefinition(conceptPS);
+		ed.setName("ElementDefinition");
+
+		er = new ElementRealization(conceptPS);
+		er.setName("ElementRealization");
+
+		eo = new ElementOccurence(conceptPS);
+		eo.setName("ElementOccurence");
+		
+		visualisation = new Visualisation(conceptVis);
+		fillVisualisationValues(visualisation);
+
+		catiaExporter = new CatiaExporter();
 	}
 	
 	@Test
 	public void testTransformEmptyConfigurationTree() {
-		ConfigurationTree ct = new ConfigurationTree(conceptPS);
-		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
@@ -71,36 +94,7 @@ public class CatiaExporterTest extends AConceptTestCase {
 	}
 	
 	@Test
-	public void testTransformParts() {
-		// Test transformation if there is no attached visualization
-		ElementDefinition ed = new ElementDefinition(conceptPS);
-		List<ElementDefinition> eds = new ArrayList<>();
-		eds.add(ed);
-	
-		CatiaExporter catiaExporter = new CatiaExporter();
-		JsonArray jsonParts = catiaExporter.transformParts(eds);
-		
-		assertTrue("There should be no part created", jsonParts.isEmpty());
-		
-		// Test transformation with attached visualization
-		Visualisation visualisation = new Visualisation(conceptVis);
-		ed.add(visualisation);
-		
-		jsonParts = catiaExporter.transformParts(eds);
-		
-		assertEquals(1, jsonParts.size());
-		
-		JsonObject jsonPart = jsonParts.getMap(0);
-		
-		assertEquals("Name should be copied", ed.getName(), jsonPart.getString(CatiaProperties.NAME));
-		assertEquals("UUID should be copied", ed.getUuid(), jsonPart.getString(CatiaProperties.UUID));
-	}
-	
-	@Test
 	public void testTransformElement() {
-		ElementDefinition ed = new ElementDefinition(conceptPS);
-		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonElement = catiaExporter.transformElement(ed);
 		
 		assertEquals("Name should be copied", ed.getName(), jsonElement.getString(CatiaProperties.NAME));
@@ -109,16 +103,9 @@ public class CatiaExporterTest extends AConceptTestCase {
 
 	@Test
 	public void testTransformConfigurationTreeWithVisualisation() {
-		ConfigurationTree ct = new ConfigurationTree(conceptPS);
-		Visualisation visualisation = new Visualisation(conceptVis);
 		ct.add(visualisation);
-
-		ElementConfiguration ec = new ElementConfiguration(conceptPS);
 		ct.add(ec);
 		
-		fillVisualisationValues(visualisation);
-		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
@@ -138,14 +125,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 
 	@Test
 	public void testTransformConfigurationTreeWithVisualisationChild() {
-		ConfigurationTree ct = new ConfigurationTree(conceptPS);
-		ElementConfiguration ec = new ElementConfiguration(conceptPS);
-		Visualisation visualisation = new Visualisation(conceptVis);
-		ec.add(visualisation);
-		
 		ct.add(ec);
-		
-		fillVisualisationValues(visualisation);
+		ec.add(visualisation);
 		
 		final String GEOMETRY_FILES_EXPORT_DESTINATION = "X:\\whatever";
 		final String GEOMETRY_FILE_NAME = "test.stl";
@@ -155,7 +136,6 @@ public class CatiaExporterTest extends AConceptTestCase {
 		visualisation.setShape(Visualisation.SHAPE_GEOMETRY_NAME);
 		visualisation.setGeometryFile(GEOMETRY_FILE_URI);
 		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		catiaExporter.setGeometryFilesPath(GEOMETRY_FILES_EXPORT_DESTINATION);
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
@@ -195,13 +175,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 
 	@Test
 	public void testTransformPartWithVisualisation() {
-		ElementDefinition ed = new ElementDefinition(conceptPS);
-
-		Visualisation visualisation = new Visualisation(conceptVis);
-		fillVisualisationValues(visualisation);
 		ed.add(visualisation);
 		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonPart = catiaExporter.transformPart(ed);
 		
 		assertEquals("Name should be copied", ed.getName(), jsonPart.getString(CatiaProperties.NAME));
@@ -211,37 +186,31 @@ public class CatiaExporterTest extends AConceptTestCase {
 	}
 
 	@Test
-	public void testPartsFromConfigurationTreeWithInheritedVisualisation() {
-		ConfigurationTree ct = new ConfigurationTree(conceptPS);
-		Visualisation ctVis = new Visualisation(conceptVis);
-		fillVisualisationValues(ctVis);
-		ct.add(ctVis);
-		
-
-		ElementConfiguration ec = new ElementConfiguration(conceptPS);
+	public void testPartsFromConfigurationTreeWithOverriddenVisualisation() {
+		ct.add(visualisation);
 		ct.add(ec);
 
-		ElementDefinition ed = new ElementDefinition(conceptPS);
 		Visualisation edVis = new Visualisation(conceptVis);
 		fillVisualisationValues(edVis);
 		ed.add(edVis);
-		
 		ec.addSuperSei(ed);
 		
-		performInheritanceOn(ec.getStructuralElementInstance());
+		InheritanceCopier ic = new InheritanceCopier();
+		ic.updateStep(ec.getStructuralElementInstance());
 		
 		//Overriding some values
 		Visualisation visInherited = ec.getFirst(Visualisation.class);
 		visInherited.setShape(Visualisation.SHAPE_CONE_NAME);
+		visInherited.getShapeBean().getTypeInstance().setOverride(true);
 		visInherited.setPositionX(-1);
+		visInherited.getPositionXBean().getTypeInstance().setOverride(true);
 		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
 		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
-		assertJsonProductEqualsVisualisation(jsonProductRoot, ctVis);
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
 		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
 		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
 
@@ -250,41 +219,34 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		assertEquals("2 parts", 2, jsonParts.size());
 		JsonObject ctPart = findByUuid(jsonParts, ct.getUuid());
-		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
+		JsonObject ecPart = findByUuid(jsonParts, ec.getUuid());
 
 		assertNotNull("CT is in parts", ctPart);
-		assertNotNull("ED is in parts", edPart);
+		assertNotNull("EC is in parts", ecPart);
 		
-		assertJsonPartEqualsVisualisation(ctPart, ctVis);
-		assertJsonPartEqualsVisualisation(edPart, edVis);
+		assertJsonPartEqualsVisualisation(ctPart, visualisation);
+		assertJsonPartEqualsVisualisation(ecPart, visInherited);
 		assertJsonProductEqualsVisualisation(ecProduct, visInherited);
-		assertEquals("Json Product has a correct part UUID", ed.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ed.getName(), ecProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
 	}
 
 	@Test
 	public void testPartsFromConfigurationTreeWithEcVisualisation() {
-		ConfigurationTree ct = new ConfigurationTree(conceptPS);
-		Visualisation ctVis = new Visualisation(conceptVis);
-		fillVisualisationValues(ctVis);
-		ct.add(ctVis);
-		
-		ElementConfiguration ec = new ElementConfiguration(conceptPS);
+		ct.add(visualisation);
 		ct.add(ec);
+
 		Visualisation ecVis = new Visualisation(conceptVis);
 		fillVisualisationValues(ecVis);
 		ec.add(ecVis);
-
-		ElementDefinition ed = new ElementDefinition(conceptPS);
 		ec.addSuperSei(ed);
 		
-		CatiaExporter catiaExporter = new CatiaExporter();
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
 		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
-		assertJsonProductEqualsVisualisation(jsonProductRoot, ctVis);
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
 		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
 		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
 		
@@ -298,26 +260,47 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertNotNull("CT is in parts", ctPart);
 		assertNotNull("EC is in parts", ecPart);
 		
-		assertJsonPartEqualsVisualisation(ctPart, ctVis);
+		assertJsonPartEqualsVisualisation(ctPart, visualisation);
 		assertJsonPartEqualsVisualisation(ecPart, ecVis);
 		assertJsonProductEqualsVisualisation(ecProduct, ecVis);
 		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
 		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
 	}
-	
-	/**
-	 * copies inherited CAs into the given sei
-	 * @param sei 
-	 */
-	private void performInheritanceOn(StructuralElementInstance sei) {
-		new InheritanceCopier() {
-			@Override
-			public Set<CategoryAssignment> updateStep(StructuralElementInstance subSei) {
-				return super.updateStep(subSei);
-			}
-		}.updateStep(sei);
-	}
 
+	@Test
+	public void testDiamondInheritance() {
+		InheritanceCopier ic = new InheritanceCopier();
+
+		ed.add(visualisation);
+		
+		ec.addSuperSei(ed);
+		er.addSuperSei(ed);
+		
+		eo.addSuperSei(ec);
+		eo.addSuperSei(er);
+
+		Arrays.asList(ed, ec, er, eo)
+				.forEach(beanSei -> ic.updateStep(beanSei.getStructuralElementInstance()));
+		
+		JsonObject jsonRoot = catiaExporter.transform(eo);
+		
+		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
+		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
+
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+
+		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		assertTrue("There should be no children", children.isEmpty());
+		assertEquals("Json Part link is set correctly", ed.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
+		assertEquals("Json Part link is set correctly", ed.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		
+		assertEquals("1 part", 1, jsonParts.size());
+		JsonObject part = jsonParts.getMap(0);
+
+		assertEquals("Json Part is ED", ed.getUuid(), part.getString(CatiaProperties.UUID));
+		assertJsonPartEqualsVisualisation(part, visualisation);
+	}
+	
 	/**
 	 * Tests that all vis values from json part are the same as in the visualisation bean
 	 * @param jsonPart 
