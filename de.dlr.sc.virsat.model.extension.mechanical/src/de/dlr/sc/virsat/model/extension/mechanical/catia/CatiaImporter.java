@@ -51,19 +51,19 @@ public class CatiaImporter {
 	public Map<String, StructuralElementInstance> mapJSONtoSEI(JsonObject jsonContent,
 			IBeanStructuralElementInstance existingTree) {
 
-		Map<String, StructuralElementInstance> mapExisitingElementtoUUID = new HashMap<String, StructuralElementInstance>();
+		Map<String, StructuralElementInstance> mapExisitingElementToUUID = new HashMap<String, StructuralElementInstance>();
 		Map<String, IBeanStructuralElementInstance> mapSEIsToUuid = createMapOfTreeSEIsToUuid(existingTree);
 
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonContent)) {
 			String uuid = object.getString(CatiaProperties.UUID);
 			IBeanStructuralElementInstance mappedElement = mapSEIsToUuid.get(uuid);
 			if (mappedElement != null) {
-				mapExisitingElementtoUUID.put(uuid, mappedElement.getStructuralElementInstance());
+				mapExisitingElementToUUID.put(uuid, mappedElement.getStructuralElementInstance());
 			}
 			
 		}
 
-		return mapExisitingElementtoUUID;
+		return mapExisitingElementToUUID;
 
 	}
 
@@ -95,7 +95,7 @@ public class CatiaImporter {
 	}
 
 	/**
-	 * Create a map of all structural elements in a tree to their UUID
+	 * Create a map of all structural element instances in a tree to their UUID
 	 * 
 	 * @param existingTree
 	 *            the existing tree element in the Virtual Satellite model
