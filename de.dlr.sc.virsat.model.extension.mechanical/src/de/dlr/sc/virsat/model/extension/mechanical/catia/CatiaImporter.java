@@ -16,7 +16,6 @@ import java.util.Map;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 
-import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelper;
@@ -53,11 +52,15 @@ public class CatiaImporter {
 			IBeanStructuralElementInstance existingTree) {
 
 		Map<String, StructuralElementInstance> mapExisitingElementtoUUID = new HashMap<String, StructuralElementInstance>();
-		Map<String, BeanStructuralElementInstance> mapSEIsToUuid = createMapOfTreeSEIsToUuid(existingTree);
+		Map<String, IBeanStructuralElementInstance> mapSEIsToUuid = createMapOfTreeSEIsToUuid(existingTree);
 
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonContent)) {
 			String uuid = object.getString(CatiaProperties.UUID);
-			mapExisitingElementtoUUID.put(uuid, mapSEIsToUuid.get(uuid).getStructuralElementInstance());
+			IBeanStructuralElementInstance mappedElement = mapSEIsToUuid.get(uuid);
+			if (mappedElement != null) {
+				mapExisitingElementtoUUID.put(uuid, mappedElement.getStructuralElementInstance());
+			}
+			
 		}
 
 		return mapExisitingElementtoUUID;
@@ -82,7 +85,7 @@ public class CatiaImporter {
 		
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonRoot)) {
 			String uuid = object.getString(CatiaProperties.UUID);
-			if (mapJSONtoSEI.get(uuid) != null) {
+			if (mapJSONtoSEI.get(uuid) == null) {
 				unmappedElements.add(object);
 			}
 		}
@@ -98,13 +101,18 @@ public class CatiaImporter {
 	 *            the existing tree element in the Virtual Satellite model
 	 * @return a map that maps all SEIs to their UUID
 	 */
-	private Map<String, BeanStructuralElementInstance> createMapOfTreeSEIsToUuid(
+	private Map<String, IBeanStructuralElementInstance> createMapOfTreeSEIsToUuid(
 			IBeanStructuralElementInstance existingTree) {
 
-		Map<String, BeanStructuralElementInstance> mapSEIsToUuid = new HashMap<String, BeanStructuralElementInstance>();
+		Map<String, IBeanStructuralElementInstance> mapSEIsToUuid = new HashMap<String, IBeanStructuralElementInstance>();
 
-		for (BeanStructuralElementInstance sei : existingTree.getDeepChildren(BeanStructuralElementInstance.class)) {
-			mapSEIsToUuid.put(sei.getUuid().toString(), sei);
+		for (IBeanStructuralElementInstance sei : existingTree.getDeepChildren(IBeanStructuralElementInstance.class)) {
+			mapSEIsToUuid.put(sei.getUuid(), sei);
+			
+			//Also add relevant elements in other trees (the super elements) to the map
+			for (IBeanStructuralElementInstance superSei : sei.getAllSuperSeis(IBeanStructuralElementInstance.class)) {
+				mapSEIsToUuid.put(superSei.getUuid(), superSei);
+			}
 		}
 
 		return mapSEIsToUuid;
