@@ -72,7 +72,7 @@ public abstract class AProjectTestCase {
 			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - setUp()");
 		}
 
-		testProject = createTestProject(TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName());
+		testProject = createTestProject(getProjectName());
 		
 		//addEditingDomain();
 	}
@@ -106,5 +106,12 @@ public abstract class AProjectTestCase {
 		editingDomain.saveAll();
 
 		repository = resSetRepositoryTarget.getRepository();
+	}
+	
+	/**
+	 * @return name of the test project in the workbench
+	 */
+	protected String getProjectName() {
+		return TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName();
 	}
 }
