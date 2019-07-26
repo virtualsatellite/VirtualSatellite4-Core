@@ -47,8 +47,6 @@ public class CatiaImporterTest extends AConceptTestCase {
 	private Concept conceptPS;
 	private Concept conceptVis;
 
-	private JsonObject jsonObject;
-
 	// Tree structure elements
 	Repository repository = DVLMFactory.eINSTANCE.createRepository();
 
@@ -83,12 +81,13 @@ public class CatiaImporterTest extends AConceptTestCase {
 	public void testTransformProductTree() {
 
 		ProductTree productTree = new ProductTree(conceptPS);
+		JsonObject rootObject = createMappedJsonObjectWithProductandConfiguration();
 
 		CatiaImporter importer = new CatiaImporter();
 
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(jsonObject, productTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, productTree);
 
-		importer.transform(jsonObject, mapping);
+		importer.transform(rootObject, mapping);
 
 	}
 
