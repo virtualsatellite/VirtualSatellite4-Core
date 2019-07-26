@@ -85,7 +85,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 
 		CatiaImporter importer = new CatiaImporter();
 
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, productTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, productTree);
 
 		importer.transform(rootObject, mapping);
 
@@ -97,7 +97,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
 		//Check map
@@ -130,7 +130,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		partArray.add(unmappedJsonObject);
 
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
 		//Check map
@@ -165,7 +165,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		productArray.add(unmappedJsonObject);
 
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 		
 		//Check map

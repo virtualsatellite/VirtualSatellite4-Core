@@ -32,10 +32,10 @@ public class CatiaImporter {
 	 * 
 	 * @param jsonObject
 	 *            the JSON Object
-	 * @param mapJSONtoSEI
+	 * @param mapJsonUuidToSEI
 	 *            the mapping of JSON elements to the existing trees
 	 */
-	public void transform(JsonObject jsonObject, Map<String, StructuralElementInstance> mapJSONtoSEI) {
+	public void transform(JsonObject jsonObject, Map<String, StructuralElementInstance> mapJsonUuidToSEI) {
 
 	}
 
@@ -49,7 +49,7 @@ public class CatiaImporter {
 	 *            a tree element the imported JSON should be mapped to
 	 * @return a map from UUID in the JSON file to their existing tree elements in the model
 	 */
-	public Map<String, StructuralElementInstance> mapJSONtoSEI(JsonObject jsonContent,
+	public Map<String, StructuralElementInstance> mapJsonUuidToSEI(JsonObject jsonContent,
 			IBeanStructuralElementInstance existingTree) {
 
 		Map<String, StructuralElementInstance> mapExisitingElementToUUID = new HashMap<String, StructuralElementInstance>();
