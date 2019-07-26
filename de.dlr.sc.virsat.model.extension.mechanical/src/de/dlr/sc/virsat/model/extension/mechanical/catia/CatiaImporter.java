@@ -18,6 +18,7 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelper;
 
 /**
  * This class imports a JSON representation of a product tree
@@ -50,17 +51,31 @@ public class CatiaImporter {
 	public Map<String, StructuralElementInstance> mapJSONtoSEI(JsonObject jsonContent,
 			IBeanStructuralElementInstance existingTree) {
 
-		Map<String, StructuralElementInstance> mapUUIDtoExisitingElement = new HashMap<String, StructuralElementInstance>();
+		Map<String, StructuralElementInstance> mapExisitingElementtoUUID = new HashMap<String, StructuralElementInstance>();
+		Map<String, IBeanStructuralElementInstance> mapSEIsToUuid = createMapOfTreeSEIsToUuid(existingTree);
 
-		return mapUUIDtoExisitingElement;
+		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonContent)) {
+			String uuid = object.getString(CatiaProperties.UUID);
+			IBeanStructuralElementInstance mappedElement = mapSEIsToUuid.get(uuid);
+			if (mappedElement != null) {
+				mapExisitingElementtoUUID.put(uuid, mappedElement.getStructuralElementInstance());
+			}
+			
+		}
+
+		return mapExisitingElementtoUUID;
 
 	}
 
-	
 	/**
-	 * Method to get all unmapped JSON elements that do not have a repesentation in the existing trees
-	 * @param jsonRoot the JSON root element to look for
-	 * @param mapJSONtoSEI the Map of SEIs to JSONObjects created by method {@link #mapJSONtoSEI(JsonObject, IBeanStructuralElementInstance)} 
+	 * Method to get all unmapped JSON elements that do not have a representation in
+	 * the existing trees
+	 * 
+	 * @param jsonRoot
+	 *            the JSON root element to look for
+	 * @param mapJSONtoSEI
+	 *            the Map of SEIs to JSONObjects created by method
+	 *            {@link #mapJSONtoSEI(JsonObject, IBeanStructuralElementInstance)}
 	 * @return a list of unmapped elements
 	 */
 	public List<JsonObject> getUnmappedJSONObjects(JsonObject jsonRoot,
@@ -68,8 +83,40 @@ public class CatiaImporter {
 
 		List<JsonObject> unmappedElements = new ArrayList<>();
 		
+		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonRoot)) {
+			String uuid = object.getString(CatiaProperties.UUID);
+			if (mapJSONtoSEI.get(uuid) == null) {
+				unmappedElements.add(object);
+			}
+		}
+
 		return unmappedElements;
-		
+
+	}
+
+	/**
+	 * Create a map of all structural elements in a tree to their UUID
+	 * 
+	 * @param existingTree
+	 *            the existing tree element in the Virtual Satellite model
+	 * @return a map that maps all SEIs to their UUID
+	 */
+	private Map<String, IBeanStructuralElementInstance> createMapOfTreeSEIsToUuid(
+			IBeanStructuralElementInstance existingTree) {
+
+		Map<String, IBeanStructuralElementInstance> mapSEIsToUuid = new HashMap<String, IBeanStructuralElementInstance>();
+
+		for (IBeanStructuralElementInstance sei : existingTree.getDeepChildren(IBeanStructuralElementInstance.class)) {
+			mapSEIsToUuid.put(sei.getUuid(), sei);
+			
+			//Also add relevant elements in other trees (the super elements) to the map
+			for (IBeanStructuralElementInstance superSei : sei.getAllSuperSeis(IBeanStructuralElementInstance.class)) {
+				mapSEIsToUuid.put(superSei.getUuid(), superSei);
+			}
+		}
+
+		return mapSEIsToUuid;
+
 	}
 
 }

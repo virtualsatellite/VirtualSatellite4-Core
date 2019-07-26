@@ -94,6 +94,8 @@ callMavenAssemble() {
 	mvn install -P ${MAVEN_PROFILE},javadoc,deploy,${DEPLOY_TYPE},product -B -V | tee maven.log
 	echo "Check for Maven Problems on Product:"
 	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+	echo "Check for AsciiDoc Problems on Product:"
+	(grep -n "\[INFO\] asciidoctor: \(WARN\|ERROR\|ERR\)" maven.log || exit 0  && exit 1;)
 }
 
 
