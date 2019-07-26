@@ -33,7 +33,7 @@ public class CatiaImporter {
 	 * @param jsonObject
 	 *            the JSON Object
 	 * @param mapJsonUuidToSEI
-	 *            the mapping of JSON elements to the existing trees
+	 *            the mapping of JSON element IDs to the existing trees
 	 */
 	public void transform(JsonObject jsonObject, Map<String, StructuralElementInstance> mapJsonUuidToSEI) {
 
@@ -75,7 +75,7 @@ public class CatiaImporter {
 	 * @param jsonRoot
 	 *            the JSON root element to look for unmapped elements in
 	 * @param mapJSONtoSEI
-	 *            the Map of SEIs to JSONObjects created by method
+	 *            the Map of JSONObject IDs to SEIs in the model created by method
 	 *            {@link #mapJSONtoSEI(JsonObject, IBeanStructuralElementInstance)}
 	 * @return a list of unmapped elements
 	 */
@@ -96,11 +96,11 @@ public class CatiaImporter {
 	}
 
 	/**
-	 * Create a map of all structural element instances in a tree to their UUID
+	 * Create a map of all UUIDs to their structural element instances in a tree and their super instances
 	 * 
 	 * @param existingTree
 	 *            the existing tree element in the Virtual Satellite model
-	 * @return a map that maps all SEIs to their UUID
+	 * @return a map that maps the UUID to all SEIs
 	 */
 	private Map<String, IBeanStructuralElementInstance> createMapOfTreeSEIsToUuid(
 			IBeanStructuralElementInstance existingTree) {
