@@ -58,7 +58,7 @@ public class CatiaImporter {
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonContent)) {
 			String uuid = object.getString(CatiaProperties.UUID);
 			IBeanStructuralElementInstance mappedElement = mapSEIsToUuid.get(uuid);
-			if (mappedElement != null) {
+			if (mapSEIsToUuid.containsKey(uuid) && mappedElement != null) {
 				mapExisitingElementToUUID.put(uuid, mappedElement.getStructuralElementInstance());
 			}
 
@@ -86,7 +86,7 @@ public class CatiaImporter {
 
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonRoot)) {
 			String uuid = object.getString(CatiaProperties.UUID);
-			if (mapJSONtoSEI.get(uuid) == null) {
+			if (!mapJSONtoSEI.containsKey(uuid)) {
 				unmappedElements.add(object);
 			}
 		}
