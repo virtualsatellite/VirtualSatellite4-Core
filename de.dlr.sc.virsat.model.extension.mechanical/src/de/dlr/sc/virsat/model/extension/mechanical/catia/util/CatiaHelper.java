@@ -73,6 +73,10 @@ public class CatiaHelper {
 	public static List<JsonObject> getListOfAllJSONProducts(JsonObject rootObject) {
 		List<JsonObject> jsonObjects = new ArrayList<>();
 		
+		if (rootObject == null) {
+			return jsonObjects;
+		}
+		
 		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
 		if (rootProduct != null) {
 			jsonObjects.add(rootProduct);
@@ -81,8 +85,10 @@ public class CatiaHelper {
 			if (productArray != null) {
 				for (int i = 0; i < productArray.size(); i++) {
 					JsonObject childProduct = productArray.getMap(i);
-					jsonObjects.add(childProduct);
-					jsonObjects.addAll(getListOfAllJSONProducts(childProduct));
+					if (childProduct != null) {
+						jsonObjects.add(childProduct);
+						jsonObjects.addAll(getListOfAllJSONProducts(childProduct));
+					}	
 				}
 			}
 		}
