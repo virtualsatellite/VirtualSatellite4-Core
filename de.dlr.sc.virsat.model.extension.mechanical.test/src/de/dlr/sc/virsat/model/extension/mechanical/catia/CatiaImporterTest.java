@@ -11,10 +11,12 @@ package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;
@@ -24,6 +26,7 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -67,7 +70,9 @@ public class CatiaImporterTest extends AConceptTestCase {
 	// Visualisation elements
 	private Visualisation reactionWheelVisDefinition;
 
-	// Create JSON object
+	private static final int TEST_POS_X_PRODUCT = 5;
+	private static final int TEST_POS_Y_PRODUCT = 5;
+	private static final int TEST_POS_Z_PRODUCT = 5;
 
 	@Before
 	public void setUp() {
@@ -83,11 +88,37 @@ public class CatiaImporterTest extends AConceptTestCase {
 		ProductTree productTree = new ProductTree(conceptPS);
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
+		// Add some changes to import
+		JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
+		JsonObject firstPart = partArray.getMap(0);
+		firstPart.put(CatiaProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_BOX_NAME);
+
+		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject firstChild = childProducts.getMap(0);
+		firstChild.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		firstChild.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		firstChild.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		String testProductID = firstChild.getString(CatiaProperties.UUID);
+
+		// Do the import
 		CatiaImporter importer = new CatiaImporter();
-
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, productTree);
-
 		importer.transform(rootObject, mapping);
+
+		// Check if import worked
+		assertEquals("Check if part values are imported", Visualisation.SHAPE_BOX_NAME,
+				reactionWheelVisDefinition.getShape());
+
+		IBeanStructuralElementInstance changedSei = configurationTree
+				.getDeepChildren(IBeanStructuralElementInstance.class).stream()
+					.filter(sei -> !sei.getUuid().equals(testProductID)).collect(Collectors.toList()).get(0);
+		assertTrue("Check if product values are imported",
+				changedSei.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
+		assertTrue("Check if product values are imported",
+				changedSei.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
+		assertTrue("Check if product values are imported",
+				changedSei.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
 
 	}
 
@@ -100,8 +131,9 @@ public class CatiaImporterTest extends AConceptTestCase {
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
-		//Check map
-		assertEquals("Map does not contain element definition", elementReactionWheelDefinition.getStructuralElementInstance(),
+		// Check map
+		assertEquals("Map does not contain element definition",
+				elementReactionWheelDefinition.getStructuralElementInstance(),
 				mapping.get(elementReactionWheelDefinition.getUuid()));
 		assertEquals("Map does not contain first element configuration",
 				elementConfigurationReactionWheel1.getStructuralElementInstance(),
@@ -112,7 +144,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		assertEquals("Map does not contain root product", subSystemAOCS.getStructuralElementInstance(),
 				mapping.get(subSystemAOCS.getUuid()));
 
-		//Check unmapped elements
+		// Check unmapped elements
 		assertEquals("Check that there are no umappable elements in the imported JSON", 0, unmappedElements.size());
 
 	}
@@ -133,8 +165,9 @@ public class CatiaImporterTest extends AConceptTestCase {
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
-		//Check map
-		assertEquals("Map does not contain element definition", elementReactionWheelDefinition.getStructuralElementInstance(),
+		// Check map
+		assertEquals("Map does not contain element definition",
+				elementReactionWheelDefinition.getStructuralElementInstance(),
 				mapping.get(elementReactionWheelDefinition.getUuid()));
 		assertEquals("Map does not contain first element configuration",
 				elementConfigurationReactionWheel1.getStructuralElementInstance(),
@@ -145,7 +178,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		assertEquals("Map does not contain root product", subSystemAOCS.getStructuralElementInstance(),
 				mapping.get(subSystemAOCS.getUuid()));
 
-		//Check unmapped elements
+		// Check unmapped elements
 		assertEquals("Check that there is one umappable element in the imported JSON", 1, unmappedElements.size());
 		assertEquals("Expected unmapped part not found", unmappedJsonObject, unmappedElements.get(0));
 
@@ -167,9 +200,10 @@ public class CatiaImporterTest extends AConceptTestCase {
 		CatiaImporter importer = new CatiaImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
-		
-		//Check map
-		assertEquals("Map does not contain element definition", elementReactionWheelDefinition.getStructuralElementInstance(),
+
+		// Check map
+		assertEquals("Map does not contain element definition",
+				elementReactionWheelDefinition.getStructuralElementInstance(),
 				mapping.get(elementReactionWheelDefinition.getUuid()));
 		assertEquals("Map does not contain first element configuration",
 				elementConfigurationReactionWheel1.getStructuralElementInstance(),
@@ -180,7 +214,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		assertEquals("Map does not contain root product", subSystemAOCS.getStructuralElementInstance(),
 				mapping.get(subSystemAOCS.getUuid()));
 
-		//Check unmapped elements
+		// Check unmapped elements
 		assertEquals("Check that there is one umappable elements in the imported JSON", 1, unmappedElements.size());
 		assertEquals("Expected unmapped product not found", unmappedJsonObject, unmappedElements.get(0));
 
