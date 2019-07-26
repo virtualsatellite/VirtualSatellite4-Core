@@ -43,6 +43,7 @@ public enum CatiaProperties implements JsonKey {
 	PRODUCT_ROT_Z("rotZ"),
 	
 	PRODUCT_SHAPE("shape"),
+	PRODUCT_STL_PATH("STL_path"),
 	
 	PRODUCT_CHILDREN("children");
 	
