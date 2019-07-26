@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,13 +62,12 @@ public class CatiaFileWriter {
 		Set<Visualisation> geometryVisualisations = catiaExporter.getGeometryVisualisations();
 		SubMonitor fileCopySubMonitor = SubMonitor.convert(progressMonitor, geometryVisualisations.size());
 		for (Visualisation visualisation : geometryVisualisations) {
-			IFile stlFile = visualisation.getGeometryFileBean().getFile();
-			//outputIPath = new Path(outputDirectoryPath.toString() + File.separator + stlFile.getName());
-			//stlFile.copy(outputIPath, true, fileCopySubMonitor);
+			IFile geometryFile = visualisation.getGeometryFileBean().getFile();
 			
-			Path source = Paths.get(stlFile.getFullPath().toString());
+			Path source = Paths.get(geometryFile.getRawLocation().toOSString());	
+			Path destination = Paths.get(outputDirectoryPath + File.separator + geometryFile.getName());
 			
-			Files.copy(source, outputDirectoryPath, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 			
 			fileCopySubMonitor.worked(1);
 		}
