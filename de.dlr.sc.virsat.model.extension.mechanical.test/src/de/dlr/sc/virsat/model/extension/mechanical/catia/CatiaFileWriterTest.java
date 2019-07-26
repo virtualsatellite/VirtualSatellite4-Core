@@ -21,8 +21,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +53,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
-	public void testWriteFiles() throws IOException {
+	public void testWriteFiles() throws IOException, CoreException {
 		ConfigurationTree ct = new ConfigurationTree(conceptPS);
 		ct.setName("ConfigurationTree");
 
@@ -62,6 +64,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 		
 		Visualisation visualisation = new Visualisation(conceptVis);
 		visualisation.setShape(Visualisation.SHAPE_GEOMETRY_NAME);
+		ec.add(visualisation);
 
 		final String STL_FILE_NAME = "dummy.stl";
 
@@ -71,6 +74,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 		Path stlFile = Paths.get(root, stlUri.toPlatformString(true));
 		List<String> stlContent = Arrays.asList("solid test", "endsolid test");
 		Files.write(stlFile, stlContent);
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 		
 		visualisation.setGeometryFile(stlUri);
 
@@ -83,7 +87,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 		assertFalse("STL file is not there initially", expectedCopiedStl.toFile().exists());
 		
 		CatiaFileWriter catiaFileWriter = new CatiaFileWriter();
-		catiaFileWriter.writeFiles(jsonFilePath, ct);
+		catiaFileWriter.writeFiles(jsonFilePath, ct, new NullProgressMonitor());
 		
 		assertTrue("JSON file is created", expectedJson.exists());
 		assertArrayEquals("STL file is copied correctly", Files.readAllBytes(stlFile), Files.readAllBytes(expectedCopiedStl));
