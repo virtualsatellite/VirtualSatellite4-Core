@@ -32,6 +32,7 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
+- name: verify
 - name: build-test
 - name: build-assemble-deploy
 
@@ -83,10 +84,18 @@ after_failure:
   # Show the debug output of Surefire Junit
   # ---------------------------------------
   - cat $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.test/target/surefire-reports/de.dlr.sc.virsat.test.ProjectAllTest-output.txt
-   
   
 jobs:
   include:
+    # --------------------------------------------
+    # Run a quicksanity check if all commits are
+    # handed in by known users
+    #---------------------------------------------
+    - stage: verify
+      name: Verify - Authors Sanity Check
+      script:
+      - ./bash/verify_commit_authors.sh known_authors.txt
+  
     # -----------------------------------------------------
     # Build and Test - SpotBugs Jobs
     # -----------------------------------------------------
