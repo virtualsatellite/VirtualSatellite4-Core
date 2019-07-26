@@ -47,8 +47,6 @@ public class CatiaImporterTest extends AConceptTestCase {
 	private Concept conceptPS;
 	private Concept conceptVis;
 
-	private JsonObject jsonObject;
-
 	// Tree structure elements
 	Repository repository = DVLMFactory.eINSTANCE.createRepository();
 
@@ -83,19 +81,20 @@ public class CatiaImporterTest extends AConceptTestCase {
 	public void testTransformProductTree() {
 
 		ProductTree productTree = new ProductTree(conceptPS);
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		CatiaImporter importer = new CatiaImporter();
 
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(jsonObject, productTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, productTree);
 
-		importer.transform(jsonObject, mapping);
+		importer.transform(rootObject, mapping);
 
 	}
 
 	@Test
 	public void testMapJSONtoSEIWithNoUnmappedJSONObject() {
 
-		JsonObject rootObject = createMappedJsonObjectWithProductandConfiguration();
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		CatiaImporter importer = new CatiaImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
@@ -121,7 +120,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 	@Test
 	public void testMapJSONtoSEIWithUnmappedJSONPart() {
 
-		JsonObject rootObject = createMappedJsonObjectWithProductandConfiguration();
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		// Create new unmapped element
 		JsonObject unmappedJsonObject = new JsonObject();
@@ -155,7 +154,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 	@Test
 	public void testMapJSONtoSEIWithUnmappedJSONProduct() {
 
-		JsonObject rootObject = createMappedJsonObjectWithProductandConfiguration();
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		// Create new unmapped element
 		JsonObject unmappedJsonObject = new JsonObject();
@@ -248,7 +247,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 	 * 
 	 * @return the JSON root object
 	 */
-	protected JsonObject createMappedJsonObjectWithProductandConfiguration() {
+	protected JsonObject createMappedJsonObjectWithProductAndConfiguration() {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
 		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
