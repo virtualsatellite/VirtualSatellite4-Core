@@ -19,6 +19,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,6 +41,8 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * The CATIA importer test class
@@ -85,7 +88,6 @@ public class CatiaImporterTest extends AConceptTestCase {
 	@Test
 	public void testTransformProductTree() {
 
-		ProductTree productTree = new ProductTree(conceptPS);
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		// Add some changes to import
@@ -103,8 +105,11 @@ public class CatiaImporterTest extends AConceptTestCase {
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, productTree);
-		importer.transform(rootObject, mapping);
+		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Command importCommand = importer.transform(rootObject, mapping);
+		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
+				.getEd(configurationTree.getStructuralElementInstance());
+		editingDomain.getVirSatCommandStack().execute(importCommand);
 
 		// Check if import worked
 		assertEquals("Check if part values are imported", Visualisation.SHAPE_BOX_NAME,
@@ -119,6 +124,45 @@ public class CatiaImporterTest extends AConceptTestCase {
 				changedSei.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
 				changedSei.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
+
+	}
+
+	@Test
+	public void testTransformProductTreeWithoutVisualisation() {
+
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
+
+		// Add some changes to import in a new configuration element without
+		// visualisation
+		ElementConfiguration elementConfigurationReactionWheel3 = new ElementConfiguration(conceptPS);
+		subSystemAOCS.add(elementConfigurationReactionWheel3);
+
+		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductofNewConfiguration = (JsonObject) childProducts.stream()
+				.filter(child -> ((JsonObject) child).getString(CatiaProperties.UUID)
+						.equals(elementConfigurationReactionWheel3.getUuid()))
+				.collect(Collectors.toList()).get(0);
+
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+
+		// Do the import
+		CatiaImporter importer = new CatiaImporter();
+		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Command importCommand = importer.transform(rootObject, mapping);
+		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
+				.getEd(configurationTree.getStructuralElementInstance());
+		editingDomain.getVirSatCommandStack().execute(importCommand);
+
+		// Check if import worked
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
 
 	}
 
