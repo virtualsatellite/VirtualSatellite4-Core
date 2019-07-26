@@ -79,5 +79,19 @@
 	    </editorSection>
 	 </extension>	
 	<!-- Plugin.XML Protected Region Start -->
+	<extension
+	  point="org.eclipse.ui.exportWizards">
+	   <wizard
+	     category="de.dlr.virsat.global.category.export.virsat"
+	     class="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CatiaExportWizard"
+	     id="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CatiaExportPage"
+	     icon="resources/icons/de.dlr.sc.virsat.model.extension.mechanical.gif"
+	     name="Catia Export Wizard">
+	   </wizard>
+      <category
+            id="de.dlr.virsat.global.category.export.virsat"
+            name="VirSat">
+      </category>
+	</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
