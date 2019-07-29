@@ -71,18 +71,25 @@ public class CatiaImporter {
 
 		CompoundCommand importCommand = new CompoundCommand();
 		this.editingDomain = editingDomain;
+		
+		boolean worked = true;
 
 		// Import parts
 		for (JsonObject part : CatiaHelper.getListOfAllJSONParts(jsonObject)) {
-			updateSeiFromPart(importCommand, mapJSONtoSEI.get(part.getString(CatiaProperties.UUID)), part);
+			worked = updateSeiFromPart(importCommand, mapJSONtoSEI.get(part.getString(CatiaProperties.UUID)), part);
 		}
 
 		// Import products
 		for (JsonObject product : CatiaHelper.getListOfAllJSONProducts(jsonObject)) {
-			updateSeiFromProduct(importCommand, mapJSONtoSEI.get(product.getString(CatiaProperties.UUID)), product);
+			worked = updateSeiFromProduct(importCommand, mapJSONtoSEI.get(product.getString(CatiaProperties.UUID)), product);
 		}
-
-		return importCommand;
+		
+		if (worked) {
+			return importCommand;
+		} else {
+			return null;
+		}
+		
 	}
 
 	/**
@@ -151,8 +158,10 @@ public class CatiaImporter {
 	 *            the structural element instance to be updated
 	 * @param part
 	 *            the JSON object part that is imported and corresponds to the SEI
+	 *            
+	 * @return returns if all required properties for the import could be found 
 	 */
-	protected void updateSeiFromPart(CompoundCommand importCommand, StructuralElementInstance sei, JsonObject part) {
+	protected boolean updateSeiFromPart(CompoundCommand importCommand, StructuralElementInstance sei, JsonObject part) {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 		
@@ -176,7 +185,7 @@ public class CatiaImporter {
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), 
 					"CatiaImport: Failed to perform import! Could not load all required properties", e));
-			return;
+			return false;
 		}
 		
 		if (part.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
@@ -199,6 +208,8 @@ public class CatiaImporter {
 			importCommand
 					.append(visualisation.setGeometryFile(editingDomain, copyAndGetPlatformResource(stlFile, beanSEI)));
 		}
+		
+		return true;
 
 	}
 
@@ -213,8 +224,10 @@ public class CatiaImporter {
 	 * @param product
 	 *            the JSON object product that is imported and corresponds to the
 	 *            SEI
-	 */
-	protected void updateSeiFromProduct(CompoundCommand importCommand, StructuralElementInstance sei,
+	 *            
+	 * @return returns if all required properties for the import could be found 
+	 */         
+	protected boolean updateSeiFromProduct(CompoundCommand importCommand, StructuralElementInstance sei,
 			JsonObject product) {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
@@ -246,7 +259,7 @@ public class CatiaImporter {
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), 
 					"CatiaImport: Failed to perform import! Could not load all required properties", e));
-			return;
+			return false;
 		}
 		
 		if (product.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
@@ -278,6 +291,8 @@ public class CatiaImporter {
 			importCommand
 					.append(visualisation.setGeometryFile(editingDomain, copyAndGetPlatformResource(stlFile, beanSEI)));
 		}
+		
+		return true;
 
 	}
 
