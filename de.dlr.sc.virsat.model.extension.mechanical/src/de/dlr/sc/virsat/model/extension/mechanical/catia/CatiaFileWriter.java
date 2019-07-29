@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
-//import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
@@ -49,8 +48,8 @@ public class CatiaFileWriter {
 		SubMonitor jsonSubMonitor = SubMonitor.convert(progressMonitor, 2);
 
 		CatiaExporter catiaExporter = new CatiaExporter();
-		java.nio.file.Path jsonFilePath = Paths.get(outputJsonFilePath);
-		java.nio.file.Path outputDirectoryPath = jsonFilePath.getParent();
+		Path jsonFilePath = Paths.get(outputJsonFilePath);
+		Path outputDirectoryPath = jsonFilePath.getParent();
 		
 		if (outputDirectoryPath == null) {
 			throw new IllegalArgumentException("Invalid path to JSON file. Can't extract output directory: " + outputJsonFilePath);

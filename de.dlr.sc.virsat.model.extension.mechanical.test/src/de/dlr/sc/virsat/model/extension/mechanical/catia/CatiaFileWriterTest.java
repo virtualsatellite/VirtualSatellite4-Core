@@ -78,7 +78,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 		
 		visualisation.setGeometryFile(stlUri);
 
-		java.nio.file.Path outputPath = Files.createTempDirectory("catiaTest");
+		Path outputPath = Files.createTempDirectory("catiaTest");
 		String jsonFilePath = outputPath.toString() + File.separator + "exported.json";
 		File expectedJson = new File(jsonFilePath);
 		Path expectedCopiedStl = Paths.get(outputPath.toString(), STL_FILE_NAME);

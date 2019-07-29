@@ -289,7 +289,7 @@ public class CatiaExporter {
 
 	/**
 	 * This method should be called after {@link #transform(IBeanStructuralElementInstance)}
-	 * @return list of Visualisation beans with external geometry
+	 * @return set of Visualisation beans with external geometry
 	 */
 	public Set<Visualisation> getGeometryVisualisations() {
 		return geometryVisualisations;
