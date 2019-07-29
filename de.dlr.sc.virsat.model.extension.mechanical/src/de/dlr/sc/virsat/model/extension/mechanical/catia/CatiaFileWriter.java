@@ -39,7 +39,7 @@ public class CatiaFileWriter {
 	/**
 	 * Exports productRoot to json and copies it to outputJsonFilePath
 	 * Also copies all geometry files to the same directory
-	 * @param outputJsonFilePath 
+	 * @param outputJsonFilePath full absolute path to the JSON file to be created
 	 * @param productRoot 
 	 * @param progressMonitor 
 	 * @throws CoreException 
@@ -51,6 +51,10 @@ public class CatiaFileWriter {
 		CatiaExporter catiaExporter = new CatiaExporter();
 		java.nio.file.Path jsonFilePath = Paths.get(outputJsonFilePath);
 		java.nio.file.Path outputDirectoryPath = jsonFilePath.getParent();
+		
+		if (outputDirectoryPath == null) {
+			throw new IllegalArgumentException("Invalid path to JSON file. Can't extract output directory: " + outputJsonFilePath);
+		}
 		
 		catiaExporter.setGeometryFilesPath(outputDirectoryPath.toString());
 		JsonObject jsonObject = catiaExporter.transform(productRoot);
