@@ -18,18 +18,19 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
-import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
+import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -43,18 +44,16 @@ import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * The CATIA importer test class
  *
  */
-public class CatiaImporterTest extends AConceptTestCase {
+public class CatiaImporterTest extends AProjectTestCase {
 
 	private Concept conceptPS;
 	private Concept conceptVis;
-
-	// Tree structure elements
-	Repository repository = DVLMFactory.eINSTANCE.createRepository();
 
 	private ProductTree productTree;
 	private ProductTreeDomain domainAOCS;
@@ -78,11 +77,26 @@ public class CatiaImporterTest extends AConceptTestCase {
 	private static final int TEST_POS_Z_PRODUCT = 5;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws CoreException {
+		super.setUp();
 		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		conceptVis = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.visualisation");
 
+		addEditingDomainAndRepository();
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+
+			@Override
+			protected void doExecute() {
+				repository.getActiveConcepts().add(conceptPS);
+				repository.getActiveConcepts().add(conceptVis);
+			}
+		});
 		createTestTreeScenario();
+	}
+
+	@After
+	public void tearDown() throws CoreException {
+		super.tearDown();
 	}
 
 	@Test
@@ -106,9 +120,7 @@ public class CatiaImporterTest extends AConceptTestCase {
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
-		Command importCommand = importer.transform(rootObject, mapping);
-		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
-				.getEd(configurationTree.getStructuralElementInstance());
+		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
 		// Check if import worked
@@ -135,23 +147,26 @@ public class CatiaImporterTest extends AConceptTestCase {
 		// Add some changes to import in a new configuration element without
 		// visualisation
 		ElementConfiguration elementConfigurationReactionWheel3 = new ElementConfiguration(conceptPS);
-		subSystemAOCS.add(elementConfigurationReactionWheel3);
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				subSystemAOCS.add(elementConfigurationReactionWheel3);
+			}
+		});
 
 		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
 		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		JsonObject jsonProductofNewConfiguration = (JsonObject) childProducts.stream()
-				.filter(child -> ((JsonObject) child).getString(CatiaProperties.UUID)
-						.equals(elementConfigurationReactionWheel3.getUuid()))
-				.collect(Collectors.toList()).get(0);
-
+		JsonObject jsonProductofNewConfiguration = new JsonObject();
+		jsonProductofNewConfiguration.put(CatiaProperties.UUID.getKey(), elementConfigurationReactionWheel3.getUuid());
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		childProducts.add(jsonProductofNewConfiguration);
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
-		Command importCommand = importer.transform(rootObject, mapping);
+		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
 				.getEd(configurationTree.getStructuralElementInstance());
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -287,13 +302,6 @@ public class CatiaImporterTest extends AConceptTestCase {
 		// Visualisation elements
 		reactionWheelVisDefinition = new Visualisation(conceptVis);
 
-		// Create tree structure with inheritance
-		repository.getRootEntities().add(productTree.getStructuralElementInstance());
-		repository.getRootEntities().add(configurationTree.getStructuralElementInstance());
-		repository.getRootEntities().add(assemblyTree.getStructuralElementInstance());
-		repository.getActiveConcepts().add(conceptPS);
-		repository.getActiveConcepts().add(conceptVis);
-
 		productTree.add(domainAOCS);
 		domainAOCS.add(elementReactionWheelDefinition);
 
@@ -312,7 +320,26 @@ public class CatiaImporterTest extends AConceptTestCase {
 		// Add visualisation categories
 		elementReactionWheelDefinition.add(reactionWheelVisDefinition);
 
-		new InheritanceCopier().updateAllInOrder(repository, new NullProgressMonitor());
+		// Create tree structure with inheritance
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+
+			@Override
+			protected void doExecute() {
+
+				repository.getRootEntities().add(productTree.getStructuralElementInstance());
+				repository.getRootEntities().add(configurationTree.getStructuralElementInstance());
+				repository.getRootEntities().add(assemblyTree.getStructuralElementInstance());
+
+				editingDomain.getResourceSet()
+						.getAndAddStructuralElementInstanceResource(productTree.getStructuralElementInstance());
+				editingDomain.getResourceSet()
+						.getAndAddStructuralElementInstanceResource(configurationTree.getStructuralElementInstance());
+				editingDomain.getResourceSet()
+						.getAndAddStructuralElementInstanceResource(assemblyTree.getStructuralElementInstance());
+
+				new InheritanceCopier().updateAllInOrder(repository, new NullProgressMonitor());
+			}
+		});
 
 		assertNotNull("Sanitycheck that the inheritance copier worked as expected",
 				reactionWheelOccurence1.getFirst(Visualisation.class));
@@ -351,6 +378,19 @@ public class CatiaImporterTest extends AConceptTestCase {
 		rootObject.put(CatiaProperties.PRODUCTS.getKey(), rootProduct);
 
 		return rootObject;
+	}
+
+	/**
+	 * Method to load the test concept
+	 * 
+	 * @param pluginName
+	 *            The name of the plugin from which to load the concept
+	 * @return the test concept
+	 */
+	protected Concept loadConceptFromPlugin(String pluginName) {
+		String conceptXmiPluginPath = pluginName + "/concept/concept.xmi";
+		Concept concept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
+		return concept;
 	}
 
 }

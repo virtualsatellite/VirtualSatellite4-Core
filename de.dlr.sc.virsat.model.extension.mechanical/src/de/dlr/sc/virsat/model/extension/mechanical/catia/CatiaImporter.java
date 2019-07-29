@@ -20,10 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 
@@ -47,7 +49,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  */
 public class CatiaImporter {
 
-	private VirSatTransactionalEditingDomain editingDomain;
+	private EditingDomain editingDomain;
 
 	public static final String POSITION_BASE_UNIT = "Millimeter";
 	public static final String SIZE_BASE_UNIT = "Millimeter";
@@ -56,22 +58,19 @@ public class CatiaImporter {
 	/**
 	 * Main method that creates the JSON representation of a configuration tree
 	 * 
+	 * @param editingDomain 
+	 * 			  the editing domain of the current project
 	 * @param jsonObject
 	 *            the Json Object
 	 * @param mapJSONtoSEI
 	 *            the mapping of JSON elements to the existing trees
 	 * 
-	 * @return the emf command to execute the import 
+	 * @return the emf command to execute the import
 	 */
-	public Command transform(JsonObject jsonObject, Map<String, StructuralElementInstance> mapJSONtoSEI) {
+	public Command transform(EditingDomain editingDomain, JsonObject jsonObject, Map<String, StructuralElementInstance> mapJSONtoSEI) {
 
 		CompoundCommand importCommand = new CompoundCommand();
-		// Initialize editing domain
-		StructuralElementInstance anyModelElement = mapJSONtoSEI.values().iterator().next();
-		if (anyModelElement == null) {
-			return importCommand;
-		}
-		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(anyModelElement);
+		this.editingDomain = editingDomain;
 
 		// Import parts
 		for (JsonObject part : CatiaHelper.getListOfAllJSONParts(jsonObject)) {
@@ -82,7 +81,7 @@ public class CatiaImporter {
 		for (JsonObject product : CatiaHelper.getListOfAllJSONProducts(jsonObject)) {
 			updateSeiFromProduct(importCommand, mapJSONtoSEI.get(product.getString(CatiaProperties.UUID)), product);
 		}
-		
+
 		return importCommand;
 	}
 
@@ -157,28 +156,46 @@ public class CatiaImporter {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 		
-		double sizeX = part.getDouble(CatiaProperties.PART_LENGTH_X);
-		double sizeY = part.getDouble(CatiaProperties.PART_LENGTH_Y);
-		double sizeZ = part.getDouble(CatiaProperties.PART_LENGTH_Z);
-		double radius = part.getDouble(CatiaProperties.PART_RADIUS);
+		double sizeX;
+		double sizeY;
+		double sizeZ;
+		double radius;
+
+		long color;
+		String shape;
+		String stlFile = null;
+		try {
+			sizeX = part.getDouble(CatiaProperties.PART_LENGTH_X);
+			sizeY = part.getDouble(CatiaProperties.PART_LENGTH_Y);
+			sizeZ = part.getDouble(CatiaProperties.PART_LENGTH_Z);
+			radius = part.getDouble(CatiaProperties.PART_RADIUS);
+
+			color = part.getLong(CatiaProperties.PART_COLOR);
+			shape = part.getString(CatiaProperties.PART_SHAPE);
+			
+		} catch (NullPointerException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), 
+					"CatiaImport: Failed to perform import! Could not load all required properties", e));
+			return;
+		}
 		
-		long color = part.getLong(CatiaProperties.PART_COLOR);
-		String shape = part.getString(CatiaProperties.PART_SHAPE);
-		String stlFile = part.getString(CatiaProperties.PART_STL_PATH);
-		
+		if (part.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
+			stlFile = part.getString(CatiaProperties.PART_STL_PATH);
+		}
+
 		importCommand.append(visualisation.setSizeX(editingDomain, sizeX));
-        importCommand.append(visualisation.getSizeXBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-        importCommand.append(visualisation.setSizeY(editingDomain, sizeY));
-        importCommand.append(visualisation.getSizeYBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-        importCommand.append(visualisation.setSizeZ(editingDomain, sizeZ));
-        importCommand.append(visualisation.getSizeZBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-        importCommand.append(visualisation.setRadius(editingDomain, radius));
-        importCommand.append(visualisation.getRadiusBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-        
-        importCommand.append(visualisation.setShape(editingDomain, shape));
-        importCommand.append(visualisation.setColor(editingDomain, color));
-        
-        if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
+		importCommand.append(visualisation.getSizeXBean().setUnit(editingDomain, SIZE_BASE_UNIT));
+		importCommand.append(visualisation.setSizeY(editingDomain, sizeY));
+		importCommand.append(visualisation.getSizeYBean().setUnit(editingDomain, SIZE_BASE_UNIT));
+		importCommand.append(visualisation.setSizeZ(editingDomain, sizeZ));
+		importCommand.append(visualisation.getSizeZBean().setUnit(editingDomain, SIZE_BASE_UNIT));
+		importCommand.append(visualisation.setRadius(editingDomain, radius));
+		importCommand.append(visualisation.getRadiusBean().setUnit(editingDomain, SIZE_BASE_UNIT));
+
+		importCommand.append(visualisation.setShape(editingDomain, shape));
+		importCommand.append(visualisation.setColor(editingDomain, color));
+
+		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
 			importCommand
 					.append(visualisation.setGeometryFile(editingDomain, copyAndGetPlatformResource(stlFile, beanSEI)));
 		}
@@ -202,18 +219,40 @@ public class CatiaImporter {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 
-		double posX = product.getDouble(CatiaProperties.PRODUCT_POS_X);
-		double posY = product.getDouble(CatiaProperties.PRODUCT_POS_Y);
-		double posZ = product.getDouble(CatiaProperties.PRODUCT_POS_Z);
+		double posX;
+		double posY;
+		double posZ;
+
+		double rotX;
+		double rotY;
+		double rotZ;
 		
-		double rotX = product.getDouble(CatiaProperties.PRODUCT_ROT_X);
-		double rotY = product.getDouble(CatiaProperties.PRODUCT_ROT_Y);
-		double rotZ = product.getDouble(CatiaProperties.PRODUCT_ROT_Z);
+		long color;
+		String shape;
+		String stlFile = null;
 		
-		String shape = product.getString(CatiaProperties.PRODUCT_SHAPE);
-		String stlFile = product.getString(CatiaProperties.PRODUCT_STL_PATH);
+		try {
+			posX = product.getDouble(CatiaProperties.PRODUCT_POS_X);
+			posY = product.getDouble(CatiaProperties.PRODUCT_POS_Y);
+			posZ = product.getDouble(CatiaProperties.PRODUCT_POS_Z);
+
+			rotX = product.getDouble(CatiaProperties.PRODUCT_ROT_X);
+			rotY = product.getDouble(CatiaProperties.PRODUCT_ROT_Y);
+			rotZ = product.getDouble(CatiaProperties.PRODUCT_ROT_Z);
+			
+			shape = product.getString(CatiaProperties.PRODUCT_SHAPE);
+			color = product.getLong(CatiaProperties.PART_COLOR);
+			
+		} catch (NullPointerException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), 
+					"CatiaImport: Failed to perform import! Could not load all required properties", e));
+			return;
+		}
 		
-		
+		if (product.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
+			stlFile = product.getString(CatiaProperties.PART_STL_PATH);
+		}
+
 		importCommand.append(visualisation.setPositionX(editingDomain, posX));
 		importCommand.append(visualisation.getPositionYBean().setUnit(editingDomain, POSITION_BASE_UNIT));
 
@@ -233,6 +272,7 @@ public class CatiaImporter {
 		importCommand.append(visualisation.getRotationZBean().setUnit(editingDomain, ROTATION_BASE_UNIT));
 
 		importCommand.append(visualisation.setShape(editingDomain, shape));
+		importCommand.append(visualisation.setColor(editingDomain, color));
 
 		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
 			importCommand
@@ -329,7 +369,9 @@ public class CatiaImporter {
 	private Visualisation createNewVisualisation(BeanStructuralElementInstance container,
 			CompoundCommand importCommand) {
 
-		Repository repository = editingDomain.getResourceSet().getRepository();
+		VirSatTransactionalEditingDomain virSatEditingDomain = VirSatEditingDomainRegistry.INSTANCE
+				.getEd(container.getStructuralElementInstance());
+		Repository repository = virSatEditingDomain.getResourceSet().getRepository();
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
 		Concept visConcept = activeConceptHelper.getConcept(Activator.getPluginId());
 		Visualisation visualisation = new Visualisation(visConcept);
