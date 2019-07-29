@@ -21,8 +21,6 @@ public class Activator extends AbstractUIPlugin {
 	
 	// The plug-in ID
 	private static String pluginId;
-	public static final String QUDV_FILE_EXTENSION = "qudv";		   //$NON-NLS-1$
-	
 	
 	// The shared instance
 	private static Activator plugin;

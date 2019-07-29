@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -77,11 +78,13 @@ public class CatiaExportWizard extends Wizard implements INewWizard {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					fileWriter.writeFiles(outputJsonFilePath, productRoot, monitor);
+					return Status.OK_STATUS;
 				} catch (CoreException | IOException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), 
-							"CatiaExportWizard: Failed to perform export!", e));
+					Status status = new Status(Status.ERROR, Activator.getPluginId(), 
+							"CatiaExportWizard: Failed to perform export!", e);
+					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+					return Status.CANCEL_STATUS;
 				}
-				return Status.OK_STATUS;
 			}
 		};
 		exportJob.schedule();
