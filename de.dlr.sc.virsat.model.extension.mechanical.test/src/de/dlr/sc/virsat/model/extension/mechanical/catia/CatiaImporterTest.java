@@ -127,30 +127,30 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionXBean().getValueToBaseUnit() == TEST_POS_X_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionYBean().getValueToBaseUnit() == TEST_POS_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionZBean().getValueToBaseUnit() == TEST_POS_Z_PRODUCT);
 		
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationX() == TEST_ROT_X_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationXBean().getValueToBaseUnit() == TEST_ROT_X_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationY() == TEST_ROT_Y_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationZ() == TEST_ROT_Z_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
 		
 		assertTrue("Check if product values are imported",
 				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PRODUCT));
 
 		assertTrue("Check if part values are imported",
-				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeX() == TEST_SIZE_X_PART);
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeXBean().getValueToBaseUnit() == TEST_SIZE_X_PART);
 		assertTrue("Check if part values are imported",
-				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeY() == TEST_SIZE_Y_PART);
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeYBean().getValueToBaseUnit() == TEST_SIZE_Y_PART);
 		assertTrue("Check if part values are imported",
-				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeZ() == TEST_SIZE_Z_PART);
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeZBean().getValueToBaseUnit() == TEST_SIZE_Z_PART);
 		assertTrue("Check if part values are imported",
-				elementReactionWheelDefinition.getFirst(Visualisation.class).getRadius() == TEST_RADIUS_PART);
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getRadiusBean().getValueToBaseUnit() == TEST_RADIUS_PART);
 		assertTrue("Check if part values are imported",
 				elementReactionWheelDefinition.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PART));
 		assertTrue("Check if part values are imported",
@@ -216,18 +216,18 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 		// Check if import worked on new element without visualisation
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionXBean().getValueToBaseUnit() == TEST_POS_X_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionYBean().getValueToBaseUnit() == TEST_POS_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionZBean().getValueToBaseUnit() == TEST_POS_Z_PRODUCT);
 		
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationX() == TEST_ROT_X_PRODUCT);
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationXBean().getValueToBaseUnit() == TEST_ROT_X_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationY() == TEST_ROT_Y_PRODUCT);
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationZ() == TEST_ROT_Z_PRODUCT);
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
 		
 		assertTrue("Check if product values are imported",
 				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PRODUCT));

@@ -51,10 +51,6 @@ public class CatiaImporter {
 
 	private EditingDomain editingDomain;
 
-	public static final String POSITION_BASE_UNIT = "Millimeter";
-	public static final String SIZE_BASE_UNIT = "Millimeter";
-	public static final String ROTATION_BASE_UNIT = "Degree";
-
 	/**
 	 * Main method that creates the JSON representation of a configuration tree
 	 * 
@@ -167,6 +163,8 @@ public class CatiaImporter {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 
+		String name;
+		
 		double sizeX;
 		double sizeY;
 		double sizeZ;
@@ -176,6 +174,8 @@ public class CatiaImporter {
 		String shape;
 		String stlFile = null;
 		try {
+			
+			name = part.getString(CatiaProperties.NAME);
 			sizeX = part.getDouble(CatiaProperties.PART_LENGTH_X);
 			sizeY = part.getDouble(CatiaProperties.PART_LENGTH_Y);
 			sizeZ = part.getDouble(CatiaProperties.PART_LENGTH_Z);
@@ -194,14 +194,13 @@ public class CatiaImporter {
 			stlFile = part.getString(CatiaProperties.PART_STL_PATH);
 		}
 
-		importCommand.append(visualisation.setSizeX(editingDomain, sizeX));
-		importCommand.append(visualisation.getSizeXBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-		importCommand.append(visualisation.setSizeY(editingDomain, sizeY));
-		importCommand.append(visualisation.getSizeYBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-		importCommand.append(visualisation.setSizeZ(editingDomain, sizeZ));
-		importCommand.append(visualisation.getSizeZBean().setUnit(editingDomain, SIZE_BASE_UNIT));
-		importCommand.append(visualisation.setRadius(editingDomain, radius));
-		importCommand.append(visualisation.getRadiusBean().setUnit(editingDomain, SIZE_BASE_UNIT));
+		importCommand.append(beanSEI.setName(editingDomain, name));
+		
+		importCommand.append(visualisation.getSizeXBean().setValueAsBaseUnit(editingDomain, sizeX));
+		importCommand.append(visualisation.getSizeYBean().setValueAsBaseUnit(editingDomain, sizeY));
+		importCommand.append(visualisation.getSizeZBean().setValueAsBaseUnit(editingDomain, sizeZ));
+		
+		importCommand.append(visualisation.getRadiusBean().setValueAsBaseUnit(editingDomain, radius));
 
 		importCommand.append(visualisation.setShape(editingDomain, shape));
 		importCommand.append(visualisation.setColor(editingDomain, color));
@@ -239,6 +238,8 @@ public class CatiaImporter {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 
+		String name;
+		
 		double posX;
 		double posY;
 		double posZ;
@@ -251,6 +252,8 @@ public class CatiaImporter {
 		String stlFile = null;
 
 		try {
+			name = product.getString(CatiaProperties.NAME);
+			
 			posX = product.getDouble(CatiaProperties.PRODUCT_POS_X);
 			posY = product.getDouble(CatiaProperties.PRODUCT_POS_Y);
 			posZ = product.getDouble(CatiaProperties.PRODUCT_POS_Z);
@@ -271,23 +274,15 @@ public class CatiaImporter {
 			stlFile = product.getString(CatiaProperties.PART_STL_PATH);
 		}
 
-		importCommand.append(visualisation.setPositionX(editingDomain, posX));
-		importCommand.append(visualisation.getPositionYBean().setUnit(editingDomain, POSITION_BASE_UNIT));
+		importCommand.append(beanSEI.setName(editingDomain, name));
+		
+		importCommand.append(visualisation.getPositionXBean().setValueAsBaseUnit(editingDomain, posX));
+		importCommand.append(visualisation.getPositionYBean().setValueAsBaseUnit(editingDomain, posY));
+		importCommand.append(visualisation.getPositionZBean().setValueAsBaseUnit(editingDomain, posZ));
 
-		importCommand.append(visualisation.setPositionY(editingDomain, posY));
-		importCommand.append(visualisation.getPositionYBean().setUnit(editingDomain, POSITION_BASE_UNIT));
-
-		importCommand.append(visualisation.setPositionZ(editingDomain, posZ));
-		importCommand.append(visualisation.getPositionZBean().setUnit(editingDomain, POSITION_BASE_UNIT));
-
-		importCommand.append(visualisation.setRotationX(editingDomain, rotX));
-		importCommand.append(visualisation.getRotationXBean().setUnit(editingDomain, ROTATION_BASE_UNIT));
-
-		importCommand.append(visualisation.setRotationY(editingDomain, rotY));
-		importCommand.append(visualisation.getRotationYBean().setUnit(editingDomain, ROTATION_BASE_UNIT));
-
-		importCommand.append(visualisation.setRotationZ(editingDomain, rotZ));
-		importCommand.append(visualisation.getRotationZBean().setUnit(editingDomain, ROTATION_BASE_UNIT));
+		importCommand.append(visualisation.getRotationXBean().setValueAsBaseUnit(editingDomain, rotX));
+		importCommand.append(visualisation.getRotationYBean().setValueAsBaseUnit(editingDomain, rotY));
+		importCommand.append(visualisation.getRotationZBean().setValueAsBaseUnit(editingDomain, rotZ));
 
 		importCommand.append(visualisation.setShape(editingDomain, shape));
 
