@@ -11,12 +11,12 @@ package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -30,7 +30,6 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -72,9 +71,24 @@ public class CatiaImporterTest extends AProjectTestCase {
 	// Visualisation elements
 	private Visualisation reactionWheelVisDefinition;
 
-	private static final int TEST_POS_X_PRODUCT = 5;
-	private static final int TEST_POS_Y_PRODUCT = 5;
-	private static final int TEST_POS_Z_PRODUCT = 5;
+	private static final int TEST_POS_X_PRODUCT = 1;
+	private static final int TEST_POS_Y_PRODUCT = 2;
+	private static final int TEST_POS_Z_PRODUCT = 3;
+	
+	private static final int TEST_ROT_X_PRODUCT = 4;
+	private static final int TEST_ROT_Y_PRODUCT = 5;
+	private static final int TEST_ROT_Z_PRODUCT = 6;
+
+	private static final String TEST_SHAPE_PRODUCT = Visualisation.SHAPE_BOX_NAME;
+	
+	private static final int TEST_SIZE_X_PART = 7;
+	private static final int TEST_SIZE_Y_PART = 8;
+	private static final int TEST_SIZE_Z_PART = 9;
+	private static final int TEST_RADIUS_PART = 10;
+	
+	private static final long TEST_COLOR_PART = 30;
+	private static final String TEST_SHAPE_PART = Visualisation.SHAPE_BOX_NAME;
+
 
 	@Before
 	public void setUp() throws CoreException {
@@ -100,22 +114,10 @@ public class CatiaImporterTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testTransformProductTree() {
+	public void testTransform() {
 
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
-		// Add some changes to import
-		JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
-		JsonObject firstPart = partArray.getMap(0);
-		firstPart.put(CatiaProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_BOX_NAME);
-
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
-		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		JsonObject firstChild = childProducts.getMap(0);
-		firstChild.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
-		firstChild.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
-		firstChild.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
-		String testProductID = firstChild.getString(CatiaProperties.UUID);
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
@@ -123,24 +125,61 @@ public class CatiaImporterTest extends AProjectTestCase {
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
-		// Check if import worked
-		assertEquals("Check if part values are imported", Visualisation.SHAPE_BOX_NAME,
-				reactionWheelVisDefinition.getShape());
 
-		IBeanStructuralElementInstance changedSei = configurationTree
-				.getDeepChildren(IBeanStructuralElementInstance.class).stream()
-					.filter(sei -> !sei.getUuid().equals(testProductID)).collect(Collectors.toList()).get(0);
 		assertTrue("Check if product values are imported",
-				changedSei.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
 		assertTrue("Check if product values are imported",
-				changedSei.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
-				changedSei.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
+		
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationX() == TEST_ROT_X_PRODUCT);
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationY() == TEST_ROT_Y_PRODUCT);
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getRotationZ() == TEST_ROT_Z_PRODUCT);
+		
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PRODUCT));
+
+		assertTrue("Check if part values are imported",
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeX() == TEST_SIZE_X_PART);
+		assertTrue("Check if part values are imported",
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeY() == TEST_SIZE_Y_PART);
+		assertTrue("Check if part values are imported",
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getSizeZ() == TEST_SIZE_Z_PART);
+		assertTrue("Check if part values are imported",
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getRadius() == TEST_RADIUS_PART);
+		assertTrue("Check if part values are imported",
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PART));
+		assertTrue("Check if part values are imported",
+				elementReactionWheelDefinition.getFirst(Visualisation.class).getColor() == TEST_COLOR_PART);
+		
+	}
+	
+	@Test
+	public void testTransformWithIncompleteJSON() {
+
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
+
+		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject firstChild = childProducts.getMap(0);
+		firstChild.remove(CatiaProperties.PRODUCT_POS_X.getKey());
+		
+		// Do the import
+		CatiaImporter importer = new CatiaImporter();
+		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
+		editingDomain.getVirSatCommandStack().execute(importCommand);
+
+		assertNull("There should be no command for incomplete JSONs", importCommand);
 
 	}
 
 	@Test
-	public void testTransformProductTreeWithoutVisualisation() {
+	public void testTransformWithoutVisualisation() {
 
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
@@ -161,6 +200,10 @@ public class CatiaImporterTest extends AProjectTestCase {
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(jsonProductofNewConfiguration);
 
 		// Do the import
@@ -171,13 +214,23 @@ public class CatiaImporterTest extends AProjectTestCase {
 				.getEd(configurationTree.getStructuralElementInstance());
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
-		// Check if import worked
+		// Check if import worked on new element without visualisation
 		assertTrue("Check if product values are imported",
 				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionX() == TEST_POS_X_PRODUCT);
 		assertTrue("Check if product values are imported",
 				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionY() == TEST_POS_Y_PRODUCT);
 		assertTrue("Check if product values are imported",
 				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getPositionZ() == TEST_POS_Z_PRODUCT);
+		
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationX() == TEST_ROT_X_PRODUCT);
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationY() == TEST_ROT_Y_PRODUCT);
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getRotationZ() == TEST_ROT_Z_PRODUCT);
+		
+		assertTrue("Check if product values are imported",
+				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PRODUCT));
 
 	}
 
@@ -356,13 +409,33 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
 		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_COLOR.getKey(), TEST_COLOR_PART);
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_LENGTH_X.getKey(), TEST_SIZE_X_PART);
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_LENGTH_Y.getKey(), TEST_SIZE_Y_PART);
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_LENGTH_Z.getKey(), TEST_SIZE_Z_PART);
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_RADIUS.getKey(), TEST_RADIUS_PART);
+		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_SHAPE.getKey(), TEST_SHAPE_PART);
 		JsonArray partArray = new JsonArray();
 		partArray.add(jsonObjectReactionWheelDefinition);
 
 		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
 		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(),
 				elementConfigurationReactionWheel1.getUuid());
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		JsonObject jsonObjectReactionWheel2Configuration = new JsonObject();
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.UUID.getKey(),
 				elementConfigurationReactionWheel2.getUuid());
 		JsonArray productArray = new JsonArray();
