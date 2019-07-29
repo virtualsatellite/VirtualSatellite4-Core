@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
@@ -171,6 +172,10 @@ public class CatiaExporterTest extends AConceptTestCase {
 		Visualisation dummyVisualisation = new Visualisation(conceptVis);
 		dummyVisualisation.setColor(0);
 		assertJsonPartEqualsVisualisation(ctPart, dummyVisualisation);
+		
+		Set<Visualisation> geometryVisualisations = catiaExporter.getGeometryVisualisations();
+		assertEquals("One geometry", 1, geometryVisualisations.size());
+		assertTrue("Geometry comes from the correct visualisation", geometryVisualisations.contains(visualisation));
 	}
 
 	@Test

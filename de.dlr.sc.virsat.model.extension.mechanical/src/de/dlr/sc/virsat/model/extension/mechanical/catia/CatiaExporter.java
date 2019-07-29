@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.URI;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonKey;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
@@ -38,6 +39,7 @@ public class CatiaExporter {
 	
 	private String geometryFilesPath;
 	private Set<IBeanStructuralElementInstance> parts;
+	private Set<Visualisation> geometryVisualisations;
 	
 	/**
 	 * Sets the path where all the geometry files are supposed to be (this class doesn't copy files)
@@ -54,6 +56,7 @@ public class CatiaExporter {
 	 */
 	public JsonObject transform(IBeanStructuralElementInstance root) {
 		parts = new HashSet<>();
+		geometryVisualisations = new HashSet<>();
 		JsonObject json = new JsonObject();
 
 		JsonObject jsonProducts = transformProduct(root);
@@ -210,12 +213,23 @@ public class CatiaExporter {
 		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), vis.getRotationZBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), vis.getShape());
 		
+		fillGeometryField(vis, jsonProduct, CatiaProperties.PRODUCT_STL_PATH);
+	}
+
+	/**
+	 * Fills geometry path key in the given json from the given visualisation bean
+	 * @param vis 
+	 * @param jsonObject 
+	 * @param geometryPathKey 
+	 */
+	private void fillGeometryField(Visualisation vis, JsonObject jsonObject, JsonKey geometryPathKey) {
 		if (vis.getShape().equals(Visualisation.SHAPE_GEOMETRY_NAME)) {
 			URI geometryUri = vis.getGeometryFile();
 			if (geometryUri != null) {
 				String geometryFileName = geometryUri.lastSegment();
 				Path filePath = Paths.get(geometryFilesPath, geometryFileName);
-				jsonProduct.put(CatiaProperties.PRODUCT_STL_PATH.getKey(), filePath.toString());
+				jsonObject.put(geometryPathKey.getKey(), filePath.toString());
+				geometryVisualisations.add(vis);
 			}
 		}
 	}
@@ -245,17 +259,9 @@ public class CatiaExporter {
 		jsonPart.put(CatiaProperties.PART_LENGTH_Z.getKey(), vis.getSizeZBean().getValueToBaseUnit());
 		jsonPart.put(CatiaProperties.PART_RADIUS.getKey(), vis.getRadiusBean().getValueToBaseUnit());
 		jsonPart.put(CatiaProperties.PART_COLOR.getKey(), vis.getColor());
-		
 		jsonPart.put(CatiaProperties.PART_SHAPE.getKey(), vis.getShape());
 		
-		if (vis.getShape().equals(Visualisation.SHAPE_GEOMETRY_NAME)) {
-			URI geometryUri = vis.getGeometryFile();
-			if (geometryUri != null) {
-				String geometryFileName = geometryUri.lastSegment();
-				Path filePath = Paths.get(geometryFilesPath, geometryFileName);
-				jsonPart.put(CatiaProperties.PART_STL_PATH.getKey(), filePath.toString());
-			}
-		}
+		fillGeometryField(vis, jsonPart, CatiaProperties.PART_STL_PATH);
 	}
 
 	/**
@@ -279,5 +285,13 @@ public class CatiaExporter {
 	private boolean hasDeepVisualisation(IBeanStructuralElementInstance productBean) {
 		List<IBeanStructuralElementInstance> deepChildren = productBean.getDeepChildren(IBeanStructuralElementInstance.class);
 		return deepChildren.stream().anyMatch(child -> child.getFirst(Visualisation.class) != null);
+	}
+
+	/**
+	 * This method should be called after {@link #transform(IBeanStructuralElementInstance)}
+	 * @return set of Visualisation beans with external geometry
+	 */
+	public Set<Visualisation> getGeometryVisualisations() {
+		return geometryVisualisations;
 	}
 }
