@@ -44,7 +44,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
- * This class imports a JSON representation of a product tree
+ * This class imports a JSON representation of system model
  *
  */
 public class CatiaImporter {
@@ -52,19 +52,20 @@ public class CatiaImporter {
 	private EditingDomain editingDomain;
 
 	/**
-	 * Main method that creates the JSON representation of a configuration tree
+	 * Main method that imports a JSON representation of our system and updates the
+	 * model accordingly
 	 * 
 	 * @param editingDomain
 	 *            the editing domain of the current project
 	 * @param jsonObject
-	 *            the Json Object
-	 * @param mapJSONtoSEI
-	 *            the mapping of JSON elements to the existing trees
+	 *            the JSON Object
+	 * @param mapJsonUuidToSEI
+	 *            the mapping of JSON element IDs to the existing trees
 	 * 
 	 * @return the emf command to execute the import
 	 */
 	public Command transform(EditingDomain editingDomain, JsonObject jsonObject,
-			Map<String, StructuralElementInstance> mapJSONtoSEI) {
+			Map<String, StructuralElementInstance> mapJsonUuidToSEI) {
 
 		CompoundCommand importCommand = new CompoundCommand();
 		this.editingDomain = editingDomain;
@@ -73,12 +74,12 @@ public class CatiaImporter {
 
 		// Import parts
 		for (JsonObject part : CatiaHelper.getListOfAllJSONParts(jsonObject)) {
-			worked = worked && updateSeiFromPart(importCommand, mapJSONtoSEI.get(part.getString(CatiaProperties.UUID)), part);
+			worked = worked && updateSeiFromPart(importCommand, mapJsonUuidToSEI.get(part.getString(CatiaProperties.UUID)), part);
 		}
 
 		// Import products
 		for (JsonObject product : CatiaHelper.getListOfAllJSONProducts(jsonObject)) {
-			worked = worked && updateSeiFromProduct(importCommand, mapJSONtoSEI.get(product.getString(CatiaProperties.UUID)),
+			worked = worked && updateSeiFromProduct(importCommand, mapJsonUuidToSEI.get(product.getString(CatiaProperties.UUID)),
 					product);
 		}
 
@@ -91,16 +92,16 @@ public class CatiaImporter {
 	}
 
 	/**
-	 * Map the imported JSON elements to existing model elements in the Virtual
-	 * Satellite model and return the ones for which no mapping can be found
+	 * Maps from the IDs of JSON elements to existing model elements in the Virtual
+	 * Satellite model 
 	 * 
 	 * @param jsonContent
 	 *            the JSON content to be imported
 	 * @param existingTree
 	 *            a tree element the imported JSON should be mapped to
-	 * @return a map of existing tree elements to their UUID in the JSON file
+	 * @return a map from UUID in the JSON file to their existing tree elements in the model
 	 */
-	public Map<String, StructuralElementInstance> mapJSONtoSEI(JsonObject jsonContent,
+	public Map<String, StructuralElementInstance> mapJsonUuidToSEI(JsonObject jsonContent,
 			IBeanStructuralElementInstance existingTree) {
 
 		Map<String, StructuralElementInstance> mapExisitingElementToUUID = new HashMap<String, StructuralElementInstance>();
@@ -109,7 +110,7 @@ public class CatiaImporter {
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonContent)) {
 			String uuid = object.getString(CatiaProperties.UUID);
 			IBeanStructuralElementInstance mappedElement = mapSEIsToUuid.get(uuid);
-			if (mappedElement != null) {
+			if (mapSEIsToUuid.containsKey(uuid) && mappedElement != null) {
 				mapExisitingElementToUUID.put(uuid, mappedElement.getStructuralElementInstance());
 			}
 
@@ -124,9 +125,9 @@ public class CatiaImporter {
 	 * the existing trees
 	 * 
 	 * @param jsonRoot
-	 *            the JSON root element to look for
+	 *            the JSON root element to look for unmapped elements in
 	 * @param mapJSONtoSEI
-	 *            the Map of SEIs to JSONObjects created by method
+	 *            the Map of JSONObject IDs to SEIs in the model created by method
 	 *            {@link #mapJSONtoSEI(JsonObject, IBeanStructuralElementInstance)}
 	 * @return a list of unmapped elements
 	 */
@@ -137,7 +138,7 @@ public class CatiaImporter {
 
 		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonRoot)) {
 			String uuid = object.getString(CatiaProperties.UUID);
-			if (mapJSONtoSEI.get(uuid) == null) {
+			if (!mapJSONtoSEI.containsKey(uuid)) {
 				unmappedElements.add(object);
 			}
 		}
@@ -352,11 +353,11 @@ public class CatiaImporter {
 	}
 
 	/**
-	 * Create a map of all structural element instances in a tree to their UUID
+	 * Create a map of all UUIDs to their structural element instances in a tree and their super instances
 	 * 
 	 * @param existingTree
 	 *            the existing tree element in the Virtual Satellite model
-	 * @return a map that maps all SEIs to their UUID
+	 * @return a map that maps the UUID to all SEIs
 	 */
 	private Map<String, IBeanStructuralElementInstance> createMapOfTreeSEIsToUuid(
 			IBeanStructuralElementInstance existingTree) {

@@ -131,7 +131,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
@@ -179,7 +179,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
@@ -217,7 +217,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
 				.getEd(configurationTree.getStructuralElementInstance());
@@ -260,7 +260,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 
 		// Do the import
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
@@ -286,7 +286,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
 		// Check map
@@ -320,7 +320,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 		partArray.add(unmappedJsonObject);
 
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
 		// Check map
@@ -356,7 +356,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 		productArray.add(unmappedJsonObject);
 
 		CatiaImporter importer = new CatiaImporter();
-		Map<String, StructuralElementInstance> mapping = importer.mapJSONtoSEI(rootObject, configurationTree);
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
 		// Check map
