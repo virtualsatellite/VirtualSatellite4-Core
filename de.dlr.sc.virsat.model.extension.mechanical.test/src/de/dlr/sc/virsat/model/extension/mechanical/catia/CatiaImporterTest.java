@@ -29,6 +29,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
@@ -275,6 +276,8 @@ public class CatiaImporterTest extends AProjectTestCase {
 		assertTrue("STL file was copied", expectedLocalPath.toFile().exists());
 		assertArrayEquals("STL file is copied correctly", Files.readAllBytes(expectedLocalPath),
 				Files.readAllBytes(externalStl));
+		assertEquals("URI added correctly", URI.createPlatformResourceURI(expectedLocalPath.toString(), false).toFileString(),
+				reactionWheelVisDefinition.getGeometryFile().toFileString());
 	}
 
 	@Test
