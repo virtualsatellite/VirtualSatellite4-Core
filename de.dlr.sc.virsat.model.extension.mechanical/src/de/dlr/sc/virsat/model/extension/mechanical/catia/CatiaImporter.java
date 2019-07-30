@@ -324,11 +324,19 @@ public class CatiaImporter {
 		URI stlURI = null;
 		// Copy file to workspace
 		Path catiaSTLPath = Paths.get(stlPath);
+		
+		Path fileName = catiaSTLPath.getFileName();
+		if (fileName == null) {
+			throw new IllegalArgumentException("Invalid path to STL file. Can't extract internal directory: " + stlPath);
+		}
+		
+		String stlName = fileName.toString();
+		
 		try {
 			String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
 			String documentPath = VirSatProjectCommons.getDocumentFolder(seiBean.getStructuralElementInstance())
 					.getFullPath().toOSString();
-			String stlName = catiaSTLPath.getFileName().toString();
+
 			Path localPath = Paths.get(documentPath, stlName);
 			Path workspace = Paths.get(workspacePath, localPath.toString());
 
