@@ -11,8 +11,8 @@ package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -182,7 +182,7 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
-		assertNull("There should be no command for incomplete JSONs", importCommand);
+		assertFalse("The command should not be exectuable for incomplete JSONs", importCommand.canExecute());
 
 	}
 

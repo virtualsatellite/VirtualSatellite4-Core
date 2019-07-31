@@ -23,8 +23,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
@@ -32,15 +32,13 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelper;
 import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
@@ -70,23 +68,23 @@ public class CatiaImporter {
 		CompoundCommand importCommand = new CompoundCommand();
 		this.editingDomain = editingDomain;
 
-		boolean worked = true;
+		boolean commandCreationWorked = true;
 
 		// Import parts
 		for (JsonObject part : CatiaHelper.getListOfAllJSONParts(jsonObject)) {
-			worked = worked && updateSeiFromPart(importCommand, mapJsonUuidToSEI.get(part.getString(CatiaProperties.UUID)), part);
+			commandCreationWorked &= updateSeiFromPart(importCommand, mapJsonUuidToSEI.get(part.getString(CatiaProperties.UUID)), part);
 		}
 
 		// Import products
 		for (JsonObject product : CatiaHelper.getListOfAllJSONProducts(jsonObject)) {
-			worked = worked && updateSeiFromProduct(importCommand, mapJsonUuidToSEI.get(product.getString(CatiaProperties.UUID)),
+			commandCreationWorked &= updateSeiFromProduct(importCommand, mapJsonUuidToSEI.get(product.getString(CatiaProperties.UUID)),
 					product);
 		}
 
-		if (worked) {
+		if (commandCreationWorked) {
 			return importCommand;
 		} else {
-			return null;
+			return UnexecutableCommand.INSTANCE;
 		}
 
 	}
@@ -175,7 +173,6 @@ public class CatiaImporter {
 		String shape;
 		String stlFile = null;
 		try {
-			
 			name = part.getString(CatiaProperties.NAME);
 			sizeX = part.getDouble(CatiaProperties.PART_LENGTH_X);
 			sizeY = part.getDouble(CatiaProperties.PART_LENGTH_Y);
@@ -207,8 +204,8 @@ public class CatiaImporter {
 		importCommand.append(visualisation.setColor(editingDomain, color));
 
 		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
-			importCommand
-					.append(visualisation.setGeometryFile(editingDomain, copyAndGetPlatformResource(stlFile, beanSEI)));
+			importCommand.append(visualisation.setGeometryFile(editingDomain, 
+					copyAndGetPlatformResource(stlFile, beanSEI)));
 		}
 
 		return true;
@@ -407,16 +404,13 @@ public class CatiaImporter {
 	private Visualisation createNewVisualisation(BeanStructuralElementInstance container,
 			CompoundCommand importCommand) {
 
-		VirSatTransactionalEditingDomain virSatEditingDomain = VirSatEditingDomainRegistry.INSTANCE
-				.getEd(container.getStructuralElementInstance());
-		Repository repository = virSatEditingDomain.getResourceSet().getRepository();
+		Repository repository = VirSatResourceSet.getVirSatResourceSet(container.getStructuralElementInstance())
+				.getRepository();
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
 		Concept visConcept = activeConceptHelper.getConcept(Activator.getPluginId());
 		Visualisation visualisation = new Visualisation(visConcept);
 
-		importCommand.append(AddCommand.create(editingDomain, container.getStructuralElementInstance(),
-				CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS,
-				visualisation.getTypeInstance()));
+		importCommand.append(container.add(editingDomain, visualisation));
 
 		return visualisation;
 	}
