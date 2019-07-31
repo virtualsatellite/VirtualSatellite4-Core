@@ -185,6 +185,64 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		assertFalse("The command should not be exectuable for incomplete JSONs", importCommand.canExecute());
 
 	}
+	
+	@Test
+	public void testTransformWithIncompleteMapping() {
+
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
+		
+		// Create unmapped element
+		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject newUnmappedJsonProduct = new JsonObject();
+		newUnmappedJsonProduct.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		childProducts.add(newUnmappedJsonProduct);
+
+
+		// Do the import
+		CatiaImporter importer = new CatiaImporter();
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
+		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
+		editingDomain.getVirSatCommandStack().execute(importCommand);
+
+		Visualisation visualisationProduct = elementConfigurationReactionWheel1.getFirst(Visualisation.class);
+		Visualisation visualisationPart = elementReactionWheelDefinition.getFirst(Visualisation.class);
+
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getPositionXBean().getValueToBaseUnit(), TEST_POS_X_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getPositionYBean().getValueToBaseUnit(), TEST_POS_Y_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getPositionZBean().getValueToBaseUnit(), TEST_POS_Z_PRODUCT, EPSILON);
+
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getRotationXBean().getValueToBaseUnit(), TEST_ROT_X_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getRotationYBean().getValueToBaseUnit(), TEST_ROT_Y_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getRotationZBean().getValueToBaseUnit(), TEST_ROT_Z_PRODUCT, EPSILON);
+
+		assertEquals("Check if product values are imported", visualisationProduct.getShape(), TEST_SHAPE_PRODUCT);
+
+		assertEquals("Check if part values are imported", visualisationPart.getSizeXBean().getValueToBaseUnit(),
+				TEST_SIZE_X_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getSizeYBean().getValueToBaseUnit(),
+				TEST_SIZE_Y_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getSizeZBean().getValueToBaseUnit(),
+				TEST_SIZE_Z_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getRadiusBean().getValueToBaseUnit(),
+				TEST_RADIUS_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getShape(), TEST_SHAPE_PART);
+		assertEquals("Check if part values are imported", visualisationPart.getColor(), TEST_COLOR_PART);
+
+	}
 
 	@Test
 	public void testTransformWithoutVisualisation() {
@@ -280,6 +338,78 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		assertEquals("URI added correctly",
 				URI.createPlatformResourceURI(expectedLocalPath.toString(), false).toFileString(),
 				reactionWheelVisDefinition.getGeometryFile().toFileString());
+	}
+	
+	@Test
+	public void testTransformWithNewMapping() {
+		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
+
+		// Add some changes to import in a new configuration element without
+		// visualisation
+		ElementConfiguration elementConfigurationReactionWheel3 = new ElementConfiguration(conceptPS);
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				subSystemAOCS.add(elementConfigurationReactionWheel3);
+			}
+		});
+
+		// Create a new JSON object thats was externally created and does not have a representation
+		// in the Virtual Satellite model jet
+		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject newUnmappedJsonProduct = new JsonObject();
+		newUnmappedJsonProduct.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		childProducts.add(newUnmappedJsonProduct);
+
+
+		// Check mapping
+		CatiaImporter importer = new CatiaImporter();
+		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
+		
+		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
+		assertFalse("List of unmapped elements should not be empty", unmappedElements.isEmpty());
+		assertEquals(newUnmappedJsonProduct, unmappedElements.get(0));
+		
+		// Do the handling of unmapped elements
+		mapping.put(unmappedElements.get(0).getString(CatiaProperties.UUID), 
+				elementConfigurationReactionWheel3.getStructuralElementInstance());
+		
+		
+		// Do the import
+		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
+		editingDomain.getVirSatCommandStack().execute(importCommand);
+		
+		
+		// Check if import worked on new element without mapping to exisiting element
+		Visualisation visualisation = elementConfigurationReactionWheel3
+				.getFirst(Visualisation.class);
+		assertNotNull("Visualisation was created", visualisation);
+		
+		assertTrue("Check if product values are imported", visualisation
+				.getPositionXBean().getValueToBaseUnit() == TEST_POS_X_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getPositionYBean().getValueToBaseUnit() == TEST_POS_Y_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getPositionZBean().getValueToBaseUnit() == TEST_POS_Z_PRODUCT);
+
+		assertTrue("Check if product values are imported", visualisation
+				.getRotationXBean().getValueToBaseUnit() == TEST_ROT_X_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
+
+		assertTrue("Check if product values are imported",
+				visualisation.getShape().equals(TEST_SHAPE_PRODUCT));
+		
 	}
 
 	@Test
