@@ -11,6 +11,14 @@
             id="de.dlr.sc.virsat.two.ui.command.update"
             name="Update Project from Repository">
       </command>
+      <command
+            id="de.dlr.sc.virsat.team.ui.git.command.commit"
+            name="Commit Project to Repository">
+      </command>
+      <command
+            id="de.dlr.sc.virsat.team.ui.git.command.update"
+            name="Update Project from Repository">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -48,6 +56,38 @@
             </with>
          </enabledWhen>
       </handler>
+ 	  <handler
+            class="de.dlr.sc.virsat.team.ui.git.action.GitCommitAction"
+            commandId="de.dlr.sc.virsat.team.ui.git.command.commit">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        forcePluginActivation="true"
+                        property="de.dlr.sc.virsat.svn.ui.gitEnabled">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="de.dlr.sc.virsat.svn.ui.action.CustomUpdateAction"
+            commandId="de.dlr.sc.virsat.team.ui.git.command.update">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                  ifEmpty="false">
+                  <test
+                        forcePluginActivation="true"
+                        property="de.dlr.sc.virsat.svn.ui.gitEnabled">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -63,12 +103,28 @@
                icon="resources/commit.gif"
                label="Commit Project to Repository"
                style="push">
+               <visibleWhen checkEnabled="true" />
          </command>
          <command
                commandId="de.dlr.sc.virsat.two.ui.command.update"
                icon="resources/update.gif"
                label="Update Project from Repository"
                style="push">
+               <visibleWhen checkEnabled="true" />
+         </command>
+         <command
+               commandId="de.dlr.sc.virsat.team.ui.git.command.commit"
+               icon="resources/commit.gif"
+               label="Commit Project to Repository"
+               style="push">
+               <visibleWhen checkEnabled="true" />
+         </command>
+         <command
+               commandId="de.dlr.sc.virsat.team.ui.git.command.update"
+               icon="resources/update.gif"
+               label="Update Project from Repository"
+               style="push">
+               <visibleWhen checkEnabled="true" />
          </command>
       </menuContribution>
       <menuContribution
@@ -79,12 +135,28 @@
                icon="resources/commit.gif"
                label="Commit Project to Repository"
                style="push">
+               <visibleWhen checkEnabled="true" />
          </command>
          <command
                commandId="de.dlr.sc.virsat.two.ui.command.update"
                icon="resources/update.gif"
                label="Update Project from Repository"
                style="push">
+               <visibleWhen checkEnabled="true" />
+         </command>
+         <command
+               commandId="de.dlr.sc.virsat.team.ui.git.command.commit"
+               icon="resources/commit.gif"
+               label="Commit Project to Repository"
+               style="push">
+               <visibleWhen checkEnabled="true" />
+         </command>
+         <command
+               commandId="de.dlr.sc.virsat.team.ui.git.command.update"
+               icon="resources/update.gif"
+               label="Update Project from Repository"
+               style="push">
+               <visibleWhen checkEnabled="true" />
          </command>
       </menuContribution>
    </extension>
@@ -94,7 +166,7 @@
             class="de.dlr.sc.virsat.svn.ui.propertyTester.VirSatPropertyTesterPersistentProject"
             id="de.dlr.sc.virsat.svn.ui.PersistentVirSatProjectResource"
             namespace="de.dlr.sc.virsat.svn.ui"
-            properties="projectPersistentProperty"
+            properties="projectPersistentProperty, gitEnabled"
             type="java.lang.Object">
       </propertyTester>
    </extension>

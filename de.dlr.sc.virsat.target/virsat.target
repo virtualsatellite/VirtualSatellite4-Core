@@ -25,6 +25,7 @@
 		<unit id="org.eclipse.swtbot.feature.group" version="2.6.0.201706141832"/>
 		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.12.0.v20170519-1412"/>
 		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
+		<unit id="org.eclipse.egit.feature.group" version="4.9.2.201712150930-r"/>
 		<repository location="http://download.eclipse.org/releases/oxygen/"/>
 		</location>              
 		</locations>

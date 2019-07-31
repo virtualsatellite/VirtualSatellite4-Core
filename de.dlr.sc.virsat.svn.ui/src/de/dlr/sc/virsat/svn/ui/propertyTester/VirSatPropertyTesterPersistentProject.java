@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.svn.ui.propertyTester;
 
 import org.eclipse.core.internal.propertytester.ResourcePropertyTester;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -38,9 +39,13 @@ public class VirSatPropertyTesterPersistentProject extends ResourcePropertyTeste
 		IStructuredSelection structuredSelection = new StructuredSelection(receiver);
 		VirSatSelectionHelper virSatSelectionHelper = new VirSatSelectionHelper(structuredSelection);
 		IProject iProject = virSatSelectionHelper.getProjectResource();
-
+		
 		if (iProject != null) {
-			return super.test(iProject, method, args, expectedValue);
+			if (method.equals("gitEnabled")) {
+				return RepositoryMapping.getMapping(iProject).getRepository() != null;
+			} else {
+				return super.test(iProject, method, args, expectedValue);
+			}
 		} else {
 			return false;
 		}
