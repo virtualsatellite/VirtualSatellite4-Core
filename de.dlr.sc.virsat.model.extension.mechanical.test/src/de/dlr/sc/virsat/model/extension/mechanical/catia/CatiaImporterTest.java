@@ -99,6 +99,8 @@ public class CatiaImporterTest extends AProjectTestCase {
 	private static final long TEST_COLOR_PART = 30;
 	private static final String TEST_SHAPE_PART = Visualisation.SHAPE_BOX_NAME;
 
+	private static final double EPSILON = 0.001;
+
 	private static final String STL_TEST_FILENAME = "SomeGeometry.stl";
 
 	@Before
@@ -135,35 +137,35 @@ public class CatiaImporterTest extends AProjectTestCase {
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel1
-				.getFirst(Visualisation.class).getPositionXBean().getValueToBaseUnit() == TEST_POS_X_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel1
-				.getFirst(Visualisation.class).getPositionYBean().getValueToBaseUnit() == TEST_POS_Y_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel1
-				.getFirst(Visualisation.class).getPositionZBean().getValueToBaseUnit() == TEST_POS_Z_PRODUCT);
+		Visualisation visualisationProduct = elementConfigurationReactionWheel1.getFirst(Visualisation.class);
+		Visualisation visualisationPart = elementReactionWheelDefinition.getFirst(Visualisation.class);
 
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel1
-				.getFirst(Visualisation.class).getRotationXBean().getValueToBaseUnit() == TEST_ROT_X_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel1
-				.getFirst(Visualisation.class).getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel1
-				.getFirst(Visualisation.class).getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getPositionXBean().getValueToBaseUnit(), TEST_POS_X_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getPositionYBean().getValueToBaseUnit(), TEST_POS_Y_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getPositionZBean().getValueToBaseUnit(), TEST_POS_Z_PRODUCT, EPSILON);
 
-		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel1.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PRODUCT));
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getRotationXBean().getValueToBaseUnit(), TEST_ROT_X_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getRotationYBean().getValueToBaseUnit(), TEST_ROT_Y_PRODUCT, EPSILON);
+		assertEquals("Check if product values are imported",
+				visualisationProduct.getRotationZBean().getValueToBaseUnit(), TEST_ROT_Z_PRODUCT, EPSILON);
 
-		assertTrue("Check if part values are imported", elementReactionWheelDefinition.getFirst(Visualisation.class)
-				.getSizeXBean().getValueToBaseUnit() == TEST_SIZE_X_PART);
-		assertTrue("Check if part values are imported", elementReactionWheelDefinition.getFirst(Visualisation.class)
-				.getSizeYBean().getValueToBaseUnit() == TEST_SIZE_Y_PART);
-		assertTrue("Check if part values are imported", elementReactionWheelDefinition.getFirst(Visualisation.class)
-				.getSizeZBean().getValueToBaseUnit() == TEST_SIZE_Z_PART);
-		assertTrue("Check if part values are imported", elementReactionWheelDefinition.getFirst(Visualisation.class)
-				.getRadiusBean().getValueToBaseUnit() == TEST_RADIUS_PART);
-		assertTrue("Check if part values are imported",
-				elementReactionWheelDefinition.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PART));
-		assertTrue("Check if part values are imported",
-				elementReactionWheelDefinition.getFirst(Visualisation.class).getColor() == TEST_COLOR_PART);
+		assertEquals("Check if product values are imported", visualisationProduct.getShape(), TEST_SHAPE_PRODUCT);
+
+		assertEquals("Check if part values are imported", visualisationPart.getSizeXBean().getValueToBaseUnit(),
+				TEST_SIZE_X_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getSizeYBean().getValueToBaseUnit(),
+				TEST_SIZE_Y_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getSizeZBean().getValueToBaseUnit(),
+				TEST_SIZE_Z_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getRadiusBean().getValueToBaseUnit(),
+				TEST_RADIUS_PART, EPSILON);
+		assertEquals("Check if part values are imported", visualisationPart.getShape(), TEST_SHAPE_PART);
+		assertEquals("Check if part values are imported", visualisationPart.getColor(), TEST_COLOR_PART);
 
 	}
 
@@ -224,22 +226,26 @@ public class CatiaImporterTest extends AProjectTestCase {
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
 		// Check if import worked on new element without visualisation
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel3
-				.getFirst(Visualisation.class).getPositionXBean().getValueToBaseUnit() == TEST_POS_X_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel3
-				.getFirst(Visualisation.class).getPositionYBean().getValueToBaseUnit() == TEST_POS_Y_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel3
-				.getFirst(Visualisation.class).getPositionZBean().getValueToBaseUnit() == TEST_POS_Z_PRODUCT);
+		Visualisation visualisation = elementConfigurationReactionWheel3
+				.getFirst(Visualisation.class);
+		assertNotNull("Visualisation was created", visualisation);
+		
+		assertTrue("Check if product values are imported", visualisation
+				.getPositionXBean().getValueToBaseUnit() == TEST_POS_X_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getPositionYBean().getValueToBaseUnit() == TEST_POS_Y_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getPositionZBean().getValueToBaseUnit() == TEST_POS_Z_PRODUCT);
 
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel3
-				.getFirst(Visualisation.class).getRotationXBean().getValueToBaseUnit() == TEST_ROT_X_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel3
-				.getFirst(Visualisation.class).getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
-		assertTrue("Check if product values are imported", elementConfigurationReactionWheel3
-				.getFirst(Visualisation.class).getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getRotationXBean().getValueToBaseUnit() == TEST_ROT_X_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
+		assertTrue("Check if product values are imported", visualisation
+				.getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
 
 		assertTrue("Check if product values are imported",
-				elementConfigurationReactionWheel3.getFirst(Visualisation.class).getShape().equals(TEST_SHAPE_PRODUCT));
+				visualisation.getShape().equals(TEST_SHAPE_PRODUCT));
 
 	}
 
@@ -276,7 +282,8 @@ public class CatiaImporterTest extends AProjectTestCase {
 		assertTrue("STL file was copied", expectedLocalPath.toFile().exists());
 		assertArrayEquals("STL file is copied correctly", Files.readAllBytes(expectedLocalPath),
 				Files.readAllBytes(externalStl));
-		assertEquals("URI added correctly", URI.createPlatformResourceURI(expectedLocalPath.toString(), false).toFileString(),
+		assertEquals("URI added correctly",
+				URI.createPlatformResourceURI(expectedLocalPath.toString(), false).toFileString(),
 				reactionWheelVisDefinition.getGeometryFile().toFileString());
 	}
 
