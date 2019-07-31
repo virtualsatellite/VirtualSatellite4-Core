@@ -31,7 +31,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -118,10 +117,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		createTestTreeScenario();
 	}
 
-	@After
-	public void tearDown() throws CoreException {
-		super.tearDown();
-	}
 
 	@Test
 	public void testTransform() {
