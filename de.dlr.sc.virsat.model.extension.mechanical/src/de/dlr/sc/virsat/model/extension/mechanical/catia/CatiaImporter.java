@@ -72,13 +72,19 @@ public class CatiaImporter {
 
 		// Import parts
 		for (JsonObject part : CatiaHelper.getListOfAllJSONParts(jsonObject)) {
-			commandCreationWorked &= updateSeiFromPart(importCommand, mapJsonUuidToSEI.get(part.getString(CatiaProperties.UUID)), part);
+			String uuidPart = part.getString(CatiaProperties.UUID);
+			if (mapJsonUuidToSEI.containsKey(uuidPart)) {
+				commandCreationWorked &= updateSeiFromPart(importCommand, mapJsonUuidToSEI.get(uuidPart), part);
+			}
 		}
 
 		// Import products
 		for (JsonObject product : CatiaHelper.getListOfAllJSONProducts(jsonObject)) {
-			commandCreationWorked &= updateSeiFromProduct(importCommand, mapJsonUuidToSEI.get(product.getString(CatiaProperties.UUID)),
-					product);
+			String uuidProduct = product.getString(CatiaProperties.UUID);
+			if (mapJsonUuidToSEI.containsKey(uuidProduct)) {
+				commandCreationWorked &= updateSeiFromProduct(importCommand, mapJsonUuidToSEI.get(uuidProduct),
+						product);
+			}
 		}
 
 		if (commandCreationWorked) {
