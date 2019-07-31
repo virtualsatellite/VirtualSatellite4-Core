@@ -38,7 +38,7 @@ import org.junit.Test;
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
-import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -50,16 +50,13 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * The CATIA importer test class
  *
  */
-public class CatiaImporterTest extends AProjectTestCase {
+public class CatiaImporterTest extends AConceptProjectTestCase {
 
 	private Concept conceptPS;
 	private Concept conceptVis;
@@ -221,8 +218,6 @@ public class CatiaImporterTest extends AProjectTestCase {
 		CatiaImporter importer = new CatiaImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
-		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
-				.getEd(configurationTree.getStructuralElementInstance());
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 
 		// Check if import worked on new element without visualisation
@@ -310,7 +305,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 				mapping.get(subSystemAOCS.getUuid()));
 
 		// Check unmapped elements
-		assertEquals("Check that there are no umappable elements in the imported JSON", 0, unmappedElements.size());
+		assertTrue("Check that there are no unappable elements in the imported JSON", unmappedElements.isEmpty());
 
 	}
 
@@ -344,7 +339,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 				mapping.get(subSystemAOCS.getUuid()));
 
 		// Check unmapped elements
-		assertEquals("Check that there is one umappable element in the imported JSON", 1, unmappedElements.size());
+		assertEquals("Check that there is one unappable element in the imported JSON", 1, unmappedElements.size());
 		assertEquals("Expected unmapped part not found", unmappedJsonObject, unmappedElements.get(0));
 
 	}
@@ -380,7 +375,7 @@ public class CatiaImporterTest extends AProjectTestCase {
 				mapping.get(subSystemAOCS.getUuid()));
 
 		// Check unmapped elements
-		assertEquals("Check that there is one umappable elements in the imported JSON", 1, unmappedElements.size());
+		assertEquals("Check that there is one unappable elements in the imported JSON", 1, unmappedElements.size());
 		assertEquals("Expected unmapped product not found", unmappedJsonObject, unmappedElements.get(0));
 
 	}
@@ -506,17 +501,6 @@ public class CatiaImporterTest extends AProjectTestCase {
 		return rootObject;
 	}
 
-	/**
-	 * Method to load the test concept
-	 * 
-	 * @param pluginName
-	 *            The name of the plugin from which to load the concept
-	 * @return the test concept
-	 */
-	protected Concept loadConceptFromPlugin(String pluginName) {
-		String conceptXmiPluginPath = pluginName + "/concept/concept.xmi";
-		Concept concept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
-		return concept;
-	}
+
 
 }
