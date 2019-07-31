@@ -9,11 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.mechanical.catia.command.CopyResourceCommand;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelper;
 import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
@@ -210,8 +208,12 @@ public class CatiaImporter {
 		importCommand.append(visualisation.setColor(editingDomain, color));
 
 		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
+			
+			Path localPath = getLocalPath(stlFile, beanSEI);
+			
+			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), localPath));
 			importCommand.append(visualisation.setGeometryFile(editingDomain, 
-					copyAndGetPlatformResource(stlFile, beanSEI)));
+					URI.createPlatformResourceURI(localPath.toString(), false)));
 		}
 
 		return true;
@@ -291,8 +293,12 @@ public class CatiaImporter {
 		importCommand.append(visualisation.setShape(editingDomain, shape));
 
 		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
-			importCommand
-					.append(visualisation.setGeometryFile(editingDomain, copyAndGetPlatformResource(stlFile, beanSEI)));
+			
+			Path localPath = getLocalPath(stlFile, beanSEI);
+			
+			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), localPath));
+			importCommand.append(visualisation.setGeometryFile(editingDomain, 
+					URI.createPlatformResourceURI(localPath.toString(), false)));
 		}
 
 		return true;
@@ -313,19 +319,16 @@ public class CatiaImporter {
 				|| product.containsKey(CatiaProperties.PRODUCT_ROT_Z.getKey())
 				|| product.containsKey(CatiaProperties.PRODUCT_SHAPE.getKey());
 	}
-
+	
+	
 	/**
-	 * Copy a given stl resource to the workspace and return its URI
-	 * 
-	 * @param stlPath
-	 *            the stl resource's path
-	 * @param seiBean
-	 *            a structural element instance bean
-	 * @return the URI
+	 * Convert the STL file path to a path in the workspace 
+	 * @param stlPath the external STL file path
+	 * @param seiBean the SEI bean 
+	 * @return the path of the internal file location
 	 */
-	private URI copyAndGetPlatformResource(String stlPath, BeanStructuralElementInstance seiBean) {
+	private Path getLocalPath(String stlPath, BeanStructuralElementInstance seiBean) {
 
-		URI stlURI = null;
 		// Copy file to workspace
 		Path catiaSTLPath = Paths.get(stlPath);
 		
@@ -336,23 +339,14 @@ public class CatiaImporter {
 		
 		String stlName = fileName.toString();
 		
-		try {
-			String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
-			String documentPath = VirSatProjectCommons.getDocumentFolder(seiBean.getStructuralElementInstance())
-					.getFullPath().toOSString();
 
-			Path localPath = Paths.get(documentPath, stlName);
-			Path workspace = Paths.get(workspacePath, localPath.toString());
-
-			Files.copy(catiaSTLPath, workspace, StandardCopyOption.REPLACE_EXISTING);
-			stlURI = URI.createPlatformResourceURI(localPath.toString(), false);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return stlURI;
-
+		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
+		String documentPath = VirSatProjectCommons.getDocumentFolder(seiBean.getStructuralElementInstance())
+				.getFullPath().toOSString();
+		
+		Path localPath = Paths.get(documentPath, stlName);
+		Path pathInWorkspace = Paths.get(workspacePath, localPath.toString());
+		return pathInWorkspace;
 	}
 
 	/**
