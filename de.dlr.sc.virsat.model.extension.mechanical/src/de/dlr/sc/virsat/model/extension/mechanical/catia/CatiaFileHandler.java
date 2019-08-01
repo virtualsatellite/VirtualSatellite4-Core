@@ -9,6 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
@@ -19,12 +23,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
+import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
@@ -74,6 +75,32 @@ public class CatiaFileHandler {
 			
 			fileCopySubMonitor.worked(1);
 		}
+	}
+	
+	
+	/**
+	 * Reads a JSON file from a CATIA export and returns it as JSON content
+	 * @param outputJsonFilePath  the file path to the JSON file
+	 * @return the JSON content as JsonObject
+	 * @throws JsonException 
+	 * @throws IOException 
+	 */
+	public JsonObject readJsonFile(String outputJsonFilePath) throws JsonException, IOException {
+		JsonObject jsonContent = null;
+		Path jsonFilePath = Paths.get(outputJsonFilePath);
+		
+		if (jsonFilePath == null) {
+			throw new IllegalArgumentException("Invalid path to JSON file. Can't find file: " + jsonFilePath);
+		}
+		
+		String jsonContentString = new String(Files.readAllBytes(jsonFilePath));
+		
+		Object jsonObject = Jsoner.deserialize(jsonContentString);
+		if (jsonObject instanceof JsonObject) {
+			jsonContent = (JsonObject) jsonObject;
+		}
+		
+		return jsonContent;
 	}
 	
 	
