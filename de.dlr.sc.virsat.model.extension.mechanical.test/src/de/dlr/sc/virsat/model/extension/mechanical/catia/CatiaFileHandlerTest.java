@@ -39,7 +39,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
  * Test class for CatiaFileWriter
  */
 
-public class CatiaFileWriterTest extends AConceptProjectTestCase {
+public class CatiaFileHandlerTest extends AConceptProjectTestCase {
 
 	private Concept conceptPS;
 	private Concept conceptVis;
@@ -86,7 +86,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 		assertFalse("JSON file is not there initially", expectedJson.exists());
 		assertFalse("STL file is not there initially", expectedCopiedStl.toFile().exists());
 		
-		CatiaFileWriter catiaFileWriter = new CatiaFileWriter();
+		CatiaFileHandler catiaFileWriter = new CatiaFileHandler();
 		catiaFileWriter.writeFiles(jsonFilePath, ct, new NullProgressMonitor());
 		
 		assertTrue("JSON file is created", expectedJson.exists());

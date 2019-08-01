@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
  * This class creates .json file and copies .stl files
  */
 
-public class CatiaFileWriter {
+public class CatiaFileHandler {
 	
 	/**
 	 * Exports productRoot to json and copies it to outputJsonFilePath
@@ -75,4 +75,6 @@ public class CatiaFileWriter {
 			fileCopySubMonitor.worked(1);
 		}
 	}
+	
+	
 }

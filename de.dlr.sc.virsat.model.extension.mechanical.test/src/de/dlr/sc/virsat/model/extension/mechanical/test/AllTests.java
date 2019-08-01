@@ -18,7 +18,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaExporterTest;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaFileWriterTest;
+import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaFileHandlerTest;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaImporterTest;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelperTest;
 import de.dlr.sc.virsat.model.extension.mechanical.validator.StructuralElementInstanceValidatorTest;
@@ -33,7 +33,7 @@ import junit.framework.JUnit4TestAdapter;
 @SuiteClasses({
 	StructuralElementInstanceValidatorTest.class,
 	CatiaExporterTest.class,
-	CatiaFileWriterTest.class,
+	CatiaFileHandlerTest.class,
 	CatiaImporterTest.class,
 	CatiaHelperTest.class
 				})
