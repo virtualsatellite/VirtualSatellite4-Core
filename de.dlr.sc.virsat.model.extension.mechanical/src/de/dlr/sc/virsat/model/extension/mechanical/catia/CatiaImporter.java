@@ -211,7 +211,7 @@ public class CatiaImporter {
 			
 			Path localPath = getLocalPath(stlFile, beanSEI);
 			
-			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), localPath));
+			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), getAbsolutePath(localPath)));
 			importCommand.append(visualisation.setGeometryFile(editingDomain, 
 					URI.createPlatformResourceURI(localPath.toString(), false)));
 		}
@@ -296,7 +296,7 @@ public class CatiaImporter {
 			
 			Path localPath = getLocalPath(stlFile, beanSEI);
 			
-			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), localPath));
+			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), getAbsolutePath(localPath)));
 			importCommand.append(visualisation.setGeometryFile(editingDomain, 
 					URI.createPlatformResourceURI(localPath.toString(), false)));
 		}
@@ -339,14 +339,21 @@ public class CatiaImporter {
 		
 		String stlName = fileName.toString();
 		
-
-		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
 		String documentPath = VirSatProjectCommons.getDocumentFolder(seiBean.getStructuralElementInstance())
 				.getFullPath().toOSString();
 		
 		Path localPath = Paths.get(documentPath, stlName);
-		Path pathInWorkspace = Paths.get(workspacePath, localPath.toString());
-		return pathInWorkspace;
+		return localPath;
+	}
+	
+	/**
+	 * Convert a path within the workspace to an absolute path by appending the workspace path
+	 * @param pathInWorkspace a path within the workspace
+	 * @return the absolute path 
+	 */
+	private Path getAbsolutePath(Path pathInWorkspace) {
+		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
+		return Paths.get(workspacePath, pathInWorkspace.toString());
 	}
 
 	/**
