@@ -1,9 +1,13 @@
 language: java
 
-dist: trusty
-
 jdk:
-- oraclejdk8
+- openjdk8
+ 
+services:
+  # -----------------------------------------------------
+  # Start up xvfb service for SWT bot GUI tests
+  # -----------------------------------------------------
+  - xvfb 
  
 cache:
   directories:
@@ -38,10 +42,6 @@ stages:
 
 env:
   global:
-  # -------------------------------
-  # set the display for UI testing
-  # -------------------------------
-  - DISPLAY=:99.0
   # ---------------------------------------------
   # API Token for access to github
   # ---------------------------------------------
@@ -56,11 +56,6 @@ env:
   - SWTBOT_SCREENSHOT=true
 
 before_script:
-  # --------------------------------------------------
-  # Start the XVFB Service for ui testing as suggested
-  # by the travis documentation
-  # --------------------------------------------------
-  - sh -e /etc/init.d/xvfb start
   # -----------------------------------
   # Startup the metacity window manager
   # -----------------------------------
