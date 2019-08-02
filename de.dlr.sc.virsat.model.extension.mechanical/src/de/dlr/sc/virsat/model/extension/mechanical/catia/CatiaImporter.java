@@ -458,9 +458,10 @@ public class CatiaImporter {
 			// Do null-save comparison of URIs
 			// URIs are not necessarily equal if their underlying path is equal
 			String oldUriString = null;
-			String newUriString = null;
-			if (visualisation.getGeometryFile() == null) {
-				oldUriString = visualisation.getGeometryFile().toFileString();
+			String newUriString = uri.toPlatformString(true);
+			
+			if (visualisation.getGeometryFile() != null) {
+				oldUriString = visualisation.getGeometryFile().toPlatformString(true);
 			} 
 			if (!Objects.equals(oldUriString, newUriString)) {
 				importCommand.append(visualisation.setGeometryFile(editingDomain, uri)); 
