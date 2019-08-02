@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Status;
@@ -453,11 +454,17 @@ public class CatiaImporter {
 			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), getAbsolutePath(localPath)));
 
 			URI uri = URI.createPlatformResourceURI(localPath.toString(), false);
-			if (visualisation.getGeometryFile() == null
-					|| !uri.toFileString().equals(visualisation.getGeometryFile().toFileString())) {
-				importCommand.append(visualisation.setGeometryFile(editingDomain, uri));
+			
+			// Do null-save comparison of URIs
+			// URIs are not necessarily equal if their underlying path is equal
+			String oldUriString = null;
+			String newUriString = null;
+			if (visualisation.getGeometryFile() == null) {
+				oldUriString = visualisation.getGeometryFile().toFileString();
+			} 
+			if (!Objects.equals(oldUriString, newUriString)) {
+				importCommand.append(visualisation.setGeometryFile(editingDomain, uri)); 
 			}
-
 		}
 	}
 
