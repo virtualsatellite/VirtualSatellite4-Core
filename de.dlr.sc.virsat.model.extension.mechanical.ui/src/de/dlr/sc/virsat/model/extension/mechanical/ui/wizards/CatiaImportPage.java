@@ -10,30 +10,17 @@
 package de.dlr.sc.virsat.model.extension.mechanical.ui.wizards;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-
-import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
-import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
-import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
-import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
 
 /**
  * A page to configure the import from CATIA by specifying a file to import from
  * and a tree on which the import should be applied to
  *
  */
-public class CatiaImportPage extends AImportExportPage {
+public class CatiaImportPage extends ACatiaImportExportPage {
 
-	private static final String DIALOG_TEXT = "File name";
-	private static final String[] DIALOG_EXTENSIONS = { "*.json" };
-	
-	
 	/**
 	 * Standard constructor
 	 * @param model the root model
@@ -48,25 +35,13 @@ public class CatiaImportPage extends AImportExportPage {
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		TreeViewer treeViewer = createTreeUI();
-		VirSatFilteredWrappedTreeContentProvider filteredCp = (VirSatFilteredWrappedTreeContentProvider) treeViewer.getContentProvider();
-		filteredCp.addStructuralElementIdFilter(ConfigurationTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
-		filteredCp.addStructuralElementIdFilter(ElementConfiguration.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
-		filteredCp.addStructuralElementIdFilter(AssemblyTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
-		filteredCp.addStructuralElementIdFilter(ElementOccurence.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		createTreeViewer();
 		
 		createFileDestinationUI();
 		
 		Label label = new Label((Composite) getControl(), SWT.NONE);
-		label.setText("All Geometry files will be copied into documents folder of the .");
+		label.setText("All Geometry files will be imported into the documents folder of the containing model element.");
 	}
 	
-	@Override
-	protected String openDialog() {
-		FileDialog dialog = new FileDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
-		dialog.setText(DIALOG_TEXT);
-		dialog.setFilterExtensions(DIALOG_EXTENSIONS);
-		return dialog.open();
-	}
-
+	
 }
