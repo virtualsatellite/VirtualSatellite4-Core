@@ -97,6 +97,12 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 							importer.mapJsonUuidToSEI(jsonContent, productRoot);
 					// TODO handle unmapped elements with importer.getUnmappedElements(...)
 					Command importCommnd = importer.transform(editingDomain, jsonContent, mapping);
+					if (!importCommnd.canExecute()) {
+						Status status = new Status(Status.ERROR, Activator.getPluginId(),
+								"CatiaImportWizard: The import command is not exectuable!");
+						StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+						return Status.CANCEL_STATUS;
+					}
 					editingDomain.getCommandStack().execute(importCommnd);
 					importSubMonitor.worked(1);
 					
