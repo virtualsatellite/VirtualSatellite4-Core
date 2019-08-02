@@ -17,12 +17,17 @@ echo "[Info] "
 if [ -f $(git rev-parse --git-dir)/shallow ]; then
 	echo "[Info] Current repository is shallow"
 	echo "[Info] Need to unshallow"
-	git fetch origin development:development
 	git fetch --unshallow
 else
   echo "[Info] Current repository is not shallow"
 fi
 
+echo "[Info] ------------------------------------"
+echo "[Info] Fetch dev branch as reference"
+echo "[Info] ------------------------------------"
+
+git fetch origin development:development
+	
 echo "[Info] ------------------------------------"
 echo "[Info] Show current branches"
 echo "[Info] ------------------------------------"
@@ -70,7 +75,6 @@ echo "[Info] Create commit authors file"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git fetch origin development development:development
 git log development... --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
@@ -165,5 +169,3 @@ else
   echo    "[Warn] ------------------------------------"
   exit 1
 fi
-
-    
