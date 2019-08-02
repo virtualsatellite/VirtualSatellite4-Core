@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.jface.dialogs.DialogSettings;
@@ -51,6 +52,7 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 	private CatiaImportPage page;
 	private IContainer model;
 	private CatiaImporter importer = new CatiaImporter();
+	private static final int NUMBER_PROGRESS_TICKS = 3;
 	
 	/**
 	 * Default constructor
@@ -85,8 +87,10 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 		Job exportJob = new Job("Performing Catia JSON Import") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS);
 				try {
 					JsonObject jsonContent = fileHandler.readJsonFile(inputJsonFilePath);
+					importSubMonitor.worked(1);
 					
 					VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(sei);
 					Map<String, StructuralElementInstance> mapping = 
@@ -94,8 +98,11 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 					// TODO handle unmapped elements with importer.getUnmappedElements(...)
 					Command importCommnd = importer.transform(editingDomain, jsonContent, mapping);
 					editingDomain.getCommandStack().execute(importCommnd);
+					importSubMonitor.worked(1);
+					
 					editingDomain.saveAll();
 					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+					importSubMonitor.worked(1);
 					
 					return Status.OK_STATUS;
 				} catch (JsonException | IOException | CoreException e) {
