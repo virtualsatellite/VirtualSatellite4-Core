@@ -265,7 +265,7 @@ public class CatiaImporter {
 
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"CatiaImport: Failed to perform import! Could not load all required properties", e));
+					"CatiaImport: Failed to perform import! Could not load all required properties"));
 			return false;
 		}
 
