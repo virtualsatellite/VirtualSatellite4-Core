@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -73,6 +74,13 @@ public class CatiaHelperTest {
 		assertEquals("Number of found objects does not match expected", NUMBER_PARTS, objects.size());
 
 		assertTrue("Element 1 not found", foundUUIDs.contains(ELEMENT_PART_UUID));
+		
+		
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(null).isEmpty());
+		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONParts(null).isEmpty());
+		
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(new JsonObject()).isEmpty());
+		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONParts(new JsonObject()).isEmpty());
 
 	}
 	
@@ -92,15 +100,57 @@ public class CatiaHelperTest {
 		assertTrue("Product 1 not found", foundUUIDs.contains(ELEMENT_PRODUCT_0_UUID));
 		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
 		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
+		
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+
+	}
+	
+	@Test
+	public void testGetListOfAllJSONProductsFromRootProduct() {
+
+		JsonObject rootObject = createJsonObjectWithProductAndConfiguration(false);
+
+		List<JsonObject> objects = CatiaHelper.getListOfAllJSONProducts(rootObject);
+		List<String> foundUUIDs = objects.stream().map(
+				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				.collect(Collectors.toList());
+
+		
+		assertEquals("Number of found objects does not match expected", NUMBER_PRODUCTS, objects.size());
+
+		assertTrue("Product 1 not found", foundUUIDs.contains(ELEMENT_PRODUCT_0_UUID));
+		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
+		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
+		
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
 
 	}
 
+	
 	/**
 	 * Create a simple JSON Object with Part and Products
 	 * 
 	 * @return an initial JSON object
 	 */
 	protected JsonObject createJsonObjectWithProductAndConfiguration() {
+		return createJsonObjectWithProductAndConfiguration(true);
+	}
+	
+	/**
+	 * Create a simple JSON Object with Part and Products
+	 * 
+	 * @param isRootProduct specifies if the root object should be a root product or not
+	 * @return an initial JSON object
+	 */
+	protected JsonObject createJsonObjectWithProductAndConfiguration(boolean isRootProduct) {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
 		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), ELEMENT_PART_UUID);
@@ -117,11 +167,19 @@ public class CatiaHelperTest {
 
 		JsonObject rootProduct = new JsonObject();
 		rootProduct.put(CatiaProperties.UUID.getKey(), ELEMENT_ROOT_PRODUCT_UUID);
+		
 		rootProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), productArray);
 
 		JsonObject rootObject = new JsonObject();
 		rootObject.put(CatiaProperties.PARTS.getKey(), partArray);
-		rootObject.put(CatiaProperties.PRODUCTS.getKey(), rootProduct);
+		if (isRootProduct) {
+			rootObject.put(CatiaProperties.PRODUCTS.getKey(), rootProduct);
+		} else {
+			JsonArray children = new JsonArray();
+			children.add(rootProduct);
+			rootObject.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), children);
+		}
+		
 
 		return rootObject;
 	}
