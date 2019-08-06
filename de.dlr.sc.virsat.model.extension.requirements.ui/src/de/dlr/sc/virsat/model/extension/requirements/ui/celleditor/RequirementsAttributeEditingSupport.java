@@ -283,7 +283,13 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 	 * @param attDef the attrbute definition
 	 */
 	protected void setEnumerationValue(Object element, Object userInputValue, RequirementAttribute attDef) {
-		super.setValue(element, attDef.getEnumeration().getLiterals().get((int) userInputValue).getName());
+		if (userInputValue instanceof Integer) {
+			int i = (int) userInputValue;
+			if (i >= 0 && i < attDef.getEnumeration().getLiterals().size()) {
+				super.setValue(element, attDef.getEnumeration().getLiterals().get((int) userInputValue).getName());
+			}
+		}
+		
 	}
 
 	@Override
