@@ -76,10 +76,10 @@ public class CatiaHelperTest {
 		assertTrue("Element 1 not found", foundUUIDs.contains(ELEMENT_PART_UUID));
 		
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(null).isEmpty());
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(null));
 		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONParts(null).isEmpty());
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(new JsonObject()).isEmpty());
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(new JsonObject()));
 		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONParts(new JsonObject()).isEmpty());
 
 	}
@@ -101,10 +101,10 @@ public class CatiaHelperTest {
 		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
 		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null));
 		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()));
 		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
 
 	}
@@ -126,10 +126,10 @@ public class CatiaHelperTest {
 		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
 		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null));
 		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()));
 		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
 
 	}
