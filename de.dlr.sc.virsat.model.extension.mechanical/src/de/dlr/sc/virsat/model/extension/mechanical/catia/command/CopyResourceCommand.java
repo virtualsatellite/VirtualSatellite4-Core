@@ -63,10 +63,7 @@ public class CopyResourceCommand extends AbstractCommand {
 	
 	@Override
 	public boolean canExecute() {
-		if (sourceFile == null) {
-			return false;
-		} 
-		return sourceFile.toFile().exists();
+		return sourceFile != null && sourceFile.toFile().exists();
 	}
 
 	@Override
@@ -88,8 +85,7 @@ public class CopyResourceCommand extends AbstractCommand {
 				Files.delete(targetLocation);
 			} catch (IOException e) {
 				Activator.getDefault().getLog()
-					.log(new Status(Status.INFO, "MechanicalUiPlugin", "ResourceCopyCommand: Could not undo copying files!"));
-				e.printStackTrace();
+					.log(new Status(Status.INFO, "MechanicalUiPlugin", "ResourceCopyCommand: Could not undo copying files!", e));
 			}
 		}
 	}
