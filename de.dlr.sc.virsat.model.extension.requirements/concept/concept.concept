@@ -1,4 +1,4 @@
-Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 1.0 
+Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.1 
 {
 
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
