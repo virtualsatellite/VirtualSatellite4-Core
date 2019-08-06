@@ -10,8 +10,6 @@
 package de.dlr.sc.virsat.model.extension.mechanical.ui.wizards;
 
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
@@ -27,7 +25,7 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
  */
 public abstract class ACatiaImportExportPage extends AImportExportPage {
 
-	private static final String DIALOG_TEXT = "File name";
+	
 	private static final String[] DIALOG_EXTENSIONS = { "*.json" };
 	
 	/**
@@ -36,6 +34,15 @@ public abstract class ACatiaImportExportPage extends AImportExportPage {
 	 */
 	protected ACatiaImportExportPage(String pageName) {
 		super(pageName);
+	}
+	
+	/**
+	 * Default constructor override
+	 * @param pageName the page name
+	 * @param style the SWT style of the page 
+	 */
+	protected ACatiaImportExportPage(String pageName, int style) {
+		super(pageName, style);
 	}
 	
 	/**
@@ -50,18 +57,17 @@ public abstract class ACatiaImportExportPage extends AImportExportPage {
 		filteredCp.addStructuralElementIdFilter(ElementOccurence.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 	}
 	
-	@Override
-	protected String openDialog() {
-		FileDialog dialog = new FileDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
-		dialog.setText(DIALOG_TEXT);
-		dialog.setFilterExtensions(DIALOG_EXTENSIONS);
-		return dialog.open();
-	}
 	
 	@Override
 	public boolean isSelectionValid() {
 		Object selection = getSelection();
 		return selection instanceof StructuralElementInstance;
+	}
+	
+	
+	@Override
+	protected String[] getSupportedFileEndings() {
+		return DIALOG_EXTENSIONS;
 	}
 
 }

@@ -26,7 +26,7 @@ public class CatiaImportPage extends ACatiaImportExportPage {
 	 * @param model the root model
 	 */
 	protected CatiaImportPage(IContainer model) {
-		super("Catia JSON Import");
+		super("Catia JSON Import", SWT.OPEN);
 		setTitle("Catia JSON Import");
 		setModel(model);
 		setDescription("Please select a tree to import to and a file to import.");
