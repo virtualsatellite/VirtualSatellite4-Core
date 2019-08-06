@@ -22,6 +22,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -122,7 +124,42 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 	@Override
 	public Image getColumnImage(Object object, int columnIndex) {
-		return null;
+		if (object == null) {
+			return null;
+		}
+
+		if (object instanceof ComposedPropertyInstance) {
+			ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
+			CategoryAssignment ca = cpi.getTypeInstance();
+			redirectNotification(ca, object);
+			return getColumnImage(cpi.getTypeInstance(), columnIndex);
+		}
+		
+		if (object instanceof CategoryAssignment) {
+			Requirement requirement = new Requirement((CategoryAssignment) object);
+			
+			if (columnIndex == STATUS_COLUMN) {
+				return super.getColumnImage(requirement.getStatus(), columnIndex);
+			}
+					
+			if (columnIndex > STATUS_COLUMN) {
+				int attIndex = columnIndex - 1; // Status Column
+				if (requirement.getReqType() == null
+						|| requirement.getReqType().getAttributes() == null
+						|| attIndex >= requirement.getReqType().getAttributes().size()) {
+					return null;
+				}
+				RequirementAttribute attDef = requirement.getReqType().getAttributes().get(attIndex);
+				
+				return super.getColumnImage(attDef, columnIndex);
+				
+				//TODO return image of actual attribute type 
+
+			}
+			
+		}
+		
+		return super.getColumnImage(object, columnIndex);
 	}
 	
 	

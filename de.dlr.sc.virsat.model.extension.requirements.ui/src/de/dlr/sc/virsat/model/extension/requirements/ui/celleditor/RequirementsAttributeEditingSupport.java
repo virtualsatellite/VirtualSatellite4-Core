@@ -54,7 +54,7 @@ public class RequirementsAttributeEditingSupport extends APropertyCellEditingSup
 	protected final VirSatTransactionalEditingDomain domain;
 
 	public static final String[] BOOL_LITERALS = { Boolean.FALSE.toString(), Boolean.TRUE.toString() };
-	private static final int NOT_SET = -1;
+	private static final int NOT_SET = 0;
 
 	private ColumnViewer viewer;
 	private CellEditor editor;
