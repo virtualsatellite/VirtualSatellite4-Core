@@ -408,7 +408,7 @@ public class CatiaImporter {
 		Repository repository = VirSatResourceSet.getVirSatResourceSet(container.getStructuralElementInstance())
 				.getRepository();
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
-		Concept visConcept = activeConceptHelper.getConcept(Activator.getPluginId());
+		Concept visConcept = activeConceptHelper.getConcept(de.dlr.sc.virsat.model.extension.visualisation.Activator.getPluginId());
 		Visualisation visualisation = new Visualisation(visConcept);
 
 		importCommand.append(container.add(editingDomain, visualisation));
