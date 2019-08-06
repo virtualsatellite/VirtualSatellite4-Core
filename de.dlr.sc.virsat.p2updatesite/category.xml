@@ -69,6 +69,9 @@
    <feature url="features/de.dlr.sc.virsat.model.extension.mechanical.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.mechanical.feature" version="4.9.1.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
+   <feature url="features/de.dlr.sc.virsat.model.extension.requirements.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.requirements.feature" version="4.9.1.qualifier">
+      <category name="VirSat_Core_Features"/>
+   </feature>
    <category-def name="VirSat_Core_Features" label="VirSat Core Features">
       <description>
          Including VirSat Data Model and EGS-CC ProductS tructure.

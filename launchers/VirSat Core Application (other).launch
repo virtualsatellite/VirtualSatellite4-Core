@@ -43,6 +43,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.maturity.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.mechanical.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.ps.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.svn.feature:default"/>
