@@ -89,10 +89,6 @@ public class CatiaFileHandler {
 		JsonObject jsonContent = null;
 		Path jsonFilePath = Paths.get(outputJsonFilePath);
 		
-		if (jsonFilePath == null) {
-			throw new IllegalArgumentException("Invalid path to JSON file. Can't find file: " + jsonFilePath);
-		}
-		
 		String jsonContentString = new String(Files.readAllBytes(jsonFilePath));
 		
 		Object jsonObject = Jsoner.deserialize(jsonContentString);
