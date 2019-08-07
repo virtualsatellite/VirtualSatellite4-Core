@@ -156,11 +156,11 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 						name = requirementType.getAttributes().get(i).getName();
 
 						// Add separator if column is used for different attributes
-						if (!columnName.equals("") && !columnName.equals(name)) {
+						if (!columnName.equals("") && !columnName.contains(name)) {
 							columnName += COLUMN_ATTRIBUTE_SEPARATOR;
 						}
 
-						if (requirementType.getAttributes().size() > i && !columnName.equals(name)) {
+						if (requirementType.getAttributes().size() > i && !columnName.contains(name)) {
 							columnName += name;
 						}
 					}
