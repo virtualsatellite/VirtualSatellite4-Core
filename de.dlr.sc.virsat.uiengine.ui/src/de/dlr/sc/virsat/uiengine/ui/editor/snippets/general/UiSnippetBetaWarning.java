@@ -91,18 +91,27 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	 */
 	@Override
 	public boolean isActive(EObject model) {
+		
+		//If the command line option to ignore the warning is set then never show this snippet
 		if (ignoreWarning) {
 			return false;
 		}
+		
 		if (model instanceof StructuralElementInstance) {
 			StructuralElementInstance sei = (StructuralElementInstance) model;
+			
+			//Check if the current structural element contains a category assignment from a beta concept
 			for (CategoryAssignment ca : sei.getCategoryAssignments()) {
 				if (isBetaElement(ca.getType())) {
 					return true;
 				}
 			}
+			//Check if the SEI is from a beta concept itself
 			return isBetaElement(sei.getType());
+			
 		} else if (model instanceof CategoryAssignment) {
+			
+			//Check if current CA is from a beta concept
 			return isBetaElement(((CategoryAssignment) model).getType());
 		}
 		return false;
@@ -121,11 +130,7 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 		EObject container = typeDefinition.eContainer();
 		if (container != null && container instanceof Concept) {
 			Concept concept = (Concept) container;
-			String version = concept.getVersion();
-			String majorNumber = version.substring(0, version.indexOf("."));
-			if (majorNumber.equals("0")) {
-				return true;
-			}
+			return concept.isBeta();
 		}
 		return false;
 	}
