@@ -65,6 +65,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.ConceptImpl#getVersion <em>Version</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.ConceptImpl#isDMF <em>DMF</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.ConceptImpl#getDisplayName <em>Display Name</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.ConceptImpl#isIsBeta <em>Is Beta</em>}</li>
  * </ul>
  *
  * @generated
@@ -259,6 +260,26 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	 * @ordered
 	 */
 	protected String displayName = DISPLAY_NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsBeta() <em>Is Beta</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsBeta()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_BETA_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsBeta() <em>Is Beta</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsBeta()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isBeta = IS_BETA_EDEFAULT;
 
 	/**
 	 * *********************************
@@ -519,6 +540,27 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsBeta() {
+		return isBeta;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsBeta(boolean newIsBeta) {
+		boolean oldIsBeta = isBeta;
+		isBeta = newIsBeta;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ConceptsPackage.CONCEPT__IS_BETA, oldIsBeta, isBeta));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<Category> getNonAbstractCategories() {
 		EList<Category> allCategories = new org.eclipse.emf.common.util.BasicEList<>();
 		
@@ -583,6 +625,8 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 				return isDMF();
 			case ConceptsPackage.CONCEPT__DISPLAY_NAME:
 				return getDisplayName();
+			case ConceptsPackage.CONCEPT__IS_BETA:
+				return isIsBeta();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -633,6 +677,9 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 			case ConceptsPackage.CONCEPT__DISPLAY_NAME:
 				setDisplayName((String)newValue);
 				return;
+			case ConceptsPackage.CONCEPT__IS_BETA:
+				setIsBeta((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -678,6 +725,9 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 			case ConceptsPackage.CONCEPT__DISPLAY_NAME:
 				setDisplayName(DISPLAY_NAME_EDEFAULT);
 				return;
+			case ConceptsPackage.CONCEPT__IS_BETA:
+				setIsBeta(IS_BETA_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -714,6 +764,8 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 				return dmf != DMF_EDEFAULT;
 			case ConceptsPackage.CONCEPT__DISPLAY_NAME:
 				return DISPLAY_NAME_EDEFAULT == null ? displayName != null : !DISPLAY_NAME_EDEFAULT.equals(displayName);
+			case ConceptsPackage.CONCEPT__IS_BETA:
+				return isBeta != IS_BETA_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -812,6 +864,8 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 		result.append(dmf);
 		result.append(", displayName: ");
 		result.append(displayName);
+		result.append(", isBeta: ");
+		result.append(isBeta);
 		result.append(')');
 		return result.toString();
 	}

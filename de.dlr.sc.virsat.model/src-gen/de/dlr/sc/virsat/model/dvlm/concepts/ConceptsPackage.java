@@ -185,13 +185,22 @@ public interface ConceptsPackage extends EPackage {
 	int CONCEPT__DISPLAY_NAME = GeneralPackage.IQUALIFIED_NAME_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Is Beta</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONCEPT__IS_BETA = GeneralPackage.IQUALIFIED_NAME_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>Concept</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONCEPT_FEATURE_COUNT = GeneralPackage.IQUALIFIED_NAME_FEATURE_COUNT + 9;
+	int CONCEPT_FEATURE_COUNT = GeneralPackage.IQUALIFIED_NAME_FEATURE_COUNT + 10;
 
 	/**
 	 * The operation id for the '<em>Get Non Abstract Categories</em>' operation.
@@ -455,6 +464,17 @@ public interface ConceptsPackage extends EPackage {
 	EAttribute getConcept_DisplayName();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#isIsBeta <em>Is Beta</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Beta</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.concepts.Concept#isIsBeta()
+	 * @see #getConcept()
+	 * @generated
+	 */
+	EAttribute getConcept_IsBeta();
+
+	/**
 	 * Returns the meta object for the '{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#getNonAbstractCategories() <em>Get Non Abstract Categories</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -617,6 +637,14 @@ public interface ConceptsPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONCEPT__DISPLAY_NAME = eINSTANCE.getConcept_DisplayName();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Beta</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONCEPT__IS_BETA = eINSTANCE.getConcept_IsBeta();
 
 		/**
 		 * The meta object literal for the '<em><b>Get Non Abstract Categories</b></em>' operation.
