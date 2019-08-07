@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResourceTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyStringTest;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstanceTest;
+import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTraverserTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMEnumValueDefinitionItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.ArrayInstanceItemProviderTest;
@@ -85,7 +86,8 @@ import junit.framework.JUnit4TestAdapter;
 				BeanPropertyEnumTest.class,
 				BeanCategoryAssignmentTest.class,
 				TransactionalEditingDomainHelperTest.class,
-				BeanStructuralElementInstanceTest.class, 
+				BeanStructuralElementInstanceTest.class,
+				BeanStructuralTreeTraverserTest.class,
 				DVLMItemNamingTest.class, 
 				DVLMCategoriesItemProviderAdapterFactoryTest.class, 
 				DVLMCategoryAssignmentItemProviderTest.class,
