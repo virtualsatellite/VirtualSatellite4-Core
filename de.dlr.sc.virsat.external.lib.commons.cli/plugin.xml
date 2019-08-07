@@ -9,7 +9,7 @@
            command="superUser">
      </clArgs>
      <clArgs
-           command="demo">
+           command="ignoreBetaConcepts">
      </clArgs>
      <clArgs
             attribute="user"

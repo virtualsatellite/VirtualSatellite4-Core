@@ -82,7 +82,7 @@
       <uiSnippet
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetBetaWarning"
             section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
-            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetBataWarning">
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetBetaWarning">
       </uiSnippet>
       <uiSnippet
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetOrigin"

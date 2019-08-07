@@ -41,16 +41,16 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 
 	private static final String SECTION_HEADING = "Beta Warning!";
 	private static final int UI_LAYOUT_NR_COLUMNS = 1;
-	private static final String DEMO_ACTIVE = "demo";
+	private static final String IGNORE_WARNING = "ignoreBetaConcepts";
 
-	private final boolean isDemoActive;
+	private final boolean ignoreWarning;
 
 	/**
 	 * Constructor for the beta warning snippet
 	 */
 	public UiSnippetBetaWarning() {
 		super();
-		isDemoActive = Activator.getCommandLineManager().isCommandLineOptionSet(DEMO_ACTIVE);
+		ignoreWarning = Activator.getCommandLineManager().isCommandLineOptionSet(IGNORE_WARNING);
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	 */
 	@Override
 	public boolean isActive(EObject model) {
-		if (isDemoActive) {
+		if (ignoreWarning) {
 			return false;
 		}
 		if (model instanceof StructuralElementInstance) {
