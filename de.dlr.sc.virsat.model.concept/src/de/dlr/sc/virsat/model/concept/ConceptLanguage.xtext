@@ -29,6 +29,7 @@ Concept returns Concepts::Concept:
 	(
 		('displayname' displayName=EString)? & 
 		('version' version=Version)? &
+		(isBeta?='beta')? &
 		('description' description=EString)? &
 		(DMF?='hasDMF')?
 	)

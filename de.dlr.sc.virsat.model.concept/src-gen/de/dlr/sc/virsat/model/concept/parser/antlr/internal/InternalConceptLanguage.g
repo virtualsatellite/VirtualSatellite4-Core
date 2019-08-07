@@ -193,28 +193,17 @@ ruleConcept returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2);
 					}
-								({true}?=>(otherlv_8='description'
-								{
-									newLeafNode(otherlv_8, grammarAccess.getConceptAccess().getDescriptionKeyword_3_2_0());
-								}
-								(
-									(
-										{
-											newCompositeNode(grammarAccess.getConceptAccess().getDescriptionEStringParserRuleCall_3_2_1_0());
+								({true}?=>((
+									lv_isBeta_8_0='beta'
+									{
+										newLeafNode(lv_isBeta_8_0, grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0());
+									}
+									{
+										if ($current==null) {
+											$current = createModelElement(grammarAccess.getConceptRule());
 										}
-										lv_description_9_0=ruleEString
-										{
-											if ($current==null) {
-												$current = createModelElementForParent(grammarAccess.getConceptRule());
-											}
-											set(
-												$current,
-												"description",
-												lv_description_9_0,
-												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-											afterParserOrEnumRuleCall();
-										}
-									)
+										setWithLastConsumed($current, "isBeta", true, "beta");
+									}
 								)
 								))
 					{ 
@@ -227,10 +216,44 @@ ruleConcept returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 3);
 					}
+								({true}?=>(otherlv_9='description'
+								{
+									newLeafNode(otherlv_9, grammarAccess.getConceptAccess().getDescriptionKeyword_3_3_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getConceptAccess().getDescriptionEStringParserRuleCall_3_3_1_0());
+										}
+										lv_description_10_0=ruleEString
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getConceptRule());
+											}
+											set(
+												$current,
+												"description",
+												lv_description_10_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getConceptAccess().getUnorderedGroup_3());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 4)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 4);
+					}
 								({true}?=>((
-									lv_DMF_10_0='hasDMF'
+									lv_DMF_11_0='hasDMF'
 									{
-										newLeafNode(lv_DMF_10_0, grammarAccess.getConceptAccess().getDMFHasDMFKeyword_3_3_0());
+										newLeafNode(lv_DMF_11_0, grammarAccess.getConceptAccess().getDMFHasDMFKeyword_3_4_0());
 									}
 									{
 										if ($current==null) {
@@ -252,16 +275,16 @@ ruleConcept returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getConceptAccess().getUnorderedGroup_3());
 				}
 		)
-		otherlv_11='{'
+		otherlv_12='{'
 		{
-			newLeafNode(otherlv_11, grammarAccess.getConceptAccess().getLeftCurlyBracketKeyword_4());
+			newLeafNode(otherlv_12, grammarAccess.getConceptAccess().getLeftCurlyBracketKeyword_4());
 		}
 		(
 			(
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getImportsConceptImportParserRuleCall_5_0());
 				}
-				lv_imports_12_0=ruleConceptImport
+				lv_imports_13_0=ruleConceptImport
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -269,7 +292,7 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"imports",
-						lv_imports_12_0,
+						lv_imports_13_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.ConceptImport");
 					afterParserOrEnumRuleCall();
 				}
@@ -280,7 +303,7 @@ ruleConcept returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getStructuralElementsStructuralElementParserRuleCall_6_0());
 				}
-				lv_structuralElements_13_0=ruleStructuralElement
+				lv_structuralElements_14_0=ruleStructuralElement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -288,7 +311,7 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"structuralElements",
-						lv_structuralElements_13_0,
+						lv_structuralElements_14_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.StructuralElement");
 					afterParserOrEnumRuleCall();
 				}
@@ -299,7 +322,7 @@ ruleConcept returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getRelationsARelationParserRuleCall_7_0());
 				}
-				lv_relations_14_0=ruleARelation
+				lv_relations_15_0=ruleARelation
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -307,7 +330,7 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"relations",
-						lv_relations_14_0,
+						lv_relations_15_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.ARelation");
 					afterParserOrEnumRuleCall();
 				}
@@ -318,7 +341,7 @@ ruleConcept returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getCategoriesCategoryParserRuleCall_8_0());
 				}
-				lv_categories_15_0=ruleCategory
+				lv_categories_16_0=ruleCategory
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -326,15 +349,15 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"categories",
-						lv_categories_15_0,
+						lv_categories_16_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.Category");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
-		otherlv_16='}'
+		otherlv_17='}'
 		{
-			newLeafNode(otherlv_16, grammarAccess.getConceptAccess().getRightCurlyBracketKeyword_9());
+			newLeafNode(otherlv_17, grammarAccess.getConceptAccess().getRightCurlyBracketKeyword_9());
 		}
 	)
 ;
