@@ -58,9 +58,9 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 		super.createSwt(toolkit, editingDomain, composite, initModel);
 
 		Composite sectionBody = createSectionBody(toolkit, SECTION_HEADING, null, UI_LAYOUT_NR_COLUMNS);
-
 		Label label = toolkit.createLabel(sectionBody, createDescriptionLabel());
 
+		//Configure color of the area to be red
 		Display display = Display.getCurrent();
 		Color red = display.getSystemColor(SWT.COLOR_DARK_RED);
 		Color gray = display.getSystemColor(SWT.COLOR_GRAY);
