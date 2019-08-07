@@ -17,24 +17,15 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
  * callback functions of a given matcher for matching nodes
  */
 public class BeanStructuralTreeTraverser {
-	IBeanStructuralTreeTraverserMatcher matcher;
-
-	/**
-	 * Setter
-	 * @param matcher new matcher
-	 */
-	public void setMatcher(IBeanStructuralTreeTraverserMatcher matcher) {
-		this.matcher = matcher;
-	}
-
 	/**
 	 * Traverses the tree starting from the given root
 	 * calling {@link IBeanStructuralTreeTraverserMatcher#isMatching(IBeanStructuralElementInstance)}
 	 * on all nodes and {@link IBeanStructuralTreeTraverserMatcher#foundMatch(IBeanStructuralElementInstance, IBeanStructuralElementInstance)}
 	 * on all found matches
-	 * @param root root of the tree to traverse
+	 * @param root traverse the subtree of this bean
+	 * @param matcher matcher for callbacks
 	 */
-	public void traverse(IBeanStructuralElementInstance root) {
+	public void traverse(IBeanStructuralElementInstance root, IBeanStructuralTreeTraverserMatcher matcher) {
 		
 	}
 }
