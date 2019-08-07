@@ -87,7 +87,7 @@
       <property name="max" value="15"/>
     </module>
     <module name="JavadocMethod">
-      <property name="allowedAnnotations" value="Test,Before,After,RunWith,Override"/>
+      <property name="allowedAnnotations" value="Test,Before,After,BeforeClass,AfterClass,RunWith,Override"/>
       <property name="suppressLoadErrors" value="true"/>
     </module>
     <module name="JavadocType"/>
