@@ -148,6 +148,7 @@ public class CatiaExporter {
 			public void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
 				JsonObject jsonProduct = transformElement(treeNode);
 				mapBeansToJsonProducts.put(treeNode, jsonProduct);
+				jsonProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), new JsonArray());
 				
 				if (hasVisCa) {
 					transformProductVisualisationFields(visCa, jsonProduct);
@@ -165,16 +166,18 @@ public class CatiaExporter {
 					
 					// See if there is already an array for children on the parent
 					JsonArray jsonArrayChildren = parentJsonObject.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-					if (jsonArrayChildren == null) {
-						jsonArrayChildren = new JsonArray();
-						parentJsonObject.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), jsonArrayChildren);
-					}
 					jsonArrayChildren.add(jsonProduct);
 				}
 			}
 		});
 		
-		return mapBeansToJsonProducts.get(productBean);
+		// if there are no Visualisations in the whole tree, there will be no parts,
+		// therefore we don't export anything
+		if (!parts.isEmpty()) {
+			return mapBeansToJsonProducts.get(productBean);
+		} else {
+			return null;
+		}
 	}
 
 	/**

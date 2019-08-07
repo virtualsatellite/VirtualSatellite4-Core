@@ -143,10 +143,6 @@ public class CatiaExporterTest extends AConceptTestCase {
 		// Check that the configuration tree was transformed correctly
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		
-		assertJsonProductEqualsVisualisation(jsonProductRoot, new Visualisation(conceptVis));
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
-
 		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		assertEquals("The child element should be copied", 1, children.size());
 		
@@ -159,20 +155,14 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertEquals("Json Product has a correct part name", ec.getName(), subProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
-		assertEquals("There should be 2 parts", 2, jsonParts.size());
+		assertEquals("There should be 1 part", 1, jsonParts.size());
 		
-		JsonObject ctPart = findByUuid(jsonParts, ct.getUuid());
 		JsonObject ecPart = findByUuid(jsonParts, ec.getUuid());
 
-		assertNotNull("CT is in parts", ctPart);
 		assertNotNull("EC is in parts", ecPart);
 		
 		assertJsonPartEqualsVisualisation(ecPart, visualisation);
 
-		Visualisation dummyVisualisation = new Visualisation(conceptVis);
-		dummyVisualisation.setColor(0);
-		assertJsonPartEqualsVisualisation(ctPart, dummyVisualisation);
-		
 		Set<Visualisation> geometryVisualisations = catiaExporter.getGeometryVisualisations();
 		assertEquals("One geometry", 1, geometryVisualisations.size());
 		assertTrue("Geometry comes from the correct visualisation", geometryVisualisations.contains(visualisation));
