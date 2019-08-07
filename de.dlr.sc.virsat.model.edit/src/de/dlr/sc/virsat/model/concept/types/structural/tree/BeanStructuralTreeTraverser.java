@@ -17,6 +17,9 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
  * callback functions of a given matcher for matching nodes
  */
 public class BeanStructuralTreeTraverser {
+	
+	private IBeanStructuralTreeTraverserMatcher matcher;
+	
 	/**
 	 * Traverses the tree starting from the given root
 	 * calling {@link IBeanStructuralTreeTraverserMatcher#isMatching(IBeanStructuralElementInstance)}
@@ -26,6 +29,23 @@ public class BeanStructuralTreeTraverser {
 	 * @param matcher matcher for callbacks
 	 */
 	public void traverse(IBeanStructuralElementInstance root, IBeanStructuralTreeTraverserMatcher matcher) {
-		
+		this.matcher = matcher;
+		traverseRecursive(root, null);
+	}
+
+	/**
+	 * Traverse a subtree of a given node
+	 * @param node 
+	 * @param parent the closest matching parent of node (or null)
+	 */
+	private void traverseRecursive(IBeanStructuralElementInstance node, IBeanStructuralElementInstance parent) {
+		IBeanStructuralElementInstance nextParent = parent;
+		if (matcher.isMatching(node)) {
+			matcher.foundMatch(node, parent);
+			nextParent = node;
+		}
+		for (IBeanStructuralElementInstance child: node.getChildren(IBeanStructuralElementInstance.class)) {
+			traverseRecursive(child, nextParent);
+		}
 	}
 }

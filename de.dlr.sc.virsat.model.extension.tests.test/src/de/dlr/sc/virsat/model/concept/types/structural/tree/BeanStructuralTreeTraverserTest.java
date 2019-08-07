@@ -12,26 +12,25 @@ package de.dlr.sc.virsat.model.concept.types.structural.tree;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
 /**
  * Test class for BeanStructuralTreeTraverser
  */
-public class BeanStructuralTreeTraverserTest {
+public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 
-	private static StructuralElement se;
-	
-	@BeforeClass
-	public static void setUpClass() {
-		se = StructuralFactory.eINSTANCE.createStructuralElement();
-		se.setIsApplicableForAll(true);
+	private Concept concept;
+
+	@Before
+	public void setup() {
+		prepareEditingDomain();
+		concept = loadConceptFromPlugin();
 	}
 	
 	@Test
@@ -95,9 +94,8 @@ public class BeanStructuralTreeTraverserTest {
 	 * @return a new bean with a given name
 	 */
 	private IBeanStructuralElementInstance createBean(String name) {
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setType(se);
-		sei.setName(name);
-		return new BeanStructuralElementInstance(sei);
+		TestStructuralElement bean = new TestStructuralElement(concept);
+		bean.setName(name);
+		return bean;
 	}
 }
