@@ -185,14 +185,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleConcept"
-    // InternalConceptLanguage.g:78:1: ruleConcept returns [EObject current=null] : ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' ) ;
+    // InternalConceptLanguage.g:78:1: ruleConcept returns [EObject current=null] : ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' ) ;
     public final EObject ruleConcept() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
         Token otherlv_4=null;
         Token otherlv_6=null;
-        Token lv_isBeta_8_0=null;
+        Token lv_beta_8_0=null;
         Token otherlv_9=null;
         Token lv_DMF_11_0=null;
         Token otherlv_12=null;
@@ -218,11 +218,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:84:2: ( ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' ) )
-            // InternalConceptLanguage.g:85:2: ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' )
+            // InternalConceptLanguage.g:84:2: ( ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' ) )
+            // InternalConceptLanguage.g:85:2: ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' )
             {
-            // InternalConceptLanguage.g:85:2: ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' )
-            // InternalConceptLanguage.g:86:3: () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}'
+            // InternalConceptLanguage.g:85:2: ( () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}' )
+            // InternalConceptLanguage.g:86:3: () otherlv_1= 'Concept' ( (lv_name_2_0= ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) ) otherlv_12= '{' ( (lv_imports_13_0= ruleConceptImport ) )* ( (lv_structuralElements_14_0= ruleStructuralElement ) )* ( (lv_relations_15_0= ruleARelation ) )* ( (lv_categories_16_0= ruleCategory ) )* otherlv_17= '}'
             {
             // InternalConceptLanguage.g:86:3: ()
             // InternalConceptLanguage.g:87:4: 
@@ -270,19 +270,19 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:116:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:117:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:116:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:117:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:117:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:118:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:117:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:118:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getConceptAccess().getUnorderedGroup_3());
             				
-            // InternalConceptLanguage.g:121:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* )
-            // InternalConceptLanguage.g:122:6: ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )*
+            // InternalConceptLanguage.g:121:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:122:6: ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:122:6: ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )*
+            // InternalConceptLanguage.g:122:6: ( ({...}? => ( ({...}? => (otherlv_4= 'displayname' ( (lv_displayName_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'version' ( (lv_version_7_0= ruleVersion ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'description' ( (lv_description_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => ( (lv_DMF_11_0= 'hasDMF' ) ) ) ) ) )*
             loop1:
             do {
                 int alt1=6;
@@ -461,41 +461,41 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 3 :
-            	    // InternalConceptLanguage.g:191:4: ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) )
+            	    // InternalConceptLanguage.g:191:4: ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:191:4: ({...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) ) )
-            	    // InternalConceptLanguage.g:192:5: {...}? => ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) )
+            	    // InternalConceptLanguage.g:191:4: ({...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) ) )
+            	    // InternalConceptLanguage.g:192:5: {...}? => ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2) ) {
             	        throw new FailedPredicateException(input, "ruleConcept", "getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2)");
             	    }
-            	    // InternalConceptLanguage.g:192:104: ( ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) ) )
-            	    // InternalConceptLanguage.g:193:6: ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) )
+            	    // InternalConceptLanguage.g:192:104: ( ({...}? => ( (lv_beta_8_0= 'beta' ) ) ) )
+            	    // InternalConceptLanguage.g:193:6: ({...}? => ( (lv_beta_8_0= 'beta' ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2);
             	    					
-            	    // InternalConceptLanguage.g:196:9: ({...}? => ( (lv_isBeta_8_0= 'beta' ) ) )
-            	    // InternalConceptLanguage.g:196:10: {...}? => ( (lv_isBeta_8_0= 'beta' ) )
+            	    // InternalConceptLanguage.g:196:9: ({...}? => ( (lv_beta_8_0= 'beta' ) ) )
+            	    // InternalConceptLanguage.g:196:10: {...}? => ( (lv_beta_8_0= 'beta' ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleConcept", "true");
             	    }
-            	    // InternalConceptLanguage.g:196:19: ( (lv_isBeta_8_0= 'beta' ) )
-            	    // InternalConceptLanguage.g:196:20: (lv_isBeta_8_0= 'beta' )
+            	    // InternalConceptLanguage.g:196:19: ( (lv_beta_8_0= 'beta' ) )
+            	    // InternalConceptLanguage.g:196:20: (lv_beta_8_0= 'beta' )
             	    {
-            	    // InternalConceptLanguage.g:196:20: (lv_isBeta_8_0= 'beta' )
-            	    // InternalConceptLanguage.g:197:10: lv_isBeta_8_0= 'beta'
+            	    // InternalConceptLanguage.g:196:20: (lv_beta_8_0= 'beta' )
+            	    // InternalConceptLanguage.g:197:10: lv_beta_8_0= 'beta'
             	    {
-            	    lv_isBeta_8_0=(Token)match(input,14,FOLLOW_4); 
+            	    lv_beta_8_0=(Token)match(input,14,FOLLOW_4); 
 
-            	    										newLeafNode(lv_isBeta_8_0, grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0());
+            	    										newLeafNode(lv_beta_8_0, grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0());
             	    									
 
             	    										if (current==null) {
             	    											current = createModelElement(grammarAccess.getConceptRule());
             	    										}
-            	    										setWithLastConsumed(current, "isBeta", true, "beta");
+            	    										setWithLastConsumed(current, "beta", true, "beta");
             	    									
 
             	    }

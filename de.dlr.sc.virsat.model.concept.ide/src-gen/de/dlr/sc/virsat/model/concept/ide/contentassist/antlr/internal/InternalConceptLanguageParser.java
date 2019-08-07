@@ -29836,17 +29836,17 @@ public class InternalConceptLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__Concept__UnorderedGroup_3__Impl"
-    // InternalConceptLanguage.g:9903:1: rule__Concept__UnorderedGroup_3__Impl : ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) ) ;
+    // InternalConceptLanguage.g:9903:1: rule__Concept__UnorderedGroup_3__Impl : ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) ) ;
     public final void rule__Concept__UnorderedGroup_3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         		boolean selected = false;
         	
         try {
-            // InternalConceptLanguage.g:9908:1: ( ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) ) )
-            // InternalConceptLanguage.g:9909:3: ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) )
+            // InternalConceptLanguage.g:9908:1: ( ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) ) )
+            // InternalConceptLanguage.g:9909:3: ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) )
             {
-            // InternalConceptLanguage.g:9909:3: ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) )
+            // InternalConceptLanguage.g:9909:3: ( ({...}? => ( ( ( rule__Concept__Group_3_0__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_1__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) ) ) | ({...}? => ( ( ( rule__Concept__Group_3_3__0 ) ) ) ) | ({...}? => ( ( ( rule__Concept__DMFAssignment_3_4 ) ) ) ) )
             int alt55=5;
             int LA55_0 = input.LA(1);
 
@@ -29965,16 +29965,16 @@ public class InternalConceptLanguageParser extends AbstractInternalContentAssist
                     }
                     break;
                 case 3 :
-                    // InternalConceptLanguage.g:9940:3: ({...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) ) )
+                    // InternalConceptLanguage.g:9940:3: ({...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) ) )
                     {
-                    // InternalConceptLanguage.g:9940:3: ({...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) ) )
-                    // InternalConceptLanguage.g:9941:4: {...}? => ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) )
+                    // InternalConceptLanguage.g:9940:3: ({...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) ) )
+                    // InternalConceptLanguage.g:9941:4: {...}? => ( ( ( rule__Concept__BetaAssignment_3_2 ) ) )
                     {
                     if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2) ) {
                         throw new FailedPredicateException(input, "rule__Concept__UnorderedGroup_3__Impl", "getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2)");
                     }
-                    // InternalConceptLanguage.g:9941:103: ( ( ( rule__Concept__IsBetaAssignment_3_2 ) ) )
-                    // InternalConceptLanguage.g:9942:5: ( ( rule__Concept__IsBetaAssignment_3_2 ) )
+                    // InternalConceptLanguage.g:9941:103: ( ( ( rule__Concept__BetaAssignment_3_2 ) ) )
+                    // InternalConceptLanguage.g:9942:5: ( ( rule__Concept__BetaAssignment_3_2 ) )
                     {
 
                     					getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2);
@@ -29982,22 +29982,22 @@ public class InternalConceptLanguageParser extends AbstractInternalContentAssist
 
                     					selected = true;
                     				
-                    // InternalConceptLanguage.g:9948:5: ( ( rule__Concept__IsBetaAssignment_3_2 ) )
-                    // InternalConceptLanguage.g:9949:6: ( rule__Concept__IsBetaAssignment_3_2 )
+                    // InternalConceptLanguage.g:9948:5: ( ( rule__Concept__BetaAssignment_3_2 ) )
+                    // InternalConceptLanguage.g:9949:6: ( rule__Concept__BetaAssignment_3_2 )
                     {
-                     before(grammarAccess.getConceptAccess().getIsBetaAssignment_3_2()); 
-                    // InternalConceptLanguage.g:9950:6: ( rule__Concept__IsBetaAssignment_3_2 )
-                    // InternalConceptLanguage.g:9950:7: rule__Concept__IsBetaAssignment_3_2
+                     before(grammarAccess.getConceptAccess().getBetaAssignment_3_2()); 
+                    // InternalConceptLanguage.g:9950:6: ( rule__Concept__BetaAssignment_3_2 )
+                    // InternalConceptLanguage.g:9950:7: rule__Concept__BetaAssignment_3_2
                     {
                     pushFollow(FOLLOW_2);
-                    rule__Concept__IsBetaAssignment_3_2();
+                    rule__Concept__BetaAssignment_3_2();
 
                     state._fsp--;
 
 
                     }
 
-                     after(grammarAccess.getConceptAccess().getIsBetaAssignment_3_2()); 
+                     after(grammarAccess.getConceptAccess().getBetaAssignment_3_2()); 
 
                     }
 
@@ -34841,9 +34841,9 @@ public class InternalConceptLanguageParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__Concept__VersionAssignment_3_1_1"
 
 
-    // $ANTLR start "rule__Concept__IsBetaAssignment_3_2"
-    // InternalConceptLanguage.g:11252:1: rule__Concept__IsBetaAssignment_3_2 : ( ( 'beta' ) ) ;
-    public final void rule__Concept__IsBetaAssignment_3_2() throws RecognitionException {
+    // $ANTLR start "rule__Concept__BetaAssignment_3_2"
+    // InternalConceptLanguage.g:11252:1: rule__Concept__BetaAssignment_3_2 : ( ( 'beta' ) ) ;
+    public final void rule__Concept__BetaAssignment_3_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -34854,17 +34854,17 @@ public class InternalConceptLanguageParser extends AbstractInternalContentAssist
             // InternalConceptLanguage.g:11257:2: ( ( 'beta' ) )
             // InternalConceptLanguage.g:11258:3: ( 'beta' )
             {
-             before(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); 
+             before(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); 
             // InternalConceptLanguage.g:11259:3: ( 'beta' )
             // InternalConceptLanguage.g:11260:4: 'beta'
             {
-             before(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); 
+             before(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); 
             match(input,73,FOLLOW_2); 
-             after(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); 
+             after(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); 
 
             }
 
-             after(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); 
+             after(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); 
 
             }
 
@@ -34883,7 +34883,7 @@ public class InternalConceptLanguageParser extends AbstractInternalContentAssist
         }
         return ;
     }
-    // $ANTLR end "rule__Concept__IsBetaAssignment_3_2"
+    // $ANTLR end "rule__Concept__BetaAssignment_3_2"
 
 
     // $ANTLR start "rule__Concept__DescriptionAssignment_3_3_1"

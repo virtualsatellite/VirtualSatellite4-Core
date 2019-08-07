@@ -284,7 +284,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 * Constraint:
 	 *     (
 	 *         name=QualifiedName 
-	 *         (displayName=EString | version=Version | isBeta?='beta' | description=EString | DMF?='hasDMF')* 
+	 *         (displayName=EString | version=Version | beta?='beta' | description=EString | DMF?='hasDMF')* 
 	 *         imports+=ConceptImport* 
 	 *         structuralElements+=StructuralElement* 
 	 *         relations+=ARelation* 

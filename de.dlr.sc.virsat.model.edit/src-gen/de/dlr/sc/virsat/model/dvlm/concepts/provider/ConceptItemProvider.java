@@ -97,7 +97,7 @@ public class ConceptItemProvider
 			addVersionPropertyDescriptor(object);
 			addDMFPropertyDescriptor(object);
 			addDisplayNamePropertyDescriptor(object);
-			addIsBetaPropertyDescriptor(object);
+			addBetaPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -279,19 +279,19 @@ public class ConceptItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Is Beta feature.
+	 * This adds a property descriptor for the Beta feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addIsBetaPropertyDescriptor(Object object) {
+	protected void addBetaPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Concept_isBeta_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Concept_isBeta_feature", "_UI_Concept_type"),
-				 ConceptsPackage.Literals.CONCEPT__IS_BETA,
+				 getString("_UI_Concept_beta_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Concept_beta_feature", "_UI_Concept_type"),
+				 ConceptsPackage.Literals.CONCEPT__BETA,
 				 true,
 				 false,
 				 false,
@@ -398,7 +398,7 @@ public class ConceptItemProvider
 			case ConceptsPackage.CONCEPT__VERSION:
 			case ConceptsPackage.CONCEPT__DMF:
 			case ConceptsPackage.CONCEPT__DISPLAY_NAME:
-			case ConceptsPackage.CONCEPT__IS_BETA:
+			case ConceptsPackage.CONCEPT__BETA:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case ConceptsPackage.CONCEPT__IMPORTS:

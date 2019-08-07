@@ -5166,14 +5166,17 @@
     </changes>
     <changes xsi:type="history:Create" xmi:id="_K05uwLkwEem4JbZCXDDwjQ" referenceName="eStructuralFeatures">
       <target href="dvlm.ecore#//concepts/Concept"/>
-      <element href="dvlm.ecore#//concepts/Concept/isBeta"/>
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
     </changes>
     <changes xsi:type="history:Set" xmi:id="_NpNpcLkwEem4JbZCXDDwjQ" featureName="eType">
-      <element href="dvlm.ecore#//concepts/Concept/isBeta"/>
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
       <referenceValue href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </changes>
     <changes xsi:type="history:Set" xmi:id="_Py1BULkwEem4JbZCXDDwjQ" featureName="name" dataValue="isBeta">
-      <element href="dvlm.ecore#//concepts/Concept/isBeta"/>
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_JrVMsLkyEem4JbZCXDDwjQ" featureName="name" dataValue="beta" oldDataValue="isBeta">
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
     </changes>
   </releases>
 </history:History>

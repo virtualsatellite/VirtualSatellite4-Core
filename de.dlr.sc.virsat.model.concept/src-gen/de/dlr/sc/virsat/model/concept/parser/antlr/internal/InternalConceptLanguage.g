@@ -194,15 +194,15 @@ ruleConcept returns [EObject current=null]
 						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_3(), 2);
 					}
 								({true}?=>((
-									lv_isBeta_8_0='beta'
+									lv_beta_8_0='beta'
 									{
-										newLeafNode(lv_isBeta_8_0, grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0());
+										newLeafNode(lv_beta_8_0, grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0());
 									}
 									{
 										if ($current==null) {
 											$current = createModelElement(grammarAccess.getConceptRule());
 										}
-										setWithLastConsumed($current, "isBeta", true, "beta");
+										setWithLastConsumed($current, "beta", true, "beta");
 									}
 								)
 								))

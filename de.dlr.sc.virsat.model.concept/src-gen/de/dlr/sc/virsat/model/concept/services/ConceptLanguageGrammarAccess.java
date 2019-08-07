@@ -50,8 +50,8 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cVersionKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
 		private final Assignment cVersionAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
 		private final RuleCall cVersionVersionParserRuleCall_3_1_1_0 = (RuleCall)cVersionAssignment_3_1_1.eContents().get(0);
-		private final Assignment cIsBetaAssignment_3_2 = (Assignment)cUnorderedGroup_3.eContents().get(2);
-		private final Keyword cIsBetaBetaKeyword_3_2_0 = (Keyword)cIsBetaAssignment_3_2.eContents().get(0);
+		private final Assignment cBetaAssignment_3_2 = (Assignment)cUnorderedGroup_3.eContents().get(2);
+		private final Keyword cBetaBetaKeyword_3_2_0 = (Keyword)cBetaAssignment_3_2.eContents().get(0);
 		private final Group cGroup_3_3 = (Group)cUnorderedGroup_3.eContents().get(3);
 		private final Keyword cDescriptionKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
 		private final Assignment cDescriptionAssignment_3_3_1 = (Assignment)cGroup_3_3.eContents().get(1);
@@ -71,7 +71,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Concept Concepts::Concept:
 		//	{Concepts::Concept}
-		//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & isBeta?='beta'? &
+		//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
 		//	('description' description=EString)? & DMF?='hasDMF'?)
 		//	'{'
 		//	imports+=ConceptImport*
@@ -82,7 +82,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{Concepts::Concept} 'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? &
-		//isBeta?='beta'? & ('description' description=EString)? & DMF?='hasDMF'?) '{' imports+=ConceptImport*
+		//beta?='beta'? & ('description' description=EString)? & DMF?='hasDMF'?) '{' imports+=ConceptImport*
 		//structuralElements+=StructuralElement* relations+=ARelation* categories+=Category* '}'
 		public Group getGroup() { return cGroup; }
 		
@@ -98,7 +98,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getNameQualifiedNameParserRuleCall_2_0() { return cNameQualifiedNameParserRuleCall_2_0; }
 		
-		//('displayname' displayName=EString)? & ('version' version=Version)? & isBeta?='beta'? & ('description'
+		//('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? & ('description'
 		//description=EString)? & DMF?='hasDMF'?
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
@@ -126,11 +126,11 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//Version
 		public RuleCall getVersionVersionParserRuleCall_3_1_1_0() { return cVersionVersionParserRuleCall_3_1_1_0; }
 		
-		//isBeta?='beta'?
-		public Assignment getIsBetaAssignment_3_2() { return cIsBetaAssignment_3_2; }
+		//beta?='beta'?
+		public Assignment getBetaAssignment_3_2() { return cBetaAssignment_3_2; }
 		
 		//'beta'
-		public Keyword getIsBetaBetaKeyword_3_2_0() { return cIsBetaBetaKeyword_3_2_0; }
+		public Keyword getBetaBetaKeyword_3_2_0() { return cBetaBetaKeyword_3_2_0; }
 		
 		//('description' description=EString)?
 		public Group getGroup_3_3() { return cGroup_3_3; }
@@ -3108,7 +3108,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Concept Concepts::Concept:
 	//	{Concepts::Concept}
-	//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & isBeta?='beta'? &
+	//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
 	//	('description' description=EString)? & DMF?='hasDMF'?)
 	//	'{'
 	//	imports+=ConceptImport*

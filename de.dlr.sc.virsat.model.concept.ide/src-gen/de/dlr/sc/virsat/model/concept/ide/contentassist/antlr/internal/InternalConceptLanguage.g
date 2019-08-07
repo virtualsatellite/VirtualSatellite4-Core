@@ -9946,9 +9946,9 @@ rule__Concept__UnorderedGroup_3__Impl
 					selected = true;
 				}
 				(
-					{ before(grammarAccess.getConceptAccess().getIsBetaAssignment_3_2()); }
-					(rule__Concept__IsBetaAssignment_3_2)
-					{ after(grammarAccess.getConceptAccess().getIsBetaAssignment_3_2()); }
+					{ before(grammarAccess.getConceptAccess().getBetaAssignment_3_2()); }
+					(rule__Concept__BetaAssignment_3_2)
+					{ after(grammarAccess.getConceptAccess().getBetaAssignment_3_2()); }
 				)
 			)
 		)|
@@ -11249,19 +11249,19 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Concept__IsBetaAssignment_3_2
+rule__Concept__BetaAssignment_3_2
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); }
+		{ before(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); }
 		(
-			{ before(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); }
+			{ before(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); }
 			'beta'
-			{ after(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); }
+			{ after(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); }
 		)
-		{ after(grammarAccess.getConceptAccess().getIsBetaBetaKeyword_3_2_0()); }
+		{ after(grammarAccess.getConceptAccess().getBetaBetaKeyword_3_2_0()); }
 	)
 ;
 finally {
