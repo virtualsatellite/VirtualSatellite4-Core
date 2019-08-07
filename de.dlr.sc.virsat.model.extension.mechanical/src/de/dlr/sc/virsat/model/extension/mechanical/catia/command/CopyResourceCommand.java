@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia.command;
 
-import java.io.IOException;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,8 +71,7 @@ public class CopyResourceCommand extends AbstractCommand {
 			Files.copy(sourceFile, targetLocation, options);
 		} catch (Exception e) {
 			Activator.getDefault().getLog()
-					.log(new Status(Status.INFO, "MechanicalUiPlugin", "ResourceCopyCommand: Could not copy files!"));
-			e.printStackTrace();
+					.log(new Status(Status.INFO, "MechanicalUiPlugin", "ResourceCopyCommand: Could not copy files!", e));
 		}
 
 	}
@@ -83,7 +81,7 @@ public class CopyResourceCommand extends AbstractCommand {
 		if (targetLocation.toFile().exists()) {
 			try {
 				Files.delete(targetLocation);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Activator.getDefault().getLog()
 					.log(new Status(Status.INFO, "MechanicalUiPlugin", "ResourceCopyCommand: Could not undo copying files!", e));
 			}

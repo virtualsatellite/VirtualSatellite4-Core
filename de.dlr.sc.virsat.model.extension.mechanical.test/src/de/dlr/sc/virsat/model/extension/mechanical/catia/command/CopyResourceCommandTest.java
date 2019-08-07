@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,12 +70,39 @@ public class CopyResourceCommandTest {
 		final String TEST_TARGET_FILE_NAME = "target.test";
 		Path testTarget = Paths.get(testFolderPath.toString(), TEST_TARGET_FILE_NAME);
 		
-		CopyResourceCommand command = new CopyResourceCommand(testFile, testTarget);
+		CopyResourceCommand command = new CopyResourceCommand(testFile, testTarget, StandardCopyOption.REPLACE_EXISTING);
 		command.execute();
 		
 		assertTrue("File copied? ", testTarget.toFile().exists());
 		assertArrayEquals("File is copied correctly", Files.readAllBytes(testFile),
 				Files.readAllBytes(testTarget));
+		
+	}
+	
+	@Test
+	public void testExecuteWithInvalidFile() throws IOException {
+		
+		final String TEST_TARGET_FILE_NAME = "target.test";
+		Path testTarget = Paths.get(testFolderPath.toString(), TEST_TARGET_FILE_NAME);
+		
+		CopyResourceCommand command = new CopyResourceCommand(null, testTarget, StandardCopyOption.REPLACE_EXISTING);
+		command.execute();
+		
+		assertFalse("File copied? ", testTarget.toFile().exists());
+		
+	}
+	
+	@Test
+	public void testUndoWithInvalidFile() throws IOException {
+		
+		final String TEST_TARGET_FILE_NAME = "target.test";
+		Path testTarget = Paths.get(testFolderPath.toString(), TEST_TARGET_FILE_NAME);
+		
+		CopyResourceCommand command = new CopyResourceCommand(testFile, testTarget, StandardCopyOption.REPLACE_EXISTING);
+		command.execute();
+		
+		Files.delete(testTarget);
+		command.undo(); // Just check for unhandled exceptions
 		
 	}
 	
