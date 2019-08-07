@@ -9,6 +9,9 @@
            command="superUser">
      </clArgs>
      <clArgs
+           command="demo">
+     </clArgs>
+     <clArgs
             attribute="user"
             command="forcedUser">
      </clArgs>
