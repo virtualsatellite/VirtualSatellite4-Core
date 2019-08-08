@@ -34,6 +34,8 @@ import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValueEditingSupport;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
@@ -90,14 +92,17 @@ public class UiSnippetTableRequirementElementsAttributeValue extends AUiSnippetT
 	protected void setUpTableViewer(EditingDomain editingDomain, FormToolkit toolkit) {
 		super.setUpTableViewer(editingDomain, toolkit);
 		
-		List<?> tableObjects = getTableObjects();
 		
 		// Sort the array entries by their index
 		columnViewer.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
-				int lhsIndex = tableObjects.indexOf(e1);
-				int rhsIndex = tableObjects.indexOf(e2);
+				RequirementAttribute attE1 = new AttributeValue(((ComposedPropertyInstance) e1).getTypeInstance()).getAttType();
+				RequirementAttribute attE2 = new AttributeValue(((ComposedPropertyInstance) e2).getTypeInstance()).getAttType();
+				ArrayInstance array = (ArrayInstance) attE1.getATypeInstance().eContainer().eContainer();
+	
+				int lhsIndex = array.getArrayInstances().indexOf(attE1.getTypeInstance().eContainer());
+				int rhsIndex = array.getArrayInstances().indexOf(attE2.getTypeInstance().eContainer());
 				return Integer.compare(lhsIndex, rhsIndex);
 			}
 		});
