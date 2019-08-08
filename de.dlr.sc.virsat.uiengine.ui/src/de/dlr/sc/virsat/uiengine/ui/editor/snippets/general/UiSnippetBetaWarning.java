@@ -118,8 +118,7 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	}
 
 	/**
-	 * Checks if the type definition's containing concept version number starts with
-	 * 0
+	 * Checks if the type definition's containing concept has the beta flag set
 	 * 
 	 * @param typeDefinition
 	 *            the type definition
