@@ -16,27 +16,21 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.ColumnViewer;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
- * @author fran_tb
+ * Editing support for table with columns for the different attributes
  *
  */
-public class RequirementsAttributeEditingSupport extends AbstractAttributeValueEditingSupport {
+public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractAttributeValueEditingSupport {
 
 	protected final int attributeIndex;
-
-	protected static final String REQUIREMENTS_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.requirements";
-	protected static final String ATTRIBUTE_CATEGORY_NAME = "AttributeValue";
 
 	protected final VirSatTransactionalEditingDomain domain;
 
@@ -48,7 +42,7 @@ public class RequirementsAttributeEditingSupport extends AbstractAttributeValueE
 	 * @param attIndex
 	 *            the index of the attribute definition this class should support
 	 */
-	public RequirementsAttributeEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, int attIndex) {
+	public RequirementsAttributeValuePerColumnEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, int attIndex) {
 		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
 		this.attributeIndex = attIndex;
 		this.domain = (VirSatTransactionalEditingDomain) editingDomain;
@@ -70,7 +64,7 @@ public class RequirementsAttributeEditingSupport extends AbstractAttributeValueE
 		APropertyInstance instance = null;
 		for (AttributeValue value : requirement.getElements()) {
 			if (value.getAttType().equals(attributeDef)) {
-				instance = getPropertyInstance(value);
+				instance = getPropertyInstanceFromBean(value);
 			}
 		}
 		if (instance == null) {
@@ -92,7 +86,7 @@ public class RequirementsAttributeEditingSupport extends AbstractAttributeValueE
 	 *            the bean object
 	 * @return the property instance
 	 */
-	protected APropertyInstance getPropertyInstance(AttributeValue attributeInstance) {
+	protected APropertyInstance getPropertyInstanceFromBean(AttributeValue attributeInstance) {
 		CategoryAssignmentHelper attributeInstanceHelper = new CategoryAssignmentHelper(
 				attributeInstance.getTypeInstance());
 		return attributeInstanceHelper.getPropertyInstance(AttributeValue.PROPERTY_VALUE);
@@ -119,28 +113,6 @@ public class RequirementsAttributeEditingSupport extends AbstractAttributeValueE
 		}
 		
 		return requirement.getReqType().getAttributes().get(attributeIndex);
-	}
-
-	/**
-	 * Get the requirements concept
-	 * 
-	 * @return the concept
-	 */
-	protected Concept getConcept() {
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(domain.getResourceSet().getRepository());
-		return acHelper.getConcept(REQUIREMENTS_CONCEPT_NAME);
-	}
-
-	/**
-	 * Get the property definition of the attribute's value
-	 * 
-	 * @param editingDomain
-	 *            the editing domain
-	 * @return the property definition
-	 */
-	protected static AProperty getAttributeValueProperty(VirSatTransactionalEditingDomain editingDomain) {
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
-		return acHelper.getProperty(REQUIREMENTS_CONCEPT_NAME, ATTRIBUTE_CATEGORY_NAME, AttributeValue.PROPERTY_VALUE);
 	}
 
 }

@@ -25,6 +25,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
@@ -284,6 +286,28 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 		Command command = InitializeRequirementAttributeCommand.create(domain,
 				getAttributeDefinition(requirement), requirement, newAttributeInstance);
 		domain.getCommandStack().execute(command);
+	}
+	
+	/**
+	 * Get the requirements concept
+	 * 
+	 * @return the concept
+	 */
+	protected Concept getConcept() {
+		ActiveConceptHelper acHelper = new ActiveConceptHelper(domain.getResourceSet().getRepository());
+		return acHelper.getConcept(REQUIREMENTS_CONCEPT_NAME);
+	}
+
+	/**
+	 * Get the property definition of the attribute's value
+	 * 
+	 * @param editingDomain
+	 *            the editing domain
+	 * @return the property definition
+	 */
+	protected static AProperty getAttributeValueProperty(VirSatTransactionalEditingDomain editingDomain) {
+		ActiveConceptHelper acHelper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
+		return acHelper.getProperty(REQUIREMENTS_CONCEPT_NAME, ATTRIBUTE_CATEGORY_NAME, AttributeValue.PROPERTY_VALUE);
 	}
 
 }
