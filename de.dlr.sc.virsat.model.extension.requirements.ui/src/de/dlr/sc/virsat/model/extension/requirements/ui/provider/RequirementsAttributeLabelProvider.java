@@ -114,9 +114,8 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 				//Clean up values which don't have a type definition anymore
 				if (value.getAttType() == null) {
-					VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
-							.getEd(value.getTypeInstance());
-					editingDomain.getVirSatCommandStack().execute(value.delete(editingDomain));
+					cleanUpAttribue(value);
+					return null;
 				}
 				// Find out initial column index of attribute
 				RequirementType requirementType = value.getAttType().getParentCaBeanOfClass(RequirementType.class);
@@ -167,6 +166,28 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 		}
 
 		return super.getColumnImage(object, columnIndex);
+	}
+	
+	/**
+	 * Clean up requirements if their type or a type of an attribute does not exist anymore
+	 * @param att the attribute value
+	 */
+	protected void cleanUpAttribue(AttributeValue att) {
+		Requirement containingRequirement = att.getCaBeanFromParentSei(Requirement.class);
+		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
+				.getEd(att.getTypeInstance());
+		
+		if (containingRequirement.getReqType() == null) {
+			//requirement does not have a type anymore... completely delete it
+			
+			editingDomain.getVirSatCommandStack().execute(containingRequirement.delete(editingDomain));
+			
+		} else if (att.getAttType() == null) {
+			//Only the attribute does not have a type anymore... clean the attribute value
+			
+			editingDomain.getVirSatCommandStack().execute(att.delete(editingDomain));
+		}
+		
 	}
 
 }
