@@ -44,7 +44,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
-import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeEditingSupport;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -172,7 +172,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 				} else {
 					TableViewerColumn newColumn = (TableViewerColumn) createDefaultColumn(columnName);
 					newColumn
-							.setEditingSupport(new RequirementsAttributeEditingSupport(editingDomain, columnViewer, i));
+							.setEditingSupport(new RequirementsAttributeValuePerColumnEditingSupport(editingDomain, columnViewer, i));
 					attColumns.add(newColumn);
 				}
 			}
