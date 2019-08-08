@@ -15,13 +15,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -44,6 +54,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
+import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
@@ -55,7 +66,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCateg
  * @author fran_tb
  *
  */
-public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnippetArrayInstanceCategoryTable {
+public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnippetArrayInstanceCategoryTable implements ControlListener {
 
 	protected Button buttonAdd;
 
@@ -65,7 +76,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = "de.dlr.sc.virsat.model.extension.requirements.Requirement.reqType";
 
 	private static final int STATUS_COLUMN_WIDTH = 100;
-
+	private static final String COLUMN_PREFIX = "attColumn";
+	
 	protected final String arrayInstanceID;
 
 	protected Set<RequirementType> requirementTypes = new HashSet<RequirementType>();
@@ -75,6 +87,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 	protected TableViewerColumn colStatus = null;
 	protected List<TableViewerColumn> attColumns;
+	
+	protected boolean controlListnerActive = true;
 
 	/**
 	 * constructor of the abstract UI snippet array instance category table
@@ -171,14 +185,17 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 					attColumns.get(i).getColumn().setText(columnName);
 				} else {
 					TableViewerColumn newColumn = (TableViewerColumn) createDefaultColumn(columnName);
+					newColumn.getColumn().addControlListener(this);
 					newColumn
 							.setEditingSupport(new RequirementsAttributeValuePerColumnEditingSupport(editingDomain, columnViewer, i));
 					attColumns.add(newColumn);
 				}
 			}
 		}
+		restoreColumnWitdh();
 
 	}
+	
 
 	/**
 	 * this method get the label provider
@@ -202,7 +219,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		ITableLabelProvider labelProvider = getTableLabelProvider();
 		columnViewer.setLabelProvider(labelProvider);
 	}
-
+	
+	
 	/**
 	 * this method creates the add button and his functionality
 	 * 
@@ -270,7 +288,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 						Command cmd = createDeleteCommand(editingDomain, affectedObjects);
 						editingDomain.getCommandStack().execute(cmd);
 					}
-
 				}
 
 				@Override
@@ -299,6 +316,80 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 				selectedTypeInstance);
 		editingDomain.getCommandStack().execute(cmd);
 		refreshTable(editingDomain);
+	}
+	
+	
+	/**
+	 * Persist the width of all columns
+	 */
+	protected void saveColumnWidth() {
+		URI uri = model.eResource().getURI();
+		IPath path = new Path(uri.toPlatformString(false)); 
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		for (TableViewerColumn column : attColumns) {
+			try {
+				String width = column.getColumn().getWidth() + "";
+				QualifiedName key = getColumnWithPropertyQualifiedName(attColumns.indexOf(column));
+				file.setPersistentProperty(key, width);
+			} catch (CoreException e) {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not save column width"));
+			}
+		}
+	}
+	
+	/**
+	 * Load the width of all columns
+	 */
+	protected void restoreColumnWitdh() {
+		URI uri = model.eResource().getURI();
+		IPath path = new Path(uri.toPlatformString(false)); 
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		controlListnerActive = false; //disable listner otherwise it triggers in these resize events
+		for (TableViewerColumn column : attColumns) {
+			try {
+				QualifiedName key = getColumnWithPropertyQualifiedName(attColumns.indexOf(column));
+				String width = file.getPersistentProperty(key);
+				if (width != null) {
+					column.getColumn().setWidth(Integer.parseInt(width));
+				}
+			} catch (CoreException e) {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not save column width"));
+			}
+		}
+		controlListnerActive = true;
+	}
+	
+	
+	/**
+	 * Create a qualified id for the column width
+	 * @param column the column index
+	 * @return the qualified id
+	 */
+	protected QualifiedName getColumnWithPropertyQualifiedName(int column) {
+		
+		String qualifier = null; 
+		if (model instanceof CategoryAssignment) {
+			qualifier = ((CategoryAssignment) model).getUuid().toString();
+			qualifier += COLUMN_PREFIX + column;
+		}
+		
+		return new QualifiedName(qualifier, COLUMN_PREFIX + column);
+	}
+	
+	@Override
+	public void controlResized(ControlEvent e) {
+		if (controlListnerActive) {
+			saveColumnWidth();
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt.events.ControlEvent)
+	 */
+	@Override
+	public void controlMoved(ControlEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
