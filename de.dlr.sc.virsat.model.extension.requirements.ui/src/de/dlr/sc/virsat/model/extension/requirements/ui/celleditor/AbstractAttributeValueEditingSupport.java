@@ -299,7 +299,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	protected void updateRequirementNameAttribute(APropertyInstance propertyInstance) {
 		AttributeValue att = new AttributeValue((CategoryAssignment) propertyInstance.eContainer());
 		Requirement requirement = att.getParentCaBeanOfClass(Requirement.class);
-		String newReqName = "";
+		String newReqName = "Req";
 		for (AttributeValue child : requirement.getElements()) {
 			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
 				newReqName += child.getValue();
