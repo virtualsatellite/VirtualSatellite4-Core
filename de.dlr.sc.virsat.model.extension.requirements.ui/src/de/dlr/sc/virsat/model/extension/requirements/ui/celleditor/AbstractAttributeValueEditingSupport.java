@@ -184,6 +184,10 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 				super.setValue(element, userInputValue);
 				break;
 		}
+		
+		if (attDef.getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+			updateRequirementNameAttribute(attributeInstance);
+		}
 	}
 	
 	/**
@@ -286,6 +290,23 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 		Command command = InitializeRequirementAttributeCommand.create(domain,
 				getAttributeDefinition(requirement), requirement, newAttributeInstance);
 		domain.getCommandStack().execute(command);
+	}
+	
+	/**
+	 * Update the containing requirements name
+	 * @param propertyInstance the current propperty instance
+	 */
+	protected void updateRequirementNameAttribute(APropertyInstance propertyInstance) {
+		AttributeValue att = new AttributeValue((CategoryAssignment) propertyInstance.eContainer());
+		Requirement requirement = att.getParentCaBeanOfClass(Requirement.class);
+		String newReqName = "";
+		for (AttributeValue child : requirement.getElements()) {
+			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+				newReqName += child.getValue();
+			}
+		}
+		editingDomain.getCommandStack().execute(requirement.setName(editingDomain, newReqName));
+		
 	}
 	
 	/**
