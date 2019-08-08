@@ -9,6 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.command;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.UnexecutableCommand;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -19,4 +30,17 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.command;
  * 
  */
 public class CreateAddArrayElementAttributesCommand extends ACreateAddArrayElementAttributesCommand {
+	
+	@Override
+	public Command create(EditingDomain editingDomain, ArrayInstance arrayInstance, Category type) {
+		if (editingDomain == null) {
+			return UnexecutableCommand.INSTANCE;
+		}
+		ComposedPropertyInstance ati = (ComposedPropertyInstance) new CategoryInstantiator().generateInstance(arrayInstance, type);
+		RequirementAttribute attDef = new RequirementAttribute(ati.getTypeInstance());
+		attDef.setType(RequirementAttribute.TYPE_String_NAME);
+		attDef.setName("NewAttribute");
+		return AddCommand.create(editingDomain, arrayInstance, PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES, ati);
+	}
+	
 }
