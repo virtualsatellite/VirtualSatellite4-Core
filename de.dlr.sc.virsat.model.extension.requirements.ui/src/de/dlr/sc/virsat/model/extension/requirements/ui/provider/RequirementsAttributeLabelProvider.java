@@ -177,7 +177,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
 				.getEd(att.getTypeInstance());
 		
-		if (containingRequirement.getReqType() == null) {
+		if (containingRequirement != null && containingRequirement.getReqType() == null) {
 			//requirement does not have a type anymore... completely delete it
 			
 			editingDomain.getVirSatCommandStack().execute(containingRequirement.delete(editingDomain));
