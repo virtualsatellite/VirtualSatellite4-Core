@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValueEditingSupport;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
 import de.dlr.sc.virsat.project.ui.Activator;
@@ -65,6 +66,7 @@ public class UiSnippetTableRequirementElementsAttributeValue extends AUiSnippetT
 		this.style = STYLE_EDITOR_BUTTON;
 		valueSwitch.setShowLocationForReferenceValues(false);
 	}
+	
 
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
@@ -73,10 +75,11 @@ public class UiSnippetTableRequirementElementsAttributeValue extends AUiSnippetT
 
 			TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
 			colProperty.getColumn().setToolTipText(property.getDescription());
-			colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
 			
 			if (property.getName().equals(VALUE_PROPERTY_NAME)) {
 				colProperty.getColumn().setWidth(VALUE_COLUMN_SIZE);
+				colProperty.setEditingSupport(
+						new RequirementsAttributeValueEditingSupport(editingDomain, columnViewer));
 			}
 		}
 
