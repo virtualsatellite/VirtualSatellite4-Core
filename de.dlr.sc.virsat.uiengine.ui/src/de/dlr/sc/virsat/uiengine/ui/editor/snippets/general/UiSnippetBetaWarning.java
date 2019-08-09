@@ -52,7 +52,7 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 		super();
 		ignoreWarning = Activator.getCommandLineManager().isCommandLineOptionSet(IGNORE_WARNING);
 	}
-	
+
 	@Override
 	public void createSwt(FormToolkit toolkit, EditingDomain editingDomain, Composite composite, EObject initModel) {
 		super.createSwt(toolkit, editingDomain, composite, initModel);
@@ -60,29 +60,30 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 		Composite sectionBody = createSectionBody(toolkit, SECTION_HEADING, null, UI_LAYOUT_NR_COLUMNS);
 		Label label = toolkit.createLabel(sectionBody, createDescriptionLabel());
 
-		//Configure color of the area to be red
+		// Configure color of the area to be red
 		Display display = Display.getCurrent();
 		Color red = display.getSystemColor(SWT.COLOR_DARK_RED);
 		Color gray = display.getSystemColor(SWT.COLOR_GRAY);
 		sectionBody.setBackground(red);
 		label.setBackground(red);
 		label.setForeground(gray);
-		
+
 		setUpLabel(label);
 
 	}
 
 	/**
-	 * Method to set up the label 
-	 * @param label The label to be set up
+	 * Method to set up the label
+	 * 
+	 * @param label
+	 *            The label to be set up
 	 */
 	private void setUpLabel(Label label) {
-		
 		GridData gridData = createDefaultGridData();
-	    gridData.horizontalSpan = 1;
+		gridData.horizontalSpan = 1;
 		label.setLayoutData(gridData);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -92,27 +93,29 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	 */
 	@Override
 	public boolean isActive(EObject model) {
-		
-		//If the command line option to ignore the warning is set then never show this snippet
+
+		// If the command line option to ignore the warning is set then never show this
+		// snippet
 		if (ignoreWarning) {
 			return false;
 		}
-		
+
 		if (model instanceof StructuralElementInstance) {
 			StructuralElementInstance sei = (StructuralElementInstance) model;
-			
-			//Check if the current structural element contains a category assignment from a beta concept
+
+			// Check if the current structural element contains a category assignment from a
+			// beta concept
 			for (CategoryAssignment ca : sei.getCategoryAssignments()) {
 				if (isBetaElement(ca.getType())) {
 					return true;
 				}
 			}
-			//Check if the SEI is from a beta concept itself
+			// Check if the SEI is from a beta concept itself
 			return isBetaElement(sei.getType());
-			
+
 		} else if (model instanceof CategoryAssignment) {
-			
-			//Check if current CA is from a beta concept
+
+			// Check if current CA is from a beta concept
 			return isBetaElement(((CategoryAssignment) model).getType());
 		}
 		return false;
@@ -136,12 +139,13 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	}
 
 	/**
-	 * Creates a description as string 
+	 * Creates a description as string
+	 * 
 	 * @return the description
 	 */
 	protected String createDescriptionLabel() {
 		String description = "Beta element(s) detected! Concept elements of ";
-		
+
 		for (Concept concept : getRelevantBetaConcept()) {
 			if (concept.getDisplayName() != null) {
 				description += concept.getDisplayName() + " ";
@@ -149,19 +153,20 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 				description += concept.getName() + " ";
 			}
 		}
-		
+
 		description += "should not be used in productive envrionment!";
-		
+
 		return description;
 	}
-	
+
 	/**
 	 * Get the concepts which are marked as beta
+	 * 
 	 * @return a list of concepts that are marked as beta
 	 */
 	protected Set<Concept> getRelevantBetaConcept() {
 		Set<Concept> betaConcept = new HashSet<Concept>();
-		
+
 		// If element is a structural element check if either itself or a
 		// contained category assignments is from a concept with beta status
 		if (model instanceof StructuralElementInstance) {
@@ -174,18 +179,18 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 			if (isBetaElement(sei.getType())) {
 				betaConcept.add((Concept) sei.getType().eContainer());
 			}
-			
-		//If the element is a categoryy assignment check if it concept is beta
+
+			// If the element is a categoryy assignment check if it concept is beta
 		} else if (model instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) model;
 			if (isBetaElement(ca.getType())) {
 				betaConcept.add((Concept) ca.getType().eContainer());
 			}
 		}
-		
+
 		return betaConcept;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
