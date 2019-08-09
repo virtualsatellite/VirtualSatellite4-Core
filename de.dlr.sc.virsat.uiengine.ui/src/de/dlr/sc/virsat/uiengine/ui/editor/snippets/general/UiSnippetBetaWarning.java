@@ -77,6 +77,7 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	 * @param label The label to be set up
 	 */
 	private void setUpLabel(Label label) {
+		
 		GridData gridData = createDefaultGridData();
 	    gridData.horizontalSpan = 1;
 		label.setLayoutData(gridData);
@@ -161,6 +162,8 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	protected Set<Concept> getRelevantBetaConcept() {
 		Set<Concept> betaConcept = new HashSet<Concept>();
 		
+		// If element is a structural element check if either itself or a
+		// contained category assignments is from a concept with beta status
 		if (model instanceof StructuralElementInstance) {
 			StructuralElementInstance sei = (StructuralElementInstance) model;
 			for (CategoryAssignment ca : sei.getCategoryAssignments()) {
@@ -171,6 +174,8 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 			if (isBetaElement(sei.getType())) {
 				betaConcept.add((Concept) sei.getType().eContainer());
 			}
+			
+		//If the element is a categoryy assignment check if it concept is beta
 		} else if (model instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) model;
 			if (isBetaElement(ca.getType())) {
