@@ -4,7 +4,6 @@
 **/temp/
 **/*._trace
 **/*.xtendbin
-**/*.xtextbin
 *.docs.feature/**/*.pdf
 /bin/
 /deploy/
