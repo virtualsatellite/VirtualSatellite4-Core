@@ -31,10 +31,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
-import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.model.dvlm.units.UnitsPackage;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -68,7 +68,7 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 	 * Constructor for this class to instantiate a UI Snippet
 	 */
 	public UiSnippetQuantityKindManagement() {
-		super(QudvPackage.Literals.SYSTEM_OF_UNITS__SYSTEM_OF_QUANTITIES);
+		super(UnitsPackage.Literals.UNIT_MANAGEMENT__SYSTEM_OF_UNIT);
 	}
 	
 	@Override
