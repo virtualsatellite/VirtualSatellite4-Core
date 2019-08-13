@@ -15,36 +15,33 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * This class configures the export page by providing the selection
- * mechanisms for selecting what object should be objected and to
- * where it should be exported
+ * A page to configure the import from CATIA by specifying a file to import from
+ * and a tree on which the import should be applied to
  *
  */
-
-public class CatiaExportPage extends ACatiaImportExportPage {
+public class CatiaImportPage extends ACatiaImportExportPage {
 
 	/**
 	 * Standard constructor
 	 * @param model the root model
 	 */
-	protected CatiaExportPage(IContainer model) {
-		super("Catia JSON Export");
-		setTitle("Catia JSON Export");
+	protected CatiaImportPage(IContainer model) {
+		super("Catia JSON Import", SWT.OPEN);
+		setTitle("Catia JSON Import");
 		setModel(model);
-		setDescription("Please select a tree to export and an export destination.");
+		setDescription("Please select a tree to import to and a file to import.");
 	}
-
 
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		
 		createTreeViewer();
+		
 		createFileDestinationUI();
 		
 		Label label = new Label((Composite) getControl(), SWT.NONE);
-		label.setText("All attached Geometry files will be copied into the same directory as the JSON file.");
+		label.setText("All Geometry files will be imported into the documents folder of the containing model element.");
 	}
 	
-
+	
 }

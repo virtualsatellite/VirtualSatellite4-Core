@@ -217,7 +217,9 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		
 		createTableColumns(editingDomain);
 		
-		setupTableViewerKeyboardNavigation((TableViewer) columnViewer);
+		if (columnViewer instanceof TableViewer) {
+			setupTableViewerKeyboardNavigation((TableViewer) columnViewer);
+		}
 		
 		ITableLabelProvider labelProvider = getTableLabelProvider();
 		columnViewer.setLabelProvider(labelProvider);

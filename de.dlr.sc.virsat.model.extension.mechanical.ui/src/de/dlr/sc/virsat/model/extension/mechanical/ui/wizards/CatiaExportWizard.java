@@ -28,7 +28,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaFileWriter;
+import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaFileHandler;
 import de.dlr.sc.virsat.model.extension.mechanical.ui.Activator;
 
 /**
@@ -71,7 +71,7 @@ public class CatiaExportWizard extends Wizard implements INewWizard {
 		BeanStructuralElementInstance productRoot = new BeanStructuralElementInstance(sei);
 		
 		String outputJsonFilePath = page.getDestination();
-		CatiaFileWriter fileWriter = new CatiaFileWriter();
+		CatiaFileHandler fileWriter = new CatiaFileHandler();
 		
 		Job exportJob = new Job("Performing Catia JSON Export") {
 			@Override

@@ -14,5 +14,6 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.concept.unittest.util
-Export-Package: de.dlr.sc.virsat.model.extension.mechanical.test
+Export-Package: de.dlr.sc.virsat.model.extension.mechanical.catia,
+ de.dlr.sc.virsat.model.extension.mechanical.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.mechanical.test

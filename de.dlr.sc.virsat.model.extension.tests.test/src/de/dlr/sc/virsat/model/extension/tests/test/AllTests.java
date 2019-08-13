@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
 import de.dlr.sc.virsat.model.concept.list.ArrayInstanceListIteratorTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactoryTest;
+import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTraverserTest;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelperTest;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelperTest;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommandAcceptanceTest;
@@ -59,6 +60,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanStructuralElementInstanceHelperTest.class,
 				BeanCategoryAssignmentFactoryTest.class,
 				BeanStructuralElementInstanceFactoryTest.class,
+				BeanStructuralTreeTraverserTest.class,
 				ModelAPITest.class
 				})
 

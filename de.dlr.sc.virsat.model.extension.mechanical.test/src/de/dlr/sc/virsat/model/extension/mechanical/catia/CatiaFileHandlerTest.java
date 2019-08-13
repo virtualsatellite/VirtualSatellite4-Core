@@ -10,7 +10,9 @@
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -19,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -28,6 +31,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.github.cliftonlabs.json_simple.JsonException;
+import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -39,19 +45,19 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
  * Test class for CatiaFileWriter
  */
 
-public class CatiaFileWriterTest extends AConceptProjectTestCase {
+public class CatiaFileHandlerTest extends AConceptProjectTestCase {
 
 	private Concept conceptPS;
 	private Concept conceptVis;
-	
+
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		
+
 		conceptPS = loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId());
 		conceptVis = loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.visualisation.Activator.getPluginId());
 	}
-	
+
 	@Test
 	public void testWriteFiles() throws IOException, CoreException {
 		ConfigurationTree ct = new ConfigurationTree(conceptPS);
@@ -59,9 +65,9 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 
 		ElementConfiguration ec = new ElementConfiguration(conceptPS);
 		ec.setName("ElementConfiguration");
-		
+
 		ct.add(ec);
-		
+
 		Visualisation visualisation = new Visualisation(conceptVis);
 		visualisation.setShape(Visualisation.SHAPE_GEOMETRY_NAME);
 		ec.add(visualisation);
@@ -75,7 +81,7 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 		List<String> stlContent = Arrays.asList("solid test", "endsolid test");
 		Files.write(stlFile, stlContent);
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+
 		visualisation.setGeometryFile(stlUri);
 
 		Path outputPath = Files.createTempDirectory("catiaTest");
@@ -85,11 +91,33 @@ public class CatiaFileWriterTest extends AConceptProjectTestCase {
 
 		assertFalse("JSON file is not there initially", expectedJson.exists());
 		assertFalse("STL file is not there initially", expectedCopiedStl.toFile().exists());
-		
-		CatiaFileWriter catiaFileWriter = new CatiaFileWriter();
+
+		CatiaFileHandler catiaFileWriter = new CatiaFileHandler();
 		catiaFileWriter.writeFiles(jsonFilePath, ct, new NullProgressMonitor());
-		
+
 		assertTrue("JSON file is created", expectedJson.exists());
-		assertArrayEquals("STL file is copied correctly", Files.readAllBytes(stlFile), Files.readAllBytes(expectedCopiedStl));
+		assertArrayEquals("STL file is copied correctly", Files.readAllBytes(stlFile),
+				Files.readAllBytes(expectedCopiedStl));
 	}
+
+	@Test
+	public void testReadJsonFile() throws IOException, JsonException {
+		final String JSON_FILE_NAME = "dummy.json";
+		Path outputPath = Files.createTempDirectory("catiaTest");
+		final String TEST_PRODUCT_NAME = "TestProduct";
+		Path jsonFilePath = Paths.get(outputPath.toString() + File.separator + JSON_FILE_NAME);
+
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.put(CatiaProperties.NAME.getKey(), TEST_PRODUCT_NAME);
+
+		Files.write(jsonFilePath, Collections.singleton(jsonObject.toJson()));
+
+		CatiaFileHandler fileHandler = new CatiaFileHandler();
+		JsonObject resultingObject = fileHandler.readJsonFile(jsonFilePath.toString());
+
+		assertNotNull("Parsed object should not be null", resultingObject);
+		assertEquals("Name should be as set before", resultingObject.getString(CatiaProperties.NAME),
+				TEST_PRODUCT_NAME);
+	}
+	
 }
