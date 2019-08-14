@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 
 /**
@@ -34,6 +35,12 @@ public class GitUpdateAction extends AbstractHandler {
 		ISelection eventSelection = HandlerUtil.getCurrentSelection(event);
 		VirSatSelectionHelper selectionHelper = new VirSatSelectionHelper(eventSelection);
 		IProject selectedProject = selectionHelper.getProjectResource();
+		
+		VirSatTransactionalEditingDomain ed = selectionHelper.getEditingDomain();
+		// clean our command stack for further operations
+		if (ed != null) {
+			ed.getCommandStack().flush();
+		}
 		
 		Repository gitRepository = RepositoryMapping.getMapping(selectedProject).getRepository();
     	

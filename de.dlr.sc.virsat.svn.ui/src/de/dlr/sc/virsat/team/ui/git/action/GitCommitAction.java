@@ -9,15 +9,22 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.ui.git.action;
 
-import java.util.Collection;
+import java.io.ByteArrayInputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.egit.core.Activator;
@@ -61,23 +68,23 @@ public class GitCommitAction extends AbstractHandler {
 		ed.saveAll();
 		ed.getCommandStack().flush();
 		
+		// Grab the git index
 		Repository gitRepository = RepositoryMapping.getMapping(selectedProject).getRepository();
     	IndexDiffCache diffCache = Activator.getDefault().getIndexDiffCache();
 		IndexDiffCacheEntry diffCacheEntry = diffCache.getIndexDiffCacheEntry(gitRepository);
-		
-		// Make sure the index is up-to date
-		Job refreshJob = diffCacheEntry.createRefreshResourcesAndIndexDiffJob();
-		refreshJob.schedule();
-		try {
-			refreshJob.join();
-		} catch (InterruptedException e1) {
-			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Job for refreshing git index got interrupted " + e1.getMessage());
-			StatusManager.getManager().handle(status, StatusManager.LOG);
-		}
-		
     	IndexDiffData indexDiff = diffCacheEntry.getIndexDiff();
 		
-		try {
+    	try {
+    		createEmptyObjectsForEmptyFolders(indexDiff.getUntrackedFolders());
+	    	
+			// Make sure the index is up-to date
+			Job refreshJob = diffCacheEntry.createRefreshResourcesAndIndexDiffJob();
+			refreshJob.schedule();
+			refreshJob.join();
+			
+			// Re-get the index to get all updates of the refresh
+			indexDiff = diffCacheEntry.getIndexDiff();
+			
 			// Check if there are local changes. If so, then we need to commit all changes and then push them. 
 			// If not, we only need to push.
 			if (indexDiff.hasChanges()) {
@@ -90,28 +97,84 @@ public class GitCommitAction extends AbstractHandler {
 					return null;
 				}
 				
-        		// Add all changed files to index
-				Collection<IResource> changedResources = indexDiff.getChangedResources();
-	        	AddToIndexOperation addToIndexOperation = new AddToIndexOperation(changedResources);
-	        	addToIndexOperation.execute(new NullProgressMonitor());
-	        	
-	        	// Commit all changes
-	        	CommitHelper commitHelper = new CommitHelper(gitRepository);
-	        	CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(), commitHelper.getCommitter(), commitMessageDialog.getCommitMessage());
-				commitOperation.setCommitAll(true);
-				commitOperation.execute(new NullProgressMonitor());
+				gitTrackFiles(indexDiff.getUntracked());
+				gitCommit(gitRepository, commitMessageDialog.getCommitMessage());
 			}
 			
 			// Push commits to remote
-			RemoteConfig rc = SimpleConfigurePushDialog.getConfiguredRemote(gitRepository);
-			PushOperationUI push = new PushOperationUI(gitRepository, rc.getName(), false);
-			push.setCredentialsProvider(new EGitCredentialsProvider());
-			push.start();
-		} catch (CoreException e) {
-			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute Git Commit! " + e.getMessage());
+			gitPush(gitRepository);
+		} catch (CoreException | InterruptedException e) {
+			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute Git Commit!", e);
 			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 		} 
 		 
 		return null;
+	}
+	
+	/**
+	 * Creates .empty files within all untracked empty folders.
+	 * To find the empty folders we traverse the file tree of all untracked folders.
+	 * @param untrackedFolders the folders not tracked by git
+	 * @throws CoreException 
+	 */
+	private void createEmptyObjectsForEmptyFolders(Set<String> untrackedFolders) throws CoreException {
+    	for (String untrackedFolder : untrackedFolders) {
+			IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(new Path(untrackedFolder));
+			if (folder.exists()) {
+				folder.accept(new IResourceVisitor() {
+					@Override
+					public boolean visit(IResource resource) throws CoreException {
+						if (resource instanceof IFolder) {
+							IFolder subFolder = (IFolder) resource;
+							boolean isEmptyFolder = subFolder.members().length == 0;
+		    				if (isEmptyFolder) {
+		    					IFile emptyFile = subFolder.getFile(".empty");
+			    				emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.HIDDEN, null);
+		    				}
+						}
+						return true;
+					}
+				});
+			}
+    	}
+	}
+	
+	/**
+	 * Tells git to track all passed file paths by adding them to the git index
+	 * @param filePaths the paths of all files to be tracked
+	 * @throws CoreException 
+	 */
+	private void gitTrackFiles(Set<String> filePaths) throws CoreException {
+		Set<IResource> resources = new HashSet<>();
+		for (String filePath : filePaths) {
+			IResource resource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
+			resources.add(resource);
+		}
+    	AddToIndexOperation addToIndexOperation = new AddToIndexOperation(resources);
+    	addToIndexOperation.execute(new NullProgressMonitor());
+	}
+	
+	/**
+	 * Performs a git commit
+	 * @param gitRepository the repository to commit
+	 * @param commitMessage the commit message
+	 * @throws CoreException 
+	 */
+	private void gitCommit(Repository gitRepository, String commitMessage) throws CoreException {
+		CommitHelper commitHelper = new CommitHelper(gitRepository);
+    	CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(), commitHelper.getCommitter(), commitMessage);
+		commitOperation.setCommitAll(true);
+		commitOperation.execute(new NullProgressMonitor());
+	}
+	
+	/**
+	 * Performs a git push
+	 * @param gitRepository the repository to push
+	 */
+	private void gitPush(Repository gitRepository) {
+		RemoteConfig rc = SimpleConfigurePushDialog.getConfiguredRemote(gitRepository);
+		PushOperationUI push = new PushOperationUI(gitRepository, rc.getName(), false);
+		push.setCredentialsProvider(new EGitCredentialsProvider());
+		push.start();
 	}
 }
