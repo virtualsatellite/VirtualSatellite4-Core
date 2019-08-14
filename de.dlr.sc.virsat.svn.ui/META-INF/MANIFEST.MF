@@ -24,4 +24,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jgit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Automatic-Module-Name: de.dlr.sc.virsat.svn.ui
+Automatic-Module-Name: de.dlr.sc.virsat.team.ui

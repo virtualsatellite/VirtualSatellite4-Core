@@ -68,7 +68,7 @@ Germany
       <feature id="de.dlr.sc.virsat.uiengine.feature"/>
       <feature id="de.dlr.sc.virsat.build.feature"/>
       <feature id="de.dlr.sc.virsat.apps.feature"/>
-      <feature id="de.dlr.sc.virsat.svn.feature"/>
+      <feature id="de.dlr.sc.virsat.team.feature"/>
       <feature id="de.dlr.sc.virsat.dependencies.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.ps.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature"/>

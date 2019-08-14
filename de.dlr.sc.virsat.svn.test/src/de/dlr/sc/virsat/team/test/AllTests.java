@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.svn.test;
+package de.dlr.sc.virsat.team.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -124,8 +124,8 @@
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
             class="de.dlr.sc.virsat.team.ui.propertyTester.VirSatPropertyTesterSharedProject"
-            id="de.dlr.sc.virsat.svn.ui.ProjectShared"
-            namespace="de.dlr.sc.virsat.svn.ui"
+            id="de.dlr.sc.virsat.team.ui.ProjectShared"
+            namespace="de.dlr.sc.virsat.team.ui"
             properties="svnEnabled, gitEnabled"
             type="java.lang.Object">
       </propertyTester>
