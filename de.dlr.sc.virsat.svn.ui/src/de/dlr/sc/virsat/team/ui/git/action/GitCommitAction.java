@@ -19,7 +19,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.egit.core.Activator;
+import org.eclipse.egit.core.internal.indexdiff.IndexDiffCache;
 import org.eclipse.egit.core.internal.indexdiff.IndexDiffCacheEntry;
 import org.eclipse.egit.core.internal.indexdiff.IndexDiffData;
 import org.eclipse.egit.core.op.AddToIndexOperation;
@@ -37,6 +39,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 import de.dlr.sc.virsat.svn.ui.dialog.CommitMessageDialog;
 
@@ -53,16 +56,31 @@ public class GitCommitAction extends AbstractHandler {
 		VirSatSelectionHelper selectionHelper = new VirSatSelectionHelper(eventSelection);
 		IProject selectedProject = selectionHelper.getProjectResource();
 		
+		// Save all in-memory changes
+		VirSatTransactionalEditingDomain ed = selectionHelper.getEditingDomain();
+		ed.saveAll();
+		ed.getCommandStack().flush();
+		
 		Repository gitRepository = RepositoryMapping.getMapping(selectedProject).getRepository();
-    	IndexDiffCacheEntry diffCacheEntry = Activator.getDefault()
-				.getIndexDiffCache().getIndexDiffCacheEntry(gitRepository);
+    	IndexDiffCache diffCache = Activator.getDefault().getIndexDiffCache();
+		IndexDiffCacheEntry diffCacheEntry = diffCache.getIndexDiffCacheEntry(gitRepository);
+		
+		// Make sure the index is up-to date
+		Job refreshJob = diffCacheEntry.createRefreshResourcesAndIndexDiffJob();
+		refreshJob.schedule();
+		try {
+			refreshJob.join();
+		} catch (InterruptedException e1) {
+			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Job for refreshing git index got interrupted " + e1.getMessage());
+			StatusManager.getManager().handle(status, StatusManager.LOG);
+		}
+		
     	IndexDiffData indexDiff = diffCacheEntry.getIndexDiff();
-    	Collection<IResource> changedResources = indexDiff.getChangedResources();
 		
 		try {
 			// Check if there are local changes. If so, then we need to commit all changes and then push them. 
 			// If not, we only need to push.
-			if (!changedResources.isEmpty()) {
+			if (indexDiff.hasChanges()) {
 				CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(), 
 						 "Commit Message", "Please enter a commit message describing your changes", "");
 				
@@ -73,6 +91,7 @@ public class GitCommitAction extends AbstractHandler {
 				}
 				
         		// Add all changed files to index
+				Collection<IResource> changedResources = indexDiff.getChangedResources();
 	        	AddToIndexOperation addToIndexOperation = new AddToIndexOperation(changedResources);
 	        	addToIndexOperation.execute(new NullProgressMonitor());
 	        	
