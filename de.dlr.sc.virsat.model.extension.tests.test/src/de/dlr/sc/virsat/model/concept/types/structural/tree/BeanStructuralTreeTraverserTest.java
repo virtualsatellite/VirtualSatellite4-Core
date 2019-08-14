@@ -82,8 +82,8 @@ public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 		BeanStructuralTreeTraverser traverser = new BeanStructuralTreeTraverser();
 		traverser.traverse(n, matcher);
 		
-		final int THREE = 3;
-		assertEquals(THREE, matcher.foundMatches.size());
+		final int EXPECTED_MATCHES = 3;
+		assertEquals(EXPECTED_MATCHES, matcher.foundMatches.size());
 		assertEquals(null, matcher.foundMatches.get(n2));
 		assertEquals(null, matcher.foundMatches.get(n1));
 		assertEquals(n1, matcher.foundMatches.get(n12));
