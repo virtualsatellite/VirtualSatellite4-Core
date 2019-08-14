@@ -107,7 +107,7 @@ public class BeanStructuralElementInstanceTest extends ABeanStructuralElementIns
 	}
 	
 	@Test
-	public void testIsRoot() {
+	public void testCanBeRoot() {
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		aBeanSei = new BeanStructuralElementInstance(sei);
@@ -116,19 +116,19 @@ public class BeanStructuralElementInstanceTest extends ABeanStructuralElementIns
 		se.setIsRootStructuralElement(true);
 		
 		assertNull("Make sure there is no SE yet assigned", sei.getType());
-		assertFalse("There is no SE yet assigned to the Sei", aBeanSei.isRoot());
+		assertFalse("There is no SE yet assigned to the Sei", aBeanSei.canBeRoot());
 		
 		// Now assign the SE and check the bean tells it is a root
 		sei.setType(se);
-		assertTrue("now the bean is a Root SEI", aBeanSei.isRoot());
+		assertTrue("now the bean can be a Root SEI", aBeanSei.canBeRoot());
 		
 		// Now change the SE state
 		se.setIsRootStructuralElement(false);
-		assertFalse("The bean is not a sei anymore", aBeanSei.isRoot());
+		assertFalse("The bean is not a sei of a root se anymore", aBeanSei.canBeRoot());
 		
 		// remove the SEI to see if we avoid a NPE
 		aBeanSei.setStructuralElementInstance(null);
-		assertFalse("A false is expected but not NPW", aBeanSei.isRoot());
+		assertFalse("A false is expected but not NPE", aBeanSei.canBeRoot());
 	}
 	
 	// ------------------------------------------------------------------

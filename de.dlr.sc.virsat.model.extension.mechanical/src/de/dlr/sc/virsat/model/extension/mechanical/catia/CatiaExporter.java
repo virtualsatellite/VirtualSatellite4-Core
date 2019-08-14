@@ -139,7 +139,7 @@ public class CatiaExporter {
 			public boolean isMatching(IBeanStructuralElementInstance treeNode) {
 				visCa = treeNode.getFirst(Visualisation.class);
 				hasVisCa = visCa != null;
-				isRoot = treeNode.isRoot();
+				isRoot = treeNode == productBean;
 				
 				return isRoot || hasVisCa;
 			}

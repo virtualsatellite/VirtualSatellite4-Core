@@ -259,7 +259,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@Override
-	public boolean isRoot() {
+	public boolean canBeRoot() {
 		if (sei != null && sei.getType() != null) {
 			StructuralElement se = sei.getType();
 			return se.isIsRootStructuralElement();
