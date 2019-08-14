@@ -41,7 +41,7 @@ public class DVLMValuePropertyInstanceItemProvider extends ValuePropertyInstance
 		if (object instanceof ValuePropertyInstance) {
 			ValuePropertyInstance vpi = (ValuePropertyInstance) object;
 			String value = vpi.getValue() == null ? "" : vpi.getValue();
-			
+
 			//If string is multiline then just show the first line
 			String lineSeperator = System.getProperty(LINE_SEPERATOR_PROPERTY);
 			if (value.indexOf(lineSeperator) > 0) {
