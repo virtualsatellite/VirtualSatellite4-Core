@@ -20,14 +20,18 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.team.svn.core.operation.CompositeOperation;
+import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
+import org.eclipse.team.svn.ui.SVNTeamUIPlugin;
 import org.eclipse.team.svn.ui.SVNUIMessages;
 import org.eclipse.team.svn.ui.action.local.CommitAction;
 import org.eclipse.team.svn.ui.dialog.TagModifyWarningDialog;
+import org.eclipse.team.svn.ui.preferences.SVNTeamPreferences;
 import org.eclipse.team.svn.ui.synchronize.SVNChangeSetCapability;
 import org.eclipse.team.svn.ui.utility.CommitActionUtility;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -105,6 +109,10 @@ public class CustomCommitAction extends CommitAction {
 	    // all other settings use a default value
 	    CommitMessageDialog commitMessageDialog = new CommitMessageDialog(this.getShell(), SVNUIMessages.CommitPanel_Title, "Please enter a commit message describing your changes", proposedComment);
         
+	    IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
+		String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
+		commitMessageDialog.setTemplates(templates);
+		
         if (commitMessageDialog.open() == 0) {
         	//we trick the commit operation with provide twice an empty array of resources for the nonSelectedResources and the treatAsEdit entry
         	IResource[] emptyResourcesArray = new Resource[0];

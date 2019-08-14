@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.svn.ui.dialog;
 
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -22,9 +21,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.team.svn.core.utility.FileUtility;
-import org.eclipse.team.svn.ui.SVNTeamUIPlugin;
-import org.eclipse.team.svn.ui.preferences.SVNTeamPreferences;
 
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 
@@ -38,12 +34,12 @@ public class CommitMessageDialog extends Dialog {
 	public static final String TEMPLATE_USER_NAME = "@user";
 	public static final int FOUR_LINES_HEIGHT = 4;
 	
-	
 	private String title;
 	private String dialogMessage;
 	private String commitMessage;
 	private Text text;
-
+	private String[] templates = new String[0];
+	
 	/**
 	 * @param parentShell the parent shell of the dialog
 	 * @param dialogTitle the title string
@@ -65,6 +61,14 @@ public class CommitMessageDialog extends Dialog {
 		}
 	}
 
+	/**
+	 * Sets the the available templates
+	 * @param templates the available templates
+	 */
+	public void setTemplates(String[] templates) {
+		this.templates = templates;
+	}
+	
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
@@ -72,9 +76,6 @@ public class CommitMessageDialog extends Dialog {
 		Label label = new Label(composite, SWT.WRAP);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true));
 		label.setText(dialogMessage);
-
-		IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
-		String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
 		
 		Combo combo = new Combo(composite, SWT.READ_ONLY);
 		combo.setItems(templates);
