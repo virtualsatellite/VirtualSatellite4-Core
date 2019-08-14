@@ -25,7 +25,7 @@
                   <test
                         args="org.eclipse.team.core.repository,org.eclipse.team.svn.core.svnnature"
                         forcePluginActivation="true"
-                        property="de.dlr.sc.virsat.svn.ui.projectPersistentProperty">
+                        property="svnEnabled">
                   </test>
                </iterate>
             </with>
@@ -42,7 +42,7 @@
                   <test
                         args="org.eclipse.team.core.repository,org.eclipse.team.svn.core.svnnature"
                         forcePluginActivation="true"
-                        property="de.dlr.sc.virsat.svn.ui.projectPersistentProperty">
+                        property="svnEnabled">
                   </test>
                </iterate>
             </with>
@@ -123,10 +123,10 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="de.dlr.sc.virsat.svn.ui.propertyTester.VirSatPropertyTesterPersistentProject"
+            class="de.dlr.sc.virsat.svn.ui.propertyTester.VirSatPropertyTesterSharedProject"
             id="de.dlr.sc.virsat.svn.ui.PersistentVirSatProjectResource"
             namespace="de.dlr.sc.virsat.svn.ui"
-            properties="projectPersistentProperty, gitEnabled"
+            properties="svnEnabled, gitEnabled"
             type="java.lang.Object">
       </propertyTester>
    </extension>

@@ -25,12 +25,12 @@ import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
  */
 
 @SuppressWarnings("restriction")
-public class VirSatPropertyTesterPersistentProject extends ResourcePropertyTester {
+public class VirSatPropertyTesterSharedProject extends ResourcePropertyTester {
 
 	/**
 	 * The constructor
 	 */
-	public VirSatPropertyTesterPersistentProject() {
+	public VirSatPropertyTesterSharedProject() {
 		super();
 	}
 	
@@ -44,8 +44,10 @@ public class VirSatPropertyTesterPersistentProject extends ResourcePropertyTeste
 			if (method.equals("gitEnabled")) {
 				RepositoryMapping mapping = RepositoryMapping.getMapping(iProject);
 				return mapping != null && mapping.getRepository() != null;
+			} else if (method.equals("svnEnabled")) {
+				return super.test(iProject, ResourcePropertyTester.PROJECT_PERSISTENT_PROPERTY, args, expectedValue);
 			} else {
-				return super.test(iProject, method, args, expectedValue);
+				throw new IllegalArgumentException("Unknown persistence property check: " +  method);
 			}
 		} else {
 			return false;
