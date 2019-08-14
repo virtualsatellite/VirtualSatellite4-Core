@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Simple SVN Connector UI
-Bundle-SymbolicName: de.dlr.sc.virsat.svn.ui;singleton:=true
+Bundle-SymbolicName: de.dlr.sc.virsat.team.ui;singleton:=true
 Bundle-Version: 4.9.1.qualifier
 Bundle-Activator: de.dlr.sc.virsat.svn.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.ui,
- de.dlr.sc.virsat.svn,
+ de.dlr.sc.virsat.team,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.ui,
  org.eclipse.team.svn,
