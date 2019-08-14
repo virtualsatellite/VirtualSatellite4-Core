@@ -21,8 +21,8 @@ SPDX-License-Identifier: EPL-2.0
     <version>4.9.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>de.dlr.sc.virsat.svn.feature</artifactId>
+  <artifactId>de.dlr.sc.virsat.team.feature</artifactId>
   <packaging>eclipse-feature</packaging>
    
-  <name>de.dlr.sc.virsat.svn.feature</name>
+  <name>de.dlr.sc.virsat.team.feature</name>
 </project> 

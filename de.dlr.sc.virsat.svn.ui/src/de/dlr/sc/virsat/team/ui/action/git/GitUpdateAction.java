@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.team.ui.git.action;
+package de.dlr.sc.virsat.team.ui.action.git;
 
 import java.util.Collections;
 

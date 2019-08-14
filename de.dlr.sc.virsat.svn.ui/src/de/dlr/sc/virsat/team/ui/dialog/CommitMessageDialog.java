@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.svn.ui.dialog;
+package de.dlr.sc.virsat.team.ui.dialog;
 
 
 import org.eclipse.jface.dialogs.Dialog;

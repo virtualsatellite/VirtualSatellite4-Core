@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Core Simple SVN Connector Tests
+Bundle-Name: VirSat Core Simple Team Connector Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.team.test
 Bundle-Version: 4.9.1.qualifier
 Fragment-Host: de.dlr.sc.virsat.team;bundle-version="0.0.1"

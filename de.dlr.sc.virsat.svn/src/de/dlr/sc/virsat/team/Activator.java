@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.svn;
+package de.dlr.sc.virsat.team;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

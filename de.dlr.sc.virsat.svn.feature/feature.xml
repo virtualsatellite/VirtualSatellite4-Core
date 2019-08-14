@@ -43,14 +43,14 @@ by German Aerospace Center (DLR e.V.)
    </requires>
 
    <plugin
-         id="de.dlr.sc.virsat.svn"
+         id="de.dlr.sc.virsat.team"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.dlr.sc.virsat.svn.ui"
+         id="de.dlr.sc.virsat.team.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

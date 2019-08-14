@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.team.ui.git.action;
+package de.dlr.sc.virsat.team.ui.action.git;
 
 import java.io.ByteArrayInputStream;
 import java.util.HashSet;
@@ -48,7 +48,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
-import de.dlr.sc.virsat.svn.ui.dialog.CommitMessageDialog;
+import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 
 /**
  * This class performs a git commit + push.
