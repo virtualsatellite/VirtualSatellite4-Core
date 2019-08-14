@@ -48,7 +48,7 @@ import de.dlr.sc.virsat.svn.ui.dialog.CommitMessageDialog;
  */
 
 @SuppressWarnings("restriction")
-public class CustomCommitAction extends CommitAction {
+public class SVNCommitAction extends CommitAction {
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {

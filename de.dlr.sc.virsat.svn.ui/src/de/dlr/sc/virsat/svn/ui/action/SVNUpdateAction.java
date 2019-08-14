@@ -38,7 +38,7 @@ import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
  *
  */
 @SuppressWarnings("restriction")
-public class CustomUpdateAction extends UpdateAction {
+public class SVNUpdateAction extends UpdateAction {
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
