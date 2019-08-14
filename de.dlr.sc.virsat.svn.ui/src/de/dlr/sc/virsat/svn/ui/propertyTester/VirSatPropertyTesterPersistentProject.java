@@ -42,7 +42,8 @@ public class VirSatPropertyTesterPersistentProject extends ResourcePropertyTeste
 		
 		if (iProject != null) {
 			if (method.equals("gitEnabled")) {
-				return RepositoryMapping.getMapping(iProject).getRepository() != null;
+				RepositoryMapping mapping = RepositoryMapping.getMapping(iProject);
+				return mapping != null && mapping.getRepository() != null;
 			} else {
 				return super.test(iProject, method, args, expectedValue);
 			}

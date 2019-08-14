@@ -11,14 +11,6 @@
             id="de.dlr.sc.virsat.two.ui.command.update"
             name="Update Project from Repository">
       </command>
-      <command
-            id="de.dlr.sc.virsat.team.ui.git.command.commit"
-            name="Commit Project to Repository">
-      </command>
-      <command
-            id="de.dlr.sc.virsat.team.ui.git.command.update"
-            name="Update Project from Repository">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -42,7 +34,7 @@
       <handler
             class="de.dlr.sc.virsat.svn.ui.action.CustomUpdateAction"
             commandId="de.dlr.sc.virsat.two.ui.command.update">
-         <enabledWhen>
+         <activeWhen>
             <with
                   variable="selection">
                <iterate
@@ -54,12 +46,12 @@
                   </test>
                </iterate>
             </with>
-         </enabledWhen>
+         </activeWhen>
       </handler>
  	  <handler
             class="de.dlr.sc.virsat.team.ui.git.action.GitCommitAction"
-            commandId="de.dlr.sc.virsat.team.ui.git.command.commit">
-         <enabledWhen>
+            commandId="de.dlr.sc.virsat.two.ui.command.commit">
+         <activeWhen>
             <with
                   variable="selection">
                <iterate
@@ -70,12 +62,12 @@
                   </test>
                </iterate>
             </with>
-         </enabledWhen>
+         </activeWhen>
       </handler>
       <handler
             class="de.dlr.sc.virsat.team.ui.git.action.GitUpdateAction"
-            commandId="de.dlr.sc.virsat.team.ui.git.command.update">
-         <enabledWhen>
+            commandId="de.dlr.sc.virsat.two.ui.command.update">
+         <activeWhen>
             <with
                   variable="selection">
                <iterate
@@ -86,7 +78,7 @@
                   </test>
                </iterate>
             </with>
-         </enabledWhen>
+         </activeWhen>
       </handler>
    </extension>
    <extension
@@ -103,28 +95,12 @@
                icon="resources/commit.gif"
                label="Commit Project to Repository"
                style="push">
-               <visibleWhen checkEnabled="true" />
          </command>
          <command
                commandId="de.dlr.sc.virsat.two.ui.command.update"
                icon="resources/update.gif"
                label="Update Project from Repository"
                style="push">
-               <visibleWhen checkEnabled="true" />
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.git.command.commit"
-               icon="resources/commit.gif"
-               label="Commit Project to Repository"
-               style="push">
-               <visibleWhen checkEnabled="true" />
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.git.command.update"
-               icon="resources/update.gif"
-               label="Update Project from Repository"
-               style="push">
-               <visibleWhen checkEnabled="true" />
          </command>
       </menuContribution>
       <menuContribution
@@ -135,28 +111,12 @@
                icon="resources/commit.gif"
                label="Commit Project to Repository"
                style="push">
-               <visibleWhen checkEnabled="true" />
          </command>
          <command
                commandId="de.dlr.sc.virsat.two.ui.command.update"
                icon="resources/update.gif"
                label="Update Project from Repository"
                style="push">
-               <visibleWhen checkEnabled="true" />
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.git.command.commit"
-               icon="resources/commit.gif"
-               label="Commit Project to Repository"
-               style="push">
-               <visibleWhen checkEnabled="true" />
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.git.command.update"
-               icon="resources/update.gif"
-               label="Update Project from Repository"
-               style="push">
-               <visibleWhen checkEnabled="true" />
          </command>
       </menuContribution>
    </extension>
