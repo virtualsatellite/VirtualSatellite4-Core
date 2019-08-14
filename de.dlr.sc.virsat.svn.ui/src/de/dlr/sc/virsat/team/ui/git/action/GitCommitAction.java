@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package de.dlr.sc.virsat.team.ui.git.action;
 
 import java.util.Collection;
@@ -9,12 +18,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.egit.core.Activator;
 import org.eclipse.egit.core.internal.indexdiff.IndexDiffCacheEntry;
 import org.eclipse.egit.core.internal.indexdiff.IndexDiffData;
 import org.eclipse.egit.core.op.AddToIndexOperation;
 import org.eclipse.egit.core.op.CommitOperation;
 import org.eclipse.egit.core.project.RepositoryMapping;
+import org.eclipse.egit.ui.internal.commit.CommitHelper;
 import org.eclipse.egit.ui.internal.credentials.EGitCredentialsProvider;
 import org.eclipse.egit.ui.internal.push.PushOperationUI;
 import org.eclipse.egit.ui.internal.push.SimpleConfigurePushDialog;
@@ -24,10 +35,15 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteConfig;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 import de.dlr.sc.virsat.svn.ui.dialog.CommitMessageDialog;
 
+/**
+ * This class performs a git commit + push.
+ * The commit is only performed if there are unstaged changes.
+ */
 @SuppressWarnings("restriction")
 public class GitCommitAction extends AbstractHandler {
 
@@ -52,6 +68,7 @@ public class GitCommitAction extends AbstractHandler {
 				
 				int status = commitMessageDialog.open();
 				if (status != Window.OK) {
+					// Commit canceled
 					return null;
 				}
 				
@@ -60,7 +77,8 @@ public class GitCommitAction extends AbstractHandler {
 	        	addToIndexOperation.execute(new NullProgressMonitor());
 	        	
 	        	// Commit all changes
-				CommitOperation commitOperation = new CommitOperation(gitRepository, "author {author_name} <{author_email}>", "author {author_name} <{author_email}>", commitMessageDialog.getCommitMessage());
+	        	CommitHelper commitHelper = new CommitHelper(gitRepository);
+	        	CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(), commitHelper.getCommitter(), commitMessageDialog.getCommitMessage());
 				commitOperation.setCommitAll(true);
 				commitOperation.execute(new NullProgressMonitor());
 			}
@@ -71,7 +89,8 @@ public class GitCommitAction extends AbstractHandler {
 			push.setCredentialsProvider(new EGitCredentialsProvider());
 			push.start();
 		} catch (CoreException e) {
-			e.printStackTrace();
+			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute Git Commit! " + e.getMessage());
+			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 		} 
 		 
 		return null;

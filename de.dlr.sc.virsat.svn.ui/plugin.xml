@@ -73,7 +73,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="de.dlr.sc.virsat.svn.ui.action.CustomUpdateAction"
+            class="de.dlr.sc.virsat.team.ui.git.action.GitUpdateAction"
             commandId="de.dlr.sc.virsat.team.ui.git.command.update">
          <enabledWhen>
             <with
