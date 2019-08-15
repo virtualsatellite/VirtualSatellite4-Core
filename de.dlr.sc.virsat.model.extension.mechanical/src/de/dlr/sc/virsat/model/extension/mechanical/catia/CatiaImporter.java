@@ -9,15 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Status;
@@ -29,14 +27,16 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.mechanical.Activator;
+import de.dlr.sc.virsat.model.extension.mechanical.catia.command.CopyResourceCommand;
 import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelper;
-import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
@@ -97,13 +97,14 @@ public class CatiaImporter {
 
 	/**
 	 * Maps from the IDs of JSON elements to existing model elements in the Virtual
-	 * Satellite model 
+	 * Satellite model
 	 * 
 	 * @param jsonContent
 	 *            the JSON content to be imported
 	 * @param existingTree
 	 *            a tree element the imported JSON should be mapped to
-	 * @return a map from UUID in the JSON file to their existing tree elements in the model
+	 * @return a map from UUID in the JSON file to their existing tree elements in
+	 *         the model
 	 */
 	public Map<String, StructuralElementInstance> mapJsonUuidToSEI(JsonObject jsonContent,
 			IBeanStructuralElementInstance existingTree) {
@@ -169,7 +170,7 @@ public class CatiaImporter {
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 
 		String name;
-		
+
 		double sizeX;
 		double sizeY;
 		double sizeZ;
@@ -198,21 +199,16 @@ public class CatiaImporter {
 			stlFile = part.getString(CatiaProperties.PART_STL_PATH);
 		}
 
-		importCommand.append(beanSEI.setName(editingDomain, name));
-		
-		importCommand.append(visualisation.getSizeXBean().setValueAsBaseUnit(editingDomain, sizeX));
-		importCommand.append(visualisation.getSizeYBean().setValueAsBaseUnit(editingDomain, sizeY));
-		importCommand.append(visualisation.getSizeZBean().setValueAsBaseUnit(editingDomain, sizeZ));
-		
-		importCommand.append(visualisation.getRadiusBean().setValueAsBaseUnit(editingDomain, radius));
+		setName(importCommand, beanSEI, name);
 
-		importCommand.append(visualisation.setShape(editingDomain, shape));
-		importCommand.append(visualisation.setColor(editingDomain, color));
+		setFloatValue(importCommand, visualisation.getSizeXBean(), sizeX);
+		setFloatValue(importCommand, visualisation.getSizeYBean(), sizeY);
+		setFloatValue(importCommand, visualisation.getSizeZBean(), sizeZ);
 
-		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
-			importCommand.append(visualisation.setGeometryFile(editingDomain, 
-					copyAndGetPlatformResource(stlFile, beanSEI)));
-		}
+		setFloatValue(importCommand, visualisation.getRadiusBean(), radius);
+
+		setColor(importCommand, visualisation, color);
+		setShape(importCommand, visualisation, shape, stlFile);
 
 		return true;
 
@@ -234,16 +230,16 @@ public class CatiaImporter {
 	 */
 	protected boolean updateSeiFromProduct(CompoundCommand importCommand, StructuralElementInstance sei,
 			JsonObject product) {
-		
+
 		if (!hasVisualisationProductProperties(product)) {
 			return true;
 		}
-		
+
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
 
 		String name;
-		
+
 		double posX;
 		double posY;
 		double posZ;
@@ -257,7 +253,7 @@ public class CatiaImporter {
 
 		try {
 			name = product.getString(CatiaProperties.NAME);
-			
+
 			posX = product.getDouble(CatiaProperties.PRODUCT_POS_X);
 			posY = product.getDouble(CatiaProperties.PRODUCT_POS_Y);
 			posZ = product.getDouble(CatiaProperties.PRODUCT_POS_Z);
@@ -270,7 +266,7 @@ public class CatiaImporter {
 
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"CatiaImport: Failed to perform import! Could not load all required properties", e));
+					"CatiaImport: Failed to perform import! Could not load all required properties"));
 			return false;
 		}
 
@@ -278,22 +274,17 @@ public class CatiaImporter {
 			stlFile = product.getString(CatiaProperties.PART_STL_PATH);
 		}
 
-		importCommand.append(beanSEI.setName(editingDomain, name));
-		
-		importCommand.append(visualisation.getPositionXBean().setValueAsBaseUnit(editingDomain, posX));
-		importCommand.append(visualisation.getPositionYBean().setValueAsBaseUnit(editingDomain, posY));
-		importCommand.append(visualisation.getPositionZBean().setValueAsBaseUnit(editingDomain, posZ));
+		setName(importCommand, beanSEI, name);
 
-		importCommand.append(visualisation.getRotationXBean().setValueAsBaseUnit(editingDomain, rotX));
-		importCommand.append(visualisation.getRotationYBean().setValueAsBaseUnit(editingDomain, rotY));
-		importCommand.append(visualisation.getRotationZBean().setValueAsBaseUnit(editingDomain, rotZ));
+		setFloatValue(importCommand, visualisation.getPositionXBean(), posX);
+		setFloatValue(importCommand, visualisation.getPositionYBean(), posY);
+		setFloatValue(importCommand, visualisation.getPositionZBean(), posZ);
 
-		importCommand.append(visualisation.setShape(editingDomain, shape));
+		setFloatValue(importCommand, visualisation.getRotationXBean(), rotX);
+		setFloatValue(importCommand, visualisation.getRotationYBean(), rotY);
+		setFloatValue(importCommand, visualisation.getRotationZBean(), rotZ);
 
-		if (shape.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
-			importCommand
-					.append(visualisation.setGeometryFile(editingDomain, copyAndGetPlatformResource(stlFile, beanSEI)));
-		}
+		setShape(importCommand, visualisation, shape, stlFile);
 
 		return true;
 
@@ -301,7 +292,9 @@ public class CatiaImporter {
 
 	/**
 	 * Returns whether the part contains any visualisation properties
-	 * @param product the JSON object of the product
+	 * 
+	 * @param product
+	 *            the JSON object of the product
 	 * @return true if the product has any visualisation properties
 	 */
 	private boolean hasVisualisationProductProperties(JsonObject product) {
@@ -315,48 +308,50 @@ public class CatiaImporter {
 	}
 
 	/**
-	 * Copy a given stl resource to the workspace and return its URI
+	 * Convert the STL file path to a path in the workspace
 	 * 
 	 * @param stlPath
-	 *            the stl resource's path
+	 *            the external STL file path
 	 * @param seiBean
-	 *            a structural element instance bean
-	 * @return the URI
+	 *            the SEI bean
+	 * @return the path of the internal file location
 	 */
-	private URI copyAndGetPlatformResource(String stlPath, BeanStructuralElementInstance seiBean) {
+	private Path getLocalPath(String stlPath, IBeanStructuralElementInstance seiBean) {
 
-		URI stlURI = null;
 		// Copy file to workspace
 		Path catiaSTLPath = Paths.get(stlPath);
-		
+
 		Path fileName = catiaSTLPath.getFileName();
 		if (fileName == null) {
-			throw new IllegalArgumentException("Invalid path to STL file. Can't extract internal directory: " + stlPath);
+			throw new IllegalArgumentException(
+					"Invalid path to STL file. Can't extract internal directory: " + stlPath);
 		}
-		
+
 		String stlName = fileName.toString();
-		
-		try {
-			String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
-			String documentPath = VirSatProjectCommons.getDocumentFolder(seiBean.getStructuralElementInstance())
-					.getFullPath().toOSString();
 
-			Path localPath = Paths.get(documentPath, stlName);
-			Path workspace = Paths.get(workspacePath, localPath.toString());
+		String documentPath = VirSatProjectCommons.getDocumentFolder(seiBean.getStructuralElementInstance())
+				.getFullPath().toOSString();
 
-			Files.copy(catiaSTLPath, workspace, StandardCopyOption.REPLACE_EXISTING);
-			stlURI = URI.createPlatformResourceURI(localPath.toString(), false);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return stlURI;
-
+		Path localPath = Paths.get(documentPath, stlName);
+		return localPath;
 	}
 
 	/**
-	 * Create a map of all UUIDs to their structural element instances in a tree and their super instances
+	 * Convert a path within the workspace to an absolute path by appending the
+	 * workspace path
+	 * 
+	 * @param pathInWorkspace
+	 *            a path within the workspace
+	 * @return the absolute path
+	 */
+	private Path getAbsolutePath(Path pathInWorkspace) {
+		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
+		return Paths.get(workspacePath, pathInWorkspace.toString());
+	}
+
+	/**
+	 * Create a map of all UUIDs to their structural element instances in a tree and
+	 * their super instances
 	 * 
 	 * @param existingTree
 	 *            the existing tree element in the Virtual Satellite model
@@ -413,12 +408,97 @@ public class CatiaImporter {
 		Repository repository = VirSatResourceSet.getVirSatResourceSet(container.getStructuralElementInstance())
 				.getRepository();
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
-		Concept visConcept = activeConceptHelper.getConcept(Activator.getPluginId());
+		Concept visConcept = activeConceptHelper.getConcept(de.dlr.sc.virsat.model.extension.visualisation.Activator.getPluginId());
 		Visualisation visualisation = new Visualisation(visConcept);
 
 		importCommand.append(container.add(editingDomain, visualisation));
 
 		return visualisation;
+	}
+
+	/**
+	 * Sets a double value to float bean if it is different than the current value
+	 * 
+	 * @param importCommand
+	 *            the import command to append the command to if necessary
+	 * @param floatBean
+	 *            the float bean
+	 * @param value
+	 *            the value to be set
+	 */
+	private void setFloatValue(CompoundCommand importCommand, BeanPropertyFloat floatBean, double value) {
+		if (floatBean.getValueToBaseUnit() != value) {
+			importCommand.append(floatBean.setValueAsBaseUnit(editingDomain, value));
+		}
+	}
+
+	/**
+	 * Sets a shape value if it is different than the current shape
+	 * 
+	 * @param importCommand
+	 *            the import command to append the command to if necessary
+	 * @param visualisation
+	 *            the current visualisation object
+	 * @param value
+	 *            the value to be set
+	 * @param stlFile
+	 *            the STL file path
+	 */
+	private void setShape(CompoundCommand importCommand, Visualisation visualisation, String value, String stlFile) {
+		if (!visualisation.getShape().equals(value)) {
+			importCommand.append(visualisation.setShape(editingDomain, value));
+		}
+		if (value.equals(Visualisation.SHAPE_GEOMETRY_NAME) && stlFile != null) {
+
+			Path localPath = getLocalPath(stlFile, visualisation.getParent());
+			importCommand.append(new CopyResourceCommand(Paths.get(stlFile), getAbsolutePath(localPath)));
+
+			URI uri = URI.createPlatformResourceURI(localPath.toString(), false);
+			
+			// Do null-save comparison of URIs
+			// URIs are not necessarily equal if their underlying path is equal
+			String oldUriString = null;
+			String newUriString = uri.toPlatformString(true);
+			
+			if (visualisation.getGeometryFile() != null) {
+				oldUriString = visualisation.getGeometryFile().toPlatformString(true);
+			} 
+			if (!Objects.equals(oldUriString, newUriString)) {
+				importCommand.append(visualisation.setGeometryFile(editingDomain, uri)); 
+			}
+		}
+	}
+
+	/**
+	 * Sets a color value if it is different than the current color
+	 * 
+	 * @param importCommand
+	 *            the import command to append the command to if necessary
+	 * @param visualisation
+	 *            the current visualisation object
+	 * @param value
+	 *            the value to be set
+	 */
+	private void setColor(CompoundCommand importCommand, Visualisation visualisation, long value) {
+		if (visualisation.getColor() != value) {
+			importCommand.append(visualisation.setColor(editingDomain, value));
+		}
+	}
+
+	/**
+	 * Sets the name value if it is different than the current name
+	 * 
+	 * @param importCommand
+	 *            the import command to append the command to if necessary
+	 * @param seiBean
+	 *            the current structural element instance as bean
+	 * @param value
+	 *            the value to be set
+	 */
+	private void setName(CompoundCommand importCommand, BeanStructuralElementInstance seiBean, String value) {
+		if (value != null && !seiBean.getName().equals(value)) {
+			importCommand.append(seiBean.setName(editingDomain, value));
+		}
 	}
 
 }

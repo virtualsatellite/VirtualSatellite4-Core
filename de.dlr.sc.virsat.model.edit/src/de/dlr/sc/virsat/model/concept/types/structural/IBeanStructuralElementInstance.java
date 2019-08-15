@@ -237,4 +237,10 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	 * @return boolean if there is a Category
 	 */
 	<BEAN_TYPE extends IBeanCategoryAssignment> boolean hasCategory(Class<BEAN_TYPE> catBeanClazz);
+	
+	/**
+	 * Checks if the current Bean SEI can be a root element.
+	 * @return true if this SEI is of SE that can be on root level
+	 */
+	boolean canBeRoot();
 }
