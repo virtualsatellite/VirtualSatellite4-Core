@@ -16,17 +16,22 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 
 /**
@@ -56,6 +61,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	private static final double ATT_2_VALUE = 322.23;
 
 	private Concept requirementsConcept;
+	private Concept conceptPS;
 
 	private RequirementAttribute attributeName;
 	private RequirementAttribute attributeID;
@@ -63,18 +69,50 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	private RequirementAttribute attributeCategory;
 	private RequirementAttribute attributeValue;
 	
+	private RequirementsSpecification targetSpec;
+	private RequirementGroup targetSpecGroup;
+	private RequirementType reqImportType;
+	private RequirementsConfiguration configuration;
+	private StructuralElementInstance reqContainerSEI;
+	private StructuralElementInstance rccSEI;
+	
 	@Before
 	public void setUp() throws CoreException {
+		super.setUp();
 		requirementsConcept = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.requirements");
-		
+		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		addEditingDomainAndRepository();
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				repository.getActiveConcepts().add(requirementsConcept);
+				ConfigurationTree configurationTree = new ConfigurationTree(conceptPS);
+				ElementConfiguration reqContainer = new ElementConfiguration(conceptPS);
+				RequirementsConfigurationCollection rcc = new RequirementsConfigurationCollection(requirementsConcept);
+				configurationTree.add(reqContainer);
+				reqContainerSEI = reqContainer.getStructuralElementInstance();
+				rccSEI = rcc.getStructuralElementInstance();
+				repository.getRootEntities().add(reqContainerSEI);
+				repository.getRootEntities().add(rccSEI);
+				editingDomain.getResourceSet().getAndAddStructuralElementInstanceResource(reqContainerSEI);
+				editingDomain.getResourceSet().getAndAddStructuralElementInstanceResource(rccSEI);
+			}
+		});
+		editingDomain.saveAll();
 	}
 
 	@Test
 	public void testLoadRequirementsToRequirementSpecification() {
-
-		RequirementsSpecification targetSpec = new RequirementsSpecification(requirementsConcept);
-		RequirementType reqImportType = createReqTypeWith3Attributes();
+		
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				reqImportType = createReqTypeWith3Attributes();
+			}
+		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
@@ -114,19 +152,26 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testLoadRequirementsToRequirementGroup() {
 
-		RequirementGroup targetSpec = new RequirementGroup(requirementsConcept);
-		RequirementType reqImportType = createReqTypeWith3Attributes();
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpecGroup = new RequirementGroup(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpecGroup.getTypeInstance());
+				reqImportType = createReqTypeWith3Attributes();
+			}
+		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
-		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getChildren(),
+		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpecGroup.getChildren(),
 				reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberSimpleAtt = 3;
-		Requirement importedReq1 = (Requirement) targetSpec.getChildren().get(0);
-		Requirement importedReq2 = (Requirement) targetSpec.getChildren().get(1);
-		Requirement importedReq3 = (Requirement) targetSpec.getChildren().get(2);
+		Requirement importedReq1 = (Requirement) targetSpecGroup.getChildren().get(0);
+		Requirement importedReq2 = (Requirement) targetSpecGroup.getChildren().get(1);
+		Requirement importedReq3 = (Requirement) targetSpecGroup.getChildren().get(2);
 		
 		assertEquals("Requirement type not set", importedReq1.getReqType(), reqImportType);
 		assertEquals("Requirement type not set", importedReq2.getReqType(), reqImportType);
@@ -155,8 +200,15 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testLoadRequirementsWithEnumeration() {
 
-		RequirementsSpecification targetSpec = new RequirementsSpecification(requirementsConcept);
-		RequirementType reqImportType = createReqTypeWithCategory();
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				reqImportType = createReqTypeWithCategory();
+			}
+		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
@@ -182,8 +234,15 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testLoadRequirementsWithDoubleValue() {
 
-		RequirementsSpecification targetSpec = new RequirementsSpecification(requirementsConcept);
-		RequirementType reqImportType = createReqTypeWithDoubleValue();
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				reqImportType = createReqTypeWithDoubleValue();
+			}
+		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
@@ -209,8 +268,18 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testLoadRequirementsWithoutType() {
 
-		RequirementsSpecification targetSpec = new RequirementsSpecification(requirementsConcept);
-		RequirementsConfiguration configuration = new RequirementsConfiguration(requirementsConcept);
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				reqImportType = createReqTypeWithDoubleValue();
+				configuration = new RequirementsConfiguration(requirementsConcept);
+				rccSEI.getCategoryAssignments().add(configuration.getTypeInstance());
+			}
+		});
+		
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
@@ -219,11 +288,9 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberExpectedAtt = 4;
-		final int indexValueAtt = 4;
+		final int indexValueAtt = 3;
 		Requirement importedReq = (Requirement) targetSpec.getRequirements().get(0);
 		
-		//Check if requirement type was created properly
-		assertEquals("Requirement type not set", importedReq.getReqType(), null);
 
 		RequirementType importedReqType = importedReq.getReqType();
 		assertEquals("Type created", importedReqType, configuration.getTypeDefinitions().get(0));
@@ -293,6 +360,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		req3Att.add(ATT_3_ID);
 		req3Att.add(ATT_3_DESCRIPTION);
 
+		csvContentMatrix.add(header);
 		csvContentMatrix.add(req1Att);
 		csvContentMatrix.add(req2Att);
 		csvContentMatrix.add(req3Att);
@@ -307,8 +375,10 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 	 * @return the requriement type
 	 */
 	private RequirementType createReqTypeWith3Attributes() {
-		
+		RequirementsConfiguration configurationRoot = new RequirementsConfiguration(requirementsConcept);
 		RequirementType requirementType = new RequirementType(requirementsConcept);
+		configurationRoot.getTypeDefinitions().add(requirementType);
+		rccSEI.getCategoryAssignments().add(configurationRoot.getTypeInstance());
 		attributeName = new RequirementAttribute(requirementsConcept);
 		attributeName.setType(RequirementAttribute.TYPE_String_NAME);
 		attributeID = new RequirementAttribute(requirementsConcept);
