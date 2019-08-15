@@ -38,7 +38,7 @@ public class CommitMessageDialog extends Dialog {
 	private String dialogMessage;
 	private String commitMessage;
 	private Text text;
-	private Combo templateCombo;
+	private String[] templates = new String[0];
 	
 	/**
 	 * @param parentShell the parent shell of the dialog
@@ -66,11 +66,7 @@ public class CommitMessageDialog extends Dialog {
 	 * @param templates the available templates
 	 */
 	public void setTemplates(String[] templates) {
-		templateCombo.setItems(templates);
-		if (commitMessage == null) {
-			templateCombo.select(0);
-			templateChanged(templateCombo);
-		}
+		this.templates = templates;
 	}
 	
 	@Override
@@ -81,18 +77,19 @@ public class CommitMessageDialog extends Dialog {
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true));
 		label.setText(dialogMessage);
 		
-		templateCombo = new Combo(composite, SWT.READ_ONLY);
-		templateCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Combo combo = new Combo(composite, SWT.READ_ONLY);
+		combo.setItems(templates);
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		templateCombo.addSelectionListener(new SelectionListener() {
+		combo.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				templateChanged(templateCombo);
+				templateChanged(combo);
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				templateChanged(templateCombo);
+				templateChanged(combo);
 			}
 		});
 		
@@ -101,7 +98,10 @@ public class CommitMessageDialog extends Dialog {
 		textLayoutData.heightHint = convertHeightInCharsToPixels(FOUR_LINES_HEIGHT);
 		text.setLayoutData(textLayoutData);
 
-		if (commitMessage != null) {
+		if (commitMessage == null) {
+			combo.select(0);
+			templateChanged(combo);
+		} else {
 			text.setText(commitMessage);
 		}
 
