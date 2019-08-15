@@ -129,7 +129,7 @@ public class GitCommitAction extends AbstractHandler {
 							boolean isEmptyFolder = subFolder.members().length == 0;
 		    				if (isEmptyFolder) {
 		    					IFile emptyFile = subFolder.getFile(".empty");
-			    				emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.HIDDEN, null);
+			    				emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.NONE, null);
 		    				}
 						}
 						return true;
