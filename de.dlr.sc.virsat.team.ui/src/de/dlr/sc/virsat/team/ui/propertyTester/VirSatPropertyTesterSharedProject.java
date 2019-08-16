@@ -27,6 +27,9 @@ import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 @SuppressWarnings("restriction")
 public class VirSatPropertyTesterSharedProject extends ResourcePropertyTester {
 
+	public static final String SVN_ENABLED_PROPERTY = "svnEnabled";
+	public static final String GIT_ENABLED_PROPERTY = "gitEnabled";
+	
 	/**
 	 * The constructor
 	 */
@@ -41,10 +44,10 @@ public class VirSatPropertyTesterSharedProject extends ResourcePropertyTester {
 		IProject iProject = virSatSelectionHelper.getProjectResource();
 		
 		if (iProject != null) {
-			if (method.equals("gitEnabled")) {
+			if (method.equals(GIT_ENABLED_PROPERTY)) {
 				RepositoryMapping mapping = RepositoryMapping.getMapping(iProject);
 				return mapping != null && mapping.getRepository() != null;
-			} else if (method.equals("svnEnabled")) {
+			} else if (method.equals(SVN_ENABLED_PROPERTY)) {
 				return super.test(iProject, ResourcePropertyTester.PROJECT_PERSISTENT_PROPERTY, args, expectedValue);
 			} else {
 				throw new IllegalArgumentException("Unknown persistence property check: " +  method);
