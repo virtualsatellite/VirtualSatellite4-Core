@@ -237,9 +237,6 @@ public class CatiaExporter {
 		jsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), vis.getRotationXBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), vis.getRotationYBean().getValueToBaseUnit());
 		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), vis.getRotationZBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), vis.getShape());
-		
-		fillGeometryField(vis, jsonProduct, CatiaProperties.PRODUCT_STL_PATH);
 	}
 
 	/**

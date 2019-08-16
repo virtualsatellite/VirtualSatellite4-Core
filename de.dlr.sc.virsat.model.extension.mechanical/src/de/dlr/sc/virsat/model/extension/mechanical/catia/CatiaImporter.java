@@ -248,9 +248,6 @@ public class CatiaImporter {
 		double rotY;
 		double rotZ;
 
-		String shape;
-		String stlFile = null;
-
 		try {
 			name = product.getString(CatiaProperties.NAME);
 
@@ -261,17 +258,10 @@ public class CatiaImporter {
 			rotX = product.getDouble(CatiaProperties.PRODUCT_ROT_X);
 			rotY = product.getDouble(CatiaProperties.PRODUCT_ROT_Y);
 			rotZ = product.getDouble(CatiaProperties.PRODUCT_ROT_Z);
-
-			shape = product.getString(CatiaProperties.PRODUCT_SHAPE);
-
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 					"CatiaImport: Failed to perform import! Could not load all required properties"));
 			return false;
-		}
-
-		if (product.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
-			stlFile = product.getString(CatiaProperties.PART_STL_PATH);
 		}
 
 		setName(importCommand, beanSEI, name);
@@ -284,10 +274,7 @@ public class CatiaImporter {
 		setFloatValue(importCommand, visualisation.getRotationYBean(), rotY);
 		setFloatValue(importCommand, visualisation.getRotationZBean(), rotZ);
 
-		setShape(importCommand, visualisation, shape, stlFile);
-
 		return true;
-
 	}
 
 	/**
@@ -303,8 +290,7 @@ public class CatiaImporter {
 				|| product.containsKey(CatiaProperties.PRODUCT_POS_Z.getKey())
 				|| product.containsKey(CatiaProperties.PRODUCT_ROT_X.getKey())
 				|| product.containsKey(CatiaProperties.PRODUCT_ROT_Y.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_ROT_Z.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_SHAPE.getKey());
+				|| product.containsKey(CatiaProperties.PRODUCT_ROT_Z.getKey());
 	}
 
 	/**

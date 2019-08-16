@@ -85,8 +85,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	private static final int TEST_ROT_Y_PRODUCT = 5;
 	private static final int TEST_ROT_Z_PRODUCT = 6;
 
-	private static final String TEST_SHAPE_PRODUCT = Visualisation.SHAPE_BOX_NAME;
-
 	private static final int TEST_SIZE_X_PART = 7;
 	private static final int TEST_SIZE_Y_PART = 8;
 	private static final int TEST_SIZE_Z_PART = 9;
@@ -146,8 +144,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		assertEquals("Check if product values are imported",
 				visualisationProduct.getRotationZBean().getValueToBaseUnit(), TEST_ROT_Z_PRODUCT, EPSILON);
 
-		assertEquals("Check if product values are imported", visualisationProduct.getShape(), TEST_SHAPE_PRODUCT);
-
 		assertEquals("Check if part values are imported", visualisationPart.getSizeXBean().getValueToBaseUnit(),
 				TEST_SIZE_X_PART, EPSILON);
 		assertEquals("Check if part values are imported", visualisationPart.getSizeYBean().getValueToBaseUnit(),
@@ -197,7 +193,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
 		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
 		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(newUnmappedJsonProduct);
 
 
@@ -223,8 +218,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 				visualisationProduct.getRotationYBean().getValueToBaseUnit(), TEST_ROT_Y_PRODUCT, EPSILON);
 		assertEquals("Check if product values are imported",
 				visualisationProduct.getRotationZBean().getValueToBaseUnit(), TEST_ROT_Z_PRODUCT, EPSILON);
-
-		assertEquals("Check if product values are imported", visualisationProduct.getShape(), TEST_SHAPE_PRODUCT);
 
 		assertEquals("Check if part values are imported", visualisationPart.getSizeXBean().getValueToBaseUnit(),
 				TEST_SIZE_X_PART, EPSILON);
@@ -264,7 +257,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
 		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(jsonProductofNewConfiguration);
 
 		// Do the import
@@ -291,10 +283,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 				.getRotationYBean().getValueToBaseUnit() == TEST_ROT_Y_PRODUCT);
 		assertTrue("Check if product values are imported", visualisation
 				.getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
-
-		assertTrue("Check if product values are imported",
-				visualisation.getShape().equals(TEST_SHAPE_PRODUCT));
-
 	}
 
 	@Test
@@ -368,7 +356,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
 		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
 		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(newUnmappedJsonProduct);
 
 
@@ -409,9 +396,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		assertTrue("Check if product values are imported", visualisation
 				.getRotationZBean().getValueToBaseUnit() == TEST_ROT_Z_PRODUCT);
 
-		assertTrue("Check if product values are imported",
-				visualisation.getShape().equals(TEST_SHAPE_PRODUCT));
-		
 	}
 
 	@Test
@@ -607,7 +591,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
 		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
 		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		JsonObject jsonObjectReactionWheel2Configuration = new JsonObject();
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
@@ -615,7 +598,6 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		jsonObjectReactionWheel2Configuration.put(CatiaProperties.UUID.getKey(),
 				elementConfigurationReactionWheel2.getUuid());
 		JsonArray productArray = new JsonArray();

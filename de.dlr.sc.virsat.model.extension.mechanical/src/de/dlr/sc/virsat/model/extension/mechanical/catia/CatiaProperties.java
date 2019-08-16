@@ -24,7 +24,7 @@ public enum CatiaProperties implements JsonKey {
 	NAME("name"),
 	
 	PART_SHAPE("shape"),
-	PART_STL_PATH("STL_path"),
+	PART_STL_PATH("stlPath"),
 	PART_COLOR("color"),
 	PART_RADIUS("radius"),
 	PART_LENGTH_X("lengthX"),
@@ -32,7 +32,7 @@ public enum CatiaProperties implements JsonKey {
 	PART_LENGTH_Z("lengthZ"),
 
 	PRODUCT_REFERENCE_NAME("partName"),
-	PRODUCT_ED_UUID("uuidED"),
+	PRODUCT_ED_UUID("partUuid"),
 	
 	PRODUCT_POS_X("posX"),
 	PRODUCT_POS_Y("posY"),
@@ -41,9 +41,6 @@ public enum CatiaProperties implements JsonKey {
 	PRODUCT_ROT_X("rotX"),
 	PRODUCT_ROT_Y("rotY"),
 	PRODUCT_ROT_Z("rotZ"),
-	
-	PRODUCT_SHAPE("shape"),
-	PRODUCT_STL_PATH("STL_path"),
 	
 	PRODUCT_CHILDREN("children");
 	
