@@ -110,8 +110,8 @@ public class SVNCommitAction extends CommitAction {
 	    CommitMessageDialog commitMessageDialog = new CommitMessageDialog(this.getShell(), SVNUIMessages.CommitPanel_Title, "Please enter a commit message describing your changes", proposedComment);
         
 	    IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
-		String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
-		commitMessageDialog.setTemplates(templates);
+	    String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
+	    commitMessageDialog.setTemplates(templates);
 		
         if (commitMessageDialog.open() == 0) {
         	//we trick the commit operation with provide twice an empty array of resources for the nonSelectedResources and the treatAsEdit entry

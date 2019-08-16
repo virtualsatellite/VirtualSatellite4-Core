@@ -150,8 +150,8 @@ public class GitCommitAction extends AbstractHandler {
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
 			resources.add(resource);
 		}
-    	AddToIndexOperation addToIndexOperation = new AddToIndexOperation(resources);
-    	addToIndexOperation.execute(new NullProgressMonitor());
+		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(resources);
+		addToIndexOperation.execute(new NullProgressMonitor());
 	}
 	
 	/**
@@ -162,8 +162,8 @@ public class GitCommitAction extends AbstractHandler {
 	 */
 	private void gitCommit(Repository gitRepository, String commitMessage) throws CoreException {
 		CommitHelper commitHelper = new CommitHelper(gitRepository);
-    	CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(), commitHelper.getCommitter(), commitMessage);
-		commitOperation.setCommitAll(true);
+		CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(), commitHelper.getCommitter(), commitMessage);
+    	commitOperation.setCommitAll(true);
 		commitOperation.execute(new NullProgressMonitor());
 	}
 	
