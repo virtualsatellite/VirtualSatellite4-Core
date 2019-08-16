@@ -70,9 +70,9 @@ public class GitCommitAction extends AbstractHandler {
 		
 		// Grab the git index
 		Repository gitRepository = RepositoryMapping.getMapping(selectedProject).getRepository();
-    	IndexDiffCache diffCache = Activator.getDefault().getIndexDiffCache();
-		IndexDiffCacheEntry diffCacheEntry = diffCache.getIndexDiffCacheEntry(gitRepository);
-    	IndexDiffData indexDiff = diffCacheEntry.getIndexDiff();
+		IndexDiffCache diffCache = Activator.getDefault().getIndexDiffCache();
+    	IndexDiffCacheEntry diffCacheEntry = diffCache.getIndexDiffCacheEntry(gitRepository);
+		IndexDiffData indexDiff = diffCacheEntry.getIndexDiff();
 		
     	try {
     		createEmptyObjectsForEmptyFolders(indexDiff.getUntrackedFolders());
