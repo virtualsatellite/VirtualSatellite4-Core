@@ -51,74 +51,78 @@ import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 
 /**
- * This class performs a git commit + push.
- * The commit is only performed if there are unstaged changes.
+ * This class performs a git commit + push. The commit is only performed if
+ * there are unstaged changes.
  */
 @SuppressWarnings("restriction")
 public class GitCommitAction extends AbstractHandler {
 
+	public static final String EMPTY_FILE_NAME = ".empty";
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ISelection eventSelection = HandlerUtil.getCurrentSelection(event);
 		VirSatSelectionHelper selectionHelper = new VirSatSelectionHelper(eventSelection);
 		IProject selectedProject = selectionHelper.getProjectResource();
-		
+
 		// Save all in-memory changes
 		VirSatTransactionalEditingDomain ed = selectionHelper.getEditingDomain();
 		ed.saveAll();
 		ed.getCommandStack().flush();
-		
+
 		// Grab the git index
 		Repository gitRepository = RepositoryMapping.getMapping(selectedProject).getRepository();
 		IndexDiffCache diffCache = Activator.getDefault().getIndexDiffCache();
-    	IndexDiffCacheEntry diffCacheEntry = diffCache.getIndexDiffCacheEntry(gitRepository);
+		IndexDiffCacheEntry diffCacheEntry = diffCache.getIndexDiffCacheEntry(gitRepository);
 		IndexDiffData indexDiff = diffCacheEntry.getIndexDiff();
-		
-    	try {
-    		createEmptyObjectsForEmptyFolders(indexDiff.getUntrackedFolders());
-	    	
+
+		try {
+			createEmptyObjectsForEmptyFolders(indexDiff.getUntrackedFolders());
+
 			// Make sure the index is up-to date
 			Job refreshJob = diffCacheEntry.createRefreshResourcesAndIndexDiffJob();
 			refreshJob.schedule();
 			refreshJob.join();
-			
+
 			// Re-get the index to get all updates of the refresh
 			indexDiff = diffCacheEntry.getIndexDiff();
-			
-			// Check if there are local changes. If so, then we need to commit all changes and then push them. 
+
+			// Check if there are local changes. If so, then we need to commit all changes
+			// and then push them.
 			// If not, we only need to push.
 			if (indexDiff.hasChanges()) {
-				CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(), 
-						 "Commit Message", "Please enter a commit message describing your changes", "");
-				
+				CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(),
+						"Commit Message", "Please enter a commit message describing your changes", "");
+
 				int status = commitMessageDialog.open();
 				if (status != Window.OK) {
 					// Commit canceled
 					return null;
 				}
-				
+
 				gitTrackFiles(indexDiff.getUntracked());
 				gitCommit(gitRepository, commitMessageDialog.getCommitMessage());
 			}
-			
+
 			// Push commits to remote
 			gitPush(gitRepository);
 		} catch (CoreException | InterruptedException e) {
 			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute Git Commit!", e);
 			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
-		} 
-		 
+		}
+
 		return null;
 	}
-	
+
 	/**
-	 * Creates .empty files within all untracked empty folders.
-	 * To find the empty folders we traverse the file tree of all untracked folders.
+	 * Creates .empty files within all untracked empty folders. To find the empty
+	 * folders we traverse the file tree of all untracked folders.
+	 * 
 	 * @param untrackedFolders the folders not tracked by git
 	 * @throws CoreException 
 	 */
 	private void createEmptyObjectsForEmptyFolders(Set<String> untrackedFolders) throws CoreException {
-    	for (String untrackedFolder : untrackedFolders) {
+		for (String untrackedFolder : untrackedFolders) {
 			IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(new Path(untrackedFolder));
 			if (folder.exists()) {
 				folder.accept(new IResourceVisitor() {
@@ -127,20 +131,21 @@ public class GitCommitAction extends AbstractHandler {
 						if (resource instanceof IFolder) {
 							IFolder subFolder = (IFolder) resource;
 							boolean isEmptyFolder = subFolder.members().length == 0;
-		    				if (isEmptyFolder) {
-		    					IFile emptyFile = subFolder.getFile(".empty");
-			    				emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.NONE, null);
-		    				}
+							if (isEmptyFolder) {
+								IFile emptyFile = subFolder.getFile(EMPTY_FILE_NAME);
+								emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.NONE, null);
+							}
 						}
 						return true;
 					}
 				});
 			}
-    	}
+		}
 	}
-	
+
 	/**
 	 * Tells git to track all passed file paths by adding them to the git index
+	 * 
 	 * @param filePaths the paths of all files to be tracked
 	 * @throws CoreException 
 	 */
@@ -153,22 +158,25 @@ public class GitCommitAction extends AbstractHandler {
 		AddToIndexOperation addToIndexOperation = new AddToIndexOperation(resources);
 		addToIndexOperation.execute(new NullProgressMonitor());
 	}
-	
+
 	/**
 	 * Performs a git commit
+	 * 
 	 * @param gitRepository the repository to commit
 	 * @param commitMessage the commit message
 	 * @throws CoreException 
 	 */
 	private void gitCommit(Repository gitRepository, String commitMessage) throws CoreException {
 		CommitHelper commitHelper = new CommitHelper(gitRepository);
-		CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(), commitHelper.getCommitter(), commitMessage);
-    	commitOperation.setCommitAll(true);
+		CommitOperation commitOperation = new CommitOperation(gitRepository, commitHelper.getAuthor(),
+				commitHelper.getCommitter(), commitMessage);
+		commitOperation.setCommitAll(true);
 		commitOperation.execute(new NullProgressMonitor());
 	}
-	
+
 	/**
 	 * Performs a git push
+	 * 
 	 * @param gitRepository the repository to push
 	 */
 	private void gitPush(Repository gitRepository) {
