@@ -36,6 +36,8 @@ public class CsvRequirementsImporter {
 
 	protected EditingDomain editingDomain;
 	protected Concept reqConcept;
+	
+	protected static final String REQ_TYPE_NAME = "CCVImportedRequirementType";
 
 	/**
 	 * The function to load requirement contents from a given SCV file to an exiting
@@ -171,9 +173,11 @@ public class CsvRequirementsImporter {
 	protected RequirementType createReqType(CompoundCommand importCommand, RequirementsConfiguration container,
 			List<String> attributeNames) {
 		RequirementType newReqType = new RequirementType(reqConcept);
+		newReqType.setName(REQ_TYPE_NAME);
 		for (String attName : attributeNames) {
 			RequirementAttribute attDef = new RequirementAttribute(reqConcept);
 			attDef.setName(attName);
+			attDef.setType(RequirementAttribute.TYPE_String_NAME);
 			newReqType.getAttributes().add(attDef);
 		}
 		importCommand.append(container.getTypeDefinitions().add(editingDomain, newReqType));
