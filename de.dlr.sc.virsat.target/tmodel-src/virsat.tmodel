@@ -26,5 +26,6 @@
 		Unit org.eclipse.swtbot.feature.group version 2.6.0.201706141832;
 		Unit org.eclipse.xtext.sdk.feature.group version 2.12.0.v20170519-1412;
 		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
+		Unit org.eclipse.egit.feature.group version 4.9.2.201712150930-r;
 	}
 }
