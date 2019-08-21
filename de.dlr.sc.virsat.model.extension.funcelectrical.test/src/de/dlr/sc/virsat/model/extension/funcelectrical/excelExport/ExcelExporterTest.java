@@ -22,10 +22,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelExport.FuncElecExporter;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;

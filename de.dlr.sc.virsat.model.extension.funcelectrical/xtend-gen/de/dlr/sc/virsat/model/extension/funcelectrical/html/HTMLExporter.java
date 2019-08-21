@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package de.dlr.sc.virsat.model.extension.funcelectrical.html;
 
 import com.google.common.base.Objects;
@@ -1411,7 +1420,7 @@ public class HTMLExporter {
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t        ");
-
+    _builder.append("This Document has been generated using Virtual Satellite 4 and belongs to the Core Project. Distribution without permission is not allowed!");
     _builder.newLine();
     _builder.newLine();
     _builder.append("\t    ");

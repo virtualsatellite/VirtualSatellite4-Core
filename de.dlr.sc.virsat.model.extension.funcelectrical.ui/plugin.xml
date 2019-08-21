@@ -536,7 +536,7 @@
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
-<extension point="org.eclipse.ui.exportWizards">
+	<extension point="org.eclipse.ui.exportWizards">
 		<wizard
 
 	   		class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.wizards.HTMLExportWizard"
@@ -545,63 +545,9 @@
 	   		name="Export to HTML">
 		</wizard>
 		<category
-
-
+			id="de.dlr.sc.virsat.excel.ui"
+			name="Excel Export">
 		</category>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			allPopups="false"
-	        locationURI="menu:de.dlr.sc.virsat.apps.ui.menu.apps?after=additions">
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createStudyApp"
-			style="push">
-		</command>
-		</menuContribution>
-		<menuContribution
-			allPopups="false"
-	        locationURI="menu:de.dlr.sc.virsat.apps.ui.menu.apps?after=additions">
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createReplaceITApp"
-			style="push">
-		</command>
-		</menuContribution>
-		<menuContribution
-			allPopups="false"
-	        locationURI="menu:de.dlr.sc.virsat.apps.ui.menu.apps?after=additions">
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createAddUnitApp"
-			style="push">
-		</command>
-		</menuContribution>
-	</extension>
-	<extension point="org.eclipse.ui.commands">
-		<command
-			id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createStudyApp"
-
-		</command>
-	    <command
-	        id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createReplaceITApp"
-
-	    </command>
-	    <command
-	        id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createAddUnitApp"
-
-	    </command>
-	</extension>
-	<extension point="org.eclipse.ui.handlers">
-		<handler
-			class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.handler.CreateAndOpenExampleStudyAppHandler"
-			commandId="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createStudyApp">
-		</handler>
-	    <handler
-	   		class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.handler.CreateAndOpenReplaceInterfaceTypesAppHandler"
-	   		commandId="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createReplaceITApp">
-	   </handler>
-	    <handler
-	   		class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.handler.CreateAndOpenAddUnitAppHandler"
-	   		commandId="de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.createAddUnitApp">
-	   </handler>
 	</extension>
 	<extension
 		point="org.eclipse.graphiti.ui.diagramTypes">

@@ -23,8 +23,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.excel.AExcelIo;
+import de.dlr.sc.virsat.excel.Fault;
+import de.dlr.sc.virsat.excel.FaultType;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.ImportValidator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 
 

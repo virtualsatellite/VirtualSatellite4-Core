@@ -26,7 +26,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.FuncElecImporter;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;

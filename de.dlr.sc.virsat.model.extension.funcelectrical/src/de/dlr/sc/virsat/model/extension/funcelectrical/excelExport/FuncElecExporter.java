@@ -26,14 +26,17 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 
+import de.dlr.sc.virsat.excel.AExcelIo;
+import de.dlr.sc.virsat.excel.ExcelExportHelper;
+import de.dlr.sc.virsat.excel.IExport;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollection;
-import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
