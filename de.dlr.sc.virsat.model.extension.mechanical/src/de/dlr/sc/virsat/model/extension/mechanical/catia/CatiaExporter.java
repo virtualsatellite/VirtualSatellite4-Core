@@ -149,16 +149,20 @@ public class CatiaExporter {
 				JsonObject jsonProduct = transformElement(treeNode);
 				mapBeansToJsonProducts.put(treeNode, jsonProduct);
 				jsonProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), new JsonArray());
-				
+
 				if (hasVisCa) {
 					transformProductVisualisationFields(visCa, jsonProduct);
 
-					IBeanStructuralElementInstance part = getPartForProduct(treeNode);
-					
-					parts.add(part);
-					
-					jsonProduct.put(CatiaProperties.PRODUCT_ED_UUID.getKey(), part.getUuid());
-					jsonProduct.put(CatiaProperties.PRODUCT_REFERENCE_NAME.getKey(), part.getName());
+					// In case the Visualization has a shape of none, it should not be exported as a shape
+					// within the product tree only the rotation and translation are needed.
+					// this goes back to ticket https://github.com/virtualsatellite/VirtualSatellite4-Core/issues/220
+					boolean isNoneShape = visCa.getShape().equals(Visualisation.SHAPE_NONE_NAME);
+					if (!isNoneShape) {
+						IBeanStructuralElementInstance part = getPartForProduct(treeNode);
+						parts.add(part);
+						jsonProduct.put(CatiaProperties.PRODUCT_PART_UUID.getKey(), part.getUuid());
+						jsonProduct.put(CatiaProperties.PRODUCT_PART_NAME.getKey(), part.getName());
+					}
 				}
 				
 				if (matchingParent != null) {

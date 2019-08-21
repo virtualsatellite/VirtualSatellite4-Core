@@ -31,8 +31,8 @@ public enum CatiaProperties implements JsonKey {
 	PART_LENGTH_Y("lengthY"),
 	PART_LENGTH_Z("lengthZ"),
 
-	PRODUCT_REFERENCE_NAME("partName"),
-	PRODUCT_ED_UUID("partUuid"),
+	PRODUCT_PART_NAME("partName"),
+	PRODUCT_PART_UUID("partUuid"),
 	
 	PRODUCT_POS_X("posX"),
 	PRODUCT_POS_Y("posY"),

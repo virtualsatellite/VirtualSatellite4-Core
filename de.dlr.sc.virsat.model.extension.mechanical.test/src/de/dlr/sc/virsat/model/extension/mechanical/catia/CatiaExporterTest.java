@@ -115,8 +115,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 
 		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		assertTrue("There should be no children", children.isEmpty());
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
 		assertEquals("There should be one part created", 1, jsonParts.size());
 		JsonObject ctPart = jsonParts.getMap(0);
@@ -148,8 +148,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		JsonObject subProduct = children.getMap(0);
 		
 		assertJsonProductEqualsVisualisation(subProduct, visualisation);
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), subProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), subProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), subProduct.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), subProduct.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);		
 		assertEquals("There should be 1 part", 1, jsonParts.size());
@@ -203,8 +203,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_NAME));
 
 		JsonArray ctChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		JsonObject ecProduct = ctChildren.getMap(0);
@@ -219,8 +219,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertJsonPartEqualsVisualisation(ctPart, visualisation);
 		assertJsonPartEqualsVisualisation(ecPart, visInherited);
 		assertJsonProductEqualsVisualisation(ecProduct, visInherited);
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_PART_NAME));
 	}
 
 	@Test
@@ -239,8 +239,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
 		JsonArray ctChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		JsonObject ecProduct = ctChildren.getMap(0);
@@ -255,8 +255,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertJsonPartEqualsVisualisation(ctPart, visualisation);
 		assertJsonPartEqualsVisualisation(ecPart, ecVis);
 		assertJsonProductEqualsVisualisation(ecProduct, ecVis);
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_PART_NAME));
 	}
 
 	@Test
@@ -283,8 +283,8 @@ public class CatiaExporterTest extends AConceptTestCase {
 
 		JsonArray children = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		assertTrue("There should be no children", children.isEmpty());
-		assertEquals("Json Part link is set correctly", ed.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Part link is set correctly", ed.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Part link is set correctly", ed.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Part link is set correctly", ed.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
 		assertEquals("1 part", 1, jsonParts.size());
 		JsonObject part = jsonParts.getMap(0);
@@ -377,71 +377,207 @@ public class CatiaExporterTest extends AConceptTestCase {
 	}
 	
 	@Test
-	public void testConfigurationTreeExportWithSubAssembly() {
+	public void testConfigurationTreeExportWithSubAssemblyNoCA() {
+		// This test case checks the export of a whole configuration tree.
+		// the Configuration is called Satellite, has a SubSystem that contains
+		// The Equipment_1. This Equipment is typed by an ElementDefinition.
+		// This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+		// The Satellite and the SubSystem have a their individual categories. which will be changed
+		// adjusted and checked in this test.
+
+		// Case 1 - No Visualization CA for the Sub System
+		// The expected result is, that the parts should only contain the part from the element definition
+		// The product tree which is exported should have the root node from Satellite and a direct child
+		// to the equipment which references the part.
+
+		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
+		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
 		ct.add(visualisation);
 		ct.setName("Satellite");
 
+		// Create the SubSytsem which does not yet have a CA
+		ElementConfiguration ecSub = new ElementConfiguration(conceptPS);
+		ecSub.setName("SubSystem");
+		ct.add(ecSub);
+		
+		// Now add the Visualization CA to the Equipment and run the inheritance copier
+		// then make sure it is also added to the EC of the Equipment
+		Visualisation edVis = new Visualisation(conceptVis);
+		fillVisualisationValues(edVis);
+		ec.addSuperSei(ed);
+		ecSub.add(ec);
+		ec.setName("Equipment_1");
+		ed.setName("Equipment");
+		ed.add(edVis);
+		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
+		Visualisation ecVis = ec.getFirst(Visualisation.class);
+		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
+		
+		// Now run the transformation on the configuration tree and extract the parts and products
+		JsonObject jsonRoot = catiaExporter.transform(ct);
+		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
+		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
+		
+		// Check that the root of the product tree is correctly set. Since the Shape is set to None
+		// It does not have a corresponding part and thus there should be no references to a part
+		assertNull("Json Product Root has no Part UUID, since there is NONE Shape", jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertNull("Json Product Root has no Part Name, since there is NONE Shape", jsonProductRoot.getString(CatiaProperties.PRODUCT_PART_NAME));
+
+		// First make sure the parts are correct
+		assertEquals("There is only one part from the ED", 1, jsonParts.size());
+		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
+
+		assertNotNull("ED is in parts", edPart);
+		assertJsonPartEqualsVisualisation(edPart, edVis);
+
+		// than check the products are correct
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+		JsonArray jsonProductChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductEquipment = jsonProductChildren.getMap(0);
+
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
+		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
+	}
+	
+	@Test
+	public void testConfigurationTreeExportWithSubAssemblyWithCANoShape() {
+		// This test case checks the export of a whole configuration tree.
+		// the Configuration is called Satellite, has a SubSystem that contains
+		// The Equipment_1. This Equipment is typed by an ElementDefinition.
+		// This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+		// The Satellite and the SubSystem have a their individual categories. which will be changed
+		// adjusted and checked in this test.
+
+		// Case 2 - Adding Visualization CA for the Sub System
+		// The expected result is, that the parts should only contain the part from the element definition
+		// The product tree which is exported should have the root node from Satellite and a two level of 
+		// children to the SubSystem and the equipment which references the part.
+
+		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
+		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
+		ct.add(visualisation);
+		ct.setName("Satellite");
+
+		// Create the SubSytsem which does not yet have a CA
 		ElementConfiguration ecSub = new ElementConfiguration(conceptPS);
 		ecSub.setName("SubSystem");
 		ct.add(ecSub);
 		Visualisation ecSubVis = new Visualisation(conceptVis);
 		fillVisualisationValues(ecSubVis);
-		
-		Visualisation ecVis = new Visualisation(conceptVis);
-		fillVisualisationValues(ecVis);
-		ec.add(ecVis);
+		ecSub.add(ecSubVis);
+		ecSubVis.setShape(Visualisation.SHAPE_NONE_NAME);
+
+		// Now add the Visualization CA to the Equipment and run the inheritance copier
+		// then make sure it is also added to the EC of the Equipment
+		Visualisation edVis = new Visualisation(conceptVis);
+		fillVisualisationValues(edVis);
 		ec.addSuperSei(ed);
 		ecSub.add(ec);
 		ec.setName("Equipment_1");
 		ed.setName("Equipment");
+		ed.add(edVis);
+		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
+		Visualisation ecVis = ec.getFirst(Visualisation.class);
+		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
 		
+		// Now run the transformation on the configuration tree and extract the parts and products
 		JsonObject jsonRoot = catiaExporter.transform(ct);
 		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
 		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		
-		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
-		
-		JsonArray ctChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		JsonObject ecProduct = ctChildren.getMap(0);
-		
-		assertEquals("2 parts", 2, jsonParts.size());
-		JsonObject ctPart = findByUuid(jsonParts, ct.getUuid());
-		JsonObject ecPart = findByUuid(jsonParts, ec.getUuid());
+		// First make sure the parts are correct
+		assertEquals("There is only one part from the ED", 1, jsonParts.size());
+		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
 
-		assertNotNull("CT is in parts", ctPart);
-		assertNotNull("EC is in parts", ecPart);
+		assertNotNull("ED is in parts", edPart);
+		assertJsonPartEqualsVisualisation(edPart, edVis);
+
+		// than check the products are correct
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+		JsonArray jsonProductChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductSubSystem = jsonProductChildren.getMap(0);
+		JsonArray jsonProductSubSystemChildren = jsonProductSubSystem.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductEquipment = jsonProductSubSystemChildren.getMap(0);
+
+		assertJsonProductEqualsVisualisation(jsonProductSubSystem, ecSubVis);
+		assertNull("Json Product SubSystem has no Part UUID, since there is NONE Shape", jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertNull("Json Product SubSystem has no Part Name, since there is NONE Shape", jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
-		assertJsonPartEqualsVisualisation(ctPart, visualisation);
-		assertJsonPartEqualsVisualisation(ecPart, ecVis);
-		assertJsonProductEqualsVisualisation(ecProduct, ecVis);
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
-		
-		// Now add a visualization to the subEC to create a sub assembly in the products tree
-		// First this visualization will have a shape NONE
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
+		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
+	}
+	
+	@Test
+	public void testConfigurationTreeExportWithSubAssemblyWithCaAndShape() {
+		// This test case checks the export of a whole configuration tree.
+		// the Configuration is called Satellite, has a SubSystem that contains
+		// The Equipment_1. This Equipment is typed by an ElementDefinition.
+		// This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+		// The Satellite and the SubSystem have a their individual categories. which will be changed
+		// adjusted and checked in this test.
+
+		// Case 3 - Switching the Shape of the SubSystem to Sphere
+		// This will create a second part. The product subsystem should now also reference this new part
+
+		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
+		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
+		ct.add(visualisation);
+		ct.setName("Satellite");
+
+		// Create the SubSytsem which does not yet have a CA
+		ElementConfiguration ecSub = new ElementConfiguration(conceptPS);
+		ecSub.setName("SubSystem");
+		ct.add(ecSub);
+		Visualisation ecSubVis = new Visualisation(conceptVis);
+		fillVisualisationValues(ecSubVis);
 		ecSub.add(ecSubVis);
-		ecSubVis.setShape("NONE");
+		ecSubVis.setShape(Visualisation.SHAPE_BOX_NAME);
+
+		// Now add the Visualization CA to the Equipment and run the inheritance copier
+		// then make sure it is also added to the EC of the Equipment
+		Visualisation edVis = new Visualisation(conceptVis);
+		fillVisualisationValues(edVis);
+		ec.addSuperSei(ed);
+		ecSub.add(ec);
+		ec.setName("Equipment_1");
+		ed.setName("Equipment");
+		ed.add(edVis);
+		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
+		Visualisation ecVis = ec.getFirst(Visualisation.class);
+		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
 		
+		
+
+		// Now run the transformation on the configuration tree and extract the parts and products
 		jsonRoot = catiaExporter.transform(ct);
 		jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
 		jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
-		ctChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		JsonObject ecSubProduct = ctChildren.getMap(0);
 		
-		//CHECKSTYLE:OFF
-		assertEquals("Now there are three parts", 3, jsonParts.size());
-		//CHECKSTYLE:ON
-		ctPart = findByUuid(jsonParts, ct.getUuid());
-		JsonObject ecSubPart = findByUuid(jsonParts, ecSub.getUuid());
+		// First make sure the parts are correct
+		assertEquals("There is only one part from the ED", 1, jsonParts.size());
+		edPart = findByUuid(jsonParts, ed.getUuid());
 
-		assertNotNull("ECSub is in parts", ecSubPart);
+		assertNotNull("ED is in parts", edPart);
+		assertJsonPartEqualsVisualisation(edPart, edVis);
+
+		// than check the products are correct
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+		jsonProductChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductSubSystem = jsonProductChildren.getMap(0);
+		JsonArray jsonProductSubSystemChildren = jsonProductSubSystem.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		jsonProductEquipment = jsonProductSubSystemChildren.getMap(0);
+
+		assertJsonProductEqualsVisualisation(jsonProductSubSystem, ecSubVis);
+		assertNull("Json Product SubSystem has no Part UUID, since there is NONE Shape", jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertNull("Json Product SubSystem has no Part Name, since there is NONE Shape", jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
-		assertJsonPartEqualsVisualisation(ctPart, visualisation);
-		assertJsonPartEqualsVisualisation(ecSubPart, ecSubVis);
-		assertJsonProductEqualsVisualisation(ecSubProduct, ecSubVis);
-		assertEquals("Json Product has a correct part UUID", ecSub.getUuid(), ecSubProduct.getString(CatiaProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ecSub.getName(), ecSubProduct.getString(CatiaProperties.PRODUCT_REFERENCE_NAME));
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
+		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
 	}
 }
