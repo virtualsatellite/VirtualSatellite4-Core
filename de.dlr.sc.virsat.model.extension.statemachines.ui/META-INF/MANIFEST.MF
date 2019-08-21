@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension State Machines UI
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.statemachines.ui;singleton:=true
+Bundle-Version: 4.7.3.qualifier
+Require-Bundle: de.dlr.sc.virsat.model.extension.statemachines,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.transaction,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.graphiti.ui,
+ de.dlr.sc.virsat.graphiti,
+ org.eclipse.nebula.widgets.tablecombo,
+ de.dlr.sc.virsat.model.extension.ps
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: de.dlr.sc.virsat.model.extension.statemachines.ui.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.statemachines.ui
