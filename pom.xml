@@ -106,10 +106,10 @@
 				<module>de.dlr.sc.virsat.graphiti.test</module>
 				<module>de.dlr.sc.virsat.graphiti.feature</module>
 
-				<module>de.dlr.sc.virsat.svn</module>
-				<module>de.dlr.sc.virsat.svn.ui</module>
-				<module>de.dlr.sc.virsat.svn.test</module>
-				<module>de.dlr.sc.virsat.svn.feature</module>
+				<module>de.dlr.sc.virsat.team</module>
+				<module>de.dlr.sc.virsat.team.ui</module>
+				<module>de.dlr.sc.virsat.team.test</module>
+				<module>de.dlr.sc.virsat.team.feature</module>
 
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>

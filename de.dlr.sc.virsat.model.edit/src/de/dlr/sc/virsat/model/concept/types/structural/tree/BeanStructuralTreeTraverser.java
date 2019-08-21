@@ -44,7 +44,7 @@ public class BeanStructuralTreeTraverser {
 			matcher.foundMatch(node, parent);
 			nextParent = node;
 		}
-		for (IBeanStructuralElementInstance child: node.getChildren(IBeanStructuralElementInstance.class)) {
+		for (IBeanStructuralElementInstance child : node.getChildren(IBeanStructuralElementInstance.class)) {
 			traverseRecursive(child, nextParent);
 		}
 	}
