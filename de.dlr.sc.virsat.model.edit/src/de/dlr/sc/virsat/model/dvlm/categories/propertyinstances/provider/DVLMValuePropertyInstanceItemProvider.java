@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.command.SetValuePropertyInstanceCommand;
 public class DVLMValuePropertyInstanceItemProvider extends ValuePropertyInstanceItemProvider {
 
 	private static final String LINE_SEPERATOR_PROPERTY = "line.separator";
+	private static final String CUT_APPENDIX = "...";
 	
 	/**
 	 * this class constructor is an instance of the factory and notifier 
@@ -45,7 +46,7 @@ public class DVLMValuePropertyInstanceItemProvider extends ValuePropertyInstance
 			//If string is multiline then just show the first line
 			String lineSeperator = System.getProperty(LINE_SEPERATOR_PROPERTY);
 			if (value.indexOf(lineSeperator) > 0) {
-				value = value.substring(0, value.indexOf(lineSeperator));
+				value = value.substring(0, value.indexOf(lineSeperator)) + CUT_APPENDIX;
 			}
 			
 			return vpi.getType().getName() + ": " + value;
