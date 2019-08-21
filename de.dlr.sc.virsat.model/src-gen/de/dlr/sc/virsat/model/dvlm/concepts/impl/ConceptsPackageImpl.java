@@ -287,6 +287,15 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getConcept_Beta() {
+		return (EAttribute)conceptEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getConcept__GetNonAbstractCategories() {
 		return conceptEClass.getEOperations().get(0);
 	}
@@ -389,6 +398,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 		createEAttribute(conceptEClass, CONCEPT__VERSION);
 		createEAttribute(conceptEClass, CONCEPT__DMF);
 		createEAttribute(conceptEClass, CONCEPT__DISPLAY_NAME);
+		createEAttribute(conceptEClass, CONCEPT__BETA);
 		createEOperation(conceptEClass, CONCEPT___GET_NON_ABSTRACT_CATEGORIES);
 
 		conceptImportEClass = createEClass(CONCEPT_IMPORT);
@@ -450,6 +460,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 		initEAttribute(getConcept_Version(), ecorePackage.getEString(), "version", "1.0", 0, 1, Concept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConcept_DMF(), ecorePackage.getEBoolean(), "DMF", "FALSE", 0, 1, Concept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getConcept_DisplayName(), ecorePackage.getEString(), "displayName", null, 0, 1, Concept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConcept_Beta(), ecorePackage.getEBoolean(), "beta", null, 0, 1, Concept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getConcept__GetNonAbstractCategories(), theCategoriesPackage.getCategory(), "getNonAbstractCategories", 0, -1, IS_UNIQUE, IS_ORDERED);
 
