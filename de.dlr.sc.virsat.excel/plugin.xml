@@ -3,5 +3,4 @@
 <plugin>
    <extension-point id="de.dlr.sc.virsat.excel.export" name="Export" schema="schema/de.dlr.sc.virsat.excel.export.exsd"/>
    <extension-point id="de.dlr.sc.virsat.excel.import" name="Import" schema="schema/de.dlr.sc.virsat.excel.import.exsd"/>
-
 </plugin>
