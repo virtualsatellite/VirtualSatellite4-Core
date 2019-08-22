@@ -29,6 +29,7 @@ public class StateMachineResizeFeature extends VirSatResizeShapeFeature  {
 	public StateMachineResizeFeature(IFeatureProvider fp) {
 		super(fp);
 	}
+	
 	@Override
 	public boolean canResizeShape(IResizeShapeContext context) {
 		boolean canResize = super.canResizeShape(context);

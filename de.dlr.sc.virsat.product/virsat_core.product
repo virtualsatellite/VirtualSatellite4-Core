@@ -70,12 +70,18 @@ Germany
       <feature id="de.dlr.sc.virsat.apps.feature"/>
       <feature id="de.dlr.sc.virsat.team.feature"/>
       <feature id="de.dlr.sc.virsat.dependencies.feature"/>
+      <feature id="de.dlr.sc.virsat.excel.feature"/>
+      <feature id="de.dlr.sc.virsat.graphiti.feature"/>
+      <feature id="de.dlr.sc.virsat.external.lib.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.power.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.funcelectrical.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.statemachines.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.ps.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.maturity.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature"/>
+      <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature"/>
       <feature id="de.dlr.sc.virsat.docs.feature"/>
-      <feature id="de.dlr.sc.virsat.external.lib.feature"/>
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.pde"/>
       <feature id="org.eclipse.help"/>
@@ -111,7 +117,6 @@ Germany
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
       <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.eclipse.draw2d"/>
-      <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature"/>
       <feature id="org.eclipse.egit"/>
    </features>
 
@@ -123,7 +128,7 @@ Germany
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
-   
+
    <repositories>
       <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
    </repositories>

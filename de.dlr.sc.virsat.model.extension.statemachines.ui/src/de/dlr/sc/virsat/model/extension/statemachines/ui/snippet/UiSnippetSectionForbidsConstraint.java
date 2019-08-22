@@ -17,7 +17,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.AUiSnippetSectionForbidsConstraint;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 

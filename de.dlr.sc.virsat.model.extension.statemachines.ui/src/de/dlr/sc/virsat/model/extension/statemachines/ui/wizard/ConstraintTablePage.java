@@ -46,13 +46,13 @@ import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
-import de.dlr.sc.virsat.model.extension.statemachines.util.ConstraintTableHelper;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.Activator;
+import de.dlr.sc.virsat.model.extension.statemachines.util.ConstraintTableHelper;
 
 
 /**
@@ -73,7 +73,6 @@ public class ConstraintTablePage extends WizardPage {
 	private StructuralElementInstanceHelper seih;
 
 	private List <StateMachine> tempStateMachines;
-
 
 	/**
 	 * Create a new ConstraintTablePage

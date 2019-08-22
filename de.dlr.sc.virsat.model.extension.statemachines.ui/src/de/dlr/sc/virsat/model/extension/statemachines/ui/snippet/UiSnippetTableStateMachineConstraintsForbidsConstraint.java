@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.ui.snippet;
 
-import de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.AUiSnippetTableStateMachineConstraintsForbidsConstraint;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
