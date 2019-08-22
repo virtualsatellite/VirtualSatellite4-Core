@@ -10,19 +10,18 @@
 package de.dlr.sc.virsat.model.extension.statemachines.migrator;
 
 // *****************************************************************
+// * Class Declaration
+// *****************************************************************
+
+import org.junit.Test;
+
+// *****************************************************************
 // * Import Statements
 // *****************************************************************
 
 
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.extension.statemachines.migrator.AMigrator1v1Test;
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
-
-import org.junit.Test;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class

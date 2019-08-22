@@ -9,47 +9,20 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.validator;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.util.Collections;
-
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceDescription;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.PropertyinstancesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.provider.DVLMItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.resource.provider.DVLMResourceItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
-import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
@@ -65,102 +38,38 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  * @author bell_er
  *
  */
-public class ValidatorTest {
-	private static final String CONCEPT_ID_PS = "de.dlr.sc.virsat.model.extension.ps";
-	private static final String CONCEPT_ID_STATE_MACHINES = "de.dlr.sc.virsat.model.extension.statemachines";
+public class ValidatorTest extends AConceptProjectTestCase {
+	private static final String CONCEPT_ID_PS = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
+	private static final String CONCEPT_ID_STATE_MACHINES = de.dlr.sc.virsat.model.extension.statemachines.Activator.getPluginId();
 
-	IProject project;
-	VirSatResourceSet resSet;
-	Repository repository;
+	private Concept conceptPs;
+	private Concept conceptStateMachines;
 
-	Concept conceptPs;
-	Concept conceptStateMachines;
-
-
-	ConfigurationTree ct;
-	ElementConfiguration ecObc;
-	ElementConfiguration ecRw;
-
-	private StructuralElement seEc;
-	private Category catIf;
+	private ConfigurationTree ct;
+	private ElementConfiguration ecObc;
+	private ElementConfiguration ecRw;
+	
 	@Before
-	public void setUp() throws CoreException, IOException {
-		UserRegistry.getInstance().setSuperUser(true);
-
-		// Create an Editing Domain
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-		adapterFactory.addAdapterFactory(new DVLMResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMStructuralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new GeneralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ConceptsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMCategoriesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PropertydefinitionsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PropertyinstancesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		EditingDomain ed = new AdapterFactoryEditingDomain(adapterFactory, new BasicCommandStack());
-
-		// Now get the workspace and create a new Project. Deactivate the auto-building to no t let
-		// the eclipse platform place markers to our resources
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-		IWorkspaceDescription wsd = ResourcesPlugin.getWorkspace().getDescription();
-		wsd.setAutoBuilding(false);
-		ResourcesPlugin.getWorkspace().setDescription(wsd);
-		wsRoot.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-
-		if (project.exists()) {
-			project.delete(true, null);
-		}
-		project.create(null);
-		project.open(null);
-
+	public void setUp() throws CoreException {
+		super.setUp();
 
 		repository = DVLMFactory.eINSTANCE.createRepository();
-		resSet = VirSatResourceSet.createUnmanagedResourceSet(project);
-		resSet.getResources().clear();
-		resSet.getRepositoryResource().getContents().add(repository);
+		VirSatResourceSet resourceSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
+		resourceSet.getRepositoryResource().getContents().add(repository);
 
-		//CHECKSTYLE:OFF
-		ActiveConceptConfigurationElement accePs = new ActiveConceptConfigurationElement(null) {
-			public String getXmi() { return "concept/concept.xmi"; };
-			public String getId() { return CONCEPT_ID_PS; };
-		};
-
-		ActiveConceptConfigurationElement acceFea = new ActiveConceptConfigurationElement(null) {
-			public String getXmi() { return "concept/concept.xmi"; };
-			public String getId() { return CONCEPT_ID_STATE_MACHINES; };
-		};
-		//CHECKSTYLE:ON
-
-		// Now load the PS and IF concept into the repository
-		// we need the full set of repository loaded concepts etc to provide
-		// correctly set up workspace resources for setting and detecting the markers
-		accePs.createAddActiveConceptCommand(ed, repository).execute();
-		acceFea.createAddActiveConceptCommand(ed, repository).execute();
-
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
-		conceptPs = acHelper.getConcept(CONCEPT_ID_PS);
-		conceptStateMachines = acHelper.getConcept(CONCEPT_ID_STATE_MACHINES);
-
-		// We used to have badly connected concepts, due to the persistence of resources
-		// on the second run of the test case the repository resource was already containing
-		// a resource and the test setup was adding a second one. We now changed the code, that
-		// the whole project in the workspace gets deleted first and then recreated.
-		//CHECKSTYLE:OFF
-		seEc = ActiveConceptHelper.getStructuralElement(conceptPs, ElementConfiguration.class.getSimpleName());
-		catIf = ActiveConceptHelper.getCategory(conceptStateMachines, StateMachine.class.getSimpleName());
-		assertThat("Concepts correctly connected", catIf.getApplicableFor(), hasItem(seEc));
-		//CHECKSTYLE:ON
+		conceptPs = loadConceptFromPlugin(CONCEPT_ID_PS);
+		conceptStateMachines = loadConceptFromPlugin(CONCEPT_ID_STATE_MACHINES);
+		repository.getActiveConcepts().add(conceptPs);
+		repository.getActiveConcepts().add(conceptStateMachines);
+		
+		ActiveConceptHelper.getCategory(conceptStateMachines, StateMachine.class.getSimpleName()).setIsApplicableForAll(true);
 
 		// Here we start to create the Test Model
 		ecObc = new ElementConfiguration(conceptPs);
 		ecObc.setName("EC_OBC");
 
-
 		ecRw = new ElementConfiguration(conceptPs);
 		ecRw.setName("EC_RW");
-
-
 
 		ct = new ConfigurationTree(conceptPs);
 		ct.setName("CONF_TREE");
@@ -169,31 +78,19 @@ public class ValidatorTest {
 		// And finally we use the project commons to create the correct workspace paths
 		// for the individual resources of the SEIs. We still have to attach the SEI eObjects
 		// to their EMF Resources and save them
-
-
-		Resource resRepo = resSet.getRepositoryResource();
-
-		Resource resCt = resSet.getStructuralElementInstanceResource(ct.getStructuralElementInstance());
-		Resource resObc = resSet.getStructuralElementInstanceResource(ecObc.getStructuralElementInstance());
-		Resource resRw = resSet.getStructuralElementInstanceResource(ecRw.getStructuralElementInstance());
-
-
+		Resource resCt = resourceSet.getStructuralElementInstanceResource(ct.getStructuralElementInstance());
+		Resource resObc = resourceSet.getStructuralElementInstanceResource(ecObc.getStructuralElementInstance());
+		Resource resRw = resourceSet.getStructuralElementInstanceResource(ecRw.getStructuralElementInstance());
 
 		resCt.getContents().add(ct.getStructuralElementInstance());
 		resObc.getContents().add(ecObc.getStructuralElementInstance());
 		resRw.getContents().add(ecRw.getStructuralElementInstance());
-
-
-		resRepo.save(Collections.EMPTY_MAP);
-
-		resCt.save(Collections.EMPTY_MAP);
-		resObc.save(Collections.EMPTY_MAP);
-		resRw.save(Collections.EMPTY_MAP);
-
-
+		resourceSet.saveAllResources(null);
 	}
+	
 	@After
-	public void tearDown() {
+	public void tearDown() throws CoreException {
+		super.tearDown();
 		UserRegistry.getInstance().setSuperUser(false);
 	}
 
@@ -215,9 +112,6 @@ public class ValidatorTest {
 		sm.getStates().add(s1);
 		sm.getTransitions().add(t1);
 		ecObc.add(sm);
-		
-		
-		
 		
 		assertFalse("InitialState is not selected", seiValidator.validate(ecObc.getStructuralElementInstance()));
 	
@@ -242,9 +136,5 @@ public class ValidatorTest {
 		ac.setStateConstraining(s1);
 		
 		assertFalse("AllowsConstraint states are from the same state machine", seiValidator.validate(ecObc.getStructuralElementInstance()));
-		
 	}
-
-
-
 }

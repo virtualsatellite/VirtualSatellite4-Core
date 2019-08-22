@@ -7,41 +7,41 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints;
+package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
+import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.AbstractConnection.AbstractConnectionAddFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstractConnection.AbstractConnectionAddFeature;
 
 /**
- * Feature for adding allows constraint in an state machine diagram. 
+ * Feature for adding forbids constraint in an state machine diagram. 
  * @author bell_Er 
  * */
-public class AllowsConstraintAddFeature extends AbstractConnectionAddFeature {
-	private static final IColorConstant CONNECTION_FOREGROUND = new ColorConstant(0, 255, 0);
+public class ForbidsConstraintAddFeature extends AbstractConnectionAddFeature {
+	private static final IColorConstant CONNECTION_FOREGROUND = new ColorConstant(255, 0, 0);
 	
 	/** 
 	 * Default constructor.
 	 * @param fp the feature provider.
 	 */
-	public AllowsConstraintAddFeature(IFeatureProvider fp) {
+	public ForbidsConstraintAddFeature(IFeatureProvider fp) {
 		super(fp);
 	}
-
+	
 	@Override
-	protected IColorConstant getLineColor() {		
+	protected IColorConstant getLineColor() {
 		return CONNECTION_FOREGROUND;
 	}
 	
 	@Override
 	public State[] getStates(CategoryAssignment ca) {
-		AllowsConstraint ac = new AllowsConstraint(ca);
-		State[] states = { ac.getStateConstraining(), ac.getStateInfluenced()};
+		ForbidsConstraint fc = new ForbidsConstraint(ca);
+		State[] states = {  fc.getStateConstraining(), fc.getStateInfluenced() };
 		return states;
 	}
 	

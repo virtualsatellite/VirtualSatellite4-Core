@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.AbstractConnection.AbstractConnectionCreateFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstractConnection.AbstractConnectionCreateFeature;
 
 /**
  * Feature for creating new transitions in an state machine diagram. 

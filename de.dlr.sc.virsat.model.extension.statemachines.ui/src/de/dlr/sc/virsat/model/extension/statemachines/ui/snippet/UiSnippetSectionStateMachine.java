@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Display;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.EnumValueDefinitionImpl;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.AUiSnippetSectionStateMachine;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;

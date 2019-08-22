@@ -12,10 +12,9 @@ package de.dlr.sc.virsat.model.extension.statemachines.ui.snippet;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.command.CreateAddArrayElementConstraintsCommand;
-
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.command.CreateAddArrayElementConstraintsCommand;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
 
 

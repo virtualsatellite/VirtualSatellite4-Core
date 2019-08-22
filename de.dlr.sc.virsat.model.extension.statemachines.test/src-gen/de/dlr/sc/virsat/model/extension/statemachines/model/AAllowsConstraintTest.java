@@ -15,9 +15,9 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
 import java.lang.Exception;
 
 

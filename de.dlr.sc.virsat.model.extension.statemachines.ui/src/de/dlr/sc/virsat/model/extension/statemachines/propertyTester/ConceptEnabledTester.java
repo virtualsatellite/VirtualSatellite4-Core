@@ -9,12 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.propertyTester;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.statemachines.Activator;
-import de.dlr.sc.virsat.model.extension.statemachines.propertyTester.AConceptEnabledTester;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 
 
 
