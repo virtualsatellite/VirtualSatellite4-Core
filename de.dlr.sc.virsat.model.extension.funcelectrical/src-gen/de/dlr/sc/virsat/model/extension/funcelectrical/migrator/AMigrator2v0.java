@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
  * 
  * Don't Manually modify this class
  * 
- * Concept for modelling Functional Electrical Architecture (FEA)
+ * Concept for modeling Functional Electrical Architecture (FEA)
  * 
  */	
 public abstract class AMigrator2v0 extends AMigrator {

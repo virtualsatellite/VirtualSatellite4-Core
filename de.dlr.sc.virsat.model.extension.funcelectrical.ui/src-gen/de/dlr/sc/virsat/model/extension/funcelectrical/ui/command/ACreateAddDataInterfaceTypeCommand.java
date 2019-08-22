@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.DataInterfaceType;
  * 
  * Don't Manually modify this class
  * 
- * Decribes a Data communication interface type
+ * Describes a Data communication interface type
  * 
  */	
 public abstract class ACreateAddDataInterfaceTypeCommand {

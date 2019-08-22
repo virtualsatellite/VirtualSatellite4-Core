@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.ui.command.CreateAddDataI
  * 
  * Don't Manually modify this class
  * 
- * Decribes a Data communication interface type
+ * Describes a Data communication interface type
  * 
  */	
 public abstract class AAddDataInterfaceTypeHandler extends ATransactionalAddCategoryHandler {

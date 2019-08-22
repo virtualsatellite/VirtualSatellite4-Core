@@ -7,8 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.funcelectrical displayname "Functional Electrical Architecture" description "Concept for modelling Functional Electrical Architecture (FEA)" version 2.0 {
+Concept de.dlr.sc.virsat.model.extension.funcelectrical displayname "Functional Electrical Architecture" description "Concept for modeling Functional Electrical Architecture (FEA)" version 2.0 {
 	Import de.dlr.sc.virsat.model.extension.ps.*;
+
 
 	StructuralElement InterfaceTypeCollection description "A Container to summarize all InterfaceTypes" {
 		IsRootStructuralElement;
@@ -35,7 +36,7 @@ Concept de.dlr.sc.virsat.model.extension.funcelectrical displayname "Functional 
 		FloatProperty maxVoltage default 0 quantityKind "Electric potential difference" unit "Volt";	
 	}
 	
-	Category DataInterfaceType extends InterfaceType description "Decribes a Data communication interface type" {
+	Category DataInterfaceType extends InterfaceType description "Describes a Data communication interface type" {
 		StringProperty electricalStandard default "Analog";
 	}
 	

@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.project.ui.editingDomain.propertyTester.EditingDomainPro
  * 
  * Don't Manually modify this class
  * 
- * Concept for modelling Functional Electrical Architecture (FEA)
+ * Concept for modeling Functional Electrical Architecture (FEA)
  * 
  */	
 public abstract class AConceptEnabledTester extends EditingDomainPropertyTester {

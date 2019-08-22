@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyIns
  * 
  * Don't Manually modify this class
  * 
- * Decribes a Data communication interface type
+ * Describes a Data communication interface type
  * 
  */	
 public abstract class AUiSnippetSectionDataInterfaceType extends AUiSnippetGenericPropertyInstances implements IUiSnippet {

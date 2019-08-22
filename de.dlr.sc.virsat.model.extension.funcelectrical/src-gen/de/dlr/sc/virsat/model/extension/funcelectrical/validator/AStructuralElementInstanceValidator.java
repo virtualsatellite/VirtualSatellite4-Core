@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValid
  * 
  * Don't Manually modify this class
  * 
- * Concept for modelling Functional Electrical Architecture (FEA)
+ * Concept for modeling Functional Electrical Architecture (FEA)
  * 
  */	
 public abstract class AStructuralElementInstanceValidator implements IStructuralElementInstanceValidator {

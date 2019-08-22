@@ -34,7 +34,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
  * 
  * Don't Manually modify this class
  * 
- * Decribes a Data communication interface type
+ * Describes a Data communication interface type
  * 
  */	
 public abstract class ADataInterfaceType extends InterfaceType implements IBeanCategoryAssignment {
