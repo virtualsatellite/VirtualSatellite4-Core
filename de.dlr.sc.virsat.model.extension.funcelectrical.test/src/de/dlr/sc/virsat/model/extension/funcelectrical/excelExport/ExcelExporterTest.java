@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -72,7 +73,8 @@ public class ExcelExporterTest extends ExcelTestCase {
 			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
-		assertNull("Line after alle entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
+		Row row = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
+		assertNull("Line after alle entries correctly empty", row);
 	}
 	
 	@Test

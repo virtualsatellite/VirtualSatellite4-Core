@@ -20,18 +20,15 @@ import java.net.URL;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -41,7 +38,6 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 
 /**
@@ -49,10 +45,9 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  * @author bell_er
  *
  */
-public class HTMLExporterTest extends AProjectTestCase {
+public class HTMLExporterTest extends AConceptProjectTestCase {
 	private static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	private static final String CONCEPT_ID_FUNCELECTRICAL = Activator.getPluginId();
-	private static final String EXTENSION_ID = "de.dlr.sc.virsat.model.Concept";
 
 	
 	public static final String FRAGMENT_ID = "de.dlr.sc.virsat.model.extension.funcelectrical.test";
@@ -74,20 +69,17 @@ public class HTMLExporterTest extends AProjectTestCase {
 		UserRegistry.getInstance().setSuperUser(true);
 
 		addEditingDomainAndRepository();
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IConfigurationElement[] configSections = registry.getConfigurationElementsFor(EXTENSION_ID);
-
-		ActiveConceptConfigurationElement acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_EGSCC);
-		Command command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-
-		acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_FUNCELECTRICAL);
-		command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
-		conceptEgscc = acHelper.getConcept(CONCEPT_ID_EGSCC);
-		conceptFuncelectrical = acHelper.getConcept(CONCEPT_ID_FUNCELECTRICAL);
+		conceptEgscc  = loadConceptFromPlugin(CONCEPT_ID_EGSCC);
+		conceptFuncelectrical = loadConceptFromPlugin(CONCEPT_ID_FUNCELECTRICAL);
+		
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			
+			@Override
+			protected void doExecute() {
+				repository.getActiveConcepts().add(conceptEgscc);
+				repository.getActiveConcepts().add(conceptFuncelectrical);
+			}
+		});
 		// Create Interface Type 
 		  
 	    InterfaceType mil = new InterfaceType(conceptFuncelectrical);

@@ -9,50 +9,27 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.funcelectrical.validator;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceDescription;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.PropertyinstancesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.provider.DVLMItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.resource.provider.DVLMResourceItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
-import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelper;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
@@ -71,14 +48,10 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  *
  */
 
-public class ValidatorTest {
+public class ValidatorTest extends AConceptProjectTestCase {
 
 	private static final String CONCEPT_ID_PS = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	private static final String CONCEPT_ID_FUNCELECTRICAL = "de.dlr.sc.virsat.model.extension.funcelectrical";
-
-	IProject project;
-	VirSatResourceSet resSet;
-	Repository repository;
 
 	Concept conceptPs;
 	Concept conceptFea;
@@ -102,66 +75,26 @@ public class ValidatorTest {
 	private Category catIf;
 
 	@Before
-	public void setUp() throws CoreException, IOException {
+	public void setUp() throws CoreException {
+		super.setUp();
 		UserRegistry.getInstance().setSuperUser(true);
 		
-		// Create an Editing Domain
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-		adapterFactory.addAdapterFactory(new DVLMResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMStructuralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new GeneralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ConceptsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMCategoriesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PropertydefinitionsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PropertyinstancesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		EditingDomain ed = new AdapterFactoryEditingDomain(adapterFactory, new BasicCommandStack());
-
-		// Now get the workspace and create a new Project. Deactivate the auto-building to no t let
-		// the eclipse platform place markers to our resources
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-		IWorkspaceDescription wsd = ResourcesPlugin.getWorkspace().getDescription();
-		wsd.setAutoBuilding(false);
-		ResourcesPlugin.getWorkspace().setDescription(wsd);
-		wsRoot.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		project = wsRoot.getProject("coreFeaTests");
-		if (project.exists()) {
-			project.delete(true, null);
-		}
-		project.create(null);
-		project.open(null);
-
+		addEditingDomainAndRepository();
+		
 		// Now create a repository object and attach it to a resource
 		// use the VirSatProjectCommons to follow our directory structure etc.
-		VirSatProjectCommons projectCommons = new VirSatProjectCommons(project);
+		VirSatProjectCommons projectCommons = new VirSatProjectCommons(testProject);
 
-		repository = DVLMFactory.eINSTANCE.createRepository();
-		resSet = VirSatResourceSet.createUnmanagedResourceSet(project);
-		resSet.getResources().clear();
-		resSet.getRepositoryResource().getContents().add(repository);
-
-		//CHECKSTYLE:OFF
-		ActiveConceptConfigurationElement accePs = new ActiveConceptConfigurationElement(null) {
-			public String getXmi() { return "concept/concept.xmi"; };
-			public String getId() { return CONCEPT_ID_PS; };
-		};
-
-		ActiveConceptConfigurationElement acceFea = new ActiveConceptConfigurationElement(null) {
-			public String getXmi() { return "concept/concept.xmi"; };
-			public String getId() { return CONCEPT_ID_FUNCELECTRICAL; };
-		};
-		//CHECKSTYLE:ON
+		conceptPs  = loadConceptFromPlugin(CONCEPT_ID_PS);
+		conceptFea = loadConceptFromPlugin(CONCEPT_ID_FUNCELECTRICAL);
 		
-		// Now load the PS and IF concept into the repository
-		// we need the full set of repository loaded concepts etc to provide
-		// correctly set up workspace resources for setting and detecting the markers
-		accePs.createAddActiveConceptCommand(ed, repository).execute();
-		acceFea.createAddActiveConceptCommand(ed, repository).execute();
-
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
-		conceptPs = acHelper.getConcept(CONCEPT_ID_PS);
-		conceptFea = acHelper.getConcept(CONCEPT_ID_FUNCELECTRICAL);
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				repository.getActiveConcepts().add(conceptPs);
+				repository.getActiveConcepts().add(conceptFea);
+			}
+		});
 
 		// Check that concepts are correctly loaded
 		// We used to have badly connected concepts, due to the persistence of resources
@@ -171,7 +104,15 @@ public class ValidatorTest {
 		//CHECKSTYLE:OFF
 		seEc = ActiveConceptHelper.getStructuralElement(conceptPs, ElementConfiguration.class.getSimpleName());
 		catIf = ActiveConceptHelper.getCategory(conceptFea, Interface.class.getSimpleName());
-		assertThat("Concepts correctly connected", catIf.getApplicableFor(), hasItem(seEc));
+
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				catIf.setIsApplicableForAll(true);
+				ActiveConceptHelper.getCategory(conceptFea, InterfaceEnd.class.getSimpleName()).setIsApplicableForAll(true);
+			}
+		});
+		
 		//CHECKSTYLE:ON
 		
 		// Here we start to create the Test Model
@@ -209,7 +150,7 @@ public class ValidatorTest {
 		
 		ecHns = new ElementConfiguration(conceptPs);
 		ecHns.setName("EC_HARNESS");
-		
+
 		ct = new ConfigurationTree(conceptPs);
 		ct.setName("CONF_TREE");
 		ct.add(ecObc);
@@ -226,29 +167,30 @@ public class ValidatorTest {
 		fileRw = projectCommons.getStructuralElementInstanceFile(ecRw.getStructuralElementInstance());
 		fileHns = projectCommons.getStructuralElementInstanceFile(ecHns.getStructuralElementInstance());
 		
-		Resource resRepo = resSet.getRepositoryResource();
+		VirSatResourceSet resSet = editingDomain.getResourceSet();
 		Resource resItc = resSet.getStructuralElementInstanceResource(itc.getStructuralElementInstance());
 		Resource resCt = resSet.getStructuralElementInstanceResource(ct.getStructuralElementInstance());
 		Resource resObc = resSet.getStructuralElementInstanceResource(ecObc.getStructuralElementInstance());
 		Resource resRw = resSet.getStructuralElementInstanceResource(ecRw.getStructuralElementInstance());
 		Resource resHns = resSet.getStructuralElementInstanceResource(ecHns.getStructuralElementInstance());
 		
-		resItc.getContents().add(itc.getStructuralElementInstance());
-		resCt.getContents().add(ct.getStructuralElementInstance());
-		resObc.getContents().add(ecObc.getStructuralElementInstance());
-		resRw.getContents().add(ecRw.getStructuralElementInstance());
-		resHns.getContents().add(ecHns.getStructuralElementInstance());
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				resItc.getContents().add(itc.getStructuralElementInstance());
+				resCt.getContents().add(ct.getStructuralElementInstance());
+				resObc.getContents().add(ecObc.getStructuralElementInstance());
+				resRw.getContents().add(ecRw.getStructuralElementInstance());
+				resHns.getContents().add(ecHns.getStructuralElementInstance());
+			}
+		});
 		
-		resRepo.save(Collections.EMPTY_MAP);
-		resItc.save(Collections.EMPTY_MAP);
-		resCt.save(Collections.EMPTY_MAP);
-		resObc.save(Collections.EMPTY_MAP);
-		resRw.save(Collections.EMPTY_MAP);
-		resHns.save(Collections.EMPTY_MAP);
+		editingDomain.saveAll();
 	}
 	
 	@After
-	public void tearDown() {
+	public void tearDown() throws CoreException {
+		super.tearDown();
 		UserRegistry.getInstance().setSuperUser(false);
 	}
 
@@ -279,7 +221,7 @@ public class ValidatorTest {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 
-		ecObc.add(ifeBad);
+		editingDomain.getCommandStack().execute(ecObc.add(editingDomain, ifeBad));
 		
 		assertFalse("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
 
@@ -319,7 +261,7 @@ public class ValidatorTest {
 		assertSame("Concepts correctly connected", ecHns.getStructuralElementInstance().getType(), seEc);
 		assertSame("Concepts correctly connected", ifHns.getTypeInstance().getType(), catIf);
 		
-		ecHns.add(ifHns);
+		editingDomain.getCommandStack().execute(ecHns.add(editingDomain, ifHns));
 		
 		assertFalse("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -336,7 +278,7 @@ public class ValidatorTest {
 		fileHns.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		
-		ifHns.setInterfaceEndFrom(ifeObc);
+		editingDomain.getCommandStack().execute(ifHns.setInterfaceEndFrom(editingDomain, ifeObc));
 		
 		assertFalse("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -357,7 +299,7 @@ public class ValidatorTest {
 		fileHns.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		
-		ifHns.setInterfaceEndTo(ifeRw);
+		editingDomain.getCommandStack().execute(ifHns.setInterfaceEndTo(editingDomain, ifeRw));
 		
 		assertTrue("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -398,11 +340,15 @@ public class ValidatorTest {
 		
 		assertSame("Concepts correctly connected", ecHns.getStructuralElementInstance().getType(), seEc);
 		assertSame("Concepts correctly connected", ifHns.getTypeInstance().getType(), catIf);
-		
-		ifHns.setInterfaceEndFrom(ifeObc);
-		ifeRw.setType(it2);
-		ifHns.setInterfaceEndTo(ifeRw);
-		ecHns.add(ifHns);
+
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				ifHns.setInterfaceEndFrom(ifeObc);
+				ifHns.setInterfaceEndTo(ifeObc);
+				ecHns.add(ifHns);
+			}
+		});
 		
 		assertFalse("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -448,9 +394,14 @@ public class ValidatorTest {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		
-		ifHns.setInterfaceEndFrom(ifeObc);
-		ifHns.setInterfaceEndTo(ifeObc);
-		ecHns.add(ifHns);
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				ifHns.setInterfaceEndFrom(ifeObc);
+				ifHns.setInterfaceEndTo(ifeObc);
+				ecHns.add(ifHns);
+			}
+		});
 		
 		assertFalse("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error",  seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -491,10 +442,15 @@ public class ValidatorTest {
 		ElementDefinition edObc = new ElementDefinition(conceptPs);
 		edObc.setName("ED_OBC");
 		edObc.add(ifeEdObc);
-		
-		ecHns.add(ifHns);
-		ifHns.setInterfaceEndFrom(ifeRw);
-		ifHns.setInterfaceEndTo(ifeObc);
+
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				ecHns.add(ifHns);
+				ifHns.setInterfaceEndFrom(ifeRw);
+				ifHns.setInterfaceEndTo(ifeObc);
+			}
+		});
 	
 		assertTrue("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -508,7 +464,12 @@ public class ValidatorTest {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		
-		ifHns.setInterfaceEndFrom(ifeEdObc);
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				ifHns.setInterfaceEndFrom(ifeEdObc);
+			}
+		});
 		
 		assertFalse("validator brings error",   seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));

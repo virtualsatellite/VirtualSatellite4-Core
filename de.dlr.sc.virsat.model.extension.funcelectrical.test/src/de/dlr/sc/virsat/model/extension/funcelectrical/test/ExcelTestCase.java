@@ -10,14 +10,12 @@
 package de.dlr.sc.virsat.model.extension.funcelectrical.test;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
@@ -32,13 +30,12 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 /**
  * Abstract class for import tests
  * @author bell_er
  *
  */
-public class ExcelTestCase extends AProjectTestCase {
+public class ExcelTestCase extends AConceptProjectTestCase {
 	protected static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	protected static final String CONCEPT_ID_FUNCELECTRICAL = Activator.getPluginId();
 	protected static final String EXTENSION_ID = "de.dlr.sc.virsat.model.Concept";
@@ -66,20 +63,25 @@ public class ExcelTestCase extends AProjectTestCase {
 	
 		addEditingDomainAndRepository();
 	    
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IConfigurationElement[] configSections = registry.getConfigurationElementsFor(EXTENSION_ID);
-		ActiveConceptConfigurationElement acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_EGSCC);
-		Command command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-	    
-		acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_FUNCELECTRICAL);
-		command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-	    
-	    ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
-	    conceptEgscc = acHelper.getConcept(CONCEPT_ID_EGSCC);
-	    conceptFuncelectrical = acHelper.getConcept(CONCEPT_ID_FUNCELECTRICAL);
-	    
+		conceptEgscc  = loadConceptFromPlugin(CONCEPT_ID_EGSCC);
+		conceptFuncelectrical = loadConceptFromPlugin(Activator.getPluginId());
+		
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			
+			@Override
+			protected void doExecute() {
+				repository.getActiveConcepts().add(conceptEgscc);
+				repository.getActiveConcepts().add(conceptFuncelectrical);
+			}
+		});
+
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				ActiveConceptHelper.getCategory(conceptFuncelectrical, InterfaceEnd.class.getSimpleName()).setIsApplicableForAll(true);
+				ActiveConceptHelper.getCategory(conceptFuncelectrical, Interface.class.getSimpleName()).setIsApplicableForAll(true);
+			}
+		});
 	    
 	    // Interface Type Collection to be changed	    
 	    itc = new InterfaceTypeCollection(conceptFuncelectrical);

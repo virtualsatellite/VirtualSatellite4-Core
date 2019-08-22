@@ -9,6 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.funcelectrical.migrator;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
+// *****************************************************************
+// * Class Declaration
+// *****************************************************************
+
+import org.junit.Test;
+
+import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
+import de.dlr.sc.virsat.model.dvlm.Repository;
+
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
@@ -16,15 +27,6 @@ package de.dlr.sc.virsat.model.extension.funcelectrical.migrator;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import de.dlr.sc.virsat.model.dvlm.Repository;
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
-
-import org.junit.Test;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
