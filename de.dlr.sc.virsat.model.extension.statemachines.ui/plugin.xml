@@ -117,7 +117,7 @@
 		     locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=concepts">
 		     <menu
 		        id="de.dlr.sc.virsat.model.extension.statemachines.menu" 
-		        label="statemachines"
+		        label="State Machines"
 		        icon="resources/icons/de.dlr.sc.virsat.model.extension.statemachines.gif"
 		        tooltip="Concept for modeling State Machines">
 		        <separator

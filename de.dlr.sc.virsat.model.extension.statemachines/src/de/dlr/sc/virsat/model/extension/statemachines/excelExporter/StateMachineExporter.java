@@ -23,6 +23,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 
+import de.dlr.sc.virsat.excel.AExcelIo;
+import de.dlr.sc.virsat.excel.ExcelExportHelper;
+import de.dlr.sc.virsat.excel.IExport;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -58,7 +61,7 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 				}
 				wb = new XSSFWorkbook(is);
 			} catch (IOException e) {
-
+				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to find the Template!", e);
 				Activator.getDefault().getLog().log(status);
 			}
 			
@@ -70,7 +73,7 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 				FileOutputStream out = new FileOutputStream(file);
 				wb.write(out);
 			} catch (IOException e) {
-
+				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!", e);
 				Activator.getDefault().getLog().log(status);
 				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			}

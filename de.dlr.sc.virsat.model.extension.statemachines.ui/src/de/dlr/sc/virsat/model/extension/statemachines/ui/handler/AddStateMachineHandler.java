@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.ui.handler;
 
-import de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AAddStateMachineHandler;
-
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 

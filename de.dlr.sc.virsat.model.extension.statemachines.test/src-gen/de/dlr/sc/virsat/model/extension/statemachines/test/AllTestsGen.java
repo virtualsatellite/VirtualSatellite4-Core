@@ -17,15 +17,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v0Test;
-import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v1Test;
+import junit.framework.JUnit4TestAdapter;
+
 import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraintTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraintTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachineTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTest;
-import de.dlr.sc.virsat.model.extension.statemachines.test.AllTests;
-import junit.framework.JUnit4TestAdapter;
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v0Test;
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v1Test;
 
 /**
  * 

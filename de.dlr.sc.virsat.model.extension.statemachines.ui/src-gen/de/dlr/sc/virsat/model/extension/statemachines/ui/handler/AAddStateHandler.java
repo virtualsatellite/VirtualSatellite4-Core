@@ -10,13 +10,12 @@
 package de.dlr.sc.virsat.model.extension.statemachines.ui.handler;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.command.CreateAddStateCommand;
-
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.project.ui.transactional.handler.ATransactionalAddCategoryHandler;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.command.CreateAddStateCommand;
 
 /**
  * Auto Generated Abstract Generator Gap Class

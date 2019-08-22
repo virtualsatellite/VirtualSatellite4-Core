@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints;
+package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.graphiti.features.IFeatureProvider;

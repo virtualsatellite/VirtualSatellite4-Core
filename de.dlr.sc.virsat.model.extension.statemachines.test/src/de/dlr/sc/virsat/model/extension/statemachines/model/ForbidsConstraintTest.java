@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.model;
 
-import de.dlr.sc.virsat.model.extension.statemachines.model.AForbidsConstraintTest;
-
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
