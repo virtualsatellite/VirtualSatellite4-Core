@@ -13,7 +13,7 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.AbstractConnection.AbstractConnectionAddFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstractConnection.AbstractConnectionAddFeature;
 /**
 * Feature for adding transition in an state machine diagram. 
 * @author bell_Er 

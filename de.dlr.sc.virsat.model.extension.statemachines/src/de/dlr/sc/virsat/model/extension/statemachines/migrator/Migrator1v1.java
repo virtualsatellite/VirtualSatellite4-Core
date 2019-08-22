@@ -9,9 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.migrator;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.statemachines.migrator.AMigrator1v1;
 import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 
 // *****************************************************************

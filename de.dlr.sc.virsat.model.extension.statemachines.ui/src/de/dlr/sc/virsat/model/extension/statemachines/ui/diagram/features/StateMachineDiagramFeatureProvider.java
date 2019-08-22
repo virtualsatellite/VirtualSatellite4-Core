@@ -51,11 +51,11 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints.AConstraintReconnectionFeature;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints.AllowsConstraintAddFeature;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints.AllowsConstraintCreateFeature;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints.ForbidsConstraintAddFeature;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints.ForbidsConstraintCreateFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints.AConstraintReconnectionFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints.AllowsConstraintAddFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints.AllowsConstraintCreateFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints.ForbidsConstraintAddFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints.ForbidsConstraintCreateFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateMachines.StateMachineAddFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateMachines.StateMachineResizeFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateMachines.StateMachineUpdateFeature;
@@ -86,6 +86,7 @@ public class StateMachineDiagramFeatureProvider extends DefaultFeatureProvider {
 		beanIndependenceSolver = new BeanIndependenceSolver(dtp);
 		setIndependenceSolver(beanIndependenceSolver);
 	}
+	
 	@Override
 	public IAddFeature getAddFeature(IAddContext context) {
 		Object newObject = context.getNewObject();
@@ -109,6 +110,7 @@ public class StateMachineDiagramFeatureProvider extends DefaultFeatureProvider {
 		}
 		return super.getAddFeature(context);
 	}
+	
 	@Override
 	public ICustomFeature[] getCustomFeatures(ICustomContext context) {
 		PictogramElement[] pe = context.getPictogramElements();

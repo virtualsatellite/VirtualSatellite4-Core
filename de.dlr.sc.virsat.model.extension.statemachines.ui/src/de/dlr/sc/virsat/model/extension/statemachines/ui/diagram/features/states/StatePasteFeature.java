@@ -87,5 +87,4 @@ public class StatePasteFeature extends AbstractPasteFeature  {
 		return true;
 
 	}
-
 }

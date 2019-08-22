@@ -9,18 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.validator;
 
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.general.IUuid;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.statemachines.marker.VirSatstatemachinesMarkerHelper;
-import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
-import de.dlr.sc.virsat.model.extension.statemachines.model.State;
-import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
-import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.validator.AStructuralElementInstanceValidator;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,7 +16,18 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.resources.IMarker;
+
 import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.statemachines.marker.VirSatStateMachinesMarkerHelper;
+import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
+import de.dlr.sc.virsat.model.extension.statemachines.model.State;
+import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
+import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 
 
 // *****************************************************************
@@ -53,55 +52,57 @@ public class StructuralElementInstanceValidator extends AStructuralElementInstan
 	public static final String WARNING_INITIAL_STATE_NOT_SET = "The initial state is not set ";
 	
 	private BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
-	private VirSatstatemachinesMarkerHelper vcmHelper = new VirSatstatemachinesMarkerHelper();
+	private VirSatStateMachinesMarkerHelper vcmHelper = new VirSatStateMachinesMarkerHelper();
+	
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
 		/**
 		 * class to find duplicate state names
 		 * 
 		 */
-		class statemachinesComparator implements Comparator<ABeanCategoryAssignment> {
+		class StatemMachinesComparator implements Comparator<ABeanCategoryAssignment> {
 			@Override
 			public int compare(ABeanCategoryAssignment o1, ABeanCategoryAssignment o2) {
 				return o1.getName().compareTo(o2.getName());
 			}
 		}
-		List<StateMachine> stateMachines = bCaHelper.getAllBeanCategories(sei, StateMachine.class);
 		
+		List<StateMachine> stateMachines = bCaHelper.getAllBeanCategories(sei, StateMachine.class);
 		boolean allInfoValid = true;
 		
 		for (StateMachine sm : stateMachines) {
 			if (sm.getInitialState() == null) {
 				String fqn = "\"" + sm.getName() + "\"";	
-				vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_INITIAL_STATE_NOT_SET + fqn, sm.getTypeInstance());
+				vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_INITIAL_STATE_NOT_SET + fqn, sm.getTypeInstance());
 				allInfoValid = false;
 			}
 			
-			
 			List<State> states = sm.getStates();
 			List<State> duplicateStates = new ArrayList<State>();
-			Set<State> stateSet = new TreeSet<State>(new statemachinesComparator());
+			Set<State> stateSet = new TreeSet<State>(new StatemMachinesComparator());
 			for (State s : states) {
 			    if (!stateSet.add(s)) {
 			        duplicateStates.add(s);
 			    }
 			}
+			
 			for (State s : duplicateStates) {
 				String fqn = "\"" + s.getTypeInstance().getFullQualifiedInstanceName() + "\"";	
-				vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_DUPLICATE_NAMES + fqn, s.getTypeInstance());
+				vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_DUPLICATE_NAMES + fqn, s.getTypeInstance());
 				allInfoValid = false;
 			}
+			
 			List <Transition> transitions = sm.getTransitions();
 			for (Transition t : transitions) {
 				
 				if (t.getStateFrom() == null) {
 					String fqn = "\"" + t.getTypeInstance().getFullQualifiedInstanceName() + "\"";	
-					vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_STATE_FROM + fqn, t.getTypeInstance());
+					vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_STATE_FROM + fqn, t.getTypeInstance());
 					allInfoValid = false;
 				} 
 				if (t.getStateTo() == null) {
 					String fqn = "\"" + t.getTypeInstance().getFullQualifiedInstanceName() + "\"";	
-					vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_STATE_TO + fqn, t.getTypeInstance());
+					vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_STATE_TO + fqn, t.getTypeInstance());
 					allInfoValid = false;
 				}
 			}
@@ -113,16 +114,15 @@ public class StructuralElementInstanceValidator extends AStructuralElementInstan
 					String fqn = "\"" + containerSM.getName() + "\"";	
 					ReferencePropertyInstance rpiConst = constraint.getStateConstrainingReferenceProperty();
 					IUuid iUuid = rpiConst;
-					vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_CONSTRAINING_STATE + fqn, iUuid);
+					vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_CONSTRAINING_STATE + fqn, iUuid);
 					allInfoValid = false;
 				} else if (constraint.getStateInfluenced() == null) {
 					StateMachine containerSM = constraint.getParentCaBeanOfClass(StateMachine.class);
 					String fqn = "\"" + containerSM.getName() + "\"";	
 					ReferencePropertyInstance rpiConst = constraint.getStateInfluencedReferenceProperty();
 					IUuid iUuid = rpiConst;
-					vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_INFLUENCED_STATE + fqn, iUuid);
+					vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_NO_INFLUENCED_STATE + fqn, iUuid);
 					allInfoValid = false;
-					
 				} else {
 					StateMachine smConstraining = constraint.getStateConstraining().getParentCaBeanOfClass(StateMachine.class);
 					StateMachine smInfluenced = constraint.getStateInfluenced().getParentCaBeanOfClass(StateMachine.class);
@@ -130,7 +130,7 @@ public class StructuralElementInstanceValidator extends AStructuralElementInstan
 						String fqn = "\"" + smConstraining.getName() + "\"";	
 						ReferencePropertyInstance rpiConst = constraint.getStateInfluencedReferenceProperty();
 						IUuid iUuid = rpiConst;
-						vcmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, WARNING_SAME_STATES + fqn, iUuid);
+						vcmHelper.createSMValidationMarker(IMarker.SEVERITY_WARNING, WARNING_SAME_STATES + fqn, iUuid);
 						allInfoValid = false;
 					}
 				}
@@ -138,9 +138,7 @@ public class StructuralElementInstanceValidator extends AStructuralElementInstan
 			}
 
 		}
+		
 		return super.validate(sei) && allInfoValid;
 	}
-	
-
-
 }

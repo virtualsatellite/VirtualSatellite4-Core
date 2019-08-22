@@ -17,6 +17,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
 
+import de.dlr.sc.virsat.excel.AExcelIo;
+import de.dlr.sc.virsat.excel.ExcelImportHelper;
+import de.dlr.sc.virsat.excel.Fault;
+import de.dlr.sc.virsat.excel.IImport;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -44,6 +48,7 @@ public class SMImporter implements IImport {
 		importStates();
 		importTransitions();
 	}
+	
 	/**
 	 * imports the transitions 
 	 * 
@@ -99,6 +104,7 @@ public class SMImporter implements IImport {
 			}
 		}
 	}
+	
 	/**
 	 * Acts like a constructor
 	 * @param eObject Object to import
@@ -115,6 +121,7 @@ public class SMImporter implements IImport {
 		}
 
 	}
+	
 	/**
 	 *Imports the states
 	 */
@@ -163,5 +170,4 @@ public class SMImporter implements IImport {
 		ImportValidator iv = new ImportValidator(object, wb);
 		return iv.validate();
 	}
-
 }
