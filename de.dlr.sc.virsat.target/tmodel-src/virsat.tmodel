@@ -6,6 +6,7 @@
 	TargetJRE JavaSE-1.8 
 	RepositoryLocation Nebula url "https://download.eclipse.org/nebula/releases/2.1.0/"{
 		Unit org.eclipse.nebula.widgets.gallery.feature.feature.group version 1.0.0.201812241324;
+		Unit org.eclipse.nebula.widgets.tablecombo.feature.feature.group version 1.2.0.201812241324;
 	}
 	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"{
 		Unit org.antlr.runtime version 4.3.0.v201502022030; 

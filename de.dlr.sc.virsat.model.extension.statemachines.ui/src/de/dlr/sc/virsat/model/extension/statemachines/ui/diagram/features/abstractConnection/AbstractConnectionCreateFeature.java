@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.AbstractConnection;
+package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstractConnection;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
  * @author bell_Er 
  * */
 public abstract class AbstractConnectionCreateFeature  extends AbstractCreateConnectionFeature {
+	
 	/**	
 	 * Default constructor.	 
 	 * @param fp the feature provider.	
@@ -96,6 +97,7 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 	public String getCreateImageId() {
 		return Transition.FULL_QUALIFIED_CATEGORY_NAME;
 	}
+	
 	@Override
 	public Connection create(ICreateConnectionContext context) {
 		Connection newConnection = null;
@@ -143,6 +145,7 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 
 		return false;
 	}
+	
 	/**	
 	 * if the two states are in the same state machine
 	 * @param state1 first state
@@ -157,6 +160,7 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 		}
 		return false;
 	}
+	
 	/**	
 	 * Creating a connection
 	 * @param addContext first state

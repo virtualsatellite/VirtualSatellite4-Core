@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.ui.command;
 
-import de.dlr.sc.virsat.model.extension.statemachines.ui.command.ACreateAddArrayElementConstraintsCommand;
-
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 

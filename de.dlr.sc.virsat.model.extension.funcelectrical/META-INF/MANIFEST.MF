@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- de.dlr.sc.virsat.external.lib.apache.poi,
+ de.dlr.sc.virsat.external.lib.apache.poi
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -27,4 +27,3 @@ Export-Package: de.dlr.sc.virsat.model.extension.funcelectrical,
  de.dlr.sc.virsat.model.extension.funcelectrical.model.util,
  de.dlr.sc.virsat.model.extension.funcelectrical.validator
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.funcelectrical
-

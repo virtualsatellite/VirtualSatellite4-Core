@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.ui.snippet;
 
-import de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.AUiSnippetTableState;
-
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************

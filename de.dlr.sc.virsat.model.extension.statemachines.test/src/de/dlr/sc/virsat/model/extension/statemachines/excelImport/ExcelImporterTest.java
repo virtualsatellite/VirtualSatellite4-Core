@@ -10,18 +10,6 @@
 
 package de.dlr.sc.virsat.model.extension.statemachines.excelImport;
 
-import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
-import de.dlr.sc.virsat.model.extension.statemachines.Activator;
-import de.dlr.sc.virsat.model.extension.statemachines.excelImport.ImportValidator;
-import de.dlr.sc.virsat.model.extension.statemachines.excelImport.SMImporter;
-import de.dlr.sc.virsat.model.extension.statemachines.model.State;
-import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
-import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -32,10 +20,22 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
+import de.dlr.sc.virsat.excel.AExcelIo;
+import de.dlr.sc.virsat.excel.Fault;
+import de.dlr.sc.virsat.excel.FaultType;
+import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
+import de.dlr.sc.virsat.model.extension.statemachines.Activator;
+import de.dlr.sc.virsat.model.extension.statemachines.model.State;
+import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
+import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 
 
 
@@ -53,7 +53,6 @@ public class ExcelImporterTest {
 	private static final int EXPECTEDSTATECOUNT = 4;
 	private static final int EXPECTEDTRANSITIONCOUNT = 4;
 	
-	
 	ABeanStructuralElementInstance ed;
 
 	Concept conceptStateMachines;
@@ -64,7 +63,6 @@ public class ExcelImporterTest {
 	public void setUp() throws Exception {
 		
 		UserRegistry.getInstance().setSuperUser(true);
-	
 
 	    conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
   
@@ -116,8 +114,8 @@ public class ExcelImporterTest {
 		ed.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
 		ed.setName("BATTERY"); 
 		ed.add(sm);
-		
 	}
+	
 	@Test
 	public void test() throws IOException  { 
 		InputStream is = Activator.getResourceContentAsString("/resources/StateMachineTest.xlsx");
@@ -131,7 +129,6 @@ public class ExcelImporterTest {
 		assertEquals("transitionnew2", sm.getTransitions().get(0).getName());
 		assertEquals("state4", sm.getTransitions().get(1).getStateFrom().getName());
 		assertEquals("state3", sm.getTransitions().get(1).getStateTo().getName());
-		
 	}
 	
 	@Test
