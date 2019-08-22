@@ -376,33 +376,28 @@ public class CatiaExporterTest extends AConceptTestCase {
 		visualisation.setColor(COLOR);
 	}
 	
-	@Test
-	public void testConfigurationTreeExportWithSubAssemblyNoCA() {
-		// This test case checks the export of a whole configuration tree.
-		// the Configuration is called Satellite, has a SubSystem that contains
-		// The Equipment_1. This Equipment is typed by an ElementDefinition.
-		// This ED contains the Visualization CA which gets inherited into the Configuration Tree.
-		// The Satellite and the SubSystem have a their individual categories. which will be changed
-		// adjusted and checked in this test.
-
-		// Case 1 - No Visualization CA for the Sub System
-		// The expected result is, that the parts should only contain the part from the element definition
-		// The product tree which is exported should have the root node from Satellite and a direct child
-		// to the equipment which references the part.
-
+	/**
+	 * This method prepares the data for checking the export of a whole configuration tree.
+	 * the Configuration is called Satellite, has a SubSystem that contains
+	 * The Equipment_1. This Equipment is typed by an ElementDefinition.
+	 * This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+	 * The Satellite and the SubSystem have a their individual categories. which will be changed
+	 * adjusted and checked in this test.
+	 */
+	private void prepareDataForConfigurationTreeTests() {
 		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
 		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
 		ct.add(visualisation);
 		ct.setName("Satellite");
 
 		// Create the SubSytsem which does not yet have a CA
-		ElementConfiguration ecSub = new ElementConfiguration(conceptPS);
+		ecSub = new ElementConfiguration(conceptPS);
 		ecSub.setName("SubSystem");
 		ct.add(ecSub);
 		
 		// Now add the Visualization CA to the Equipment and run the inheritance copier
 		// then make sure it is also added to the EC of the Equipment
-		Visualisation edVis = new Visualisation(conceptVis);
+		edVis = new Visualisation(conceptVis);
 		fillVisualisationValues(edVis);
 		ec.addSuperSei(ed);
 		ecSub.add(ec);
@@ -410,8 +405,23 @@ public class CatiaExporterTest extends AConceptTestCase {
 		ed.setName("Equipment");
 		ed.add(edVis);
 		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
-		Visualisation ecVis = ec.getFirst(Visualisation.class);
+		ecVis = ec.getFirst(Visualisation.class);
 		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
+	}
+	
+	protected Visualisation edVis;
+	protected Visualisation ecVis;
+	protected ElementConfiguration ecSub;
+	
+	/**
+	 *  Case 1 - No Visualization CA for the Sub System
+	 *	The expected result is, that the parts should only contain the part from the element definition
+	 *	The product tree which is exported should have the root node from Satellite and a direct child
+	 *	to the equipment which references the part.
+	 */
+	@Test
+	public void testConfigurationTreeExportWithSubAssemblyNoCA() {
+		prepareDataForConfigurationTreeTests();
 		
 		// Now run the transformation on the configuration tree and extract the parts and products
 		JsonObject jsonRoot = catiaExporter.transform(ct);
@@ -440,47 +450,23 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
 		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
 	}
-	
+
+	/**
+	 * Test Case 2 - Visualization CA for subSystem with NONE shape
+	 * This test case checks the export of a whole configuration tree.
+	 * the Configuration is called Satellite, has a SubSystem that contains
+	 * The Equipment_1. This Equipment is typed by an ElementDefinition.
+	 * This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+	 * The Satellite and the SubSystem have a their individual categories. which will be changed
+	 * adjusted and checked in this test.
+	 */
 	@Test
 	public void testConfigurationTreeExportWithSubAssemblyWithCANoShape() {
-		// This test case checks the export of a whole configuration tree.
-		// the Configuration is called Satellite, has a SubSystem that contains
-		// The Equipment_1. This Equipment is typed by an ElementDefinition.
-		// This ED contains the Visualization CA which gets inherited into the Configuration Tree.
-		// The Satellite and the SubSystem have a their individual categories. which will be changed
-		// adjusted and checked in this test.
+		prepareDataForConfigurationTreeTests();
 
-		// Case 2 - Adding Visualization CA for the Sub System
-		// The expected result is, that the parts should only contain the part from the element definition
-		// The product tree which is exported should have the root node from Satellite and a two level of 
-		// children to the SubSystem and the equipment which references the part.
-
-		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
-		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
-		ct.add(visualisation);
-		ct.setName("Satellite");
-
-		// Create the SubSytsem which does not yet have a CA
-		ElementConfiguration ecSub = new ElementConfiguration(conceptPS);
-		ecSub.setName("SubSystem");
-		ct.add(ecSub);
 		Visualisation ecSubVis = new Visualisation(conceptVis);
-		fillVisualisationValues(ecSubVis);
 		ecSub.add(ecSubVis);
 		ecSubVis.setShape(Visualisation.SHAPE_NONE_NAME);
-
-		// Now add the Visualization CA to the Equipment and run the inheritance copier
-		// then make sure it is also added to the EC of the Equipment
-		Visualisation edVis = new Visualisation(conceptVis);
-		fillVisualisationValues(edVis);
-		ec.addSuperSei(ed);
-		ecSub.add(ec);
-		ec.setName("Equipment_1");
-		ed.setName("Equipment");
-		ed.add(edVis);
-		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
-		Visualisation ecVis = ec.getFirst(Visualisation.class);
-		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
 		
 		// Now run the transformation on the configuration tree and extract the parts and products
 		JsonObject jsonRoot = catiaExporter.transform(ct);
@@ -510,74 +496,48 @@ public class CatiaExporterTest extends AConceptTestCase {
 		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
 		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
 	}
-	
+
+	/**
+     * Case 3 - Switching the Shape of the SubSystem to Sphere
+	 * This will create a second part. The product subsystem should now also reference this new part
+	 */
 	@Test
 	public void testConfigurationTreeExportWithSubAssemblyWithCaAndShape() {
-		// This test case checks the export of a whole configuration tree.
-		// the Configuration is called Satellite, has a SubSystem that contains
-		// The Equipment_1. This Equipment is typed by an ElementDefinition.
-		// This ED contains the Visualization CA which gets inherited into the Configuration Tree.
-		// The Satellite and the SubSystem have a their individual categories. which will be changed
-		// adjusted and checked in this test.
+		prepareDataForConfigurationTreeTests();
 
-		// Case 3 - Switching the Shape of the SubSystem to Sphere
-		// This will create a second part. The product subsystem should now also reference this new part
-
-		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
-		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
-		ct.add(visualisation);
-		ct.setName("Satellite");
-
-		// Create the SubSytsem which does not yet have a CA
-		ElementConfiguration ecSub = new ElementConfiguration(conceptPS);
-		ecSub.setName("SubSystem");
-		ct.add(ecSub);
 		Visualisation ecSubVis = new Visualisation(conceptVis);
-		fillVisualisationValues(ecSubVis);
 		ecSub.add(ecSubVis);
-		ecSubVis.setShape(Visualisation.SHAPE_BOX_NAME);
-
-		// Now add the Visualization CA to the Equipment and run the inheritance copier
-		// then make sure it is also added to the EC of the Equipment
-		Visualisation edVis = new Visualisation(conceptVis);
-		fillVisualisationValues(edVis);
-		ec.addSuperSei(ed);
-		ecSub.add(ec);
-		ec.setName("Equipment_1");
-		ed.setName("Equipment");
-		ed.add(edVis);
-		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
-		Visualisation ecVis = ec.getFirst(Visualisation.class);
-		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
+		ecSubVis.setShape(Visualisation.SHAPE_SPHERE_NAME);
 		
-		
-
 		// Now run the transformation on the configuration tree and extract the parts and products
-		jsonRoot = catiaExporter.transform(ct);
-		jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
-		jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
+		JsonObject jsonRoot = catiaExporter.transform(ct);
+		JsonArray jsonParts = jsonRoot.getCollection(CatiaProperties.PARTS);
+		JsonObject jsonProductRoot = jsonRoot.getMap(CatiaProperties.PRODUCTS);
 		
 		// First make sure the parts are correct
-		assertEquals("There is only one part from the ED", 1, jsonParts.size());
-		edPart = findByUuid(jsonParts, ed.getUuid());
+		assertEquals("There are now two Parts, One from the ED and one from the EC sub System", 2, jsonParts.size());
+		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
+		JsonObject ecPart = findByUuid(jsonParts, ecSub.getUuid());
 
 		assertNotNull("ED is in parts", edPart);
+		assertNotNull("EC is in parts", ecPart);
 		assertJsonPartEqualsVisualisation(edPart, edVis);
+		assertJsonPartEqualsVisualisation(ecPart, ecSubVis);
 
 		// than check the products are correct
 		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
-		jsonProductChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonArray jsonProductChildren = jsonProductRoot.getCollection(CatiaProperties.PRODUCT_CHILDREN);
 		JsonObject jsonProductSubSystem = jsonProductChildren.getMap(0);
 		JsonArray jsonProductSubSystemChildren = jsonProductSubSystem.getCollection(CatiaProperties.PRODUCT_CHILDREN);
-		jsonProductEquipment = jsonProductSubSystemChildren.getMap(0);
+		JsonObject jsonProductEquipment = jsonProductSubSystemChildren.getMap(0);
 
 		assertJsonProductEqualsVisualisation(jsonProductSubSystem, ecSubVis);
-		assertNull("Json Product SubSystem has no Part UUID, since there is NONE Shape", jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_UUID));
-		assertNull("Json Product SubSystem has no Part Name, since there is NONE Shape", jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_NAME));
+		assertEquals("Json Product SubSystem has a correct part UUID", ecSub.getUuid(), jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product SubSystem has a correct part name", ecSub.getName(), jsonProductSubSystem.getString(CatiaProperties.PRODUCT_PART_NAME));
 		
 		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
 		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
-		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
-		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
+		assertEquals("Json Product Equipment has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product Equipment has a correct part name", ed.getName(), jsonProductEquipment.getString(CatiaProperties.PRODUCT_PART_NAME));
 	}
 }
