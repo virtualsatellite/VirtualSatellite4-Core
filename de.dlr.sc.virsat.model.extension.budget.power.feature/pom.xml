@@ -21,5 +21,4 @@
 	<packaging>eclipse-feature</packaging>
 
 	<name>de.dlr.sc.virsat.model.extension.budget.power.feature</name>
-	<version>4.7.3-SNAPSHOT</version>
-</project> 
+	</project> 

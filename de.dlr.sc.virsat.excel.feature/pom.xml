@@ -21,6 +21,5 @@
 	<artifactId>de.dlr.sc.virsat.excel.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
 
-	<version>4.7.3-SNAPSHOT</version>
 	<name>de.dlr.sc.virsat.excel.feature</name>
 </project> 

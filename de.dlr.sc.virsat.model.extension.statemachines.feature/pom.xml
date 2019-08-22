@@ -20,6 +20,5 @@
 	<artifactId>de.dlr.sc.virsat.model.extension.statemachines.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
 
-	<version>4.7.3-SNAPSHOT</version>
 	<name>de.dlr.sc.virsat.model.extension.statemachines.feature</name>
 </project> 

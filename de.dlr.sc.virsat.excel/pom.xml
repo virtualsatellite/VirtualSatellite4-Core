@@ -18,7 +18,5 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.excel</artifactId>
 	<name>de.dlr.sc.virsat.excel</name>
-	<version>4.7.3-SNAPSHOT</version>
-
 	<packaging>eclipse-plugin</packaging>
 </project>

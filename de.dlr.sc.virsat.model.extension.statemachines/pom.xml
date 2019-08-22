@@ -18,7 +18,5 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.model.extension.statemachines</artifactId>
 	<name>de.dlr.sc.virsat.model.extension.statemachines</name>
-	<version>4.7.3-SNAPSHOT</version>
-
 	<packaging>eclipse-plugin</packaging>
 </project>
