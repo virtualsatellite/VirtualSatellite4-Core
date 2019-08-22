@@ -59,14 +59,15 @@
 	<!-- Plugin.XML Protected Region Start -->
 <extension
        point="de.dlr.sc.virsat.excel.export">
-    <FuncElecExporter
+    <Exporter
           class="de.dlr.sc.virsat.model.extension.funcelectrical.excelExport.FuncElecExporter">
-    </FuncElecExporter>
+    </Exporter>
  </extension>
  <extension
        point="de.dlr.sc.virsat.excel.import">
-    <FuncElecImporter
-          class="de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.FuncElecImporter"></FuncElecImporter>
+    <Importer
+          class="de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.FuncElecImporter">
+    </Importer>
  </extension>
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
 	<migrator
