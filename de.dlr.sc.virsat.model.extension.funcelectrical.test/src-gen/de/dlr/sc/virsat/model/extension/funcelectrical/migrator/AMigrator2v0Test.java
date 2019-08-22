@@ -29,7 +29,7 @@ import org.junit.Before;
  * 
  * Don't Manually modify this class
  * 
- * Concept for modelling Functional Electrical Architecture (FEA)
+ * Concept for modeling Functional Electrical Architecture (FEA)
  * 
  */	
 public abstract class AMigrator2v0Test {
