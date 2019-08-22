@@ -21,9 +21,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.excel.ExcelExporter;
-import de.dlr.sc.virsat.excel.IExport;
-
 /**
  * This class test the ExcelExporter class.
  * @author muel_s8
