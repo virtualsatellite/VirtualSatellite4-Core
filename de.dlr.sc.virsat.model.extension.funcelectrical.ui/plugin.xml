@@ -187,7 +187,7 @@
 		        id="de.dlr.sc.virsat.model.extension.funcelectrical.menu" 
 		        label="Functional Electrical Architecture"
 		        icon="resources/icons/de.dlr.sc.virsat.model.extension.funcelectrical.gif"
-		        tooltip="Concept for modelling Functional Electrical Architecture (FEA)">
+		        tooltip="Concept for modeling Functional Electrical Architecture (FEA)">
 		        <separator
 		            name="categories"
 		            visible="true">
@@ -536,7 +536,7 @@
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
-	<extension point="org.eclipse.ui.exportWizards">
+<extension point="org.eclipse.ui.exportWizards">
 		<wizard
 
 	   		class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.wizards.HTMLExportWizard"
