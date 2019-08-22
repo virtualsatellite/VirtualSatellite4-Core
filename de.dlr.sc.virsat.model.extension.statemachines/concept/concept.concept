@@ -7,8 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.statemachines displayname "statemachines" description "Concept for modeling State Machines"  version 1.1
-{
+Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machines" description "Concept for modeling State Machines"  version 1.1 {
 	Import de.dlr.sc.virsat.model.extension.ps.*; 
 	
 	Category State description "State of the component at a given time"{

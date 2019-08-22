@@ -111,6 +111,7 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 		} 
 		return Reason.createFalseReason();
 	}
+	
 	/**
 	 * Method to update connections
 	 * @param stateMachine the stateMachine
@@ -210,7 +211,6 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 		}
 	}
 
-
 	/**
 	 * Method to find the relevant state and set it as start state
 	 * @param pes pictogram elements in the diagram (possible candidates for the relevant state)
@@ -227,7 +227,6 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			}
 		}
 	}
-
 
 	/**
 	 * Method to find the influenced state from another state machine
@@ -430,5 +429,4 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 		Object object = getBusinessObjectForPictogramElement(context.getPictogramElement());
 		return (object instanceof StateMachine || object == null) && super.canUpdate(context);
 	}
-
 }

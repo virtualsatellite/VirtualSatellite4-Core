@@ -41,14 +41,15 @@
 	<!-- Plugin.XML Protected Region Start -->
 <extension
       point="de.dlr.sc.virsat.excel.export">
-   <SMExporter
-         class="de.dlr.sc.virsat.model.extension.statemachines.ExcelExporter.StateMachineExporter">
-   </SMExporter>
+   <Exporter
+         class="de.dlr.sc.virsat.model.extension.statemachines.excelExporter.StateMachineExporter">
+   </Exporter>
 </extension>
 <extension
       point="de.dlr.sc.virsat.excel.import">
-   <SMImporter
-         class="de.dlr.sc.virsat.model.extension.statemachines.ExcelImport.SMImporter"></SMImporter>
+	<Importer
+       class="de.dlr.sc.virsat.model.extension.statemachines.excelImport.SMImporter">
+	</Importer>
 </extension>
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
 	<migrator
@@ -61,7 +62,7 @@
 <extension
       point="de.dlr.sc.virsat.project.markerHelper">
    <markerHelper
-         markerHelper="de.dlr.sc.virsat.model.extension.statemachines.marker.VirSatstatemachinesMarkerHelper"
+         markerHelper="de.dlr.sc.virsat.model.extension.statemachines.marker.VirSatStateMachinesMarkerHelper"
          markerType="de.dlr.sc.virsat.problem.markers.validation.statemachines">
    </markerHelper>
 </extension>

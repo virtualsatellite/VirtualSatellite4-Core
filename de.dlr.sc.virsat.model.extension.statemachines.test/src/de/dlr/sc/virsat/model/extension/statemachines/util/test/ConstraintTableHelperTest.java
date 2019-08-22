@@ -15,16 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
@@ -34,53 +31,35 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.util.ConstraintTableHelper;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 /**
  * Test Case for ConstraintTable
  * @author bell_er
  *
  */
-public class ConstraintTableHelperTest extends AProjectTestCase {
+public class ConstraintTableHelperTest extends AConceptProjectTestCase {
 	private static final String CONCEPT_ID_STATE_MACHINES = de.dlr.sc.virsat.model.extension.statemachines.Activator.getPluginId();
-	private static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
+	private static final String CONCEPT_ID_PS = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	
-	private static final String EXTENSION_ID = "de.dlr.sc.virsat.model.Concept";
+	private ElementConfiguration ec;
+	private ConfigurationTree ct;	
 	
-	ElementConfiguration ec;
-	ConfigurationTree ct;	
+	private ArrayList<StateMachine> sms;
 	
-	ArrayList<StateMachine> sms;
-	
-	Concept conceptEgscc;
-	Concept conceptStateMachines;
+	private Concept conceptPs;
+	private Concept conceptStateMachines;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		UserRegistry.getInstance().setSuperUser(true);
-
 		addEditingDomainAndRepository();
 		
-
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IConfigurationElement[] configSections = registry.getConfigurationElementsFor(EXTENSION_ID);
-
-		ActiveConceptConfigurationElement acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_EGSCC);
-		Command command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-
-		acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_STATE_MACHINES);
-		command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-
-
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
-		conceptEgscc = acHelper.getConcept(CONCEPT_ID_EGSCC);
-		conceptStateMachines = acHelper.getConcept(CONCEPT_ID_STATE_MACHINES);
+		conceptPs = loadConceptFromPlugin(CONCEPT_ID_PS);
+		conceptStateMachines = loadConceptFromPlugin(CONCEPT_ID_STATE_MACHINES);
 		
 		// Create A configuration Tree And its Children
-		ct = new ConfigurationTree(conceptEgscc);
-		ec = new ElementConfiguration(conceptEgscc);
+		ct = new ConfigurationTree(conceptPs);
+		ec = new ElementConfiguration(conceptPs);
 		ct.add(ec);
 		StateMachine sm = new StateMachine(conceptStateMachines);
 		sm.setName("StateMachine1");
@@ -126,6 +105,12 @@ public class ConstraintTableHelperTest extends AProjectTestCase {
 		sms.add(tempStateMachine2);
 	}
 
+	@Override
+	public void tearDown() throws CoreException {
+		super.tearDown();
+		UserRegistry.getInstance().setSuperUser(false);
+	}
+	
 	@Test
 	public void testMergeCommand() throws CoreException  { 
 		Command commandAddStructuralElementInstance = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, ct.getStructuralElementInstance());

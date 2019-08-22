@@ -7,29 +7,27 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.Constraints;
+package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
+import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.AbstractConnection.AbstractConnectionCreateFeature;
-
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstractConnection.AbstractConnectionCreateFeature;
 /**
- * Feature for adding allows constraint in an state machine diagram. 
+ * Feature for adding forbids constraint in an state machine diagram. 
  * @author bell_Er 
  * */
-
-public class AllowsConstraintCreateFeature extends AbstractConnectionCreateFeature {
+public class ForbidsConstraintCreateFeature extends AbstractConnectionCreateFeature {
 	/**	
 	 * Default constructor.	 
 	 * @param fp the feature provider.	
 	 */	
-	public AllowsConstraintCreateFeature(IFeatureProvider fp) {
-		super(fp, "AllowsConstraint", "Create AllowsConstraint");
+	public ForbidsConstraintCreateFeature(IFeatureProvider fp) {
+		super(fp, "ForbidsConstraint", "Create ForbidsConstraint");
 	}
 
 	@Override
@@ -39,15 +37,15 @@ public class AllowsConstraintCreateFeature extends AbstractConnectionCreateFeatu
 
 	@Override
 	public void addConnection(AddConnectionContext addContext, State source, State target, StateMachine stateMachine, Concept concept) {
-		AllowsConstraint ac = new AllowsConstraint(concept);
-		ac.setStateInfluenced(target);
-		ac.setStateConstraining(source);
-		stateMachine.getConstraints().add(ac);
-		addContext.setNewObject(ac.getTypeInstance());	
+		ForbidsConstraint fc = new ForbidsConstraint(concept);
+		fc.setStateInfluenced(target);
+		fc.setStateConstraining(source);
+		stateMachine.getConstraints().add(fc);
+		addContext.setNewObject(fc.getTypeInstance());
 	}
 	
 	@Override
 	public String getCreateImageId() {
-		return AllowsConstraint.FULL_QUALIFIED_CATEGORY_NAME;
+		return ForbidsConstraint.FULL_QUALIFIED_CATEGORY_NAME;
 	}
 }

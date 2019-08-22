@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.project.markers.IMarkerHelper;
  */
 public class VirSatStateMachinesMarkerHelper extends VirSatValidationMarkerHelper implements IMarkerHelper {
 
-	static final String ID_FEA_VALIDATION_PROBLEM_MARKER = "de.dlr.sc.virsat.problem.markers.validation.statemachines";
+	public static final String ID_SM_VALIDATION_PROBLEM_MARKER = "de.dlr.sc.virsat.problem.markers.validation.statemachines";
 	
 	/**
 	 * Method to attach a FEAValidationProblemMarker to the Resource of the given object
@@ -32,8 +32,8 @@ public class VirSatStateMachinesMarkerHelper extends VirSatValidationMarkerHelpe
 	 *  This information should be evaluated in out Editor to show the exact place of problem
 	 * @return The created Marker
 	 */
-	public IMarker createFEAValidationMarker(int severity, String message, IUuid iUuid) {
-		IMarker marker = createMarker(ID_FEA_VALIDATION_PROBLEM_MARKER, severity, message, iUuid);
+	public IMarker createSMValidationMarker(int severity, String message, IUuid iUuid) {
+		IMarker marker = createMarker(ID_SM_VALIDATION_PROBLEM_MARKER, severity, message, iUuid);
 		return marker;
 	}
 }

@@ -18,6 +18,10 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
 
+import de.dlr.sc.virsat.excel.AExcelIo;
+import de.dlr.sc.virsat.excel.ExcelImportHelper;
+import de.dlr.sc.virsat.excel.Fault;
+import de.dlr.sc.virsat.excel.FaultType;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
@@ -38,6 +42,7 @@ public class ImportValidator  {
 	private List<State> states;
 	private List<Transition> transitions;
 	private List<Fault> faultList;
+	
 	/**
 	 * Create a new validator
 	 * 
@@ -56,7 +61,8 @@ public class ImportValidator  {
 			this.wb = wb;
 			faultList = new ArrayList<Fault>();
 		}
-	}	
+	}
+	
 	/**
 	 * Validates depending on the type of the Structural element
 	 * 
@@ -71,6 +77,7 @@ public class ImportValidator  {
 		return faultList;	
 		
 	}
+	
 	/**
 	 * Validates the transitions when importing a state machine
 	 * 
@@ -124,13 +131,13 @@ public class ImportValidator  {
 		}
 		
 	}
+	
 	/**
 	 * Validates the states when importing a state machine
 	 * 
 	 * @author  Bell_er
 	 */
 	private void validateStates() {
-
 		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_STATES);
 		
 		if (sheet == null) {
@@ -170,13 +177,13 @@ public class ImportValidator  {
 		}
 		
 	}
+	
 	/**
 	 * Validates the Header Pages for all
 	 * 
 	 * @author  Bell_er
 	 */
 	public void validateHeaders() {
-		
 		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
 		final int sheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
 		

@@ -46,7 +46,6 @@ public class ConstraintTableHelper {
 	 * @throws CoreException 
 	 */
 	public static void createAndExecuteCompaundCommandForMerge(StructuralElementInstance mainRootSc, List<StateMachine> tempStateMachines) throws CoreException {	
-		
 		BeanStructuralElementInstanceFactory bsf = new BeanStructuralElementInstanceFactory();
 		ABeanStructuralElementInstance addedElement = null;
 		
