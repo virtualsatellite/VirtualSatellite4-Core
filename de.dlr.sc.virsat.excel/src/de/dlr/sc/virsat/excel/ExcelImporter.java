@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
-import de.dlr.sc.virsat.model.extension.ps.Activator;
 
 
 /**
