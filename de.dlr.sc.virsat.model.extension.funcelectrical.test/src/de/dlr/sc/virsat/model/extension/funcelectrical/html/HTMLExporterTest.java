@@ -194,6 +194,7 @@ public class HTMLExporterTest extends AConceptProjectTestCase {
 		InputStream is2 = new FileInputStream(file);			
 		String first = CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
 		String trimmedFirst = removeDate(first);
+		trimmedFirst = trimmedFirst.replaceAll("\r\n", System.lineSeparator());
 		String second = CharStreams.toString(new InputStreamReader(is2, Charsets.UTF_8));
 		String trimmedSecond = removeDate(second);
 		assertEquals(trimmedFirst, trimmedSecond);
@@ -210,6 +211,7 @@ public class HTMLExporterTest extends AConceptProjectTestCase {
 		InputStream is2 = new FileInputStream(file);			
 		String first = CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
 		String trimmedFirst = removeDate(first);
+		trimmedFirst = trimmedFirst.replaceAll("\r\n", System.lineSeparator());
 		String second = CharStreams.toString(new InputStreamReader(is2, Charsets.UTF_8));
 		String trimmedSecond = removeDate(second);
 		assertEquals(trimmedFirst, trimmedSecond);
