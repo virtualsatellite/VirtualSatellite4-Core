@@ -87,7 +87,6 @@ public class HTMLExporterTest extends AConceptProjectTestCase {
 	    mil.setName("MIL");	     
 		
 	     // Create interface ends
-	    
 	    InterfaceEnd ec1a = new InterfaceEnd(conceptFuncelectrical);
 	    InterfaceEnd ec1b = new InterfaceEnd(conceptFuncelectrical);
 	    InterfaceEnd ec2a = new InterfaceEnd(conceptFuncelectrical);
