@@ -487,45 +487,9 @@ public class HTMLExporter {
       if ((seiLinks != null)) {
         {
           for(final SEILink seiLink : seiLinks) {
-            {
-              String _name = sc.getName();
-              String _containerSEIname = seiLink.getContainerSEIname();
-              boolean _equals = Objects.equal(_name, _containerSEIname);
-              if (_equals) {
-                _builder.append("<h1 ><img src= \"");
-                String _name_1 = sc.getName();
-                _builder.append(_name_1);
-                _builder.append(".png\" align=\"middle\" alt=\"alttext\" usemap=\"#mapname\" > </h1>");
-                _builder.newLineIfNotEmpty();
-                _builder.append("<map name=\"mapname\">");
-                _builder.newLine();
-                {
-                  ArrayList<Area> _areas = seiLink.getAreas();
-                  for(final Area area : _areas) {
-                    _builder.append("\t");
-                    _builder.append("<area shape=\"rect\" coords=\"");
-                    int _topLeftx = area.getTopLeftx();
-                    _builder.append(_topLeftx, "\t");
-                    _builder.append(",");
-                    int _topLefty = area.getTopLefty();
-                    _builder.append(_topLefty, "\t");
-                    _builder.append(",");
-                    int _bottomRightx = area.getBottomRightx();
-                    _builder.append(_bottomRightx, "\t");
-                    _builder.append(",");
-                    int _bottomRighty = area.getBottomRighty();
-                    _builder.append(_bottomRighty, "\t");
-                    _builder.append("\" href=\"");
-                    String _linkSEIname = area.getLinkSEIname();
-                    _builder.append(_linkSEIname, "\t");
-                    _builder.append(".htm\" alt=\"alttext\">");
-                    _builder.newLineIfNotEmpty();
-                  }
-                }
-                _builder.append("</map>");
-                _builder.newLine();
-              }
-            }
+            CharSequence _seiLinkHTML = this.getSeiLinkHTML(sc, seiLink);
+            _builder.append(_seiLinkHTML);
+            _builder.newLineIfNotEmpty();
           }
         }
       }
@@ -560,8 +524,8 @@ public class HTMLExporter {
     _builder.newLine();
     _builder.append("            ");
     _builder.append("<td >");
-    String _name_2 = sc.getName();
-    _builder.append(_name_2, "            ");
+    String _name = sc.getName();
+    _builder.append(_name, "            ");
     _builder.append("</td>");
     _builder.newLineIfNotEmpty();
     _builder.append("        ");
@@ -596,8 +560,8 @@ public class HTMLExporter {
       boolean _tripleNotEquals = (_assignedDiscipline != null);
       if (_tripleNotEquals) {
         _builder.append("            ");
-        String _name_3 = sc.getAssignedDiscipline().getName();
-        _builder.append(_name_3, "            ");
+        String _name_1 = sc.getAssignedDiscipline().getName();
+        _builder.append(_name_1, "            ");
         _builder.append("   ");
         _builder.newLineIfNotEmpty();
       }
@@ -641,9 +605,9 @@ public class HTMLExporter {
     _builder.append("   ");
     _builder.newLine();
     {
-      String _name_4 = sc.getType().getName();
-      String _name_5 = InterfaceTypeCollection.class.getClass().getName();
-      boolean _notEquals = (!Objects.equal(_name_4, _name_5));
+      String _name_2 = sc.getType().getName();
+      String _name_3 = InterfaceTypeCollection.class.getClass().getName();
+      boolean _notEquals = (!Objects.equal(_name_2, _name_3));
       if (_notEquals) {
         _builder.append("\t ");
         _builder.append("   ");
@@ -682,8 +646,8 @@ public class HTMLExporter {
             _builder.append("       ");
             _builder.append("    ");
             _builder.append("<td>");
-            String _name_6 = ie.getName();
-            _builder.append(_name_6, "\t            ");
+            String _name_4 = ie.getName();
+            _builder.append(_name_4, "\t            ");
             _builder.append("</td>");
             _builder.newLineIfNotEmpty();
             _builder.append("\t ");
@@ -695,8 +659,8 @@ public class HTMLExporter {
               boolean _tripleNotEquals_1 = (_type != null);
               if (_tripleNotEquals_1) {
                 _builder.append("  ");
-                String _name_7 = ie.getType().getName();
-                _builder.append(_name_7, "\t            ");
+                String _name_5 = ie.getType().getName();
+                _builder.append(_name_5, "\t            ");
                 _builder.append("  ");
               }
             }
@@ -779,8 +743,8 @@ public class HTMLExporter {
             _builder.append("       ");
             _builder.append("    ");
             _builder.append("<td>");
-            String _name_8 = i.getName();
-            _builder.append(_name_8, "\t            ");
+            String _name_6 = i.getName();
+            _builder.append(_name_6, "\t            ");
             _builder.append("</td>");
             _builder.newLineIfNotEmpty();
             _builder.append("\t ");
@@ -792,11 +756,11 @@ public class HTMLExporter {
               boolean _tripleNotEquals_2 = (_interfaceEndFrom != null);
               if (_tripleNotEquals_2) {
                 _builder.append(" <a href=\"");
-                String _name_9 = temp.getName();
-                _builder.append(_name_9, "\t            ");
+                String _name_7 = temp.getName();
+                _builder.append(_name_7, "\t            ");
                 _builder.append(".htm\"> ");
-                String _name_10 = i.getInterfaceEndFrom().getTypeInstance().getName();
-                _builder.append(_name_10, "\t            ");
+                String _name_8 = i.getInterfaceEndFrom().getTypeInstance().getName();
+                _builder.append(_name_8, "\t            ");
                 _builder.append(" </a> ");
               }
             }
@@ -811,11 +775,11 @@ public class HTMLExporter {
               boolean _tripleNotEquals_3 = (_interfaceEndFrom_1 != null);
               if (_tripleNotEquals_3) {
                 _builder.append(" <a href=\"");
-                String _name_11 = temp.getName();
-                _builder.append(_name_11, "\t            ");
+                String _name_9 = temp.getName();
+                _builder.append(_name_9, "\t            ");
                 _builder.append(".htm\"> ");
-                String _name_12 = temp.getName();
-                _builder.append(_name_12, "\t            ");
+                String _name_10 = temp.getName();
+                _builder.append(_name_10, "\t            ");
                 _builder.append(" </a> ");
               }
             }
@@ -830,11 +794,11 @@ public class HTMLExporter {
               boolean _tripleNotEquals_4 = (_interfaceEndTo != null);
               if (_tripleNotEquals_4) {
                 _builder.append(" <a href=\"");
-                String _name_13 = temp2.getName();
-                _builder.append(_name_13, "\t            ");
+                String _name_11 = temp2.getName();
+                _builder.append(_name_11, "\t            ");
                 _builder.append(".htm\"> ");
-                String _name_14 = i.getInterfaceEndTo().getTypeInstance().getName();
-                _builder.append(_name_14, "\t            ");
+                String _name_12 = i.getInterfaceEndTo().getTypeInstance().getName();
+                _builder.append(_name_12, "\t            ");
                 _builder.append(" ");
               }
             }
@@ -849,11 +813,11 @@ public class HTMLExporter {
               boolean _tripleNotEquals_5 = (_interfaceEndFrom_2 != null);
               if (_tripleNotEquals_5) {
                 _builder.append(" <a href=\"");
-                String _name_15 = temp2.getName();
-                _builder.append(_name_15, "\t            ");
+                String _name_13 = temp2.getName();
+                _builder.append(_name_13, "\t            ");
                 _builder.append(".htm\"> ");
-                String _name_16 = temp2.getName();
-                _builder.append(_name_16, "\t            ");
+                String _name_14 = temp2.getName();
+                _builder.append(_name_14, "\t            ");
                 _builder.append(" </a> ");
               }
             }
@@ -872,10 +836,10 @@ public class HTMLExporter {
       }
     }
     {
-      String _name_17 = sc.getType().getName();
+      String _name_15 = sc.getType().getName();
       String _simpleName = InterfaceTypeCollection.class.getClass().getSimpleName();
-      boolean _equals_1 = Objects.equal(_name_17, _simpleName);
-      if (_equals_1) {
+      boolean _equals = Objects.equal(_name_15, _simpleName);
+      if (_equals) {
         _builder.append("\t");
         _builder.append("<table>");
         _builder.newLine();
@@ -906,8 +870,8 @@ public class HTMLExporter {
             _builder.append("\t");
             _builder.append("\t");
             _builder.append("<td>");
-            String _name_18 = ie_1.getName();
-            _builder.append(_name_18, "\t\t\t");
+            String _name_16 = ie_1.getName();
+            _builder.append(_name_16, "\t\t\t");
             _builder.append("</td> ");
             _builder.newLineIfNotEmpty();
             _builder.append("\t");
@@ -961,6 +925,52 @@ public class HTMLExporter {
     _builder.newLine();
     _builder.append("</html>");
     _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence getSeiLinkHTML(final StructuralElementInstance sc, final SEILink seiLink) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      String _name = sc.getName();
+      String _containerSEIname = seiLink.getContainerSEIname();
+      boolean _equals = Objects.equal(_name, _containerSEIname);
+      if (_equals) {
+        _builder.newLineIfNotEmpty();
+        _builder.append("<h1 ><img src= \"");
+        String _name_1 = sc.getName();
+        _builder.append(_name_1);
+        _builder.append(".png\" align=\"middle\" alt=\"alttext\" usemap=\"#mapname\" > </h1>");
+        _builder.newLineIfNotEmpty();
+        _builder.append("<map name=\"mapname\">");
+        _builder.newLine();
+        {
+          ArrayList<Area> _areas = seiLink.getAreas();
+          for(final Area area : _areas) {
+            _builder.append("\t");
+            _builder.append("<area shape=\"rect\" coords=\"");
+            int _topLeftx = area.getTopLeftx();
+            _builder.append(_topLeftx, "\t");
+            _builder.append(",");
+            int _topLefty = area.getTopLefty();
+            _builder.append(_topLefty, "\t");
+            _builder.append(",");
+            int _bottomRightx = area.getBottomRightx();
+            _builder.append(_bottomRightx, "\t");
+            _builder.append(",");
+            int _bottomRighty = area.getBottomRighty();
+            _builder.append(_bottomRighty, "\t");
+            _builder.append("\" href=\"");
+            String _linkSEIname = area.getLinkSEIname();
+            _builder.append(_linkSEIname, "\t");
+            _builder.append(".htm\" alt=\"alttext\">");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("</map>");
+        _builder.newLine();
+        _builder.append("\t\t");
+      }
+    }
     return _builder;
   }
   

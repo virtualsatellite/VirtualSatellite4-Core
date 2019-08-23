@@ -182,14 +182,7 @@ class HTMLExporter {
 		</script>
 		«IF seiLinks!== null»
 			«FOR seiLink : seiLinks »
-				«IF sc.getName() == seiLink.getContainerSEIname()»
-					<h1 ><img src= "«sc.getName()».png" align="middle" alt="alttext" usemap="#mapname" > </h1>
-					<map name="mapname">
-						«FOR area : seiLink.getAreas()»
-						<area shape="rect" coords="«area.getTopLeftx()»,«area.getTopLefty()»,«area.getBottomRightx()»,«area.getBottomRighty()»" href="«area.getLinkSEIname()».htm" alt="alttext">
-						«ENDFOR»
-					</map>
-				«ENDIF»
+				«getSeiLinkHTML(sc, seiLink)»
 			«ENDFOR»
 		«ENDIF»
 		<div id="data">
@@ -290,6 +283,17 @@ class HTMLExporter {
 		
 		</html>
 	'''
+	
+	def CharSequence getSeiLinkHTML(StructuralElementInstance sc, SEILink seiLink)
+		'''«IF sc.getName() == seiLink.getContainerSEIname()»
+			<h1 ><img src= "«sc.getName()».png" align="middle" alt="alttext" usemap="#mapname" > </h1>
+			<map name="mapname">
+				«FOR area : seiLink.getAreas()»
+				<area shape="rect" coords="«area.getTopLeftx()»,«area.getTopLefty()»,«area.getBottomRightx()»,«area.getBottomRighty()»" href="«area.getLinkSEIname()».htm" alt="alttext">
+				«ENDFOR»
+			</map>
+		«ENDIF»'''
+	
 	
 	
 	def someHTML(StructuralElementInstance sc) 
