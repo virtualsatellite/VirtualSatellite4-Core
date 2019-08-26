@@ -6,6 +6,7 @@
 	TargetJRE JavaSE-1.8 
 	RepositoryLocation Nebula url "https://download.eclipse.org/nebula/releases/2.1.0/"{
 		Unit org.eclipse.nebula.widgets.gallery.feature.feature.group version 1.0.0.201812241324;
+		Unit org.eclipse.nebula.widgets.tablecombo.feature.feature.group version 1.2.0.201812241324;
 	}
 	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"{
 		Unit org.antlr.runtime version 4.3.0.v201502022030; 
@@ -22,10 +23,12 @@
 		Unit org.eclipse.pde.source.feature.group version 3.13.4.v20180330-0640;  
 		Unit org.eclipse.platform.sdk version 4.7.3.M20180330-0640;
 		Unit org.eclipse.team.svn.feature.group version 4.0.5.I20170425-1700;
-		Unit org.eclipse.swtbot.eclipse.feature.group version 2.6.0.201706141832;
-		Unit org.eclipse.swtbot.feature.group version 2.6.0.201706141832;
 		Unit org.eclipse.xtext.sdk.feature.group version 2.12.0.v20170519-1412;
 		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
 		Unit org.eclipse.egit.feature.group version 4.9.2.201712150930-r;
+	}
+	RepositoryLocation SWTBot url "https://download.eclipse.org/technology/swtbot/releases/2.8.0/"{
+		Unit org.eclipse.swtbot.eclipse.feature.group version newest;
+		Unit org.eclipse.swtbot.feature.group version newest;
 	}
 }
