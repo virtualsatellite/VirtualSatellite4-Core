@@ -1430,7 +1430,7 @@ public class HTMLExporter {
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t        ");
-    _builder.append("This Document has been generated using Virtual Satellite 4 and belongs to the Core Project. Distribution without permission is not allowed!");
+    _builder.append("This Document has been generated using Virtual Satellite 4 Core.");
     _builder.newLine();
     _builder.newLine();
     _builder.append("\t    ");

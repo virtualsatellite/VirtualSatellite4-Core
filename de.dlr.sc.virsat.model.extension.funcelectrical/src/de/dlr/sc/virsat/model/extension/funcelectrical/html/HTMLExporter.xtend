@@ -455,7 +455,7 @@ class HTMLExporter {
 		<div id="generalwrapper">
 		    <header>
 		
-		        This Document has been generated using Virtual Satellite 4 and belongs to the Core Project. Distribution without permission is not allowed!
+		        This Document has been generated using Virtual Satellite 4 Core.
 	
 		    </header>
 		    <div id="wrapper">
