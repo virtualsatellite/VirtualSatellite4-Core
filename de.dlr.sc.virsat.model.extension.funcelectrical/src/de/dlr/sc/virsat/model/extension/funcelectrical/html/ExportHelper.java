@@ -38,8 +38,8 @@ public class ExportHelper {
 	public static final String INDEX = "index" + TYPE;
 	public static final String TARGETFOLDER = "\\resources";
 	public static final String RESOURCEFOLDER = "/resources";
-	public static final String PRINTERLOGO = "PrinterLogo.jpg";
-	public static final String STEPLOGO = "StepLogo.jpg";
+	public static final String PRINTERLOGO = "PrinterLogo.png";
+	public static final String PROJECTLOGO = "ProjectLogo.png";
 	
 	/**
 	 * Method to export interface end and interface tables for all the selected structural element instances
@@ -87,7 +87,7 @@ public class ExportHelper {
 			resources.mkdir();	
 			
 			// Copy necessary files into the folder
-			copyFile(path + TARGETFOLDER + "\\" + STEPLOGO, RESOURCEFOLDER + "/" + STEPLOGO);
+			copyFile(path + TARGETFOLDER + "\\" + PROJECTLOGO, RESOURCEFOLDER + "/" + PROJECTLOGO);
 			copyFile(path + TARGETFOLDER + "\\" + PRINTERLOGO, RESOURCEFOLDER + "/" + PRINTERLOGO);
 			
 			// Export Block Diagrams
