@@ -97,7 +97,7 @@ public class DVLMValuePropertyInstanceItemProviderTest {
 		DVLMValuePropertyInstanceItemProvider dvlmUviip = new DVLMValuePropertyInstanceItemProvider(adapterFactory);
 		
 		final String firstLine = "Line1";
-		final String testString = firstLine + System.getProperty("line.separator") + "Line2";
+		final String testString = firstLine + System.lineSeparator() + "Line2";
 		
 		StringProperty sp = PropertydefinitionsFactory.eINSTANCE.createStringProperty();
 		sp.setName("SP");
