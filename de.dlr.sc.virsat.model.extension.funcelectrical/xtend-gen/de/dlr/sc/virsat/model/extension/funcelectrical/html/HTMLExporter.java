@@ -404,7 +404,7 @@ public class HTMLExporter {
     _builder.append("#button {");
     _builder.newLine();
     _builder.append("    \t");
-    _builder.append("background-image: url(PrinterLogo.jpg);");
+    _builder.append("background-image: url(PrinterLogo.png);");
     _builder.newLine();
     _builder.append("    \t");
     _builder.append("background-size: cover;");
@@ -466,7 +466,7 @@ public class HTMLExporter {
     _builder.append("<div id=\"forprint\">");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("<img src=\"StepLogo.jpg\" alt=\"\" />");
+    _builder.append("<img src=\"ProjectLogo.png\" alt=\"\" />");
     _builder.newLine();
     _builder.append("</div>");
     _builder.newLine();
@@ -610,48 +610,48 @@ public class HTMLExporter {
       boolean _notEquals = (!Objects.equal(_name_2, _name_3));
       if (_notEquals) {
         _builder.append("\t ");
-        _builder.append("   ");
+        _builder.append(" ");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("   ");
+        _builder.append(" ");
         _builder.append("<table>");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("   \t");
+        _builder.append(" \t");
         _builder.append("<caption><span class=\"tabEnd\"> Interface Ends </span></caption>");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("       ");
+        _builder.append("     ");
         _builder.append("<tr>");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("           ");
+        _builder.append("         ");
         _builder.append("<th>InterfaceEndName</th>");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("           ");
+        _builder.append("         ");
         _builder.append("<th>InterfaceEndType</th>");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("       ");
+        _builder.append("     ");
         _builder.append("</tr>");
         _builder.newLine();
         {
           for(final InterfaceEnd ie : seiInterfaceEnds) {
             _builder.append("\t ");
-            _builder.append("       ");
+            _builder.append("     ");
             _builder.append("<tr>");
             _builder.newLine();
             _builder.append("\t ");
-            _builder.append("       ");
+            _builder.append("     ");
             _builder.append("    ");
             _builder.append("<td>");
             String _name_4 = ie.getName();
-            _builder.append(_name_4, "\t            ");
+            _builder.append(_name_4, "\t          ");
             _builder.append("</td>");
             _builder.newLineIfNotEmpty();
             _builder.append("\t ");
-            _builder.append("       ");
+            _builder.append("     ");
             _builder.append("    ");
             _builder.append("<td>");
             {
@@ -660,185 +660,32 @@ public class HTMLExporter {
               if (_tripleNotEquals_1) {
                 _builder.append("  ");
                 String _name_5 = ie.getType().getName();
-                _builder.append(_name_5, "\t            ");
+                _builder.append(_name_5, "\t          ");
                 _builder.append("  ");
               }
             }
             _builder.append("</td>");
             _builder.newLineIfNotEmpty();
             _builder.append("\t ");
-            _builder.append("       ");
+            _builder.append("     ");
             _builder.append("</tr>");
             _builder.newLine();
           }
         }
         _builder.append("\t ");
-        _builder.append("   ");
+        _builder.append(" ");
         _builder.append("</table>");
         _builder.newLine();
         _builder.append("\t ");
-        _builder.append("  ");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("   ");
-        _builder.append("<table>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("    ");
-        _builder.append("<caption><span class=\"tabEnd\"> Interfaces </span></caption>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("       ");
-        _builder.append("<tr>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("           ");
-        _builder.append("<th>InterfaceName</th>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("           ");
-        _builder.append("<th>FromInterfaceEnd</th>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("           ");
-        _builder.append("<th>Container</th>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("           ");
-        _builder.append("<th>ToInterfaceEnd</th>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("           ");
-        _builder.append("<th>Container</th>");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.newLine();
-        _builder.append("\t ");
-        _builder.append("       ");
-        _builder.append("</tr>");
-        _builder.newLine();
-        {
-          final Function1<Interface, Boolean> _function = (Interface it) -> {
-            return Boolean.valueOf(((it.getInterfaceEndFrom() != null) && (it.getInterfaceEndTo() != null)));
-          };
-          Iterable<Interface> _filter = IterableExtensions.<Interface>filter(seiInterfaces, _function);
-          for(final Interface i : _filter) {
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("<tr>");
-            _builder.newLine();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("\t");
-            EObject _eContainer = i.getInterfaceEndFrom().getTypeInstance().eContainer();
-            StructuralElementInstance temp = ((StructuralElementInstance) _eContainer);
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("\t");
-            EObject _eContainer_1 = i.getInterfaceEndTo().getTypeInstance().eContainer();
-            StructuralElementInstance temp2 = ((StructuralElementInstance) _eContainer_1);
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("    ");
-            _builder.append("<td>");
-            String _name_6 = i.getName();
-            _builder.append(_name_6, "\t            ");
-            _builder.append("</td>");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("    ");
-            _builder.append("<td>");
-            {
-              InterfaceEnd _interfaceEndFrom = i.getInterfaceEndFrom();
-              boolean _tripleNotEquals_2 = (_interfaceEndFrom != null);
-              if (_tripleNotEquals_2) {
-                _builder.append(" <a href=\"");
-                String _name_7 = temp.getName();
-                _builder.append(_name_7, "\t            ");
-                _builder.append(".htm\"> ");
-                String _name_8 = i.getInterfaceEndFrom().getTypeInstance().getName();
-                _builder.append(_name_8, "\t            ");
-                _builder.append(" </a> ");
-              }
-            }
-            _builder.append("</td>");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("    ");
-            _builder.append("<td>");
-            {
-              InterfaceEnd _interfaceEndFrom_1 = i.getInterfaceEndFrom();
-              boolean _tripleNotEquals_3 = (_interfaceEndFrom_1 != null);
-              if (_tripleNotEquals_3) {
-                _builder.append(" <a href=\"");
-                String _name_9 = temp.getName();
-                _builder.append(_name_9, "\t            ");
-                _builder.append(".htm\"> ");
-                String _name_10 = temp.getName();
-                _builder.append(_name_10, "\t            ");
-                _builder.append(" </a> ");
-              }
-            }
-            _builder.append("</td>");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("    ");
-            _builder.append("<td>");
-            {
-              InterfaceEnd _interfaceEndTo = i.getInterfaceEndTo();
-              boolean _tripleNotEquals_4 = (_interfaceEndTo != null);
-              if (_tripleNotEquals_4) {
-                _builder.append(" <a href=\"");
-                String _name_11 = temp2.getName();
-                _builder.append(_name_11, "\t            ");
-                _builder.append(".htm\"> ");
-                String _name_12 = i.getInterfaceEndTo().getTypeInstance().getName();
-                _builder.append(_name_12, "\t            ");
-                _builder.append(" ");
-              }
-            }
-            _builder.append("</td>");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("    ");
-            _builder.append("<td>");
-            {
-              InterfaceEnd _interfaceEndFrom_2 = i.getInterfaceEndFrom();
-              boolean _tripleNotEquals_5 = (_interfaceEndFrom_2 != null);
-              if (_tripleNotEquals_5) {
-                _builder.append(" <a href=\"");
-                String _name_13 = temp2.getName();
-                _builder.append(_name_13, "\t            ");
-                _builder.append(".htm\"> ");
-                String _name_14 = temp2.getName();
-                _builder.append(_name_14, "\t            ");
-                _builder.append(" </a> ");
-              }
-            }
-            _builder.append("</td>");
-            _builder.newLineIfNotEmpty();
-            _builder.append("\t ");
-            _builder.append("       ");
-            _builder.append("</tr>");
-            _builder.newLine();
-          }
-        }
-        _builder.append("\t ");
-        _builder.append("   ");
-        _builder.append("</table>");
-        _builder.newLine();
+        CharSequence _interfaceTable = this.getInterfaceTable(seiInterfaces);
+        _builder.append(_interfaceTable, "\t ");
+        _builder.newLineIfNotEmpty();
       }
     }
     {
-      String _name_15 = sc.getType().getName();
+      String _name_6 = sc.getType().getName();
       String _simpleName = InterfaceTypeCollection.class.getClass().getSimpleName();
-      boolean _equals = Objects.equal(_name_15, _simpleName);
+      boolean _equals = Objects.equal(_name_6, _simpleName);
       if (_equals) {
         _builder.append("\t");
         _builder.append("<table>");
@@ -870,8 +717,8 @@ public class HTMLExporter {
             _builder.append("\t");
             _builder.append("\t");
             _builder.append("<td>");
-            String _name_16 = ie_1.getName();
-            _builder.append(_name_16, "\t\t\t");
+            String _name_7 = ie_1.getName();
+            _builder.append(_name_7, "\t\t\t");
             _builder.append("</td> ");
             _builder.newLineIfNotEmpty();
             _builder.append("\t");
@@ -925,6 +772,144 @@ public class HTMLExporter {
     _builder.newLine();
     _builder.append("</html>");
     _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence getInterfaceTable(final List<Interface> interfaces) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<table>");
+    _builder.newLine();
+    _builder.append("\t     ");
+    _builder.append("<caption><span class=\"tabEnd\"> Interfaces </span></caption>");
+    _builder.newLine();
+    _builder.append("\t        ");
+    _builder.append("<tr>");
+    _builder.newLine();
+    _builder.append("\t            ");
+    _builder.append("<th>InterfaceName</th>");
+    _builder.newLine();
+    _builder.append("\t            ");
+    _builder.append("<th>FromInterfaceEnd</th>");
+    _builder.newLine();
+    _builder.append("\t            ");
+    _builder.append("<th>Container</th>");
+    _builder.newLine();
+    _builder.append("\t            ");
+    _builder.append("<th>ToInterfaceEnd</th>");
+    _builder.newLine();
+    _builder.append("\t            ");
+    _builder.append("<th>Container</th>");
+    _builder.newLine();
+    _builder.append("\t ");
+    _builder.newLine();
+    _builder.append("\t        ");
+    _builder.append("</tr>");
+    _builder.newLine();
+    {
+      final Function1<Interface, Boolean> _function = (Interface it) -> {
+        return Boolean.valueOf(((it.getInterfaceEndFrom() != null) && (it.getInterfaceEndTo() != null)));
+      };
+      Iterable<Interface> _filter = IterableExtensions.<Interface>filter(interfaces, _function);
+      for(final Interface i : _filter) {
+        _builder.append("\t        ");
+        _builder.append("<tr>");
+        _builder.newLine();
+        _builder.append("\t        ");
+        _builder.append("\t");
+        EObject _eContainer = i.getInterfaceEndFrom().getTypeInstance().eContainer();
+        StructuralElementInstance temp = ((StructuralElementInstance) _eContainer);
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("\t");
+        EObject _eContainer_1 = i.getInterfaceEndTo().getTypeInstance().eContainer();
+        StructuralElementInstance temp2 = ((StructuralElementInstance) _eContainer_1);
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("    ");
+        _builder.append("<td>");
+        String _name = i.getName();
+        _builder.append(_name, "\t            ");
+        _builder.append("</td>");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("    ");
+        _builder.append("<td>");
+        {
+          InterfaceEnd _interfaceEndFrom = i.getInterfaceEndFrom();
+          boolean _tripleNotEquals = (_interfaceEndFrom != null);
+          if (_tripleNotEquals) {
+            _builder.append(" <a href=\"");
+            String _name_1 = temp.getName();
+            _builder.append(_name_1, "\t            ");
+            _builder.append(".htm\"> ");
+            String _name_2 = i.getInterfaceEndFrom().getTypeInstance().getName();
+            _builder.append(_name_2, "\t            ");
+            _builder.append(" </a> ");
+          }
+        }
+        _builder.append("</td>");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("    ");
+        _builder.append("<td>");
+        {
+          InterfaceEnd _interfaceEndFrom_1 = i.getInterfaceEndFrom();
+          boolean _tripleNotEquals_1 = (_interfaceEndFrom_1 != null);
+          if (_tripleNotEquals_1) {
+            _builder.append(" <a href=\"");
+            String _name_3 = temp.getName();
+            _builder.append(_name_3, "\t            ");
+            _builder.append(".htm\"> ");
+            String _name_4 = temp.getName();
+            _builder.append(_name_4, "\t            ");
+            _builder.append(" </a> ");
+          }
+        }
+        _builder.append("</td>");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("    ");
+        _builder.append("<td>");
+        {
+          InterfaceEnd _interfaceEndTo = i.getInterfaceEndTo();
+          boolean _tripleNotEquals_2 = (_interfaceEndTo != null);
+          if (_tripleNotEquals_2) {
+            _builder.append(" <a href=\"");
+            String _name_5 = temp2.getName();
+            _builder.append(_name_5, "\t            ");
+            _builder.append(".htm\"> ");
+            String _name_6 = i.getInterfaceEndTo().getTypeInstance().getName();
+            _builder.append(_name_6, "\t            ");
+            _builder.append(" ");
+          }
+        }
+        _builder.append("</td>");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("    ");
+        _builder.append("<td>");
+        {
+          InterfaceEnd _interfaceEndFrom_2 = i.getInterfaceEndFrom();
+          boolean _tripleNotEquals_3 = (_interfaceEndFrom_2 != null);
+          if (_tripleNotEquals_3) {
+            _builder.append(" <a href=\"");
+            String _name_7 = temp2.getName();
+            _builder.append(_name_7, "\t            ");
+            _builder.append(".htm\"> ");
+            String _name_8 = temp2.getName();
+            _builder.append(_name_8, "\t            ");
+            _builder.append(" </a> ");
+          }
+        }
+        _builder.append("</td>");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t        ");
+        _builder.append("</tr>");
+        _builder.newLine();
+      }
+    }
+    _builder.append("\t    ");
+    _builder.append("</table>");
     return _builder;
   }
   
@@ -1444,7 +1429,7 @@ public class HTMLExporter {
     _builder.append("<div id=\"tree\">");
     _builder.newLine();
     _builder.append("\t            ");
-    _builder.append("<img src=\"resources/Steplogo.jpg\" alt=\"\" />");
+    _builder.append("<img src=\"resources/ProjectLogo.png\" alt=\"\" />");
     _builder.newLine();
     _builder.append("\t            ");
     _builder.append("<article>");

@@ -150,7 +150,7 @@ class HTMLExporter {
 		        text-align: center;
 		    }
 		    #button {
-		    	background-image: url(PrinterLogo.jpg);
+		    	background-image: url(PrinterLogo.png);
 		    	background-size: cover;
 				width: 70px;
 				height: 70px;
@@ -172,7 +172,7 @@ class HTMLExporter {
 		<!DOCTYPE html>
 		<html>
 		<div id="forprint">
-			<img src="StepLogo.jpg" alt="" />
+			<img src="ProjectLogo.png" alt="" />
 		</div>
 		<button id = "button" onclick="myFunction()"></button>
 		<script>
@@ -234,29 +234,7 @@ class HTMLExporter {
 			        </tr>
 			        «ENDFOR»
 			    </table>
-			   
-			    <table>
-			     <caption><span class="tabEnd"> Interfaces </span></caption>
-			        <tr>
-			            <th>InterfaceName</th>
-			            <th>FromInterfaceEnd</th>
-			            <th>Container</th>
-			            <th>ToInterfaceEnd</th>
-			            <th>Container</th>
-			 
-			        </tr>
-			        «FOR i : seiInterfaces.filter[getInterfaceEndFrom() !== null && getInterfaceEndTo() !== null] »	
-			        <tr>
-			        	« var StructuralElementInstance temp = i.getInterfaceEndFrom().getTypeInstance().eContainer() as StructuralElementInstance»
-			        	« var StructuralElementInstance temp2 = i.getInterfaceEndTo().getTypeInstance().eContainer() as StructuralElementInstance»
-			            <td>«i.getName()»</td>
-			            <td>«IF i.getInterfaceEndFrom() !== null» <a href="«temp.getName()».htm"> «i.getInterfaceEndFrom().getTypeInstance().getName()» </a> «ENDIF»</td>
-			            <td>«IF i.getInterfaceEndFrom() !== null» <a href="«temp.getName()».htm"> «temp.getName()» </a> «ENDIF»</td>
-			            <td>«IF i.getInterfaceEndTo() !== null» <a href="«temp2.getName()».htm"> «i.getInterfaceEndTo().getTypeInstance().getName()» «ENDIF»</td>
-			            <td>«IF i.getInterfaceEndFrom() !== null» <a href="«temp2.getName()».htm"> «temp2.getName()» </a> «ENDIF»</td>
-			        </tr>
-			        «ENDFOR»
-			    </table>
+			   «getInterfaceTable(seiInterfaces)»
 			«ENDIF»
 			«IF sc.getType().getName() == InterfaceTypeCollection.getClass().getSimpleName()»
 			<table>
@@ -283,6 +261,31 @@ class HTMLExporter {
 		
 		</html>
 	'''
+	
+	def CharSequence getInterfaceTable(List<Interface> interfaces) {
+	    '''<table>
+	     <caption><span class="tabEnd"> Interfaces </span></caption>
+	        <tr>
+	            <th>InterfaceName</th>
+	            <th>FromInterfaceEnd</th>
+	            <th>Container</th>
+	            <th>ToInterfaceEnd</th>
+	            <th>Container</th>
+	 
+	        </tr>
+	        «FOR i : interfaces.filter[getInterfaceEndFrom() !== null && getInterfaceEndTo() !== null] »	
+	        <tr>
+	        	« var StructuralElementInstance temp = i.getInterfaceEndFrom().getTypeInstance().eContainer() as StructuralElementInstance»
+	        	« var StructuralElementInstance temp2 = i.getInterfaceEndTo().getTypeInstance().eContainer() as StructuralElementInstance»
+	            <td>«i.getName()»</td>
+	            <td>«IF i.getInterfaceEndFrom() !== null» <a href="«temp.getName()».htm"> «i.getInterfaceEndFrom().getTypeInstance().getName()» </a> «ENDIF»</td>
+	            <td>«IF i.getInterfaceEndFrom() !== null» <a href="«temp.getName()».htm"> «temp.getName()» </a> «ENDIF»</td>
+	            <td>«IF i.getInterfaceEndTo() !== null» <a href="«temp2.getName()».htm"> «i.getInterfaceEndTo().getTypeInstance().getName()» «ENDIF»</td>
+	            <td>«IF i.getInterfaceEndFrom() !== null» <a href="«temp2.getName()».htm"> «temp2.getName()» </a> «ENDIF»</td>
+	        </tr>
+	        «ENDFOR»
+	    </table>'''
+	}
 	
 	def CharSequence getSeiLinkHTML(StructuralElementInstance sc, SEILink seiLink)
 		'''«IF sc.getName() == seiLink.getContainerSEIname()»
@@ -461,7 +464,7 @@ class HTMLExporter {
 		    <div id="wrapper">
 
 		        <div id="tree">
-		            <img src="resources/Steplogo.jpg" alt="" />
+		            <img src="resources/ProjectLogo.png" alt="" />
 		            <article>
 		                <ul id="demo">
 		                    <item class="item" :model="treeData">
