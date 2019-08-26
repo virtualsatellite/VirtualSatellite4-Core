@@ -20,12 +20,12 @@ public interface ILevel {
 	/**
 	 * Method that checks if element is on the level
 	 * 
-	 * @param structuralElement
+	 * @param bean
 	 *            the structural element instance bean under question
 	 * @return returns true if a structural element instance bean belongs to this
 	 *         level
 	 */
-	boolean isOnLevel(IBeanStructuralElementInstance structuralElement);
+	boolean isOnLevel(IBeanStructuralElementInstance bean);
 
 	/**
 	 * Specify if the level can be nested. Nested means that an element of that
