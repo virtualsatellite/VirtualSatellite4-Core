@@ -96,7 +96,7 @@ public class LevelCheckerTest extends AConceptTestCase {
 		IBeanStructuralElementInstance child = createBean("x");
 		parent.add(child);
 		
-		assertEquals(expected(a), checker.getApplicableLevels(parent));
+		assertEquals(expected(an), checker.getApplicableLevels(parent));
 		assertEquals(expected(an, b), checker.getApplicableLevels(child));
 	}
 
@@ -211,6 +211,11 @@ public class LevelCheckerTest extends AConceptTestCase {
 			@Override
 			public boolean canBeNested() {
 				return allowNesting;
+			}
+			
+			@Override
+			public String toString() {
+				return "Level " + name + (allowNesting ? " nested" : "");
 			}
 		};
 	}

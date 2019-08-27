@@ -67,7 +67,7 @@ public class LevelChecker {
 	public Set<ILevel> getApplicableLevels(IBeanStructuralElementInstance bean) {
 		Set<ILevel> applicableLevels = new HashSet<>();
 		int minLevelIndex = 0;
-		int maxLevelIndex = levels.size();
+		int maxLevelIndex = levels.size() - 1;
 
 		// Check if element belongs to level already - then it can by definition of this
 		// checker only be on this level
@@ -80,34 +80,34 @@ public class LevelChecker {
 		// Get first parent with level
 		IBeanStructuralElementInstance parent = getFirstParentWithLevel(bean);
 		// Get relevant child with level
-		IBeanStructuralElementInstance child = getFirstChildWithHighestLevel(bean);
+		List<IBeanStructuralElementInstance> children = getChildrenWithLevel(bean);
 		
 		// Check maximum and minimum level index
 		if (parent != null) {
 			int minLevelFromParent = getMinIndexFromParentLevel(parent);
 			int maxLevelFromParent = getMaxIndexFromTreeDistanceOfParent(parent, bean);
 			
-			if (minLevelFromParent < minLevelIndex) {
+			if (minLevelFromParent > minLevelIndex) {
 				minLevelIndex = minLevelFromParent;
 			}
-			if (maxLevelFromParent > maxLevelIndex) {
+			if (maxLevelFromParent < maxLevelIndex) {
 				maxLevelIndex = maxLevelFromParent;
 			}
 		}
-		if (child != null) {
+		for (IBeanStructuralElementInstance child : children) {
 			int maxLevelFromChild = getMaxIndexFromRelevantChild(child);
 			int minLevelFromChild = getMinIndexFromTreeDistanceOfChild(child, bean);
 			
-			if (minLevelFromChild < minLevelIndex) {
+			if (minLevelFromChild > minLevelIndex) {
 				minLevelIndex = minLevelFromChild;
 			}
-			if (maxLevelFromChild > maxLevelIndex) {
+			if (maxLevelFromChild < maxLevelIndex) {
 				maxLevelIndex = maxLevelFromChild;
 			}
 		}
 
 		// Add applicable levels to set
-		for (int index = minLevelIndex; index < maxLevelIndex; index++) {
+		for (int index = minLevelIndex; index <= maxLevelIndex; index++) {
 			applicableLevels.add(levels.get(index));
 		}
 
@@ -231,23 +231,11 @@ public class LevelChecker {
 	 *            the SEIBean
 	 * @return the next parent with level
 	 */
-	private IBeanStructuralElementInstance getFirstChildWithHighestLevel(IBeanStructuralElementInstance bean) {
+	private List<IBeanStructuralElementInstance> getChildrenWithLevel(IBeanStructuralElementInstance bean) {
 		HasLevelTreeTraverserMatcher matcher = new HasLevelTreeTraverserMatcher(levels);
 		new BeanStructuralTreeTraverser().traverse(bean, matcher);
-
-		// Search most relevant child with level - relevant is the closest child with
-		// the highest level because that constraints the minimum level index for our element
-		int currentHighestRelevance = levels.size();
-		IBeanStructuralElementInstance mostRelevantChild = null;
-		for (IBeanStructuralElementInstance levelChild : matcher.getElementsWithLevel()) {
-			int relevance = levels.indexOf(getLevelOfBean(levelChild)) - getTreeDistance(levelChild, bean);
-			if (relevance < currentHighestRelevance) {
-				currentHighestRelevance = relevance;
-				mostRelevantChild = levelChild;
-			}
-		}
 		
-		return mostRelevantChild;
+		return matcher.getElementsWithLevel();
 	}
 
 	/**
@@ -276,15 +264,15 @@ public class LevelChecker {
 	 */
 	private int getTreeDistance(IBeanStructuralElementInstance startElement, IBeanStructuralElementInstance target,
 			int startDistance) {
-		int currentDistance = startDistance;
-		IBeanStructuralElementInstance parent = target.getParentSeiBean();
+		int currentDistance = startDistance + 1;
+		IBeanStructuralElementInstance parent = startElement.getParentSeiBean();
 		if (parent == null) {
 			return -1;
 		}
 		if (parent.equals(target)) {
 			return currentDistance;
 		} else {
-			return getTreeDistance(parent, target, currentDistance++);
+			return getTreeDistance(parent, target, currentDistance);
 		}
 
 	}
