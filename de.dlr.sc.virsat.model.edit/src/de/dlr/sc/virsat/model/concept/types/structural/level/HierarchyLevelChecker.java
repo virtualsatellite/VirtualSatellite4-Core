@@ -146,7 +146,8 @@ public class HierarchyLevelChecker {
 	 *         true if element has no level or is on an applicable level
 	 */
 	public boolean validateApplicableLevel(IBeanStructuralElementInstance bean) {
-		return deduceApplicableLevels(bean).contains(getLevelOfBean(bean));
+		IHierarchyLevel level = getLevelOfBean(bean);
+		return level == null || deduceApplicableLevels(bean).contains(level);
 	}
 
 	/**
@@ -320,8 +321,9 @@ public class HierarchyLevelChecker {
 	private List<IBeanStructuralElementInstance> getChildrenWithLevel(IBeanStructuralElementInstance bean) {
 		HasLevelTreeTraverserMatcher matcher = new HasLevelTreeTraverserMatcher(levels);
 		new BeanStructuralTreeTraverser().traverse(bean, matcher);
-
-		return matcher.getElementsWithLevel();
+		List<IBeanStructuralElementInstance> children = matcher.getElementsWithLevel();
+		children.remove(bean);
+		return children;
 	}
 
 	/**
