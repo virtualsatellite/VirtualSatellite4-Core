@@ -81,12 +81,12 @@ public class LevelChecker {
 		IBeanStructuralElementInstance parent = getFirstParentWithLevel(bean);
 		// Get relevant child with level
 		List<IBeanStructuralElementInstance> children = getChildrenWithLevel(bean);
-		
+
 		// Check maximum and minimum level index
 		if (parent != null) {
 			int minLevelFromParent = getMinIndexFromParentLevel(parent);
 			int maxLevelFromParent = getMaxIndexFromTreeDistanceOfParent(parent, bean);
-			
+
 			if (minLevelFromParent > minLevelIndex) {
 				minLevelIndex = minLevelFromParent;
 			}
@@ -97,7 +97,7 @@ public class LevelChecker {
 		for (IBeanStructuralElementInstance child : children) {
 			int maxLevelFromChild = getMaxIndexFromRelevantChild(child);
 			int minLevelFromChild = getMinIndexFromTreeDistanceOfChild(child, bean);
-			
+
 			if (minLevelFromChild > minLevelIndex) {
 				minLevelIndex = minLevelFromChild;
 			}
@@ -126,66 +126,106 @@ public class LevelChecker {
 		return getApplicableLevels(bean).contains(level);
 	}
 
-	
 	/**
 	 * Get the minimum level index from the next parent element with level
-	 * @param parent the next parent with level
+	 * 
+	 * @param parent
+	 *            the next parent with level
 	 * @return the minumum level index
 	 */
 	private int getMinIndexFromParentLevel(IBeanStructuralElementInstance parent) {
 		ILevel parentLevel = getLevelOfBean(parent);
-		
+
 		int minLevelIndex = levels.indexOf(parentLevel);
-		
-		//If the level cannot be nested (->repeated) then the element needs to be of the next level
+
+		// If the level cannot be nested (->repeated) then the element needs to be of
+		// the next level
 		if (!parentLevel.canBeNested()) {
 			minLevelIndex += 1;
 		}
-		
+
 		return minLevelIndex;
 	}
-	
+
 	/**
 	 * Get the minimum level index from the next parent element with level
-	 * @param child the next child with level
+	 * 
+	 * @param child
+	 *            the next child with level
 	 * @return the minumum level index
 	 */
 	private int getMaxIndexFromRelevantChild(IBeanStructuralElementInstance child) {
 		ILevel childLevel = getLevelOfBean(child);
-		
+
 		int maxLevelIndex = levels.indexOf(childLevel);
-		
-		//If the level cannot be nested (->repeated) then the element needs to be of the previous level from the order
+
+		// If the level cannot be nested (->repeated) then the element needs to be of
+		// the previous level from the order
 		if (!childLevel.canBeNested()) {
 			maxLevelIndex -= 1;
 		}
-		
+
 		return maxLevelIndex;
 	}
-	
+
 	/**
-	 * Get the minimum index considering the tree distance of the next relvant child with level
-	 * @param child the next relevant child with level 
-	 * 	- the next relevant child is the one with the least value of the difference from the level index and the tree distance
-	 * @param elementToCheck the element to check
+	 * Get the minimum index considering the tree distance of the next relvant child
+	 * with level
+	 * 
+	 * @param child
+	 *            the next relevant child with level - the next relevant child is
+	 *            the one with the least value of the difference from the level
+	 *            index and the tree distance
+	 * @param elementToCheck
+	 *            the element to check
 	 * @return the minimum level index
 	 */
-	private int getMinIndexFromTreeDistanceOfChild(IBeanStructuralElementInstance child, IBeanStructuralElementInstance elementToCheck) {
+	private int getMinIndexFromTreeDistanceOfChild(IBeanStructuralElementInstance child,
+			IBeanStructuralElementInstance elementToCheck) {
 		ILevel childLevel = getLevelOfBean(child);
-		return levels.indexOf(childLevel) - getTreeDistance(child, elementToCheck);
+		int treeDistance = getTreeDistance(child, elementToCheck);
+		int minLevel = levels.indexOf(childLevel) - treeDistance;
+		
+		// Go through all the levels between the child level and the one with a
+		// distance of the tree depth and check if their optional. If so, then the
+		// minimum applicable level index decreases as we can also skip the level
+		for (int i = levels.indexOf(childLevel); i < levels.indexOf(childLevel) - treeDistance; i--) {
+			if (levels.get(i).isOptional()) {
+				minLevel--;
+			}
+		}
+		
+		return minLevel;
 	}
-	
+
 	/**
-	 * Get the maximum level index considering the tree distance to the next parent element with level
-	 * @param parent the next parent element with level
-	 * @param elementToCheck the element to check
+	 * Get the maximum level index considering the tree distance to the next parent
+	 * element with level
+	 * 
+	 * @param parent
+	 *            the next parent element with level
+	 * @param elementToCheck
+	 *            the element to check
 	 * @return the maximum level index
 	 */
-	private int getMaxIndexFromTreeDistanceOfParent(IBeanStructuralElementInstance parent, IBeanStructuralElementInstance elementToCheck) {
+	private int getMaxIndexFromTreeDistanceOfParent(IBeanStructuralElementInstance parent,
+			IBeanStructuralElementInstance elementToCheck) {
 		ILevel parentLevel = getLevelOfBean(parent);
-		return levels.indexOf(parentLevel) + getTreeDistance(elementToCheck, parent);
+		int treeDistance = getTreeDistance(elementToCheck, parent);
+		int maxLevel = levels.indexOf(parentLevel) + treeDistance;
+
+		// Go through all the levels between the parent level and the one with a
+		// distance of the tree depth and check if their optional. If so, then the
+		// maximum applicable level index increases as we can also skip the level
+		for (int i = levels.indexOf(parentLevel); i < levels.indexOf(parentLevel) + treeDistance; i++) {
+			if (levels.get(i).isOptional()) {
+				maxLevel++;
+			}
+		}
+
+		return maxLevel;
 	}
-	
+
 	/**
 	 * Get the level an arbitrary bean is on
 	 * 
@@ -234,7 +274,7 @@ public class LevelChecker {
 	private List<IBeanStructuralElementInstance> getChildrenWithLevel(IBeanStructuralElementInstance bean) {
 		HasLevelTreeTraverserMatcher matcher = new HasLevelTreeTraverserMatcher(levels);
 		new BeanStructuralTreeTraverser().traverse(bean, matcher);
-		
+
 		return matcher.getElementsWithLevel();
 	}
 
@@ -276,6 +316,5 @@ public class LevelChecker {
 		}
 
 	}
-
 
 }
