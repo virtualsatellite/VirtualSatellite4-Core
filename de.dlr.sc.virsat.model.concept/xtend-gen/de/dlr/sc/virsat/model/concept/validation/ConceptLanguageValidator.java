@@ -28,11 +28,11 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
  */
 @SuppressWarnings("all")
 public class ConceptLanguageValidator extends AbstractConceptLanguageValidator {
-  public final static String DUPLICATE_PROPERTY_NAME = "duplicatePropertyName";
+  public static final String DUPLICATE_PROPERTY_NAME = "duplicatePropertyName";
   
-  public final static String DUPLICATE_CATEGORY_NAME = "duplicateCategoryName";
+  public static final String DUPLICATE_CATEGORY_NAME = "duplicateCategoryName";
   
-  public final static String DEFAULT_VALUE_ON_ARRAY_INFO = "defaultValueForArrayInfo";
+  public static final String DEFAULT_VALUE_ON_ARRAY_INFO = "defaultValueForArrayInfo";
   
   @Check
   public void CheckDuplicateNameInScope(final Concept concept) {

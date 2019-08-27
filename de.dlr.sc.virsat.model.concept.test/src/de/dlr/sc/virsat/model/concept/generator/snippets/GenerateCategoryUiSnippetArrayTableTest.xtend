@@ -31,10 +31,10 @@ class GenerateCategoryUiSnippetArrayTableTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	final val TEST_CONCEPT_NAME = "testConcept"
-	final val TEST_CATEGORY_NAME = "testCategory"
-	final val TEST_EXTENDING_CATEGORY_NAME = "testExtendingCategory"
-	final val TEST_PROPERTY_NAME = "testStringArray"
+	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CATEGORY_NAME = "testCategory"
+	val TEST_EXTENDING_CATEGORY_NAME = "testExtendingCategory"
+	val TEST_PROPERTY_NAME = "testStringArray"
 	val createAddCommandGenerator = new GenerateCategoryUiSnippetArrayTable
 
 	@Before

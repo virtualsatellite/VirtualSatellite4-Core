@@ -78,9 +78,6 @@
           changeable="false" volatile="true" transient="true" defaultValueLiteral="de.dlr.sc.model.dvlm.noid"
           derived="true" iD="true">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="documentation" value="The FullQualifiedName (FQN) is the combination of the current name plus the names of the containers. In the Categories and properties we usually have FQN which follow the pattern of Concept.Category.Property .&#xD;&#xA;WARNING!!! This attribute cannot be implemented through the model by an EOperation. An EOperation cannot be set to be the ID of the class. In contrast this derived feature builds the id of this class and is important to  uniquely identify concepts and its contained elements for registration within a repository."/>
-          </eAnnotations>
           <details key="documentation" value="The FullQualifiedName (FQN) is the combination of the current name plus the names of the containers. In the Categories and properties we usually have FQN which follow the pattern of Concept.Category.Property .&#xD;&#xA;WARNING!!! This attribute cannot be implemented through the model by an EOperation. An EOperation cannot be set to be the ID of the class. In contrast this derived feature builds the id of this class and is important to  uniquely identify concepts and its contained elements for registration within a repository."/>
         </eAnnotations>
       </eStructuralFeatures>

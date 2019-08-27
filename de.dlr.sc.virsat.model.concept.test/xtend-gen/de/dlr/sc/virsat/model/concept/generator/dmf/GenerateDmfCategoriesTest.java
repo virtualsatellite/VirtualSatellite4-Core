@@ -50,13 +50,13 @@ public class GenerateDmfCategoriesTest {
   @Extension
   private ParseHelper<Concept> _parseHelper;
   
-  private final static String TEST_CONCEPT_NAME = "testConcept";
+  private static final String TEST_CONCEPT_NAME = "testConcept";
   
-  private final static String TEST_FQN_NAME = (("de.dlr.sc.virsat.model.extension" + ".") + GenerateDmfCategoriesTest.TEST_CONCEPT_NAME);
+  private static final String TEST_FQN_NAME = (("de.dlr.sc.virsat.model.extension" + ".") + GenerateDmfCategoriesTest.TEST_CONCEPT_NAME);
   
-  private final static String TEST_CATEGORY_NAME = "testCategory";
+  private static final String TEST_CATEGORY_NAME = "testCategory";
   
-  private final static String TEST_CONCEPT_VERSION = "2";
+  private static final String TEST_CONCEPT_VERSION = "2";
   
   private final GenerateDmfCategories dmfCategoriesGenerator = new GenerateDmfCategories();
   

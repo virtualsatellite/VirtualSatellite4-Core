@@ -367,7 +367,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 			return false;
 		}
 		
-		def public getTheProject() {
+		def getTheProject() {
 			return project;
 		}
 	}

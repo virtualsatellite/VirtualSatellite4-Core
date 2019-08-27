@@ -71,7 +71,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     return (_plus + GenerateStructuralElementBeans.PACKAGE_FOLDER);
   }
   
-  public final static String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
+  public static final String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
   
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
