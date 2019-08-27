@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v5/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v5/cp/cppd" name="de.dlr.sc.virsat.model.extension.statemachines" description="Concept for modeling State Machines" displayName="statemachines">
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
+  <categories name="State" description="State of the component at a given time"/>
+  <categories name="Transition" description="Transitions among states">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateFrom" description="The Transition starts in this state" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateTo" description="The Transition ends in this state" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
+  </categories>
+  <categories name="AConstraint" description="General constraint in statemachines " isAbstract="true">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateConstraining" description="The state that constraints the influenced state" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateInfluenced" description="The state that is influenced by this constraint" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
+  </categories>
+  <categories name="AllowsConstraint" description="A state explicitly allows another state" extendsCategory="de.dlr.sc.virsat.model.extension.statemachines.AConstraint"/>
+  <categories name="ForbidsConstraint" description="A state forbids another state" extendsCategory="de.dlr.sc.virsat.model.extension.statemachines.AConstraint"/>
+  <categories name="StateMachine" description="A state machine with states and transitions">
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementDefinition"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementOccurence"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="initialState" description="The initial state of this state machine" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="states" description="A collection of states of this state machine" type="de.dlr.sc.virsat.model.extension.statemachines.State">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="transitions" description="A collections of transitions of this state machine" type="de.dlr.sc.virsat.model.extension.statemachines.Transition">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="constraints" description="A collection of constraints of this state machine" type="de.dlr.sc.virsat.model.extension.statemachines.AConstraint">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+  </categories>
+</dvlm_c:Concept>

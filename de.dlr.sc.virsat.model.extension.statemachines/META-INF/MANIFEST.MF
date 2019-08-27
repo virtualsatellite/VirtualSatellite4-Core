@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension State Machines
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.statemachines;singleton:=true
+Bundle-Version: 4.9.1.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.ui,
+ de.dlr.sc.virsat.build,
+ de.dlr.sc.virsat.external.lib.apache.poi,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.model,
+ org.eclipse.core.runtime,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.excel
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.model.extension.statemachines,
+ de.dlr.sc.virsat.model.extension.statemachines.model,
+ de.dlr.sc.virsat.model.extension.statemachines.util,
+ de.dlr.sc.virsat.model.extension.statemachines.validator
+Bundle-Activator: de.dlr.sc.virsat.model.extension.statemachines.Activator
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.statemachines
