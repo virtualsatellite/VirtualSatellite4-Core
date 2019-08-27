@@ -76,7 +76,6 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
-<setEntry value="de.dlr.sc.virsat.svn.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.test.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.uiengine.feature:default"/>
 <setEntry value="org.eclipse.e4.rcp:default"/>
@@ -114,7 +113,6 @@
 <setEntry value="org.eclipse.xtext.runtime:default"/>
 <setEntry value="org.eclipse.xtext.xbase.lib:default"/>
 <setEntry value="org.eclipse.xtext.xbase:default"/>
-<setEntry value="org.polarion.eclipse.team.svn.connector:default"/>
 </setAttribute>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>

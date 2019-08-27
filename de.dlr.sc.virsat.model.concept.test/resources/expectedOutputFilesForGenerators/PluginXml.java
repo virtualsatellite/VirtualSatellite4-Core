@@ -11,15 +11,15 @@ public class PluginXml {
 	public static class commands {
 		public static class CommandcreateStudyApp {
 			public static final String ID = "de.dlr.sc.virsat.model.extension.testResource.ui.command.createStudyApp";
-			public static final String NAME = "S2tep Example Study App";
+			public static final String NAME = "Example Study App";
 		}	
 		public static class CommandcreateReplaceITApp {
 			public static final String ID = "de.dlr.sc.virsat.model.extension.testResource.ui.command.createReplaceITApp";
-			public static final String NAME = "S2tep Replace Interface Types App";
+			public static final String NAME = "Replace Interface Types App";
 		}	
 		public static class CommandcreateAddUnitApp {
 			public static final String ID = "de.dlr.sc.virsat.model.extension.testResource.ui.command.createAddUnitApp";
-			public static final String NAME = "S2tep Add Unit App";
+			public static final String NAME = "Add Unit App";
 		}	
 	}
 	public static class conceptImages {

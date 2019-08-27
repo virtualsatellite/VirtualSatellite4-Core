@@ -6,7 +6,8 @@
 	TargetJRE JavaSE-1.8
 	 
 	RepositoryLocation Nebula url "https://download.eclipse.org/nebula/releases/2.2.0/"{
-		Unit org.eclipse.nebula.widgets.gallery.feature.feature.group version newest;
+		Unit org.eclipse.nebula.widgets.gallery.feature.feature.group version 1.0.0.201907151344;
+		Unit org.eclipse.nebula.widgets.tablecombo.feature.feature.group version 1.2.0.201907151344;
 	}
 	
 	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"{
@@ -14,24 +15,24 @@
 	}
 	
 	RepositoryLocation EclipseOxygen url "http://download.eclipse.org/releases/2019-06"{
-		Unit org.eclipse.emf.compare.ide.ui.feature.group version newest;
-		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version newest;
-		Unit org.eclipse.emf.sdk.feature.group version newest;
-		Unit org.eclipse.emf.transaction.sdk.feature.group version newest;
-		Unit org.eclipse.equinox.executable.feature.group version newest;
-		Unit org.eclipse.graphiti.sdk.feature.feature.group version newest;
-		Unit org.eclipse.jdt.source.feature.group version newest;
-		Unit org.eclipse.ocl.all.sdk.feature.group version newest;
-		Unit org.eclipse.pde.source.feature.group version newest;  
-		Unit org.eclipse.platform.sdk version newest;
-		Unit org.eclipse.swtbot.eclipse.feature.group version newest;
-		Unit org.eclipse.swtbot.feature.group version newest;
-		Unit org.eclipse.xtext.sdk.feature.group version newest;
-		Unit org.eclipse.gef.feature.group version newest;  
-		Unit org.eclipse.egit.feature.group version newest;
+		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.7.201905300200;
+		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version 1.4.0.201902190757;
+		Unit org.eclipse.emf.sdk.feature.group version 2.18.0.v20190528-0845;
+		Unit org.eclipse.emf.transaction.sdk.feature.group version 1.12.0.201805140824;
+		Unit org.eclipse.equinox.executable.feature.group version 3.8.400.v20190515-0925;
+		Unit org.eclipse.graphiti.sdk.feature.feature.group version 0.16.0.201906041401;
+		Unit org.eclipse.jdt.source.feature.group version 3.18.0.v20190605-1800;
+		Unit org.eclipse.ocl.all.sdk.feature.group version 5.9.0.v20190603-1146;
+		Unit org.eclipse.pde.source.feature.group version 3.14.0.v20190605-1800;  
+		Unit org.eclipse.platform.sdk version 4.12.0.I20190605-1800;
+		Unit org.eclipse.swtbot.eclipse.feature.group version 2.8.0.201906121535;
+		Unit org.eclipse.swtbot.feature.group version 2.8.0.201906121535;
+		Unit org.eclipse.xtext.sdk.feature.group version 2.18.0.v20190528-0716;
+		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
+		Unit org.eclipse.egit.feature.group version 5.4.0.201906121030-r;
 	}
 	
 	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.0/update-site/" {
-		Unit org.eclipse.team.svn.feature.group version newest;
+		Unit org.eclipse.team.svn.feature.group version 4.0.5.I20170425-1700;
 	}
 }
