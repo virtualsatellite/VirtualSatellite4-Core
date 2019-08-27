@@ -38,17 +38,25 @@ public class LevelCheckerTest extends AConceptTestCase {
 	private ILevel an;
 	private ILevel bn;
 	private ILevel cn;
+	private ILevel ao;
+	private ILevel bo;
+	private ILevel co;
+	private ILevel ano;
 
 	@Before
 	public void setup() {
 		concept = loadConceptFromPlugin();
 		
-		a = createNameMatchingLevel("a", false);
-		b = createNameMatchingLevel("b", false);
-		c = createNameMatchingLevel("c", false);
-		an = createNameMatchingLevel("a", true);
-		bn = createNameMatchingLevel("b", true);
-		cn = createNameMatchingLevel("c", true);
+		a = createNameMatchingLevel("a", false, false);
+		b = createNameMatchingLevel("b", false, false);
+		c = createNameMatchingLevel("c", false, false);
+		an = createNameMatchingLevel("a", true, false);
+		bn = createNameMatchingLevel("b", true, false);
+		cn = createNameMatchingLevel("c", true, false);
+		ao = createNameMatchingLevel("a", false, true);
+		bo = createNameMatchingLevel("b", false, true);
+		co = createNameMatchingLevel("c", false, true);
+		ano = createNameMatchingLevel("a", true, true);
 	}
 
 	@Test
@@ -101,6 +109,56 @@ public class LevelCheckerTest extends AConceptTestCase {
 	}
 
 	@Test
+	public void testOptionalParent() {
+		LevelChecker checker = getChecker(ao, bn);
+		IBeanStructuralElementInstance parent = createBean("x");
+		IBeanStructuralElementInstance child = createBean("b");
+		parent.add(child);
+		
+		assertEquals(expected(ao, bn), checker.getApplicableLevels(parent));
+	}
+
+	@Test
+	public void testOptionalParentPresent() {
+		LevelChecker checker = getChecker(ao, b);
+		IBeanStructuralElementInstance parent = createBean("a");
+		IBeanStructuralElementInstance child = createBean("x");
+		parent.add(child);
+		
+		assertEquals(expected(b), checker.getApplicableLevels(child));
+	}
+	
+	@Test
+	public void testOptionalNested() {
+		LevelChecker checker = getChecker(ano, b);
+		IBeanStructuralElementInstance parent = createBean("a");
+		IBeanStructuralElementInstance child = createBean("x");
+		parent.add(child);
+		
+		assertEquals(expected(ano, b), checker.getApplicableLevels(child));
+	}
+	
+	@Test
+	public void testOptionalParents() {
+		LevelChecker checker = getChecker(ao, bo, c);
+		IBeanStructuralElementInstance parent = createBean("x");
+		IBeanStructuralElementInstance child = createBean("c");
+		parent.add(child);
+		
+		assertEquals(expected(ao, bo), checker.getApplicableLevels(parent));
+	}
+
+	@Test
+	public void testOptionalChildren() {
+		LevelChecker checker = getChecker(a, bo, co);
+		IBeanStructuralElementInstance parent = createBean("a");
+		IBeanStructuralElementInstance child = createBean("x");
+		parent.add(child);
+		
+		assertEquals(expected(bo, co), checker.getApplicableLevels(child));
+	}
+	
+	@Test
 	public void testMiddleLevel() {
 		LevelChecker checker = getChecker(a, b, c);
 		IBeanStructuralElementInstance parent = createBean("a");
@@ -151,6 +209,18 @@ public class LevelCheckerTest extends AConceptTestCase {
 		
 		assertTrue(checker.getApplicableLevels(parent).isEmpty());
 	}
+
+	@Test
+	public void testDifferentChildrenOptional() {
+		LevelChecker checker = getChecker(a, bo, c);
+		IBeanStructuralElementInstance parent = createBean("x");
+		IBeanStructuralElementInstance child1 = createBean("b");
+		IBeanStructuralElementInstance child2 = createBean("c");
+		parent.add(child1);
+		parent.add(child2);
+		
+		assertEquals(expected(a), checker.getApplicableLevels(parent));
+	}
 	
 	@Test
 	public void testDifferentDeepChildren() {
@@ -199,9 +269,10 @@ public class LevelCheckerTest extends AConceptTestCase {
 	/**
 	 * @param name 
 	 * @param allowNesting 
+	 * @param optional 
 	 * @return level implementation that matches bean name with the given name
 	 */
-	private ILevel createNameMatchingLevel(String name, boolean allowNesting) {
+	private ILevel createNameMatchingLevel(String name, boolean allowNesting, boolean optional) {
 		return new ILevel() {
 			@Override
 			public boolean isOnLevel(IBeanStructuralElementInstance bean) {
@@ -214,8 +285,13 @@ public class LevelCheckerTest extends AConceptTestCase {
 			}
 			
 			@Override
+			public boolean isOptional() {
+				return optional;
+			}
+			
+			@Override
 			public String toString() {
-				return "Level " + name + (allowNesting ? " nested" : "");
+				return "Level " + name + (allowNesting ? " nested" : "") + (optional ? " optional" : "");
 			}
 		};
 	}
