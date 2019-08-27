@@ -24,7 +24,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
-import de.dlr.sc.virsat.project.ui.Activator;
+import de.dlr.sc.virsat.uieingine.ui.Activator;
 
 
 
@@ -54,7 +54,7 @@ public class ExcelExportWizard extends Wizard implements INewWizard {
 		this.columnViewer = columnViewer;
 		this.type = type;
 		// Setup persistency if necessary
-        IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
+        IDialogSettings pluginSettings = de.dlr.sc.virsat.project.ui.Activator.getDefault().getDialogSettings();
         IDialogSettings wizardSettings = pluginSettings.getSection(ID);
         if (wizardSettings == null) {
             wizardSettings = new DialogSettings(ID);
@@ -94,7 +94,7 @@ public class ExcelExportWizard extends Wizard implements INewWizard {
 			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO",
 					"Successfully exported to excel file to " + file.getAbsolutePath()));
 		} catch (Exception e) {
-			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.s2tep.excel.ui", "Failed to perform an export operation! ", e);
+			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! ", e);
 			DVLMEditPlugin.getPlugin().getLog().log(status);
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			return false;
