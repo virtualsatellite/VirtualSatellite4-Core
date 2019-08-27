@@ -14,7 +14,10 @@
 		Unit org.antlr.runtime version newest; 
 	}
 	
-	RepositoryLocation Eclipse2019_06 url "http://download.eclipse.org/releases/2019-06"{
+	// Purely named Eclipse. The name is important for target models having this one as 
+	// super model. Then this name can be referenced to explicitly exclude
+	// certain features from the target model
+	RepositoryLocation Eclipse url "http://download.eclipse.org/releases/2019-06"{
 		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.7.201905300200;
 		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version 1.4.0.201902190757;
 		Unit org.eclipse.emf.sdk.feature.group version 2.18.0.v20190528-0845;
