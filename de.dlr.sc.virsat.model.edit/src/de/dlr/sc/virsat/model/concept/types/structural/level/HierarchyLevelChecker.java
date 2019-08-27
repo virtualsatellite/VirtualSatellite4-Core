@@ -9,9 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.structural.level;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTraverser;
@@ -19,11 +21,11 @@ import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTr
 /**
  * <pre>
  * A class to check elements against a custom tree level structure which are
- * specified by implementations of {@link ILevel}s
+ * specified by implementations of {@link IHierarchyLevel}s
  * 
  * An example of such a tree structure is a model that consists of a SYSTEM,
  * SUBSYTEM and EQUIPMENT levels These levels are implemented with the
- * {@link ILevel} interface
+ * {@link IHierarchyLevel} interface
  * 
  * System MySatellite
  *  |
@@ -40,9 +42,9 @@ import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTr
  * 
  * 
  */
-public class LevelChecker {
+public class HierarchyLevelChecker {
 
-	protected List<ILevel> levels;
+	protected List<IHierarchyLevel> levels;
 
 	/**
 	 * @param levels
@@ -50,9 +52,10 @@ public class LevelChecker {
 	 * 
 	 *            Levels should not overlap - for any element only one level can
 	 *            have true as result from the
-	 *            {@link ILevel#isOnLevel(IBeanStructuralElementInstance)} method
+	 *            {@link IHierarchyLevel#isOnLevel(IBeanStructuralElementInstance)} method.
+	 *            Otherwise an {@link IllegalArgumentException} is thrown
 	 */
-	public LevelChecker(List<ILevel> levels) {
+	public HierarchyLevelChecker(List<IHierarchyLevel> levels) {
 		this.levels = levels;
 	}
 
@@ -64,19 +67,29 @@ public class LevelChecker {
 	 * @return a set of applicable levels from the list of levels passed in the
 	 *         constructor
 	 */
-	public Set<ILevel> getApplicableLevels(IBeanStructuralElementInstance bean) {
-		Set<ILevel> applicableLevels = new HashSet<>();
-		int minLevelIndex = 0;
-		int maxLevelIndex = levels.size() - 1;
+	public Set<IHierarchyLevel> getApplicableLevels(IBeanStructuralElementInstance bean) {
 
 		// Check if element belongs to level already - then it can by definition of this
 		// checker only be on this level
-		ILevel currentLevel = getLevelOfBean(bean);
+		IHierarchyLevel currentLevel = getLevelOfBean(bean);
 		if (currentLevel != null) {
-			applicableLevels.add(currentLevel);
-			return applicableLevels;
+			return Collections.singleton(currentLevel);
 		}
 
+		return deduceApplicableLevels(bean);
+	}
+
+	/**
+	 * Deduces applicable levels based on the levels already present in the tree
+	 * @param bean
+	 *            the structural element bean to check
+	 * @return set of applicable levels
+	 */
+	protected Set<IHierarchyLevel> deduceApplicableLevels(IBeanStructuralElementInstance bean) {
+		Set<IHierarchyLevel> applicableLevels = new HashSet<>();
+		int minLevelIndex = 0;
+		int maxLevelIndex = levels.size() - 1;
+		
 		// Get first parent with level
 		IBeanStructuralElementInstance parent = getFirstParentWithLevel(bean);
 		// Get children with level
@@ -122,10 +135,29 @@ public class LevelChecker {
 	 *            level from the list of levels passed in the constructor
 	 * @return true if the the element can be on this level, false otherwise
 	 */
-	public boolean checkApplicable(IBeanStructuralElementInstance bean, ILevel level) {
+	public boolean checkApplicable(IBeanStructuralElementInstance bean, IHierarchyLevel level) {
 		return getApplicableLevels(bean).contains(level);
 	}
 
+	/**
+	 * @param bean
+	 *            the structural element bean to check
+	 * @return false if an element is on a level that would not be applicable for it,
+	 *         true if element has no level or is on an applicable level
+	 */
+	public boolean validateApplicableLevel(IBeanStructuralElementInstance bean) {
+		return deduceApplicableLevels(bean).contains(getLevelOfBean(bean));
+	}
+
+	/**
+	 * @param bean
+	 *            the structural element bean to check
+	 * @return false if element belongs to more than one level, true otherwise
+	 */
+	public boolean validateUniqueLevel(IBeanStructuralElementInstance bean) {
+		return getLevelsOfBean(bean).size() <= 1;
+	}
+	
 	/**
 	 * Get the minimum level index from the next parent element with level
 	 * 
@@ -134,7 +166,7 @@ public class LevelChecker {
 	 * @return the minumum level index
 	 */
 	private int getMinIndexFromParentLevel(IBeanStructuralElementInstance parent) {
-		ILevel parentLevel = getLevelOfBean(parent);
+		IHierarchyLevel parentLevel = getLevelOfBean(parent);
 
 		int minLevelIndex = levels.indexOf(parentLevel);
 
@@ -155,7 +187,7 @@ public class LevelChecker {
 	 * @return the minumum level index
 	 */
 	private int getMaxIndexFromRelevantChild(IBeanStructuralElementInstance child) {
-		ILevel childLevel = getLevelOfBean(child);
+		IHierarchyLevel childLevel = getLevelOfBean(child);
 
 		int maxLevelIndex = levels.indexOf(childLevel);
 
@@ -182,21 +214,19 @@ public class LevelChecker {
 	 */
 	private int getMinIndexFromTreeDistanceOfChild(IBeanStructuralElementInstance child,
 			IBeanStructuralElementInstance elementToCheck) {
-		ILevel childLevel = getLevelOfBean(child);
+		IHierarchyLevel childLevel = getLevelOfBean(child);
 		int treeDistance = getTreeDistance(child, elementToCheck);
 		int minLevel = levels.indexOf(childLevel) - treeDistance;
-		
+
 		// Go through all the levels between the child level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// minimum applicable level index decreases as we can also skip the level
-		for (int i = levels.indexOf(childLevel) - 1; 
-				i >= 0 && i >= levels.indexOf(childLevel) - treeDistance; 
-				i--) {
+		for (int i = levels.indexOf(childLevel) - 1; i >= 0 && i >= levels.indexOf(childLevel) - treeDistance; i--) {
 			if (levels.get(i).isOptional()) {
 				minLevel--;
 			}
 		}
-		
+
 		return minLevel;
 	}
 
@@ -212,16 +242,15 @@ public class LevelChecker {
 	 */
 	private int getMaxIndexFromTreeDistanceOfParent(IBeanStructuralElementInstance parent,
 			IBeanStructuralElementInstance elementToCheck) {
-		ILevel parentLevel = getLevelOfBean(parent);
+		IHierarchyLevel parentLevel = getLevelOfBean(parent);
 		int treeDistance = getTreeDistance(elementToCheck, parent);
 		int maxLevel = levels.indexOf(parentLevel) + treeDistance;
 
 		// Go through all the levels between the parent level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// maximum applicable level index increases as we can also skip the level
-		for (int i = levels.indexOf(parentLevel) + 1; 
-				i <= levels.indexOf(parentLevel) + treeDistance && i < levels.size(); 
-				i++) {
+		for (int i = levels.indexOf(parentLevel) + 1; i <= levels.indexOf(parentLevel) + treeDistance
+				&& i < levels.size(); i++) {
 			if (levels.get(i).isOptional()) {
 				maxLevel++;
 			}
@@ -237,15 +266,28 @@ public class LevelChecker {
 	 *            the bean to get level from
 	 * @return the level
 	 */
-	private ILevel getLevelOfBean(IBeanStructuralElementInstance bean) {
-		for (ILevel level : levels) {
-			if (level.isOnLevel(bean)) {
-				return level;
-			}
+	private IHierarchyLevel getLevelOfBean(IBeanStructuralElementInstance bean) {
+		List<IHierarchyLevel> foundLevels = getLevelsOfBean(bean);
+		if (foundLevels.size() > 1) {
+			throw new IllegalArgumentException("Element " + bean + " is on multiple levels: " + foundLevels);
+		}
+		if (foundLevels.size() == 1) {
+			return foundLevels.get(0);
 		}
 		return null;
 	}
 
+	/**
+	 * Get all levels a bean is on
+	 * @param bean 
+	 * @return list of levels
+	 */
+	private List<IHierarchyLevel> getLevelsOfBean(IBeanStructuralElementInstance bean) {
+		return levels.stream()
+				.filter(level -> level.isOnLevel(bean))
+				.collect(Collectors.toList());
+	}
+	
 	/**
 	 * Get the first parent with level or null if not existing
 	 * 
@@ -257,7 +299,7 @@ public class LevelChecker {
 		IBeanStructuralElementInstance parent = bean.getParentSeiBean();
 
 		if (parent != null) {
-			ILevel level = getLevelOfBean(parent);
+			IHierarchyLevel level = getLevelOfBean(parent);
 			if (level != null) {
 				return parent;
 			} else {

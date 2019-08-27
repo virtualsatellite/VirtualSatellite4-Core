@@ -26,27 +26,27 @@ import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
 /**
- * Test class for {@link LevelChecker}
+ * Test class for {@link HierarchyLevelChecker}
  */
-public class LevelCheckerTest extends AConceptTestCase {
+public class HierarchyLevelCheckerTest extends AConceptTestCase {
 
 	private Concept concept;
-	
-	private ILevel a;
-	private ILevel b;
-	private ILevel c;
-	private ILevel an;
-	private ILevel bn;
-	private ILevel cn;
-	private ILevel ao;
-	private ILevel bo;
-	private ILevel co;
-	private ILevel ano;
+
+	private IHierarchyLevel a;
+	private IHierarchyLevel b;
+	private IHierarchyLevel c;
+	private IHierarchyLevel an;
+	private IHierarchyLevel bn;
+	private IHierarchyLevel cn;
+	private IHierarchyLevel ao;
+	private IHierarchyLevel bo;
+	private IHierarchyLevel co;
+	private IHierarchyLevel ano;
 
 	@Before
 	public void setup() {
 		concept = loadConceptFromPlugin();
-		
+
 		a = createNameMatchingLevel("a", false, false);
 		b = createNameMatchingLevel("b", false, false);
 		c = createNameMatchingLevel("c", false, false);
@@ -61,130 +61,132 @@ public class LevelCheckerTest extends AConceptTestCase {
 
 	@Test
 	public void testSingleBean() {
-		LevelChecker checker = getChecker(a);
+		HierarchyLevelChecker checker = getChecker(a);
 		IBeanStructuralElementInstance bean = createBean("a");
-		
+
 		assertEquals(expected(a), checker.getApplicableLevels(bean));
+		assertTrue(checker.validateApplicableLevel(bean));
 	}
 
 	@Test
 	public void testSingleBean2() {
-		LevelChecker checker = getChecker(a);
+		HierarchyLevelChecker checker = getChecker(a);
 		IBeanStructuralElementInstance bean = createBean("x");
-		
+
 		assertEquals(expected(a), checker.getApplicableLevels(bean));
+		assertTrue(checker.validateApplicableLevel(bean));
 	}
 
 	@Test
 	public void testSingleBeanTwoLevels() {
-		LevelChecker checker = getChecker(a, b);
+		HierarchyLevelChecker checker = getChecker(a, b);
 		IBeanStructuralElementInstance bean = createBean("x");
-		
+
 		assertEquals(expected(a, b), checker.getApplicableLevels(bean));
 	}
 
 	@Test
 	public void testTwoBeans() {
-		LevelChecker checker = getChecker(a, b);
+		HierarchyLevelChecker checker = getChecker(a, b);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		parent.add(child);
-		
+
 		assertEquals(expected(a), checker.getApplicableLevels(parent));
 		assertEquals(expected(b), checker.getApplicableLevels(child));
-		
+
 		assertFalse(checker.checkApplicable(child, a));
 		assertTrue(checker.checkApplicable(child, b));
 	}
 
 	@Test
 	public void testTwoBeansNesting() {
-		LevelChecker checker = getChecker(an, b);
+		HierarchyLevelChecker checker = getChecker(an, b);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		parent.add(child);
-		
+
 		assertEquals(expected(an), checker.getApplicableLevels(parent));
 		assertEquals(expected(an, b), checker.getApplicableLevels(child));
 	}
 
 	@Test
 	public void testOptionalParent() {
-		LevelChecker checker = getChecker(ao, bn);
+		HierarchyLevelChecker checker = getChecker(ao, bn);
 		IBeanStructuralElementInstance parent = createBean("x");
 		IBeanStructuralElementInstance child = createBean("b");
 		parent.add(child);
-		
+
 		assertEquals(expected(ao, bn), checker.getApplicableLevels(parent));
 	}
 
 	@Test
 	public void testOptionalParentPresent() {
-		LevelChecker checker = getChecker(ao, b);
+		HierarchyLevelChecker checker = getChecker(ao, b);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		parent.add(child);
-		
+
 		assertEquals(expected(b), checker.getApplicableLevels(child));
 	}
-	
+
 	@Test
 	public void testOptionalNested() {
-		LevelChecker checker = getChecker(ano, b);
+		HierarchyLevelChecker checker = getChecker(ano, b);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		parent.add(child);
-		
+
 		assertEquals(expected(ano, b), checker.getApplicableLevels(child));
 	}
-	
+
 	@Test
 	public void testOptionalParents() {
-		LevelChecker checker = getChecker(ao, bo, c);
+		HierarchyLevelChecker checker = getChecker(ao, bo, c);
 		IBeanStructuralElementInstance parent = createBean("x");
 		IBeanStructuralElementInstance child = createBean("c");
 		parent.add(child);
-		
+
 		assertEquals(expected(ao, bo), checker.getApplicableLevels(parent));
 	}
 
 	@Test
 	public void testOptionalChildren() {
-		LevelChecker checker = getChecker(a, bo, co);
+		HierarchyLevelChecker checker = getChecker(a, bo, co);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		parent.add(child);
-		
+
 		assertEquals(expected(bo, co), checker.getApplicableLevels(child));
 	}
-	
+
 	@Test
 	public void testMiddleLevel() {
-		LevelChecker checker = getChecker(a, b, c);
+		HierarchyLevelChecker checker = getChecker(a, b, c);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		IBeanStructuralElementInstance grandchild = createBean("c");
 		parent.add(child);
 		child.add(grandchild);
-		
+
 		assertEquals(expected(b), checker.getApplicableLevels(child));
 	}
 
 	@Test
 	public void testMiddleLevelNested() {
-		LevelChecker checker = getChecker(an, b, cn);
+		HierarchyLevelChecker checker = getChecker(an, b, cn);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
 		IBeanStructuralElementInstance grandchild = createBean("c");
 		parent.add(child);
 		child.add(grandchild);
-		
+
 		assertEquals(expected(b), checker.getApplicableLevels(child));
 	}
 
 	@Test
 	public void testMiddleLevelDeep() {
-		LevelChecker checker = getChecker(an, b, cn);
+		HierarchyLevelChecker checker = getChecker(an, b, cn);
 		IBeanStructuralElementInstance b1 = createBean("a");
 		IBeanStructuralElementInstance b2 = createBean("x");
 		IBeanStructuralElementInstance b3 = createBean("x");
@@ -194,37 +196,37 @@ public class LevelCheckerTest extends AConceptTestCase {
 		b2.add(b3);
 		b3.add(b4);
 		b4.add(b5);
-		
+
 		assertEquals(expected(an, b, cn), checker.getApplicableLevels(b3));
 	}
 
 	@Test
 	public void testDifferentChildren() {
-		LevelChecker checker = getChecker(a, b, c);
+		HierarchyLevelChecker checker = getChecker(a, b, c);
 		IBeanStructuralElementInstance parent = createBean("x");
 		IBeanStructuralElementInstance child1 = createBean("b");
 		IBeanStructuralElementInstance child2 = createBean("c");
 		parent.add(child1);
 		parent.add(child2);
-		
+
 		assertTrue(checker.getApplicableLevels(parent).isEmpty());
 	}
 
 	@Test
 	public void testDifferentChildrenOptional() {
-		LevelChecker checker = getChecker(a, bo, c);
+		HierarchyLevelChecker checker = getChecker(a, bo, c);
 		IBeanStructuralElementInstance parent = createBean("x");
 		IBeanStructuralElementInstance child1 = createBean("b");
 		IBeanStructuralElementInstance child2 = createBean("c");
 		parent.add(child1);
 		parent.add(child2);
-		
+
 		assertEquals(expected(a), checker.getApplicableLevels(parent));
 	}
-	
+
 	@Test
 	public void testDifferentDeepChildren() {
-		LevelChecker checker = getChecker(a, b, c);
+		HierarchyLevelChecker checker = getChecker(a, b, c);
 		IBeanStructuralElementInstance parent = createBean("x");
 		IBeanStructuralElementInstance child1 = createBean("x");
 		IBeanStructuralElementInstance child11 = createBean("b");
@@ -234,7 +236,7 @@ public class LevelCheckerTest extends AConceptTestCase {
 		parent.add(child2);
 		child1.add(child11);
 		child2.add(child21);
-		
+
 		assertEquals(expected(a), checker.getApplicableLevels(parent));
 		assertEquals(expected(a), checker.getApplicableLevels(child1));
 		assertEquals(expected(b), checker.getApplicableLevels(child2));
@@ -242,7 +244,7 @@ public class LevelCheckerTest extends AConceptTestCase {
 
 	@Test
 	public void testDifferentDeepChildrenNested() {
-		LevelChecker checker = getChecker(an, bn, cn);
+		HierarchyLevelChecker checker = getChecker(an, bn, cn);
 		IBeanStructuralElementInstance parent = createBean("x");
 		IBeanStructuralElementInstance child1 = createBean("x");
 		IBeanStructuralElementInstance child11 = createBean("b");
@@ -252,55 +254,99 @@ public class LevelCheckerTest extends AConceptTestCase {
 		parent.add(child2);
 		child1.add(child11);
 		child2.add(child21);
-		
+
 		assertEquals(expected(an, bn), checker.getApplicableLevels(parent));
 		assertEquals(expected(an, bn), checker.getApplicableLevels(child1));
 		assertEquals(expected(bn, cn), checker.getApplicableLevels(child2));
 	}
-	
+
+	@Test
+	public void testInvalidNestedLevel() {
+		HierarchyLevelChecker checker = getChecker(a, b);
+		IBeanStructuralElementInstance parent = createBean("a");
+		IBeanStructuralElementInstance child = createBean("a");
+		parent.add(child);
+
+		assertFalse(checker.validateApplicableLevel(parent));
+		assertFalse(checker.validateApplicableLevel(child));
+	}
+
+	@Test
+	public void testInvalidLevelWrongOrder() {
+		HierarchyLevelChecker checker = getChecker(a, b);
+		IBeanStructuralElementInstance parent = createBean("b");
+		IBeanStructuralElementInstance child = createBean("a");
+		parent.add(child);
+
+		assertFalse(checker.validateApplicableLevel(parent));
+		assertFalse(checker.validateApplicableLevel(child));
+	}
+
+	@Test
+	public void testInvalidLevelWrongTreeDistance() {
+		HierarchyLevelChecker checker = getChecker(a, b, c);
+		IBeanStructuralElementInstance parent = createBean("a");
+		IBeanStructuralElementInstance child = createBean("c");
+		parent.add(child);
+
+		assertFalse(checker.validateApplicableLevel(parent));
+		assertFalse(checker.validateApplicableLevel(child));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidElementMultipleLevels() {
+		HierarchyLevelChecker checker = getChecker(a, b);
+		IBeanStructuralElementInstance bean = createBean("ab");
+
+		assertFalse(checker.validateUniqueLevel(bean));
+
+		// Should raise an exception
+		checker.getApplicableLevels(bean);
+	}
+
 	/**
 	 * @param levels 
 	 * @return LevelChecker with given levels
 	 */
-	private LevelChecker getChecker(ILevel... levels) {
-		return new LevelChecker(Arrays.asList(levels));
+	private HierarchyLevelChecker getChecker(IHierarchyLevel... levels) {
+		return new HierarchyLevelChecker(Arrays.asList(levels));
 	}
-	
+
 	/**
 	 * @param name 
 	 * @param allowNesting 
 	 * @param optional 
 	 * @return level implementation that matches bean name with the given name
 	 */
-	private ILevel createNameMatchingLevel(String name, boolean allowNesting, boolean optional) {
-		return new ILevel() {
+	private IHierarchyLevel createNameMatchingLevel(String name, boolean allowNesting, boolean optional) {
+		return new IHierarchyLevel() {
 			@Override
 			public boolean isOnLevel(IBeanStructuralElementInstance bean) {
-				return bean.getName().equals(name);
+				return bean.getName().contains(name);
 			}
-			
+
 			@Override
 			public boolean canBeNested() {
 				return allowNesting;
 			}
-			
+
 			@Override
 			public boolean isOptional() {
 				return optional;
 			}
-			
+
 			@Override
 			public String toString() {
 				return "Level " + name + (allowNesting ? " nested" : "") + (optional ? " optional" : "");
 			}
 		};
 	}
-	
+
 	/**
 	 * @param levels 
 	 * @return set of given levels
 	 */
-	private Set<ILevel> expected(ILevel... levels) {
+	private Set<IHierarchyLevel> expected(IHierarchyLevel... levels) {
 		return new HashSet<>(Arrays.asList(levels));
 	}
 

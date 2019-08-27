@@ -22,13 +22,13 @@ import de.dlr.sc.virsat.model.concept.types.structural.tree.IBeanStructuralTreeT
 public class HasLevelTreeTraverserMatcher implements IBeanStructuralTreeTraverserMatcher {
 
 	private List<IBeanStructuralElementInstance> levelElements = new ArrayList<>();
-	private List<ILevel> levels;
+	private List<IHierarchyLevel> levels;
 	
 	/**
 	 * Constructor
 	 * @param levels levels to search for
 	 */
-	public HasLevelTreeTraverserMatcher(List<ILevel> levels) {
+	public HasLevelTreeTraverserMatcher(List<IHierarchyLevel> levels) {
 		this.levels = levels;
 	}
 	
@@ -51,7 +51,7 @@ public class HasLevelTreeTraverserMatcher implements IBeanStructuralTreeTraverse
 	 * @return the level
 	 */
 	private boolean hasLevel(IBeanStructuralElementInstance bean) {
-		for (ILevel level : levels) {
+		for (IHierarchyLevel level : levels) {
 			if (level.isOnLevel(bean)) {
 				return true;
 			}

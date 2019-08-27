@@ -15,7 +15,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
  * Interface for a level as basis to specify custom tree hierarchies
  * 
  */
-public interface ILevel {
+public interface IHierarchyLevel {
 
 	/**
 	 * Method that checks if element is on the level
