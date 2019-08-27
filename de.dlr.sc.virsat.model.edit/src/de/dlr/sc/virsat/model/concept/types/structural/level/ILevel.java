@@ -34,5 +34,11 @@ public interface ILevel {
 	 * @return returns true if a the level can be nested
 	 */
 	boolean canBeNested();
+	
+	/**
+	 * Specify if the level can be skipped
+	 * @return true if it can be skipped, false otherwise
+	 */
+	boolean isOptional();
 
 }
