@@ -110,6 +110,10 @@ public class HierarchyLevelChecker {
 			minLevelIndex = Math.max(minLevelIndex, minLevelFromChild);
 			maxLevelIndex = Math.min(maxLevelIndex, maxLevelFromChild);
 		}
+		
+		if (parent == null && children.isEmpty()) {
+			maxLevelIndex = getMaxIndexFromTreeDistanceToRoot(bean);
+		}
 
 		// Add applicable levels to set
 		applicableLevels.addAll(levels.subList(minLevelIndex, maxLevelIndex + 1));
@@ -250,6 +254,16 @@ public class HierarchyLevelChecker {
 
 		return maxLevel;
 	}
+	
+	/**
+	 * Get the maximum level index considering the tree distance to the root element
+	 * 
+	 * @param bean the element to check
+	 * @return the maximum level index
+	 */
+	private int getMaxIndexFromTreeDistanceToRoot(IBeanStructuralElementInstance bean) {
+		return getTreeDistanceToRootBean(bean);
+	}
 
 	/**
 	 * Get the level an arbitrary bean is on
@@ -352,6 +366,31 @@ public class HierarchyLevelChecker {
 			return currentDistance;
 		} else {
 			return getTreeDistance(parent, target, currentDistance);
+		}
+	}
+	
+	/**
+	 * Get the tree distance of the bean to its tree root
+	 * 
+	 * @param bean the bean to search the distance for
+	 * @return the distance
+	 */
+	private int getTreeDistanceToRootBean(IBeanStructuralElementInstance bean) {
+		return getTreeDistanceToRootBean(bean, 0);
+	}
+	
+	/**
+	 * Get the tree distance of the bean to its tree root
+	 * 
+	 * @param bean the bean to search the distance for
+	 * @param startDistance the current distance
+	 * @return the distance
+	 */
+	private int getTreeDistanceToRootBean(IBeanStructuralElementInstance bean, int startDistance) {
+		if (bean.getParentSeiBean() != null) {
+			return getTreeDistanceToRootBean(bean.getParentSeiBean(), ++startDistance);
+		} else {
+			return startDistance;
 		}
 	}
 

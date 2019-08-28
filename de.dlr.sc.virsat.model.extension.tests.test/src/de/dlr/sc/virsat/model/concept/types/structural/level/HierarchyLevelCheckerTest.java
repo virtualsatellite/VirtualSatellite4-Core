@@ -82,7 +82,7 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		HierarchyLevelChecker checker = getChecker(a, b);
 		IBeanStructuralElementInstance bean = createBean("x");
 
-		assertEquals(expected(a, b), checker.getApplicableLevels(bean));
+		assertEquals(expected(a), checker.getApplicableLevels(bean));
 	}
 
 	@Test
@@ -108,6 +108,21 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 
 		assertEquals(expected(an), checker.getApplicableLevels(parent));
 		assertEquals(expected(an, b), checker.getApplicableLevels(child));
+	}
+	
+	@Test
+	public void testThreeNewBeans() {
+		HierarchyLevelChecker checker = getChecker(a, b, c);
+		IBeanStructuralElementInstance parent = createBean("x");
+		IBeanStructuralElementInstance child = createBean("y");
+		IBeanStructuralElementInstance grandChild = createBean("z");
+		parent.add(child);
+		child.add(grandChild);
+		
+		assertEquals(expected(a), checker.getApplicableLevels(parent));
+		assertEquals(expected(a, b), checker.getApplicableLevels(child));
+		assertEquals(expected(a, b, c), checker.getApplicableLevels(grandChild));
+		
 	}
 
 	@Test
