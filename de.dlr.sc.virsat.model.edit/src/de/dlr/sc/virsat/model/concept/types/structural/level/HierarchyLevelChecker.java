@@ -49,11 +49,7 @@ public class HierarchyLevelChecker {
 	/**
 	 * @param levels
 	 *            A list that specifies the concrete order of tree levels.
-	 * 
-	 *            Levels should not overlap - for any element only one level can
-	 *            have true as result from the
-	 *            {@link IHierarchyLevel#isOnLevel(IBeanStructuralElementInstance)} method.
-	 *            Otherwise an {@link IllegalArgumentException} is thrown
+	 *            Levels should not overlap - any element should belong to no more than one level.
 	 */
 	public HierarchyLevelChecker(List<IHierarchyLevel> levels) {
 		this.levels = levels;
@@ -66,8 +62,9 @@ public class HierarchyLevelChecker {
 	 *            the structural element bean to check
 	 * @return a set of applicable levels from the list of levels passed in the
 	 *         constructor
+	 * @throws IllegalArgumentException if an element with multiple levels is encountered in the structural tree
 	 */
-	public Set<IHierarchyLevel> getApplicableLevels(IBeanStructuralElementInstance bean) {
+	public Set<IHierarchyLevel> getApplicableLevels(IBeanStructuralElementInstance bean) throws IllegalArgumentException {
 
 		// Check if element belongs to level already - then it can by definition of this
 		// checker only be on this level
@@ -136,21 +133,20 @@ public class HierarchyLevelChecker {
 	/**
 	 * @param bean
 	 *            the structural element bean to check
-	 * @return false if an element is on a level that would not be applicable for it,
-	 *         true if element has no level or is on an applicable level
+	 * @return true if an element is on a level that would not be applicable for it, false otherwise
 	 */
-	public boolean validateApplicableLevel(IBeanStructuralElementInstance bean) {
+	public boolean beanHasInapplicableLevel(IBeanStructuralElementInstance bean) {
 		IHierarchyLevel level = getLevelOfBean(bean);
-		return level == null || deduceApplicableLevels(bean).contains(level);
+		return level != null && !deduceApplicableLevels(bean).contains(level);
 	}
 
 	/**
 	 * @param bean
 	 *            the structural element bean to check
-	 * @return false if element belongs to more than one level, true otherwise
+	 * @return true if element belongs to more than one level, false otherwise
 	 */
-	public boolean validateUniqueLevel(IBeanStructuralElementInstance bean) {
-		return getLevelsOfBean(bean).size() <= 1;
+	public boolean beanHasAmbiguousLevel(IBeanStructuralElementInstance bean) {
+		return getLevelsOfBean(bean).size() > 1;
 	}
 	
 	/**
