@@ -174,6 +174,7 @@ public abstract class AUiSnippetEStructuralFeatureTable extends AUiEStructuralFe
 	 * Method to get the Content Provider for the table
 	 * @return The ContentProvider
 	 */
+	@SuppressWarnings("rawtypes")
 	protected IContentProvider getTableContentProvider() {
 		IContentProvider cp = tableViewer.getContentProvider();
 		if (cp != null) {
@@ -252,6 +253,7 @@ public abstract class AUiSnippetEStructuralFeatureTable extends AUiEStructuralFe
 	 * @param columnEsfPath The Path to the Feature, most often simply one Attribute
 	 * @return The ColumnLabelProvider
 	 */
+	@SuppressWarnings("rawtypes")
 	protected CellLabelProvider getDefaultColumnLabelProvider(EditingDomain editingDomain, boolean withImageProvider, EStructuralFeature... columnEsfPath) {
 		return getDefaultColumnLabelProvider(editingDomain, (ObservableListContentProvider) getTableContentProvider(), withImageProvider, columnEsfPath);
 	}
@@ -264,6 +266,7 @@ public abstract class AUiSnippetEStructuralFeatureTable extends AUiEStructuralFe
 	 * @param columnEsfPath The Path to the Feature, most often simply one Attribute
 	 * @return The ColumnLabelProvider
 	 */
+	@SuppressWarnings("rawtypes")
 	protected CellLabelProvider getDefaultColumnLabelProvider(EditingDomain editingDomain, ObservableListContentProvider contentProvider, boolean withImageProvider, EStructuralFeature... columnEsfPath) {
 		@SuppressWarnings("unchecked")
 		IObservableSet<EObject> knownElements = contentProvider.getKnownElements();

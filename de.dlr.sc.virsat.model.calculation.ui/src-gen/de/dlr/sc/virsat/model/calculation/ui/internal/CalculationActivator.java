@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.calculation.ui.internal;
 import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import de.dlr.sc.virsat.model.calculation.EquationDSLRuntimeModule;
 import de.dlr.sc.virsat.model.calculation.ui.EquationDSLUiModule;
 import java.util.Collections;
@@ -29,6 +28,7 @@ import org.osgi.framework.BundleContext;
  */
 public class CalculationActivator extends AbstractUIPlugin {
 
+	public static final String PLUGIN_ID = "de.dlr.sc.virsat.model.calculation.ui";
 	public static final String DE_DLR_SC_VIRSAT_MODEL_CALCULATION_EQUATIONDSL = "de.dlr.sc.virsat.model.calculation.EquationDSL";
 	
 	private static final Logger logger = Logger.getLogger(CalculationActivator.class);
@@ -66,10 +66,10 @@ public class CalculationActivator extends AbstractUIPlugin {
 	
 	protected Injector createInjector(String language) {
 		try {
-			Module runtimeModule = getRuntimeModule(language);
-			Module sharedStateModule = getSharedStateModule();
-			Module uiModule = getUiModule(language);
-			Module mergedModule = Modules2.mixin(runtimeModule, sharedStateModule, uiModule);
+			com.google.inject.Module runtimeModule = getRuntimeModule(language);
+			com.google.inject.Module sharedStateModule = getSharedStateModule();
+			com.google.inject.Module uiModule = getUiModule(language);
+			com.google.inject.Module mergedModule = Modules2.mixin(runtimeModule, sharedStateModule, uiModule);
 			return Guice.createInjector(mergedModule);
 		} catch (Exception e) {
 			logger.error("Failed to create injector for " + language);
@@ -78,22 +78,23 @@ public class CalculationActivator extends AbstractUIPlugin {
 		}
 	}
 	
-	protected Module getRuntimeModule(String grammar) {
+	protected com.google.inject.Module getRuntimeModule(String grammar) {
 		if (DE_DLR_SC_VIRSAT_MODEL_CALCULATION_EQUATIONDSL.equals(grammar)) {
 			return new EquationDSLRuntimeModule();
 		}
 		throw new IllegalArgumentException(grammar);
 	}
 	
-	protected Module getUiModule(String grammar) {
+	protected com.google.inject.Module getUiModule(String grammar) {
 		if (DE_DLR_SC_VIRSAT_MODEL_CALCULATION_EQUATIONDSL.equals(grammar)) {
 			return new EquationDSLUiModule(this);
 		}
 		throw new IllegalArgumentException(grammar);
 	}
 	
-	protected Module getSharedStateModule() {
+	protected com.google.inject.Module getSharedStateModule() {
 		return new SharedStateModule();
 	}
+	
 	
 }

@@ -663,10 +663,10 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3492:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // InternalEquationDSL.g:3492:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalEquationDSL.g:3493:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // InternalEquationDSL.g:3493:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // InternalEquationDSL.g:3492:11: ( '^' )?
+            // InternalEquationDSL.g:3493:11: ( '^' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -675,7 +675,7 @@ public class InternalEquationDSLLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // InternalEquationDSL.g:3492:11: '^'
+                    // InternalEquationDSL.g:3493:11: '^'
                     {
                     match('^'); 
 
@@ -693,7 +693,7 @@ public class InternalEquationDSLLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalEquationDSL.g:3492:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalEquationDSL.g:3493:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop2:
             do {
                 int alt2=2;
@@ -742,10 +742,10 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3494:10: ( ( '0' .. '9' )+ )
-            // InternalEquationDSL.g:3494:12: ( '0' .. '9' )+
+            // InternalEquationDSL.g:3495:10: ( ( '0' .. '9' )+ )
+            // InternalEquationDSL.g:3495:12: ( '0' .. '9' )+
             {
-            // InternalEquationDSL.g:3494:12: ( '0' .. '9' )+
+            // InternalEquationDSL.g:3495:12: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -759,7 +759,7 @@ public class InternalEquationDSLLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalEquationDSL.g:3494:13: '0' .. '9'
+            	    // InternalEquationDSL.g:3495:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -791,10 +791,10 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3496:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // InternalEquationDSL.g:3496:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalEquationDSL.g:3497:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // InternalEquationDSL.g:3497:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // InternalEquationDSL.g:3496:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalEquationDSL.g:3497:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -812,10 +812,10 @@ public class InternalEquationDSLLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // InternalEquationDSL.g:3496:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // InternalEquationDSL.g:3497:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // InternalEquationDSL.g:3496:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // InternalEquationDSL.g:3497:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop4:
                     do {
                         int alt4=3;
@@ -831,7 +831,7 @@ public class InternalEquationDSLLexer extends Lexer {
 
                         switch (alt4) {
                     	case 1 :
-                    	    // InternalEquationDSL.g:3496:21: '\\\\' .
+                    	    // InternalEquationDSL.g:3497:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -839,7 +839,7 @@ public class InternalEquationDSLLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalEquationDSL.g:3496:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalEquationDSL.g:3497:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -864,10 +864,10 @@ public class InternalEquationDSLLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalEquationDSL.g:3496:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // InternalEquationDSL.g:3497:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // InternalEquationDSL.g:3496:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // InternalEquationDSL.g:3497:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop5:
                     do {
                         int alt5=3;
@@ -883,7 +883,7 @@ public class InternalEquationDSLLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // InternalEquationDSL.g:3496:54: '\\\\' .
+                    	    // InternalEquationDSL.g:3497:54: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -891,7 +891,7 @@ public class InternalEquationDSLLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalEquationDSL.g:3496:61: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalEquationDSL.g:3497:61: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -934,12 +934,12 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3498:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalEquationDSL.g:3498:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalEquationDSL.g:3499:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalEquationDSL.g:3499:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalEquationDSL.g:3498:24: ( options {greedy=false; } : . )*
+            // InternalEquationDSL.g:3499:24: ( options {greedy=false; } : . )*
             loop7:
             do {
                 int alt7=2;
@@ -964,7 +964,7 @@ public class InternalEquationDSLLexer extends Lexer {
 
                 switch (alt7) {
             	case 1 :
-            	    // InternalEquationDSL.g:3498:52: .
+            	    // InternalEquationDSL.g:3499:52: .
             	    {
             	    matchAny(); 
 
@@ -994,12 +994,12 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3500:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalEquationDSL.g:3500:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalEquationDSL.g:3501:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalEquationDSL.g:3501:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalEquationDSL.g:3500:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalEquationDSL.g:3501:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop8:
             do {
                 int alt8=2;
@@ -1012,7 +1012,7 @@ public class InternalEquationDSLLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // InternalEquationDSL.g:3500:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalEquationDSL.g:3501:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -1032,7 +1032,7 @@ public class InternalEquationDSLLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalEquationDSL.g:3500:40: ( ( '\\r' )? '\\n' )?
+            // InternalEquationDSL.g:3501:40: ( ( '\\r' )? '\\n' )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -1041,9 +1041,9 @@ public class InternalEquationDSLLexer extends Lexer {
             }
             switch (alt10) {
                 case 1 :
-                    // InternalEquationDSL.g:3500:41: ( '\\r' )? '\\n'
+                    // InternalEquationDSL.g:3501:41: ( '\\r' )? '\\n'
                     {
-                    // InternalEquationDSL.g:3500:41: ( '\\r' )?
+                    // InternalEquationDSL.g:3501:41: ( '\\r' )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -1052,7 +1052,7 @@ public class InternalEquationDSLLexer extends Lexer {
                     }
                     switch (alt9) {
                         case 1 :
-                            // InternalEquationDSL.g:3500:41: '\\r'
+                            // InternalEquationDSL.g:3501:41: '\\r'
                             {
                             match('\r'); 
 
@@ -1084,10 +1084,10 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3502:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalEquationDSL.g:3502:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalEquationDSL.g:3503:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalEquationDSL.g:3503:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalEquationDSL.g:3502:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalEquationDSL.g:3503:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt11=0;
             loop11:
             do {
@@ -1141,8 +1141,8 @@ public class InternalEquationDSLLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalEquationDSL.g:3504:16: ( . )
-            // InternalEquationDSL.g:3504:18: .
+            // InternalEquationDSL.g:3505:16: ( . )
+            // InternalEquationDSL.g:3505:18: .
             {
             matchAny(); 
 

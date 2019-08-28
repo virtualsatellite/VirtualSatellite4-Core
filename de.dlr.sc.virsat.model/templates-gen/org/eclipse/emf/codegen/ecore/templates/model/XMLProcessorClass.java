@@ -45,7 +45,6 @@ public class XMLProcessorClass
   protected final String TEXT_29 = " getRegistrations()" + NL + "\t{" + NL + "\t\tif (registrations == null)" + NL + "\t\t{" + NL + "\t\t\tsuper.getRegistrations();" + NL + "\t\t\tregistrations.put(XML_EXTENSION, new ";
   protected final String TEXT_30 = "());" + NL + "\t\t\tregistrations.put(STAR_EXTENSION, new ";
   protected final String TEXT_31 = "());" + NL + "\t\t}" + NL + "\t\treturn registrations;" + NL + "\t}" + NL + "" + NL + "} //";
-  protected final String TEXT_32 = NL;
 
   public String generate(Object argument)
   {
@@ -128,7 +127,7 @@ public class XMLProcessorClass
     stringBuffer.append(TEXT_31);
     stringBuffer.append(genPackage.getXMLProcessorClassName());
     genModel.emitSortedImports();
-    stringBuffer.append(TEXT_32);
+    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

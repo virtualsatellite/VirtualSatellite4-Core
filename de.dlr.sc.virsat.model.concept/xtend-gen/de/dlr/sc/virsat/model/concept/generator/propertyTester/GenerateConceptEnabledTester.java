@@ -64,7 +64,7 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     return (_plus_4 + ".java");
   }
   
-  public final static String PACKAGE_FOLDER = "propertyTester";
+  public static final String PACKAGE_FOLDER = "propertyTester";
   
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {

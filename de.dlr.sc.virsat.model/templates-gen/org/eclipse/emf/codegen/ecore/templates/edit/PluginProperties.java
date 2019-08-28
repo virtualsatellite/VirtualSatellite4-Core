@@ -27,19 +27,12 @@ public class PluginProperties
   protected final String TEXT_10 = NL + "_UI_";
   protected final String TEXT_11 = "_type = ";
   protected final String TEXT_12 = NL + "_UI_Unknown_type = Object" + NL + "" + NL + "_UI_Unknown_datatype= Value" + NL;
-  protected final String TEXT_13 = NL + "_UI_";
-  protected final String TEXT_14 = "_";
-  protected final String TEXT_15 = "_feature = ";
-  protected final String TEXT_16 = NL + "_UI_";
-  protected final String TEXT_17 = "_";
-  protected final String TEXT_18 = "_description = ";
-  protected final String TEXT_19 = NL + "_UI_Unknown_feature = Unspecified" + NL;
-  protected final String TEXT_20 = NL + "_UI_";
-  protected final String TEXT_21 = "_";
-  protected final String TEXT_22 = "_literal = ";
-  protected final String TEXT_23 = NL;
-  protected final String TEXT_24 = " = ";
-  protected final String TEXT_25 = NL;
+  protected final String TEXT_13 = "_";
+  protected final String TEXT_14 = "_feature = ";
+  protected final String TEXT_15 = "_description = ";
+  protected final String TEXT_16 = NL + "_UI_Unknown_feature = Unspecified" + NL;
+  protected final String TEXT_17 = "_literal = ";
+  protected final String TEXT_18 = " = ";
 
   public String generate(Object argument)
   {
@@ -89,44 +82,44 @@ public class PluginProperties
     }
     stringBuffer.append(TEXT_12);
     for (GenFeature genFeature : genModel.getFilteredAllGenFeatures()) { String description = genFeature.getPropertyDescription();
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(genFeature.getGenClass().getName());
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(genFeature.getName());
-    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_14);
     stringBuffer.append(genFeature.getFormattedName());
     if (description != null && description.length() > 0) {
-    stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(genFeature.getGenClass().getName());
-    stringBuffer.append(TEXT_17);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(genFeature.getName());
-    stringBuffer.append(TEXT_18);
+    stringBuffer.append(TEXT_15);
     stringBuffer.append(description);
     }
     }
-    stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_16);
     for (GenPackage genPackage : genModel.getAllGenAndUsedGenPackagesWithClassifiers()) {
     if (genPackage.getGenModel() == genModel || !genPackage.getGenModel().hasEditSupport()) {
     for (GenEnum genEnum : genPackage.getGenEnums()) {
     for (GenEnumLiteral genEnumLiteral : genEnum.getGenEnumLiterals()) {
-    stringBuffer.append(TEXT_20);
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(genEnum.getName());
-    stringBuffer.append(TEXT_21);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(genEnumLiteral.getName());
-    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_17);
     stringBuffer.append(genEnumLiteral.getLiteral());
     }
     }
     }
     }
     for (String category : genModel.getPropertyCategories()) {
-    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_5);
     stringBuffer.append(genModel.getPropertyCategoryKey(category));
-    stringBuffer.append(TEXT_24);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(category);
     }
     }
-    stringBuffer.append(TEXT_25);
+    stringBuffer.append(TEXT_5);
     return stringBuffer.toString();
   }
 }

@@ -32,33 +32,20 @@ public class Properties
   protected final String TEXT_15 = "\")" + NL + "\tString ";
   protected final String TEXT_16 = "Type();" + NL;
   protected final String TEXT_17 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_Unknown_type\")" + NL + "\t@DefaultMessage(\"Object\")" + NL + "\tString unknownType();" + NL + "" + NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_Unknown_datatype\")" + NL + "\t@DefaultMessage(\"Value\")" + NL + "\tString unknownDatatype();" + NL;
-  protected final String TEXT_18 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_";
-  protected final String TEXT_19 = "_";
-  protected final String TEXT_20 = "_feature\")" + NL + "\t@DefaultMessage(\"";
-  protected final String TEXT_21 = "\")" + NL + "\tString ";
-  protected final String TEXT_22 = "_";
-  protected final String TEXT_23 = "Feature();" + NL;
-  protected final String TEXT_24 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_";
-  protected final String TEXT_25 = "_";
-  protected final String TEXT_26 = "_description\")" + NL + "\t@DefaultMessage(\"";
-  protected final String TEXT_27 = "\")" + NL + "\tString ";
-  protected final String TEXT_28 = "_";
-  protected final String TEXT_29 = "Description();" + NL;
-  protected final String TEXT_30 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_Unknown_feature\")" + NL + "\t@DefaultMessage(\"Unspecified\")" + NL + "\tString unknownFeature();" + NL;
-  protected final String TEXT_31 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_";
-  protected final String TEXT_32 = "_";
-  protected final String TEXT_33 = "_literal\")" + NL + "\t@DefaultMessage(\"";
-  protected final String TEXT_34 = "\")" + NL + "\tString ";
-  protected final String TEXT_35 = "_";
-  protected final String TEXT_36 = "Literal();" + NL;
-  protected final String TEXT_37 = NL;
-  protected final String TEXT_38 = " = ";
-  protected final String TEXT_39 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"";
-  protected final String TEXT_40 = "\")" + NL + "\t@DefaultMessage(\"";
-  protected final String TEXT_41 = "\")" + NL + "\tString ";
-  protected final String TEXT_42 = "();" + NL;
-  protected final String TEXT_43 = NL + "}";
-  protected final String TEXT_44 = NL;
+  protected final String TEXT_18 = "_";
+  protected final String TEXT_19 = "_feature\")" + NL + "\t@DefaultMessage(\"";
+  protected final String TEXT_20 = "Feature();" + NL;
+  protected final String TEXT_21 = "_description\")" + NL + "\t@DefaultMessage(\"";
+  protected final String TEXT_22 = "Description();" + NL;
+  protected final String TEXT_23 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"_UI_Unknown_feature\")" + NL + "\t@DefaultMessage(\"Unspecified\")" + NL + "\tString unknownFeature();" + NL;
+  protected final String TEXT_24 = "_literal\")" + NL + "\t@DefaultMessage(\"";
+  protected final String TEXT_25 = "Literal();" + NL;
+  protected final String TEXT_26 = NL;
+  protected final String TEXT_27 = " = ";
+  protected final String TEXT_28 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\t@Key(\"";
+  protected final String TEXT_29 = "\")" + NL + "\t@DefaultMessage(\"";
+  protected final String TEXT_30 = "();" + NL;
+  protected final String TEXT_31 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -115,67 +102,67 @@ public class Properties
     }
     stringBuffer.append(TEXT_17);
     for (GenFeature genFeature : genModel.getFilteredAllGenFeatures()) { String description = genFeature.getPropertyDescription();
+    stringBuffer.append(TEXT_13);
+    stringBuffer.append(genFeature.getGenClass().getName());
     stringBuffer.append(TEXT_18);
-    stringBuffer.append(genFeature.getGenClass().getName());
+    stringBuffer.append(genFeature.getName());
     stringBuffer.append(TEXT_19);
-    stringBuffer.append(genFeature.getName());
-    stringBuffer.append(TEXT_20);
     stringBuffer.append(genFeature.getFormattedName());
-    stringBuffer.append(TEXT_21);
+    stringBuffer.append(TEXT_15);
     stringBuffer.append(genFeature.getGenClass().getUncapName());
-    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(genFeature.getCapName());
-    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_20);
     if (description != null && description.length() > 0) {
-    stringBuffer.append(TEXT_24);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(genFeature.getGenClass().getName());
-    stringBuffer.append(TEXT_25);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(genFeature.getName());
-    stringBuffer.append(TEXT_26);
+    stringBuffer.append(TEXT_21);
     stringBuffer.append(description);
-    stringBuffer.append(TEXT_27);
+    stringBuffer.append(TEXT_15);
     stringBuffer.append(genFeature.getGenClass().getUncapName());
-    stringBuffer.append(TEXT_28);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(genFeature.getCapName());
-    stringBuffer.append(TEXT_29);
+    stringBuffer.append(TEXT_22);
     }
     }
-    stringBuffer.append(TEXT_30);
+    stringBuffer.append(TEXT_23);
     for (GenPackage genPackage : genModel.getAllGenAndUsedGenPackagesWithClassifiers()) {
     if (genPackage.getGenModel() == genModel || !genPackage.getGenModel().hasEditSupport()) {
     for (GenEnum genEnum : genPackage.getGenEnums()) {
     for (GenEnumLiteral genEnumLiteral : genEnum.getGenEnumLiterals()) {
-    stringBuffer.append(TEXT_31);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(genEnum.getName());
-    stringBuffer.append(TEXT_32);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(genEnumLiteral.getName());
-    stringBuffer.append(TEXT_33);
+    stringBuffer.append(TEXT_24);
     stringBuffer.append(genEnumLiteral.getLiteral());
-    stringBuffer.append(TEXT_34);
+    stringBuffer.append(TEXT_15);
     stringBuffer.append(genEnum.getSafeUncapName());
-    stringBuffer.append(TEXT_35);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(genEnumLiteral.getName());
-    stringBuffer.append(TEXT_36);
+    stringBuffer.append(TEXT_25);
     }
     }
     }
     }
     for (String category : genModel.getPropertyCategories()) {
-    stringBuffer.append(TEXT_37);
+    stringBuffer.append(TEXT_26);
     stringBuffer.append(genModel.getPropertyCategoryKey(category));
-    stringBuffer.append(TEXT_38);
+    stringBuffer.append(TEXT_27);
     stringBuffer.append(category);
-    stringBuffer.append(TEXT_39);
+    stringBuffer.append(TEXT_28);
     stringBuffer.append(genModel.getPropertyCategoryKey(category));
-    stringBuffer.append(TEXT_40);
+    stringBuffer.append(TEXT_29);
     stringBuffer.append(category);
-    stringBuffer.append(TEXT_41);
+    stringBuffer.append(TEXT_15);
     stringBuffer.append(genModel.getPropertyCategoryKey(category));
-    stringBuffer.append(TEXT_42);
+    stringBuffer.append(TEXT_30);
     }
-    stringBuffer.append(TEXT_43);
+    stringBuffer.append(TEXT_31);
     genModel.emitSortedImports();
-    stringBuffer.append(TEXT_44);
+    stringBuffer.append(TEXT_26);
     return stringBuffer.toString();
   }
 }

@@ -31,8 +31,8 @@ class GenerateMigratorTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	final val TEST_CONCEPT_NAME = "testConcept"
-	final val TEST_VERSION = "1.1"
+	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_VERSION = "1.1"
 	
 	val migratorGenerator = new GenerateMigrator
 

@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.calculation.ui;
 
 import com.google.inject.Injector;
 import de.dlr.sc.virsat.model.calculation.ui.internal.CalculationActivator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
 
@@ -22,12 +23,13 @@ public class EquationDSLExecutableExtensionFactory extends AbstractGuiceAwareExe
 
 	@Override
 	protected Bundle getBundle() {
-		return CalculationActivator.getInstance().getBundle();
+		return Platform.getBundle(CalculationActivator.PLUGIN_ID);
 	}
 	
 	@Override
 	protected Injector getInjector() {
-		return CalculationActivator.getInstance().getInjector(CalculationActivator.DE_DLR_SC_VIRSAT_MODEL_CALCULATION_EQUATIONDSL);
+		CalculationActivator activator = CalculationActivator.getInstance();
+		return activator != null ? activator.getInjector(CalculationActivator.DE_DLR_SC_VIRSAT_MODEL_CALCULATION_EQUATIONDSL) : null;
 	}
-	
+
 }
