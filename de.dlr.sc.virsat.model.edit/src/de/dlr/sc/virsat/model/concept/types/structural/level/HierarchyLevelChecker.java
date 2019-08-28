@@ -100,30 +100,20 @@ public class HierarchyLevelChecker {
 			int minLevelFromParent = getMinIndexFromParentLevel(parent);
 			int maxLevelFromParent = getMaxIndexFromTreeDistanceOfParent(parent, bean);
 
-			if (minLevelFromParent > minLevelIndex) {
-				minLevelIndex = minLevelFromParent;
-			}
-			if (maxLevelFromParent < maxLevelIndex) {
-				maxLevelIndex = maxLevelFromParent;
-			}
+			minLevelIndex = Math.max(minLevelIndex, minLevelFromParent);
+			maxLevelIndex = Math.min(maxLevelIndex, maxLevelFromParent);
 		}
 		for (IBeanStructuralElementInstance child : children) {
 			int maxLevelFromChild = getMaxIndexFromRelevantChild(child);
 			int minLevelFromChild = getMinIndexFromTreeDistanceOfChild(child, bean);
 
-			if (minLevelFromChild > minLevelIndex) {
-				minLevelIndex = minLevelFromChild;
-			}
-			if (maxLevelFromChild < maxLevelIndex) {
-				maxLevelIndex = maxLevelFromChild;
-			}
+			minLevelIndex = Math.max(minLevelIndex, minLevelFromChild);
+			maxLevelIndex = Math.min(maxLevelIndex, maxLevelFromChild);
 		}
 
 		// Add applicable levels to set
-		for (int index = minLevelIndex; index <= maxLevelIndex; index++) {
-			applicableLevels.add(levels.get(index));
-		}
-
+		applicableLevels.addAll(levels.subList(minLevelIndex, maxLevelIndex + 1));
+		
 		return applicableLevels;
 	}
 
@@ -221,7 +211,8 @@ public class HierarchyLevelChecker {
 		// Go through all the levels between the child level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// minimum applicable level index decreases as we can also skip the level
-		for (int i = levels.indexOf(childLevel) - 1; i >= 0 && i >= levels.indexOf(childLevel) - treeDistance; i--) {
+		int minLevelFromDistance = levels.indexOf(childLevel) - treeDistance;
+		for (int i = levels.indexOf(childLevel) - 1; i >= 0 && i >= minLevelFromDistance; i--) {
 			if (levels.get(i).isOptional()) {
 				minLevel--;
 			}
@@ -249,8 +240,8 @@ public class HierarchyLevelChecker {
 		// Go through all the levels between the parent level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// maximum applicable level index increases as we can also skip the level
-		for (int i = levels.indexOf(parentLevel) + 1; i <= levels.indexOf(parentLevel) + treeDistance
-				&& i < levels.size(); i++) {
+		int maxLevelFromDistance = levels.indexOf(parentLevel) + treeDistance;
+		for (int i = levels.indexOf(parentLevel) + 1; i <= maxLevelFromDistance && i < levels.size(); i++) {
 			if (levels.get(i).isOptional()) {
 				maxLevel++;
 			}
@@ -326,7 +317,7 @@ public class HierarchyLevelChecker {
 	}
 
 	/**
-	 * Get the tree distance from one tree element to anther
+	 * Get the tree distance from one tree element to another
 	 * 
 	 * @param startElement
 	 *            the element to start from, has to be the one with a higher depth
@@ -351,17 +342,16 @@ public class HierarchyLevelChecker {
 	 */
 	private int getTreeDistance(IBeanStructuralElementInstance startElement, IBeanStructuralElementInstance target,
 			int startDistance) {
-		int currentDistance = startDistance + 1;
 		IBeanStructuralElementInstance parent = startElement.getParentSeiBean();
 		if (parent == null) {
 			return -1;
 		}
+		int currentDistance = startDistance + 1;
 		if (parent.equals(target)) {
 			return currentDistance;
 		} else {
 			return getTreeDistance(parent, target, currentDistance);
 		}
-
 	}
 
 }
