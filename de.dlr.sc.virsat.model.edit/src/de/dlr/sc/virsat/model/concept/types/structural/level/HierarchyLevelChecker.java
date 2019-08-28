@@ -50,10 +50,8 @@ public class HierarchyLevelChecker {
 	 * @param levels
 	 *            A list that specifies the concrete order of tree levels.
 	 * 
-	 *            Levels should not overlap - for any element only one level can
-	 *            have true as result from the
-	 *            {@link IHierarchyLevel#isOnLevel(IBeanStructuralElementInstance)} method.
-	 *            Otherwise an {@link IllegalArgumentException} is thrown
+	 *            Levels should not overlap - any element should belong to no more than one level.
+	 *            Otherwise an IllegalArgumentException is thrown
 	 */
 	public HierarchyLevelChecker(List<IHierarchyLevel> levels) {
 		this.levels = levels;

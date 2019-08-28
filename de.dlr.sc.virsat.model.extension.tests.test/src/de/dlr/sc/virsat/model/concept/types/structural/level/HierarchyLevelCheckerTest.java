@@ -64,7 +64,7 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		b = createNameMatchingLevel("b", false, false);
 		c = createNameMatchingLevel("c", false, false);
 
-		//Nested levels
+		//Levels that allow nesting
 		an = createNameMatchingLevel("a", true, false);
 		bn = createNameMatchingLevel("b", true, false);
 		cn = createNameMatchingLevel("c", true, false);
@@ -77,25 +77,25 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 	}
 
 	@Test
-	public void testSingleBean() {
+	public void testSingleBeanOnCorrectLevel() {
 		HierarchyLevelChecker checker = createCheckerForHierarchy(a);
 		IBeanStructuralElementInstance bean = createBean("a");
 
 		assertEquals(expectedApplicableLevels(a), checker.getApplicableLevels(bean));
-		assertTrue(checker.beanHasInapplicableLevel(bean));
+		assertFalse("No level conflicts", checker.beanHasInapplicableLevel(bean));
 	}
 
 	@Test
-	public void testSingleBean2() {
+	public void testSingleBeanWithoutLevel() {
 		HierarchyLevelChecker checker = createCheckerForHierarchy(a);
 		IBeanStructuralElementInstance bean = createBean("x");
 
 		assertEquals(expectedApplicableLevels(a), checker.getApplicableLevels(bean));
-		assertFalse(checker.beanHasInapplicableLevel(bean));
+		assertFalse("No level conflicts", checker.beanHasInapplicableLevel(bean));
 	}
 
 	@Test
-	public void testSingleBeanTwoLevels() {
+	public void testSingleBeanTwoPossibleLevels() {
 		HierarchyLevelChecker checker = createCheckerForHierarchy(a, b);
 		IBeanStructuralElementInstance bean = createBean("x");
 
@@ -103,7 +103,7 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 	}
 
 	@Test
-	public void testTwoBeans() {
+	public void testChildApplicabilityFiltered() {
 		HierarchyLevelChecker checker = createCheckerForHierarchy(a, b);
 		IBeanStructuralElementInstance parent = createBean("a");
 		IBeanStructuralElementInstance child = createBean("x");
@@ -284,8 +284,8 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		IBeanStructuralElementInstance child = createBean("a");
 		parent.add(child);
 
-		assertFalse(checker.beanHasInapplicableLevel(parent));
-		assertFalse(checker.beanHasInapplicableLevel(child));
+		assertTrue(checker.beanHasInapplicableLevel(parent));
+		assertTrue(checker.beanHasInapplicableLevel(child));
 	}
 
 	@Test
@@ -295,8 +295,8 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		IBeanStructuralElementInstance child = createBean("a");
 		parent.add(child);
 
-		assertFalse(checker.beanHasInapplicableLevel(parent));
-		assertFalse(checker.beanHasInapplicableLevel(child));
+		assertTrue(checker.beanHasInapplicableLevel(parent));
+		assertTrue(checker.beanHasInapplicableLevel(child));
 	}
 
 	@Test
@@ -306,8 +306,8 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		IBeanStructuralElementInstance child = createBean("c");
 		parent.add(child);
 
-		assertFalse(checker.beanHasInapplicableLevel(parent));
-		assertFalse(checker.beanHasInapplicableLevel(child));
+		assertTrue("Middle level is missing", checker.beanHasInapplicableLevel(parent));
+		assertTrue("Middle level is missing", checker.beanHasInapplicableLevel(child));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -315,7 +315,7 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		HierarchyLevelChecker checker = createCheckerForHierarchy(a, b);
 		IBeanStructuralElementInstance bean = createBean("ab");
 
-		assertFalse(checker.beanHasAmbiguousLevel(bean));
+		assertTrue("Name matches both levels a and b", checker.beanHasAmbiguousLevel(bean));
 
 		// Should raise an exception
 		checker.getApplicableLevels(bean);
