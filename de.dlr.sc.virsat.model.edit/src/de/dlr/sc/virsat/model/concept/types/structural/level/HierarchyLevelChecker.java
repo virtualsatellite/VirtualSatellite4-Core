@@ -49,9 +49,7 @@ public class HierarchyLevelChecker {
 	/**
 	 * @param levels
 	 *            A list that specifies the concrete order of tree levels.
-	 * 
 	 *            Levels should not overlap - any element should belong to no more than one level.
-	 *            Otherwise an IllegalArgumentException is thrown
 	 */
 	public HierarchyLevelChecker(List<IHierarchyLevel> levels) {
 		this.levels = levels;
@@ -64,8 +62,9 @@ public class HierarchyLevelChecker {
 	 *            the structural element bean to check
 	 * @return a set of applicable levels from the list of levels passed in the
 	 *         constructor
+	 * @throws IllegalArgumentException if an element with multiple levels is encountered in the structural tree
 	 */
-	public Set<IHierarchyLevel> getApplicableLevels(IBeanStructuralElementInstance bean) {
+	public Set<IHierarchyLevel> getApplicableLevels(IBeanStructuralElementInstance bean) throws IllegalArgumentException {
 
 		// Check if element belongs to level already - then it can by definition of this
 		// checker only be on this level
