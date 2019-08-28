@@ -142,21 +142,20 @@ public class HierarchyLevelChecker {
 	/**
 	 * @param bean
 	 *            the structural element bean to check
-	 * @return false if an element is on a level that would not be applicable for it,
-	 *         true if element has no level or is on an applicable level
+	 * @return true if an element is on a level that would not be applicable for it, false otherwise
 	 */
-	public boolean validateApplicableLevel(IBeanStructuralElementInstance bean) {
+	public boolean beanHasInapplicableLevel(IBeanStructuralElementInstance bean) {
 		IHierarchyLevel level = getLevelOfBean(bean);
-		return level == null || deduceApplicableLevels(bean).contains(level);
+		return level != null && !deduceApplicableLevels(bean).contains(level);
 	}
 
 	/**
 	 * @param bean
 	 *            the structural element bean to check
-	 * @return false if element belongs to more than one level, true otherwise
+	 * @return true if element belongs to more than one level, false otherwise
 	 */
-	public boolean validateUniqueLevel(IBeanStructuralElementInstance bean) {
-		return getLevelsOfBean(bean).size() <= 1;
+	public boolean beanHasAmbiguousLevel(IBeanStructuralElementInstance bean) {
+		return getLevelsOfBean(bean).size() > 1;
 	}
 	
 	/**
