@@ -22,11 +22,11 @@ public class Activator extends NativeLibPlugin implements BundleActivator {
 
 	@Override
 	public void loadLibraryByAbsolutePath(String libNameAbsolutePath) {
-		System.load(libNameAbsolutePath);
+		//System.load(libNameAbsolutePath);
 	}
 
 	@Override
 	public void loadLibraryByName(String libName) {
-		System.loadLibrary(libName);
+		//System.loadLibrary(libName);
 	}
 }
