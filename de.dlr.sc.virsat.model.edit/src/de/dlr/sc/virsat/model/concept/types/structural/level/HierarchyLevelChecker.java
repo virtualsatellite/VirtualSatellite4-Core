@@ -112,8 +112,10 @@ public class HierarchyLevelChecker {
 			maxLevelIndex = getMaxIndexFromTreeDistanceToRoot(bean);
 		}
 
-		// Add applicable levels to set
-		applicableLevels.addAll(levels.subList(minLevelIndex, maxLevelIndex + 1));
+		if (minLevelIndex <= maxLevelIndex) {
+			// Add applicable levels to set
+			applicableLevels.addAll(levels.subList(minLevelIndex, maxLevelIndex + 1));
+		}
 		
 		return applicableLevels;
 	}

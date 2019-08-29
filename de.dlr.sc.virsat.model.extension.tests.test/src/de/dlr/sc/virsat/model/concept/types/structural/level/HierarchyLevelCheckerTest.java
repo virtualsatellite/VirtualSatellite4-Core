@@ -305,6 +305,20 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 	}
 
 	@Test
+	public void testInvalidLowerLevelBetweenHigherLevels() {
+		HierarchyLevelChecker checker = createCheckerForHierarchy(a, b);
+		IBeanStructuralElementInstance parent = createBean("a");
+		IBeanStructuralElementInstance child = createBean("b");
+		IBeanStructuralElementInstance grandchild = createBean("a");
+		parent.add(child);
+		child.add(grandchild);
+
+		assertTrue(checker.beanHasInapplicableLevel(parent));
+		assertTrue(checker.beanHasInapplicableLevel(child));
+		assertTrue(checker.beanHasInapplicableLevel(grandchild));
+	}
+	
+	@Test
 	public void testInvalidLevelWrongOrder() {
 		HierarchyLevelChecker checker = createCheckerForHierarchy(a, b);
 		IBeanStructuralElementInstance parent = createBean("b");
