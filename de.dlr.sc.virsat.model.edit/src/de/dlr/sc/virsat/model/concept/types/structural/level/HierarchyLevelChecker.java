@@ -269,7 +269,7 @@ public class HierarchyLevelChecker {
 	 * @return the level
 	 * @throws IllegalArgumentException if a model element belongs to mulitple levels
 	 */
-	private IHierarchyLevel getLevelOfBean(IBeanStructuralElementInstance bean) throws IllegalArgumentException{
+	private IHierarchyLevel getLevelOfBean(IBeanStructuralElementInstance bean) throws IllegalArgumentException {
 		List<IHierarchyLevel> foundLevels = getLevelsOfBean(bean);
 		if (foundLevels.size() > 1) {
 			throw new IllegalArgumentException("Element " + bean + " is on multiple levels: " + foundLevels);
