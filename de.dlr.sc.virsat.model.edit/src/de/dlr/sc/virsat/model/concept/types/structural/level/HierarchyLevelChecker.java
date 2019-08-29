@@ -212,7 +212,7 @@ public class HierarchyLevelChecker {
 		// Go through all the levels between the child level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// minimum applicable level index decreases as we can also skip the level
-		int minLevelFromDistance = levels.indexOf(childLevel) - treeDistance;
+		int minLevelFromDistance = minLevel;
 		for (int i = levels.indexOf(childLevel) - 1; i >= 0 && i >= minLevelFromDistance; i--) {
 			if (levels.get(i).isOptional()) {
 				minLevel--;
@@ -241,7 +241,7 @@ public class HierarchyLevelChecker {
 		// Go through all the levels between the parent level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// maximum applicable level index increases as we can also skip the level
-		int maxLevelFromDistance = levels.indexOf(parentLevel) + treeDistance;
+		int maxLevelFromDistance = maxLevel;
 		for (int i = levels.indexOf(parentLevel) + 1; i <= maxLevelFromDistance && i < levels.size(); i++) {
 			if (levels.get(i).isOptional()) {
 				maxLevel++;
