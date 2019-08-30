@@ -12,8 +12,6 @@ package de.dlr.sc.virsat.external.lib;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
