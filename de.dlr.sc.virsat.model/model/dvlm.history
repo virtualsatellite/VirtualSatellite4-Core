@@ -4100,22 +4100,13 @@
     </changes>
   </releases>
   <releases xmi:id="_azf6ELVfEeaRpsVaCOyn1Q" date="2017-02-10T08:59:38.052+0100">
-    <changes xsi:type="history:Create" xmi:id="_fNLgALVzEeaRpsVaCOyn1Q" referenceName="eAnnotations">
+    <changes xsi:type="history:Create" xmi:id="_fNLgALVzEeaRpsVaCOyn1Q" referenceName="eAnnotations" element="_VWVVAci5Eem2Qrk7U2NnxA">
       <target href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <element href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <changes xsi:type="history:Set" xmi:id="_fNLgAbVzEeaRpsVaCOyn1Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
-        <element href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      </changes>
+      <changes xsi:type="history:Set" xmi:id="_fNLgAbVzEeaRpsVaCOyn1Q" element="_VWVVAci5Eem2Qrk7U2NnxA" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel"/>
     </changes>
-    <changes xsi:type="history:Create" xmi:id="_fNLgArVzEeaRpsVaCOyn1Q" referenceName="details">
-      <target href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <element href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      <changes xsi:type="history:Set" xmi:id="_fNLgA7VzEeaRpsVaCOyn1Q" featureName="key" dataValue="documentation">
-        <element href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
-      <changes xsi:type="history:Set" xmi:id="_fNLgBLVzEeaRpsVaCOyn1Q" featureName="value" dataValue="The FullQualifiedName (FQN) is the combination of the current name plus the names of the containers. In the Categories and properties we usually have FQN which follow the pattern of Concept.Category.Property .&#xD;&#xA;WARNING!!! This attribute cannot be implemented through the model by an EOperation. An EOperation cannot be set to be the ID of the class. In contrast this derived feature builds the id of this class and is important to  uniquely identify concepts and its contained elements for registration within a repository.">
-        <element href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
+    <changes xsi:type="history:Create" xmi:id="_fNLgArVzEeaRpsVaCOyn1Q" target="_VWVVAci5Eem2Qrk7U2NnxA" referenceName="details" element="_VWVVAsi5Eem2Qrk7U2NnxA">
+      <changes xsi:type="history:Set" xmi:id="_fNLgA7VzEeaRpsVaCOyn1Q" element="_VWVVAsi5Eem2Qrk7U2NnxA" featureName="key" dataValue="documentation"/>
+      <changes xsi:type="history:Set" xmi:id="_fNLgBLVzEeaRpsVaCOyn1Q" element="_VWVVAsi5Eem2Qrk7U2NnxA" featureName="value" dataValue="The FullQualifiedName (FQN) is the combination of the current name plus the names of the containers. In the Categories and properties we usually have FQN which follow the pattern of Concept.Category.Property .&#xD;&#xA;WARNING!!! This attribute cannot be implemented through the model by an EOperation. An EOperation cannot be set to be the ID of the class. In contrast this derived feature builds the id of this class and is important to  uniquely identify concepts and its contained elements for registration within a repository."/>
     </changes>
     <changes xsi:type="history:Create" xmi:id="_QCDJwLcMEeabU7ZlCYYBhA" referenceName="eStructuralFeatures">
       <target href="dvlm.ecore#//structural/IApplicableFor"/>
@@ -5163,6 +5154,26 @@
   <releases xmi:id="_T2CQkKbaEeiSOOvGn7vraw">
     <changes xsi:type="history:Set" xmi:id="_um-FgIOFEeiLBsC_lEpzIg" featureName="value" dataValue="// If the cardinality is 0, check if we are extending from some category and then take their cardinality&#xD;&#xA;return cardinality == 0 &amp;&amp; getExtendsCategory() != null ? getExtendsCategory().getCardinality() : cardinality;" oldDataValue="// If the cardinality is 0, check if we are extending from some category and then take their cardinality&#xD;&#xA;return cardinality &lt;= 0 &amp;&amp; getExtendsCategory() != null ? getExtendsCategory().getCardinality() : cardinality;">
       <element href="dvlm.ecore#//categories/Category/getCardinality/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_K05uwLkwEem4JbZCXDDwjQ" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//concepts/Concept"/>
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_NpNpcLkwEem4JbZCXDDwjQ" featureName="eType">
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
+      <referenceValue href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_Py1BULkwEem4JbZCXDDwjQ" featureName="name" dataValue="isBeta">
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_JrVMsLkyEem4JbZCXDDwjQ" featureName="name" dataValue="beta" oldDataValue="isBeta">
+      <element href="dvlm.ecore#//concepts/Concept/beta"/>
+    </changes>
+    <changes xsi:type="history:Delete" xmi:id="_VWVVAMi5Eem2Qrk7U2NnxA" referenceName="eAnnotations">
+      <target href="dvlm.ecore#//general/IQualifiedName/fullQualifiedName/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <element xsi:type="ecore:EAnnotation" xmi:id="_VWVVAci5Eem2Qrk7U2NnxA" source="http://www.eclipse.org/emf/2002/GenModel">
+        <details xmi:id="_VWVVAsi5Eem2Qrk7U2NnxA" key="documentation" value="The FullQualifiedName (FQN) is the combination of the current name plus the names of the containers. In the Categories and properties we usually have FQN which follow the pattern of Concept.Category.Property .&#xD;&#xA;WARNING!!! This attribute cannot be implemented through the model by an EOperation. An EOperation cannot be set to be the ID of the class. In contrast this derived feature builds the id of this class and is important to  uniquely identify concepts and its contained elements for registration within a repository."/>
+      </element>
     </changes>
   </releases>
 </history:History>

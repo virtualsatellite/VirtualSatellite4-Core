@@ -27,7 +27,6 @@ public class ModuleGWTXML
   protected final String TEXT_10 = NL + "  <source path=\"";
   protected final String TEXT_11 = "\"/>";
   protected final String TEXT_12 = NL + "</module>";
-  protected final String TEXT_13 = NL;
 
   public String generate(Object argument)
   {
@@ -68,7 +67,7 @@ public class ModuleGWTXML
     stringBuffer.append(TEXT_11);
     }
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_2);
     return stringBuffer.toString();
   }
 }

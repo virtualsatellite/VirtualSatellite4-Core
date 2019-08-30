@@ -37,10 +37,10 @@ class GenerateDmfCategoriesTest {
 
 	@Inject extension ParseHelper<Concept>
 
-	static final val TEST_CONCEPT_NAME = "testConcept";
-	static final val TEST_FQN_NAME = "de.dlr.sc.virsat.model.extension" + "." + TEST_CONCEPT_NAME;
-	static final val TEST_CATEGORY_NAME = "testCategory";
-	static final val TEST_CONCEPT_VERSION = "2";
+	static val TEST_CONCEPT_NAME = "testConcept";
+	static val TEST_FQN_NAME = "de.dlr.sc.virsat.model.extension" + "." + TEST_CONCEPT_NAME;
+	static val TEST_CATEGORY_NAME = "testCategory";
+	static val TEST_CONCEPT_VERSION = "2";
 	val dmfCategoriesGenerator = new GenerateDmfCategories();
 
 	@Before

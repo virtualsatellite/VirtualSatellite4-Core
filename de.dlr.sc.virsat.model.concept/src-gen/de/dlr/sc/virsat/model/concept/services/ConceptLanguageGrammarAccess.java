@@ -50,12 +50,14 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cVersionKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
 		private final Assignment cVersionAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
 		private final RuleCall cVersionVersionParserRuleCall_3_1_1_0 = (RuleCall)cVersionAssignment_3_1_1.eContents().get(0);
-		private final Group cGroup_3_2 = (Group)cUnorderedGroup_3.eContents().get(2);
-		private final Keyword cDescriptionKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
-		private final Assignment cDescriptionAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
-		private final RuleCall cDescriptionEStringParserRuleCall_3_2_1_0 = (RuleCall)cDescriptionAssignment_3_2_1.eContents().get(0);
-		private final Assignment cDMFAssignment_3_3 = (Assignment)cUnorderedGroup_3.eContents().get(3);
-		private final Keyword cDMFHasDMFKeyword_3_3_0 = (Keyword)cDMFAssignment_3_3.eContents().get(0);
+		private final Assignment cBetaAssignment_3_2 = (Assignment)cUnorderedGroup_3.eContents().get(2);
+		private final Keyword cBetaBetaKeyword_3_2_0 = (Keyword)cBetaAssignment_3_2.eContents().get(0);
+		private final Group cGroup_3_3 = (Group)cUnorderedGroup_3.eContents().get(3);
+		private final Keyword cDescriptionKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
+		private final Assignment cDescriptionAssignment_3_3_1 = (Assignment)cGroup_3_3.eContents().get(1);
+		private final RuleCall cDescriptionEStringParserRuleCall_3_3_1_0 = (RuleCall)cDescriptionAssignment_3_3_1.eContents().get(0);
+		private final Assignment cDMFAssignment_3_4 = (Assignment)cUnorderedGroup_3.eContents().get(4);
+		private final Keyword cDMFHasDMFKeyword_3_4_0 = (Keyword)cDMFAssignment_3_4.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cImportsAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cImportsConceptImportParserRuleCall_5_0 = (RuleCall)cImportsAssignment_5.eContents().get(0);
@@ -69,8 +71,8 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Concept Concepts::Concept:
 		//	{Concepts::Concept}
-		//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & ('description'
-		//	description=EString)? & DMF?='hasDMF'?)
+		//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
+		//	('description' description=EString)? & DMF?='hasDMF'?)
 		//	'{'
 		//	imports+=ConceptImport*
 		//	structuralElements+=StructuralElement*
@@ -80,7 +82,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{Concepts::Concept} 'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? &
-		//('description' description=EString)? & DMF?='hasDMF'?) '{' imports+=ConceptImport*
+		//beta?='beta'? & ('description' description=EString)? & DMF?='hasDMF'?) '{' imports+=ConceptImport*
 		//structuralElements+=StructuralElement* relations+=ARelation* categories+=Category* '}'
 		public Group getGroup() { return cGroup; }
 		
@@ -96,8 +98,8 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getNameQualifiedNameParserRuleCall_2_0() { return cNameQualifiedNameParserRuleCall_2_0; }
 		
-		//('displayname' displayName=EString)? & ('version' version=Version)? & ('description' description=EString)? &
-		//DMF?='hasDMF'?
+		//('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? & ('description'
+		//description=EString)? & DMF?='hasDMF'?
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
 		//('displayname' displayName=EString)?
@@ -124,23 +126,29 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//Version
 		public RuleCall getVersionVersionParserRuleCall_3_1_1_0() { return cVersionVersionParserRuleCall_3_1_1_0; }
 		
+		//beta?='beta'?
+		public Assignment getBetaAssignment_3_2() { return cBetaAssignment_3_2; }
+		
+		//'beta'
+		public Keyword getBetaBetaKeyword_3_2_0() { return cBetaBetaKeyword_3_2_0; }
+		
 		//('description' description=EString)?
-		public Group getGroup_3_2() { return cGroup_3_2; }
+		public Group getGroup_3_3() { return cGroup_3_3; }
 		
 		//'description'
-		public Keyword getDescriptionKeyword_3_2_0() { return cDescriptionKeyword_3_2_0; }
+		public Keyword getDescriptionKeyword_3_3_0() { return cDescriptionKeyword_3_3_0; }
 		
 		//description=EString
-		public Assignment getDescriptionAssignment_3_2_1() { return cDescriptionAssignment_3_2_1; }
+		public Assignment getDescriptionAssignment_3_3_1() { return cDescriptionAssignment_3_3_1; }
 		
 		//EString
-		public RuleCall getDescriptionEStringParserRuleCall_3_2_1_0() { return cDescriptionEStringParserRuleCall_3_2_1_0; }
+		public RuleCall getDescriptionEStringParserRuleCall_3_3_1_0() { return cDescriptionEStringParserRuleCall_3_3_1_0; }
 		
 		//DMF?='hasDMF'?
-		public Assignment getDMFAssignment_3_3() { return cDMFAssignment_3_3; }
+		public Assignment getDMFAssignment_3_4() { return cDMFAssignment_3_4; }
 		
 		//'hasDMF'
-		public Keyword getDMFHasDMFKeyword_3_3_0() { return cDMFHasDMFKeyword_3_3_0; }
+		public Keyword getDMFHasDMFKeyword_3_4_0() { return cDMFHasDMFKeyword_3_4_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
@@ -3100,8 +3108,8 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Concept Concepts::Concept:
 	//	{Concepts::Concept}
-	//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & ('description'
-	//	description=EString)? & DMF?='hasDMF'?)
+	//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
+	//	('description' description=EString)? & DMF?='hasDMF'?)
 	//	'{'
 	//	imports+=ConceptImport*
 	//	structuralElements+=StructuralElement*

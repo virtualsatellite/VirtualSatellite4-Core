@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.external.lib;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -92,6 +93,9 @@ public abstract class NativeLibPlugin extends LibPlugin {
 	 */
 	private ArrayList<String> getLibraryNames(boolean createAbsolutePath) throws IOException {
 		String bundleNativeCodeManifestValue = bundle.getHeaders().get(MANIFEST_BUNDLE_NATIVE_CODE);
+		if (bundleNativeCodeManifestValue == null) {
+			return new ArrayList<String>();
+		}
 		String[] nativeCodeEntries = bundleNativeCodeManifestValue.split(";");
 		ArrayList<String> libNames = new ArrayList<>();
 		for (int i = 0; i < nativeCodeEntries.length - 2; i++) {

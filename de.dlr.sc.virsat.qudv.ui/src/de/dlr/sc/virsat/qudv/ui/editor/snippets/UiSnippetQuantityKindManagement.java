@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.qudv.ui.editor.snippets;
 
 import java.util.List;
 
+import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.DeleteCommand;
@@ -34,6 +35,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
@@ -77,8 +79,20 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 	}
 
 	@Override
+	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
+		UnitManagement unitManagement = (UnitManagement) model;
+		SystemOfUnits systemOfUnit = unitManagement.getSystemOfUnit();
+		super.setDataBinding(dbCtx, editingDomain, systemOfUnit);
+	}
+	
+	@Override
+	public boolean isActive(EObject model) {
+		return model instanceof UnitManagement;
+	}
+	
+	@Override
 	protected IContentProvider getTableContentProvider() {
-		//Get filtered content showing all AUnits 
+		//Get filtered content showing all AQuantityKinds
 		VirSatFilteredWrappedTreeContentProvider filteredContentProvider = new VirSatFilteredWrappedTreeContentProvider(adapterFactory);
 		filteredContentProvider.addClassFilterToGetChildren(AQuantityKind.class);
 		filteredContentProvider.addClassFilterToGetElement(AQuantityKind.class);
@@ -205,11 +219,6 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 				widgetSelected(e);
 			}
 		});
-	}
-	
-	@Override
-	public boolean isActive(EObject model) {
-		return model instanceof UnitManagement;
 	}
 	
 	/**

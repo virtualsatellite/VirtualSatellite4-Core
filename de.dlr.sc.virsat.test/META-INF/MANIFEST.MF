@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.12.0",
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model,
- de.dlr.sc.virsat.svn,
+ de.dlr.sc.virsat.team,
  de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.model.calculation,
@@ -20,9 +20,13 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.visualisation,
  de.dlr.sc.virsat.model.extension.tests,
  de.dlr.sc.virsat.model.extension.budget.mass,
+ de.dlr.sc.virsat.model.extension.budget.power,
  de.dlr.sc.virsat.model.extension.tests.edit,
  de.dlr.sc.virsat.model.extension.maturity,
- de.dlr.sc.virsat.model.extension.mechanical
+ de.dlr.sc.virsat.model.extension.mechanical,
+ de.dlr.sc.virsat.model.extension.statemachines,
+ de.dlr.sc.virsat.model.extension.funcelectrical,
+ de.dlr.sc.virsat.excel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -34,14 +38,18 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.concept.test,
  de.dlr.sc.virsat.model.edit.test,
  de.dlr.sc.virsat.model.extension.budget.mass.test,
+ de.dlr.sc.virsat.model.extension.budget.power.test,
  de.dlr.sc.virsat.model.extension.maturity.test,
  de.dlr.sc.virsat.model.extension.mechanical.test,
  de.dlr.sc.virsat.model.extension.ps.test,
  de.dlr.sc.virsat.model.extension.tests.edit.test,
  de.dlr.sc.virsat.model.extension.tests.test,
  de.dlr.sc.virsat.model.extension.visualisation.test,
+ de.dlr.sc.virsat.model.extension.statemachines.test,
+ de.dlr.sc.virsat.model.extension.funcelectrical.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
- de.dlr.sc.virsat.svn.test
+ de.dlr.sc.virsat.team.test,
+ de.dlr.sc.virsat.excel.test
 Export-Package: de.dlr.sc.virsat.test
 Automatic-Module-Name: de.dlr.sc.virsat.test

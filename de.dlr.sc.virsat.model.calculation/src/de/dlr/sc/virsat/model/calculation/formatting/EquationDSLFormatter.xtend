@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.calculation.services.EquationDSLGrammarAccess
  * 
  * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
  */
-public class EquationDSLFormatter extends AbstractDeclarativeFormatter {
+class EquationDSLFormatter extends AbstractDeclarativeFormatter {
 	
 	@Inject extension EquationDSLGrammarAccess
 	

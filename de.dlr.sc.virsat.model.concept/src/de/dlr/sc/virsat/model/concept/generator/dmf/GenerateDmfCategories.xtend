@@ -67,11 +67,11 @@ class GenerateDmfCategories {
 	public static final String MODEL_DMF_DOBJECT_NAME = "DObject";
 	public static final String MODEL_NS_PREFIX_PREFIX = "dmf_";
 	
-	private EClass dvlmDObject;
-	private ResourceSet ecoreModelResourceSet;
-	private Resource targetResource;
-	private Resource dvlmResource;
-	private String platformPluginUriStringForEcoreModel;
+	EClass dvlmDObject;
+	ResourceSet ecoreModelResourceSet;
+	Resource targetResource;
+	Resource dvlmResource;
+	String platformPluginUriStringForEcoreModel;
 	
 	/**
 	 * This method serialized the data model into the given format

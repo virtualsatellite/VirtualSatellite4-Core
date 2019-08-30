@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  de.dlr.sc.virsat.external.lib.apache.poi,
- de.dlr.sc.virsat.s2tep.excel
+ de.dlr.sc.virsat.excel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true

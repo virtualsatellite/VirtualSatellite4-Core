@@ -17,7 +17,7 @@ import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
@@ -178,7 +178,7 @@ public class UiSnippetSectionVisualisation extends AUiSnippetSectionVisualisatio
 				@SuppressWarnings("unchecked")
 				IValueProperty<EObject, ?> vpiValueProperty = EMFEditProperties.value(editingDomain, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE);
 				if (visualisationWidget instanceof CCombo) {
-					dbCtx.bindValue(WidgetProperties.selection().observe(visualisationWidget), vpiValueProperty.observe(propertyInstance));
+					dbCtx.bindValue(WidgetProperties.ccomboSelection().observe((CCombo) visualisationWidget), vpiValueProperty.observe(propertyInstance));
 				} else if (visualisationWidget instanceof Text) { 
 					dbCtx.bindValue(WidgetProperties.text(SWT.Modify).observe(visualisationWidget), vpiValueProperty.observe(propertyInstance));
 				} 	

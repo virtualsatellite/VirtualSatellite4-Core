@@ -73,19 +73,19 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
  */
 @SuppressWarnings("all")
 public class GenerateDmfCategories {
-  public final static String GENMODEL_TYPE_ECORE_EXTENSION = "genmodel";
+  public static final String GENMODEL_TYPE_ECORE_EXTENSION = "genmodel";
   
-  public final static String MODEL_TYPE_ECORE_EXTENSION = "ecore";
+  public static final String MODEL_TYPE_ECORE_EXTENSION = "ecore";
   
-  public final static String MODEL_CONCEPT_ECORE_FILENAME = ("concept." + GenerateDmfCategories.MODEL_TYPE_ECORE_EXTENSION);
+  public static final String MODEL_CONCEPT_ECORE_FILENAME = ("concept." + GenerateDmfCategories.MODEL_TYPE_ECORE_EXTENSION);
   
-  public final static String GENMODEL_CONCEPT_ECORE_FILENAME = ("concept." + GenerateDmfCategories.GENMODEL_TYPE_ECORE_EXTENSION);
+  public static final String GENMODEL_CONCEPT_ECORE_FILENAME = ("concept." + GenerateDmfCategories.GENMODEL_TYPE_ECORE_EXTENSION);
   
-  public final static String MODEL_DVLM_ECORE_URI = "/de.dlr.sc.virsat.model/model/dvlm.ecore";
+  public static final String MODEL_DVLM_ECORE_URI = "/de.dlr.sc.virsat.model/model/dvlm.ecore";
   
-  public final static String MODEL_DMF_DOBJECT_NAME = "DObject";
+  public static final String MODEL_DMF_DOBJECT_NAME = "DObject";
   
-  public final static String MODEL_NS_PREFIX_PREFIX = "dmf_";
+  public static final String MODEL_NS_PREFIX_PREFIX = "dmf_";
   
   private EClass dvlmDObject;
   
