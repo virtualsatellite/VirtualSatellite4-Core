@@ -27,9 +27,9 @@ addons:
   # ---------------------------------------------------------------
   apt:
     packages:
-    - libvtk6.2 # 7.1 for bionic. At the moment we are still with jdk8 which is on xenial only
-    - libvtk6-java
-    - libvtk6-jni
+    - libvtk6.2 # libvtk7.1 # for bionic. At the moment we are still with jdk8 which is on xenial only
+    - libvtk6-java # libvtk7-java # for bionic
+    # - libvtk7-jni # for bionic
     - libzmq5
     - libzmq-java
     - libzmq-jni
