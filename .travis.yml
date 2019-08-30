@@ -77,7 +77,7 @@ before_script:
   # --------------------------------------------------------------
   # Setup environment variables for correct linking of vtk and zmq
   # --------------------------------------------------------------
-  - source bash/setup_enviroment.sh
+  - source bash/setup_environment.sh
   
 after_failure:
   # ----------------------------------------
