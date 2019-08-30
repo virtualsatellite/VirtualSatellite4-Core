@@ -77,7 +77,8 @@ augmentLdLibraryPath $(dirname $JAVA_LIB_JVM)
 EXPECTED_JNI_SO_DIR=/usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 
-export VS_JAR_VTK=/usr/share/java/vtk7.jar
+#export VS_JAR_VTK=/usr/share/java/vtk7.jar
+export VS_JAR_VTK=/usr/share/java/vtk6.jar
 export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
 
 augmentLdLibraryPath $EXPECTED_SO_DIR
