@@ -41,7 +41,7 @@ public abstract class NativeLibPlugin extends LibPlugin {
 	 * to load the libraries by their absolute path
 	 * @return true in case the libraries should be loaded by absolute path.
 	 */
-	public boolean loadFromAbsolutePath() {
+	protected boolean loadFromAbsolutePath() {
 		boolean isLinux = platformOs.equalsIgnoreCase(Platform.OS_LINUX);
 		String bundleShape = bundle.getHeaders().get(MANIFEST_BUNDLE_SHAPE);
 		boolean isShapeDir = ((bundleShape != null) && (bundleShape.equalsIgnoreCase(MANIFEST_BUNDLE_SHAPE_DIR)));
@@ -89,7 +89,7 @@ public abstract class NativeLibPlugin extends LibPlugin {
 	 * @return list of library names e.g. "vtkpng-7.0"
 	 * @throws IOException 
 	 */
-	private ArrayList<String> getLibraryNames(boolean createAbsolutePath) throws IOException {
+	protected ArrayList<String> getLibraryNames(boolean createAbsolutePath) throws IOException {
 		String bundleNativeCodeManifestValue = bundle.getHeaders().get(MANIFEST_BUNDLE_NATIVE_CODE);
 		if (bundleNativeCodeManifestValue == null) {
 			return new ArrayList<String>();

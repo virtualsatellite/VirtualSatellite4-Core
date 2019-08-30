@@ -10,8 +10,12 @@
 package de.dlr.sc.virsat.external.lib.vtk.linux.x86_64;
 
 import de.dlr.sc.virsat.external.lib.NativeLibPlugin;
-import org.osgi.framework.BundleActivator;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.osgi.framework.BundleActivator;
+import vtk.vtkNativeLibrary;
 /**
  * Activator for loading the vtk Plugin
  * 
@@ -21,12 +25,25 @@ import org.osgi.framework.BundleActivator;
 public class Activator extends NativeLibPlugin implements BundleActivator {
 
 	@Override
+	protected boolean loadFromAbsolutePath() {
+		// The libraries for vtk should be loaded from the system
+		// Thus it is expected that they reside on the path
+		// hence they are not loaded by absolute path
+		return false;
+	}
+	
+	@Override
+	protected ArrayList<String> getLibraryNames(boolean createAbsolutePath) throws IOException {
+		ArrayList<String> vtklibraries = new ArrayList<>(vtkNativeLibraries.values()); 
+	}
+	
+	@Override
 	public void loadLibraryByAbsolutePath(String libNameAbsolutePath) {
-		//System.load(libNameAbsolutePath);
+		System.load(libNameAbsolutePath);
 	}
 
 	@Override
 	public void loadLibraryByName(String libName) {
-		//System.loadLibrary(libName);
+		System.loadLibrary(libName);
 	}
 }
