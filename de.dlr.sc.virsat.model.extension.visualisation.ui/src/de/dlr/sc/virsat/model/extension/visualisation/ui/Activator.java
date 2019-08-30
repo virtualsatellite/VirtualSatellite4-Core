@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.Geo
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.SceneGraphServer;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkClientVisUpdateHandler;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import vtk.vtkNativeLibrary;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -68,7 +67,6 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		
-		vtkNativeLibrary.LoadAllNativeLibraries();
 		plugin = this;
 		pluginId = getDefault().getBundle().getSymbolicName();
 		// initialize the communication servers

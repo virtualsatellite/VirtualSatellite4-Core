@@ -34,7 +34,11 @@ public class Activator extends NativeLibPlugin implements BundleActivator {
 	
 	@Override
 	protected ArrayList<String> getLibraryNames(boolean createAbsolutePath) throws IOException {
-		ArrayList<String> vtklibraries = new ArrayList<>(vtkNativeLibraries.values()); 
+		ArrayList<String> vtkLibraries = new ArrayList<>(); 
+		for (vtkNativeLibrary lib : vtkNativeLibrary.values()) {
+			vtkLibraries.add(lib.GetLibraryName());
+		}
+		return vtkLibraries;
 	}
 	
 	@Override
