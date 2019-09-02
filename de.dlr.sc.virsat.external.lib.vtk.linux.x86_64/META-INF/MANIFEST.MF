@@ -8,7 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) )
 Eclipse-BundleShape: dir
 Require-Bundle: de.dlr.sc.virsat.external.lib
-Bundle-ClassPath: external:$VS_JAR_VTK$,
+Bundle-ClassPath: native_lib/vtk/vtk.jar,
+ external:$VS_JAR_VTK$,
  .
 Export-Package: vtk,
  vtk.rendering,
