@@ -39,7 +39,7 @@ fi
 
 augmentLdLibraryPath() {
 	AUGMENT_WITH=$1
-	echo -n "Augmenting LD_LIBRARY_PATH with : $AUGMENT_WITH ... "
+	echo -n "Augmenting LD_LIBRARY_PATH with : ${AUGMENT_WITH} ... "
 	if [[ $LD_LIBRARY_PATH == *$AUGMENT_WITH:* ]]; then
 		echo "skipping"
 	else
@@ -52,7 +52,7 @@ augmentLdLibraryPath() {
 	fi
 }
 
-echo "Current LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+echo "Current LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
 
 # -------------------------------------
 # Start to setup java
@@ -64,8 +64,8 @@ JAVA_INSTALL=${JAVA_INSTALL_BIN%"/bin/java"}
 JAVA_LIB_AWT=$(find $JAVA_INSTALL -name libawt.so)
 JAVA_LIB_JVM=$(find $JAVA_INSTALL -name libjvm.so)
 
-echo "Found Java Bin in the following location: $JAVA_INSTALL_BIN"
-echo "Assuming Java installation here: $JAVA_INSTALL"
+echo "Found Java Bin in the following location: $J{AVA_INSTALL_BIN}"
+echo "Assuming Java installation here: ${JAVA_INSTALL}"
 
 augmentLdLibraryPath $(dirname $JAVA_LIB_AWT)
 augmentLdLibraryPath $(dirname $JAVA_LIB_JVM)
@@ -78,11 +78,15 @@ EXPECTED_JNI_SO_DIR=/usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 
 #export VS_JAR_VTK=/usr/share/java/vtk7.jar
-export VS_JAR_VTK=/usr/share/java/vtk.jar
+export VS_JAR_VTK=$(locate vtk6.jar)
 export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
+
+echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
+echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
+
 
 augmentLdLibraryPath $EXPECTED_SO_DIR
 augmentLdLibraryPath $EXPECTED_JNI_SO_DIR
 
 export LD_LIBRARY_PATH
-echo "Current LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+echo "Current LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
