@@ -29,8 +29,6 @@ printUsage() {
 	echo "Copyright by DLR (German Aerospace Center)"
 }
 
-
-
 # process all command line arguments
 if [ "$1" != "" ]; then
 	printUsage
@@ -64,7 +62,7 @@ JAVA_INSTALL=${JAVA_INSTALL_BIN%"/bin/java"}
 JAVA_LIB_AWT=$(find $JAVA_INSTALL -name libawt.so)
 JAVA_LIB_JVM=$(find $JAVA_INSTALL -name libjvm.so)
 
-echo "Found Java Bin in the following location: $J{AVA_INSTALL_BIN}"
+echo "Found Java Bin in the following location: ${JAVA_INSTALL_BIN}"
 echo "Assuming Java installation here: ${JAVA_INSTALL}"
 
 augmentLdLibraryPath $(dirname $JAVA_LIB_AWT)
@@ -77,6 +75,9 @@ augmentLdLibraryPath $(dirname $JAVA_LIB_JVM)
 EXPECTED_JNI_SO_DIR=/usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 
+
+# Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
+ls -l /usr/share/java/
 #export VS_JAR_VTK=/usr/share/java/vtk7.jar
 export VS_JAR_VTK=$(locate vtk6.jar)
 export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
