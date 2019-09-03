@@ -34,7 +34,7 @@ SPDX-License-Identifier: EPL-2.0
 					<!-- Let the tests run for 20 minutes max. If time is exceeded kill the process. Apparently something is wrong -->
 					<forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
-					<showEclipseLog>true</showEclipseLog>
+					<showEclipseLog>false</showEclipseLog>
 					<testFailureIgnore>true</testFailureIgnore>
               		<useUIHarness>true</useUIHarness>
         		    <useUIThread>false</useUIThread>
