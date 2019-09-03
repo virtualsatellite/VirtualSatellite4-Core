@@ -59,7 +59,7 @@ public class ASwtBotTestCase {
 	public TestRule testStatusWatcher = new TestWatcher() {
 		@Override
 		protected void starting(Description description) {
-			System.err.println("SWTBotTestCase: " + description.getMethodName() + "...started");
+			System.out.println("SWTBotTestCase: " + description.getMethodName() + "...started");
 		}
 		
 		@Override
