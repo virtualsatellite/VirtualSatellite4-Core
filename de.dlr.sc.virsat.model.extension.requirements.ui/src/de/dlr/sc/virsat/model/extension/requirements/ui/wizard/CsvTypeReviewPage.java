@@ -322,7 +322,7 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 	 */
 	@Override
 	public void modifyText(ModifyEvent e) {
-		if (e.getSource().equals(typeNameText)) {
+		if (isNewType && e.getSource().equals(typeNameText)) {
 			requirementType.setName(typeNameText.getText());
 		} 
 	}

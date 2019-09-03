@@ -9,8 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.csv;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.ecore.EObject;
@@ -22,6 +24,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
+import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
@@ -117,6 +120,7 @@ public class CsvRequirementsImporter {
 
 		// Create a requirement type for the import
 		CompoundCommand importCommand = new CompoundCommand();
+		customizeReqTypeFromData(nonPersistedType, csvContentMatrix, attributeMapping);
 		RequirementType reqType = createReqType(importCommand, newImportTypeContainer, nonPersistedType);
 
 		importCommand.append(
@@ -214,6 +218,41 @@ public class CsvRequirementsImporter {
 		importCommand.append(container.getTypeDefinitions().add(editingDomain, newReqType));
 		return newReqType;
 	}
+	
+	/**
+	 * Update a new requirement type from a set of CSV data
+	 * @param type the not yet persisted requirement type
+	 * @param csvContentMatrix the CSV data
+	 * @param attributeMapping the mapping of column index to attribute
+	 */
+	protected void customizeReqTypeFromData(RequirementType type, List<List<String>> csvContentMatrix, Map<Integer, RequirementAttribute> attributeMapping) {
+		for (RequirementAttribute att : type.getAttributes()) {
+			
+			if (att.getType().equals(RequirementAttribute.TYPE_Enumeration_NAME)) {
+				
+				Integer columnIndexOfAttribute = null;
+				for (Integer key : attributeMapping.keySet()) {
+					if (attributeMapping.get(key).equals(att)) {
+						columnIndexOfAttribute = key;
+					}
+				}
+				
+				if (columnIndexOfAttribute != null) {
+					Set<String> enumerationLiteralValues = new HashSet<>();
+					for (List<String> reg : csvContentMatrix) {
+						enumerationLiteralValues.add(reg.get(columnIndexOfAttribute));
+					}
+					for (String literal : enumerationLiteralValues) {
+						if (!literal.equals("")) {
+							EnumerationLiteral literalBean = new EnumerationLiteral(reqConcept);
+							literalBean.setName(literal);
+							att.getEnumeration().getLiterals().add(literalBean);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Get the requirement concept from any model element within the same resource
@@ -228,5 +267,6 @@ public class CsvRequirementsImporter {
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
 		return activeConceptHelper.getConcept(Activator.getPluginId());
 	}
+
 
 }

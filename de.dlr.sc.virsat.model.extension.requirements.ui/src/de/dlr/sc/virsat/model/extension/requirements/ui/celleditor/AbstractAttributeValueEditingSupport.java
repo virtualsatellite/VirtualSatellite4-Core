@@ -89,6 +89,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 			case RequirementAttribute.TYPE_Enumeration_NAME:
 				List<String> comboItems = new ArrayList<String>();
 				attDef.getEnumeration().getLiterals().forEach(literal -> comboItems.add(literal.getName()));
+				comboItems.add("");
 				editor = new ComboBoxCellEditor((Composite) viewer.getControl(), comboItems.toArray(new String[0]));
 				return editor;
 	
@@ -272,9 +273,11 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	protected void setEnumerationValue(Object element, Object userInputValue, RequirementAttribute attDef) {
 		if (userInputValue instanceof Integer) {
 			int i = (int) userInputValue;
+			String value = "";
 			if (i >= 0 && i < attDef.getEnumeration().getLiterals().size()) {
-				super.setValue(element, attDef.getEnumeration().getLiterals().get((int) userInputValue).getName());
+				value = attDef.getEnumeration().getLiterals().get((int) userInputValue).getName();
 			}
+			super.setValue(element, value);
 		}	
 	}
 	
