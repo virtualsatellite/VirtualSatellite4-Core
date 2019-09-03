@@ -29,12 +29,6 @@ The Developers IDE currently supports the following operating system configurati
 Virtual Satellite does not execute on a Java 32 bit runtime environment.
 ====
 
-[WARNING] 
-.Linux compilation issues
-==== 
-Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A re-compilation when using other distributions is probably needed. This concerns e.g. the visualization functionality based on the Visualization Toolkit (VTK).
-====
-
 NOTE: The Developers IDE supports newer Java versions same as eclipse. Nevertheless, Virtual Satellite still requires Java version 8. 
 
 === Different Ways to Develop Virtual Satellite
@@ -121,6 +115,54 @@ Done. You installed and successfully started Virtual Satellite Developer IDE.
 
 === Calculations
 
+== Advanced Development topics
+
+Special topics are discussed in this chapter.
+Developers should read this part to get a better understanding for certain decisions in Virtual Satellite.
+
+=== Third party libraries
+
+The simplest way to load a third party JAR library is to pack it into an OSGI/Equinox plugin.
+This plugin can then be used as a dependency wherever it is needed.
+The following example shows how a library such as `json-simple` is integrated. The Figure "<<ExternalLibraryJson-Simple-Bundled>>" shows the file structure of the plugin.
+
+.The external third party library json-simple bundled into a plugin.
+[#ExternalLibraryJson-Simple-Bundled]
+image::chapterExternalLibraries/TheJsonSimpleTPL.png[Json-Simple External Library]
+ 
+Third party libraries get placed into the `externalLib` folder.
+The sources are usually placed here as well for legal reasons.
+The individual licenses are stored here as well as in the `about_files` folder.
+Now, to make these libraries accessible from other plugins three things need to be done.
+
+First, these libraries have to be added to the runtime classpath of the plugin as shown in Figure "<<ExternalLibraryClassPathAndPackages>>".
+This can be done from the _Manifest Editor_.
+The classpath gets extended by adding the new library on the _Runtime_ tab.
+Then the packages of the imported library can be exported.
+
+.The Manifest Editor for adding the third party library to the runtime classpath as well as exporting the library packages.
+[#ExternalLibraryClassPathAndPackages]
+image::chapterExternalLibraries/ManifestRuntimeTab.png[Manifest Editor]
+
+Second the external library has to be bundled into the plugin.
+This way the jar which extends the runtime classpath is present and can actually be loaded.
+In the _Build_ tab of the _Manifest Editor_, the `externalLib` folder and all of its sub-folders and files should be marked for the _binary build_ as shown in Figure "<<ExternalLibraryBinaryBuild>>". 
+
+.The Manifest Editor for updating the binary build.
+[#ExternalLibraryBinaryBuild]
+image::chapterExternalLibraries/BuildPropertiesExternal.png[Build Properties Editor]
+
+Third and finally, the library has to be registered for correct compilation in eclipse.
+Therefore it has to be added to the build class path of the plugin.
+The _Build Path Editor_  in Figure "ExternalLibraryBuildPath" can be accessed by the context menu menu:Context[Build Path > Configure Build Path...].
+The libraries of the `externalLib` folder have to be listed here.
+Additionally they can be linked with their source or javadoc libraries as well.
+
+.The Build Path Editor for setting the library dependencies for eclipse compile time.
+[#ExternalLibraryBuildPath]
+image::chapterExternalLibraries/BuildClassPathEditor.png[Build Classpath Editor]
+
+=== Platform Specific external libraries
 
 [colophone]
 == Legal - License & Copyright
