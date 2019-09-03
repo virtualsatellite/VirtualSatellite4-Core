@@ -16,9 +16,12 @@ import org.eclipse.swt.widgets.Composite;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
+import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
+import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.uiengine.ui.wizard.ATreeViewerPage;
 
@@ -26,18 +29,18 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.ATreeViewerPage;
  * A page to select a requirement type for imported requirements
  *
  */
-public class CsvImportReqTypeSelectionPage extends ATreeViewerPage {
+public class CsvImportTargetSelectionPage extends ATreeViewerPage {
 
 	/**
 	 * Default constructor
 	 * @param model the model
 	 */
-	protected CsvImportReqTypeSelectionPage(IContainer model) {
-		super("Import Type Selection");
-		setTitle("Import Type Selection");
+	protected CsvImportTargetSelectionPage(IContainer model) {
+		super("Import Target Selection");
+		setTitle("Import Target Selection");
 		setModel(model);
 		setDescription(
-				"Please select a requirement type for the imported requirements or a container configuration if a new type should be created");
+				"Please select a requirement specification element in which the requirements should be imported to.");
 	}
 
 	@Override
@@ -48,16 +51,21 @@ public class CsvImportReqTypeSelectionPage extends ATreeViewerPage {
 	
 	
 	/**
-	 * Create a tree viewer with filters to show only relevant tree elements for CATIA import /export
+	 * Create a tree viewer with filters to show only relevant tree target elements 
 	 */
 	protected void createTreeViewer() {
 		TreeViewer treeViewer = createTreeUI();
-		VirSatFilteredWrappedTreeContentProvider filteredCp = (VirSatFilteredWrappedTreeContentProvider) treeViewer.getContentProvider();
+		VirSatFilteredWrappedTreeContentProvider filteredCp = (VirSatFilteredWrappedTreeContentProvider) treeViewer
+				.getContentProvider();
 		filteredCp.addClassFilter(CategoryAssignment.class);
 		filteredCp.addClassFilter(ArrayInstance.class);
 		filteredCp.addClassFilter(ComposedPropertyInstance.class);
-		filteredCp.addStructuralElementIdFilter(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 
+		filteredCp.addStructuralElementIdFilter(ConfigurationTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addStructuralElementIdFilter(ElementConfiguration.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addStructuralElementIdFilter(AssemblyTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addStructuralElementIdFilter(ElementOccurence.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addCategoryIdFilter(RequirementsSpecification.FULL_QUALIFIED_CATEGORY_NAME);
 	}
 	
 	
@@ -65,24 +73,13 @@ public class CsvImportReqTypeSelectionPage extends ATreeViewerPage {
 	public boolean isSelectionValid() {
 		Object selection = getSelection();
 		if (selection instanceof CategoryAssignment) {
-			return ((CategoryAssignment) selection).getType().getFullQualifiedName().equals(
-					RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME)
-					|| ((CategoryAssignment) selection).getType().getFullQualifiedName().equals(
-							RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
+			return ((CategoryAssignment) selection).getType().getFullQualifiedName()
+					.equals(RequirementsSpecification.FULL_QUALIFIED_CATEGORY_NAME)
+					|| ((CategoryAssignment) selection).getType().getFullQualifiedName()
+							.equals(RequirementGroup.FULL_QUALIFIED_CATEGORY_NAME);
 		}
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.dlr.sc.virsat.uiengine.ui.wizard.ATreeViewerPage#getSelection()
-	 */
-	@Override
-	public Object getSelection() {
-		Object selected = super.getSelection();
-		if (selected instanceof ComposedPropertyInstance) {
-			selected = ((ComposedPropertyInstance) selected).getTypeInstance();
-		}
-		return selected;
-	}
 	
 }

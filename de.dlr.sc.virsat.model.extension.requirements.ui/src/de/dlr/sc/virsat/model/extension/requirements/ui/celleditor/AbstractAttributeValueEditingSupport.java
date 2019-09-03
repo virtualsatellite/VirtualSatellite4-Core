@@ -305,6 +305,9 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 				newReqName += child.getValue();
 			}
 		}
+		newReqName = newReqName.replaceAll(" ", "");
+		newReqName = newReqName.replaceAll("-", "");
+		newReqName = newReqName.replaceAll("_", "");
 		editingDomain.getCommandStack().execute(requirement.setName(editingDomain, newReqName));
 		
 	}

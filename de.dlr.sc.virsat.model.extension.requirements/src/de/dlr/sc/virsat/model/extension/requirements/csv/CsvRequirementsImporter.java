@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.requirements.csv;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.ecore.EObject;
@@ -36,8 +37,8 @@ public class CsvRequirementsImporter {
 
 	protected EditingDomain editingDomain;
 	protected Concept reqConcept;
-	
-	protected static final String REQ_TYPE_NAME = "CCVImportedRequirementType";
+
+	static final String REQ_TYPE_NAME = "CCVImportedRequirementType";
 
 	/**
 	 * The function to load requirement contents from a given SCV file to an exiting
@@ -50,12 +51,15 @@ public class CsvRequirementsImporter {
 	 * @param targetSpecificationList
 	 *            the specification list where the requirements should be imported
 	 *            into
+	 * @param attributeMapping
+	 *            the mapping of column index to attribute
 	 * @param importType
 	 *            the requirement type of the imported requirements
 	 * @return the compound command that can be performed to import the requirements
 	 */
 	public CompoundCommand loadRequirements(EditingDomain editingDomain, List<List<String>> csvContentMatrix,
-			IBeanList<RequirementObject> targetSpecificationList, RequirementType importType) {
+			IBeanList<RequirementObject> targetSpecificationList, Map<Integer, RequirementAttribute> attributeMapping,
+			RequirementType importType) {
 
 		this.editingDomain = editingDomain;
 		if (reqConcept == null) {
@@ -64,21 +68,19 @@ public class CsvRequirementsImporter {
 
 		CompoundCommand importCommand = new CompoundCommand();
 
-		// Remove the header... we don't need it anymore
-		csvContentMatrix.remove(0);
-
 		// Read the actual requirements
 		for (List<String> req : csvContentMatrix) {
-			Requirement newReqElement = createRequirement(importCommand, targetSpecificationList, importType);
+			int lineNumber = csvContentMatrix.indexOf(req);
+			Requirement newReqElement = createRequirement(importCommand, targetSpecificationList, importType, lineNumber);
 
-			for (RequirementAttribute attDef : importType.getAttributes()) {
-				int currentIndex = importType.getAttributes().indexOf(attDef);
-				String value = "";
-				if (currentIndex < req.size()) {
-					value = req.get(currentIndex);
+			for (String attValue : req) {
+				int currentIndex = req.indexOf(attValue);
+				RequirementAttribute mappedAttribute = attributeMapping.get(currentIndex);
+
+				if (mappedAttribute != null) {
+					setAttributeValue(importCommand, newReqElement, attValue, mappedAttribute);
 				}
-				createAttributeValue(importCommand, newReqElement, value,
-						attDef);
+
 			}
 		}
 
@@ -97,25 +99,53 @@ public class CsvRequirementsImporter {
 	 * @param targetSpecificationList
 	 *            the specification list where the requirements should be imported
 	 *            into
+	 * @param attributeMapping
+	 *            the mapping of column index to attribute
 	 * @param newImportTypeContainer
 	 *            the requirement configuration in which the new type element should
 	 *            be added into
+	 * @param nonPersistedType
+	 *            A new requirement type that is not yet persisted
 	 * @return the compound command that can be performed to import the requirements
 	 */
 	public CompoundCommand loadRequirements(EditingDomain editingDomain, List<List<String>> csvContentMatrix,
-			IBeanList<RequirementObject> targetSpecificationList, RequirementsConfiguration newImportTypeContainer) {
+			IBeanList<RequirementObject> targetSpecificationList, Map<Integer, RequirementAttribute> attributeMapping,
+			RequirementsConfiguration newImportTypeContainer, RequirementType nonPersistedType) {
 
 		this.editingDomain = editingDomain;
 		this.reqConcept = getReqConcept(newImportTypeContainer.getTypeInstance());
 
 		// Create a requirement type for the import
 		CompoundCommand importCommand = new CompoundCommand();
-		RequirementType reqType = createReqType(importCommand, newImportTypeContainer, csvContentMatrix.get(0));
+		RequirementType reqType = createReqType(importCommand, newImportTypeContainer, nonPersistedType);
 
-		importCommand.append(loadRequirements(editingDomain, csvContentMatrix, targetSpecificationList, reqType));
+		importCommand.append(
+				loadRequirements(editingDomain, csvContentMatrix, targetSpecificationList, attributeMapping, reqType));
 
 		return importCommand;
+	}
 
+	/**
+	 * Creates a requirement type from a list of attribute names. Does not create a
+	 * command or persist the element yet
+	 * 
+	 * @param reqConcept
+	 *            the active concept
+	 * @param attributeNames
+	 *            a list of attribute names
+	 * @return the new type
+	 */
+	public RequirementType prepareRequirementType(Concept reqConcept, List<String> attributeNames) {
+		this.reqConcept = reqConcept;
+		RequirementType newReqType = new RequirementType(reqConcept);
+		newReqType.setName(REQ_TYPE_NAME);
+		for (String attName : attributeNames) {
+			RequirementAttribute attDef = new RequirementAttribute(reqConcept);
+			attDef.setName(attName.replace(" ", ""));
+			attDef.setType(RequirementAttribute.TYPE_String_NAME);
+			newReqType.getAttributes().add(attDef);
+		}
+		return newReqType;
 	}
 
 	/**
@@ -127,12 +157,21 @@ public class CsvRequirementsImporter {
 	 *            the containing list of requirements
 	 * @param reqType
 	 *            the requirement type
+	 * @param lineNumber 
+	 * 			  the line index of the requirement
 	 * @return the new requirement
 	 */
 	protected Requirement createRequirement(CompoundCommand importCommand,
-			IBeanList<RequirementObject> containerSpecificationList, RequirementType reqType) {
+			IBeanList<RequirementObject> containerSpecificationList, RequirementType reqType, int lineNumber) {
 		Requirement requirement = new Requirement(reqConcept);
 		requirement.setReqType(reqType);
+		requirement.setName(reqType.getName() + lineNumber);
+		for (RequirementAttribute att : reqType.getAttributes()) {
+			AttributeValue attValue = new AttributeValue(reqConcept);
+			attValue.setName(att.getName());
+			attValue.setAttType(att);
+			requirement.getElements().add(attValue);
+		}
 		importCommand.append(containerSpecificationList.add(editingDomain, requirement));
 		return requirement;
 	}
@@ -142,21 +181,20 @@ public class CsvRequirementsImporter {
 	 * 
 	 * @param importCommand
 	 *            the command in which this operation should be contained in
-	 * @param container
-	 *            the containing requirement
+	 * @param requirement
+	 *            the requirement to edit
 	 * @param value
 	 *            the value to be added to the attribute
-	 * @param attDef
-	 *            the type of the attribute
-	 * @return the attribute value
+	 * @param attDef the attribute definition
 	 */
-	protected AttributeValue createAttributeValue(CompoundCommand importCommand, Requirement container, String value,
+	protected void setAttributeValue(CompoundCommand importCommand, Requirement requirement, String value,
 			RequirementAttribute attDef) {
-		AttributeValue attValue = new AttributeValue(reqConcept);
-		attValue.setValue(value);
-		attValue.setAttType(attDef);
-		importCommand.append(container.getElements().add(editingDomain, attValue));
-		return attValue;
+		for (AttributeValue att : requirement.getElements()) {
+			RequirementAttribute type = att.getAttType();
+			if (type.equals(attDef)) {
+				importCommand.append(att.setValue(editingDomain, value));
+			}
+		}
 	}
 
 	/**
@@ -166,24 +204,16 @@ public class CsvRequirementsImporter {
 	 *            the import command which should contain this creation operation
 	 * @param container
 	 *            the container element in which the new type should be added into
-	 * @param attributeNames
-	 * 			  a list of the names of all requirement attributes
+	 * @param newReqType
+	 *            a new not yet persited requirement type
 	 * @return the new requirement type
 	 */
 	protected RequirementType createReqType(CompoundCommand importCommand, RequirementsConfiguration container,
-			List<String> attributeNames) {
-		RequirementType newReqType = new RequirementType(reqConcept);
-		newReqType.setName(REQ_TYPE_NAME);
-		for (String attName : attributeNames) {
-			RequirementAttribute attDef = new RequirementAttribute(reqConcept);
-			attDef.setName(attName);
-			attDef.setType(RequirementAttribute.TYPE_String_NAME);
-			newReqType.getAttributes().add(attDef);
-		}
+			RequirementType newReqType) {
+
 		importCommand.append(container.getTypeDefinitions().add(editingDomain, newReqType));
 		return newReqType;
 	}
-
 
 	/**
 	 * Get the requirement concept from any model element within the same resource

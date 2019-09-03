@@ -12,7 +12,9 @@ package de.dlr.sc.virsat.model.extension.requirements.csv;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -114,10 +116,15 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			}
 		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+		for (RequirementAttribute att : reqImportType.getAttributes()) {
+			int index = reqImportType.getAttributes().indexOf(att);
+			mapping.put(index, att);
+		}
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
-				reqImportType);
+				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberSimpleAtt = 3;
@@ -162,10 +169,15 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			}
 		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+		for (RequirementAttribute att : reqImportType.getAttributes()) {
+			int index = reqImportType.getAttributes().indexOf(att);
+			mapping.put(index, att);
+		}
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpecGroup.getChildren(),
-				reqImportType);
+				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberSimpleAtt = 3;
@@ -210,10 +222,15 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			}
 		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+		for (RequirementAttribute att : reqImportType.getAttributes()) {
+			int index = reqImportType.getAttributes().indexOf(att);
+			mapping.put(index, att);
+		}
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
-				reqImportType);
+				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberExpectedAtt = 4;
@@ -244,10 +261,15 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			}
 		});
 		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+		for (RequirementAttribute att : reqImportType.getAttributes()) {
+			int index = reqImportType.getAttributes().indexOf(att);
+			mapping.put(index, att);
+		}
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
-				reqImportType);
+				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberExpectedAtt = 4;
@@ -274,17 +296,24 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 				targetSpec = new RequirementsSpecification(requirementsConcept);
 				reqContainerSEI.getCategoryAssignments().clear();
 				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
-				reqImportType = createReqTypeWithDoubleValue();
 				configuration = new RequirementsConfiguration(requirementsConcept);
 				rccSEI.getCategoryAssignments().add(configuration.getTypeInstance());
 			}
 		});
 		
-		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		List<List<String>> csvContentMatrix = createCSVContentMatrix(true);
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
 
 		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementType newType = importer.prepareRequirementType(requirementsConcept, csvContentMatrix.get(0));
+		for (RequirementAttribute att : newType.getAttributes()) {
+			int index = newType.getAttributes().indexOf(att);
+			mapping.put(index, att);
+		}
+		
+		csvContentMatrix.remove(0); //remove header line
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
-				configuration);
+				mapping, configuration, newType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
 		
 		final int numberExpectedAtt = 4;
@@ -323,13 +352,107 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		assertEquals("Attribute not contained", importedReq3.getElements().get(1).getValue(), ATT_3_ID);
 		assertEquals("Attribute not contained", importedReq3.getElements().get(2).getValue(), ATT_3_DESCRIPTION);
 	}
+	
+	@Test
+	public void testLoadRequirementsWithCustomMapping() {
+
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				reqImportType = createReqTypeWithDoubleValue();
+			}
+		});
+		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+		for (RequirementAttribute att : reqImportType.getAttributes()) {
+			
+			int index = reqImportType.getAttributes().indexOf(att);
+			if (index != 1) {
+				mapping.put(index, att);		//Customize mapping to don't import ID column
+			}
+		}
+
+		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
+				mapping, reqImportType);
+		editingDomain.getVirSatCommandStack().execute(importCommand);
+		
+		final int numberExpectedAtt = 4;
+		final int indexCategory = 3;
+		Requirement importedReq2 = (Requirement) targetSpec.getRequirements().get(1);
+		
+		assertEquals("Requirement type not set", importedReq2.getReqType(), reqImportType);
+		
+		assertEquals("Number attributes is not correct", 
+				importedReq2.getElements().size(), numberExpectedAtt);
+		assertEquals("Attribute not contained", importedReq2.getElements().get(0).getValue(), ATT_2_NAME);
+		assertEquals("Attribute not contained", importedReq2.getElements().get(1).getValue(), null); //ID column should not be imported
+		assertEquals("Attribute not contained", importedReq2.getElements().get(2).getValue(), ATT_2_DESCRIPTION);
+		assertEquals("Attribute not contained", importedReq2.getElements().get(indexCategory).getValue(), ATT_2_VALUE + "");
+
+	}
+	
+	@Test
+	public void testLoadRequirementsWithCustomMappingInverseOrder() {
+
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				reqImportType = createReqTypeWithDoubleValue();
+			}
+		});
+		List<List<String>> csvContentMatrix = createCSVContentMatrix();
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+		final int maxIndex = 3;
+		for (RequirementAttribute att : reqImportType.getAttributes()) {
+			
+			int index = reqImportType.getAttributes().indexOf(att);
+			mapping.put(maxIndex - index, att);		//Inverse order
+		
+		}
+
+		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
+				mapping, reqImportType);
+		editingDomain.getVirSatCommandStack().execute(importCommand);
+		
+		final int numberExpectedAtt = 4;
+		final int indexCategory = 3;
+		Requirement importedReq2 = (Requirement) targetSpec.getRequirements().get(1);
+		
+		assertEquals("Requirement type not set", importedReq2.getReqType(), reqImportType);
+		
+		assertEquals("Number attributes is not correct", 
+				importedReq2.getElements().size(), numberExpectedAtt);
+		
+		assertEquals("Imported order should be inverse now", importedReq2.getElements().get(0).getValue(), ATT_2_VALUE + "");
+		assertEquals("Imported order should be inverse now", importedReq2.getElements().get(1).getValue(), ATT_2_DESCRIPTION); 
+		assertEquals("Imported order should be inverse now", importedReq2.getElements().get(2).getValue(), ATT_2_ID);
+		assertEquals("Imported order should be inverse now", importedReq2.getElements().get(indexCategory).getValue(), ATT_2_NAME);
+
+	}
 
 	/**
 	 * Create a matrix with test requirement values
-	 * 
+	 *
 	 * @return a matrix as list of list of string values
 	 */
 	private List<List<String>> createCSVContentMatrix() {
+		return createCSVContentMatrix(false);
+	}
+	
+	/**
+	 * Create a matrix with test requirement values
+	 * @param withHeader add header or not
+	 * @return a matrix as list of list of string values
+	 */
+	private List<List<String>> createCSVContentMatrix(boolean withHeader) {
 
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();
 
@@ -360,7 +483,9 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		req3Att.add(ATT_3_ID);
 		req3Att.add(ATT_3_DESCRIPTION);
 
-		csvContentMatrix.add(header);
+		if (withHeader) {
+			csvContentMatrix.add(header);
+		}
 		csvContentMatrix.add(req1Att);
 		csvContentMatrix.add(req2Att);
 		csvContentMatrix.add(req3Att);
