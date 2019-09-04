@@ -49,6 +49,9 @@ checkforMavenProblems() {
 }
 
 callMavenSurefire() {
+	echo "Setting VS_JAR_VTK to: $VS_JAR_VTK"
+	echo "Setting VS_JAR_ZMQ to: $VS_JAR_ZMQ"
+
 	echo "Maven - Surefire - ${MAVEN_PROFILE}"
 	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
