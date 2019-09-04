@@ -79,7 +79,7 @@
 	    </editorSection>
 	 </extension>	
 	<!-- Plugin.XML Protected Region Start -->
-	<extension
+<extension
 	  point="org.eclipse.ui.exportWizards">
 	   <wizard
 	     category="de.dlr.virsat.global.category.export.virsat"
