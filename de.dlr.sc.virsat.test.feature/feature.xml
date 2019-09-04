@@ -240,4 +240,44 @@ by German Aerospace Center (DLR e.V.)
          fragment="true"
          unpack="false"/>
 
+   <plugin
+         id="de.dlr.sc.virsat.excel.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.budget.power.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.funcelectrical.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.statemachines.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.requirements.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>

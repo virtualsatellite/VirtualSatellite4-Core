@@ -56,7 +56,7 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     return (_plus_1 + ".java");
   }
   
-  public final static String PACKAGE_FOLDER = "migrator";
+  public static final String PACKAGE_FOLDER = "migrator";
   
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {

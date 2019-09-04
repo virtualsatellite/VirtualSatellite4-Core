@@ -23,11 +23,11 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 
 @SuppressWarnings("all")
 public class GenerateConceptXmi {
-  public final static String MODEL_TYPE_XMI_EXTENSION = "xmi";
+  public static final String MODEL_TYPE_XMI_EXTENSION = "xmi";
   
-  public final static String CONCEPT_BASE_FILENAME = "concept";
+  public static final String CONCEPT_BASE_FILENAME = "concept";
   
-  public final static String CONCEPT_XMI_FILENAME = ((GenerateConceptXmi.CONCEPT_BASE_FILENAME + ".") + GenerateConceptXmi.MODEL_TYPE_XMI_EXTENSION);
+  public static final String CONCEPT_XMI_FILENAME = ((GenerateConceptXmi.CONCEPT_BASE_FILENAME + ".") + GenerateConceptXmi.MODEL_TYPE_XMI_EXTENSION);
   
   /**
    * This method serialized the data model into the given format
@@ -56,19 +56,19 @@ public class GenerateConceptXmi {
       }
     }
     try {
-      final ResourceSetImpl targetResourceSet_1 = new ResourceSetImpl();
+      final ResourceSetImpl targetResourceSet = new ResourceSetImpl();
       final String filenameWithVersion = GenerateConceptXmi.getConceptWithVersionName(dataModel);
-      final Resource targetResource_1 = targetResourceSet_1.createResource(URI.createURI(filenameWithVersion));
-      targetResource_1.getContents().add(dataModel);
-      final ByteArrayOutputStream outputStream_1 = new ByteArrayOutputStream();
-      targetResource_1.save(outputStream_1, null);
-      fsa.generateFile(filenameWithVersion, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_CONCEPT, outputStream_1.toString());
-    } catch (final Throwable _t_1) {
-      if (_t_1 instanceof IOException) {
-        final IOException e_1 = (IOException)_t_1;
-        throw new RuntimeException(e_1);
+      final Resource targetResource = targetResourceSet.createResource(URI.createURI(filenameWithVersion));
+      targetResource.getContents().add(dataModel);
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      targetResource.save(outputStream, null);
+      fsa.generateFile(filenameWithVersion, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
+    } catch (final Throwable _t) {
+      if (_t instanceof IOException) {
+        final IOException e = (IOException)_t;
+        throw new RuntimeException(e);
       } else {
-        throw Exceptions.sneakyThrow(_t_1);
+        throw Exceptions.sneakyThrow(_t);
       }
     }
   }

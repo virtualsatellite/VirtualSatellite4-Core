@@ -15,12 +15,12 @@ Require-Bundle: de.dlr.sc.virsat.model.edit,
  org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.ui.ide,
  org.eclipse.compare,
- org.eclipse.xtend.lib;resolution:=optional,
+ org.eclipse.xtend.lib;bundle-version="2.14.0";resolution:=optional,
  org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.core.expressions,
  org.eclipse.ui.editors,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.dlr.sc.virsat.model.concept.ui.quickfix,

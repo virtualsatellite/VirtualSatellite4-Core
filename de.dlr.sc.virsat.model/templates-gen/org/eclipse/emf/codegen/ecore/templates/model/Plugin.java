@@ -49,9 +49,7 @@ public class Plugin
   protected final String TEXT_33 = NL + "\t\t\t@Override";
   protected final String TEXT_34 = NL + "\t\t\tprotected ";
   protected final String TEXT_35 = " createBundle()" + NL + "\t\t\t{" + NL + "\t\t\t\treturn new Implementation();" + NL + "\t\t\t}" + NL + "\t\t}";
-  protected final String TEXT_36 = NL + "\t}" + NL;
-  protected final String TEXT_37 = NL + "}";
-  protected final String TEXT_38 = NL;
+  protected final String TEXT_36 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -143,11 +141,11 @@ public class Plugin
     stringBuffer.append(genModel.getImportedName("org.osgi.framework.BundleActivator"));
     stringBuffer.append(TEXT_35);
     }
-    stringBuffer.append(TEXT_36);
+    stringBuffer.append(TEXT_23);
     }
-    stringBuffer.append(TEXT_37);
+    stringBuffer.append(TEXT_36);
     genModel.emitSortedImports();
-    stringBuffer.append(TEXT_38);
+    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

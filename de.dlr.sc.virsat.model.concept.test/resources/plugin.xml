@@ -27,57 +27,18 @@
 		</CategoryAssignmentBean>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
-<extension point="org.eclipse.ui.exportWizards">
-		<wizard
-			category="de.dlr.sc.virsat.s2tep.excel.ui.s2tep"
-	   		class="de.dlr.sc.virsat.model.extension.testResource.ui.wizards.HTMLExportWizard"
-	   		icon="resources/icons/VirSat_General_HTML_Export.gif"
-	   		id="de.dlr.sc.virsat.model.extension.testResource.ui.exportWizard"
-	   		name="Export to HTML">
-		</wizard>
-		<category
-			id="de.dlr.sc.virsat.s2tep.excel.ui.s2tep"
-			name="S2tep">
-		</category>
-	</extension>
-	<extension point="org.eclipse.ui.menus">
-		<menuContribution
-			allPopups="false"
-	        locationURI="menu:de.dlr.sc.virsat.apps.ui.menu.apps?after=additions">
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.testResource.ui.command.createStudyApp"
-			style="push">
-		</command>
-		</menuContribution>
-		<menuContribution
-			allPopups="false"
-	        locationURI="menu:de.dlr.sc.virsat.apps.ui.menu.apps?after=additions">
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.testResource.ui.command.createReplaceITApp"
-			style="push">
-		</command>
-		</menuContribution>
-		<menuContribution
-			allPopups="false"
-	        locationURI="menu:de.dlr.sc.virsat.apps.ui.menu.apps?after=additions">
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.testResource.ui.command.createAddUnitApp"
-			style="push">
-		</command>
-		</menuContribution>
-	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command
 			id="de.dlr.sc.virsat.model.extension.testResource.ui.command.createStudyApp"
-			name="S2tep Example Study App">
+			name="Example Study App">
 		</command>
 	    <command
 	        id="de.dlr.sc.virsat.model.extension.testResource.ui.command.createReplaceITApp"
-	        name="S2tep Replace Interface Types App">
+	        name="Replace Interface Types App">
 	    </command>
 	    <command
 	        id="de.dlr.sc.virsat.model.extension.testResource.ui.command.createAddUnitApp"
-	        name="S2tep Add Unit App">
+	        name="Add Unit App">
 	    </command>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">

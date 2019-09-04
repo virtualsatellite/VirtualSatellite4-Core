@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Generic Excel IO Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.excel.test
+Bundle-Version: 4.9.1.qualifier
+Fragment-Host: de.dlr.sc.virsat.excel
+Bundle-ClassPath: .
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.junit
+Export-Package: de.dlr.sc.virsat.excel.test
+Automatic-Module-Name: de.dlr.sc.virsat.excel.test
+Import-Package: de.dlr.sc.virsat.project.test
