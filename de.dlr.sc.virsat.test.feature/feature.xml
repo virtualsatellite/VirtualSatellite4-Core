@@ -31,7 +31,7 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="org.junit" version="4.12.0" match="greaterOrEqual"/>
       <import plugin="de.dlr.sc.virsat.project" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="de.dlr.sc.virsat.model" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.svn" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.team" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="de.dlr.sc.virsat.model.edit" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="de.dlr.sc.virsat.model.calculation"/>
       <import plugin="de.dlr.sc.virsat.apps"/>
@@ -53,7 +53,7 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="de.dlr.sc.virsat.model.extension.visualisation" version="0.0.1" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.svn.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.team.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.uiengine.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.commons.feature" version="4.4.0"/>
@@ -101,7 +101,7 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
-         id="de.dlr.sc.virsat.svn.test"
+         id="de.dlr.sc.virsat.team.test"
          download-size="0"
          install-size="0"
          version="0.0.0"

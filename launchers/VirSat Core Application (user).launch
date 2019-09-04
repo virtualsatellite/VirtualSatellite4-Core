@@ -47,7 +47,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
-<setEntry value="de.dlr.sc.virsat.svn.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.team.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.uiengine.feature:default"/>
 <setEntry value="org.eclipse.e4.rcp:default"/>
 <setEntry value="org.eclipse.ecf.core.feature:default"/>
@@ -56,6 +56,7 @@
 <setEntry value="org.eclipse.ecf.filetransfer.httpclient4.feature:default"/>
 <setEntry value="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature:default"/>
 <setEntry value="org.eclipse.ecf.filetransfer.ssl.feature:default"/>
+<setEntry value="org.eclipse.egit:default"/>
 <setEntry value="org.eclipse.emf.common.ui:default"/>
 <setEntry value="org.eclipse.emf.common:default"/>
 <setEntry value="org.eclipse.emf.compare:default"/>

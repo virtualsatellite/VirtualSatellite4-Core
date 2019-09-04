@@ -333,6 +333,13 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		assertEquals("URI added correctly",
 				URI.createPlatformResourceURI(expectedLocalPath.toString(), false).toFileString(),
 				reactionWheelVisDefinition.getGeometryFile().toFileString());
+		
+		editingDomain.getVirSatCommandStack().undo();
+		assertFalse("STL copy operation should be reverted now", expectedLocalPath.toFile().exists());
+		
+		editingDomain.getVirSatCommandStack().redo();
+		assertTrue("STL should be copied again", expectedLocalPath.toFile().exists());
+		
 	}
 	
 	@Test

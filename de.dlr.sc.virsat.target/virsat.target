@@ -3,7 +3,7 @@
 		<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.nebula.widgets.gallery.feature.feature.group" version="1.0.0.201812241324"/>
-		<repository location="https://download.eclipse.org/nebula/releases/latest/"/>
+		<repository location="https://download.eclipse.org/nebula/releases/2.1.0/"/>
 		</location>              
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
@@ -25,6 +25,7 @@
 		<unit id="org.eclipse.swtbot.feature.group" version="2.6.0.201706141832"/>
 		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.12.0.v20170519-1412"/>
 		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
+		<unit id="org.eclipse.egit.feature.group" version="4.9.2.201712150930-r"/>
 		<repository location="http://download.eclipse.org/releases/oxygen/"/>
 		</location>              
 		</locations>

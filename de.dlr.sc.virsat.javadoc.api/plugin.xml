@@ -125,10 +125,10 @@
                id="de.dlr.sc.virsat.qudv.ui">
          </plugin>
 <plugin
-               id="de.dlr.sc.virsat.svn">
+               id="de.dlr.sc.virsat.team">
          </plugin>
 <plugin
-               id="de.dlr.sc.virsat.svn.ui">
+               id="de.dlr.sc.virsat.team.ui">
          </plugin>
 <plugin
                id="de.dlr.sc.virsat.uiengine.ui">
