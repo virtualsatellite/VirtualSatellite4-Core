@@ -6,12 +6,14 @@ Bundle-Version: 4.9.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8 
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) )
-Bundle-ClassPath: external:$VS_JAR_VTK$,
+Eclipse-BundleShape: dir
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-ClassPath: native_lib/vtk/vtk.jar,
+ external:$VS_JAR_VTK$,
  .
 Export-Package: vtk,
  vtk.rendering,
  vtk.rendering.awt
 Bundle-Activator: de.dlr.sc.virsat.external.lib.vtk.linux.x86_64.Activator
 Bundle-ActivationPolicy: lazy
-Require-Bundle: de.dlr.sc.virsat.external.lib
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.vtk.linux.x86_64
