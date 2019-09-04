@@ -76,14 +76,14 @@ public class CsvRequirementsImporter {
 			int lineNumber = csvContentMatrix.indexOf(req);
 			Requirement newReqElement = createRequirement(importCommand, targetSpecificationList, importType, lineNumber);
 
+			int currentIndex = 0;	//Needed because req.indexOf(attValue) does not work if columns have the same value
 			for (String attValue : req) {
-				int currentIndex = req.indexOf(attValue);
 				RequirementAttribute mappedAttribute = attributeMapping.get(currentIndex);
 
 				if (mappedAttribute != null) {
 					setAttributeValue(importCommand, newReqElement, attValue, mappedAttribute);
 				}
-
+				currentIndex++;
 			}
 		}
 
