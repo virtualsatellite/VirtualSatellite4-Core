@@ -47,7 +47,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTest;
 	EnumerationDefinitionTest.class,
 	EnumerationLiteralTest.class,
 	RequirementsConfigurationCollectionTest.class,
-	Migrator0v1Test.class
+	Migrator0v1Test.class,
 				})
 
 /**
