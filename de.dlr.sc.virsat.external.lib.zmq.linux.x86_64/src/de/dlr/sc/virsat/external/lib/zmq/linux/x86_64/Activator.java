@@ -10,6 +10,10 @@
 package de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;
 
 import de.dlr.sc.virsat.external.lib.NativeLibPlugin;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.osgi.framework.BundleActivator;
 
 /**
@@ -20,6 +24,21 @@ import org.osgi.framework.BundleActivator;
  */
 public class Activator extends NativeLibPlugin implements BundleActivator {
 
+	@Override
+	protected boolean loadFromAbsolutePath() {
+		// The libraries for zmq should be loaded from the system
+		// Thus it is expected that they reside on the path
+		// hence they are not loaded by absolute path
+		return false;
+	}
+	
+	@Override
+	protected ArrayList<String> getLibraryNames(boolean createAbsolutePath) throws IOException {
+		ArrayList<String> zmqLibraries = new ArrayList<>(); 
+		zmqLibraries.add("jzmq"); // is loading the zmq by itself since it is depending and it should be in the LD_LIBRARY_PATH
+		return zmqLibraries;
+	}
+	
 	@Override
 	public void loadLibraryByAbsolutePath(String libNameAbsolutePath) {
 		System.load(libNameAbsolutePath);

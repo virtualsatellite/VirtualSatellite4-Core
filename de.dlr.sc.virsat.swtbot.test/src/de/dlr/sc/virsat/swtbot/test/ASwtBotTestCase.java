@@ -32,6 +32,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -52,6 +55,19 @@ import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
  */
 public class ASwtBotTestCase {
 
+	@Rule
+	public TestRule testStatusWatcher = new TestWatcher() {
+		@Override
+		protected void starting(Description description) {
+			System.out.println("SWTBotTestCase: " + description.getMethodName() + "...started");
+		}
+		
+		@Override
+		protected void finished(Description description) {
+			System.err.println("SWTBotTestCase: " + description.getMethodName() + "...finished");
+		}
+	};
+	
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
