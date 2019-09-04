@@ -175,7 +175,7 @@
 							<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
 							<showEclipseLog>false</showEclipseLog>
-							<testFailureIgnore>true</testFailureIgnore>
+							<testFailureIgnore>false</testFailureIgnore>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
 						</configuration>
