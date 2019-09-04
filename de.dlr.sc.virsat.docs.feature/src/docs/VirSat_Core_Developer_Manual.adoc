@@ -1,0 +1,138 @@
+= Virtual Satellite 4 Core: Developer Manual
+:imagesdir: images
+:title-logo-image: images/title/VirtualSatellite_Developing.jpg
+:toc:
+:toclevels: 3
+:experimental:  
+
+:sectnums:
+
+== Getting Started
+
+Learn about basic requirements of Virtual Satellite Developers IDE, how it is installed and begin your first development.
+
+=== System Requirements 
+
+Virtual Satellite Developer IDE is based on the Eclipse for Plugin Developer.
+It has been extended by some additional tools that we require for our development, e.g. checkstyle or overtarget.
+Additionally, the IDE contains the Concept Language, the implementation of the Generic Systems Engineering Language (GSEL).
+This language is based on xtext and it is the simple entry point to start enhancing the Conceptual Data Model of Virtual Satellite for your individual needs. 
+
+The Developers IDE currently supports the following operating system configurations:
+
+. Windows 7 64bit with Java 8 runtime environment
+. Linux 64 bit with Java 8 runtime environment
+
+[WARNING]
+.Use 64 bit Java JRE
+====
+Virtual Satellite does not execute on a Java 32 bit runtime environment.
+====
+
+[WARNING] 
+.Linux compilation issues
+==== 
+Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A re-compilation when using other distributions is probably needed. This concerns e.g. the visualization functionality based on the Visualization Toolkit (VTK).
+====
+
+NOTE: The Developers IDE supports newer Java versions same as eclipse. Nevertheless, Virtual Satellite still requires Java version 8. 
+
+=== Different Ways to Develop Virtual Satellite
+
+Virtual Satellite offers three different ways to be a developer. 
+All of them require different sets of skills and offer different ways of contributing.
+
+The first set is called *Virtual Satellite App Developer*.
+Developing an App is described in the User Manual.
+Apps are usually programmed directly within a project and contain project specific processing of the modeled data.
+Apps can be developed directly from within Virtual Satellite and do not require special setup.
+
+The second way is called the *Virtual Satellite Concept Developer*. 
+A Concept is an extension to the Virtual Satellite Conceptual Data Model (CDM).
+A Concept offers new ways of modeling to the user. 
+These new ways are usually process specific, meaning depending on your understanding of modeling a spacecraft.
+Once a Concept is developed it can be deployed and installed into any Virtual Satellite instance.
+Thus a Concept can be easily shared and reused across projects.
+Developing a concept requires some programming skills and requires to install the Virtual Satellite Developer IDE.
+A Concept is developed based on the Concept Language which is an xtext implementation of our Generic Systems Engineering Language (GSEL).
+This xtext language is an easy to use entry point to create new modeling items.
+Code generators create all neccessary code to get started.
+More advanced developers can override this generated code for further detailed modifications.
+
+The third way is called *Virtual Satellite Infrastructure Developers*.
+infrastructure Developers work on the core and basis of Virtual Satellite.
+This requires a high knowledge of Virtual Satellite, Eclipse and Java.
+It also requires to install the Virtual Satellite Developer IDE.
+
+=== The Modular Conceptual Data Model
+
+=== Virtual Satellite / Eclipse IDE Installation
+
+Installing Virtual Satellite Developers IDE is as easy as possible.
+Provided that a Java Runtime Environment is installed to your system.
+Follow the steps below to install Virtual Satellite Developers IDE on a windows system: 
+
+NOTE: Installation steps on linux are very similar.
+
+{counter2:step:0}
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Download the Virtual Satellite Developers IDE zip-file from the GitHub releases section.
+
+NOTE: The Developers IDE is developed in the same organization but in a different repository:
+`https://github.com/virtualsatellite/VirtualSatellite4-DEV-IDE/releases`
+
+|image:chapterIdeInstallation/DownloadIdeRelease.png[Download]
+
+|{counter:step}.
+|Store the zip file to the folder of your choice (e.g.: `C:\VirtualSatellite\`) and unzip it here.
+|image:chapterIdeInstallation/UnzipIde.png[Unzip]
+
+|{counter:step}.
+|Dive into the unzipped sub-folder and Execute the `eclipse.exe` file.
+|image:chapterIdeInstallation/ExecuteEclipse.png[Execute]
+
+|{counter:step}.
+|Once Virtual Satellite Developer IDE is started it should appear as shown in the image.
+Now press the link btn:[Workbench].
+|image:chapterIdeInstallation/VirtualSatelliteIdeStarted.png[Started]
+
+|===
+
+Done. You installed and successfully started Virtual Satellite Developer IDE.
+
+== The Virtual Satellite "Hello World" Examples
+
+=== Virtual Satellite for Project Developer
+
+=== Virtual Satellite for Concept Developer
+
+== Generic Systems Engineering (Concept) Language 
+
+=== Categories and Properties
+
+=== Structural Elements
+
+=== Calculations
+
+
+[colophone]
+== Legal - License & Copyright
+
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| Travis CI Job Number: | {buildnr}
+|=== 
+
+Copyright (c) 2008-2019 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.
