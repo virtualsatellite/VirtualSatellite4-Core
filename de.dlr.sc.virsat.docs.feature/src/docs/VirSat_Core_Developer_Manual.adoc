@@ -115,12 +115,12 @@ Done. You installed and successfully started Virtual Satellite Developer IDE.
 
 === Calculations
 
-== Advanced Development topics
+== Advanced Development Topics
 
 Special topics are discussed in this chapter.
 Developers should read this part to get a better understanding for certain decisions in Virtual Satellite.
 
-=== Third party libraries
+=== Third party JAR libraries
 
 The simplest way to load a third party JAR library is to pack it into an OSGI/Equinox plugin.
 This plugin can then be used as a dependency wherever it is needed.
@@ -163,6 +163,87 @@ Additionally they can be linked with their source or javadoc libraries as well.
 image::chapterExternalLibraries/BuildClassPathEditor.png[Build Classpath Editor]
 
 === Platform Specific external libraries
+
+When DLLs on windows or so-libraries on linux are required bundling them and using them becomes a buit more complicated.
+On Windows it is still possible to bundle them and to ship them with Virtual Satellite.
+On Linux, due to the various different distributions, most libraries have to be compiled and linked to the specific saystem libraries.
+Therefore they cannot be shipped and bundled. 
+The following chapters will show how to prepare and use such platform specific libraries with Virtual Satellite.
+
+=== Platform specific DLL libraries on Windows
+
+The library `de.dlr.sc.virsat.external.lib.zmq.win32.x86_64` presents a good example for a Windows platform specific third party library.
+It bundles the DLLs for ZeroMQ plus the jar to make it available in other plugins.
+Similar to the general thrid party libraries the jar is placed in the _native_lib_ folder.
+The Windows DLLs will be placed here as well.
+All these files are selected for the binary build in the _build.properties_.
+As a consequence they get exported into the final jar.
+The jar is itself is included into the classpath as described in <<Third party JAR libraries>>.
+A major difference is explained in the _MANIFEST.MF_
+
+.MANIFEST.MF file of the windows specific ZeroMQ external library
+[#ExternalLibraryManifestMfWin32]
+----
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit Win32
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64;singleton:=true
+Bundle-Version: 4.9.1.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-NativeCode: native_lib/zmq/jzmq.dll; // <2>
+ native_lib/zmq/libzmq-v140-mt-4_2_0.dll;
+ native_lib/zmq/msvcp140.dll;
+ native_lib/zmq/vcruntime140.dll;
+ osname=Win32; processor=x86_64
+Eclipse-PlatformFilter: (&  (osgi.os=win32) (osgi.arch=x86_64) ) <1>
+Bundle-ClassPath: .,
+ native_lib/zmq/zmq.jar
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Export-Package: org.zeromq
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64.Activator // <3>
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64
+
+----
+<1> This statement defines the platform filter.
+This means that the plugin is only executed on a win32 64 bit environment.
+On other environments the Equinox platform will reject to laod this plugin.
+
+<2> Registration of the Native DLLs in the plugin.
+All required DLLs are registered here.
+Even though Equinox provides some intrinsic functionality to loading these DLLs.
+It is not sufficient for DLLs which require other DLLs as well.
+
+<3> The activator is needed to process the registered DLLs.
+It actually tries to load all of the libraries.
+
+.Activator.java for a Windows specific library plugin
+[source,java,#ExternalLibraryActivatorWin32][Test]
+----
+public class Activator extends NativeLibPlugin implements BundleActivator { // <1>
+
+	@Override
+	public void loadLibraryByAbsolutePath(String libNameAbsolutePath) {
+		System.load(libNameAbsolutePath); // <2>
+	}
+
+	@Override
+	public void loadLibraryByName(String libName) {
+		System.loadLibrary(libName); // <2>
+	}
+}
+----
+<4> The activator extends NativeLibPlugin.
+The class NativeLibPLugin provides all the logic to correctly read all DLLs and report on the status.
+It provides two abstract methods which have to be implemented.
+
+<5> Here are the actual calls to the Java system to load the libraries.
+This has to be implemented here to load the DLLs into the correct classpath context of the bundle.
+
+ 
+
+=== Platform specific SO libraries on Linux
 
 [colophone]
 == Legal - License & Copyright
