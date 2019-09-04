@@ -56,7 +56,7 @@ callMavenSurefire() {
 	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-	mvn install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
+	mvn clean install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
 	checkforMavenProblems
 	echo "Check for failed test cases:"
 	(grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
@@ -73,7 +73,7 @@ callMavenSpotbugs() {
 	mvn clean compile -P $MAVEN_PROFILE,target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-	mvn install -P $MAVEN_PROFILE,spotbugs,product -B -V | tee maven.log
+	mvn clean install -P $MAVEN_PROFILE,spotbugs,product -B -V | tee maven.log
 	checkforMavenProblems
 }
 
@@ -82,7 +82,7 @@ callMavenCheckstyle() {
 	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-	mvn install -P ${MAVEN_PROFILE},checkstyle,product -B -V | tee maven.log
+	mvn clean install -P ${MAVEN_PROFILE},checkstyle,product -B -V | tee maven.log
 	checkforMavenProblems
 	}
 
@@ -96,7 +96,7 @@ callMavenAssemble() {
 	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-	mvn install -P ${MAVEN_PROFILE},doc,deploy,${DEPLOY_TYPE},product -B -V | tee maven.log
+	mvn clean install -P ${MAVEN_PROFILE},doc,deploy,${DEPLOY_TYPE},product -B -V | tee maven.log
 	checkforMavenProblems
 	echo "Check for AsciiDoc Problems on Product:"
 	(grep -n "\[INFO\] asciidoctor: \(WARN\|ERROR\|ERR\)" maven.log || exit 0  && exit 1;)
