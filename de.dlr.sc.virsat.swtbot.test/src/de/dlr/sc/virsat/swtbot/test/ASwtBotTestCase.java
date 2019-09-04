@@ -67,7 +67,7 @@ public class ASwtBotTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
 	
 	@Rule
-    public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
 	
 	@Rule 
 	public TestName testMethodName = new TestName();
