@@ -27,6 +27,6 @@ import org.junit.runners.Suite;
 				ProductStructureTest.class
 				})
 
-public class ProjectUiAllTest {
+public class ProjectUiAllTests {
 
 }
