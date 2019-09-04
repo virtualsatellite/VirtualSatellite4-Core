@@ -22,7 +22,7 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 				de.dlr.sc.virsat.commons.test.AllTests.class,
-				de.dlr.sc.virsat.svn.test.AllTests.class,
+				de.dlr.sc.virsat.team.test.AllTests.class,
 				de.dlr.sc.virsat.model.test.AllTests.class,
 				de.dlr.sc.virsat.model.edit.test.AllTests.class,
 				de.dlr.sc.virsat.model.concept.test.AllTests.class,
@@ -43,8 +43,9 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.model.extension.budget.mass.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.visualisation.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.visualisation.test.AllTestsGen.class,
+				de.dlr.sc.virsat.model.extension.requirements.test.AllTests.class,
+				de.dlr.sc.virsat.model.extension.requirements.test.AllTestsGen.class,
 				de.dlr.sc.virsat.graphiti.test.AllTests.class,
-				de.dlr.sc.virsat.model.extension.requirements.test.AllTestsGen.class
 				})
 
 /**

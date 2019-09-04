@@ -51,7 +51,6 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
-<setEntry value="de.dlr.sc.virsat.svn.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.uiengine.feature:default"/>
 <setEntry value="org.eclipse.e4.rcp.source:default"/>
 <setEntry value="org.eclipse.e4.rcp:default"/>

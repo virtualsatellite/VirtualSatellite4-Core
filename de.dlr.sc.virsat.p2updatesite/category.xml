@@ -15,7 +15,7 @@
    <feature url="features/de.dlr.sc.virsat.project.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.project.feature" version="4.9.1.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.svn.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.svn.feature" version="4.9.1.qualifier">
+   <feature url="features/de.dlr.sc.virsat.team.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.team.feature" version="4.9.1.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
    <feature url="features/de.dlr.sc.virsat.uiengine.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.uiengine.feature" version="4.9.1.qualifier">

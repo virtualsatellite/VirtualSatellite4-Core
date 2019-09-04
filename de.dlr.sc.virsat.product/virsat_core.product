@@ -55,6 +55,7 @@ Germany
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
 
+
    <plugins>
    </plugins>
 
@@ -68,7 +69,7 @@ Germany
       <feature id="de.dlr.sc.virsat.uiengine.feature"/>
       <feature id="de.dlr.sc.virsat.build.feature"/>
       <feature id="de.dlr.sc.virsat.apps.feature"/>
-      <feature id="de.dlr.sc.virsat.svn.feature"/>
+      <feature id="de.dlr.sc.virsat.team.feature"/>
       <feature id="de.dlr.sc.virsat.dependencies.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.ps.feature"/>
       <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature"/>
@@ -112,6 +113,7 @@ Germany
       <feature id="org.eclipse.equinox.executable"/>
       <feature id="org.eclipse.draw2d"/>
       <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature"/>
+      <feature id="org.eclipse.egit"/>
       <feature id="de.dlr.sc.virsat.model.extension.requirements.feature"/>
    </features>
 
@@ -123,6 +125,10 @@ Germany
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
+
+   <repositories>
+      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
+   </repositories>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>

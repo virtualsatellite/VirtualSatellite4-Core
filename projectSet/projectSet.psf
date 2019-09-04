@@ -87,10 +87,10 @@
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.test"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.ui"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.qudv.ui"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn.feature"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn.test"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.ui"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.swtbot.test"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.target"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.target.feature"/>

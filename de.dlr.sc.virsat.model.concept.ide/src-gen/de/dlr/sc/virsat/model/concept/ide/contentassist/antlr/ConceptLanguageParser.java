@@ -55,7 +55,7 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConceptAccess().getGroup(), "rule__Concept__Group__0");
 					put(grammarAccess.getConceptAccess().getGroup_3_0(), "rule__Concept__Group_3_0__0");
 					put(grammarAccess.getConceptAccess().getGroup_3_1(), "rule__Concept__Group_3_1__0");
-					put(grammarAccess.getConceptAccess().getGroup_3_2(), "rule__Concept__Group_3_2__0");
+					put(grammarAccess.getConceptAccess().getGroup_3_3(), "rule__Concept__Group_3_3__0");
 					put(grammarAccess.getStructuralElementAccess().getGroup(), "rule__StructuralElement__Group__0");
 					put(grammarAccess.getStructuralElementAccess().getGroup_3_0(), "rule__StructuralElement__Group_3_0__0");
 					put(grammarAccess.getStructuralElementAccess().getGroup_3_1(), "rule__StructuralElement__Group_3_1__0");
@@ -148,8 +148,9 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConceptAccess().getNameAssignment_2(), "rule__Concept__NameAssignment_2");
 					put(grammarAccess.getConceptAccess().getDisplayNameAssignment_3_0_1(), "rule__Concept__DisplayNameAssignment_3_0_1");
 					put(grammarAccess.getConceptAccess().getVersionAssignment_3_1_1(), "rule__Concept__VersionAssignment_3_1_1");
-					put(grammarAccess.getConceptAccess().getDescriptionAssignment_3_2_1(), "rule__Concept__DescriptionAssignment_3_2_1");
-					put(grammarAccess.getConceptAccess().getDMFAssignment_3_3(), "rule__Concept__DMFAssignment_3_3");
+					put(grammarAccess.getConceptAccess().getBetaAssignment_3_2(), "rule__Concept__BetaAssignment_3_2");
+					put(grammarAccess.getConceptAccess().getDescriptionAssignment_3_3_1(), "rule__Concept__DescriptionAssignment_3_3_1");
+					put(grammarAccess.getConceptAccess().getDMFAssignment_3_4(), "rule__Concept__DMFAssignment_3_4");
 					put(grammarAccess.getConceptAccess().getImportsAssignment_5(), "rule__Concept__ImportsAssignment_5");
 					put(grammarAccess.getConceptAccess().getStructuralElementsAssignment_6(), "rule__Concept__StructuralElementsAssignment_6");
 					put(grammarAccess.getConceptAccess().getRelationsAssignment_7(), "rule__Concept__RelationsAssignment_7");

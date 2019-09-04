@@ -20,3 +20,4 @@ Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.mechanical.ui
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Activator: de.dlr.sc.virsat.model.extension.mechanical.ui.Activator
+Import-Package: com.github.cliftonlabs.json_simple
