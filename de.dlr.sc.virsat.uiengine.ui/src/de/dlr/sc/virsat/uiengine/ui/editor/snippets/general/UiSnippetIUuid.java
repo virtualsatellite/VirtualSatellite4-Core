@@ -16,7 +16,7 @@ import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
@@ -92,6 +92,7 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 		label.setLayoutData(gridData);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
 		super.setDataBinding(dbCtx, editingDomain, model);
@@ -116,7 +117,6 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 		};
 
 		if (textUuid != null) {
-			@SuppressWarnings("unchecked")
 			IValueProperty<EObject, ?> iUuidProperty = EMFEditProperties.value(editingDomain, GeneralPackage.eINSTANCE.getIUuid_Uuid());
 			
 			dbCtx.bindValue(WidgetProperties.text(SWT.Modify).observe(textUuid), iUuidProperty.observe(model),

@@ -7,10 +7,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.dlr.sc.virsat.model.calculation,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
- org.antlr.runtime
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.model.calculation.ide.contentassist.antlr.internal,
  de.dlr.sc.virsat.model.calculation.ide.contentassist.antlr
 Automatic-Module-Name: de.dlr.sc.virsat.model.calculation.ide
-

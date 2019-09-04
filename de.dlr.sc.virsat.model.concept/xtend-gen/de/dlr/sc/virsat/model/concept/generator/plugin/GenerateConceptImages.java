@@ -81,12 +81,10 @@ public class GenerateConceptImages {
           _xtrycatchfinallyexpression = _xblockexpression_1;
         } catch (final Throwable _t) {
           if (_t instanceof FileAlreadyExistsException) {
-            final FileAlreadyExistsException e1 = (FileAlreadyExistsException)_t;
             ILog _log = Activator.getDefault().getLog();
             Status _status = new Status(Status.ERROR, "ConceptPlugin:", "File already existing: we do not override!");
             _log.log(_status);
           } else if (_t instanceof IOException) {
-            final IOException e = (IOException)_t;
             throw new RuntimeException(("Could not copy image: " + fileName));
           } else {
             throw Exceptions.sneakyThrow(_t);

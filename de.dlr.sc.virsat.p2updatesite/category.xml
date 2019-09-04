@@ -15,7 +15,7 @@
    <feature url="features/de.dlr.sc.virsat.project.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.project.feature" version="4.9.1.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.svn.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.svn.feature" version="4.9.1.qualifier">
+   <feature url="features/de.dlr.sc.virsat.team.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.team.feature" version="4.9.1.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
    <feature url="features/de.dlr.sc.virsat.uiengine.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.uiengine.feature" version="4.9.1.qualifier">
@@ -67,6 +67,21 @@
       <category name="VirSat_Core_Features"/>
    </feature>
    <feature url="features/de.dlr.sc.virsat.model.extension.mechanical.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.mechanical.feature" version="4.9.1.qualifier">
+      <category name="VirSat_Core_Features"/>
+   </feature>
+   <feature url="features/de.dlr.sc.virsat.model.extension.requirements.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.requirements.feature" version="4.9.1.qualifier">
+      <category name="VirSat_Core_Features"/>
+   </feature>
+   <feature url="features/de.dlr.sc.virsat.excel.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.excel.feature" version="4.9.1.qualifier">
+      <category name="VirSat_Core_Features"/>
+   </feature>
+   <feature url="features/de.dlr.sc.virsat.model.extension.budget.power.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.budget.power.feature" version="4.9.1.qualifier">
+      <category name="VirSat_Core_Features"/>
+   </feature>
+   <feature url="features/de.dlr.sc.virsat.model.extension.funcelectrical.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.funcelectrical.feature" version="4.9.1.qualifier">
+      <category name="VirSat_Core_Features"/>
+   </feature>
+   <feature url="features/de.dlr.sc.virsat.model.extension.statemachines.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.statemachines.feature" version="4.9.1.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
    <feature url="features/de.dlr.sc.virsat.model.extension.requirements.feature_4.9.1.qualifier.jar" id="de.dlr.sc.virsat.model.extension.requirements.feature" version="4.9.1.qualifier">

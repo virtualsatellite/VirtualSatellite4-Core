@@ -135,7 +135,7 @@ public class DiagramWizard extends BasicNewResourceWizard {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(editorInput, editorID);
 		} catch (PartInitException e) {
 			String error = "Error while opening diagram editor";
-			IStatus status = new Status(IStatus.ERROR, "de.dlr.sc.virsat.s2tep.funcelectrical.ui", error, e);
+			IStatus status = new Status(IStatus.ERROR, Activator.getPluginId(), error, e);
 			ErrorDialog.openError(getShell(), "An error occurred", null, status);
 			return false;
 		}
