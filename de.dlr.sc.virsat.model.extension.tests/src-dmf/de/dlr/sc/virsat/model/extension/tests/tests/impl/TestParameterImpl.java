@@ -77,6 +77,7 @@ public class TestParameterImpl extends DObjectImpl implements TestParameter {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public double getDefaultValue() {
 		return defaultValue;
 	}
@@ -86,6 +87,7 @@ public class TestParameterImpl extends DObjectImpl implements TestParameter {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDefaultValue(double newDefaultValue) {
 		double oldDefaultValue = defaultValue;
 		defaultValue = newDefaultValue;
@@ -160,7 +162,7 @@ public class TestParameterImpl extends DObjectImpl implements TestParameter {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (defaultValue: ");
 		result.append(defaultValue);
 		result.append(')');
