@@ -29,7 +29,6 @@ public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 
 	@Before
 	public void setup() {
-		prepareEditingDomain();
 		concept = loadConceptFromPlugin();
 	}
 

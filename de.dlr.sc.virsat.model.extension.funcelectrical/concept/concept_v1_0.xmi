@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v4/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v4/cp/cppd" name="de.dlr.sc.virsat.model.extension.funcelectrical" description="Concept for modelling Functional Electrical Architecture (FEA)">
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
+  <categories name="InterfaceType" shortName="IFT" description="InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" applicableFor="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceTypeCollection"/>
+  <categories name="PowerInterfaceType" description="Describes a Power interface type with nominal voltages" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceType">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="voltages" type="de.dlr.sc.virsat.model.extension.funcelectrical.VoltageDefinition">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+  </categories>
+  <categories name="VoltageDefinition" description="Abstract voltage definition" isAbstract="true"/>
+  <categories name="FixedVoltageDefinition" description="Fixed voltage defining a nominal value" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.VoltageDefinition">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="nominalValue" quantityKindName="Electric potential difference" unitName="Volt" defaultValue="0"/>
+  </categories>
+  <categories name="RangedVoltageDefinition" description="Interval range of nominal voltages" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.VoltageDefinition">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="minVoltage" quantityKindName="Electric potential difference" unitName="Volt" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxVoltage" quantityKindName="Electric potential difference" unitName="Volt" defaultValue="0"/>
+  </categories>
+  <categories name="DataInterfaceType" description="Decribes a Data communication interface type" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceType">
+    <properties xsi:type="dvlm_cppd:StringProperty" name="electricalStandard" defaultValue="Analog"/>
+  </categories>
+  <categories name="ThermalReferencePoint" description="Describes a thermal communication interface type" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.DataInterfaceType"/>
+  <categories name="InterfaceEnd" shortName="IFE" description="Describes a Functional Electrical InterfaceEnd as connection point for Interfaces">
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementDefinition"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementOccurence"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceType"/>
+  </categories>
+  <categories name="Interface" shortName="IF" description="Describes a Functional Electrical Interface connecting two InterfaceEnds">
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementOccurence"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEndFrom" referenceType="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEndTo" referenceType="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"/>
+  </categories>
+  <structuralElements name="InterfaceTypeCollection" description="A Container to summarize all InterfaceTypes" isRootStructuralElement="true"/>
+</dvlm_c:Concept>

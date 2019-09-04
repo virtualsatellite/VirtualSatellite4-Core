@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.dlr.sc.virsat.model.extension.statemachines.feature"
+      label="VirSat Core Model Extension State Machines"
+      version="4.9.1.qualifier"
+      provider-name="DLR (German Aerospace Center)"
+      license-feature="de.dlr.sc.virsat.license.feature">
+
+   <description>
+      Feature for modeling State Machines in Virtual Satellite.
+German Aerospace Center (DLR e.V.)
+Simulation and Software Technology
+   </description>
+
+   <copyright>
+      Copyright 2017
+ by German Aerospace Center (DLR e.V.)
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="de.dlr.sc.virsat.build"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.apache.poi"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.ps"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
+      <import plugin="de.dlr.sc.virsat.graphiti.ui"/>
+      <import plugin="de.dlr.sc.virsat.graphiti"/>
+      <import plugin="org.eclipse.swt"/>
+      <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.model.extension.ps.feature" version="0.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.statemachines"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.statemachines.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.nebula.widgets.tablecombo"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

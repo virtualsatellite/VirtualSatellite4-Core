@@ -76,6 +76,7 @@
 				<module>de.dlr.sc.virsat.commons.ui</module>
 				<module>de.dlr.sc.virsat.commons.feature</module>
 				<module>de.dlr.sc.virsat.commons.test</module>
+				
 				<module>de.dlr.sc.virsat.build</module>
 				<module>de.dlr.sc.virsat.build.feature</module>
 				<module>de.dlr.sc.virsat.build.test</module>
@@ -85,6 +86,11 @@
 				<module>de.dlr.sc.virsat.apps.test</module>
 				<module>de.dlr.sc.virsat.apps.feature</module>
 				<module>de.dlr.sc.virsat.apps.ui</module>
+
+				<module>de.dlr.sc.virsat.excel</module>
+				<module>de.dlr.sc.virsat.excel.feature</module>
+				<module>de.dlr.sc.virsat.excel.test</module>
+				<module>de.dlr.sc.virsat.excel.ui</module>
 
 				<module>de.dlr.sc.virsat.uiengine.ui</module>
 				<module>de.dlr.sc.virsat.uiengine.feature</module>
@@ -142,12 +148,29 @@
 				<module>de.dlr.sc.virsat.model.extension.ps.ui</module>
 				<module>de.dlr.sc.virsat.model.extension.ps.feature</module>
 
+				<!-- The Extension for Functional Electrical Architecture Feature -->
+				<module>de.dlr.sc.virsat.model.extension.funcelectrical</module>
+				<module>de.dlr.sc.virsat.model.extension.funcelectrical.test</module>
+				<module>de.dlr.sc.virsat.model.extension.funcelectrical.ui</module>
+				<module>de.dlr.sc.virsat.model.extension.funcelectrical.feature</module>
 
-				<!-- The Extension for general Mass Budget Feature -->
+				<!-- The Extension for Mass Budget Feature -->
 				<module>de.dlr.sc.virsat.model.extension.budget.mass</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.test</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.ui</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.feature</module>
+
+				<!-- The Extension for Power Budget Feature -->
+				<module>de.dlr.sc.virsat.model.extension.budget.power</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.power.test</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.power.ui</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.power.feature</module>
+
+				<!-- The Extension for State Machines Feature -->
+				<module>de.dlr.sc.virsat.model.extension.statemachines</module>
+				<module>de.dlr.sc.virsat.model.extension.statemachines.test</module>
+				<module>de.dlr.sc.virsat.model.extension.statemachines.ui</module>
+				<module>de.dlr.sc.virsat.model.extension.statemachines.feature</module>
 
 				<!-- Extension for Visualization -->
 				<module>de.dlr.sc.virsat.model.extension.visualisation</module>

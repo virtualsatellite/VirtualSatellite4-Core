@@ -25,6 +25,8 @@ import de.dlr.sc.virsat.model.dvlm.command.SetValuePropertyInstanceCommand;
  */
 public class DVLMValuePropertyInstanceItemProvider extends ValuePropertyInstanceItemProvider {
 
+	private static final String CUT_APPENDIX = "...";
+	
 	/**
 	 * this class constructor is an instance of the factory and notifier 
 	 * @param adapterFactory 
@@ -39,6 +41,13 @@ public class DVLMValuePropertyInstanceItemProvider extends ValuePropertyInstance
 		if (object instanceof ValuePropertyInstance) {
 			ValuePropertyInstance vpi = (ValuePropertyInstance) object;
 			String value = vpi.getValue() == null ? "" : vpi.getValue();
+
+			//If string is multiline then just show the first line
+			String lineSeperator = System.lineSeparator();
+			if (value.indexOf(lineSeperator) > 0) {
+				value = value.substring(0, value.indexOf(lineSeperator)) + CUT_APPENDIX;
+			}
+			
 			return vpi.getType().getName() + ": " + value;
 		}
 		

@@ -71,7 +71,6 @@ public class EquationSectionImportedNamespaceAwareLocalScopeProvider extends Imp
         _xtrycatchfinallyexpression = (_plus + _wildCard);
       } catch (final Throwable _t) {
         if (_t instanceof NullPointerException) {
-          final NullPointerException e = (NullPointerException)_t;
           _xtrycatchfinallyexpression = null;
         } else {
           throw Exceptions.sneakyThrow(_t);

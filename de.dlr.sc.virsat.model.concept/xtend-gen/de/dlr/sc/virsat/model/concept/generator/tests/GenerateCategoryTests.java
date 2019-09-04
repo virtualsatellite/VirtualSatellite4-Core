@@ -76,7 +76,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     return (_plus + GenerateCategoryTests.PACKAGE_FOLDER);
   }
   
-  public final static String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
+  public static final String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
   
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
