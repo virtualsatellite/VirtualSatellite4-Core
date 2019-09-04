@@ -9,13 +9,19 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.migrator;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
+// *****************************************************************
+// * Import Statements
+// *****************************************************************
 
+
+import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
+
+import org.junit.Test;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -25,11 +31,20 @@ import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
  * Extension for Requirement Specification
  * 
  */
-public class Migrator1v0 extends AMigrator1v0 implements IMigrator {
-
-	@Override
-	public void migrate(Concept concept, IMigrator previousMigrator) {
-		//TODO: Implement custom concept migration for version 1.0
-		super.migrate(concept, previousMigrator);
+public class Migrator0v1Test extends AMigrator0v1Test {		
+	
+	@Test
+	public void testMigrator0v1() {
+		Migrator0v1 testMigrator0v1 = new Migrator0v1();
+		
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptMigrateFromRepository);
+		
+		//TODO: Setup test instances
+		
+		testMigrator0v1.migrate(conceptMigrateFrom, conceptMigrateFromRepository, conceptMigrateTo);
+		
+		//TODO: Check for correct migration
 	}
+	
 }
