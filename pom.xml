@@ -19,12 +19,12 @@
 			<properties>
 				<build.src>tmodel-src</build.src>
 			</properties>
-
 			<modules>
 				<module>de.dlr.sc.virsat.target</module>
 			</modules>
 
 		</profile>
+
 		<profile>
 			<!-- Build profile for building the main product -->
 			<id>product</id>
@@ -33,17 +33,9 @@
 			</properties>
 			<modules>
 				<module>de.dlr.sc.virsat.target</module>
-				<module>de.dlr.sc.virsat.target.feature</module>
 
 				<module>de.dlr.sc.virsat.branding.ui</module>
-				<module>de.dlr.sc.virsat.branding.feature</module>
 
-				<module>de.dlr.sc.virsat.javadoc.api</module>
-				<module>de.dlr.sc.virsat.javadoc.api.feature</module>
-
-				<module>de.dlr.sc.virsat.license.feature</module>
-
-				<module>de.dlr.sc.virsat.external.lib.feature</module>
 				<module>de.dlr.sc.virsat.external.lib</module>
 				<module>de.dlr.sc.virsat.external.lib.apache.poi</module>
 				<module>de.dlr.sc.virsat.external.lib.spotbugs</module>
@@ -64,115 +56,89 @@
 				<module>de.dlr.sc.virsat.model.edit.test</module>
 				<module>de.dlr.sc.virsat.model.ui</module>
 				<module>de.dlr.sc.virsat.model.test</module>
-				<module>de.dlr.sc.virsat.model.feature</module>
 
 				<module>de.dlr.sc.virsat.model.calculation</module>
-				<module>de.dlr.sc.virsat.model.calculation.feature</module>
 				<module>de.dlr.sc.virsat.model.calculation.test</module>
 				<module>de.dlr.sc.virsat.model.calculation.ide</module>
 				<module>de.dlr.sc.virsat.model.calculation.ui</module>
 
 				<module>de.dlr.sc.virsat.commons</module>
 				<module>de.dlr.sc.virsat.commons.ui</module>
-				<module>de.dlr.sc.virsat.commons.feature</module>
 				<module>de.dlr.sc.virsat.commons.test</module>
-				
+
 				<module>de.dlr.sc.virsat.build</module>
-				<module>de.dlr.sc.virsat.build.feature</module>
 				<module>de.dlr.sc.virsat.build.test</module>
 				<module>de.dlr.sc.virsat.build.ui</module>
 
 				<module>de.dlr.sc.virsat.apps</module>
 				<module>de.dlr.sc.virsat.apps.test</module>
-				<module>de.dlr.sc.virsat.apps.feature</module>
 				<module>de.dlr.sc.virsat.apps.ui</module>
-
 				<module>de.dlr.sc.virsat.excel</module>
-				<module>de.dlr.sc.virsat.excel.feature</module>
 				<module>de.dlr.sc.virsat.excel.test</module>
 				<module>de.dlr.sc.virsat.excel.ui</module>
 
 				<module>de.dlr.sc.virsat.uiengine.ui</module>
-				<module>de.dlr.sc.virsat.uiengine.feature</module>
 
 				<module>de.dlr.sc.virsat.model.concept</module>
 				<module>de.dlr.sc.virsat.model.concept.ide</module>
 				<module>de.dlr.sc.virsat.model.concept.ui</module>
 				<module>de.dlr.sc.virsat.model.concept.test</module>
-				<module>de.dlr.sc.virsat.model.concept.feature</module>
 
 				<module>de.dlr.sc.virsat.project</module>
 				<module>de.dlr.sc.virsat.project.ui</module>
 				<module>de.dlr.sc.virsat.qudv.ui</module>
 				<module>de.dlr.sc.virsat.project.test</module>
-				<module>de.dlr.sc.virsat.project.feature</module>
 
 				<module>de.dlr.sc.virsat.graphiti</module>
 				<module>de.dlr.sc.virsat.graphiti.ui</module>
 				<module>de.dlr.sc.virsat.graphiti.test</module>
-				<module>de.dlr.sc.virsat.graphiti.feature</module>
 
 				<module>de.dlr.sc.virsat.team</module>
 				<module>de.dlr.sc.virsat.team.ui</module>
 				<module>de.dlr.sc.virsat.team.test</module>
-				<module>de.dlr.sc.virsat.team.feature</module>
 
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>
-				<module>de.dlr.sc.virsat.test.feature</module>
 				<!-- Now we finally build the products: oh yes we build it! -->
-				<module>de.dlr.sc.virsat.dependencies.feature</module>
-				<module>de.dlr.sc.virsat.docs.feature</module>
-				<module>de.dlr.sc.virsat.product</module>
-				<module>de.dlr.sc.virsat.p2updatesite</module>
-				<module>de.dlr.sc.virsat.model.concept.p2updatesite</module>
 
 				<module>de.dlr.sc.virsat.model.extension.maturity</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
-				
+
 				<module>de.dlr.sc.virsat.model.extension.mechanical</module>
 				<module>de.dlr.sc.virsat.model.extension.mechanical.test</module>
 				<module>de.dlr.sc.virsat.model.extension.mechanical.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
 				<module>de.dlr.sc.virsat.model.extension.ps</module>
 				<module>de.dlr.sc.virsat.model.extension.ps.test</module>
 				<module>de.dlr.sc.virsat.model.extension.ps.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.ps.feature</module>
 
 				<!-- The Extension for Functional Electrical Architecture Feature -->
 				<module>de.dlr.sc.virsat.model.extension.funcelectrical</module>
 				<module>de.dlr.sc.virsat.model.extension.funcelectrical.test</module>
 				<module>de.dlr.sc.virsat.model.extension.funcelectrical.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.funcelectrical.feature</module>
-
+	
 				<!-- The Extension for Mass Budget Feature -->
 				<module>de.dlr.sc.virsat.model.extension.budget.mass</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.test</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.budget.mass.feature</module>
-
+	
 				<!-- The Extension for Power Budget Feature -->
 				<module>de.dlr.sc.virsat.model.extension.budget.power</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.power.test</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.power.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.budget.power.feature</module>
-
+	
 				<!-- The Extension for State Machines Feature -->
 				<module>de.dlr.sc.virsat.model.extension.statemachines</module>
 				<module>de.dlr.sc.virsat.model.extension.statemachines.test</module>
 				<module>de.dlr.sc.virsat.model.extension.statemachines.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.statemachines.feature</module>
-
+	
 				<!-- Extension for Visualization -->
 				<module>de.dlr.sc.virsat.model.extension.visualisation</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.test</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.visualisation.feature</module>
-
+	
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->
 				<module>de.dlr.sc.virsat.model.extension.tests</module>
@@ -180,13 +146,55 @@
 				<module>de.dlr.sc.virsat.model.extension.tests.edit</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.edit.test</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.ui</module>
-				<module>de.dlr.sc.virsat.model.extension.tests.feature</module>
-
+	
 				<!-- Performance Tests -->
 				<module>de.dlr.sc.virsat.performance.test</module>
 
 				<!-- SWTBot UI Tests -->
 				<module>de.dlr.sc.virsat.swtbot.test</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>deploy</id>
+			<modules>
+				<module>de.dlr.sc.virsat.target.feature</module>
+				<module>de.dlr.sc.virsat.branding.feature</module>
+				<module>de.dlr.sc.virsat.license.feature</module>
+				<module>de.dlr.sc.virsat.external.lib.feature</module>
+				<module>de.dlr.sc.virsat.model.feature</module>
+				<module>de.dlr.sc.virsat.model.calculation.feature</module>
+				<module>de.dlr.sc.virsat.commons.feature</module>
+				<module>de.dlr.sc.virsat.build.feature</module>
+				<module>de.dlr.sc.virsat.apps.feature</module>
+				<module>de.dlr.sc.virsat.excel.feature</module>
+				<module>de.dlr.sc.virsat.uiengine.feature</module>
+				<module>de.dlr.sc.virsat.model.concept.feature</module>
+				<module>de.dlr.sc.virsat.project.feature</module>
+				<module>de.dlr.sc.virsat.graphiti.feature</module>
+				<module>de.dlr.sc.virsat.team.feature</module>
+				<module>de.dlr.sc.virsat.test.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.ps.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.funcelectrical.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.mass.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.power.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.statemachines.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.visualisation.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.tests.feature</module>
+				<module>de.dlr.sc.virsat.javadoc.api.feature</module>
+				<module>de.dlr.sc.virsat.docs.feature</module>
+				
+				<module>de.dlr.sc.virsat.dependencies.feature</module>
+				<module>de.dlr.sc.virsat.product</module>
+				<module>de.dlr.sc.virsat.p2updatesite</module>
+				<module>de.dlr.sc.virsat.model.concept.p2updatesite</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>doc</id>
+			<modules>
+				<module>de.dlr.sc.virsat.javadoc.api</module>
 			</modules>
 		</profile>
 	</profiles>
