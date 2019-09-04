@@ -93,6 +93,10 @@ public class RequirementsAttributeValueEditingSupport extends AbstractAttributeV
 			att = new AttributeValue((CategoryAssignment) element);
 		}
 		
+		if (att == null) {
+			return null;
+		}
+		
 		return att.getAttType();
 	}
 	

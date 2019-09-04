@@ -112,6 +112,10 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 			requirement = new Requirement((CategoryAssignment) element);
 		}
 		
+		if (requirement == null) {
+			return null;
+		}
+		
 		return requirement.getReqType().getAttributes().get(attributeIndex);
 	}
 
