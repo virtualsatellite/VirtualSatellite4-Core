@@ -35,11 +35,11 @@ class GenerateConceptUiPluginXmlTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	final val TEST_CONCEPT_NAME = "testConcept"
-	final val TEST_CATEGORY_NAME = "testCategory"
-	final val TEST_STRUCTURAL_1_NAME = "testStructural1";
-	final val TEST_STRUCTURAL_2_NAME = "testStructural2";
-	final val TEST_EXTRACT_PROTECTED_REGION = "testExtractProtectedRegion"
+	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CATEGORY_NAME = "testCategory"
+	val TEST_STRUCTURAL_1_NAME = "testStructural1";
+	val TEST_STRUCTURAL_2_NAME = "testStructural2";
+	val TEST_EXTRACT_PROTECTED_REGION = "testExtractProtectedRegion"
 	
 	val pluginGenerator = new GenerateUiPluginXml
 

@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.model.concept.services.ConceptLanguageGrammarAccess
  * 
  * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
  */
-public class ConceptLanguageFormatter extends AbstractDeclarativeFormatter {
+class ConceptLanguageFormatter extends AbstractDeclarativeFormatter {
 	
 	@Inject extension ConceptLanguageGrammarAccess
 	

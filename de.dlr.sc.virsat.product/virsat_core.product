@@ -59,60 +59,64 @@ Germany
    </plugins>
 
    <features>
-      <feature id="de.dlr.sc.virsat.branding.feature"/>
-      <feature id="de.dlr.sc.virsat.commons.feature"/>
-      <feature id="de.dlr.sc.virsat.license.feature"/>
-      <feature id="de.dlr.sc.virsat.model.feature"/>
-      <feature id="de.dlr.sc.virsat.model.calculation.feature"/>
-      <feature id="de.dlr.sc.virsat.project.feature"/>
-      <feature id="de.dlr.sc.virsat.uiengine.feature"/>
-      <feature id="de.dlr.sc.virsat.build.feature"/>
-      <feature id="de.dlr.sc.virsat.apps.feature"/>
-      <feature id="de.dlr.sc.virsat.team.feature"/>
-      <feature id="de.dlr.sc.virsat.dependencies.feature"/>
-      <feature id="de.dlr.sc.virsat.model.extension.ps.feature"/>
-      <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature"/>
-      <feature id="de.dlr.sc.virsat.model.extension.maturity.feature"/>
-      <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature"/>
-      <feature id="de.dlr.sc.virsat.docs.feature"/>
-      <feature id="de.dlr.sc.virsat.external.lib.feature"/>
-      <feature id="org.eclipse.platform"/>
-      <feature id="org.eclipse.pde"/>
-      <feature id="org.eclipse.help"/>
-      <feature id="org.eclipse.jdt"/>
-      <feature id="org.eclipse.emf.common"/>
-      <feature id="org.eclipse.emf.common.ui"/>
-      <feature id="org.eclipse.emf.databinding.edit"/>
-      <feature id="org.eclipse.emf.edit"/>
-      <feature id="org.eclipse.emf.edit.ui"/>
-      <feature id="org.eclipse.emf.transaction"/>
-      <feature id="org.eclipse.emf.ecore"/>
-      <feature id="org.eclipse.emf.edapt.runtime.feature"/>
-      <feature id="org.eclipse.emf.workspace"/>
-      <feature id="org.eclipse.emf.databinding"/>
-      <feature id="org.eclipse.emf.validation"/>
-      <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.team.svn"/>
-      <feature id="org.eclipse.ocl"/>
-      <feature id="org.eclipse.emf.compare"/>
-      <feature id="org.eclipse.xtext.xbase.lib"/>
-      <feature id="org.eclipse.xtext.xbase"/>
-      <feature id="org.eclipse.xtext.runtime"/>
-      <feature id="org.eclipse.rcp"/>
-      <feature id="org.eclipse.e4.rcp"/>
-      <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
-      <feature id="org.eclipse.equinox.p2.user.ui"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.equinox.executable"/>
-      <feature id="org.eclipse.draw2d"/>
-      <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature"/>
-      <feature id="org.eclipse.egit"/>
+      <feature id="de.dlr.sc.virsat.branding.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.commons.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.license.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.calculation.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.project.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.uiengine.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.build.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.apps.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.team.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.dependencies.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.excel.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.graphiti.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.external.lib.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.power.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.funcelectrical.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.statemachines.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.ps.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.maturity.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.docs.feature" installMode="root"/>
+      <feature id="org.eclipse.platform" installMode="root"/>
+      <feature id="org.eclipse.pde" installMode="root"/>
+      <feature id="org.eclipse.help" installMode="root"/>
+      <feature id="org.eclipse.jdt" installMode="root"/>
+      <feature id="org.eclipse.emf.common" installMode="root"/>
+      <feature id="org.eclipse.emf.common.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding.edit" installMode="root"/>
+      <feature id="org.eclipse.emf.edit" installMode="root"/>
+      <feature id="org.eclipse.emf.edit.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.transaction" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.edapt.runtime.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.workspace" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding" installMode="root"/>
+      <feature id="org.eclipse.emf.validation" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
+      <feature id="org.eclipse.team.svn" installMode="root"/>
+      <feature id="org.eclipse.ocl" installMode="root"/>
+      <feature id="org.eclipse.emf.compare" installMode="root"/>
+      <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
+      <feature id="org.eclipse.xtext.xbase" installMode="root"/>
+      <feature id="org.eclipse.xtext.runtime" installMode="root"/>
+      <feature id="org.eclipse.rcp" installMode="root"/>
+      <feature id="org.eclipse.e4.rcp" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.executable" installMode="root"/>
+      <feature id="org.eclipse.draw2d" installMode="root"/>
+      <feature id="org.eclipse.egit" installMode="root"/>
    </features>
 
    <configurations>
@@ -123,7 +127,7 @@ Germany
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
-   
+
    <repositories>
       <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
    </repositories>

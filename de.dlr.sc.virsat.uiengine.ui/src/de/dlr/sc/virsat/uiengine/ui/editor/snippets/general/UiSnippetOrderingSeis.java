@@ -113,6 +113,7 @@ public class UiSnippetOrderingSeis extends AUiSnippetEStructuralFeatureTable imp
 	 * @param editingDomain The EditingDomain to get the Features from
 	 * @param table The Table which should be set in the TableViewer
 	 */
+	@SuppressWarnings("rawtypes")
 	protected void setUpTableViewerCas(EditingDomain editingDomain, Table table) {
 		tableViewerCa = new TableViewer(table);
 		ObservableListContentProvider contentprovider = new ObservableListContentProvider();

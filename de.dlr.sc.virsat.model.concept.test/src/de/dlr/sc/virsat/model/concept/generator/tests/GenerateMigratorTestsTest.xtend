@@ -31,7 +31,7 @@ class GenerateMigratorTestsTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	final val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CONCEPT_NAME = "testConcept"
 	
 	// Don't get the Test but the Tests here. The Test is the test case for the GenerateMigrator.
 	// Whereas here we want to have the Generator for the GenerateMigratorTests.

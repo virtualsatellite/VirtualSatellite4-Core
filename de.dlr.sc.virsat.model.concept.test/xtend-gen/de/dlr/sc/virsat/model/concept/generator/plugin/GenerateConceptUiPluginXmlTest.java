@@ -179,7 +179,6 @@ public class GenerateConceptUiPluginXmlTest {
             this.lines = Files.readAllLines(Paths.get(iFileLocation));
           } catch (final Throwable _t) {
             if (_t instanceof IOException) {
-              final IOException e = (IOException)_t;
               throw new RuntimeException(("Could not read plugin.xml in project " + pluginId));
             } else {
               throw Exceptions.sneakyThrow(_t);

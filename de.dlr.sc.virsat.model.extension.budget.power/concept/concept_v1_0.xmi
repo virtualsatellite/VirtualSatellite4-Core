@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v6/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v6/calc" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v6/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.power" description="Power Budget Concept" displayName="Power Budget" beta="true">
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.statemachines.*"/>
+  <categories name="APowerParameters" description="Abstract definition of a collection of power parameters" isAbstract="true">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPower" description="The average power over all states" quantityKindName="Power" unitName="Watt"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="minPower" description="The minimum power over all states" quantityKindName="Power" unitName="Watt"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxPower" description="The maximum power over all states" quantityKindName="Power" unitName="Watt"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPowerWithMargin" description="The equipment mass plus the safety margin" quantityKindName="Power" unitName="Watt" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPowerMargin" description="The actual amount of margin mass" quantityKindName="Power" unitName="Watt" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
+  </categories>
+  <categories name="PowerEquipment" description="Definition of the equipment power" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.PowerState.avgPower"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="min" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.PowerState.power"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.minPower"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="max" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.PowerState.power"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.maxPower"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="*">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+        <right xsi:type="dvlm_calc:Parenthesis">
+          <right xsi:type="dvlm_calc:AdditionAndSubtraction">
+            <left xsi:type="dvlm_calc:NumberLiteral" value="1"/>
+            <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.margin"/>
+          </right>
+        </right>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerWithMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerWithMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerMargin"/>
+    </equationDefinitions>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="powerValues" type="de.dlr.sc.virsat.model.extension.budget.power.PowerState">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+  </categories>
+  <categories name="PowerSummary" description="Summary of all nested equipment powers" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.minPower"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.minPower"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.maxPower"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.maxPower"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerWithMargin"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerWithMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerWithMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="/">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPowerMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.avgPower"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters.margin"/>
+    </equationDefinitions>
+  </categories>
+  <categories name="PowerState" description="Power data for a single equipment mode">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="*">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.PowerState.power"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.power.PowerState.dutyCycle"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.power.PowerState.avgPower"/>
+    </equationDefinitions>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="mode" description="The mode of the equipment">
+      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.statemachines/concept/concept.concept#de.dlr.sc.virsat.model.extension.statemachines.State"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="power" description="The power consumption in this mode" quantityKindName="Power" unitName="Watt" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPower" description="The average power consumption of the mode" quantityKindName="Power" unitName="Watt"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="dutyCycle" description="The percentage of time spent in the mode " quantityKindName="Dimensionless" unitName="Percent" defaultValue="0"/>
+  </categories>
+</dvlm_c:Concept>

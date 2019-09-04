@@ -16,11 +16,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.ChangeEvent;
@@ -38,8 +38,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.ISWTObservable;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecoration;
@@ -851,7 +851,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		caHelper = new CategoryAssignmentHelper(caModel);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
 		initializeHelperForModel(model);
@@ -874,7 +874,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			if (buttonCheckOverride != null) {
 				IValueProperty<EObject, ?> overrideProperty = EMFEditProperties.value(editingDomain,
 						InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE);
-				dbCtx.bindValue(WidgetProperties.selection().observe(buttonCheckOverride),
+				dbCtx.bindValue(WidgetProperties.buttonSelection().observe(buttonCheckOverride),
 						overrideProperty.observe(propertyInstance));
 			}
 
@@ -984,11 +984,12 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		
 		// Add binding change listeners to every binding, so it can update the decorators
 		// accordingly in case they are added to the bound SWT widget
-		dbCtx.getValidationStatusProviders().forEach(new Consumer<Binding>() {
-			public void accept(Binding binding) {
+		for (ValidationStatusProvider provider : dbCtx.getValidationStatusProviders()) {
+			if (provider instanceof Binding) {
+				Binding binding = (Binding) provider;
 				binding.getValidationStatus().addChangeListener(new BindingChangeListener(binding));
-			};
-		});
+			}
+		}
 	}
 	
 	/**

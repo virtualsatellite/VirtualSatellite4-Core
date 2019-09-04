@@ -70,6 +70,7 @@ SPDX-License-Identifier: EPL-2.0
 						<include name="**/*"/>
 						<exclude name="**/*Test*.class" />
 						<exclude name="**/model/extension/**/A*.class" />
+						<exclude name="**/AExcelIo.class" />
 						<exclude name="**/parser/antlr/**/*.class" />
 						<exclude name="**/serializer/*SemanticSequencer.class" />
 						<exclude name="**/serializer/*SyntacticSequencer.class" />

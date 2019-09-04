@@ -34,7 +34,7 @@ public interface VirsatTestAPI {
 		wsd.setAutoBuilding(false);
 		ResourcesPlugin.getWorkspace().setDescription(wsd);
 		wsRoot.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		project = wsRoot.getProject("s2tepFeaTests");
+		project = wsRoot.getProject("FeaTests");
 		if (project.exists()) {
 			project.delete(true, null);
 		}

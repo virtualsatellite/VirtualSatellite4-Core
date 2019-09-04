@@ -22,5 +22,4 @@ public abstract class AbstractEquationDSLValidator extends AbstractDeclarativeVa
 		result.add(EPackage.Registry.INSTANCE.getEPackage("http://www.virsat.sc.dlr.de/dvlm/v6/calc"));
 		return result;
 	}
-	
 }
