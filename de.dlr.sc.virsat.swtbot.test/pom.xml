@@ -35,7 +35,7 @@ SPDX-License-Identifier: EPL-2.0
 					<forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
 					<showEclipseLog>false</showEclipseLog>
-					
+					<rerunFailingTestsCount>3</rerunFailingTestsCount>
 					<testFailureIgnore>true</testFailureIgnore>
               		<useUIHarness>true</useUIHarness>
         		    <useUIThread>false</useUIThread>
