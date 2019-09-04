@@ -43,14 +43,18 @@ printUsage() {
 	echo "Copyright by DLR (German Aerospace Center)"
 }
 
+checkforMavenProblems() {
+	echo "Check for Maven Problems on Product:"
+	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log | grep -v "\[WARNING\] Checksum validation failed" || exit 0  && exit 1;)
+}
+
 callMavenSurefire() {
 	echo "Maven - Surefire - ${MAVEN_PROFILE}"
 	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
-	echo "Check for Maven Problems on Product:"
-	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+	checkforMavenProblems
 	echo "Check for failed test cases:"
 	(grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
 	echo "Ant jacoco Reports"
@@ -67,8 +71,7 @@ callMavenSpotbugs() {
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn install -P $MAVEN_PROFILE,spotbugs,product -B -V | tee maven.log
-	echo "Check for Maven Problems on Product:"
-	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+	checkforMavenProblems
 }
 
 callMavenCheckstyle() {
@@ -77,9 +80,8 @@ callMavenCheckstyle() {
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn install -P ${MAVEN_PROFILE},checkstyle,product -B -V | tee maven.log
-	echo "Check for Maven Problems on Product:"
-	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
-}
+	checkforMavenProblems
+	}
 
 callMavenAssemble() {
 	if [ "$MAVEN_PROFILE" == "release" ] ; then
@@ -92,8 +94,7 @@ callMavenAssemble() {
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn install -P ${MAVEN_PROFILE},javadoc,deploy,${DEPLOY_TYPE},product -B -V | tee maven.log
-	echo "Check for Maven Problems on Product:"
-	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+	checkforMavenProblems
 	echo "Check for AsciiDoc Problems on Product:"
 	(grep -n "\[INFO\] asciidoctor: \(WARN\|ERROR\|ERR\)" maven.log || exit 0  && exit 1;)
 }
