@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ExampleTest {
 
 	@Test
-	void testIsTrue() {
+	public void testIsTrue() {
 		assertTrue("This is an example test case", true);
 	}
 	
