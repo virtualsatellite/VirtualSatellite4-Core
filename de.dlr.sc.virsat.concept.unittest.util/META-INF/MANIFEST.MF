@@ -6,14 +6,14 @@ Bundle-Version: 4.9.1.qualifier
 Bundle-Activator: de.dlr.sc.virsat.concept.unittest.util.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
- de.dlr.sc.virsat.model,
  org.eclipse.emf.ecore.xmi,
+ de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.concept.unittest.util,
  de.dlr.sc.virsat.concept.unittest.util.test
-Import-Package: de.dlr.sc.virsat.project.test
 Automatic-Module-Name: de.dlr.sc.virsat.concept.unittest.util

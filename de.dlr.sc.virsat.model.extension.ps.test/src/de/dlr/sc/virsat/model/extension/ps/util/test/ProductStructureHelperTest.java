@@ -19,6 +19,7 @@ import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
@@ -33,7 +34,6 @@ import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Test Case for Generating Tree

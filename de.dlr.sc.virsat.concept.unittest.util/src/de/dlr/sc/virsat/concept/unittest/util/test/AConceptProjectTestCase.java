@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.concept.unittest.util.test;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * This class can be used to create a test case where the test concept needs to be loaded

@@ -8,7 +8,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.junit
+Require-Bundle: org.junit,
+ de.dlr.sc.virsat.concept.unittest.util
 Export-Package: de.dlr.sc.virsat.excel.test
 Automatic-Module-Name: de.dlr.sc.virsat.excel.test
-Import-Package: de.dlr.sc.virsat.project.test
