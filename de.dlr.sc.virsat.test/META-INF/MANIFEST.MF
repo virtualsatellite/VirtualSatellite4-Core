@@ -27,6 +27,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.statemachines,
  de.dlr.sc.virsat.model.extension.funcelectrical,
+ de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.excel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
@@ -48,6 +49,7 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.extension.visualisation.test,
  de.dlr.sc.virsat.model.extension.statemachines.test,
  de.dlr.sc.virsat.model.extension.funcelectrical.test,
+ de.dlr.sc.virsat.model.extension.requirements.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.team.test,

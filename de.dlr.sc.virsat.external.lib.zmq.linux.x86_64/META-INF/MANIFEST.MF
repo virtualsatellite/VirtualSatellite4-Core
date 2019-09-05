@@ -5,13 +5,11 @@ Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;singleton:=t
 Bundle-Version: 4.9.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-NativeCode: native_lib/zmq/libjzmq.so;
- native_lib/zmq/libzmq.so.5;
- osname=linux; processor=x86_64
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) )
 Eclipse-BundleShape: dir
 Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-ClassPath: native_lib/zmq/zmq.jar,
+ external:$VS_JAR_ZMQ$,
  .
 Export-Package: org.zeromq
 Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64.Activator

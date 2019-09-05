@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
+import de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidatorTest;
 import de.dlr.sc.virsat.model.concept.list.ArrayInstanceListIteratorTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactoryTest;
@@ -42,7 +43,8 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({ VirSatClipboardCommandAcceptanceTest.class,
+@SuiteClasses({	DvlmLatestConceptValidatorTest.class, 
+				VirSatClipboardCommandAcceptanceTest.class,
 				DeleteStructuralElementInstanceCommandAcceptanceTest.class,	
 				TestCategoryAllPropertyTest.class,
 				TestCategoryCompositionTest.class,

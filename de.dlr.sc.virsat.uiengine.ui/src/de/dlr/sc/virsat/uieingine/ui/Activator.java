@@ -12,8 +12,6 @@ package de.dlr.sc.virsat.uieingine.ui;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-
 /**
  * The plugin root class which is the entry point for the OSGi bundle activation
  * @author scha_vo
@@ -41,7 +39,6 @@ public class Activator extends Plugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
 		plugin = null;
 		super.stop(context);
 	}

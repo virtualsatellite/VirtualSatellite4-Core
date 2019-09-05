@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -110,6 +111,10 @@ public class PropertyInstanceHelper {
 		}
 		
 		EObject container = (instance instanceof IEquationSectionContainer) ? instance : VirSatEcoreUtil.getEContainerOfClass(instance, IEquationSectionContainer.class);
+
+		if (setterProviders ==  null) {
+			setterProviders = loadExtensionPoint();
+		}
 		
 		while (container != null && container instanceof IEquationSectionContainer) {
 			IEquationSectionContainer equationSectionContainer = (IEquationSectionContainer) container;
@@ -129,11 +134,18 @@ public class PropertyInstanceHelper {
 						TypeInstanceResult instanceResult = (TypeInstanceResult) equationResult;
 						ATypeInstance resultInstance = (ATypeInstance) instanceResult.getReference();
 						ITypeInstanceSetter setter = getApplicableSetter(resultInstance);
+						// In case there is a SetterProvider registered it should be used to evaluate if the calculation
+						// is affecting this property. This is e.g. used for CEF where not a single property is calculated
+						// but actually a hole category (Parameter)
 						if (setter != null) {
 							List<ATypeInstance> affectedTypeInstances = setter.getAffectedTypeInstances(resultInstance);
 							if (affectedTypeInstances.contains(instance)) {
 								return true;
 							}
+						} else {
+							// In case there is no SetterProvider yet defined, the default case has to be checked. The default case
+							// checks that the referenced instance by the equation result is excatly the one in question yb this method.
+							return (resultInstance == instance);
 						}
 					}
 				}
@@ -149,13 +161,17 @@ public class PropertyInstanceHelper {
 		return false;
 	}
 	
+	private List<ITypeInstanceSetterProvider<?>> setterProviders;
+	
+	
 	/**
-	 * Checks if there is an applicable type instance setter predefining the value
-	 * of this type instance
-	 * @param instance the type instance
-	 * @return a type instance setter if an applicable one exists
+	 * This method loads the extension point and creates a list of available TypeInstanceSetters
+	 * This method can be changed and overridden for tests
+	 * @return A LIst of TypeInstanceSetter . Return value is never supposed to be null.
 	 */
-	private ITypeInstanceSetter getApplicableSetter(ATypeInstance instance) {
+	protected List<ITypeInstanceSetterProvider<?>> loadExtensionPoint() {
+		List<ITypeInstanceSetterProvider<?>> setterProviders = new ArrayList<>();
+		
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		if (registry != null) {
 			IConfigurationElement[] expressionExtenders = registry.getConfigurationElementsFor("de.dlr.sc.virsat.model.edit.TypeInstanceSetterProvider");
@@ -163,17 +179,31 @@ public class PropertyInstanceHelper {
 			for (IConfigurationElement configElement : expressionExtenders) {
 				try {
 					ITypeInstanceSetterProvider<?> setterProvider = (ITypeInstanceSetterProvider<?>) configElement.createExecutableExtension("class");
-					for (ITypeInstanceSetter setter : setterProvider.getTypeInstanceSetters()) {
-						if (setter.isApplicableFor(instance)) {
-							return setter;
-						}
-					}
+					setterProviders.add(setterProvider);
 				} catch (CoreException e) {
 					DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, "Could not resolve extension points for type instance setters", e));
 				}
 			}
 		}
 		
+		return setterProviders;
+	}
+	
+	/**
+	 * Checks if there is an applicable type instance setter predefining the value
+	 * of this type instance
+	 * @param instance the type instance
+	 * @return a type instance setter if an applicable one exists
+	 */
+	private ITypeInstanceSetter getApplicableSetter(ATypeInstance instance) {
+		for (ITypeInstanceSetterProvider<?> setterProvider : setterProviders) {
+
+			for (ITypeInstanceSetter setter : setterProvider.getTypeInstanceSetters()) {
+				if (setter.isApplicableFor(instance)) {
+					return setter;
+				}
+			}
+		}
 		return null;
 	}
 }
