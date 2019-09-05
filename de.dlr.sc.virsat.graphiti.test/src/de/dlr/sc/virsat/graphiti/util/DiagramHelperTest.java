@@ -25,7 +25,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.concept.unittest.util.test.AProjectTestCase;
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
@@ -38,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * This class tests the DiagramHelper

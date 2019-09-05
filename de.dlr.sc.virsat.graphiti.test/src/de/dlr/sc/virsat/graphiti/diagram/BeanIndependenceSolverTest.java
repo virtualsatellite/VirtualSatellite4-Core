@@ -28,7 +28,6 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.concept.unittest.util.test.AProjectTestCase;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
@@ -44,6 +43,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * test Class for independence solver

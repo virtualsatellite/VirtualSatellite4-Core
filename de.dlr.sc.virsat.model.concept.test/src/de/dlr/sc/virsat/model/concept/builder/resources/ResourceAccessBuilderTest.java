@@ -22,8 +22,8 @@ import org.junit.Test;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 
-import de.dlr.sc.virsat.concept.unittest.util.test.AProjectTestCase;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
+import de.dlr.sc.virsat.project.test.AProjectTestCase;
 /**
  * test class for resource access builder
  * @author bell_Er

@@ -9,7 +9,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
- de.dlr.sc.virsat.project,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
@@ -17,3 +16,4 @@ Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.concept.unittest.util,
  de.dlr.sc.virsat.concept.unittest.util.test
 Automatic-Module-Name: de.dlr.sc.virsat.concept.unittest.util
+Import-Package: de.dlr.sc.virsat.project.test

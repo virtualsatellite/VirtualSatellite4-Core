@@ -538,6 +538,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param event the actual EVent telling what happened with the Resource
 	 */
 	private static void fireNotifyResourceEvent(Set<Resource> resources, int event) {
+		if (resourceChangeEventThread == null || resourceChangeEventThread.getState() == Thread.State.TERMINATED) {
+			resourceChangeEventThread = new ResourceChangeEventThread();
+		}
 		if (resourceChangeEventThread.getState() == Thread.State.NEW) {
 			resourceChangeEventThread.start();
 		}
@@ -553,7 +556,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		}
 	}
 	
-	private static ResourceChangeEventThread resourceChangeEventThread = new ResourceChangeEventThread(); 
+	private static ResourceChangeEventThread resourceChangeEventThread = null; 
 	
 	/**
 	 * Use this method to stop the notification thread for resource event changes.
