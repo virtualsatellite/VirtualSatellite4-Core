@@ -549,11 +549,17 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		elementConfigurationReactionWheel1.addSuperSei(elementReactionWheelDefinition);
 		elementConfigurationReactionWheel2.addSuperSei(elementReactionWheelDefinition);
 
+		assertThat("Element Configuration is well connected to Definition", elementConfigurationReactionWheel1.getAllSuperSeis(ElementDefinition.class), hasItems(elementReactionWheelDefinition));
+		assertThat("Element Configuration is well connected to Definition", elementConfigurationReactionWheel2.getAllSuperSeis(ElementDefinition.class), hasItems(elementReactionWheelDefinition));
+		
 		assemblyTree.add(aocsSubSystemOccurence);
 		aocsSubSystemOccurence.add(reactionWheelOccurence1);
 		aocsSubSystemOccurence.add(reactionWheelOccurence2);
 		reactionWheelOccurence1.addSuperSei(elementConfigurationReactionWheel1);
-		reactionWheelOccurence2.addSuperSei(elementConfigurationReactionWheel1);
+		reactionWheelOccurence2.addSuperSei(elementConfigurationReactionWheel2);
+
+		assertThat("Element Occurrence is well connected to Configuration", reactionWheelOccurence1.getAllSuperSeis(ElementConfiguration.class), hasItems(elementConfigurationReactionWheel1));
+		assertThat("Element Occurrence is well connected to Configuration", reactionWheelOccurence2.getAllSuperSeis(ElementConfiguration.class), hasItems(elementConfigurationReactionWheel2));
 
 		// Add visualisation categories
 		elementReactionWheelDefinition.add(reactionWheelVisDefinition);
