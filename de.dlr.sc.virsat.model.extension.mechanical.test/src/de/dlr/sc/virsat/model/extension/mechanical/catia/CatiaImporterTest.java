@@ -9,13 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.hasItems;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -107,7 +107,7 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		
-		UserRegistry.getInstance().setSuperUser(true);
+		System.out.println(UserRegistry.getInstance().getUserName());
 		
 		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		conceptVis = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.visualisation");
