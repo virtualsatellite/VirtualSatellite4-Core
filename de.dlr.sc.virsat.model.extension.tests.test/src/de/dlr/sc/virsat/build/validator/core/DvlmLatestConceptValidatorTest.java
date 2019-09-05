@@ -22,13 +22,13 @@ import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * TestCase for latest concept validator
@@ -36,7 +36,7 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  * @author bell_er
  *
  */
-public class DvlmLatestConceptValidatorTest extends AProjectTestCase {
+public class DvlmLatestConceptValidatorTest extends AConceptProjectTestCase {
 	private static final String CONCEPT_EXTENSION_POINT_ID = "de.dlr.sc.virsat.model.Concept";
 	private static final String TEST_CONCEPT_ID = "de.dlr.sc.virsat.model.extension.tests";
 	
