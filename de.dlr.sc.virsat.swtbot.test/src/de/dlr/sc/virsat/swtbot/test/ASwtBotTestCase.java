@@ -32,7 +32,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
-
+import org.junit.rules.Timeout;
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -51,7 +51,7 @@ import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
  *
  */
 public class ASwtBotTestCase {
-
+	
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
@@ -63,6 +63,11 @@ public class ASwtBotTestCase {
 	
 	protected static final String PROJECTNAME = "SWTBotTestProject";
 	protected IProject project;
+	
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
 	
 	@Rule 
 	public TestName testMethodName = new TestName();

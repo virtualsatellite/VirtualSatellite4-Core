@@ -14,6 +14,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.emf.common.command.Command;
 import org.junit.After;
 import org.junit.Before;
@@ -27,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
 import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
 import de.dlr.sc.virsat.model.dvlm.calculation.TypeInstanceResult;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -180,9 +185,91 @@ public class PropertyInstanceHelperTest extends ABeanPropertyTest {
 		
 		caCalculated.setEquationSection(eqSection);
 		
-		PropertyInstanceHelper piHelper = new PropertyInstanceHelper();
+		PropertyInstanceHelper piHelper = new PropertyInstanceHelper() {
+			@Override
+			protected List<ITypeInstanceSetterProvider<?>> loadExtensionPoint() {
+				// Don' t load the extension point to check for default behavior of this method
+				// set an empty list instead 
+				return Collections.emptyList();
+			}
+		};
 		
 		assertTrue("This is a calculated value", piHelper.isCalculated(vpiCalculated));
 		assertFalse("This is not a calculated value", piHelper.isCalculated(vpiNotCalculated));
 	}
+	
+	@Test
+	public void testIsCalculatedWithSetterProvider() {
+		Category testCategory = CategoriesFactory.eINSTANCE.createCategory();
+		AProperty testProperty = PropertydefinitionsFactory.eINSTANCE.createFloatProperty();
+		testCategory.getProperties().add(testProperty);
+		
+		CategoryAssignment caCalculated = new CategoryInstantiator().generateInstance(testCategory, "testCa1");
+		
+		UnitValuePropertyInstance vpiCalculated = (UnitValuePropertyInstance) caCalculated.getPropertyInstances().get(0);
+		
+		// Setup some simple equation referencing vpiCalculated
+		EquationSection eqSection = CalculationFactory.eINSTANCE.createEquationSection();
+		Equation eq = CalculationFactory.eINSTANCE.createEquation();
+		TypeInstanceResult tir = CalculationFactory.eINSTANCE.createTypeInstanceResult();
+		tir.setReference(vpiCalculated);
+		eq.setResult(tir);
+		NumberLiteral nl = CalculationFactory.eINSTANCE.createNumberLiteral();
+		nl.setValue("1");
+		eq.setExpression(nl);
+		eqSection.getEquations().add(eq);
+		
+		caCalculated.setEquationSection(eqSection);
+		
+		final TestTypeInstanceSetterProvider provider = new TestTypeInstanceSetterProvider();
+		
+		PropertyInstanceHelper piHelper = new PropertyInstanceHelper() {
+			@Override
+			protected List<ITypeInstanceSetterProvider<?>> loadExtensionPoint() {
+				List<ITypeInstanceSetterProvider<?>> providers = new ArrayList<ITypeInstanceSetterProvider<?>>();
+				providers.add(provider);
+				return providers; 
+			}
+		};
+		
+		assertFalse("The TypeInstanceSetter will have no clue about the correct type", piHelper.isCalculated(vpiCalculated));
+		assertTrue("The TypeInstanceSetter got correctly called by the underlying methods", provider.hitIsApplicableFor);
+		assertTrue("The TypeInstanceSetter got correctly called by the underlying methods", provider.hitGetAffectedTypeInstance);
+	}
+	
+	/**
+	 * TypeIsntanceSetterProvider mock for correctly testing is calculated method
+	 * @author fisc_ph
+	 *
+	 */
+	class TestTypeInstanceSetterProvider implements ITypeInstanceSetterProvider<ITypeInstanceSetter> {
+		
+		//CHECKSTYLE:OFF
+		public boolean hitIsApplicableFor = false;
+		public boolean hitGetAffectedTypeInstance = false;
+		//CHECKSTYLE:ON
+		
+		protected ITypeInstanceSetter testTypeInstanceSetter = new ITypeInstanceSetter() {
+			
+			@Override
+			public boolean isApplicableFor(ATypeInstance instance) {
+				hitIsApplicableFor = true;
+				return true;
+			}
+			
+			@Override
+			public List<ATypeInstance> getAffectedTypeInstances(ATypeInstance instance) {
+				hitGetAffectedTypeInstance = true;
+				return Collections.emptyList();
+			}
+		};
+		
+		@Override
+		public List<ITypeInstanceSetter> getTypeInstanceSetters() {
+			List<ITypeInstanceSetter> typeInstanceSetters = new ArrayList<ITypeInstanceSetter>();
+			typeInstanceSetters.add(testTypeInstanceSetter);
+			return typeInstanceSetters;
+		}
+	};
+	
 }

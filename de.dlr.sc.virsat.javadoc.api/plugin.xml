@@ -20,7 +20,6 @@
 <plugin id="de.dlr.sc.virsat.build.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.commons"></plugin>
 <plugin id="de.dlr.sc.virsat.commons.ui"></plugin>
-<plugin id="de.dlr.sc.virsat.concept.unittest.util"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.apache.poi"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.commons.cli"></plugin>
@@ -58,7 +57,6 @@
 <plugin id="de.dlr.sc.virsat.target"></plugin>
 <plugin id="de.dlr.sc.virsat.team"></plugin>
 <plugin id="de.dlr.sc.virsat.team.ui"></plugin>
-<plugin id="de.dlr.sc.virsat.test"></plugin>
 <plugin id="de.dlr.sc.virsat.uiengine.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.excel"></plugin>
 <plugin id="de.dlr.sc.virsat.excel.ui"></plugin>
