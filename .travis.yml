@@ -44,10 +44,11 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
-- name: verify
-- name: build-test
-- name: build-assemble-deploy
-
+#- name: verify
+#- name: build-test
+#- name: build-assemble-deploy
+- name: build-test-surefire
+ 
 env:
   global:
   # ---------------------------------------------
@@ -131,7 +132,7 @@ jobs:
     # Build and Test - Surefire Jobs
     # -----------------------------------------------------
     # --- Development and Feature Branches
-    - stage: build-test
+    - stage: build-test-surefire
       if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
       name: Build and Test - Surefire - Development and Features
       script:
