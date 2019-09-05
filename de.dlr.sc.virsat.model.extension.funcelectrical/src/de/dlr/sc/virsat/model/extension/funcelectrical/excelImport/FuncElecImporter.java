@@ -52,16 +52,13 @@ public class FuncElecImporter implements IImport {
 
 	private StructuralElementInstance sc;
 	private XSSFWorkbook wb;
-	private BeanCategoryAssignmentHelper bCaHelper;
-	private FuncElectricalArchitectureHelper feaHelper;
-	private ActiveConceptHelper acHelper;
-	private StructuralElementInstanceHelper seiHelper;
 	private List<InterfaceType> ifTypes;
 	private List<InterfaceEnd> seiInterfaceEnds;
 	private List<InterfaceEnd> ecInterfaceEnds;
 	private List<InterfaceType> itcTypes;
 	private List<Interface> ifaces;
 	private Concept concept;
+	private Repository repository;
 
 	@Override
 	public void importExcel(EObject eObject, Repository repository, XSSFWorkbook wb) {
@@ -96,15 +93,17 @@ public class FuncElecImporter implements IImport {
 	private void init(EObject eObject, Repository repository, XSSFWorkbook wb) {
 		this.sc = (StructuralElementInstance) eObject;
 		this.wb = wb;
-		bCaHelper = new BeanCategoryAssignmentHelper();
-		feaHelper = new FuncElectricalArchitectureHelper();
-		seiHelper = new StructuralElementInstanceHelper(sc);
-		acHelper = new ActiveConceptHelper(repository);
+		this.repository = repository;
+		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
+		FuncElectricalArchitectureHelper feaHelper = new FuncElectricalArchitectureHelper();
+		StructuralElementInstanceHelper seiHelper = new StructuralElementInstanceHelper(sc);
+		ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
+		concept = acHelper.getConcept(Activator.getPluginId());
+		
 		seiInterfaceEnds = bCaHelper.getAllBeanCategories(sc, InterfaceEnd.class);
 		itcTypes = bCaHelper.getAllBeanCategories(sc, InterfaceType.class);	
 		ifTypes = feaHelper.getAllInterfaceTypes(repository);	
 		ifaces = bCaHelper.getAllBeanCategories(sc, Interface.class);
-		concept = acHelper.getConcept(Activator.getPluginId());
 		ecInterfaceEnds =  bCaHelper.getAllBeanCategoriesFromRoot(seiHelper.getRoot(), InterfaceEnd.class);
 	}
 	
@@ -267,7 +266,7 @@ public class FuncElecImporter implements IImport {
 	
 	@Override
 	public List<Fault> validate(EObject object, XSSFWorkbook wb) {
-		ImportValidator iv = new ImportValidator(object, wb);
+		ImportValidator iv = new ImportValidator(object, repository, wb);
 		return iv.validate();
 	}
 }
