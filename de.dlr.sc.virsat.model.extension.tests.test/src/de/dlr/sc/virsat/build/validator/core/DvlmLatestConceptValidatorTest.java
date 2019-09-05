@@ -22,13 +22,13 @@ import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.build.test.ABuilderTest;
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * TestCase for latest concept validator
@@ -36,22 +36,21 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  * @author bell_er
  *
  */
-public class DvlmLatestConceptValidatorTest extends ABuilderTest {
+public class DvlmLatestConceptValidatorTest extends AConceptProjectTestCase {
 	private static final String CONCEPT_EXTENSION_POINT_ID = "de.dlr.sc.virsat.model.Concept";
 	private static final String TEST_CONCEPT_ID = "de.dlr.sc.virsat.model.extension.tests";
 	
 	VirSatTransactionalEditingDomain domain;
 	
+	Repository repo;
+	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws CoreException {
 		super.setUp();
 		UserRegistry.getInstance().setSuperUser(true);
-
-		VirSatResourceSet resSetRepositoryTarget = VirSatResourceSet.getResourceSet(project, false);
-		domain = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
-		Command cmd = resSetRepositoryTarget.initializeModelsAndResourceSet(null, domain);
-		domain.getCommandStack().execute(cmd);
-		domain.saveAll();
+		addEditingDomainAndRepository();
+		domain = editingDomain;
+		repo = DVLMFactory.eINSTANCE.createRepository();
 	}
 	
 	@Test

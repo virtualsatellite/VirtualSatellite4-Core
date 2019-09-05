@@ -9,33 +9,24 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.test;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
-import junit.framework.JUnit4TestAdapter;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
- * 
- * @author scha_vo
+ * This is an example test case to make Travis CI with amven tycho succeed.
+ * Without a test maven/tycho fials. Still in case test cases are written here, 
+ * this class, can be reused, replaced deleted 
+ * @author fisc_ph
  *
  */
-@RunWith(Suite.class)
+public class ExampleTest {
 
-@SuiteClasses({ExampleTest.class})
-
-public class AllTests {
-
-	/**
-	 * the constructor
-	 */
-	private AllTests() {
+	@Test
+	public void testIsTrue() {
+		assertTrue("This is an example test case", true);
 	}
-	/**
-	 * initializes the test suite
-	 * @return a newt JUnit test adapter
-	 */
-	public static junit.framework.Test suite() {
-		return new JUnit4TestAdapter(AllTests.class);
-	}	
+	
+
 }

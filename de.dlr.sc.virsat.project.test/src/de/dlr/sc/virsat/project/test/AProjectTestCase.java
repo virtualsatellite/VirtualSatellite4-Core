@@ -23,6 +23,7 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -73,8 +74,19 @@ public abstract class AProjectTestCase {
 		}
 
 		testProject = createTestProject(getProjectName());
-		
-		//addEditingDomain();
+
+		previousUser = UserRegistry.getInstance().getUserName();
+		setUserAndRights();
+	}
+	
+	private String previousUser;
+	
+	/**
+	 * Method to adjust the User rights for the test cases
+	 * This method gets called by the constructor
+	 */
+	protected void setUserAndRights() {
+		UserRegistry.getInstance().setSuperUser(true);
 	}
 	
 	@After
@@ -86,6 +98,7 @@ public abstract class AProjectTestCase {
 		if (editingDomain != null) {
 			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
 			editingDomain.dispose();
+			editingDomain = null;
 		}
 		
 		// Make sure all projects that were created get removed again
@@ -93,6 +106,13 @@ public abstract class AProjectTestCase {
 			project.delete(true, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
 		}
+		
+		// Bring down user settings to previous state and disable superUser rights
+		
+		//CHECKSTYLE:OFF
+		UserRegistry.getInstance().setSuperUser(false);
+		UserRegistry.getInstance().setUser(previousUser, 356);
+		//CHECKSTYLE:ON
 	}
 	/**
 	 * Creates the editing domain

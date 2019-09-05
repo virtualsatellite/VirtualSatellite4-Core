@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Calculation Tests
-Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation.tests
+Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation.test
 Bundle-Version: 4.9.1.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.calculation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -10,4 +10,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  de.dlr.sc.virsat.model
 Export-Package: de.dlr.sc.virsat.model.calculation.test;uses:="junit.framework"
-Automatic-Module-Name: de.dlr.sc.virsat.model.calculation.tests
+Automatic-Module-Name: de.dlr.sc.virsat.model.calculation.test

@@ -28,14 +28,12 @@ SPDX-License-Identifier: EPL-2.0
             	<artifactId>tycho-surefire-plugin</artifactId>
             	<version>${tycho-version}</version>
             	<configuration>
-            	    <includes>
-					  <include>**/*AllTest.java</include>
-					</includes>
 					<!-- Let the tests run for 20 minutes max. If time is exceeded kill the process. Apparently something is wrong -->
 					<forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
-					<showEclipseLog>true</showEclipseLog>
-					<testFailureIgnore>true</testFailureIgnore>
+					<showEclipseLog>false</showEclipseLog>
+					<rerunFailingTestsCount>3</rerunFailingTestsCount>
+					<testFailureIgnore>false</testFailureIgnore>
               		<useUIHarness>true</useUIHarness>
         		    <useUIThread>false</useUIThread>
 		            <product>de.dlr.sc.virsat.branding.ui.VirSat_Core</product>
