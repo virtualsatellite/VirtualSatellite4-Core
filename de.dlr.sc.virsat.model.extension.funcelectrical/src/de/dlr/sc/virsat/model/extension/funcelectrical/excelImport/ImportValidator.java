@@ -35,8 +35,6 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 
 
@@ -51,14 +49,9 @@ public class ImportValidator {
 
 	// attributes
 	private XSSFWorkbook wb;
-	private VirSatTransactionalEditingDomain domain;
-	private Repository repository;
 	private StructuralElementInstance importSei;
 	private List<InterfaceType> itcTypes;
 	private List<Interface> ifaces;
-	private BeanCategoryAssignmentHelper bCaHelper;
-	private FuncElectricalArchitectureHelper feaHelper;
-	private StructuralElementInstanceHelper seiHelper;
 	private List<InterfaceType> ifTypes;
 	private List<InterfaceEnd> seiInterfaceEnds;
 	private List<InterfaceEnd> ecInterfaceEnds;
@@ -67,22 +60,19 @@ public class ImportValidator {
 	/**
 	 * Create a new validator
 	 * 
-	 * @param object
-	 *            will be used as the root object for integrating the data
-	 * @param wb
-	 *            the excel file
+	 * @param object will be used as the root object for integrating the data
+	 * @param repository the repository
+	 * @param wb the excel file
 
 	 */
-	public ImportValidator(EObject object, XSSFWorkbook wb) {
+	public ImportValidator(EObject object, Repository repository, XSSFWorkbook wb) {
 		if (object instanceof StructuralElementInstance) {
 			importSei = (StructuralElementInstance) object;
 		}
-		this.domain = VirSatEditingDomainRegistry.INSTANCE.getEd(importSei);
 		this.wb = wb;
-		bCaHelper = new BeanCategoryAssignmentHelper();
-		feaHelper = new FuncElectricalArchitectureHelper();
-		repository = this.domain.getResourceSet().getRepository();
-		seiHelper = new StructuralElementInstanceHelper(importSei);
+		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
+		FuncElectricalArchitectureHelper feaHelper = new FuncElectricalArchitectureHelper();
+		StructuralElementInstanceHelper seiHelper = new StructuralElementInstanceHelper(importSei);
 		seiInterfaceEnds = bCaHelper.getAllBeanCategories(importSei, InterfaceEnd.class);
 		itcTypes = bCaHelper.getAllBeanCategories(importSei, InterfaceType.class);
 		ifTypes = feaHelper.getAllInterfaceTypes(repository);
