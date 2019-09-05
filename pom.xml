@@ -22,7 +22,6 @@
 			<modules>
 				<module>de.dlr.sc.virsat.target</module>
 			</modules>
-
 		</profile>
 
 		<profile>
@@ -53,28 +52,28 @@
 
 				<module>de.dlr.sc.virsat.model</module>
 				<module>de.dlr.sc.virsat.model.edit</module>
-				<!--module>de.dlr.sc.virsat.model.edit.test</module-->
+				<module>de.dlr.sc.virsat.model.edit.test</module>
 				<module>de.dlr.sc.virsat.model.ui</module>
-				<!-- module>de.dlr.sc.virsat.model.test</module-->
+				<module>de.dlr.sc.virsat.model.test</module>
 
 				<module>de.dlr.sc.virsat.model.calculation</module>
-				<!--  module>de.dlr.sc.virsat.model.calculation.test</module-->
+				<module>de.dlr.sc.virsat.model.calculation.test</module>
 				<module>de.dlr.sc.virsat.model.calculation.ide</module>
 				<module>de.dlr.sc.virsat.model.calculation.ui</module>
 
 				<module>de.dlr.sc.virsat.commons</module>
 				<module>de.dlr.sc.virsat.commons.ui</module>
-				<!-- module>de.dlr.sc.virsat.commons.test</module-->
+				<module>de.dlr.sc.virsat.commons.test</module>
 
 				<module>de.dlr.sc.virsat.build</module>
-				<!-- module>de.dlr.sc.virsat.build.test</module-->
+				<module>de.dlr.sc.virsat.build.test</module>
 				<module>de.dlr.sc.virsat.build.ui</module>
 
 				<module>de.dlr.sc.virsat.apps</module>
-				<!-- module>de.dlr.sc.virsat.apps.test</module-->
+				<module>de.dlr.sc.virsat.apps.test</module>
 				<module>de.dlr.sc.virsat.apps.ui</module>
 				<module>de.dlr.sc.virsat.excel</module>
-				<!-- module>de.dlr.sc.virsat.excel.test</module-->
+				<module>de.dlr.sc.virsat.excel.test</module>
 				<module>de.dlr.sc.virsat.excel.ui</module>
 
 				<module>de.dlr.sc.virsat.uiengine.ui</module>
@@ -82,27 +81,27 @@
 				<module>de.dlr.sc.virsat.model.concept</module>
 				<module>de.dlr.sc.virsat.model.concept.ide</module>
 				<module>de.dlr.sc.virsat.model.concept.ui</module>
-				<!-- module>de.dlr.sc.virsat.model.concept.test</module-->
+				<module>de.dlr.sc.virsat.model.concept.test</module>
 
 				<module>de.dlr.sc.virsat.project</module>
 				<module>de.dlr.sc.virsat.project.ui</module>
 				<module>de.dlr.sc.virsat.qudv.ui</module>
-				<!-- module>de.dlr.sc.virsat.project.test</module-->
+				<module>de.dlr.sc.virsat.project.test</module>
 
 				<module>de.dlr.sc.virsat.graphiti</module>
 				<module>de.dlr.sc.virsat.graphiti.ui</module>
-				<!-- module>de.dlr.sc.virsat.graphiti.test</module-->
+				<module>de.dlr.sc.virsat.graphiti.test</module>
 
 				<module>de.dlr.sc.virsat.team</module>
 				<module>de.dlr.sc.virsat.team.ui</module>
-				<!-- module>de.dlr.sc.virsat.team.test</module-->
+				<module>de.dlr.sc.virsat.team.test</module>
 
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
-				<!-- module>de.dlr.sc.virsat.test</module-->
-				<!-- Now we finally build the products: oh yes we build it! -->
-
+				<module>de.dlr.sc.virsat.test</module>
+				
+				
 				<module>de.dlr.sc.virsat.model.extension.maturity</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.maturity.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.ui</module>
 
 				<module>de.dlr.sc.virsat.model.extension.mechanical</module>
@@ -111,47 +110,47 @@
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
 				<module>de.dlr.sc.virsat.model.extension.ps</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.ps.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.ps.test</module>
 				<module>de.dlr.sc.virsat.model.extension.ps.ui</module>
 
 				<!-- The Extension for Functional Electrical Architecture Feature -->
 				<module>de.dlr.sc.virsat.model.extension.funcelectrical</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.funcelectrical.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.funcelectrical.test</module>
 				<module>de.dlr.sc.virsat.model.extension.funcelectrical.ui</module>
 	
 				<!-- The Extension for Mass Budget Feature -->
 				<module>de.dlr.sc.virsat.model.extension.budget.mass</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.budget.mass.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.budget.mass.test</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.ui</module>
 	
 				<!-- The Extension for Power Budget Feature -->
 				<module>de.dlr.sc.virsat.model.extension.budget.power</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.budget.power.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.budget.power.test</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.power.ui</module>
 	
 				<!-- The Extension for State Machines Feature -->
 				<module>de.dlr.sc.virsat.model.extension.statemachines</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.statemachines.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.statemachines.test</module>
 				<module>de.dlr.sc.virsat.model.extension.statemachines.ui</module>
 	
 				<!-- Extension for Visualization -->
 				<module>de.dlr.sc.virsat.model.extension.visualisation</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.visualisation.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.visualisation.test</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.ui</module>
 	
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->
 				<module>de.dlr.sc.virsat.model.extension.tests</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.tests.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.tests.test</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.edit</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.tests.edit.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.tests.edit.test</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.ui</module>
 	
 				<!-- Performance Tests -->
-				<!-- module>de.dlr.sc.virsat.performance.test</module-->
+				<module>de.dlr.sc.virsat.performance.test</module>
 
 				<!-- SWTBot UI Tests -->
-				<!-- module>de.dlr.sc.virsat.swtbot.test</module-->
+				<module>de.dlr.sc.virsat.swtbot.test</module>
 			</modules>
 		</profile>
 		<profile>
@@ -185,6 +184,7 @@
 				<module>de.dlr.sc.virsat.javadoc.api.feature</module>
 				<module>de.dlr.sc.virsat.docs.feature</module>
 				
+				<!-- Now we finally build the products: oh yes we build it! -->
 				<module>de.dlr.sc.virsat.dependencies.feature</module>
 				<module>de.dlr.sc.virsat.product</module>
 				<module>de.dlr.sc.virsat.p2updatesite</module>
