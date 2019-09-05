@@ -107,7 +107,8 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		
-		System.out.println(UserRegistry.getInstance().getUserName());
+		System.out.println("Current Super User: " + UserRegistry.getInstance().isSuperUser());
+		System.out.println("Current User Name: " + UserRegistry.getInstance().getUserName());
 		
 		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		conceptVis = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.visualisation");
