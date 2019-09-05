@@ -538,12 +538,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param event the actual EVent telling what happened with the Resource
 	 */
 	private static void fireNotifyResourceEvent(Set<Resource> resources, int event) {
-		if (resourceChangeEventThread == null || resourceChangeEventThread.getState() == Thread.State.TERMINATED) {
-			resourceChangeEventThread = new ResourceChangeEventThread();
-		}
-		if (resourceChangeEventThread.getState() == Thread.State.NEW) {
-			resourceChangeEventThread.start();
-		}
+		initResourceChangeEventThread();
 		
 		if (event == EVENT_CHANGED) {
 			synchronized (accumulatedResourceChangeEvents) {
@@ -553,6 +548,20 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			resourceChangeEventThread.resetTimer();
 		} else {
 			doFireNotifyResourceEvent(resources, event);
+		}
+	}
+
+	/**
+	 * Method to set up the resource Change event thread.
+	 * Starts one if it exists, and creates a new instance if the current
+	 * one got terminated. This seemed to be a reason for stalling jUnit test cases
+	 */
+	private static synchronized void initResourceChangeEventThread() {
+		if (resourceChangeEventThread == null || resourceChangeEventThread.getState() == Thread.State.TERMINATED) {
+			resourceChangeEventThread = new ResourceChangeEventThread();
+		}
+		if (resourceChangeEventThread.getState() == Thread.State.NEW) {
+			resourceChangeEventThread.start();
 		}
 	}
 	
