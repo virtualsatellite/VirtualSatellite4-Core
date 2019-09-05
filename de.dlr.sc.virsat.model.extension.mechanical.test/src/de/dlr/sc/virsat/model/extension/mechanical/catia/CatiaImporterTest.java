@@ -13,7 +13,9 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.hasItems;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,6 +33,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -115,6 +118,8 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 			}
 		});
 		createTestTreeScenario();
+		
+		assertThat("Concepts git added to repository", repository.getActiveConcepts(), hasItems(conceptPS, conceptVis));
 	}
 
 
@@ -554,7 +559,7 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		elementReactionWheelDefinition.add(reactionWheelVisDefinition);
 
 		// Create tree structure with inheritance
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ExecutionCheckCommand command = new ExecutionCheckCommand(editingDomain) {
 
 			@Override
 			protected void doExecute() {
@@ -571,14 +576,43 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 						.getAndAddStructuralElementInstanceResource(assemblyTree.getStructuralElementInstance());
 
 				new InheritanceCopier().updateAllInOrder(repository, new NullProgressMonitor());
+				super.doExecute();
 			}
-		});
+		};
 
+		assertTrue("Command should be executable", command.canExecute());
+		
+		editingDomain.getVirSatCommandStack().execute(command);
+		
+		assertTrue("Command got executed", command.isExecuted);
+		
 		assertNotNull("Sanitycheck that the inheritance copier worked as expected",
 				reactionWheelOccurence1.getFirst(Visualisation.class));
-
 	}
 
+	/**
+	 * Wrapped RecordingCommand to observe if a command got executed correctly
+	 * @author fisc_ph
+	 *
+	 */
+	class ExecutionCheckCommand extends RecordingCommand {
+
+		boolean isExecuted = false;
+		
+		/**
+		 * Just a constructor
+		 * @param domain the editing domain where this command will act on
+		 */
+		ExecutionCheckCommand(TransactionalEditingDomain domain) {
+			super(domain);
+		}
+
+		@Override
+		protected void doExecute() {
+			isExecuted = true;
+		}
+	}
+	
 	/**
 	 * Create a simple mapped JSON object with parts and products that are mapped to
 	 * elements in the test trees
@@ -632,7 +666,4 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		return rootObject;
 	}
-
-
-
 }
