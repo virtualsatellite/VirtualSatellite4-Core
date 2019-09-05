@@ -557,6 +557,8 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		// Add visualisation categories
 		elementReactionWheelDefinition.add(reactionWheelVisDefinition);
+		
+		assertThat("Reaction Wheel Definition has a Visualization category", elementReactionWheelDefinition.getAll(Visualisation.class), hasItems(reactionWheelVisDefinition));
 
 		// Create tree structure with inheritance
 		ExecutionCheckCommand command = new ExecutionCheckCommand(editingDomain) {
