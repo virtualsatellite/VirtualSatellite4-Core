@@ -43,6 +43,7 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
@@ -105,6 +106,9 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
+		
+		UserRegistry.getInstance().setSuperUser(true);
+		
 		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		conceptVis = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.visualisation");
 
