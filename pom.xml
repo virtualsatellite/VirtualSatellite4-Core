@@ -106,7 +106,7 @@
 				<module>de.dlr.sc.virsat.model.extension.maturity.ui</module>
 
 				<module>de.dlr.sc.virsat.model.extension.mechanical</module>
-				<module>de.dlr.sc.virsat.model.extension.mechanical.test</module>
+				<!-- module>de.dlr.sc.virsat.model.extension.mechanical.test</module-->
 				<module>de.dlr.sc.virsat.model.extension.mechanical.ui</module>
 
 				<!-- The Extension for Common EGS-CC based Product Structure -->
@@ -136,7 +136,7 @@
 	
 				<!-- Extension for Visualization -->
 				<module>de.dlr.sc.virsat.model.extension.visualisation</module>
-				<!-- module>de.dlr.sc.virsat.model.extension.visualisation.test</module-->
+				<module>de.dlr.sc.virsat.model.extension.visualisation.test</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.ui</module>
 	
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
