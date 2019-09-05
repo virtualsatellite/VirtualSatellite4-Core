@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,6 +82,11 @@ public class CatiaExporterTest extends AConceptTestCase {
 		fillVisualisationValues(visualisation);
 
 		catiaExporter = new CatiaExporter();
+	}
+	
+	@After
+	public void tearDown() {
+		UserRegistry.getInstance().setSuperUser(false);
 	}
 	
 	@Test
