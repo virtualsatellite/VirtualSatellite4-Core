@@ -34,6 +34,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,6 +44,7 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
@@ -105,6 +107,11 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
+
+		System.out.println("Current Super User: " + UserRegistry.getInstance().isSuperUser());
+		System.out.println("Current User Name: " + UserRegistry.getInstance().getUserName());
+		
+		UserRegistry.getInstance().setSuperUser(true);
 		
 		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		conceptVis = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.visualisation");
@@ -122,6 +129,11 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		createTestTreeScenario();
 	}
 
+	@After
+	public void tearDown() throws CoreException {
+		UserRegistry.getInstance().setSuperUser(false);
+		super.tearDown();
+	}
 
 	@Test
 	public void testTransform() {
