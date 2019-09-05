@@ -110,16 +110,15 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		addEditingDomainAndRepository();
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
-
 			@Override
 			protected void doExecute() {
 				repository.getActiveConcepts().add(conceptPS);
 				repository.getActiveConcepts().add(conceptVis);
 			}
 		});
-		createTestTreeScenario();
-		
 		assertThat("Concepts git added to repository", repository.getActiveConcepts(), hasItems(conceptPS, conceptVis));
+
+		createTestTreeScenario();
 	}
 
 
