@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +41,7 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.concept.unittest.util.test.ExecutionCheckCommand;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
@@ -604,33 +604,10 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		
 		editingDomain.getVirSatCommandStack().execute(command);
 		
-		assertTrue("Command got executed", command.isExecuted);
+		assertTrue("Command got executed", command.isExecuted());
 		
 		assertNotNull("Sanitycheck that the inheritance copier worked as expected",
 				reactionWheelOccurence1.getFirst(Visualisation.class));
-	}
-
-	/**
-	 * Wrapped RecordingCommand to observe if a command got executed correctly
-	 * @author fisc_ph
-	 *
-	 */
-	class ExecutionCheckCommand extends RecordingCommand {
-
-		boolean isExecuted = false;
-		
-		/**
-		 * Just a constructor
-		 * @param domain the editing domain where this command will act on
-		 */
-		ExecutionCheckCommand(TransactionalEditingDomain domain) {
-			super(domain);
-		}
-
-		@Override
-		protected void doExecute() {
-			isExecuted = true;
-		}
 	}
 	
 	/**
