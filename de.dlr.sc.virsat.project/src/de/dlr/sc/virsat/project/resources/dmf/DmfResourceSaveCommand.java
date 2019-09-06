@@ -46,7 +46,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RecordingCommand;
 
 import com.google.common.base.Function;
@@ -106,7 +105,6 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	private IMatchEngine.Factory.Registry matchRegistry;
 	private IDiffEngine diffEngine;
 	private BatchMerger merger;
-	private VirSatTransactionalEditingDomain virSatEd;
 	
 	/**
 	 * Standard constructor
@@ -117,7 +115,6 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	
 	public DmfResourceSaveCommand(VirSatTransactionalEditingDomain virSatEd, StructuralElementInstance sei, List<DObject> dObjects) {
 		super(virSatEd);
-		this.virSatEd = virSatEd;
 		this.sei = sei;
 		this.dObjects = dObjects;
 		this.repository = virSatEd.getResourceSet().getRepository();
@@ -250,9 +247,6 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	 * @return a category assignment if suitable one exists and null if not
 	 */
 	private CategoryAssignment findCategoryAssignmentForDObject(DObject dObject) {
-		if (sei.eIsProxy()) {
-			sei = (StructuralElementInstance) EcoreUtil.resolve(sei, virSatEd.getResourceSet());
-		}
 		return (CategoryAssignment) sei.eResource().getEObject(dObject.getUuid().toString());
 	}
 	
