@@ -83,7 +83,6 @@ public class TestCategoryCompositionArrayImpl extends DObjectImpl implements Tes
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public EList<TestCategoryAllProperty> getTestCompositionArrayDynamic() {
 		if (testCompositionArrayDynamic == null) {
 			testCompositionArrayDynamic = new EObjectContainmentEList<TestCategoryAllProperty>(TestCategoryAllProperty.class, this, TestsPackage.TEST_CATEGORY_COMPOSITION_ARRAY__TEST_COMPOSITION_ARRAY_DYNAMIC);
@@ -96,7 +95,6 @@ public class TestCategoryCompositionArrayImpl extends DObjectImpl implements Tes
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public EList<TestCategoryAllProperty> getTestCompositionArrayStatic() {
 		if (testCompositionArrayStatic == null) {
 			testCompositionArrayStatic = new EObjectContainmentEList<TestCategoryAllProperty>(TestCategoryAllProperty.class, this, TestsPackage.TEST_CATEGORY_COMPOSITION_ARRAY__TEST_COMPOSITION_ARRAY_STATIC);

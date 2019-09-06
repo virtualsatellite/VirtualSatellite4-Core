@@ -69,7 +69,6 @@ public class TestCategoryReferenceImpl extends DObjectImpl implements TestCatego
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryAllProperty getTestRefCategory() {
 		if (testRefCategory != null && testRefCategory.eIsProxy()) {
 			InternalEObject oldTestRefCategory = (InternalEObject)testRefCategory;
@@ -96,7 +95,6 @@ public class TestCategoryReferenceImpl extends DObjectImpl implements TestCatego
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setTestRefCategory(TestCategoryAllProperty newTestRefCategory) {
 		TestCategoryAllProperty oldTestRefCategory = testRefCategory;
 		testRefCategory = newTestRefCategory;
