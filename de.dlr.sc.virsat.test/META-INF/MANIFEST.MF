@@ -53,7 +53,6 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.team.test,
- de.dlr.sc.virsat.model.extension.requirements.test,
  de.dlr.sc.virsat.excel.test
 Export-Package: de.dlr.sc.virsat.test
 Automatic-Module-Name: de.dlr.sc.virsat.test
