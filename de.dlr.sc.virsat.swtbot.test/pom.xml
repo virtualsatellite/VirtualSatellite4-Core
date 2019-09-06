@@ -35,7 +35,8 @@ SPDX-License-Identifier: EPL-2.0
 					<rerunFailingTestsCount>3</rerunFailingTestsCount>
 					<testFailureIgnore>false</testFailureIgnore>
               		<useUIHarness>true</useUIHarness>
-        		    <useUIThread>false</useUIThread>
+              		<trimStackTrace>false</trimStackTrace>
+              		<useUIThread>false</useUIThread>
 		            <product>de.dlr.sc.virsat.branding.ui.VirSat_Core</product>
               		<application>org.eclipse.ui.ide.workbench</application>
             	</configuration>
