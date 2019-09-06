@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.project.resources.dmf;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,9 @@ public class DmfResource extends XMIResourceImpl {
 	 * @throws IOException If underling resource cant be saved
 	 */
 	protected void saveDMFResource(Map<?, ?> options) throws IOException {
+		if (virSatDvlmResource.getContents().isEmpty()) {
+			virSatDvlmResource.load(Collections.EMPTY_MAP);
+		}
 		StructuralElementInstance sei = (StructuralElementInstance) virSatDvlmResource.getContents().get(0);
 		DObjectContainer dObjectContainer = (DObjectContainer) super.getContents().get(0);
 		DmfResourceSaveCommand dmfResourceSaveCommand = new DmfResourceSaveCommand(virSatEd, sei,

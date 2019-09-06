@@ -390,6 +390,7 @@ public class DmfResourceTest extends AConceptTestCase {
 		assertEquals("DMF property same as Bean property", TEST_VALUE_INT, dmfCategoryAssignment.getTestInt());
 	}
 	
+
 	@Test
 	public void testLoadComposedCategory() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
@@ -659,7 +660,84 @@ public class DmfResourceTest extends AConceptTestCase {
 		TestCategoryReference beanTestCategoryAssignmentReference = new TestCategoryReference(referencingCa);
 		
 		assertEquals("Reference is set correctly", beanTestCategoryAssignment, beanTestCategoryAssignmentReference.getTestRefCategory());
+		
+		resSeiOther.unload();
+		resSei.unload();
+		dmfCategoryAssignmentReference.setName("vfdv");
+		dmfCategoryAssignment.setName("sdfsdf");
+		dmfResource.save(Collections.EMPTY_MAP);
+		
 	}
+	
+	@Test
+	public void testSaveReferencedDObjectDifferentUnloadedContainment() throws IOException {
+		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
+		TestStructuralElement beanTestStructuralElementOther = new TestStructuralElement(concept);
+
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+			}
+		});
+
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSeiOther = resSet.getStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+		
+		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
+		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
+		m.put(DmfResource.DMF_FILENAME_EXTENSION, new DmfResourceFactory());
+
+		URI originalSeiUriOther = resSeiOther.getURI();
+		URI dmfSeiUriOther = originalSeiUriOther.appendFileExtension(DmfResource.DMF_FILENAME_EXTENSION);
+		
+		URI originalSeiUri = resSei.getURI();
+		URI dmfSeiUri = originalSeiUri.appendFileExtension(DmfResource.DMF_FILENAME_EXTENSION);
+		
+		ResourceSet dmfResourceSet = new ResourceSetImpl();
+		Resource dmfResourceOther = dmfResourceSet.getResource(dmfSeiUriOther, true);
+		Resource dmfResource = dmfResourceSet.getResource(dmfSeiUri, true);
+		
+		ed.saveAll();
+		
+		DObjectContainer dObjectContainerOther = (DObjectContainer) dmfResourceOther.getContents().get(0);
+		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference dmfCategoryAssignmentReference = TestsFactory.eINSTANCE.createTestCategoryReference();
+		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty dmfCategoryAssignment = TestsFactory.eINSTANCE.createTestCategoryAllProperty();
+
+		dObjectContainerOther.getObjects().add(dmfCategoryAssignment);
+		dmfResourceOther.save(Collections.EMPTY_MAP);
+		
+		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
+		dmfCategoryAssignmentReference.setTestRefCategory(dmfCategoryAssignment);
+		dObjectContainer.getObjects().add(dmfCategoryAssignmentReference);
+		dmfResource.save(Collections.EMPTY_MAP);
+		
+		//Unload original DVLM resources
+		resSeiOther.unload();
+		resSei.unload();
+		
+		//Check that its still possible to save changes
+		final String changedNameReference = "NewNameReference";
+		final String changedNameReferenced = "NewNameReferenced";
+		dmfCategoryAssignmentReference.setName(changedNameReference);
+		dmfCategoryAssignment.setName(changedNameReferenced);
+		dmfResource.save(Collections.EMPTY_MAP);
+		dmfResourceOther.save(Collections.EMPTY_MAP);
+		
+		resSei.load(Collections.EMPTY_MAP);
+		resSeiOther.load(Collections.EMPTY_MAP);
+		StructuralElementInstance sei = (StructuralElementInstance) resSei.getContents().get(0);
+		assertEquals("Sei has correct number of category assignments", 1, sei.getCategoryAssignments().size());
+		StructuralElementInstance seiOther = (StructuralElementInstance) resSeiOther.getContents().get(0);
+		assertEquals("Sei has correct number of category assignments", 1, seiOther.getCategoryAssignments().size());
+		CategoryAssignment referencingCa = sei.getCategoryAssignments().get(0);
+		CategoryAssignment referencedCa = seiOther.getCategoryAssignments().get(0);
+		assertEquals("Category assignments should be updated even with unloaded DVLM resources", referencingCa.getName(), changedNameReference);
+		assertEquals("Category assignments should be updated even with unloaded DVLM resources", referencedCa.getName(), changedNameReferenced);
+		
+	}
+	
 	
 	@Test
 	public void testSaveContainedDObject() throws IOException {
