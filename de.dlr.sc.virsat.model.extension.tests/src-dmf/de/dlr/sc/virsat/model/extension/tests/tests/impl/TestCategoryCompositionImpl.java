@@ -70,7 +70,6 @@ public class TestCategoryCompositionImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryAllProperty getTestSubCategory() {
 		return testSubCategory;
 	}
@@ -95,7 +94,6 @@ public class TestCategoryCompositionImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public void setTestSubCategory(TestCategoryAllProperty newTestSubCategory) {
 		if (newTestSubCategory != testSubCategory) {
 			NotificationChain msgs = null;

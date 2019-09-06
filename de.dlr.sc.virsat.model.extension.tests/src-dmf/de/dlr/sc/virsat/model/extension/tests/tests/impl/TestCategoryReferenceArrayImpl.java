@@ -79,7 +79,6 @@ public class TestCategoryReferenceArrayImpl extends DObjectImpl implements TestC
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public EList<TestCategoryAllProperty> getTestCategoryReferenceArrayDynamic() {
 		if (testCategoryReferenceArrayDynamic == null) {
 			testCategoryReferenceArrayDynamic = new EObjectResolvingEList<TestCategoryAllProperty>(TestCategoryAllProperty.class, this, TestsPackage.TEST_CATEGORY_REFERENCE_ARRAY__TEST_CATEGORY_REFERENCE_ARRAY_DYNAMIC);
@@ -92,7 +91,6 @@ public class TestCategoryReferenceArrayImpl extends DObjectImpl implements TestC
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public EList<TestCategoryAllProperty> getTestCategoryReferenceArrayStatic() {
 		if (testCategoryReferenceArrayStatic == null) {
 			testCategoryReferenceArrayStatic = new EObjectResolvingEList<TestCategoryAllProperty>(TestCategoryAllProperty.class, this, TestsPackage.TEST_CATEGORY_REFERENCE_ARRAY__TEST_CATEGORY_REFERENCE_ARRAY_STATIC);
