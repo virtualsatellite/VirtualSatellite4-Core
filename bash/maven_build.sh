@@ -45,7 +45,10 @@ printUsage() {
 
 checkforMavenProblems() {
 	echo "Check for Maven Problems on Product:"
-	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log | grep -v "\[WARNING\] Checksum validation failed" || exit 0  && exit 1;)
+	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log \
+	| grep -v "\[WARNING\] Checksum validation failed" \
+	| grep -v "\[WARNING\] Could not validate integrity of download" \
+	|| exit 0 && exit 1;)
 }
 
 callMavenSurefire() {
