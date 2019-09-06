@@ -661,12 +661,6 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		assertEquals("Reference is set correctly", beanTestCategoryAssignment, beanTestCategoryAssignmentReference.getTestRefCategory());
 		
-		resSeiOther.unload();
-		resSei.unload();
-		dmfCategoryAssignmentReference.setName("vfdv");
-		dmfCategoryAssignment.setName("sdfsdf");
-		dmfResource.save(Collections.EMPTY_MAP);
-		
 	}
 	
 	@Test
@@ -704,8 +698,10 @@ public class DmfResourceTest extends AConceptTestCase {
 		DObjectContainer dObjectContainerOther = (DObjectContainer) dmfResourceOther.getContents().get(0);
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference dmfCategoryAssignmentReference = TestsFactory.eINSTANCE.createTestCategoryReference();
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty dmfCategoryAssignment = TestsFactory.eINSTANCE.createTestCategoryAllProperty();
+		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty dmfNewTargetCategoryAssignment = TestsFactory.eINSTANCE.createTestCategoryAllProperty();
 
 		dObjectContainerOther.getObjects().add(dmfCategoryAssignment);
+		dObjectContainerOther.getObjects().add(dmfNewTargetCategoryAssignment);
 		dmfResourceOther.save(Collections.EMPTY_MAP);
 		
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
@@ -713,15 +709,20 @@ public class DmfResourceTest extends AConceptTestCase {
 		dObjectContainer.getObjects().add(dmfCategoryAssignmentReference);
 		dmfResource.save(Collections.EMPTY_MAP);
 		
-		//Unload original DVLM resources
-		resSeiOther.unload();
+		//Unload original DVLM resources to ensure that they are properly loaded when saving changes to a DMF resource
 		resSei.unload();
+		resSeiOther.unload();
+		assertFalse("The DVLM resource should be unloaded now to check if saving the DMF resource properly loads this resource again", 
+				resSei.isLoaded());
+		assertFalse("The DVLM resource should be unloaded now to check if saving the DMF resource properly loads this resource again", 
+				resSeiOther.isLoaded());
 		
 		//Check that its still possible to save changes
 		final String changedNameReference = "NewNameReference";
 		final String changedNameReferenced = "NewNameReferenced";
 		dmfCategoryAssignmentReference.setName(changedNameReference);
-		dmfCategoryAssignment.setName(changedNameReferenced);
+		dmfCategoryAssignmentReference.setTestRefCategory(dmfNewTargetCategoryAssignment);
+		dmfNewTargetCategoryAssignment.setName(changedNameReferenced);
 		dmfResource.save(Collections.EMPTY_MAP);
 		dmfResourceOther.save(Collections.EMPTY_MAP);
 		
@@ -730,9 +731,10 @@ public class DmfResourceTest extends AConceptTestCase {
 		StructuralElementInstance sei = (StructuralElementInstance) resSei.getContents().get(0);
 		assertEquals("Sei has correct number of category assignments", 1, sei.getCategoryAssignments().size());
 		StructuralElementInstance seiOther = (StructuralElementInstance) resSeiOther.getContents().get(0);
-		assertEquals("Sei has correct number of category assignments", 1, seiOther.getCategoryAssignments().size());
+		assertEquals("Sei has correct number of category assignments", 2, seiOther.getCategoryAssignments().size());
 		CategoryAssignment referencingCa = sei.getCategoryAssignments().get(0);
-		CategoryAssignment referencedCa = seiOther.getCategoryAssignments().get(0);
+		ReferencePropertyInstance refProp = (ReferencePropertyInstance) referencingCa.getPropertyInstances().get(0);
+		CategoryAssignment referencedCa = (CategoryAssignment) refProp.getReference();
 		assertEquals("Category assignments should be updated even with unloaded DVLM resources", referencingCa.getName(), changedNameReference);
 		assertEquals("Category assignments should be updated even with unloaded DVLM resources", referencedCa.getName(), changedNameReferenced);
 		
