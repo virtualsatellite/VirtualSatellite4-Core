@@ -18,3 +18,4 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.requirements,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.ui
+Bundle-Vendor: DLR (German Aerospace Center)
