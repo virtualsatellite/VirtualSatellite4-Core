@@ -29,10 +29,9 @@ public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 
 	@Before
 	public void setup() {
-		prepareEditingDomain();
 		concept = loadConceptFromPlugin();
 	}
-	
+
 	@Test
 	public void testNoMatch() {
 		IBeanStructuralElementInstance parent = createBean("A");
@@ -59,8 +58,8 @@ public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 		BeanStructuralTreeTraverser traverser = new BeanStructuralTreeTraverser();
 		traverser.traverse(parent, matcher);
 		
-		final int THREE = 3;
-		assertEquals(THREE, matcher.foundMatches.size());
+		final int EXPECTED_MATCHES = 3;
+		assertEquals(EXPECTED_MATCHES, matcher.foundMatches.size());
 		assertEquals(null, matcher.foundMatches.get(parent));
 		assertEquals(parent, matcher.foundMatches.get(child));
 		assertEquals(child, matcher.foundMatches.get(grandChild));
@@ -82,13 +81,13 @@ public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 		BeanStructuralTreeTraverser traverser = new BeanStructuralTreeTraverser();
 		traverser.traverse(n, matcher);
 		
-		final int THREE = 3;
-		assertEquals(THREE, matcher.foundMatches.size());
+		final int EXPECTED_MATCHES = 3;
+		assertEquals(EXPECTED_MATCHES, matcher.foundMatches.size());
 		assertEquals(null, matcher.foundMatches.get(n2));
 		assertEquals(null, matcher.foundMatches.get(n1));
 		assertEquals(n1, matcher.foundMatches.get(n12));
 	}
-	
+
 	/**
 	 * @param name 
 	 * @return a new bean with a given name
