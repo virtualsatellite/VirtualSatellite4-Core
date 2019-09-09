@@ -77,6 +77,8 @@ public abstract class AProjectTestCase {
 
 		previousUser = UserRegistry.getInstance().getUserName();
 		setUserAndRights();
+		
+		VirSatEditingDomainRegistry.INSTANCE.clear();  
 	}
 	
 	private String previousUser;
@@ -96,8 +98,7 @@ public abstract class AProjectTestCase {
 		}
 
 		if (editingDomain != null) {
-			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
-			editingDomain.dispose();
+			VirSatEditingDomainRegistry.INSTANCE.clear();
 			editingDomain = null;
 		}
 		

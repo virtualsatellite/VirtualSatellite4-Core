@@ -609,7 +609,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		private static final int SLEEP_TIME = 50;
 		private static final int ACCUMULATION_TIME = 250;
 
-		private boolean threadFinished = false;
+		private boolean triggerFinished = false;
 		
 		private int timer;
 		
@@ -631,7 +631,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		@Override
 		public void run() {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread started "));
-			while (!threadFinished) {
+			while (!triggerFinished) {
 				try {
 					Thread.sleep(SLEEP_TIME);
 				} catch (InterruptedException e) {
@@ -657,7 +657,16 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		 */
 		public void finish() {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread triggered for stop.... "));
-			threadFinished = true;
+			triggerFinished = true;
+			
+			// Now wait until the thread actually terminated
+			while (this.isAlive()) {
+				try {
+					Thread.sleep(SLEEP_TIME);
+				} catch (InterruptedException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to get to sleep! ", e));
+				}
+			}
 		}
 	}
 	
