@@ -118,12 +118,15 @@ Germany
       <feature id="org.eclipse.equinox.executable" installMode="root"/>
       <feature id="org.eclipse.draw2d" installMode="root"/>
       <feature id="org.eclipse.egit" installMode="root"/>
+      <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
+      <feature id="org.eclipse.graphiti.feature" installMode="root"/>
+      <feature id="org.eclipse.jgit" installMode="root"/>
    </features>
 
    <configurations>
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
