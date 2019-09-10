@@ -22,7 +22,7 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({ })
+@SuiteClasses({ExampleTest.class})
 
 public class AllTests {
 
@@ -30,7 +30,6 @@ public class AllTests {
 	 * the constructor
 	 */
 	private AllTests() {
-
 	}
 	/**
 	 * initializes the test suite

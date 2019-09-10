@@ -17,16 +17,16 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.excel.ExcelImporter;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  *  Test class for the import command
  */
-public class ImportCommandTest extends AProjectTestCase {
+public class ImportCommandTest extends AConceptProjectTestCase {
 	
 	@Before
 	public void setUp() throws CoreException {

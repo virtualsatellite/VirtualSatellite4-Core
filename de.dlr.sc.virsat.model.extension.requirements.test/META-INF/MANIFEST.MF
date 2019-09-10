@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Model Extension Concept Tests
+Bundle-Name: VirSat Model Extension Requirements Concept Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.requirements.test;singleton:=true
 Bundle-Version: 4.9.1.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.extension.requirements

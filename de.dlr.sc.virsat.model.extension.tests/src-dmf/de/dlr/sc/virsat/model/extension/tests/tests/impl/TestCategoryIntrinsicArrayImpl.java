@@ -78,7 +78,6 @@ public class TestCategoryIntrinsicArrayImpl extends DObjectImpl implements TestC
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public EList<String> getTestStringArrayDynamic() {
 		if (testStringArrayDynamic == null) {
 			testStringArrayDynamic = new EDataTypeUniqueEList<String>(String.class, this, TestsPackage.TEST_CATEGORY_INTRINSIC_ARRAY__TEST_STRING_ARRAY_DYNAMIC);
@@ -91,7 +90,6 @@ public class TestCategoryIntrinsicArrayImpl extends DObjectImpl implements TestC
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public EList<String> getTestStringArrayStatic() {
 		if (testStringArrayStatic == null) {
 			testStringArrayStatic = new EDataTypeUniqueEList<String>(String.class, this, TestsPackage.TEST_CATEGORY_INTRINSIC_ARRAY__TEST_STRING_ARRAY_STATIC);
@@ -179,7 +177,7 @@ public class TestCategoryIntrinsicArrayImpl extends DObjectImpl implements TestC
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuilder result = new StringBuilder(super.toString());
+		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (testStringArrayDynamic: ");
 		result.append(testStringArrayDynamic);
 		result.append(", testStringArrayStatic: ");

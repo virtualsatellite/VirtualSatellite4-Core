@@ -117,7 +117,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryAllProperty createTestCategoryAllProperty() {
 		TestCategoryAllPropertyImpl testCategoryAllProperty = new TestCategoryAllPropertyImpl();
 		return testCategoryAllProperty;
@@ -128,7 +127,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryComposition createTestCategoryComposition() {
 		TestCategoryCompositionImpl testCategoryComposition = new TestCategoryCompositionImpl();
 		return testCategoryComposition;
@@ -139,7 +137,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryReference createTestCategoryReference() {
 		TestCategoryReferenceImpl testCategoryReference = new TestCategoryReferenceImpl();
 		return testCategoryReference;
@@ -150,7 +147,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryIntrinsicArray createTestCategoryIntrinsicArray() {
 		TestCategoryIntrinsicArrayImpl testCategoryIntrinsicArray = new TestCategoryIntrinsicArrayImpl();
 		return testCategoryIntrinsicArray;
@@ -161,7 +157,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryCompositionArray createTestCategoryCompositionArray() {
 		TestCategoryCompositionArrayImpl testCategoryCompositionArray = new TestCategoryCompositionArrayImpl();
 		return testCategoryCompositionArray;
@@ -172,7 +167,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryReferenceArray createTestCategoryReferenceArray() {
 		TestCategoryReferenceArrayImpl testCategoryReferenceArray = new TestCategoryReferenceArrayImpl();
 		return testCategoryReferenceArray;
@@ -183,7 +177,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryBeanA createTestCategoryBeanA() {
 		TestCategoryBeanAImpl testCategoryBeanA = new TestCategoryBeanAImpl();
 		return testCategoryBeanA;
@@ -194,7 +187,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryBeanB createTestCategoryBeanB() {
 		TestCategoryBeanBImpl testCategoryBeanB = new TestCategoryBeanBImpl();
 		return testCategoryBeanB;
@@ -205,7 +197,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryBeanConcrete createTestCategoryBeanConcrete() {
 		TestCategoryBeanConcreteImpl testCategoryBeanConcrete = new TestCategoryBeanConcreteImpl();
 		return testCategoryBeanConcrete;
@@ -216,7 +207,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryBase createTestCategoryBase() {
 		TestCategoryBaseImpl testCategoryBase = new TestCategoryBaseImpl();
 		return testCategoryBase;
@@ -227,7 +217,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestCategoryExtends createTestCategoryExtends() {
 		TestCategoryExtendsImpl testCategoryExtends = new TestCategoryExtendsImpl();
 		return testCategoryExtends;
@@ -238,7 +227,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestParameter createTestParameter() {
 		TestParameterImpl testParameter = new TestParameterImpl();
 		return testParameter;
@@ -249,7 +237,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestMassParameters createTestMassParameters() {
 		TestMassParametersImpl testMassParameters = new TestMassParametersImpl();
 		return testMassParameters;
@@ -280,7 +267,6 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
 	public TestsPackage getTestsPackage() {
 		return (TestsPackage)getEPackage();
 	}

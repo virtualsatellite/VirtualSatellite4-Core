@@ -174,8 +174,9 @@
 								the process. Apparently something is wrong -->
 							<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
-							<showEclipseLog>true</showEclipseLog>
-							<testFailureIgnore>true</testFailureIgnore>
+							<showEclipseLog>false</showEclipseLog>
+							<testFailureIgnore>false</testFailureIgnore>
+							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
 						</configuration>
@@ -283,7 +284,7 @@
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
-							<pluginExecution>
+								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.asciidoctor</groupId>
 										<artifactId>asciidoctor-maven-plugin</artifactId>

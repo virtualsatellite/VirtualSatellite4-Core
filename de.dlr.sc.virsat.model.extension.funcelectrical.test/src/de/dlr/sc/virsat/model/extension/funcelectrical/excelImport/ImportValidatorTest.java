@@ -63,7 +63,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFaults.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_END, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + THREE));
 		expectedFaults.add(new Fault(FaultType.INTERFACE_END_NAME_IS_NOT_SET, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + FOUR));
 					
-		ImportValidator iv = new ImportValidator(ed.getStructuralElementInstance(), wb);
+		ImportValidator iv = new ImportValidator(ed.getStructuralElementInstance(), repository, wb);
 		ArrayList<Fault> faults = (ArrayList<Fault>) iv.validate();	
 		assertEquals("Faults were correctly detected", expectedFaults, faults);
 	}
@@ -83,7 +83,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFault.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_TYPE, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + THREE));
 		expectedFault.add(new Fault(FaultType.INTERFACE_TYPE_NAME_IS_NOT_SET, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + THREE));
-		ImportValidator iv = new ImportValidator(itc.getStructuralElementInstance(), wb);
+		ImportValidator iv = new ImportValidator(itc.getStructuralElementInstance(), repository, wb);
 		ArrayList<Fault> fault = (ArrayList<Fault>) iv.validate();
 		assertEquals(expectedFault, fault);
 	}
@@ -105,7 +105,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFault.add(new Fault(FaultType.INTERFACE_NAME_IS_NOT_SET, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FaultType.TO_INTERFACE_END_NOT_FOUND, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
-		ImportValidator iv = new ImportValidator(ec.getStructuralElementInstance(), wb);
+		ImportValidator iv = new ImportValidator(ec.getStructuralElementInstance(), repository, wb);
 		
 		ArrayList<Fault> fault = (ArrayList<Fault>) iv.validate();
 		assertEquals(expectedFault, fault);
