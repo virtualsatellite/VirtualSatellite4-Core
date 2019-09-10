@@ -81,7 +81,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 		this.typeReviewPage = typeReviewPage;
 		this.wizard = containingWizard;
 		setDescription(
-				"Please select a CSV file to import from and a requirement type for the imported requirements. If a new type should be created then select the container configuration");
+				"Please select a CSV file and a requirement type for the imported requirements. To create a new type, select a container configuration.");
 	}
 
 	@Override
