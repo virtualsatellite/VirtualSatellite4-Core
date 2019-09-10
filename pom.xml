@@ -137,7 +137,12 @@
 				<module>de.dlr.sc.virsat.model.extension.visualisation</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.test</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.ui</module>
-	
+				
+				<!-- Extension for Requirements -->
+				<module>de.dlr.sc.virsat.model.extension.requirements</module>
+				<module>de.dlr.sc.virsat.model.extension.requirements.test</module>
+				<module>de.dlr.sc.virsat.model.extension.requirements.ui</module>
+				
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->
 				<module>de.dlr.sc.virsat.model.extension.tests</module>
@@ -179,6 +184,7 @@
 				<module>de.dlr.sc.virsat.model.extension.budget.mass.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.budget.power.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.statemachines.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.requirements.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.feature</module>
 				<module>de.dlr.sc.virsat.javadoc.api.feature</module>
