@@ -658,14 +658,11 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		public void finish() {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread triggered for stop.... "));
 			triggerFinished = true;
-			
-			// Now wait until the thread actually terminated
-			while (this.isAlive()) {
-				try {
-					Thread.sleep(SLEEP_TIME);
-				} catch (InterruptedException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to get to sleep! ", e));
-				}
+
+			try {
+				join();
+			} catch (InterruptedException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "ResourceChangeEventThread: Failed waiting until Threads are joined.... "));
 			}
 		}
 	}
