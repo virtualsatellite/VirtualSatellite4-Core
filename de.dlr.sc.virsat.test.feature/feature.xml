@@ -27,17 +27,17 @@ by German Aerospace Center (DLR e.V.)
          version="0.0.0"/>
 
    <requires>
-      <import plugin="de.dlr.sc.virsat.project" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.team" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.edit" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="de.dlr.sc.virsat.team"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
       <import plugin="de.dlr.sc.virsat.model.calculation"/>
       <import plugin="de.dlr.sc.virsat.apps"/>
       <import plugin="de.dlr.sc.virsat.build"/>
       <import plugin="de.dlr.sc.virsat.graphiti"/>
       <import plugin="de.dlr.sc.virsat.model.extension.ps"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.visualisation" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.tests" version="4.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.visualisation"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.mass"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.power"/>
       <import plugin="de.dlr.sc.virsat.model.extension.tests.edit"/>
@@ -48,11 +48,11 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="de.dlr.sc.virsat.model.extension.requirements"/>
       <import plugin="de.dlr.sc.virsat.excel"/>
       <import plugin="de.dlr.sc.virsat.external.lib.spotbugs"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.tests" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
       <import plugin="de.dlr.sc.virsat.external.lib.apache.poi"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.ps" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.visualisation" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.budget.mass" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.ps"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.visualisation"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.mass"/>
       <import plugin="de.dlr.sc.virsat.apps.ui"/>
       <import plugin="de.dlr.sc.virsat.branding.ui"/>
       <import plugin="de.dlr.sc.virsat.build.ui"/>
@@ -70,15 +70,15 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="de.dlr.sc.virsat.team.ui"/>
       <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.mass.ui"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.maturity" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.mechanical" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.statemachines" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.maturity"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.mechanical"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.statemachines"/>
       <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.team.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.uiengine.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.commons.feature" version="4.4.0"/>
+      <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
