@@ -19,17 +19,16 @@ import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
- * 
+ *
  * This class is generated once, do your changes here
- * 
+ *
  * Concept for modelling Functional Electrical Architecture (FEA)
- * 
+ *
  */
 public class Migrator2v0 extends AMigrator2v0 implements IMigrator {
 
 	@Override
 	public void migrate(Concept concept, IMigrator previousMigrator) {
-		//TODO: Implement custom concept migration for version 2.0
 		super.migrate(concept, previousMigrator);
 	}
 }

@@ -19,17 +19,16 @@ import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValid
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
- * 
+ *
  * This class is generated once, do your changes here
- * 
+ *
  * Power Budget Concept
- * 
+ *
  */
 public class StructuralElementInstanceValidator extends AStructuralElementInstanceValidator implements IStructuralElementInstanceValidator {
 
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
-		//TODO: Implement custom validation for concept
 		return super.validate(sei);
 	}
 }

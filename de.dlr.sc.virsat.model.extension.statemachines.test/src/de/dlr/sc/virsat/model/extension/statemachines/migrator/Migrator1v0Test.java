@@ -30,31 +30,27 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
- * 
+ *
  * This class is generated once, do your changes here
- * 
+ *
  * Concept for modeling State Machines
- * 
+ *
  */
-public class Migrator1v0Test extends AMigrator1v0Test {		
-	
+public class Migrator1v0Test extends AMigrator1v0Test {
+
 	@Test
 	public void testMigrator1v0() {
 		Migrator1v0 testMigrator1v0 = new Migrator1v0();
-		
+
 		Repository repository = DVLMFactory.eINSTANCE.createRepository();
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
-		
+
 		repository.getActiveConcepts().add(conceptCurrent);
-	
-		//TODO: Setup a current concept and a concept to migrate to
-		
+
 		Concept conceptPrevious = EcoreUtil.copy(conceptCurrent);
-		
+
 		testMigrator1v0.migrate(conceptPrevious, conceptCurrent, conceptNext);
-		
-		//TODO: Check for correct migration
 	}
-	
+
 }
