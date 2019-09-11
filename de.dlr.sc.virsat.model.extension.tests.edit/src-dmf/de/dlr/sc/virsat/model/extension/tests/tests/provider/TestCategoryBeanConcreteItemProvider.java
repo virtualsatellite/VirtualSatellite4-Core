@@ -92,7 +92,6 @@ public class TestCategoryBeanConcreteItemProvider extends DObjectItemProvider {
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
-		super.notifyChanged(notification);
 	}
 
 	/**

@@ -44,6 +44,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 		FuncElecExporter fe = new FuncElecExporter();
 		assertEquals(true, fe.canExport(ec.getStructuralElementInstance()));
 	}
+	
 	@Test
 	public void test()  { 		
 		StructuralElementInstance sei = itc.getStructuralElementInstance();
@@ -59,6 +60,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 	}
+	
 	@Test
 	public void test2() throws IOException  { 		
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
@@ -93,8 +95,8 @@ public class ExcelExporterTest extends ExcelTestCase {
 			assertEquals("Interface exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-		
 	}
+	
 	@Test
 	public void test4() throws IOException  { 	
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
@@ -111,8 +113,8 @@ public class ExcelExporterTest extends ExcelTestCase {
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-		
 	}
+	
 	@Test
 	public void test5() throws IOException  { 		
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
@@ -132,6 +134,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
+	
 	@Test
 	public void test6() throws IOException  { 
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
@@ -166,8 +169,8 @@ public class ExcelExporterTest extends ExcelTestCase {
 			assertEquals("Interface exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-		
 	}
+	
 	@Test
 	public void test8() throws IOException  { 
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
@@ -184,8 +187,8 @@ public class ExcelExporterTest extends ExcelTestCase {
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-		
 	}
+	
 	@Test
 	public void test9() throws IOException  { 		
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
@@ -205,7 +208,6 @@ public class ExcelExporterTest extends ExcelTestCase {
 			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-		
+		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));	
 	}
 }

@@ -23,7 +23,7 @@
 	</properties>
 	<profiles>
 		<profile>
-			<id>javadoc</id>
+			<id>doc</id>
 			<build>
 				<plugins>
 					<plugin>

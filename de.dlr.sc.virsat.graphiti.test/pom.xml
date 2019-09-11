@@ -20,5 +20,5 @@ SPDX-License-Identifier: EPL-2.0
 	<artifactId>de.dlr.sc.virsat.graphiti.test</artifactId>
 	<name>de.dlr.sc.virsat.graphiti.test</name>
 	
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 </project>

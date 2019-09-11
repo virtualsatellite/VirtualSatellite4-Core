@@ -18,5 +18,5 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.model.extension.budget.power.test</artifactId>
 	<name>de.dlr.sc.virsat.model.extension.budget.power.test</name>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 </project>

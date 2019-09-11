@@ -44,6 +44,7 @@ SPDX-License-Identifier: EPL-2.0
 				<dirset dir="." casesensitive="yes">
 					<include name="de.dlr.sc.virsat.*"/>
 					<exclude name="de.dlr.sc.virsat.*ui"/>
+					<exclude name="de.dlr.sc.virsat.javadoc.api"/>
 					<exclude name="de.dlr.sc.virsat.*feature"/>
 					<exclude name="de.dlr.sc.virsat.*ide"/>
 					<exclude name="de.dlr.sc.virsat.*test*"/>

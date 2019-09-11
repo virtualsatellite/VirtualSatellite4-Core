@@ -9,10 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.mechanical.catia;
 
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -31,6 +33,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.transaction.RecordingCommand;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,8 +41,10 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.concept.unittest.util.test.ExecutionCheckCommand;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
@@ -102,21 +107,33 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
+
+		System.out.println("Current Super User: " + UserRegistry.getInstance().isSuperUser());
+		System.out.println("Current User Name: " + UserRegistry.getInstance().getUserName());
+		
+		UserRegistry.getInstance().setSuperUser(true);
+		
 		conceptPS = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.ps");
 		conceptVis = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.visualisation");
 
 		addEditingDomainAndRepository();
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
-
 			@Override
 			protected void doExecute() {
 				repository.getActiveConcepts().add(conceptPS);
 				repository.getActiveConcepts().add(conceptVis);
 			}
 		});
+		assertThat("Concepts git added to repository", repository.getActiveConcepts(), hasItems(conceptPS, conceptVis));
+
 		createTestTreeScenario();
 	}
 
+	@After
+	public void tearDown() throws CoreException {
+		UserRegistry.getInstance().setSuperUser(false);
+		super.tearDown();
+	}
 
 	@Test
 	public void testTransform() {
@@ -544,17 +561,25 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		elementConfigurationReactionWheel1.addSuperSei(elementReactionWheelDefinition);
 		elementConfigurationReactionWheel2.addSuperSei(elementReactionWheelDefinition);
 
+		assertThat("Element Configuration is well connected to Definition", elementConfigurationReactionWheel1.getAllSuperSeis(ElementDefinition.class), hasItems(elementReactionWheelDefinition));
+		assertThat("Element Configuration is well connected to Definition", elementConfigurationReactionWheel2.getAllSuperSeis(ElementDefinition.class), hasItems(elementReactionWheelDefinition));
+		
 		assemblyTree.add(aocsSubSystemOccurence);
 		aocsSubSystemOccurence.add(reactionWheelOccurence1);
 		aocsSubSystemOccurence.add(reactionWheelOccurence2);
 		reactionWheelOccurence1.addSuperSei(elementConfigurationReactionWheel1);
-		reactionWheelOccurence2.addSuperSei(elementConfigurationReactionWheel1);
+		reactionWheelOccurence2.addSuperSei(elementConfigurationReactionWheel2);
+
+		assertThat("Element Occurrence is well connected to Configuration", reactionWheelOccurence1.getAllSuperSeis(ElementConfiguration.class), hasItems(elementConfigurationReactionWheel1));
+		assertThat("Element Occurrence is well connected to Configuration", reactionWheelOccurence2.getAllSuperSeis(ElementConfiguration.class), hasItems(elementConfigurationReactionWheel2));
 
 		// Add visualisation categories
 		elementReactionWheelDefinition.add(reactionWheelVisDefinition);
+		
+		assertThat("Reaction Wheel Definition has a Visualization category", elementReactionWheelDefinition.getAll(Visualisation.class), hasItems(reactionWheelVisDefinition));
 
 		// Create tree structure with inheritance
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ExecutionCheckCommand command = new ExecutionCheckCommand(editingDomain) {
 
 			@Override
 			protected void doExecute() {
@@ -571,14 +596,20 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 						.getAndAddStructuralElementInstanceResource(assemblyTree.getStructuralElementInstance());
 
 				new InheritanceCopier().updateAllInOrder(repository, new NullProgressMonitor());
+				super.doExecute();
 			}
-		});
+		};
 
+		assertTrue("Command should be executable", command.canExecute());
+		
+		editingDomain.getVirSatCommandStack().execute(command);
+		
+		assertTrue("Command got executed", command.isExecuted());
+		
 		assertNotNull("Sanitycheck that the inheritance copier worked as expected",
 				reactionWheelOccurence1.getFirst(Visualisation.class));
-
 	}
-
+	
 	/**
 	 * Create a simple mapped JSON object with parts and products that are mapped to
 	 * elements in the test trees
@@ -632,7 +663,4 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		return rootObject;
 	}
-
-
-
 }
