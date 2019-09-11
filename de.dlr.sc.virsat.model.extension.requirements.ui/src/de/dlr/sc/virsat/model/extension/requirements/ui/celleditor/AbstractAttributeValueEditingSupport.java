@@ -89,6 +89,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 			case RequirementAttribute.TYPE_Enumeration_NAME:
 				List<String> comboItems = new ArrayList<String>();
 				attDef.getEnumeration().getLiterals().forEach(literal -> comboItems.add(literal.getName()));
+				comboItems.add("");
 				editor = new ComboBoxCellEditor(parent, comboItems.toArray(new String[0]));
 				return editor;
 	
@@ -270,6 +271,9 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 			int i = (int) userInputValue;
 			if (i >= 0 && i < attDef.getEnumeration().getLiterals().size()) {
 				super.setValue(element, attDef.getEnumeration().getLiterals().get((int) userInputValue).getName());
+			} else if (i == attDef.getEnumeration().getLiterals().size()) {
+				//If empty choice is selected then the value should be cleared
+				super.setValue(element, "");
 			}
 		}	
 	}
