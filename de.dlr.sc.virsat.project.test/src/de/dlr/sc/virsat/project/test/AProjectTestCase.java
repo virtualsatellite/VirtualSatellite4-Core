@@ -97,10 +97,9 @@ public abstract class AProjectTestCase {
 			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - tearDown()");
 		}
 
-		if (editingDomain != null) {
-			VirSatEditingDomainRegistry.INSTANCE.clear();
-			editingDomain = null;
-		}
+		// make sure all Editing Domains are well removed and disposed
+		VirSatEditingDomainRegistry.INSTANCE.clear();
+		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
 		for (IProject project : testProjects) {
@@ -108,9 +107,8 @@ public abstract class AProjectTestCase {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
 		}
 		
-		// Bring down user settings to previous state and disable superUser rights
-		
 		//CHECKSTYLE:OFF
+		// Bring down user settings to previous state and disable superUser rights
 		UserRegistry.getInstance().setSuperUser(false);
 		UserRegistry.getInstance().setUser(previousUser, 356);
 		//CHECKSTYLE:ON
