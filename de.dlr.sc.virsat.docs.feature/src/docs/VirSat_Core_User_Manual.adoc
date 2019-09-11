@@ -30,13 +30,13 @@ Virtual Satellite does not execute on a Java 32 bit runtime environment.
 [WARNING] 
 .Linux Dependencies
 ==== 
-Virtual Satellite is depending on Visualization Tool Kit (VTK) and ZeroMQ (ZMQ). Where on Windows both are shipped with the external library plugins, on linux it is not that easy. Make sure that you have the following dependencies installed to your system:
+Virtual Satellite is depending on Visualization Tool Kit (VTK) and ZeroMQ (ZMQ). Where on Windows both are shipped with the external library plugins, on Linux it is not that easy. Make sure that you have the following dependencies installed to your system:
 
 * VTK 8.1 
 * ZMQ 4.1.4
 * JZMQ 3.1.0
 
-Current Versions can be checked in the win32 plugins. Other Versions may work as well but are not tested.
+Current Versions can be checked in the win32 plugins. Other versions may work as well, but have not been tested.
 
 Virtual Satellite will look up the Environment Variables `VS_JAR_VTK` and `VS_JAR_ZMQ`. The variables should directly reference the library to be used e.g. : `VS_JAR_VTK=/usr/share/java/vtk6.jar`.
 ====
