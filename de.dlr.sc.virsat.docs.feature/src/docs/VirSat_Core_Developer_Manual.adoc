@@ -174,7 +174,7 @@ The following chapters will show how to prepare and use such platform specific l
 
 The library `de.dlr.sc.virsat.external.lib.zmq.win32.x86_64` presents a good example for a Windows platform specific third party library.
 It bundles the DLLs for ZeroMQ plus the jar to make it available in other plugins.
-Similar to the general thrid party libraries the jar is placed in the _native_lib_ folder.
+Similar to the general third party libraries the jar is placed in the _native_lib_ folder.
 The Windows DLLs will be placed here as well.
 All these files are selected for the binary build in the _build.properties_.
 As a consequence they get exported into the final jar.
@@ -204,11 +204,10 @@ Export-Package: org.zeromq
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64.Activator // <3>
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64
-
 ----
 <1> This statement defines the platform filter.
 This means that the plugin is only executed on a win32 64 bit environment.
-On other environments the Equinox platform will reject to laod this plugin.
+On other environments the Equinox platform will reject to load this plugin.
 
 <2> Registration of the Native DLLs in the plugin.
 All required DLLs are registered here.
@@ -241,9 +240,95 @@ It provides two abstract methods which have to be implemented.
 <5> Here are the actual calls to the Java system to load the libraries.
 This has to be implemented here to load the DLLs into the correct classpath context of the bundle.
 
- 
-
 === Platform specific SO libraries on Linux
+
+The library `de.dlr.sc.virsat.external.lib.zmq.linux.x86_64` presents a good example for a Linux platform specific third party library.
+Different to windows it does not bundle the libraries.
+Instead it tries to resolve the libraries from the current system.
+The plugin is setup to use an environment variable during runtime to specify the library to be loaded.
+For compile time, a compatible library needs to be present as well.
+This library is stored in the usual _externalLib_ folder.
+It is not deployed but it is needed for Tycho and Eclipse Compilation.
+The _MANIFEST.MF_ file is described below: 
+
+.MANIFEST.MF file of the linux specific ZeroMQ external library
+[#ExternalLibraryManifestMfLinux]
+----
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit Linux
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;singleton:=true
+Bundle-Version: 4.9.1.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) ) // <1>
+Eclipse-BundleShape: dir // <2>
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-ClassPath: native_lib/zmq/zmq.jar, <3>
+ external:$VS_JAR_ZMQ$, <4>
+ .
+Export-Package: org.zeromq <5>
+Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64.Activator
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64
+----
+<1> This statement defines the platform filter.
+This means that the plugin is only executed on a linux 64 bit environment.
+On other environments the Equinox platform will reject to load this plugin.
+
+<2> The bundle shape is set to `dir` which emans that this plugin will be unzipped when instaleld into a _product_.
+This helps to manipulate fiels when needed.
+
+<3> The path to the library which is stored in the plugin sources but not in the binary build.
+This is needed for Maven/Tycho to compile in particular.
+Maven/Tycho does not evaluate the external libraries with environment variables correctly.
+
+<4> Reference to the library which should be used during runtime. 
+Eclipse/Equinox will evaluate the encoded environment variable and will try to load the library.
+
+<5> The exported packages to make the content of the library usable by consuming plugins.
+
+the _build.properties_ file needs to be prepared so it does not bundle the libraries into the final plugin.
+Otherwise it seems that plugin internal resources are preferred before external resources, and the externally linked libraries get never loaded.
+
+.build.properties which is not including the _externalLib_ folder
+[#ExternalLibraryBuildPropertiesLinux]
+----
+source.. = src/
+output.. = target/classes/
+bin.includes = META-INF/,\ //<1>
+               .,\
+               about_files/,\
+               about.html
+jars.compile.order = .
+----
+<1> Binary includes for the final plugin assembly.
+It does not include the _externalLib_ folder or one of its libraries.
+
+To make eclipse compile the library has to be mentioned in the classpath.
+The eclipse compilation does not care about which library is mentioned in the _MANIFEST.MF_.
+
+.classpath file  referencing the zmq jar
+[#ExternalLibraryBuildPropertiesLinux]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jd...auncher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="native_lib/zmq/zmq.jar"/> // <1>
+	<classpathentry kind="src" path="src/"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
+----
+<1> Reference to the _zmq.jar_ file to make clipse compile.
+
+WARNING: Adding libraries as `external:...` to the _MANIFEST.MF_ file is dangerous.
+Eclipse and tycho compiles against the library which is part of the source code. 
+This library can be different during runtime.
+Differences may lead to unexpected behavior.
+Therefore it is recommended to have the expected versions specified in the environment variables.
+
+
 
 [colophone]
 == Legal - License & Copyright
