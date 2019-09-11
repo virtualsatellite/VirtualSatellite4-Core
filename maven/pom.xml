@@ -139,7 +139,7 @@
 								<id>validate</id>
 								<phase>validate</phase>
 								<configuration>
-									<configLocation>checkStylesDefinition.xml</configLocation>
+									<configLocation>../checkStylesDefinition.xml</configLocation>
 									<propertyExpansion>samedir=.</propertyExpansion>
 									<encoding>UTF-8</encoding>
 									<consoleOutput>true</consoleOutput>
