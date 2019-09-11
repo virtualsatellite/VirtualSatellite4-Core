@@ -13,7 +13,7 @@
 	<parent>
 		<relativePath>../maven/pom.xml</relativePath>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<artifactId>de.dlr.sc.virsat</artifactId>
+		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<version>4.9.1-SNAPSHOT</version>
 	</parent>
 
