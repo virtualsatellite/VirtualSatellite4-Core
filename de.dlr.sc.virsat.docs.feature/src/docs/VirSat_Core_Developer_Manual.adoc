@@ -196,7 +196,7 @@ Bundle-NativeCode: native_lib/zmq/jzmq.dll; // <2>
  native_lib/zmq/msvcp140.dll;
  native_lib/zmq/vcruntime140.dll;
  osname=Win32; processor=x86_64
-Eclipse-PlatformFilter: (&  (osgi.os=win32) (osgi.arch=x86_64) ) <1>
+Eclipse-PlatformFilter: (&  (osgi.os=win32) (osgi.arch=x86_64) ) // <1>
 Bundle-ClassPath: .,
  native_lib/zmq/zmq.jar
 Require-Bundle: de.dlr.sc.virsat.external.lib
@@ -233,11 +233,11 @@ public class Activator extends NativeLibPlugin implements BundleActivator { // <
 	}
 }
 ----
-<4> The activator extends `NativeLibPlugin`.
+<1> The activator extends `NativeLibPlugin`.
 The class `NativeLibPlugin` provides all the logic to correctly read all DLLs and report on the status.
 It provides two abstract methods which have to be implemented.
 
-<5> Here are the actual calls to the Java system to load the libraries.
+<2> Here are the actual calls to the Java system to load the libraries.
 This has to be implemented here to load the DLLs into the correct classpath context of the bundle.
 
 === Platform-specific SO libraries on Linux
@@ -309,7 +309,7 @@ To make Eclipse compile, the library has to be mentioned in the classpath.
 The Eclipse compilation does not care about which library is mentioned in the _MANIFEST.MF_.
 
 .classpath file  referencing the zmq jar
-[#ExternalLibraryBuildPropertiesLinux]
+[#ExternalLibraryClasspathLinux]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
