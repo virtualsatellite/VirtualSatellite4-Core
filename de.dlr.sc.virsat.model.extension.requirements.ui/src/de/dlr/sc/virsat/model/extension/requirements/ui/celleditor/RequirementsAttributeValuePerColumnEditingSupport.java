@@ -32,20 +32,18 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 
 	protected final int attributeIndex;
 
-	protected final VirSatTransactionalEditingDomain domain;
 
 	/**
 	 * @param editingDomain
 	 *            the editing domain
 	 * @param viewer
 	 *            the column viewer
-	 * @param attIndex
+	 * @param attributeIndex
 	 *            the index of the attribute definition this class should support
 	 */
-	public RequirementsAttributeValuePerColumnEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, int attIndex) {
+	public RequirementsAttributeValuePerColumnEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, int attributeIndex) {
 		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
-		this.attributeIndex = attIndex;
-		this.domain = (VirSatTransactionalEditingDomain) editingDomain;
+		this.attributeIndex = attributeIndex;
 	}
 
 
@@ -71,7 +69,7 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 			// Requirement attribute instance does not exist yet, create one...
 			// But don't add it to the model yet, otherwise we will trigger a notification
 			// that disturbs UI (Focus loss)
-			AttributeValue newAttributeInstance = new AttributeValue(getConcept());
+			AttributeValue newAttributeInstance = new AttributeValue(requirement.getConcept());
 			instance = getPropertyInstance(newAttributeInstance);
 		}
 
@@ -110,9 +108,7 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 			requirement = (Requirement) element;
 		} else if (element instanceof CategoryAssignment) {
 			requirement = new Requirement((CategoryAssignment) element);
-		}
-		
-		if (requirement == null) {
+		} else {
 			return null;
 		}
 		

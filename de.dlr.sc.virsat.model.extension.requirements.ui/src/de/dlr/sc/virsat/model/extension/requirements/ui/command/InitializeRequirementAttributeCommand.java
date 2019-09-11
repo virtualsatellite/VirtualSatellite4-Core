@@ -71,16 +71,11 @@ public class InitializeRequirementAttributeCommand extends RecordingCommand {
 		return new InitializeRequirementAttributeCommand(domain, new RequirementAttribute(attributeType), new Requirement(requirement), new AttributeValue(attributeValue));
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.transaction.RecordingCommand#doExecute()
-	 */
 	@Override
 	protected void doExecute() {
 		attribute.setAttType(attributeType);
 		attribute.setName(PREFIX_ATTRIBUTE + attributeType.getName());
 		requirement.getElements().add(attribute);
 	}
-	
-	
 
 }

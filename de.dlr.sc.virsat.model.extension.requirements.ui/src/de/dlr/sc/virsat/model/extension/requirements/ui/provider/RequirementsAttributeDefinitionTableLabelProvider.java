@@ -54,10 +54,6 @@ public class RequirementsAttributeDefinitionTableLabelProvider extends VirSatTra
 		if (object instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) object;
 			
-			if (columnIndex == 0) {
-				return ca.getName();
-			} 
-			
 			switch (columnIndex) {
 				case 0:
 					return ca.getName();
@@ -108,9 +104,7 @@ public class RequirementsAttributeDefinitionTableLabelProvider extends VirSatTra
 	
 	@Override
 	public Image getColumnImage(Object object, int columnIndex) {
-		
 		return null;
-		
 	}
 
 }

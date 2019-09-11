@@ -17,7 +17,6 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
@@ -85,11 +84,6 @@ public class InitializeRequirementCommand extends RecordingCommand {
 		return new InitializeRequirementCommand(domain, requirement, requirementType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.emf.transaction.RecordingCommand#doExecute()
-	 */
 	@Override
 	protected void doExecute() {
 		requirement.setReqType(requirementType);
@@ -98,8 +92,7 @@ public class InitializeRequirementCommand extends RecordingCommand {
 
 		// Also prepare attribute instances to simplify setting values later
 		for (RequirementAttribute attDef : requirementType.getAttributes()) {
-			AttributeValue attInstance = new AttributeValue(
-					ActiveConceptHelper.getConcept(requirement.getATypeInstance().getType()));
+			AttributeValue attInstance = new AttributeValue(requirement.getConcept());
 			InitializeRequirementAttributeCommand composedCommand = new InitializeRequirementAttributeCommand(
 					editingDomain, attDef, requirement, attInstance);
 			composedCommand.execute();
