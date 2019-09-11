@@ -16,6 +16,7 @@ TargetLibrary core_development {
 		Unit de.dlr.sc.virsat.model.extension.budget.power.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.funcelectrical.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.statemachines.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.requirements.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.maturity.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.ps.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.tests.feature.feature.group version newest;

@@ -142,7 +142,7 @@
 				<module>de.dlr.sc.virsat.model.extension.requirements</module>
 				<module>de.dlr.sc.virsat.model.extension.requirements.test</module>
 				<module>de.dlr.sc.virsat.model.extension.requirements.ui</module>
-	
+				
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->
 				<module>de.dlr.sc.virsat.model.extension.tests</module>

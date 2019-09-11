@@ -40,6 +40,7 @@ public class VirSatEditingDomainRegistry {
 	 * this method is intended for test case use only.
 	 */
 	public void clear() {
+		VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
 		for (VirSatTransactionalEditingDomain ed : mapProjectToEditingDomain.values()) {
 			ed.dispose();
 		}
