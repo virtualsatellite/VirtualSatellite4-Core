@@ -16,8 +16,8 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -43,7 +43,7 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
  * A page to select a CSV file to import and the target model element
  *
  */
-public class CsvFileReqTypeSelectionPage extends AImportExportPage implements SelectionListener {
+public class CsvFileReqTypeSelectionPage extends AImportExportPage implements ModifyListener {
 
 	private static final String[] FILE_EXTENSIONS = { "*.csv" };
 	protected static final int COLUMNS = 2;
@@ -116,7 +116,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 		data.widthHint = WITH_TEXT;
 		seperatorField.setLayoutData(data);
 		seperatorField.setText(DEFAULT_SEPARATOR);
-		seperatorField.addSelectionListener(this);
+		seperatorField.addModifyListener(this);
 
 		Label labelHeaderNumber = new Label(propertiesComposite, SWT.NONE);
 		labelHeaderNumber.setText(HEADER_LINE_LABEL);
@@ -126,7 +126,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 		data.widthHint = WITH_TEXT;
 		data.horizontalAlignment = SWT.END;
 		headerNumberField.setLayoutData(data);
-		headerNumberField.addSelectionListener(this);
+		headerNumberField.addModifyListener(this);
 		headerNumberField.setText("1");
 
 		Label labelDataNumber = new Label(propertiesComposite, SWT.NONE);
@@ -137,7 +137,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 		data.widthHint = WITH_TEXT;
 		data.horizontalAlignment = SWT.END;
 		dataNumberField.setLayoutData(data);
-		dataNumberField.addSelectionListener(this);
+		dataNumberField.addModifyListener(this);
 		dataNumberField.setText("2");
 
 	}
@@ -282,30 +282,13 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.
-	 * events.SelectionEvent)
-	 */
+
 	@Override
-	public void widgetSelected(SelectionEvent e) {
+	public void modifyText(ModifyEvent e) {
 		wizard.getReader().setDataLine(getFristDataLineNumber());
 		wizard.getReader().setHeaderLine(getHeaderLineNumber());
 		wizard.getReader().setSeparator(getSeparator());
 		setPageComplete(isComplete());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.
-	 * swt.events.SelectionEvent)
-	 */
-	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
-
 	}
 
 }
