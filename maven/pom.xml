@@ -9,7 +9,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
-	<artifactId>de.dlr.sc.virsat</artifactId>
+	<artifactId>de.dlr.sc.virsat.parent</artifactId>
 	<version>4.9.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -139,7 +139,7 @@
 								<id>validate</id>
 								<phase>validate</phase>
 								<configuration>
-									<configLocation>checkStylesDefinition.xml</configLocation>
+									<configLocation>../checkStylesDefinition.xml</configLocation>
 									<propertyExpansion>samedir=.</propertyExpansion>
 									<encoding>UTF-8</encoding>
 									<consoleOutput>true</consoleOutput>
