@@ -103,7 +103,7 @@ public class CsvFileReader {
 			if (currentLineNumber >= startLine) {
 				currentReqData += line;
 				int numberOfColumns = currentReqData.length() - currentReqData.replaceAll(separator, "").length();
-				if (numberOfColumns == maxNumberOfColumns - 1) {
+				if (numberOfColumns >= maxNumberOfColumns - 1) {
 					//Only write data into list if data set is complete
 					String[] requirement = currentReqData.split(separator);
 					csvContentMatrix.add(Arrays.asList(requirement));
@@ -160,7 +160,7 @@ public class CsvFileReader {
 	 * @param separator the separator to set
 	 */
 	public void setSeparator(String separator) {
-		this.separator = separator;
+		this.separator = separator + REGEX_ESCAPE_SPLIT;
 	}
 
 	/**

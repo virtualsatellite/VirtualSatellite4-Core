@@ -196,10 +196,12 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 					Concept activeReqConcept = activeConceptHelper.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
 			
 					try {
+						wizard.getReader().setSeparator(getSeparator());
+						wizard.getReader().setHeaderLine(getHeaderLineNumber());
 						csvHeader = wizard.getReader().readCsvHeadline(destination);
 					} catch (IOException e) {
 						Status status = new Status(Status.ERROR, Activator.getPluginId(),
-								"CatiaImportWizard: Failed to perform import!", e);
+								"CatiaImportWizard: Failed to perform import! Selected file not valid!", e);
 						StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					}
 					
@@ -233,7 +235,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 	 * @return the integer header line number
 	 */
 	public int getHeaderLineNumber() {
-		return Integer.parseInt(headerNumberField.getText());
+		return Integer.parseInt(headerNumberField.getText()) - 1;
 	}
 	
 	/**
@@ -241,7 +243,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 	 * @return the line number as integer
 	 */
 	public int getFristDataLineNumber() {
-		return Integer.parseInt(dataNumberField.getText());
+		return Integer.parseInt(dataNumberField.getText()) - 1;
 	}
 
 	/*
@@ -303,7 +305,6 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Se
 	 */
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

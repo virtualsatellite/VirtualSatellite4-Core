@@ -240,7 +240,9 @@ public class CsvRequirementsImporter {
 				if (columnIndexOfAttribute != null) {
 					Set<String> enumerationLiteralValues = new HashSet<>();
 					for (List<String> reg : csvContentMatrix) {
-						enumerationLiteralValues.add(reg.get(columnIndexOfAttribute));
+						if (reg.size() > columnIndexOfAttribute) {
+							enumerationLiteralValues.add(reg.get(columnIndexOfAttribute));
+						}
 					}
 					for (String literal : enumerationLiteralValues) {
 						if (!literal.equals("")) {
