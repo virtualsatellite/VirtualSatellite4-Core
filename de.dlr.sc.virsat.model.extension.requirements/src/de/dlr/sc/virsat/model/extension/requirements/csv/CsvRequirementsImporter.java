@@ -41,7 +41,8 @@ public class CsvRequirementsImporter {
 	protected EditingDomain editingDomain;
 	protected Concept reqConcept;
 
-	static final String REQ_TYPE_NAME = "CCVImportedRequirementType";
+	private static final String REQ_TYPE_NAME = "CCVImportedRequirementType";
+	private static final String REQ_EXTENSION_IDENTIFIER_PREFIX = "-extension";
 
 	/**
 	 * The function to load requirement contents from a given SCV file to an exiting
@@ -76,7 +77,20 @@ public class CsvRequirementsImporter {
 			int lineNumber = csvContentMatrix.indexOf(req);
 			Requirement newReqElement = createRequirement(importCommand, targetSpecificationList, importType, lineNumber);
 
-			int currentIndex = 0;	//Needed because req.indexOf(attValue) does not work if columns have the same value
+			//If the first columns of a requirement are empty then values from previous lines are used
+			String attribute = req.iterator().next();
+			while (attribute.equals("")) {
+				int currentAttributeIndex = req.indexOf(attribute);
+				String repeatedValue = csvContentMatrix.get(lineNumber - 1).get(currentAttributeIndex);
+				if (attributeMapping.get(currentAttributeIndex).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+					repeatedValue += REQ_EXTENSION_IDENTIFIER_PREFIX;
+				}
+				req.set(currentAttributeIndex, repeatedValue);
+				attribute = req.get(currentAttributeIndex + 1);
+			}
+	
+			//Needed because req.indexOf(attValue) does not work if columns have the same value
+			int currentIndex = 0;
 			for (String attValue : req) {
 				RequirementAttribute mappedAttribute = attributeMapping.get(currentIndex);
 
