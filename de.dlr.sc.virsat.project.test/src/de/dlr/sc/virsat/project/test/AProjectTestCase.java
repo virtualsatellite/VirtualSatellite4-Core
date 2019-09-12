@@ -37,7 +37,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  */
 public abstract class AProjectTestCase {
 
-	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 10;
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
 	
 	@Rule
 	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);

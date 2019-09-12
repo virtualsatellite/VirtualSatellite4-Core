@@ -42,7 +42,7 @@ import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactor
  */
 public abstract class AConceptTestCase {
 
-	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 10;
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
 	
 	@Rule
 	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
