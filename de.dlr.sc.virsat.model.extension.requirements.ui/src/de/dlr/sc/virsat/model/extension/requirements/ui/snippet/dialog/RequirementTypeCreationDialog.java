@@ -44,8 +44,7 @@ public class RequirementTypeCreationDialog extends Dialog {
 	protected EObject initModel;
 
 	/**
-	 * @param parentShell
-	 *            the shell of the parent element
+	 * @param parentShell  the shell of the parent element
 	 */
 	public RequirementTypeCreationDialog(IShellProvider parentShell) {
 		super(parentShell);
@@ -54,14 +53,10 @@ public class RequirementTypeCreationDialog extends Dialog {
 
 	/**
 	 * 
-	 * @param parentShell
-	 *            The shell of the parent element
-	 * @param toolkit
-	 *            The swt toolkit
-	 * @param editingDomain
-	 *            the editing domain of the underlying model element
-	 * @param initModel
-	 *            the underlying model element
+	 * @param parentShell The shell of the parent element
+	 * @param toolkit The swt toolkit
+	 * @param editingDomain the editing domain of the underlying model element
+	 * @param initModel the underlying model element
 	 */
 	public RequirementTypeCreationDialog(Shell parentShell, FormToolkit toolkit, EditingDomain editingDomain,
 			EObject initModel) {
@@ -99,11 +94,7 @@ public class RequirementTypeCreationDialog extends Dialog {
 		return composite;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
-	 */
+
 	@Override
 	protected void cancelPressed() {
 		//Clean up

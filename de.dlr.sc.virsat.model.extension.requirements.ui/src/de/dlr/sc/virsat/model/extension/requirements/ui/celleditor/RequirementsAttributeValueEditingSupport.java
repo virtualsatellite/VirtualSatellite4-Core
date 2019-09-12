@@ -33,10 +33,8 @@ public class RequirementsAttributeValueEditingSupport extends AbstractAttributeV
 	protected final VirSatTransactionalEditingDomain domain;
 	
 	/**
-	 * @param editingDomain
-	 *            the editing domain
-	 * @param viewer
-	 *            the column viewer
+	 * @param editingDomain the editing domain
+	 * @param viewer the column viewer
 	 */
 	public RequirementsAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer) {
 		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
@@ -63,8 +61,7 @@ public class RequirementsAttributeValueEditingSupport extends AbstractAttributeV
 	/**
 	 * get the property instance from the bean object
 	 * 
-	 * @param attributeInstance
-	 *            the bean object
+	 * @param attributeInstance the bean object
 	 * @return the property instance
 	 */
 	protected APropertyInstance getPropertyInstanceFromBean(AttributeValue attributeInstance) {
@@ -76,8 +73,7 @@ public class RequirementsAttributeValueEditingSupport extends AbstractAttributeV
 	/**
 	 * Get the attribute definition of the current editor element
 	 * 
-	 * @param element
-	 *            the editor element
+	 * @param element the editor element
 	 * @return the attribute definition
 	 */
 	@Override

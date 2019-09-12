@@ -41,14 +41,10 @@ public class EnumerationCreationDialog  extends Dialog {
 	
 	/**
 	 * 
-	 * @param parentShell
-	 *            The shell of the parent element
-	 * @param toolkit
-	 *            The swt toolkit
-	 * @param editingDomain
-	 *            the editing domain of the underlying model element
-	 * @param initModel
-	 *            the underlying model element
+	 * @param parentShell The shell of the parent element
+	 * @param toolkit The swt toolkit
+	 * @param editingDomain the editing domain of the underlying model element
+	 * @param initModel the underlying model element
 	 */
 	public EnumerationCreationDialog(Shell parentShell, FormToolkit toolkit, EditingDomain editingDomain,
 			EObject initModel) {

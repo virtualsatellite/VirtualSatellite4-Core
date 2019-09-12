@@ -43,12 +43,9 @@ import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingS
 public abstract class AbstractAttributeValueEditingSupport extends APropertyCellEditingSupport  {
 	
 	/**
-	 * @param editingDomain
-	 *            the editing domain
-	 * @param viewer
-	 *            the column viewer
-	 * @param property 
-	 *            the property to be edited
+	 * @param editingDomain the editing domain
+	 * @param viewer the column viewer
+	 * @param property the property to be edited
 	 */
 	public AbstractAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property) {
 		super(editingDomain, viewer, property);
@@ -119,8 +116,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the boolean string to an integer
 	 * 
-	 * @param stringValue
-	 *            the boolean string
+	 * @param stringValue the boolean string
 	 * @return the integer value
 	 */
 	protected Integer getBooleanValue(String stringValue) {
@@ -190,10 +186,8 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the user input to a boolean-string value
 	 * 
-	 * @param element
-	 *            the editor subject
-	 * @param userInputValue
-	 *            the user input
+	 * @param element the editor subject
+	 * @param userInputValue the user input
 	 */
 	protected void setBooleanValue(Object element, Object userInputValue) {
 		if (userInputValue instanceof Integer) {
@@ -208,10 +202,8 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the user input to a integer-string value
 	 * 
-	 * @param element
-	 *            the editor subject
-	 * @param userInputValue
-	 *            the user input
+	 * @param element the editor subject
+	 * @param userInputValue the user input
 	 */
 	protected void setIntegerValue(Object element, Object userInputValue) {
 		Integer newValue = null;
@@ -235,10 +227,8 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the user input to a integer-string value
 	 * 
-	 * @param element
-	 *            the editor subject
-	 * @param userInputValue
-	 *            the user input
+	 * @param element the editor subject
+	 * @param userInputValue the user input
 	 */
 	protected void setRealValue(Object element, Object userInputValue) {
 		Double newValue = null;
@@ -316,8 +306,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Get the property definition of the attribute's value
 	 * 
-	 * @param editingDomain
-	 *            the editing domain
+	 * @param editingDomain the editing domain
 	 * @return the property definition
 	 */
 	protected static AProperty getAttributeValueProperty(VirSatTransactionalEditingDomain editingDomain) {

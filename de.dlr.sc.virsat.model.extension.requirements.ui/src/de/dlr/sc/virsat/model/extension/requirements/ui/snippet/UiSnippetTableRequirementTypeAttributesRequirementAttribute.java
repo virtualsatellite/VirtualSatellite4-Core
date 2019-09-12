@@ -65,9 +65,6 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 	
 	private FormToolkit toolKit;
 	
-	/* (non-Javadoc)
-	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable#createTableColumns(org.eclipse.emf.edit.domain.EditingDomain)
-	 */
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
 		TableViewerColumn colName = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_NAME);
@@ -122,9 +119,7 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable#getTableLabelProvider()
-	 */
+
 	@Override
 	protected ITableLabelProvider getTableLabelProvider() {
 		return new RequirementsAttributeDefinitionTableLabelProvider(adapterFactory);
@@ -138,9 +133,6 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 	
 
 
-	/* (non-Javadoc)
-	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSectionSnippet#createSectionBody(org.eclipse.ui.forms.widgets.FormToolkit, java.lang.String, java.lang.String, int)
-	 */
 	@Override
 	public Composite createSectionBody(FormToolkit toolkit, String sectionHeading, String sectionDescription,
 			int numberColumns) {
@@ -149,9 +141,6 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 	}
 
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-	 */
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 		List<?> selection = columnViewer.getStructuredSelection().toList();
@@ -182,9 +171,6 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 	}
 
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-	 */
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
 		// TODO Auto-generated method stub

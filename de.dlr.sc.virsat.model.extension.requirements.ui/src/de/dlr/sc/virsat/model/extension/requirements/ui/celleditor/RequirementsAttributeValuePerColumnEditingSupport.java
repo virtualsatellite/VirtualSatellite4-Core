@@ -34,12 +34,9 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 
 
 	/**
-	 * @param editingDomain
-	 *            the editing domain
-	 * @param viewer
-	 *            the column viewer
-	 * @param attributeIndex
-	 *            the index of the attribute definition this class should support
+	 * @param editingDomain the editing domain
+	 * @param viewer the column viewer
+	 * @param attributeIndex the index of the attribute definition this class should support
 	 */
 	public RequirementsAttributeValuePerColumnEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, int attributeIndex) {
 		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));

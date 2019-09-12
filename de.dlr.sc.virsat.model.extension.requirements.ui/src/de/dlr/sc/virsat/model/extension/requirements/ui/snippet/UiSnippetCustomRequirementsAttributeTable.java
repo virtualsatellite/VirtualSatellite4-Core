@@ -93,18 +93,12 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	 * constructor of the abstract UI snippet array instance category table
 	 * instantiate the ID of the concept and the active category id
 	 * 
-	 * @param conceptId
-	 *            the id of the concept
-	 * @param categoryId
-	 *            the id of the category
-	 * @param arrayInstanceId
-	 *            the array instance id
-	 * @param activeForCategoryId
-	 *            the active for the category id
-	 * @param fullQualifiedCategoryId
-	 *            the full qualified category id
-	 * @param style
-	 *            The style as binary mask defining which buttons should be
+	 * @param conceptId the id of the concept
+	 * @param categoryId the id of the category
+	 * @param arrayInstanceId the array instance id
+	 * @param activeForCategoryId the active for the category id
+	 * @param fullQualifiedCategoryId the full qualified category id
+	 * @param style The style as binary mask defining which buttons should be
 	 *            displayed with the given table (e.g. Add/Remove/Drill-Down)
 	 */
 	public UiSnippetCustomRequirementsAttributeTable(String conceptId, String categoryId, String arrayInstanceId,
@@ -116,8 +110,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * Implementation of the createTableColumns Method
 	 * 
-	 * @param editingDomain
-	 *            the editing domain which shall be used to provide the editing
+	 * @param editingDomain the editing domain which shall be used to provide the editing
 	 *            support in the columns
 	 */
 	protected void createTableColumns(EditingDomain editingDomain) {
@@ -207,8 +200,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * Refresh the table if a requirement with new type was added
 	 * 
-	 * @param editingDomain
-	 *            the editing domain
+	 * @param editingDomain the editing domain
 	 */
 	protected void refreshTable(EditingDomain editingDomain) {
 		createTableColumns(editingDomain);
@@ -220,12 +212,9 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * this method creates the add button and his functionality
 	 * 
-	 * @param toolkit
-	 *            the toolkit to be used to create the button
-	 * @param editingDomain
-	 *            the editing domain an which the button might act on
-	 * @param compositeButtons
-	 *            the composite in which the button should be placed
+	 * @param toolkit the toolkit to be used to create the button
+	 * @param editingDomain the editing domain an which the button might act on
+	 * @param compositeButtons the composite in which the button should be placed
 	 */
 	protected void createAddButton(FormToolkit toolkit, EditingDomain editingDomain, Composite compositeButtons) {
 		if ((style & STYLE_ADD_BUTTON) != 0) {
@@ -298,12 +287,9 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * Initialize a new requirement from a given requirement type
 	 * 
-	 * @param editingDomain
-	 *            the editing domain
-	 * @param requirementType
-	 *            the req type
-	 * @param newRequirement
-	 *            the new requirment
+	 * @param editingDomain the editing domain
+	 * @param requirementType the req type
+	 * @param newRequirement the new requirment
 	 */
 	protected void initializeRequirement(EditingDomain editingDomain, CategoryAssignment requirementType,
 			CategoryAssignment newRequirement) {
