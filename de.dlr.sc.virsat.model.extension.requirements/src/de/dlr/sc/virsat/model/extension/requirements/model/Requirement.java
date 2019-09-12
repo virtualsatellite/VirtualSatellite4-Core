@@ -9,11 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
 // * Class Declaration
@@ -51,5 +54,38 @@ public  class Requirement extends ARequirement {
 	 */
 	public Requirement(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
+	}
+	
+	/**
+	 * Update the requirement name to the name of its identifying attributes
+	 * @param ed the editing domain
+	 * @return the command
+	 */
+	public Command updateNameFromAttributes(EditingDomain ed) {
+		return setName(ed, getNameFromAttributes());
+	}
+	
+	/**
+	 * Update the requirement name to the name of its identifying attributes
+	 */
+	public void updateNameFromAttributes() {
+		setName(getNameFromAttributes());
+	}
+	
+	/**
+	 * Create a name from all identifying attributes
+	 * @return the name derived from the attributes
+	 */
+	protected String getNameFromAttributes() {
+		String newReqName = "Req";
+		for (AttributeValue child : getElements()) {
+			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+				newReqName += child.getValue();
+			}
+		}
+		newReqName = newReqName.replaceAll(" ", "");
+		newReqName = newReqName.replaceAll("-", "");
+		newReqName = newReqName.replaceAll("_", "");
+		return newReqName;
 	}
 }

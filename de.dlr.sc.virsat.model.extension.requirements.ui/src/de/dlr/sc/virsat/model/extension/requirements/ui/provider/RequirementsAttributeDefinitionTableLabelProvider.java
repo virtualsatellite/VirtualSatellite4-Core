@@ -10,13 +10,11 @@
 package de.dlr.sc.virsat.model.extension.requirements.ui.provider;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.swt.graphics.Image;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
-import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -54,19 +52,12 @@ public class RequirementsAttributeDefinitionTableLabelProvider extends VirSatTra
 		if (object instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) object;
 			
-			if (columnIndex == 0) {
-				return ca.getName();
-			} 
-			
 			switch (columnIndex) {
 				case 0:
 					return ca.getName();
 	
 				case 1:
 					return getAttributeTypeLabel(new RequirementAttribute(ca));
-					
-				case 2:
-					return getEnumerationDefinitionLabel(new RequirementAttribute(ca));
 					
 				default:
 					return null;
@@ -86,31 +77,4 @@ public class RequirementsAttributeDefinitionTableLabelProvider extends VirSatTra
 		}
 		return attDef.getType();
 	}
-	
-	/**
-	 * Get the label of the contained enumeration
-	 * @param attDef the attribute
-	 * @return the label
-	 */
-	protected String getEnumerationDefinitionLabel(RequirementAttribute attDef) {
-		String label = "";
-		if (attDef.getEnumeration().getLiterals().size() > 0) {
-			label += attDef.getEnumeration().getName();
-			label += " { ";
-			for (EnumerationLiteral literal : attDef.getEnumeration().getLiterals()) {
-				label += literal.getName() + " ";
-			}
-			label += " }";
-		}
-		
-		return label;
-	}
-	
-	@Override
-	public Image getColumnImage(Object object, int columnIndex) {
-		
-		return null;
-		
-	}
-
 }

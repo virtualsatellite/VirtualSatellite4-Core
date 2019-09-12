@@ -41,7 +41,6 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.build.marker.ui.EsfMarkerImageProvider;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
@@ -73,7 +72,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String COLUMN_TEXT_STATUS = "Status";
 	protected static final String COLUMN_ATTRIBUTE_SEPARATOR = " / ";
 
-	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = "de.dlr.sc.virsat.model.extension.requirements.Requirement.reqType";
+	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = Requirement.FULL_QUALIFIED_CATEGORY_NAME + "." + Requirement.PROPERTY_REQTYPE;
 
 	private static final int STATUS_COLUMN_WIDTH = 100;
 	private static final String COLUMN_PREFIX = "attColumn";
@@ -88,7 +87,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected TableViewerColumn colStatus = null;
 	protected List<TableViewerColumn> attColumns;
 	
-	protected boolean controlListnerActive = true;
+	protected boolean controlListenerActive = true;
 
 	/**
 	 * constructor of the abstract UI snippet array instance category table
@@ -147,16 +146,14 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			// property can be in different CAs
 			for (APropertyInstance arrayInstance : arrayInstances) {
 				CategoryAssignment reqObject = ((ComposedPropertyInstance) arrayInstance).getTypeInstance();
-				if (((Category) reqObject.getType()).getFullQualifiedName()
+				if (reqObject.getType().getFullQualifiedName()
 						.equals(Requirement.FULL_QUALIFIED_CATEGORY_NAME)) {
-					RequirementType requirementType = (new Requirement(reqObject)).getReqType();
+					RequirementType requirementType = new Requirement(reqObject).getReqType();
 					if (requirementType != null) {
 						requirementTypes.add(requirementType);
-						if (requirementType.getAttributes().size() > maxNumberAttributes) {
-							maxNumberAttributes = requirementType.getAttributes().size();
-						}
+						int numberAttributes = requirementType.getAttributes().size();
+						maxNumberAttributes = Math.max(maxNumberAttributes, numberAttributes);
 					}
-
 				}
 			}
 
@@ -168,13 +165,14 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 					String name = "";
 					if (requirementType.getAttributes().size() > i) {
 						name = requirementType.getAttributes().get(i).getName();
-
+						boolean notYetSpecified = !columnName.contains(name);
+						
 						// Add separator if column is used for different attributes
-						if (!columnName.equals("") && !columnName.contains(name)) {
+						if (!columnName.equals("") && notYetSpecified) {
 							columnName += COLUMN_ATTRIBUTE_SEPARATOR;
 						}
 
-						if (requirementType.getAttributes().size() > i && !columnName.contains(name)) {
+						if (notYetSpecified) {
 							columnName += name;
 						}
 					}
@@ -186,14 +184,12 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 				} else {
 					TableViewerColumn newColumn = (TableViewerColumn) createDefaultColumn(columnName);
 					newColumn.getColumn().addControlListener(this);
-					newColumn
-							.setEditingSupport(new RequirementsAttributeValuePerColumnEditingSupport(editingDomain, columnViewer, i));
+					newColumn.setEditingSupport(new RequirementsAttributeValuePerColumnEditingSupport(editingDomain, columnViewer, i));
 					attColumns.add(newColumn);
 				}
 			}
 		}
 		restoreColumnWitdh();
-
 	}
 	
 
@@ -278,7 +274,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 							List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
 									.getNestedCategoryAssignments((StructuralElementInstance) selection,
 											RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
-							if (reqTypesOfSelection.size() > 0) {
+							if (!reqTypesOfSelection.isEmpty()) {
 								initializeRequirement(editingDomain, reqTypesOfSelection.get(0), newRequirement);
 							}
 						}
@@ -328,7 +324,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 		for (TableViewerColumn column : attColumns) {
 			try {
-				String width = column.getColumn().getWidth() + "";
+				String width = String.valueOf(column.getColumn().getWidth());
 				QualifiedName key = getColumnWithPropertyQualifiedName(attColumns.indexOf(column));
 				file.setPersistentProperty(key, width);
 			} catch (CoreException e) {
@@ -344,7 +340,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		URI uri = model.eResource().getURI();
 		IPath path = new Path(uri.toPlatformString(false)); 
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-		controlListnerActive = false; //disable listner otherwise it triggers in these resize events
+		controlListenerActive = false; //disable listner otherwise it triggers in these resize events
 		for (TableViewerColumn column : attColumns) {
 			try {
 				QualifiedName key = getColumnWithPropertyQualifiedName(attColumns.indexOf(column));
@@ -356,7 +352,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not save column width"));
 			}
 		}
-		controlListnerActive = true;
+		controlListenerActive = true;
 	}
 	
 	
@@ -378,14 +374,11 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	
 	@Override
 	public void controlResized(ControlEvent e) {
-		if (controlListnerActive) {
+		if (controlListenerActive) {
 			saveColumnWidth();
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt.events.ControlEvent)
-	 */
 	@Override
 	public void controlMoved(ControlEvent e) {
 		// TODO Auto-generated method stub

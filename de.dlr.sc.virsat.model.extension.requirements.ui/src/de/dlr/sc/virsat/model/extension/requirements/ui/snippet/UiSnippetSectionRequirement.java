@@ -46,12 +46,10 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetSectionRequirement extends AUiSnippetSectionRequirement implements IUiSnippet {
 
-	private static final String REQ_TYPE_PROPERTY_ID = "reqType";
-
 	@Override
 	protected void executeReferenceSelectionDialog(EditingDomain editingDomain, String propertyFqn) {
 		Category viewerCategory = acHelper.getCategory(conceptId, categoryId);
-		AProperty typeProperty = ActiveConceptHelper.getProperty(viewerCategory, REQ_TYPE_PROPERTY_ID);
+		AProperty typeProperty = ActiveConceptHelper.getProperty(viewerCategory, Requirement.PROPERTY_REQTYPE);
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) caHelper
 				.getPropertyInstance(propertyFqn);
 		if (propertyInstance.getType().equals(typeProperty)) {

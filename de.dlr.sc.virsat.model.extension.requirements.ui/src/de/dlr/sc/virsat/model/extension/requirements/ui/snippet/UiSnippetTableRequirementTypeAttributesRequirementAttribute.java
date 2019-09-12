@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
@@ -55,8 +54,8 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 
 	
 	private static final String COLUMN_TEXT_NAME = "Name";
+	private static final String COLUMN_TEXT_TYPE_NAME = "Type";
 	private static final String NAME_TYPE_PROPERTY = "type";
-	private static final String NAME_ENUMERATION_PROPERTY = "enumeration";
 	
 	private static final String BUTTON_MOVEUP_TEXT = "Move Up";
 	private static final String BUTTON_MOVEDOWN_TEXT = "Move Down";
@@ -78,17 +77,10 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 		
 		//Type property table
 		EnumProperty typeProp = (EnumProperty) ActiveConceptHelper.getProperty(categoryModel, NAME_TYPE_PROPERTY);
-		TableViewerColumn colType = (TableViewerColumn) createDefaultColumn(typeProp.getName());
+		TableViewerColumn colType = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TYPE_NAME);
 		colType.setEditingSupport(new RequirementsAttributeTypeEnumerationEditingSupport(toolKit, editingDomain, columnViewer, typeProp));
 		colType.getColumn().setToolTipText(typeProp.getDescription());
 		
-		//Enumeration containment property
-		AProperty enumerationTypeProp = ActiveConceptHelper.getProperty(categoryModel, NAME_ENUMERATION_PROPERTY);
-		TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn("");
-		colProperty.getColumn().setToolTipText(enumerationTypeProp.getDescription());
-		colProperty.setEditingSupport(createEditingSupport(editingDomain, enumerationTypeProp));
-		
-
 	}
 
 	

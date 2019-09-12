@@ -85,13 +85,15 @@ public class DmfResource extends XMIResourceImpl {
 	 * @throws IOException If underling resource cant be saved
 	 */
 	protected void saveDMFResource(Map<?, ?> options) throws IOException {
+		// Load the DVLM Resource in case it did not yet happen.
 		if (virSatDvlmResource.getContents().isEmpty()) {
 			virSatDvlmResource.load(Collections.EMPTY_MAP);
 		}
+		
+		// Start saving the Resource
 		StructuralElementInstance sei = (StructuralElementInstance) virSatDvlmResource.getContents().get(0);
 		DObjectContainer dObjectContainer = (DObjectContainer) super.getContents().get(0);
-		DmfResourceSaveCommand dmfResourceSaveCommand = new DmfResourceSaveCommand(virSatEd, sei,
-				dObjectContainer.getObjects());
+		DmfResourceSaveCommand dmfResourceSaveCommand = new DmfResourceSaveCommand(virSatEd, sei, dObjectContainer.getObjects());
 
 		// Use NoUndo to suppress notification of this infrastructure-related
 		// operation

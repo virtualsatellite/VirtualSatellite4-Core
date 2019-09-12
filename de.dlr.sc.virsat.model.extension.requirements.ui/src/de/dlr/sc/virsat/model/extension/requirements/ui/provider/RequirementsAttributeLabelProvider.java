@@ -105,18 +105,17 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	 * @return the value
 	 */
 	protected String getValueOfAttributeIndex(ArrayInstance arrayInstance, int attributeIndex) {
-		String attributValue = null;
 		for (APropertyInstance instance : arrayInstance.getArrayInstances()) {
-
 			if (instance instanceof ComposedPropertyInstance) {
 				ComposedPropertyInstance prInstance = (ComposedPropertyInstance) instance;
 				AttributeValue value = new AttributeValue(prInstance.getTypeInstance());
-
+				
 				//Clean up values which don't have a type definition anymore
 				if (value.getAttType() == null) {
 					cleanUpAttribue(value);
 					return null;
 				}
+				
 				// Find out initial column index of attribute
 				RequirementType requirementType = value.getAttType().getParentCaBeanOfClass(RequirementType.class);
 				if (requirementType.getAttributes().indexOf(value.getAttType()) == attributeIndex) {
@@ -125,8 +124,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 			}
 		}
-
-		return attributValue;
+		return null;
 	}
 
 	@Override
@@ -158,8 +156,6 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 				RequirementAttribute attDef = requirement.getReqType().getAttributes().get(attIndex);
 
 				return super.getColumnImage(attDef, columnIndex);
-
-				// TODO return image of actual attribute type
 
 			}
 

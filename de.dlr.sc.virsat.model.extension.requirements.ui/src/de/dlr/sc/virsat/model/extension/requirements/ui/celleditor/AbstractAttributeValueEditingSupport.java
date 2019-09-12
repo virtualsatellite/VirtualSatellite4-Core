@@ -48,7 +48,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	 * @param viewer
 	 *            the column viewer
 	 * @param property 
-	 * 			  the property to be edited
+	 *            the property to be edited
 	 */
 	public AbstractAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property) {
 		super(editingDomain, viewer, property);
@@ -56,7 +56,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 		this.viewer = viewer;
 	}
 
-	protected static final String REQUIREMENTS_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.requirements";
+	protected static final String REQUIREMENTS_CONCEPT_NAME = de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId();
 	protected static final String ATTRIBUTE_CATEGORY_NAME = "AttributeValue";
 
 	protected final VirSatTransactionalEditingDomain domain;
@@ -65,7 +65,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	private static final int NOT_SET = 0;
 
 	private ColumnViewer viewer;
-	private CellEditor editor;
+	
 	
 	/**
 	 * Get the attribute definition from the provided editor subject
@@ -77,24 +77,24 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		RequirementAttribute attDef = getAttributeDefinition(element);
+		Composite parent = (Composite) viewer.getControl();
+		CellEditor editor;
+		
 		switch (attDef.getType()) {
-			case RequirementAttribute.TYPE_String_NAME:
-				editor = new TextCellEditor((Composite) viewer.getControl());
-				return editor;
 	
 			case RequirementAttribute.TYPE_Boolean_NAME:
-				editor = new ComboBoxCellEditor((Composite) viewer.getControl(), BOOL_LITERALS);
+				editor = new ComboBoxCellEditor(parent, BOOL_LITERALS);
 				return editor;
 				
 			case RequirementAttribute.TYPE_Enumeration_NAME:
 				List<String> comboItems = new ArrayList<String>();
 				attDef.getEnumeration().getLiterals().forEach(literal -> comboItems.add(literal.getName()));
 				comboItems.add("");
-				editor = new ComboBoxCellEditor((Composite) viewer.getControl(), comboItems.toArray(new String[0]));
+				editor = new ComboBoxCellEditor(parent, comboItems.toArray(new String[0]));
 				return editor;
 	
 			default:
-				editor = new TextCellEditor((Composite) viewer.getControl());
+				editor = new TextCellEditor(parent);
 				return editor;
 		}
 
@@ -104,9 +104,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	protected Object getValue(Object element) {
 		RequirementAttribute attDef = getAttributeDefinition(element);
 		switch (attDef.getType()) {
-			case RequirementAttribute.TYPE_String_NAME:
-				return super.getValue(element);
-	
+
 			case RequirementAttribute.TYPE_Boolean_NAME:
 				return getBooleanValue((String) super.getValue(element));
 				
@@ -126,7 +124,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	 * @return the integer value
 	 */
 	protected Integer getBooleanValue(String stringValue) {
-		for (int i = 0; i <= 1; i++) {
+		for (int i = 0; i < BOOL_LITERALS.length; i++) {
 			if (stringValue.equals(BOOL_LITERALS[i])) {
 				return i;
 			}
@@ -162,9 +160,6 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 		}
 
 		switch (attDef.getType()) {
-			case RequirementAttribute.TYPE_String_NAME:
-				super.setValue(element, userInputValue);
-				break;
 	
 			case RequirementAttribute.TYPE_Boolean_NAME:
 				setBooleanValue(element, userInputValue);
@@ -180,6 +175,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	
 			case RequirementAttribute.TYPE_Enumeration_NAME:
 				setEnumerationValue(element, userInputValue, attDef);
+				break;
 				
 			default:
 				super.setValue(element, userInputValue);
@@ -232,7 +228,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 		}
 
 		if (newValue != null) {
-			super.setValue(element, newValue + "");
+			super.setValue(element, String.valueOf(newValue));
 		}
 	}
 
@@ -260,7 +256,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 		}
 
 		if (newValue != null) {
-			super.setValue(element, newValue + "");
+			super.setValue(element, String.valueOf(newValue));
 		}
 	}
 	
@@ -273,11 +269,12 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	protected void setEnumerationValue(Object element, Object userInputValue, RequirementAttribute attDef) {
 		if (userInputValue instanceof Integer) {
 			int i = (int) userInputValue;
-			String value = "";
 			if (i >= 0 && i < attDef.getEnumeration().getLiterals().size()) {
-				value = attDef.getEnumeration().getLiterals().get((int) userInputValue).getName();
+				super.setValue(element, attDef.getEnumeration().getLiterals().get((int) userInputValue).getName());
+			} else if (i == attDef.getEnumeration().getLiterals().size()) {
+				//If empty choice is selected then the value should be cleared
+				super.setValue(element, "");
 			}
-			super.setValue(element, value);
 		}	
 	}
 	
@@ -302,16 +299,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	protected void updateRequirementNameAttribute(APropertyInstance propertyInstance) {
 		AttributeValue att = new AttributeValue((CategoryAssignment) propertyInstance.eContainer());
 		Requirement requirement = att.getParentCaBeanOfClass(Requirement.class);
-		String newReqName = "Req";
-		for (AttributeValue child : requirement.getElements()) {
-			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
-				newReqName += child.getValue();
-			}
-		}
-		newReqName = newReqName.replaceAll(" ", "");
-		newReqName = newReqName.replaceAll("-", "");
-		newReqName = newReqName.replaceAll("_", "");
-		editingDomain.getCommandStack().execute(requirement.setName(editingDomain, newReqName));
+		editingDomain.getCommandStack().execute(requirement.updateNameFromAttributes(editingDomain));
 		
 	}
 	
