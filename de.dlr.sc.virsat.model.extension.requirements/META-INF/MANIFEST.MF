@@ -14,6 +14,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.requirements,
+ de.dlr.sc.virsat.model.extension.requirements.command,
  de.dlr.sc.virsat.model.extension.requirements.model,
  de.dlr.sc.virsat.model.extension.requirements.validator
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements
