@@ -29,6 +29,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  */
 public  class AttributeValue extends AAttributeValue {
 	
+	public static final String ATTRIBUTE_NAME_PREFIX = "att";
+	
 	/**
 	 * Constructor of Concept Class
 	 */

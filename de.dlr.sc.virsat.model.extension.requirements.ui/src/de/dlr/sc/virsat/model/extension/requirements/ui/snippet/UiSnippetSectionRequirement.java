@@ -29,10 +29,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 

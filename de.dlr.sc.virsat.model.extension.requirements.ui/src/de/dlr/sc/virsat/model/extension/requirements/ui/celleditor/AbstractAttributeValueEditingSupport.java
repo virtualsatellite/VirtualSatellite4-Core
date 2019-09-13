@@ -27,12 +27,12 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementAttributeCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementAttributeCommand;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
 
@@ -276,7 +276,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 			CategoryAssignment caRequirement) {
 		Requirement requirement = new Requirement(caRequirement);
 		AttributeValue newAttributeInstance = new AttributeValue((CategoryAssignment) attributeInstance.eContainer());
-		Command command = InitializeRequirementAttributeCommand.create(domain,
+		Command command = new InitializeRequirementAttributeCommand(domain,
 				getAttributeDefinition(requirement), requirement, newAttributeInstance);
 		domain.getCommandStack().execute(command);
 	}

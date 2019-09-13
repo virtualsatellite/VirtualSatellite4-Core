@@ -10,7 +10,7 @@
 /**
  * 
  */
-package de.dlr.sc.virsat.model.extension.requirements.ui.command;
+package de.dlr.sc.virsat.model.extension.requirements.command;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.RecordingCommand;
