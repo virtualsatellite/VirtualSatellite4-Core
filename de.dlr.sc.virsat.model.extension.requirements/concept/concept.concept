@@ -39,7 +39,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	Category Requirement extends RequirementObject {
 		Reference reqType of Type RequirementType;
 		Type elements [] of Category AttributeValue;
-		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApllicable = 4];
+		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
 	}
 	
 	Category AttributeValue {

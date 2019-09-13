@@ -31,7 +31,7 @@
       <values name="FullyCompliant" value="1"/>
       <values name="PartialCompliant" value="2"/>
       <values name="NonCompliant" value="3"/>
-      <values name="NotApllicable" value="4"/>
+      <values name="NotApplicable" value="4"/>
     </properties>
   </categories>
   <categories name="AttributeValue">
