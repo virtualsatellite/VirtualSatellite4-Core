@@ -75,7 +75,7 @@ public class CsvRequirementsImporter {
 		// Read the actual requirements
 		for (List<String> req : csvContentMatrix) {
 			int lineNumber = csvContentMatrix.indexOf(req);
-			Requirement newReqElement = createRequirement(importCommand, targetSpecificationList, importType, lineNumber);
+			Requirement newReqElement = createRequirement(importType, lineNumber);
 
 			//If the first columns of a requirement are empty then values from previous lines are used
 			String attribute = req.iterator().next();
@@ -95,10 +95,12 @@ public class CsvRequirementsImporter {
 				RequirementAttribute mappedAttribute = attributeMapping.get(currentIndex);
 
 				if (mappedAttribute != null) {
-					setAttributeValue(importCommand, newReqElement, attValue, mappedAttribute);
+					setAttributeValue(newReqElement, attValue, mappedAttribute);
 				}
 				currentIndex++;
 			}
+			newReqElement.updateNameFromAttributes();
+			importCommand.append(targetSpecificationList.add(editingDomain, newReqElement));
 		}
 
 		return importCommand;
@@ -169,9 +171,6 @@ public class CsvRequirementsImporter {
 	/**
 	 * Create a requirement and set its type
 	 * 
-	 * @param importCommand
-	 *            the command in which this operation should be contained in
-	 * @param containerSpecificationList
 	 *            the containing list of requirements
 	 * @param reqType
 	 *            the requirement type
@@ -179,8 +178,7 @@ public class CsvRequirementsImporter {
 	 * 			  the line index of the requirement
 	 * @return the new requirement
 	 */
-	protected Requirement createRequirement(CompoundCommand importCommand,
-			IBeanList<RequirementObject> containerSpecificationList, RequirementType reqType, int lineNumber) {
+	protected Requirement createRequirement(RequirementType reqType, int lineNumber) {
 		Requirement requirement = new Requirement(reqConcept);
 		requirement.setReqType(reqType);
 		requirement.setName(reqType.getName() + lineNumber);
@@ -190,27 +188,24 @@ public class CsvRequirementsImporter {
 			attValue.setAttType(att);
 			requirement.getElements().add(attValue);
 		}
-		importCommand.append(containerSpecificationList.add(editingDomain, requirement));
 		return requirement;
 	}
 
 	/**
 	 * Create a attribute value within a requirement
 	 * 
-	 * @param importCommand
-	 *            the command in which this operation should be contained in
 	 * @param requirement
 	 *            the requirement to edit
 	 * @param value
 	 *            the value to be added to the attribute
 	 * @param attDef the attribute definition
 	 */
-	protected void setAttributeValue(CompoundCommand importCommand, Requirement requirement, String value,
+	protected void setAttributeValue(Requirement requirement, String value,
 			RequirementAttribute attDef) {
 		for (AttributeValue att : requirement.getElements()) {
 			RequirementAttribute type = att.getAttType();
 			if (type.equals(attDef)) {
-				importCommand.append(att.setValue(editingDomain, value));
+				att.setValue(value);
 			}
 		}
 	}
@@ -261,7 +256,10 @@ public class CsvRequirementsImporter {
 					for (String literal : enumerationLiteralValues) {
 						if (!literal.equals("")) {
 							EnumerationLiteral literalBean = new EnumerationLiteral(reqConcept);
-							literalBean.setName(literal);
+							String literalName = literal.replaceAll(" ", "");
+							literalName = literalName.replaceAll("-", "");
+							literalName = literalName.replaceAll("_", "");
+							literalBean.setName(literalName);
 							att.getEnumeration().getLiterals().add(literalBean);
 						}
 					}
