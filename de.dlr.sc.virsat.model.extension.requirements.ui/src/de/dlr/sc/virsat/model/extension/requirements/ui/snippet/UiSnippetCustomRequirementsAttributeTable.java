@@ -155,9 +155,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 				String columnName = "";
 				for (RequirementType requirementType : requirementTypes) {
 
-					String name = "";
 					if (requirementType.getAttributes().size() > i) {
-						name = requirementType.getAttributes().get(i).getName();
+						String name = requirementType.getAttributes().get(i).getName();
 						boolean notYetSpecified = !columnName.contains(name);
 						
 						// Add separator if column is used for different attributes
@@ -169,7 +168,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 							columnName += name;
 						}
 					}
-
 				}
 
 				if (attColumns.size() > i) {
@@ -268,7 +266,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 							}
 						}
 					} else {
-
 						// Clean up
 						Command cmd = createDeleteCommand(editingDomain, affectedObjects);
 						editingDomain.getCommandStack().execute(cmd);
@@ -367,8 +364,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	
 	@Override
 	public void controlMoved(ControlEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

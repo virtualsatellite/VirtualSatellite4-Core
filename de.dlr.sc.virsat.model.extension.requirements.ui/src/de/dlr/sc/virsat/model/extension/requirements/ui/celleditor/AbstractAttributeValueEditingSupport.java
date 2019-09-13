@@ -45,10 +45,9 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * @param editingDomain the editing domain
 	 * @param viewer the column viewer
-	 * @param property the property to be edited
 	 */
-	public AbstractAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property) {
-		super(editingDomain, viewer, property);
+	public AbstractAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer) {
+		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
 		this.domain = (VirSatTransactionalEditingDomain) editingDomain;
 		this.viewer = viewer;
 	}

@@ -37,7 +37,4 @@ public class UiSnippetNameAutoDataBinding extends UiSnippetIName {
 		updateState(true);
 	}
 
-	
-	
-
 }

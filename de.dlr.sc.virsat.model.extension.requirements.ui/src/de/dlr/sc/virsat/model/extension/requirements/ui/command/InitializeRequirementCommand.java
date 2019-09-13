@@ -31,7 +31,6 @@ public class InitializeRequirementCommand extends RecordingCommand {
 	protected final Requirement requirement;
 	protected final RequirementType requirementType;
 	protected final TransactionalEditingDomain editingDomain;
-	protected static final String REQ_NAME_PREFIX = "req";
 
 	/**
 	 * Restricted constructor
@@ -87,7 +86,7 @@ public class InitializeRequirementCommand extends RecordingCommand {
 	@Override
 	protected void doExecute() {
 		requirement.setReqType(requirementType);
-		requirement.setName(REQ_NAME_PREFIX + requirementType.getName());
+		requirement.setName(Requirement.REQUIREMENT_NAME_PREFIX + requirementType.getName());
 		requirement.setStatus(Requirement.STATUS_Open_NAME);
 
 		// Also prepare attribute instances to simplify setting values later

@@ -167,16 +167,11 @@ public class UiSnippetTableRequirementTypeAttributesRequirementAttribute extends
 				editingDomain.getCommandStack().execute(cmd);
 			}
 		}
-	
 	}
 
 
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-	
-	
 	
 }

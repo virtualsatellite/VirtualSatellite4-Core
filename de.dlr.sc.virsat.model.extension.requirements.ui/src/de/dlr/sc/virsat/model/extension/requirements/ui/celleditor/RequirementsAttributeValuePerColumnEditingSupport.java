@@ -22,7 +22,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Editing support for table with columns for the different attributes
@@ -39,7 +38,7 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 	 * @param attributeIndex the index of the attribute definition this class should support
 	 */
 	public RequirementsAttributeValuePerColumnEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, int attributeIndex) {
-		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
+		super(editingDomain, viewer);
 		this.attributeIndex = attributeIndex;
 	}
 
@@ -56,21 +55,17 @@ public class RequirementsAttributeValuePerColumnEditingSupport extends AbstractA
 
 		RequirementAttribute attributeDef = requirement.getReqType().getAttributes().get(attributeIndex);
 
-		APropertyInstance instance = null;
 		for (AttributeValue value : requirement.getElements()) {
 			if (value.getAttType().equals(attributeDef)) {
-				instance = getPropertyInstanceFromBean(value);
+				return getPropertyInstanceFromBean(value);
 			}
 		}
-		if (instance == null) {
-			// Requirement attribute instance does not exist yet, create one...
-			// But don't add it to the model yet, otherwise we will trigger a notification
-			// that disturbs UI (Focus loss)
-			AttributeValue newAttributeInstance = new AttributeValue(requirement.getConcept());
-			instance = getPropertyInstance(newAttributeInstance);
-		}
-
-		return instance;
+		
+		// Requirement attribute instance does not exist yet, create one...
+		// But don't add it to the model yet, otherwise we will trigger a notification
+		// that disturbs UI (Focus loss)
+		AttributeValue newAttributeInstance = new AttributeValue(requirement.getConcept());
+		return getPropertyInstance(newAttributeInstance);
 
 	}
 

@@ -16,9 +16,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
+import de.dlr.sc.virsat.model.extension.requirements.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Editing support  for a table with a column for all attribute values
@@ -27,18 +27,15 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 public class RequirementsAttributeValueEditingSupport extends AbstractAttributeValueEditingSupport {
 
 
-	protected static final String REQUIREMENTS_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.requirements";
+	protected static final String REQUIREMENTS_CONCEPT_NAME = Activator.getPluginId();
 	protected static final String ATTRIBUTE_CATEGORY_NAME = "AttributeValue";
 
-	protected final VirSatTransactionalEditingDomain domain;
-	
 	/**
 	 * @param editingDomain the editing domain
 	 * @param viewer the column viewer
 	 */
 	public RequirementsAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer) {
-		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
-		this.domain = (VirSatTransactionalEditingDomain) editingDomain;
+		super(editingDomain, viewer);
 	}
 
 	@Override
@@ -87,9 +84,7 @@ public class RequirementsAttributeValueEditingSupport extends AbstractAttributeV
 			att = (AttributeValue) element;
 		} else if (element instanceof CategoryAssignment) {
 			att = new AttributeValue((CategoryAssignment) element);
-		}
-		
-		if (att == null) {
+		} else {
 			return null;
 		}
 		

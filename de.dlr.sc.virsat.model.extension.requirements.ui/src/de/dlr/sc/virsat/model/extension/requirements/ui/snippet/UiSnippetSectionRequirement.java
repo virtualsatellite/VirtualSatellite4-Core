@@ -63,11 +63,11 @@ public class UiSnippetSectionRequirement extends AUiSnippetSectionRequirement im
 			dialog.setDoubleClickSelects(true);
 			if (dialog.open() == Dialog.OK) {
 				Object selection = dialog.getFirstResult();
-				if (selection instanceof ATypeInstance) {
-					ATypeInstance selectedTypeInstance = (ATypeInstance) selection;
+				if (selection instanceof CategoryAssignment) {
+					CategoryAssignment selectedCa = (CategoryAssignment) selection;
 
 					Requirement requirement = new Requirement(caModel);
-					RequirementType reqType = new RequirementType((CategoryAssignment) selectedTypeInstance);
+					RequirementType reqType = new RequirementType(selectedCa);
 					
 					updateRequirementToNewType(editingDomain, requirement, reqType);
 					
@@ -97,7 +97,7 @@ public class UiSnippetSectionRequirement extends AUiSnippetSectionRequirement im
 		// Cache and clear old values
 		Map<String, String> mapOldValueToTypeCache = new HashMap<>();
 		List<String> orderedValueList = new ArrayList<String>();
-		if (requirement.getElements().size() > 0) {
+		if (!requirement.getElements().isEmpty()) {
 			for (AttributeValue value : requirement.getElements()) {
 				orderedValueList.add(value.getValue());
 				mapOldValueToTypeCache.put(value.getValue(), value.getAttType().getType());

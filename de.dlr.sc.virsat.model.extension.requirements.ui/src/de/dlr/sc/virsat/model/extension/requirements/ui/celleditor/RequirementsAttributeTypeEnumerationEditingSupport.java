@@ -67,6 +67,7 @@ public class RequirementsAttributeTypeEnumerationEditingSupport extends EnumProp
 	public RequirementsAttributeTypeEnumerationEditingSupport(FormToolkit toolKit, EditingDomain editingDomain, ColumnViewer viewer, EnumProperty property, PropertyInstanceValueSwitch valueSwitch, boolean showEmptyField) {
 		super(editingDomain, viewer, property);
 		this.toolKit = toolKit;
+		this.property = property;
 		setupValues(property);
 	}
 	
@@ -75,11 +76,7 @@ public class RequirementsAttributeTypeEnumerationEditingSupport extends EnumProp
 	 * @param ep the enmueration property
 	 */
 	protected void setupValues(EnumProperty ep) {
-		if (comboItems == null) {
-			comboItems = new ArrayList<>();
-		} else {
-			comboItems.clear();
-		}
+		comboItems = new ArrayList<>();
 		comboItems.add("");
 		ep.getValues().forEach((evd) -> {
 			comboItems.add(evd.getName());
@@ -112,7 +109,7 @@ public class RequirementsAttributeTypeEnumerationEditingSupport extends EnumProp
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), this.toolKit, editingDomain,
 						type.getEnumeration().getATypeInstance());
 				dialog.open();
-			} else if (type.getEnumeration().getLiterals().size() > 0) {
+			} else if (!type.getEnumeration().getLiterals().isEmpty()) {
 				editingDomain.getCommandStack().execute(new RecordingCommand((TransactionalEditingDomain) editingDomain) {
 					@Override
 					protected void doExecute() {
