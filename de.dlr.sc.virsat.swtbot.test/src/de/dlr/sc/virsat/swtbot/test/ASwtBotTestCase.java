@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.junit.rules.Timeout;
+
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -44,6 +45,7 @@ import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
+import de.dlr.sc.virsat.swtbot.util.VirSatWaitForProjectBuilder;
 
 /**
  * Base class for performing SWTBot tests.
@@ -55,7 +57,7 @@ public class ASwtBotTestCase {
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
-	private static final int WAIT_BEFORE_SYNCING_UI_THREAD_100 = 100;
+	public static final int GENERAL_SWTBOT_WAIT_TIME = 10;
 	
 	protected SWTWorkbenchBot bot;
 	protected Concept conceptPs;
@@ -133,9 +135,9 @@ public class ASwtBotTestCase {
 	 */
 	protected void clickOnComboBox(String comboboxLabel) {
 		bot.checkBoxWithLabel(comboboxLabel).click();
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
+
 	/**
 	 * saves the editors
 	 *
@@ -154,7 +156,6 @@ public class ASwtBotTestCase {
 	protected SWTBotTreeItem openEditor(SWTBotTreeItem item) {
 		SWTBotTreeItem newItem = item.doubleClick();
 		waitForEditor(item);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 		return newItem;
 		
@@ -194,6 +195,7 @@ public class ASwtBotTestCase {
 		bot.textWithLabel("Project name:").setText(projectName);
 		bot.button("Finish").click();
 		waitForEditingDomainAndUiThread();
+		project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 	}
 
 	/**
@@ -212,7 +214,6 @@ public class ASwtBotTestCase {
 		bot.button("Add from Registry").click();
 		bot.button("Select All").click();
 		bot.button("OK").click();
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -224,7 +225,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void delete(SWTBotTreeItem item) {
 		item.contextMenu().menu("Delete").click(); 
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -237,7 +237,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void setText(String name, String value) {
 		bot.textWithLabel(name).setText(value);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread(); 
 	}
 	
@@ -251,7 +250,6 @@ public class ASwtBotTestCase {
 	protected void rename(SWTBotTreeItem item, String newName) {
 		openEditor(item);
 		bot.textWithLabel("Name").setText(newName);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -263,7 +261,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void paste(SWTBotTreeItem item) {
 		item.contextMenu().menu("Paste").click();
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -287,7 +284,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void renameField(String labelName, String value) {
 		bot.textWithLabel(labelName).setText(value);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -310,7 +306,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void undo(SWTBotTreeItem item) {
 		item.contextMenu().menu("Undo").click();	
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -326,7 +321,6 @@ public class ASwtBotTestCase {
 		createProject(projectName);
 		waitForEditingDomainAndUiThread();
 		addAllConcepts(projectName);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 		return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 	}
@@ -336,7 +330,7 @@ public class ASwtBotTestCase {
 	 *
 	 */
 	protected void propagateInheritance() {
-		bot.saveAllEditors();
+		bot.waitUntil(new VirSatWaitForProjectBuilder(1));
 		waitForEditingDomainAndUiThread();
 		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (inheritance builder)"));
 	}
@@ -345,9 +339,7 @@ public class ASwtBotTestCase {
 	 *
 	 */
 	protected void waitCalculationBuilder() {
-		bot.saveAllEditors();
-		waitForEditingDomainAndUiThread();
-		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (calculation builder)"));
+		propagateInheritance();
 	}
 	
 	/**
@@ -485,13 +477,14 @@ public class ASwtBotTestCase {
 	 *
 	 */
 	static class WaitForRunnable implements Runnable {
+		
 		Boolean gotExecuted = false;
 		
 		@Override
 		public void run() {
-			synchronized (gotExecuted) {
+			synchronized (this) {
 				gotExecuted = true;
-				gotExecuted.notify();
+				notify();
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Wait For Runnable UI Thread: " + Thread.currentThread()));
 			}
 		}
@@ -501,10 +494,10 @@ public class ASwtBotTestCase {
 		 * THis method blocks until the runnable got called.
 		 */
 		void waitForExecution() {
-			synchronized (gotExecuted) {
+			synchronized (this) {
 				while (!gotExecuted) {
 					try {
-						gotExecuted.wait(WAIT_BEFORE_SYNCING_UI_THREAD_100);
+						wait(GENERAL_SWTBOT_WAIT_TIME);
 					} catch (InterruptedException e) {
 						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not go to sleep Thread: " + Thread.currentThread()));
 					}
@@ -525,7 +518,7 @@ public class ASwtBotTestCase {
 		
 		// Wait a little time, so we give other UI threads / runnables to get started or queued in between
 		try {
-			Thread.sleep(WAIT_BEFORE_SYNCING_UI_THREAD_100);
+			Thread.sleep(GENERAL_SWTBOT_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}
@@ -538,7 +531,7 @@ public class ASwtBotTestCase {
 
 		// Add some grace time just for the res
 		try {
-			Thread.sleep(WAIT_BEFORE_SYNCING_UI_THREAD_100);
+			Thread.sleep(GENERAL_SWTBOT_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}

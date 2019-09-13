@@ -57,11 +57,11 @@ public class CalculationTest extends ASwtBotTestCase {
 		massEquipment1 = addElement(MassEquipment.class, conceptMass, productTree);
 		openEditor(massEquipment1);
 	}
+	
 	@Test
 	public void calculationsForMassEquipmentTest() {
 		// test margin calculation
 		renameField(MassEquipment.PROPERTY_MASS, "45");
-		save();
 		waitCalculationBuilder(); 
 		assertText("54.0", bot.textWithLabel(MassEquipment.PROPERTY_MASSWITHMARGIN));
 		// add another mass equipment
@@ -77,6 +77,7 @@ public class CalculationTest extends ASwtBotTestCase {
 		assertText("100.0", bot.textWithLabel(MassEquipment.PROPERTY_MASS));
 		assertText("120.0", bot.textWithLabel(MassEquipment.PROPERTY_MASSWITHMARGIN));
 	}
+	
 	@Test
 	public void addRemoveEquationTest() {
 		bot.button("Add Equation").click();
@@ -86,6 +87,7 @@ public class CalculationTest extends ASwtBotTestCase {
 		bot.button("Remove Equation").click();
 		assertEquals(2, allPropertyTable.rowCount());	
 	}
+	
 	@Test
 	public void calculatedFieldsAreReadOnlyTest() {
 		assertTrue(SWTUtils.hasStyle(bot.textWithLabel(MassEquipment.PROPERTY_MASSWITHMARGIN).widget, SWT.READ_ONLY));
