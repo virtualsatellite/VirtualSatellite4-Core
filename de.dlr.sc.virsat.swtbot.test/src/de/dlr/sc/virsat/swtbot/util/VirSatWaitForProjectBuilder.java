@@ -24,21 +24,24 @@ import de.dlr.sc.virsat.swtbot.test.ASwtBotTestCase;
 
 /**
  * This Condition waits for the Workspace Builder to execute
- * @author fisc_ph
  *
  */
 public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJobChangeListener {
 
 	private boolean error = false;
 	private String message = "";
-	private int expectedBuilder;
+	private int minExpectedWorkspaceBuilder;
+
+	// The Name of the WorkspaceBuilder as they get called by Eclipse
+	@SuppressWarnings("restriction")
+	private static final String WORKSPACE_BUILDER_NAME = org.eclipse.core.internal.utils.Messages.events_building_0;
 	
 	/**
 	 * Constructor for the condition
-	 * @param expectedBuilder the minimum amount of builders which are expected to be executed
+	 * @param minExpectedWorkspaceBuilder the minimum amount of builders which are expected to be executed
 	 */
-	public VirSatWaitForProjectBuilder(int expectedBuilder) {
-		this.expectedBuilder = expectedBuilder;
+	public VirSatWaitForProjectBuilder(int minExpectedWorkspaceBuilder) {
+		this.minExpectedWorkspaceBuilder = minExpectedWorkspaceBuilder;
 	}
 	
 	/**
@@ -51,15 +54,15 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 		this.error = true;
 	}
 
-	private Map<String, Integer> mapScheduleCounter = new HashMap<>();
+	private Map<String, Integer> mapJobScheduleCounters = new HashMap<>();
 	
 	@Override
 	public void init(SWTBot bot) {
 		synchronized (this) {
 			super.init(bot);
+			mapJobScheduleCounters.clear();
 			
-			mapScheduleCounter.clear();
-			
+			// Wait until all jobs that may interfere with this condition are done
 			while (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) {
 				try {
 					Thread.sleep(ASwtBotTestCase.GENERAL_SWTBOT_WAIT_TIME);
@@ -87,29 +90,29 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 		}
 		
 		// Try to find all jobs
-		Job[] queuedJobs = Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD);
+		Job[] currentlyQueuedJobs = Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD);
 
-		// Wait that there is no other job still running
+		// Wait that there is no other job still running or queued
 		message = "";
-		if (queuedJobs.length > 0) {
-			for (Job queuedJob : queuedJobs) {
+		if (currentlyQueuedJobs.length > 0) {
+			for (Job queuedJob : currentlyQueuedJobs) {
 				message += "Job <" + queuedJob + "> is still in the queue with state <" + queuedJob.getState() + "\n"; 
 			}
 			return false;
 		}
 		
 		// Check if the minimum expected amount of builds has been caught
-		if (mapScheduleCounter.size() < expectedBuilder) {
-			message = "Counted " + mapScheduleCounter.size() + " jobs, but expected a minimum of " + expectedBuilder + " ...";
+		if (mapJobScheduleCounters.size() < minExpectedWorkspaceBuilder) {
+			message = "Counted " + mapJobScheduleCounters.size() + " jobs, but expected a minimum of " + minExpectedWorkspaceBuilder + " ...";
 			return false;
 		}
 		
 		// Check if all scheduled jobs are also considered done
 		message = "";
-		for (String numberedJobName : mapScheduleCounter.keySet()) {
-			Integer scheduleCounter = mapScheduleCounter.get(numberedJobName);
+		for (String jobNameWithIndex : mapJobScheduleCounters.keySet()) {
+			Integer scheduleCounter = mapJobScheduleCounters.get(jobNameWithIndex);
 			if (scheduleCounter != 0) {
-				message += "Job < " + numberedJobName + "> is not done as often it got scheduled ...\n";
+				message += "Job < " + jobNameWithIndex + "> is not done as often it got scheduled ...\n";
 			}
 		}
 		
@@ -129,28 +132,41 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 	}
 
 	@Override
-	public void aboutToRun(IJobChangeEvent event) {
-	}
-
-	@Override
-	public void awake(IJobChangeEvent event) {
-	}
-
-	@Override
 	public synchronized void done(IJobChangeEvent event) {
-		if (event.getJob().toString().contains(WORKSPACE_BUILDER_NAME)) {
-			String numberedJobName = event.getJob().toString();
-			Integer scheduleCount = mapScheduleCounter.get(numberedJobName);
-			if (scheduleCount == null) {
-				setErrorState("Job <" + numberedJobName + "> being done but not scheduled ...");
+		String jobNameWithIndex = event.getJob().toString();
+		if (jobNameWithIndex.contains(WORKSPACE_BUILDER_NAME)) {
+			Integer jobScheduleCount = mapJobScheduleCounters.get(jobNameWithIndex);
+			if (jobScheduleCount == null) {
+				setErrorState("Job <" + jobNameWithIndex + "> being done but not scheduled ...");
 			} else {
-				scheduleCount--;
+				jobScheduleCount--;
 			}
 
-			mapScheduleCounter.put(numberedJobName, scheduleCount);
+			mapJobScheduleCounters.put(jobNameWithIndex, jobScheduleCount);
 
-			if (scheduleCount < 0) {
-				setErrorState("Job <" + numberedJobName + "> finished more often than being scheduled ...");
+			if (jobScheduleCount < 0) {
+				setErrorState("Job <" + jobNameWithIndex + "> finished more often than being scheduled ...");
+			}
+		}
+	}
+
+	@Override
+	public synchronized void scheduled(IJobChangeEvent event) {
+		String jobNameWithIndex = event.getJob().toString();
+		if (jobNameWithIndex.contains(WORKSPACE_BUILDER_NAME)) {
+			Integer jobScheduleCount = mapJobScheduleCounters.get(jobNameWithIndex);
+			if (jobScheduleCount == null) {
+				jobScheduleCount = 1;
+			} else {
+				jobScheduleCount++;
+			}
+			
+			mapJobScheduleCounters.put(jobNameWithIndex, jobScheduleCount);
+			
+			System.out.println("SWTBot: Job <" + jobNameWithIndex + "> got scheduled " + jobScheduleCount + " times ...");
+			
+			if (jobScheduleCount > 1) {
+				setErrorState("Job <" + jobNameWithIndex + "> got scheduled " + jobScheduleCount + " times ...");
 			}
 		}
 	}
@@ -159,31 +175,15 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 	public void running(IJobChangeEvent event) {
 	}
 
-	private static final String WORKSPACE_BUILDER_NAME = "Building workspace";
-	
 	@Override
-	public synchronized void scheduled(IJobChangeEvent event) {
-		String numberedJobName = event.getJob().toString();
-		System.out.println("SWTBot: Job <" + numberedJobName + "> got scheduled...");
-		if (numberedJobName.contains(WORKSPACE_BUILDER_NAME)) {
-			Integer scheduleCount = mapScheduleCounter.get(numberedJobName);
-			if (scheduleCount == null) {
-				scheduleCount = 1;
-			} else {
-				scheduleCount++;
-			}
-			
-			mapScheduleCounter.put(numberedJobName, scheduleCount);
-			
-			System.out.println("SWTBot: Job <" + numberedJobName + "> got scheduled " + scheduleCount + " times ...");
-			
-			if (scheduleCount > 1) {
-				setErrorState("Job <" + numberedJobName + "> got scheduled " + scheduleCount + " times ...");
-			}
-		}
+	public void sleeping(IJobChangeEvent event) {
 	}
 
 	@Override
-	public void sleeping(IJobChangeEvent event) {
+	public void aboutToRun(IJobChangeEvent event) {
+	}
+
+	@Override
+	public void awake(IJobChangeEvent event) {
 	}
 }
