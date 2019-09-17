@@ -72,8 +72,8 @@ before_script:
   # create adirectory for Overtarget and try to receive language plugin
   # -------------------------------------------------------------------
   - mkdir -p ./OverTarget
-  - travis_retry curl -L -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
-  - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
+  - travis_retry wget -o ./OverTarget/OverTarget.jar ${OVERTARGET_REPO}/${OVERTARGET_GROUP}.language_${OVERTARGET_VERSION}.jar
+  - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=${OVERTARGET_GROUP} -DartifactId=${OVERTARGET_GROUP}.language -Dversion=${OVERTARGET_VERSION} -Dpackaging=jar
   # --------------------------------------------------------------
   # Setup environment variables for correct linking of vtk and zmq
   # --------------------------------------------------------------
