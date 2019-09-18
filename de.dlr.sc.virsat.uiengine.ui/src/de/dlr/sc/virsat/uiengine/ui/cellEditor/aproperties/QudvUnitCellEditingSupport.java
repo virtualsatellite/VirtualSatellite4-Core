@@ -149,12 +149,6 @@ public class QudvUnitCellEditingSupport extends ValuePropertyCellEditingSupport 
 	}
 
 	@Override
-	protected void setValue(Object element, Object userInputValue) {
-		// TODO Auto-generated method stub
-		super.setValue(element, userInputValue);
-	}
-
-	@Override
 	protected Object getValue(Object element) {
 		APropertyInstance propertyInstance = getPropertyInstance(element);
 		AUnit unit = ((UnitValuePropertyInstance) propertyInstance).getUnit();
