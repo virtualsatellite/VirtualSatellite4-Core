@@ -13,7 +13,7 @@
 	<parent>
 		<relativePath>../maven/pom.xml</relativePath>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<artifactId>de.dlr.sc.virsat</artifactId>
+		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<version>4.9.1-SNAPSHOT</version>
 	</parent>
 
@@ -36,7 +36,7 @@
 							<dependency>
 								<groupId>org.asciidoctor</groupId>
 								<artifactId>asciidoctorj-pdf</artifactId>
-								<version>1.5.0-alpha.18</version>
+								<version>1.5.0-beta.4</version>
 							</dependency>
 						</dependencies>
 						<configuration>
