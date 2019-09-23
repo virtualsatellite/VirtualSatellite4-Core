@@ -95,7 +95,7 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 					VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(sei);
 					Map<String, StructuralElementInstance> mapping = 
 							importer.mapJsonUuidToSEI(jsonContent, productRoot);
-					// TODO handle unmapped elements with importer.getUnmappedElements(...)
+
 					Command importCommnd = importer.transform(editingDomain, jsonContent, mapping);
 					if (!importCommnd.canExecute()) {
 						Status status = new Status(Status.ERROR, Activator.getPluginId(),
@@ -128,7 +128,6 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 	public void addPages() {
 		page = new CatiaImportPage(model);
 		addPage(page);
-		//TODO page for mapping of new elements
 	}
 
 }
