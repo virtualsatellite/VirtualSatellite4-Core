@@ -27,8 +27,6 @@ import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableEn
 public class EnumerationCreationDialog extends AUiSnippetCreationDialog {
 	
 	protected FormToolkit toolkit;
-	protected EditingDomain editingDomain;
-	protected EObject initModel;
 	
 	
 	/**
@@ -42,8 +40,6 @@ public class EnumerationCreationDialog extends AUiSnippetCreationDialog {
 			EObject initModel) {
 		super(parentShell, editingDomain, initModel);
 		this.toolkit = toolkit;
-		this.editingDomain = editingDomain;
-		this.initModel = initModel;
 	}
 	
 	

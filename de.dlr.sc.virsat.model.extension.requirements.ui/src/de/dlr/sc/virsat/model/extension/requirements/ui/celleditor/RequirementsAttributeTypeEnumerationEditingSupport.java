@@ -56,22 +56,6 @@ public class RequirementsAttributeTypeEnumerationEditingSupport extends EnumProp
 	}
 	
 	/**
-	 * constructor of the value property cell editing support instantiate the editor
-	 * @param toolKit the swt toolkit
-	 * @param editingDomain the editing domain
-	 * @param viewer the table viewer
-	 * @param property an aproperty
-	 * @param showEmptyField 
-	 * @param valueSwitch 
-	 */
-	public RequirementsAttributeTypeEnumerationEditingSupport(FormToolkit toolKit, EditingDomain editingDomain, ColumnViewer viewer, EnumProperty property, PropertyInstanceValueSwitch valueSwitch, boolean showEmptyField) {
-		super(editingDomain, viewer, property);
-		this.toolKit = toolKit;
-		this.property = property;
-		setupValues(property);
-	}
-	
-	/**
 	 * Constructs the list of values available as type
 	 * @param ep the enmueration property
 	 */

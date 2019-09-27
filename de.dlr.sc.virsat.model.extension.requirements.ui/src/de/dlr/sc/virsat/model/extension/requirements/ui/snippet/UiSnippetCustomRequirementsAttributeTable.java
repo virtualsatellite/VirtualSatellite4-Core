@@ -236,41 +236,11 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 					ATypeDefinition referencePropertyType = ((ReferenceProperty) propertyInstance.getType())
 							.getReferenceType();
 
-					ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(
-							Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
-					dialog.setInput(model.eResource());
-
-					// select first config collection
-					for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
-							.getRootEntities()) {
-						if (sei.getType().getFullQualifiedName()
-								.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
-							dialog.setInitialSelection(sei);
-							break;
-						}
-					}
-
-					dialog.setAllowMultiple(false);
-					dialog.setDoubleClickSelects(true);
-
-					if (dialog.open() == Dialog.OK) {
-						Object selection = dialog.getFirstResult();
-						if (selection instanceof CategoryAssignment) {
-							initializeRequirement(editingDomain, (CategoryAssignment) selection, newRequirement);
-						} else if (selection instanceof StructuralElementInstance) {
-							List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
-									.getNestedCategoryAssignments((StructuralElementInstance) selection,
-											RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
-							if (!reqTypesOfSelection.isEmpty()) {
-								initializeRequirement(editingDomain, reqTypesOfSelection.get(0), newRequirement);
-							}
-						}
-					} else {
-						// Clean up
-						Command cmd = createDeleteCommand(editingDomain, affectedObjects);
-						editingDomain.getCommandStack().execute(cmd);
-					}
+					createAddRequirementDialog(editingDomain, affectedObjects, arrayInstance, newRequirement,
+							referencePropertyType);
 				}
+
+				
 
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
@@ -281,6 +251,53 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		}
 	}
 
+	/**
+	 * @param editingDomain the editing domain of the new requirement
+	 * @param affectedObjects affected elements of the add operation
+	 * @param arrayInstance the array instance of the requirement table
+	 * @param newRequirement the new requirement
+	 * @param referencePropertyType the property type of the requirement
+	 */
+	protected void createAddRequirementDialog(EditingDomain editingDomain, Collection<?> affectedObjects,
+			ComposedPropertyInstance arrayInstance, CategoryAssignment newRequirement,
+			ATypeDefinition referencePropertyType) {
+		ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(
+				Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
+		dialog.setInput(model.eResource());
+
+		// select first config collection
+		for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
+				.getRootEntities()) {
+			if (sei.getType().getFullQualifiedName()
+					.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
+				dialog.setInitialSelection(sei);
+				break;
+			}
+		}
+
+		dialog.setAllowMultiple(false);
+		dialog.setDoubleClickSelects(true);
+
+		if (dialog.open() == Dialog.OK) {
+			Object selection = dialog.getFirstResult();
+			if (selection instanceof CategoryAssignment) {
+				initializeRequirement(editingDomain, (CategoryAssignment) selection, newRequirement);
+			} else if (selection instanceof StructuralElementInstance) {
+				List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
+						.getNestedCategoryAssignments((StructuralElementInstance) selection,
+								RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
+				if (!reqTypesOfSelection.isEmpty()) {
+					initializeRequirement(editingDomain, reqTypesOfSelection.get(0), newRequirement);
+				}
+			}
+		} else {
+			// Clean up
+			Command cmd = createDeleteCommand(editingDomain, affectedObjects);
+			editingDomain.getCommandStack().execute(cmd);
+		}
+	}
+	
+	
 	/**
 	 * Initialize a new requirement from a given requirement type
 	 * 
@@ -302,9 +319,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	 * Persist the width of all columns
 	 */
 	protected void saveColumnWidth() {
-		URI uri = model.eResource().getURI();
-		IPath path = new Path(uri.toPlatformString(false)); 
-		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		IFile file = getModelIFile();
 		for (TableViewerColumn column : attColumns) {
 			try {
 				String width = String.valueOf(column.getColumn().getWidth());
@@ -320,9 +335,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	 * Load the width of all columns
 	 */
 	protected void restoreColumnWitdh() {
-		URI uri = model.eResource().getURI();
-		IPath path = new Path(uri.toPlatformString(false)); 
-		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		IFile file = getModelIFile();
 		controlListenerActive = false; //disable listner otherwise it triggers in these resize events
 		for (TableViewerColumn column : attColumns) {
 			try {
@@ -338,7 +351,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		controlListenerActive = true;
 	}
 	
-	
 	/**
 	 * Create a qualified id for the column width
 	 * @param column the column index
@@ -353,6 +365,16 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		}
 		
 		return new QualifiedName(qualifier, COLUMN_PREFIX + column);
+	}
+	
+	/**
+	 * Get IFile of the current model element
+	 * @return the ifile
+	 */
+	private IFile getModelIFile() {
+		URI uri = model.eResource().getURI();
+		IPath path = new Path(uri.toPlatformString(false)); 
+		return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 	}
 	
 	@Override

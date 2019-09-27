@@ -33,8 +33,6 @@ public class RequirementTypeCreationDialog extends AUiSnippetCreationDialog {
 	protected static final String INITIAL_TYPE_NAME = "NewRequirementType"; 
 	
 	protected FormToolkit toolkit;
-	protected EditingDomain editingDomain;
-	protected EObject initModel;
 
 	/**
 	 * 
@@ -47,8 +45,6 @@ public class RequirementTypeCreationDialog extends AUiSnippetCreationDialog {
 			EObject initModel) {
 		super(parentShell, editingDomain, initModel);
 		this.toolkit = toolkit;
-		this.editingDomain = editingDomain;
-		this.initModel = initModel;
 		if (initModel instanceof CategoryAssignment) {
 			prepareNewTypeElement((CategoryAssignment) initModel);
 		}
