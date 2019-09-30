@@ -16,7 +16,7 @@ SPDX-License-Identifier: EPL-2.0
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>
-		<artifactId>de.dlr.sc.virsat</artifactId>
+		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
 		<version>4.9.1-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>

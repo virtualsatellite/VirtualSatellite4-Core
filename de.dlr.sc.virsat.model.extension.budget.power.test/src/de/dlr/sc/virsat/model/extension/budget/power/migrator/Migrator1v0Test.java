@@ -46,13 +46,9 @@ public class Migrator1v0Test extends AMigrator1v0Test {
 		
 		repository.getActiveConcepts().add(conceptCurrent);
 	
-		//TODO: Setup a current concept and a concept to migrate to
-		
 		Concept conceptPrevious = EcoreUtil.copy(conceptCurrent);
 		
 		testMigrator1v0.migrate(conceptPrevious, conceptCurrent, conceptNext);
-		
-		//TODO: Check for correct migration
 	}
 	
 }

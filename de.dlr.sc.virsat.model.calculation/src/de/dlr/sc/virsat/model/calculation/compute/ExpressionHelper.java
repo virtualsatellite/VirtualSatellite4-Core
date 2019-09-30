@@ -70,7 +70,7 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
  */
 
 public class ExpressionHelper {
-	
+
 	private List<IExpressionEvaluator> evaluators;
 	private List<IInputGetter> inputGetters;
 	private List<IResultSetter> resultSetters;
@@ -79,22 +79,22 @@ public class ExpressionHelper {
 	 * ExpressionHelper with extensions registered by plugins and
 	 * per default also for handling number literals.
 	 */
-	
+
 	public ExpressionHelper() {
 		evaluators = new ArrayList<>();
 		inputGetters = new ArrayList<>();
 		resultSetters = new ArrayList<>();
-		
+
 		processExtensions();
 	}
-	
+
 	/**
 	 * Processes extensiosn registered by plugins.
 	 */
-	
+
 	private void processExtensions() {
 		// Register all plugin extensions
-		
+
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		if (registry != null) {
 			List<IConfigurationElement> setterProviders = Arrays.asList(registry.getConfigurationElementsFor("de.dlr.sc.virsat.model.edit.TypeInstanceSetterProvider"));
@@ -106,7 +106,7 @@ public class ExpressionHelper {
 					return Integer.compare(intValue1, intValue2);
 				}
 			});
-			
+
 			for (IConfigurationElement configElement : setterProviders) {
 				try {
 					Object extension = configElement.createExecutableExtension("class");
@@ -122,7 +122,7 @@ public class ExpressionHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * Apply the getters to the passed input
 	 * @param input the input object onto which a getter will be applied
@@ -132,14 +132,14 @@ public class ExpressionHelper {
 		if (input == null) {
 			return new UnresolvedExpressionResult();
 		}
-		
+
 		for (IInputGetter inputGetter : inputGetters) {
 			IExpressionResult result = inputGetter.get(input);
 			if (result != null) {
 				return result;
 			}
 		}
-		
+
 		return new UnresolvedExpressionResult(input);
 	}
 
@@ -148,35 +148,35 @@ public class ExpressionHelper {
 	 * @param expression The expression to be evaluated
 	 * @return The result of the evaluation
 	 */
-	
+
 	public IExpressionResult evaluate(AExpression expression) {
 		return evaluate(expression, new HashMap<>());
 	}
-	
+
 	/**
 	 * Evaluates a single expression
 	 * @param object The object to be evaluated
 	 * @param interimResultMap map of previously computed results
 	 * @return The result of the evaluation
 	 */
-	
+
 	public IExpressionResult evaluate(EObject object, Map<EObject, IExpressionResult> interimResultMap) {
-		
+
 		if (interimResultMap.containsKey(object)) {
 			return interimResultMap.get(object);
 		}
-		
+
 		CalculationSwitch<IExpressionResult> calcSwitch = new CalculationSwitch<IExpressionResult>() {
-			
+
 			@Override
 			public IExpressionResult caseALiteral(ALiteral object) {
 				return performGet(object);
 			}
-			
+
 			@Override
 			public IExpressionResult caseReferencedInput(ReferencedInput object) {
 				IEquationInput equationInput;
-				
+
 				if (object.getDefinition() != null) {
 					equationInput = getReferencedDefinitionInput(object);
 					if (equationInput == null) {
@@ -189,10 +189,10 @@ public class ExpressionHelper {
 				if (interimResultMap.containsKey(equationInput)) {
 					return interimResultMap.get(equationInput);
 				}
-				
+
 				if (equationInput instanceof EquationIntermediateResult) {
 					EquationIntermediateResult eir = (EquationIntermediateResult) equationInput;
-					Equation eq = (Equation) eir.eContainer(); 
+					Equation eq = (Equation) eir.eContainer();
 					AExpression expression = eq.getExpression();
 					IExpressionResult calculatedResult = interimResultMap.get(expression);
 					return calculatedResult;
@@ -200,7 +200,7 @@ public class ExpressionHelper {
 					return performGet(equationInput);
 				}
 			}
-			
+
 			@Override
 			public IExpressionResult caseALeftOpRightExpression(ALeftOpRightExpression object) {
 				AExpression exprLeft = object.getLeft();
@@ -208,26 +208,26 @@ public class ExpressionHelper {
 
 				IExpressionResult left = evaluate(exprLeft, interimResultMap);
 				IExpressionResult right = evaluate(exprRight, interimResultMap);
-				
+
 				for (IExpressionEvaluator evaluator : evaluators) {
 					IExpressionResult result = evaluator.caseALeftOpRightExpression(object, left, right);
 					if (result != null) {
 						return result;
 					}
 				}
-				
+
 				return new UnresolvedExpressionResult();
 			}
-			
+
 			@Override
 			public IExpressionResult caseAdvancedFunction(AdvancedFunction object) {
 				List<IExpressionResult> results = new ArrayList<>();
-				
+
 				for (AExpression expression : object.getInputs()) {
 					IExpressionResult result = evaluate(expression, interimResultMap);
 					results.add(result);
 				}
-				
+
 				// Apply the correct evaluator
 				for (IExpressionEvaluator evaluator : evaluators) {
 					IExpressionResult result = evaluator.caseAAdvancedFunction(object, results);
@@ -235,16 +235,16 @@ public class ExpressionHelper {
 						return result;
 					}
 				}
-				
+
 				// No evaluator was applicable
 				return new UnresolvedExpressionResult();
 			}
-			
+
 			@Override
 			public IExpressionResult caseSetFunction(SetFunction object) {
 				List<ATypeInstance> typeInstances = getSetFunctionInput(object);
 				List<IExpressionResult> getResults = new ArrayList<>();
-				
+
 				for (ATypeInstance typeInstance : typeInstances) {
 					if (interimResultMap.containsKey(typeInstance)) {
 						getResults.add(interimResultMap.get(typeInstance));
@@ -252,7 +252,7 @@ public class ExpressionHelper {
 						getResults.add(performGet(typeInstance));
 					}
 				}
-				
+
 				// Apply the correct evaluator
 				for (IExpressionEvaluator evaluator : evaluators) {
 					IExpressionResult result = evaluator.caseAAdvancedFunction(object, getResults);
@@ -260,11 +260,11 @@ public class ExpressionHelper {
 						return result;
 					}
 				}
-				
+
 				// No evaluator was applicable
 				return new UnresolvedExpressionResult();
 			}
-			
+
 			// This case covers
 				// Function
 				// Paranthesis
@@ -273,24 +273,24 @@ public class ExpressionHelper {
 				AExpression exprRight = object.getRight();
 
 				IExpressionResult right = evaluate(exprRight, interimResultMap);
-				
+
 				for (IExpressionEvaluator evaluator : evaluators) {
 					IExpressionResult result = evaluator.caseAOpRightExpression(object, right);
 					if (result != null) {
 						return result;
 					}
 				}
-				
+
 				return new UnresolvedExpressionResult();
 			}
 		};
-		
+
 		IExpressionResult result = calcSwitch.doSwitch(object);
 		interimResultMap.put(object, result);
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Gets a list of a all type instances that the passed set function would use as input
 	 * @param object the set function
@@ -300,38 +300,38 @@ public class ExpressionHelper {
 		ATypeDefinition typeDefinition = object.getTypeDefinition();
 		String filterName = object.getFilterName();
 		boolean filterForName = filterName != null && !filterName.equals("");
-		
+
 		// Grab the structural element instance the set function belongs to
 		StructuralElementInstance sei = getStructuralElementInstance(object);
 		if (sei == null) {
 			return new ArrayList<>();
 		}
-		
+
 		// Find all applicable instances that are directly or indirectly contained by the sei
 		List<EObject> containers = new ArrayList<>();
 		containers.add(sei);
 		containers.addAll(StructuralElementInstanceHelper.getDeepChildren(sei, object.getDepth(), 0));
-		
+
 		// Find all child seis that also compute the set function
 		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, object);
-		
+
 		List<ATypeInstance> inputs = new ArrayList<>();
 		TreeIterator<Object> treeIter = EcoreUtil.getAllProperContents(containers, true);
 		while (treeIter.hasNext()) {
 			Object potentialATypeInstance = treeIter.next();
 			if (potentialATypeInstance instanceof ATypeInstance) {
 				ATypeInstance aTypeInstance = (ATypeInstance) potentialATypeInstance;
-				
+
 				boolean correctType = aTypeInstance.getType() == typeDefinition;
 				boolean notComputedByChild = !childrenWithSetFunction.contains(getStructuralElementInstance(aTypeInstance));
-				
+
 				if (correctType && notComputedByChild) {
 					// For composed property instances we have to get the category assignment
 					// to be able to work with them
 					if (aTypeInstance instanceof ComposedPropertyInstance) {
 						aTypeInstance = ((ComposedPropertyInstance) aTypeInstance).getTypeInstance();
 					}
-					
+
 					boolean correctName = !filterForName || hasCorrectName(aTypeInstance, filterName);
 					if (correctName) {
 						inputs.add(aTypeInstance);
@@ -341,10 +341,10 @@ public class ExpressionHelper {
 		}
 
 		// Get the CA in which the current Set resides. All TypeInstances of this category shall not be
-		// part of the inputs to be processed by this SetFunction. Accordingly they have to be removed 
+		// part of the inputs to be processed by this SetFunction. Accordingly they have to be removed
 		// from the Set's inputs
 		CategoryAssignment currentCa = VirSatEcoreUtil.getEContainerOfClass(object, CategoryAssignment.class);
-		if (currentCa != null) { 
+		if (currentCa != null) {
 			for (APropertyInstance pi : currentCa.getPropertyInstances()) {
 				inputs.remove(pi);
 				if (pi instanceof ComposedPropertyInstance) {
@@ -353,10 +353,10 @@ public class ExpressionHelper {
 				}
 			}
 		}
-		
+
 		return inputs;
 	}
-	
+
 	/**
 	 * Gets child seis that compute the set function for them and
 	 * their children. That sei and the corresponding sub tree can then ignored in
@@ -367,14 +367,13 @@ public class ExpressionHelper {
 	 */
 	private Set<StructuralElementInstance> getChildrenWithSetFunction(StructuralElementInstance sei, SetFunction setFunction) {
 		Set<StructuralElementInstance> childrenWithSetFunction = new HashSet<>();
-		
-		// TODO: Properly deal with child set functions in the case of depth limitations
+
 		if (setFunction.getDepth() == -1) {
 			List<StructuralElementInstance> children = sei.getChildren();
 			for (StructuralElementInstance child : children) {
 				VirSatEcoreUtil.getAllContentsOfType(child.eResource(), Equation.class, true).forEachRemaining(eObject -> {
 					Equation equation = (Equation) eObject;
-					
+
 					// Check if the expression computes the same set function but for the child sei
 					AExpression expression = equation.getExpression();
 					if (expression instanceof SetFunction && !childrenWithSetFunction.contains(getStructuralElementInstance(expression))) {
@@ -388,10 +387,10 @@ public class ExpressionHelper {
 				});
 			}
 		}
-		
+
 		return childrenWithSetFunction;
 	}
-	
+
 	/**
 	 * Checks if the given input has a correct name. This can either be the typeinstance itself,
 	 * or the container type instance if the typeinstance itself is not a named object
@@ -409,11 +408,11 @@ public class ExpressionHelper {
 			IName name = (IName) aTypeInstance.eContainer();
 			return name.getName().equals(filterName);
 		}
-		
+
 		// This is not a named object, yet we require a specific name, therefore the name is not correct
 		return false;
 	}
-	
+
 	/**
 	 * Compares two set functions and whether they have the same settings. That is, this comparison
 	 * ignores things such as container, uuid, etc. and only considers the parameters the user
@@ -428,7 +427,7 @@ public class ExpressionHelper {
 		boolean sameTypeDefinition = Objects.equals(sf1.getTypeDefinition(), sf2.getTypeDefinition());
 		return sameOperator && sameFilter && sameTypeDefinition;
 	}
-	
+
 	/**
 	 * Gets the structural element instance containing this object
 	 * @param eObject the object contained by some sei
@@ -442,27 +441,27 @@ public class ExpressionHelper {
 			}
 			container = container.eContainer();
 		}
-		
+
 		return (StructuralElementInstance) container;
 	}
-	
+
 	/**
 	 * Resolve a referenced definition input to an instance
 	 * @param object the reference to the definition
 	 * @return the resolved equation input if it exists, null otherwise
 	 */
-	
+
 	public IEquationInput getReferencedDefinitionInput(ReferencedInput object) {
 		IEquationDefinitionInput reference = object.getDefinition().getReference();
-		
+
 		// Backtrack as follows:
 		// First check if there is an instance of the referenced typeDefinition locally in the category assignment
 		// Then go up to the local StructuralElementInstance and check if it has a ca with the reference
 		// If not, go to the parent sei and repeat until we are at the root
-		
+
 		EObject container = object.eContainer();
 		while (container != null) {
-			
+
 			// Either check the category assignment itself (if container is one) or check the category assignemnts
 			// attached to the structural element instance (if container is one)
 			List<CategoryAssignment> caList = new ArrayList<CategoryAssignment>();
@@ -472,7 +471,7 @@ public class ExpressionHelper {
 				StructuralElementInstance sei = (StructuralElementInstance) container;
 				caList.addAll(sei.getCategoryAssignments());
 			}
-			
+
 			for (CategoryAssignment ca : caList) {
 				if (reference instanceof EquationIntermediateResult) {
 					EquationIntermediateResult interResult = (EquationIntermediateResult) reference;
@@ -501,13 +500,13 @@ public class ExpressionHelper {
 					}
 				}
 			}
-			
+
 			container = container.eContainer();
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Calculates the dependencies that are required to calculate this expression (e.g. sub expressions,
 	 * references, etc)
@@ -515,9 +514,9 @@ public class ExpressionHelper {
 	 * @return the necessary dependencies
 	 */
 	public List<EObject> getDependencies(AExpression expression) {
-		
+
 		List<EObject> dependencies = new ArrayList<>();
-		
+
 		CalculationSwitch<List<EObject>> calcSwitch = new CalculationSwitch<List<EObject>>() {
 			@Override
 			public List<EObject> caseReferencedInput(ReferencedInput object) {
@@ -529,33 +528,33 @@ public class ExpressionHelper {
 				} else {
 					dependencies.add(object.getReference());
 				}
-				
+
 				return dependencies;
 			}
-			
+
 			@Override
 			public List<EObject> caseALeftOpRightExpression(ALeftOpRightExpression object) {
 				AExpression exprLeft = object.getLeft();
 				AExpression exprRight = object.getRight();
-			
+
 				dependencies.add(exprLeft);
 				dependencies.add(exprRight);
-				
+
 				return dependencies;
 			}
-			
+
 			@Override
 			public List<EObject> caseAdvancedFunction(AdvancedFunction object) {
 				dependencies.addAll(object.getInputs());
 				return dependencies;
 			}
-			
+
 			@Override
 			public List<EObject> caseSetFunction(SetFunction object) {
 				dependencies.addAll(getSetFunctionInput(object));
 				return dependencies;
 			}
-			
+
 			// This case covers
 				// Function
 				// Paranthesis
@@ -563,22 +562,22 @@ public class ExpressionHelper {
 			public List<EObject> caseAOpRightExpression(AOpRightExpression object) {
 				AExpression exprRight = object.getRight();
 				dependencies.add(exprRight);
-				
+
 				return dependencies;
 			}
 		};
-		
+
 		calcSwitch.doSwitch(expression);
-		
+
 		return dependencies;
 	}
-	
+
 	/**
 	 * Gets the setter applicable for a certain instance
 	 * @param instance The instance which to which we want to assign a result
 	 * @return The setter applicable for this instance. null if no setter is applicable
 	 */
-	
+
 	public IResultSetter getResultSetter(ATypeInstance instance) {
 		for (IResultSetter setter : resultSetters) {
 			if (setter.isApplicableFor(instance)) {
@@ -587,31 +586,31 @@ public class ExpressionHelper {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * This method concatenates a String representing the complete expression. 
-	 * It recursively evaluates the nested expression and assembles a complete statement which can be displayed 
+	 * This method concatenates a String representing the complete expression.
+	 * It recursively evaluates the nested expression and assembles a complete statement which can be displayed
 	 * @param ex the expression to switch on
 	 * @return String the math expression as String
 	 */
 	public String getCompleteExpression(AExpression ex) {
 		CalculationSwitch<String> calcSwitch = new CalculationSwitch<String>() {
-			
+
 			@Override
 			public String caseNumberLiteral(NumberLiteral object) {
 				return object.getValue();
 			}
-			
+
 			@Override
 			public String caseValuePi(ValuePi object) {
 				return "pi";
 			}
-			
+
 			@Override
 			public String caseValueE(ValueE object) {
 				return "e";
 			}
-			
+
 			@Override
 			public String caseALeftOpRightExpression(ALeftOpRightExpression ex) {
 				AExpression left = ex.getLeft();
@@ -620,7 +619,7 @@ public class ExpressionHelper {
 				String rtnString = getCompleteExpression(left).concat(" ").concat(op.getLiteral().concat(" ")).concat(getCompleteExpression(right));
 				return rtnString;
 			}
-			
+
 			@Override
 			public String caseAOpRightExpression(AOpRightExpression ex) {
 				AExpression right = ex.getRight();
@@ -628,13 +627,13 @@ public class ExpressionHelper {
 				String rtnString = op.getLiteral().concat(" ").concat(getCompleteExpression(right));
 				return rtnString;
 			}
-			
+
 			@Override
 			public String caseReferencedInput(ReferencedInput ex) {
 				IExpressionResult result = evaluate(ex);
 				return result.toString();
 			}
-			
+
 			@Override
 			public String caseFunction(Function ex) {
 				AExpression right = ex.getRight();
@@ -642,14 +641,14 @@ public class ExpressionHelper {
 				String rtnString = op.getLiteral().concat("(").concat(getCompleteExpression(right)).concat(")");
 				return rtnString;
 			}
-			
+
 			@Override
 			public String caseParenthesis(Parenthesis ex) {
 				AExpression right = ex.getRight();
 				String rtnString = "(".concat(getCompleteExpression(right)).concat(")");
 				return rtnString;
 			}
-			
+
 			@Override
 			public String caseSetFunction(SetFunction ex) {
 				ATypeDefinition typeDefinition = ex.getTypeDefinition();
@@ -662,16 +661,16 @@ public class ExpressionHelper {
 				String rtnString = op.concat("(").concat(typeDefinition.getName()).concat(filterNameString).concat(")");
 				return rtnString;
 			}
-			
+
 			@Override
 			public String caseAdvancedFunction(AdvancedFunction ex) {
-				
+
 				StringBuilder sb = new StringBuilder();
-				
+
 				String op = ex.getOperator();
 				sb.append(op);
 				sb.append("(");
-				
+
 				for (int i = 0; i < ex.getInputs().size(); ++i) {
 					String subExpression = getCompleteExpression(ex.getInputs().get(i));
 					sb.append(subExpression);
@@ -679,16 +678,16 @@ public class ExpressionHelper {
 						sb.append(", ");
 					}
 				}
-				
+
 				sb.append(")");
 				return sb.toString();
 			}
-			
+
 		};
-		
+
 		return calcSwitch.doSwitch(ex);
 	}
-	
+
 	/**
 	 * Get the equation associated with this expression
 	 * @param expression the expression
@@ -701,5 +700,5 @@ public class ExpressionHelper {
 		}
 		return (Equation) container;
 	}
-	
+
 }

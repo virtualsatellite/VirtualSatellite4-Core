@@ -19,17 +19,16 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
- * 
+ *
  * This class is generated once, do your changes here
- * 
+ *
  * Concept for modelling State Diagrams
- * 
+ *
  */
 public class Migrator1v0 extends AMigrator1v0 implements IMigrator {
 
 	@Override
 	public void migrate(Concept concept, IMigrator previousMigrator) {
-		//TODO: Implement custom concept migration for version 1.0
 		super.migrate(concept, previousMigrator);
 	}
 }

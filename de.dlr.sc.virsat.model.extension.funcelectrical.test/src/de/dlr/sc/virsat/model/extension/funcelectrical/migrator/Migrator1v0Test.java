@@ -30,31 +30,27 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
- * 
+ *
  * This class is generated once, do your changes here
- * 
+ *
  * Concept for modelling Functional Electrical Architecture (FEA)
- * 
+ *
  */
-public class Migrator1v0Test extends AMigrator2v0Test {		
-	
+public class Migrator1v0Test extends AMigrator2v0Test {
+
 	@Test
 	public void testMigrator2v0() {
 		Migrator2v0 testMigrator2v0 = new Migrator2v0();
-		
+
 		Repository repository = DVLMFactory.eINSTANCE.createRepository();
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
-		
+
 		repository.getActiveConcepts().add(conceptCurrent);
-	
-		//TODO: Setup a current concept and a concept to migrate to
-		
+
 		Concept conceptPrevious = EcoreUtil.copy(conceptCurrent);
-		
+
 		testMigrator2v0.migrate(conceptPrevious, conceptCurrent, conceptNext);
-		
-		//TODO: Check for correct migration
 	}
-	
+
 }
