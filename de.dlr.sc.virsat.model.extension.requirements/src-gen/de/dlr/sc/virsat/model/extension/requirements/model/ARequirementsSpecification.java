@@ -14,20 +14,21 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import org.eclipse.emf.common.util.URI;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 
 
 // *****************************************************************
@@ -55,7 +56,7 @@ public abstract class ARequirementsSpecification extends ABeanCategoryAssignment
 	}
 	
 	// property name constants
-	public static final String PROPERTY_FILENAME = "fileName";
+	public static final String PROPERTY_EXPORTFILE = "exportFile";
 	public static final String PROPERTY_REQUIREMENTS = "requirements";
 	public static final String PROPERTY_TYPEDEFINITIONS = "typeDefinitions";
 	
@@ -80,40 +81,40 @@ public abstract class ARequirementsSpecification extends ABeanCategoryAssignment
 	
 	
 	// *****************************************************************
-	// * Attribute: fileName
+	// * Attribute: exportFile
 	// *****************************************************************
-	private BeanPropertyString fileName = new BeanPropertyString();
+	private BeanPropertyResource exportFile = new BeanPropertyResource();
 	
-	private void safeAccessFileName() {
-		if (fileName.getTypeInstance() == null) {
-			fileName.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("fileName"));
+	private void safeAccessExportFile() {
+		if (exportFile.getTypeInstance() == null) {
+			exportFile.setTypeInstance((ResourcePropertyInstance) helper.getPropertyInstance("exportFile"));
 		}
 	}
 	
-	public Command setFileName(EditingDomain ed, String value) {
-		safeAccessFileName();
-		return this.fileName.setValue(ed, value);
+	public Command setExportFile(EditingDomain ed, URI value) {
+		safeAccessExportFile();
+		return this.exportFile.setValue(ed, value);
 	}
 	
-	public void setFileName(String value) {
-		safeAccessFileName();
-		this.fileName.setValue(value);
+	public void setExportFile(URI value) {
+		safeAccessExportFile();
+		this.exportFile.setValue(value);
 	}
 	
-	public String getFileName() {
-		safeAccessFileName();
-		return fileName.getValue();
+	public URI getExportFile() {
+		safeAccessExportFile();
+		return exportFile.getValue();
 	}
 	
-	public BeanPropertyString getFileNameBean() {
-		safeAccessFileName();
-		return fileName;
+	public BeanPropertyResource getExportFileBean() {
+		safeAccessExportFile();
+		return exportFile;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: requirements
 	// *****************************************************************
-	private IBeanList<Requirement> requirements = new TypeSafeComposedPropertyInstanceList<>(Requirement.class);
+	private IBeanList<RequirementObject> requirements = new TypeSafeComposedPropertyInstanceList<>(RequirementObject.class);
 	
 	private void safeAccessRequirements() {
 		if (requirements.getArrayInstance() == null) {
@@ -121,7 +122,7 @@ public abstract class ARequirementsSpecification extends ABeanCategoryAssignment
 		}
 	}
 	
-	public IBeanList<Requirement> getRequirements() {
+	public IBeanList<RequirementObject> getRequirements() {
 		safeAccessRequirements();
 		return requirements;
 	}

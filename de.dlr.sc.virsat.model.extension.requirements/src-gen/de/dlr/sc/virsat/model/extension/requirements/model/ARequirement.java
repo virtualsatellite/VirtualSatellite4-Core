@@ -67,11 +67,15 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	// Status enumeration value names
 	public static final String STATUS_Open_NAME = "Open";
 	public static final String STATUS_FullyCompliant_NAME = "FullyCompliant";
-	public static final String STATUS_PartlyCompliant_NAME = "PartlyCompliant";
+	public static final String STATUS_PartialCompliant_NAME = "PartialCompliant";
+	public static final String STATUS_NonCompliant_NAME = "NonCompliant";
+	public static final String STATUS_NotApplicable_NAME = "NotApplicable";
 	// Status enumeration values
 	public static final String STATUS_Open_VALUE = "0";
 	public static final String STATUS_FullyCompliant_VALUE = "1";
-	public static final String STATUS_PartlyCompliant_VALUE = "2";
+	public static final String STATUS_PartialCompliant_VALUE = "2";
+	public static final String STATUS_NonCompliant_VALUE = "3";
+	public static final String STATUS_NotApplicable_VALUE = "4";
 	
 	
 	// *****************************************************************

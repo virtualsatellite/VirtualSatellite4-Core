@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ASCII"?>
 <dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v6/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.1" displayName="Requirements" beta="true">
   <categories name="RequirementsSpecification" isApplicableForAll="true">
-    <properties xsi:type="dvlm_cppd:StringProperty" name="fileName"/>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="requirements" type="de.dlr.sc.virsat.model.extension.requirements.Requirement">
+    <properties xsi:type="dvlm_cppd:ResourceProperty" name="exportFile"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="requirements" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="typeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
   </categories>
-  <categories name="RequirementsConfiguration" isApplicableForAll="true">
+  <categories name="RequirementsConfiguration" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
     <properties xsi:type="dvlm_cppd:StringProperty" name="fileName"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="typeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
@@ -29,7 +29,9 @@
     <properties xsi:type="dvlm_cppd:EnumProperty" name="status">
       <values name="Open" value="0"/>
       <values name="FullyCompliant" value="1"/>
-      <values name="PartlyCompliant" value="2"/>
+      <values name="PartialCompliant" value="2"/>
+      <values name="NonCompliant" value="3"/>
+      <values name="NotApplicable" value="4"/>
     </properties>
   </categories>
   <categories name="AttributeValue">
@@ -49,6 +51,7 @@
       <values name="Integer" value="3"/>
       <values name="Real" value="4"/>
       <values name="String" value="5"/>
+      <values name="Identifier" value="6"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="enumeration" type="de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition"/>
   </categories>
@@ -58,4 +61,5 @@
     </properties>
   </categories>
   <categories name="EnumerationLiteral"/>
+  <structuralElements name="RequirementsConfigurationCollection" description="Storage for configuration elements of requirements" isRootStructuralElement="true"/>
 </dvlm_c:Concept>

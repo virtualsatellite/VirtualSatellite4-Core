@@ -9,8 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.extension.requirements.ui.command.CreateAddArrayElementRequirementsCommand;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -20,5 +25,24 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  * 
  */
-public class UiSnippetTableRequirementsSpecificationRequirementsRequirement extends AUiSnippetTableRequirementsSpecificationRequirementsRequirement implements IUiSnippet {
+public class UiSnippetTableRequirementsSpecificationRequirementsRequirement
+		extends UiSnippetCustomRequirementsAttributeTable implements IUiSnippet {
+
+	/**
+	 * 
+	 */
+	public UiSnippetTableRequirementsSpecificationRequirementsRequirement() {
+		super("de.dlr.sc.virsat.model.extension.requirements",
+			"Requirement",
+			"requirements",
+			"RequirementsSpecification",
+			"de.dlr.sc.virsat.model.extension.requirements.Requirement",
+			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
+	}
+	
+	@Override
+	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
+		return new CreateAddArrayElementRequirementsCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "Requirement"));
+	}
+	
 }
