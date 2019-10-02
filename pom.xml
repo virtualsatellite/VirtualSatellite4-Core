@@ -159,6 +159,12 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>doc</id>
+			<modules>
+				<module>de.dlr.sc.virsat.javadoc.api</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>deploy</id>
 			<modules>
 				<module>de.dlr.sc.virsat.target.feature</module>
@@ -195,12 +201,6 @@
 				<module>de.dlr.sc.virsat.product</module>
 				<module>de.dlr.sc.virsat.p2updatesite</module>
 				<module>de.dlr.sc.virsat.model.concept.p2updatesite</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>doc</id>
-			<modules>
-				<module>de.dlr.sc.virsat.javadoc.api</module>
 			</modules>
 		</profile>
 	</profiles>
