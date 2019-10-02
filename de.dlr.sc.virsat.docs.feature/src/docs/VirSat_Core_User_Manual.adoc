@@ -10,6 +10,10 @@ It has been a long way to get here and it will be an even harder way to go on. T
 
 :sectnums:
 
+== Introduction
+
+This is an example for an introduction.
+
 == Getting Started
 
 Learn about basic requirements of Virtual Satellite, how it is installed and begin your first modeling. It probably takes less than 15 minutes until you have your first item modeled.  
