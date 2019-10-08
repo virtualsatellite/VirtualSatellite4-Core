@@ -115,12 +115,12 @@ Following the next steps will help you with the progress.
 |Image
 
 |{counter:steps}.
-|Start with opening a new perspective by clicking the "window" button in your menu as shown in Figure "Open Perspective".
+|Start with opening a new perspective by clicking the "window" button in your menu. +
+Select the option "Git". 
 |image::chapterIdeInstallation/subsectionGitIdeSetup/2_OpenPerspective.png[Open perspective]
 
 |{counter:steps}.
-|Select the option "Git". +
-In the next step you have to select a repository source.
+|In the next step you have to select a repository source.
 Choose "clone URl" and continue. +
 After that you need to visit www.github.com and choose the repository you want to clone. +
 Click the green button in the upper right corner which says "clone or download" and copy the link.
@@ -137,7 +137,7 @@ Now you have to choose a directory as a local destination for VirtualSatellite4-
 |image::chapterIdeInstallation/subsectionGitIdeSetup/8_CheckoutBranch.PNG[Check out development branch]
 
 |{counter:steps}.
-|Now you have to open the folder "Working Tree" and scroll down until you find the folder "de.dlr.sc.virsat.target". +
+|Now you have to open the folder "Working Tree" in your Git repositories on the left side and scroll down until you find the folder "de.dlr.sc.virsat.target". +
 Open it and then select "virsat.target". +
 You need to wait until the progress is fully loaded. +
 Then set it as your active target platform. The button is in the upper right corner.
@@ -153,7 +153,7 @@ Select the option "Git" -> "Projects from Git" and continue.
 |In the next step you have to select a location of your Git repositories. +
 Choose "Existing local repository" and select "VirtualSatellite4-Core [development]- [...] \.git" and continue. +
 Next, choose the first option "Import existing Eclipse projects" and go on to the window, where all projects are selected. +
-When you have finished the process, you see all projects listed in your Project Explorer on the left side.
+When you have finished the process, you see all projects listed in your project explorer on the left side.
 |image::chapterIdeInstallation/subsectionGitIdeSetup/15_ImportEclipse.PNG[Import existing Eclipse projects]
 
 
