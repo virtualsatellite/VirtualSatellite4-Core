@@ -124,37 +124,37 @@ In the next step you have to select a repository source.
 Choose "clone URl" and continue. +
 After that you need to visit www.github.com and choose the repository you want to clone. +
 Click the green button in the upper right corner which says "clone or download" and copy the link.
-|image::chapterIdeInstallation/subsectionGitIdeSetup/4.1_CloneGitUrl.png[Clone Git URL]
+|image::chapterIdeInstallation/subsectionGitIdeSetup/4.1_CloneGitUrl.PNG[Clone Git URL]
 
 |{counter:steps}.
 |Enter the link of the source repository into the free field "URl" and authenticate yourself in the section beneath. +
 In the next step you can select branches to clone from the remote repository. In this case, just let them all selected and continue. +
 Now you have to choose a directory as a local destination for VirtualSatellite4-Core to finish the process. 
-|image::chapterIdeInstallation/subsectionGitIdeSetup/5_InsertGitUrl.png[Insert Git URL]
+|image::chapterIdeInstallation/subsectionGitIdeSetup/5_InsertGitUrl.PNG[Insert Git URL]
 
 |{counter:steps}.
 |After that, you select the branch "development" in the upper left corner of your window and double click to check out the branch. 
-|image::chapterIdeInstallation/subsectionGitIdeSetup/8_CheckoutBranch.png[Check out development branch]
+|image::chapterIdeInstallation/subsectionGitIdeSetup/8_CheckoutBranch.PNG[Check out development branch]
 
 |{counter:steps}.
 |Now you have to open the folder "Working Tree" and scroll down until you find the folder "de.dlr.sc.virsat.target". +
 Open it and then select "virsat.target". +
 You need to wait until the progress is fully loaded. +
 Then set it as your active target platform. The button is in the upper right corner.
-|image::chapterIdeInstallation/subsectionGitIdeSetup/10_OpenVirsatTarget.png[Open Virsat Target]
+|image::chapterIdeInstallation/subsectionGitIdeSetup/10_OpenVirsatTarget.PNG[Open Virsat Target]
 
 |{counter:steps}.
 |After that you need to switch from the Git perspective to the Plug-in development perspective in the upper right corner. +
 Then take a look at the project explorer in the upper left corner to import a project. +
 Select the option "Git" -> "Projects from Git" and continue.
-|image::chapterIdeInstallation/subsectionGitIdeSetup/12_ImportProjectsGit.png[Import Projects from Git]
+|image::chapterIdeInstallation/subsectionGitIdeSetup/12_ImportProjectsGit.PNG[Import Projects from Git]
 
 |{counter:steps}.
 |In the next step you have to select a location of your Git repositories. +
 Choose "Existing local repository" and select "VirtualSatellite4-Core [development]- [...] \.git" and continue. +
 Next, choose the first option "Import existing Eclipse projects" and go on to the window, where all projects are selected. +
 When you have finished the process, you see all projects listed in your Project Explorer on the left side.
-|image::chapterIdeInstallation/subsectionGitIdeSetup/15_ImportEclipse.png[Import existing Eclipse projects]
+|image::chapterIdeInstallation/subsectionGitIdeSetup/15_ImportEclipse.PNG[Import existing Eclipse projects]
 
 
 |=== 
