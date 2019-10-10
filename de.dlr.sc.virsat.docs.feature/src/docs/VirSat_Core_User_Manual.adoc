@@ -1268,7 +1268,7 @@ In the same menue, manual builds can also be triggered via menu:Project[Build Al
 Just like all other data model changes, the builder is subject to the rights management.
 Should a value be updated and a calculated variable require an update, which cannot
 be performed due to lack of rights, a `Computed value is out of date` warning is issued instead.
-A proposed update order for to resolve these warnings can be obtained from the _Domain Round View_.
+A proposed update order to resolve these warnings can be obtained from the _Domain Round View_.
 The view can be opened via menu:Window[Show View > Other > VirSat > Domain Round].
 By selecting a project in the _Navigator_, the view will then show a proposed update order to resolve calculation dependencies.
 
@@ -1301,7 +1301,7 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |image:chapterApps/ActivateApps.png[Activating the Apps]
 
 |{counter:step}.
-|After the Apps are activated, press the button btn:[Add App] to add a new exmaple app.
+|After the Apps are activated, press the button btn:[Add App] to add a new example app.
 |image:chapterApps/AddApp.png[Add a new example App]
 
 |{counter:step}.
@@ -1312,7 +1312,7 @@ NOTE: The Apps provide a complete Java in the background. This means you can inc
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
 |{counter:step}.
-|Back in the Repository Editor you can now execute the App by pressing the btn:[Run APP] button. You have to select the App in the list before.
+|Back in the Repository Editor you can now execute the App by pressing the btn:[Run App] button. You have to select the App in the list before.
 
 TIP: You can also execute the App in the editor by the context menu menu:Context[Run As > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
 
