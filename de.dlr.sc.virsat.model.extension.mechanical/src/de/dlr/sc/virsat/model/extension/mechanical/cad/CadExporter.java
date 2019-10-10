@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia;
+package de.dlr.sc.virsat.model.extension.mechanical.cad;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,7 +39,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
  *
  */
 
-public class CatiaExporter {
+public class CadExporter {
 	
 	private String geometryFilesPath;
 	private Set<IBeanStructuralElementInstance> parts;
@@ -66,10 +66,10 @@ public class CatiaExporter {
 
 		JsonObject jsonProducts = transformProduct(root);
 		if (jsonProducts != null) {
-			json.put(CatiaProperties.PRODUCTS.getKey(), jsonProducts); 
+			json.put(CadProperties.PRODUCTS.getKey(), jsonProducts); 
 		}
 		
-		json.put(CatiaProperties.PARTS.getKey(), transformParts(parts)); 
+		json.put(CadProperties.PARTS.getKey(), transformParts(parts)); 
 		
 		return json;
 	}
@@ -115,8 +115,8 @@ public class CatiaExporter {
 	 */
 	public JsonObject transformElement(IBeanStructuralElementInstance element) {
 		JsonObject jsonElement = new JsonObject();
-		jsonElement.put(CatiaProperties.NAME.getKey(), element.getName());
-		jsonElement.put(CatiaProperties.UUID.getKey(), element.getUuid());
+		jsonElement.put(CadProperties.NAME.getKey(), element.getName());
+		jsonElement.put(CadProperties.UUID.getKey(), element.getUuid());
 		return jsonElement;
 	}
 
@@ -148,7 +148,7 @@ public class CatiaExporter {
 			public void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
 				JsonObject jsonProduct = transformElement(treeNode);
 				mapBeansToJsonProducts.put(treeNode, jsonProduct);
-				jsonProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), new JsonArray());
+				jsonProduct.put(CadProperties.PRODUCT_CHILDREN.getKey(), new JsonArray());
 				
 				if (hasVisCa) {
 					transformProductVisualisationFields(visCa, jsonProduct);
@@ -157,15 +157,15 @@ public class CatiaExporter {
 					
 					parts.add(part);
 					
-					jsonProduct.put(CatiaProperties.PRODUCT_ED_UUID.getKey(), part.getUuid());
-					jsonProduct.put(CatiaProperties.PRODUCT_REFERENCE_NAME.getKey(), part.getName());
+					jsonProduct.put(CadProperties.PRODUCT_ED_UUID.getKey(), part.getUuid());
+					jsonProduct.put(CadProperties.PRODUCT_REFERENCE_NAME.getKey(), part.getName());
 				}
 				
 				if (matchingParent != null) {
 					JsonObject parentJsonObject = mapBeansToJsonProducts.get(matchingParent);
 					
 					// See if there is already an array for children on the parent
-					JsonArray jsonArrayChildren = parentJsonObject.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+					JsonArray jsonArrayChildren = parentJsonObject.getCollection(CadProperties.PRODUCT_CHILDREN);
 					jsonArrayChildren.add(jsonProduct);
 				}
 			}
@@ -231,15 +231,15 @@ public class CatiaExporter {
 	 * @param jsonProduct 
 	 */
 	private void transformProductVisualisationFields(Visualisation vis, JsonObject jsonProduct) {
-		jsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), vis.getPositionXBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), vis.getPositionYBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), vis.getPositionZBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), vis.getRotationXBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), vis.getRotationYBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), vis.getRotationZBean().getValueToBaseUnit());
-		jsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), vis.getShape());
+		jsonProduct.put(CadProperties.PRODUCT_POS_X.getKey(), vis.getPositionXBean().getValueToBaseUnit());
+		jsonProduct.put(CadProperties.PRODUCT_POS_Y.getKey(), vis.getPositionYBean().getValueToBaseUnit());
+		jsonProduct.put(CadProperties.PRODUCT_POS_Z.getKey(), vis.getPositionZBean().getValueToBaseUnit());
+		jsonProduct.put(CadProperties.PRODUCT_ROT_X.getKey(), vis.getRotationXBean().getValueToBaseUnit());
+		jsonProduct.put(CadProperties.PRODUCT_ROT_Y.getKey(), vis.getRotationYBean().getValueToBaseUnit());
+		jsonProduct.put(CadProperties.PRODUCT_ROT_Z.getKey(), vis.getRotationZBean().getValueToBaseUnit());
+		jsonProduct.put(CadProperties.PRODUCT_SHAPE.getKey(), vis.getShape());
 		
-		fillGeometryField(vis, jsonProduct, CatiaProperties.PRODUCT_STL_PATH);
+		fillGeometryField(vis, jsonProduct, CadProperties.PRODUCT_STL_PATH);
 	}
 
 	/**
@@ -266,14 +266,14 @@ public class CatiaExporter {
 	 * @param jsonPart 
 	 */
 	private void transformPartVisualisationFields(Visualisation vis, JsonObject jsonPart) {
-		jsonPart.put(CatiaProperties.PART_LENGTH_X.getKey(), vis.getSizeXBean().getValueToBaseUnit());
-		jsonPart.put(CatiaProperties.PART_LENGTH_Y.getKey(), vis.getSizeYBean().getValueToBaseUnit());
-		jsonPart.put(CatiaProperties.PART_LENGTH_Z.getKey(), vis.getSizeZBean().getValueToBaseUnit());
-		jsonPart.put(CatiaProperties.PART_RADIUS.getKey(), vis.getRadiusBean().getValueToBaseUnit());
-		jsonPart.put(CatiaProperties.PART_COLOR.getKey(), vis.getColor());
-		jsonPart.put(CatiaProperties.PART_SHAPE.getKey(), vis.getShape());
+		jsonPart.put(CadProperties.PART_LENGTH_X.getKey(), vis.getSizeXBean().getValueToBaseUnit());
+		jsonPart.put(CadProperties.PART_LENGTH_Y.getKey(), vis.getSizeYBean().getValueToBaseUnit());
+		jsonPart.put(CadProperties.PART_LENGTH_Z.getKey(), vis.getSizeZBean().getValueToBaseUnit());
+		jsonPart.put(CadProperties.PART_RADIUS.getKey(), vis.getRadiusBean().getValueToBaseUnit());
+		jsonPart.put(CadProperties.PART_COLOR.getKey(), vis.getColor());
+		jsonPart.put(CadProperties.PART_SHAPE.getKey(), vis.getShape());
 		
-		fillGeometryField(vis, jsonPart, CatiaProperties.PART_STL_PATH);
+		fillGeometryField(vis, jsonPart, CadProperties.PART_STL_PATH);
 	}
 
 	/**

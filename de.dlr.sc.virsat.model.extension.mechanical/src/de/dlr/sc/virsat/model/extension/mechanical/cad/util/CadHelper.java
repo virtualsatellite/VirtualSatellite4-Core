@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia.util;
+package de.dlr.sc.virsat.model.extension.mechanical.cad.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +16,18 @@ import java.util.stream.Collectors;
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaProperties;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadProperties;
 
 /**
- * A util class for accessing the CATIA JSON files
+ * A util class for accessing the CAD JSON files
  *
  */
-public class CatiaHelper {
+public class CadHelper {
 	
 	/**
 	 * Restrict constructor to prevent instantiation
 	 */
-	private CatiaHelper() { };
+	private CadHelper() { };
 	
 	/**
 	 * Iterate through the JSON file and search for all children of the element,
@@ -54,7 +54,7 @@ public class CatiaHelper {
 	 */
 	public static List<JsonObject> getListOfAllJSONParts(JsonObject rootObject) {
 		if (rootObject != null) {
-			JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
+			JsonArray partArray = rootObject.getCollection(CadProperties.PARTS);
 			if (partArray != null) {
 				return partArray.stream().map(object -> (JsonObject) object)
 						.collect(Collectors.toList());
@@ -78,12 +78,12 @@ public class CatiaHelper {
 			return jsonObjects;
 		}
 		
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
+		JsonObject rootProduct = rootObject.getMap(CadProperties.PRODUCTS);
 		if (rootProduct != null) {
 			jsonObjects.add(rootProduct);
-			productArray = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+			productArray = rootProduct.getCollection(CadProperties.PRODUCT_CHILDREN);
 		} else {	
-			productArray = rootObject.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+			productArray = rootObject.getCollection(CadProperties.PRODUCT_CHILDREN);
 		}
 		
 		if (productArray != null) {

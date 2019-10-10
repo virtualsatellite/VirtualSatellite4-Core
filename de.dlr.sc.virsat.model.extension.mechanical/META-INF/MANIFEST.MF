@@ -17,5 +17,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.mechanical
-Export-Package: de.dlr.sc.virsat.model.extension.mechanical.catia
+Export-Package: de.dlr.sc.virsat.model.extension.mechanical.cad
 Bundle-Activator: de.dlr.sc.virsat.model.extension.mechanical.Activator

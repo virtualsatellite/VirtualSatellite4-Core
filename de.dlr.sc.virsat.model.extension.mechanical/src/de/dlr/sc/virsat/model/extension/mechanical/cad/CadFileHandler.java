@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia;
+package de.dlr.sc.virsat.model.extension.mechanical.cad;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
  * This class creates .json file and copies .stl files
  */
 
-public class CatiaFileHandler {
+public class CadFileHandler {
 	
 	/**
 	 * Exports productRoot to json and copies it to outputJsonFilePath
@@ -48,7 +48,7 @@ public class CatiaFileHandler {
 	public void writeFiles(String outputJsonFilePath, IBeanStructuralElementInstance productRoot, IProgressMonitor progressMonitor) throws CoreException, IOException {
 		SubMonitor jsonSubMonitor = SubMonitor.convert(progressMonitor, 2);
 
-		CatiaExporter catiaExporter = new CatiaExporter();
+		CadExporter cadExporter = new CadExporter();
 		Path jsonFilePath = Paths.get(outputJsonFilePath);
 		Path outputDirectoryPath = jsonFilePath.getParent();
 		
@@ -56,14 +56,14 @@ public class CatiaFileHandler {
 			throw new IllegalArgumentException("Invalid path to JSON file. Can't extract output directory: " + outputJsonFilePath);
 		}
 		
-		catiaExporter.setGeometryFilesPath(outputDirectoryPath.toString());
-		JsonObject jsonObject = catiaExporter.transform(productRoot);
+		cadExporter.setGeometryFilesPath(outputDirectoryPath.toString());
+		JsonObject jsonObject = cadExporter.transform(productRoot);
 		jsonSubMonitor.worked(1);
 
 		Files.write(jsonFilePath, Collections.singleton(jsonObject.toJson()));
 		jsonSubMonitor.worked(1);
 		
-		Set<Visualisation> geometryVisualisations = catiaExporter.getGeometryVisualisations();
+		Set<Visualisation> geometryVisualisations = cadExporter.getGeometryVisualisations();
 		SubMonitor fileCopySubMonitor = SubMonitor.convert(progressMonitor, geometryVisualisations.size());
 		for (Visualisation visualisation : geometryVisualisations) {
 			IFile geometryFile = visualisation.getGeometryFileBean().getFile();
@@ -79,7 +79,7 @@ public class CatiaFileHandler {
 	
 	
 	/**
-	 * Reads a JSON file from a CATIA export and returns it as JSON content
+	 * Reads a JSON file from a CAD export and returns it as JSON content
 	 * @param outputJsonFilePath  the file path to the JSON file
 	 * @return the JSON content as JsonObject
 	 * @throws JsonException 

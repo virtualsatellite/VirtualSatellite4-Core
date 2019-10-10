@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia;
+package de.dlr.sc.virsat.model.extension.mechanical.cad;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertArrayEquals;
@@ -46,6 +46,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadImporter;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadProperties;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
@@ -57,10 +59,10 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
- * The CATIA importer test class
+ * The CAD importer test class
  *
  */
-public class CatiaImporterTest extends AConceptProjectTestCase {
+public class CadImporterTest extends AConceptProjectTestCase {
 
 	private Concept conceptPS;
 	private Concept conceptVis;
@@ -141,7 +143,7 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
 		// Do the import
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -183,13 +185,13 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
-		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject rootProduct = rootObject.getMap(CadProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CadProperties.PRODUCT_CHILDREN);
 		JsonObject firstChild = childProducts.getMap(0);
-		firstChild.remove(CatiaProperties.PRODUCT_POS_X.getKey());
+		firstChild.remove(CadProperties.PRODUCT_POS_X.getKey());
 
 		// Do the import
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -204,22 +206,22 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 		
 		// Create unmapped element
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
-		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject rootProduct = rootObject.getMap(CadProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CadProperties.PRODUCT_CHILDREN);
 		JsonObject newUnmappedJsonProduct = new JsonObject();
-		newUnmappedJsonProduct.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.UUID.getKey(), UUID.randomUUID().toString());
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(newUnmappedJsonProduct);
 
 
 		// Do the import
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -271,21 +273,21 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 			}
 		});
 
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
-		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject rootProduct = rootObject.getMap(CadProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CadProperties.PRODUCT_CHILDREN);
 		JsonObject jsonProductofNewConfiguration = new JsonObject();
-		jsonProductofNewConfiguration.put(CatiaProperties.UUID.getKey(), elementConfigurationReactionWheel3.getUuid());
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		jsonProductofNewConfiguration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.UUID.getKey(), elementConfigurationReactionWheel3.getUuid());
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		jsonProductofNewConfiguration.put(CadProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(jsonProductofNewConfiguration);
 
 		// Do the import
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -319,18 +321,18 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
-		Path externalFolder = Files.createTempDirectory("catiaTest");
+		Path externalFolder = Files.createTempDirectory("cadTest");
 		Path externalStl = Paths.get(externalFolder.toString(), STL_TEST_FILENAME);
 		List<String> stlContent = Arrays.asList("solid test", "endsolid test");
 		Files.write(externalStl, stlContent);
 
-		JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
+		JsonArray partArray = rootObject.getCollection(CadProperties.PARTS);
 		JsonObject part = partArray.getMap(0);
-		part.put(CatiaProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_GEOMETRY_NAME);
-		part.put(CatiaProperties.PART_STL_PATH.getKey(), externalStl.toString());
+		part.put(CadProperties.PART_SHAPE.getKey(), Visualisation.SHAPE_GEOMETRY_NAME);
+		part.put(CadProperties.PART_STL_PATH.getKey(), externalStl.toString());
 
 		// Do the import
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		Command importCommand = importer.transform(editingDomain, rootObject, mapping);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -375,22 +377,22 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		// Create a new JSON object thats was externally created and does not have a representation
 		// in the Virtual Satellite model jet
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
-		JsonArray childProducts = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject rootProduct = rootObject.getMap(CadProperties.PRODUCTS);
+		JsonArray childProducts = rootProduct.getCollection(CadProperties.PRODUCT_CHILDREN);
 		JsonObject newUnmappedJsonProduct = new JsonObject();
-		newUnmappedJsonProduct.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		newUnmappedJsonProduct.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.UUID.getKey(), UUID.randomUUID().toString());
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		newUnmappedJsonProduct.put(CadProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		childProducts.add(newUnmappedJsonProduct);
 
 
 		// Check mapping
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
@@ -398,7 +400,7 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 		assertEquals(newUnmappedJsonProduct, unmappedElements.get(0));
 		
 		// Do the handling of unmapped elements
-		mapping.put(unmappedElements.get(0).getString(CatiaProperties.UUID), 
+		mapping.put(unmappedElements.get(0).getString(CadProperties.UUID), 
 				elementConfigurationReactionWheel3.getStructuralElementInstance());
 		
 		
@@ -436,7 +438,7 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
@@ -465,12 +467,12 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		// Create new unmapped element
 		JsonObject unmappedJsonObject = new JsonObject();
-		unmappedJsonObject.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
+		unmappedJsonObject.put(CadProperties.UUID.getKey(), UUID.randomUUID().toString());
 
-		JsonArray partArray = rootObject.getCollection(CatiaProperties.PARTS);
+		JsonArray partArray = rootObject.getCollection(CadProperties.PARTS);
 		partArray.add(unmappedJsonObject);
 
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
@@ -500,13 +502,13 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 
 		// Create new unmapped element
 		JsonObject unmappedJsonObject = new JsonObject();
-		unmappedJsonObject.put(CatiaProperties.UUID.getKey(), UUID.randomUUID().toString());
+		unmappedJsonObject.put(CadProperties.UUID.getKey(), UUID.randomUUID().toString());
 
-		JsonObject rootProduct = rootObject.getMap(CatiaProperties.PRODUCTS);
-		JsonArray productArray = rootProduct.getCollection(CatiaProperties.PRODUCT_CHILDREN);
+		JsonObject rootProduct = rootObject.getMap(CadProperties.PRODUCTS);
+		JsonArray productArray = rootProduct.getCollection(CadProperties.PRODUCT_CHILDREN);
 		productArray.add(unmappedJsonObject);
 
-		CatiaImporter importer = new CatiaImporter();
+		CadImporter importer = new CadImporter();
 		Map<String, StructuralElementInstance> mapping = importer.mapJsonUuidToSEI(rootObject, configurationTree);
 		List<JsonObject> unmappedElements = importer.getUnmappedJSONObjects(rootObject, mapping);
 
@@ -619,47 +621,47 @@ public class CatiaImporterTest extends AConceptProjectTestCase {
 	protected JsonObject createMappedJsonObjectWithProductAndConfiguration() {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_COLOR.getKey(), TEST_COLOR_PART);
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_LENGTH_X.getKey(), TEST_SIZE_X_PART);
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_LENGTH_Y.getKey(), TEST_SIZE_Y_PART);
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_LENGTH_Z.getKey(), TEST_SIZE_Z_PART);
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_RADIUS.getKey(), TEST_RADIUS_PART);
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.PART_SHAPE.getKey(), TEST_SHAPE_PART);
+		jsonObjectReactionWheelDefinition.put(CadProperties.UUID.getKey(), elementReactionWheelDefinition.getUuid());
+		jsonObjectReactionWheelDefinition.put(CadProperties.PART_COLOR.getKey(), TEST_COLOR_PART);
+		jsonObjectReactionWheelDefinition.put(CadProperties.PART_LENGTH_X.getKey(), TEST_SIZE_X_PART);
+		jsonObjectReactionWheelDefinition.put(CadProperties.PART_LENGTH_Y.getKey(), TEST_SIZE_Y_PART);
+		jsonObjectReactionWheelDefinition.put(CadProperties.PART_LENGTH_Z.getKey(), TEST_SIZE_Z_PART);
+		jsonObjectReactionWheelDefinition.put(CadProperties.PART_RADIUS.getKey(), TEST_RADIUS_PART);
+		jsonObjectReactionWheelDefinition.put(CadProperties.PART_SHAPE.getKey(), TEST_SHAPE_PART);
 		JsonArray partArray = new JsonArray();
 		partArray.add(jsonObjectReactionWheelDefinition);
 
 		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(),
+		jsonObjectReactionWheel1Configuration.put(CadProperties.UUID.getKey(),
 				elementConfigurationReactionWheel1.getUuid());
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
 		JsonObject jsonObjectReactionWheel2Configuration = new JsonObject();
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.UUID.getKey(),
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_POS_X.getKey(), TEST_POS_X_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_POS_Y.getKey(), TEST_POS_Y_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_POS_Z.getKey(), TEST_POS_Z_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_ROT_X.getKey(), TEST_ROT_X_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_ROT_Y.getKey(), TEST_ROT_Y_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_ROT_Z.getKey(), TEST_ROT_Z_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.PRODUCT_SHAPE.getKey(), TEST_SHAPE_PRODUCT);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.UUID.getKey(),
 				elementConfigurationReactionWheel2.getUuid());
 		JsonArray productArray = new JsonArray();
 		productArray.add(jsonObjectReactionWheel1Configuration);
 		productArray.add(jsonObjectReactionWheel2Configuration);
 
 		JsonObject rootProduct = new JsonObject();
-		rootProduct.put(CatiaProperties.UUID.getKey(), subSystemAOCS.getUuid());
-		rootProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), productArray);
+		rootProduct.put(CadProperties.UUID.getKey(), subSystemAOCS.getUuid());
+		rootProduct.put(CadProperties.PRODUCT_CHILDREN.getKey(), productArray);
 
 		JsonObject rootObject = new JsonObject();
-		rootObject.put(CatiaProperties.PARTS.getKey(), partArray);
-		rootObject.put(CatiaProperties.PRODUCTS.getKey(), rootProduct);
+		rootObject.put(CadProperties.PARTS.getKey(), partArray);
+		rootObject.put(CadProperties.PRODUCTS.getKey(), rootProduct);
 
 		return rootObject;
 	}

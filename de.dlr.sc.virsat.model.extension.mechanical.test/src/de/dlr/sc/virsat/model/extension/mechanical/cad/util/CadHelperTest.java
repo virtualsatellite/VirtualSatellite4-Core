@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia.util;
+package de.dlr.sc.virsat.model.extension.mechanical.cad.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,13 +22,14 @@ import org.junit.Test;
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaProperties;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadProperties;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.util.CadHelper;
 
 /**
- * Test class for the CATIA helper class
+ * Test class for the CAD helper class
  *
  */
-public class CatiaHelperTest {
+public class CadHelperTest {
 
 	public static final String ELEMENT_PART_UUID = UUID.randomUUID().toString();
 	public static final String ELEMENT_PRODUCT_0_UUID = UUID.randomUUID().toString();
@@ -45,9 +46,9 @@ public class CatiaHelperTest {
 
 		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
 
-		List<JsonObject> objects = CatiaHelper.getListOfAllJSONElements(rootObject);
+		List<JsonObject> objects = CadHelper.getListOfAllJSONElements(rootObject);
 		List<String> foundUUIDs = objects.stream().map(
-				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				object -> (String) object.get(CadProperties.UUID.getKey()))
 				.collect(Collectors.toList());
 
 		
@@ -65,9 +66,9 @@ public class CatiaHelperTest {
 
 		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
 
-		List<JsonObject> objects = CatiaHelper.getListOfAllJSONParts(rootObject);
+		List<JsonObject> objects = CadHelper.getListOfAllJSONParts(rootObject);
 		List<String> foundUUIDs = objects.stream().map(
-				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				object -> (String) object.get(CadProperties.UUID.getKey()))
 				.collect(Collectors.toList());
 
 		
@@ -76,11 +77,11 @@ public class CatiaHelperTest {
 		assertTrue("Element 1 not found", foundUUIDs.contains(ELEMENT_PART_UUID));
 		
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(null));
-		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONParts(null).isEmpty());
+		assertNotNull("Return value should not be null", CadHelper.getListOfAllJSONParts(null));
+		assertTrue("List should be emplty", CadHelper.getListOfAllJSONParts(null).isEmpty());
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONParts(new JsonObject()));
-		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONParts(new JsonObject()).isEmpty());
+		assertNotNull("Return value should not be null", CadHelper.getListOfAllJSONParts(new JsonObject()));
+		assertTrue("List should be emplty", CadHelper.getListOfAllJSONParts(new JsonObject()).isEmpty());
 
 	}
 	
@@ -89,9 +90,9 @@ public class CatiaHelperTest {
 
 		JsonObject rootObject = createJsonObjectWithProductAndConfiguration();
 
-		List<JsonObject> objects = CatiaHelper.getListOfAllJSONProducts(rootObject);
+		List<JsonObject> objects = CadHelper.getListOfAllJSONProducts(rootObject);
 		List<String> foundUUIDs = objects.stream().map(
-				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				object -> (String) object.get(CadProperties.UUID.getKey()))
 				.collect(Collectors.toList());
 
 		
@@ -101,11 +102,11 @@ public class CatiaHelperTest {
 		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
 		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null));
-		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		assertNotNull("Return value should not be null", CadHelper.getListOfAllJSONProducts(null));
+		assertTrue("List should be emplty", CadHelper.getListOfAllJSONProducts(null).isEmpty());
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()));
-		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+		assertNotNull("Return value should not be null", CadHelper.getListOfAllJSONProducts(new JsonObject()));
+		assertTrue("List should be emplty", CadHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
 
 	}
 	
@@ -114,9 +115,9 @@ public class CatiaHelperTest {
 
 		JsonObject rootObject = createJsonObjectWithProductAndConfiguration(false);
 
-		List<JsonObject> objects = CatiaHelper.getListOfAllJSONProducts(rootObject);
+		List<JsonObject> objects = CadHelper.getListOfAllJSONProducts(rootObject);
 		List<String> foundUUIDs = objects.stream().map(
-				object -> (String) object.get(CatiaProperties.UUID.getKey()))
+				object -> (String) object.get(CadProperties.UUID.getKey()))
 				.collect(Collectors.toList());
 
 		
@@ -126,11 +127,11 @@ public class CatiaHelperTest {
 		assertTrue("product 2 not found", foundUUIDs.contains(ELEMENT_PRODUCT_1_UUID));
 		assertTrue("Root product not found", foundUUIDs.contains(ELEMENT_ROOT_PRODUCT_UUID));
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(null));
-		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(null).isEmpty());
+		assertNotNull("Return value should not be null", CadHelper.getListOfAllJSONProducts(null));
+		assertTrue("List should be emplty", CadHelper.getListOfAllJSONProducts(null).isEmpty());
 		
-		assertNotNull("Return value should not be null", CatiaHelper.getListOfAllJSONProducts(new JsonObject()));
-		assertTrue("List should be emplty", CatiaHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
+		assertNotNull("Return value should not be null", CadHelper.getListOfAllJSONProducts(new JsonObject()));
+		assertTrue("List should be emplty", CadHelper.getListOfAllJSONProducts(new JsonObject()).isEmpty());
 
 	}
 
@@ -153,31 +154,31 @@ public class CatiaHelperTest {
 	protected JsonObject createJsonObjectWithProductAndConfiguration(boolean isRootProduct) {
 
 		JsonObject jsonObjectReactionWheelDefinition = new JsonObject();
-		jsonObjectReactionWheelDefinition.put(CatiaProperties.UUID.getKey(), ELEMENT_PART_UUID);
+		jsonObjectReactionWheelDefinition.put(CadProperties.UUID.getKey(), ELEMENT_PART_UUID);
 		JsonArray partArray = new JsonArray();
 		partArray.add(jsonObjectReactionWheelDefinition);
 
 		JsonObject jsonObjectReactionWheel1Configuration = new JsonObject();
-		jsonObjectReactionWheel1Configuration.put(CatiaProperties.UUID.getKey(), ELEMENT_PRODUCT_0_UUID);
+		jsonObjectReactionWheel1Configuration.put(CadProperties.UUID.getKey(), ELEMENT_PRODUCT_0_UUID);
 		JsonObject jsonObjectReactionWheel2Configuration = new JsonObject();
-		jsonObjectReactionWheel2Configuration.put(CatiaProperties.UUID.getKey(), ELEMENT_PRODUCT_1_UUID);
+		jsonObjectReactionWheel2Configuration.put(CadProperties.UUID.getKey(), ELEMENT_PRODUCT_1_UUID);
 		JsonArray productArray = new JsonArray();
 		productArray.add(jsonObjectReactionWheel1Configuration);
 		productArray.add(jsonObjectReactionWheel2Configuration);
 
 		JsonObject rootProduct = new JsonObject();
-		rootProduct.put(CatiaProperties.UUID.getKey(), ELEMENT_ROOT_PRODUCT_UUID);
+		rootProduct.put(CadProperties.UUID.getKey(), ELEMENT_ROOT_PRODUCT_UUID);
 		
-		rootProduct.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), productArray);
+		rootProduct.put(CadProperties.PRODUCT_CHILDREN.getKey(), productArray);
 
 		JsonObject rootObject = new JsonObject();
-		rootObject.put(CatiaProperties.PARTS.getKey(), partArray);
+		rootObject.put(CadProperties.PARTS.getKey(), partArray);
 		if (isRootProduct) {
-			rootObject.put(CatiaProperties.PRODUCTS.getKey(), rootProduct);
+			rootObject.put(CadProperties.PRODUCTS.getKey(), rootProduct);
 		} else {
 			JsonArray children = new JsonArray();
 			children.add(rootProduct);
-			rootObject.put(CatiaProperties.PRODUCT_CHILDREN.getKey(), children);
+			rootObject.put(CadProperties.PRODUCT_CHILDREN.getKey(), children);
 		}
 		
 

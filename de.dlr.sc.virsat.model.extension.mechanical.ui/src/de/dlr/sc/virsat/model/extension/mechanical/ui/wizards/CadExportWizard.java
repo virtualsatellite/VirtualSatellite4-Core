@@ -28,7 +28,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaFileHandler;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadFileHandler;
 import de.dlr.sc.virsat.model.extension.mechanical.ui.Activator;
 
 /**
@@ -36,19 +36,19 @@ import de.dlr.sc.virsat.model.extension.mechanical.ui.Activator;
  *
  */
 
-public class CatiaExportWizard extends Wizard implements INewWizard {
+public class CadExportWizard extends Wizard implements INewWizard {
 	
-	public static final String ID = "de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.catiaExport";
+	public static final String ID = "de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.cadExport";
 
-	private CatiaExportPage page;
+	private CadExportPage page;
 	private IContainer model;
 	
 	/**
 	 * Default constructor
 	 */
-	public CatiaExportWizard() {
+	public CadExportWizard() {
 		super();
-		setWindowTitle("Catia JSON Export");
+		setWindowTitle("Cad JSON Export");
 		
 		// Setup persistency
 		IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
@@ -71,9 +71,9 @@ public class CatiaExportWizard extends Wizard implements INewWizard {
 		BeanStructuralElementInstance productRoot = new BeanStructuralElementInstance(sei);
 		
 		String outputJsonFilePath = page.getDestination();
-		CatiaFileHandler fileWriter = new CatiaFileHandler();
+		CadFileHandler fileWriter = new CadFileHandler();
 		
-		Job exportJob = new Job("Performing Catia JSON Export") {
+		Job exportJob = new Job("Performing Cad JSON Export") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
@@ -81,7 +81,7 @@ public class CatiaExportWizard extends Wizard implements INewWizard {
 					return Status.OK_STATUS;
 				} catch (CoreException | IOException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(), 
-							"CatiaExportWizard: Failed to perform export!", e);
+							"CadExportWizard: Failed to perform export!", e);
 					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					return Status.CANCEL_STATUS;
 				}
@@ -94,7 +94,7 @@ public class CatiaExportWizard extends Wizard implements INewWizard {
 	
     @Override
     public void addPages() {
-        page = new CatiaExportPage(model);
+        page = new CadExportPage(model);
         addPage(page);
     }
 }

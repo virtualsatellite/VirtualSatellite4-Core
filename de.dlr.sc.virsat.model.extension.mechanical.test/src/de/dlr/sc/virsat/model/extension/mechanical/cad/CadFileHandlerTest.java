@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia;
+package de.dlr.sc.virsat.model.extension.mechanical.cad;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -37,15 +37,17 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadFileHandler;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadProperties;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
- * Test class for CatiaFileWriter
+ * Test class for CadFileWriter
  */
 
-public class CatiaFileHandlerTest extends AConceptProjectTestCase {
+public class CadFileHandlerTest extends AConceptProjectTestCase {
 
 	private Concept conceptPS;
 	private Concept conceptVis;
@@ -84,7 +86,7 @@ public class CatiaFileHandlerTest extends AConceptProjectTestCase {
 
 		visualisation.setGeometryFile(stlUri);
 
-		Path outputPath = Files.createTempDirectory("catiaTest");
+		Path outputPath = Files.createTempDirectory("cadTest");
 		String jsonFilePath = outputPath.toString() + File.separator + "exported.json";
 		File expectedJson = new File(jsonFilePath);
 		Path expectedCopiedStl = Paths.get(outputPath.toString(), STL_FILE_NAME);
@@ -92,8 +94,8 @@ public class CatiaFileHandlerTest extends AConceptProjectTestCase {
 		assertFalse("JSON file is not there initially", expectedJson.exists());
 		assertFalse("STL file is not there initially", expectedCopiedStl.toFile().exists());
 
-		CatiaFileHandler catiaFileWriter = new CatiaFileHandler();
-		catiaFileWriter.writeFiles(jsonFilePath, ct, new NullProgressMonitor());
+		CadFileHandler cadFileWriter = new CadFileHandler();
+		cadFileWriter.writeFiles(jsonFilePath, ct, new NullProgressMonitor());
 
 		assertTrue("JSON file is created", expectedJson.exists());
 		assertArrayEquals("STL file is copied correctly", Files.readAllBytes(stlFile),
@@ -103,20 +105,20 @@ public class CatiaFileHandlerTest extends AConceptProjectTestCase {
 	@Test
 	public void testReadJsonFile() throws IOException, JsonException {
 		final String JSON_FILE_NAME = "dummy.json";
-		Path outputPath = Files.createTempDirectory("catiaTest");
+		Path outputPath = Files.createTempDirectory("cadTest");
 		final String TEST_PRODUCT_NAME = "TestProduct";
 		Path jsonFilePath = Paths.get(outputPath.toString() + File.separator + JSON_FILE_NAME);
 
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.put(CatiaProperties.NAME.getKey(), TEST_PRODUCT_NAME);
+		jsonObject.put(CadProperties.NAME.getKey(), TEST_PRODUCT_NAME);
 
 		Files.write(jsonFilePath, Collections.singleton(jsonObject.toJson()));
 
-		CatiaFileHandler fileHandler = new CatiaFileHandler();
+		CadFileHandler fileHandler = new CadFileHandler();
 		JsonObject resultingObject = fileHandler.readJsonFile(jsonFilePath.toString());
 
 		assertNotNull("Parsed object should not be null", resultingObject);
-		assertEquals("Name should be as set before", resultingObject.getString(CatiaProperties.NAME),
+		assertEquals("Name should be as set before", resultingObject.getString(CadProperties.NAME),
 				TEST_PRODUCT_NAME);
 	}
 	
