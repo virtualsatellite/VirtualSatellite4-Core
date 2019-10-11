@@ -1125,6 +1125,83 @@ In this case you can add a NONE shape to the root of the component to position t
 
 |===
 
+==== CAD Ex-/Import
+
+The 3D Visualisation can be ex- and imported into CAD (computer-aided design)-tools using the JSON (JavaScript Object Notation) format.
+This subsection describes the workflow on the Virtual Satellite side of the corresponding Roundtrip Engineering. 
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|You start with a simple _Repository_ similar as above, containing a _Product_, _Configuration_ and _Assembly Tree_, with a visualization added to the `ST2`.
+|image:chapterModeling/subsectionCAD/export/00_example_tree.PNG[Example trees]
+
+|{counter:step}.
+|To export that visualisation navigate to _File->Export..._.
+|image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
+
+|{counter:step}.
+|The _Export_ Wizard opens, in which you select the _Cad Export Wizard_.
+|image:chapterModeling/subsectionCAD/export/02_Export_Wizard.PNG[Export Wizard]
+
+|{counter:step}.
+|In the Wizard you have to select the _Tree_ you want to export, e.g. the _Configuration Tree_ `StarExplorerConfig`.
+You also have to provide the destination of the export file.
+
+|image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
+
+|{counter:step}.
+|Finishing the dialog now exports all elements of the selected _Tree_, that contain visualisations, into the JSON output file.
+As you can see only the `ST2` got exported, because `ST1` did not contain a visualisation. 
+
+NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
+|image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
+ 
+|===
+
+NOTE: The Roundtrip Engineering is driven from the Virtual Satellite side, so that Virtual Satellite can execute all CRUD (Create, Replace, Update, Delete) operations, while an external CAD software can only Replace and Update.
+
+NOTE: For the purpose of mapping each element has a corresponding UUID (Universally Unique Identifier).
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|You can now modify the generated JSON file using a CAD software, e.g. change the _posX_ of the `ST2`. Afterwards it can be reimported to update the Virtual Satellite Model.
+|image:chapterModeling/subsectionCAD/import/00_changed_output.PNG[Changed JSON output file]
+
+|{counter:step}.
+|Similar to exporting you open the _Import_ Wizard.
+|image:chapterModeling/subsectionCAD/import/01_Import.png[Import]
+
+|{counter:step}.
+|Then select the _Cad Import Wizard_.
+|image:chapterModeling/subsectionCAD/import/02_Cad_Import_Wizard.PNG[Import Wizard]
+
+|{counter:step}.
+|In the Wizard now select the _Tree_ to load the JSON file into and the destination of that file.
+|image:chapterModeling/subsectionCAD/import/03_tree_and_destination_selection.PNG[Tree and destination selection]
+
+|{counter:step}.
+|Finally you can open the `ST2` 's Visualisation to check that it's _positionX_ property updated.
+
+NOTE: Because of Inheritance (see <<Extended product structures - Inheritance and Configuration Control>>) importing a _Configuration Tree_ will also change the corresponding _Assembly Tree_.
+|image:chapterModeling/subsectionCAD/import/04_model_changes.PNG[Imported Model changes]
+
+|===
+
+
 === Advanced Modeling
 
 Most users will only required modeling techniques from the section <<General Modeling>>.
