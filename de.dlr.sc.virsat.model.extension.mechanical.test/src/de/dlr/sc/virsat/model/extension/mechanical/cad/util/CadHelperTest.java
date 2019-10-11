@@ -23,7 +23,6 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.model.extension.mechanical.cad.CadProperties;
-import de.dlr.sc.virsat.model.extension.mechanical.cad.util.CadHelper;
 
 /**
  * Test class for the CAD helper class

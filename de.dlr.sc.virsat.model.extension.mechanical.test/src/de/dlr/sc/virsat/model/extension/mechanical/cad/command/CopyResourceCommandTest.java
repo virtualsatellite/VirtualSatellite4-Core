@@ -25,8 +25,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.extension.mechanical.cad.command.CopyResourceCommand;
-
 /**
  * Test class for the copy resource command
  *
