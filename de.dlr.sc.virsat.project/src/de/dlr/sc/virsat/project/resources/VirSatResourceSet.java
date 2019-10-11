@@ -1078,8 +1078,10 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * 
 	 * @param resource
 	 *            the resource of which to update the diagnostic
+	 * @return true iff resource diagnostic changed
 	 */
-	public void updateDiagnostic(Resource resource) {
+	public boolean updateDiagnostic(Resource resource) {
+		boolean changes = false;
 		if (resource != null) {
 			Diagnostic diagnostic = analyzeResourceProblems(resource);
 
@@ -1090,6 +1092,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 			if (diagnostic.getSeverity() != Diagnostic.OK) {
 				resourceToDiagnosticMap.put(resource, diagnostic);
+				changes = true;
 				Activator.getDefault().getLog()
 						.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
 								"VirSatResourceSet: Current Diagnostic Map adding Resource ("
@@ -1103,9 +1106,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 											+ resource.getURI().toPlatformString(true) + ")",
 									null));
 					resourceToDiagnosticMap.remove(resource);
+					changes = true;
 				}
 			}
 		}
+		return changes;
 	}
 
 	/**

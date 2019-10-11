@@ -87,7 +87,10 @@ public class VirSatResourceSetUtil {
 			// First try to store the current Resource into Memory
 			InMemoryByteArrayOutputStream inMemoryBuffer = new InMemoryByteArrayOutputStream();
 			try {
+				boolean resourceSendsNotifications = resource.eDeliver();
+				resource.eSetDeliver(false);
 				resource.save(inMemoryBuffer, saveOptions);
+				resource.eSetDeliver(resourceSendsNotifications);
 			} finally {
 				inMemoryBuffer.close();
 			}
