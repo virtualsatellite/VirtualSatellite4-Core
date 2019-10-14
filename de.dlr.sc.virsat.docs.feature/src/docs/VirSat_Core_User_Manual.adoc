@@ -1125,10 +1125,10 @@ In this case you can add a NONE shape to the root of the component to position t
 
 |===
 
-==== CAD Ex-/Import
+==== CAD Export/Import
 
-The 3D Visualisation can be ex- and imported into CAD (computer-aided design)-tools using the JSON (JavaScript Object Notation) format.
-This subsection describes the workflow on the Virtual Satellite side of the corresponding Roundtrip Engineering. 
+The 3D Visualisation can be exported from Virtual Satellite and imported into CAD (computer-aided design)-tools using JSON (JavaScript Object Notation) format.
+This subsection describes the workflow on the Virtual Satellite side of the corresponding round-trip engineering. 
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -1139,35 +1139,35 @@ This subsection describes the workflow on the Virtual Satellite side of the corr
 |Image
 
 |{counter:step}.
-|You start with a simple _Repository_ similar as above, containing a _Product_, _Configuration_ and _Assembly Tree_, with a visualization added to the `ST2`.
+|You start with a simple _Repository_ containing a _Product_, _Configuration_ and _Assembly Tree_, with a visualization added to the `ST2`.
 |image:chapterModeling/subsectionCAD/export/00_example_tree.PNG[Example trees]
 
 |{counter:step}.
-|To export that visualisation navigate to _File->Export..._.
+|To export that visualisation, navigate to _File->Export..._.
 |image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
 
 |{counter:step}.
-|The _Export_ Wizard opens, in which you select the _Cad Export Wizard_.
+|The _Export_ Wizard opens, in which you can select the _Cad Export Wizard_.
 |image:chapterModeling/subsectionCAD/export/02_Export_Wizard.PNG[Export Wizard]
 
 |{counter:step}.
 |In the Wizard you have to select the _Tree_ you want to export, e.g. the _Configuration Tree_ `StarExplorerConfig`.
-You also have to provide the destination of the export file.
+You also have to provide the destination of the exported file.
 
 |image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
-|Finishing the dialog now exports all elements of the selected _Tree_, that contain visualisations, into the JSON output file.
-As you can see only the `ST2` got exported, because `ST1` did not contain a visualisation. 
+|Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the JSON output file.
+In this example only the `ST2` got exported because `ST1` did not contain a visualisation.
 
 NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
 |image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
  
 |===
 
-NOTE: The Roundtrip Engineering is driven from the Virtual Satellite side, so that Virtual Satellite can execute all CRUD (Create, Replace, Update, Delete) operations, while an external CAD software can only Replace and Update.
+NOTE: The round-trip engineering is driven from the Virtual Satellite side, so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, while an external CAD software can only Read and Update existing components.
 
-NOTE: For the purpose of mapping each element has a corresponding UUID (Universally Unique Identifier).
+NOTE: For the purpose of identification, each element has a corresponding UUID (Universally Unique Identifier).
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -1190,11 +1190,11 @@ NOTE: For the purpose of mapping each element has a corresponding UUID (Universa
 |image:chapterModeling/subsectionCAD/import/02_Cad_Import_Wizard.PNG[Import Wizard]
 
 |{counter:step}.
-|In the Wizard now select the _Tree_ to load the JSON file into and the destination of that file.
+|In the Wizard, select the _Tree_ to load the JSON file into and the destination of the file.
 |image:chapterModeling/subsectionCAD/import/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
-|Finally you can open the `ST2` 's Visualisation to check that it's _positionX_ property updated.
+|Finally you can open the `ST2` 's Visualisation to check that its _positionX_ is property updated.
 
 NOTE: Because of Inheritance (see <<Extended product structures - Inheritance and Configuration Control>>) importing a _Configuration Tree_ will also change the corresponding _Assembly Tree_.
 |image:chapterModeling/subsectionCAD/import/04_model_changes.PNG[Imported Model changes]
