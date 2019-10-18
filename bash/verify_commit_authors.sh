@@ -90,7 +90,6 @@ echo "[Info] List of Commit Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-dos2unix ./commit_authors.txt
 cat ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
@@ -99,7 +98,6 @@ echo "[Info] ------------------------------------"
 echo "[Info] "
 
 sed '/^$/d' known_authors.txt > known_authors_cleaned.txt
-dos2unix ./known_authors_cleaned.txt
 cat ./known_authors_cleaned.txt
 
 echo "[Info] ------------------------------------"

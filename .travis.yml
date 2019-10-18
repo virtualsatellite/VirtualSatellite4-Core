@@ -35,7 +35,6 @@ addons:
     - libzmq-jni
     - metacity
     - ant
-    - dos2unix
 
 install:
 - true
