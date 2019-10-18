@@ -90,6 +90,7 @@ echo "[Info] List of Commit Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+dos2unix ./commit_authors.txt
 cat ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
@@ -97,6 +98,7 @@ echo "[Info] List of Known Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+dos2unix ./known_authors.txt
 cat ./known_authors.txt
 
 echo "[Info] ------------------------------------"
