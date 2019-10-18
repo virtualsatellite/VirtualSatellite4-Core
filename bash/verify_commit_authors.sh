@@ -106,6 +106,8 @@ echo "[Info] List of unknown Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+grep -v -F -f ./known_authors.txt ./commit_authors.txt
+
 UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors.txt ./commit_authors.txt)
 
 CR='\033[0;31m' # Red Color
