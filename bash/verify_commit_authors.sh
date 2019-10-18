@@ -97,7 +97,9 @@ echo "[Info] List of Known Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-sed '/^$/d' known_authors.txt > known_authors_cleaned.txt
+# The next statement first removes all windows style line feeds, then the result is piped to the next
+# sed to remove empty lines.
+sed 's/\r$//' known_authors.txt | sed '/^$/d' > known_authors_cleaned.txt
 cat ./known_authors_cleaned.txt
 
 echo "[Info] ------------------------------------"
