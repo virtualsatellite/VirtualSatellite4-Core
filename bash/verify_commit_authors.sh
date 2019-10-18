@@ -106,6 +106,8 @@ echo "[Info] List of unknown Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+grep -V
+
 grep -v -F -f ./known_authors.txt ./commit_authors.txt
 
 UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors.txt ./commit_authors.txt)
