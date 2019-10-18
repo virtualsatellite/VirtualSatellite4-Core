@@ -98,19 +98,16 @@ echo "[Info] List of Known Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-dos2unix ./known_authors.txt
-cat ./known_authors.txt
+sed '/^$/d' known_authors.txt > known_authors_cleaned.txt
+dos2unix ./known_authors_cleaned.txt
+cat ./known_authors_cleaned.txt
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of unknown Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-grep -V
-
-grep -v -F -f ./known_authors.txt ./commit_authors.txt
-
-UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors.txt ./commit_authors.txt)
+UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors_cleaned.txt ./commit_authors.txt)
 
 CR='\033[0;31m' # Red Color
 CY='\033[1;33m' # Yellow Color
