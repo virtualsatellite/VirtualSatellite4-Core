@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroupTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v1Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteralTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollectionTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTypeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationDefinitionTest;
@@ -45,6 +46,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTest;
 	RequirementAttributeTest.class,
 	EnumerationDefinitionTest.class,
 	EnumerationLiteralTest.class,
+	RequirementsConfigurationCollectionTest.class,
 	Migrator0v1Test.class,
 				})
 

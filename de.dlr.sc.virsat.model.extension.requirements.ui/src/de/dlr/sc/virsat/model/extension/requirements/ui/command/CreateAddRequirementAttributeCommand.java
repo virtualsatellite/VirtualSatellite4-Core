@@ -9,6 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.command;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -19,4 +28,13 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.command;
  * 
  */
 public class CreateAddRequirementAttributeCommand extends ACreateAddRequirementAttributeCommand {
+	
+	@Override
+	public Command create(EditingDomain editingDomain, EObject owner, Concept activeConcept) {
+		RequirementAttribute conceptObject = new RequirementAttribute(activeConcept);
+		conceptObject.setType(RequirementAttribute.TYPE_String_NAME);
+		CategoryAssignment ca = conceptObject.getTypeInstance();
+		return AddCommand.create(editingDomain, owner, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, ca);
+	}
+	
 }

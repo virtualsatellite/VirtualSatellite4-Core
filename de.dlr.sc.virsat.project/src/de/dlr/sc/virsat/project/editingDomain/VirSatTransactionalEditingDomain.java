@@ -469,8 +469,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 						
 						// Always run all diagnostics
 						for (Resource resource : virSatResourceSet.getResources()) {
-							virSatResourceSet.updateDiagnostic(resource);
-							virSatResourceSet.notifyDiagnosticListeners(resource);
+							if (virSatResourceSet.updateDiagnostic(resource)) {
+								virSatResourceSet.notifyDiagnosticListeners(resource);
+							}
 						}
 						
 						// Rework the dirty states of the resources

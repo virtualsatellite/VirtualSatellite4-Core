@@ -83,10 +83,10 @@
 	  point="org.eclipse.ui.exportWizards">
 	   <wizard
 	     category="de.dlr.virsat.global.category.export.virsat"
-	     class="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CatiaExportWizard"
-	     id="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CatiaExportPage"
+	     class="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CadExportWizard"
+	     id="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CadExportPage"
 	     icon="resources/icons/de.dlr.sc.virsat.model.extension.mechanical.gif"
-	     name="Catia Export Wizard">
+	     name="Cad Export Wizard">
 	   </wizard>
       <category
             id="de.dlr.virsat.global.category.export.virsat"
@@ -97,10 +97,10 @@
 	  point="org.eclipse.ui.importWizards">
 	   <wizard
 	     category="de.dlr.virsat.global.category.import.virsat"
-	     class="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CatiaImportWizard"
-	     id="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CatiaImportPage"
+	     class="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CadImportWizard"
+	     id="de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.CadImportPage"
 	     icon="resources/icons/de.dlr.sc.virsat.model.extension.mechanical.gif"
-	     name="Catia Import Wizard">
+	     name="Cad Import Wizard">
 	   </wizard>
 	  <category
             id="de.dlr.virsat.global.category.import.virsat"

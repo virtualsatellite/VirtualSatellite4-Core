@@ -32,11 +32,13 @@ Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.uieingine.ui,
  de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties,
  de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes,
+ de.dlr.sc.virsat.uiengine.ui.databinding,
  de.dlr.sc.virsat.uiengine.ui.dialog,
  de.dlr.sc.virsat.uiengine.ui.dialog.provider,
  de.dlr.sc.virsat.uiengine.ui.editor,
  de.dlr.sc.virsat.uiengine.ui.editor.provider,
  de.dlr.sc.virsat.uiengine.ui.editor.snippets,
+ de.dlr.sc.virsat.uiengine.ui.editor.snippets.general,
  de.dlr.sc.virsat.uiengine.ui.editor.snippets.tableimpl,
  de.dlr.sc.virsat.uiengine.ui.handler,
  de.dlr.sc.virsat.uiengine.ui.wizard

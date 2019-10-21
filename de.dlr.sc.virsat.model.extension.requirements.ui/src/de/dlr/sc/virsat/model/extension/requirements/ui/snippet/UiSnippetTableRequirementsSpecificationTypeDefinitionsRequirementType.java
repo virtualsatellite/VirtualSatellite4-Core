@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
+import org.eclipse.emf.ecore.EObject;
+
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
@@ -21,4 +23,10 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  */
 public class UiSnippetTableRequirementsSpecificationTypeDefinitionsRequirementType extends AUiSnippetTableRequirementsSpecificationTypeDefinitionsRequirementType implements IUiSnippet {
+
+	@Override
+	public boolean isActive(EObject model) {
+		return false;
+	}
+
 }
