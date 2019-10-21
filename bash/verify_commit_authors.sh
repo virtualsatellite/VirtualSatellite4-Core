@@ -97,14 +97,17 @@ echo "[Info] List of Known Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-cat ./known_authors.txt
+# The next statement first removes all windows style line feeds, then the result is piped to the next
+# sed to remove empty lines.
+sed 's/\r$//' known_authors.txt | sed '/^$/d' > known_authors_cleaned.txt
+cat ./known_authors_cleaned.txt
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of unknown Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors.txt ./commit_authors.txt)
+UNKNOWN_AUTHORS=$(grep -v -F -f ./known_authors_cleaned.txt ./commit_authors.txt)
 
 CR='\033[0;31m' # Red Color
 CY='\033[1;33m' # Yellow Color
