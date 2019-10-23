@@ -82,6 +82,11 @@
 				<module>de.dlr.sc.virsat.model.concept.ide</module>
 				<module>de.dlr.sc.virsat.model.concept.ui</module>
 				<module>de.dlr.sc.virsat.model.concept.test</module>
+				
+				<module>de.dlr.sc.virsat.model.extension.core</module>
+				<module>de.dlr.sc.virsat.model.extension.core.ui</module>
+				<module>de.dlr.sc.virsat.model.extension.core.test</module>
+				<module>de.dlr.sc.virsat.model.extension.core.feature</module>
 
 				<module>de.dlr.sc.virsat.project</module>
 				<module>de.dlr.sc.virsat.project.ui</module>
