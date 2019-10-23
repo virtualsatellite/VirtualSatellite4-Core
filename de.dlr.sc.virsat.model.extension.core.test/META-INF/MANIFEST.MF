@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Model Extension Concept Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.core.test;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Fragment-Host: de.dlr.sc.virsat.model.extension.core;bundle-version="0.0.1"
+Bundle-ClassPath: .
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.junit,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.ecore.xmi,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.concept.unittest.util
+Export-Package: de.dlr.sc.virsat.model.extension.core.migrator,
+ de.dlr.sc.virsat.model.extension.core.model,
+ de.dlr.sc.virsat.model.extension.core.test
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.core.test
