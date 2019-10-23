@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.scoping;
 
+import de.dlr.sc.virsat.model.concept.core.Activator;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EObject;
@@ -34,10 +35,10 @@ public class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalSco
   
   @Override
   public List<ImportNormalizer> getImplicitImports(final boolean ignoreCase) {
-    QualifiedName qualifiedNamespace = new IQualifiedNameConverter.DefaultImpl().toQualifiedName("de.dlr.sc.virsat.model.extension.core");
-    ImportNormalizer normalizer = new ImportNormalizer(qualifiedNamespace, true, true);
-    ArrayList<ImportNormalizer> list = new ArrayList<ImportNormalizer>();
-    list.add(normalizer);
-    return list;
+    QualifiedName qualifiedNamespace = new IQualifiedNameConverter.DefaultImpl().toQualifiedName(Activator.getPluginId());
+    ImportNormalizer coreNamespace = new ImportNormalizer(qualifiedNamespace, true, true);
+    ArrayList<ImportNormalizer> implicitImports = new ArrayList<ImportNormalizer>();
+    implicitImports.add(coreNamespace);
+    return implicitImports;
   }
 }

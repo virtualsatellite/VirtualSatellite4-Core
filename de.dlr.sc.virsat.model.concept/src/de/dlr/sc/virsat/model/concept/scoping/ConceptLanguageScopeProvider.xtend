@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.Scopes
 import java.util.Collections
-import de.dlr.sc.virsat.model.^extension.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler
+import de.dlr.sc.virsat.model.concept.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler
 import org.eclipse.xtext.scoping.impl.ImportScope
 import java.util.Collection
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider
@@ -26,6 +26,7 @@ import static java.util.Collections.emptyList
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import java.util.ArrayList
+import de.dlr.sc.virsat.model.concept.core.Activator
 
 /**
  * This class contains custom scoping description.
@@ -41,11 +42,11 @@ class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalScopeProvi
 	}
 	
 	override List<ImportNormalizer> getImplicitImports(boolean ignoreCase) {
-		var qualifiedNamespace = (new IQualifiedNameConverter.DefaultImpl).toQualifiedName("de.dlr.sc.virsat.model.extension.core")
-		var normalizer = new ImportNormalizer(qualifiedNamespace, true, true);
-		var list = new ArrayList<ImportNormalizer>
-		list.add(normalizer)
-		return list;
+		var qualifiedNamespace = (new IQualifiedNameConverter.DefaultImpl).toQualifiedName(Activator.pluginId)
+		var coreNamespace = new ImportNormalizer(qualifiedNamespace, true, true);
+		var implicitImports = new ArrayList<ImportNormalizer>
+		implicitImports.add(coreNamespace)
+		return implicitImports;
 	}
 	
 }
