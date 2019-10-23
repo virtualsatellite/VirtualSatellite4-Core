@@ -95,7 +95,6 @@ public class InheritanceTest extends ASwtBotTestCase {
 		renameField(Document.PROPERTY_DOCUMENTNAME, "NewNewName");
 		propagateInheritance();
 		openEditor(newDocument); 
-		waitForEditingDomainAndUiThread();
 		assertText("NewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
 		// Remove override flag, save
