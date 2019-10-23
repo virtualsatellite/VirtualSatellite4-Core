@@ -33,6 +33,7 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementT
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -53,6 +54,8 @@ public class ConceptLanguageGenerator implements IGenerator2 {
   private final String ID_EXTENSION_POINT_GENERATOR = "de.dlr.sc.virsat.model.concept.generator";
   
   private final String ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS = "class";
+  
+  private final ConceptLanguageImplicitSuperTypeHandler conceptLanguageHandler = new ConceptLanguageImplicitSuperTypeHandler();
   
   @Override
   public void afterGenerate(final Resource input, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
@@ -80,7 +83,7 @@ public class ConceptLanguageGenerator implements IGenerator2 {
       }
       if (generateCode) {
         EObject _get = resource.getContents().get(0);
-        final Concept dataModel = ((Concept) _get);
+        final Concept dataModel = this.conceptLanguageHandler.addImplicitSuperType(((Concept) _get));
         new GenerateDmfCategories().serializeModel(dataModel, fsa);
         new GenerateConceptXmi().serializeModel(dataModel, fsa);
         new GenerateConceptImages().serializeModel(dataModel, fsa);

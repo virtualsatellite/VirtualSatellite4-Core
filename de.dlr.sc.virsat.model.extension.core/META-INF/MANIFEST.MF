@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
-Export-Package: de.dlr.sc.virsat.model.extension.core.migrator,
+Export-Package: de.dlr.sc.virsat.model.extension.core.infrastructure,
+ de.dlr.sc.virsat.model.extension.core.migrator,
  de.dlr.sc.virsat.model.extension.core.model,
  de.dlr.sc.virsat.model.extension.core.validator
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.core
