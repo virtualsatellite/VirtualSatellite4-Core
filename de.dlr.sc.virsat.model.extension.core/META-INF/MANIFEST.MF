@@ -18,3 +18,4 @@ Export-Package: de.dlr.sc.virsat.model.extension.core.infrastructure,
  de.dlr.sc.virsat.model.extension.core.model,
  de.dlr.sc.virsat.model.extension.core.validator
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.core
+Bundle-Activator: de.dlr.sc.virsat.model.extension.core.Activator

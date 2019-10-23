@@ -16,7 +16,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.core.Activator;
-import de.dlr.sc.virsat.model.extension.core.model.GenericCategory;
 
 /**
  * @author fran_tb
@@ -25,6 +24,7 @@ import de.dlr.sc.virsat.model.extension.core.model.GenericCategory;
 public class ConceptLanguageImplicitSuperTypeHandler {
 	
 	private static final String CONCEPT_XMI_PATH = "/concept/concept.xmi";
+	private static final String GENERIC_CATEGORY_NAME = "GenericCategory";
 	
 	/**
 	 * Update a concept so that all categories extend the generic category
@@ -32,7 +32,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 	 * @return a copy of the concept with updated categories
 	 */
 	public Concept addImplicitSuperType(Concept concept) {
-		Concept langaugeCoreConcept = loadConceptFromPlugin();
+		Concept langaugeCoreConcept = loadLangaugeCoreConceptFromPlugin();
 		
 		//Check that the generic category does not get itself as super type
 		if (concept.equals(langaugeCoreConcept)) {
@@ -41,8 +41,8 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 		
 		Concept conceptWithImplicitSuperType = EcoreUtil.copy(concept);
 		Category genericCategory = ActiveConceptHelper.
-				getCategory(langaugeCoreConcept, GenericCategory.FULL_QUALIFIED_CATEGORY_NAME);
-		for (Category category : concept.getCategories()) {
+				getCategory(langaugeCoreConcept, GENERIC_CATEGORY_NAME);
+		for (Category category : conceptWithImplicitSuperType.getCategories()) {
 			if (category.getExtendsCategory() == null) {
 				category.setExtendsCategory(genericCategory);
 			}
@@ -55,7 +55,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 	 * Load the language core concept model from this plugin
 	 * @return the language core concept
 	 */
-	public Concept loadConceptFromPlugin() {
+	public static Concept loadLangaugeCoreConceptFromPlugin() {
 		return ActiveConceptConfigurationElement.loadConceptFromPlugin(Activator.getPluginId() + CONCEPT_XMI_PATH);
 	}
 
