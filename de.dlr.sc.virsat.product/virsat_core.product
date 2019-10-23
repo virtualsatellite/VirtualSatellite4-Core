@@ -121,6 +121,7 @@ Germany
       <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
       <feature id="org.eclipse.graphiti.feature" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.concept.core.feature" installMode="root"/>
    </features>
 
    <configurations>

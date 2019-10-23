@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Model Extension Concept Tests
+Bundle-Name: VirSat Core Model Concept Core Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.model.concept.core.test;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 4.9.1.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.concept.core;bundle-version="0.0.1"
 Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
