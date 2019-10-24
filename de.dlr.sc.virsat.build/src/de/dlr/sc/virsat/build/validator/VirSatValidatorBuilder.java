@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.build.validator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -38,19 +39,15 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
- * the VirSatProjectbuilder our contribution to automatically 'build' our model. As a first implementation  
- * @author scha_vo
+ * Eclipse builder that runs validators on the model
  *
  */
 public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "de.dlr.sc.virsat.build.validator";
-
-	/**
-	 * public constructor
-	 */
-	public VirSatValidatorBuilder() {
-	}
+	private VirSatResourceSet resourceSet;
+	private Set<IStructuralElementInstanceValidator> seiValidators = new HashSet<>();
+	private Set<IRepositoryValidator> repoValidators = new HashSet<>();
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
@@ -62,6 +59,11 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 			return null;
 		}
 		
+		resourceSet = getResourceSet();
+		if (!resourceSet.isOpen()) {
+			return null;
+		}
+
 		readConceptValidatorExtensionPoints();
 		
 		switch (kind) {  
@@ -90,9 +92,7 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 		return null; //new IProject[]{project};
 	}
 	
-	private Set<IStructuralElementInstanceValidator> seiValidators = new HashSet<>();
-	private Set<IRepositoryValidator> repoValidators = new HashSet<>(); 
-	
+
 	/**
 	 * the fullBuild method is executed to trigger a build with all necessary steps.
 	 * @param monitor ProgressMonitor to show progress to Eclipse Framework 
@@ -102,11 +102,6 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 	protected void fullBuild(IProgressMonitor monitor, Set<IStructuralElementInstanceValidator> seiValidators, Set<IRepositoryValidator> repoValidators) {
 	
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatValidatorBuilder: Started full build", null));
-		
-		VirSatResourceSet resourceSet = getResourceSet(); 
-		if (!resourceSet.isOpen()) {
-			return;
-		}
 		
 		Set<StructuralElementInstance> seis = resourceSet.getAllSeisInProject();
 		Repository repo = resourceSet.getRepository();
@@ -159,34 +154,38 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 	 * It registers the found images in the bundles ImgageRegistry
 	 */
 	private void readConceptValidatorExtensionPoints() {
-		// Before reading the validators we remove all of them.
-		// By this the validators will not stack up anymore
 		seiValidators.clear();
 		repoValidators.clear();
+		
+		Set<String> activeConceptIds = resourceSet.getRepository().getActiveConcepts().stream()
+				.map(c -> c.getFullQualifiedName()).collect(Collectors.toSet());
 		
 		// Now go to the registry and read them again. This is just a bug
 		// fix and may lead to performance issues.It should be considered
 		// to initialize them in a singleton manner later on
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		
-		// Read all concept images through the extension point definitions in the various concept plugins
 		IConfigurationElement[] configElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID_CONCEPT_VALIDATOR);
 		
 		for (IConfigurationElement configElement : configElements) {
-			// String key = configElement.getAttribute("id");
-			try {
-				IConfigurationElement[] children = configElement.getChildren();
-				IConfigurationElement childConfigElement = children[0];
-				Object validator = childConfigElement.createExecutableExtension("class");
-				if (validator instanceof IStructuralElementInstanceValidator) {
-					IStructuralElementInstanceValidator seiValidator = (IStructuralElementInstanceValidator) validator;
-					seiValidators.add(seiValidator);
-				} else if (validator instanceof IRepositoryValidator) {
-					IRepositoryValidator repoValidator = (IRepositoryValidator) validator;
-					repoValidators.add(repoValidator);
+			for (IConfigurationElement validatorConfigElement : configElement.getChildren()) {
+				String contributor = validatorConfigElement.getContributor().getName();
+				boolean conceptSpecific = contributor.startsWith("de.dlr.sc.virsat.model.extension");
+				if (!conceptSpecific || activeConceptIds.contains(contributor)) {
+					try {
+						Object validator = validatorConfigElement.createExecutableExtension("class");
+						
+						if (validator instanceof IStructuralElementInstanceValidator) {
+							IStructuralElementInstanceValidator seiValidator = (IStructuralElementInstanceValidator) validator;
+							seiValidators.add(seiValidator);
+						} else if (validator instanceof IRepositoryValidator) {
+							IRepositoryValidator repoValidator = (IRepositoryValidator) validator;
+							repoValidators.add(repoValidator);
+						}
+					} catch (CoreException e) {
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VirSatValidatorBuilder: Could not create validator for " + validatorConfigElement, e));
+					}
 				}
-			} catch (CoreException e) {
-				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VirSatValidatorBuilder: Could not resolve validator through extension point", e));
 			}
 		}
 	}
