@@ -45,6 +45,9 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "de.dlr.sc.virsat.build.validator";
+	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.build.DvlmValidator";
+	public static final String CONCEPT_BUNDLE_PREFIX = "de.dlr.sc.virsat.model.extension";
+
 	private VirSatResourceSet resourceSet;
 	private Set<IStructuralElementInstanceValidator> seiValidators = new HashSet<>();
 	private Set<IRepositoryValidator> repoValidators = new HashSet<>();
@@ -146,8 +149,6 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 
 	}
 	
-	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.build.DvlmValidator";
-	
 	/**
 	 * call this method to read the extension point for the concept images
 	 * It registers the found images in the bundles ImgageRegistry
@@ -169,7 +170,7 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 		for (IConfigurationElement configElement : configElements) {
 			for (IConfigurationElement validatorConfigElement : configElement.getChildren()) {
 				String contributor = validatorConfigElement.getContributor().getName();
-				boolean conceptSpecific = contributor.startsWith("de.dlr.sc.virsat.model.extension");
+				boolean conceptSpecific = contributor.startsWith(CONCEPT_BUNDLE_PREFIX);
 				if (!conceptSpecific || activeConceptIds.contains(contributor)) {
 					try {
 						Object validator = validatorConfigElement.createExecutableExtension("class");
