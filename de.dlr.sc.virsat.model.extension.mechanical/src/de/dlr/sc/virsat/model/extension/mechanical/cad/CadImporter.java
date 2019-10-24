@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia;
+package de.dlr.sc.virsat.model.extension.mechanical.cad;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,8 +35,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.mechanical.Activator;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.command.CopyResourceCommand;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.util.CatiaHelper;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.command.CopyResourceCommand;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.util.CadHelper;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
@@ -45,7 +45,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  * This class imports a JSON representation of system model
  *
  */
-public class CatiaImporter {
+public class CadImporter {
 
 	private EditingDomain editingDomain;
 
@@ -71,16 +71,16 @@ public class CatiaImporter {
 		boolean commandCreationWorked = true;
 
 		// Import parts
-		for (JsonObject part : CatiaHelper.getListOfAllJSONParts(jsonObject)) {
-			String uuidPart = part.getString(CatiaProperties.UUID);
+		for (JsonObject part : CadHelper.getListOfAllJSONParts(jsonObject)) {
+			String uuidPart = part.getString(CadProperties.UUID);
 			if (mapJsonUuidToSEI.containsKey(uuidPart)) {
 				commandCreationWorked &= updateSeiFromPart(importCommand, mapJsonUuidToSEI.get(uuidPart), part);
 			}
 		}
 
 		// Import products
-		for (JsonObject product : CatiaHelper.getListOfAllJSONProducts(jsonObject)) {
-			String uuidProduct = product.getString(CatiaProperties.UUID);
+		for (JsonObject product : CadHelper.getListOfAllJSONProducts(jsonObject)) {
+			String uuidProduct = product.getString(CadProperties.UUID);
 			if (mapJsonUuidToSEI.containsKey(uuidProduct)) {
 				commandCreationWorked &= updateSeiFromProduct(importCommand, mapJsonUuidToSEI.get(uuidProduct),
 						product);
@@ -112,8 +112,8 @@ public class CatiaImporter {
 		Map<String, StructuralElementInstance> mapExisitingElementToUUID = new HashMap<String, StructuralElementInstance>();
 		Map<String, IBeanStructuralElementInstance> mapSEIsToUuid = createMapOfTreeSEIsToUuid(existingTree);
 
-		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonContent)) {
-			String uuid = object.getString(CatiaProperties.UUID);
+		for (JsonObject object : CadHelper.getListOfAllJSONElements(jsonContent)) {
+			String uuid = object.getString(CadProperties.UUID);
 			IBeanStructuralElementInstance mappedElement = mapSEIsToUuid.get(uuid);
 			if (mapSEIsToUuid.containsKey(uuid) && mappedElement != null) {
 				mapExisitingElementToUUID.put(uuid, mappedElement.getStructuralElementInstance());
@@ -141,8 +141,8 @@ public class CatiaImporter {
 
 		List<JsonObject> unmappedElements = new ArrayList<>();
 
-		for (JsonObject object : CatiaHelper.getListOfAllJSONElements(jsonRoot)) {
-			String uuid = object.getString(CatiaProperties.UUID);
+		for (JsonObject object : CadHelper.getListOfAllJSONElements(jsonRoot)) {
+			String uuid = object.getString(CadProperties.UUID);
 			if (!mapJSONtoSEI.containsKey(uuid)) {
 				unmappedElements.add(object);
 			}
@@ -180,23 +180,23 @@ public class CatiaImporter {
 		String shape;
 		String stlFile = null;
 		try {
-			name = part.getString(CatiaProperties.NAME);
-			sizeX = part.getDouble(CatiaProperties.PART_LENGTH_X);
-			sizeY = part.getDouble(CatiaProperties.PART_LENGTH_Y);
-			sizeZ = part.getDouble(CatiaProperties.PART_LENGTH_Z);
-			radius = part.getDouble(CatiaProperties.PART_RADIUS);
+			name = part.getString(CadProperties.NAME);
+			sizeX = part.getDouble(CadProperties.PART_LENGTH_X);
+			sizeY = part.getDouble(CadProperties.PART_LENGTH_Y);
+			sizeZ = part.getDouble(CadProperties.PART_LENGTH_Z);
+			radius = part.getDouble(CadProperties.PART_RADIUS);
 
-			color = part.getLong(CatiaProperties.PART_COLOR);
-			shape = part.getString(CatiaProperties.PART_SHAPE);
+			color = part.getLong(CadProperties.PART_COLOR);
+			shape = part.getString(CadProperties.PART_SHAPE);
 
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"CatiaImport: Failed to perform import! Could not load all required properties", e));
+					"CadImport: Failed to perform import! Could not load all required properties", e));
 			return false;
 		}
 
-		if (part.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
-			stlFile = part.getString(CatiaProperties.PART_STL_PATH);
+		if (part.containsKey(CadProperties.PART_STL_PATH.getKey())) {
+			stlFile = part.getString(CadProperties.PART_STL_PATH);
 		}
 
 		setName(importCommand, beanSEI, name);
@@ -252,26 +252,26 @@ public class CatiaImporter {
 		String stlFile = null;
 
 		try {
-			name = product.getString(CatiaProperties.NAME);
+			name = product.getString(CadProperties.NAME);
 
-			posX = product.getDouble(CatiaProperties.PRODUCT_POS_X);
-			posY = product.getDouble(CatiaProperties.PRODUCT_POS_Y);
-			posZ = product.getDouble(CatiaProperties.PRODUCT_POS_Z);
+			posX = product.getDouble(CadProperties.PRODUCT_POS_X);
+			posY = product.getDouble(CadProperties.PRODUCT_POS_Y);
+			posZ = product.getDouble(CadProperties.PRODUCT_POS_Z);
 
-			rotX = product.getDouble(CatiaProperties.PRODUCT_ROT_X);
-			rotY = product.getDouble(CatiaProperties.PRODUCT_ROT_Y);
-			rotZ = product.getDouble(CatiaProperties.PRODUCT_ROT_Z);
+			rotX = product.getDouble(CadProperties.PRODUCT_ROT_X);
+			rotY = product.getDouble(CadProperties.PRODUCT_ROT_Y);
+			rotZ = product.getDouble(CadProperties.PRODUCT_ROT_Z);
 
-			shape = product.getString(CatiaProperties.PRODUCT_SHAPE);
+			shape = product.getString(CadProperties.PRODUCT_SHAPE);
 
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"CatiaImport: Failed to perform import! Could not load all required properties"));
+					"CadImport: Failed to perform import! Could not load all required properties"));
 			return false;
 		}
 
-		if (product.containsKey(CatiaProperties.PART_STL_PATH.getKey())) {
-			stlFile = product.getString(CatiaProperties.PART_STL_PATH);
+		if (product.containsKey(CadProperties.PART_STL_PATH.getKey())) {
+			stlFile = product.getString(CadProperties.PART_STL_PATH);
 		}
 
 		setName(importCommand, beanSEI, name);
@@ -298,13 +298,13 @@ public class CatiaImporter {
 	 * @return true if the product has any visualisation properties
 	 */
 	private boolean hasVisualisationProductProperties(JsonObject product) {
-		return product.containsKey(CatiaProperties.PRODUCT_POS_X.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_POS_Y.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_POS_Z.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_ROT_X.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_ROT_Y.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_ROT_Z.getKey())
-				|| product.containsKey(CatiaProperties.PRODUCT_SHAPE.getKey());
+		return product.containsKey(CadProperties.PRODUCT_POS_X.getKey())
+				|| product.containsKey(CadProperties.PRODUCT_POS_Y.getKey())
+				|| product.containsKey(CadProperties.PRODUCT_POS_Z.getKey())
+				|| product.containsKey(CadProperties.PRODUCT_ROT_X.getKey())
+				|| product.containsKey(CadProperties.PRODUCT_ROT_Y.getKey())
+				|| product.containsKey(CadProperties.PRODUCT_ROT_Z.getKey())
+				|| product.containsKey(CadProperties.PRODUCT_SHAPE.getKey());
 	}
 
 	/**
@@ -319,9 +319,9 @@ public class CatiaImporter {
 	private Path getLocalPath(String stlPath, IBeanStructuralElementInstance seiBean) {
 
 		// Copy file to workspace
-		Path catiaSTLPath = Paths.get(stlPath);
+		Path cadSTLPath = Paths.get(stlPath);
 
-		Path fileName = catiaSTLPath.getFileName();
+		Path fileName = cadSTLPath.getFileName();
 		if (fileName == null) {
 			throw new IllegalArgumentException(
 					"Invalid path to STL file. Can't extract internal directory: " + stlPath);

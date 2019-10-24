@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
  * A basic import / export page to select a tree element and a file destination for an import / export JSON file
  *
  */
-public abstract class ACatiaImportExportPage extends AImportExportPage {
+public abstract class ACadImportExportPage extends AImportExportPage {
 
 	
 	private static final String[] DIALOG_EXTENSIONS = { "*.json" };
@@ -32,7 +32,7 @@ public abstract class ACatiaImportExportPage extends AImportExportPage {
 	 * Default constructor override
 	 * @param pageName the page name
 	 */
-	protected ACatiaImportExportPage(String pageName) {
+	protected ACadImportExportPage(String pageName) {
 		super(pageName);
 	}
 	
@@ -41,12 +41,12 @@ public abstract class ACatiaImportExportPage extends AImportExportPage {
 	 * @param pageName the page name
 	 * @param style the SWT style of the page 
 	 */
-	protected ACatiaImportExportPage(String pageName, int style) {
+	protected ACadImportExportPage(String pageName, int style) {
 		super(pageName, style);
 	}
 	
 	/**
-	 * Create a tree viewer with filters to show only relevant tree elements for CATIA import /export
+	 * Create a tree viewer with filters to show only relevant tree elements for CAD import /export
 	 */
 	protected void createTreeViewer() {
 		TreeViewer treeViewer = createTreeUI();

@@ -7,16 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia;
+package de.dlr.sc.virsat.model.extension.mechanical.cad;
 
 import com.github.cliftonlabs.json_simple.JsonKey;
 
 /**
- * Defines the keys to access Catia properties
+ * Defines the keys to access Cad properties
  *
  */
 
-public enum CatiaProperties implements JsonKey {
+public enum CadProperties implements JsonKey {
 	PARTS("Parts"),
 	PRODUCTS("Products"),
 	
@@ -53,7 +53,7 @@ public enum CatiaProperties implements JsonKey {
 	 * Standard constructor
 	 * @param property the property
 	 */
-	CatiaProperties(String property) {
+	CadProperties(String property) {
 		this.property = property;
 	}
 	

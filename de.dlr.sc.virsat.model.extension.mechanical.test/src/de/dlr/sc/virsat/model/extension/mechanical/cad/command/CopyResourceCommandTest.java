@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.mechanical.catia.command;
+package de.dlr.sc.virsat.model.extension.mechanical.cad.command;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
@@ -38,7 +38,7 @@ public class CopyResourceCommandTest {
 	
 	@Before
 	public void setUp() throws CoreException, IOException {
-		testFolderPath = Files.createTempDirectory("catiaTest");
+		testFolderPath = Files.createTempDirectory("cadTest");
 		
 		testFile = Paths.get(testFolderPath.toString(), TEST_FILE_NAME);
 		testContent = Arrays.asList("solid test", "endsolid test");

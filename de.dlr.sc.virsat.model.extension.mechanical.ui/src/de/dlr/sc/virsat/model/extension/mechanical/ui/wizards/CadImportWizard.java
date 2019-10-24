@@ -35,8 +35,8 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaFileHandler;
-import de.dlr.sc.virsat.model.extension.mechanical.catia.CatiaImporter;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadFileHandler;
+import de.dlr.sc.virsat.model.extension.mechanical.cad.CadImporter;
 import de.dlr.sc.virsat.model.extension.mechanical.ui.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -45,21 +45,21 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
  * 
  *
  */
-public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
+public class CadImportWizard extends Wizard implements IWorkbenchWizard {
 
-	public static final String ID = "de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.catiaImport";
+	public static final String ID = "de.dlr.sc.virsat.model.extension.mechanical.ui.wizards.cadImport";
 
-	private CatiaImportPage page;
+	private CadImportPage page;
 	private IContainer model;
-	private CatiaImporter importer = new CatiaImporter();
+	private CadImporter importer = new CadImporter();
 	private static final int NUMBER_PROGRESS_TICKS = 3;
 	
 	/**
 	 * Default constructor
 	 */
-	public CatiaImportWizard() {
+	public CadImportWizard() {
 		super();
-		setWindowTitle("Catia JSON Import");
+		setWindowTitle("Cad JSON Import");
 
 		// Setup persistency
 		IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
@@ -82,9 +82,9 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 		BeanStructuralElementInstance productRoot = new BeanStructuralElementInstance(sei);
 
 		String inputJsonFilePath = page.getDestination();
-		CatiaFileHandler fileHandler = new CatiaFileHandler();
+		CadFileHandler fileHandler = new CadFileHandler();
 		
-		Job exportJob = new Job("Performing Catia JSON Import") {
+		Job exportJob = new Job("Performing Cad JSON Import") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS);
@@ -99,7 +99,7 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 					Command importCommnd = importer.transform(editingDomain, jsonContent, mapping);
 					if (!importCommnd.canExecute()) {
 						Status status = new Status(Status.ERROR, Activator.getPluginId(),
-								"CatiaImportWizard: The import command is not exectuable!");
+								"CadImportWizard: The import command is not exectuable!");
 						StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 						return Status.CANCEL_STATUS;
 					}
@@ -113,7 +113,7 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 					return Status.OK_STATUS;
 				} catch (JsonException | IOException | CoreException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(),
-							"CatiaImportWizard: Failed to perform import!", e);
+							"CadImportWizard: Failed to perform import!", e);
 					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					return Status.CANCEL_STATUS;
 				}
@@ -126,7 +126,7 @@ public class CatiaImportWizard extends Wizard implements IWorkbenchWizard {
 
 	@Override
 	public void addPages() {
-		page = new CatiaImportPage(model);
+		page = new CadImportPage(model);
 		addPage(page);
 	}
 
