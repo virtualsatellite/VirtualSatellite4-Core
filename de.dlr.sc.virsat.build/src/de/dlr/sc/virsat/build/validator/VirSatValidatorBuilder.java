@@ -156,7 +156,7 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 		seiValidators.clear();
 		repoValidators.clear();
 		
-		Set<String> activeConceptIds = resourceSet.getRepository().getActiveConcepts().stream()
+		Set<String> activeConceptIds = getResourceSet().getRepository().getActiveConcepts().stream()
 				.map(c -> c.getFullQualifiedName()).collect(Collectors.toSet());
 		
 		// Now go to the registry and read them again. This is just a bug
