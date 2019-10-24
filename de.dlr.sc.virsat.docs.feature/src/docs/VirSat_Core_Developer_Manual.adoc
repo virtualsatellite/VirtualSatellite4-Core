@@ -122,7 +122,7 @@ Select the option "Git".
 |{counter:steps}.
 |In the next step you have to select a repository source.
 Choose "clone URl" and continue. +
-After that you need to visit www.github.com and choose the repository you want to clone. +
+After that you need to visit https://github.com/virtualsatellite and choose the repository you want to clone. +
 Click the green button in the upper right corner which says "clone or download" and copy the link.
 |image::chapterIdeInstallation/subsectionGitIdeSetup/4.1_CloneGitUrl.PNG[Clone Git URL]
 
@@ -144,18 +144,9 @@ Then set it as your active target platform. The button is in the upper right cor
 |image::chapterIdeInstallation/subsectionGitIdeSetup/10_OpenVirsatTarget.PNG[Open Virsat Target]
 
 |{counter:steps}.
-|After that you need to switch from the Git perspective to the Plug-in development perspective in the upper right corner. +
-Then take a look at the project explorer in the upper left corner to import a project. +
-Select the option "Git" -> "Projects from Git" and continue.
+|After that you need to import the projects from Git. 
+Right click on working tree, choose "Import Projects" and finish.
 |image::chapterIdeInstallation/subsectionGitIdeSetup/12_ImportProjectsGit.PNG[Import Projects from Git]
-
-|{counter:steps}.
-|In the next step you have to select a location of your Git repositories. +
-Choose "Existing local repository" and select "VirtualSatellite4-Core [development]- [...] \.git" and continue. +
-Next, choose the first option "Import existing Eclipse projects" and go on to the window, where all projects are selected. +
-When you have finished the process, you see all projects listed in your project explorer on the left side.
-|image::chapterIdeInstallation/subsectionGitIdeSetup/15_ImportEclipse.PNG[Import existing Eclipse projects]
-
 
 |=== 
 
