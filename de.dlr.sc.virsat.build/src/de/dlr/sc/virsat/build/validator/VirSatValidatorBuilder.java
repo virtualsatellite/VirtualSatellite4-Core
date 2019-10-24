@@ -59,8 +59,7 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 			return null;
 		}
 		
-		resourceSet = getResourceSet();
-		if (!resourceSet.isOpen()) {
+		if (!getResourceSet().isOpen()) {
 			return null;
 		}
 
@@ -103,8 +102,8 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 	
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatValidatorBuilder: Started full build", null));
 		
-		Set<StructuralElementInstance> seis = resourceSet.getAllSeisInProject();
-		Repository repo = resourceSet.getRepository();
+		Set<StructuralElementInstance> seis = getResourceSet().getAllSeisInProject();
+		Repository repo = getResourceSet().getRepository();
 		VirSatValidationMarkerHelper vvmHelper = new VirSatValidationMarkerHelper();
 		
 		int maxTasks = seis.size() * seiValidators.size() + repoValidators.size();
@@ -215,7 +214,10 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 	 * @return gets the resource set this builder operates on
 	 */
 	protected VirSatResourceSet getResourceSet() {
-		return VirSatResourceSet.getResourceSet(getVirSatProject());
+		if (resourceSet == null) {
+			resourceSet = VirSatResourceSet.getResourceSet(getVirSatProject());
+		}
+		return resourceSet;
 	}
 	
 	@Override
