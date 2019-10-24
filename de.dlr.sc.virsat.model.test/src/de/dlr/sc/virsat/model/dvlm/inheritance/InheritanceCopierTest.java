@@ -593,6 +593,27 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	}
 	
 	@Test
+	public void testGetInheritedATypeInstanceForWithMultiInheritanceCardinality1AndNoCommonAncestor() {
+		catIfe.setCardinality(1);
+		
+		CategoryAssignment ecRwIIfe = attachInterfaceEnd(seiEcRwI, "RwIfe");
+		attachInterfaceEnd(seiErRwA, "RwIfe");
+		InheritanceCopier ic = new InheritanceCopier();
+		
+		assertEquals("Should be no CA yet Ca", 0, seiEo1RwI.getCategoryAssignments().size());
+		
+		ic.updateStep(seiEo1RwI);
+
+		assertEquals("Should be a single Ca", 1, seiEo1RwI.getCategoryAssignments().size());
+		CategoryAssignment copiedEoRwIIfeFromEc = seiEo1RwI.getCategoryAssignments().get(0);
+		
+		assertThat("Categories are correctly linked", copiedEoRwIIfeFromEc.getSuperTis(), hasItems(ecRwIIfe));
+
+		IInheritanceLink referencingATypeInstance = ic.getInheritedIInheritanceLinkFor(ecRwIIfe, seiEo1RwI);
+		assertEquals("Found copied CA of RW Eo that is referencing the EC IFE", copiedEoRwIIfeFromEc, referencingATypeInstance);
+	}
+	
+	@Test
 	public void testGetAllTypeInstances() {
 		CategoryAssignment caEdRwIfe = attachInterfaceEnd(seiEdRw, "RwIe");
 		
