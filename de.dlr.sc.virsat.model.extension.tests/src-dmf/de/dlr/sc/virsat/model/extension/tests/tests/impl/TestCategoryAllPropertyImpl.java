@@ -183,6 +183,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getTestString() {
 		return testString;
 	}
@@ -192,6 +193,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestString(String newTestString) {
 		String oldTestString = testString;
 		testString = newTestString;
@@ -204,6 +206,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getTestInt() {
 		return testInt;
 	}
@@ -213,6 +216,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestInt(int newTestInt) {
 		int oldTestInt = testInt;
 		testInt = newTestInt;
@@ -225,6 +229,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public double getTestFloat() {
 		return testFloat;
 	}
@@ -234,6 +239,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestFloat(double newTestFloat) {
 		double oldTestFloat = testFloat;
 		testFloat = newTestFloat;
@@ -246,6 +252,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isTestBool() {
 		return testBool;
 	}
@@ -255,6 +262,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestBool(boolean newTestBool) {
 		boolean oldTestBool = testBool;
 		testBool = newTestBool;
@@ -267,6 +275,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getTestResource() {
 		return testResource;
 	}
@@ -276,6 +285,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestResource(String newTestResource) {
 		String oldTestResource = testResource;
 		testResource = newTestResource;
@@ -288,6 +298,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EnumTestEnum getTestEnum() {
 		return testEnum;
 	}
@@ -297,6 +308,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestEnum(EnumTestEnum newTestEnum) {
 		EnumTestEnum oldTestEnum = testEnum;
 		testEnum = newTestEnum == null ? TEST_ENUM_EDEFAULT : newTestEnum;
@@ -421,7 +433,7 @@ public class TestCategoryAllPropertyImpl extends DObjectImpl implements TestCate
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (testString: ");
 		result.append(testString);
 		result.append(", testInt: ");
