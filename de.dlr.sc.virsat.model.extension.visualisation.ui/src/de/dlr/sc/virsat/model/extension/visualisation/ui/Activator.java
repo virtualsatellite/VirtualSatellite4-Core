@@ -42,6 +42,8 @@ public class Activator extends AbstractUIPlugin {
 	private CommunicationServer geometryFileServer;
 	private ResourceReloadListener resourceReloadListener;
 
+	private boolean serverstarted = false;
+	
 	/**
 	 * The constructor
 	 */
@@ -70,18 +72,27 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 		pluginId = getDefault().getBundle().getSymbolicName();
 		// initialize the communication servers
-		sceneGraphServer = new SceneGraphServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
-		geometryFileServer = new GeometryFileServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
+		try {
 		
-		resourceReloadListener = new ResourceReloadListener();
-		VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
+			sceneGraphServer = new SceneGraphServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
+			geometryFileServer = new GeometryFileServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
+			
+			resourceReloadListener = new ResourceReloadListener();
+			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
+			
+			serverstarted = true;
+		} catch (UnsatisfiedLinkError e) {
+			
+		}
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		sceneGraphServer.close();
-		geometryFileServer.close();
-		VirSatTransactionalEditingDomain.removeResourceEventListener(resourceReloadListener);
+		if (serverstarted) {
+			sceneGraphServer.close();
+			geometryFileServer.close();
+			VirSatTransactionalEditingDomain.removeResourceEventListener(resourceReloadListener);
+		}
 		plugin = null;
 		super.stop(context);
 	}
