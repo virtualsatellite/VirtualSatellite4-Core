@@ -334,6 +334,7 @@ public class ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (inheritance builder)"));
 	}
+	
 	/**
 	 * waits for calculation builder 
 	 *
