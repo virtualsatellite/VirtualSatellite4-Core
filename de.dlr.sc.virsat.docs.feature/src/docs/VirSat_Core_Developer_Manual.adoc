@@ -101,6 +101,57 @@ Now press the link btn:[Workbench].
 
 Done. You installed and successfully started Virtual Satellite Developer IDE.
 
+==== Git integration setup
+
+Once you have installed your Virtual Satellite Developer IDE, you need to set up your Git integration. 
+Following the next steps will help you with the progress.
+
+
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:steps}.
+|Start with clicking the "Open perspective" button on the top right to open the Git perspective.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/2_OpenPerspective.png[Open perspective]
+
+|{counter:steps}.
+|In the next step you have to select a repository source. 
+In the Git Repositories view click "Clone a git repository" and then choose "clone URl" and continue. +
+After that you need to visit https://github.com/virtualsatellite and choose the repository you want to clone. +
+Click the green button in the upper right corner which says "clone or download" and copy the link.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/4.1_CloneGitUrl.PNG[Clone Git URL]
+
+|{counter:steps}.
+|Enter the link of the source repository into the free field "URl" and authenticate yourself in the section beneath. +
+In the next step you can select branches to clone from the remote repository. In this case, just let them all selected and continue. +
+Now you have to choose a directory as a local destination for VirtualSatellite4-Core to finish the process. 
+|image::chapterIdeInstallation/subsectionGitIdeSetup/5_InsertGitUrl.PNG[Insert Git URL]
+
+|{counter:steps}.
+|After that, you select the branch "development" in the upper left corner of your window and double click to check out the branch. 
+|image::chapterIdeInstallation/subsectionGitIdeSetup/8_CheckoutBranch.PNG[Check out development branch]
+
+|{counter:steps}.
+|Now you need to import the projects from Git. 
+Right click on "Working Tree", choose "Import Projects" and finish the process.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/12_ImportProjectsGit.PNG[Import Projects from Git]
+
+|{counter:steps}.
+|After that search for the folder "de.dlr.sc.virsat.target" in your working tree. +
+Open it and then select "virsat.target". +
+You need to wait until the progress is fully loaded. +
+Then set it as your active target platform. The button is in the upper right corner.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/10_OpenVirsatTarget.PNG[Open Virsat Target]
+
+
+|=== 
+
+Congratulations. You have successfully set up your Git integration!
+
 == The Virtual Satellite "Hello World" Examples
 
 === Virtual Satellite for Project Developer
