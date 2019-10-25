@@ -172,21 +172,30 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 				String contributor = validatorConfigElement.getContributor().getName();
 				boolean conceptSpecific = contributor.startsWith(CONCEPT_BUNDLE_PREFIX);
 				if (!conceptSpecific || activeConceptIds.contains(contributor)) {
-					try {
-						Object validator = validatorConfigElement.createExecutableExtension("class");
-						
-						if (validator instanceof IStructuralElementInstanceValidator) {
-							IStructuralElementInstanceValidator seiValidator = (IStructuralElementInstanceValidator) validator;
-							seiValidators.add(seiValidator);
-						} else if (validator instanceof IRepositoryValidator) {
-							IRepositoryValidator repoValidator = (IRepositoryValidator) validator;
-							repoValidators.add(repoValidator);
-						}
-					} catch (CoreException e) {
-						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VirSatValidatorBuilder: Could not create validator for " + validatorConfigElement, e));
-					}
+					createValidator(validatorConfigElement);
 				}
 			}
+		}
+	}
+
+
+	/**
+	 * Creates a validator object and adds it to SEI or Repo validators depending on its type 
+	 * @param validatorConfigElement validator extension config element
+	 */
+	private void createValidator(IConfigurationElement validatorConfigElement) {
+		try {
+			Object validator = validatorConfigElement.createExecutableExtension("class");
+			
+			if (validator instanceof IStructuralElementInstanceValidator) {
+				IStructuralElementInstanceValidator seiValidator = (IStructuralElementInstanceValidator) validator;
+				seiValidators.add(seiValidator);
+			} else if (validator instanceof IRepositoryValidator) {
+				IRepositoryValidator repoValidator = (IRepositoryValidator) validator;
+				repoValidators.add(repoValidator);
+			}
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VirSatValidatorBuilder: Could not create validator for " + validatorConfigElement, e));
 		}
 	}
 
