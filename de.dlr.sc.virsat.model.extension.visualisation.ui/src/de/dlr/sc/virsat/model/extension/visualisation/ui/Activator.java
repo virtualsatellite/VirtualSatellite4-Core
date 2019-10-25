@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
@@ -82,7 +83,7 @@ public class Activator extends AbstractUIPlugin {
 			
 			serverstarted = true;
 		} catch (UnsatisfiedLinkError e) {
-			
+			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK libraries. Error: " + e.getMessage()));
 		}
 	}
 

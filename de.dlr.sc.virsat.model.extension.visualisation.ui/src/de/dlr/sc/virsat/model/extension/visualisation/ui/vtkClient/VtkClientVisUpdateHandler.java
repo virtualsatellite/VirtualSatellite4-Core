@@ -45,7 +45,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 	 * Create a Helper for updating the visualisation
 	 */
 	private VtkClientVisUpdateHandler() {
-		
 	}
 
 	/**
@@ -82,7 +81,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		VtkTreeManager.getInstance().clearNewActors();
 		
 		// render the scene
-		
 		visMan.Render();
 	}
 
@@ -122,11 +120,10 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 				VtkTreeManager.getInstance().checkIdAndCreateAxes(uuid);
 				VtkTreeManager.getInstance().highlightIfSelectedObject(uuid);
 			}
-		} catch (UnsatisfiedLinkError cnfe) {
-			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not Activate Visualization sever. Most likely VTK did not get loaded correctly. Error: " + cnfe.getMessage()));
+		} catch (UnsatisfiedLinkError e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not activate Visualization sever. Most likely VTK did not get loaded correctly. Error: " + e.getMessage()));
 		}
-		
-	}
+	}		
 
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
