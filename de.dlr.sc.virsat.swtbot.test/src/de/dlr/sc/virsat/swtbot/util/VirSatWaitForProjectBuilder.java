@@ -112,7 +112,7 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 		for (String jobNameWithIndex : mapJobScheduleCounters.keySet()) {
 			Integer scheduleCounter = mapJobScheduleCounters.get(jobNameWithIndex);
 			if (scheduleCounter != 0) {
-				message += "Job < " + jobNameWithIndex + "> is not done as often it got scheduled ...\n";
+				message += "Job < " + jobNameWithIndex + "> is not >>done<< as often it got >>scheduled<< ...\n";
 			}
 		}
 		
@@ -164,10 +164,6 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 			mapJobScheduleCounters.put(jobNameWithIndex, jobScheduleCount);
 			
 			System.out.println("SWTBot: Job <" + jobNameWithIndex + "> got scheduled " + jobScheduleCount + " times ...");
-			
-			if (jobScheduleCount > 1) {
-				setErrorState("Job <" + jobNameWithIndex + "> got scheduled " + jobScheduleCount + " times ...");
-			}
 		}
 	}
 
