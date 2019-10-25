@@ -10,6 +10,8 @@
         eType="#//units/UnitManagement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="activeConcepts" upperBound="-1"
         eType="#//concepts/Concept" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="suppressedValidators" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eSubpackages name="structural" nsURI="http://www.virsat.sc.dlr.de/dvlm/v6/s" nsPrefix="dvlm_s">
     <eClassifiers xsi:type="ecore:EClass" name="IApplicableFor" abstract="true" interface="true">

@@ -34,7 +34,6 @@ public interface IInstance extends EObject {
 	 * This method hands back the full qualified path of the current instance in the DVLM. The FAN consists of all relevant names from the current object to its top container delimited by a "."
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper.getFullQualifedNameForInstance(this);'"
 	 * @generated
 	 */
 	String getFullQualifiedInstanceName();
