@@ -9,21 +9,18 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.build.validator;
 
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
@@ -45,12 +42,8 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 
 	public static final String BUILDER_ID = "de.dlr.sc.virsat.build.validator";
-	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.build.DvlmValidator";
-	public static final String CONCEPT_BUNDLE_PREFIX = "de.dlr.sc.virsat.model.extension";
 
 	private VirSatResourceSet resourceSet;
-	private Set<IStructuralElementInstanceValidator> seiValidators = new HashSet<>();
-	private Set<IRepositoryValidator> repoValidators = new HashSet<>();
 
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
@@ -65,9 +58,11 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 		if (!getResourceSet().isOpen()) {
 			return null;
 		}
-
-		readConceptValidatorExtensionPoints();
 		
+		RepoValidatorsInstantiator validatorsInstantiator = new RepoValidatorsInstantiator(getResourceSet().getRepository());
+		List<IStructuralElementInstanceValidator> seiValidators = validatorsInstantiator.getSeiValidators();
+		List<IRepositoryValidator> repoValidators = validatorsInstantiator.getRepoValidators();
+
 		switch (kind) {  
 			case FULL_BUILD:
 				fullBuild(monitor, seiValidators, repoValidators);
@@ -101,7 +96,7 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 	 * @param seiValidators The validators for the seis to be used with this run 
 	 * @param repoValidators The repo specific validators to be used with this run
 	 */
-	protected void fullBuild(IProgressMonitor monitor, Set<IStructuralElementInstanceValidator> seiValidators, Set<IRepositoryValidator> repoValidators) {
+	protected void fullBuild(IProgressMonitor monitor, Collection<IStructuralElementInstanceValidator> seiValidators, Collection<IRepositoryValidator> repoValidators) {
 	
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatValidatorBuilder: Started full build", null));
 		
@@ -148,56 +143,6 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatValidatorBuilder: Executed full build", null));
 
 	}
-	
-	/**
-	 * call this method to read the extension point for the concept images
-	 * It registers the found images in the bundles ImgageRegistry
-	 */
-	private void readConceptValidatorExtensionPoints() {
-		seiValidators.clear();
-		repoValidators.clear();
-		
-		Set<String> activeConceptIds = getResourceSet().getRepository().getActiveConcepts().stream()
-				.map(c -> c.getFullQualifiedName()).collect(Collectors.toSet());
-		
-		// Now go to the registry and read them again. This is just a bug
-		// fix and may lead to performance issues.It should be considered
-		// to initialize them in a singleton manner later on
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		
-		IConfigurationElement[] configElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID_CONCEPT_VALIDATOR);
-		
-		for (IConfigurationElement configElement : configElements) {
-			for (IConfigurationElement validatorConfigElement : configElement.getChildren()) {
-				String contributor = validatorConfigElement.getContributor().getName();
-				boolean conceptSpecific = contributor.startsWith(CONCEPT_BUNDLE_PREFIX);
-				if (!conceptSpecific || activeConceptIds.contains(contributor)) {
-					createValidator(validatorConfigElement);
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * Creates a validator object and adds it to SEI or Repo validators depending on its type 
-	 * @param validatorConfigElement validator extension config element
-	 */
-	private void createValidator(IConfigurationElement validatorConfigElement) {
-		try {
-			Object validator = validatorConfigElement.createExecutableExtension("class");
-			
-			if (validator instanceof IStructuralElementInstanceValidator) {
-				IStructuralElementInstanceValidator seiValidator = (IStructuralElementInstanceValidator) validator;
-				seiValidators.add(seiValidator);
-			} else if (validator instanceof IRepositoryValidator) {
-				IRepositoryValidator repoValidator = (IRepositoryValidator) validator;
-				repoValidators.add(repoValidator);
-			}
-		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VirSatValidatorBuilder: Could not create validator for " + validatorConfigElement, e));
-		}
-	}
 
 	/**
 	 * the method triggers an incremental build which should re-use some previously build artifacts.
@@ -206,7 +151,7 @@ public class VirSatValidatorBuilder extends IncrementalProjectBuilder {
 	 * @param seiValidators The validators for the seis to be used with this run 
 	 * @param repoValidators The repo specific validators to be used with this run
 	 */
-	protected void incrementalBuild(IProgressMonitor monitor, Set<IStructuralElementInstanceValidator> seiValidators, Set<IRepositoryValidator> repoValidators) {
+	protected void incrementalBuild(IProgressMonitor monitor, Collection<IStructuralElementInstanceValidator> seiValidators, Collection<IRepositoryValidator> repoValidators) {
 		fullBuild(monitor, seiValidators, repoValidators);
 	}
 	
