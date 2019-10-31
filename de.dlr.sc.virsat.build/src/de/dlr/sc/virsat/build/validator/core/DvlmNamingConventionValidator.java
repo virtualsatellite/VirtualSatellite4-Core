@@ -15,9 +15,7 @@ import java.util.Set;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
 import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IInstance;
@@ -32,7 +30,10 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * @author fisc_ph
  *
  */
-public class DvlmNamingConventionValidator extends ADvlmCoreValidator implements IStructuralElementInstanceValidator, IRepositoryValidator {
+public class DvlmNamingConventionValidator extends ADvlmCoreValidator implements IStructuralElementInstanceValidator {
+
+	//includes capital and small letters, numbers and underline "_" but no spaces and especially no dots
+	public static final String CAMELCASE_PATTERN_ARBITRARY = "^[a-zA-z]+\\w*";
 	
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
@@ -76,13 +77,4 @@ public class DvlmNamingConventionValidator extends ADvlmCoreValidator implements
 		
 		return validationSuccessful;
 	}
-	
-	//includes capital and small letters, numbers and underline "_" but no spaces and especially no dots
-	public static final String CAMELCASE_PATTERN_ARBITRARY = "^[a-zA-z]+\\w*";
-
-	@Override
-	public boolean validate(Repository repo) {
-		return false;
-	}
-	
 }
