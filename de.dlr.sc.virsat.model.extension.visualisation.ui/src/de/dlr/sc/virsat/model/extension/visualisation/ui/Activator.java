@@ -43,7 +43,7 @@ public class Activator extends AbstractUIPlugin {
 	private CommunicationServer geometryFileServer;
 	private ResourceReloadListener resourceReloadListener;
 
-	private boolean serverstarted = false;
+	private boolean serverStarted = false;
 	
 	/**
 	 * The constructor
@@ -81,7 +81,7 @@ public class Activator extends AbstractUIPlugin {
 			resourceReloadListener = new ResourceReloadListener();
 			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
 			
-			serverstarted = true;
+			serverStarted = true;
 		} catch (UnsatisfiedLinkError e) {
 			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK libraries. Error: " + e.getMessage()));
 		}
@@ -89,7 +89,7 @@ public class Activator extends AbstractUIPlugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		if (serverstarted) {
+		if (serverStarted) {
 			sceneGraphServer.close();
 			geometryFileServer.close();
 			VirSatTransactionalEditingDomain.removeResourceEventListener(resourceReloadListener);
