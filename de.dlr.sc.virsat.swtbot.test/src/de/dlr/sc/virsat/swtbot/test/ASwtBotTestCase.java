@@ -57,7 +57,7 @@ public class ASwtBotTestCase {
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
-	public static final int GENERAL_SWTBOT_WAIT_TIME = 10;
+	public static final int GENERAL_SWTBOT_WAIT_TIME = 100;
 	
 	protected SWTWorkbenchBot bot;
 	protected Concept conceptPs;
