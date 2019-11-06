@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.dvlm;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -129,13 +130,22 @@ public interface DVLMPackage extends EPackage {
 	int REPOSITORY__ACTIVE_CONCEPTS = GeneralPackage.IUUID_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Suppressed Validators</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPOSITORY__SUPPRESSED_VALIDATORS = GeneralPackage.IUUID_FEATURE_COUNT + 5;
+
+	/**
 	 * The number of structural features of the '<em>Repository</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPOSITORY_FEATURE_COUNT = GeneralPackage.IUUID_FEATURE_COUNT + 5;
+	int REPOSITORY_FEATURE_COUNT = GeneralPackage.IUUID_FEATURE_COUNT + 6;
 
 	/**
 	 * The operation id for the '<em>Get Contained IAssigned Disciplines</em>' operation.
@@ -211,6 +221,17 @@ public interface DVLMPackage extends EPackage {
 	EReference getRepository_ActiveConcepts();
 
 	/**
+	 * Returns the meta object for the attribute list '{@link de.dlr.sc.virsat.model.dvlm.Repository#getSuppressedValidators <em>Suppressed Validators</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Suppressed Validators</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.Repository#getSuppressedValidators()
+	 * @see #getRepository()
+	 * @generated
+	 */
+	EAttribute getRepository_SuppressedValidators();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -274,6 +295,14 @@ public interface DVLMPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REPOSITORY__ACTIVE_CONCEPTS = eINSTANCE.getRepository_ActiveConcepts();
+
+		/**
+		 * The meta object literal for the '<em><b>Suppressed Validators</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REPOSITORY__SUPPRESSED_VALIDATORS = eINSTANCE.getRepository_SuppressedValidators();
 
 	}
 
