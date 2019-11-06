@@ -36,6 +36,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.Repository#getRoleManagement <em>Role Management</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.Repository#getUnitManagement <em>Unit Management</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.Repository#getActiveConcepts <em>Active Concepts</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.Repository#getSuppressedValidators <em>Suppressed Validators</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.DVLMPackage#getRepository()
@@ -126,5 +127,21 @@ public interface Repository extends IUuid, IAssignedDiscipline {
 	 * @generated
 	 */
 	EList<Concept> getActiveConcepts();
+
+	/**
+	 * Returns the value of the '<em><b>Suppressed Validators</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Suppressed Validators</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Suppressed Validators</em>' attribute list.
+	 * @see de.dlr.sc.virsat.model.dvlm.DVLMPackage#getRepository_SuppressedValidators()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getSuppressedValidators();
 
 } // Repository

@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
 import de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidatorTest;
+import de.dlr.sc.virsat.build.validator.core.RepoValidatorsInstantiatorTest;
 import de.dlr.sc.virsat.model.concept.list.ArrayInstanceListIteratorTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactoryTest;
@@ -65,7 +66,8 @@ import junit.framework.JUnit4TestAdapter;
 				BeanStructuralElementInstanceFactoryTest.class,
 				BeanStructuralTreeTraverserTest.class,
 				HierarchyLevelCheckerTest.class,
-				ModelAPITest.class
+				ModelAPITest.class,
+				RepoValidatorsInstantiatorTest.class
 				})
 
 /**

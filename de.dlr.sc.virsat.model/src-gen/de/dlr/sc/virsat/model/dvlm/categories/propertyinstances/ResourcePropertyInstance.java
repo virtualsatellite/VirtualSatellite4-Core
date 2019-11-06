@@ -64,7 +64,6 @@ public interface ResourcePropertyInstance extends APropertyInstance, IOverridabl
 	 * Convenience Method to set the Uri String via an EMF URI
 	 * <!-- end-model-doc -->
 	 * @model uriDataType="de.dlr.sc.virsat.model.dvlm.types.URI"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if (uri != null) {\r\n\tsetResourceUri(uri.toPlatformString(false));\r\n} else {\r\n\tsetResourceUri(null);\r\n}'"
 	 * @generated
 	 */
 	void setUri(URI uri);
@@ -76,7 +75,6 @@ public interface ResourcePropertyInstance extends APropertyInstance, IOverridabl
 	 * Convenience Method to get the curently set Uri as EMF Platform Uri
 	 * <!-- end-model-doc -->
 	 * @model kind="operation" dataType="de.dlr.sc.virsat.model.dvlm.types.URI"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='if (resourceUri == null) {\r\n\treturn null;\r\n}\r\nreturn URI.createPlatformResourceURI(resourceUri, false);'"
 	 * @generated
 	 */
 	URI getUri();
