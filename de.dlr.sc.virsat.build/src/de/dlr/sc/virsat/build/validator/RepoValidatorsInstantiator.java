@@ -42,19 +42,14 @@ public class RepoValidatorsInstantiator {
 
 	public RepoValidatorsInstantiator(Repository repository) {
 		this.repository = repository;
+		createValidators();
 	}
 	
 	public List<IRepositoryValidator> getRepoValidators() {
-		if (repoValidators == null) {
-			createValidators();
-		}
 		return repoValidators;
 	}
 	
 	public List<IStructuralElementInstanceValidator> getSeiValidators() {
-		if (seiValidators == null) {
-			createValidators();
-		}
 		return seiValidators;
 	}
 	
@@ -68,7 +63,7 @@ public class RepoValidatorsInstantiator {
 		Set<String> activeConceptIds = repository.getActiveConcepts().stream()
 				.map(c -> c.getFullQualifiedName()).collect(Collectors.toSet());
 		
-		Set <String> suppressedValidators = new HashSet<>(repository.getSuppressedValidators());
+		Set<String> suppressedValidators = new HashSet<>(repository.getSuppressedValidators());
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 
