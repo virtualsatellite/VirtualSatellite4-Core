@@ -53,6 +53,9 @@ public class CadExporterTest extends AConceptTestCase {
 	private ElementOccurence eo;
 	private ElementRealization er;
 	private Visualisation visualisation;
+	private Visualisation edVis;
+	private Visualisation ecVis;
+	private ElementConfiguration ecSub;
 	
 	private CadExporter cadExporter;
 	
@@ -414,10 +417,6 @@ public class CadExporterTest extends AConceptTestCase {
 		ecVis = ec.getFirst(Visualisation.class);
 		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
 	}
-
-	protected Visualisation edVis;
-	protected Visualisation ecVis;
-	protected ElementConfiguration ecSub;
 
 	/**
 	 *  Case 1 - No Visualization CA for the Sub System
