@@ -5152,9 +5152,6 @@
     </changes>
   </releases>
   <releases xmi:id="_T2CQkKbaEeiSOOvGn7vraw" date="2019-11-07T10:36:06.200+0100">
-    <changes xsi:type="history:Set" xmi:id="_um-FgIOFEeiLBsC_lEpzIg" featureName="value" dataValue="// If the cardinality is 0, check if we are extending from some category and then take their cardinality&#xD;&#xA;return cardinality == 0 &amp;&amp; getExtendsCategory() != null ? getExtendsCategory().getCardinality() : cardinality;" oldDataValue="// If the cardinality is 0, check if we are extending from some category and then take their cardinality&#xD;&#xA;return cardinality &lt;= 0 &amp;&amp; getExtendsCategory() != null ? getExtendsCategory().getCardinality() : cardinality;">
-      <element href="dvlm.ecore#//categories/Category/getCardinality/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-    </changes>
     <changes xsi:type="history:Create" xmi:id="_K05uwLkwEem4JbZCXDDwjQ" referenceName="eStructuralFeatures">
       <target href="dvlm.ecore#//concepts/Concept"/>
       <element href="dvlm.ecore#//concepts/Concept/beta"/>
