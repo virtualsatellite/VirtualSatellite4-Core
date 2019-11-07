@@ -5175,5 +5175,19 @@
         <details xmi:id="_VWVVAsi5Eem2Qrk7U2NnxA" key="documentation" value="The FullQualifiedName (FQN) is the combination of the current name plus the names of the containers. In the Categories and properties we usually have FQN which follow the pattern of Concept.Category.Property .&#xD;&#xA;WARNING!!! This attribute cannot be implemented through the model by an EOperation. An EOperation cannot be set to be the ID of the class. In contrast this derived feature builds the id of this class and is important to  uniquely identify concepts and its contained elements for registration within a repository."/>
       </element>
     </changes>
+    <changes xsi:type="history:Create" xmi:id="_Cen4IPZsEembX--VUdS06w" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//Repository"/>
+      <element href="dvlm.ecore#//Repository/suppressedValidators"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_FXhX4PZsEembX--VUdS06w" featureName="upperBound" dataValue="-1" oldDataValue="1">
+      <element href="dvlm.ecore#//Repository/suppressedValidators"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_ICd7MPZsEembX--VUdS06w" featureName="eType">
+      <element href="dvlm.ecore#//Repository/suppressedValidators"/>
+      <referenceValue href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_cxvmoPZsEembX--VUdS06w" featureName="name" dataValue="suppressedValidators">
+      <element href="dvlm.ecore#//Repository/suppressedValidators"/>
+    </changes>
   </releases>
 </history:History>

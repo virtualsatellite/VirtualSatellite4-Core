@@ -70,7 +70,6 @@ public interface ATypeInstance extends IUuid, IComment, IInstance, IInheritanceL
 	 * Call this method to get a CategoryAssignmentContainer handed back for any TypeInstance. This method returns null in case it could not be found.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper.getContainerFor(this);'"
 	 * @generated
 	 */
 	ICategoryAssignmentContainer getCategoryAssignmentContainer();

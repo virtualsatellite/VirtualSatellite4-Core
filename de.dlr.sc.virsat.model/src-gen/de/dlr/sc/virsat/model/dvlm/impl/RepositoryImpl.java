@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -65,6 +66,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.impl.RepositoryImpl#getRoleManagement <em>Role Management</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.impl.RepositoryImpl#getUnitManagement <em>Unit Management</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.impl.RepositoryImpl#getActiveConcepts <em>Active Concepts</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.impl.RepositoryImpl#getSuppressedValidators <em>Suppressed Validators</em>}</li>
  * </ul>
  *
  * @generated
@@ -139,6 +141,16 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	 * @ordered
 	 */
 	protected EList<Concept> activeConcepts;
+
+	/**
+	 * The cached value of the '{@link #getSuppressedValidators() <em>Suppressed Validators</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSuppressedValidators()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> suppressedValidators;
 
 	/**
 	 * *********************************
@@ -347,6 +359,20 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<String> getSuppressedValidators() {
+		if (suppressedValidators == null) {
+			suppressedValidators = new EDataTypeUniqueEList<String>(String.class, this, DVLMPackage.REPOSITORY__SUPPRESSED_VALIDATORS);
+		 
+		
+		}
+		return suppressedValidators;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<IAssignedDiscipline> getContainedIAssignedDisciplines() {
 		EList<IAssignedDiscipline> containedIAssignedDiscipline = new org.eclipse.emf.common.util.BasicEList<>();
 		org.eclipse.emf.common.util.TreeIterator<Object> iter = org.eclipse.emf.ecore.util.EcoreUtil.getAllContents(this, true);
@@ -397,6 +423,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return basicGetUnitManagement();
 			case DVLMPackage.REPOSITORY__ACTIVE_CONCEPTS:
 				return getActiveConcepts();
+			case DVLMPackage.REPOSITORY__SUPPRESSED_VALIDATORS:
+				return getSuppressedValidators();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -430,6 +458,10 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				getActiveConcepts().clear();
 				getActiveConcepts().addAll((Collection<? extends Concept>)newValue);
 				return;
+			case DVLMPackage.REPOSITORY__SUPPRESSED_VALIDATORS:
+				getSuppressedValidators().clear();
+				getSuppressedValidators().addAll((Collection<? extends String>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -460,6 +492,9 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 			case DVLMPackage.REPOSITORY__ACTIVE_CONCEPTS:
 				getActiveConcepts().clear();
 				return;
+			case DVLMPackage.REPOSITORY__SUPPRESSED_VALIDATORS:
+				getSuppressedValidators().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -484,6 +519,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 				return unitManagement != null;
 			case DVLMPackage.REPOSITORY__ACTIVE_CONCEPTS:
 				return activeConcepts != null && !activeConcepts.isEmpty();
+			case DVLMPackage.REPOSITORY__SUPPRESSED_VALIDATORS:
+				return suppressedValidators != null && !suppressedValidators.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -562,6 +599,8 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (uuid: ");
 		result.append(uuid);
+		result.append(", suppressedValidators: ");
+		result.append(suppressedValidators);
 		result.append(')');
 		return result.toString();
 	}

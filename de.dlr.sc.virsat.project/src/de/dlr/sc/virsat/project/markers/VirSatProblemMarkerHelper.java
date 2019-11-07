@@ -365,9 +365,16 @@ public class VirSatProblemMarkerHelper implements IMarkerHelper {
 			markers = getMarkers(eObject, markerId);
 			TreeIterator<EObject> contentsIterator = eObject.eAllContents();
 
-			while (contentsIterator.hasNext()) {
-				EObject child = contentsIterator.next();
-				markers.addAll(getMarkers(child, markerId));
+			try {
+				while (contentsIterator.hasNext()) {
+					EObject child = contentsIterator.next();
+					markers.addAll(getMarkers(child, markerId));
+				}
+			} catch (Exception e) {
+				// We can get an exception if the contents are changed by a new command while we are traversing it
+				// It is probably safe to just ignore it, since all the refreshing will be called again after the new command
+				Activator.getDefault().getLog().log(
+						new Status(Status.WARNING, Activator.getPluginId(), "Error getting problem markers", e));
 			}
 		}
 		

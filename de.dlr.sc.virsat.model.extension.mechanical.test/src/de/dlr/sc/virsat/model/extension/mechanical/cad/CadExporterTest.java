@@ -15,7 +15,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -54,6 +53,9 @@ public class CadExporterTest extends AConceptTestCase {
 	private ElementOccurence eo;
 	private ElementRealization er;
 	private Visualisation visualisation;
+	private Visualisation edVis;
+	private Visualisation ecVis;
+	private ElementConfiguration ecSub;
 	
 	private CadExporter cadExporter;
 	
@@ -122,8 +124,8 @@ public class CadExporterTest extends AConceptTestCase {
 
 		JsonArray children = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
 		assertTrue("There should be no children", children.isEmpty());
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_NAME));
 		
 		assertEquals("There should be one part created", 1, jsonParts.size());
 		JsonObject ctPart = jsonParts.getMap(0);
@@ -137,7 +139,6 @@ public class CadExporterTest extends AConceptTestCase {
 		
 		final String GEOMETRY_FILES_EXPORT_DESTINATION = "X:\\whatever";
 		final String GEOMETRY_FILE_NAME = "test.stl";
-		final String EXPECTED_GEOMETRY_FILE_PATH = GEOMETRY_FILES_EXPORT_DESTINATION + File.separator + GEOMETRY_FILE_NAME;
 		final URI GEOMETRY_FILE_URI = URI.createPlatformResourceURI(GEOMETRY_FILE_NAME, false);
 		
 		visualisation.setShape(Visualisation.SHAPE_GEOMETRY_NAME);
@@ -156,9 +157,8 @@ public class CadExporterTest extends AConceptTestCase {
 		JsonObject subProduct = children.getMap(0);
 		
 		assertJsonProductEqualsVisualisation(subProduct, visualisation);
-		assertEquals("The Geometry path should be copied", EXPECTED_GEOMETRY_FILE_PATH, subProduct.getString(CadProperties.PRODUCT_STL_PATH));
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), subProduct.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), subProduct.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), subProduct.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), subProduct.getString(CadProperties.PRODUCT_PART_NAME));
 		
 		JsonArray jsonParts = jsonRoot.getCollection(CadProperties.PARTS);		
 		assertEquals("There should be 1 part", 1, jsonParts.size());
@@ -212,8 +212,8 @@ public class CadExporterTest extends AConceptTestCase {
 		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CadProperties.PRODUCTS);
 		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_NAME));
 
 		JsonArray ctChildren = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
 		JsonObject ecProduct = ctChildren.getMap(0);
@@ -228,8 +228,8 @@ public class CadExporterTest extends AConceptTestCase {
 		assertJsonPartEqualsVisualisation(ctPart, visualisation);
 		assertJsonPartEqualsVisualisation(ecPart, visInherited);
 		assertJsonProductEqualsVisualisation(ecProduct, visInherited);
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CadProperties.PRODUCT_PART_NAME));
 	}
 
 	@Test
@@ -248,8 +248,8 @@ public class CadExporterTest extends AConceptTestCase {
 		
 		JsonObject jsonProductRoot = jsonRoot.getMap(CadProperties.PRODUCTS);
 		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
-		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ct.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ct.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_NAME));
 		
 		JsonArray ctChildren = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
 		JsonObject ecProduct = ctChildren.getMap(0);
@@ -264,8 +264,8 @@ public class CadExporterTest extends AConceptTestCase {
 		assertJsonPartEqualsVisualisation(ctPart, visualisation);
 		assertJsonPartEqualsVisualisation(ecPart, ecVis);
 		assertJsonProductEqualsVisualisation(ecProduct, ecVis);
-		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Product has a correct part UUID", ec.getUuid(), ecProduct.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ec.getName(), ecProduct.getString(CadProperties.PRODUCT_PART_NAME));
 	}
 
 	@Test
@@ -292,8 +292,8 @@ public class CadExporterTest extends AConceptTestCase {
 
 		JsonArray children = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
 		assertTrue("There should be no children", children.isEmpty());
-		assertEquals("Json Part link is set correctly", ed.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_ED_UUID));
-		assertEquals("Json Part link is set correctly", ed.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_REFERENCE_NAME));
+		assertEquals("Json Part link is set correctly", ed.getUuid(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Part link is set correctly", ed.getName(), jsonProductRoot.getString(CadProperties.PRODUCT_PART_NAME));
 		
 		assertEquals("1 part", 1, jsonParts.size());
 		JsonObject part = jsonParts.getMap(0);
@@ -333,13 +333,6 @@ public class CadExporterTest extends AConceptTestCase {
 		assertEquals("The X rotation should be copied", visualisation.getRotationX(), jsonProduct.getDouble(CadProperties.PRODUCT_ROT_X), EPSILON);
 		assertEquals("The Y rotation should be copied", visualisation.getRotationY(), jsonProduct.getDouble(CadProperties.PRODUCT_ROT_Y), EPSILON);
 		assertEquals("The Z rotation should be copied", visualisation.getRotationZ(), jsonProduct.getDouble(CadProperties.PRODUCT_ROT_Z), EPSILON);
-
-		assertEquals("The Shape should be copied", visualisation.getShape(), jsonProduct.getString(CadProperties.PRODUCT_SHAPE));
-
-		assertEquals("Shape matches", visualisation.getShape(), jsonProduct.getString(CadProperties.PART_SHAPE));
-		if (!visualisation.getShape().equals(Visualisation.SHAPE_GEOMETRY_NAME)) {
-			assertFalse("No geometry path if not geometry shape", jsonProduct.containsKey(CadProperties.PART_STL_PATH.getKey()));
-		}
 	}
 	
 	/**
@@ -390,5 +383,166 @@ public class CadExporterTest extends AConceptTestCase {
 		
 		visualisation.setRadius(RADIUS);
 		visualisation.setColor(COLOR);
+	}
+	
+	/**
+	 * This method prepares the data for checking the export of a whole configuration tree.
+	 * the Configuration is called Satellite, has a SubSystem that contains
+	 * The Equipment_1. This Equipment is typed by an ElementDefinition.
+	 * This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+	 * The Satellite and the SubSystem have a their individual categories. which will be changed
+	 * adjusted and checked in this test.
+	 */
+	private void prepareDataForConfigurationTreeTests() {
+		// Setup the root object which is now called Satellite and has a Visualization CA with NONE Shape
+		visualisation.setShape(Visualisation.SHAPE_NONE_NAME);
+		ct.add(visualisation);
+		ct.setName("Satellite");
+
+		// Create the SubSytsem which does not yet have a CA
+		ecSub = new ElementConfiguration(conceptPS);
+		ecSub.setName("SubSystem");
+		ct.add(ecSub);
+
+		// Now add the Visualization CA to the Equipment and run the inheritance copier
+		// then make sure it is also added to the EC of the Equipment
+		edVis = new Visualisation(conceptVis);
+		fillVisualisationValues(edVis);
+		ec.addSuperSei(ed);
+		ecSub.add(ec);
+		ec.setName("Equipment_1");
+		ed.setName("Equipment");
+		ed.add(edVis);
+		new InheritanceCopier().updateStep(ec.getStructuralElementInstance());
+		ecVis = ec.getFirst(Visualisation.class);
+		assertNotNull("Found a Visualization CA at the ec representing the Equipment", ecVis);
+	}
+
+	/**
+	 *  Case 1 - No Visualization CA for the Sub System
+	 *	The expected result is, that the parts should only contain the part from the element definition
+	 *	The product tree which is exported should have the root node from Satellite and a direct child
+	 *	to the equipment which references the part.
+	 */
+	@Test
+	public void testConfigurationTreeExportWithSubAssemblyNoCA() {
+		prepareDataForConfigurationTreeTests();
+
+		// Now run the transformation on the configuration tree and extract the parts and products
+		JsonObject jsonRoot = cadExporter.transform(ct);
+		JsonArray jsonParts = jsonRoot.getCollection(CadProperties.PARTS);
+		JsonObject jsonProductRoot = jsonRoot.getMap(CadProperties.PRODUCTS);
+
+		// Check that the root of the product tree is correctly set. Since the Shape is set to None
+		// It does not have a corresponding part and thus there should be no references to a part
+		assertNull("Json Product Root has no Part UUID, since there is NONE Shape", jsonProductRoot.getString(CadProperties.PRODUCT_PART_UUID));
+		assertNull("Json Product Root has no Part Name, since there is NONE Shape", jsonProductRoot.getString(CadProperties.PRODUCT_PART_NAME));
+
+		// First make sure the parts are correct
+		assertEquals("There is only one part from the ED", 1, jsonParts.size());
+		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
+
+		assertNotNull("ED is in parts", edPart);
+		assertJsonPartEqualsVisualisation(edPart, edVis);
+
+		// than check the products are correct
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+		JsonArray jsonProductChildren = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductEquipment = jsonProductChildren.getMap(0);
+
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
+		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CadProperties.PRODUCT_PART_NAME));
+	}
+
+	/**
+	 * Test Case 2 - Visualization CA for subSystem with NONE shape
+	 * This test case checks the export of a whole configuration tree.
+	 * the Configuration is called Satellite, has a SubSystem that contains
+	 * The Equipment_1. This Equipment is typed by an ElementDefinition.
+	 * This ED contains the Visualization CA which gets inherited into the Configuration Tree.
+	 * The Satellite and the SubSystem have a their individual categories. which will be changed
+	 * adjusted and checked in this test.
+	 */
+	@Test
+	public void testConfigurationTreeExportWithSubAssemblyWithCANoShape() {
+		prepareDataForConfigurationTreeTests();
+
+		Visualisation ecSubVis = new Visualisation(conceptVis);
+		ecSub.add(ecSubVis);
+		ecSubVis.setShape(Visualisation.SHAPE_NONE_NAME);
+
+		// Now run the transformation on the configuration tree and extract the parts and products
+		JsonObject jsonRoot = cadExporter.transform(ct);
+		JsonArray jsonParts = jsonRoot.getCollection(CadProperties.PARTS);
+		JsonObject jsonProductRoot = jsonRoot.getMap(CadProperties.PRODUCTS);
+
+		// First make sure the parts are correct
+		assertEquals("There is only one part from the ED", 1, jsonParts.size());
+		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
+
+		assertNotNull("ED is in parts", edPart);
+		assertJsonPartEqualsVisualisation(edPart, edVis);
+
+		// than check the products are correct
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+		JsonArray jsonProductChildren = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductSubSystem = jsonProductChildren.getMap(0);
+		JsonArray jsonProductSubSystemChildren = jsonProductSubSystem.getCollection(CadProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductEquipment = jsonProductSubSystemChildren.getMap(0);
+
+		assertJsonProductEqualsVisualisation(jsonProductSubSystem, ecSubVis);
+		assertNull("Json Product SubSystem has no Part UUID, since there is NONE Shape", jsonProductSubSystem.getString(CadProperties.PRODUCT_PART_UUID));
+		assertNull("Json Product SubSystem has no Part Name, since there is NONE Shape", jsonProductSubSystem.getString(CadProperties.PRODUCT_PART_NAME));
+
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
+		assertEquals("Json Product has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product has a correct part name", ed.getName(), jsonProductEquipment.getString(CadProperties.PRODUCT_PART_NAME));
+	}
+
+	/**
+     * Case 3 - Switching the Shape of the SubSystem to Sphere
+	 * This will create a second part. The product subsystem should now also reference this new part
+	 */
+	@Test
+	public void testConfigurationTreeExportWithSubAssemblyWithCaAndShape() {
+		prepareDataForConfigurationTreeTests();
+
+		Visualisation ecSubVis = new Visualisation(conceptVis);
+		ecSub.add(ecSubVis);
+		ecSubVis.setShape(Visualisation.SHAPE_SPHERE_NAME);
+
+		// Now run the transformation on the configuration tree and extract the parts and products
+		JsonObject jsonRoot = cadExporter.transform(ct);
+		JsonArray jsonParts = jsonRoot.getCollection(CadProperties.PARTS);
+		JsonObject jsonProductRoot = jsonRoot.getMap(CadProperties.PRODUCTS);
+
+		// First make sure the parts are correct
+		assertEquals("There are now two Parts, One from the ED and one from the EC sub System", 2, jsonParts.size());
+		JsonObject edPart = findByUuid(jsonParts, ed.getUuid());
+		JsonObject ecPart = findByUuid(jsonParts, ecSub.getUuid());
+
+		assertNotNull("ED is in parts", edPart);
+		assertNotNull("EC is in parts", ecPart);
+		assertJsonPartEqualsVisualisation(edPart, edVis);
+		assertJsonPartEqualsVisualisation(ecPart, ecSubVis);
+
+		// than check the products are correct
+		assertJsonProductEqualsVisualisation(jsonProductRoot, visualisation);
+		JsonArray jsonProductChildren = jsonProductRoot.getCollection(CadProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductSubSystem = jsonProductChildren.getMap(0);
+		JsonArray jsonProductSubSystemChildren = jsonProductSubSystem.getCollection(CadProperties.PRODUCT_CHILDREN);
+		JsonObject jsonProductEquipment = jsonProductSubSystemChildren.getMap(0);
+
+		assertJsonProductEqualsVisualisation(jsonProductSubSystem, ecSubVis);
+		assertEquals("Json Product SubSystem has a correct part UUID", ecSub.getUuid(), jsonProductSubSystem.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product SubSystem has a correct part name", ecSub.getName(), jsonProductSubSystem.getString(CadProperties.PRODUCT_PART_NAME));
+
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, edVis);
+		assertJsonProductEqualsVisualisation(jsonProductEquipment, ecVis);
+		assertEquals("Json Product Equipment has a correct part UUID", ed.getUuid(), jsonProductEquipment.getString(CadProperties.PRODUCT_PART_UUID));
+		assertEquals("Json Product Equipment has a correct part name", ed.getName(), jsonProductEquipment.getString(CadProperties.PRODUCT_PART_NAME));
 	}
 }

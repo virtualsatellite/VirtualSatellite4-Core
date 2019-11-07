@@ -105,6 +105,7 @@ public class RepositoryItemProvider
 			addRootEntitiesPropertyDescriptor(object);
 			addRoleManagementPropertyDescriptor(object);
 			addUnitManagementPropertyDescriptor(object);
+			addSuppressedValidatorsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -220,6 +221,28 @@ public class RepositoryItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Suppressed Validators feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSuppressedValidatorsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Repository_suppressedValidators_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Repository_suppressedValidators_feature", "_UI_Repository_type"),
+				 DVLMPackage.Literals.REPOSITORY__SUPPRESSED_VALIDATORS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -294,6 +317,7 @@ public class RepositoryItemProvider
 
 		switch (notification.getFeatureID(Repository.class)) {
 			case DVLMPackage.REPOSITORY__UUID:
+			case DVLMPackage.REPOSITORY__SUPPRESSED_VALIDATORS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case DVLMPackage.REPOSITORY__ROOT_ENTITIES:
