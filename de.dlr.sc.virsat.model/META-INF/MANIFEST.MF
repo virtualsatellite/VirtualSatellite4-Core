@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Core Data Model
+Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model;singleton:=true
 Bundle-Version: 4.10.0.qualifier
 Bundle-ClassPath: .
@@ -9,7 +9,7 @@ Require-Bundle: de.dlr.sc.virsat.external.lib.commons.cli,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Eclipse-ExtensibleAPI: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

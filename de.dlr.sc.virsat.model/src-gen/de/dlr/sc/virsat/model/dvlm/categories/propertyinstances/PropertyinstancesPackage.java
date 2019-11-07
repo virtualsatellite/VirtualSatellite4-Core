@@ -48,7 +48,7 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppi";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi";
 
 	/**
 	 * The package namespace name.
