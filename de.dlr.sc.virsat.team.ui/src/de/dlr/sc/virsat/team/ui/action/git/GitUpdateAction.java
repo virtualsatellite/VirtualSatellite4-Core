@@ -59,7 +59,7 @@ public class GitUpdateAction extends AbstractHandler {
 				try {
 					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 				} catch (CoreException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform a refresh after a git pull! " + e.getMessage()));
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform a refresh after a git pull! " + e.getMessage(), e));
 				}
 			}
 		}; 
