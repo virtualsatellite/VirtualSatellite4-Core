@@ -15,6 +15,11 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.egit.ui.internal.pull.PullOperationUI;
 import org.eclipse.jface.viewers.ISelection;
@@ -22,6 +27,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 
 /**
@@ -44,7 +50,19 @@ public class GitUpdateAction extends AbstractHandler {
 		
 		Repository gitRepository = RepositoryMapping.getMapping(selectedProject).getRepository();
     	
-		PullOperationUI pull = new PullOperationUI(Collections.singleton(gitRepository)); 
+		PullOperationUI pull = new PullOperationUI(Collections.singleton(gitRepository)) {
+			@Override
+			public void done(IJobChangeEvent event) {
+				super.done(event);
+				
+				// Chain a refresh of the workspace to reload possible stale objects
+				try {
+					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+				} catch (CoreException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform a refresh after a git pull! " + e.getMessage()));
+				}
+			}
+		}; 
 		pull.start();
 		
 		return null;
