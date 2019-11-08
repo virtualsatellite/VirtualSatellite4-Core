@@ -123,22 +123,28 @@ public class GitCommitAction extends AbstractHandler {
 	 */
 	private void createEmptyObjectsForEmptyFolders(Set<String> untrackedFolders) throws CoreException {
 		for (String untrackedFolder : untrackedFolders) {
-			IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(new Path(untrackedFolder));
-			if (folder.exists()) {
-				folder.accept(new IResourceVisitor() {
-					@Override
-					public boolean visit(IResource resource) throws CoreException {
-						if (resource instanceof IFolder) {
-							IFolder subFolder = (IFolder) resource;
-							boolean isEmptyFolder = subFolder.members().length == 0;
-							if (isEmptyFolder) {
-								IFile emptyFile = subFolder.getFile(EMPTY_FILE_NAME);
-								emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.NONE, null);
+			Path path = new Path(untrackedFolder);
+			// Workaround for the issue https://github.com/virtualsatellite/VirtualSatellite4-Core/issues/347
+			// A path with segment length 1 is considered to be a Project by eclipse.
+			// But the operation getFolder() is only applicable for Folders.
+			if (path.segmentCount() != 1) {
+				IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+				if (folder.exists()) {
+					folder.accept(new IResourceVisitor() {
+						@Override
+						public boolean visit(IResource resource) throws CoreException {
+							if (resource instanceof IFolder) {
+								IFolder subFolder = (IFolder) resource;
+								boolean isEmptyFolder = subFolder.members().length == 0;
+								if (isEmptyFolder) {
+									IFile emptyFile = subFolder.getFile(EMPTY_FILE_NAME);
+									emptyFile.create(new ByteArrayInputStream(new byte[0]), IResource.NONE, null);
+								}
 							}
+							return true;
 						}
-						return true;
-					}
-				});
+					});
+				}
 			}
 		}
 	}
