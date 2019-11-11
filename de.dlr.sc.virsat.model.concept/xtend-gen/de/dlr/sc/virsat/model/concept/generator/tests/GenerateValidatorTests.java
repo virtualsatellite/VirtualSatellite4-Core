@@ -12,8 +12,11 @@ package de.dlr.sc.virsat.model.concept.generator.tests;
 import de.dlr.sc.virsat.model.concept.generator.AGeneratorGapGenerator;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ImportManager;
+import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -93,7 +96,7 @@ public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("// *****************************************************************");
     _builder.newLine();
-    _builder.append("// * Import Statements hallo das ist ein Test");
+    _builder.append("// * Import Statements");
     _builder.newLine();
     _builder.append("// *****************************************************************");
     _builder.newLine();
@@ -121,12 +124,102 @@ public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
    * Entry method to write the class body
    */
   @Override
-  public CharSequence declareAClass(final Concept concept, final EObject eObject, final ImportManager importManager) {
-    return "";
+  public CharSequence declareAClass(final Concept concept, final EObject conceptPart, final ImportManager importManager) {
+    StringConcatenation _builder = new StringConcatenation();
+    importManager.register(StructuralElementInstance.class);
+    _builder.newLineIfNotEmpty();
+    importManager.register(StructuralFactory.class);
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("// *****************************************************************");
+    _builder.newLine();
+    _builder.append("// * Class Declaration");
+    _builder.newLine();
+    _builder.append("// *****************************************************************");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("import org.junit.Before;");
+    _builder.newLine();
+    _builder.newLine();
+    CharSequence _generateAClassHeader = ConceptGeneratorUtil.generateAClassHeader(concept);
+    _builder.append(_generateAClassHeader);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("public abstract class ");
+    String _abstractClassName = GenerateValidatorTests.getAbstractClassName(concept);
+    _builder.append(_abstractClassName, "\t");
+    _builder.append("Test {");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("StructuralElementInstance testSei;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@Before");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void setup() {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
   }
   
   @Override
   protected CharSequence declareClass(final Concept concept, final EObject type, final ImportManager manager) {
-    return "";
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("// *****************************************************************");
+    _builder.newLine();
+    _builder.append("// * Class Declaration");
+    _builder.newLine();
+    _builder.append("// *****************************************************************");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("import org.junit.Test;");
+    _builder.newLine();
+    _builder.append("import static org.junit.Assert.assertTrue;");
+    _builder.newLine();
+    _builder.newLine();
+    CharSequence _generateClassHeader = ConceptGeneratorUtil.generateClassHeader(concept);
+    _builder.append(_generateClassHeader);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("public class ");
+    String _concreteClassName = GenerateValidatorTests.getConcreteClassName(concept);
+    _builder.append(_concreteClassName, "\t");
+    _builder.append("Test extends ");
+    String _abstractClassName = GenerateValidatorTests.getAbstractClassName(concept);
+    _builder.append(_abstractClassName, "\t");
+    _builder.append("Test {");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@Test\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void test");
+    String _concreteClassName_1 = GenerateValidatorTests.getConcreteClassName(concept);
+    _builder.append(_concreteClassName_1, "\t");
+    _builder.append("() { ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("assertTrue(validator.validate(testSei));");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
   }
 }

@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory
+
 
 
 class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
@@ -78,7 +80,7 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	 */
 	override declareImports(ImportManager importManager, Concept concept, EObject eObject, String conceptPackage) '''
 	// *****************************************************************
-	// * Import Statements hallo das ist ein Test
+	// * Import Statements
 	// *****************************************************************
 
 	
@@ -96,13 +98,44 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	/**
 	 *	Entry method to write the class body 
 	 */
-	override declareAClass(Concept concept, EObject eObject, ImportManager importManager) {
-		""
-	}
+	override declareAClass(Concept concept, EObject conceptPart, ImportManager importManager) '''
+	«importManager.register(StructuralElementInstance)»
+	«importManager.register(StructuralFactory)»
 	
-	override protected declareClass(Concept concept, EObject type, ImportManager manager) {
-		""
+	// *****************************************************************
+	// * Class Declaration
+	// *****************************************************************
+	
+	import org.junit.Before;
+	
+	«ConceptGeneratorUtil.generateAClassHeader(concept)»
+		public abstract class «concept.abstractClassName»Test {
+	
+		StructuralElementInstance testSei;
+	
+		@Before
+		public void setup() {
+			testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		}
 	}
-
-
+	'''
+	
+	override protected declareClass(Concept concept, EObject type, ImportManager manager)  '''
+	// *****************************************************************
+	// * Class Declaration
+	// *****************************************************************
+	
+	import org.junit.Test;
+	import static org.junit.Assert.assertTrue;
+	
+	«ConceptGeneratorUtil.generateClassHeader(concept)»
+		public class «concept.concreteClassName»Test extends «concept.abstractClassName»Test {
+	
+		@Test	
+		public void test«concept.concreteClassName»() { 
+		StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
+		assertTrue(validator.validate(testSei));
+		}
+	}
+	'''
 }
