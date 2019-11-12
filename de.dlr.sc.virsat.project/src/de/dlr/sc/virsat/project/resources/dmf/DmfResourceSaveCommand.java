@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RecordingCommand;
 
 import com.google.common.base.Function;
@@ -105,6 +106,7 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	private IMatchEngine.Factory.Registry matchRegistry;
 	private IDiffEngine diffEngine;
 	private BatchMerger merger;
+	private VirSatTransactionalEditingDomain virSatEd;
 	
 	/**
 	 * Standard constructor
@@ -119,6 +121,7 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 		this.dObjects = dObjects;
 		this.repository = virSatEd.getResourceSet().getRepository();
 		this.acHelper = new ActiveConceptHelper(repository);
+		this.virSatEd = virSatEd;
 		
 		setupMatchRegistry();
 		setupMergeRegistry();
@@ -247,7 +250,7 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	 * @return a category assignment if suitable one exists and null if not
 	 */
 	private CategoryAssignment findCategoryAssignmentForDObject(DObject dObject) {
-		return (CategoryAssignment) sei.eResource().getEObject(dObject.getUuid().toString());
+		return (CategoryAssignment) safeGetSei().eResource().getEObject(dObject.getUuid().toString());
 	}
 	
 	/**
@@ -527,6 +530,17 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 				}.doSwitch(pi);
 			}
 		});
+	}
+	
+	/**
+	 * Get the current structural element. This method ensures that a potential proxy is resolved.
+	 * @return the SEI
+	 */
+	public StructuralElementInstance safeGetSei() {
+		if (sei.eIsProxy()) {
+			sei = (StructuralElementInstance) EcoreUtil.resolve(sei, virSatEd.getResourceSet());
+		}
+		return sei;
 	}
 	
 }
