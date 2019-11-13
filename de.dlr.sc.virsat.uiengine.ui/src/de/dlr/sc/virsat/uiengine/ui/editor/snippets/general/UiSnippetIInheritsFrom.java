@@ -112,7 +112,7 @@ public class UiSnippetIInheritsFrom extends AUiSnippetEStructuralFeatureTable im
 
 		// A Hack to support an EMFEdit compatible CellLabelProvider that supports
 		// EOperation call to FQN
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		IObservableSet<EObject> knownElements = ((ObservableListContentProvider) getTableContentProvider())
 				.getKnownElements();
 

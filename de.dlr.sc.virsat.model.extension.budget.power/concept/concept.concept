@@ -1,0 +1,58 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+Concept de.dlr.sc.virsat.model.extension.budget.power displayname "Power Budget" description "Power Budget Concept" beta {
+	Import de.dlr.sc.virsat.model.extension.statemachines.*;
+
+	Category APowerParameters description "Abstract definition of a collection of power parameters" {
+		IsAbstract;
+		
+		FloatProperty avgPower description "The average power over all states" quantityKind "Power" unit "Watt";
+		FloatProperty minPower description "The minimum power over all states" quantityKind "Power" unit "Watt";
+		FloatProperty maxPower description "The maximum power over all states" quantityKind "Power" unit "Watt";
+		FloatProperty avgPowerWithMargin description "The equipment mass plus the safety margin" default 0.0 quantityKind "Power" unit "Watt";
+		FloatProperty avgPowerMargin description "The actual amount of margin mass" default 0.0 quantityKind "Power" unit "Watt";
+		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
+	}
+	
+	Category PowerEquipment extends APowerParameters description "Definition of the equipment power" {
+		Applicable For All;
+		Cardinality 1;
+		
+		Type powerValues[] of Category PowerState;
+		
+		Ref: APowerParameters.avgPower = summary{PowerState.avgPower};
+		Ref: APowerParameters.minPower = min{PowerState.power};
+		Ref: APowerParameters.maxPower = max{PowerState.power};
+		Ref: APowerParameters.avgPowerWithMargin = APowerParameters.avgPower * (1 + APowerParameters.margin);
+		Ref: APowerParameters.avgPowerMargin = APowerParameters.avgPowerWithMargin - APowerParameters.avgPower;
+	}
+	
+	Category PowerSummary extends APowerParameters description "Summary of all nested equipment powers" {
+		Applicable For All;
+		Cardinality 1;
+		
+		Ref: APowerParameters.avgPower = summary{APowerParameters.avgPower};
+		Ref: APowerParameters.minPower = summary{APowerParameters.minPower};
+		Ref: APowerParameters.maxPower = summary{APowerParameters.maxPower};
+		Ref: APowerParameters.avgPowerWithMargin = summary{APowerParameters.avgPowerWithMargin};
+		Ref: APowerParameters.avgPowerMargin = APowerParameters.avgPowerWithMargin - APowerParameters.avgPower;
+		Ref: APowerParameters.margin = APowerParameters.avgPowerMargin / APowerParameters.avgPower;
+	}
+	
+	Category PowerState description "Power data for a single equipment mode" {
+		Reference mode of Type State description "The mode of the equipment";
+		FloatProperty power description "The power consumption in this mode" default 0 quantityKind "Power" unit "Watt";
+		FloatProperty avgPower description "The average power consumption of the mode" quantityKind "Power" unit "Watt";
+		FloatProperty dutyCycle description "The percentage of time spent in the mode " default 0 quantityKind "Dimensionless" unit "Percent";
+		
+		Ref: avgPower = power * dutyCycle;
+	}
+}
+

@@ -28,9 +28,17 @@ Virtual Satellite does not execute on a Java 32 bit runtime environment.
 ====
 
 [WARNING] 
-.Linux compilation issues
+.Linux Dependencies
 ==== 
-Some dependencies to C and C++ libraries are build on a Suse Linux Enterprise Distribution (SLED). A re-compilation when using other distributions is probably needed. This concerns e.g. the visualization functionality based on the Visualization Toolkit (VTK).
+Virtual Satellite is depending on Visualization Tool Kit (VTK) and ZeroMQ (ZMQ). Where on Windows both are shipped with the external library plugins, on Linux it is not that easy. Make sure that you have the following dependencies installed to your system:
+
+* VTK 8.1 
+* ZMQ 4.1.4
+* JZMQ 3.1.0
+
+Current Versions can be checked in the win32 plugins. Other versions may work as well, but have not been tested.
+
+Virtual Satellite will look up the Environment Variables `VS_JAR_VTK` and `VS_JAR_ZMQ`. The variables should directly reference the library to be used e.g. : `VS_JAR_VTK=/usr/share/java/vtk6.jar`.
 ====
 
 === Installation
@@ -156,7 +164,7 @@ NOTE: _Concepts_ can require other concepts. If you select a concept, all its re
 
 NOTE: The ribbon tab of the _Editor_ changes from "PTD: ..." to "+*PTD: ...". The extra *+ shows that there are unsaved changes.
 
-TIP: Save your work frequently since most changes are kept in memory and not on your hard-drive. You can easily save your work by pressing kbd:[CTRL+S] from within the current _Editor_ or by menu:File[Save]. You should use kbd:[CTRL+SHIFT+S] or menuFile:[Save All] to save all _Editors_ and chnages.
+TIP: Save your work frequently since most changes are kept in memory and not on your hard-drive. You can easily save your work by pressing kbd:[CTRL+S] from within the current _Editor_ or by menu:File[Save]. You should use kbd:[CTRL+SHIFT+S] or menuFile:[Save All] to save all _Editors_ and changes.
 |image:chapterFirstSteps/ProductTreeDomainEditor.png[Product Tree Domain Editor]
 
 |{counter:step}.
@@ -373,11 +381,11 @@ Then select the _Discipline_ in the _User Name_ column and change it to `OtherUs
 |We will now assign the discipline to the _Repository_. 
 To do this, open the _Repository_ from the _Navigator_.
 Then select the combo box listing *Discipline: System* and choose the entry *Discipline: RepositoryManagener*.
-Finally press the btn:[Assign Discipline] button.
+Finally press the btn:[Apply Discipline] button.
 
-TIP: You can assign a _Discipline_ to an element and all sub elements by pressing the btn:[Assign Discipline Recursive] button.
+TIP: You can assign a _Discipline_ to an element and all sub elements by pressing the btn:[Apply Discipline Recursive] button.
 
-|image:chapterModeling/AssignDiscipline.png[Assigning a Discipline]
+|image:chapterModeling/ApplyDiscipline.png[Applying a Discipline]
 
 |{counter:step}.
 |All editable fields will be no longer be editable and shown as greyed out.
@@ -485,8 +493,9 @@ Then press btn:[Next].
 |image:chapterModeling/UnitWizardSelection.png[Selecting the quantity kind wizard]
 
 |{counter:step}.
-|Set the name to ´MyUnit´ and fill out the other fields by some data.
-Then press btn:[Finish]. 
+|Set the name to `MyUnit` and fill out the other fields by some data.
+Set the *Quantity Kind* to _MyQuantityKind - Q_
+Then press btn:[Finish].
 You can now find your created _Unit_ in the *Unit Management* section.
 |image:chapterModeling/SimpleUnitWizard.png[Simple unit wizard]
 
@@ -631,7 +640,7 @@ There are several aspects where these product structures should support:
 The product structures concept delivers capabilities to structure the system design. 
 Besides classical decomposition into one product tree, the concept delivers four different type of trees.
 Each of these trees reflect a different view to the system in the context of its development.
-Information which is entered into one of the trees in an early development stage, can be reused in anotehr tree in a later stage.
+Information which is entered into one of the trees in an early development stage, can be reused in another tree in a later stage.
 The concept uses Virtual Satellite's intrinsic inheritance functionality for this purpose.
 The four different trees are called: *Product Tree*, *Configuration Tree*, *Assembly Tree* and *Product Storage*.
 
@@ -656,7 +665,7 @@ TIP: E.g.: Here is the place to model every instance of the star tracker such as
 Assembly Tree::
 These are the third trees usually defined in the development process.
 One of these trees reflect how one spacecraft conforming to the _Configuration Tree_ is built.
-The data stored here is usually information which is specific to the actual sapcecraft built.
+The data stored here is usually information which is specific to the actual spacecraft built.
 All information of an equipment in the _configuration tree_ is inherited here.
 Information can be overridden here if necessary.  
 
@@ -667,7 +676,7 @@ Also slight modifications to the configuration can be reflected here.
 
 NOTE: The _Assembly Tree_ also combines information from the _Product Storage_.
 E.g. an equipment in the _Product Storage_ may have a unique serial number.
-Once plugged into the _Assembly Tree_ the serial number will be finally overridden with the one from the equipment in the _Product Storage_
+Once plugged into the _Assembly Tree_ the serial number will be finally overridden with the one from the equipment in the _Product Storage_.
 
 Product Storage::
 This is the last tree usually defined in the development process.
@@ -675,7 +684,7 @@ This tree is used to combine the reality with the virtual representation of the 
 The data stored here is usually information which is unique to the actual equipment. 
 All information of an equipment in the _product tree_ is inherited here.
 Information can be overridden here if necessary.  
-Data defined here is finally inherited into the _Assembly Tree_
+Data defined here is finally inherited into the _Assembly Tree_.
 
 TIP: The _Product Storage_ is usually the place to save information such as real life measurements or serial numbers.
 
@@ -833,7 +842,7 @@ Once the data is saved, the eclipse builder will call the inheritance builder to
 | Add some weight to the star tracker:
 
 . Traverse the _Product Tree_ in the _Navigator_ down to the _Element Definition_ called `ST`.
-. Select the _Mass Equipment_ and double-click to open it in the _Editor.
+. Select the _Mass Equipment_ and double-click to open it in the _Editor_.
 . In the _Editor scroll down to the field called *mass* and set a value of `1.5kg`.
 . Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
 
@@ -937,16 +946,39 @@ Simply *drag* the `ST` from the _Product Tree_ and drop it into the table of the
 `ST_D` is kept in the _Product Storage_ as a spare.
 
 . Traverse the _Navigator_ down to the `ST1` of `StarExplorer1`.
-. Double-click the 'ST1' to open it in the _Editor_.
+. Double-click the `ST1` to open it in the _Editor_.
 . Scroll down to the section called *Inheritance*.
 . Add a second inheritance referencing to the `ST_A` in the _Product Storage_.
 . Press kbd:[CTRL+S] to save all changes, and to update all inherited data.
-
+. Repeat the steps to assign the other star tracker as well.
 
 |image:chapterExtendedProductStructures/ProductStorageST5.png[Product Storage with five equipment]
 
+|{counter:step}.
+| Now the changes can be observed in the `Assembly Tree` for the 'StarExplorer1' and `StarExplorer2`.
+
+. Traverse the _Navigator_ down to the `AOCS` of `StarExplorer1`.
+. Double-click the `AOCS` to open it in the _Editor_.
+. Scroll down to the section *MassSummary*.
+
+You can now see the impact of the star trackers from the `Product Storage`.
+
+|image:chapterExtendedProductStructures/AssemblyTreeInheritedMassesFromStorage.png[Product Storage with five equipment]
 
 |===
+
+
+NOTE: You can also change the order of inheritance in the inheritance section.
+E.g. if you set the link to an `Element Configuration` into second place, it's values will override the ones from the `Element Realization` from the 'Product Storage'.
+
+TIP: You can specify as many inheritance links as you which.
+This can be useful, when e.g. stereotyping certain equipment.
+
+TIP: You can also use *drag & drop* again to set the inheritance links.
+
+
+You finalized the tutorial for the extended product structures. 
+
 
 ==== Equipment mass and mass summaries concept
 
@@ -1094,6 +1126,83 @@ In this case you can add a NONE shape to the root of the component to position t
 
 |===
 
+==== CAD Export/Import
+
+The 3D Visualisation can be exported from Virtual Satellite and imported into CAD (computer-aided design)-tools using JSON (JavaScript Object Notation) format.
+This subsection describes the workflow on the Virtual Satellite side of the corresponding round-trip engineering. 
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|You start with a simple _Repository_ containing a _Product_, _Configuration_ and _Assembly Tree_, with a visualization added to the `ST2`.
+|image:chapterModeling/subsectionCAD/export/00_example_tree.PNG[Example trees]
+
+|{counter:step}.
+|To export that visualisation, navigate to _File->Export..._.
+|image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
+
+|{counter:step}.
+|The _Export_ Wizard opens, in which you can select the _Cad Export Wizard_.
+|image:chapterModeling/subsectionCAD/export/02_Export_Wizard.PNG[Export Wizard]
+
+|{counter:step}.
+|In the Wizard you have to select the _Tree_ you want to export, e.g. the _Configuration Tree_ `StarExplorerConfig`.
+You also have to provide the destination of the exported file.
+
+|image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
+
+|{counter:step}.
+|Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the JSON output file.
+In this example only the `ST2` got exported because `ST1` did not contain a visualisation.
+
+NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
+|image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
+ 
+|===
+
+NOTE: The round-trip engineering is driven from the Virtual Satellite side, so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, while an external CAD software can only Read and Update existing components.
+
+NOTE: For the purpose of identification, each element has a corresponding UUID (Universally Unique Identifier).
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|You can now modify the generated JSON file using a CAD software, e.g. change the _posX_ of the `ST2`. Afterwards it can be reimported to update the Virtual Satellite Model.
+|image:chapterModeling/subsectionCAD/import/00_changed_output.PNG[Changed JSON output file]
+
+|{counter:step}.
+|Similar to exporting you open the _Import_ Wizard.
+|image:chapterModeling/subsectionCAD/import/01_Import.png[Import]
+
+|{counter:step}.
+|Then select the _Cad Import Wizard_.
+|image:chapterModeling/subsectionCAD/import/02_Cad_Import_Wizard.PNG[Import Wizard]
+
+|{counter:step}.
+|In the Wizard, select the _Tree_ to load the JSON file into and the destination of the file.
+|image:chapterModeling/subsectionCAD/import/03_tree_and_destination_selection.PNG[Tree and destination selection]
+
+|{counter:step}.
+|Finally you can open the `ST2` 's Visualisation to check that its _positionX_ is property updated.
+
+NOTE: Because of Inheritance (see <<Extended product structures - Inheritance and Configuration Control>>) importing a _Configuration Tree_ will also change the corresponding _Assembly Tree_.
+|image:chapterModeling/subsectionCAD/import/04_model_changes.PNG[Imported Model changes]
+
+|===
+
+
 === Advanced Modeling
 
 Most users will only required modeling techniques from the section <<General Modeling>>.
@@ -1236,7 +1345,7 @@ In the same menue, manual builds can also be triggered via menu:Project[Build Al
 Just like all other data model changes, the builder is subject to the rights management.
 Should a value be updated and a calculated variable require an update, which cannot
 be performed due to lack of rights, a `Computed value is out of date` warning is issued instead.
-A proposed update order for to resolve these warnings can be obtained from the _Domain Round View_.
+A proposed update order to resolve these warnings can be obtained from the _Domain Round View_.
 The view can be opened via menu:Window[Show View > Other > VirSat > Domain Round].
 By selecting a project in the _Navigator_, the view will then show a proposed update order to resolve calculation dependencies.
 
@@ -1269,7 +1378,7 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |image:chapterApps/ActivateApps.png[Activating the Apps]
 
 |{counter:step}.
-|After the Apps are activated, press the button btn:[Add App] to add a new exmaple app.
+|After the Apps are activated, press the button btn:[Add App] to add a new example app.
 |image:chapterApps/AddApp.png[Add a new example App]
 
 |{counter:step}.
@@ -1280,7 +1389,7 @@ NOTE: The Apps provide a complete Java in the background. This means you can inc
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
 |{counter:step}.
-|Back in the Repository Editor you can now execute the App by pressing the btn:[Run APP] button. You have to select the App in the list before.
+|Back in the Repository Editor you can now execute the App by pressing the btn:[Run App] button. You have to select the App in the list before.
 
 TIP: You can also execute the App in the editor by the context menu menu:Context[Run As > Java Application] or by pressing kbd:[ALT+SHIFT+X], kbd:[J].
 

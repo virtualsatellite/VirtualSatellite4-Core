@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.test.feature"
       label="VirSat Core General Tests Feature"
-      version="4.9.1.qualifier"
+      version="4.10.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       license-feature="de.dlr.sc.virsat.license.feature">
 
@@ -27,38 +27,58 @@ by German Aerospace Center (DLR e.V.)
          version="0.0.0"/>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.junit" version="4.12.0" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.project" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.svn" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.edit" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.project"/>
+      <import plugin="de.dlr.sc.virsat.model"/>
+      <import plugin="de.dlr.sc.virsat.team"/>
+      <import plugin="de.dlr.sc.virsat.model.edit"/>
       <import plugin="de.dlr.sc.virsat.model.calculation"/>
       <import plugin="de.dlr.sc.virsat.apps"/>
       <import plugin="de.dlr.sc.virsat.build"/>
+      <import plugin="de.dlr.sc.virsat.graphiti"/>
       <import plugin="de.dlr.sc.virsat.model.extension.ps"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.visualisation" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.tests" version="4.0.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="org.eclipse.emf.transaction"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.tests" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.testing"/>
-      <import plugin="org.eclipse.xtext.xbase.lib"/>
-      <import plugin="de.dlr.sc.virsat.model" version="4.0.2" match="greaterOrEqual"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.ps" version="0.0.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.visualisation" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.visualisation"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.mass"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.power"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.tests.edit"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.maturity"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.mechanical"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.statemachines"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.funcelectrical"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.requirements"/>
+      <import plugin="de.dlr.sc.virsat.excel"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.spotbugs"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.apache.poi"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.ps"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.visualisation"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.mass"/>
+      <import plugin="de.dlr.sc.virsat.apps.ui"/>
+      <import plugin="de.dlr.sc.virsat.branding.ui"/>
+      <import plugin="de.dlr.sc.virsat.build.ui"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.commons.cli"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.commons.math"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.jfreechart"/>
+      <import plugin="de.dlr.sc.virsat.external.lib.protobuf"/>
+      <import plugin="de.dlr.sc.virsat.model.calculation.ui"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.ps.ui"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.tests.ui"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.visualisation.ui"/>
+      <import plugin="de.dlr.sc.virsat.model.ui"/>
+      <import plugin="de.dlr.sc.virsat.project.ui"/>
+      <import plugin="de.dlr.sc.virsat.qudv.ui"/>
+      <import plugin="de.dlr.sc.virsat.team.ui"/>
+      <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.mass.ui"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.maturity"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.mechanical"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.statemachines"/>
       <import feature="de.dlr.sc.virsat.model.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.svn.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.team.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.uiengine.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.commons.feature" version="4.4.0"/>
-      <import plugin="de.dlr.sc.virsat.model.concept"/>
-      <import plugin="de.dlr.sc.virsat.model.extension.tests.edit"/>
+      <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -101,7 +121,7 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
-         id="de.dlr.sc.virsat.svn.test"
+         id="de.dlr.sc.virsat.team.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -149,7 +169,7 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
-         id="de.dlr.sc.virsat.model.calculation.tests"
+         id="de.dlr.sc.virsat.model.calculation.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -218,6 +238,62 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.graphiti.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.mechanical.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.requirements.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.excel.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.budget.power.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.funcelectrical.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.statemachines.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.requirements.test"
          download-size="0"
          install-size="0"
          version="0.0.0"

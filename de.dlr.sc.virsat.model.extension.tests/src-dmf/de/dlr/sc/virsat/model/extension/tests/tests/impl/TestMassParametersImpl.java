@@ -70,6 +70,7 @@ public class TestMassParametersImpl extends DObjectImpl implements TestMassParam
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public TestParameter getMass() {
 		return mass;
 	}
@@ -94,6 +95,7 @@ public class TestMassParametersImpl extends DObjectImpl implements TestMassParam
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMass(TestParameter newMass) {
 		if (newMass != mass) {
 			NotificationChain msgs = null;

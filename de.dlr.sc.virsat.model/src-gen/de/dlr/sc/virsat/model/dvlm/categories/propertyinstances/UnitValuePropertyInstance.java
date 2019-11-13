@@ -29,7 +29,6 @@ public interface UnitValuePropertyInstance extends APropertyInstance, ValuePrope
 	 * Convenience Method to directly convert the value to its base unit
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='double value = Double.parseDouble(getValue());\r\nAUnit unit = getUnit();\r\nif (unit != null) {\r\n\tvalue = de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.getInstance().convertFromSourceUnitToBaseUnit(unit, value);\r\n}\r\n\t\t\r\nreturn value;'"
 	 * @generated
 	 */
 	double getValueToBaseUnit();
@@ -40,7 +39,7 @@ public interface UnitValuePropertyInstance extends APropertyInstance, ValuePrope
 	 * <!-- begin-model-doc -->
 	 * Convenience Method to directly set a value in the frame of the base unit and convert it to the target unit as set in the current UnitValuePropertyInstance.
 	 * <!-- end-model-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='AUnit unit = getUnit();\r\nif (unit != null) {\r\n\tdouble targetValue = de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.getInstance().convertFromBaseUnitToTargetUnit(unit, value);\r\n\tString textualValue = Double.toString(targetValue);\r\n\tsetValue(textualValue);\r\n} else {\r\n\tsetValue(Double.toString(value));\r\n}'"
+	 * @model
 	 * @generated
 	 */
 	void setValueAsBaseUnit(double value);

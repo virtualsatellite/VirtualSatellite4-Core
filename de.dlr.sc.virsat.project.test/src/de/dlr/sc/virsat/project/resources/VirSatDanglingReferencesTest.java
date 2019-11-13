@@ -20,12 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceDescription;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -33,7 +28,6 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,20 +37,19 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
-import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Test Cases for the wrapping VirSatProject Resource
  * @author kova_an, lobe_el
  *
  */
-public class VirSatDanglingReferencesTest {
+public class VirSatDanglingReferencesTest extends AProjectTestCase {
 	
-	protected IProject project;
 	protected VirSatResourceSet resSet;
 	
 	protected Concept concept;
@@ -68,18 +61,11 @@ public class VirSatDanglingReferencesTest {
 	protected StructuralElementInstance seiDefinition;
 
 	@Before
-	public void setUp() throws CoreException, IOException {
-		UserRegistry.getInstance().setSuperUser(true);
+	public void setUp() throws CoreException {
+		super.setUp();
 		createConcept();
 		createRepository();
-		createAndOpenProject();
 		createAndFillResources();
-		UserRegistry.getInstance().setSuperUser(false);
-	}
-	
-	@After
-	public void tearDown() throws CoreException {
-		project.delete(IResource.ALWAYS_DELETE_PROJECT_CONTENT, null);
 	}
 	
 	/**
@@ -125,30 +111,11 @@ public class VirSatDanglingReferencesTest {
 	}
 	
 	/**
-	 * Do some magic to create new project
-	 * @throws CoreException if creation of project fails
-	 */
-	private void createAndOpenProject() throws CoreException {
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-		IWorkspaceDescription wsd = ResourcesPlugin.getWorkspace().getDescription();
-		wsd.setAutoBuilding(false);
-		ResourcesPlugin.getWorkspace().setDescription(wsd);
-		wsRoot.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		
-		project = wsRoot.getProject("DanglingReferencesTestProject");
-		if (project.exists()) {
-			project.delete(IResource.ALWAYS_DELETE_PROJECT_CONTENT, null);
-		}
-		project.create(null);
-		project.open(null);
-	}
-	
-	/**
 	 * Adding the StructuralElementInstances to the ResourceSet
 	 * @throws IOException if saving of resources fails
 	 */
-	private void createAndFillResources() throws IOException {
-		resSet = VirSatResourceSet.createUnmanagedResourceSet(project);
+	private void createAndFillResources() {
+		resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
 		resSet.getResources().clear();
 
 		Resource resRepo = resSet.getRepositoryResource();
@@ -171,7 +138,7 @@ public class VirSatDanglingReferencesTest {
 	 * @return the ResourcesSet of the Project
 	 */
 	private VirSatResourceSet reloadAndGetNewResourceSet() {
-		VirSatResourceSet reloadedResourceSet = VirSatResourceSet.createUnmanagedResourceSet(project);
+		VirSatResourceSet reloadedResourceSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
 		return reloadedResourceSet;
 	}
 	
@@ -186,7 +153,7 @@ public class VirSatDanglingReferencesTest {
 
 	@Test
 	public void testDeletedReferencedFile() throws Exception {
-		VirSatProjectCommons projectCommons = new VirSatProjectCommons(project);
+		VirSatProjectCommons projectCommons = new VirSatProjectCommons(testProject);
 		IResource fileDefinition = projectCommons.getStructuralElementInstanceFile(seiDefinition);
 		fileDefinition.delete(true, null);
 

@@ -51,7 +51,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd";
 
 	/**
 	 * The package namespace name.

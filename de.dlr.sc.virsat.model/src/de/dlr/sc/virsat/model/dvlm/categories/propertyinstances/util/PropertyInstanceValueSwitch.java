@@ -54,6 +54,7 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 	
 	private boolean showUnitForUnitValues = true;
 	private boolean showEnumValueDefinitionValues = true;
+	private boolean showLocationForReferenceValues = true;
 	
 	/**
 	 * Gets a boolean flag that decides whether to add unit to the value or not
@@ -85,6 +86,22 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 	 */
 	public void setShowEnumValueDefinitionValues(boolean showEnumValueDefinitionValue) {
 		this.showEnumValueDefinitionValues = showEnumValueDefinitionValue;
+	}
+	
+	/**
+	 * Get a boolean flag that decides whether the complete location path for a reference value is shown
+	 * @return the showLocationForReferenceValues
+	 */
+	public boolean getShowLocationForReferenceValues() {
+		return showLocationForReferenceValues;
+	}
+
+	/**
+	 * Sets a boolean flag that decides whether the complete location path for a reference value is shown
+	 * @param showLocationForReferenceValues the showLocationForReferenceValues to set
+	 */
+	public void setShowLocationForReferenceValues(boolean showLocationForReferenceValues) {
+		this.showLocationForReferenceValues = showLocationForReferenceValues;
 	}
 
 	/**
@@ -191,7 +208,11 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 					ATypeInstance referencedTi = pivSwitch.doSwitch(object);
 					String valueString = ActiveConceptHelper.getContainerQualifedNameForInstance(referencedTi);
 					if (referencedTi instanceof IName) {
-						valueString = ((IName) referencedTi).getName() + " - " + valueString;
+						if (showLocationForReferenceValues) {
+							valueString = ((IName) referencedTi).getName() + " - " + valueString;
+						} else {
+							valueString = ((IName) referencedTi).getName();
+						}
 					}
 					return valueString;
 				} else {

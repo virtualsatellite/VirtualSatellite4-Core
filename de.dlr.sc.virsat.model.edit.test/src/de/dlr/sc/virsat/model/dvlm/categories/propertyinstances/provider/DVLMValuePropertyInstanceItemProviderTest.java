@@ -91,6 +91,24 @@ public class DVLMValuePropertyInstanceItemProviderTest {
 		String actual = dvlmUviip.getText(vpi);
 		assertEquals("The output is like expected", EXPECTED, actual);
 	}
+	
+	@Test
+	public void testGetStringTextWithLineEnding() {
+		DVLMValuePropertyInstanceItemProvider dvlmUviip = new DVLMValuePropertyInstanceItemProvider(adapterFactory);
+		
+		final String firstLine = "Line1";
+		final String testString = firstLine + System.lineSeparator() + "Line2";
+		
+		StringProperty sp = PropertydefinitionsFactory.eINSTANCE.createStringProperty();
+		sp.setName("SP");
+		ValuePropertyInstance vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
+		vpi.setType(sp);
+		vpi.setValue(testString);
+		
+		final String EXPECTED = "SP: " + firstLine + "...";
+		String actual = dvlmUviip.getText(vpi);
+		assertEquals("The output is like expected", EXPECTED, actual);
+	}
 
 	@Test
 	public void testCreateSetCommand() {

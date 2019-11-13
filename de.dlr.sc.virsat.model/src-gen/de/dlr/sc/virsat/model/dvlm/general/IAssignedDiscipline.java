@@ -66,7 +66,6 @@ public interface IAssignedDiscipline extends EObject {
 	 * This method hands back all contained IAssignedDiscipline objects
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='EList&lt;IAssignedDiscipline&gt; containedIAssignedDiscipline = new org.eclipse.emf.common.util.BasicEList&lt;&gt;();\r\norg.eclipse.emf.common.util.TreeIterator&lt;Object&gt; iter = org.eclipse.emf.ecore.util.EcoreUtil.getAllContents(this, true);\r\n\t\t\t\r\niter.forEachRemaining((object) -&gt; {\r\n\tif (object instanceof IAssignedDiscipline) {\r\n\t\tcontainedIAssignedDiscipline.add((IAssignedDiscipline) object);\r\n\t}\r\n});\r\n\t\t\r\nreturn containedIAssignedDiscipline;'"
 	 * @generated
 	 */
 	EList<IAssignedDiscipline> getContainedIAssignedDisciplines();

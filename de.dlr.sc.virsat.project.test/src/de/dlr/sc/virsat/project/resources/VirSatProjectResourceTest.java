@@ -10,12 +10,11 @@
 package de.dlr.sc.virsat.project.resources;
 
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +25,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,19 +46,8 @@ public class VirSatProjectResourceTest {
 		project2 = ws.getProject("testProject2");
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testVirSatProjectResource() {
-		VirSatProjectResource vsProjectResource = new VirSatProjectResource(project1);
-		
-		assertEquals("VirSatProjectResource is wrapping correct project", project1, vsProjectResource.getWrappedProject());
-	}
-
-	@Test
-	public void testGetWrappedProject() {
 		VirSatProjectResource vsProjectResource = new VirSatProjectResource(project1);
 		
 		assertEquals("VirSatProjectResource is wrapping correct project", project1, vsProjectResource.getWrappedProject());

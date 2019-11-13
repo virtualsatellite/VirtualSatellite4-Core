@@ -19,6 +19,7 @@ import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
@@ -27,20 +28,19 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
-import de.dlr.sc.virsat.model.extension.ps.util.ProductStructureHelper;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
+import de.dlr.sc.virsat.model.extension.ps.util.ProductStructureHelper;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Test Case for Generating Tree
  * @author bell_er
  *
  */
-public class ProductStructureHelperTest extends AProjectTestCase {
+public class ProductStructureHelperTest extends AConceptProjectTestCase {
 	private static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	private static final String EXTENSION_ID = "de.dlr.sc.virsat.model.Concept";
 

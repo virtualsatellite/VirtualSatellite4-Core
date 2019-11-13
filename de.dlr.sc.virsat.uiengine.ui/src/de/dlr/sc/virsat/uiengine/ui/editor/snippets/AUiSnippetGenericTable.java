@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets;
 
 import java.util.Collection;
+import java.util.EventObject;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -27,6 +28,10 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ColumnViewerEditor;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -36,6 +41,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TableViewerEditor;
+import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -43,6 +50,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -107,6 +115,8 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	public static final String BUTTON_ADD_TEXT = "Add ";
 	public static final String BUTTON_REMOVE_TEXT = "Remove ";
 	public static final String BUTTON_EDIT_TEXT = "Drill-Down";
+	
+	public static final int MOUSE_EVENT_RIGHT_CLICK_BUTTON = 3;
 	
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
@@ -207,6 +217,10 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		
 		createTableColumns(editingDomain);
 		
+		if (columnViewer instanceof TableViewer) {
+			setupTableViewerKeyboardNavigation((TableViewer) columnViewer);
+		}
+		
 		ITableLabelProvider labelProvider = getTableLabelProvider();
 		columnViewer.setLabelProvider(labelProvider);
 		
@@ -269,6 +283,32 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		return new TableViewer(table);
 	}
 
+	/**
+	 * Add a focus manager to the table viewer to navigate throw the table by using keyboard commands such as TAB
+	 * @param tableViewer the table viewer
+	 */
+	protected void setupTableViewerKeyboardNavigation(TableViewer tableViewer) {
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+
+		ColumnViewerEditorActivationStrategy activationSupport = new ColumnViewerEditorActivationStrategy(tableViewer) {
+		    protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
+		        if (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION) {
+		            EventObject source = event.sourceEvent;
+		            if (source instanceof MouseEvent && ((MouseEvent) source).button == MOUSE_EVENT_RIGHT_CLICK_BUTTON) {
+		            	return false;
+		            }
+		                
+		        }
+		        return super.isEditorActivationEvent(event) || (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.CR);
+		    }
+		};
+
+		TableViewerEditor.create(tableViewer, focusCellManager, activationSupport, ColumnViewerEditor.TABBING_HORIZONTAL 
+				| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
+				| ColumnViewerEditor.TABBING_VERTICAL 
+				| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+	}
+	
 	/**
 	 * this abstract method can be implemented to get the label provider
 	 * @return the table label provider

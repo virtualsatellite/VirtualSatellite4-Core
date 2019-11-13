@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Generic UI Engine and Editor UI
 Bundle-SymbolicName: de.dlr.sc.virsat.uiengine.ui;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.10.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin$Implementation
 Bundle-Vendor: DLR (German Aerospace Center)
@@ -26,16 +26,19 @@ Require-Bundle: de.dlr.sc.virsat.commons,
  org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.ui.workbench,
  org.eclipse.ui.forms;visibility:=reexport,
- org.eclipse.nebula.widgets.gallery
+ org.eclipse.nebula.widgets.gallery,
+ de.dlr.sc.virsat.external.lib.commons.cli
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.uieingine.ui,
  de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties,
  de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes,
+ de.dlr.sc.virsat.uiengine.ui.databinding,
  de.dlr.sc.virsat.uiengine.ui.dialog,
  de.dlr.sc.virsat.uiengine.ui.dialog.provider,
  de.dlr.sc.virsat.uiengine.ui.editor,
  de.dlr.sc.virsat.uiengine.ui.editor.provider,
  de.dlr.sc.virsat.uiengine.ui.editor.snippets,
+ de.dlr.sc.virsat.uiengine.ui.editor.snippets.general,
  de.dlr.sc.virsat.uiengine.ui.editor.snippets.tableimpl,
  de.dlr.sc.virsat.uiengine.ui.handler,
  de.dlr.sc.virsat.uiengine.ui.wizard

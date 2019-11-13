@@ -9,16 +9,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
-	<artifactId>de.dlr.sc.virsat</artifactId>
-	<version>4.9.1-SNAPSHOT</version>
+	<artifactId>de.dlr.sc.virsat.parent</artifactId>
+	<version>4.10.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.0.0</tycho-version>
-		<tycho-extras-version>1.0.0</tycho-extras-version>
+		<tycho-version>1.4.0</tycho-version>
+		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.9.1</build.version>
+		<build.version>4.10.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -139,7 +139,7 @@
 								<id>validate</id>
 								<phase>validate</phase>
 								<configuration>
-									<configLocation>checkStylesDefinition.xml</configLocation>
+									<configLocation>../checkStylesDefinition.xml</configLocation>
 									<propertyExpansion>samedir=.</propertyExpansion>
 									<encoding>UTF-8</encoding>
 									<consoleOutput>true</consoleOutput>
@@ -174,8 +174,9 @@
 								the process. Apparently something is wrong -->
 							<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
-							<showEclipseLog>true</showEclipseLog>
-							<testFailureIgnore>true</testFailureIgnore>
+							<showEclipseLog>false</showEclipseLog>
+							<testFailureIgnore>false</testFailureIgnore>
+							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
 						</configuration>
@@ -265,7 +266,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.9.1-SNAPSHOT</version>
+							<version>4.10.0-SNAPSHOT</version>
 							<classifier>virsat</classifier>
 						</artifact>
 					</target>
@@ -283,7 +284,7 @@
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
-							<pluginExecution>
+								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.asciidoctor</groupId>
 										<artifactId>asciidoctor-maven-plugin</artifactId>

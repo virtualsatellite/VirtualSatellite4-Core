@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Generic Excel IO UI
+Bundle-SymbolicName: de.dlr.sc.virsat.excel.ui;singleton:=true
+Bundle-Version: 4.10.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.excel.ui.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.excel,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.external.lib.apache.poi
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.excel.ui
+Automatic-Module-Name: de.dlr.sc.virsat.excel.ui

@@ -18,7 +18,6 @@ import de.dlr.sc.virsat.build.marker.util.VirSatInheritanceMarkerHelperTest;
 import de.dlr.sc.virsat.build.marker.util.VirSatValidationMarkerHelperTest;
 import de.dlr.sc.virsat.build.validator.VirSatValidatorBuilderTest;
 import de.dlr.sc.virsat.build.validator.core.DvlmSEIsUniqeNameValidatorTest;
-import de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidatorTest;
 import de.dlr.sc.virsat.build.validator.core.DvlmMissingResourcePropertyValidatorTest;
 import de.dlr.sc.virsat.build.validator.core.DvlmNamingConventionValidatorTest;
 import de.dlr.sc.virsat.build.validator.core.DvlmRepositoryDefaultQuantityKindValidatorTest;
@@ -40,10 +39,9 @@ import junit.framework.JUnit4TestAdapter;
 	VirSatInheritanceMarkerHelperTest.class,
 	VirSatValidatorBuilderTest.class,
 	VirSatInheritanceBuilderTest.class,
-	DvlmLatestConceptValidatorTest.class,
 	DvlmResolvedStructuralElementInstanceValidatorTest.class,
 	DvlmRepositoryDefaultQuantityKindValidatorTest.class
-				})
+})
 
 /**
  * 

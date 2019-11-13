@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   
+   <extension
+     id="de.dlr.sc.virsat.excel.ui.export"
+     point="org.eclipse.ui.exportWizards">
+	  <wizard
+         category="de.dlr.sc.virsat.excel.ui"
+         class="de.dlr.sc.virsat.excel.ui.wizards.ExportWizard"
+         icon="resources/icons/VirSat_General_ExcelExport.gif"
+         id="de.dlr.sc.virsat.excel.ui.wizards.exportWizard"
+         name="Export to Excel">
+	  </wizard>
+   <category
+         id="de.dlr.sc.virsat.excel.ui"
+         name="VirSat">
+   </category>
+  </extension>
+   <extension
+     id="de.dlr.sc.virsat.excel.ui.import"
+     point="org.eclipse.ui.importWizards">
+	  <wizard
+         category="de.dlr.sc.virsat.excel.ui"
+         class="de.dlr.sc.virsat.excel.ui.wizards.ImportWizard"
+         icon="resources/icons/VirSat_General_Excel_Import.gif"
+         id="de.dlr.sc.virsat.excel.ui.wizards.importWizard"
+         name="Import from Excel">
+	  </wizard>
+   <category
+         id="de.dlr.sc.virsat.excel.ui"
+         name="VirSat">
+   </category>
+  </extension>
+	
+</plugin>

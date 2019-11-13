@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
@@ -42,6 +43,8 @@ public class Activator extends AbstractUIPlugin {
 	private CommunicationServer geometryFileServer;
 	private ResourceReloadListener resourceReloadListener;
 
+	private boolean serverStarted = false;
+	
 	/**
 	 * The constructor
 	 */
@@ -66,21 +69,31 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		
 		plugin = this;
 		pluginId = getDefault().getBundle().getSymbolicName();
 		// initialize the communication servers
-		sceneGraphServer = new SceneGraphServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
-		geometryFileServer = new GeometryFileServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
+		try {
 		
-		resourceReloadListener = new ResourceReloadListener();
-		VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
+			sceneGraphServer = new SceneGraphServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
+			geometryFileServer = new GeometryFileServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
+			
+			resourceReloadListener = new ResourceReloadListener();
+			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
+			
+			serverStarted = true;
+		} catch (UnsatisfiedLinkError e) {
+			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK libraries. Error: " + e.getMessage()));
+		}
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		sceneGraphServer.close();
-		geometryFileServer.close();
-		VirSatTransactionalEditingDomain.removeResourceEventListener(resourceReloadListener);
+		if (serverStarted) {
+			sceneGraphServer.close();
+			geometryFileServer.close();
+			VirSatTransactionalEditingDomain.removeResourceEventListener(resourceReloadListener);
+		}
 		plugin = null;
 		super.stop(context);
 	}

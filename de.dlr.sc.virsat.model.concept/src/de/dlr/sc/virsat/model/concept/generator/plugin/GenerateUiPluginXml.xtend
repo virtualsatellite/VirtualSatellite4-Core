@@ -30,7 +30,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 class GenerateUiPluginXml {
 	
 	@Accessors
-	private PluginXmlReader pluginXmlReader;
+	PluginXmlReader pluginXmlReader;
 	
 	def serializeModel(Concept concept, PluginXmlReader pluginXmlReader, IFileSystemAccess fsa) {
 		this.pluginXmlReader = pluginXmlReader;

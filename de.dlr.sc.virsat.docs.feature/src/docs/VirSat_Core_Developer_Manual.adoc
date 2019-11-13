@@ -1,0 +1,397 @@
+= Virtual Satellite 4 Core: Developer Manual
+:imagesdir: images
+:title-logo-image: images/title/VirtualSatellite_Developing.jpg
+:toc:
+:toclevels: 3
+:experimental:  
+
+:sectnums:
+
+== Getting Started
+
+Learn about basic requirements of Virtual Satellite Developers IDE, how it is installed and begin your first development.
+
+=== System Requirements 
+
+Virtual Satellite Developer IDE is based on the Eclipse for Plugin Developer.
+It has been extended by some additional tools that we require for our development, e.g. checkstyle or overtarget.
+Additionally, the IDE contains the Concept Language, the implementation of the Generic Systems Engineering Language (GSEL).
+This language is based on xtext and it is the simple entry point to start enhancing the Conceptual Data Model of Virtual Satellite for your individual needs. 
+
+The Developers IDE currently supports the following operating system configurations:
+
+. Windows 7 64bit with Java 8 runtime environment
+. Linux 64 bit with Java 8 runtime environment
+
+[WARNING]
+.Use 64 bit Java JRE
+====
+Virtual Satellite does not execute on a Java 32 bit runtime environment.
+====
+
+NOTE: The Developers IDE supports newer Java versions same as eclipse. Nevertheless, Virtual Satellite still requires Java version 8. 
+
+=== Different Ways to Develop Virtual Satellite
+
+Virtual Satellite offers three different ways to be a developer. 
+All of them require different sets of skills and offer different ways of contributing.
+
+The first set is called *Virtual Satellite App Developer*.
+Developing an App is described in the User Manual.
+Apps are usually programmed directly within a project and contain project specific processing of the modeled data.
+Apps can be developed directly from within Virtual Satellite and do not require special setup.
+
+The second way is called the *Virtual Satellite Concept Developer*. 
+A Concept is an extension to the Virtual Satellite Conceptual Data Model (CDM).
+A Concept offers new ways of modeling to the user. 
+These new ways are usually process specific, meaning depending on your understanding of modeling a spacecraft.
+Once a Concept is developed it can be deployed and installed into any Virtual Satellite instance.
+Thus a Concept can be easily shared and reused across projects.
+Developing a concept requires some programming skills and requires to install the Virtual Satellite Developer IDE.
+A Concept is developed based on the Concept Language which is an xtext implementation of our Generic Systems Engineering Language (GSEL).
+This xtext language is an easy to use entry point to create new modeling items.
+Code generators create all neccessary code to get started.
+More advanced developers can override this generated code for further detailed modifications.
+
+The third way is called *Virtual Satellite Infrastructure Developers*.
+infrastructure Developers work on the core and basis of Virtual Satellite.
+This requires a high knowledge of Virtual Satellite, Eclipse and Java.
+It also requires to install the Virtual Satellite Developer IDE.
+
+=== The Modular Conceptual Data Model
+
+=== Virtual Satellite / Eclipse IDE Installation
+
+Installing Virtual Satellite Developers IDE is as easy as possible.
+Provided that a Java Runtime Environment is installed to your system.
+Follow the steps below to install Virtual Satellite Developers IDE on a windows system: 
+
+NOTE: Installation steps on linux are very similar.
+
+{counter2:step:0}
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Download the Virtual Satellite Developers IDE zip-file from the GitHub releases section.
+
+NOTE: The Developers IDE is developed in the same organization but in a different repository:
+`https://github.com/virtualsatellite/VirtualSatellite4-DEV-IDE/releases`
+
+|image:chapterIdeInstallation/DownloadIdeRelease.png[Download]
+
+|{counter:step}.
+|Store the zip file to the folder of your choice (e.g.: `C:\VirtualSatellite\`) and unzip it here.
+|image:chapterIdeInstallation/UnzipIde.png[Unzip]
+
+|{counter:step}.
+|Dive into the unzipped sub-folder and Execute the `eclipse.exe` file.
+|image:chapterIdeInstallation/ExecuteEclipse.png[Execute]
+
+|{counter:step}.
+|Once Virtual Satellite Developer IDE is started it should appear as shown in the image.
+Now press the link btn:[Workbench].
+|image:chapterIdeInstallation/VirtualSatelliteIdeStarted.png[Started]
+
+|===
+
+Done. You installed and successfully started Virtual Satellite Developer IDE.
+
+==== Git integration setup
+
+Once you have installed your Virtual Satellite Developer IDE, you need to set up your Git integration. 
+Following the next steps will help you with the progress.
+
+
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:steps}.
+|Start with clicking the "Open perspective" button on the top right to open the Git perspective.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/2_OpenPerspective.png[Open perspective]
+
+|{counter:steps}.
+|In the next step you have to select a repository source. 
+In the Git Repositories view click "Clone a git repository" and then choose "clone URl" and continue. +
+After that you need to visit https://github.com/virtualsatellite and choose the repository you want to clone. +
+Click the green button in the upper right corner which says "clone or download" and copy the link.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/4.1_CloneGitUrl.PNG[Clone Git URL]
+
+|{counter:steps}.
+|Enter the link of the source repository into the free field "URl" and authenticate yourself in the section beneath. +
+In the next step you can select branches to clone from the remote repository. In this case, just let them all selected and continue. +
+Now you have to choose a directory as a local destination for VirtualSatellite4-Core to finish the process. 
+|image::chapterIdeInstallation/subsectionGitIdeSetup/5_InsertGitUrl.PNG[Insert Git URL]
+
+|{counter:steps}.
+|After that, you select the branch "development" in the upper left corner of your window and double click to check out the branch. 
+|image::chapterIdeInstallation/subsectionGitIdeSetup/8_CheckoutBranch.PNG[Check out development branch]
+
+|{counter:steps}.
+|Now you need to import the projects from Git. 
+Right click on "Working Tree", choose "Import Projects" and finish the process.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/12_ImportProjectsGit.PNG[Import Projects from Git]
+
+|{counter:steps}.
+|After that search for the folder "de.dlr.sc.virsat.target" in your working tree. +
+Open it and then select "virsat.target". +
+You need to wait until the progress is fully loaded. +
+Then set it as your active target platform. The button is in the upper right corner.
+|image::chapterIdeInstallation/subsectionGitIdeSetup/10_OpenVirsatTarget.PNG[Open Virsat Target]
+
+
+|=== 
+
+Congratulations. You have successfully set up your Git integration!
+
+== The Virtual Satellite "Hello World" Examples
+
+=== Virtual Satellite for Project Developer
+
+=== Virtual Satellite for Concept Developer
+
+== Generic Systems Engineering (Concept) Language 
+
+=== Categories and Properties
+
+=== Structural Elements
+
+=== Calculations
+
+== Advanced Development Topics
+
+Special topics are discussed in this chapter.
+Developers should read this part to get a better understanding for certain decisions in Virtual Satellite.
+
+=== Third party JAR libraries
+
+The simplest way to load a third party JAR library is to pack it into an OSGI/Equinox plugin.
+This plugin can then be used as a dependency wherever it is needed.
+The following example shows how a library such as `json-simple` is integrated. The Figure "<<ExternalLibraryJson-Simple-Bundled>>" shows the file structure of the plugin.
+
+.The external third party library json-simple bundled into a plugin.
+[#ExternalLibraryJson-Simple-Bundled]
+image::chapterExternalLibraries/TheJsonSimpleTPL.png[Json-Simple External Library]
+ 
+Third party libraries get placed into the `externalLib` folder.
+The sources are usually placed here as well for legal reasons.
+The individual licenses and related files are stored in the `about_files` folder and mentioned in `about.html`.
+Now, to make these libraries accessible from other plugins three things need to be done.
+
+First, these libraries have to be added to the runtime classpath of the plugin as shown in Figure "<<ExternalLibraryClassPathAndPackages>>".
+This can be done from the _Manifest Editor_.
+The classpath gets extended by adding the new library on the _Runtime_ tab.
+Then the packages of the imported library can be exported.
+
+.The Manifest Editor for adding the third party library to the runtime classpath as well as exporting the library packages.
+[#ExternalLibraryClassPathAndPackages]
+image::chapterExternalLibraries/ManifestRuntimeTab.png[Manifest Editor]
+
+Second, the external library has to be bundled into the plugin.
+This way the jar which extends the runtime classpath is present and can actually be loaded.
+In the _Build_ tab of the _Manifest Editor_, the `externalLib` folder and all of its sub-folders and files should be marked for the _binary build_ as shown in Figure "<<ExternalLibraryBinaryBuild>>". 
+
+.The Manifest Editor for updating the binary build.
+[#ExternalLibraryBinaryBuild]
+image::chapterExternalLibraries/BuildPropertiesExternal.png[Build Properties Editor]
+
+Third and finally, the library has to be registered for correct compilation in eclipse.
+Therefore it has to be added to the build class path of the plugin.
+The _Build Path Editor_  in Figure "ExternalLibraryBuildPath" can be accessed by the context menu menu:Context[Build Path > Configure Build Path...].
+The libraries of the `externalLib` folder have to be listed here.
+Additionally they can be linked with their source or javadoc libraries as well.
+
+.The Build Path Editor for setting the library dependencies for eclipse compile time.
+[#ExternalLibraryBuildPath]
+image::chapterExternalLibraries/BuildClassPathEditor.png[Build Classpath Editor]
+
+=== Platform-specific external libraries
+
+When DLLs on Windows or so-libraries on Linux are required, bundling them and using them becomes a bit more complicated.
+On Windows it is still possible to bundle them and to ship them with Virtual Satellite.
+On Linux, due to the various different distributions, most libraries have to be compiled and linked to the specific system libraries.
+Therefore, they cannot be shipped and bundled.
+The following chapters will show how to prepare and use such platform-specific libraries with Virtual Satellite.
+
+=== Platform-specific DLL libraries on Windows
+
+The library `de.dlr.sc.virsat.external.lib.zmq.win32.x86_64` presents a good example for a Windows platform-specific third party library.
+It bundles the DLLs for ZeroMQ plus the jar to make it available in other plugins.
+Similar to the general third party libraries, the jar is placed in the _native_lib_ folder.
+The Windows DLLs are placed here as well.
+All these files are selected for the binary build in the _build.properties_.
+As a consequence, they get exported into the final jar.
+The jar is itself is included into the classpath as described in <<Third party JAR libraries>>.
+A major difference is explained in the _MANIFEST.MF_
+
+.MANIFEST.MF file of the windows specific ZeroMQ external library
+[#ExternalLibraryManifestMfWin32]
+----
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit Win32
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64;singleton:=true
+Bundle-Version: 4.9.1.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-NativeCode: native_lib/zmq/jzmq.dll; // <2>
+ native_lib/zmq/libzmq-v140-mt-4_2_0.dll;
+ native_lib/zmq/msvcp140.dll;
+ native_lib/zmq/vcruntime140.dll;
+ osname=Win32; processor=x86_64
+Eclipse-PlatformFilter: (&  (osgi.os=win32) (osgi.arch=x86_64) ) // <1>
+Bundle-ClassPath: .,
+ native_lib/zmq/zmq.jar
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Export-Package: org.zeromq
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64.Activator // <3>
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64
+----
+<1> This statement defines the platform filter.
+This means that the plugin is only executed on a win32 64 bit environment.
+On other environments the Equinox platform will reject to load this plugin.
+
+<2> Registration of the Native DLLs in the plugin.
+All required DLLs are registered here.
+Even though Equinox provides some intrinsic functionality for loading these DLLs,
+it is not sufficient for DLLs which require other DLLs.
+
+<3> The activator is needed to process the registered DLLs.
+It actually tries to load all of the libraries.
+
+.Activator.java for a Windows specific library plugin
+[source,java,#ExternalLibraryActivatorWin32][Test]
+----
+public class Activator extends NativeLibPlugin implements BundleActivator { // <1>
+
+	@Override
+	public void loadLibraryByAbsolutePath(String libNameAbsolutePath) {
+		System.load(libNameAbsolutePath); // <2>
+	}
+
+	@Override
+	public void loadLibraryByName(String libName) {
+		System.loadLibrary(libName); // <2>
+	}
+}
+----
+<1> The activator extends `NativeLibPlugin`.
+The class `NativeLibPlugin` provides all the logic to correctly read all DLLs and report on the status.
+It provides two abstract methods which have to be implemented.
+
+<2> Here are the actual calls to the Java system to load the libraries.
+This has to be implemented here to load the DLLs into the correct classpath context of the bundle.
+
+=== Platform-specific SO libraries on Linux
+
+The library `de.dlr.sc.virsat.external.lib.zmq.linux.x86_64` presents a good example for a Linux platform-specific third party library.
+Unlike the Windows version, it does not bundle the libraries.
+Instead it tries to resolve the libraries from the current system.
+The plugin is set up to use an environment variable during runtime to specify the library to be loaded.
+For compile time, a compatible library needs to be present as well.
+This library is stored in the usual _externalLib_ folder.
+It is not deployed, but it is needed for Tycho and Eclipse Compilation.
+The _MANIFEST.MF_ file is described below: 
+
+.MANIFEST.MF file of the Linux-specific ZeroMQ external library
+[#ExternalLibraryManifestMfLinux]
+----
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit Linux
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;singleton:=true
+Bundle-Version: 4.9.1.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) ) // <1>
+Eclipse-BundleShape: dir // <2>
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-ClassPath: native_lib/zmq/zmq.jar, <3>
+ external:$VS_JAR_ZMQ$, <4>
+ .
+Export-Package: org.zeromq <5>
+Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64.Activator
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64
+----
+<1> This statement defines the platform filter.
+This means that the plugin is only executed on a linux 64 bit environment.
+On other environments the Equinox platform will reject to load this plugin.
+
+<2> The bundle shape is set to `dir` which means that this plugin will be unzipped when installed into a _product_.
+This helps to manipulate files when needed.
+
+<3> The path to the library which is stored in the plugin sources, but not in the binary build.
+This is needed for Maven/Tycho to compile.
+In particular, Maven/Tycho does not evaluate the external libraries with environment variables correctly.
+
+<4> Reference to the library which should be used during runtime. 
+Eclipse/Equinox will evaluate the encoded environment variable and will try to load the library.
+
+<5> The exported packages to make the content of the library usable by consuming plugins.
+
+the _build.properties_ file needs to be prepared so it does not bundle the libraries into the final plugin.
+Otherwise it seems that plugin internal resources are preferred before external resources, and the externally linked libraries never get loaded.
+
+.build.properties which is not including the _externalLib_ folder
+[#ExternalLibraryBuildPropertiesLinux]
+----
+source.. = src/
+output.. = target/classes/
+bin.includes = META-INF/,\ //<1>
+               .,\
+               about_files/,\
+               about.html
+jars.compile.order = .
+----
+<1> Binary includes for the final plugin assembly.
+It does not include the _externalLib_ folder or one of its libraries.
+
+To make Eclipse compile, the library has to be mentioned in the classpath.
+The Eclipse compilation does not care about which library is mentioned in the _MANIFEST.MF_.
+
+.classpath file  referencing the zmq jar
+[#ExternalLibraryClasspathLinux]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jd...auncher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="native_lib/zmq/zmq.jar"/> // <1>
+	<classpathentry kind="src" path="src/"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
+----
+<1> Reference to the _zmq.jar_ file to make Eclipse compile.
+
+WARNING: Adding libraries as `external:...` to the _MANIFEST.MF_ file is dangerous.
+Eclipse and Tycho compile against the library which is part of the source code. 
+This library can be different during runtime.
+Differences may lead to unexpected behavior.
+Therefore, it is recommended to have the expected versions specified in the environment variables.
+
+
+
+[colophone]
+== Legal - License & Copyright
+
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| Travis CI Job Number: | {buildnr}
+|=== 
+
+Copyright (c) 2008-2019 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.

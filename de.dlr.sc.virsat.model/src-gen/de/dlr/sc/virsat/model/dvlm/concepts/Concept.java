@@ -35,6 +35,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#getVersion <em>Version</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#isDMF <em>DMF</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#getDisplayName <em>Display Name</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#isBeta <em>Beta</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage#getConcept()
@@ -171,13 +172,38 @@ public interface Concept extends IQualifiedName, IDescription, IActiveConcept, I
 	void setDisplayName(String value);
 
 	/**
+	 * Returns the value of the '<em><b>Beta</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Beta</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Beta</em>' attribute.
+	 * @see #setBeta(boolean)
+	 * @see de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage#getConcept_Beta()
+	 * @model
+	 * @generated
+	 */
+	boolean isBeta();
+
+	/**
+	 * Sets the value of the '{@link de.dlr.sc.virsat.model.dvlm.concepts.Concept#isBeta <em>Beta</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Beta</em>' attribute.
+	 * @see #isBeta()
+	 * @generated
+	 */
+	void setBeta(boolean value);
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * returns all categories from the concept which are not abstract.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='EList&lt;Category&gt; allCategories = new org.eclipse.emf.common.util.BasicEList&lt;&gt;();\r\n\r\nfor (Category category : getCategories()) {\r\n\tif (!category.isIsAbstract()) {\r\n\t\tallCategories.add(category);\r\n\t}\r\n}\r\n\t\t\t\r\nreturn allCategories;'"
 	 * @generated
 	 */
 	EList<Category> getNonAbstractCategories();

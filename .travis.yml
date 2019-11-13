@@ -1,9 +1,15 @@
 language: java
 
-dist: trusty
+dist: xenial
 
 jdk:
-- oraclejdk8
+- openjdk8
+ 
+services:
+  # -----------------------------------------------------
+  # Start up xvfb service for SWT bot GUI tests
+  # -----------------------------------------------------
+  - xvfb 
  
 cache:
   directories:
@@ -21,6 +27,12 @@ addons:
   # ---------------------------------------------------------------
   apt:
     packages:
+    - libvtk6.2 # libvtk7.1 # for bionic. At the moment we are still with jdk8 which is on xenial only
+    - libvtk6-java # libvtk7-java # for bionic
+    # - libvtk7-jni # for bionic
+    - libzmq5
+    - libzmq-java
+    - libzmq-jni
     - metacity
     - ant
 
@@ -32,15 +44,12 @@ stages:
 # Just one stage, multiple stages 
 # with maven overcomplicate the things
 # ------------------------------------
+- name: verify
 - name: build-test
 - name: build-assemble-deploy
 
 env:
   global:
-  # -------------------------------
-  # set the display for UI testing
-  # -------------------------------
-  - DISPLAY=:99.0
   # ---------------------------------------------
   # API Token for access to github
   # ---------------------------------------------
@@ -55,11 +64,6 @@ env:
   - SWTBOT_SCREENSHOT=true
 
 before_script:
-  # --------------------------------------------------
-  # Start the XVFB Service for ui testing as suggested
-  # by the travis documentation
-  # --------------------------------------------------
-  - sh -e /etc/init.d/xvfb start
   # -----------------------------------
   # Startup the metacity window manager
   # -----------------------------------
@@ -68,8 +72,12 @@ before_script:
   # create adirectory for Overtarget and try to receive language plugin
   # -------------------------------------------------------------------
   - mkdir -p ./OverTarget
-  - curl -L -o ./OverTarget/OverTarget.jar $OVERTARGET_REPO/$OVERTARGET_GROUP.language_$OVERTARGET_VERSION.jar
-  - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=$OVERTARGET_GROUP -DartifactId=$OVERTARGET_GROUP.language -Dversion=$OVERTARGET_VERSION -Dpackaging=jar
+  - travis_retry curl -v -L -o ./OverTarget/OverTarget.jar ${OVERTARGET_REPO}/${OVERTARGET_GROUP}.language_${OVERTARGET_VERSION}.jar/download#
+  - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=${OVERTARGET_GROUP} -DartifactId=${OVERTARGET_GROUP}.language -Dversion=${OVERTARGET_VERSION} -Dpackaging=jar
+  # --------------------------------------------------------------
+  # Setup environment variables for correct linking of vtk and zmq
+  # --------------------------------------------------------------
+  - source bash/setup_environment.sh
   
 after_failure:
   # ----------------------------------------
@@ -83,10 +91,18 @@ after_failure:
   # Show the debug output of Surefire Junit
   # ---------------------------------------
   - cat $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.test/target/surefire-reports/de.dlr.sc.virsat.test.ProjectAllTest-output.txt
-   
   
 jobs:
   include:
+    # --------------------------------------------
+    # Run a quicksanity check if all commits are
+    # handed in by known users
+    #---------------------------------------------
+    - stage: verify
+      name: Verify - Authors Sanity Check
+      script:
+      - ./bash/verify_commit_authors.sh known_authors.txt
+  
     # -----------------------------------------------------
     # Build and Test - SpotBugs Jobs
     # -----------------------------------------------------

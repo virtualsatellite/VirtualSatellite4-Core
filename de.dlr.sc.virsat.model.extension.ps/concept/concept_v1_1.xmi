@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v6/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd" name="de.dlr.sc.virsat.model.extension.ps" description="Product Structure Concept" version="1.1" displayName="Product Structure">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.ps" description="Product Structure Concept" version="1.1" displayName="Product Structure">
   <categories name="Document" description="Category to describe documents such as specifications" applicableFor="de.dlr.sc.virsat.model.extension.ps.ElementDefinition de.dlr.sc.virsat.model.extension.ps.ElementConfiguration de.dlr.sc.virsat.model.extension.ps.ElementOccurence de.dlr.sc.virsat.model.extension.ps.ElementRealization">
     <properties xsi:type="dvlm_cppd:StringProperty" name="documentName" description="Name of the document"/>
     <properties xsi:type="dvlm_cppd:StringProperty" name="note" description="Some not of the document"/>

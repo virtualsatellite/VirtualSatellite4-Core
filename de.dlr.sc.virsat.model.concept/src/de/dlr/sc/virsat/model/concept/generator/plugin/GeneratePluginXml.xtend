@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi
 class GeneratePluginXml {
 	
 	@Accessors
-	private PluginXmlReader pluginXmlReader;
+	PluginXmlReader pluginXmlReader;
 	
 	def serializeModel(Concept concept, PluginXmlReader pluginXmlReader, IFileSystemAccess fsa) {
 		this.pluginXmlReader = pluginXmlReader;

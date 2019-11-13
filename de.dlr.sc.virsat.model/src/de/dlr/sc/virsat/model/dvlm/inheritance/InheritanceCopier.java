@@ -182,7 +182,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @return a HashSet containing all copied CAs with updated references into the current tree.
 	 */
 	@SuppressWarnings("unchecked")
-	protected Set<CategoryAssignment> updateStep(StructuralElementInstance subSei) {
+	public Set<CategoryAssignment> updateStep(StructuralElementInstance subSei) {
 		boolean hasWritePermission = rightsHelper.hasWriteAccess(subSei);
 	
 		if (hasWritePermission) {
@@ -457,7 +457,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @param updateSei the SEI which wants to be updated 
 	 * @return the List of SEIs which have to be updated first
 	 */
-	protected List<StructuralElementInstance> getSuperSeisInheritanceOrder(StructuralElementInstance updateSei) {
+	public List<StructuralElementInstance> getSuperSeisInheritanceOrder(StructuralElementInstance updateSei) {
 		Set<StructuralElementInstance> unorderedSuperSeis = getSuperSeisInheritanceUnordered(updateSei);
 		List<StructuralElementInstance> orderedSuperSeis = orderByInheritance(unorderedSuperSeis);
 		return orderedSuperSeis;

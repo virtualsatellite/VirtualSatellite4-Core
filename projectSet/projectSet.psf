@@ -44,7 +44,7 @@
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.feature"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.ide"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.tests"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.test"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.ui"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept.feature"/>
@@ -87,10 +87,10 @@
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.test"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.ui"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.qudv.ui"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn.feature"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn.test"/>
-<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.svn.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.ui"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.swtbot.test"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.target"/>
 <project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.target.feature"/>
@@ -130,7 +130,7 @@
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1455204607665_31" label="VirSat Data Model Calculation" name="VirSat Data Model Calculation">
 <item elementID="=de.dlr.sc.virsat.model.calculation.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=de.dlr.sc.virsat.model.calculation.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.calculation.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.calculation.feature" type="4"/>
 <item elementID="=de.dlr.sc.virsat.model.calculation" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=de.dlr.sc.virsat.model.calculation.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>

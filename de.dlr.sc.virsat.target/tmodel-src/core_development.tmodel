@@ -4,6 +4,7 @@ TargetLibrary core_development {
 		Unit de.dlr.sc.virsat.branding.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.build.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.commons.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.excel.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.dependencies.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.docs.feature.feature.group version newest; 
 		Unit de.dlr.sc.virsat.external.lib.feature.feature.group version newest;
@@ -12,13 +13,18 @@ TargetLibrary core_development {
 		Unit de.dlr.sc.virsat.license.feature.feature.group version newest; 
 		Unit de.dlr.sc.virsat.model.calculation.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.budget.mass.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.budget.power.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.funcelectrical.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.statemachines.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.requirements.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.maturity.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.ps.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.tests.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.visualisation.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.extension.mechanical.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.project.feature.feature.group version newest;
-		Unit de.dlr.sc.virsat.svn.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.team.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.test.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.uiengine.feature.feature.group version newest;
 	}

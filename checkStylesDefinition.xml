@@ -62,8 +62,7 @@
     </module>
     <module name="ArrayTypeStyle"/>
     <module name="TodoComment">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+      <property name="format" value="(TODO)|(FIXME)"/>
     </module>
     <module name="UpperEll"/>
     <module name="Indentation"/>
@@ -87,7 +86,8 @@
       <property name="max" value="15"/>
     </module>
     <module name="JavadocMethod">
-      <property name="allowedAnnotations" value="Test,Before,After,RunWith,Override"/>
+      <property name="minLineCount" value="5"/>
+      <property name="allowedAnnotations" value="Test,Before,After,BeforeClass,AfterClass,RunWith,Override"/>
       <property name="suppressLoadErrors" value="true"/>
     </module>
     <module name="JavadocType"/>

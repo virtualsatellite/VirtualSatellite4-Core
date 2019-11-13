@@ -58,11 +58,11 @@ import org.w3c.dom.Node;
  */
 @SuppressWarnings("all")
 public class ResourceAccessBuilder extends IncrementalProjectBuilder {
-  public final static String MANIFEST_MF = "MANIFEST.MF";
+  public static final String MANIFEST_MF = "MANIFEST.MF";
   
-  public final static String PLUGIN_XML = "plugin.xml";
+  public static final String PLUGIN_XML = "plugin.xml";
   
-  public final static String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
+  public static final String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
   
   private final String[] CONCATENATE_ID = { "CategoryAssignmentBean", "extension", "command", "image", "handler", "conceptImage" };
   
