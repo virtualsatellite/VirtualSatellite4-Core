@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.ps displayname "Product Structure" description "Product Structure Concept"  version 1.1 {
+Concept de.dlr.sc.virsat.model.extension.ps displayname "Product Structure" description "Product Structure Concept"  version 1.2 {
 	
 	// --- Product Tree ---
 	StructuralElement ProductTree description "Product tree to describe specifications of used components" { 
@@ -24,6 +24,7 @@ Concept de.dlr.sc.virsat.model.extension.ps displayname "Product Structure" desc
 	 
 	// --- Configuration Tree ---	
 	StructuralElement ConfigurationTree description "Configuration tree representing how components are put together" { 
+		Inherits From [ElementDefinition];
 		IsRootStructuralElement;  
 	} 
 	 
@@ -34,6 +35,7 @@ Concept de.dlr.sc.virsat.model.extension.ps displayname "Product Structure" desc
 	
 	// --- Assembly Tree ---	
 	StructuralElement AssemblyTree description "Assembly tree to represent how components are actually integrated" {
+		Inherits From [ConfigurationTree];
 		IsRootStructuralElement;
 	}
 	
