@@ -24,20 +24,20 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 		concept.name + "." + PACKAGE_FOLDER;
 	}
 	
-	static def getConcreteClassName(EObject typeDefinition) {
-		"StructuralElementInstanceValidator";
+	static def getConcreteClassName(Concept concept) {
+		concept.name + "Validator";
 	}
 	
-	static def getAbstractClassName(EObject typeDefinition) {
-		"AStructuralElementInstanceValidator";
+	static def getAbstractClassName(Concept concept) {
+		"A" + concept.name + "Validator";
 	}
 	
 	override createConcreteClassFileName(Concept concept, EObject eObject) {
-		 concept.packageFolder + "/" + eObject.concreteClassName + ".java"
+		 concept.packageFolder + "/" + concept.concreteClassName + ".java"
 	}
 	
 	override createAbstractClassFileName(Concept concept, EObject eObject) {
-		 concept.packageFolder + "/" + eObject.abstractClassName + ".java"
+		 concept.packageFolder + "/" + concept.abstractClassName + ".java"
 	}
 	
 	public static val PACKAGE_FOLDER = "validator";
@@ -90,7 +90,7 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateAClassHeader(concept)»
-	public abstract class «conceptPart.abstractClassName» implements IStructuralElementInstanceValidator {
+	public abstract class «concept.abstractClassName» implements IStructuralElementInstanceValidator {
 
 		@Override
 		public boolean validate(StructuralElementInstance sei) {
@@ -111,7 +111,7 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateClassHeader(concept)»
-	public class «conceptPart.concreteClassName» extends «conceptPart.abstractClassName» implements IStructuralElementInstanceValidator {
+	public class «concept.concreteClassName» extends «concept.abstractClassName» implements IStructuralElementInstanceValidator {
 
 		@Override
 		public boolean validate(StructuralElementInstance sei) {
