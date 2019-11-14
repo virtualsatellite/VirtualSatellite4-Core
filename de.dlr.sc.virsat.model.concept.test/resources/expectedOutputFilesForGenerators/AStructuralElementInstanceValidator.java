@@ -25,11 +25,10 @@ import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValid
  * 
  * 
  */	
-public abstract class AStructuralElementInstanceValidator implements IStructuralElementInstanceValidator {
+public abstract class AtestConceptValidator implements IStructuralElementInstanceValidator {
 
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
 		return true;
 	}
 }
-

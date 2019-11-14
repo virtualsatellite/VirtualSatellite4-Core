@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValid
  * 
  * 
  */
-public class StructuralElementInstanceValidator extends AStructuralElementInstanceValidator implements IStructuralElementInstanceValidator {
+public class testConceptValidator extends AtestConceptValidator implements IStructuralElementInstanceValidator {
 
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
