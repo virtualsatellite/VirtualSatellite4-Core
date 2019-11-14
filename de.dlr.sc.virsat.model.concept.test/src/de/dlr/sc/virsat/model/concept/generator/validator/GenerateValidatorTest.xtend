@@ -45,7 +45,7 @@ class GenerateValidatorTest {
     def void testCreateConcreteClassFileName() {
     	val fileName = validatorGenerator.createConcreteClassFileName(concept, concept)
     	
-    	val expectedFileName = testConceptName + "/validator/StructuralElementInstanceValidator.java"
+    	val expectedFileName = testConceptName + "/validator/testConceptValidator.java"
     	
     	Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName)
     }
@@ -54,7 +54,7 @@ class GenerateValidatorTest {
     def void testCreateAbstractClassFileName() {
     	val fileName = validatorGenerator.createAbstractClassFileName(concept, concept)
     	
-    	val expectedFileName = testConceptName + "/validator/AStructuralElementInstanceValidator.java"
+    	val expectedFileName = testConceptName + "/validator/AtestConceptValidator.java"
     	
     	Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName)
     }

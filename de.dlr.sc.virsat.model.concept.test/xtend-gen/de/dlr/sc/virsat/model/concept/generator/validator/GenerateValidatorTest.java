@@ -58,14 +58,14 @@ public class GenerateValidatorTest {
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.validatorGenerator.createConcreteClassFileName(this.concept, this.concept);
-    final String expectedFileName = (this.testConceptName + "/validator/StructuralElementInstanceValidator.java");
+    final String expectedFileName = (this.testConceptName + "/validator/testConceptValidator.java");
     Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName);
   }
   
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.validatorGenerator.createAbstractClassFileName(this.concept, this.concept);
-    final String expectedFileName = (this.testConceptName + "/validator/AStructuralElementInstanceValidator.java");
+    final String expectedFileName = (this.testConceptName + "/validator/AtestConceptValidator.java");
     Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName);
   }
   
