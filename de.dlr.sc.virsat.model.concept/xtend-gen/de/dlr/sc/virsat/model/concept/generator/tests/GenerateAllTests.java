@@ -331,6 +331,12 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
       listOfTests.add((it + "Test"));
     };
     allMigratorsReader.migrators.forEach(_function_1);
+    String _fullQualifiedName = concept.getFullQualifiedName();
+    String _plus = (_fullQualifiedName + ".validator.");
+    String _plus_1 = (_plus + "StructuralElementInstanceValidator");
+    String _plus_2 = (_plus_1 + "Test");
+    importManager.register(_plus_2);
+    listOfTests.add(("StructuralElementInstanceValidator" + "Test"));
     StringConcatenation _builder = new StringConcatenation();
     {
       for(final String test : listOfTests) {
