@@ -7,24 +7,24 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.resources;
+package de.dlr.sc.virsat.server.data;
 
+public class Model {
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+    private String uuid;
 
-import de.dlr.sc.virsat.server.data.Workspace;
+    Model() {
+    }
 
-@Path("/war")
-public class WorkspaceAccessResource {
+    public Model(String uuid) {
+        this.uuid = uuid;
+    }
 
-	@GET
-	@Path("/{username}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Workspace hello(@PathParam("username") String name) {
-		return new Workspace(name);
-	}
+    public String getUUID() {
+        return uuid;
+    }
+
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
+    }
 }

@@ -7,24 +7,24 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.resources;
+package de.dlr.sc.virsat.server.data;
 
+public class Workspace {
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+    private String user;
 
-import de.dlr.sc.virsat.server.data.Workspace;
+    Workspace() {
+    }
 
-@Path("/war")
-public class WorkspaceAccessResource {
+    public Workspace(String name) {
+        this.user = name;
+    }
 
-	@GET
-	@Path("/{username}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Workspace hello(@PathParam("username") String name) {
-		return new Workspace(name);
-	}
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String name) {
+        this.user = name;
+    }
 }
