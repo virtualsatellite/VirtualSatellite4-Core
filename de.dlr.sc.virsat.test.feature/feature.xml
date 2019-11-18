@@ -79,6 +79,7 @@ by German Aerospace Center (DLR e.V.)
       <import feature="de.dlr.sc.virsat.uiengine.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="de.dlr.sc.virsat.server"/>
    </requires>
 
    <plugin

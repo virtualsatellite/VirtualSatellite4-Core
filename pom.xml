@@ -96,6 +96,9 @@
 				<module>de.dlr.sc.virsat.team.ui</module>
 				<module>de.dlr.sc.virsat.team.test</module>
 
+				<module>de.dlr.sc.virsat.server</module>
+				<module>de.dlr.sc.virsat.server.test</module>
+
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>
 				
@@ -182,6 +185,7 @@
 				<module>de.dlr.sc.virsat.project.feature</module>
 				<module>de.dlr.sc.virsat.graphiti.feature</module>
 				<module>de.dlr.sc.virsat.team.feature</module>
+				<module>de.dlr.sc.virsat.server.feature</module>
 				<module>de.dlr.sc.virsat.test.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
