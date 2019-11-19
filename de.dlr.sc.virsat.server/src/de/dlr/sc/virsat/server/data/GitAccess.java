@@ -9,22 +9,43 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.data;
 
-public class Workspace {
+import java.io.File;
+import java.nio.file.Paths;
 
-    private String user;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
-    Workspace() {
-    }
+public class GitAccess {
 
-    public Workspace(String name) {
-        this.user = name;
-    }
+	private static GitAccess gitAccess = null;
 
-    public String getUser() {
-        return user;
-    }
+	private GitAccess() {
+	}
 
-    public void setUser(String name) {
-        this.user = name;
-    }
+	public static GitAccess getInstance() {
+		if (gitAccess == null) {
+			gitAccess = new GitAccess();
+		}
+
+		return gitAccess;
+	}
+
+	/**
+	 * Clones a git repository from the given uri to a local repository.
+	 * @param uri git uri to clone from
+	 * @return local directory where the git repository was cloned to
+	 */
+	public String cloneRepository(String uri) {
+		String directory = Paths.get(uri).getFileName().toString();
+		try {
+			Git.cloneRepository()
+			   .setURI(uri)
+			   .setDirectory(new File(directory))
+			    .call();
+		} catch (GitAPIException e) {
+			e.printStackTrace();
+		}
+
+		return directory;
+	}
 }

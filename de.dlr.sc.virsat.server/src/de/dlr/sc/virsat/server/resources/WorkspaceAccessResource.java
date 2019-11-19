@@ -13,18 +13,15 @@ package de.dlr.sc.virsat.server.resources;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
-import de.dlr.sc.virsat.server.data.Workspace;
+import de.dlr.sc.virsat.server.data.GitAccess;
 
-@Path("/war")
+@Path("/persistence")
 public class WorkspaceAccessResource {
 
 	@GET
-	@Path("/{username}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Workspace hello(@PathParam("username") String name) {
-		return new Workspace(name);
+	@Path("/clone")
+	public String clone(@PathParam("uri") String uri) {
+		return GitAccess.getInstance().cloneRepository(uri);
 	}
 }

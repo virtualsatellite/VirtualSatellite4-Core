@@ -20,3 +20,5 @@ Export-Package: de.dlr.sc.virsat.server,
  de.dlr.sc.virsat.server.data,
  de.dlr.sc.virsat.server.resources
 Automatic-Module-Name: de.dlr.sc.virsat.team
+Import-Package: org.eclipse.jgit.api,
+ org.eclipse.jgit.api.errors;version="5.4.0"

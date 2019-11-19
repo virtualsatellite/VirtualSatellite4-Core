@@ -27,7 +27,7 @@ public class VirSatJettyServer {
 	private VirSatJettyServer() {
 	}
 	
-	private static final int VIRSAT_JETTY_PORT = 8080; 
+	private static final int VIRSAT_JETTY_PORT = 8000; 
 	
 	/**
 	 * Main entry point for Virtual Satellite Jetty Server
