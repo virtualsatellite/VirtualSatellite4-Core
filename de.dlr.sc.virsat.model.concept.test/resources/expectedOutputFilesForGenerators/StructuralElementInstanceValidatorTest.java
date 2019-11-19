@@ -30,11 +30,11 @@ import static org.junit.Assert.assertTrue;
  * 
  *
  */
-	public class StructuralElementInstanceValidatorTest extends AStructuralElementInstanceValidatorTest {
+public class StructuralElementInstanceValidatorTest extends AStructuralElementInstanceValidatorTest {
 
 	@Test	
 	public void testStructuralElementInstanceValidator() { 
-	StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
-	assertTrue(validator.validate(testSei));
+		StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
+		assertTrue(validator.validate(testSei));
 	}
 }
