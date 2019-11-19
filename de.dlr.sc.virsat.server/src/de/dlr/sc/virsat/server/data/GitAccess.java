@@ -50,26 +50,27 @@ public class GitAccess {
 		String directory = extractDirectoryFromUri(uri);
 		try {
 			Git.cloneRepository()
-			   .setURI(uri)
-			   .setDirectory(new File(directory))
-			   .setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
-			    .call();
+				.setURI(uri)
+				.setDirectory(new File(directory))
+				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+				.call();
 		} catch (GitAPIException e) {
 			e.printStackTrace();
 		}
 
 		return directory;
 	}
-	
+
 	/**
-	 * 
-	 * @param uri
-	 * @param message
-	 * @param username
-	 * @param password
-	 * @return
+	 * Commits the changes of the local directory of the repository belonging to the given URI.
+	 * Three commands are executed: add all files, commit (with message), push.
+	 * @param uri git URI for the repository
+	 * @param message commit message
+	 * @param username Username for login at Git instance
+	 * @param password Password for login at Git instance
+	 * @return "ok" if everything was ok; exception message if there was an exception
 	 */
-	public String commitChanges(String uri, String message, String username, String password) {
+	public String commit(String uri, String message, String username, String password) {
 		String result = "ok";
 		String directory = extractDirectoryFromUri(uri);
 
@@ -81,10 +82,10 @@ public class GitAccess {
 			git.commit()
 				.setAll(true)
 				.setMessage(message)
-			    .call();
+				.call();
 			git.push()
-			   .setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
-			   	.call();
+				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+				.call();
 		} catch (NoHeadException e) {
 			result = e.getMessage();
 			e.printStackTrace();
@@ -112,7 +113,35 @@ public class GitAccess {
 		}
 		return result;
 	}
-	
+
+	/**
+	 * 
+	 * @param uri
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public String update(String uri, String username, String password) {
+		String result = "ok";
+		String directory = extractDirectoryFromUri(uri);
+
+		Git git;
+		try {
+			git = Git.open(new File(directory));
+			git.pull()
+				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
+				.call();
+		} catch (IOException e) {
+			result = e.getMessage();
+			e.printStackTrace();
+		} catch (GitAPIException e) {
+			result = e.getMessage();
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 	/** 
 	 * Takes from the URI the last part, which is the directory of the repository
 	 * @param uri URI to get directory from
@@ -127,7 +156,7 @@ public class GitAccess {
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		return directory;
 	}
 }
