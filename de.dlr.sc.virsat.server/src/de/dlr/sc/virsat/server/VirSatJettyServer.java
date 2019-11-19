@@ -34,21 +34,46 @@ public class VirSatJettyServer {
 	 * @param args Not used currently
 	 */
 	public static void main(String[] args) {
-		Server server = new Server(VIRSAT_JETTY_PORT);
+		try {
+			new VirSatJettyServer().start();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-        ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
-        servletContextHandler.setContextPath("/");
-        server.setHandler(servletContextHandler);
+	private Server server;
+	
+	/**
+	 *  Call this method to start the Virtual Satellite specific Jetty Server.
+	 *  This method blocks in a join statement to wait make the cally thread wait
+	 *  until the server is shut down.
+	 * @throws Exception
+	 * @throws InterruptedException
+	 */
+	public void start() throws Exception, InterruptedException {
+		server = new Server(VIRSAT_JETTY_PORT);
 
-        ServletHolder servletHolder = servletContextHandler.addServlet(ServletContainer.class, "/rest/*");
-        servletHolder.setInitOrder(0);
-        servletHolder.setInitParameter("jersey.config.server.provider.packages", "de.dlr.sc.virsat.server.resources");
+		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
+		servletContextHandler.setContextPath("/");
+		server.setHandler(servletContextHandler);
 
-        try {
-            server.start();
-            server.join();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } 
-    }
+		ServletHolder servletHolder = servletContextHandler.addServlet(ServletContainer.class, "/rest/*");
+		servletHolder.setInitOrder(0);
+		servletHolder.setInitParameter(
+			"jersey.config.server.provider.packages",
+			"de.dlr.sc.virsat.server.resources");
+
+		server.start();
+		server.join();
+	}
+	
+	/**
+	 * Call this method to stop the server
+	 * @throws Exception
+	 */
+	public void stop() throws Exception {
+		if (server != null) {
+			server.stop();
+		}
+	}
 }

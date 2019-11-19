@@ -26,4 +26,22 @@ public class WorkspaceAccessResource {
 						@QueryParam("password") String password) {
 		return GitAccess.getInstance().cloneRepository(uri, username, password);
 	}
+	
+	@GET
+	@Path("/commit")
+	public String commit() {
+		// In terms of Virtual Satellite a commit on a git Repository is both,
+		// adding all files to the stage, committing them and pushing the changes
+		// to the upstream repository
+		
+		return "N/A";
+	}
+
+	@GET
+	@Path("/update")
+	public String update() {
+		// In terms of Virtual Satellite update means pulling first
+		// and then fetching all the changes into the local branch
+		return "N/A";
+	}
 }

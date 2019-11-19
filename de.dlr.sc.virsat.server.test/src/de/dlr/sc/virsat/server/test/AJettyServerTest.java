@@ -9,24 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.test;
 
+import org.junit.After;
+import org.junit.Before;
 
-import static org.junit.Assert.assertTrue;
+public abstract class AJettyServerTest {
 
-import org.junit.Test;
+	@Before
+	public void setUp() throws Exception {
+	}
 
-/**
- * This is an example test case to make Travis CI with amven tycho succeed.
- * Without a test maven/tycho fials. Still in case test cases are written here, 
- * this class, can be reused, replaced deleted 
- * @author fisc_ph
- *
- */
-public class ExampleTest {
-
-	@Test
-	public void testIsTrue() {
-		assertTrue("This is an example test case", true);
+	@After
+	public void tearDown() throws Exception {
 	}
 	
-
 }
