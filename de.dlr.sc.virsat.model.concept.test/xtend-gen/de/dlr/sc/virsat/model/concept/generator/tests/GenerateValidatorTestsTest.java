@@ -62,8 +62,8 @@ public class GenerateValidatorTestsTest {
       this.concept = this._parseHelper.parse(_builder);
       final String concreteClassfileName = this.generateValidatorTests.createConcreteClassFileName(this.concept, this.concept);
       final String abstractClassfileName = this.generateValidatorTests.createAbstractClassFileName(this.concept, this.concept);
-      final String expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/StructuralElementInstanceValidatorTest.java";
-      final String expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AStructuralElementInstanceValidatorTest.java";
+      final String expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/testConceptValidatorTest.java";
+      final String expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AtestConceptValidatorTest.java";
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName);
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
     } catch (Throwable _e) {

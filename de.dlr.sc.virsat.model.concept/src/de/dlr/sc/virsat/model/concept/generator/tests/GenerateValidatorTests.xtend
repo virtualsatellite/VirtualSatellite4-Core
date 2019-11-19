@@ -29,11 +29,11 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory
 class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	
 	static def getConcreteClassName(Concept concept) {
-		"StructuralElementInstanceValidator";
+		concept.name + "Validator";
 	}
 	
 	static def getAbstractClassName(Concept concept) {
-		"AStructuralElementInstanceValidator";
+		"A" + concept.name + "Validator";
 	}
 	
 	override createConcreteClassFileName(Concept concept, EObject eObject) {
@@ -109,7 +109,7 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	import org.junit.Before;
 	
 	«ConceptGeneratorUtil.generateAClassHeader(concept)»
-		public abstract class «concept.abstractClassName»Test {
+	public abstract class «concept.abstractClassName»Test {
 	
 		StructuralElementInstance testSei;
 	
@@ -120,7 +120,7 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	}
 	'''
 	
-	override protected declareClass(Concept concept, EObject type, ImportManager manager)  '''
+	override protected declareClass(Concept concept, EObject type, ImportManager manager) '''
 	// *****************************************************************
 	// * Class Declaration
 	// *****************************************************************
@@ -129,12 +129,12 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	import static org.junit.Assert.assertTrue;
 	
 	«ConceptGeneratorUtil.generateClassHeader(concept)»
-		public class «concept.concreteClassName»Test extends «concept.abstractClassName»Test {
+	public class «concept.concreteClassName»Test extends «concept.abstractClassName»Test {
 	
 		@Test	
-		public void test«concept.concreteClassName»() { 
-		StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
-		assertTrue(validator.validate(testSei));
+		public void test«concept.concreteClassName»() {
+			«concept.concreteClassName» validator = new «concept.concreteClassName»();
+			assertTrue(validator.validate(testSei));
 		}
 	}
 	'''

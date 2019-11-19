@@ -48,7 +48,7 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 	public static val PACKAGE_FOLDER = "test";
 	
 	override serializeModel(Concept concept, IFileSystemAccess fsa) {
-				
+	
 		// ************************************************************************************
 		// Abstract Class
 		// ************************************************************************************
@@ -91,7 +91,7 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 		«FOR clazz : importManager.importedClasses»
 			import «clazz»;
 		«ENDFOR»
-  	«ENDIF»
+	«ENDIF»
 	'''
 
 	// *************************************************************************************
@@ -189,8 +189,8 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 			listOfTests.add(it + "Test")
 		]
 		
-			importManager.register(concept.fullQualifiedName + ".validator." + "StructuralElementInstanceValidator" + "Test")
-			listOfTests.add("StructuralElementInstanceValidator" + "Test")
+		importManager.register(concept.fullQualifiedName + ".validator." + concept.name + "Validator" + "Test")
+		listOfTests.add(concept.name + "Validator" + "Test")
 			
 		return '''
 		«FOR test : listOfTests»
@@ -199,4 +199,3 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 		'''
 	}
 }
-

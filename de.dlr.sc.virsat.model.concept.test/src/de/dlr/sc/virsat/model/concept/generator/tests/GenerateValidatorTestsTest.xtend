@@ -45,34 +45,32 @@ class GenerateValidatorTestsTest {
 	}
 	
 	@Test
-    def void testCreateConcreteClassFileName() {
-      	concept = '''
+	def void testCreateConcreteClassFileName() {
+		concept = '''
 			Concept «TEST_CONCEPT_NAME» {
 			}
-	    '''.parse
+			'''.parse
 
 		val concreteClassfileName = generateValidatorTests.createConcreteClassFileName(concept, concept)
 		val abstractClassfileName = generateValidatorTests.createAbstractClassFileName(concept, concept)
-		val expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/StructuralElementInstanceValidatorTest.java"
-		val expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AStructuralElementInstanceValidatorTest.java"
+		val expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/testConceptValidatorTest.java"
+		val expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AtestConceptValidatorTest.java"
 
-		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName,	concreteClassfileName)
-		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName,	abstractClassfileName)
+		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName)
+		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
 	}
 	
 	@Test
-    def void testCreateForCategoryTests() {
-    	concept = '''
+	def void testCreateForCategoryTests() {
+		concept = '''
 			Concept «TEST_CONCEPT_NAME» {
 			}
-		'''.parse
-
-    	val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
-    	val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)
-    	
+			'''.parse
+		
+		val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
+		val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)
+		
 		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidatorTest.java")
 		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidatorTest.java")
-    }
-   
+	}
 }
-	
