@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jetty.server,
  org.eclipse.jetty.servlet,
  org.eclipse.jetty.util,
- javax.servlet
+ javax.servlet,
+ org.eclipse.jgit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -21,6 +22,3 @@ Export-Package: de.dlr.sc.virsat.server,
  de.dlr.sc.virsat.server.data,
  de.dlr.sc.virsat.server.resources
 Automatic-Module-Name: de.dlr.sc.virsat.server
-Import-Package: org.eclipse.jgit.api,
- org.eclipse.jgit.api.errors,
- org.eclipse.jgit.transport;version="5.4.0"
