@@ -23,7 +23,6 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.UnmergedPathsException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public class GitAccess {
 
@@ -43,23 +42,22 @@ public class GitAccess {
 	/**
 	 * Clones a git repository from the given uri to a local repository.
 	 * @param uri git uri to clone from
-	 * @param username Username for login at Git instance
-	 * @param password Password for login at Git instance
-	 * @return local directory where the git repository was cloned to
+	 * @return local directory where the git repository was cloned to, if successful; error message otherwise
 	 */
-	public String cloneRepository(String uri, String username, String password) {
+	public String cloneRepository(String uri) {
 		String directory = extractDirectoryFromUri(uri);
+		String result = directory;
 		try {
 			Git.cloneRepository()
 				.setURI(uri)
 				.setDirectory(new File(directory))
-				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
 				.call();
 		} catch (GitAPIException e) {
+			result = e.getMessage();
 			e.printStackTrace();
 		}
 
-		return directory;
+		return result;
 	}
 
 	/**
@@ -67,11 +65,9 @@ public class GitAccess {
 	 * Three commands are executed: add all files, commit (with message), push.
 	 * @param uri git URI for the repository
 	 * @param message commit message
-	 * @param username Username for login at Git instance
-	 * @param password Password for login at Git instance
 	 * @return "ok" if everything was ok; exception message if there was an exception
 	 */
-	public String commit(String uri, String message, String username, String password) {
+	public String commit(String uri, String message) {
 		String result = "ok";
 		String directory = extractDirectoryFromUri(uri);
 
@@ -85,7 +81,6 @@ public class GitAccess {
 				.setMessage(message)
 				.call();
 			git.push()
-				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
 				.call();
 		} catch (NoHeadException e) {
 			result = e.getMessage();
@@ -118,11 +113,9 @@ public class GitAccess {
 	/**
 	 * 
 	 * @param uri
-	 * @param username
-	 * @param password
 	 * @return
 	 */
-	public String update(String uri, String username, String password) {
+	public String update(String uri) {
 		String result = "ok";
 		String directory = extractDirectoryFromUri(uri);
 
@@ -130,7 +123,6 @@ public class GitAccess {
 		try {
 			git = Git.open(new File(directory));
 			git.pull()
-				.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
 				.call();
 		} catch (IOException e) {
 			result = e.getMessage();
