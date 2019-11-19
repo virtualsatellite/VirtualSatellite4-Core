@@ -12,7 +12,7 @@ package de.dlr.sc.virsat.server.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 import de.dlr.sc.virsat.server.data.GitAccess;
 
@@ -21,7 +21,9 @@ public class WorkspaceAccessResource {
 
 	@GET
 	@Path("/clone")
-	public String clone(@PathParam("uri") String uri) {
-		return GitAccess.getInstance().cloneRepository(uri);
+	public String clone(@QueryParam("uri") String uri,
+						@QueryParam("username") String username,
+						@QueryParam("password") String password) {
+		return GitAccess.getInstance().cloneRepository(uri, username, password);
 	}
 }

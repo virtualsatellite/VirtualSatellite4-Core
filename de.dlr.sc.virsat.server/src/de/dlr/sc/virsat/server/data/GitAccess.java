@@ -10,10 +10,12 @@
 package de.dlr.sc.virsat.server.data;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public class GitAccess {
 
@@ -35,12 +37,20 @@ public class GitAccess {
 	 * @param uri git uri to clone from
 	 * @return local directory where the git repository was cloned to
 	 */
-	public String cloneRepository(String uri) {
-		String directory = Paths.get(uri).getFileName().toString();
+	public String cloneRepository(String uri, String username, String password) {
+		URL url = null;
+		String directory = "";
+		try {
+			url = new URL(uri);
+			directory = url.getFile(); // TODO: better extraction
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			Git.cloneRepository()
 			   .setURI(uri)
 			   .setDirectory(new File(directory))
+			   .setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password))
 			    .call();
 		} catch (GitAPIException e) {
 			e.printStackTrace();
