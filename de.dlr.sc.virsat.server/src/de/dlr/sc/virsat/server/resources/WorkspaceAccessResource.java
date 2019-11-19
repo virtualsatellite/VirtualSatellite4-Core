@@ -29,12 +29,15 @@ public class WorkspaceAccessResource {
 	
 	@GET
 	@Path("/commit")
-	public String commit() {
+	public String commit(@QueryParam("uri") String uri,
+						 @QueryParam("message") String message,
+						 @QueryParam("username") String username,
+						 @QueryParam("password") String password) {
 		// In terms of Virtual Satellite a commit on a git Repository is both,
 		// adding all files to the stage, committing them and pushing the changes
 		// to the upstream repository
 		
-		return "N/A";
+		return GitAccess.getInstance().commitChanges(uri, message, username, password);
 	}
 
 	@GET
