@@ -8,4 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit
 Export-Package: de.dlr.sc.virsat.server.test
-Automatic-Module-Name: de.dlr.sc.virsat.team.test
+Automatic-Module-Name: de.dlr.sc.virsat.server.test

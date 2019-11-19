@@ -226,4 +226,4 @@ Export-Package: .,
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-Activator: de.dlr.virsat.external.lib.jersey.Activator
-Automatic-Module-Name: de.dlr.sc.virsat.external.lib.json-simple
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey
