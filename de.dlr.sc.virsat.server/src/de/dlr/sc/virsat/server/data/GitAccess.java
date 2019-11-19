@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.AbortedByHookException;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
@@ -152,7 +153,7 @@ public class GitAccess {
 		String directory = "";
 		try {
 			url = new URL(uri);
-			directory = url.getFile(); // TODO: better extraction
+			directory = FilenameUtils.getBaseName(url.getPath());
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		}
