@@ -37,14 +37,16 @@ public class WorkspaceAccessResource {
 		// adding all files to the stage, committing them and pushing the changes
 		// to the upstream repository
 		
-		return GitAccess.getInstance().commitChanges(uri, message, username, password);
+		return GitAccess.getInstance().commit(uri, message, username, password);
 	}
 
 	@GET
 	@Path("/update")
-	public String update() {
+	public String update(@QueryParam("uri") String uri,
+						 @QueryParam("username") String username,
+						 @QueryParam("password") String password) {
 		// In terms of Virtual Satellite update means pulling first
 		// and then fetching all the changes into the local branch
-		return "N/A";
+		return GitAccess.getInstance().update(uri, username, password);
 	}
 }
