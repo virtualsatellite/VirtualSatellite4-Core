@@ -45,11 +45,12 @@ class GenerateValidatorTestsTest {
 	}
 	
 	@Test
-    def void testCreateConcreteClassFileName() {
-      	concept = '''
-			Concept «TEST_CONCEPT_NAME» {
-			}
-	    '''.parse
+	def void testCreateConcreteClassFileName() {
+		concept = '''
+		Concept «TEST_CONCEPT_NAME» {
+			
+		}
+		'''.parse
 
 		val concreteClassfileName = generateValidatorTests.createConcreteClassFileName(concept, concept)
 		val abstractClassfileName = generateValidatorTests.createAbstractClassFileName(concept, concept)
@@ -61,18 +62,16 @@ class GenerateValidatorTestsTest {
 	}
 	
 	@Test
-    def void testCreateForCategoryTests() {
-    	concept = '''
+	def void testCreateForCategoryTests() {
+		concept = '''
 			Concept «TEST_CONCEPT_NAME» {
 			}
 		'''.parse
-
-    	val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
-    	val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)
-    	
+		
+		val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
+		val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)
+		
 		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidatorTest.java")
 		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidatorTest.java")
-    }
-   
+	}
 }
-	

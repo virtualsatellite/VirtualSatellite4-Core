@@ -57,6 +57,8 @@ public class GenerateValidatorTestsTest {
       _builder.append(this.TEST_CONCEPT_NAME);
       _builder.append(" {");
       _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.newLine();
       _builder.append("}");
       _builder.newLine();
       this.concept = this._parseHelper.parse(_builder);
