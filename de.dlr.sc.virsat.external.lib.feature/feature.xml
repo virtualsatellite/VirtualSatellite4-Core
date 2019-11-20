@@ -136,7 +136,7 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
-         id="com.sun.jersey"
+         id="de.dlr.sc.virsat.external.lib.jetty"
          download-size="0"
          install-size="0"
          version="0.0.0"
