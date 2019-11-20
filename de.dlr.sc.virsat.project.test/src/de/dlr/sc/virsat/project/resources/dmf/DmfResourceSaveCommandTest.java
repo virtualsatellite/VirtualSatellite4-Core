@@ -31,7 +31,7 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 public class DmfResourceSaveCommandTest extends AProjectTestCase {
 
-	StructuralElementInstance sei;
+	private StructuralElementInstance sei;
 
 	@Override
 	public void setUp() throws CoreException {
