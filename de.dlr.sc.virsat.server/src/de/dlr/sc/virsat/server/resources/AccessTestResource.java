@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 import de.dlr.sc.virsat.server.data.Model;
 
 @Path("/mar")
-public class ModelAccessResource {
+public class AccessTestResource {
 
 	@GET
 	@Path("/{uuid}")
