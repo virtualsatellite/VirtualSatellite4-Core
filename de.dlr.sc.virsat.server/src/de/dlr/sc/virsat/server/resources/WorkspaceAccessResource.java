@@ -18,35 +18,30 @@ import de.dlr.sc.virsat.server.data.GitAccess;
 
 @Path("/persistence")
 public class WorkspaceAccessResource {
-
+	
 	@GET
 	@Path("/clone")
 	public String clone(@QueryParam("uri") String uri,
-						@QueryParam("username") String username,
-						@QueryParam("password") String password) {
-		return GitAccess.getInstance().cloneRepository(uri, username, password);
+						@QueryParam("localroot") String localRoot) {
+		return GitAccess.getInstance().cloneRepository(uri, localRoot);
 	}
 	
 	@GET
 	@Path("/commit")
-	public String commit(@QueryParam("uri") String uri,
-						 @QueryParam("message") String message,
-						 @QueryParam("username") String username,
-						 @QueryParam("password") String password) {
+	public String commit(@QueryParam("localdirectory") String localdirectory,
+						 @QueryParam("message") String message) {
 		// In terms of Virtual Satellite a commit on a git Repository is both,
 		// adding all files to the stage, committing them and pushing the changes
 		// to the upstream repository
 		
-		return GitAccess.getInstance().commit(uri, message, username, password);
+		return GitAccess.getInstance().commit(localdirectory, message);
 	}
 
 	@GET
 	@Path("/update")
-	public String update(@QueryParam("uri") String uri,
-						 @QueryParam("username") String username,
-						 @QueryParam("password") String password) {
+	public String update(@QueryParam("localdirectory") String localdirectory) {
 		// In terms of Virtual Satellite update means pulling first
 		// and then fetching all the changes into the local branch
-		return GitAccess.getInstance().update(uri, username, password);
+		return GitAccess.getInstance().update(localdirectory);
 	}
 }
