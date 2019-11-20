@@ -11,9 +11,6 @@ package de.dlr.sc.virsat.server;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.glassfish.jersey.servlet.ServletContainer;
-
 import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 
 /**
@@ -55,13 +52,9 @@ public class VirSatJettyServer {
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
 		servletContextHandler.setContextPath("/");
-		server.setHandler(servletContextHandler);
+		servletContextHandler.addServlet(VirSatModelAccessServlet.class, "/rest/*");
 
-		ServletHolder servletHolder = servletContextHandler.addServlet(ServletContainer.class, "/rest/*");
-		servletHolder.setInitOrder(0);
-		servletHolder.setInitParameter(
-			"jersey.config.server.provider.packages",
-			"de.dlr.sc.virsat.server.resources");
+		server.setHandler(servletContextHandler);
 
 		server.start();
 		return this;

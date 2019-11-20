@@ -6,13 +6,13 @@ Bundle-Version: 4.10.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.server.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
- de.dlr.sc.virsat.external.lib.jersey,
  org.eclipse.jetty.http,
  org.eclipse.jetty.io,
  org.eclipse.jetty.security,
  org.eclipse.jetty.server,
  org.eclipse.jetty.servlet,
  org.eclipse.jetty.util,
+ de.dlr.sc.virsat.external.lib.jersey,
  javax.servlet,
  org.eclipse.jgit,
  org.slf4j.api,

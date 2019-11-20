@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.After;
@@ -45,7 +46,6 @@ public abstract class AJettyServerTest {
 	public void setUp() throws Exception {
 		server = new VirSatJettyServer();
 		server.start();
-		System.out.println("The Serevr magically got started... weehauw");
 	}
 
 	@After
@@ -56,6 +56,6 @@ public abstract class AJettyServerTest {
 	@AfterClass
 	public static void tearDownClass() throws IOException { 
 		// Clean Up temporary Files
-		Files.delete(pathToTempUpstreamRepository.toPath());
+		FileUtils.deleteDirectory(pathToTempUpstreamRepository);
 	}
 }

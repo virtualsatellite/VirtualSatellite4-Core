@@ -20,7 +20,7 @@ import de.dlr.sc.virsat.server.data.Model;
 
 @Path("/mar")
 public class ModelAccessResource {
-
+	
 	@GET
 	@Path("/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
