@@ -42,11 +42,14 @@ public class GitAccess {
 	/**
 	 * Clones a git repository from the given uri to a local repository.
 	 * @param uri git uri to clone from
+	 * @param localRoot directory where the cloned repository should be put below
 	 * @return local directory where the git repository was cloned to, if successful; error message otherwise
 	 */
-	public String cloneRepository(String uri) {
+	public String cloneRepository(String uri, String localRoot) {
 		String directory = extractDirectoryFromUri(uri);
+		directory = FilenameUtils.concat(localRoot, directory);
 		String result = directory;
+		
 		try {
 			Git.cloneRepository()
 				.setURI(uri)
@@ -63,16 +66,15 @@ public class GitAccess {
 	/**
 	 * Commits the changes of the local directory of the repository belonging to the given URI.
 	 * Three commands are executed: add all files, commit (with message), push.
-	 * @param uri git URI for the repository
+	 * @param localDirectory directory of local repository
 	 * @param message commit message
 	 * @return "ok" if everything was ok; exception message if there was an exception
 	 */
-	public String commit(String uri, String message) {
+	public String commit(String localDirectory, String message) {
 		String result = "ok";
-		String directory = extractDirectoryFromUri(uri);
 
 		try {
-			Git git = Git.open(new File(directory));
+			Git git = Git.open(new File(localDirectory));
 			git.add()
 				.addFilepattern(".")
 				.call();
@@ -112,16 +114,14 @@ public class GitAccess {
 
 	/**
 	 * 
-	 * @param uri
+	 * @param localDirectory directory of local repository
 	 * @return
 	 */
-	public String update(String uri) {
+	public String update(String localDirectory) {
 		String result = "ok";
-		String directory = extractDirectoryFromUri(uri);
-
 		Git git;
 		try {
-			git = Git.open(new File(directory));
+			git = Git.open(new File(localDirectory));
 			git.pull()
 				.call();
 		} catch (IOException e) {
