@@ -227,5 +227,4 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
  javax.servlet;visibility:=reexport
 Bundle-Activator: de.dlr.virsat.external.lib.jersey.Activator
-Eclipse-BuddyPolicy: registered
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey
