@@ -48,7 +48,7 @@ public class CadExportWizard extends Wizard implements INewWizard {
 	 */
 	public CadExportWizard() {
 		super();
-		setWindowTitle("Cad JSON Export");
+		setWindowTitle("Cad JSON Export (Beta)");
 		
 		// Setup persistency
 		IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
