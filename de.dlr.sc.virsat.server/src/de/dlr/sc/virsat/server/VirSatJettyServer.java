@@ -24,7 +24,7 @@ import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
  */
 public class VirSatJettyServer {
 
-	private VirSatJettyServer() {
+	public VirSatJettyServer() {
 	}
 	
 	private static final int VIRSAT_JETTY_PORT = 8000; 
@@ -35,7 +35,7 @@ public class VirSatJettyServer {
 	 */
 	public static void main(String[] args) {
 		try {
-			new VirSatJettyServer().start();
+			new VirSatJettyServer().start().join();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -50,7 +50,7 @@ public class VirSatJettyServer {
 	 * @throws Exception
 	 * @throws InterruptedException
 	 */
-	public void start() throws Exception, InterruptedException {
+	public VirSatJettyServer start() throws Exception, InterruptedException {
 		server = new Server(VIRSAT_JETTY_PORT);
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
@@ -64,7 +64,12 @@ public class VirSatJettyServer {
 			"de.dlr.sc.virsat.server.resources");
 
 		server.start();
+		return this;
+	}
+	
+	public VirSatJettyServer join() throws InterruptedException {
 		server.join();
+		return this;
 	}
 	
 	/**

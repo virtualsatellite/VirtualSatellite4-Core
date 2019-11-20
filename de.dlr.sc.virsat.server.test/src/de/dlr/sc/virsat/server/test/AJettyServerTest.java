@@ -18,27 +18,44 @@ import java.nio.file.Files;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import de.dlr.sc.virsat.server.VirSatJettyServer;
+
 public abstract class AJettyServerTest {
 
+	private static File pathToTempUpstreamRepository;
+	
 	@BeforeClass
-	public void setUpClass() throws IOException, IllegalStateException, GitAPIException {
-		// Create an upstream repository
-		File pathToUpstreamRepository = File.createTempFile("VirSatUpstreamRepo", "");
-        Files.delete(pathToUpstreamRepository.toPath());
+	public static void setUpClass() throws IOException, IllegalStateException, GitAPIException {
 		
-		Git git = Git.init().setDirectory(pathToUpstreamRepository).call();
+		// Create an upstream repository within the temporary file area
+		pathToTempUpstreamRepository = File.createTempFile("VirSatUpstreamRepo", "");
+		Files.delete(pathToTempUpstreamRepository.toPath());
+
+		Git git = Git.init().setDirectory(pathToTempUpstreamRepository).call();
 		assertTrue(git.status().call().isClean());
 	}
+
+	private VirSatJettyServer server;
 	
 	@Before
 	public void setUp() throws Exception {
+		server = new VirSatJettyServer();
+		server.start();
+		System.out.println("The Serevr magically got started... weehauw");
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		server.stop();
 	}
 	
+	@AfterClass
+	public static void tearDownClass() throws IOException { 
+		// Clean Up temporary Files
+		Files.delete(pathToTempUpstreamRepository.toPath());
+	}
 }

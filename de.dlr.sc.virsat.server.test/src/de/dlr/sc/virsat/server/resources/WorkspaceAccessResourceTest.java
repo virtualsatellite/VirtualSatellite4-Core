@@ -34,14 +34,14 @@ public class WorkspaceAccessResourceTest extends AJettyServerTest {
 		fail("Not yet implemented");
 	}
 
-	@Test
-	public void testCommit() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testUpdate() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	public void testCommit() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testUpdate() {
+//		fail("Not yet implemented");
+//	}
 
 }
