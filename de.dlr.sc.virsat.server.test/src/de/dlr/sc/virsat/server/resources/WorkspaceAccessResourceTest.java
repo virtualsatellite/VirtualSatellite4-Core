@@ -51,7 +51,7 @@ public class WorkspaceAccessResourceTest extends AJettyServerTest {
 		
 		String serverResponse = target.
 			path("rest").
-			path("mar").
+			path("atr").
 			path("data").
 			request().
 			accept(MediaType.APPLICATION_JSON).
@@ -60,21 +60,17 @@ public class WorkspaceAccessResourceTest extends AJettyServerTest {
 		
 		String serverJson = target.
 				path("rest").
-				path("mar").
+				path("atr").
 				path("data").
 				request().
 				accept(MediaType.APPLICATION_JSON).
 				get(String.class);
 		
-		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/mar/data, status=200, reason=OK}}";
+		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/atr/data, status=200, reason=OK}}";
 		String expectedJson = "{\"UUID\":\"data\"}";
 		
 		assertEquals("Server response is correct", expectedResponse, serverResponse);
 		assertEquals("Server json paylaod is correct", expectedJson, serverJson);
-	}
-
-	private static URI getBaseURI() {
-	    return UriBuilder.fromUri("http://localhost:8000/").build();
 	}
 
 //	@Test
