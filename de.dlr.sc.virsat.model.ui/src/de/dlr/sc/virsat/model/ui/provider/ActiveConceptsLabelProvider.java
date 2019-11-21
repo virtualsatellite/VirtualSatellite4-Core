@@ -25,10 +25,18 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		if (element instanceof ActiveConceptConfigurationElement) {
 			ActiveConceptConfigurationElement acce = (ActiveConceptConfigurationElement) element;
-			return acce.getId() + " [" + acce.getVersion() + "]";
+			String acceDisplayName = acce.getDisplayName();
+			
+			if(acceDisplayName == null) {
+				return acce.getId() + " [" + acce.getVersion() + "]";
+				
+			} else {
+				return acceDisplayName + " – " + acce.getId() + " [" + acce.getVersion() + "]";
+			}
+			
 		} else if (element instanceof Concept) {
 			Concept concept = (Concept) element;
-			return concept.getName() + " [" + concept.getVersion() + "]";
+			return concept.getDisplayName() + " [" + concept.getVersion() + "]";
 		}
 		return super.getText(element);
 	}
