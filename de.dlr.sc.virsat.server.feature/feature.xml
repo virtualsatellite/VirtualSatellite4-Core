@@ -8,7 +8,7 @@
       license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
-      VirSat Team Connector
+      VirSat Jetty Headless Server with REST API using Jersey
 German Aerospace Center (DLR e.V.)
 Simulation and Software Technology
    </description>
@@ -26,11 +26,23 @@ by German Aerospace Center (DLR e.V.)
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="de.dlr.sc.virsat.external.lib.jersey"/>
+      <import feature="org.eclipse.jgit" version="5.4.0.201906121030-r"/>
       <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.jgit" version="5.4.0.201906121030-r"/>
       <import feature="de.dlr.sc.virsat.external.lib.feature" version="4.10.0.qualifier"/>
+      <import plugin="org.eclipse.jetty.http"/>
+      <import plugin="org.eclipse.jetty.io"/>
+      <import plugin="org.eclipse.jetty.security"/>
+      <import plugin="org.eclipse.jetty.server"/>
+      <import plugin="org.eclipse.jetty.servlet"/>
+      <import plugin="org.eclipse.jetty.util"/>
+      <import plugin="javax.servlet"/>
+      <import plugin="org.slf4j.api"/>
+      <import plugin="org.apache.commons.io"/>
+      <import plugin="org.bouncycastle.bcpg"/>
+      <import plugin="org.bouncycastle.bcprov"/>
    </requires>
 
    <plugin

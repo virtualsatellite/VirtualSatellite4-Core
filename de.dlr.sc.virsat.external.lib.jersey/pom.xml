@@ -20,6 +20,4 @@ SPDX-License-Identifier: EPL-2.0
 	<artifactId>de.dlr.sc.virsat.external.lib.jersey</artifactId>
 	<name>de.dlr.sc.virsat.external.lib.jersey</name>
 	<packaging>eclipse-plugin</packaging>
-
-
 </project>
