@@ -14,7 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-import de.dlr.sc.virsat.server.data.GitAccess;
+import de.dlr.sc.virsat.server.data.VirSatGitAccess;
 
 @Path("/persistence")
 public class WorkspaceAccessResource {
@@ -23,7 +23,7 @@ public class WorkspaceAccessResource {
 	@Path("/clone")
 	public String clone(@QueryParam("uri") String uri,
 						@QueryParam("localroot") String localRoot) {
-		return GitAccess.getInstance().cloneRepository(uri, localRoot);
+		return VirSatGitAccess.getInstance().cloneRepository(uri, localRoot);
 	}
 	
 	@GET
@@ -34,7 +34,7 @@ public class WorkspaceAccessResource {
 		// adding all files to the stage, committing them and pushing the changes
 		// to the upstream repository
 		
-		return GitAccess.getInstance().commit(localdirectory, message);
+		return VirSatGitAccess.getInstance().commit(localdirectory, message);
 	}
 
 	@GET
@@ -42,6 +42,6 @@ public class WorkspaceAccessResource {
 	public String update(@QueryParam("localdirectory") String localdirectory) {
 		// In terms of Virtual Satellite update means pulling first
 		// and then fetching all the changes into the local branch
-		return GitAccess.getInstance().update(localdirectory);
+		return VirSatGitAccess.getInstance().update(localdirectory);
 	}
 }

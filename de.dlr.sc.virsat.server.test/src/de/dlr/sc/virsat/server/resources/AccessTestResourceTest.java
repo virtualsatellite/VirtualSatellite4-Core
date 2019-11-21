@@ -25,9 +25,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.test.AJettyServerTest;
+import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
-public class WorkspaceAccessResourceTest extends AJettyServerTest {
+public class AccessTestResourceTest extends AGitAndJettyServerTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -40,7 +40,7 @@ public class WorkspaceAccessResourceTest extends AJettyServerTest {
 	}
 
 	@Test
-	public void testCloneString() {
+	public void testServerConnection() {
 		ClientConfig config = new ClientConfig();
 		
 		Client client = ClientBuilder.newClient(config);
@@ -72,15 +72,4 @@ public class WorkspaceAccessResourceTest extends AJettyServerTest {
 		assertEquals("Server response is correct", expectedResponse, serverResponse);
 		assertEquals("Server json paylaod is correct", expectedJson, serverJson);
 	}
-
-//	@Test
-//	public void testCommit() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testUpdate() {
-//		fail("Not yet implemented");
-//	}
-
 }

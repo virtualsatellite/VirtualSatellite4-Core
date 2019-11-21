@@ -15,27 +15,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.io.FilenameUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.AbortedByHookException;
-import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.api.errors.NoMessageException;
-import org.eclipse.jgit.api.errors.UnmergedPathsException;
-import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+import de.dlr.sc.virsat.server.Activator;
 
-public class GitAccess {
+/**
+ * This class implements VirSat Style Git Access, which basically
+ * pulls and fetches as well as commits and pushes.
+ * Implementation is based purely on jGit and not eGit 
+ *
+ */
+public class VirSatGitAccess {
 
-	private static GitAccess gitAccess = null;
+	public static final String STATUS_OK = "ok";
+	
+	private static VirSatGitAccess gitAccess = null;
 
-	private GitAccess() {
+	private VirSatGitAccess() {
 	}
 
-	public static GitAccess getInstance() {
+	public static VirSatGitAccess getInstance() {
 		if (gitAccess == null) {
-			gitAccess = new GitAccess();
+			gitAccess = new VirSatGitAccess();
 		}
-
 		return gitAccess;
 	}
 
@@ -57,7 +60,7 @@ public class GitAccess {
 				.call();
 		} catch (GitAPIException e) {
 			result = e.getMessage();
-			e.printStackTrace();
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed to git clone" + e.getMessage()));
 		}
 
 		return result;
@@ -71,7 +74,7 @@ public class GitAccess {
 	 * @return "ok" if everything was ok; exception message if there was an exception
 	 */
 	public String commit(String localDirectory, String message) {
-		String result = "ok";
+		String result = STATUS_OK;
 
 		try {
 			Git git = Git.open(new File(localDirectory));
@@ -84,31 +87,10 @@ public class GitAccess {
 				.call();
 			git.push()
 				.call();
-		} catch (NoHeadException e) {
+		} catch (IOException | GitAPIException e) {
 			result = e.getMessage();
-			e.printStackTrace();
-		} catch (NoMessageException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		} catch (UnmergedPathsException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		} catch (ConcurrentRefUpdateException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		} catch (WrongRepositoryStateException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		} catch (AbortedByHookException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		} catch (GitAPIException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		} catch (IOException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		}
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed to git commit" + e.getMessage()));
+		} 
 		return result;
 	}
 
@@ -118,19 +100,16 @@ public class GitAccess {
 	 * @return
 	 */
 	public String update(String localDirectory) {
-		String result = "ok";
+		String result = STATUS_OK;
 		Git git;
 		try {
 			git = Git.open(new File(localDirectory));
 			git.pull()
 				.call();
-		} catch (IOException e) {
+		} catch (IOException | GitAPIException e) {
 			result = e.getMessage();
-			e.printStackTrace();
-		} catch (GitAPIException e) {
-			result = e.getMessage();
-			e.printStackTrace();
-		}
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed to git update" + e.getMessage()));
+		} 
 		
 		return result;
 	}
@@ -146,8 +125,8 @@ public class GitAccess {
 		try {
 			url = new URL(uri);
 			directory = FilenameUtils.getBaseName(url.getPath());
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
+		} catch (MalformedURLException e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed to extract Directory from Uri: " + e.getMessage()));
 		}
 
 		return directory;

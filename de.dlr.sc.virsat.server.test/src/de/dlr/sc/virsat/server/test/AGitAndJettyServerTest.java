@@ -25,7 +25,7 @@ import org.junit.BeforeClass;
 
 import de.dlr.sc.virsat.server.VirSatJettyServer;
 
-public abstract class AJettyServerTest {
+public abstract class AGitAndJettyServerTest {
 
 	private static File pathToTempUpstreamRepository;
 	

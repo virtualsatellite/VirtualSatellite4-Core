@@ -18,6 +18,10 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
+/**
+ * This servlet registers the classes that should be provided as REST resources.
+ *
+ */
 public class VirSatModelAccessServlet extends ApplicationServletContainer implements Servlet {
 	
 	@Override

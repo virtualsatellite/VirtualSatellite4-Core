@@ -13,7 +13,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.server.resources.WorkspaceAccessResourceTest;
+import de.dlr.sc.virsat.server.data.VirSatGitAccessTest;
+import de.dlr.sc.virsat.server.resources.AccessTestResourceTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -23,7 +24,8 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({WorkspaceAccessResourceTest.class})
+@SuiteClasses({VirSatGitAccessTest.class,
+	AccessTestResourceTest.class})
 
 public class AllTests {
 

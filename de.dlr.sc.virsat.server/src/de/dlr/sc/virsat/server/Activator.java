@@ -9,17 +9,36 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+/**
+ * Activator for the Server Plugin
+ *
+ */
+public class Activator extends Plugin {
 
+	// The plug in ID
+	private static String pluginId;
+	// The shared instance
+	private static Activator plugin;
+	
 	@Override
 	public void start(BundleContext context) throws Exception {
+		plugin = this;
+		pluginId = context.getBundle().getSymbolicName();
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		plugin = null;
 	}
 
+	public static Activator getDefault() {
+		return plugin;
+	}
+
+	public static String getPluginId() {
+		return pluginId;
+	}
 }
