@@ -51,7 +51,6 @@ public class ZMQSocket {
 			}
 		} catch (Exception e) {
 			activator.getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Error during port binding.", e));
-			System.exit(-1);
 		}
 		socket.setReceiveTimeOut(receiveTimeout);
 	}

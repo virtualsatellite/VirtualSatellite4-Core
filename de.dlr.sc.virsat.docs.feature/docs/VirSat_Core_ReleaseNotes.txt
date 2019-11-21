@@ -1,6 +1,16 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.9.2 (21st November 2019)
+----------------------------------
+
+New Features:
+		
+Usability Updates:
+	
+Fixed Bugs:
+	Fixed crash on opening multiple instances of VirSat
+
 Release 4.9.1 (15th July 2019)
 ----------------------------------
 
