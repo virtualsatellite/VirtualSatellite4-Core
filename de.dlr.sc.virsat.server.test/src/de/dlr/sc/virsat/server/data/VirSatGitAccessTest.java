@@ -83,7 +83,7 @@ public class VirSatGitAccessTest {
 			pathToTempLocalRepository1.getAbsolutePath().toString()
 		);
 			
-		assertEquals("Succeded to clone upstream repsoitory", pathToTempLocalRepository1.getAbsolutePath().toString() + File.separator, resultSuccess);
+		assertEquals("Succeded to clone upstream repsoitory", pathToTempLocalRepository1.getAbsolutePath().toString(), resultSuccess);
 	}
 
 	@Test
