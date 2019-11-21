@@ -19,13 +19,14 @@ import junit.framework.JUnit4TestAdapter;
 
 /**
  * 
- * @author scha_vo
- *
+ * test Suite for the VirSat Server
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({VirSatGitAccessTest.class,
-	AccessTestResourceTest.class})
+@SuiteClasses({
+	VirSatGitAccessTest.class,
+	AccessTestResourceTest.class
+})
 
 public class AllTests {
 

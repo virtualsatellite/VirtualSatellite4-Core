@@ -18,7 +18,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 
-
+/**
+ * This is a wrapping Container which allows to implement a customized
+ * Servlet that e.g. provides an application and configuration. This is needed
+ * for equinox to register the classes, rather than just the package name.
+ * @author fisc_ph
+ *
+ */
 public abstract class ApplicationServletContainer implements Servlet {
 
 	protected Servlet servlet;
@@ -49,7 +55,7 @@ public abstract class ApplicationServletContainer implements Servlet {
 
 	@Override
 	public String getServletInfo() {
-		return getServletInfo();
+		return servlet.getServletInfo();
 	}
 
 	@Override

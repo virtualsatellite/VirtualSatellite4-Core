@@ -31,7 +31,6 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		return new ServletContainer(resourceConfig);
 	}
 
-	// @ApplicationPath(CONTEXT_PATH)
 	private class ModelAccessRestApplication extends ResourceConfig {
 		private ModelAccessRestApplication() {
 			register(AccessTestResource.class);
