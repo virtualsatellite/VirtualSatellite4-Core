@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Headless Rest Jetty Server
-Bundle-SymbolicName: de.dlr.sc.virsat.server
+Bundle-SymbolicName: de.dlr.sc.virsat.server;singleton:=true
 Bundle-Version: 4.10.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.server.Activator
 Bundle-Vendor: DLR (German Aerospace Center)

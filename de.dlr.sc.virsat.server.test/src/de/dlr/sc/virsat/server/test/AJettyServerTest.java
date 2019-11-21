@@ -23,7 +23,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import de.dlr.sc.virsat.server.VirSatJettyServer;
+import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 
 public abstract class AJettyServerTest {
 
