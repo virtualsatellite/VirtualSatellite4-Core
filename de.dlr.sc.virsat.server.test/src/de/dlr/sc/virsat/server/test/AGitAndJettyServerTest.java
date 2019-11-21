@@ -56,5 +56,6 @@ public abstract class AGitAndJettyServerTest {
 	@AfterClass
 	public static void tearDownClass() throws Exception { 
 		server.stop();
+		server.join();
 	}
 }
