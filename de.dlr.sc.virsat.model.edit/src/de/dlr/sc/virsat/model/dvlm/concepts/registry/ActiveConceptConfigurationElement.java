@@ -80,6 +80,16 @@ public class ActiveConceptConfigurationElement {
 	}
 
 	/**
+	 * this method get the displayName of the concept
+	 * @return displayName of the concept
+	 */
+	public String getDisplayName() {
+		Concept concept = loadConceptFromPlugin();
+		return concept.getDisplayName();
+		
+	}
+	
+	/**
 	 *This method tells if the ACCE registers a given Concept. This method can be used
 	 * to test if a given concept is handled by the given configuration element from the
 	 * eclipse / equinox platform. 
@@ -173,12 +183,7 @@ public class ActiveConceptConfigurationElement {
 	 * @param repository where the copy will be saved
 	 * @return the active Concept that has been added to the repository.
 	 */
-	public static Concept createCopyConceptToRepository(Concept concept, Repository repository) {
-		Concept activeConcept = createActiveConcept(concept, repository);		
-		repository.getActiveConcepts().add(activeConcept);
-		return activeConcept;
-	}
-	
+		
 	/**
 	 * This method copies the concept to the repository and makes sure that IDs referencing other concepts are
 	 * redirected accordingly, since some References are stored on XMI rather then DVLM related URIs.
