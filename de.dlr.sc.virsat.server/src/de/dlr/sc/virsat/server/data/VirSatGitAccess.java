@@ -11,10 +11,6 @@ package de.dlr.sc.virsat.server.data;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -49,14 +45,12 @@ public class VirSatGitAccess {
 	 * @return local directory where the git repository was cloned to, if successful; error message otherwise
 	 */
 	public String cloneRepository(String uri, String localRoot) {
-		String directory = extractDirectoryFromUri(uri);
-		directory = FilenameUtils.concat(localRoot, directory);
-		String result = directory;
+		String result = localRoot;
 		
 		try {
 			Git.cloneRepository()
 				.setURI(uri)
-				.setDirectory(new File(directory))
+				.setDirectory(new File(localRoot))
 				.call();
 		} catch (GitAPIException e) {
 			result = e.getMessage();
@@ -112,23 +106,5 @@ public class VirSatGitAccess {
 		} 
 		
 		return result;
-	}
-
-	/** 
-	 * Takes from the URI the last part, which is the directory of the repository
-	 * @param uri URI to get directory from
-	 * @return directory part from the URI
-	 */
-	private String extractDirectoryFromUri(String uri) {
-		URL url = null;
-		String directory = "";
-		try {
-			url = new URL(uri);
-			directory = FilenameUtils.getBaseName(url.getPath());
-		} catch (MalformedURLException e) {
-			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed to extract Directory from Uri: " + e.getMessage()));
-		}
-
-		return directory;
 	}
 }

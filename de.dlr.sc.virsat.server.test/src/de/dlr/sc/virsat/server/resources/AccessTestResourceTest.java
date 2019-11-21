@@ -42,17 +42,15 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 	@Test
 	public void testServerConnection() {
 		ClientConfig config = new ClientConfig();
-		
 		Client client = ClientBuilder.newClient(config);
 		
 		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
-		
 		WebTarget target = client.target(uri);
 		
 		String serverResponse = target.
-			path("rest").
-			path("atr").
-			path("data").
+			path("/rest").
+			path("/atr").
+			path("/data").
 			request().
 			accept(MediaType.APPLICATION_JSON).
 			get(Response.class)
