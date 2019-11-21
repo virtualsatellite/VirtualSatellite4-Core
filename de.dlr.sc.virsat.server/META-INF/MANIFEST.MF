@@ -24,5 +24,6 @@ Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.server,
  de.dlr.sc.virsat.server.data,
+ de.dlr.sc.virsat.server.jetty,
  de.dlr.sc.virsat.server.resources
 Automatic-Module-Name: de.dlr.sc.virsat.server

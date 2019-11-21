@@ -18,9 +18,13 @@ import javax.ws.rs.core.MediaType;
 
 import de.dlr.sc.virsat.server.data.Model;
 
+/**
+ * Simple test resource for debugging purposes
+ *
+ */
 @Path("/atr")
 public class AccessTestResource {
-
+	
 	@GET
 	@Path("/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)

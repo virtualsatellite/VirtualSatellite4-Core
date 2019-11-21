@@ -7,7 +7,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-
 package de.dlr.sc.virsat.server.servlet;
 
 import javax.servlet.Servlet;
@@ -16,8 +15,13 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
+import de.dlr.sc.virsat.server.resources.WorkspaceAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
+/**
+ * This servlet registers the classes that should be provided as REST resources.
+ *
+ */
 public class VirSatModelAccessServlet extends ApplicationServletContainer implements Servlet {
 	
 	@Override
@@ -26,10 +30,10 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		return new ServletContainer(resourceConfig);
 	}
 
-	// @ApplicationPath(CONTEXT_PATH)
 	private class ModelAccessRestApplication extends ResourceConfig {
 		private ModelAccessRestApplication() {
 			register(AccessTestResource.class);
+			register(WorkspaceAccessResource.class);
 		}
 	}
 }

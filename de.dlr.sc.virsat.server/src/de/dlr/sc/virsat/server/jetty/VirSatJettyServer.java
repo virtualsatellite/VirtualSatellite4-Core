@@ -45,8 +45,6 @@ public class VirSatJettyServer {
 	
 	/**
 	 *  Call this method to start the Virtual Satellite specific Jetty Server.
-	 *  This method blocks in a join statement to wait make the cally thread wait
-	 *  until the server is shut down.
 	 * @throws Exception
 	 * @throws InterruptedException
 	 */
@@ -64,7 +62,9 @@ public class VirSatJettyServer {
 	}
 	
 	public VirSatJettyServer join() throws InterruptedException {
-		server.join();
+		if (server != null) {
+			server.join();
+		}
 		return this;
 	}
 	

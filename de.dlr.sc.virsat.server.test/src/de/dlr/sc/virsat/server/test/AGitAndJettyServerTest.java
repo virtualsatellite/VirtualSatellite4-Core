@@ -9,53 +9,52 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.test;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 
-public abstract class AJettyServerTest {
+public abstract class AGitAndJettyServerTest {
 
-	private static File pathToTempUpstreamRepository;
+	protected static File pathToTempUpstreamRepository;
+	private static VirSatJettyServer server;
 	
 	@BeforeClass
-	public static void setUpClass() throws IOException, IllegalStateException, GitAPIException {
-		
-		// Create an upstream repository within the temporary file area
-		pathToTempUpstreamRepository = File.createTempFile("VirSatUpstreamRepo", "");
-		Files.delete(pathToTempUpstreamRepository.toPath());
-
-		Git git = Git.init().setDirectory(pathToTempUpstreamRepository).call();
-		assertTrue(git.status().call().isClean());
-	}
-
-	private VirSatJettyServer server;
-	
-	@Before
-	public void setUp() throws Exception {
+	public static void setUpClass() throws InterruptedException, Exception {
 		server = new VirSatJettyServer();
 		server.start();
 	}
 
+	
+	@Before
+	public void setUp() throws Exception {
+		// Create an upstream repository within the temporary file area
+		pathToTempUpstreamRepository = File.createTempFile("VirSatUpstreamRepo", "");
+		Files.delete(pathToTempUpstreamRepository.toPath());
+		
+		Git.init().setDirectory(pathToTempUpstreamRepository).call();
+	}
+
 	@After
 	public void tearDown() throws Exception {
-		server.stop();
+		try {
+			FileUtils.deleteDirectory(pathToTempUpstreamRepository);
+		} catch (Exception e) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Failed to remove temp directory in test" + e.getMessage()));
+		}
 	}
 	
 	@AfterClass
-	public static void tearDownClass() throws IOException { 
-		// Clean Up temporary Files
-		FileUtils.deleteDirectory(pathToTempUpstreamRepository);
+	public static void tearDownClass() throws Exception { 
+		server.stop();
 	}
 }
