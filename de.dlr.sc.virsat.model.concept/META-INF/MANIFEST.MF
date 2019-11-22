@@ -23,7 +23,7 @@ Require-Bundle: de.dlr.sc.virsat.model,
  org.eclipse.emf.importer,
  org.eclipse.xtend.lib;bundle-version="2.14.0",
  org.eclipse.core.filesystem,
- de.dlr.sc.virsat.model.concept.core
+ de.dlr.sc.virsat.model.ext.core
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-ExtensibleAPI: true

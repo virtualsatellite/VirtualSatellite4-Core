@@ -9,7 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
-import de.dlr.sc.virsat.model.concept.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 import de.dlr.sc.virsat.model.concept.generator.IConceptGeneratorEnablement;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
@@ -34,6 +33,7 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementT
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;

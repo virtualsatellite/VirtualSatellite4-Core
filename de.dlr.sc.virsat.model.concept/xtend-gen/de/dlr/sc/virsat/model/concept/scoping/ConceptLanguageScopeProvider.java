@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.scoping;
 
-import de.dlr.sc.virsat.model.concept.core.Activator;
+import de.dlr.sc.virsat.model.ext.core.Activator;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EObject;

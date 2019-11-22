@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.scoping.Scopes
 import java.util.Collections
-import de.dlr.sc.virsat.model.concept.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler
+import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler
 import org.eclipse.xtext.scoping.impl.ImportScope
 import java.util.Collection
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider
@@ -26,7 +26,7 @@ import static java.util.Collections.emptyList
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import java.util.ArrayList
-import de.dlr.sc.virsat.model.concept.core.Activator
+import de.dlr.sc.virsat.model.ext.core.Activator
 
 /**
  * This class contains custom scoping description.

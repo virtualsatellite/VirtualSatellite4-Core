@@ -1,0 +1,9 @@
+Concept de.dlr.sc.virsat.model.ext.core description "Concept for core language elements" displayname "Core"
+{
+	
+	Category GenericCategory {
+		
+	}	
+	
+}
+

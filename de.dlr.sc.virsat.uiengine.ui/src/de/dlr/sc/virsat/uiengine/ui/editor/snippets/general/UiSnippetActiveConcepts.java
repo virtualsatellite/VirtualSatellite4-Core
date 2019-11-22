@@ -134,6 +134,7 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 						// Create a map conceptName -> concept and add all concept names to the dependency tree
 						for (Object object : selectedObjects) {
 							Concept concept = ((ActiveConceptConfigurationElement) object).loadConceptFromPlugin();
+							EcoreUtil.resolveAll(concept);
 							selectedConcepts.put(concept.getName(), concept);
 							dependencyTree.addDependencies(concept.getName(), new String[] {});
 						}

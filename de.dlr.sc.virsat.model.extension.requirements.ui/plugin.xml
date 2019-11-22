@@ -559,6 +559,11 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementElementsAttributeValue">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementTrace"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementTrace">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetAttributeValue"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableAttributeValue">
