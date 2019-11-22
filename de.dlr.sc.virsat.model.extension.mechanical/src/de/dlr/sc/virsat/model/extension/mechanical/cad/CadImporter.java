@@ -248,9 +248,6 @@ public class CadImporter {
 		double rotY;
 		double rotZ;
 
-		String shape;
-		String stlFile = null;
-
 		try {
 			name = product.getString(CadProperties.NAME);
 
@@ -261,17 +258,10 @@ public class CadImporter {
 			rotX = product.getDouble(CadProperties.PRODUCT_ROT_X);
 			rotY = product.getDouble(CadProperties.PRODUCT_ROT_Y);
 			rotZ = product.getDouble(CadProperties.PRODUCT_ROT_Z);
-
-			shape = product.getString(CadProperties.PRODUCT_SHAPE);
-
 		} catch (NullPointerException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 					"CadImport: Failed to perform import! Could not load all required properties"));
 			return false;
-		}
-
-		if (product.containsKey(CadProperties.PART_STL_PATH.getKey())) {
-			stlFile = product.getString(CadProperties.PART_STL_PATH);
 		}
 
 		setName(importCommand, beanSEI, name);
@@ -284,10 +274,7 @@ public class CadImporter {
 		setFloatValue(importCommand, visualisation.getRotationYBean(), rotY);
 		setFloatValue(importCommand, visualisation.getRotationZBean(), rotZ);
 
-		setShape(importCommand, visualisation, shape, stlFile);
-
 		return true;
-
 	}
 
 	/**
@@ -303,8 +290,7 @@ public class CadImporter {
 				|| product.containsKey(CadProperties.PRODUCT_POS_Z.getKey())
 				|| product.containsKey(CadProperties.PRODUCT_ROT_X.getKey())
 				|| product.containsKey(CadProperties.PRODUCT_ROT_Y.getKey())
-				|| product.containsKey(CadProperties.PRODUCT_ROT_Z.getKey())
-				|| product.containsKey(CadProperties.PRODUCT_SHAPE.getKey());
+				|| product.containsKey(CadProperties.PRODUCT_ROT_Z.getKey());
 	}
 
 	/**

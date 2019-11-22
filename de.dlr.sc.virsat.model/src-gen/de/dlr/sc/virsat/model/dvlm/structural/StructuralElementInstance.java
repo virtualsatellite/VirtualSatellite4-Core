@@ -137,7 +137,6 @@ public interface StructuralElementInstance extends IUuid, IDescription, IName, I
 	 * This method hands back all StructuralElement Instances which are nested by a TreeRelation
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='EList&lt;StructuralElementInstance&gt; children = new  org.eclipse.emf.common.util.BasicEList&lt;&gt;();\r\nfor (StructuralElementInstance structuralElementInstance : getChildren()) {\r\n\tchildren.add(structuralElementInstance);\r\n\tEList&lt;StructuralElementInstance&gt; nestedChildren = structuralElementInstance.getDeepChildren();\r\n\tchildren.addAll(nestedChildren);\r\n}\r\n\r\nreturn children;'"
 	 * @generated
 	 */
 	EList<StructuralElementInstance> getDeepChildren();

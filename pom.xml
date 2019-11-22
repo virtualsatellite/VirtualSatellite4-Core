@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat</artifactId>
-	<version>4.9.1-SNAPSHOT</version>
+	<version>4.10.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<profiles>
 		<profile>
@@ -42,6 +42,7 @@
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
+				<module>de.dlr.sc.virsat.external.lib.jersey</module>
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>

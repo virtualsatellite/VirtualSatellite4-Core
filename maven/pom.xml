@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.parent</artifactId>
-	<version>4.9.1-SNAPSHOT</version>
+	<version>4.10.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -18,7 +18,7 @@
 		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.9.1</build.version>
+		<build.version>4.10.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -126,12 +126,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>3.0.0</version>
+						<version>3.1.0</version>
 						<dependencies>
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>8.8</version>
+								<version>8.26</version>
 							</dependency>
 						</dependencies>
 						<executions>
@@ -266,7 +266,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.9.1-SNAPSHOT</version>
+							<version>4.10.0-SNAPSHOT</version>
 							<classifier>virsat</classifier>
 						</artifact>
 					</target>

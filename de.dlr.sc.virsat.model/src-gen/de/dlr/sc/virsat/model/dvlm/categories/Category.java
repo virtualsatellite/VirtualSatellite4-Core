@@ -115,7 +115,6 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * This method hands back all properties of the catgeory including the ones from super (extends) categories
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='EList&lt;AProperty&gt; allProperties = new org.eclipse.emf.common.util.BasicEList&lt;&gt;();\r\nallProperties.addAll(getProperties());\r\n\r\n// In case this category inherits from another one (extends another category) that their properties should eb added as well\r\nif (extendsCategory != null) {\r\n\tallProperties.addAll(extendsCategory.getAllProperties());\r\n}\r\n\t\r\nreturn allProperties;'"
 	 * @generated
 	 */
 	EList<AProperty> getAllProperties();
@@ -126,7 +125,7 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- begin-model-doc -->
 	 * This method returns true iff it is an instance of the passed typeDefinition
 	 * <!-- end-model-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='Category category = this;\r\n\t\t\r\nwhile (category != null) {\r\n\tif (category.equals(typeDefinition)) {\r\n\t\treturn true;\r\n\t}\r\n\t\t\t\r\n\tcategory = category.getExtendsCategory();\r\n}\r\n\t\t\r\nreturn false;'"
+	 * @model
 	 * @generated
 	 */
 	boolean isExtensionOf(ATypeDefinition typeDefinition);
@@ -138,7 +137,6 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * This method hands back all equation definitions of the catgeory including the ones from super (extends) categories
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='EList&lt;EquationDefinition&gt; allEquationDefinitions = new org.eclipse.emf.common.util.BasicEList&lt;&gt;();\r\nallEquationDefinitions.addAll(getEquationDefinitions());\r\n\r\n// In case this category inherits from another one (extends another category) that their equation definitions should be added as well\r\nif (extendsCategory != null) {\r\n\tallEquationDefinitions.addAll(extendsCategory.getAllEquationDefinitions());\r\n}\r\n\t\r\nreturn allEquationDefinitions;'"
 	 * @generated
 	 */
 	EList<EquationDefinition> getAllEquationDefinitions();
@@ -147,7 +145,6 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='// If the cardinality is 0, check if we are extending from some category and then take their cardinality\r\nreturn cardinality == 0 &amp;&amp; getExtendsCategory() != null ? getExtendsCategory().getCardinality() : cardinality;'"
 	 * @generated
 	 */
 	int getCardinality();

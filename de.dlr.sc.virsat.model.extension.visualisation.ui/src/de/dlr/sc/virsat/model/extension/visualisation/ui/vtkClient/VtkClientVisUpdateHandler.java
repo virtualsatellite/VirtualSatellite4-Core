@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient;
 
 import java.awt.EventQueue;
 
+
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbench;
@@ -21,6 +23,7 @@ import org.eclipse.ui.PlatformUI;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
+import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.IVisUpdateHandler;
 import de.dlr.sc.virsat.uiengine.ui.editor.GenericEditor;
 import de.dlr.sc.visproto.VisProto.SceneGraphNode;
@@ -42,7 +45,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 	 * Create a Helper for updating the visualisation
 	 */
 	private VtkClientVisUpdateHandler() {
-		
 	}
 
 	/**
@@ -79,7 +81,6 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		VtkTreeManager.getInstance().clearNewActors();
 		
 		// render the scene
-		
 		visMan.Render();
 	}
 
@@ -100,27 +101,29 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 	
 	@Override
 	public void partActivated(IWorkbenchPartReference partRef) {
-		
 		IWorkbenchPart part = partRef.getPart(true);
 		
-		if ((part != null) && (part instanceof GenericEditor)) {
-			GenericEditor ge = (GenericEditor) part;
-			EObject editorObject = ge.getEditorModelObject();
-			String uuid = null;
-			if (editorObject instanceof ICategoryAssignmentContainer) {
-				ICategoryAssignmentContainer caContainer = (ICategoryAssignmentContainer) editorObject;
-				uuid = caContainer.getUuid().toString();
-			} else if (editorObject instanceof CategoryAssignment) {
-				CategoryAssignment ca = (CategoryAssignment) editorObject;
-				ICategoryAssignmentContainer caContainer = ca.getCategoryAssignmentContainer();
-				uuid = caContainer.getUuid().toString();
+		try {
+			if ((part != null) && (part instanceof GenericEditor)) {
+				GenericEditor ge = (GenericEditor) part;
+				EObject editorObject = ge.getEditorModelObject();
+				String uuid = null;
+				if (editorObject instanceof ICategoryAssignmentContainer) {
+					ICategoryAssignmentContainer caContainer = (ICategoryAssignmentContainer) editorObject;
+					uuid = caContainer.getUuid().toString();
+				} else if (editorObject instanceof CategoryAssignment) {
+					CategoryAssignment ca = (CategoryAssignment) editorObject;
+					ICategoryAssignmentContainer caContainer = ca.getCategoryAssignmentContainer();
+					uuid = caContainer.getUuid().toString();
+				}
+				
+				VtkTreeManager.getInstance().checkIdAndCreateAxes(uuid);
+				VtkTreeManager.getInstance().highlightIfSelectedObject(uuid);
 			}
-			
-			VtkTreeManager.getInstance().checkIdAndCreateAxes(uuid);
-			VtkTreeManager.getInstance().highlightIfSelectedObject(uuid);
+		} catch (UnsatisfiedLinkError e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not activate Visualization sever. Most likely VTK did not get loaded correctly. Error: " + e.getMessage()));
 		}
-		
-	}
+	}		
 
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {

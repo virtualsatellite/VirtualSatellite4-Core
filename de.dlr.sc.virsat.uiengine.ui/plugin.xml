@@ -115,6 +115,11 @@
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetActiveConcepts">
       </uiSnippet>
       <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetSuppressedValidators"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetSuppressedValidators">
+      </uiSnippet>
+      <uiSnippet
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetRoleManagement"
             section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetRoleManagement">
