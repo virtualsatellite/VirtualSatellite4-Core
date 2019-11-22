@@ -13,6 +13,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ext.core.Activator;
@@ -47,6 +49,12 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 				category.setExtendsCategory(genericCategory);
 			}
 		}
+		
+		// Add concept of generic category as implicit import to 
+		// automatically load it when a concept with categories is loaded
+		ConceptImport implicitImport = ConceptsFactory.eINSTANCE.createConceptImport();
+		implicitImport.setImportedNamespace(Activator.getPluginId());
+		conceptWithImplicitSuperType.getImports().add(implicitImport);
 		
 		return conceptWithImplicitSuperType;
 	}
