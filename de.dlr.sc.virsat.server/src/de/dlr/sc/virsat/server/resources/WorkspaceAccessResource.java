@@ -17,8 +17,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import de.dlr.sc.virsat.server.data.Model;
-import de.dlr.sc.virsat.server.data.VirSatGitAccess;
+import de.dlr.sc.virsat.server.dataaccess.Model;
+import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
 
 
 @Path(WorkspaceAccessResource.PATH_PERSISTENCE)

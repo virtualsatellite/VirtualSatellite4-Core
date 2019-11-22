@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.Activator;
-import de.dlr.sc.virsat.server.data.VirSatGitAccess;
+import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
