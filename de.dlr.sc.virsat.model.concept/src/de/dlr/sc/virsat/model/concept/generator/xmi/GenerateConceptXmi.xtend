@@ -31,25 +31,11 @@ class GenerateConceptXmi {
 	 * @param dataModel access to the root model object
 	 * @param fsa access to the local file system
 	 */
-	def serializeModel(Concept dataModel, IFileSystemAccess fsa) {
+	def serializeModel(Concept dataModel, URI conceptURI, IFileSystemAccess fsa) {
 		// Register the factories for XMI and XML serialization		
 		val resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		resourceRegistry.extensionToFactoryMap.put(MODEL_TYPE_XMI_EXTENSION, new XMIResourceFactoryImpl());
 
-		// Create a resource set and a resource to store it as XMI
-		try {
-			val targetResourceSet = new ResourceSetImpl();
-			val targetResource = targetResourceSet.createResource(URI.createURI(CONCEPT_XMI_FILENAME));
-			targetResource.getContents().add(dataModel);
-			val outputStream = new ByteArrayOutputStream();
-			targetResource.save(outputStream, null);
-			
-			fsa.generateFile(CONCEPT_XMI_FILENAME, ConceptOutputConfigurationProvider::GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
-			
-		} catch (IOException e) {
-			throw new RuntimeException(e);	
-		}
-		
 		// Also create the xmi file that has the version information encoded into its filename
 		try {
 			val targetResourceSet = new ResourceSetImpl();
@@ -64,6 +50,23 @@ class GenerateConceptXmi {
 		} catch (IOException e) {
 			throw new RuntimeException(e);	
 		}
+
+		// Create a resource set and a resource to store it as XMI
+		try {
+			val targetResourceSet = new ResourceSetImpl();
+			var targetUri = conceptURI.trimFileExtension;
+			targetUri = targetUri.appendFileExtension(MODEL_TYPE_XMI_EXTENSION);
+			val targetResource = targetResourceSet.createResource(targetUri);
+			targetResource.getContents().add(dataModel);
+			val outputStream = new ByteArrayOutputStream();
+			targetResource.save(outputStream, null);
+			
+			fsa.generateFile(CONCEPT_XMI_FILENAME, ConceptOutputConfigurationProvider::GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
+			
+		} catch (IOException e) {
+			throw new RuntimeException(e);	
+		}
+		
 	}
 	
 	def static String getConceptWithVersionName(Concept concept) {
