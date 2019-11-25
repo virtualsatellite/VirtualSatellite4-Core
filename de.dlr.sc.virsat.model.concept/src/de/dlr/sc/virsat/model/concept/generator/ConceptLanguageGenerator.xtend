@@ -85,9 +85,10 @@ class ConceptLanguageGenerator implements IGenerator2 {
 		if (generateCode) {
 			// Get the Data Model and retrieve the Name of it
 			val dataModel = conceptLanguageHandler.addImplicitSuperType(resource.contents.get(0) as Concept);
+			//Serialize the concept in the new containers
+			new GenerateConceptXmi().serializeModel(dataModel, resource.URI, fsa);
 	
 			new GenerateDmfCategories().serializeModel(dataModel, fsa);
-			new GenerateConceptXmi().serializeModel(dataModel, fsa);
 			new GenerateConceptImages().serializeModel(dataModel, fsa);
 			new GenerateCategoryBeans().serializeModel(dataModel, fsa);
 			new GenerateStructuralElementBeans().serializeModel(dataModel, fsa);
