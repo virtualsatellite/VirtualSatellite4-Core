@@ -62,7 +62,7 @@ class GenerateValidatorTestsTest {
 	}
 	
 	@Test
-	def void testCreateForCategoryTests() {
+	def void testCreateClass() {
 		concept = '''
 			Concept «TEST_CONCEPT_NAME» {
 			}

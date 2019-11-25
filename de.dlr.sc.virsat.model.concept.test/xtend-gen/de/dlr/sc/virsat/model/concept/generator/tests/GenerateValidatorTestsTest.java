@@ -74,7 +74,7 @@ public class GenerateValidatorTestsTest {
   }
   
   @Test
-  public void testCreateForCategoryTests() {
+  public void testCreateClass() {
     try {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Concept ");
