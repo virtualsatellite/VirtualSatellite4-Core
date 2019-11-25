@@ -199,7 +199,9 @@ SPDX-License-Identifier: EPL-2.0";
 			val catEClass = EcoreFactory.eINSTANCE.createEClass;
 			ePackage.EClassifiers += catEClass;
 			catEClass.name = it.name;
-			catEClass.ESuperTypes += dvlmDObject; 
+			if(it.extendsCategory === null) {
+				catEClass.ESuperTypes += dvlmDObject; 
+			}
 			catEClass.abstract = it.isIsAbstract;
 			
 			// Create the attributes and references
@@ -374,7 +376,7 @@ SPDX-License-Identifier: EPL-2.0";
 		// the eclass which is referenced by its name 
 
 		val rpUri = ap.eResource.URI;
-		val ecorePath = rpUri.toString.replace(".concept", ".ecore");
+		val ecorePath = rpUri.toString.replace(".xmi", ".ecore");
 		val ecoreUri = URI.createURI(ecorePath);
 		val ecoreResource = ecoreModelResourceSet.getResource(ecoreUri, true);
 		
