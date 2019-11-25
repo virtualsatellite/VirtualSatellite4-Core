@@ -37,7 +37,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 		Concept langaugeCoreConcept = loadLangaugeCoreConceptFromPlugin();
 		
 		//Check that the generic category does not get itself as super type
-		if (concept.equals(langaugeCoreConcept)) {
+		if (concept.getName().equals(langaugeCoreConcept.getName())) {
 			return concept;
 		}
 		
@@ -55,7 +55,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 		ConceptImport implicitImport = ConceptsFactory.eINSTANCE.createConceptImport();
 		implicitImport.setImportedNamespace(Activator.getPluginId());
 		conceptWithImplicitSuperType.getImports().add(implicitImport);
-		
+	
 		return conceptWithImplicitSuperType;
 	}
 	

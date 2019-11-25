@@ -47,6 +47,13 @@
 		xmi="concept/concept_v1_0.xmi">
 	</migrator>
 </extension>
+<extension point="org.eclipse.emf.ecore.generated_package">
+	<!-- @generated concept -->
+	<package 
+		uri="http://www.virsat.sc.dlr.de/dmf/v1.0/core"
+		class="de.dlr.sc.virsat.model.ext.core.core.CorePackage"
+		genModel="concept/concept.genmodel"/>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
 	<!-- Plugin.XML Protected Region End -->
