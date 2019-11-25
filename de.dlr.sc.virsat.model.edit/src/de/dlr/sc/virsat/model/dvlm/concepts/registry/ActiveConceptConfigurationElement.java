@@ -183,7 +183,12 @@ public class ActiveConceptConfigurationElement {
 	 * @param repository where the copy will be saved
 	 * @return the active Concept that has been added to the repository.
 	 */
-		
+	public static Concept createCopyConceptToRepository(Concept concept, Repository repository) {
+		Concept activeConcept = createActiveConcept(concept, repository);		
+		repository.getActiveConcepts().add(activeConcept);
+		return activeConcept;
+	}
+	
 	/**
 	 * This method copies the concept to the repository and makes sure that IDs referencing other concepts are
 	 * redirected accordingly, since some References are stored on XMI rather then DVLM related URIs.
