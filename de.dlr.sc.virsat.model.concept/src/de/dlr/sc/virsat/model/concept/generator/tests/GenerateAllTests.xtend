@@ -189,6 +189,9 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 			listOfTests.add(it + "Test")
 		]
 		
+			importManager.register(concept.fullQualifiedName + ".validator." + "StructuralElementInstanceValidator" + "Test")
+			listOfTests.add("StructuralElementInstanceValidator" + "Test")
+			
 		return '''
 		«FOR test : listOfTests»
 		«test».class,
