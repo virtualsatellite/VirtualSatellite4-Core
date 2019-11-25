@@ -69,7 +69,8 @@ SPDX-License-Identifier: EPL-2.0
 				<classfiles>
 					<fileset dir="${projectDir}/target/classes">
 						<include name="**/*"/>
-						<exclude name="**/*Test*.class" />
+						<exclude name="**/AllTests.class" />
+						<exclude name="**/*Test.class" />
 						<exclude name="**/model/extension/**/A*.class" />
 						<exclude name="**/AExcelIo.class" />
 						<exclude name="**/parser/antlr/**/*.class" />
