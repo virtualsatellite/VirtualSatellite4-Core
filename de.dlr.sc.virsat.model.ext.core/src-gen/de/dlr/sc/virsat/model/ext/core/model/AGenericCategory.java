@@ -30,7 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
  * 
  * Don't Manually modify this class
  * 
- * 
+ * Implicit super category of all categories
  * 
  */	
 public abstract class AGenericCategory extends ABeanCategoryAssignment implements IBeanCategoryAssignment {

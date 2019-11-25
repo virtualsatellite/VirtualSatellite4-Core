@@ -38,7 +38,7 @@ import org.junit.Test;
  * 
  * Don't Manually modify this class
  * 
- * 
+ * Implicit super category of all categories
  * 
  */	
 public abstract class AGenericCategoryTest {

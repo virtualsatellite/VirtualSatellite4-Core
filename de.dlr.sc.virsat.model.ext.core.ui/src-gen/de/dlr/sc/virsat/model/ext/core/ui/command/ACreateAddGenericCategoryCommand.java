@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * Don't Manually modify this class
  * 
- * 
+ * Implicit super category of all categories
  * 
  */	
 public abstract class ACreateAddGenericCategoryCommand {

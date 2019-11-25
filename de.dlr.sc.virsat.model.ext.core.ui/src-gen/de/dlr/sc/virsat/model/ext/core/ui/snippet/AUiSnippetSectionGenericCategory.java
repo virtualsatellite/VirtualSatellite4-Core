@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyIns
  * 
  * Don't Manually modify this class
  * 
- * 
+ * Implicit super category of all categories
  * 
  */	
 public abstract class AUiSnippetSectionGenericCategory extends AUiSnippetGenericPropertyInstances implements IUiSnippet {
