@@ -47,7 +47,7 @@ public interface DVLMPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v6";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7";
 
 	/**
 	 * The package namespace name.
