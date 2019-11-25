@@ -542,7 +542,7 @@
         class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.wizards.HTMLExportWizard"
         icon="resources/icons/VirSat_General_HTML_Export.gif"
         id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.exportWizard"
-        name="Export Functional Electrical Architecture to HTML">
+        name="Functional Electrical Architecture to HTML Export Wizard">
 		</wizard>
       <category
             id="de.dlr.virsat.global.category.export.virsat"

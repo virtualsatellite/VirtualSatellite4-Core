@@ -10,7 +10,7 @@
          class="de.dlr.sc.virsat.excel.ui.wizards.ExportWizard"
          icon="resources/icons/VirSat_General_ExcelExport.gif"
          id="de.dlr.sc.virsat.excel.ui.wizards.exportWizard"
-         name="Export to Excel">
+         name="Excel Export Wizard">
 	  </wizard>
       <category
             id="de.dlr.virsat.global.category.export.virsat"
@@ -25,7 +25,7 @@
          class="de.dlr.sc.virsat.excel.ui.wizards.ImportWizard"
          icon="resources/icons/VirSat_General_Excel_Import.gif"
          id="de.dlr.sc.virsat.excel.ui.wizards.importWizard"
-         name="Import from Excel">
+         name="Excel Import Wizard">
 	  </wizard>
       <category
             id="de.dlr.virsat.global.category.export.virsat"
