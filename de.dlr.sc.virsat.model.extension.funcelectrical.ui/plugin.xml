@@ -542,12 +542,12 @@
 	   		class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.wizards.HTMLExportWizard"
 	   		icon="resources/icons/VirSat_General_HTML_Export.gif"
 	   		id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.exportWizard"
-	   		name="Export to HTML">
+	   		name="Export Functional Electrical Architecture to HTML">
 		</wizard>
-		<category
-			id="de.dlr.sc.virsat.excel.ui"
-			name="Excel Export">
-		</category>
+      <category
+            id="de.dlr.virsat.global.category.export.virsat"
+            name="VirSat">
+      </category>
 	</extension>
 	<extension
 		point="org.eclipse.graphiti.ui.diagramTypes">
