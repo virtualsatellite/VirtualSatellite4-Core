@@ -36,7 +36,13 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 			
 		} else if (element instanceof Concept) {
 			Concept concept = (Concept) element;
-			return concept.getDisplayName() + " [" + concept.getVersion() + "]";
+
+			if(concept.getDisplayName() == null) {
+				return concept.getName() + " [" + concept.getVersion() + "]";
+
+			} else {
+			return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
+			}
 		}
 		return super.getText(element);
 	}
