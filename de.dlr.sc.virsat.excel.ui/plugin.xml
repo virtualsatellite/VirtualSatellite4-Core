@@ -6,7 +6,7 @@
      id="de.dlr.sc.virsat.excel.ui.export"
      point="org.eclipse.ui.exportWizards">
 	  <wizard
-         category="de.dlr.sc.virsat.excel.ui"
+         category="de.dlr.virsat.global.category.export.virsat"
          class="de.dlr.sc.virsat.excel.ui.wizards.ExportWizard"
          icon="resources/icons/VirSat_General_ExcelExport.gif"
          id="de.dlr.sc.virsat.excel.ui.wizards.exportWizard"
@@ -21,7 +21,7 @@
      id="de.dlr.sc.virsat.excel.ui.import"
      point="org.eclipse.ui.importWizards">
 	  <wizard
-         category="de.dlr.sc.virsat.excel.ui"
+         category="de.dlr.virsat.global.category.export.virsat"
          class="de.dlr.sc.virsat.excel.ui.wizards.ImportWizard"
          icon="resources/icons/VirSat_General_Excel_Import.gif"
          id="de.dlr.sc.virsat.excel.ui.wizards.importWizard"

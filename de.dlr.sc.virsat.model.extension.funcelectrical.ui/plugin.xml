@@ -538,11 +538,11 @@
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="org.eclipse.ui.exportWizards">
 		<wizard
-
-	   		class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.wizards.HTMLExportWizard"
-	   		icon="resources/icons/VirSat_General_HTML_Export.gif"
-	   		id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.exportWizard"
-	   		name="Export Functional Electrical Architecture to HTML">
+        category="de.dlr.virsat.global.category.export.virsat"
+        class="de.dlr.sc.virsat.model.extension.funcelectrical.ui.wizards.HTMLExportWizard"
+        icon="resources/icons/VirSat_General_HTML_Export.gif"
+        id="de.dlr.sc.virsat.model.extension.funcelectrical.ui.exportWizard"
+        name="Export Functional Electrical Architecture to HTML">
 		</wizard>
       <category
             id="de.dlr.virsat.global.category.export.virsat"
