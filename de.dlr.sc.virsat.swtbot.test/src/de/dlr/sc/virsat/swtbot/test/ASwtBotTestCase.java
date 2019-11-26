@@ -462,7 +462,6 @@ public class ASwtBotTestCase {
 	 * returns the repository
 	 * @param project the project
 	 * @return rep the repository
-	 * @author bell_er
 	 *
 	 */
 	public static Repository getRepository(IProject project) {
@@ -474,37 +473,32 @@ public class ASwtBotTestCase {
 	
 	/**
 	 * A Runnable lock to make sure that the display thread executed all messages
-	 * @author fisc_ph
 	 *
 	 */
 	static class WaitForRunnable implements Runnable {
 		
-		Boolean gotExecuted = false;
+		private Boolean gotExecuted = false;
 		
 		@Override
-		public void run() {
-			synchronized (this) {
-				gotExecuted = true;
-				notify();
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Wait For Runnable UI Thread: " + Thread.currentThread()));
-			}
+		public synchronized void run() {
+			gotExecuted = true;
+			notify();
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Wait For Runnable UI Thread: " + Thread.currentThread()));
 		}
 		
 		/**
 		 * Call this method to make sure the runnable got executed
 		 * THis method blocks until the runnable got called.
 		 */
-		void waitForExecution() {
-			synchronized (this) {
-				while (!gotExecuted) {
-					try {
-						wait(GENERAL_SWTBOT_WAIT_TIME);
-					} catch (InterruptedException e) {
-						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not go to sleep Thread: " + Thread.currentThread()));
-					}
+		synchronized void waitForExecution() {
+			while (!gotExecuted) {
+				try {
+					wait(GENERAL_SWTBOT_WAIT_TIME);
+				} catch (InterruptedException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not go to sleep Thread: " + Thread.currentThread()));
 				}
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Runnable got Executed Thread: " + Thread.currentThread()));
 			}
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Runnable got Executed Thread: " + Thread.currentThread()));
 		}
 	}
 	
