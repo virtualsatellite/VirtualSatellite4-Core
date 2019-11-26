@@ -37,9 +37,8 @@ public abstract class ApplicationServletContainer implements Servlet {
 	}
 
 	/**
-	 * Implement this method to create the actual servlet with the correct
-	 * @param contextPath
-	 * @return
+	 * Implement this class to create the servlet to be wrapped.
+	 * @return The servlet that will be wrapped by this container.
 	 */
 	protected abstract Servlet onCreateServlet();
 
