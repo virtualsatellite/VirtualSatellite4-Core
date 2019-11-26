@@ -36,10 +36,10 @@ import de.dlr.sc.virsat.server.Activator;
 
 public class VirSatGitAccessTest {
 
-	private static File pathToTempUpstreamRepository;
-	private static File pathToTempLocalRepository1;
-	private static File pathToTempLocalRepository2;
-	private static Git gitUpstream;
+	private File pathToTempUpstreamRepository;
+	private File pathToTempLocalRepository1;
+	private File pathToTempLocalRepository2;
+	private Git gitUpstream;
 	
 	@Before
 	public void setUp() throws Exception {

@@ -95,9 +95,8 @@ public class VirSatGitAccess {
 	 */
 	public String update(String localDirectory) {
 		String result = STATUS_OK;
-		Git git;
 		try {
-			git = Git.open(new File(localDirectory));
+			Git git = Git.open(new File(localDirectory));
 			git.pull()
 				.call();
 		} catch (IOException | GitAPIException e) {

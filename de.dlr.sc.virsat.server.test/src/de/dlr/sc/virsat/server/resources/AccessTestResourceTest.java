@@ -21,23 +21,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class AccessTestResourceTest extends AGitAndJettyServerTest {
-
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		super.tearDown();
-	}
 
 	@Test
 	public void testServerConnection() {

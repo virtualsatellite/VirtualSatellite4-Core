@@ -96,7 +96,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		// Add a file to repo one and commit it
 		// now add a file to the local repository
 		File newFile = new File(pathToTempLocalRepository1.getAbsolutePath().toString() + "/test.dat");
-		Files.createFile(newFile.toPath());
+		newFile.createNewFile();
 		
 		final String COMMIT_MESSAGE = "Commit a first file";
 		

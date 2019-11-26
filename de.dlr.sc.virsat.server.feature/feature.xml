@@ -8,7 +8,7 @@
       license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
-      VirSat Team Connector
+      VirSat Headless Server based on Jetty and Jersey
 German Aerospace Center (DLR e.V.)
 Simulation and Software Technology
    </description>
