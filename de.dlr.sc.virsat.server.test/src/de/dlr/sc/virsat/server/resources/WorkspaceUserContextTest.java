@@ -26,8 +26,8 @@ public class WorkspaceUserContextTest {
 	public static final String TEST_REPO_2 = "repo_2";
 	
 	@Test
-	public void testGetCombinedPath() {
-		String combinedPath = new WorkspaceUserContext(TEST_USER_1, TEST_REPO_1).getCombinedPath();
+	public void testGetRepositoryPath() {
+		String combinedPath = new WorkspaceUserContext(TEST_USER_1, TEST_REPO_1).getRepoPath();
 		String expectedPath = TEST_USER_1 + File.separator + TEST_REPO_1; 
 		assertEquals("Got correct combined path", expectedPath, combinedPath);
 	}

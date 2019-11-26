@@ -42,10 +42,18 @@ public class WorkspaceUserContext {
 	 * This method returns the combined path for the user and local path
 	 * @return the combined path starting with the user
 	 */
-	public String getCombinedPath() {
+	public String getRepoPath() {
+		return getRepoPathFile().toString();
+	}
+	
+	/**
+	 * This method returns the combined path for the user and local path
+	 * @return the combined path starting with the user
+	 */
+	public File getRepoPathFile() {
 		File userPath = new File(this.user);
 		File combinedPath = new File(userPath, localRepoPath);
-		return combinedPath.toString();
+		return combinedPath;
 	}
 	
 	/**

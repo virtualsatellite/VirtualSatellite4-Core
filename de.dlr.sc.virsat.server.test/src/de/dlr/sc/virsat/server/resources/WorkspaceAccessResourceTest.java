@@ -15,8 +15,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -33,25 +31,31 @@ import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 
-	private File pathToTempLocalRepository1;
-	private File pathToTempLocalRepository2;
-
+	private String pathToTempLocalRepository1;
+	private String pathToTempLocalRepository2;
+	private static final String TEST_USER = "test_user";
+	
+	private WorkspaceUserContext wuContextRepo1;
+	private WorkspaceUserContext wuContextRepo2;
+	
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		pathToTempLocalRepository1 = new File("VirSatLocalRepo1");
-		pathToTempLocalRepository2 = new File("VirSatLocalRepo2");
-		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository1));
-		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository2));
-		Files.createDirectory(makeAbsolute(pathToTempLocalRepository1).toPath());
-		Files.createDirectory(makeAbsolute(pathToTempLocalRepository2).toPath());
+		pathToTempLocalRepository1 = "VirSatLocalRepo1";
+		pathToTempLocalRepository2 = "VirSatLocalRepo2";
+		wuContextRepo1 = new WorkspaceUserContext(TEST_USER, pathToTempLocalRepository1.toString());
+		wuContextRepo2 = new WorkspaceUserContext(TEST_USER, pathToTempLocalRepository1.toString());
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo1.getRepoPathFile()));
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo2.getRepoPathFile()));
+		makeAbsolute(wuContextRepo1.getRepoPathFile()).mkdirs();
+		makeAbsolute(wuContextRepo2.getRepoPathFile()).mkdirs();
 	}
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository1));
-		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository2));
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo1.getRepoPathFile()));
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo2.getRepoPathFile()));
 		super.tearDown();
 	}
 
@@ -69,6 +73,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_CLONE).
 			queryParam(WorkspaceAccessResource.PARAM_REMOTE, pathToTempUpstreamRepository).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository1).
 			request().
 			get(String.class);
@@ -81,6 +86,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_CLONE).
 			queryParam(WorkspaceAccessResource.PARAM_REMOTE, pathToTempUpstreamRepository).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository2).
 			request().
 			get(String.class);
@@ -89,7 +95,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 				
 		// Add a file to repo one and commit it
 		// now add a file to the local repository
-		File newFile = makeAbsolute(new File(pathToTempLocalRepository1, "/test.dat"));
+		File newFile = makeAbsolute(new File(wuContextRepo1.getRepoPathFile(), "/test.dat"));
 		newFile.createNewFile();
 		
 		final String COMMIT_MESSAGE = "Commit a first file";
@@ -99,6 +105,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path("/rest").
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_COMMIT).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository1).
 			queryParam(WorkspaceAccessResource.PARAM_MESSAGE, COMMIT_MESSAGE).
 			request().
@@ -111,6 +118,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path("/rest").
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_UPDATE).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository2).
 			request().
 			get(String.class);
@@ -118,7 +126,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		assertEquals("File got correctly updated", VirSatGitAccess.STATUS_OK, result4);
 
 		// Check the file arrived in repo 2
-		File updatedFile = makeAbsolute(new File(pathToTempLocalRepository2.toString() + "/test.dat"));
+		File updatedFile = makeAbsolute(new File(wuContextRepo2.getRepoPathFile(), "/test.dat"));
 
 		assertTrue("The file has arrived in repo 2", updatedFile.exists());
 	}
