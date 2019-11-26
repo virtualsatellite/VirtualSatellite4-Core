@@ -326,21 +326,13 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
-	 * propagates the inheritance
-	 *
+	 * This method makes sure all builders are executed.
+	 * It further checks that all UI Threads ahve executed.
 	 */
-	protected void propagateInheritance() {
+	protected void waitForAllBuildersAndUiThread() {
 		bot.waitUntil(new VirSatWaitForProjectBuilder(1));
 		waitForEditingDomainAndUiThread();
 		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (inheritance builder)"));
-	}
-	
-	/**
-	 * waits for calculation builder 
-	 *
-	 */
-	protected void waitCalculationBuilder() {
-		propagateInheritance();
 	}
 	
 	/**
