@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
+import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class VirSatGitAccessTest {
 
@@ -59,7 +60,7 @@ public class VirSatGitAccessTest {
 	}
 
 	private File makeAbsolute(File relativePath) throws IOException {
-		return new File(workspaceRoot, relativePath.toString());
+		return AGitAndJettyServerTest.makeAbsolute(relativePath);
 	}
 
 	@After

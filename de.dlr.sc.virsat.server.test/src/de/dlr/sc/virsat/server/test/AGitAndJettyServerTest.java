@@ -10,23 +10,26 @@
 package de.dlr.sc.virsat.server.test;
 
 import java.io.File;
-import java.nio.file.Files;
-
+import java.io.IOException;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jgit.api.Git;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 
 public abstract class AGitAndJettyServerTest {
 
 	protected static File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
+	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+	
+	public static File makeAbsolute(File relativePath) throws IOException {
+		return new File(WORKSPACE_ROOT, relativePath.toString());
+	}
 	
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException, Exception {
@@ -37,20 +40,14 @@ public abstract class AGitAndJettyServerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		// Create an upstream repository within the temporary file area
-		pathToTempUpstreamRepository = File.createTempFile("VirSatUpstreamRepo", "");
-		Files.delete(pathToTempUpstreamRepository.toPath());
-		
+		pathToTempUpstreamRepository = makeAbsolute(new File("VirSatUpstreamRepo"));
+		FileUtils.deleteQuietly(pathToTempUpstreamRepository);
 		Git.init().setDirectory(pathToTempUpstreamRepository).call();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		try {
-			FileUtils.deleteDirectory(pathToTempUpstreamRepository);
-		} catch (Exception e) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Failed to remove temp directory in test" + e.getMessage()));
-		}
+		FileUtils.forceDelete(pathToTempUpstreamRepository);
 	}
 	
 	@AfterClass

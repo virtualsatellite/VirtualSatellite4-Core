@@ -49,6 +49,7 @@ public class VirSatJettyServer {
 	 * @throws InterruptedException
 	 */
 	public VirSatJettyServer start() throws Exception, InterruptedException {
+		
 		server = new Server(VIRSAT_JETTY_PORT);
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);

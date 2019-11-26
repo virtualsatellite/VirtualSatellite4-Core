@@ -10,14 +10,13 @@
 package de.dlr.sc.virsat.server.resources;
 
 
+import java.io.File;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import org.eclipse.core.resources.ResourcesPlugin;
 
-import de.dlr.sc.virsat.server.dataaccess.Model;
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
 
 
@@ -31,19 +30,18 @@ public class WorkspaceAccessResource {
 	public static final String PARAM_REMOTE = "remote";
 	public static final String PARAM_LOCAL = "local";
 	public static final String PARAM_MESSAGE = "message";
+
+	private File workspaceRoot;
 	
-	@GET
-	@Path("/{uuid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Model hello(@PathParam("uuid") String uuid) {
-		return new Model(uuid);
+	public WorkspaceAccessResource() {
+		workspaceRoot = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 	}
 	
 	@GET
 	@Path(WorkspaceAccessResource.PATH_CLONE)
 	public String clone(@QueryParam(WorkspaceAccessResource.PARAM_REMOTE) String uri,
 						@QueryParam(WorkspaceAccessResource.PARAM_LOCAL) String localRoot) {
-		return VirSatGitAccess.getInstance().cloneRepository(uri, localRoot);
+		return new VirSatGitAccess(workspaceRoot).cloneRepository(uri, localRoot);
 	}
 	
 	@GET
@@ -54,7 +52,7 @@ public class WorkspaceAccessResource {
 		// adding all files to the stage, committing them and pushing the changes
 		// to the upstream repository
 		
-		return VirSatGitAccess.getInstance().commit(localdirectory, message);
+		return new VirSatGitAccess(workspaceRoot).commit(localdirectory, message);
 	}
 
 	@GET
@@ -62,6 +60,6 @@ public class WorkspaceAccessResource {
 	public String update(@QueryParam(WorkspaceAccessResource.PARAM_LOCAL) String localdirectory) {
 		// In terms of Virtual Satellite update means pulling first
 		// and then fetching all the changes into the local branch
-		return VirSatGitAccess.getInstance().update(localdirectory);
+		return new VirSatGitAccess(workspaceRoot).update(localdirectory);
 	}
 }

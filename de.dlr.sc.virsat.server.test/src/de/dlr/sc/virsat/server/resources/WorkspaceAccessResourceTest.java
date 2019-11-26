@@ -23,13 +23,11 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.core.runtime.Status;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
@@ -42,22 +40,18 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		pathToTempLocalRepository1 = File.createTempFile("VirSatLocalRepo1_", "");
-		pathToTempLocalRepository2 = File.createTempFile("VirSatLocalRepo2_", "");
-		Files.delete(pathToTempLocalRepository1.toPath());
-		Files.delete(pathToTempLocalRepository2.toPath());
-		Files.createDirectory(pathToTempLocalRepository1.toPath());
-		Files.createDirectory(pathToTempLocalRepository2.toPath());
+		pathToTempLocalRepository1 = new File("VirSatLocalRepo1");
+		pathToTempLocalRepository2 = new File("VirSatLocalRepo2");
+		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository1));
+		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository2));
+		Files.createDirectory(makeAbsolute(pathToTempLocalRepository1).toPath());
+		Files.createDirectory(makeAbsolute(pathToTempLocalRepository2).toPath());
 	}
-
+	
 	@After
 	public void tearDown() throws Exception {
-		try {
-			FileUtils.deleteDirectory(pathToTempLocalRepository1);
-			FileUtils.deleteDirectory(pathToTempLocalRepository2);
-		} catch (Exception e) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Failed to remove temp directory in test" + e.getMessage()));
-		}
+		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository1));
+		FileUtils.deleteQuietly(makeAbsolute(pathToTempLocalRepository2));
 		super.tearDown();
 	}
 
@@ -79,7 +73,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			request().
 			get(String.class);
 		
-		assertEquals("Cloning local repository 1 succeeded", pathToTempLocalRepository1.toString(), result);
+		assertEquals("Cloning local repository 1 succeeded", VirSatGitAccess.STATUS_OK, result);
 		
 		// Clone to local repository 2
 		String result2 = target.
@@ -91,11 +85,11 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			request().
 			get(String.class);
 		
-		assertEquals("Cloning local repository 2 succeeded", pathToTempLocalRepository2.toString(), result2);
+		assertEquals("Cloning local repository 2 succeeded", VirSatGitAccess.STATUS_OK, result2);
 				
 		// Add a file to repo one and commit it
 		// now add a file to the local repository
-		File newFile = new File(pathToTempLocalRepository1.getAbsolutePath().toString() + "/test.dat");
+		File newFile = makeAbsolute(new File(pathToTempLocalRepository1.toString() + "/test.dat"));
 		Files.createFile(newFile.toPath());
 		
 		final String COMMIT_MESSAGE = "Commit a first file";
@@ -124,7 +118,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		assertEquals("File got correctly updated", VirSatGitAccess.STATUS_OK, result4);
 
 		// Check the file arrived in repo 2
-		File updatedFile = new File(pathToTempLocalRepository2.getAbsolutePath().toString() + "/test.dat");
+		File updatedFile = makeAbsolute(new File(pathToTempLocalRepository2.toString() + "/test.dat"));
 
 		assertTrue("The file has arrived in repo 2", updatedFile.exists());
 	}
