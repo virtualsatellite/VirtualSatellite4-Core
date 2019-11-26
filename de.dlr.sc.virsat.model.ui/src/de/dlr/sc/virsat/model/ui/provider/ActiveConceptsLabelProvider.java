@@ -27,7 +27,7 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 			ActiveConceptConfigurationElement acce = (ActiveConceptConfigurationElement) element;
 			String acceDisplayName = acce.getDisplayName();
 			
-			if(acceDisplayName == null) {
+			if (acceDisplayName == null) {
 				return acce.getId() + " [" + acce.getVersion() + "]";
 				
 			} else {
@@ -37,11 +37,11 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 		} else if (element instanceof Concept) {
 			Concept concept = (Concept) element;
 
-			if(concept.getDisplayName() == null) {
+			if (concept.getDisplayName() == null) {
 				return concept.getName() + " [" + concept.getVersion() + "]";
 
 			} else {
-			return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
+				return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
 			}
 		}
 		return super.getText(element);
