@@ -29,17 +29,15 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 			
 			if (acceDisplayName == null) {
 				return acce.getId() + " [" + acce.getVersion() + "]";
-				
 			} else {
 				return acceDisplayName + " – " + acce.getId() + " [" + acce.getVersion() + "]";
 			}
-			
+
 		} else if (element instanceof Concept) {
 			Concept concept = (Concept) element;
-
+			
 			if (concept.getDisplayName() == null) {
 				return concept.getName() + " [" + concept.getVersion() + "]";
-
 			} else {
 				return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
 			}
