@@ -151,7 +151,7 @@ public class VirSatGitAccessTest {
 		assertEquals("Sucessfully to commit to upstream repo", VirSatGitAccess.STATUS_OK, resultSuccess);
 
 		// now do the first update on false location the "FailRepository"
-		File failPath = new File("/FailRepo");
+		File failPath = new File("FailRepo");
 		String resultFail = new VirSatGitAccess(workspaceRoot).update(failPath.toString());
 		assertEquals("Failed to update from repo", VirSatGitAccess.STATUS_FAIL_UPDATE + failPath.toString(), resultFail);
 
