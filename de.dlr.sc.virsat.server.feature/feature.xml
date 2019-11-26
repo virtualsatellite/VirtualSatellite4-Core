@@ -8,7 +8,11 @@
       license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
+<<<<<<< HEAD
       VirSat Jetty Headless Server with REST API using Jersey
+=======
+      VirSat Headless Server based on Jetty and Jersey
+>>>>>>> refs/heads/feature/task_359-Add_JGit_dependencies
 German Aerospace Center (DLR e.V.)
 Simulation and Software Technology
    </description>

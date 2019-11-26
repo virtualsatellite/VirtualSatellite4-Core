@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.data;
+package de.dlr.sc.virsat.server.dataaccess;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -32,17 +32,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class VirSatGitAccessTest {
 
-	private static File absolutePathToTempUpstreamRepository;
-	private static File relativePathToTempLocalRepository1;
-	private static File relativePathToTempLocalRepository2;
-	private static Git gitUpstream;
-	private static File workspaceRoot;
-	
+	private File absolutePathToTempUpstreamRepository;
+	private File relativePathToTempLocalRepository1;
+	private File relativePathToTempLocalRepository2;
+	private Git gitUpstream;
+	private File workspaceRoot;
+
 	@Before
 	public void setUp() throws Exception {
 		workspaceRoot = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
