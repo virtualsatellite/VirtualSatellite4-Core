@@ -25,13 +25,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 @SuppressWarnings("all")
 public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
   public static String getConcreteClassName(final Concept concept) {
-    String _name = concept.getName();
-    return (_name + "Validator");
+    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
+    return (_replace + "Validator");
   }
   
   public static String getAbstractClassName(final Concept concept) {
-    String _name = concept.getName();
-    String _plus = ("A" + _name);
+    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
+    String _plus = ("A" + _replace);
     return (_plus + "Validator");
   }
   

@@ -333,13 +333,13 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     allMigratorsReader.migrators.forEach(_function_1);
     String _fullQualifiedName = concept.getFullQualifiedName();
     String _plus = (_fullQualifiedName + ".validator.");
-    String _name = concept.getName();
-    String _plus_1 = (_plus + _name);
+    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
+    String _plus_1 = (_plus + _replace);
     String _plus_2 = (_plus_1 + "Validator");
     String _plus_3 = (_plus_2 + "Test");
     importManager.register(_plus_3);
-    String _name_1 = concept.getName();
-    String _plus_4 = (_name_1 + "Validator");
+    String _replace_1 = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
+    String _plus_4 = (_replace_1 + "Validator");
     String _plus_5 = (_plus_4 + "Test");
     listOfTests.add(_plus_5);
     StringConcatenation _builder = new StringConcatenation();

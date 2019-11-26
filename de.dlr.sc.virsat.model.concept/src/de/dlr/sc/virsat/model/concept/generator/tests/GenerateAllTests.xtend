@@ -189,8 +189,8 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 			listOfTests.add(it + "Test")
 		]
 		
-		importManager.register(concept.fullQualifiedName + ".validator." + concept.name + "Validator" + "Test")
-		listOfTests.add(concept.name + "Validator" + "Test")
+		importManager.register(concept.fullQualifiedName + ".validator." + concept.name.replace("de.dlr.sc.virsat.model.extension.", "") + "Validator" + "Test")
+		listOfTests.add(concept.name.replace("de.dlr.sc.virsat.model.extension.", "") + "Validator" + "Test")
 			
 		return '''
 		«FOR test : listOfTests»
