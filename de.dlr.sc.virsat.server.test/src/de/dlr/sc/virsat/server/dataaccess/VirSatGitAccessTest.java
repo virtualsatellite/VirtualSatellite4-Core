@@ -106,7 +106,7 @@ public class VirSatGitAccessTest {
 
 		// now add a file to the local repository
 		File newFile = makeAbsolute(new File(relativePathToTempLocalRepository1 + "/test.dat"));
-		Files.createFile(newFile.toPath());
+		newFile.createNewFile();
 		
 		// now try to commit the new file to the wrong repository 2 and not 1
 		String resultFail = new VirSatGitAccess(workspaceRoot).commit(relativePathToTempLocalRepository2.toString(), COMMIT_MESSAGE);
@@ -144,7 +144,7 @@ public class VirSatGitAccessTest {
 
 		// now add a file to the local repository
 		File newFile = makeAbsolute(new File(relativePathToTempLocalRepository1 + "/test.dat"));
-		Files.createFile(newFile.toPath());
+		newFile.createNewFile();
 
 		// Commit the file
 		String resultSuccess = new VirSatGitAccess(workspaceRoot).commit(relativePathToTempLocalRepository1.toString(), COMMIT_MESSAGE);
