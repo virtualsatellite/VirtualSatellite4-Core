@@ -75,7 +75,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		// change the super document
 		rename(document, "NewDocument");	
 		
-		propagateInheritance();
+		waitForAllBuildersAndUiThread();
 		expand(elementConfiguration);
 		waitForEditingDomainAndUiThread();
 		
@@ -93,14 +93,13 @@ public class InheritanceTest extends ASwtBotTestCase {
 		openEditor(document);
 		// Change a value in super Sei in a field which is overriden in sub Sei
 		renameField(Document.PROPERTY_DOCUMENTNAME, "NewNewName");
-		propagateInheritance();
+		waitForAllBuildersAndUiThread();
 		openEditor(newDocument); 
-		waitForEditingDomainAndUiThread();
 		assertText("NewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
 		// Remove override flag, save
 		clickOnComboBox(Document.PROPERTY_DOCUMENTNAME);
-		propagateInheritance();
+		waitForAllBuildersAndUiThread();
 		openEditor(newDocument); 
 		assertText("NewNewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
@@ -115,7 +114,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 
 		//Delete CA which is inherited
 		document.contextMenu().menu("Delete").click();
-		propagateInheritance();
+		waitForAllBuildersAndUiThread();
 		assertEquals(1, elementConfiguration.getItems().length);
 		assertEquals(1, elementOccurence.getItems().length);
 	}
@@ -126,7 +125,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		setText(Document.PROPERTY_DOCUMENTNAME, "docName");
 		setText(Document.PROPERTY_NOTE, "docNote");
 		addInheritance(elementConfiguration, "PT: ProductTree", "PTD: ProductTreeDomain", "ED: ElementDefinition");
-		propagateInheritance();
+		waitForAllBuildersAndUiThread();
 		assertEquals("docName", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		assertEquals("docNote", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_NOTE));
 		bot.tableWithId("tableDocument").click(0, 2);
@@ -137,7 +136,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		setText(Document.PROPERTY_NOTE, "newNote");
 
 		openEditor(elementConfiguration);
-		propagateInheritance();
+		waitForAllBuildersAndUiThread();
 		assertEquals("newDocName", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		assertEquals("overriden note", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_NOTE));
 		
