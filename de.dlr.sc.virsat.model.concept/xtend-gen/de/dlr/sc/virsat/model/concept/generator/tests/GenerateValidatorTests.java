@@ -25,13 +25,12 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 @SuppressWarnings("all")
 public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
   public static String getConcreteClassName(final Concept concept) {
-    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
-    return (_replace + "Validator");
+    return GenerateValidator.getValidatorName(concept);
   }
   
   public static String getAbstractClassName(final Concept concept) {
-    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
-    String _plus = ("A" + _replace);
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    String _plus = ("A" + _validatorName);
     return (_plus + "Validator");
   }
   
@@ -202,7 +201,7 @@ public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@Test\t");
+    _builder.append("@Test");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public void test");
@@ -213,10 +212,10 @@ public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
     _builder.append("\t\t");
     String _concreteClassName_2 = GenerateValidatorTests.getConcreteClassName(concept);
     _builder.append(_concreteClassName_2, "\t\t");
-    _builder.append(" validator = new ");
+    _builder.append("Validator validator = new ");
     String _concreteClassName_3 = GenerateValidatorTests.getConcreteClassName(concept);
     _builder.append(_concreteClassName_3, "\t\t");
-    _builder.append("();");
+    _builder.append("Validator();");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("assertTrue(validator.validate(testSei));");
