@@ -19,6 +19,8 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
@@ -29,14 +31,24 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     return (_plus + GenerateValidator.PACKAGE_FOLDER);
   }
   
+  public static String getValidatorName(final Concept concept) {
+    final String name = concept.getName();
+    final String[] arrOfName = name.split("\\.");
+    final String shortName = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(arrOfName)));
+    String _upperCase = shortName.substring(0, 1).toUpperCase();
+    String _substring = shortName.substring(1);
+    final String validatorName = (_upperCase + _substring);
+    return validatorName;
+  }
+  
   public static String getConcreteClassName(final Concept concept) {
-    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
-    return (_replace + "Validator");
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    return (_validatorName + "Validator");
   }
   
   public static String getAbstractClassName(final Concept concept) {
-    String _replace = concept.getName().replace("de.dlr.sc.virsat.model.extension.", "");
-    String _plus = ("A" + _replace);
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    String _plus = ("A" + _validatorName);
     return (_plus + "Validator");
   }
   

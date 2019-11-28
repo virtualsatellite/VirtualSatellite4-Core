@@ -24,12 +24,21 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 		concept.name + "." + PACKAGE_FOLDER;
 	}
 	
+	static def getValidatorName(Concept concept) {
+		val name = concept.name
+		val String[] arrOfName = name.split("\\.")
+		val shortName = arrOfName.last
+		
+		val validatorName = shortName.substring(0,1).toUpperCase() + shortName.substring(1) 
+		return validatorName
+	}
+	
 	static def getConcreteClassName(Concept concept) {
-		concept.name.replace("de.dlr.sc.virsat.model.extension.", "") + "Validator";
+		getValidatorName(concept) + "Validator";
 	}
 	
 	static def getAbstractClassName(Concept concept) {
-		"A" + concept.name.replace("de.dlr.sc.virsat.model.extension.", "") + "Validator";
+		"A" + getValidatorName(concept) + "Validator";
 	}
 	
 	override createConcreteClassFileName(Concept concept, EObject eObject) {
