@@ -7,34 +7,28 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package testConcept.validator;
+package TestConcept.validator;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
-
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 
 
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
 
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
-
 /**
- * Auto Generated Class inheriting from Generator Gap Class
+ * Auto Generated Abstract Generator Gap Class
  * 
- * This class is generated once, do your changes here
+ * Don't Manually modify this class
  * 
  * 
- *
- */
-public class testConceptValidatorTest extends AtestConceptValidatorTest {
+ * 
+ */	
+public abstract class ATestConceptValidator implements IStructuralElementInstanceValidator {
 
-	@Test
-	public void testtestConceptValidator() {
-		testConceptValidator validator = new testConceptValidator();
-		assertTrue(validator.validate(testSei));
+	@Override
+	public boolean validate(StructuralElementInstance sei) {
+		return true;
 	}
 }

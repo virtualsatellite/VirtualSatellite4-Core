@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package testConcept.validator;
+package TestConcept.validator;
 
 // *****************************************************************
 // * Import Statements
@@ -32,7 +32,7 @@ import org.junit.Before;
  * 
  * 
  */	
-public abstract class AtestConceptValidatorTest {
+public abstract class ATestConceptValidatorTest {
 
 	StructuralElementInstance testSei;
 
