@@ -35,7 +35,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
  * @author bell_er
  *
  */
-public class FuncEelcExporterTest extends ExcelTestCase {
+public class FuncElecExporterTest extends ExcelTestCase {
 	
 	@Test
 	public void canExport()  { 	
