@@ -31,7 +31,7 @@ class GenerateValidatorTestsTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CONCEPT_NAME = "TestConcept"
 	
 	// Don't get the Test but the Tests here. The Test is the test case for the GenerateValidator.
 	// Whereas here we want to have the Generator for the GenerateValidatorTests.
@@ -53,8 +53,8 @@ class GenerateValidatorTestsTest {
 
 		val concreteClassfileName = generateValidatorTests.createConcreteClassFileName(concept, concept)
 		val abstractClassfileName = generateValidatorTests.createAbstractClassFileName(concept, concept)
-		val expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/testConceptValidatorTest.java"
-		val expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AtestConceptValidatorTest.java"
+		val expectedConcreteClassFileName = "../../TestConcept.test/src/TestConcept/validator/TestConceptValidatorTest.java"
+		val expectedAbstractClassFileName = "../../TestConcept.test/src-gen/TestConcept/validator/ATestConceptValidatorTest.java"
 
 		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName)
 		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
@@ -70,7 +70,7 @@ class GenerateValidatorTestsTest {
 		val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
 		val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)
 		
-		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidatorTest.java")
-		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidatorTest.java")
+		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidatorTest.java")
+		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidatorTest.java")
 	}
 }

@@ -38,7 +38,7 @@ public class GenerateValidatorTestsTest {
   
   private Concept concept;
   
-  private final String TEST_CONCEPT_NAME = "testConcept";
+  private final String TEST_CONCEPT_NAME = "TestConcept";
   
   private final GenerateValidatorTests generateValidatorTests = new GenerateValidatorTests();
   
@@ -62,8 +62,8 @@ public class GenerateValidatorTestsTest {
       this.concept = this._parseHelper.parse(_builder);
       final String concreteClassfileName = this.generateValidatorTests.createConcreteClassFileName(this.concept, this.concept);
       final String abstractClassfileName = this.generateValidatorTests.createAbstractClassFileName(this.concept, this.concept);
-      final String expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/testConceptValidatorTest.java";
-      final String expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AtestConceptValidatorTest.java";
+      final String expectedConcreteClassFileName = "../../TestConcept.test/src/TestConcept/validator/TestConceptValidatorTest.java";
+      final String expectedAbstractClassFileName = "../../TestConcept.test/src-gen/TestConcept/validator/ATestConceptValidatorTest.java";
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName);
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
     } catch (Throwable _e) {
@@ -84,8 +84,8 @@ public class GenerateValidatorTestsTest {
       this.concept = this._parseHelper.parse(_builder);
       final CharSequence concreteClassContents = this.generateValidatorTests.createConcreteClass(this.concept, this.concept);
       final CharSequence abstractClassContents = this.generateValidatorTests.createAbstractClass(this.concept, this.concept);
-      GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidatorTest.java");
-      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidatorTest.java");
+      GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidatorTest.java");
+      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidatorTest.java");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
