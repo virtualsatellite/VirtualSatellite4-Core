@@ -36,7 +36,7 @@ public class GenerateValidatorTest {
   
   private Concept concept;
   
-  private final String testConceptName = "testConcept";
+  private final String testConceptName = "TestConcept";
   
   private final GenerateValidator validatorGenerator = new GenerateValidator();
   
@@ -58,14 +58,14 @@ public class GenerateValidatorTest {
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.validatorGenerator.createConcreteClassFileName(this.concept, this.concept);
-    final String expectedFileName = (this.testConceptName + "/validator/testConceptValidator.java");
+    final String expectedFileName = (this.testConceptName + "/validator/TestConceptValidator.java");
     Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName);
   }
   
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.validatorGenerator.createAbstractClassFileName(this.concept, this.concept);
-    final String expectedFileName = (this.testConceptName + "/validator/AtestConceptValidator.java");
+    final String expectedFileName = (this.testConceptName + "/validator/ATestConceptValidator.java");
     Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName);
   }
   
@@ -73,7 +73,7 @@ public class GenerateValidatorTest {
   public void testCreateConcreteClass() {
     try {
       final CharSequence classContents = this.validatorGenerator.createConcreteClass(this.concept, this.concept);
-      GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidator.java");
+      GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidator.java");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -83,7 +83,7 @@ public class GenerateValidatorTest {
   public void testCreateAbstractClass() {
     try {
       final CharSequence classContents = this.validatorGenerator.createAbstractClass(this.concept, this.concept);
-      GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidator.java");
+      GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidator.java");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

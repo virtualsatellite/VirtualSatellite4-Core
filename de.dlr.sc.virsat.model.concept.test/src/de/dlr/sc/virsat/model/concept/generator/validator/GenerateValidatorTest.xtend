@@ -29,45 +29,45 @@ class GenerateValidatorTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	val testConceptName = "testConcept"
+	val testConceptName = "TestConcept"
 	val validatorGenerator = new GenerateValidator
 
 	@Before
 	def void setUp() {
 		ConceptsPackage.eINSTANCE.eClass
 		
-        concept = '''
-        	Concept «testConceptName»{}
-        '''.parse
+		concept = '''
+			Concept «testConceptName»{}
+		'''.parse
 	}
 	
 	@Test
-    def void testCreateConcreteClassFileName() {
-    	val fileName = validatorGenerator.createConcreteClassFileName(concept, concept)
-    	
-    	val expectedFileName = testConceptName + "/validator/testConceptValidator.java"
-    	
-    	Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName)
-    }
+	def void testCreateConcreteClassFileName() {
+		val fileName = validatorGenerator.createConcreteClassFileName(concept, concept)
+		
+		val expectedFileName = testConceptName + "/validator/TestConceptValidator.java"
+		
+		Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName)
+	}
 	
 	@Test
-    def void testCreateAbstractClassFileName() {
-    	val fileName = validatorGenerator.createAbstractClassFileName(concept, concept)
-    	
-    	val expectedFileName = testConceptName + "/validator/AtestConceptValidator.java"
-    	
-    	Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName)
-    }
+	def void testCreateAbstractClassFileName() {
+		val fileName = validatorGenerator.createAbstractClassFileName(concept, concept)
+		
+		val expectedFileName = testConceptName + "/validator/ATestConceptValidator.java"
+		
+		Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName)
+	}
 
 	@Test
-    def void testCreateConcreteClass() {
-    	val classContents = validatorGenerator.createConcreteClass(concept, concept)
-		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidator.java")
-    }
+	def void testCreateConcreteClass() {
+		val classContents = validatorGenerator.createConcreteClass(concept, concept)
+		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidator.java")
+	}
 
 	@Test
     def void testCreateAbstractClass() {
     	val classContents = validatorGenerator.createAbstractClass(concept, concept)
-		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidator.java")
+		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidator.java")
     } 
 }
