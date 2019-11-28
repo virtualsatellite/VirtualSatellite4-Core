@@ -25,9 +25,7 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
 
@@ -37,7 +35,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
  * @author bell_er
  *
  */
-public class ExcelExporterTest extends ExcelTestCase {
+public class FuncEelcExporterTest extends ExcelTestCase {
 	
 	@Test
 	public void canExport()  { 	
@@ -46,7 +44,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void test()  { 		
+	public void testExportTypes()  { 		
 		StructuralElementInstance sei = itc.getStructuralElementInstance();
 		FuncElecExporter fe = new FuncElecExporter();
 		fe.export(itc.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
@@ -62,7 +60,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void test2() throws IOException  { 		
+	public void testExportInterfaceEnds() throws IOException  { 		
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		StructuralElementInstance sei = ed.getStructuralElementInstance();
 		
@@ -80,7 +78,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void test3() throws IOException  { 	
+	public void testExportInterfaces() throws IOException  { 	
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		
 		StructuralElementInstance sei = ec.getStructuralElementInstance();
@@ -98,25 +96,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void test4() throws IOException  { 	
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
-		
-		StructuralElementInstance sei = ec2.getStructuralElementInstance();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
-
-		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
-		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
-		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-	}
-	
-	@Test
-	public void test5() throws IOException  { 		
+	public void testExportTypesIntoEmptyWorkbook() throws IOException  { 		
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 		
 		StructuralElementInstance sei = itc.getStructuralElementInstance();
@@ -136,7 +116,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void test6() throws IOException  { 
+	public void testExportInterfacesIntoEmptyWorkbook() throws IOException  { 
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 		
 		StructuralElementInstance sei = ed.getStructuralElementInstance();
@@ -154,25 +134,7 @@ public class ExcelExporterTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void test7() throws IOException  { 	
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
-		
-		StructuralElementInstance sei = ec.getStructuralElementInstance();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
-
-		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
-		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME);
-			assertEquals("Interface exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
-		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-	}
-	
-	@Test
-	public void test8() throws IOException  { 
+	public void testExportInterfaceEndsIntoEmptyWorkbook() throws IOException  { 
 		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 		
 		StructuralElementInstance sei = ec2.getStructuralElementInstance();
@@ -187,27 +149,5 @@ public class ExcelExporterTest extends ExcelTestCase {
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-	}
-	
-	@Test
-	public void test9() throws IOException  { 		
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
-		InterfaceEnd ie1 = new InterfaceEnd(conceptFuncelectrical);
-		ie1.setName("POW_IN");
-		ec2.add(ie1);
-		StructuralElementInstance sei = ec2.getStructuralElementInstance();
-		sei.setType(ActiveConceptHelper.getStructuralElement(conceptEgscc, "ElementOccurence"));
-		addElementsToRepository();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
-
-		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
-		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
-		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));	
 	}
 }

@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
  * @author bell_er
  *
  */
-public class ExcelImporterTest extends ExcelTestCase {
+public class FuncElecImporterTest extends ExcelTestCase {
 
 	@Before
 	public void setUp() throws CoreException {
