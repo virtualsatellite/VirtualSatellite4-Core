@@ -19,6 +19,7 @@ import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
+import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator
 
 /**
  * This class generates the test cases for the StructruralElements
@@ -48,7 +49,6 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 	public static val PACKAGE_FOLDER = "test";
 	
 	override serializeModel(Concept concept, IFileSystemAccess fsa) {
-	
 		// ************************************************************************************
 		// Abstract Class
 		// ************************************************************************************
@@ -189,8 +189,12 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 			listOfTests.add(it + "Test")
 		]
 		
-		importManager.register(concept.fullQualifiedName + ".validator." + concept.name.replace("de.dlr.sc.virsat.model.extension.", "") + "Validator" + "Test")
-		listOfTests.add(concept.name.replace("de.dlr.sc.virsat.model.extension.", "") + "Validator" + "Test")
+		/**
+		 *	Add ValidatorTest to import and SuiteClasses
+		 */
+		
+		importManager.register(concept.fullQualifiedName + ".validator." + GenerateValidator.getValidatorName(concept) + "Validator" + "Test")
+		listOfTests.add(GenerateValidator.getValidatorName(concept) + "Validator" + "Test")
 			
 		return '''
 		«FOR test : listOfTests»
