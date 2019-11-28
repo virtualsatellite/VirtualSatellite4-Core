@@ -11,6 +11,7 @@
 package de.dlr.sc.virsat.model.extension.funcelectrical.excelImport;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.excel.Fault;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
@@ -41,9 +43,19 @@ public class FuncElecImporterTest extends ExcelTestCase {
 		iface.getTypeInstance().setUuid(new VirSatUuid("dc928367-36b7-479c-8aaf-38291f394902"));
 		ec.add(iface2);
 	}
+	
+	@Test
+	public void testValidate() throws IOException {
+		InputStream is = Activator.getResourceContentAsString("/resources/ImportInterfaceTypeCollectionTest.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(is);
+
+		FuncElecImporter ei = new FuncElecImporter();
+		List<Fault> faults = ei.validate(itc.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+	}
 
 	@Test
-	public void test() throws IOException {
+	public void testImportInterfaceTypeCollection() throws IOException {
 		InputStream is = Activator.getResourceContentAsString("/resources/ImportInterfaceTypeCollectionTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
@@ -56,7 +68,7 @@ public class FuncElecImporterTest extends ExcelTestCase {
 	}
 
 	@Test
-	public void test2() throws IOException {
+	public void testImportInterfaceEnds() throws IOException {
 		InputStream is = Activator.getResourceContentAsString("/resources/ImportElementDefinitionTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
@@ -76,7 +88,7 @@ public class FuncElecImporterTest extends ExcelTestCase {
 	}
 
 	@Test
-	public void test3() throws IOException {
+	public void testImportInterfaces() throws IOException {
 		InputStream is = Activator.getResourceContentAsString("/resources/ImportElementConfigurationTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
