@@ -25,7 +25,8 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 @SuppressWarnings("all")
 public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
   public static String getConcreteClassName(final Concept concept) {
-    return GenerateValidator.getValidatorName(concept);
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    return (_validatorName + "Validator");
   }
   
   public static String getAbstractClassName(final Concept concept) {
@@ -212,10 +213,10 @@ public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
     _builder.append("\t\t");
     String _concreteClassName_2 = GenerateValidatorTests.getConcreteClassName(concept);
     _builder.append(_concreteClassName_2, "\t\t");
-    _builder.append("Validator validator = new ");
+    _builder.append(" validator = new ");
     String _concreteClassName_3 = GenerateValidatorTests.getConcreteClassName(concept);
     _builder.append(_concreteClassName_3, "\t\t");
-    _builder.append("Validator();");
+    _builder.append("();");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("assertTrue(validator.validate(testSei));");
