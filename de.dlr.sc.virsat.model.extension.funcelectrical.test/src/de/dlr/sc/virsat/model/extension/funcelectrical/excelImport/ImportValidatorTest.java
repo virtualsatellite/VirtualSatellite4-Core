@@ -26,6 +26,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.excel.Fault;
 import de.dlr.sc.virsat.excel.FaultType;
+import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 
@@ -89,7 +90,10 @@ public class ImportValidatorTest extends ExcelTestCase {
 	}
 	
 	@Test
-	public void testValidateInterfacetTypeSheet() throws IOException  { 
+	public void testValidateInterfaceTypeSheet() throws IOException  { 
+		// Set a missmatching UUID
+		ec.getStructuralElementInstance().setUuid(new VirSatUuid("2c325de4-0000-467c-8867-bdddda7723f6"));
+		
 		InputStream is = Activator.getResourceContentAsString("/resources/ElementConfigurationTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 		
