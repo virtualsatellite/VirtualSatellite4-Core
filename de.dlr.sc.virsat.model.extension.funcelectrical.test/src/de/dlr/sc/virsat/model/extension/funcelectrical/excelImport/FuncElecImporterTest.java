@@ -43,16 +43,6 @@ public class FuncElecImporterTest extends ExcelTestCase {
 		iface.getTypeInstance().setUuid(new VirSatUuid("dc928367-36b7-479c-8aaf-38291f394902"));
 		ec.add(iface2);
 	}
-	
-	@Test
-	public void testValidate() throws IOException {
-		InputStream is = Activator.getResourceContentAsString("/resources/ImportInterfaceTypeCollectionTest.xlsx");
-		XSSFWorkbook wb = new XSSFWorkbook(is);
-
-		FuncElecImporter ei = new FuncElecImporter();
-		List<Fault> faults = ei.validate(itc.getStructuralElementInstance(), wb);
-		assertTrue("Succesfully called the validator", faults.isEmpty());
-	}
 
 	@Test
 	public void testImportInterfaceTypeCollection() throws IOException {
@@ -60,6 +50,10 @@ public class FuncElecImporterTest extends ExcelTestCase {
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
 		FuncElecImporter ei = new FuncElecImporter();
+		
+		List<Fault> faults = ei.validate(itc.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+		
 		ei.importExcel(itc.getStructuralElementInstance(), repository, wb);
 		assertEquals(THREE, itc.getStructuralElementInstance().getCategoryAssignments().size());
 		assertEquals("FILL", itc.getStructuralElementInstance().getCategoryAssignments().get(0).getName());
@@ -74,6 +68,10 @@ public class FuncElecImporterTest extends ExcelTestCase {
 
 		repository.getRootEntities().add(itc.getStructuralElementInstance());
 		FuncElecImporter ei = new FuncElecImporter();
+		
+		List<Fault> faults = ei.validate(ed.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+		
 		ei.importExcel(ed.getStructuralElementInstance(), repository, wb);
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(ed.getStructuralElementInstance(), InterfaceEnd.class);
@@ -93,6 +91,10 @@ public class FuncElecImporterTest extends ExcelTestCase {
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
 		FuncElecImporter ei = new FuncElecImporter();
+		
+		List<Fault> faults = ei.validate(ec.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+		
 		ei.importExcel(ec.getStructuralElementInstance(), repository, wb);
 
 		assertEquals(2, ec.getStructuralElementInstance().getCategoryAssignments().size());
