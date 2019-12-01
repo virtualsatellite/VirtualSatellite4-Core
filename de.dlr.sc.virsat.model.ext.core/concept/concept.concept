@@ -1,6 +1,10 @@
 Concept de.dlr.sc.virsat.model.ext.core description "Concept for core language elements" displayname "Core" hasDMF
 {
-	
+	/**
+	 * Implicit super category of all categories
+	 * 
+	 * Can be used for generic references that should allow all categories
+	 */
 	Category GenericCategory description "Implicit super category of all categories" {
 		
 	}	
