@@ -236,8 +236,12 @@ public class GenerateDmfCategories {
       EList<EClassifier> _eClassifiers = ePackage.getEClassifiers();
       _eClassifiers.add(catEClass);
       catEClass.setName(it.getName());
-      EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
-      _eSuperTypes.add(this.dvlmDObject);
+      Category _extendsCategory = it.getExtendsCategory();
+      boolean _tripleEquals = (_extendsCategory == null);
+      if (_tripleEquals) {
+        EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
+        _eSuperTypes.add(this.dvlmDObject);
+      }
       catEClass.setAbstract(it.isIsAbstract());
       final Consumer<AProperty> _function_1 = (AProperty it_1) -> {
         final EStructuralFeature propEStructuralFeature = new PropertydefinitionsSwitch<EStructuralFeature>() {
@@ -421,7 +425,7 @@ public class GenerateDmfCategories {
    */
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
     final URI rpUri = ap.eResource().getURI();
-    final String ecorePath = rpUri.toString().replace(".concept", ".ecore");
+    final String ecorePath = rpUri.toString().replace(".xmi", ".ecore");
     final URI ecoreUri = URI.createURI(ecorePath);
     final Resource ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
     final Function1<Object, Boolean> _function = (Object it) -> {

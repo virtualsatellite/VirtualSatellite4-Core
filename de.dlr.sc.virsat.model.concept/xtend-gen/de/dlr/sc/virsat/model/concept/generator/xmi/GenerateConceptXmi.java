@@ -35,18 +35,19 @@ public class GenerateConceptXmi {
    * @param dataModel access to the root model object
    * @param fsa access to the local file system
    */
-  public void serializeModel(final Concept dataModel, final IFileSystemAccess fsa) {
+  public void serializeModel(final Concept dataModel, final URI conceptURI, final IFileSystemAccess fsa) {
     final Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
     Map<String, Object> _extensionToFactoryMap = resourceRegistry.getExtensionToFactoryMap();
     XMIResourceFactoryImpl _xMIResourceFactoryImpl = new XMIResourceFactoryImpl();
     _extensionToFactoryMap.put(GenerateConceptXmi.MODEL_TYPE_XMI_EXTENSION, _xMIResourceFactoryImpl);
     try {
       final ResourceSetImpl targetResourceSet = new ResourceSetImpl();
-      final Resource targetResource = targetResourceSet.createResource(URI.createURI(GenerateConceptXmi.CONCEPT_XMI_FILENAME));
+      final String filenameWithVersion = GenerateConceptXmi.getConceptWithVersionName(dataModel);
+      final Resource targetResource = targetResourceSet.createResource(URI.createURI(filenameWithVersion));
       targetResource.getContents().add(dataModel);
       final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       targetResource.save(outputStream, null);
-      fsa.generateFile(GenerateConceptXmi.CONCEPT_XMI_FILENAME, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
+      fsa.generateFile(filenameWithVersion, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
     } catch (final Throwable _t) {
       if (_t instanceof IOException) {
         final IOException e = (IOException)_t;
@@ -57,12 +58,13 @@ public class GenerateConceptXmi {
     }
     try {
       final ResourceSetImpl targetResourceSet = new ResourceSetImpl();
-      final String filenameWithVersion = GenerateConceptXmi.getConceptWithVersionName(dataModel);
-      final Resource targetResource = targetResourceSet.createResource(URI.createURI(filenameWithVersion));
+      URI targetUri = conceptURI.trimFileExtension();
+      targetUri = targetUri.appendFileExtension(GenerateConceptXmi.MODEL_TYPE_XMI_EXTENSION);
+      final Resource targetResource = targetResourceSet.createResource(targetUri);
       targetResource.getContents().add(dataModel);
       final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       targetResource.save(outputStream, null);
-      fsa.generateFile(filenameWithVersion, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
+      fsa.generateFile(GenerateConceptXmi.CONCEPT_XMI_FILENAME, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_CONCEPT, outputStream.toString());
     } catch (final Throwable _t) {
       if (_t instanceof IOException) {
         final IOException e = (IOException)_t;
