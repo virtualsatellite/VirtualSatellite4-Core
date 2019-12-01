@@ -84,8 +84,8 @@ public class ConceptLanguageGenerator implements IGenerator2 {
       if (generateCode) {
         EObject _get = resource.getContents().get(0);
         final Concept dataModel = this.conceptLanguageHandler.addImplicitSuperType(((Concept) _get));
+        new GenerateConceptXmi().serializeModel(dataModel, resource.getURI(), fsa);
         new GenerateDmfCategories().serializeModel(dataModel, fsa);
-        new GenerateConceptXmi().serializeModel(dataModel, fsa);
         new GenerateConceptImages().serializeModel(dataModel, fsa);
         new GenerateCategoryBeans().serializeModel(dataModel, fsa);
         new GenerateStructuralElementBeans().serializeModel(dataModel, fsa);

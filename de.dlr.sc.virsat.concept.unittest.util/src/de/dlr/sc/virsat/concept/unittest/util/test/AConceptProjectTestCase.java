@@ -10,8 +10,12 @@
 package de.dlr.sc.virsat.concept.unittest.util.test;
 
 
+import org.eclipse.emf.transaction.RecordingCommand;
+
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
@@ -21,6 +25,8 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  */
 public abstract class AConceptProjectTestCase extends AProjectTestCase {
 
+	private static final String CONCEPT_ID_CORE = "de.dlr.sc.virsat.model.ext.core";
+	
 	/**
 	 * Method to load the test concept
 	 * @param pluginName The name of the plugin from which to load the concept 
@@ -30,5 +36,31 @@ public abstract class AConceptProjectTestCase extends AProjectTestCase {
 	    String conceptXmiPluginPath = pluginName + "/concept/concept.xmi";
 		Concept concept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
 		return concept;
+	}
+	
+	/**
+	 * Adds the language core concept to the repository.
+	 * 
+	 * Requires addEditingDomainAndRepository() from super class to be executed before
+	 */
+	protected void activateCoreConcept() {
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				addCoreConceptToRepository(repository);
+			}
+		});
+
+	}
+	
+	/**
+	 * Adds the language core concept to the repository (without using a command)
+	 * 
+	 * @param repository the repository in which the core concept should be added
+	 */
+	protected void addCoreConceptToRepository(Repository repository) {
+		Concept coreConcept = loadConceptFromPlugin(CONCEPT_ID_CORE);
+		Concept activeCoreConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(coreConcept, repository);
+		repository.getActiveConcepts().add(activeCoreConcept);
 	}
 }

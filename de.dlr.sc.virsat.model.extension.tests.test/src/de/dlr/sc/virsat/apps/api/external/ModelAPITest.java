@@ -49,7 +49,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 public class ModelAPITest extends AConceptProjectTestCase {
 
-	private Concept virSatConcept;
+	private Concept virSatTestConcept;
 	private ModelAPI modelAPI;
 	private Repository virSatRepository;
 	private UnitManagement virSatUnitManagement;
@@ -73,9 +73,10 @@ public class ModelAPITest extends AConceptProjectTestCase {
 		virSatRepository = rs.getRepository();
 		
 		// Load the concept to create the test object
-		virSatConcept = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.tests");
-		Concept activeConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(virSatConcept, virSatRepository);
-		virSatRepository.getActiveConcepts().add(activeConcept);
+		addCoreConceptToRepository(virSatRepository);
+		virSatTestConcept = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.tests");
+		Concept activeTestConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(virSatTestConcept, virSatRepository);
+		virSatRepository.getActiveConcepts().add(activeTestConcept);
 		rs.saveAllResources(new NullProgressMonitor());
 		relaodResourceSet();
 		
@@ -95,7 +96,6 @@ public class ModelAPITest extends AConceptProjectTestCase {
 		rs.realoadAll();
 		virSatRepository = rs.getRepository();
 		virSatUnitManagement = rs.getUnitManagement();
-		virSatConcept = virSatRepository.getActiveConcepts().get(0);
 	}
 
 	@Test
@@ -105,13 +105,13 @@ public class ModelAPITest extends AConceptProjectTestCase {
 
 	@Test
 	public void testGetConcept() {
-		assertEquals("Concept correctly retrieved", virSatConcept.getFullQualifiedName(), modelAPI.getConcept("de.dlr.sc.virsat.model.extension.tests").getFullQualifiedName());
+		assertEquals("Concept correctly retrieved", virSatTestConcept.getFullQualifiedName(), modelAPI.getConcept("de.dlr.sc.virsat.model.extension.tests").getFullQualifiedName());
 		assertNull("Concept that does not exist correctly not found", modelAPI.getConcept("sh<kdjfk"));
 	}
 
 	@Test
 	public void testAddRootSei() throws IOException {
-		TestStructuralElement tsei = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei = new TestStructuralElement(virSatTestConcept);
 		
 		assertTrue("No rootEntitiy yet", virSatRepository.getRootEntities().isEmpty());
 		
@@ -127,15 +127,15 @@ public class ModelAPITest extends AConceptProjectTestCase {
 
 	@Test
 	public void testPerformInheritance() {
-		TestStructuralElement tsei1 = new TestStructuralElement(virSatConcept);
-		TestStructuralElement tsei2 = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei1 = new TestStructuralElement(virSatTestConcept);
+		TestStructuralElement tsei2 = new TestStructuralElement(virSatTestConcept);
 
 		modelAPI.addRootSei(tsei1);
 		modelAPI.addRootSei(tsei2);
 		
 		tsei2.addSuperSei(tsei1);
 		
-		TestCategoryBeanA tca = new TestCategoryBeanA(virSatConcept);
+		TestCategoryBeanA tca = new TestCategoryBeanA(virSatTestConcept);
 		tsei1.add(tca);
 		
 		assertTrue("Category not yet propagated", tsei2.getAll(TestCategoryBeanA.class).isEmpty());
@@ -147,8 +147,8 @@ public class ModelAPITest extends AConceptProjectTestCase {
 
 	@Test
 	public void testGetRootSeis() {
-		TestStructuralElement tsei1 = new TestStructuralElement(virSatConcept);
-		TestStructuralElement tsei2 = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei1 = new TestStructuralElement(virSatTestConcept);
+		TestStructuralElement tsei2 = new TestStructuralElement(virSatTestConcept);
 		
 		modelAPI.addRootSei(tsei1);
 		modelAPI.addRootSei(tsei2);
@@ -159,7 +159,7 @@ public class ModelAPITest extends AConceptProjectTestCase {
 	
 	@Test
 	public void testCreateSeiStorage() throws IOException, CoreException {
-		TestStructuralElement tsei = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei = new TestStructuralElement(virSatTestConcept);
 
 		IFolder folderNotExist = projectCommons.getStructuralElemntInstanceFolder(tsei.getStructuralElementInstance());
 		assertFalse("The folder does not yet exist", folderNotExist.exists());
@@ -175,7 +175,7 @@ public class ModelAPITest extends AConceptProjectTestCase {
 	
 	@Test
 	public void getSeiStorageDocumentPath() throws CoreException, IOException {
-		TestStructuralElement tsei = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei = new TestStructuralElement(virSatTestConcept);
 		
 		String path = modelAPI.getSeiStorageDocumentPath(tsei);
 		
@@ -198,9 +198,9 @@ public class ModelAPITest extends AConceptProjectTestCase {
 	
 	@Test
 	public void testDeleteAllRootSeiAndStorage() throws CoreException, IOException {
-		TestStructuralElement tsei = new TestStructuralElement(virSatConcept);
-		TestStructuralElement tsei2 = new TestStructuralElement(virSatConcept);
-		TestStructuralElement tsei3 = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei = new TestStructuralElement(virSatTestConcept);
+		TestStructuralElement tsei2 = new TestStructuralElement(virSatTestConcept);
+		TestStructuralElement tsei3 = new TestStructuralElement(virSatTestConcept);
 		
 		IFolder folderNotExist = projectCommons.getStructuralElemntInstanceFolder(tsei.getStructuralElementInstance());
 		assertFalse("The folder does not yet exist", folderNotExist.exists());
@@ -235,7 +235,7 @@ public class ModelAPITest extends AConceptProjectTestCase {
 	
 	@Test
 	public void testDeleteSeiAndStorageBeanSei() throws IOException, CoreException {
-		TestStructuralElement tsei = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei = new TestStructuralElement(virSatTestConcept);
 		
 		IFolder folderNotExist = projectCommons.getStructuralElemntInstanceFolder(tsei.getStructuralElementInstance());
 		assertFalse("The folder does not yet exist", folderNotExist.exists());
@@ -260,7 +260,7 @@ public class ModelAPITest extends AConceptProjectTestCase {
 		
 	@Test
 	public void testDeleteSeiAndStorageSei() throws IOException, CoreException {
-		TestStructuralElement tsei = new TestStructuralElement(virSatConcept);
+		TestStructuralElement tsei = new TestStructuralElement(virSatTestConcept);
 		
 		IFolder folderNotExist = projectCommons.getStructuralElemntInstanceFolder(tsei.getStructuralElementInstance());
 		assertFalse("The folder does not yet exist", folderNotExist.exists());

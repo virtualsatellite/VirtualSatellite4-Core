@@ -19,12 +19,11 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
@@ -42,15 +41,14 @@ public class DvlmLatestConceptValidatorTest extends AConceptProjectTestCase {
 	
 	VirSatTransactionalEditingDomain domain;
 	
-	Repository repo;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		UserRegistry.getInstance().setSuperUser(true);
 		addEditingDomainAndRepository();
+		activateCoreConcept();
 		domain = editingDomain;
-		repo = DVLMFactory.eINSTANCE.createRepository();
 	}
 	
 	@Test
@@ -61,15 +59,21 @@ public class DvlmLatestConceptValidatorTest extends AConceptProjectTestCase {
 		IConfigurationElement[] concepts = registry.getConfigurationElementsFor(CONCEPT_EXTENSION_POINT_ID);
 		
 		ActiveConceptConfigurationElement acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(concepts, TEST_CONCEPT_ID);
-		Command command = acElement.createAddActiveConceptCommand(domain, repo);
+		Command command = acElement.createAddActiveConceptCommand(domain, repository);
 		domain.getCommandStack().execute(command);
 
-		assertTrue("concept is up to date", validator.validate(repo));
+		assertTrue("concept is up to date", validator.validate(repository));
 		// we decrease the version of the concept
-		for (Concept concept : repo.getActiveConcepts()) {
-			concept.setVersion("0.001");
+		for (Concept concept : repository.getActiveConcepts()) {
+			editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+				@Override
+				protected void doExecute() {
+					concept.setVersion("0.001");
+				}
+			});
+			
 		}
 
-		assertFalse("concept is not up to date", validator.validate(repo));
+		assertFalse("concept is not up to date", validator.validate(repository));
 	}
 }
