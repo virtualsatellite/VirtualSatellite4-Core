@@ -78,11 +78,11 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 		UserRegistry.getInstance().setSuperUser(true);
 
 		addEditingDomainAndRepository();
-		
+		activateCoreConcept();
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] configSections = registry.getConfigurationElementsFor(EXTENSION_ID);
-
+		
 		ActiveConceptConfigurationElement acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_EGSCC);
 		Command command = acElement.createAddActiveConceptCommand(editingDomain, repository);
 		editingDomain.getCommandStack().execute(command);

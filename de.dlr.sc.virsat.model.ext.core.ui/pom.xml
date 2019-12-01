@@ -16,7 +16,7 @@
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>de.dlr.sc.virsat.model.concept.core.ui</artifactId>
-	<name>de.dlr.sc.virsat.model.concept.core.ui</name>
+	<artifactId>de.dlr.sc.virsat.model.ext.core.ui</artifactId>
+	<name>de.dlr.sc.virsat.model.ext.core.ui</name>
 	<packaging>eclipse-plugin</packaging>
 </project>
