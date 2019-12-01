@@ -27,15 +27,12 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -66,8 +63,6 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public static final String PROPERTY_REQTYPE = "reqType";
 	public static final String PROPERTY_ELEMENTS = "elements";
 	public static final String PROPERTY_STATUS = "status";
-	public static final String PROPERTY_TRACE = "trace";
-	public static final String PROPERTY_BLA = "bla";
 	
 	// Status enumeration value names
 	public static final String STATUS_Open_NAME = "Open";
@@ -199,70 +194,6 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public BeanPropertyEnum getStatusBean() {
 		safeAccessStatus();
 		return status;
-	}
-	
-	// *****************************************************************
-	// * Array Attribute: trace
-	// *****************************************************************
-		private IBeanList<GenericCategory> trace = new TypeSafeReferencePropertyInstanceList<>(GenericCategory.class);
-	
-		private void safeAccessTrace() {
-			if (trace.getArrayInstance() == null) {
-				trace.setArrayInstance((ArrayInstance) helper.getPropertyInstance("trace"));
-			}
-		}
-	
-		public IBeanList<GenericCategory> getTrace() {
-			safeAccessTrace();
-			return trace;
-		}
-	
-	// *****************************************************************
-	// * Attribute: bla
-	// *****************************************************************
-	private Document bla;
-	
-	private void safeAccessBla() {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("bla");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (bla == null) {
-				createBla(ca);
-			}
-			bla.setTypeInstance(ca);
-		} else {
-			bla = null;
-		}
-	}
-	
-	private void createBla(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			bla = (Document) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
-	public Document getBla() {
-		safeAccessBla();
-		return bla;
-	}
-	
-	public Command setBla(EditingDomain ed, Document value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("bla");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
-	}
-	
-	public void setBla(Document value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("bla");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
 	}
 	
 	

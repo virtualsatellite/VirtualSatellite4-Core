@@ -10,9 +10,6 @@
 Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.1 beta 
 {
 
-	Import de.dlr.sc.virsat.model.ext.core.*;
-	Import de.dlr.sc.virsat.model.extension.ps.*;
-
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
 		IsRootStructuralElement;
 	}
@@ -43,8 +40,6 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Reference reqType of Type RequirementType;
 		Type elements [] of Category AttributeValue;
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
-		Reference trace[] of Type GenericCategory;
-		Reference bla of Type Document;
 	}
 	
 	Category AttributeValue {
