@@ -42,6 +42,7 @@ public class RepoValidatorsInstantiatorTest extends AConceptProjectTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addEditingDomainAndRepository();
+		activateCoreConcept();
 	}
 
 	@Test
