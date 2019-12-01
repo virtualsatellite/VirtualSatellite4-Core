@@ -23,10 +23,6 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
-   <includes
-         id="de.dlr.sc.virsat.model.concept.core.feature"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="org.eclipse.xtext"/>
       <import plugin="org.eclipse.equinox.common" version="3.5.0" match="greaterOrEqual"/>
