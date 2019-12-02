@@ -76,7 +76,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	public void execute(Command command, Map<?, ?> options) {
 		transactionLock.lock();
 		
-			try {
+		try {
 			if (command instanceof RecordingCommand) {
 				command = new VirSatRecordingCommand(command);
 			}
