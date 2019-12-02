@@ -8,6 +8,7 @@ Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.ext.core.core.provider.ConceptEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Eclipse-ExtensibleAPI: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.dlr.sc.virsat.model.ext.core.core.provider
 Require-Bundle: org.eclipse.core.runtime,

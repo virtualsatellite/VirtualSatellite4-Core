@@ -15,3 +15,5 @@ Require-Bundle: org.junit,
  org.eclipse.emf.ecore.xmi,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit
+Export-Package: de.dlr.sc.virsat.model.ext.core.edit.test,
+ de.dlr.sc.virsat.model.ext.core.provider
