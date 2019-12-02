@@ -47,9 +47,8 @@ class GenerateValidatorTestsTest {
 	@Test
 	def void testCreateConcreteClassFileName() {
 		concept = '''
-			Concept «TEST_CONCEPT_NAME» {
-			}
-			'''.parse
+			Concept «TEST_CONCEPT_NAME» {}
+		'''.parse
 
 		val concreteClassfileName = generateValidatorTests.createConcreteClassFileName(concept, concept)
 		val abstractClassfileName = generateValidatorTests.createAbstractClassFileName(concept, concept)
@@ -61,11 +60,10 @@ class GenerateValidatorTestsTest {
 	}
 	
 	@Test
-	def void testCreateForCategoryTests() {
+	def void testCreateClass() {
 		concept = '''
-			Concept «TEST_CONCEPT_NAME» {
-			}
-			'''.parse
+			Concept «TEST_CONCEPT_NAME» {}
+		'''.parse
 		
 		val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
 		val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)

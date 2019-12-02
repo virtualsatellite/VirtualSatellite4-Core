@@ -55,10 +55,8 @@ public class GenerateValidatorTestsTest {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Concept ");
       _builder.append(this.TEST_CONCEPT_NAME);
-      _builder.append(" {");
+      _builder.append(" {}");
       _builder.newLineIfNotEmpty();
-      _builder.append("}");
-      _builder.newLine();
       this.concept = this._parseHelper.parse(_builder);
       final String concreteClassfileName = this.generateValidatorTests.createConcreteClassFileName(this.concept, this.concept);
       final String abstractClassfileName = this.generateValidatorTests.createAbstractClassFileName(this.concept, this.concept);
@@ -72,15 +70,13 @@ public class GenerateValidatorTestsTest {
   }
   
   @Test
-  public void testCreateForCategoryTests() {
+  public void testCreateClass() {
     try {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Concept ");
       _builder.append(this.TEST_CONCEPT_NAME);
-      _builder.append(" {");
+      _builder.append(" {}");
       _builder.newLineIfNotEmpty();
-      _builder.append("}");
-      _builder.newLine();
       this.concept = this._parseHelper.parse(_builder);
       final CharSequence concreteClassContents = this.generateValidatorTests.createConcreteClass(this.concept, this.concept);
       final CharSequence abstractClassContents = this.generateValidatorTests.createAbstractClass(this.concept, this.concept);
