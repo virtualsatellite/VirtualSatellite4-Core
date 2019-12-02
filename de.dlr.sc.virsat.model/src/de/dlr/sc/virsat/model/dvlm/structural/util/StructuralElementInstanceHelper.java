@@ -10,8 +10,10 @@
 package de.dlr.sc.virsat.model.dvlm.structural.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -91,5 +93,19 @@ public class StructuralElementInstanceHelper {
 		}
 		
 		return deepChildren;
+	}
+
+
+	/**
+	 * @param sei 
+	 * @return direct and indirect super SEIs of the passed sei
+	 */
+	public static Set<StructuralElementInstance> getAllSuperSeis(StructuralElementInstance sei) {
+		Set<StructuralElementInstance> superSeis = new HashSet<>();
+		for (StructuralElementInstance superSei: sei.getSuperSeis()) {
+			superSeis.add(superSei);
+			superSeis.addAll(getAllSuperSeis(superSei));
+		}
+		return superSeis;
 	}
 }

@@ -85,7 +85,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanPropertyEnumTest.class,
 				BeanCategoryAssignmentTest.class,
 				TransactionalEditingDomainHelperTest.class,
-				BeanStructuralElementInstanceTest.class, 
+				BeanStructuralElementInstanceTest.class,
 				DVLMItemNamingTest.class, 
 				DVLMCategoriesItemProviderAdapterFactoryTest.class, 
 				DVLMCategoryAssignmentItemProviderTest.class,

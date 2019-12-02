@@ -94,9 +94,15 @@ public class NumberLiteralResultHelper {
 		if (operator.equals(MathOperator.PLUS)) {
 			Sum sum = new Sum();
 			doubleResult = sum.evaluate(values);
+			if (!QudvUnitHelper.getInstance().haveSameQuantityKind(lhsBaseQuantityKinds, rhsBaseQuantityKinds)) {
+				resultBaseQuantityKinds = QudvUnitHelper.getInstance().createUndefinedQKMap();
+			}
 		} else if (operator.equals(MathOperator.MINUS)) {
 			Subtract subtract = new Subtract();
 			doubleResult = subtract.value(values[0], values[1]);
+			if (!QudvUnitHelper.getInstance().haveSameQuantityKind(lhsBaseQuantityKinds, rhsBaseQuantityKinds)) {
+				resultBaseQuantityKinds = QudvUnitHelper.getInstance().createUndefinedQKMap();
+			}
 		} else if (operator.equals(MathOperator.MULTIPLY)) {
 			Product multiply = new Product();
 			doubleResult = multiply.evaluate(values);

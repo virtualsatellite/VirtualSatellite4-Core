@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 
@@ -47,6 +48,8 @@ public abstract class AImportExportPage extends WizardPage {
 	private static final String DESTINATION_TEXT = "Destination:";
 	protected static final int ROWS = 3;
 	protected static final int DESTINATION_WIDTH_HINT = 250;
+	protected static final String DIALOG_TEXT = "File name";
+	protected int dialogStyle = SWT.SAVE | SWT.SHEET;
 
 	private Object model;
 	private Object selection;
@@ -62,6 +65,20 @@ public abstract class AImportExportPage extends WizardPage {
 	 */
 	protected AImportExportPage(String pageName) {
 		super(pageName);
+	}
+	
+	/**
+	 * default constructor
+	 * 
+	 * @param pageName
+	 *            Name of the Page
+	 *            
+	 * @param style
+	 * 			  the SWT style of the page 
+	 */
+	protected AImportExportPage(String pageName, int style) {
+		super(pageName);
+		this.dialogStyle = style;
 	}
 
 	@Override
@@ -140,7 +157,23 @@ public abstract class AImportExportPage extends WizardPage {
 	/**
 	 * @return dialog.open() the selected directory Name
 	 */
-	protected abstract String openDialog();
+	protected String openDialog() {
+		FileDialog dialog = new FileDialog(getContainer().getShell(), dialogStyle);
+		dialog.setText(DIALOG_TEXT);
+		dialog.setFilterExtensions(getSupportedFileEndings());
+		return dialog.open();
+	}
+	
+	/**
+	 * Returns a array of file endings that should be allowed in the selection area
+	 * 
+	 * Should be implemented in the subclass to specify which file types are desired
+	 * 
+	 * @return the array of file endings as string
+	 */
+	protected String[] getSupportedFileEndings() {
+		return new String[0];
+	}
 
 	/**
 	 * Creates the field and the default value of the field
@@ -209,4 +242,6 @@ public abstract class AImportExportPage extends WizardPage {
 	public void setModel(Object model) {
 		this.model = model;
 	}
+	
+	
 }

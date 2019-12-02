@@ -31,8 +31,8 @@ class GenerateCategoryTestsTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	final val TEST_CONCEPT_NAME = "testConcept"
-	final val TEST_CATEGORY_NAME = "testCategory"
+	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CATEGORY_NAME = "testCategory"
 	val generateCategoryTests = new GenerateCategoryTests();
 
 	@Before

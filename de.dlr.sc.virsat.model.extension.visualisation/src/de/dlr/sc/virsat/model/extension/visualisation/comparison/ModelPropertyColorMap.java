@@ -19,6 +19,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.ColorDelta;
@@ -35,7 +36,8 @@ public class ModelPropertyColorMap extends ACompareModelAlgorithm {
 	
 	private static final String VISUALISATION_CATEGORY_NAME = AVisualisation.FULL_QUALIFIED_CATEGORY_NAME;
 	
-	private static ColorMap colorMap = new ColorMap(0, 0);
+	private ColorMap colorMap = new ColorMap(0, 0);
+	
 	/**
 	 * Constructor of the algorithm 
 	 * @param pm a ProgressMonitor to report progress. COnstructor will convert it into subMonitor.
@@ -76,17 +78,31 @@ public class ModelPropertyColorMap extends ACompareModelAlgorithm {
 		subMonitor.subTask("Finding specific property in base model");
 		// Find all correct property instances in the baseProject
 		EcoreUtil.getAllContents(baseRepo.getRootEntities(), true).forEachRemaining((object) -> {
-			if (object instanceof ComposedPropertyInstance) {													
-				ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
-				String fqn = cpi.getType().getFullQualifiedName();		
-								
-				if (fqn.equals(propertyFqn)) {
-					CategoryAssignment ca = cpi.getTypeInstance();
-					UnitValuePropertyInstance uvpi = (UnitValuePropertyInstance) ca.getPropertyInstances().get(0);
-					listOfVpis.add(uvpi);
+			
+			if (object instanceof APropertyInstance) {
+				APropertyInstance pi = (APropertyInstance) object;
+				String fqn = pi.getType().getFullQualifiedName();
 				
-				} 
+				if (fqn.equals(propertyFqn)) {
+					UnitValuePropertyInstance uvpi = null;
+					
+					if (object instanceof ComposedPropertyInstance) {
+						ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
+						
+						uvpi = cpi.getTypeInstance().getPropertyInstances().stream()
+								.filter(p -> p instanceof UnitValuePropertyInstance)
+								.map(p -> (UnitValuePropertyInstance) p)
+								.findFirst().orElse(null);
+					} else if (object instanceof UnitValuePropertyInstance) {
+						uvpi = (UnitValuePropertyInstance) object;
+					}
+					
+					if (uvpi != null) {
+						listOfVpis.add(uvpi);
+					}
+				}
 			}
+			
 			if (object instanceof CategoryAssignment) {
 				CategoryAssignment ca = (CategoryAssignment) object;
 				String fqn = ca.getType().getFullQualifiedName();

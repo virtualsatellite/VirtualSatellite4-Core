@@ -1,0 +1,58 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+Concept de.dlr.sc.virsat.model.extension.funcelectrical displayname "Functional Electrical Architecture" description "Concept for modeling Functional Electrical Architecture (FEA)" version 2.0 {
+	Import de.dlr.sc.virsat.model.extension.ps.*;
+
+
+	StructuralElement InterfaceTypeCollection description "A Container to summarize all InterfaceTypes" {
+		IsRootStructuralElement;
+	}	 
+
+	Category InterfaceType shortname IFT description "InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" {
+		Applicable For [InterfaceTypeCollection];
+	}
+
+	Category PowerInterfaceType extends InterfaceType description "Describes a Power interface type with nominal voltages" {
+		Type voltages[] of Category VoltageDefinition;
+	}
+	
+	Category VoltageDefinition description "Abstract voltage definition" {
+		IsAbstract;	
+	}
+
+	Category FixedVoltageDefinition extends VoltageDefinition description "Fixed voltage defining a nominal value" {
+		FloatProperty nominalValue default 0 quantityKind "Electric potential difference" unit "Volt";	
+	}
+	
+	Category RangedVoltageDefinition extends VoltageDefinition description "Interval range of nominal voltages" {
+		FloatProperty minVoltage default 0 quantityKind "Electric potential difference" unit "Volt";
+		FloatProperty maxVoltage default 0 quantityKind "Electric potential difference" unit "Volt";	
+	}
+	
+	Category DataInterfaceType extends InterfaceType description "Describes a Data communication interface type" {
+		StringProperty electricalStandard default "Analog";
+	}
+	
+	Category ThermalReferencePoint extends DataInterfaceType description "Describes a thermal communication interface type" {
+
+	}
+
+	Category InterfaceEnd shortname IFE description "Describes a Functional Electrical InterfaceEnd as connection point for Interfaces" {   
+		Applicable For [ElementDefinition, ElementConfiguration, ElementOccurence];
+		Reference type of Type InterfaceType;
+	}   
+  
+	Category Interface shortname IF description "Describes a Functional Electrical Interface connecting two InterfaceEnds" {   
+		Applicable For [ElementConfiguration, ElementOccurence];
+		Reference interfaceEndFrom of Type InterfaceEnd;
+		Reference interfaceEndTo of Type InterfaceEnd;
+	}      
+ 
+}        

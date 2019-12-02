@@ -37,9 +37,9 @@ public class GenerateStructuralElementTestsTest {
   
   private Concept concept;
   
-  private final static String TEST_CONCEPT_NAME = "testConcept";
+  private static final String TEST_CONCEPT_NAME = "testConcept";
   
-  private final static String TEST_STRUCTURAL_ELEMENT_NAME = "testStructuralElement";
+  private static final String TEST_STRUCTURAL_ELEMENT_NAME = "testStructuralElement";
   
   private final GenerateStructuralElementTests generateStructuralElementTests = new GenerateStructuralElementTests();
   

@@ -26,7 +26,7 @@
          </property>
          <property
                name="aboutText"
-               value="Virtual Satellite 4 - DVLM Core&#x0A;&#x0A;Version 4.9.0&#x0A;&#x0A;Copyright 2019 - Simulation and Software Technology (DLR)&#x0A;&#x0A;German Aerospace Center (DLR) e.V.&#x0A;Lilienthalplatz 7&#x0A;38108 Braunschweig&#x0A;Germany">
+               value="Virtual Satellite 4 - DVLM Core&#x0A;&#x0A;Version 4.10.0&#x0A;&#x0A;Copyright 2019 - Simulation and Software Technology (DLR)&#x0A;&#x0A;German Aerospace Center (DLR) e.V.&#x0A;Lilienthalplatz 7&#x0A;38108 Braunschweig&#x0A;Germany">
          </property>
          <property
                name="aboutImage"
@@ -52,6 +52,18 @@
                name="preferenceCustomization"
                value="plugin_customization.ini">
          </property>
+         <property
+               name="cssTheme"
+               value="org.eclipse.e4.ui.css.theme.e4_default">
+         </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.e4.ui.css.swt.theme">
+      <theme
+            basestylesheeturi="css/theme-super-user.css"
+            id="de.dlr.sc.virsat.branding.ui.themesuperuser"
+            label="SuperUserTheme">
+      </theme>
    </extension>
 </plugin>

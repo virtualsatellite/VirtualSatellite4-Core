@@ -182,7 +182,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @return a HashSet containing all copied CAs with updated references into the current tree.
 	 */
 	@SuppressWarnings("unchecked")
-	protected Set<CategoryAssignment> updateStep(StructuralElementInstance subSei) {
+	public Set<CategoryAssignment> updateStep(StructuralElementInstance subSei) {
 		boolean hasWritePermission = rightsHelper.hasWriteAccess(subSei);
 	
 		if (hasWritePermission) {
@@ -200,6 +200,10 @@ public class InheritanceCopier implements IInheritanceCopier {
 			// reference was copied to, and then references this copied target. But we have
 			// not actually copied this object. Therefore we have to lift all potential
 			// objects into this cache.
+			// This also means, if a new superSei is set to a sei, there are no subTis yet, that
+			// have a link to a superTi, therefore there is nothing to be loaded to the cache.
+			// These objects have to placed into the cache once they are created. This is a an internal
+			// functionality of the ecore copier.
 			Set<StructuralElementInstance> potentiallyReferencedTreeSeis = getReferencesInTree(subSei);
 			potentiallyReferencedTreeSeis.add(subSei);
 			
@@ -286,15 +290,30 @@ public class InheritanceCopier implements IInheritanceCopier {
 			EObject subEObject = null;
 			
 			// In case that we want to create a copy of a CategroyAssignment or one of the PropertyInstances from
-			// our SuperType we should carefully check if the derived CAs or PIs already exist.
+			// the SuperSei we should carefully check if the derived CAs or PIs already exist.
 			if (superEObject instanceof IInheritanceLink) {
 				IInheritanceLink superIInheritanceLink = (IInheritanceLink) superEObject;
 
 				// Here we will ask, if the subSei has already an IInheritanceLink that is linked, therefore derived from the one we
 				// just want to copy. In case an object with the link already exists, we don't need to copy it, otherwise we will create
-				// a new eObject of that type and set the link accordingly
+				// a new eObject of that type and set the link accordingly. In Diamond inheritance cases, it can also happen that the 
+				// CA or PI in the SubSei si already inherited but maybe by a different path to the common parent.
 				IInheritanceLink subIInheritanceLink = getInheritedIInheritanceLinkFor(superIInheritanceLink, subSei);
 				if (subIInheritanceLink == null) {
+					// In case we try to copy/inherit a Category Assignment we have to first check,
+					// if the Category is applicable for the target SEI type. If not we do not create
+					// a copy at all. The data model would prevent such a CA to be attached as well,
+					// but all the copying logic is not needed here and might create dangling references
+					// since such an object would be cached in the copier.
+					if (superIInheritanceLink instanceof CategoryAssignment && superIInheritanceLink.eContainer() instanceof StructuralElementInstance) {
+						if (!applicableForCheck.isValidObject(superIInheritanceLink)) {
+							return null;
+						}
+					}
+					
+					// All other objects are copied and handled as usual. PIs of a non-applicable CA will
+					// not get copied, since they are nested to the CA, and the copying of the features will
+					// not get called.
 					subIInheritanceLink = (IInheritanceLink) super.createCopy(superEObject);
 				} 
 
@@ -311,29 +330,6 @@ public class InheritanceCopier implements IInheritanceCopier {
 			}
 		
 			return subEObject;
-		}
-		
-		@Override
-		public EObject copy(EObject superObject) {
-			boolean updateExistingCopy = keySet().contains(superObject);
-			
-			// In case we try to copy/inherit a Category Assignment we have to first check,
-			// if the Category is applicable for the target SEI type. If not we do not create
-			// a copy at all. The data model would prevent such a CA to be attached as well,
-			// but all the copying logic is not needed here at might create dangling references
-			// since such an object would be cached in the copier.
-			if (!updateExistingCopy) {
-				if (superObject instanceof CategoryAssignment && superObject.eContainer() instanceof StructuralElementInstance) {
-					if (!applicableForCheck.isValidObject(superObject)) {
-						return null;
-					}
-				}
-			}
-			
-			// All other objects are copied and handled as usual. PIs of a non-applicable CA will
-			// not get copied, since they are nested to the CA, and the copying of the features will
-			// not get called.
-			return super.copy(superObject);
 		}
 		
 		private StructuralElementInstance subSei;
@@ -362,7 +358,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	};
 	
 	/**
-	 * Use this method to recieve the CAs the subSei should update from the SuperSei
+	 * Use this method to receive the CAs the subSei should update from the SuperSei.
 	 * @param subSei Element which we want to update later on
 	 * @param superSei One of the Element it inherits from
 	 * @return List of the copied CAs from the superSei 
@@ -386,12 +382,18 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * the canUpdate method the behavior needs to be slightly different. If we hand back an already copied
 	 * CA from the SubSEI the update method would copy the features into it. For this case we expect some new 
 	 * CAs, hence this method should return null, triggering the copy method to create some new objects.
+	 * <br>
+	 * <b>Long Story Short</b>: This method checks if a Ti of the sub SEI and the super SEI have a common ancestor. If
+	 * yes, the one in the subSei is regarded as a copy of the TI in sueprSei. This can happen in case of multi-
+	 * inheritance with diamond inheritance. In this case, only the superTi of the Ti in the subSei needs to be
+	 * updated.
+	 * 
 	 * @param superIInheritanceLink The type instance for which a new copy or an existing one in the SubSEI should be created/updated
 	 * @param subSei The sub SEI where the inheritance should copy to
 	 * @return an existing type instance in the SubSEI which has a link to the given TypeInstance or null in case it does not yet exist
 	 */
 	protected IInheritanceLink getInheritedIInheritanceLinkFor(IInheritanceLink superIInheritanceLink, StructuralElementInstance subSei) {
-
+		// If not try to find the copy by a common ancestor
 		Set<IInheritanceLink> rootTisSuper = getRootSuperTypeInstance(superIInheritanceLink);
 		
 		// Loop over all objects and see if the current sub SEI contains a TypeInstance which has a link to the super SEI's type instance
@@ -455,7 +457,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @param updateSei the SEI which wants to be updated 
 	 * @return the List of SEIs which have to be updated first
 	 */
-	protected List<StructuralElementInstance> getSuperSeisInheritanceOrder(StructuralElementInstance updateSei) {
+	public List<StructuralElementInstance> getSuperSeisInheritanceOrder(StructuralElementInstance updateSei) {
 		Set<StructuralElementInstance> unorderedSuperSeis = getSuperSeisInheritanceUnordered(updateSei);
 		List<StructuralElementInstance> orderedSuperSeis = orderByInheritance(unorderedSuperSeis);
 		return orderedSuperSeis;
@@ -792,17 +794,24 @@ public class InheritanceCopier implements IInheritanceCopier {
 	
 	/**
 	 * Clean the links of the contained type instances in a structural element instance that have no valid link
+	 * Cleaning means if the current subSei has a typeInstance which is linked to a typeInstance , that is not
+	 * contained in one of the superSeis anymore, then it has to be removed from the subSei.
 	 * @param sei the structural element instance to be cleaned
 	 */
 	public void cleanSuperTis(StructuralElementInstance sei) {
 		List<StructuralElementInstance> superSeis = sei.getSuperSeis();
 		
+		// First step is to get all type instances from all superSeis
 		Set<IInheritanceLink> allSuperTis = new HashSet<>();
 		for (StructuralElementInstance superSei : superSeis) {
 			Set<IInheritanceLink> superTis = getAllTypeInstances(superSei);
 			allSuperTis.addAll(superTis);
 		}
 		
+		// Now get all the type instances in the subSei
+		// And loop over all the current typeInstances
+		// rather than removing we only keep the ones which 
+		// are present in the superSei
 		Set<IInheritanceLink> childTypeInstances = getAllTypeInstances(sei);
 		for (IInheritanceLink childTi : childTypeInstances) {
 			childTi.getSuperTis().retainAll(allSuperTis);

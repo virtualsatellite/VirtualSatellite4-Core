@@ -2,26 +2,26 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-Version: 4.9.0.qualifier
+Bundle-Version: 4.10.0.qualifier
 Bundle-SymbolicName: de.dlr.sc.virsat.model.concept;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.dlr.sc.virsat.model,
- org.eclipse.equinox.common;bundle-version="3.5.0",
- org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.equinox.common,
+ org.eclipse.xtext,
  org.eclipse.xtext.util,
- org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.eclipse.xtext.common.types,
- org.antlr.runtime,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ org.objectweb.asm;bundle-version="[7.1.0,7.2.0)";resolution:=optional,
  org.eclipse.jface,
  org.eclipse.core.resources,
- org.eclipse.core.runtime;bundle-version="3.11.0",
- org.eclipse.jdt.core;bundle-version="3.11.0",
- org.eclipse.xtext.xbase;bundle-version="2.8.3",
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.xtext.xbase,
  de.dlr.sc.virsat.model.edit,
- org.eclipse.emf.importer.ecore;bundle-version="2.8.0",
+ org.eclipse.emf.importer.ecore,
  org.eclipse.emf.importer,
- org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib;bundle-version="2.14.0",
  org.eclipse.core.filesystem
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

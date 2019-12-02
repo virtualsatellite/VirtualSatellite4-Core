@@ -185,4 +185,47 @@ public class BeanPropertyIntTest extends ABeanPropertyTest {
 		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", uvpi.getUnit().getName());
 		assertEquals("Unit gargl still needs to be invented, thus gramm should be the truth", "Gram", beanProperty.getUnit());
 	}
+	
+	@Test
+	public void testSetValueWithUnit() {
+		setUpRepo();
+		
+		UnitValuePropertyInstance uvpiOther = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
+		uvpiOther.setType(propertyOne);
+		BeanPropertyInt other = new BeanPropertyInt(uvpiOther);
+		
+		beanProperty.setUnit("Gram");
+		beanProperty.setValue(0L);
+		
+		other.setUnit("Kilogram");
+		other.setValue(1L);
+		
+		beanProperty.setValueWithUnit(other);
+		
+		final double EPSILON = 0.001;
+		assertEquals("Unit has been set correctly", other.getUnit(), beanProperty.getUnit());
+		assertEquals("Value has been set correctly", other.getValue(), beanProperty.getValue(), EPSILON);
+	}
+	
+	@Test
+	public void testSetValueWithUnitEditingDomain() {
+		setUpRepo();
+		
+		UnitValuePropertyInstance uvpiOther = PropertyinstancesFactory.eINSTANCE.createUnitValuePropertyInstance();
+		uvpiOther.setType(propertyOne);
+		BeanPropertyInt other = new BeanPropertyInt(uvpiOther);
+		
+		beanProperty.setUnit("Gram");
+		beanProperty.setValue(0L);
+		
+		other.setUnit("Kilogram");
+		other.setValue(1L);
+		
+		Command cmd = beanProperty.setValueWithUnit(ed, other);
+		cmd.execute();
+		
+		final double EPSILON = 0.001;
+		assertEquals("Unit has been set correctly", other.getUnit(), beanProperty.getUnit());
+		assertEquals("Value has been set correctly", other.getValue(), beanProperty.getValue(), EPSILON);
+	}
 }

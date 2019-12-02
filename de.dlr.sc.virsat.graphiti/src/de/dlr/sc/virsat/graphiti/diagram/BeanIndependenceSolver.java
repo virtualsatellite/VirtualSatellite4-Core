@@ -47,14 +47,14 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 
 	private Map<String, Object> objectMap = new HashMap<String, Object>();
 	private IDiagramTypeProvider dtp;
-	
+
 	/**
 	 * Standard constructor. Required diagram type provider of the diagrams to later on
 	 * the obejcts corresponding to a virsat ID can be looked up from the respective
 	 * resource set.
 	 * @param dtp the diagram type provider
 	 */
-	
+
 	public BeanIndependenceSolver(IDiagramTypeProvider dtp) {
 		this.dtp = dtp;
 	}
@@ -65,15 +65,15 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 		if (object != null) {
 			if (object instanceof ABeanStructuralElementInstance) {
 				result = ((ABeanStructuralElementInstance) object).getStructuralElementInstance().getUuid().toString();
-				
+
 				if (!objectMap.containsKey(result)) {
 					objectMap.put(result, object);
 				}
 			}
-			
+
 			if (object instanceof ABeanObject) {
 				result = ((ABeanObject<?>) object).getTypeInstance().getUuid().toString();
-				
+
 				if (!objectMap.containsKey(result)) {
 					objectMap.put(result, object);
 				}
@@ -86,7 +86,7 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 	public Object getBusinessObjectForKey(String key) {
 		if (objectMap.containsKey(key)) {
 			Object object = objectMap.get(key);
-			
+
 			if (object instanceof ABeanStructuralElementInstance) {
 				Resource resource = ((ABeanStructuralElementInstance) object).getStructuralElementInstance().eResource();
 				if (resource == null) {
@@ -129,8 +129,6 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 								DVLMEditPlugin.getPlugin().getLog().log(status);
 							}
 						} else if (object instanceof ATypeInstance) {
-							// TODO: There should be a factory that takes a bean property and then returns
-							// the corresponding bean
 							BeanPropertyFloat bean = new BeanPropertyFloat();
 							bean.setATypeInstance((ATypeInstance) object);
 							objectMap.put(key, bean);

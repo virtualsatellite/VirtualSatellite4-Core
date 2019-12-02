@@ -16,10 +16,12 @@ import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -66,8 +68,15 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 	 * Method to set up the Uuid Text
 	 */
 	private void setUpText() {
+
+		Display display = Display.getCurrent();
+		Color darkGray = display.getSystemColor(SWT.COLOR_DARK_GRAY);
+		Color gray = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		
 		textUuid.setEditable(false);
-		textUuid.setEnabled(false);
+		textUuid.setBackground(gray);
+		textUuid.setForeground(darkGray);
+
 		GridData gridData = createDefaultGridData();
 	    gridData.horizontalSpan = 1;
 	    textUuid.setLayoutData(gridData);
@@ -83,6 +92,7 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 		label.setLayoutData(gridData);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
 		super.setDataBinding(dbCtx, editingDomain, model);
@@ -107,7 +117,6 @@ public class UiSnippetIUuid extends AUiEStructuralFeatureSectionSnippet implemen
 		};
 
 		if (textUuid != null) {
-			@SuppressWarnings("unchecked")
 			IValueProperty<EObject, ?> iUuidProperty = EMFEditProperties.value(editingDomain, GeneralPackage.eINSTANCE.getIUuid_Uuid());
 			
 			dbCtx.bindValue(WidgetProperties.text(SWT.Modify).observe(textUuid), iUuidProperty.observe(model),

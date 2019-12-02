@@ -80,6 +80,11 @@
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIName">
       </uiSnippet>
       <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetBetaWarning"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetBetaWarning">
+      </uiSnippet>
+      <uiSnippet
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetOrigin"
             section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIInheritanceLink">
@@ -108,6 +113,11 @@
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetActiveConcepts"
             section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetActiveConcepts">
+      </uiSnippet>
+      <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetSuppressedValidators"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetSuppressedValidators">
       </uiSnippet>
       <uiSnippet
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetRoleManagement"

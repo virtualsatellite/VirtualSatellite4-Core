@@ -33,7 +33,6 @@ public class PluginXML
   protected final String TEXT_16 = NL + "      <library name=\".\">";
   protected final String TEXT_17 = NL + "         <export name=\"*\"/>" + NL + "      </library>" + NL + "   </runtime>" + NL;
   protected final String TEXT_18 = NL + "</plugin>";
-  protected final String TEXT_19 = NL;
 
   public String generate(Object argument)
   {
@@ -86,7 +85,7 @@ public class PluginXML
     stringBuffer.append(TEXT_17);
     }
     stringBuffer.append(TEXT_18);
-    stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_2);
     return stringBuffer.toString();
   }
 }

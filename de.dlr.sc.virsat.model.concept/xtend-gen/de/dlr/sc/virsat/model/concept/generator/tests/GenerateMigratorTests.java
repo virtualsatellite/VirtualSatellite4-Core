@@ -72,7 +72,7 @@ public class GenerateMigratorTests extends AGeneratorGapGenerator<EObject> {
     return (_plus + GenerateMigratorTests.PACKAGE_FOLDER);
   }
   
-  public final static String PACKAGE_FOLDER = GenerateMigrator.PACKAGE_FOLDER;
+  public static final String PACKAGE_FOLDER = GenerateMigrator.PACKAGE_FOLDER;
   
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {

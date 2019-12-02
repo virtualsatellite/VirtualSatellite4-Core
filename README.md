@@ -17,15 +17,15 @@ Virtual Satellite 4 is the new evolution of MBSE. With a customizable data model
 ## Requirements 
 
 Virtual Satellite is based on Java / Eclipse and provides an installable feature with plug-ins for your personal eclipse IDE. The following infrastructure is required:
- - Java Development Kit (JDK) 8
- - Eclipse Oxygen or newer
-   - Including Checkstyle
-   - Including Spotbugs
-   - Including M2E
- - Maven 3
- - Windows 7 or Linux Computer
+ - Java Development Kit (JDK) 8 - 64 bit
+ - Windows 7 or Linux Computer - 64 bit
 
-## Quickstart
+## Quickstart for users
+
+If you just want to use Virtual Satellite feel free to download it from the [Releases](https://github.com/virtualsatellite/VirtualSatellite4-Core/releases) section here on GitHub.
+A manual is provided as PDF in the upcoming distributions from version 4.10.x onwards. The latest changes on the manual is written in ascii doc and can be found here: [de.dlr.sc.virsat.docs.feature/src/docs/VirSat_Core_User_Manual.adoc](de.dlr.sc.virsat.docs.feature/src/docs/VirSat_Core_User_Manual.adoc)
+
+## Quickstart for developers
 
 1. Open your Eclipse and switch to the Git Perspective.
 2. Clone this repository.
@@ -53,11 +53,31 @@ Deployments are done using GitHub Releases as well as sourceforge: [![Download v
 
 ## Contribution
 
+We are happy to receive your contributions. Nevertheless in such a big project there is a lot to respect and to obey. 
+One thing to respect are legal requirements such as authorship rights and privacy protection. 
+Therefore, before we can accept your contributions we need you to sign our *Contributor License Agreement (CLA)*.
+The CLA is provided in *English* language only:
+
+[Contributor License Agreement CLA](cla/20190724_DLR_Individual_Contributor_License_Agreement_Virtual_Satellite_en_v1.2.pdf)
+
+Before you sign it and send it to us, you have to read the privacy policy as well.
+The privacy policy is available in *English* and *German (Deutsch)* language: 
+
 To contribute to this project follow the given steps:
+
+[Declaration of consent data processing and privacy policy](cla/20190724_Declaration_of_consent_data_processing_and_privacy_policy_Virtual_Satellite_en_v1.2.pdf)
+
+[Einverständniserklärung Datenverarbeitung und Datenschutz](cla/20190724_Einverständniserklärung_Datenverabreitung_und_Datenschutz_VirtualSatellite_de_v1.2.pdf)
+
+If you agree to the CLA and privacy policy, please fill out the CLA and send it back to us. The detailed process of how to submit the documents is described in the documents themself.
+
+Once you are an authorized committer feel free to contribute. We will not activate your account within our organization. Therefore use Pull-Requests to contribute:
 
 1. Create your own fork of the project.
 2. Apply your changes.
-3. Create a pull-request of your change to our development branch.
+3. Make sure you own all relevant rights to make this contribution.
+4. Make sure you are obeying legal requirements.
+5. Create a pull-request of your change to our development branch.
 
 To increase chance that we accept your pull-request, make sure all tests are working. The best indicator is the Travis CI job. Next we will review your pull-request, give comments and maybe accept it.
 

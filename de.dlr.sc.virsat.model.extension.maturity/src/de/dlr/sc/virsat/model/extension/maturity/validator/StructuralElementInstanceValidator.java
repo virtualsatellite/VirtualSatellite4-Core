@@ -29,7 +29,6 @@ public class StructuralElementInstanceValidator extends AStructuralElementInstan
 
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
-		//TODO: Implement custom validation for concept
 		return super.validate(sei);
 	}
 }

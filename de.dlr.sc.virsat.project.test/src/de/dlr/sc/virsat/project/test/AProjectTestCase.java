@@ -21,8 +21,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -35,6 +37,11 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  */
 public abstract class AProjectTestCase {
 
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
+	
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE = "true"; 
@@ -72,9 +79,22 @@ public abstract class AProjectTestCase {
 			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - setUp()");
 		}
 
-		testProject = createTestProject(TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName());
+		testProject = createTestProject(getProjectName());
+
+		previousUser = UserRegistry.getInstance().getUserName();
+		setUserAndRights();
 		
-		//addEditingDomain();
+		VirSatEditingDomainRegistry.INSTANCE.clear();  
+	}
+	
+	private String previousUser;
+	
+	/**
+	 * Method to adjust the User rights for the test cases
+	 * This method gets called by the constructor
+	 */
+	protected void setUserAndRights() {
+		UserRegistry.getInstance().setSuperUser(true);
 	}
 	
 	@After
@@ -83,16 +103,21 @@ public abstract class AProjectTestCase {
 			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - tearDown()");
 		}
 
-		if (editingDomain != null) {
-			VirSatTransactionalEditingDomain.stopResourceChangeEventThread();
-			editingDomain.dispose();
-		}
+		// make sure all Editing Domains are well removed and disposed
+		VirSatEditingDomainRegistry.INSTANCE.clear();
+		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
 		for (IProject project : testProjects) {
 			project.delete(true, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
 		}
+		
+		//CHECKSTYLE:OFF
+		// Bring down user settings to previous state and disable superUser rights
+		UserRegistry.getInstance().setSuperUser(false);
+		UserRegistry.getInstance().setUser(previousUser, 356);
+		//CHECKSTYLE:ON
 	}
 	/**
 	 * Creates the editing domain
@@ -106,5 +131,12 @@ public abstract class AProjectTestCase {
 		editingDomain.saveAll();
 
 		repository = resSetRepositoryTarget.getRepository();
+	}
+	
+	/**
+	 * @return name of the test project in the workbench
+	 */
+	protected String getProjectName() {
+		return TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName();
 	}
 }

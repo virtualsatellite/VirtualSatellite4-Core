@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Functional Eclectrical Interfaces
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.funcelectrical;singleton:=true
+Bundle-Version: 4.10.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ org.eclipse.emf.edit,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.build,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ de.dlr.sc.virsat.external.lib.apache.poi,
+ de.dlr.sc.virsat.excel
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Bundle-Activator: de.dlr.sc.virsat.model.extension.funcelectrical.Activator
+Export-Package: de.dlr.sc.virsat.model.extension.funcelectrical,
+ de.dlr.sc.virsat.model.extension.funcelectrical.html,
+ de.dlr.sc.virsat.model.extension.funcelectrical.model,
+ de.dlr.sc.virsat.model.extension.funcelectrical.model.util,
+ de.dlr.sc.virsat.model.extension.funcelectrical.validator
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.funcelectrical
+

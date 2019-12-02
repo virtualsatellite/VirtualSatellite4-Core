@@ -1,62 +1,116 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.10.0 (29th November 2019)
+----------------------------------
+
+New Features:
+   Upgraded to Eclipse 2019-06 - #XX Feature
+   Updated Product Structure Concept to version 1.2 using improved inheritance definitions - #239 Feature
+   Transitioned Power Budget Concept to open source - #226 Feature
+   Transitioned State Machines Concept to open source - #225 Feature
+   Transitioned Functional Electrical Architecture Concept to open source - #224 Feature
+   Implemented visual ui warning when using beta functionality - #205 Feature
+   Implemented git support in addition to svn support - #195 Feature
+   Implemented simple JSON import / export for interfacing with CAD applications (beta) - #148 #149 Feature
+   Implemented data model extension for Requirements Concept (beta) - #127 Feature
+   Validation rules can now be suppressed - #97 Feature
+   SuperUser mode now has recogniceable ui layout - #76 Feature 
+   Created Developer Manual - #249 Feature
+   Created User Manual - #73 #110 Feature
+   Improved the visualised comparison logic and ui - #58 #64 Feature 
+
+Usability Updates:
+   Supporting keyboard navigation in tables - #146 Comfort/usability
+   The UUID field of an element is now selectable - #88 Comfort/usability
+   Improved layout of commit dialogue - #77 Comfort/usability
+   3D viewer no longer has to be restarted to register new projects - #66 Comfort/usability
+
+Fixed Bugs:
+    Fixed issue of VTK and ZMQ causing nullpointer exceptions on linux - #318 Bug
+    Fixed issue of validators from inactive concepts being executed - #313 Bug
+    Fixed issue of update listeners in the ui being triggered multiple times on every command - #299  Bug 
+    Fixed issue of DMF models sometimes not properly resolving other DMF models in different resources - #259 Bug
+    Fixed issue of validator giving an incorrect warning for URIs with spaces - #87 Bug
+    Fixed issue of multiline strings not being shown correctly under linux in the navigator - #79 Bug
+    Fixed issue of 3D axes not appearing when closing and reopening the 3D viewer - #60 Bug
+    Fixed issue of the visualisation debug client throwing nullpointer exceptions upon the first connection attempt - #55 Bug
+    Fixed issue of color picker in visualisation throwing nullpointer exceptions - #49 Bug
+    Fixed issue of 3D viewer not occupying the full viewing field - #44 Bug
+    Fixed issue of visualised bounding box not adjusting to new shapes - #43 Bug
+    Fixed issue of Virtual Satellite crashing if multiple instances are run on the same computer - #42 Bug
+    Fixed comparison functions of the visualisation concept throwing nullpointer exceptions - #40 Bug
+    Fixed issue of some visualisation concept UI elements appearing despite the concept not being enabled - #39 Bug
+    Fixed issue of scenegraph updates appearing in the command stack history - #38 Bug
+    Fixed issue of copying elements with nested elements of another discipline - #26 Bug
+    Fixed issue of calculation engine not correctly computing quantities - #24 Bug
+
+Release 4.9.1 (15th July 2019)
+----------------------------------
+
+New Features:
+		
+Usability Updates:
+	
+Fixed Bugs:
+    Fixed issue with multi-inheritance (diamond inheritance) and categories with cardinality one
+
 Release 4.9.0 (23rd April 2019)
 ----------------------------------
 
 New Features:
-	Transition to Open Source at https://github.com/virtualsatellite/VirtualSatellite4-Core #1 #3 #4 #5 Release
+    Transition to Open Source at https://github.com/virtualsatellite/VirtualSatellite4-Core - #1 #3 #4 #5 Release
 
 Release 4.8.0 (22nd February 2018)
 ----------------------------------
 
 New Features:
-	Open Source Compliance #662 Release
-	API Improvements for the AppEngine #635 #634 #633 Feature
+    Open Source Compliance #662 Release
+    API Improvements for the AppEngine #635 #634 #633 Feature
 	
 Usability Updates:
-	Copy & Pasting a SEI now directly assigns the discipline to the person doing the paste #609 Comfort/Usability
-	Selecting a concept in the add concept dialogue now also selects all dependencies #644 Comfort/Usability
-	Added DrillDown button in inheritance section #631 Comfort/Usability
+    Copy & Pasting a SEI now directly assigns the discipline to the person doing the paste - #609 Comfort/Usability
+    Selecting a concept in the add concept dialogue now also selects all dependencies - #644 Comfort/Usability
+    Added DrillDown button in inheritance section - #631 Comfort/Usability
 
 Fixed Bugs:
-	Fixed issue of deadlock / race condition freezing VirSat #648 Bug
-	Fixed issue where concept generator did not generate migrator tests correctly #647 Bug
-	Fixed issue of having a NullPointerException when getting all bean children of a SEI #637 Bug
-	Fixed issue where automatic name generation for copy & pasted objects did not behave correctly #616 Bug UIEngine
+    Fixed issue of deadlock / race condition freezing VirSat - #648 Bug
+    Fixed issue where concept generator did not generate migrator tests correctly - #647 Bug
+    Fixed issue of having a NullPointerException when getting all bean children of a SEI - #637 Bug
+    Fixed issue where automatic name generation for copy & pasted objects did not behave correctly - #616 Bug UIEngine
 
 Release 4.7.0 (2nd July 2018)
 ----------------------------------
 
 New Features:
-	Improved the Product Structure Wizzard - #558 Feature
-	Added Linux support for VirSat - #160 Build
+    Improved the Product Structure Wizzard - #558 Feature
+    Added Linux support for VirSat - #160 Build
 	
 Usability Updates:
-	Improved error/warning icons on visualisation editor - #598 Comfort/Usability
-	Improved ditor forms appearance in Linux build - #589 Comfort/Usability
-	Added concept icons to the Concept Palette - #565 Comfort/Usability
-	Improved Filtering of names in ReferenceSelectionDialogue - #560 Comfort/Usability
-	Improved naming of Concept Palette items - #559 Comfort/Usability
-	Added auto opening of an editor after creating a new element - #358 Comfort/UsabilityNiceToHave
+    Improved error/warning icons on visualisation editor - #598 Comfort/Usability
+    Improved ditor forms appearance in Linux build - #589 Comfort/Usability
+    Added concept icons to the Concept Palette - #565 Comfort/Usability
+    Improved Filtering of names in ReferenceSelectionDialogue - #560 Comfort/Usability
+    Improved naming of Concept Palette items - #559 Comfort/Usability
+    Added auto opening of an editor after creating a new element - #358 Comfort/UsabilityNiceToHave
 
 Fixed Bugs:
-	Fixed issue where DomainRoundView shows update request for the own domain - #625 Bug
+    Fixed issue where DomainRoundView shows update request for the own domain - #625 Bug
     Fixed issue where dangling references of child SEIs were considered dangling references of the parent SEI - #623 Bug
-	Fixed issue where NavigatorSorting not working in some cases - #612 Bug
-	Fixed issue where Copy-paste of Visualisation-containing SEI does not update VTK view - #608 Bug
-	Fixed issue of having Wrong rotation units in Visualisation - #605 Bug
-	Fixed issue where InheritanceCopier can go into infinite loop when inheriting from multiple elements in different orders - #603 Bug
-	Fixed issue where Array elements with index >= 10 have incorrect sorting in table snippets - #602 Bug UIEngine
-	Fixed issue where of not set default unit for intrinsic arrays - #601 Bug
-	Fixed issue of having an NPE when opening editor with a CA not being available - #595 Bug
-	Fixed issue of having incorrect navigation of markers - #587 Bug
-	Fixed issue in Visualisation: don't process notification from geometryFile if the shape is not geometry - #573 Bug
-	Fixed issue in Visualisation: Category Assignment cannot be deleted while VtkView is open - #557 Bug
-	VirSat Visualisation should be scaled to base units - #553 Bug
-	Fixed issue of Beans List not handling null references and nulls - #539 Bug
-	Fixed issue of having NullPointerException in certain cases refreshing the Graphiti Diagram Editor - #538 Bug
-	Fixed issue of having NPE tyring to get list of abstract CAs from bean - #511 Bug
+    Fixed issue where NavigatorSorting not working in some cases - #612 Bug
+    Fixed issue where Copy-paste of Visualisation-containing SEI does not update VTK view - #608 Bug
+    Fixed issue of having Wrong rotation units in Visualisation - #605 Bug
+    Fixed issue where InheritanceCopier can go into infinite loop when inheriting from multiple elements in different orders - #603 Bug
+    Fixed issue where Array elements with index >= 10 have incorrect sorting in table snippets - #602 Bug UIEngine
+    Fixed issue where of not set default unit for intrinsic arrays - #601 Bug
+    Fixed issue of having an NPE when opening editor with a CA not being available - #595 Bug
+    Fixed issue of having incorrect navigation of markers - #587 Bug
+    Fixed issue in Visualisation: don't process notification from geometryFile if the shape is not geometry - #573 Bug
+    Fixed issue in Visualisation: Category Assignment cannot be deleted while VtkView is open - #557 Bug
+    VirSat Visualisation should be scaled to base units - #553 Bug
+    Fixed issue of Beans List not handling null references and nulls - #539 Bug
+    Fixed issue of having NullPointerException in certain cases refreshing the Graphiti Diagram Editor - #538 Bug
+    Fixed issue of having NPE tyring to get list of abstract CAs from bean - #511 Bug
 	
 
 Release 4.6.0 (16th January 2018)
@@ -66,7 +120,6 @@ New Features:
     Updated Target Platform to Eclipse 4.7 Oxygen - #466 Build Comfort/Usability Feature NiceToHave Release
     Added support of STL model files to visualisation - #457 Feature
     Added support for the calculation engine to check correctness of quantity kinds - #423 Feature
-
 
 Usability Updates:
     Improved migrator to correctly migrate Visualization concept and data from version 1.0 to 1.1 - #454 BugComfort/Usability
@@ -102,7 +155,6 @@ Usability Updates:
     Improved Tree Sorting which can now be specified by the concept - #276 Comfort/Usability
     Added Drag & Drop capabilities into editor for setting references etc. - #245 Comfort/Usability
     Added Copy and Paste for CategoryAssignments in generic editor - #28 Comfort/Usability Feature
-
 
 Fixed Bugs:
     Fixed issue with Xtext editor dealing with Not a Number NaN values - #537 Bug
@@ -165,7 +217,6 @@ Usability Updates:
     Implemented general context menu functionality in Editor - #409 UIEngine NiceToHave Feature Comfort/Usability
     Displayed, calculated values can now be rounded to a desired precision - #343 NiceToHave Feature/ omfort/Usability
     
-    
 Fixed Bugs:
     Fixed issue where the name of a StructuralElementInstance is not editable when pulling an assigned discipline change - #317 Bug
     Fixed issue where equations did not update in the correct order - #353 Bug
@@ -191,7 +242,6 @@ Fixed Bugs:
     Fixed exceptions on closing VirSat with unsaved resources - #373, #416 Bug
     Fixed issue where using drill down on a UnitValuePropertyInstance opened the wrong editor - #412 Bug
 
-
 Release 4.4.0 (28th February 2017)
 ----------------------------------
 
@@ -213,5 +263,3 @@ Fixed Bugs:
     Investigated and fixed issue on productive S2tep data set on validating reference properties - #295 Bug
     Repository Editor is now showing Buttons to Launch an App and to Edit an App - #294 Bug
     Fixed crash with Editor trying to open a document from a category assignment (CA) where no file is attached yet - #289 Bug
-
-    

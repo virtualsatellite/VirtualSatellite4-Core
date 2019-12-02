@@ -30,15 +30,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
-import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.model.extension.visualisation.comparison.CompareModelProperty;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModel;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIo;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.VtkClientView;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.dialogs.CompareModelPropertyDialog;
+import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 
 /**
@@ -64,15 +63,15 @@ public class CompareModelPropertyHandler extends AbstractHandler implements IHan
 				
 				if (dialog.open() == Window.OK) {
 					VirSatProjectResource vsCompareProject = dialog.getComparisonProjectResource();
-					ComposedProperty property  = dialog.getComparisonProjectProperty();
+					String propertyFQN  = dialog.getComparisonProjectPropertyFQN();
 					
-					if (vsCompareProject != null && property != null) {
+					if (vsCompareProject != null && propertyFQN != null) {
 						new ProgressMonitorDialog(shell).run(true, false, (pm) -> {
 							try {
 								Repository vsBaseRepo = VirSatResourceSet.getResourceSet(vsBaseProject.getWrappedProject()).getRepository();
 								Repository vsCompareRepo = VirSatResourceSet.getResourceSet(vsCompareProject.getWrappedProject()).getRepository();
 								
-								VisualisationDeltaModel deltaModel = new CompareModelProperty(pm).compare(vsBaseRepo, vsCompareRepo, property.getFullQualifiedName());
+								VisualisationDeltaModel deltaModel = new CompareModelProperty(pm).compare(vsBaseRepo, vsCompareRepo, propertyFQN);
 								IFile deltaModelFile;
 								deltaModelFile = CreateDeltaModelFolderHandler.getNewComparisonFile(vsBaseProject, CreateDeltaModelFolderHandler.VIS_DELTA_MODEL_PARA_FILE_EXT);
 								File file = new File(deltaModelFile.getLocation().toOSString());

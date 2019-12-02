@@ -16,11 +16,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.ChangeEvent;
@@ -28,22 +28,18 @@ import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.ISWTObservable;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
-import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecoration;
@@ -79,6 +75,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.ide.IDE;
 
 import de.dlr.sc.virsat.build.marker.ui.MarkerImageProvider;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -705,11 +702,8 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-
-				// Now get the Uri and create the IFile from it
-				URI resourceUri = propertyInstance.getUri();
-				IPath resourcePath = new Path(resourceUri.toPlatformString(true));
-				IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(resourcePath);
+				BeanPropertyResource beanPropertyResource = new BeanPropertyResource(propertyInstance);
+				IFile resourceFile = beanPropertyResource.getFile();
 
 				// Now try to identify the standard editor for this file and
 				// open it
@@ -857,7 +851,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		caHelper = new CategoryAssignmentHelper(caModel);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
 		initializeHelperForModel(model);
@@ -880,7 +874,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			if (buttonCheckOverride != null) {
 				IValueProperty<EObject, ?> overrideProperty = EMFEditProperties.value(editingDomain,
 						InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE);
-				dbCtx.bindValue(WidgetProperties.selection().observe(buttonCheckOverride),
+				dbCtx.bindValue(WidgetProperties.buttonSelection().observe(buttonCheckOverride),
 						overrideProperty.observe(propertyInstance));
 			}
 
@@ -990,11 +984,12 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		
 		// Add binding change listeners to every binding, so it can update the decorators
 		// accordingly in case they are added to the bound SWT widget
-		dbCtx.getValidationStatusProviders().forEach(new Consumer<Binding>() {
-			public void accept(Binding binding) {
+		for (ValidationStatusProvider provider : dbCtx.getValidationStatusProviders()) {
+			if (provider instanceof Binding) {
+				Binding binding = (Binding) provider;
 				binding.getValidationStatus().addChangeListener(new BindingChangeListener(binding));
-			};
-		});
+			}
+		}
 	}
 	
 	/**

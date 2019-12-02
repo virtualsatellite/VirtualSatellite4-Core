@@ -58,11 +58,11 @@ import org.w3c.dom.Node;
  */
 @SuppressWarnings("all")
 public class ResourceAccessBuilder extends IncrementalProjectBuilder {
-  public final static String MANIFEST_MF = "MANIFEST.MF";
+  public static final String MANIFEST_MF = "MANIFEST.MF";
   
-  public final static String PLUGIN_XML = "plugin.xml";
+  public static final String PLUGIN_XML = "plugin.xml";
   
-  public final static String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
+  public static final String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
   
   private final String[] CONCATENATE_ID = { "CategoryAssignmentBean", "extension", "command", "image", "handler", "conceptImage" };
   
@@ -194,28 +194,31 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    */
   public CharSequence createManifestAccessClass(final String packageName, final Attributes attributes) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("/**");
+    _builder.append("/*******************************************************************************");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* This file is part of the VirSat project.");
+    _builder.append("* Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.");
     _builder.newLine();
     _builder.append(" ");
     _builder.append("*");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* Copyright (c) 2008-2017");
+    _builder.append("* This program and the accompanying materials are made available under the");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* German Aerospace Center (DLR), Simulation and Software Technology, Germany");
+    _builder.append("* terms of the Eclipse Public License 2.0 which is available at");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* All rights reserved");
+    _builder.append("* http://www.eclipse.org/legal/epl-2.0.");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* ");
+    _builder.append("*");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("*/");
+    _builder.append("* SPDX-License-Identifier: EPL-2.0");
+    _builder.newLine();
+    _builder.append(" ");
+    _builder.append("*******************************************************************************/");
     _builder.newLine();
     _builder.append("package ");
     _builder.append(packageName);
@@ -332,28 +335,31 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    */
   public CharSequence createPluginXmlAccessClass(final String packageName, final Node node) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("/**");
+    _builder.append("/*******************************************************************************");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* This file is part of the VirSat project.");
+    _builder.append("* Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.");
     _builder.newLine();
     _builder.append(" ");
     _builder.append("*");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* Copyright (c) 2008-2017");
+    _builder.append("* This program and the accompanying materials are made available under the");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* German Aerospace Center (DLR), Simulation and Software Technology, Germany");
+    _builder.append("* terms of the Eclipse Public License 2.0 which is available at");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* All rights reserved");
+    _builder.append("* http://www.eclipse.org/legal/epl-2.0.");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("* ");
+    _builder.append("*");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("*/");
+    _builder.append("* SPDX-License-Identifier: EPL-2.0");
+    _builder.newLine();
+    _builder.append(" ");
+    _builder.append("*******************************************************************************/");
     _builder.newLine();
     _builder.append("package ");
     _builder.append(packageName);

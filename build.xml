@@ -13,7 +13,7 @@ SPDX-License-Identifier: EPL-2.0
   	  Additional Build Preparations for VirSat
   	</description>
 
-	<property name="version">4.9.0</property>
+	<property name="version">4.10.0</property>
 
 	<property name="version.pattern.qualified">[\s]?[0-9]+\.[0-9]+\.[0-9]+\.qualifier</property>
 	<property name="version.pattern">[\s]?[0-9]+\.[0-9]+\.[0-9]+</property>
@@ -44,6 +44,7 @@ SPDX-License-Identifier: EPL-2.0
 				<dirset dir="." casesensitive="yes">
 					<include name="de.dlr.sc.virsat.*"/>
 					<exclude name="de.dlr.sc.virsat.*ui"/>
+					<exclude name="de.dlr.sc.virsat.javadoc.api"/>
 					<exclude name="de.dlr.sc.virsat.*feature"/>
 					<exclude name="de.dlr.sc.virsat.*ide"/>
 					<exclude name="de.dlr.sc.virsat.*test*"/>
@@ -70,6 +71,7 @@ SPDX-License-Identifier: EPL-2.0
 						<include name="**/*"/>
 						<exclude name="**/*Test*.class" />
 						<exclude name="**/model/extension/**/A*.class" />
+						<exclude name="**/AExcelIo.class" />
 						<exclude name="**/parser/antlr/**/*.class" />
 						<exclude name="**/serializer/*SemanticSequencer.class" />
 						<exclude name="**/serializer/*SyntacticSequencer.class" />
@@ -196,8 +198,8 @@ SPDX-License-Identifier: EPL-2.0
 			<regexp pattern="&lt;build.version&gt;${version.pattern}&lt;/build.version&gt;" />
 			<substitution expression="&lt;build.version&gt;${version.new}&lt;/build.version&gt;" />
 			<fileset dir=".">
-				<exclude name="de.dlr.sc.**/target/"/>
-				<include name="de.dlr.sc.**/**/pom.xml" />
+				<exclude name="**/target/"/>
+				<include name="**/pom.xml" />
 			</fileset>
 		</replaceregexp>
 

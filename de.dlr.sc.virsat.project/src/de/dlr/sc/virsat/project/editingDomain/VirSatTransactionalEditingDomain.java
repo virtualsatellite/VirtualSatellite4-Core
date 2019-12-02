@@ -469,8 +469,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 						
 						// Always run all diagnostics
 						for (Resource resource : virSatResourceSet.getResources()) {
-							virSatResourceSet.updateDiagnostic(resource);
-							virSatResourceSet.notifyDiagnosticListeners(resource);
+							if (virSatResourceSet.updateDiagnostic(resource)) {
+								virSatResourceSet.notifyDiagnosticListeners(resource);
+							}
 						}
 						
 						// Rework the dirty states of the resources
@@ -538,9 +539,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param event the actual EVent telling what happened with the Resource
 	 */
 	private static void fireNotifyResourceEvent(Set<Resource> resources, int event) {
-		if (resourceChangeEventThread.getState() == Thread.State.NEW) {
-			resourceChangeEventThread.start();
-		}
+		initResourceChangeEventThread();
 		
 		if (event == EVENT_CHANGED) {
 			synchronized (accumulatedResourceChangeEvents) {
@@ -552,8 +551,22 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			doFireNotifyResourceEvent(resources, event);
 		}
 	}
+
+	/**
+	 * Method to set up the resource Change event thread.
+	 * Starts one if it exists, and creates a new instance if the current
+	 * one got terminated. This seemed to be a reason for stalling jUnit test cases
+	 */
+	private static synchronized void initResourceChangeEventThread() {
+		if (resourceChangeEventThread == null || resourceChangeEventThread.getState() == Thread.State.TERMINATED) {
+			resourceChangeEventThread = new ResourceChangeEventThread();
+		}
+		if (resourceChangeEventThread.getState() == Thread.State.NEW) {
+			resourceChangeEventThread.start();
+		}
+	}
 	
-	private static ResourceChangeEventThread resourceChangeEventThread = new ResourceChangeEventThread(); 
+	private static ResourceChangeEventThread resourceChangeEventThread = null; 
 	
 	/**
 	 * Use this method to stop the notification thread for resource event changes.
@@ -597,7 +610,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		private static final int SLEEP_TIME = 50;
 		private static final int ACCUMULATION_TIME = 250;
 
-		private boolean threadFinished = false;
+		private boolean triggerFinished = false;
 		
 		private int timer;
 		
@@ -619,7 +632,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		@Override
 		public void run() {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread started "));
-			while (!threadFinished) {
+			while (!triggerFinished) {
 				try {
 					Thread.sleep(SLEEP_TIME);
 				} catch (InterruptedException e) {
@@ -645,7 +658,13 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		 */
 		public void finish() {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread triggered for stop.... "));
-			threadFinished = true;
+			triggerFinished = true;
+
+			try {
+				join();
+			} catch (InterruptedException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "ResourceChangeEventThread: Failed waiting until Threads are joined.... "));
+			}
 		}
 	}
 	

@@ -2,10 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Project Builder UI
 Bundle-SymbolicName: de.dlr.sc.virsat.build.ui;singleton:=true
-Bundle-Version: 4.9.0.qualifier
+Bundle-Version: 4.10.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.build.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-Localization: plugin
 Require-Bundle: de.dlr.sc.virsat.build;visibility:=reexport,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.project,

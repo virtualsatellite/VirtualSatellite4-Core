@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
@@ -447,9 +448,6 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 	@Test
 	public void testGetSuperSeis() {
 		TestStructuralElement tse = new TestStructuralElement(concept);
-		StructuralElementInstance sei = tse.getStructuralElementInstance();
-
-		assertEquals("Has correct amount of children", 0, sei.getSuperSeis().size());
 
 		TestStructuralElement superTse1 = new TestStructuralElement(concept);
 		TestStructuralElement superTse2 = new TestStructuralElement(concept);
@@ -457,11 +455,24 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		tse.addSuperSei(superTse1);
 		tse.addSuperSei(superTse2);
 		
-		assertEquals("Has correct amount of children", 2, sei.getSuperSeis().size());
-		
 		List<TestStructuralElement> superSeiBeans = tse.getSuperSeis(TestStructuralElement.class);
 		assertEquals("Correct amount of super Sei beans", 2, superSeiBeans.size());
-		assertThat("List ahs correct elements of super Sei Benas", superSeiBeans, hasItems(superTse1, superTse2));
+		assertThat("List has correct elements of super Sei Beans", superSeiBeans, hasItems(superTse1, superTse2));
+	}
+
+	@Test
+	public void testGetAllSuperSeis() {
+		TestStructuralElement tse = new TestStructuralElement(concept);
+
+		TestStructuralElement superTse1 = new TestStructuralElement(concept);
+		TestStructuralElement superTse2 = new TestStructuralElement(concept);
+		
+		tse.addSuperSei(superTse1);
+		superTse1.addSuperSei(superTse2);
+		
+		Set<TestStructuralElement> superSeiBeans = tse.getAllSuperSeis(TestStructuralElement.class);
+		assertEquals("Correct amount of super Sei beans", 2, superSeiBeans.size());
+		assertThat("List has correct elements of super Sei Beans", superSeiBeans, hasItems(superTse1, superTse2));
 	}
 	
 	@Test

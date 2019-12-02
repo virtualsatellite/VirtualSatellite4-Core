@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Functional Eclectrical Interfaces Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.funcelectrical.test
+Bundle-Version: 4.10.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Fragment-Host: de.dlr.sc.virsat.model.extension.funcelectrical
+Export-Package: de.dlr.sc.virsat.model.extension.funcelectrical.test,
+ de.dlr.sc.virsat.model.extension.funcelectrical.validator
+Require-Bundle: org.junit,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.concept.unittest.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: de.dlr.sc.virsat.project.test
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.funcelectrical.test
