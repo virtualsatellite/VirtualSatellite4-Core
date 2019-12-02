@@ -124,8 +124,10 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		}
 		counter = 1;
 		sb.append("Recently Changed resources: ----------\n");
-		for (URI uri : recentlyChangedResource) {
-			sb.append("Recently Changed Resource <" + counter++ + "> : " + uri + " - " + uri + "\n");
+		synchronized (recentlyChangedResource) {
+			for (URI uri : recentlyChangedResource) {
+				sb.append("Recently Changed Resource <" + counter++ + "> : " + uri + " - " + uri + "\n");
+			}
 		}
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Recently saved Resources: " + sb.toString()));
