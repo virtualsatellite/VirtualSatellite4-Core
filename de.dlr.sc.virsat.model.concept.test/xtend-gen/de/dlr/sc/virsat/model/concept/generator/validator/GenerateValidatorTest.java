@@ -38,6 +38,8 @@ public class GenerateValidatorTest {
   
   private final String testConceptName = "TestConcept";
   
+  private final String testConceptNameLong = "de.dlr.sc.virsat.model.extension.testConcept";
+  
   private final GenerateValidator validatorGenerator = new GenerateValidator();
   
   @Before
@@ -50,6 +52,23 @@ public class GenerateValidatorTest {
       _builder.append("{}");
       _builder.newLineIfNotEmpty();
       this.concept = this._parseHelper.parse(_builder);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testGetValidatorName() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept ");
+      _builder.append(this.testConceptNameLong);
+      _builder.append("{}");
+      _builder.newLineIfNotEmpty();
+      this.concept = this._parseHelper.parse(_builder);
+      final String validatorName = GenerateValidator.getValidatorName(this.concept);
+      final String expectedValidatorName = this.testConceptName;
+      Assert.assertEquals("Validator name for the generated validator is correct", expectedValidatorName, validatorName);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

@@ -30,6 +30,7 @@ class GenerateValidatorTest {
 
 	Concept concept
 	val testConceptName = "TestConcept"
+	val testConceptNameLong = "de.dlr.sc.virsat.model.extension.testConcept"
 	val validatorGenerator = new GenerateValidator
 
 	@Before
@@ -39,6 +40,19 @@ class GenerateValidatorTest {
 		concept = '''
 			Concept «testConceptName»{}
 		'''.parse
+	}
+	
+	@Test 
+	def void testGetValidatorName() {
+		concept = '''
+			Concept «testConceptNameLong»{}
+		'''.parse
+
+		val validatorName = GenerateValidator.getValidatorName(concept)
+
+		val expectedValidatorName = testConceptName
+
+		Assert.assertEquals("Validator name for the generated validator is correct", expectedValidatorName, validatorName)
 	}
 	
 	@Test
@@ -66,8 +80,8 @@ class GenerateValidatorTest {
 	}
 
 	@Test
-    def void testCreateAbstractClass() {
-    	val classContents = validatorGenerator.createAbstractClass(concept, concept)
+	def void testCreateAbstractClass() {
+		val classContents = validatorGenerator.createAbstractClass(concept, concept)
 		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidator.java")
-    } 
+	}
 }
