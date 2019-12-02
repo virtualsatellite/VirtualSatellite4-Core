@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.Saveable;
 import org.eclipse.ui.navigator.SaveablesProvider;
 
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
@@ -37,7 +38,7 @@ public class VirSatProjectSaveablesProvider extends SaveablesProvider {
 	 * States (e.g. Dirty State) and changes to them (e.g. Removed Workspace Resource etc). The listener tracks these changes
 	 * and calls the appropriate methods on this provider. 
 	 */
-	private VirSatTransactionalEditingDomain.IResourceEventListener dirtyChangeListener = new VirSatTransactionalEditingDomain.IResourceEventListener() {
+	private IResourceEventListener dirtyChangeListener = new IResourceEventListener() {
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
 			if (resources.isEmpty()) {
@@ -49,12 +50,12 @@ public class VirSatProjectSaveablesProvider extends SaveablesProvider {
 				VirSatResourceSet virSatResourceSet = (VirSatResourceSet) resourceSet;
 				Display.getDefault().asyncExec(() -> {
 					switch (event) {
-						case VirSatTransactionalEditingDomain.EVENT_LOAD:
-						case VirSatTransactionalEditingDomain.EVENT_RELOAD:
-						case VirSatTransactionalEditingDomain.EVENT_CHANGED:
+						case IResourceEventListener.EVENT_LOAD:
+						case IResourceEventListener.EVENT_RELOAD:
+						case IResourceEventListener.EVENT_CHANGED:
 							createNewDirtySaveable(virSatResourceSet);
 							break;
-						case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
+						case IResourceEventListener.EVENT_UNLOAD:
 							if (!virSatResourceSet.getProject().isOpen()) {
 								removeSaveable(virSatResourceSet);
 							}

@@ -101,10 +101,10 @@ import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMUnresolvedReferenceException;
 import de.dlr.sc.virsat.model.ui.editor.input.VirSatUriEditorInput;
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatSaveJob;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet.IDiagnosticListener;
@@ -205,7 +205,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 			}
 				
 			switch (event) {
-				case VirSatTransactionalEditingDomain.EVENT_CHANGED:
+				case IResourceEventListener.EVENT_CHANGED:
 					if (GenericEditor.this.editorModelObject.eResource() == null
 							|| GenericEditor.this.resource.getResourceSet() == null) {
 						// If the resource that this editor was responsible for has been removed from the resource set
@@ -217,10 +217,10 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 					
 					firePropertyChange(IEditorPart.PROP_DIRTY);
 					break;
-				case VirSatTransactionalEditingDomain.EVENT_RELOAD:
+				case IResourceEventListener.EVENT_RELOAD:
 					handleChangedResources(affectedResources);
 					break;
-				case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
+				case IResourceEventListener.EVENT_UNLOAD:
 					handleClosedResources(affectedResources);
 					break;
 				default:

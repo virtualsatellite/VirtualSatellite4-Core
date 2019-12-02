@@ -34,8 +34,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 
 import de.dlr.sc.virsat.project.Activator;
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.resources.IVirsatWrappedResource;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;

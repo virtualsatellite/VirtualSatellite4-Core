@@ -135,7 +135,7 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 			@Override
 			public void execute() {
 				fullBuild(monitor);
-				virSatTed.saveAll(true, true);
+				virSatTed.saveAll(true, false);
 			}
 
 			@Override
@@ -184,7 +184,7 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 			@Override
 			public void execute() {
 				incrementalBuild(delta, monitor);
-				virSatTed.saveAll(true, true);
+				virSatTed.saveAll(true, false);
 			}
 
 			@Override

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.editingDomain;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -16,10 +18,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.transaction.RollbackException;
-import org.eclipse.emf.transaction.impl.InternalTransaction;
-
-import de.dlr.sc.virsat.project.Activator;
 
 /**
  * This job performs a save a save all operation.
@@ -37,17 +35,17 @@ public class VirSatSaveJob extends WorkspaceJob {
 	public static final String SAVE_JOB_NAME = "Saving";
 	
 	private VirSatTransactionalEditingDomain editingDomain;
-	private boolean supressRemoveDanglingReferences;
+	private boolean removeDanglingReferences;
 	
 	/**
 	 * Standard constructor
 	 * @param editingDomain the editing domain
-	 * @param supressRemoveDanglingReferences supresses removal of dangling references for the builder
+	 * @param removeDanglingReferences supresses removal of dangling references for the builder
 	 */
-	public VirSatSaveJob(VirSatTransactionalEditingDomain editingDomain, boolean supressRemoveDanglingReferences) {
+	public VirSatSaveJob(VirSatTransactionalEditingDomain editingDomain, boolean removeDanglingReferences) {
 		super(SAVE_JOB_NAME);
 		this.editingDomain = editingDomain;
-		this.supressRemoveDanglingReferences = supressRemoveDanglingReferences;
+		this.removeDanglingReferences = removeDanglingReferences;
 		setRule(ResourcesPlugin.getWorkspace().getRoot());
 	}
 	
@@ -69,24 +67,17 @@ public class VirSatSaveJob extends WorkspaceJob {
 			return Status.CANCEL_STATUS;
 		}
 		
-		try {
-			// Bundle all transactions such as removing dangling references during the save
-			// into one big transaction. Also check for active transactions so we
-			// don't cause any deadlocks
-			if (editingDomain.getActiveTransaction() == null) {
-				if (supressRemoveDanglingReferences) {
-					editingDomain.saveAll(false, supressRemoveDanglingReferences);
-				} else {
-					InternalTransaction tx = editingDomain.startTransaction(false, null);
-					editingDomain.saveAll(false, supressRemoveDanglingReferences);
-					tx.commit();
-				}
-			} else {
-				schedule();
-			}
-			
-		} catch (InterruptedException | RollbackException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatSaveJob: Saving failed", e));
+		// Since the save thread has exclusive access to the workspace file system
+		// we need to make sure that no other thread has exclusive access to the editing domain
+		// before beginning an EMF transaction.
+		// Otherwise we may run into deadlocks if an already active transaction wishes
+		// to manipulate the file system (e.g. deletion of a structural element instance).
+		ReentrantLock transactionLock = editingDomain.getVirSatCommandStack().getTransactionLock();
+		if (transactionLock.tryLock()) {
+			editingDomain.saveAll(true, removeDanglingReferences);
+			transactionLock.unlock();
+		} else {
+			schedule();
 		}
 		
 		return Status.OK_STATUS;

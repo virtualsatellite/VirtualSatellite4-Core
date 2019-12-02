@@ -24,6 +24,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.Com
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.GeometryFileServer;
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.SceneGraphServer;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkClientVisUpdateHandler;
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
@@ -57,10 +58,10 @@ public class Activator extends AbstractUIPlugin {
 	 * @author fisc_ph
 	 *
 	 */
-	public class ResourceReloadListener implements VirSatTransactionalEditingDomain.IResourceEventListener {
+	public class ResourceReloadListener implements IResourceEventListener {
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
-			if (event == VirSatTransactionalEditingDomain.EVENT_RELOAD) {
+			if (event == IResourceEventListener.EVENT_RELOAD) {
 				StartManagers.restartVis();
 			}
 		}

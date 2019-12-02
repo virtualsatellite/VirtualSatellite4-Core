@@ -40,7 +40,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
@@ -99,7 +98,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	 * @author fisc_ph
 	 *
 	 */
-	private class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
+	private class ResourceEventCounter implements IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
 		protected Resource firstResource;
 		protected int triggeredEvent;
@@ -133,7 +132,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 				super.resourceEvent(resources, event);
 				
 				assertThat("Event has correctResourceInformation", firstResource, anyOf(equalTo(repoRes), equalTo(rmRes), equalTo(umRes)));
-				assertEquals("Receiving correct Event Type", VirSatTransactionalEditingDomain.EVENT_CHANGED, event);
+				assertEquals("Receiving correct Event Type", IResourceEventListener.EVENT_CHANGED, event);
 			}
 		};
 		
@@ -161,7 +160,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
-		editingDomain.saveAll(false, false);
+		editingDomain.saveAll(true, true);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -182,7 +181,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 			public void resourceEvent(Set<Resource> resources, int event) {
 				super.resourceEvent(resources, event);
 				assertEquals("Got a trigger for the correct resource", rmResource, firstResource);
-				assertEquals("Receiving correct Event Type", VirSatTransactionalEditingDomain.EVENT_CHANGED, event);
+				assertEquals("Receiving correct Event Type", IResourceEventListener.EVENT_CHANGED, event);
 			}
 		};
 		
@@ -301,7 +300,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 			public void resourceEvent(Set<Resource> resources, int event) {
 				super.resourceEvent(resources, event);
 				assertEquals("Got a trigger for the correct resource", rmResource, firstResource);
-				assertEquals("Receiving correct Event Type", VirSatTransactionalEditingDomain.EVENT_CHANGED, event);
+				assertEquals("Receiving correct Event Type", IResourceEventListener.EVENT_CHANGED, event);
 			}
 		};
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter);

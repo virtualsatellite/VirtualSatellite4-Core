@@ -23,8 +23,8 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.navigator.CommonActionProvider;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
 
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.ui.editingDomain.action.VirSatRedoAction;
 import de.dlr.sc.virsat.project.ui.editingDomain.action.VirSatUndoAction;
 

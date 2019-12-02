@@ -77,7 +77,7 @@ public class VirSatProjectWizard extends BasicNewProjectResourceWizard implement
 				// after save has been called it will be triggered again sending change events that are caught by the workspacesynchronizer.
 				// In case we do not have the breakpoint, the changelistener is only catching the ADD events but no changes events. The workspacesynchronizer
 				// does not deal with these events
-				ed.saveAll(true, true);
+				ed.saveAll(false, false);
 				
 				newProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Finished VirSat Project Initialization"));

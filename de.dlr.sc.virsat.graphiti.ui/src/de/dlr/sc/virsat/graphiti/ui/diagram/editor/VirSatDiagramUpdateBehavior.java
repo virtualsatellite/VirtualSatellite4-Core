@@ -24,9 +24,9 @@ import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
 import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
 import org.eclipse.swt.widgets.Display;
 
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
@@ -50,7 +50,7 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 			Resource diagramResource = diagram.eResource();
 				
 			switch (event) {
-				case VirSatTransactionalEditingDomain.EVENT_CHANGED:
+				case IResourceEventListener.EVENT_CHANGED:
 					if (diagramResource == null	|| diagramResource.getResourceSet() == null) {
 						// If the resource that this editor was responsible for has been removed from the resource set
 						// we automatically close the editor. On the other hand, if the resource still exists but the model object
@@ -62,10 +62,10 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 					diagramBehavior.refreshContent();
 					refreshDecorators();
 					break;
-				case VirSatTransactionalEditingDomain.EVENT_RELOAD:
+				case IResourceEventListener.EVENT_RELOAD:
 					handleChangedResources();
 					break;
-				case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
+				case IResourceEventListener.EVENT_UNLOAD:
 					handleClosedResources(affectedResources);
 					break;
 				default:
@@ -77,11 +77,7 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 	 * This method closes the editor asynchronously.
 	 */
 	protected void closeEditorAsynchronously() {
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				closeContainer();
-			}
-		});
+		Display.getDefault().asyncExec(() -> closeContainer());
 	}
 	
 	/**

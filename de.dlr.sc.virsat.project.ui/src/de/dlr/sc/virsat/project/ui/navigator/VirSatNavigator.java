@@ -49,8 +49,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.comparer.VirSatComparer;
 import de.dlr.sc.virsat.project.ui.navigator.dropAssist.PaletteObjectDropAdapterAssistant;
@@ -163,7 +163,7 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 	public void resourceEvent(Set<Resource> resources, int event) {
 		// In case that there is a reload or unload event in one of the domains
 		// make sure that nothing is selected anymore to avoid updates on stale objects or similar
-		if ((event == VirSatTransactionalEditingDomain.EVENT_UNLOAD) || (event == VirSatTransactionalEditingDomain.EVENT_RELOAD)) {
+		if ((event == IResourceEventListener.EVENT_UNLOAD) || (event == IResourceEventListener.EVENT_RELOAD)) {
 			Display.getDefault().asyncExec(() -> this.getCommonViewer().setSelection(new StructuredSelection()));
 		}
 	}

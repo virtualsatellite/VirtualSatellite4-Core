@@ -105,7 +105,7 @@ public class VirSatResourceSetUtilTest2 {
 		Resource resourceReferencing = resSet.getResource(uriFileReferencing, true);
 		ReferencePropertyInstance rpi = (ReferencePropertyInstance) resourceReferencing.getContents().get(0);
 		
-		assertTrue("There are no errors yet at teh reosurce", resourceReferencing.getErrors().isEmpty());
+		assertTrue("There are no errors yet at the reosurce", resourceReferencing.getErrors().isEmpty());
 		
 		// Check proxy object gets indirectly called and should place an exception/diagnostic to the resource
 		// This code indirectly checks the EMF modified code generator as well
@@ -113,7 +113,7 @@ public class VirSatResourceSetUtilTest2 {
 	
 		assertEquals("There is one error now", 1, resourceReferencing.getErrors().size());
 		
-		VirSatResourceSetUtil.removeDanglingReferences(resourceReferencing);
+		boolean removedDanglingReference = VirSatResourceSetUtil.removeDanglingReferences(resourceReferencing);
 		resourceReferencing.save(saveOptions);
 		
 		ResourceSet resSet2 = new ResourceSetImpl();
@@ -122,6 +122,7 @@ public class VirSatResourceSetUtilTest2 {
 		rpi = (ReferencePropertyInstance) resourceReferencing2.getContents().get(0);
 		proxyObject = rpi.getReference();
 		
+		assertTrue("Confirmed that a dangling reference was removed", removedDanglingReference);
 		assertNull("After removing the dangling references the reference should not exist anymore", proxyObject);
 	}
 }

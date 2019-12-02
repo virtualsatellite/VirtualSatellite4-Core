@@ -153,9 +153,11 @@ public class VirSatResourceSetUtil {
 	/**
 	 * Removes upon execution removes all dangling references contained in a resource
 	 * @param resource the resource we wish to free from dangling references
+	 * @return true iff a dangling reference was removed
 	 */
-	public static void removeDanglingReferences(Resource resource) {
+	public static boolean removeDanglingReferences(Resource resource) {
 		Map<EObject, Collection<Setting>> unresolvedProxies = EcoreUtil.UnresolvedProxyCrossReferencer.find(resource);
+		boolean removedDanglingReference = false;
 		
 		for (EObject proxy : unresolvedProxies.keySet()) {
 			Collection<Setting> settings = unresolvedProxies.get(proxy);
@@ -163,11 +165,14 @@ public class VirSatResourceSetUtil {
 				EObject eContainer = setting.getEObject();
 				EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
 				if (eStructuralFeature.isMany()) {
-					((EList<?>) eContainer.eGet(eStructuralFeature)).remove(proxy);
+					removedDanglingReference |= ((EList<?>) eContainer.eGet(eStructuralFeature)).remove(proxy);
 				} else {
+					removedDanglingReference |= eContainer.eIsSet(eStructuralFeature);
 					eContainer.eUnset(eStructuralFeature);
 				}
 			}
 		}
+		
+		return removedDanglingReference;
 	}
 }

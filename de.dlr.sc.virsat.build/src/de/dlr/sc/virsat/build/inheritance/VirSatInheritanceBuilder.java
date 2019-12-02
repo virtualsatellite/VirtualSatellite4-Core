@@ -118,7 +118,7 @@ public class VirSatInheritanceBuilder extends IncrementalProjectBuilder {
 			@Override
 			public void execute() {
 				fullBuild(monitor, inheritanceCopier);
-				virSatTed.saveAll(true, true);
+				virSatTed.saveAll(true, false);
 			}
 
 			@Override
@@ -162,7 +162,7 @@ public class VirSatInheritanceBuilder extends IncrementalProjectBuilder {
 			@Override
 			public void execute() {
 				incrementalBuild(delta, monitor, inheritanceCopier);
-				virSatTed.saveAll(true, true);
+				virSatTed.saveAll(true, false);
 			}
 
 			@Override

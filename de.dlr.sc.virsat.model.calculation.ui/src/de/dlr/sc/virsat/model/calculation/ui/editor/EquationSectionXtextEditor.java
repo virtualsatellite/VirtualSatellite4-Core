@@ -26,8 +26,8 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
+import de.dlr.sc.virsat.project.editingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 
 /**
 * This class extends the XtextEditor to be able to work with our data model
@@ -138,9 +138,9 @@ public class EquationSectionXtextEditor extends XtextEditor {
 			if (isDisposed) {
 				return;
 			}
-			if (event == VirSatTransactionalEditingDomain.EVENT_CHANGED) {
+			if (event == IResourceEventListener.EVENT_CHANGED) {
 				firePropertyChange(IEditorPart.PROP_DIRTY);
-			} else if (event == VirSatTransactionalEditingDomain.EVENT_RELOAD) {
+			} else if (event == IResourceEventListener.EVENT_RELOAD) {
 				updatedEditorContent();
 			}
 		});

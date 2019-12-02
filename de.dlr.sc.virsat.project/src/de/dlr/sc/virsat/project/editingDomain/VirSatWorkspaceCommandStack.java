@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.project.editingDomain;
 
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -35,6 +36,7 @@ import de.dlr.sc.virsat.project.Activator;
 public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 
 	private VirSatTransactionalEditingDomain editingDomain;
+	private ReentrantLock transactionLock = new ReentrantLock();
 	
 	private boolean triggerSave;
 	
@@ -72,6 +74,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	
 	@Override
 	public void execute(Command command, Map<?, ?> options) {
+		transactionLock.lock();
+		
 		if (command instanceof RecordingCommand) {
 			command = new VirSatRecordingCommand(command);
 		}
@@ -99,20 +103,30 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "Failed to execute command", e));
 		}
 		checkTriggerSaveAll();
+		
+		transactionLock.unlock();
 	}
 	
 	@Override
 	public void undo() {
+		transactionLock.lock();
+		
 		triggerSave = false;
 		super.undo();
 		checkTriggerSaveAll();
+	
+		transactionLock.unlock();
 	}
 	
 	@Override
 	public void redo() {
+		transactionLock.lock();
+		
 		triggerSave = false;
 		super.redo();
 		checkTriggerSaveAll();
+	
+		transactionLock.unlock();
 	}
 	
 	/**
@@ -159,4 +173,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		}
 	}
 	
+	public ReentrantLock getTransactionLock() {
+		return transactionLock;
+	}
 }
