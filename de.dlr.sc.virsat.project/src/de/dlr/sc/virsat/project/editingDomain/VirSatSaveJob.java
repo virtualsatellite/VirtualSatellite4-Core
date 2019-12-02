@@ -74,8 +74,11 @@ public class VirSatSaveJob extends WorkspaceJob {
 		// to manipulate the file system (e.g. deletion of a structural element instance).
 		ReentrantLock transactionLock = editingDomain.getVirSatCommandStack().getTransactionLock();
 		if (transactionLock.tryLock()) {
-			editingDomain.saveAll(true, removeDanglingReferences);
-			transactionLock.unlock();
+			try {
+				editingDomain.saveAll(true, removeDanglingReferences);
+			} finally {
+				transactionLock.unlock();
+			}
 		} else {
 			schedule();
 		}
