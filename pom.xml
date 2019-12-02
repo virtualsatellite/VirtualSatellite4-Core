@@ -88,6 +88,7 @@
 				<module>de.dlr.sc.virsat.model.ext.core.ui</module>
 				<module>de.dlr.sc.virsat.model.ext.core.edit</module>
 				<module>de.dlr.sc.virsat.model.ext.core.test</module>
+				<module>de.dlr.sc.virsat.model.ext.core.edit.test</module>
 
 				<module>de.dlr.sc.virsat.project</module>
 				<module>de.dlr.sc.virsat.project.ui</module>
