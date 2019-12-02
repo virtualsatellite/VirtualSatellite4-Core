@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 
 /**
  * The label provider for showing active concepts in a repository
@@ -25,22 +26,10 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		if (element instanceof ActiveConceptConfigurationElement) {
 			ActiveConceptConfigurationElement acce = (ActiveConceptConfigurationElement) element;
-			String acceDisplayName = acce.getDisplayName();
-			
-			if (acceDisplayName == null) {
-				return acce.getId() + " [" + acce.getVersion() + "]";
-			} else {
-				return acceDisplayName + " – " + acce.getId() + " [" + acce.getVersion() + "]";
-			}
-
+			return acce.getConceptName();
 		} else if (element instanceof Concept) {
 			Concept concept = (Concept) element;
-			
-			if (concept.getDisplayName() == null) {
-				return concept.getName() + " [" + concept.getVersion() + "]";
-			} else {
-				return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
-			}
+			return ActiveConceptHelper.getConceptName(concept);
 		}
 		return super.getText(element);
 	}

@@ -83,9 +83,10 @@ public class ActiveConceptConfigurationElement {
 	 * This method get the displayName of the concept
 	 * @return displayName of the concept
 	 */
-	public String getDisplayName() {
+	public String getConceptName() {
 		Concept concept = loadConceptFromPlugin();
-		return concept.getDisplayName();
+		String conceptName = ActiveConceptHelper.getConceptName(concept);
+		return conceptName;
 	}
 	
 	/**
