@@ -76,57 +76,64 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	public void execute(Command command, Map<?, ?> options) {
 		transactionLock.lock();
 		
-		if (command instanceof RecordingCommand) {
-			command = new VirSatRecordingCommand(command);
-		}
-		
-		triggerSave = false;
-		try {
-			InternalTransaction activeTransaction = getDomain().getActiveTransaction();
-			boolean usableTransactionExists = activeTransaction != null && !activeTransaction.isReadOnly()
-					&& activeTransaction.getOwner().equals(Thread.currentThread());
+			try {
+			if (command instanceof RecordingCommand) {
+				command = new VirSatRecordingCommand(command);
+			}
 			
-			if (!usableTransactionExists) {
-				// No active transaction means we have to execute the command as a
-				// top-level command
-				super.execute(command, options);
-			} else {
-				// An active transaction already exists, execute the command within its scope
-				if (command != null && command.canExecute()) {
-					command.execute();
-					if (getActiveCommand() instanceof VirSatRecordingCommand) {
-						getActiveCommand().chain(command);
+			triggerSave = false;
+			try {
+				InternalTransaction activeTransaction = getDomain().getActiveTransaction();
+				boolean usableTransactionExists = activeTransaction != null && !activeTransaction.isReadOnly()
+						&& activeTransaction.getOwner().equals(Thread.currentThread());
+				
+				if (!usableTransactionExists) {
+					// No active transaction means we have to execute the command as a
+					// top-level command
+					super.execute(command, options);
+				} else {
+					// An active transaction already exists, execute the command within its scope
+					if (command != null && command.canExecute()) {
+						command.execute();
+						if (getActiveCommand() instanceof VirSatRecordingCommand) {
+							getActiveCommand().chain(command);
+						}
 					}
 				}
+			} catch (InterruptedException | RollbackException e) {
+				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "Failed to execute command", e));
 			}
-		} catch (InterruptedException | RollbackException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "Failed to execute command", e));
-		}
-		checkTriggerSaveAll();
+			checkTriggerSaveAll();
 		
-		transactionLock.unlock();
+		} finally {
+			transactionLock.unlock();
+		}
 	}
 	
 	@Override
 	public void undo() {
 		transactionLock.lock();
 		
-		triggerSave = false;
-		super.undo();
-		checkTriggerSaveAll();
-	
-		transactionLock.unlock();
+		try {
+			triggerSave = false;
+			super.undo();
+			checkTriggerSaveAll();
+		} finally {
+			transactionLock.unlock();
+		}
 	}
 	
 	@Override
 	public void redo() {
 		transactionLock.lock();
 		
-		triggerSave = false;
-		super.redo();
-		checkTriggerSaveAll();
-	
-		transactionLock.unlock();
+		try {
+			triggerSave = false;
+			super.redo();
+			checkTriggerSaveAll();
+		} finally {
+			transactionLock.unlock();
+		}
 	}
 	
 	/**
