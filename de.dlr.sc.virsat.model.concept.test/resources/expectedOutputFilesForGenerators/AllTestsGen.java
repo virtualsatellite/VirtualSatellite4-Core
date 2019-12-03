@@ -19,7 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
-import testConcept.validator.testConceptValidatorTest;
+import testConcept.validator.TestConceptValidatorTest;
 import testConcept.model.testCategoryTest;
 
 /**
@@ -29,7 +29,7 @@ import testConcept.model.testCategoryTest;
 
 @SuiteClasses({
 	testCategoryTest.class,
-	testConceptValidatorTest.class,
+	TestConceptValidatorTest.class,
 				})
 
 /**
