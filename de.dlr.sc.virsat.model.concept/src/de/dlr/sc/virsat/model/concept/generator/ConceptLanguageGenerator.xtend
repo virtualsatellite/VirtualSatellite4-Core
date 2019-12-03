@@ -52,7 +52,6 @@ class ConceptLanguageGenerator implements IGenerator2 {
 	
 	val ID_EXTENSION_POINT_GENERATOR = "de.dlr.sc.virsat.model.concept.generator"
 	val ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS = "class"
-	val conceptLanguageHandler = new ConceptLanguageImplicitSuperTypeHandler
 	
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
@@ -85,9 +84,8 @@ class ConceptLanguageGenerator implements IGenerator2 {
 		// Only generate the code if it is actually desired to do so
 		if (generateCode) {
 			// Get the Data Model and retrieve the Name of it
-			val dataModel = conceptLanguageHandler.addImplicitSuperType(resource.contents.get(0) as Concept);
-			//Serialize the concept in the new containers
-			new GenerateConceptXmi().serializeModel(dataModel, resource.URI, fsa);
+			val conceptPreprocessor = new ConceptPreprocessor(fsa)
+			val dataModel = conceptPreprocessor.process(resource)
 	
 			new GenerateDmfCategories().serializeModel(dataModel, fsa);
 			new GenerateConceptImages().serializeModel(dataModel, fsa);
