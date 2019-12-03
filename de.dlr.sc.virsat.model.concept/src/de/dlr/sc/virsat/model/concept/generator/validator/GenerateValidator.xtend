@@ -30,15 +30,15 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 		val shortName = arrOfName.last
 		
 		val validatorName = shortName.substring(0,1).toUpperCase() + shortName.substring(1) 
-		return validatorName
+		return validatorName + "Validator";
 	}
 	
 	static def getConcreteClassName(Concept concept) {
-		getValidatorName(concept) + "Validator";
+		getValidatorName(concept);
 	}
 	
 	static def getAbstractClassName(Concept concept) {
-		"A" + getValidatorName(concept) + "Validator";
+		"A" + getValidatorName(concept);
 	}
 	
 	override createConcreteClassFileName(Concept concept, EObject eObject) {

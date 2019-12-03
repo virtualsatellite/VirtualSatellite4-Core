@@ -31,7 +31,8 @@ class GenerateValidatorTestsTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	val TEST_CONCEPT_NAME = "TestConcept"
+	val TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept"
+	val TEST_CONCEPT_SHORT_NAME = "TestConcept"
 	
 	// Don't get the Test but the Tests here. The Test is the test case for the GenerateValidator.
 	// Whereas here we want to have the Generator for the GenerateValidatorTests.
@@ -52,11 +53,11 @@ class GenerateValidatorTestsTest {
 
 		val concreteClassfileName = generateValidatorTests.createConcreteClassFileName(concept, concept)
 		val abstractClassfileName = generateValidatorTests.createAbstractClassFileName(concept, concept)
-		val expectedConcreteClassFileName = "../../TestConcept.test/src/TestConcept/validator/TestConceptValidatorTest.java"
-		val expectedAbstractClassFileName = "../../TestConcept.test/src-gen/TestConcept/validator/ATestConceptValidatorTest.java"
+		val expectedConcreteClassFileName = "../../" + TEST_CONCEPT_NAME + ".test/src/" + TEST_CONCEPT_NAME.replace(".","/") + "/validator/" + TEST_CONCEPT_SHORT_NAME + "ValidatorTest.java"
+		val expectedAbstractClassFileName = "../../" + TEST_CONCEPT_NAME + ".test/src-gen/" + TEST_CONCEPT_NAME.replace(".","/") + "/validator/A" + TEST_CONCEPT_SHORT_NAME + "ValidatorTest.java"
 
 		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName)
-		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
+		Assert.assertEquals("Abstract file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
 	}
 	
 	@Test

@@ -336,13 +336,11 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     String _plus = (_fullQualifiedName + ".validator.");
     String _validatorName = GenerateValidator.getValidatorName(concept);
     String _plus_1 = (_plus + _validatorName);
-    String _plus_2 = (_plus_1 + "Validator");
-    String _plus_3 = (_plus_2 + "Test");
-    importManager.register(_plus_3);
+    String _plus_2 = (_plus_1 + "Test");
+    importManager.register(_plus_2);
     String _validatorName_1 = GenerateValidator.getValidatorName(concept);
-    String _plus_4 = (_validatorName_1 + "Validator");
-    String _plus_5 = (_plus_4 + "Test");
-    listOfTests.add(_plus_5);
+    String _plus_3 = (_validatorName_1 + "Test");
+    listOfTests.add(_plus_3);
     StringConcatenation _builder = new StringConcatenation();
     {
       for(final String test : listOfTests) {

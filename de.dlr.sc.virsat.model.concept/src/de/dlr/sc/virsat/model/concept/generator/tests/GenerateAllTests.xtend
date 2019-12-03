@@ -193,8 +193,8 @@ class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
 		 *	Add ValidatorTest to import and SuiteClasses
 		 */
 		
-		importManager.register(concept.fullQualifiedName + ".validator." + GenerateValidator.getValidatorName(concept) + "Validator" + "Test")
-		listOfTests.add(GenerateValidator.getValidatorName(concept) + "Validator" + "Test")
+		importManager.register(concept.fullQualifiedName + ".validator." + GenerateValidator.getValidatorName(concept) + "Test")
+		listOfTests.add(GenerateValidator.getValidatorName(concept) + "Test")
 			
 		return '''
 		«FOR test : listOfTests»

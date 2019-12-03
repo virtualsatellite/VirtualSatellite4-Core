@@ -39,7 +39,7 @@ public class GenerateAllTestsTest {
   
   private Concept concept;
   
-  private final String TEST_CONCEPT_NAME = "testConcept";
+  private final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept";
   
   private final String TEST_CATEGORY_NAME = "testCategory";
   
@@ -84,10 +84,14 @@ public class GenerateAllTestsTest {
       final Category category = this.concept.getCategories().get(0);
       final String concreteClassfileName = this.generateAllTests.createConcreteClassFileName(this.concept, category);
       final String abstractClassfileName = this.generateAllTests.createAbstractClassFileName(this.concept, category);
-      final String expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/test/AllTests.java";
-      final String expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/test/AllTestsGen.java";
+      String _replace = this.TEST_CONCEPT_NAME.replace(".", "/");
+      String _plus = ((("../../" + this.TEST_CONCEPT_NAME) + ".test/src/") + _replace);
+      final String expectedConcreteClassFileName = (_plus + "/test/AllTests.java");
+      String _replace_1 = this.TEST_CONCEPT_NAME.replace(".", "/");
+      String _plus_1 = ((("../../" + this.TEST_CONCEPT_NAME) + ".test/src-gen/") + _replace_1);
+      final String expectedAbstractClassFileName = (_plus_1 + "/test/AllTestsGen.java");
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName);
-      Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
+      Assert.assertEquals("Abstract file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

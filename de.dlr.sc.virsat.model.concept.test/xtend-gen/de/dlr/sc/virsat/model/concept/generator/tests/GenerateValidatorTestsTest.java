@@ -38,7 +38,9 @@ public class GenerateValidatorTestsTest {
   
   private Concept concept;
   
-  private final String TEST_CONCEPT_NAME = "TestConcept";
+  private final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept";
+  
+  private final String TEST_CONCEPT_SHORT_NAME = "TestConcept";
   
   private final GenerateValidatorTests generateValidatorTests = new GenerateValidatorTests();
   
@@ -60,10 +62,18 @@ public class GenerateValidatorTestsTest {
       this.concept = this._parseHelper.parse(_builder);
       final String concreteClassfileName = this.generateValidatorTests.createConcreteClassFileName(this.concept, this.concept);
       final String abstractClassfileName = this.generateValidatorTests.createAbstractClassFileName(this.concept, this.concept);
-      final String expectedConcreteClassFileName = "../../TestConcept.test/src/TestConcept/validator/TestConceptValidatorTest.java";
-      final String expectedAbstractClassFileName = "../../TestConcept.test/src-gen/TestConcept/validator/ATestConceptValidatorTest.java";
+      String _replace = this.TEST_CONCEPT_NAME.replace(".", "/");
+      String _plus = ((("../../" + this.TEST_CONCEPT_NAME) + ".test/src/") + _replace);
+      String _plus_1 = (_plus + "/validator/");
+      String _plus_2 = (_plus_1 + this.TEST_CONCEPT_SHORT_NAME);
+      final String expectedConcreteClassFileName = (_plus_2 + "ValidatorTest.java");
+      String _replace_1 = this.TEST_CONCEPT_NAME.replace(".", "/");
+      String _plus_3 = ((("../../" + this.TEST_CONCEPT_NAME) + ".test/src-gen/") + _replace_1);
+      String _plus_4 = (_plus_3 + "/validator/A");
+      String _plus_5 = (_plus_4 + this.TEST_CONCEPT_SHORT_NAME);
+      final String expectedAbstractClassFileName = (_plus_5 + "ValidatorTest.java");
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName);
-      Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
+      Assert.assertEquals("Abstract file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

@@ -29,11 +29,11 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory
 class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	
 	static def getConcreteClassName(Concept concept) {
-		GenerateValidator.getValidatorName(concept) + "Validator"
+		GenerateValidator.getValidatorName(concept)
 	}
 	
 	static def getAbstractClassName(Concept concept) {
-		"A" + GenerateValidator.getValidatorName(concept) + "Validator"
+		"A" + GenerateValidator.getValidatorName(concept)
 	}
 	
 	override createConcreteClassFileName(Concept concept, EObject eObject) {

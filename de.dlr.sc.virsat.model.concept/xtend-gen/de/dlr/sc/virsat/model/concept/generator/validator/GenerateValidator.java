@@ -38,18 +38,16 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     String _upperCase = shortName.substring(0, 1).toUpperCase();
     String _substring = shortName.substring(1);
     final String validatorName = (_upperCase + _substring);
-    return validatorName;
+    return (validatorName + "Validator");
   }
   
   public static String getConcreteClassName(final Concept concept) {
-    String _validatorName = GenerateValidator.getValidatorName(concept);
-    return (_validatorName + "Validator");
+    return GenerateValidator.getValidatorName(concept);
   }
   
   public static String getAbstractClassName(final Concept concept) {
     String _validatorName = GenerateValidator.getValidatorName(concept);
-    String _plus = ("A" + _validatorName);
-    return (_plus + "Validator");
+    return ("A" + _validatorName);
   }
   
   @Override
