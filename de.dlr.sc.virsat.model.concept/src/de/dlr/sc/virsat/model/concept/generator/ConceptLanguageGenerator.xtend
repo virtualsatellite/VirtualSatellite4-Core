@@ -41,7 +41,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
-import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler
 
 /**
  * Generates code from your model files on save.

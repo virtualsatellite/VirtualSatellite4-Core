@@ -16,7 +16,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.ext.core.core.provider.ConceptEditPlugin;
 
 /**
- * @author fran_tb
  *
  */
 public class ConceptEditPluginTest {

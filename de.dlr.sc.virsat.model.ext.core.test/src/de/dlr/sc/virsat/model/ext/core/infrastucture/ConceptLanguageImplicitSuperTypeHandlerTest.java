@@ -26,14 +26,6 @@ import de.dlr.sc.virsat.model.ext.core.Activator;
 import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
-
 /**
  * Test class for the implicit super type handler
  */

@@ -15,7 +15,8 @@ import java.util.List;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 
 /**
- *
+ * A simple mock-up class for a file system access that stores the content 
+ * and filenames that should have been generated
  */
 public class MockupFileSystemAccess implements IFileSystemAccess {
 

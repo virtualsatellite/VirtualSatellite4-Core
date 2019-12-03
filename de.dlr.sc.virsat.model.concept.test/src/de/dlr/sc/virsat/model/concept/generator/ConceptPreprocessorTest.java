@@ -56,14 +56,14 @@ public class ConceptPreprocessorTest extends AConceptProjectTestCase {
 		addEditingDomainAndRepository();
 		processor = new ConceptPreprocessor(fsa);
 		
-		//Create concept to me processed
+		//Create concept to be processed
 		conceptSource = ConceptsFactory.eINSTANCE.createConcept();
 		testExtendsCategory = CategoriesFactory.eINSTANCE.createCategory();
 		testCategory = CategoriesFactory.eINSTANCE.createCategory();
 		testExtendsCategory.setExtendsCategory(testCategory);
 		resource = editingDomain.getResourceSet().createResource(URI.createFileURI("test.concept"));
 		
-		//Create concept that is read after processing
+		//Create concept that is (re-)loaded after processing (mocks the not persisted updated concept)
 		mockupConceptAfterReloading = ConceptsFactory.eINSTANCE.createConcept();
 		mockupResource = editingDomain.getResourceSet().createResource(URI.createFileURI("test.xmi"));
 		
@@ -74,7 +74,6 @@ public class ConceptPreprocessorTest extends AConceptProjectTestCase {
 				mockupResource.getContents().add(mockupConceptAfterReloading);
 			}
 		});
-		
 	}
 	
 	

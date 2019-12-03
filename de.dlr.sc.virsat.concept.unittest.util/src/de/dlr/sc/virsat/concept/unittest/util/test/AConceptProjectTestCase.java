@@ -48,7 +48,6 @@ public abstract class AConceptProjectTestCase extends AProjectTestCase {
 				addCoreConceptToRepository(repository);
 			}
 		});
-
 	}
 	
 	/**

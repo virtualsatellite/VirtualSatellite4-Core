@@ -15,7 +15,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 /**
- * @author fran_tb
  *
  */
 public class CorePackageTest {
