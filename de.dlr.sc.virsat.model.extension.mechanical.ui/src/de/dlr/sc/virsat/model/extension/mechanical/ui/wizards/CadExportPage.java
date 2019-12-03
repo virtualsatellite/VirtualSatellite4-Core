@@ -29,7 +29,7 @@ public class CadExportPage extends ACadImportExportPage {
 	 */
 	protected CadExportPage(IContainer model) {
 		super("Cad JSON Export");
-		setTitle("Cad JSON Export");
+		setTitle("Cad JSON Export (Beta)");
 		setModel(model);
 		setDescription("Please select a tree to export and an export destination.");
 	}

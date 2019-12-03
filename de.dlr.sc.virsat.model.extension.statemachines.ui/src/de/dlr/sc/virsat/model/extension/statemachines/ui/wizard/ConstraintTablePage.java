@@ -82,7 +82,7 @@ public class ConstraintTablePage extends WizardPage {
 		super("");
 		sc = (StructuralElementInstance) ((IStructuredSelection) preSelect).getFirstElement();
 		if (sc.getType().getName().equals(ElementConfiguration.class.getSimpleName())) {
-			setTitle("All the stateMachines");
+			setTitle("All the stateMachines (Beta)");
 		}
 		setDescription("Change the constraints between the states");
 		tempStateMachines = new ArrayList<StateMachine>();

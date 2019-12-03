@@ -76,7 +76,7 @@ public class ExcelTestCase extends AConceptTestCase {
 		// Interface Type Collection to be changed
 		itc = new InterfaceTypeCollection(conceptFuncelectrical);
 		itc.setName("InterfaceTypeCollection");
-		itc.getStructuralElementInstance().setUuid(new VirSatUuid("af0b3603-637d-4fb6-b50c-c89b99f43b15"));
+		itc.getStructuralElementInstance().setUuid(new VirSatUuid("505748e0-5d88-47b3-bce8-f53acacb7ccb"));
 		InterfaceType i1 = new InterfaceType(conceptFuncelectrical);
 		i1.getTypeInstance().setUuid(new VirSatUuid("ea816464-cea3-4db7-ae91-31d37c60a63c"));
 		i1.setName("KILL");
@@ -100,7 +100,7 @@ public class ExcelTestCase extends AConceptTestCase {
 		// Element Definition to be changed
 		ed = new ElementDefinition(conceptEgscc);
 		ed.setName("BATTERY");
-		ed.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
+		ed.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-acec-b7f2b9827d4b"));
 
 		ptd.add(ed);
 
@@ -151,6 +151,7 @@ public class ExcelTestCase extends AConceptTestCase {
 		// to hold interfaces
 		ec = new ElementConfiguration(conceptEgscc);
 		ec.setName("Interfaces");
+		ec.getStructuralElementInstance().setUuid(new VirSatUuid("2c325de4-f52f-467c-8867-bdddda7723f6"));
 		ec.add(iface);
 
 		// to hold interface ends

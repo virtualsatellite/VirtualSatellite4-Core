@@ -106,7 +106,7 @@ public class ImportWizard extends Wizard implements INewWizard {
 		TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
     	try {
     		ExcelImporter ei = new ExcelImporter();
-	    	List<Fault> faultList =   ei.validate(eObject, wb);
+	    	List<Fault> faultList = ei.validate(eObject, wb);
 	    	if (faultList.isEmpty()) {
 	    		ImportCommand importCommand = new ImportCommand(eObject, wb, ed);
 	    		ed.getCommandStack().execute(importCommand);

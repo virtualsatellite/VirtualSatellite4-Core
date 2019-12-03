@@ -27,7 +27,7 @@ public class CadImportPage extends ACadImportExportPage {
 	 */
 	protected CadImportPage(IContainer model) {
 		super("Cad JSON Import", SWT.OPEN);
-		setTitle("Cad JSON Import");
+		setTitle("Cad JSON Import (Beta)");
 		setModel(model);
 		setDescription("Please select a tree to import to and a file to import.");
 	}
