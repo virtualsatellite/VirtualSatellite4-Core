@@ -376,7 +376,14 @@ SPDX-License-Identifier: EPL-2.0";
 		// the eclass which is referenced by its name 
 
 		val rpUri = ap.eResource.URI;
-		val ecorePath = rpUri.toString.replace(".xmi", ".ecore");
+		var ecorePath = rpUri.toString.replace(".xmi", ".ecore");
+		ecorePath = ecorePath.replace(".concept", ".ecore")
+		if(!ecorePath.contains("concept/")) {
+			ecorePath = ecorePath.replace("concept", "concept/concept")
+		}
+		if(!rpUri.isPlatformPlugin) {
+			ecorePath = ecorePath.replace("resource", "plugin")
+		}
 		val ecoreUri = URI.createURI(ecorePath);
 		val ecoreResource = ecoreModelResourceSet.getResource(ecoreUri, true);
 		

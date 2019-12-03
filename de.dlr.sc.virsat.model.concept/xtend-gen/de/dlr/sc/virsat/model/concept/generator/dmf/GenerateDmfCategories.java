@@ -425,7 +425,18 @@ public class GenerateDmfCategories {
    */
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
     final URI rpUri = ap.eResource().getURI();
-    final String ecorePath = rpUri.toString().replace(".xmi", ".ecore");
+    String ecorePath = rpUri.toString().replace(".xmi", ".ecore");
+    ecorePath = ecorePath.replace(".concept", ".ecore");
+    boolean _contains = ecorePath.contains("concept/");
+    boolean _not = (!_contains);
+    if (_not) {
+      ecorePath = ecorePath.replace("concept", "concept/concept");
+    }
+    boolean _isPlatformPlugin = rpUri.isPlatformPlugin();
+    boolean _not_1 = (!_isPlatformPlugin);
+    if (_not_1) {
+      ecorePath = ecorePath.replace("resource", "plugin");
+    }
     final URI ecoreUri = URI.createURI(ecorePath);
     final Resource ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
     final Function1<Object, Boolean> _function = (Object it) -> {
