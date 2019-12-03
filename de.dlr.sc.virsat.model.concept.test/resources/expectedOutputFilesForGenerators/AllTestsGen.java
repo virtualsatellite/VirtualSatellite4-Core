@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package testConcept.test;
+package de.dlr.sc.virsat.model.extension.testConcept.test;
 
 // *****************************************************************
 // * Import Statements
@@ -19,8 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
-import testConcept.validator.TestConceptValidatorTest;
-import testConcept.model.testCategoryTest;
+import de.dlr.sc.virsat.model.extension.testConcept.validator.TestConceptValidatorTest;
+import de.dlr.sc.virsat.model.extension.testConcept.model.testCategoryTest;
 
 /**
  * 

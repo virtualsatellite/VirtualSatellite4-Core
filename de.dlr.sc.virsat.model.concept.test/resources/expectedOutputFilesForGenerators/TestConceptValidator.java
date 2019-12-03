@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package TestConcept.validator;
+package de.dlr.sc.virsat.model.extension.testConcept.validator;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
