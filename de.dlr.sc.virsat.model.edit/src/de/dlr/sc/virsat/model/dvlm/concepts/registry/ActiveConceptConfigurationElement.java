@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edapt.migration.ReleaseUtils;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -41,6 +42,7 @@ public class ActiveConceptConfigurationElement {
 	private static final String EXTENSION_POINT_ID_SNIPPETS_ID = "id";
 	private static final String EXTENSION_POINT_ID_SNIPPETS_XMI = "xmi";
 	private static final String EXTENSION_POINT_ID_SNIPPETS_VERSION = "version";
+	private static final String PROJECT_CONCEPT_LOCATION_PATH = "/concept/concept.xmi";
 	
 	private IConfigurationElement configElement;
 	
@@ -228,6 +230,11 @@ public class ActiveConceptConfigurationElement {
 	 * @return loaded concept
 	 */
 	public static Concept loadConceptFromPlugin(String conceptXmiFilePath) {
+		//Check if path has valid concept plugin namespace
+		if (conceptXmiFilePath == null 
+				|| ReleaseUtils.getNamespaceURI(URI.createPlatformPluginURI(conceptXmiFilePath, true)) == null) {
+			return null;
+		}
 		ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(null) {
 			@Override
 			protected String getConceptXmiPluginPath() {
@@ -237,5 +244,28 @@ public class ActiveConceptConfigurationElement {
 		
 		Concept concept = acce.loadConceptFromPlugin();
 		return concept;
+	}
+	
+	/**
+	 * Method to load a concept from its XMI file by using the concept name
+	 * @param conceptName the concept name
+	 * @return the loaded concept
+	 */
+	public static Concept loadConceptViaConceptName(String conceptName) {
+		return loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
+	}
+	
+	/**
+	 * Method to load a concept's DMF ecore model by using the concept name
+	 * @param conceptName the concept name
+	 * @return the loaded DMF ecore model
+	 */
+	public static Resource loadConceptDMFResourceViaConceptName(String conceptName) {
+		Concept loadedConcept = loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
+		if (loadedConcept != null) {
+			URI ecoreConceptURI = loadedConcept.eResource().getURI().trimFileExtension().appendFileExtension("ecore");
+			return loadedConcept.eResource().getResourceSet().getResource(ecoreConceptURI, true);
+		}
+		return null;
 	}
 };

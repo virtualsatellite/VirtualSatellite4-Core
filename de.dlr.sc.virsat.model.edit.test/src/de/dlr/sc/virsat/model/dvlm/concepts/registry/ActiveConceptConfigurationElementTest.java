@@ -11,17 +11,21 @@ package de.dlr.sc.virsat.model.dvlm.concepts.registry;
 
 
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -41,10 +45,10 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
+import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 
 /**
  * This test case will handle the copying of concepts into the repository.
@@ -56,6 +60,9 @@ import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProvide
 public class ActiveConceptConfigurationElementTest {
 
 	private EditingDomain ourEditingDomain;
+	
+	private static final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.tests";
+	private static final String TEST_CONCEPT_URI = "de.dlr.sc.virsat.model.extension.tests/concept/concept.xmi";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -154,5 +161,35 @@ public class ActiveConceptConfigurationElementTest {
 		Concept activeConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(conceptSourceA, repository);
 		
 		assertNotSame("Should not be the same object, should be copied", activeConcept, conceptSourceA);
+	}
+	
+	@Test
+	public void testLoadConceptFromPlugin() {
+		
+		Concept testConcept = ActiveConceptConfigurationElement.loadConceptFromPlugin(TEST_CONCEPT_URI);
+		assertNotNull("Test concept should exist and not be null", testConcept);
+		assertEquals(TEST_CONCEPT_NAME, testConcept.getName());
+		
+		assertNull("Should not result in exception and be null", ActiveConceptConfigurationElement.loadConceptFromPlugin(null));
+		
+	}
+	
+	@Test
+	public void testLoadConceptViaConceptName() {
+		
+		Concept testConcept = ActiveConceptConfigurationElement.loadConceptViaConceptName(TEST_CONCEPT_NAME);
+		assertNotNull("Test concept should exist and not be null", testConcept);
+		assertEquals(TEST_CONCEPT_NAME, testConcept.getName());
+		
+	}
+	
+	@Test
+	public void testLoadConceptDMFResourceViaConceptName() {
+		
+		Resource dmfResource = ActiveConceptConfigurationElement.loadConceptDMFResourceViaConceptName(TEST_CONCEPT_NAME);
+		assertNotNull("Test resource should exist and not be null", dmfResource);
+		assertNotNull("Test resource should have content", dmfResource.getContents().get(0));
+		assertTrue("Root element should be an the DMF EPackage", dmfResource.getContents().get(0) instanceof EPackage);
+		
 	}
 }

@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayMod
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import java.io.ByteArrayOutputStream;
@@ -424,21 +425,14 @@ public class GenerateDmfCategories {
    * file. This is needed to create correct references in one Ecore based category model to another one
    */
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
-    final URI rpUri = ap.eResource().getURI();
-    String ecorePath = rpUri.toString().replace(".xmi", ".ecore");
-    ecorePath = ecorePath.replace(".concept", ".ecore");
-    boolean _contains = ecorePath.contains("concept/");
-    boolean _not = (!_contains);
-    if (_not) {
-      ecorePath = ecorePath.replace("concept", "concept/concept");
+    EObject _eContainer = ap.eContainer();
+    Resource ecoreResource = ActiveConceptConfigurationElement.loadConceptDMFResourceViaConceptName(((Concept) _eContainer).getName());
+    if ((ecoreResource == null)) {
+      final URI rpUri = ap.eResource().getURI();
+      final String ecorePath = rpUri.toString().replace(".concept", ".ecore");
+      final URI ecoreUri = URI.createURI(ecorePath);
+      ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
     }
-    boolean _isPlatformPlugin = rpUri.isPlatformPlugin();
-    boolean _not_1 = (!_isPlatformPlugin);
-    if (_not_1) {
-      ecorePath = ecorePath.replace("resource", "plugin");
-    }
-    final URI ecoreUri = URI.createURI(ecorePath);
-    final Resource ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
     final Function1<Object, Boolean> _function = (Object it) -> {
       if ((it instanceof EClass)) {
         final EClass eClass = ((EClass) it);

@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
+import de.dlr.sc.virsat.model.concept.generator.ConceptPreprocessor;
 import de.dlr.sc.virsat.model.concept.generator.IConceptGeneratorEnablement;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
@@ -32,13 +33,10 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
-import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGenerator2;
@@ -55,8 +53,6 @@ public class ConceptLanguageGenerator implements IGenerator2 {
   private final String ID_EXTENSION_POINT_GENERATOR = "de.dlr.sc.virsat.model.concept.generator";
   
   private final String ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS = "class";
-  
-  private final ConceptLanguageImplicitSuperTypeHandler conceptLanguageHandler = new ConceptLanguageImplicitSuperTypeHandler();
   
   @Override
   public void afterGenerate(final Resource input, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
@@ -83,9 +79,8 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         }
       }
       if (generateCode) {
-        EObject _get = resource.getContents().get(0);
-        final Concept dataModel = this.conceptLanguageHandler.addImplicitSuperType(((Concept) _get));
-        new GenerateConceptXmi().serializeModel(dataModel, resource.getURI(), fsa);
+        final ConceptPreprocessor conceptPreprocessor = new ConceptPreprocessor(fsa);
+        final Concept dataModel = conceptPreprocessor.process(resource);
         new GenerateDmfCategories().serializeModel(dataModel, fsa);
         new GenerateConceptImages().serializeModel(dataModel, fsa);
         new GenerateCategoryBeans().serializeModel(dataModel, fsa);

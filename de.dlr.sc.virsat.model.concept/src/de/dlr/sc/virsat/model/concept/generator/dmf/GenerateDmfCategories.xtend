@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.codegen.ecore.genmodel.GenResourceKind
 import java.util.Date
 import java.util.Calendar
+import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement
 
 /**
  * This generator generates an eCore model with eClasses out of described categories
@@ -375,17 +376,14 @@ SPDX-License-Identifier: EPL-2.0";
 		// ecore based categories model. After that load the resource and find
 		// the eclass which is referenced by its name 
 
-		val rpUri = ap.eResource.URI;
-		var ecorePath = rpUri.toString.replace(".xmi", ".ecore");
-		ecorePath = ecorePath.replace(".concept", ".ecore")
-		if(!ecorePath.contains("concept/")) {
-			ecorePath = ecorePath.replace("concept", "concept/concept")
+		var ecoreResource = ActiveConceptConfigurationElement.loadConceptDMFResourceViaConceptName(((ap.eContainer as Concept).name))
+		if(ecoreResource === null) {
+			//If concept is not registered via extension then check next to the concept file
+			val rpUri = ap.eResource.URI;
+			val ecorePath = rpUri.toString.replace(".concept", ".ecore");
+			val ecoreUri = URI.createURI(ecorePath);
+			ecoreResource = ecoreModelResourceSet.getResource(ecoreUri, true);
 		}
-		if(!rpUri.isPlatformPlugin) {
-			ecorePath = ecorePath.replace("resource", "plugin")
-		}
-		val ecoreUri = URI.createURI(ecorePath);
-		val ecoreResource = ecoreModelResourceSet.getResource(ecoreUri, true);
 		
 		val referencedEClass = EcoreUtil.getAllContents(ecoreResource, true).findFirst[
 			if (it instanceof EClass) {
