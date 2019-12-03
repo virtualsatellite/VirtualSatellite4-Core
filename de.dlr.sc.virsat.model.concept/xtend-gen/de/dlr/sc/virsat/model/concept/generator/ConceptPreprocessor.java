@@ -15,7 +15,7 @@ import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSup
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.generator.IFileSystemAccess2;
+import org.eclipse.xtext.generator.IFileSystemAccess;
 
 /**
  * Prepares a concept for a enhanced serialization in XMI and activates
@@ -27,9 +27,9 @@ public class ConceptPreprocessor {
   
   private final ConceptLanguageImplicitSuperTypeHandler conceptLanguageHandler = new ConceptLanguageImplicitSuperTypeHandler();
   
-  private final IFileSystemAccess2 fileSystemAcesss;
+  private final IFileSystemAccess fileSystemAcesss;
   
-  public ConceptPreprocessor(final IFileSystemAccess2 fsa) {
+  public ConceptPreprocessor(final IFileSystemAccess fsa) {
     this.fileSystemAcesss = fsa;
   }
   
@@ -56,7 +56,7 @@ public class ConceptPreprocessor {
    * Serialize the processed concept into their new containers
    */
   public void serializeContent(final Concept concept, final URI xmiURI) {
-    new GenerateConceptXmi().serializeModel(concept, xmiURI, this.fileSystemAcesss);
+    new GenerateConceptXmi().serializeModel(concept, this.fileSystemAcesss);
   }
   
   /**

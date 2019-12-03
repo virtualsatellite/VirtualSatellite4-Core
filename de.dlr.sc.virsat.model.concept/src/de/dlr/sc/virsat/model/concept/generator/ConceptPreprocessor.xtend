@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi
+import org.eclipse.xtext.generator.IFileSystemAccess
 
 /**
  * Prepares a concept for a enhanced serialization in XMI and activates 
@@ -25,9 +26,9 @@ class ConceptPreprocessor {
 	
 	public static final String MODEL_TYPE_XMI_EXTENSION = "xmi";
 	val conceptLanguageHandler = new ConceptLanguageImplicitSuperTypeHandler
-	val IFileSystemAccess2 fileSystemAcesss
+	val IFileSystemAccess fileSystemAcesss
 	
-	new(IFileSystemAccess2 fsa) {
+	new(IFileSystemAccess fsa) {
 		this.fileSystemAcesss = fsa
 	}
 	
@@ -57,7 +58,7 @@ class ConceptPreprocessor {
 	 * Serialize the processed concept into their new containers
 	 */
 	def serializeContent(Concept concept, URI xmiURI) {
-		new GenerateConceptXmi().serializeModel(concept, xmiURI, fileSystemAcesss);
+		new GenerateConceptXmi().serializeModel(concept, fileSystemAcesss);
 	}
 	
 	/**

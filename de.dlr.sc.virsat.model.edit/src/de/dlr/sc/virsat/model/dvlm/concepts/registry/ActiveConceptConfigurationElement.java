@@ -256,15 +256,14 @@ public class ActiveConceptConfigurationElement {
 	}
 	
 	/**
-	 * Method to load a concept's DMF ecore model by using the concept name
+	 * Method to get a cocnept's DMF ecore model URI by using the concept name
 	 * @param conceptName the concept name
 	 * @return the loaded DMF ecore model
 	 */
-	public static Resource loadConceptDMFResourceViaConceptName(String conceptName) {
+	public static URI getConceptDMFResourceUri(String conceptName) {
 		Concept loadedConcept = loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
 		if (loadedConcept != null) {
-			URI ecoreConceptURI = loadedConcept.eResource().getURI().trimFileExtension().appendFileExtension("ecore");
-			return loadedConcept.eResource().getResourceSet().getResource(ecoreConceptURI, true);
+			return loadedConcept.eResource().getURI().trimFileExtension().appendFileExtension("ecore");
 		}
 		return null;
 	}

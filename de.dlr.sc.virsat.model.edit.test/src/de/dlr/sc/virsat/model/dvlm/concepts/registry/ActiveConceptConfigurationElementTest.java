@@ -25,7 +25,6 @@ import java.util.HashMap;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -63,6 +62,7 @@ public class ActiveConceptConfigurationElementTest {
 	
 	private static final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.tests";
 	private static final String TEST_CONCEPT_URI = "de.dlr.sc.virsat.model.extension.tests/concept/concept.xmi";
+	private static final String TEST_CONCEPT_DMF_URI = "platform:/plugin/de.dlr.sc.virsat.model.extension.tests/concept/concept.ecore";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -186,10 +186,9 @@ public class ActiveConceptConfigurationElementTest {
 	@Test
 	public void testLoadConceptDMFResourceViaConceptName() {
 		
-		Resource dmfResource = ActiveConceptConfigurationElement.loadConceptDMFResourceViaConceptName(TEST_CONCEPT_NAME);
-		assertNotNull("Test resource should exist and not be null", dmfResource);
-		assertNotNull("Test resource should have content", dmfResource.getContents().get(0));
-		assertTrue("Root element should be an the DMF EPackage", dmfResource.getContents().get(0) instanceof EPackage);
+		URI dmfURI = ActiveConceptConfigurationElement.getConceptDMFResourceUri(TEST_CONCEPT_NAME);
+		assertNotNull("Test resource should exist and not be null", dmfURI);
+		assertEquals("DMF URI should be as the concept URI but with ecore ending", TEST_CONCEPT_DMF_URI, dmfURI.toString());
 		
 	}
 }

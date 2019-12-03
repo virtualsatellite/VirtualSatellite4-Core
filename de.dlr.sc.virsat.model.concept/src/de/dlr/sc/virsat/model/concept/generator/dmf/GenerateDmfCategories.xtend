@@ -200,9 +200,7 @@ SPDX-License-Identifier: EPL-2.0";
 			val catEClass = EcoreFactory.eINSTANCE.createEClass;
 			ePackage.EClassifiers += catEClass;
 			catEClass.name = it.name;
-			if(it.extendsCategory === null) {
-				catEClass.ESuperTypes += dvlmDObject; 
-			}
+			catEClass.ESuperTypes += dvlmDObject; 
 			catEClass.abstract = it.isIsAbstract;
 			
 			// Create the attributes and references
@@ -375,16 +373,16 @@ SPDX-License-Identifier: EPL-2.0";
 		// and bend the resource from the xtext based concept file, to the
 		// ecore based categories model. After that load the resource and find
 		// the eclass which is referenced by its name 
-
-		var ecoreResource = ActiveConceptConfigurationElement.loadConceptDMFResourceViaConceptName(((ap.eContainer as Concept).name))
-		if(ecoreResource === null) {
+		var concept = ap.eResource.contents.get(0) as Concept
+		var ecoreUri = ActiveConceptConfigurationElement.getConceptDMFResourceUri((concept.name))
+		if(ecoreUri === null) {
 			//If concept is not registered via extension then check next to the concept file
 			val rpUri = ap.eResource.URI;
-			val ecorePath = rpUri.toString.replace(".concept", ".ecore");
-			val ecoreUri = URI.createURI(ecorePath);
-			ecoreResource = ecoreModelResourceSet.getResource(ecoreUri, true);
+			val ecorePath = rpUri.toString.replace(".concept", ".ecore").replace(".xmi", ".ecore");
+			ecoreUri = URI.createURI(ecorePath);
 		}
-		
+		var ecoreResource = ecoreModelResourceSet.getResource(ecoreUri, true);
+
 		val referencedEClass = EcoreUtil.getAllContents(ecoreResource, true).findFirst[
 			if (it instanceof EClass) {
 				val eClass = it as EClass;

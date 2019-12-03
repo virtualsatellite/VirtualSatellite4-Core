@@ -237,12 +237,8 @@ public class GenerateDmfCategories {
       EList<EClassifier> _eClassifiers = ePackage.getEClassifiers();
       _eClassifiers.add(catEClass);
       catEClass.setName(it.getName());
-      Category _extendsCategory = it.getExtendsCategory();
-      boolean _tripleEquals = (_extendsCategory == null);
-      if (_tripleEquals) {
-        EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
-        _eSuperTypes.add(this.dvlmDObject);
-      }
+      EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
+      _eSuperTypes.add(this.dvlmDObject);
       catEClass.setAbstract(it.isIsAbstract());
       final Consumer<AProperty> _function_1 = (AProperty it_1) -> {
         final EStructuralFeature propEStructuralFeature = new PropertydefinitionsSwitch<EStructuralFeature>() {
@@ -425,14 +421,15 @@ public class GenerateDmfCategories {
    * file. This is needed to create correct references in one Ecore based category model to another one
    */
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
-    EObject _eContainer = ap.eContainer();
-    Resource ecoreResource = ActiveConceptConfigurationElement.loadConceptDMFResourceViaConceptName(((Concept) _eContainer).getName());
-    if ((ecoreResource == null)) {
+    EObject _get = ap.eResource().getContents().get(0);
+    Concept concept = ((Concept) _get);
+    URI ecoreUri = ActiveConceptConfigurationElement.getConceptDMFResourceUri(concept.getName());
+    if ((ecoreUri == null)) {
       final URI rpUri = ap.eResource().getURI();
-      final String ecorePath = rpUri.toString().replace(".concept", ".ecore");
-      final URI ecoreUri = URI.createURI(ecorePath);
-      ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
+      final String ecorePath = rpUri.toString().replace(".concept", ".ecore").replace(".xmi", ".ecore");
+      ecoreUri = URI.createURI(ecorePath);
     }
+    Resource ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
     final Function1<Object, Boolean> _function = (Object it) -> {
       if ((it instanceof EClass)) {
         final EClass eClass = ((EClass) it);
