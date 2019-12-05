@@ -193,11 +193,12 @@ public class ActiveConceptHelper {
 	 * @param concept the concept which name details are needed
 	 * @return the display name plus FQN and version or the FQN and version when there is no display name
 	 */
-	public static String getConceptName(Concept concept) {
+	public static String getConceptNameWithVersion(Concept concept) {
+		String formattedVersion = " [" + concept.getVersion() + "]";
 		if (concept.getDisplayName() == null) {
-			return concept.getName() + " [" + concept.getVersion() + "]";
+			return concept.getName() + formattedVersion;
 		} else {
-			return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
+			return concept.getDisplayName() + " – " + concept.getName() + formattedVersion;
 		}
 	}
 	

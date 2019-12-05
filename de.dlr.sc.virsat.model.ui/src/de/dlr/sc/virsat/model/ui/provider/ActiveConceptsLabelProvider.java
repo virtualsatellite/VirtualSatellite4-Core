@@ -26,10 +26,10 @@ public class ActiveConceptsLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		if (element instanceof ActiveConceptConfigurationElement) {
 			ActiveConceptConfigurationElement acce = (ActiveConceptConfigurationElement) element;
-			return acce.getConceptName();
+			return acce.getConceptNameWithVersion();
 		} else if (element instanceof Concept) {
 			Concept concept = (Concept) element;
-			return ActiveConceptHelper.getConceptName(concept);
+			return ActiveConceptHelper.getConceptNameWithVersion(concept);
 		}
 		return super.getText(element);
 	}
