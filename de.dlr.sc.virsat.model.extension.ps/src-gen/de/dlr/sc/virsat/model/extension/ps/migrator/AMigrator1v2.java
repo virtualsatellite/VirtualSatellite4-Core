@@ -7,13 +7,23 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.concept.ui.outline
+package de.dlr.sc.virsat.model.extension.ps.migrator;
+
+import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
+
+
+// *****************************************************************
+// * Class Declaration
+// *****************************************************************
 
 /**
- * Customization of the default outline structure.
- *
- * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#outline
- */
-class ConceptLanguageOutlineTreeProvider extends org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider {
-	
+ * Auto Generated Abstract Generator Gap Class
+ * 
+ * Don't Manually modify this class
+ * 
+ * Product Structure Concept
+ * 
+ */	
+public abstract class AMigrator1v2 extends AMigrator {
+
 }

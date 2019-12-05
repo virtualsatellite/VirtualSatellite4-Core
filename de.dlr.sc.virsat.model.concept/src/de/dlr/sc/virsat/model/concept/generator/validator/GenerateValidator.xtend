@@ -24,6 +24,11 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 		concept.name + "." + PACKAGE_FOLDER;
 	}
 	
+	/**
+	 * This method gets the concept name which is usually in a form like this "de.dlr.sc.virsat.model.extension.conceptName". 
+	 * It splits the name after every dot and only takes the last element as the name.
+	 * The first letter is capitalized, since it will be used as a class name.
+	 */
 	static def getValidatorName(Concept concept) {
 		val name = concept.name
 		val String[] arrOfName = name.split("\\.")

@@ -11,6 +11,7 @@
 package de.dlr.sc.virsat.model.extension.funcelectrical.excelImport;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.excel.Fault;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
@@ -33,7 +35,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
  * @author bell_er
  *
  */
-public class ExcelImporterTest extends ExcelTestCase {
+public class FuncElecImporterTest extends ExcelTestCase {
 
 	@Before
 	public void setUp() throws CoreException {
@@ -43,11 +45,15 @@ public class ExcelImporterTest extends ExcelTestCase {
 	}
 
 	@Test
-	public void test() throws IOException {
+	public void testImportInterfaceTypeCollection() throws IOException {
 		InputStream is = Activator.getResourceContentAsString("/resources/ImportInterfaceTypeCollectionTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
 		FuncElecImporter ei = new FuncElecImporter();
+		
+		List<Fault> faults = ei.validate(itc.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+		
 		ei.importExcel(itc.getStructuralElementInstance(), repository, wb);
 		assertEquals(THREE, itc.getStructuralElementInstance().getCategoryAssignments().size());
 		assertEquals("FILL", itc.getStructuralElementInstance().getCategoryAssignments().get(0).getName());
@@ -56,12 +62,16 @@ public class ExcelImporterTest extends ExcelTestCase {
 	}
 
 	@Test
-	public void test2() throws IOException {
+	public void testImportInterfaceEnds() throws IOException {
 		InputStream is = Activator.getResourceContentAsString("/resources/ImportElementDefinitionTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
 		repository.getRootEntities().add(itc.getStructuralElementInstance());
 		FuncElecImporter ei = new FuncElecImporter();
+		
+		List<Fault> faults = ei.validate(ed.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+		
 		ei.importExcel(ed.getStructuralElementInstance(), repository, wb);
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(ed.getStructuralElementInstance(), InterfaceEnd.class);
@@ -76,11 +86,15 @@ public class ExcelImporterTest extends ExcelTestCase {
 	}
 
 	@Test
-	public void test3() throws IOException {
+	public void testImportInterfaces() throws IOException {
 		InputStream is = Activator.getResourceContentAsString("/resources/ImportElementConfigurationTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
 		FuncElecImporter ei = new FuncElecImporter();
+		
+		List<Fault> faults = ei.validate(ec.getStructuralElementInstance(), wb);
+		assertTrue("Succesfully called the validator", faults.isEmpty());
+		
 		ei.importExcel(ec.getStructuralElementInstance(), repository, wb);
 
 		assertEquals(2, ec.getStructuralElementInstance().getCategoryAssignments().size());
