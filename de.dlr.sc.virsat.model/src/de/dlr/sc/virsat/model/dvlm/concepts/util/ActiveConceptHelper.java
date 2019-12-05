@@ -198,7 +198,7 @@ public class ActiveConceptHelper {
 			return concept.getName() + " [" + concept.getVersion() + "]";
 		} else {
 			return concept.getDisplayName() + " – " + concept.getName() + " [" + concept.getVersion() + "]";
-			}
+		}
 	}
 	
 	/**
