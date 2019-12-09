@@ -85,8 +85,8 @@ public class ActiveConceptConfigurationElement {
 	 */
 	public String getConceptNameWithVersion() {
 		Concept concept = loadConceptFromPlugin();
-		String conceptName = ActiveConceptHelper.getConceptNameWithVersion(concept);
-		return conceptName;
+		String conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
+		return conceptNameWithVersion;
 	}
 	
 	/**
