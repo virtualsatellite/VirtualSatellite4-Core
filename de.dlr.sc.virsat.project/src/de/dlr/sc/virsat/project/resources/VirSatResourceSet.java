@@ -289,10 +289,10 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			// Add the diagnostic message for the null content
 			if (hasNullContent) {
 				basicDiagnostic.merge(new BasicDiagnostic(
-						Diagnostic.ERROR,
-						Activator.getPluginId(), 0,
-						"Restart Virtual Satellite! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
-						new Object[] { resource }
+					Diagnostic.ERROR,
+					Activator.getPluginId(), 0,
+					"Restart Virtual Satellite! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
+					new Object[] { resource }
 				));
 			}
 			
