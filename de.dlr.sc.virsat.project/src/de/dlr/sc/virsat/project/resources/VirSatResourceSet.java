@@ -145,11 +145,78 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	};
 
 	/**
+	 * This content checks the EMF resources for NULL objects.
+	 * Usually their content lists are free of NULL objects and don't allow to have
+	 * them included. In some cases it can still happen. This class is supposed
+	 * to spot these rare cases.
+	 */
+	protected EContentAdapter resourceNullContentAdapter = new EContentAdapter() {
+		@Override
+		public void notifyChanged(Notification notification) {
+			if (notification.getNotifier() instanceof Resource) {
+				Resource resource = (Resource) notification.getNotifier();
+				// Check if these notification is triggered on the contents of a resource
+				int featureID = notification.getFeatureID(Resource.class);
+				if (featureID == Resource.RESOURCE__CONTENTS) {
+					// Check if the new value is a null object
+					Object newValue = notification.getNewValue();
+					if (newValue == null) {
+						String errorMessage = "Found NULL object in EMF Resource\n";
+						errorMessage       += "---------------------------------\n";
+						String uri = resource.getURI().toPlatformString(true);
+						errorMessage       += "Resource: " + uri + "\n";
+						errorMessage       += "Stacktrace:\n";
+						
+						for (StackTraceElement se : Thread.currentThread().getStackTrace()) {
+							errorMessage   += se.toString() + "\n";
+						}
+						
+						// Now throw the message on the log and create a diagnostics report
+						Activator.getDefault().getLog().log(
+							new Status(Status.ERROR, Activator.getPluginId(), errorMessage)
+						);
+						
+						// Now where it is certain that there is something wrong with the content of the resource,
+						// it is time to update the diagnostics, so that the editors will display a reasonable message
+						// as well.
+						updateDiagnostic(resource);
+						notifyDiagnosticListeners(resource);
+					}
+				}
+			}
+			
+			super.notifyChanged(notification);
+		}
+		
+		protected void setTarget(EObject target) {
+			// Don't add adapter to eobjects
+		};
+		
+		protected void unsetTarget(EObject target) {
+			// Adapter is not added to eobjects, thus it does not need to be removed.
+		};
+		
+		@Override
+		protected void setTarget(Resource target) {
+			// Make sure that not children of the resource will get this adapter
+			basicSetTarget(target);
+		}
+
+		@Override
+		protected void unsetTarget(Resource target) {
+			basicUnsetTarget(target);
+			resourceToDiagnosticMap.remove(target);
+			notifyDiagnosticListeners(target);
+		}
+	};
+	
+	/**
 	 * Add the problem indication adapter, enabling this resource set to receive
 	 * changes in its resources and update the diagnostics accordingly.
 	 */
 	public void addProblemIndicationAdapter() {
 		eAdapters().add(problemIndicationAdapter);
+		eAdapters().add(resourceNullContentAdapter);
 	}
 
 	/**
@@ -194,10 +261,41 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public Diagnostic analyzeResourceProblems(Resource resource) {
 		boolean hasErrors = !resource.getErrors().isEmpty();
-		if (hasErrors || !resource.getWarnings().isEmpty()) {
-			BasicDiagnostic basicDiagnostic = new BasicDiagnostic(hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
-					"de.dlr.sc.virsat.project", 0, "Problems encountered in file " + resource.getURI(),
-					new Object[] { resource });
+		boolean hasWarnings = !resource.getWarnings().isEmpty();
+		boolean hasNullContent = false;
+
+		// Loop over the contents to detect a null
+		for (EObject object : resource.getContents()) {
+			if (object == null) {
+				hasNullContent = true;
+				hasErrors = true;
+				Activator.getDefault().getLog().log(new Status(
+					Status.ERROR,
+					Activator.getPluginId(),
+					"Found NULL object in Resource content: " + resource.getURI().toPlatformString(true)
+				));
+			}
+		}
+		
+		// Now build up the diagnostics
+		if (hasErrors || hasWarnings) {
+			BasicDiagnostic basicDiagnostic = new BasicDiagnostic(
+				hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
+				Activator.getPluginId(), 0,
+				"Problems encountered in resource: " + resource.getURI().toPlatformString(true),
+				new Object[] { resource }
+			);
+			
+			// Add the diagnostic message for the null content
+			if (hasNullContent) {
+				basicDiagnostic.merge(new BasicDiagnostic(
+						Diagnostic.ERROR,
+						Activator.getPluginId(), 0,
+						"Restart Virtual Satellite! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
+						new Object[] { resource }
+				));
+			}
+			
 			basicDiagnostic.merge(EcoreUtil.computeDiagnostic(resource, true));
 			return basicDiagnostic;
 		} else {
@@ -1076,8 +1174,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	/**
 	 * Updates the resources diagnostic entry in the resourceToDiagnosticMap
 	 * 
-	 * @param resource
-	 *            the resource of which to update the diagnostic
+	 * @param resource the resource of which to update the diagnostic
 	 */
 	public void updateDiagnostic(Resource resource) {
 		if (resource != null) {
@@ -1087,21 +1184,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				EObject resolvedEObject = EcoreUtil.resolve(eObject, this);
 				diagnostic = analyzeModelProblems(resolvedEObject, diagnostic);
 			}
-
+			
 			if (diagnostic.getSeverity() != Diagnostic.OK) {
 				resourceToDiagnosticMap.put(resource, diagnostic);
-				Activator.getDefault().getLog()
-						.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-								"VirSatResourceSet: Current Diagnostic Map adding Resource ("
-										+ resource.getURI().toPlatformString(true) + ")",
-								null));
+				Activator.getDefault().getLog().log(new Status(
+					Status.INFO, Activator.getPluginId(), Status.INFO,
+					"VirSatResourceSet: Current Diagnostic Map adding Resource (" + resource.getURI().toPlatformString(true) + ")",
+					null
+				));
 			} else {
 				if (resourceToDiagnosticMap.containsKey(resource)) {
-					Activator.getDefault().getLog()
-							.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-									"VirSatResourceSet: Current Diagnostic Map removing Resource ("
-											+ resource.getURI().toPlatformString(true) + ")",
-									null));
+					Activator.getDefault().getLog().log(new Status(
+						Status.INFO, Activator.getPluginId(), Status.INFO,
+						"VirSatResourceSet: Current Diagnostic Map removing Resource (" + resource.getURI().toPlatformString(true) + ")",
+						null
+					));
 					resourceToDiagnosticMap.remove(resource);
 				}
 			}
