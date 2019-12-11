@@ -24,10 +24,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * This class is generated once, do your changes here
  * 
- * 
+ * Implicit super category of all categories
  * 
  */
-public  class GenericCategory extends AGenericCategory {
+public abstract class GenericCategory extends AGenericCategory {
 	
 	/**
 	 * Constructor of Concept Class
