@@ -157,14 +157,16 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				Resource resource = (Resource) notification.getNotifier();
 				// Check if these notification is triggered on the contents of a resource
 				int featureID = notification.getFeatureID(Resource.class);
+				int eventType = notification.getEventType();
 				if (featureID == Resource.RESOURCE__CONTENTS) {
 					// Check if the new value is a null object
 					Object newValue = notification.getNewValue();
-					if (newValue == null) {
+					if ((newValue == null) && (eventType != Notification.REMOVE)) {
 						String errorMessage = "Found NULL object in EMF Resource\n";
 						errorMessage       += "---------------------------------\n";
 						String uri = resource.getURI().toPlatformString(true);
 						errorMessage       += "Resource: " + uri + "\n";
+						errorMessage       += "Event Type: " + eventType + "\n"; 
 						errorMessage       += "Stacktrace:\n";
 						
 						for (StackTraceElement se : Thread.currentThread().getStackTrace()) {
