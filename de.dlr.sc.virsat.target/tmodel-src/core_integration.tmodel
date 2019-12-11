@@ -12,6 +12,7 @@ TargetLibrary core_integration {
 		Unit de.dlr.sc.virsat.javadoc.api.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.license.feature.feature.group version newest; 
 		Unit de.dlr.sc.virsat.model.calculation.feature.feature.group version newest;
+		Unit de.dlr.sc.virsat.model.ext.core.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.budget.mass.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.budget.power.feature.feature.group version newest;
 		Unit de.dlr.sc.virsat.model.extension.funcelectrical.feature.feature.group version newest;
