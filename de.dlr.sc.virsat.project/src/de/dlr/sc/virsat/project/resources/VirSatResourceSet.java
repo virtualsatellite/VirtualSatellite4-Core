@@ -190,10 +190,20 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			super.notifyChanged(notification);
 		}
 		
+		@Override
+		protected void selfAdapt(Notification notification) {
+			Object object = notification.getNotifier();
+			if (object instanceof ResourceSet) {
+				super.selfAdapt(notification);
+			}
+		};
+
+		@Override
 		protected void setTarget(EObject target) {
 			// Don't add adapter to eobjects
 		};
 		
+		@Override
 		protected void unsetTarget(EObject target) {
 			// Adapter is not added to eobjects, thus it does not need to be removed.
 		};
@@ -534,7 +544,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * @param project
 	 *            The project to which this resourceSet is bound.
 	 */
-	private VirSatResourceSet(IProject project) {
+	protected VirSatResourceSet(IProject project) {
 		this.project = project;
 		this.projectCommons = new VirSatProjectCommons(project);
 
@@ -1183,8 +1193,10 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			Diagnostic diagnostic = analyzeResourceProblems(resource);
 
 			for (EObject eObject : resource.getContents()) {
-				EObject resolvedEObject = EcoreUtil.resolve(eObject, this);
-				diagnostic = analyzeModelProblems(resolvedEObject, diagnostic);
+				if (eObject != null) {
+					EObject resolvedEObject = EcoreUtil.resolve(eObject, this);
+					diagnostic = analyzeModelProblems(resolvedEObject, diagnostic);
+				}
 			}
 			
 			if (diagnostic.getSeverity() != Diagnostic.OK) {
