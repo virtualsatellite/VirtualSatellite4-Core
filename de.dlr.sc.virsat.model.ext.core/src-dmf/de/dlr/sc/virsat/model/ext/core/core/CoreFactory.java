@@ -29,15 +29,6 @@ public interface CoreFactory extends EFactory {
 	CoreFactory eINSTANCE = de.dlr.sc.virsat.model.ext.core.core.impl.CoreFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Generic Category</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Generic Category</em>'.
-	 * @generated
-	 */
-	GenericCategory createGenericCategory();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -63,21 +63,9 @@ public class CoreFactoryImpl extends EFactoryImpl implements CoreFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case CorePackage.GENERIC_CATEGORY: return createGenericCategory();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public GenericCategory createGenericCategory() {
-		GenericCategoryImpl genericCategory = new GenericCategoryImpl();
-		return genericCategory;
 	}
 
 	/**

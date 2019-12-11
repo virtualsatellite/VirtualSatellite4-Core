@@ -21,23 +21,10 @@
 	</conceptImage>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
-	<command
-		id="de.dlr.sc.virsat.model.ext.core.ui.command.AddGenericCategory"
-		name="Add GenericCategory">
-	</command>
 	</extension>
 	<extension point="org.eclipse.ui.commandImages">
-	<image
-	      commandId="de.dlr.sc.virsat.model.ext.core.ui.command.AddGenericCategory"
-	      disabledIcon="resources/icons/GenericCategory_disabled.gif"
-	      icon="resources/icons/GenericCategory.gif">
-	</image>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
-	<handler
-		class="de.dlr.sc.virsat.model.ext.core.ui.handler.AddGenericCategoryHandler"
-		commandId="de.dlr.sc.virsat.model.ext.core.ui.command.AddGenericCategory">
-	</handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
@@ -83,28 +70,6 @@
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.ext.core.menu?after=categories">
-		<command
-			commandId="de.dlr.sc.virsat.model.ext.core.ui.command.AddGenericCategory"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.ext.core.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.ext.core.menu?after=structuralElements">
@@ -118,16 +83,6 @@
 	    </editorSection>
 	 </extension>	
 	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.ext.core.table.uiSnippetGenericCategory"
-		      section="de.dlr.sc.virsat.model.ext.core.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.ext.core.ui.snippet.UiSnippetTableGenericCategory">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.ext.core.section.uiSnippetGenericCategory"
-		      section="de.dlr.sc.virsat.model.ext.core.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.ext.core.ui.snippet.UiSnippetSectionGenericCategory">
-		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 	<!-- Plugin.XML Protected Region End -->

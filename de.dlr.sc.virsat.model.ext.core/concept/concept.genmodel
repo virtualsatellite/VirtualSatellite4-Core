@@ -10,6 +10,6 @@
   <foreignModel>/de.dlr.sc.virsat.model.ext.core/concept/concept.ecore</foreignModel>
   <genPackages prefix="Core" basePackage="de.dlr.sc.virsat.model.ext.core" resource="XMI"
       disposableProviderFactory="true" ecorePackage="concept.ecore#/">
-    <genClasses ecoreClass="concept.ecore#//GenericCategory"/>
+    <genClasses image="false" ecoreClass="concept.ecore#//GenericCategory"/>
   </genPackages>
 </genmodel:GenModel>

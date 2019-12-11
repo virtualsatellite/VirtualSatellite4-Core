@@ -16,12 +16,6 @@
 			</seiValidator>
 		</dvlmValidator>
 	</extension>
-	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
-		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.ext.core.GenericCategory"
-			caBean="de.dlr.sc.virsat.model.ext.core.model.GenericCategory">
-		</CategoryAssignmentBean>
-	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
 	<migrator

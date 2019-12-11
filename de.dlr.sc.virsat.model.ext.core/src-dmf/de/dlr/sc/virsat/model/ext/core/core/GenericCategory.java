@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  *
  *
  * @see de.dlr.sc.virsat.model.ext.core.core.CorePackage#getGenericCategory()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface GenericCategory extends DObject {

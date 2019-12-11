@@ -14,7 +14,9 @@ Concept de.dlr.sc.virsat.model.ext.core description "Concept for core language e
 	 * 
 	 * Can be used for generic references that should allow all categories
 	 */
-	Category GenericCategory description "Implicit super category of all categories" {}	
+	Category GenericCategory description "Implicit super category of all categories" {
+		IsAbstract;
+	}	
 	
 }
 

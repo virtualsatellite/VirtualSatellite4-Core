@@ -176,7 +176,7 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
 		genericCategoryEClass.getESuperTypes().add(theDmfPackage.getDObject());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(genericCategoryEClass, GenericCategory.class, "GenericCategory", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(genericCategoryEClass, GenericCategory.class, "GenericCategory", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

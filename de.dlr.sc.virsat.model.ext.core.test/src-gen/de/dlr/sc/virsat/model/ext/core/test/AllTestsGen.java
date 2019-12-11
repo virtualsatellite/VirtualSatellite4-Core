@@ -19,8 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategoryTest;
 import de.dlr.sc.virsat.model.ext.core.migrator.Migrator1v0Test;
+import de.dlr.sc.virsat.model.ext.core.validator.StructuralElementInstanceValidatorTest;
 
 /**
  * 
@@ -28,8 +28,8 @@ import de.dlr.sc.virsat.model.ext.core.migrator.Migrator1v0Test;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	GenericCategoryTest.class,
 	Migrator1v0Test.class,
+	StructuralElementInstanceValidatorTest.class,
 				})
 
 /**

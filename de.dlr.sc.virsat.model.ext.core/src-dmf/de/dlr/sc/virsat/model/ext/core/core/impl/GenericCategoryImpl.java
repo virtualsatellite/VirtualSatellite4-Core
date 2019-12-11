@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class GenericCategoryImpl extends DObjectImpl implements GenericCategory {
+public abstract class GenericCategoryImpl extends DObjectImpl implements GenericCategory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -79,29 +79,6 @@ public class CoreItemProviderAdapterFactory extends CoreAdapterFactory implement
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.ext.core.core.GenericCategory} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected GenericCategoryItemProvider genericCategoryItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.ext.core.core.GenericCategory}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createGenericCategoryAdapter() {
-		if (genericCategoryItemProvider == null) {
-			genericCategoryItemProvider = new GenericCategoryItemProvider(this);
-		}
-
-		return genericCategoryItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -206,7 +183,6 @@ public class CoreItemProviderAdapterFactory extends CoreAdapterFactory implement
 	 */
 	@Override
 	public void dispose() {
-		if (genericCategoryItemProvider != null) genericCategoryItemProvider.dispose();
 	}
 
 }
