@@ -28,8 +28,9 @@ import de.dlr.sc.virsat.project.Activator;
 
 /**
  * VirSat Command Stack which delegates to a WorkspaceCommandStack
- * but offers the possibility to execute commands without undo
- * @author fisc_ph
+ * but offers the possibility to execute commands without undo. It 
+ * also provides special treatment of recording commands which may call
+ * extra logic such as removing the file of a SEI
  *
  */
 public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
@@ -72,22 +73,43 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	
 	@Override
 	public void execute(Command command, Map<?, ?> options) {
+		// In case the command that shall be executed is a Recording Command,
+		// it will be wrapped into VirSatRecordingCommand. This command can be 
+		// easily distinguished in the stack as a command that was processed here.
 		if (command instanceof RecordingCommand) {
 			command = new VirSatRecordingCommand(command);
 		}
 		
 		triggerSave = false;
 		try {
+			// Try to see if there is already a transaction going on in the editing domain,
+			// which is associated with this Command Stack.
 			InternalTransaction activeTransaction = getDomain().getActiveTransaction();
+			
+			// In case it exists, we want to now check if it is reusable for us. Which means
+			// like if a recording command is executed, which also tries to remove a file from a SEI,
+			// These commands shall be executed in one atomic transaction. This is implemented for making 
+			// Graphiti Framework work for us. Important is, that a transaction can only be rentered by
+			// the same thread. Thus commands within a recording command can be placed into the same transaction
+			// A command from a different thread can not be placed into the already open transaction.
 			boolean usableTransactionExists = activeTransaction != null && !activeTransaction.isReadOnly()
 					&& activeTransaction.getOwner().equals(Thread.currentThread());
 			
+			// The standard case, is that there is a new command which should be executed.
+			// Since there is usually no transaction yet, it will be forwarded to the Standard Workspace
+			// Command Stack which opens a transaction and starts executing the command. Or in case there is a transaction
+			// it will be just placed on the stack as the next command.
 			if (!usableTransactionExists) {
 				// No active transaction means we have to execute the command as a
 				// top-level command
 				super.execute(command, options);
 			} else {
-				// An active transaction already exists, execute the command within its scope
+				// now where a transaction for the same thread exists, the command itself will be executed
+				// within exactly that transaction. In case that the command which is already executed by the 
+				// transaction is a VirtualSatelliteRecordCommand, the executed command will be chained to it.
+				// This way it looks to the CommandStack as if only the VirSatRecordingCommand was executed.
+				// Now when e.g. an undo is triggered, the chained commands will be undone as well within the
+				// same atomic transaction.
 				if (command != null && command.canExecute()) {
 					command.execute();
 					if (getActiveCommand() instanceof VirSatRecordingCommand) {
