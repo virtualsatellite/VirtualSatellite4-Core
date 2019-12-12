@@ -33,6 +33,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.commons.datastructures.DependencyTree;
 import de.dlr.sc.virsat.model.calculation.compute.problem.EvaluationProblem;
@@ -332,6 +333,7 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 			EcoreUtil.resolveAll(resourceSet);
 			
 			if (resourceSet.hasError()) {
+				reportResourceSetErrors(resourceSet);
 				return Collections.EMPTY_LIST;
 			}
 			
@@ -348,8 +350,40 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 		}
 	
 		return equations;
+	}
+
+	/**
+	 * Writes all errors from resourceSet to log and shows them in a UI dialog
+	 * @param resourceSet resource set to get errors from
+	 */
+	private void reportResourceSetErrors(VirSatResourceSet resourceSet) {
+		for (Resource resource : resourceSet.getResources()) {
+			for (Resource.Diagnostic error : resource.getErrors()) {
+				Status status = getResourceErrorStatus(resource, error);
+				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+			}
+		}
 	};
 	
+	/**
+	 * Creates a status for an error in a resource
+	 * @param resource 
+	 * @param error 
+	 * @return status
+	 */
+	private Status getResourceErrorStatus(Resource resource, Resource.Diagnostic error) {
+		Status status;
+		if (error instanceof Throwable) {
+			status = new Status(Status.ERROR, Activator.getPluginId(), 
+					"Error in resource " + resource, (Throwable) error);
+		} else {
+			status = new Status(Status.ERROR, Activator.getPluginId(), 
+					String.format("Error in resource %s: %s, location %s, line %d, column %d",
+							resource.toString(), error.getMessage(), error.getLocation(), error.getLine(), error.getColumn()));
+		}
+		return status;
+	}
+
 	/**
 	 * Call this method to get all Equations from a given EMF Resource
 	 * @param resource The EMF Resource to look in for equations
