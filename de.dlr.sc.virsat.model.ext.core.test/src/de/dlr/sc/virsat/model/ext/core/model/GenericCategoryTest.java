@@ -10,28 +10,25 @@
 package de.dlr.sc.virsat.model.ext.core.model;
 
 // *****************************************************************
-// * Import Statements
-// *****************************************************************
-
-
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import java.lang.Exception;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
-
-
-// *****************************************************************
 // * Class Declaration
 // *****************************************************************
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+
+// *****************************************************************
+// * Import Statements
+// *****************************************************************
+
+
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
  * Auto Generated Abstract Generator Gap Class
@@ -71,7 +68,7 @@ public class GenericCategoryTest {
 	public void testGenericCategoryConcept() {
 		GenericCategory testGenericCategory = new GenericCategoryBeanMockupImpl(concept);
 		
-		assertNotNull("There is an internal DVLM object", testGenericCategory.getATypeInstance());
+		assertNull("Should not be able to instance it", testGenericCategory.getATypeInstance());
 	}
 	
 	@Test

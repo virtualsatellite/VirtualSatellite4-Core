@@ -33,7 +33,7 @@ import junit.framework.JUnit4TestAdapter;
 	CorePackageTest.class,
 	GenericCategoryTest.class,
 	CoreResourceFactoryImplTest.class,
-	GenericCategoryTest.class
+	de.dlr.sc.virsat.model.ext.core.model.GenericCategoryTest.class
 	})
 
 /**
