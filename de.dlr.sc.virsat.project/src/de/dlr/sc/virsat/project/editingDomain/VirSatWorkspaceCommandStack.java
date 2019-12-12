@@ -54,16 +54,22 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * @param command The command to be executed.
 	 */
 	public void executeNoUndo(Command command) {
-		// Check if the command is execute able and prepare it (happens in canExecute)
-		if (command.canExecute()) {
-			// Wrap it into an EMF operation and execute the command ourselves without
-			// using the history to prevent the operation from being listed in there
-			EMFCommandOperation operation = new EMFCommandOperation(getDomain(), command);
-			try {
-				operation.execute(null, null);
-			} catch (ExecutionException e) {
-				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command without undo ", e));
+		transactionLock.lock();
+		
+		try { 
+			// Check if the command is execute able and prepare it (happens in canExecute)
+			if (command.canExecute()) {
+				// Wrap it into an EMF operation and execute the command ourselves without
+				// using the history to prevent the operation from being listed in there
+				EMFCommandOperation operation = new EMFCommandOperation(getDomain(), command);
+				try {
+					operation.execute(null, null);
+				} catch (ExecutionException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command without undo ", e));
+				}
 			}
+		} finally {
+			transactionLock.unlock();
 		}
 	}
 	

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -137,12 +138,17 @@ public class VirSatInheritanceBuilder extends IncrementalProjectBuilder {
 			}
 		};
 		
-		if (virSatTed.getActiveTransaction() != null) {
+		ReentrantLock transactionLock = virSatTed.getVirSatCommandStack().getTransactionLock();
+		if (transactionLock.tryLock()) {
+			try {
+				virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+			} finally {
+				transactionLock.unlock();
+			}
+		} else {
 			rememberLastBuiltState();
 			return;
 		}
-		
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
 	}
 	
 	/**
@@ -181,12 +187,17 @@ public class VirSatInheritanceBuilder extends IncrementalProjectBuilder {
 			}
 		};
 		
-		if (virSatTed.getActiveTransaction() != null) {
+		ReentrantLock transactionLock = virSatTed.getVirSatCommandStack().getTransactionLock();
+		if (transactionLock.tryLock()) {
+			try {
+				virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+			} finally {
+				transactionLock.unlock();
+			}
+		} else {
 			rememberLastBuiltState();
 			return;
 		}
-		
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
 	}
 	
 	private VirSatInheritanceMarkerHelper vimHelper = new VirSatInheritanceMarkerHelper();
