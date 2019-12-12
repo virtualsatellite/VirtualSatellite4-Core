@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -31,6 +32,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
+import de.dlr.sc.virsat.svn.ui.decoration.VirSatSvnRevisionStatusUtil;
 
 /**
  * a class to define the update actions
@@ -69,13 +71,25 @@ public class CustomUpdateAction extends UpdateAction {
 				}
 				
 				try {
+					Activator.getDefault().getLog().log(new Status(
+						IStatus.INFO,
+						Activator.getPluginId(),
+						"SVN: Before update on:\n" +  new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)
+					));
+
 					super.execute(event);
+				
+					Activator.getDefault().getLog().log(new Status(
+						IStatus.INFO,
+						Activator.getPluginId(),
+						"SVN: After update on:\n" +  new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)
+					));
 				} catch (Exception e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute call to SVN in Custom Update! " + e.getMessage()));
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SVN: Failed to execute call to SVN in Custom Update! " + e.getMessage()));
 				}
 			}, ResourcesPlugin.getWorkspace().getRoot(), IWorkspace.AVOID_UPDATE, null);
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute Custom Update! " + e.getMessage()));
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SVN: Failed to execute Custom Update! " + e.getMessage()));
 		}
 		
 		return null;
