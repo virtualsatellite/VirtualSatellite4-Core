@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSetUtilTest;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSetUtilTest2;
 import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommandTest;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommandTest;
+import de.dlr.sc.virsat.project.resources.dmf.DmfResourceSaveCommandTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommonsTest;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNatureTest;
@@ -56,7 +57,8 @@ import junit.framework.JUnit4TestAdapter;
 				CreateAddSeiWithFileStructureCommandTest.class,
 				AssignDisciplineCommandTest.class,
 				VirSatProblemMarkerHelperTest.class,
-				VirSatEditingDomainClipBoardTest.class
+				VirSatEditingDomainClipBoardTest.class,
+				DmfResourceSaveCommandTest.class
 				})
 
 /**

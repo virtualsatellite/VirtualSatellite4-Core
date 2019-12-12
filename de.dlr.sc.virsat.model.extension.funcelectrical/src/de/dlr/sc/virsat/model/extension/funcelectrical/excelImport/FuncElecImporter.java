@@ -58,7 +58,6 @@ public class FuncElecImporter implements IImport {
 	private List<InterfaceType> itcTypes;
 	private List<Interface> ifaces;
 	private Concept concept;
-	private Repository repository;
 
 	@Override
 	public void importExcel(EObject eObject, Repository repository, XSSFWorkbook wb) {
@@ -93,7 +92,6 @@ public class FuncElecImporter implements IImport {
 	private void init(EObject eObject, Repository repository, XSSFWorkbook wb) {
 		this.sc = (StructuralElementInstance) eObject;
 		this.wb = wb;
-		this.repository = repository;
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		FuncElectricalArchitectureHelper feaHelper = new FuncElectricalArchitectureHelper();
 		StructuralElementInstanceHelper seiHelper = new StructuralElementInstanceHelper(sc);
@@ -266,7 +264,7 @@ public class FuncElecImporter implements IImport {
 	
 	@Override
 	public List<Fault> validate(EObject object, XSSFWorkbook wb) {
-		ImportValidator iv = new ImportValidator(object, repository, wb);
+		ImportValidator iv = new ImportValidator(object, wb);
 		return iv.validate();
 	}
 }

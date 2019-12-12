@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.team,
+ de.dlr.sc.virsat.server,
  de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.model.calculation,
@@ -52,6 +53,7 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.team.test,
+ de.dlr.sc.virsat.server.test,
  de.dlr.sc.virsat.excel.test
 Export-Package: de.dlr.sc.virsat.test
 Automatic-Module-Name: de.dlr.sc.virsat.test

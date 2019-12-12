@@ -59,7 +59,7 @@ public class CadImportWizard extends Wizard implements IWorkbenchWizard {
 	 */
 	public CadImportWizard() {
 		super();
-		setWindowTitle("Cad JSON Import");
+		setWindowTitle("Cad JSON Import (Beta)");
 
 		// Setup persistency
 		IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
