@@ -72,7 +72,7 @@ public class WorkspaceUserContext {
 	/**
 	 * Call this method to execute code within the context
 	 * @param workspaceExecution AN implementation to be called within the context
-	 * @return A STring as the result of the code executed in the context
+	 * @return A String as the result of the code executed in the context
 	 */
 	public String runInContext(IWorkspaceUserContextExecution workspaceExecution) {
 		Object context = getContext();

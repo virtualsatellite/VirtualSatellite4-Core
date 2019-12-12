@@ -58,12 +58,12 @@ public abstract class ApplicationServletContainer implements Servlet {
 	}
 
 	@Override
-	public void init(ServletConfig arg0) throws ServletException {
-		this.servlet.init(arg0);
+	public void init(ServletConfig servletConfiguration) throws ServletException {
+		this.servlet.init(servletConfiguration);
 	}
 
 	@Override
-	public void service(ServletRequest arg0, ServletResponse arg1) throws ServletException, IOException {
-		this.servlet.service(arg0, arg1);
+	public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+		this.servlet.service(servletRequest, servletResponse);
 	}
 }
