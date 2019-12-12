@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -154,12 +155,17 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 			}
 		};
 		
-		if (virSatTed.getActiveTransaction() != null) {
+		ReentrantLock transactionLock = virSatTed.getVirSatCommandStack().getTransactionLock();
+		if (transactionLock.tryLock()) {
+			try {
+				virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+			} finally {
+				transactionLock.unlock();
+			}
+		} else {
 			rememberLastBuiltState();
 			return;
 		}
-		
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
 		
 		// Clean up old markers
 		vemHelper.deleteAllMarkersInWorkspace();
@@ -203,12 +209,17 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 			}
 		};
 		
-		if (virSatTed.getActiveTransaction() != null) {
+		ReentrantLock transactionLock = virSatTed.getVirSatCommandStack().getTransactionLock();
+		if (transactionLock.tryLock()) {
+			try {
+				virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+			} finally {
+				transactionLock.unlock();
+			}
+		} else {
 			rememberLastBuiltState();
 			return;
 		}
-		
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
 		
 		// Clean up old markers
 		for (EObject objectWithOldMarkers : objectsWithOldMarkers) {
