@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -24,7 +23,6 @@ import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * This class implements an incremental builder compatible to
@@ -33,9 +31,8 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  * changes are only executed in case the Workspace Command Stack has no transaction
  * going on. Otherwise the builder will be remembered for later execution.
  */
-public abstract class AVirSatTransactionalBuilder extends IncrementalProjectBuilder {
+public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 
-	protected VirSatProblemMarkerHelper vpmHelper;
 	protected boolean redirectIncrementalToAutoBuild;
 	
 	/**
@@ -44,8 +41,7 @@ public abstract class AVirSatTransactionalBuilder extends IncrementalProjectBuil
 	 * @param redirectIncrementalToAutoBuild set to true in case the incremental build should be decided in the auto_build functionality
 	 */
 	public AVirSatTransactionalBuilder(VirSatProblemMarkerHelper vpmHelper, boolean redirectIncrementalToAutoBuild) {
-		super();
-		this.vpmHelper = vpmHelper;
+		super(vpmHelper);
 		this.redirectIncrementalToAutoBuild = redirectIncrementalToAutoBuild;
 	}
 
@@ -54,12 +50,14 @@ public abstract class AVirSatTransactionalBuilder extends IncrementalProjectBuil
 	 * @param delta The delta that should be build
 	 * @param monitor the monitor to be used for communicating progress
 	 */
+	@Override
 	protected abstract void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor);
 
 	/**
 	 * Implement this method for a full build
 	 * @param monitor the monitor to be used for communicating progress
 	 */
+	@Override
 	protected abstract void fullBuild(IProgressMonitor monitor);
 
 	@Override
@@ -210,23 +208,6 @@ public abstract class AVirSatTransactionalBuilder extends IncrementalProjectBuil
 		public boolean canExecute() {
 			return true;
 		}
-	}
-	
-	/**
-	 * Facade method to be able to override getProject method
-	 * for the test cases of this tester
-	 * @return hands back the current project the builder is triggered on
-	 */
-	protected IProject getVirSatProject() {
-		return getProject();
-	}
-
-	/**
-	 * Overrideable method to provide the resource set for the use of non transactional testers
-	 * @return gets the resource set this builder operates on
-	 */
-	protected VirSatResourceSet getResourceSet() {
-		return VirSatResourceSet.getResourceSet(getVirSatProject());
 	}
 
 }

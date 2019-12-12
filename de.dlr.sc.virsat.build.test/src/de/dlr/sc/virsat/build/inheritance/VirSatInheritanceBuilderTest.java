@@ -83,7 +83,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 	public void testFullBuild() {
 		TestInheritanceCopier tic = new TestInheritanceCopier();
 
-		AVirSatTransactionalBuilder builder = new VirSatInheritanceBuilder() {
+		AVirSatBuilder builder = new VirSatInheritanceBuilder() {
 			@Override
 			protected IProject getVirSatProject() {
 				return project;
@@ -121,7 +121,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 	public void testIncrementalBuild() {
 		TestInheritanceCopier tic = new TestInheritanceCopier();
 		
-		AVirSatTransactionalBuilder builder = new VirSatInheritanceBuilder() {
+		AVirSatBuilder builder = new VirSatInheritanceBuilder() {
 			@Override
 			protected IProject getVirSatProject() {
 				return project;
