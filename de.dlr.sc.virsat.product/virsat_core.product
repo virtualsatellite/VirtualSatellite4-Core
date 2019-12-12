@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.9.2.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.9.3.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
       <text>
          Virtual Satellite 4 - DVLM Core
 
-Version 4.9.2
+Version 4.9.3
 
 Copyright 2019 - Simulation and Software Technology (DLR)
 
