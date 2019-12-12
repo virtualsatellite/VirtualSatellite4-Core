@@ -121,21 +121,24 @@ public class ConceptPaletteView extends ViewPart {
 			ActiveConceptConfigurationElement acce = (ActiveConceptConfigurationElement) object;
 			Concept concept = acce.loadConceptFromPlugin();
 			
-			// Create the group entry in the palette
-			GalleryItem conceptGroup = new GalleryItem(gallery, SWT.NONE);
-			if (concept.getDisplayName() != null) {
-				conceptGroup.setText(concept.getDisplayName());
-			} else {
-				conceptGroup.setText(concept.getName());
-			}
-			conceptGroup.setImage(getImage(concept));
-			conceptGroup.setExpanded(false);
-			
 			// Create the actual item entries for the concept
 			List<IConceptTypeDefinition> conceptTypeDefinitions = new ArrayList<>();
 			conceptTypeDefinitions.addAll(concept.getStructuralElements());
 			conceptTypeDefinitions.addAll(concept.getNonAbstractCategories());
-			conceptTypeDefinitions.forEach(conceptTypeDefinition -> createItem(conceptGroup, conceptTypeDefinition));
+			
+			// Create the group entry in the palette
+			if (!conceptTypeDefinitions.isEmpty()) {
+				GalleryItem conceptGroup = new GalleryItem(gallery, SWT.NONE);
+				if (concept.getDisplayName() != null) {
+					conceptGroup.setText(concept.getDisplayName());
+				} else {
+					conceptGroup.setText(concept.getName());
+				}
+				conceptGroup.setImage(getImage(concept));
+				conceptGroup.setExpanded(false);
+				
+				conceptTypeDefinitions.forEach(conceptTypeDefinition -> createItem(conceptGroup, conceptTypeDefinition));
+			}
 		}
 	}
 	
