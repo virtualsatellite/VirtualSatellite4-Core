@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.dvlm.concepts.registry;
 
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -154,5 +155,21 @@ public class ActiveConceptConfigurationElementTest {
 		Concept activeConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(conceptSourceA, repository);
 		
 		assertNotSame("Should not be the same object, should be copied", activeConcept, conceptSourceA);
+	}
+	
+	@Test
+	public void testGetConceptNameWithVersion() {
+		ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(null) {
+			public Concept loadConceptFromPlugin() {
+				Concept concept = ConceptsFactory.eINSTANCE.createConcept();
+				concept.setDisplayName("DisplayName");
+				return concept;
+			}
+		};
+
+		String expectedConceptNameWithVersion = "DisplayName – de.dlr.sc.model.dvlm.noid [1.0]";
+		String conceptNameWithVersion = acce.getConceptNameWithVersion();
+
+		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
 	}
 }

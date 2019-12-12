@@ -70,6 +70,8 @@ public class ActiveConceptHelperTest {
 	private ActiveConceptHelper acHelper;
 	
 	private static final String TEST_CONCEPT_ID = "de.dlr.sc.virsat.model.concept.test"; 
+	private static final String TEST_DISPLAY_NAME = "Concept"; 
+	private static final String TEST_VERSION = "1.0"; 
 	private static final String TEST_INVALID_ID = "de.dlr.sc.virsat.model.concept.test.invalid"; 
 	private static final String TEST_CATEGORY_ID_ONE = "de.dlr.sc.virsat.model.concept.catOne"; 
 	private static final String TEST_CATEGORY_ID_TWO = "de.dlr.sc.virsat.model.concept.catTWo"; 
@@ -84,6 +86,8 @@ public class ActiveConceptHelperTest {
 		
 		testConcept = ConceptsFactory.eINSTANCE.createConcept();
 		testConcept.setName(TEST_CONCEPT_ID);
+		testConcept.setDisplayName(TEST_DISPLAY_NAME);
+		testConcept.setVersion(TEST_VERSION);
 		
 		testCategoryOne = CategoriesFactory.eINSTANCE.createCategory();
 		testCategoryTwo = CategoriesFactory.eINSTANCE.createCategory();
@@ -213,6 +217,23 @@ public class ActiveConceptHelperTest {
 		
 		AProperty returnedPropertyOne = ActiveConceptHelper.getProperty(testCategoryOne, ID_ONE);
 		assertEquals("the id one one existed in the category", propertyOne, returnedPropertyOne);
+	}
+	
+	@Test
+	public void testGetConceptNameWithVersion() {
+		Concept concept = testConcept;
+		String version = "[" + TEST_VERSION + "]";
+
+		String expectedConceptNameWithVersion = TEST_DISPLAY_NAME + " – " + TEST_CONCEPT_ID + " " + version;
+		String conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
+
+		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
+		
+		concept.setDisplayName(null);
+		expectedConceptNameWithVersion = TEST_CONCEPT_ID + " " + version;
+		conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
+		
+		assertEquals("The concept without a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
 	}
 	
 	@Test

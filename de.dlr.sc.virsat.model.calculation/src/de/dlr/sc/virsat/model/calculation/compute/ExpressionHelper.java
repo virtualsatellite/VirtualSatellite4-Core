@@ -312,10 +312,11 @@ public class ExpressionHelper {
 		containers.add(sei);
 		containers.addAll(StructuralElementInstanceHelper.getDeepChildren(sei, object.getDepth(), 0));
 
-		// Find all child seis that also compute the set function
-		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, object);
-
 		List<ATypeInstance> inputs = new ArrayList<>();
+		
+		// Find all child seis that also compute the set function
+		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, object, inputs);
+
 		TreeIterator<Object> treeIter = EcoreUtil.getAllProperContents(containers, true);
 		while (treeIter.hasNext()) {
 			Object potentialATypeInstance = treeIter.next();
@@ -363,9 +364,11 @@ public class ExpressionHelper {
 	 * the further search for inputs.
 	 * @param sei the sei of the set function we want the inputs for
 	 * @param setFunction the set function
+	 * @param inputs the list of current inputs. 
+	 * Instances that compute already set function for a child are added here.
 	 * @return all child seis that compute the same set function for their sub trees
 	 */
-	private Set<StructuralElementInstance> getChildrenWithSetFunction(StructuralElementInstance sei, SetFunction setFunction) {
+	private Set<StructuralElementInstance> getChildrenWithSetFunction(StructuralElementInstance sei, SetFunction setFunction, List<ATypeInstance> inputs) {
 		Set<StructuralElementInstance> childrenWithSetFunction = new HashSet<>();
 
 		if (setFunction.getDepth() == -1) {
@@ -380,6 +383,11 @@ public class ExpressionHelper {
 						boolean equals = equalSetFunctions(setFunction, (SetFunction) expression);
 						boolean isTypeInstanceResult = equation.getResult() instanceof TypeInstanceResult;
 						if (equals && isTypeInstanceResult) {
+							// Remember the set function that handles the sei & its children
+							TypeInstanceResult result = (TypeInstanceResult) equation.getResult();
+							inputs.add(result.getReference());
+							
+							// Remember that all inputs from this sei and its children are covered
 							childrenWithSetFunction.add(child);
 							childrenWithSetFunction.addAll(child.getDeepChildren());
 						}

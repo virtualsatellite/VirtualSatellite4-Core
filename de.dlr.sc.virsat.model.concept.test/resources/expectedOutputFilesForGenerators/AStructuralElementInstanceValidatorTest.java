@@ -32,7 +32,7 @@ import org.junit.Before;
  * 
  * 
  */	
-	public abstract class AStructuralElementInstanceValidatorTest {
+public abstract class AStructuralElementInstanceValidatorTest {
 
 	StructuralElementInstance testSei;
 

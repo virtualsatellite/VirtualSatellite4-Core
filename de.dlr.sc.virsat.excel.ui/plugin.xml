@@ -1,113 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            id="de.dlr.sc.virsat.excel.ui.command.importExcel"
-            name="Import Excel...">
-      </command>
-      <command
-            id="de.dlr.sc.virsat.excel.ui.command.exportExcel"
-            name="Export Excel...">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="de.dlr.sc.virsat.excel.ui.handler.ImportHandler"
-            commandId="de.dlr.sc.virsat.excel.ui.command.importExcel">
-             <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
-                     </instanceof>
-                  </or>
-               </iterate>
-               <and>
-                  <count
-                        value="1">
-                  </count>
-               </and>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="de.dlr.sc.virsat.excel.ui.handler.ExportHandler"
-            commandId="de.dlr.sc.virsat.excel.ui.command.exportExcel">
-             <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
-                     </instanceof>
-                  </or>
-               </iterate>
-               <and>
-                  <count
-                        value="1">
-                  </count>
-               </and>
-            </with>
-         </enabledWhen>
-      </handler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu">
-         <command
-               commandId="de.dlr.sc.virsat.excel.ui.command.importExcel"
-               icon="resources/icons/VirSat_General_Excel_Import.gif"
-               style="push">
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.excel.ui.command.exportExcel"
-               icon="resources/icons/VirSat_General_ExcelExport.gif"
-               style="push">
-         </command>
-	  </menuContribution>
-	</extension>
    
    <extension
      id="de.dlr.sc.virsat.excel.ui.export"
      point="org.eclipse.ui.exportWizards">
 	  <wizard
-         category="de.dlr.sc.virsat.excel.ui"
+         category="de.dlr.virsat.global.category.export.virsat"
          class="de.dlr.sc.virsat.excel.ui.wizards.ExportWizard"
          icon="resources/icons/VirSat_General_ExcelExport.gif"
          id="de.dlr.sc.virsat.excel.ui.wizards.exportWizard"
-         name="Export to Excel">
+         name="Excel Export Wizard">
 	  </wizard>
-   <category
-         id="de.dlr.sc.virsat.excel.ui"
-         name="VirSat">
-   </category>
+      <category
+            id="de.dlr.virsat.global.category.export.virsat"
+            name="VirSat">
+      </category>
   </extension>
    <extension
      id="de.dlr.sc.virsat.excel.ui.import"
      point="org.eclipse.ui.importWizards">
 	  <wizard
-         category="de.dlr.sc.virsat.excel.ui"
+         category="de.dlr.virsat.global.category.import.virsat"
          class="de.dlr.sc.virsat.excel.ui.wizards.ImportWizard"
          icon="resources/icons/VirSat_General_Excel_Import.gif"
          id="de.dlr.sc.virsat.excel.ui.wizards.importWizard"
-         name="Import from Excel">
+         name="Excel Import Wizard">
 	  </wizard>
-   <category
-         id="de.dlr.sc.virsat.excel.ui"
-         name="VirSat">
-   </category>
+      <category
+            id="de.dlr.virsat.global.category.import.virsat"
+            name="VirSat">
+      </category>
   </extension>
 	
 </plugin>

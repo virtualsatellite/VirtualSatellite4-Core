@@ -24,6 +24,7 @@ import de.dlr.sc.virsat.excel.Fault;
 import de.dlr.sc.virsat.excel.FaultType;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
@@ -61,20 +62,22 @@ public class ImportValidator {
 	 * Create a new validator
 	 * 
 	 * @param object will be used as the root object for integrating the data
-	 * @param repository the repository
 	 * @param wb the excel file
 
 	 */
-	public ImportValidator(EObject object, Repository repository, XSSFWorkbook wb) {
+	public ImportValidator(EObject object, XSSFWorkbook wb) {
 		if (object instanceof StructuralElementInstance) {
 			importSei = (StructuralElementInstance) object;
 		}
+		
 		this.wb = wb;
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		FuncElectricalArchitectureHelper feaHelper = new FuncElectricalArchitectureHelper();
 		StructuralElementInstanceHelper seiHelper = new StructuralElementInstanceHelper(importSei);
 		seiInterfaceEnds = bCaHelper.getAllBeanCategories(importSei, InterfaceEnd.class);
 		itcTypes = bCaHelper.getAllBeanCategories(importSei, InterfaceType.class);
+		// Grab the repository using the concept
+		Repository repository = (Repository) ActiveConceptHelper.getConcept(importSei.getType()).eContainer();
 		ifTypes = feaHelper.getAllInterfaceTypes(repository);
 		faultList = new ArrayList<Fault>();
 		ifaces = bCaHelper.getAllBeanCategories(importSei, Interface.class);
