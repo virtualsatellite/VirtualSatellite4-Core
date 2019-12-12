@@ -51,15 +51,10 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 	 * public constructor
 	 */
 	public VirSatInheritanceBuilder() {
-		super(new VirSatInheritanceMarkerHelper());
+		super(new VirSatInheritanceMarkerHelper(), true);
 		this.vimHelper = (VirSatInheritanceMarkerHelper) this.vpmHelper;
 	}
 
-	/**
-	 * the fullBuild method is executed to trigger a build with all necessary steps.
-	 * @param monitor monitor the progress
-	 * @param inheritanceCopier  the copier to be actually used
-	 */
 	@Override
 	protected void fullBuild(IProgressMonitor monitor) {
 		final int MAX_TASKS = 3;
@@ -122,12 +117,6 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 		return listOfCAs;
 	};
 
-	/**
-	 * Method for incremental build 
-	 * @param delta the delta from the BUilderManager 
-	 * @param monitor a progress monitor to track what is going on
-	 * @param inheritanceCopier  the copier to be actually used
-	 */
 	@Override
 	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
 		final int MAX_TASKS = 3;
