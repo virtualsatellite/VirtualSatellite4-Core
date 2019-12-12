@@ -76,13 +76,17 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.server.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.team.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.test.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.uiengine.feature:default"/>
 <setEntry value="org.eclipse.e4.rcp:default"/>
 <setEntry value="org.eclipse.ecf.core.feature:default"/>
 <setEntry value="org.eclipse.ecf.core.ssl.feature:default"/>
 <setEntry value="org.eclipse.ecf.filetransfer.feature:default"/>
+<setEntry value="org.eclipse.ecf.filetransfer.httpclient45.feature:default"/>
 <setEntry value="org.eclipse.ecf.filetransfer.ssl.feature:default"/>
+<setEntry value="org.eclipse.egit:default"/>
 <setEntry value="org.eclipse.emf.common.ui:default"/>
 <setEntry value="org.eclipse.emf.common:default"/>
 <setEntry value="org.eclipse.emf.compare:default"/>
@@ -103,6 +107,8 @@
 <setEntry value="org.eclipse.graphiti.feature:default"/>
 <setEntry value="org.eclipse.help:default"/>
 <setEntry value="org.eclipse.jdt:default"/>
+<setEntry value="org.eclipse.jgit.ssh.apache:default"/>
+<setEntry value="org.eclipse.jgit:default"/>
 <setEntry value="org.eclipse.ocl:default"/>
 <setEntry value="org.eclipse.pde:default"/>
 <setEntry value="org.eclipse.platform:default"/>

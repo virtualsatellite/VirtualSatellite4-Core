@@ -37,6 +37,7 @@ Bundle-ClassPath: .,
 Export-Package: .,
  com.sun.research.ws.wadl,
  de.dlr.virsat.external.lib.jersey,
+ de.dlr.virsat.external.lib.jersey.servlet,
  javassist,
  javassist.bytecode,
  javassist.bytecode.analysis,
@@ -224,6 +225,7 @@ Export-Package: .,
  org.osgi.service.url,
  org.osgi.util.tracker
 Bundle-Vendor: DLR (German Aerospace Center)
-Require-Bundle: de.dlr.sc.virsat.external.lib
+Require-Bundle: de.dlr.sc.virsat.external.lib,
+ javax.servlet;visibility:=reexport
 Bundle-Activator: de.dlr.virsat.external.lib.jersey.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey
