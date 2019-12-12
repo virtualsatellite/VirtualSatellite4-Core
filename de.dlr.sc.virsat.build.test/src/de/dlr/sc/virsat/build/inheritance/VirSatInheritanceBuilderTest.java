@@ -37,16 +37,12 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * test Case for the Inheritance Builder
- * @author fisc_ph
- *
  */
 @SuppressWarnings("restriction")
 public class VirSatInheritanceBuilderTest extends ABuilderTest {
 
-
 	/**
 	 * Inheritance Copier Stub
-	 * @author fisc_ph
 	 *
 	 */
 	private class TestInheritanceCopier implements IInheritanceCopier {
@@ -85,7 +81,9 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 
 	@Test
 	public void testFullBuild() {
-		VirSatInheritanceBuilder builder = new VirSatInheritanceBuilder() {
+		TestInheritanceCopier tic = new TestInheritanceCopier();
+
+		AVirSatTransactionalBuilder builder = new VirSatInheritanceBuilder() {
 			@Override
 			protected IProject getVirSatProject() {
 				return project;
@@ -95,9 +93,12 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
 			}
+			
+			@Override
+			protected IInheritanceCopier createInheritanceCopier() {
+				return tic;
+			}
 		};
-		
-		TestInheritanceCopier tic = new TestInheritanceCopier();
 		
 		assertEquals("Correct Amount of Calls", 0, tic.calls);
 		assertNull("No Repo yet Called", tic.repo);
@@ -105,7 +106,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 		assertFalse("Not yet called", tic.buildSeiGotCalled);
 		assertFalse("Not yet called", tic.buildRepoGotCalled);
 		
-		builder.fullBuild(null, tic);
+		builder.fullBuild(null);
 		
 		//CHECKSTYLE:OFF
 		assertEquals("Correct Amount of Calls", 1, tic.calls);
@@ -118,7 +119,9 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 
 	@Test
 	public void testIncrementalBuild() {
-		VirSatInheritanceBuilder builder = new VirSatInheritanceBuilder() {
+		TestInheritanceCopier tic = new TestInheritanceCopier();
+		
+		AVirSatTransactionalBuilder builder = new VirSatInheritanceBuilder() {
 			@Override
 			protected IProject getVirSatProject() {
 				return project;
@@ -128,9 +131,12 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
 			}
+			
+			@Override
+			protected IInheritanceCopier createInheritanceCopier() {
+				return tic;
+			}
 		};
-		
-		TestInheritanceCopier tic = new TestInheritanceCopier();
 		
 		assertEquals("Correct Amount of Calls", 0, tic.calls);
 		assertNull("No Repo yet Called", tic.repo);
@@ -156,7 +162,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 			}
 		};
 		
-		builder.incrementalBuild(delta, null, tic);
+		builder.incrementalBuild(delta, null);
 		
 		//CHECKSTYLE:OFF
 		assertEquals("Correct Amount of Calls", 1, tic.calls);
