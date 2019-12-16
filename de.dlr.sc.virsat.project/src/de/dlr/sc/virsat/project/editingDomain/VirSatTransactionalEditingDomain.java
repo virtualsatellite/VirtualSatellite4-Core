@@ -230,6 +230,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 					String fileExtension = wsDvlmResource.getFileExtension();
 					if (VirSatProjectCommons.FILENAME_EXTENSION.equals(fileExtension)) {
 						if (!recentlyChangedResource.remove(changedResourceUri)) {
+							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
 							triggerFullReload = true;
 						} 
 					}
@@ -256,7 +257,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * This is needed for the builders which should not incur any additional changes during the save or they will trigger themselves.
 	 */
 	public void saveAll(boolean supressRecentlySavedResource, boolean supressRemoveDanglingReferences) {
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Started saving all resources"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 	
 		List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
 		for (Resource resource : resources) {
@@ -268,7 +269,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		maintainDirtyResources();
 		
 		
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished saving all resources"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished try saving all resources"));
 	}
 	
 	/**
@@ -332,10 +333,10 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void saveResource(Resource resource, boolean supressRecentlySavedResource, boolean supressRemoveDanglingReferences) {
 		if (resource != null) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Started saving resource (" + resource.getURI().toPlatformString(true) + ")"));
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving resource (" + resource.getURI().toPlatformString(true) + ")"));
 			
 			if (!resource.isLoaded() || resource.getContents().isEmpty()) {
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain aborted saving (" + resource.getURI().toPlatformString(true) + ") because it is already unloaded "));
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: aborted saving (" + resource.getURI().toPlatformString(true) + ") because it is already unloaded "));
 				return;
 			}
 			
@@ -378,7 +379,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			// Mark the resource as not dirty in either case
 			isResourceDirty.put(resource, false);
 			
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished saving resource (" + resource.getURI().toPlatformString(true) + ")"));
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished try saving resource (" + resource.getURI().toPlatformString(true) + ")"));
 		}
 	}
 	

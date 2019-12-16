@@ -98,6 +98,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	
 	@Override
 	public void execute(Command command, Map<?, ?> options) {
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Entered execute command"));
+		
 		// In case the command that shall be executed is a Recording Command,
 		// it will be wrapped into VirSatRecordingCommand. This command can be 
 		// easily distinguished in the stack as a command that was processed here.
@@ -108,6 +110,12 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		final Command executeCommand = command;
 	
 		try {
+			// Run all execute, undo, et.c in a workspace operation. This way deadlocks can be avoided,
+			// since no two commands can run at the same time. There used to be deadlocks with the builders
+			// which were obtaining locks in the opposite order. E.g. when creating a SEI first the Command was executed
+			// obtaining a lock on the Editing domain, then obtaining a lock on the Workspace. Meanwhile the builder could start
+			// obtaining a lock on the workspace, then executing a command obtaining a lock on the ED.
+			// Now both, first have to get the Lock on the Workspace, then on the Editing domain.
 			wsProject.run(action -> {
 				
 				triggerSave = false;
@@ -150,11 +158,16 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 				} catch (InterruptedException | RollbackException e) {
 					Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "Failed to execute command", e));
 				}
-				checkTriggerSaveAll();
 			}, null);
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command as workspace operation", e));
 		}
+		
+		// now check if something asked in between to issue a save operation on all resources
+		// this call cannot be placed into the Workspace Operation, WWorkspace operations scheduled by the 
+		// command execution need to be able to execute first. 
+		checkTriggerSaveAll();
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Left execute command"));
 	}
 	
 	@Override
@@ -163,8 +176,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 			wsProject.run(action -> {
 				triggerSave = false;
 				super.undo();
-				checkTriggerSaveAll();
 			}, null);
+			checkTriggerSaveAll();
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute undo as workspace operation", e));
 		}
@@ -176,8 +189,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 			wsProject.run(action -> {
 				triggerSave = false;
 				super.redo();
-				checkTriggerSaveAll();
 			}, null);
+			checkTriggerSaveAll();
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute redo as workspace operation", e));
 		}
