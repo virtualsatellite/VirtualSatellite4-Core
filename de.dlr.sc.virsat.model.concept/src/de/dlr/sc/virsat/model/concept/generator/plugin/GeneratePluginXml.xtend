@@ -66,7 +66,7 @@ class GeneratePluginXml {
 		<dvlmValidator>
 			<seiValidator
 				id="«concept.name»"
-				class="«concept.name».«GenerateValidator.PACKAGE_FOLDER».StructuralElementInstanceValidator">
+				class="«concept.name».«GenerateValidator.PACKAGE_FOLDER».«GenerateValidator.getValidatorName(concept)»">
 			</seiValidator>
 		</dvlmValidator>
 	</extension>

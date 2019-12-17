@@ -135,7 +135,10 @@ public class GeneratePluginXml {
     _builder.append(_name_1, "\t\t\t");
     _builder.append(".");
     _builder.append(GenerateValidator.PACKAGE_FOLDER, "\t\t\t");
-    _builder.append(".StructuralElementInstanceValidator\">");
+    _builder.append(".");
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    _builder.append(_validatorName, "\t\t\t");
+    _builder.append("\">");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("</seiValidator>");
