@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTests
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator
+import de.dlr.sc.virsat.model.concept.generator.validator.GenerateOldValidator
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import org.eclipse.core.runtime.Platform
@@ -55,7 +56,7 @@ class ConceptLanguageGenerator implements IGenerator2 {
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
 	}
-	
+
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
 	}
@@ -79,7 +80,7 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			val IConceptGeneratorEnablement generatorEnablement = configElement.createExecutableExtension(ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS) as IConceptGeneratorEnablement;
 			generateCode = generateCode && generatorEnablement.generatorEnabled;			
 		}
-	
+
 		// Only generate the code if it is actually desired to do so
 		if (generateCode) {
 			// Get the Data Model and retrieve the Name of it
@@ -100,10 +101,16 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			new GenerateUiPluginXml().serializeModel(dataModel, new PluginXmlReader(), fsa);
 			new GeneratePluginXml().serializeModel(dataModel, new PluginXmlReader(), fsa);
 			new GenerateValidator().serializeModel(dataModel, fsa);
+			
+			// Checks if there is a deprecated validator
+			val deprecatedValidator = fsa.isFile('../src/' + dataModel.name.replace(".","/") +'/validator/StructuralElementInstanceValidator.java');
+				if (deprecatedValidator == true) {
+					new GenerateOldValidator().serializeModel(dataModel, fsa);
+				}
 			new GenerateMigrator().serializeModel(dataModel, fsa);
 			new GenerateConceptEnabledTester().serializeModel(dataModel, fsa);
 			
-			// Generate Code for Test fargment
+			// Generate Code for Test fragment
 			new GenerateCategoryTests().serializeModel(dataModel, fsa);
 			new GenerateStructuralElementTests().serializeModel(dataModel, fsa);
 			new GenerateMigratorTests().serializeModel(dataModel, fsa);
