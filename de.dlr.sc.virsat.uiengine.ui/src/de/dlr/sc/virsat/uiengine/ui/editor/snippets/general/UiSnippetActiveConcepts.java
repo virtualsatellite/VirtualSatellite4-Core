@@ -71,6 +71,7 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 	private static final String BUTTON_ADD_TEXT = "Add from Registry";
 	private static final String BUTTON_UPDATEALL_TEXT = "Update all Concepts";
 	
+	private static final String COLUMN_TEXT_CONCEPT = "Concept Name";
 	private static final String COLUMN_TEXT_CONCEPT_ID = "Concept ID";
 	private static final String COLUMN_TEXT_ACTIVE = "Active";
 	private static final String COLUMN_TEXT_VERSION = "Version";
@@ -89,10 +90,14 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
+		// Column Concept Concept Name
+		TableViewerColumn columnConceptDisplayName = createDefaultColumn(tableViewer, COLUMN_TEXT_CONCEPT);
+		columnConceptDisplayName.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, ConceptsPackage.Literals.CONCEPT__DISPLAY_NAME));
+		
 		// Column Concept Id
 		TableViewerColumn columnConceptId = createDefaultColumn(tableViewer, COLUMN_TEXT_CONCEPT_ID);
 		columnConceptId.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.IQUALIFIED_NAME__NAME));
-
+				
 		// Column Concept Is Active
 		TableViewerColumn columnConceptIsActive = createDefaultColumn(tableViewer, COLUMN_TEXT_ACTIVE);
 		columnConceptIsActive.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, ConceptsPackage.Literals.IACTIVE_CONCEPT__ACTIVE));

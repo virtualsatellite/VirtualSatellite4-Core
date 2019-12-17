@@ -8,12 +8,8 @@
 		</location>              
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
-		<unit id="com.sun.jersey" version="1.17.0.v201503170330"/>
-		<unit id="org.glassfish.jersey.containers.servlet" version="2.22.1.v20161103-0227"/>
-		<unit id="org.glassfish.jersey.containers.servlet.core" version="2.22.1.v20161103-0227"/>
-		<unit id="org.glassfish.jersey.core.jersey-client" version="2.22.1.v20161103-1916"/>
-		<unit id="org.glassfish.jersey.core.jersey-common" version="2.22.1.v20181004-1955"/>
-		<unit id="org.glassfish.jersey.core.jersey-server" version="2.22.1.v20181004-1955"/>
+		<unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
+		<unit id="org.apache.commons.io.source" version="2.6.0.v20190123-2029"/>
 		<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"/>
 		</location>              
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">

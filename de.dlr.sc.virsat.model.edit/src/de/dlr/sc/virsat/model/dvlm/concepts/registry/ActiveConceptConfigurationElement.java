@@ -71,7 +71,7 @@ public class ActiveConceptConfigurationElement {
 	}
 
 	/**
-	 * this method get the xmi of the configuration element
+	 * This method get the xmi of the configuration element
 	 * @return xmi of the configuration element
 	 */
 	public String getXmi() {
@@ -80,7 +80,17 @@ public class ActiveConceptConfigurationElement {
 	}
 
 	/**
-	 *This method tells if the ACCE registers a given Concept. This method can be used
+	 * This method get the displayName of the concept
+	 * @return displayName of the concept
+	 */
+	public String getConceptNameWithVersion() {
+		Concept concept = loadConceptFromPlugin();
+		String conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
+		return conceptNameWithVersion;
+	}
+	
+	/**
+	 * This method tells if the ACCE registers a given Concept. This method can be used
 	 * to test if a given concept is handled by the given configuration element from the
 	 * eclipse / equinox platform. 
 	 * @param concept The concept to be checked
@@ -101,24 +111,23 @@ public class ActiveConceptConfigurationElement {
 	}
 	
 	/**
-	 * this method load the concept from the Plugin
+	 * This method load the concept from the Plugin
 	 * @return the loaded concept
 	 */
 	public Concept loadConceptFromPlugin() {
 		Resource.Factory.Registry factoryRegistry = Resource.Factory.Registry.INSTANCE;
-	    Map<String, Object> extensionMap = factoryRegistry.getExtensionToFactoryMap();
-	    extensionMap.put("xmi", new DvlmXMIResourceFactoryImpl());
+		Map<String, Object> extensionMap = factoryRegistry.getExtensionToFactoryMap();
+		extensionMap.put("xmi", new DvlmXMIResourceFactoryImpl());
 
-	    String conceptXmiPluginPath = getConceptXmiPluginPath();
-	    URI conceptResourceUri = URI.createPlatformPluginURI(conceptXmiPluginPath, true);
-	    
-	    ResourceSet resourceSet = AMigrator.performMigration(conceptResourceUri);
-	    
+		String conceptXmiPluginPath = getConceptXmiPluginPath();
+		URI conceptResourceUri = URI.createPlatformPluginURI(conceptXmiPluginPath, true);
+		
+		ResourceSet resourceSet = AMigrator.performMigration(conceptResourceUri);
+		
 		Resource resource = resourceSet.getResource(conceptResourceUri, true);
 		Concept concept = (Concept) resource.getContents().get(0);
 		return concept;
 	}
-
 
 	/**
 	 * This method copies the concept and makes sure that IDs referencing other concepts are
@@ -193,7 +202,7 @@ public class ActiveConceptConfigurationElement {
 	}
 	
 	/**
-	 * this method add the active concept
+	 * This method add the active concept
 	 * @param ed editing domain
 	 * @param repository where the copy will be saved
 	 * @return the adding command

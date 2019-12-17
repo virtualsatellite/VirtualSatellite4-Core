@@ -189,6 +189,20 @@ public class ActiveConceptHelper {
 	}
 	
 	/**
+	 * Method to get the concept name to display in concept selection dialog
+	 * @param concept the concept which name details are needed
+	 * @return the display name plus FQN and version or the FQN and version when there is no display name
+	 */
+	public static String getConceptNameWithVersion(Concept concept) {
+		String formattedVersion = " [" + concept.getVersion() + "]";
+		if (concept.getDisplayName() == null) {
+			return concept.getName() + formattedVersion;
+		} else {
+			return concept.getDisplayName() + " – " + concept.getName() + formattedVersion;
+		}
+	}
+	
+	/**
 	 * Method to get just the concept from the active concepts of the active repository
 	 * @param conceptId the id of the concept to look for
 	 * @return the concept or null in case it could not be found
