@@ -71,13 +71,10 @@ public class VirSatProjectWizard extends BasicNewProjectResourceWizard implement
 				
 				// Create the actual resources and ResourceSet
 				Command initializeProjectCommand = resSet.initializeModelsAndResourceSet(progressMonitor, ed);
-				ed.getCommandStack().execute(initializeProjectCommand);
-				// When saving we tell the editing domain to not remember what has recently being saved.
-				// In case we put a breakpoint here, the resource changelistener will be triggered in between with the new files and
-				// after save has been called it will be triggered again sending change events that are caught by the workspacesynchronizer.
-				// In case we do not have the breakpoint, the changelistener is only catching the ADD events but no changes events. The workspacesynchronizer
-				// does not deal with these events
-				ed.saveAll(true, true);
+
+				// Trigger the command stack to save all files after they have been created
+				ed.getVirSatCommandStack().triggerSaveAll();
+				ed.getVirSatCommandStack().execute(initializeProjectCommand);
 				
 				newProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Finished VirSat Project Initialization"));

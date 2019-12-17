@@ -75,10 +75,10 @@ public class VirSatSaveJob extends WorkspaceJob {
 			// don't cause any deadlocks
 			if (editingDomain.getActiveTransaction() == null) {
 				if (supressRemoveDanglingReferences) {
-					editingDomain.saveAll(false, supressRemoveDanglingReferences);
+					editingDomain.saveAll(supressRemoveDanglingReferences);
 				} else {
 					InternalTransaction tx = editingDomain.startTransaction(false, null);
-					editingDomain.saveAll(false, supressRemoveDanglingReferences);
+					editingDomain.saveAll(supressRemoveDanglingReferences);
 					tx.commit();
 				}
 			} else {

@@ -58,7 +58,7 @@ public class ASwtBotTestCase {
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
-	public static final int GENERAL_SWTBOT_WAIT_TIME = 250;
+	public static final int SWTBOT_GENERAL_WAIT_TIME = 10;
 	
 	protected SWTWorkbenchBot bot;
 	protected Concept conceptPs;
@@ -155,12 +155,10 @@ public class ASwtBotTestCase {
 	 *
 	 */
 	protected SWTBotTreeItem openEditor(SWTBotTreeItem item) {
-		waitForEditingDomainAndUiThread();
 		SWTBotTreeItem newItem = item.doubleClick();
 		waitForEditor(item);
 		waitForEditingDomainAndUiThread();
 		return newItem;
-		
 	}
 	
 	/**
@@ -487,7 +485,7 @@ public class ASwtBotTestCase {
 		synchronized void waitForExecution() {
 			while (!gotExecuted) {
 				try {
-					wait(GENERAL_SWTBOT_WAIT_TIME);
+					wait(SWTBOT_GENERAL_WAIT_TIME);
 				} catch (InterruptedException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not go to sleep Thread: " + Thread.currentThread()));
 				}
@@ -507,7 +505,7 @@ public class ASwtBotTestCase {
 		
 		// Wait a little time, so we give other UI threads / runnables to get started or queued in between
 		try {
-			Thread.sleep(GENERAL_SWTBOT_WAIT_TIME);
+			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}
@@ -520,7 +518,7 @@ public class ASwtBotTestCase {
 
 		// Add some grace time just for the res
 		try {
-			Thread.sleep(GENERAL_SWTBOT_WAIT_TIME);
+			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}

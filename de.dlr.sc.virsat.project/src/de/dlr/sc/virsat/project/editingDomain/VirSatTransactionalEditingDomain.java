@@ -245,23 +245,20 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 */
 	public void saveAll() {
-		saveAll(false, false);
+		saveAll(false);
 	}
 	
 	/**
 	 * this method saves all the resources in the {@link VirSatResourceSet}
-	 * @param supressRecentlySavedResource set to true to make resource not appear in list of recently saved resources. this will always create a reload of the resource by the WorkspaceSynchronizer
-	 * this was needed for the wizard that creates files and changes them so quickly that all resources are marked as added but not as changed
-	 * accordingly the WorkspaceSychronizer is not capable to react as it should. The WorkspaceSynchronizer does not react to ADD events
 	 * @param supressRemoveDanglingReferences set to true to make the virsat editing domain not remove dangling references during the save.
 	 * This is needed for the builders which should not incur any additional changes during the save or they will trigger themselves.
 	 */
-	public void saveAll(boolean supressRecentlySavedResource, boolean supressRemoveDanglingReferences) {
+	public void saveAll(boolean supressRemoveDanglingReferences) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 	
 		List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
 		for (Resource resource : resources) {
-			saveResource(resource, supressRecentlySavedResource, supressRemoveDanglingReferences);
+			saveResource(resource, supressRemoveDanglingReferences);
 			virSatResourceSet.updateDiagnostic(resource);
 			virSatResourceSet.notifyDiagnosticListeners(resource);
 		}
@@ -321,17 +318,16 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param resource The resource to be saved
 	 */
 	protected void saveResource(Resource resource) {
-		saveResource(resource, false, false);
+		saveResource(resource, false);
 	}
 	
 	/**
 	 * Use this method to make the editing domain aware of that the resource has been saved
 	 * The Editing Domain remembers it and prevents a direct update coming from the workspace resources 
 	 * @param resource The resource to be saved
-	 * @param supressRecentlySavedResource set to true in case the resource should not be placed in the list of recently saved resources 
 	 * @param supressRemoveDanglingReferences set to true in case the resource is should not be cleared of dangling references before the save
 	 */
-	public void saveResource(Resource resource, boolean supressRecentlySavedResource, boolean supressRemoveDanglingReferences) {
+	public void saveResource(Resource resource, boolean supressRemoveDanglingReferences) {
 		if (resource != null) {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving resource (" + resource.getURI().toPlatformString(true) + ")"));
 			
@@ -372,7 +368,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			// in recentlySavedResource BUT the resource has not changed then, the WokrspaceSynchronizer will NOT trigger
 			// and the resource will stay listed in recentlySavedResource indefinitely.
 			if (virSatResourceSet.hasWritePermission(resource) && virSatResourceSet.isChanged(resource)) {
-				internallySaveResource(resource, supressRecentlySavedResource, false);
+				internallySaveResource(resource, false);
 				fireNotifyResourceEvent(Collections.singleton(resource), VirSatTransactionalEditingDomain.EVENT_CHANGED);
 			}
 			
@@ -388,17 +384,14 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * needing to ignore checks such as rights management. Needed for example when changing the discipline
 	 * of a resource since this means giving the rights away.
 	 * @param resource the resource to save
-	 * @param supressRecentlySavedResource the flag to memorize this resource for the recently saved resources list
 	 * @param overrideWritePermissions the flag to give permission to ignore rights management
 	 */
-	public void internallySaveResource(Resource resource, boolean supressRecentlySavedResource, boolean overrideWritePermissions) {
+	public void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
 		// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
 		// to decide if reload of the resource is needed or not (means handling external resource changes)
-		if (!supressRecentlySavedResource) {
-			synchronized (recentlyChangedResource) {
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Changed resource (" + resource.getURI().toPlatformString(true) + ")"));
-				recentlyChangedResource.add(resource.getURI());
-			}
+		synchronized (recentlyChangedResource) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
+			recentlyChangedResource.add(resource.getURI());
 		}
 		
 		// Call the VirSatResourceSet so we are sure it uses our correct Save Settings

@@ -86,6 +86,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 					}
 				}
 			}, null);
+			
+			checkTriggerSaveAll();
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command without undo as workspace operation", e));
 		}
