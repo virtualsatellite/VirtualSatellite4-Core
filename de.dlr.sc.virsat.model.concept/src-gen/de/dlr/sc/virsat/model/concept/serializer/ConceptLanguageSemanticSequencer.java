@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.DynamicArrayModifier;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
@@ -139,6 +140,9 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 				return; 
 			case PropertydefinitionsPackage.DYNAMIC_ARRAY_MODIFIER:
 				sequence_DynmaicArrayModifier(context, (DynamicArrayModifier) semanticObject); 
+				return; 
+			case PropertydefinitionsPackage.EREFERENCE_PROPERTY:
+				sequence_EReferenceProperty(context, (EReferenceProperty) semanticObject); 
 				return; 
 			case PropertydefinitionsPackage.ENUM_PROPERTY:
 				sequence_EnumProperty(context, (EnumProperty) semanticObject); 
@@ -305,6 +309,19 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *     {DynamicArrayModifier}
 	 */
 	protected void sequence_DynmaicArrayModifier(ISerializationContext context, DynamicArrayModifier semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     AProperty returns EReferenceProperty
+	 *     EReferenceProperty returns EReferenceProperty
+	 *
+	 * Constraint:
+	 *     (name=ID arrayModifier=ArrayModifier? referenceType=[EClass|QualifiedName] description=EString?)
+	 */
+	protected void sequence_EReferenceProperty(ISerializationContext context, EReferenceProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

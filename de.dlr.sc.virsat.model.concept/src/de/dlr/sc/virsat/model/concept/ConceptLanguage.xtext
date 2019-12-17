@@ -109,6 +109,7 @@ AProperty returns PropertyDefinitions::AProperty:
 	BooleanProperty |
 	EnumProperty |
 	ReferenceProperty |
+	EReferenceProperty |
 	ResourceProperty
 ;
 
@@ -187,6 +188,13 @@ EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
 ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
 	'Reference' name=ID (arrayModifier=ArrayModifier)?
 	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+	('description' description=EString)?
+	';'
+	;
+	
+EReferenceProperty returns PropertyDefinitions::EReferenceProperty:
+	'EReference' name=ID (arrayModifier=ArrayModifier)?
+	'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
 	('description' description=EString)?
 	';'
 	;

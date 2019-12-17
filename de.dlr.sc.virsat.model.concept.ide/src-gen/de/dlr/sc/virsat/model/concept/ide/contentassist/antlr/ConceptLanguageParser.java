@@ -115,6 +115,8 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getEnumValueDefinitionAccess().getGroup(), "rule__EnumValueDefinition__Group__0");
 			builder.put(grammarAccess.getReferencePropertyAccess().getGroup(), "rule__ReferenceProperty__Group__0");
 			builder.put(grammarAccess.getReferencePropertyAccess().getGroup_6(), "rule__ReferenceProperty__Group_6__0");
+			builder.put(grammarAccess.getEReferencePropertyAccess().getGroup(), "rule__EReferenceProperty__Group__0");
+			builder.put(grammarAccess.getEReferencePropertyAccess().getGroup_6(), "rule__EReferenceProperty__Group_6__0");
 			builder.put(grammarAccess.getResourcePropertyAccess().getGroup(), "rule__ResourceProperty__Group__0");
 			builder.put(grammarAccess.getResourcePropertyAccess().getGroup_3(), "rule__ResourceProperty__Group_3__0");
 			builder.put(grammarAccess.getEquationDefinitionAccess().getGroup(), "rule__EquationDefinition__Group__0");
@@ -226,6 +228,10 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getReferencePropertyAccess().getArrayModifierAssignment_2(), "rule__ReferenceProperty__ArrayModifierAssignment_2");
 			builder.put(grammarAccess.getReferencePropertyAccess().getReferenceTypeAssignment_5(), "rule__ReferenceProperty__ReferenceTypeAssignment_5");
 			builder.put(grammarAccess.getReferencePropertyAccess().getDescriptionAssignment_6_1(), "rule__ReferenceProperty__DescriptionAssignment_6_1");
+			builder.put(grammarAccess.getEReferencePropertyAccess().getNameAssignment_1(), "rule__EReferenceProperty__NameAssignment_1");
+			builder.put(grammarAccess.getEReferencePropertyAccess().getArrayModifierAssignment_2(), "rule__EReferenceProperty__ArrayModifierAssignment_2");
+			builder.put(grammarAccess.getEReferencePropertyAccess().getReferenceTypeAssignment_5(), "rule__EReferenceProperty__ReferenceTypeAssignment_5");
+			builder.put(grammarAccess.getEReferencePropertyAccess().getDescriptionAssignment_6_1(), "rule__EReferenceProperty__DescriptionAssignment_6_1");
 			builder.put(grammarAccess.getResourcePropertyAccess().getNameAssignment_1(), "rule__ResourceProperty__NameAssignment_1");
 			builder.put(grammarAccess.getResourcePropertyAccess().getArrayModifierAssignment_2(), "rule__ResourceProperty__ArrayModifierAssignment_2");
 			builder.put(grammarAccess.getResourcePropertyAccess().getDescriptionAssignment_3_1(), "rule__ResourceProperty__DescriptionAssignment_3_1");

@@ -1503,11 +1503,20 @@ ruleAProperty returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getAPropertyAccess().getResourcePropertyParserRuleCall_7());
+			newCompositeNode(grammarAccess.getAPropertyAccess().getEReferencePropertyParserRuleCall_7());
 		}
-		this_ResourceProperty_7=ruleResourceProperty
+		this_EReferenceProperty_7=ruleEReferenceProperty
 		{
-			$current = $this_ResourceProperty_7.current;
+			$current = $this_EReferenceProperty_7.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getAPropertyAccess().getResourcePropertyParserRuleCall_8());
+		}
+		this_ResourceProperty_8=ruleResourceProperty
+		{
+			$current = $this_ResourceProperty_8.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -3043,6 +3052,119 @@ ruleReferenceProperty returns [EObject current=null]
 		otherlv_8=';'
 		{
 			newLeafNode(otherlv_8, grammarAccess.getReferencePropertyAccess().getSemicolonKeyword_7());
+		}
+	)
+;
+
+// Entry rule entryRuleEReferenceProperty
+entryRuleEReferenceProperty returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getEReferencePropertyRule()); }
+	iv_ruleEReferenceProperty=ruleEReferenceProperty
+	{ $current=$iv_ruleEReferenceProperty.current; }
+	EOF;
+
+// Rule EReferenceProperty
+ruleEReferenceProperty returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='EReference'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getEReferencePropertyAccess().getEReferenceKeyword_0());
+		}
+		(
+			(
+				lv_name_1_0=RULE_ID
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getEReferencePropertyAccess().getNameIDTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getEReferencePropertyRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.common.Terminals.ID");
+				}
+			)
+		)
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getEReferencePropertyAccess().getArrayModifierArrayModifierParserRuleCall_2_0());
+				}
+				lv_arrayModifier_2_0=ruleArrayModifier
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
+					}
+					set(
+						$current,
+						"arrayModifier",
+						lv_arrayModifier_2_0,
+						"de.dlr.sc.virsat.model.concept.ConceptLanguage.ArrayModifier");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)?
+		otherlv_3='of'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getEReferencePropertyAccess().getOfKeyword_3());
+		}
+		otherlv_4='Type'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getEReferencePropertyAccess().getTypeKeyword_4());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getEReferencePropertyRule());
+					}
+				}
+				{
+					newCompositeNode(grammarAccess.getEReferencePropertyAccess().getReferenceTypeEClassCrossReference_5_0());
+				}
+				ruleQualifiedName
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			otherlv_6='description'
+			{
+				newLeafNode(otherlv_6, grammarAccess.getEReferencePropertyAccess().getDescriptionKeyword_6_0());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getEReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_1_0());
+					}
+					lv_description_7_0=ruleEString
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
+						}
+						set(
+							$current,
+							"description",
+							lv_description_7_0,
+							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
+		otherlv_8=';'
+		{
+			newLeafNode(otherlv_8, grammarAccess.getEReferencePropertyAccess().getSemicolonKeyword_7());
 		}
 	)
 ;

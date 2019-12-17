@@ -938,18 +938,19 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBooleanPropertyParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		private final RuleCall cEnumPropertyParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		private final RuleCall cReferencePropertyParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
-		private final RuleCall cResourcePropertyParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cEReferencePropertyParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cResourcePropertyParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
 		
 		//// ***************************************************************************************
 		//// The Properties
 		//// ***************************************************************************************
 		//AProperty PropertyDefinitions::AProperty:
 		//	ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty
-		//	| ResourceProperty;
+		//	| EReferenceProperty | ResourceProperty;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty |
-		//ResourceProperty
+		//EReferenceProperty | ResourceProperty
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ComposedProperty
@@ -973,8 +974,11 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//ReferenceProperty
 		public RuleCall getReferencePropertyParserRuleCall_6() { return cReferencePropertyParserRuleCall_6; }
 		
+		//EReferenceProperty
+		public RuleCall getEReferencePropertyParserRuleCall_7() { return cEReferencePropertyParserRuleCall_7; }
+		
 		//ResourceProperty
-		public RuleCall getResourcePropertyParserRuleCall_7() { return cResourcePropertyParserRuleCall_7; }
+		public RuleCall getResourcePropertyParserRuleCall_8() { return cResourcePropertyParserRuleCall_8; }
 	}
 	public class ArrayModifierElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.ArrayModifier");
@@ -1793,6 +1797,80 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//QualifiedName
 		public RuleCall getReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1() { return cReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1; }
+		
+		//('description' description=EString)?
+		public Group getGroup_6() { return cGroup_6; }
+		
+		//'description'
+		public Keyword getDescriptionKeyword_6_0() { return cDescriptionKeyword_6_0; }
+		
+		//description=EString
+		public Assignment getDescriptionAssignment_6_1() { return cDescriptionAssignment_6_1; }
+		
+		//EString
+		public RuleCall getDescriptionEStringParserRuleCall_6_1_0() { return cDescriptionEStringParserRuleCall_6_1_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
+	}
+	public class EReferencePropertyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.EReferenceProperty");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cEReferenceKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cArrayModifierAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cArrayModifierArrayModifierParserRuleCall_2_0 = (RuleCall)cArrayModifierAssignment_2.eContents().get(0);
+		private final Keyword cOfKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cTypeKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cReferenceTypeAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final CrossReference cReferenceTypeEClassCrossReference_5_0 = (CrossReference)cReferenceTypeAssignment_5.eContents().get(0);
+		private final RuleCall cReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1 = (RuleCall)cReferenceTypeEClassCrossReference_5_0.eContents().get(1);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cDescriptionKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Assignment cDescriptionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cDescriptionEStringParserRuleCall_6_1_0 = (RuleCall)cDescriptionAssignment_6_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		
+		//EReferenceProperty PropertyDefinitions::EReferenceProperty:
+		//	'EReference' name=ID arrayModifier=ArrayModifier?
+		//	'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description' description=EString)?
+		//	';';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'EReference' name=ID arrayModifier=ArrayModifier? 'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description'
+		//description=EString)? ';'
+		public Group getGroup() { return cGroup; }
+		
+		//'EReference'
+		public Keyword getEReferenceKeyword_0() { return cEReferenceKeyword_0; }
+		
+		//name=ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//arrayModifier=ArrayModifier?
+		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
+		
+		//ArrayModifier
+		public RuleCall getArrayModifierArrayModifierParserRuleCall_2_0() { return cArrayModifierArrayModifierParserRuleCall_2_0; }
+		
+		//'of'
+		public Keyword getOfKeyword_3() { return cOfKeyword_3; }
+		
+		//'Type'
+		public Keyword getTypeKeyword_4() { return cTypeKeyword_4; }
+		
+		//referenceType=[ecore::EClass|QualifiedName]
+		public Assignment getReferenceTypeAssignment_5() { return cReferenceTypeAssignment_5; }
+		
+		//[ecore::EClass|QualifiedName]
+		public CrossReference getReferenceTypeEClassCrossReference_5_0() { return cReferenceTypeEClassCrossReference_5_0; }
+		
+		//QualifiedName
+		public RuleCall getReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1() { return cReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1; }
 		
 		//('description' description=EString)?
 		public Group getGroup_6() { return cGroup_6; }
@@ -2963,6 +3041,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final EnumPropertyElements pEnumProperty;
 	private final EnumValueDefinitionElements pEnumValueDefinition;
 	private final ReferencePropertyElements pReferenceProperty;
+	private final EReferencePropertyElements pEReferenceProperty;
 	private final ResourcePropertyElements pResourceProperty;
 	private final EquationDefinitionElements pEquationDefinition;
 	private final EquationDefinitionResultElements pEquationDefinitionResult;
@@ -3034,6 +3113,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pEnumProperty = new EnumPropertyElements();
 		this.pEnumValueDefinition = new EnumValueDefinitionElements();
 		this.pReferenceProperty = new ReferencePropertyElements();
+		this.pEReferenceProperty = new EReferencePropertyElements();
 		this.pResourceProperty = new ResourcePropertyElements();
 		this.pEquationDefinition = new EquationDefinitionElements();
 		this.pEquationDefinitionResult = new EquationDefinitionResultElements();
@@ -3210,7 +3290,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	//// ***************************************************************************************
 	//AProperty PropertyDefinitions::AProperty:
 	//	ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty
-	//	| ResourceProperty;
+	//	| EReferenceProperty | ResourceProperty;
 	public APropertyElements getAPropertyAccess() {
 		return pAProperty;
 	}
@@ -3348,6 +3428,18 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getReferencePropertyRule() {
 		return getReferencePropertyAccess().getRule();
+	}
+	
+	//EReferenceProperty PropertyDefinitions::EReferenceProperty:
+	//	'EReference' name=ID arrayModifier=ArrayModifier?
+	//	'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description' description=EString)?
+	//	';';
+	public EReferencePropertyElements getEReferencePropertyAccess() {
+		return pEReferenceProperty;
+	}
+	
+	public ParserRule getEReferencePropertyRule() {
+		return getEReferencePropertyAccess().getRule();
 	}
 	
 	//ResourceProperty PropertyDefinitions::ResourceProperty:
