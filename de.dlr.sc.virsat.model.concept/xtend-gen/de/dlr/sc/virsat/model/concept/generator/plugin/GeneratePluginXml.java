@@ -39,6 +39,15 @@ public class GeneratePluginXml {
     fsa.generateFile((Folder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
   }
   
+  public void serializeDeprecatedModel(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
+    this.pluginXmlReader = pluginXmlReader;
+    final String fileName = "plugin.xml";
+    final String plugin = concept.getName();
+    CharSequence fileOutput = this.createDeprecatedXml(concept, plugin);
+    final String Folder = (("../../" + plugin) + "/");
+    fsa.generateFile((Folder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
+  }
+  
   public CharSequence createXml(final Concept concept, final String plugin) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -54,6 +63,55 @@ public class GeneratePluginXml {
     _builder.append("\t");
     CharSequence _declareDvlmValidatorExtension = this.declareDvlmValidatorExtension(concept);
     _builder.append(_declareDvlmValidatorExtension, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    CharSequence _declareConceptCaBeanRegistration = this.declareConceptCaBeanRegistration(concept);
+    _builder.append(_declareConceptCaBeanRegistration, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    CharSequence _declareConceptSeiBeanRegistration = this.declareConceptSeiBeanRegistration(concept);
+    _builder.append(_declareConceptSeiBeanRegistration, "\t");
+    _builder.newLineIfNotEmpty();
+    CharSequence _declareConceptMigratorExtensions = this.declareConceptMigratorExtensions(concept, plugin);
+    _builder.append(_declareConceptMigratorExtensions);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("<!-- ");
+    _builder.append(PluginXmlReader.PR_START, "\t");
+    _builder.append(" -->");
+    _builder.newLineIfNotEmpty();
+    String _trim = this.pluginXmlReader.extractProtectedRegion(1).trim();
+    _builder.append(_trim);
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("<!-- ");
+    _builder.append(PluginXmlReader.PR_END, "\t");
+    _builder.append(" -->");
+    _builder.newLineIfNotEmpty();
+    _builder.append("</plugin>");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence createDeprecatedXml(final Concept concept, final String plugin) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+    _builder.newLine();
+    _builder.append("<?eclipse version=\"3.4\"?>");
+    _builder.newLine();
+    _builder.append("<plugin>");
+    _builder.newLine();
+    _builder.append("\t");
+    CharSequence _declareConceptRegistryExtension = this.declareConceptRegistryExtension(concept);
+    _builder.append(_declareConceptRegistryExtension, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    CharSequence _declareDvlmValidatorExtension = this.declareDvlmValidatorExtension(concept);
+    _builder.append(_declareDvlmValidatorExtension, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    CharSequence _declareDvlmDeprecatedValidatorExtension = this.declareDvlmDeprecatedValidatorExtension(concept);
+    _builder.append(_declareDvlmDeprecatedValidatorExtension, "\t");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     CharSequence _declareConceptCaBeanRegistration = this.declareConceptCaBeanRegistration(concept);
@@ -139,6 +197,41 @@ public class GeneratePluginXml {
     String _validatorName = GenerateValidator.getValidatorName(concept);
     _builder.append(_validatorName, "\t\t\t");
     _builder.append("\">");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("</seiValidator>");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("</dvlmValidator>");
+    _builder.newLine();
+    _builder.append("</extension>");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence declareDvlmDeprecatedValidatorExtension(final Concept concept) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<extension point=\"de.dlr.sc.virsat.build.DvlmValidator\">");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<dvlmValidator>");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("<seiValidator");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("id=\"");
+    String _name = concept.getName();
+    _builder.append(_name, "\t\t\t");
+    _builder.append("\"");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t\t");
+    _builder.append("class=\"");
+    String _name_1 = concept.getName();
+    _builder.append(_name_1, "\t\t\t");
+    _builder.append(".");
+    _builder.append(GenerateValidator.PACKAGE_FOLDER, "\t\t\t");
+    _builder.append(".StructuralElementInstanceValidator\">");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("</seiValidator>");

@@ -35,6 +35,18 @@ class GeneratePluginXml {
 		fsa.generateFile(Folder + fileName, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput
 		);
 	}
+
+	def serializeDeprecatedModel(Concept concept, PluginXmlReader pluginXmlReader, IFileSystemAccess fsa) {
+		this.pluginXmlReader = pluginXmlReader;
+		
+		val fileName = "plugin.xml"
+		val plugin = concept.name
+	
+		var fileOutput = createDeprecatedXml(concept, plugin)
+		val Folder = "../../" + plugin + "/"
+		fsa.generateFile(Folder + fileName, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput
+		);
+	}	
 	
 	def createXml(Concept concept, String plugin)'''
 		<?xml version="1.0" encoding="UTF-8"?>
@@ -42,6 +54,21 @@ class GeneratePluginXml {
 		<plugin>
 			«declareConceptRegistryExtension(concept)»
 			«declareDvlmValidatorExtension(concept)»
+			«declareConceptCaBeanRegistration(concept)»
+			«declareConceptSeiBeanRegistration(concept)»
+		«declareConceptMigratorExtensions(concept, plugin)»
+			<!-- «PluginXmlReader.PR_START» -->
+		«pluginXmlReader.extractProtectedRegion(1).trim»
+			<!-- «PluginXmlReader.PR_END» -->
+		</plugin>
+		'''
+	def createDeprecatedXml(Concept concept, String plugin)'''
+		<?xml version="1.0" encoding="UTF-8"?>
+		<?eclipse version="3.4"?>
+		<plugin>
+			«declareConceptRegistryExtension(concept)»
+			«declareDvlmValidatorExtension(concept)»
+			«declareDvlmDeprecatedValidatorExtension(concept)»
 			«declareConceptCaBeanRegistration(concept)»
 			«declareConceptSeiBeanRegistration(concept)»
 		«declareConceptMigratorExtensions(concept, plugin)»
@@ -67,6 +94,17 @@ class GeneratePluginXml {
 			<seiValidator
 				id="«concept.name»"
 				class="«concept.name».«GenerateValidator.PACKAGE_FOLDER».«GenerateValidator.getValidatorName(concept)»">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	'''
+
+	def declareDvlmDeprecatedValidatorExtension(Concept concept) '''
+	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="«concept.name»"
+				class="«concept.name».«GenerateValidator.PACKAGE_FOLDER».StructuralElementInstanceValidator">
 			</seiValidator>
 		</dvlmValidator>
 	</extension>
@@ -106,6 +144,7 @@ class GeneratePluginXml {
 	</extension>
 	«ENDIF»
 	'''
+	
 	def declareConceptSeiBeanRegistration(Concept concept) '''
 	«IF !concept.structuralElements.isEmpty»
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">

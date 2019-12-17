@@ -116,6 +116,8 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			// Generate validator and mark it as deprecated
 			if (hasDeprecatedValidator == true) {
 				new GenerateDeprecatedValidator().serializeModel(dataModel, fsa);
+				new GeneratePluginXml().serializeDeprecatedModel(dataModel, new PluginXmlReader(), fsa);
+				
 			}
 		}
 	}
