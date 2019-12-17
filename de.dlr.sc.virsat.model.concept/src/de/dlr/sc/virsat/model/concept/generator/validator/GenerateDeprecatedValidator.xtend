@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.generator.IFileSystemAccess
 
-class GenerateOldValidator extends AGeneratorGapGenerator<EObject> {
+class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject> {
 	
 	override getPackage(Concept concept) {
 		concept.name + "." + PACKAGE_FOLDER;

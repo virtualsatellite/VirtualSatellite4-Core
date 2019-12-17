@@ -21,12 +21,12 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 
 @SuppressWarnings("all")
-public class GenerateOldValidator extends AGeneratorGapGenerator<EObject> {
+public class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject> {
   @Override
   public String getPackage(final Concept concept) {
     String _name = concept.getName();
     String _plus = (_name + ".");
-    return (_plus + GenerateOldValidator.PACKAGE_FOLDER);
+    return (_plus + GenerateDeprecatedValidator.PACKAGE_FOLDER);
   }
   
   public static String getAbstractClassName(final EObject typeDefinition) {
@@ -109,7 +109,7 @@ public class GenerateOldValidator extends AGeneratorGapGenerator<EObject> {
     _builder.append("@Deprecated");
     _builder.newLine();
     _builder.append("public abstract class ");
-    String _abstractClassName = GenerateOldValidator.getAbstractClassName(conceptPart);
+    String _abstractClassName = GenerateDeprecatedValidator.getAbstractClassName(conceptPart);
     _builder.append(_abstractClassName);
     _builder.append(" implements IStructuralElementInstanceValidator {");
     _builder.newLineIfNotEmpty();
