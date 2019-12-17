@@ -31,6 +31,7 @@ import org.hamcrest.core.StringStartsWith;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
 import org.junit.rules.Timeout;
 
@@ -57,7 +58,7 @@ public class ASwtBotTestCase {
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
-	public static final int GENERAL_SWTBOT_WAIT_TIME = 100;
+	public static final int GENERAL_SWTBOT_WAIT_TIME = 250;
 	
 	protected SWTWorkbenchBot bot;
 	protected Concept conceptPs;
@@ -69,7 +70,7 @@ public class ASwtBotTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
 	
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	public DisableOnDebug globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	
 	@Rule 
 	public TestName testMethodName = new TestName();
@@ -154,6 +155,7 @@ public class ASwtBotTestCase {
 	 *
 	 */
 	protected SWTBotTreeItem openEditor(SWTBotTreeItem item) {
+		waitForEditingDomainAndUiThread();
 		SWTBotTreeItem newItem = item.doubleClick();
 		waitForEditor(item);
 		waitForEditingDomainAndUiThread();
@@ -331,8 +333,8 @@ public class ASwtBotTestCase {
 	 */
 	protected void waitForAllBuildersAndUiThread() {
 		bot.waitUntil(new VirSatWaitForProjectBuilder(1));
-		waitForEditingDomainAndUiThread();
 		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (inheritance builder)"));
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
