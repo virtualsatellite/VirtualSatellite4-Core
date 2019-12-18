@@ -71,7 +71,7 @@ public class GenerateConceptPluginXmlTest {
   }
   
   @Test
-  public void testCreateUiXml() {
+  public void testCreateXml() {
     try {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Concept ");
@@ -156,6 +156,97 @@ public class GenerateConceptPluginXmlTest {
       this.concept = this._parseHelper.parse(_builder);
       final CharSequence expected = this.pluginGenerator.createXml(this.concept, this.concept.getName());
       GeneratorJunitAssert.assertEqualContent(expected, "/resources/expectedOutputFilesForGenerators/ConceptPlugin.xml");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void createXmlDeprecatedValidator() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept ");
+      _builder.append(this.TEST_CONCEPT_NAME);
+      _builder.append(" version ");
+      _builder.append(this.TEST_VERSION);
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("StructuralElement ");
+      _builder.append(this.TEST_STRUCTURAL_1_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("IsRootStructuralElement;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("StructuralElement ");
+      _builder.append(this.TEST_STRUCTURAL_2_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("Applicable For [");
+      _builder.append(this.TEST_STRUCTURAL_1_NAME, "\t\t");
+      _builder.append("];");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("}\t\t\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Category ");
+      _builder.append(this.TEST_CATEGORY_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("StringProperty tpSringArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("StringProperty tpSringArrayStatic[5];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("IntProperty tpIntArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("IntProperty tpIntArrayStatic[6];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("FloatProperty tpFloatArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("FloatProperty tpFloatArrayStatic[7];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("BooleanProperty tpBooleanArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("BooleanProperty tpBooleanArrayStatic[8];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Resource tpResourceDynamich[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Resource tpResourceStatic[9];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Applicable For All;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      this.concept = this._parseHelper.parse(_builder);
+      final CharSequence expected = this.pluginGenerator.createXmlDeprecatedValidator(this.concept, this.concept.getName());
+      GeneratorJunitAssert.assertEqualContent(expected, "/resources/expectedOutputFilesForGenerators/ConceptPluginDeprecatedValidator.xml");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

@@ -81,11 +81,11 @@ class GeneratePluginXml {
 
 	def declareConceptRegistryExtension(Concept concept) '''
 	<extension point="de.dlr.sc.virsat.model.Concept">
-	<concept
-	          id="«concept.name»"
-	          version="«concept.version»"
-	          xmi="concept/concept.xmi">
-	    </concept>
+		<concept
+			id="«concept.name»"
+			version="«concept.version»"
+			xmi="concept/concept.xmi">
+		</concept>
 	</extension>
 	'''
 
