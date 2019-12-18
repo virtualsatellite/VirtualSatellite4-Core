@@ -352,7 +352,7 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * Writes all errors from resourceSet to log and shows them in a UI dialog
+	 * Writes all errors from resourceSet to log
 	 * @param resourceSet resource set to get errors from
 	 */
 	private void reportResourceSetErrors(VirSatResourceSet resourceSet) {
@@ -374,7 +374,9 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 		Status status;
 		Throwable exception = error instanceof Throwable ? (Throwable) error : null;
 		status = new Status(Status.ERROR, Activator.getPluginId(),
-				String.format("Error in resource %s: %s", resource.toString(), error.getMessage()), exception);
+				String.format("IncrementalEquationBuilder: error in resource %s: %s", resource.toString(),
+						error.getMessage()),
+				exception);
 		return status;
 	}
 
