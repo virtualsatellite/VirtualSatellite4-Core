@@ -39,11 +39,11 @@ public class GeneratePluginXml {
     fsa.generateFile((Folder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
   }
   
-  public void serializeDeprecatedModel(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
+  public void serializeModelDeprecatedValidator(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
     this.pluginXmlReader = pluginXmlReader;
     final String fileName = "plugin.xml";
     final String plugin = concept.getName();
-    CharSequence fileOutput = this.createDeprecatedXml(concept, plugin);
+    CharSequence fileOutput = this.createXmlDeprecatedValidator(concept, plugin);
     final String Folder = (("../../" + plugin) + "/");
     fsa.generateFile((Folder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
   }
@@ -93,7 +93,7 @@ public class GeneratePluginXml {
     return _builder;
   }
   
-  public CharSequence createDeprecatedXml(final Concept concept, final String plugin) {
+  public CharSequence createXmlDeprecatedValidator(final Concept concept, final String plugin) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     _builder.newLine();
@@ -223,7 +223,7 @@ public class GeneratePluginXml {
     _builder.append("id=\"");
     String _name = concept.getName();
     _builder.append(_name, "\t\t\t");
-    _builder.append("\"");
+    _builder.append(".deprecated\"");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t\t");
     _builder.append("class=\"");

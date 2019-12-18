@@ -117,7 +117,7 @@ public class ConceptLanguageGenerator implements IGenerator2 {
           new GenerateDeprecatedValidator().serializeModel(dataModel, fsa);
           GeneratePluginXml _generatePluginXml_1 = new GeneratePluginXml();
           PluginXmlReader _pluginXmlReader_2 = new PluginXmlReader();
-          _generatePluginXml_1.serializeDeprecatedModel(dataModel, _pluginXmlReader_2, fsa);
+          _generatePluginXml_1.serializeModelDeprecatedValidator(dataModel, _pluginXmlReader_2, fsa);
         }
       }
     } catch (Throwable _e) {

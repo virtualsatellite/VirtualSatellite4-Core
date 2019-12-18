@@ -36,13 +36,13 @@ class GeneratePluginXml {
 		);
 	}
 
-	def serializeDeprecatedModel(Concept concept, PluginXmlReader pluginXmlReader, IFileSystemAccess fsa) {
+	def serializeModelDeprecatedValidator(Concept concept, PluginXmlReader pluginXmlReader, IFileSystemAccess fsa) {
 		this.pluginXmlReader = pluginXmlReader;
 		
 		val fileName = "plugin.xml"
 		val plugin = concept.name
 	
-		var fileOutput = createDeprecatedXml(concept, plugin)
+		var fileOutput = createXmlDeprecatedValidator(concept, plugin)
 		val Folder = "../../" + plugin + "/"
 		fsa.generateFile(Folder + fileName, ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput
 		);
@@ -62,7 +62,8 @@ class GeneratePluginXml {
 			<!-- «PluginXmlReader.PR_END» -->
 		</plugin>
 		'''
-	def createDeprecatedXml(Concept concept, String plugin)'''
+	
+	def createXmlDeprecatedValidator(Concept concept, String plugin)'''
 		<?xml version="1.0" encoding="UTF-8"?>
 		<?eclipse version="3.4"?>
 		<plugin>
@@ -86,8 +87,8 @@ class GeneratePluginXml {
 	          xmi="concept/concept.xmi">
 	    </concept>
 	</extension>
-    '''
-    
+	'''
+
 	def declareDvlmValidatorExtension(Concept concept) '''
 	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
 		<dvlmValidator>
@@ -103,7 +104,7 @@ class GeneratePluginXml {
 	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
 		<dvlmValidator>
 			<seiValidator
-				id="«concept.name»"
+				id="«concept.name».deprecated"
 				class="«concept.name».«GenerateValidator.PACKAGE_FOLDER».StructuralElementInstanceValidator">
 			</seiValidator>
 		</dvlmValidator>
