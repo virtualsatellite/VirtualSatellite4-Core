@@ -33,7 +33,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.commons.datastructures.DependencyTree;
 import de.dlr.sc.virsat.model.calculation.compute.problem.EvaluationProblem;
@@ -360,16 +359,16 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 		for (Resource resource : resourceSet.getResources()) {
 			for (Resource.Diagnostic error : resource.getErrors()) {
 				Status status = getResourceErrorStatus(resource, error);
-				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+				Activator.getDefault().getLog().log(status);
 			}
 		}
 	};
 	
 	/**
 	 * Creates a status for an error in a resource
-	 * @param resource 
+	 * @param resource EMF resource with an error
 	 * @param error 
-	 * @return status
+	 * @return status for writing to log
 	 */
 	private Status getResourceErrorStatus(Resource resource, Resource.Diagnostic error) {
 		Status status;

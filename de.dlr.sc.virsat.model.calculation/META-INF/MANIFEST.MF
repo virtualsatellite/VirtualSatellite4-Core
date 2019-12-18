@@ -21,8 +21,7 @@ Require-Bundle: de.dlr.sc.virsat.model,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
  org.eclipse.xtext.xbase,
  org.eclipse.xtend.lib,
- de.dlr.sc.virsat.build,
- org.eclipse.ui.workbench
+ de.dlr.sc.virsat.build
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.dlr.sc.virsat.model.calculation,
  de.dlr.sc.virsat.model.calculation.compute,
