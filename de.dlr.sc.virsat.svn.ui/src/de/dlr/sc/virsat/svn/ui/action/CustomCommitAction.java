@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,6 +36,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
+import de.dlr.sc.virsat.svn.ui.decoration.VirSatSvnRevisionStatusUtil;
 import de.dlr.sc.virsat.svn.ui.dialog.CommitMessageDialog;
 
 /**
@@ -67,21 +69,33 @@ public class CustomCommitAction extends CommitAction {
 				// resources dirty state.
 				ed.saveAll();
 				ed.getCommandStack().flush();
-					
+				
 				// Call the proper SVN commandHandler/action from Subversive
 				if (selectedProject != null) {
 					newStructuredSelection = new StructuredSelection(new SimpleResourceMapping(selectedProject));
 					selectionChanged(null, newStructuredSelection);
 					checkSelection(newStructuredSelection);
 					try {
+						Activator.getDefault().getLog().log(new Status(
+							IStatus.INFO,
+							Activator.getPluginId(),
+							"SVN: Before commit on:\n" +  new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)
+						));
+
 						super.execute(event);
+
+						Activator.getDefault().getLog().log(new Status(
+							IStatus.INFO,
+							Activator.getPluginId(),
+							"SVN: After commit on:\n" +  new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)
+						));
 					} catch (Exception e) {
-						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute call to SVN in Custom Commit! " + e.getMessage()));
+						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SVN: Failed to execute call to SVN in Custom Commit! " + e.getMessage()));
 					}
 				}
 			}, ResourcesPlugin.getWorkspace().getRoot(), IWorkspace.AVOID_UPDATE, null);
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute Custom Commit! " + e.getMessage()));
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SVN: Failed to execute Custom Commit! " + e.getMessage()));
 		}
 	
 		return null;
