@@ -184,7 +184,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 					synchronized (recentlyChangedResource) {
 						printRecentlyChangedResources();
 						changedDvlmResources.forEach((wsDvlmResource) -> {
-							updateTriggerFullReload(wsDvlmResource);
+							// A resource which has been marked ad changed is processed now and the mark
+							// should be removed again to detect external changes if they happen on a DVLM file.
+							updateTriggerFullReload(wsDvlmResource, true);
 						});
 					}
 				}
@@ -196,7 +198,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 					synchronized (recentlyChangedResource) {
 						printRecentlyChangedResources();
 						removedDvlmResources.forEach((wsDvlmResource) -> {
-							updateTriggerFullReload(wsDvlmResource);
+							updateTriggerFullReload(wsDvlmResource, true);
 							
 							URI changedResourceUri = URI.createPlatformResourceURI(wsDvlmResource.getFullPath().toString(), true);
 							Resource emfResource = virSatResourceSet.getResource(changedResourceUri, false);
@@ -216,7 +218,18 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 					synchronized (recentlyChangedResource) {
 						printRecentlyChangedResources();
 						addedDvlmResources.forEach((wsDvlmResource) -> {
-							updateTriggerFullReload(wsDvlmResource);
+							// If a DVLM file is added it should not be taken from the list of recently saved resources.
+							// There are two reasons for it: First logically, how can a DVLM file be added if it is marked as changed. 
+							// Which means if it is marked as changed it cannot be added thus it should not be removed from the list of
+							// recently saved resources. Second and more importantly: When VirSat creates a new SEI for example, the
+							// workspace recognizes two changes: An ADD and a CHANGE on the same file. This usually triggers this listener
+							// two times resulting in two Workspace Synchronize operations. One for the add and one for the change. Together
+							// with the save  and create commands/operations it usually creates the following order of changes to the currently
+							// changed resources: a marking of changed resource when creating the SEI, the ADD change removing it, the save adding
+							// it to the list of changes again and finally the CHANGE removing it again. In rare cases this order is changed: first
+							// marking the resource as changed, then processing the ADD and directly processing the CHANGE. This resulted in two times
+							// trying to take the resource from the list of recently changed files and thus creating a full reload which is not needed.
+							updateTriggerFullReload(wsDvlmResource, false);
 						});
 					}
 				}
@@ -225,14 +238,22 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				 * Updates the flag for triggering a full reload if there has been an external change
 				 * @param wsDvlmResource the resource that has been modified
 				 */
-				private void updateTriggerFullReload(IResource wsDvlmResource) {
+				private void updateTriggerFullReload(IResource wsDvlmResource, boolean removeFromRecentlySavedResources) {
 					URI changedResourceUri = URI.createPlatformResourceURI(wsDvlmResource.getFullPath().toString(), true);
 					String fileExtension = wsDvlmResource.getFileExtension();
 					if (VirSatProjectCommons.FILENAME_EXTENSION.equals(fileExtension)) {
-						if (!recentlyChangedResource.remove(changedResourceUri)) {
+						// First check if the resource which is changed is not on the list of
+						// recently resources than trigger a full reload for all resources.
+						if (!recentlyChangedResource.contains(changedResourceUri)) {
 							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
 							triggerFullReload = true;
 						} 
+						
+						// Now remove the file from the recently saved resources if requested
+						if (removeFromRecentlySavedResources) {
+							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
+							recentlyChangedResource.remove(changedResourceUri);
+						}						
 					}
 				}
 			};
