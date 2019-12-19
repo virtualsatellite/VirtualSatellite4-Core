@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/de.dlr.sc.virsat.branding.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.branding.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.branding.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.branding.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.build.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.build.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.build.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.build.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.calculation.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.calculation.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.calculation.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.calculation.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.project.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.project.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.project.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.project.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.svn.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.svn.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.svn.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.svn.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.uiengine.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.uiengine.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.uiengine.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.uiengine.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.dependencies.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.dependencies.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.dependencies.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.dependencies.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.license.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.license.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.license.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.license.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.extension.ps.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.extension.ps.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.extension.ps.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.extension.ps.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.javadoc.api.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.javadoc.api.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.javadoc.api.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.javadoc.api.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.commons.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.commons.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.commons.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.commons.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.apps.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.apps.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.apps.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.apps.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.extension.visualisation.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.extension.visualisation.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.extension.visualisation.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.extension.visualisation.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.test.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.test.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.test.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.test.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.extension.tests.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.extension.tests.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.extension.tests.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.extension.tests.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.docs.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.docs.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.docs.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.docs.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.extension.budget.mass.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.extension.budget.mass.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.extension.budget.mass.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.extension.budget.mass.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.graphiti.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.graphiti.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.graphiti.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.graphiti.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.extension.maturity.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.model.extension.maturity.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.extension.maturity.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.model.extension.maturity.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.external.lib.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.external.lib.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.external.lib.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.external.lib.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.target.feature_4.9.2.qualifier.jar" id="de.dlr.sc.virsat.target.feature" version="4.9.2.qualifier">
+   <feature url="features/de.dlr.sc.virsat.target.feature_4.9.3.qualifier.jar" id="de.dlr.sc.virsat.target.feature" version="4.9.3.qualifier">
       <category name="VirSat_Core_Features"/>
    </feature>
    <category-def name="VirSat_Core_Features" label="VirSat Core Features">

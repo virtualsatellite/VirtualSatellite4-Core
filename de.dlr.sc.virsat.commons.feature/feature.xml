@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.commons.feature"
       label="VirSat Core Commons Feature"
-      version="4.9.2.qualifier"
+      version="4.9.3.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
