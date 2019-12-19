@@ -31,8 +31,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
+import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.IActiveConcept;
 import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
+import de.dlr.sc.virsat.model.dvlm.concepts.IEImports;
 import de.dlr.sc.virsat.model.dvlm.concepts.IImports;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage;
@@ -117,6 +119,20 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 	 * @generated
 	 */
 	private EClass iConceptTypeDefinitionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass ecoreImportEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass ieImportsEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -372,6 +388,42 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getEcoreImport() {
+		return ecoreImportEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getEcoreImport_ImportedNsURI() {
+		return (EAttribute)ecoreImportEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIEImports() {
+		return ieImportsEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIEImports_EcoreImports() {
+		return (EReference)ieImportsEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ConceptsFactory getConceptsFactory() {
 		return (ConceptsFactory)getEFactoryInstance();
 	}
@@ -415,6 +467,12 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 		createEReference(iImportsEClass, IIMPORTS__IMPORTS);
 
 		iConceptTypeDefinitionEClass = createEClass(ICONCEPT_TYPE_DEFINITION);
+
+		ecoreImportEClass = createEClass(ECORE_IMPORT);
+		createEAttribute(ecoreImportEClass, ECORE_IMPORT__IMPORTED_NS_URI);
+
+		ieImportsEClass = createEClass(IE_IMPORTS);
+		createEReference(ieImportsEClass, IE_IMPORTS__ECORE_IMPORTS);
 	}
 
 	/**
@@ -444,6 +502,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 		GeneralPackage theGeneralPackage = (GeneralPackage)EPackage.Registry.INSTANCE.getEPackage(GeneralPackage.eNS_URI);
 		CategoriesPackage theCategoriesPackage = (CategoriesPackage)EPackage.Registry.INSTANCE.getEPackage(CategoriesPackage.eNS_URI);
 		StructuralPackage theStructuralPackage = (StructuralPackage)EPackage.Registry.INSTANCE.getEPackage(StructuralPackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -454,6 +513,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 		conceptEClass.getESuperTypes().add(theGeneralPackage.getIDescription());
 		conceptEClass.getESuperTypes().add(this.getIActiveConcept());
 		conceptEClass.getESuperTypes().add(this.getIImports());
+		conceptEClass.getESuperTypes().add(this.getIEImports());
 		iConceptTypeDefinitionEClass.getESuperTypes().add(theGeneralPackage.getIQualifiedName());
 
 		// Initialize classes, features, and operations; add parameters
@@ -478,6 +538,12 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 		initEReference(getIImports_Imports(), this.getConceptImport(), null, "imports", null, 0, -1, IImports.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iConceptTypeDefinitionEClass, IConceptTypeDefinition.class, "IConceptTypeDefinition", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(ecoreImportEClass, EcoreImport.class, "EcoreImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEcoreImport_ImportedNsURI(), theEcorePackage.getEString(), "importedNsURI", null, 0, 1, EcoreImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(ieImportsEClass, IEImports.class, "IEImports", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIEImports_EcoreImports(), this.getEcoreImport(), null, "ecoreImports", null, 0, -1, IEImports.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 	}
 
 } //ConceptsPackageImpl

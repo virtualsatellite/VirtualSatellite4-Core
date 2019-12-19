@@ -106,6 +106,12 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/IImports/imports"/>
       </genClasses>
       <genClasses image="false" ecoreClass="dvlm.ecore#//concepts/IConceptTypeDefinition"/>
+      <genClasses ecoreClass="dvlm.ecore#//concepts/EcoreImport">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/EcoreImport/importedNsURI"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//concepts/IEImports">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Roles" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
         ecorePackage="dvlm.ecore#//roles">

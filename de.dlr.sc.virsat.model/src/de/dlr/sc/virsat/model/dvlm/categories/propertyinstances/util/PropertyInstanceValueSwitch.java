@@ -222,11 +222,10 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 			}
 			
 			public String caseEReferencePropertyInstance(EReferencePropertyInstance object) {
-				PropertyInstanceValueSwitch pivSwitch = new PropertyInstanceValueSwitch();
 				if (object.getReference() != null) {
-					EObject referencedType = pivSwitch.doSwitch(object);
-					String valueString = referencedType.eClass().getName();
-					valueString += " - " + referencedType.eResource().getURI().toString();
+					
+					EObject value = object.getReference();
+					String valueString = value.toString() + " - " + value.eResource().getURI().lastSegment().toString();
 					return valueString;
 				} else {
 					return "";

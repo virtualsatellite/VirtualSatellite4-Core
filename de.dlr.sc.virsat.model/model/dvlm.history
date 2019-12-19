@@ -9137,5 +9137,57 @@
       <referenceValue href="../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
       <oldReferenceValue href="dvlm.ecore#//categories/ATypeInstance"/>
     </changes>
+    <changes xsi:type="history:Create" xmi:id="_CFm6ECGAEeqW4cuBBMKnVw" referenceName="eClassifiers">
+      <target href="dvlm.ecore#//concepts"/>
+      <element href="dvlm.ecore#//concepts/EcoreImport"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_JSafACGAEeqW4cuBBMKnVw" featureName="name" dataValue="EcoreImport">
+      <element href="dvlm.ecore#//concepts/EcoreImport"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_MIla4CGAEeqW4cuBBMKnVw" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//concepts/EcoreImport"/>
+      <element href="dvlm.ecore#//concepts/EcoreImport/importedNsURI"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_LwEwECGHEeqW4cuBBMKnVw" featureName="name" dataValue="importedNsURI">
+      <element href="dvlm.ecore#//concepts/EcoreImport/importedNsURI"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_M7GYwCGHEeqW4cuBBMKnVw" featureName="eType">
+      <element href="dvlm.ecore#//concepts/EcoreImport/importedNsURI"/>
+      <referenceValue href="../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_USCKECGHEeqW4cuBBMKnVw" referenceName="eClassifiers">
+      <target href="dvlm.ecore#//concepts"/>
+      <element href="dvlm.ecore#//concepts/IEImports"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_XWojgCGHEeqW4cuBBMKnVw" featureName="name" dataValue="IEImports">
+      <element href="dvlm.ecore#//concepts/IEImports"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_YgSTMCGHEeqW4cuBBMKnVw" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//concepts/IEImports"/>
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_aX-0oCGHEeqW4cuBBMKnVw" featureName="name" dataValue="imports">
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_bMxHkCGHEeqW4cuBBMKnVw" featureName="eType">
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+      <referenceValue href="dvlm.ecore#//concepts/EcoreImport"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_cJ_k0CGHEeqW4cuBBMKnVw" featureName="containment" dataValue="true" oldDataValue="false">
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+    </changes>
+    <changes xsi:type="history:Add" xmi:id="_f8MEECGHEeqW4cuBBMKnVw" featureName="eSuperTypes">
+      <element href="dvlm.ecore#//concepts/Concept"/>
+      <referenceValue href="dvlm.ecore#//concepts/IEImports"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_m-PKgCGHEeqW4cuBBMKnVw" featureName="name" dataValue="eImports" oldDataValue="imports">
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_oSUokCGHEeqW4cuBBMKnVw" featureName="name" dataValue="ecoreImports" oldDataValue="eImports">
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_QUoRoCGNEeqW4cuBBMKnVw" featureName="upperBound" dataValue="-1" oldDataValue="1">
+      <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+    </changes>
   </releases>
 </history:History>
