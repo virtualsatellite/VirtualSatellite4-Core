@@ -34,9 +34,10 @@ Concept returns Concepts::Concept:
 		(DMF?='hasDMF')?
 	)
 	'{'
-		(imports+=ConceptImport)* 
-		(structuralElements+=StructuralElement)*
-		(relations+=ARelation)*
+		((imports+=ConceptImport)* &
+		(ecoreImports+=EcoreImport)* )
+		(structuralElements+=StructuralElement)* 
+		(relations+=ARelation)* 
 		(categories+=Category)*
 	'}';
 
@@ -94,6 +95,12 @@ Category returns Categories::Category:
 ConceptImport returns Concepts::ConceptImport:
 	{Concepts::ConceptImport}
    'Import' importedNamespace = QualifiedNameWithWildcard
+   ';'
+;
+
+EcoreImport returns Concepts::EcoreImport:
+	{Concepts::EcoreImport}
+   'EImport' importedNsURI = STRING
    ';'
 ;
 

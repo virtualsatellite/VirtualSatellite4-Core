@@ -281,29 +281,80 @@ ruleConcept returns [EObject current=null]
 		}
 		(
 			(
-				{
-					newCompositeNode(grammarAccess.getConceptAccess().getImportsConceptImportParserRuleCall_5_0());
+				{ 
+				  getUnorderedGroupHelper().enter(grammarAccess.getConceptAccess().getUnorderedGroup_5());
 				}
-				lv_imports_13_0=ruleConceptImport
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getConceptRule());
+				(
+					(
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 0)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 0);
 					}
-					add(
-						$current,
-						"imports",
-						lv_imports_13_0,
-						"de.dlr.sc.virsat.model.concept.ConceptLanguage.ConceptImport");
-					afterParserOrEnumRuleCall();
-				}
+								({true}?=>((
+									{
+										newCompositeNode(grammarAccess.getConceptAccess().getImportsConceptImportParserRuleCall_5_0_0());
+									}
+									lv_imports_14_0=ruleConceptImport
+									{
+										if ($current==null) {
+											$current = createModelElementForParent(grammarAccess.getConceptRule());
+										}
+										add(
+											$current,
+											"imports",
+											lv_imports_14_0,
+											"de.dlr.sc.virsat.model.concept.ConceptLanguage.ConceptImport");
+										afterParserOrEnumRuleCall();
+									}
+								)
+								))+
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getConceptAccess().getUnorderedGroup_5());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 1)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 1);
+					}
+								({true}?=>((
+									{
+										newCompositeNode(grammarAccess.getConceptAccess().getEcoreImportsEcoreImportParserRuleCall_5_1_0());
+									}
+									lv_ecoreImports_15_0=ruleEcoreImport
+									{
+										if ($current==null) {
+											$current = createModelElementForParent(grammarAccess.getConceptRule());
+										}
+										add(
+											$current,
+											"ecoreImports",
+											lv_ecoreImports_15_0,
+											"de.dlr.sc.virsat.model.concept.ConceptLanguage.EcoreImport");
+										afterParserOrEnumRuleCall();
+									}
+								)
+								))+
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getConceptAccess().getUnorderedGroup_5());
+					}
+				)
 			)
-		)*
+					)*
+				)
+			)
+				{ 
+				  getUnorderedGroupHelper().leave(grammarAccess.getConceptAccess().getUnorderedGroup_5());
+				}
+		)
 		(
 			(
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getStructuralElementsStructuralElementParserRuleCall_6_0());
 				}
-				lv_structuralElements_14_0=ruleStructuralElement
+				lv_structuralElements_16_0=ruleStructuralElement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -311,7 +362,7 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"structuralElements",
-						lv_structuralElements_14_0,
+						lv_structuralElements_16_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.StructuralElement");
 					afterParserOrEnumRuleCall();
 				}
@@ -322,7 +373,7 @@ ruleConcept returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getRelationsARelationParserRuleCall_7_0());
 				}
-				lv_relations_15_0=ruleARelation
+				lv_relations_17_0=ruleARelation
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -330,7 +381,7 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"relations",
-						lv_relations_15_0,
+						lv_relations_17_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.ARelation");
 					afterParserOrEnumRuleCall();
 				}
@@ -341,7 +392,7 @@ ruleConcept returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getConceptAccess().getCategoriesCategoryParserRuleCall_8_0());
 				}
-				lv_categories_16_0=ruleCategory
+				lv_categories_18_0=ruleCategory
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getConceptRule());
@@ -349,15 +400,15 @@ ruleConcept returns [EObject current=null]
 					add(
 						$current,
 						"categories",
-						lv_categories_16_0,
+						lv_categories_18_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.Category");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
-		otherlv_17='}'
+		otherlv_19='}'
 		{
-			newLeafNode(otherlv_17, grammarAccess.getConceptAccess().getRightCurlyBracketKeyword_9());
+			newLeafNode(otherlv_19, grammarAccess.getConceptAccess().getRightCurlyBracketKeyword_9());
 		}
 	)
 ;
@@ -1419,6 +1470,58 @@ ruleConceptImport returns [EObject current=null]
 		otherlv_3=';'
 		{
 			newLeafNode(otherlv_3, grammarAccess.getConceptImportAccess().getSemicolonKeyword_3());
+		}
+	)
+;
+
+// Entry rule entryRuleEcoreImport
+entryRuleEcoreImport returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getEcoreImportRule()); }
+	iv_ruleEcoreImport=ruleEcoreImport
+	{ $current=$iv_ruleEcoreImport.current; }
+	EOF;
+
+// Rule EcoreImport
+ruleEcoreImport returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getEcoreImportAccess().getEcoreImportAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='EImport'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getEcoreImportAccess().getEImportKeyword_1());
+		}
+		(
+			(
+				lv_importedNsURI_2_0=RULE_STRING
+				{
+					newLeafNode(lv_importedNsURI_2_0, grammarAccess.getEcoreImportAccess().getImportedNsURISTRINGTerminalRuleCall_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getEcoreImportRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"importedNsURI",
+						lv_importedNsURI_2_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_3=';'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getEcoreImportAccess().getSemicolonKeyword_3());
 		}
 	)
 ;

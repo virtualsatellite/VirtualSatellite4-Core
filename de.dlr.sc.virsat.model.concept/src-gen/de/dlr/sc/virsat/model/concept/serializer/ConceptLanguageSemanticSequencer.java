@@ -44,6 +44,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
+import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.dvlm.structural.GeneralRelation;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
@@ -128,6 +129,9 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 				return; 
 			case ConceptsPackage.CONCEPT_IMPORT:
 				sequence_ConceptImport(context, (ConceptImport) semanticObject); 
+				return; 
+			case ConceptsPackage.ECORE_IMPORT:
+				sequence_EcoreImport(context, (EcoreImport) semanticObject); 
 				return; 
 			}
 		else if (epackage == PropertydefinitionsPackage.eINSTANCE)
@@ -289,7 +293,8 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *     (
 	 *         name=QualifiedName 
 	 *         (displayName=EString | version=Version | beta?='beta' | description=EString | DMF?='hasDMF')* 
-	 *         imports+=ConceptImport* 
+	 *         imports+=ConceptImport? 
+	 *         (ecoreImports+=EcoreImport? imports+=ConceptImport?)* 
 	 *         structuralElements+=StructuralElement* 
 	 *         relations+=ARelation* 
 	 *         categories+=Category*
@@ -323,6 +328,24 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 */
 	protected void sequence_EReferenceProperty(ISerializationContext context, EReferenceProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     EcoreImport returns EcoreImport
+	 *
+	 * Constraint:
+	 *     importedNsURI=STRING
+	 */
+	protected void sequence_EcoreImport(ISerializationContext context, EcoreImport semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ConceptsPackage.Literals.ECORE_IMPORT__IMPORTED_NS_URI) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ConceptsPackage.Literals.ECORE_IMPORT__IMPORTED_NS_URI));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getEcoreImportAccess().getImportedNsURISTRINGTerminalRuleCall_2_0(), semanticObject.getImportedNsURI());
+		feeder.finish();
 	}
 	
 	

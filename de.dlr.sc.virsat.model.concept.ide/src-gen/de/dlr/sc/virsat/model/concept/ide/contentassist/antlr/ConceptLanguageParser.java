@@ -83,6 +83,7 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getCategoryAccess().getGroup_5_1_2_0_2(), "rule__Category__Group_5_1_2_0_2__0");
 			builder.put(grammarAccess.getCategoryAccess().getGroup_5_2(), "rule__Category__Group_5_2__0");
 			builder.put(grammarAccess.getConceptImportAccess().getGroup(), "rule__ConceptImport__Group__0");
+			builder.put(grammarAccess.getEcoreImportAccess().getGroup(), "rule__EcoreImport__Group__0");
 			builder.put(grammarAccess.getDynmaicArrayModifierAccess().getGroup(), "rule__DynmaicArrayModifier__Group__0");
 			builder.put(grammarAccess.getStaticArrayModifierAccess().getGroup(), "rule__StaticArrayModifier__Group__0");
 			builder.put(grammarAccess.getComposedPropertyAccess().getGroup(), "rule__ComposedProperty__Group__0");
@@ -153,7 +154,8 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getConceptAccess().getBetaAssignment_3_2(), "rule__Concept__BetaAssignment_3_2");
 			builder.put(grammarAccess.getConceptAccess().getDescriptionAssignment_3_3_1(), "rule__Concept__DescriptionAssignment_3_3_1");
 			builder.put(grammarAccess.getConceptAccess().getDMFAssignment_3_4(), "rule__Concept__DMFAssignment_3_4");
-			builder.put(grammarAccess.getConceptAccess().getImportsAssignment_5(), "rule__Concept__ImportsAssignment_5");
+			builder.put(grammarAccess.getConceptAccess().getImportsAssignment_5_0(), "rule__Concept__ImportsAssignment_5_0");
+			builder.put(grammarAccess.getConceptAccess().getEcoreImportsAssignment_5_1(), "rule__Concept__EcoreImportsAssignment_5_1");
 			builder.put(grammarAccess.getConceptAccess().getStructuralElementsAssignment_6(), "rule__Concept__StructuralElementsAssignment_6");
 			builder.put(grammarAccess.getConceptAccess().getRelationsAssignment_7(), "rule__Concept__RelationsAssignment_7");
 			builder.put(grammarAccess.getConceptAccess().getCategoriesAssignment_8(), "rule__Concept__CategoriesAssignment_8");
@@ -187,6 +189,7 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getCategoryAccess().getPropertiesAssignment_6(), "rule__Category__PropertiesAssignment_6");
 			builder.put(grammarAccess.getCategoryAccess().getEquationDefinitionsAssignment_7(), "rule__Category__EquationDefinitionsAssignment_7");
 			builder.put(grammarAccess.getConceptImportAccess().getImportedNamespaceAssignment_2(), "rule__ConceptImport__ImportedNamespaceAssignment_2");
+			builder.put(grammarAccess.getEcoreImportAccess().getImportedNsURIAssignment_2(), "rule__EcoreImport__ImportedNsURIAssignment_2");
 			builder.put(grammarAccess.getStaticArrayModifierAccess().getArraySizeAssignment_1(), "rule__StaticArrayModifier__ArraySizeAssignment_1");
 			builder.put(grammarAccess.getComposedPropertyAccess().getNameAssignment_2(), "rule__ComposedProperty__NameAssignment_2");
 			builder.put(grammarAccess.getComposedPropertyAccess().getArrayModifierAssignment_3(), "rule__ComposedProperty__ArrayModifierAssignment_3");
@@ -259,6 +262,7 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSetFunctionAccess().getFilterNameAssignment_5_1(), "rule__SetFunction__FilterNameAssignment_5_1");
 			builder.put(grammarAccess.getNumberLiteralAccess().getValueAssignment_1(), "rule__NumberLiteral__ValueAssignment_1");
 			builder.put(grammarAccess.getConceptAccess().getUnorderedGroup_3(), "rule__Concept__UnorderedGroup_3");
+			builder.put(grammarAccess.getConceptAccess().getUnorderedGroup_5(), "rule__Concept__UnorderedGroup_5");
 			builder.put(grammarAccess.getStructuralElementAccess().getUnorderedGroup_3(), "rule__StructuralElement__UnorderedGroup_3");
 			builder.put(grammarAccess.getStructuralElementAccess().getUnorderedGroup_5(), "rule__StructuralElement__UnorderedGroup_5");
 			builder.put(grammarAccess.getCategoryAccess().getUnorderedGroup_3(), "rule__Category__UnorderedGroup_3");
