@@ -332,6 +332,7 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 			EcoreUtil.resolveAll(resourceSet);
 			
 			if (resourceSet.hasError()) {
+				reportResourceSetErrors(resourceSet);
 				return Collections.EMPTY_LIST;
 			}
 			
@@ -348,8 +349,37 @@ public class IncrementalEquationBuilder extends IncrementalProjectBuilder {
 		}
 	
 		return equations;
+	}
+
+	/**
+	 * Writes all errors from resourceSet to log
+	 * @param resourceSet resource set to get errors from
+	 */
+	private void reportResourceSetErrors(VirSatResourceSet resourceSet) {
+		for (Resource resource : resourceSet.getResources()) {
+			for (Resource.Diagnostic error : resource.getErrors()) {
+				Status status = getResourceErrorStatus(resource, error);
+				Activator.getDefault().getLog().log(status);
+			}
+		}
 	};
 	
+	/**
+	 * Creates a status for an error in a resource
+	 * @param resource EMF resource with an error
+	 * @param error 
+	 * @return status for writing to log
+	 */
+	private Status getResourceErrorStatus(Resource resource, Resource.Diagnostic error) {
+		Status status;
+		Throwable exception = error instanceof Throwable ? (Throwable) error : null;
+		status = new Status(Status.ERROR, Activator.getPluginId(),
+				String.format("IncrementalEquationBuilder: error in resource %s: %s", resource.toString(),
+						error.getMessage()),
+				exception);
+		return status;
+	}
+
 	/**
 	 * Call this method to get all Equations from a given EMF Resource
 	 * @param resource The EMF Resource to look in for equations
