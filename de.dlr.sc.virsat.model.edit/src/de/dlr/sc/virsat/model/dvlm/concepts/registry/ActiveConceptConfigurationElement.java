@@ -14,6 +14,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -143,6 +144,15 @@ public class ActiveConceptConfigurationElement {
 			
 			@Override
 			public EObject get(Object key) {
+				
+				// For EReferences to external EClasses ignore activation 
+				// -> without its registration an external EObject cannot be 
+				// loaded anyway. VirSat does not ensure external model's storage.
+				// We only enable non-containment references.
+				if (key instanceof EClass) {
+					return (EClass) key;
+				}
+				
 				EObject eObject = super.get(key);
 
 				// In case we try to create a reference to an object which was not copied
