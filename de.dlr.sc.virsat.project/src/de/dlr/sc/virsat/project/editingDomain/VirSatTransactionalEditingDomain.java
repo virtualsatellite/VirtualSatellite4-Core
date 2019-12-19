@@ -311,24 +311,34 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void reloadAll() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Started reloading all resources"));
-		
-		// In case that a resource is properly unloaded 
-		// The command stack should be flushed and the Clipboard
-		// should be brought back into a clean state
-		VirSatEditingDomainClipBoard.INSTANCE.flushClipboard(this);
-		VirSatTransactionalEditingDomain.this.getCommandStack().flush();
 
-		virSatResourceSet.realoadAll();
-		
-		synchronized (recentlyChangedResource) {
-			recentlyChangedResource.clear();
+		// Make sure that no Change Events are fired while a resource is reloaded
+		synchronized (accumulatedResourceChangeEvents) {
+			// Clear all Accumulated Resource Change Events because at the end of this method
+			// we will notify about all resources being reloaded.
+			clearAccumulatedRecourceChangeEvents();
+			
+			// take the lock on recently changed resources. So that all resources will be reloaded
+			// in one go. No one should interfere at this point.
+			synchronized (recentlyChangedResource) {
+				// In case that a resource is properly unloaded 
+				// The command stack should be flushed and the Clipboard
+				// should be brought back into a clean state
+				VirSatEditingDomainClipBoard.INSTANCE.flushClipboard(this);
+				VirSatTransactionalEditingDomain.this.getCommandStack().flush();
+
+				// Now reload all resources and make sure that all of them are marked as unchanged.
+				virSatResourceSet.realoadAll();
+				recentlyChangedResource.clear();
+				
+				// After performing a reload all there are no more dirty resources
+				isResourceDirty.clear();
+			
+				// Now start notifying everyone about the change of resources
+				List<Resource> reloadedResources = virSatResourceSet.getResources();
+				fireNotifyResourceEvent(new HashSet<>(reloadedResources), VirSatTransactionalEditingDomain.EVENT_RELOAD);
+			}
 		}
-		
-		// After performing a reload all there are no more dirty resources
-		isResourceDirty.clear();
-
-		List<Resource> reloadedResources = virSatResourceSet.getResources();
-		fireNotifyResourceEvent(new HashSet<>(reloadedResources), VirSatTransactionalEditingDomain.EVENT_RELOAD);
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished reloading all resources"));
 	}

@@ -19,6 +19,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.junit.Rule;
+import org.junit.rules.DisableOnDebug;
+import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
@@ -45,7 +47,7 @@ public abstract class AConceptTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
 	
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 
 	
 	/**
