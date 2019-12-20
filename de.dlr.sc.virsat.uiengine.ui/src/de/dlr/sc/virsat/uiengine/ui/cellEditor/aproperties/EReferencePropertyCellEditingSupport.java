@@ -14,11 +14,8 @@ import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -35,16 +32,14 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMPropertyinstancesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMDVLMItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
@@ -91,22 +86,12 @@ public class EReferencePropertyCellEditingSupport extends APropertyCellEditingSu
 		EReferencePropertyInstance propertyInstance = (EReferencePropertyInstance) caHelper.getPropertyInstance(propertyFqn);
 		EReferenceProperty propertyDefinition = ((EReferenceProperty) propertyInstance.getType());
 		
+		EReferencePropertyHelper propertyHelper = new EReferencePropertyHelper();
 		
-		EClass referencePropertyType = propertyDefinition.getReferenceType();
 		Set<String> supportedFileExtensions = new HashSet<String>();
-		Concept concept = ActiveConceptHelper.getConcept(propertyDefinition);
+		final EClass resolvedType = propertyHelper.getResolvedEClassType(propertyDefinition);
+		supportedFileExtensions.add(propertyHelper.getEPackageOfType(propertyDefinition).getName());
 		
-		for (EcoreImport importedPackage : concept.getEcoreImports()) {
-			EPackage registeredPackage = EPackage.Registry.INSTANCE.getEPackage(importedPackage.getImportedNsURI());
-			URI proxyURI =  ((InternalEObject) referencePropertyType).eProxyURI();
-			EObject resolvedEClass = registeredPackage.eResource().getEObject(proxyURI.fragment());
-			if (resolvedEClass != null) {
-				referencePropertyType = (EClass) resolvedEClass;
-				supportedFileExtensions.add(registeredPackage.getName());
-			}
-		}
-		
-		final EClass resolvedType = referencePropertyType;
 		editor = new DialogCellEditor((Composite) viewer.getControl()) {
 			
 			@Override

@@ -32,13 +32,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.ui.action.LoadResourceAction;
@@ -90,6 +87,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypePrope
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ResourceProperty;
@@ -103,8 +101,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
@@ -926,19 +922,12 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		// not have a reference property instance.
 		EReferencePropertyInstance propertyInstance = (EReferencePropertyInstance) caHelper.getPropertyInstance(propertyFqn);
 		EReferenceProperty propertyDefinition = ((EReferenceProperty) propertyInstance.getType());
-		EClass referencePropertyType = propertyDefinition.getReferenceType();
-		Set<String> supportedFileExtensions = new HashSet<String>();
-		Concept concept = ActiveConceptHelper.getConcept(propertyDefinition);
-		for (EcoreImport importedPackage : concept.getEcoreImports()) {
-			EPackage registeredPackage = EPackage.Registry.INSTANCE.getEPackage(importedPackage.getImportedNsURI());
-			URI proxyURI =  ((InternalEObject) referencePropertyType).eProxyURI();
-			EObject resolvedEClass = registeredPackage.eResource().getEObject(proxyURI.fragment());
-			if (resolvedEClass != null) {
-				referencePropertyType = (EClass) resolvedEClass;
-				supportedFileExtensions.add(registeredPackage.getName());
-			}
-		}
 		
+		EReferencePropertyHelper propertyHelper = new EReferencePropertyHelper();
+		EClass referencePropertyType = propertyHelper.getResolvedEClassType(propertyDefinition);
+
+		Set<String> supportedFileExtensions = new HashSet<String>();
+		supportedFileExtensions.add(propertyHelper.getEPackageOfType(propertyDefinition).getName());
 		
 		ReferenceSelectionDialog dialog = createReferenceDialogAndSetInput(propertyInstance, referencePropertyType, supportedFileExtensions);
 
