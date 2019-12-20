@@ -31,8 +31,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import de.dlr.sc.virsat.project.Activator;
-import de.dlr.sc.virsat.project.editingDomain.VirSatSaveJob;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * A resource change listener that identifies which DVLM resources have been changed
@@ -43,7 +41,6 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 public abstract class VirSatProjectResourceChangeListener implements IResourceChangeListener {
 
 	private IProject virSatProject;
-	private VirSatTransactionalEditingDomain ed;
 	private boolean closedOrDeletedProject;
 	private int counter;
 	
@@ -52,9 +49,8 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 	 * @param ed The editingDomain that will be used for executing the handlers
 	 * @param virSatProject The virsatproject resource this listener should listen to
 	 */
-	public VirSatProjectResourceChangeListener(VirSatTransactionalEditingDomain ed, IProject virSatProject) {
+	public VirSatProjectResourceChangeListener(IProject virSatProject) {
 		this.virSatProject = virSatProject;
-		this.ed = ed;
 		this.counter = 0;
 	}
 	
@@ -188,13 +184,8 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 		
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			// Make it so the synchronization job is extecuted after the save job
-			if (Job.getJobManager().find(VirSatSaveJob.SAVE_JOB_NAME).length == 0 && ed.getActiveTransaction() == null) {
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Synchronization " + this.getName() + " is executed now."));
-				handleChanges(addedDvlmResources, removedDvlmResources, changedDvlmResources);
-			} else {
-				schedule();
-			}
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Synchronization " + this.getName() + " is executed now."));
+			handleChanges(addedDvlmResources, removedDvlmResources, changedDvlmResources);
 			return Status.OK_STATUS;
 		}
 	}

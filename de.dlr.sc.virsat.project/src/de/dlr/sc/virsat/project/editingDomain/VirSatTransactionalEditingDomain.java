@@ -40,6 +40,9 @@ import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.RollbackException;
+import org.eclipse.emf.transaction.RunnableWithResult;
+import org.eclipse.emf.transaction.Transaction;
 import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
 import org.eclipse.emf.workspace.IWorkspaceCommandStack;
 import org.eclipse.emf.workspace.ResourceUndoContext;
@@ -154,7 +157,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	private VirSatProjectResourceChangeListener initWorkSpaceChangeListener() {
 		if (workSpaceChangeListener == null) {
-			workSpaceChangeListener = new VirSatProjectResourceChangeListener(this, getResourceSet().getProject()) {
+			workSpaceChangeListener = new VirSatProjectResourceChangeListener(getResourceSet().getProject()) {
 				
 				private boolean triggerFullReload;
 				
@@ -270,23 +273,98 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	}
 	
 	/**
+	 * This method is the counter part to the run exclusive method from the transactional
+	 * editing domain. This call grants exclusive write access to the editing domain. 
+	 * 
+	 * @param readWriteRunner a runnable provided with read and write privileges
+	 * 
+	 * @return the result of the read operation if it is a
+	 *    {@link RunnableWithResult} and the transaction did not roll back;
+	 *    <code>null</code>, otherwise
+	 *    
+	 * @throws InterruptedException if the current thread is interrupted while
+	 *    waiting for access to the resource set
+	 */
+	public Object writeExclusive(Runnable readWriteRunnable) throws InterruptedException {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Starting an exclusive write transaction"));
+
+		// get the active transaction and check if it is reusable for us
+		Transaction activeTransaction = getActiveTransaction();
+		Transaction writeTransaction = null;
+		
+		// If there is no transaction -> create one
+		// If there is a transaction, and it is of a different thread -> create a new one
+		// If there is a transaction, and it is readOnly -> create a new one
+		// If there is a transaction, but it is not active -> create a new one
+		// Simply speaking: Create a new transaction if there is none, or if it is not reusable.
+		if ((activeTransaction == null)
+			|| !(activeTransaction.isActive() 
+				&& !activeTransaction.isReadOnly()
+				&& (activeTransaction.getOwner() == Thread.currentThread()))) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Creating a new write transaction"));
+			writeTransaction = startTransaction(false, null);
+		}
+		
+		// Create a cast in case it is a runnable with result
+		final RunnableWithResult<?> rwr = (readWriteRunnable instanceof RunnableWithResult) ? (RunnableWithResult<?>) readWriteRunnable : null;
+		
+		try {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Executing the runnable"));
+			readWriteRunnable.run();
+		} finally {
+			if ((writeTransaction != null) && (writeTransaction.isActive())) {
+				try {
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Commiting the write Transaction"));
+					writeTransaction.commit();
+					
+					if (rwr != null) {
+						rwr.setStatus(Status.OK_STATUS);
+					}
+				} catch (RollbackException e) {
+					Activator.getDefault().getLog().log(new Status(
+						Status.WARNING,
+						Activator.getPluginId(),
+						"VirSatTransactionalEditingDomain: Detected Rollback on exclusive Write transaction: " + e.getMessage())
+					);
+					if (rwr != null) {
+						rwr.setStatus(e.getStatus());
+					}
+				}
+			}
+		}
+		
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished an exclusive write transaction"));
+		// Hand back the result of the runnable with result in case it exists, otherwise null
+		return (rwr != null) ? rwr.getResult() : null;
+	}
+	
+	/**
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 * @param supressRemoveDanglingReferences set to true to make the virsat editing domain not remove dangling references during the save.
 	 * This is needed for the builders which should not incur any additional changes during the save or they will trigger themselves.
 	 */
 	public void saveAll(boolean supressRemoveDanglingReferences) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
-	
-		List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
-		for (Resource resource : resources) {
-			saveResource(resource, supressRemoveDanglingReferences);
-			virSatResourceSet.updateDiagnostic(resource);
-			virSatResourceSet.notifyDiagnosticListeners(resource);
+
+		try {
+			this.writeExclusive(() -> {
+				List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
+				for (Resource resource : resources) {
+					saveResource(resource, supressRemoveDanglingReferences);
+					virSatResourceSet.updateDiagnostic(resource);
+					virSatResourceSet.notifyDiagnosticListeners(resource);
+				}
+				
+				maintainDirtyResources();
+			});
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(
+				Status.WARNING,
+				Activator.getPluginId(),
+				"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
+			);
 		}
-		
-		maintainDirtyResources();
-		
-		
+
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished try saving all resources"));
 	}
 	
@@ -418,15 +496,26 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param overrideWritePermissions the flag to give permission to ignore rights management
 	 */
 	public void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
-		// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
-		// to decide if reload of the resource is needed or not (means handling external resource changes)
-		synchronized (recentlyChangedResource) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
-			recentlyChangedResource.add(resource.getURI());
+		try {
+			this.writeExclusive(() -> {
+				// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
+				// to decide if reload of the resource is needed or not (means handling external resource changes)
+				synchronized (recentlyChangedResource) {
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
+					recentlyChangedResource.add(resource.getURI());
+				}
+				
+				// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
+				virSatResourceSet.saveResource(resource, overrideWritePermissions);
+			});
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(
+				Status.ERROR,
+				Activator.getPluginId(),
+				"VirSatTransactionalEditingDomain: Saving resource (" + resource.getURI().toPlatformString(true) + ") failed in a write transaction: " + e.getMessage(),
+				e
+			));
 		}
-		
-		// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
-		virSatResourceSet.saveResource(resource, overrideWritePermissions);
 	}
 	
 	/**
