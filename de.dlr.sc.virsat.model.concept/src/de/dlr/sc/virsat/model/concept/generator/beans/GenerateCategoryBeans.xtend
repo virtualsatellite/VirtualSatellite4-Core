@@ -63,6 +63,10 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage
+import org.eclipse.emf.codegen.ecore.genmodel.GenModel
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.codegen.ecore.genmodel.GenPackage
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -470,7 +474,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 			}
 			
 			override caseEReferenceProperty(EReferenceProperty property) {
-				importManager.register(BeanPropertyString);
+				importManager.register(BeanPropertyEReference);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
 			
@@ -844,6 +848,12 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyEReference);
 				importManager.register(EReferencePropertyInstance)
 				importManager.register(EObject);
+				
+				val typeClass = getEObjectClass(property)
+				val genPackageSpecified = typeClass !== null
+				if(genPackageSpecified) {
+					importManager.register(typeClass)
+				}
 			
 				return '''
 				private BeanPropertyEReference «property.name» = new BeanPropertyEReference();
@@ -855,14 +865,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return this.«property.name».setValue(ed, value);
 				}
 
-				public void «propertyMethodSet(property)»(EObject value) {
+				public void «propertyMethodSet(property)»(«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF» value) {
 					«propertyMethodSafeAccess(property)»;
 					this.«property.name».setValue(value);
 				}
 
-				public EObject «propertyMethodGet(property)»() {
+				public «IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF» «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
-					return «property.name».getValue();
+					return «IF genPackageSpecified»(«property.referenceType.name») «ENDIF»«property.name».getValue();
 				}
 
 				'''	
@@ -891,6 +901,42 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	
 	protected def propertyMethodSafeAccess(AProperty property) {
 		return "safeAccess" + property.name.toFirstUpper +"()";
+	}
+	
+	protected def getEObjectClass(EReferenceProperty property) {
+		val eClassPackage = property.referenceType.eContainer as EPackage
+		val concept = property.eResource.contents.get(0) as Concept
+		val resource = property.eResource
+		val nsURI = eClassPackage.nsURI
+		var String typeClass = null
+		var GenPackage genPackage
+		
+		//Try to resolve package from genmodel import
+		for(eImport : concept.ecoreImports) {
+			if(eImport.importedGenModel !== null) {
+				val genModelURI = URI.createPlatformResourceURI(eImport.importedGenModel, true)
+				val genModelResource = resource.resourceSet.getResource(genModelURI, true)
+				if(genModelResource !== null && genModelResource.contents.get(0) instanceof GenModel) {
+					var loadedGenModel = genModelResource.contents.get(0) as GenModel
+					for(package : loadedGenModel.allGenPackagesWithClassifiers) {
+						if(package.NSURI.equals(nsURI)) {
+							genPackage = package
+						}
+					}
+				}
+			}
+		}
+		
+		//If package could be found get class name
+		if(genPackage !== null) {
+			typeClass = ""
+			if(genPackage.basePackage !== null) {
+				typeClass = genPackage.basePackage + "."
+			}
+			typeClass += genPackage.NSName
+			typeClass += "." + property.referenceType.name
+		}
+		return typeClass
 	}
 	
 	/**

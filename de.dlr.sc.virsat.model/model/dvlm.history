@@ -9189,5 +9189,16 @@
     <changes xsi:type="history:Set" xmi:id="_QUoRoCGNEeqW4cuBBMKnVw" featureName="upperBound" dataValue="-1" oldDataValue="1">
       <element href="dvlm.ecore#//concepts/IEImports/ecoreImports"/>
     </changes>
+    <changes xsi:type="history:Create" xmi:id="_XOGCwCc-EeqRzNDokc_hrA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//concepts/EcoreImport"/>
+      <element href="dvlm.ecore#//concepts/EcoreImport/importedGenModel"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_ZqeloCc-EeqRzNDokc_hrA" featureName="name" dataValue="importedGenModel">
+      <element href="dvlm.ecore#//concepts/EcoreImport/importedGenModel"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_aFBzoCc-EeqRzNDokc_hrA" featureName="eType">
+      <element href="dvlm.ecore#//concepts/EcoreImport/importedGenModel"/>
+      <referenceValue href="../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </changes>
   </releases>
 </history:History>

@@ -406,6 +406,15 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getEcoreImport_ImportedGenModel() {
+		return (EAttribute)ecoreImportEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getIEImports() {
 		return ieImportsEClass;
 	}
@@ -470,6 +479,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 
 		ecoreImportEClass = createEClass(ECORE_IMPORT);
 		createEAttribute(ecoreImportEClass, ECORE_IMPORT__IMPORTED_NS_URI);
+		createEAttribute(ecoreImportEClass, ECORE_IMPORT__IMPORTED_GEN_MODEL);
 
 		ieImportsEClass = createEClass(IE_IMPORTS);
 		createEReference(ieImportsEClass, IE_IMPORTS__ECORE_IMPORTS);
@@ -541,6 +551,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 
 		initEClass(ecoreImportEClass, EcoreImport.class, "EcoreImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEcoreImport_ImportedNsURI(), theEcorePackage.getEString(), "importedNsURI", null, 0, 1, EcoreImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEcoreImport_ImportedGenModel(), theEcorePackage.getEString(), "importedGenModel", null, 0, 1, EcoreImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(ieImportsEClass, IEImports.class, "IEImports", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getIEImports_EcoreImports(), this.getEcoreImport(), null, "ecoreImports", null, 0, -1, IEImports.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

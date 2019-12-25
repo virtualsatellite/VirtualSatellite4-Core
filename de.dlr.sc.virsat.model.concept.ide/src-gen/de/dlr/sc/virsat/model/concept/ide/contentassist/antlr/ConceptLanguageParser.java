@@ -84,6 +84,7 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getCategoryAccess().getGroup_5_2(), "rule__Category__Group_5_2__0");
 			builder.put(grammarAccess.getConceptImportAccess().getGroup(), "rule__ConceptImport__Group__0");
 			builder.put(grammarAccess.getEcoreImportAccess().getGroup(), "rule__EcoreImport__Group__0");
+			builder.put(grammarAccess.getEcoreImportAccess().getGroup_3(), "rule__EcoreImport__Group_3__0");
 			builder.put(grammarAccess.getDynmaicArrayModifierAccess().getGroup(), "rule__DynmaicArrayModifier__Group__0");
 			builder.put(grammarAccess.getStaticArrayModifierAccess().getGroup(), "rule__StaticArrayModifier__Group__0");
 			builder.put(grammarAccess.getComposedPropertyAccess().getGroup(), "rule__ComposedProperty__Group__0");
@@ -190,6 +191,7 @@ public class ConceptLanguageParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getCategoryAccess().getEquationDefinitionsAssignment_7(), "rule__Category__EquationDefinitionsAssignment_7");
 			builder.put(grammarAccess.getConceptImportAccess().getImportedNamespaceAssignment_2(), "rule__ConceptImport__ImportedNamespaceAssignment_2");
 			builder.put(grammarAccess.getEcoreImportAccess().getImportedNsURIAssignment_2(), "rule__EcoreImport__ImportedNsURIAssignment_2");
+			builder.put(grammarAccess.getEcoreImportAccess().getImportedGenModelAssignment_3_1(), "rule__EcoreImport__ImportedGenModelAssignment_3_1");
 			builder.put(grammarAccess.getStaticArrayModifierAccess().getArraySizeAssignment_1(), "rule__StaticArrayModifier__ArraySizeAssignment_1");
 			builder.put(grammarAccess.getComposedPropertyAccess().getNameAssignment_2(), "rule__ComposedProperty__NameAssignment_2");
 			builder.put(grammarAccess.getComposedPropertyAccess().getArrayModifierAssignment_3(), "rule__ComposedProperty__ArrayModifierAssignment_3");

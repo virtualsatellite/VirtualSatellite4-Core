@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.EcoreImportImpl#getImportedNsURI <em>Imported Ns URI</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.EcoreImportImpl#getImportedGenModel <em>Imported Gen Model</em>}</li>
  * </ul>
  *
  * @generated
@@ -57,6 +58,26 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 	 * @ordered
 	 */
 	protected String importedNsURI = IMPORTED_NS_URI_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getImportedGenModel() <em>Imported Gen Model</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImportedGenModel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String IMPORTED_GEN_MODEL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getImportedGenModel() <em>Imported Gen Model</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImportedGenModel()
+	 * @generated
+	 * @ordered
+	 */
+	protected String importedGenModel = IMPORTED_GEN_MODEL_EDEFAULT;
 
 	/**
 	 * *********************************
@@ -124,11 +145,36 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getImportedGenModel() {
+		return importedGenModel;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setImportedGenModel(String newImportedGenModel) {
+		String oldImportedGenModel = importedGenModel;
+		importedGenModel = newImportedGenModel;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ConceptsPackage.ECORE_IMPORT__IMPORTED_GEN_MODEL, oldImportedGenModel, importedGenModel));
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case ConceptsPackage.ECORE_IMPORT__IMPORTED_NS_URI:
 				return getImportedNsURI();
+			case ConceptsPackage.ECORE_IMPORT__IMPORTED_GEN_MODEL:
+				return getImportedGenModel();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -143,6 +189,9 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 		switch (featureID) {
 			case ConceptsPackage.ECORE_IMPORT__IMPORTED_NS_URI:
 				setImportedNsURI((String)newValue);
+				return;
+			case ConceptsPackage.ECORE_IMPORT__IMPORTED_GEN_MODEL:
+				setImportedGenModel((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -159,6 +208,9 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 			case ConceptsPackage.ECORE_IMPORT__IMPORTED_NS_URI:
 				setImportedNsURI(IMPORTED_NS_URI_EDEFAULT);
 				return;
+			case ConceptsPackage.ECORE_IMPORT__IMPORTED_GEN_MODEL:
+				setImportedGenModel(IMPORTED_GEN_MODEL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -173,6 +225,8 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 		switch (featureID) {
 			case ConceptsPackage.ECORE_IMPORT__IMPORTED_NS_URI:
 				return IMPORTED_NS_URI_EDEFAULT == null ? importedNsURI != null : !IMPORTED_NS_URI_EDEFAULT.equals(importedNsURI);
+			case ConceptsPackage.ECORE_IMPORT__IMPORTED_GEN_MODEL:
+				return IMPORTED_GEN_MODEL_EDEFAULT == null ? importedGenModel != null : !IMPORTED_GEN_MODEL_EDEFAULT.equals(importedGenModel);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -189,6 +243,8 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (importedNsURI: ");
 		result.append(importedNsURI);
+		result.append(", importedGenModel: ");
+		result.append(importedGenModel);
 		result.append(')');
 		return result.toString();
 	}

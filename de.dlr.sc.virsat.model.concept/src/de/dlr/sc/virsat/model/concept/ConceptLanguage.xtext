@@ -100,7 +100,7 @@ ConceptImport returns Concepts::ConceptImport:
 
 EcoreImport returns Concepts::EcoreImport:
 	{Concepts::EcoreImport}
-   'EImport' importedNsURI = STRING
+   'EImport' importedNsURI = STRING ('genModel' importedGenModel=STRING)?
    ';'
 ;
 

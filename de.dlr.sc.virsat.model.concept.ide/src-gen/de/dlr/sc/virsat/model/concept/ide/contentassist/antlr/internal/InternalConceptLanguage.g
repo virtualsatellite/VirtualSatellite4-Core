@@ -5034,6 +5034,7 @@ rule__EcoreImport__Group__3
 	}
 :
 	rule__EcoreImport__Group__3__Impl
+	rule__EcoreImport__Group__4
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -5045,9 +5046,89 @@ rule__EcoreImport__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getEcoreImportAccess().getSemicolonKeyword_3()); }
+	{ before(grammarAccess.getEcoreImportAccess().getGroup_3()); }
+	(rule__EcoreImport__Group_3__0)?
+	{ after(grammarAccess.getEcoreImportAccess().getGroup_3()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__EcoreImport__Group__4
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__EcoreImport__Group__4__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__EcoreImport__Group__4__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getEcoreImportAccess().getSemicolonKeyword_4()); }
 	';'
-	{ after(grammarAccess.getEcoreImportAccess().getSemicolonKeyword_3()); }
+	{ after(grammarAccess.getEcoreImportAccess().getSemicolonKeyword_4()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__EcoreImport__Group_3__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__EcoreImport__Group_3__0__Impl
+	rule__EcoreImport__Group_3__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__EcoreImport__Group_3__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getEcoreImportAccess().getGenModelKeyword_3_0()); }
+	'genModel'
+	{ after(grammarAccess.getEcoreImportAccess().getGenModelKeyword_3_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__EcoreImport__Group_3__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__EcoreImport__Group_3__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__EcoreImport__Group_3__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getEcoreImportAccess().getImportedGenModelAssignment_3_1()); }
+	(rule__EcoreImport__ImportedGenModelAssignment_3_1)
+	{ after(grammarAccess.getEcoreImportAccess().getImportedGenModelAssignment_3_1()); }
 )
 ;
 finally {
@@ -12431,6 +12512,21 @@ rule__EcoreImport__ImportedNsURIAssignment_2
 		{ before(grammarAccess.getEcoreImportAccess().getImportedNsURISTRINGTerminalRuleCall_2_0()); }
 		RULE_STRING
 		{ after(grammarAccess.getEcoreImportAccess().getImportedNsURISTRINGTerminalRuleCall_2_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__EcoreImport__ImportedGenModelAssignment_3_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getEcoreImportAccess().getImportedGenModelSTRINGTerminalRuleCall_3_1_0()); }
+		RULE_STRING
+		{ after(grammarAccess.getEcoreImportAccess().getImportedGenModelSTRINGTerminalRuleCall_3_1_0()); }
 	)
 ;
 finally {

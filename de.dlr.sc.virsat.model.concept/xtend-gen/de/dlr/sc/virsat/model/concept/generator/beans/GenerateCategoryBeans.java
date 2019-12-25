@@ -57,14 +57,20 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropert
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
+import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -1002,7 +1008,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       
       @Override
       public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
-        importManager.register(BeanPropertyString.class);
+        importManager.register(BeanPropertyEReference.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
         StringConcatenation _builder = new StringConcatenation();
@@ -2078,6 +2084,11 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyEReference.class);
         importManager.register(EReferencePropertyInstance.class);
         importManager.register(EObject.class);
+        final String typeClass = GenerateCategoryBeans.this.getEObjectClass(property);
+        final boolean genPackageSpecified = (typeClass != null);
+        if (genPackageSpecified) {
+          importManager.register(typeClass);
+        }
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyEReference ");
         String _name = property.getName();
@@ -2111,7 +2122,16 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("public void ");
         String _propertyMethodSet_1 = GenerateCategoryBeans.this.propertyMethodSet(property);
         _builder.append(_propertyMethodSet_1);
-        _builder.append("(EObject value) {");
+        _builder.append("(");
+        {
+          if (genPackageSpecified) {
+            String _name_2 = property.getReferenceType().getName();
+            _builder.append(_name_2);
+          } else {
+            _builder.append("EObject");
+          }
+        }
+        _builder.append(" value) {");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         String _propertyMethodSafeAccess_1 = GenerateCategoryBeans.this.propertyMethodSafeAccess(property);
@@ -2120,14 +2140,23 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.append("this.");
-        String _name_2 = property.getName();
-        _builder.append(_name_2, "\t");
+        String _name_3 = property.getName();
+        _builder.append(_name_3, "\t");
         _builder.append(".setValue(value);");
         _builder.newLineIfNotEmpty();
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
-        _builder.append("public EObject ");
+        _builder.append("public ");
+        {
+          if (genPackageSpecified) {
+            String _name_4 = property.getReferenceType().getName();
+            _builder.append(_name_4);
+          } else {
+            _builder.append("EObject");
+          }
+        }
+        _builder.append(" ");
         String _propertyMethodGet = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet);
         _builder.append("() {");
@@ -2139,8 +2168,16 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.append("return ");
-        String _name_3 = property.getName();
-        _builder.append(_name_3, "\t");
+        {
+          if (genPackageSpecified) {
+            _builder.append("(");
+            String _name_5 = property.getReferenceType().getName();
+            _builder.append(_name_5, "\t");
+            _builder.append(") ");
+          }
+        }
+        String _name_6 = property.getName();
+        _builder.append(_name_6, "\t");
         _builder.append(".getValue();");
         _builder.newLineIfNotEmpty();
         _builder.append("}");
@@ -2175,6 +2212,55 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     String _plus = ("safeAccess" + _firstUpper);
     return (_plus + "()");
+  }
+  
+  protected String getEObjectClass(final EReferenceProperty property) {
+    EObject _eContainer = property.getReferenceType().eContainer();
+    final EPackage eClassPackage = ((EPackage) _eContainer);
+    EObject _get = property.eResource().getContents().get(0);
+    final Concept concept = ((Concept) _get);
+    final Resource resource = property.eResource();
+    final String nsURI = eClassPackage.getNsURI();
+    String typeClass = null;
+    GenPackage genPackage = null;
+    EList<EcoreImport> _ecoreImports = concept.getEcoreImports();
+    for (final EcoreImport eImport : _ecoreImports) {
+      String _importedGenModel = eImport.getImportedGenModel();
+      boolean _tripleNotEquals = (_importedGenModel != null);
+      if (_tripleNotEquals) {
+        final URI genModelURI = URI.createPlatformResourceURI(eImport.getImportedGenModel(), true);
+        final Resource genModelResource = resource.getResourceSet().getResource(genModelURI, true);
+        if (((genModelResource != null) && (genModelResource.getContents().get(0) instanceof GenModel))) {
+          EObject _get_1 = genModelResource.getContents().get(0);
+          GenModel loadedGenModel = ((GenModel) _get_1);
+          List<GenPackage> _allGenPackagesWithClassifiers = loadedGenModel.getAllGenPackagesWithClassifiers();
+          for (final GenPackage package_ : _allGenPackagesWithClassifiers) {
+            boolean _equals = package_.getNSURI().equals(nsURI);
+            if (_equals) {
+              genPackage = package_;
+            }
+          }
+        }
+      }
+    }
+    if ((genPackage != null)) {
+      typeClass = "";
+      String _basePackage = genPackage.getBasePackage();
+      boolean _tripleNotEquals_1 = (_basePackage != null);
+      if (_tripleNotEquals_1) {
+        String _basePackage_1 = genPackage.getBasePackage();
+        String _plus = (_basePackage_1 + ".");
+        typeClass = _plus;
+      }
+      String _typeClass = typeClass;
+      String _nSName = genPackage.getNSName();
+      typeClass = (_typeClass + _nSName);
+      String _typeClass_1 = typeClass;
+      String _name = property.getReferenceType().getName();
+      String _plus_1 = ("." + _name);
+      typeClass = (_typeClass_1 + _plus_1);
+    }
+    return typeClass;
   }
   
   /**

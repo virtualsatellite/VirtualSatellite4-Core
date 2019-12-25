@@ -945,15 +945,19 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cEImportKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cImportedNsURIAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cImportedNsURISTRINGTerminalRuleCall_2_0 = (RuleCall)cImportedNsURIAssignment_2.eContents().get(0);
-		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cGenModelKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cImportedGenModelAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cImportedGenModelSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cImportedGenModelAssignment_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//EcoreImport Concepts::EcoreImport:
 		//	{Concepts::EcoreImport}
-		//	'EImport' importedNsURI=STRING
+		//	'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)?
 		//	';';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Concepts::EcoreImport} 'EImport' importedNsURI=STRING ';'
+		//{Concepts::EcoreImport} 'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)? ';'
 		public Group getGroup() { return cGroup; }
 		
 		//{Concepts::EcoreImport}
@@ -968,8 +972,20 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getImportedNsURISTRINGTerminalRuleCall_2_0() { return cImportedNsURISTRINGTerminalRuleCall_2_0; }
 		
+		//('genModel' importedGenModel=STRING)?
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//'genModel'
+		public Keyword getGenModelKeyword_3_0() { return cGenModelKeyword_3_0; }
+		
+		//importedGenModel=STRING
+		public Assignment getImportedGenModelAssignment_3_1() { return cImportedGenModelAssignment_3_1; }
+		
+		//STRING
+		public RuleCall getImportedGenModelSTRINGTerminalRuleCall_3_1_0() { return cImportedGenModelSTRINGTerminalRuleCall_3_1_0; }
+		
 		//';'
-		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
 	}
 	public class APropertyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.AProperty");
@@ -3330,7 +3346,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//EcoreImport Concepts::EcoreImport:
 	//	{Concepts::EcoreImport}
-	//	'EImport' importedNsURI=STRING
+	//	'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)?
 	//	';';
 	public EcoreImportElements getEcoreImportAccess() {
 		return pEcoreImport;

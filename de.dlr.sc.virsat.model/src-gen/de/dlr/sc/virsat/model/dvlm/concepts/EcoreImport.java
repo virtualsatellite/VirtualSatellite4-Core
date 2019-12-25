@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport#getImportedNsURI <em>Imported Ns URI</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport#getImportedGenModel <em>Imported Gen Model</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage#getEcoreImport()
@@ -54,5 +55,31 @@ public interface EcoreImport extends EObject {
 	 * @generated
 	 */
 	void setImportedNsURI(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Imported Gen Model</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Imported Gen Model</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Imported Gen Model</em>' attribute.
+	 * @see #setImportedGenModel(String)
+	 * @see de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage#getEcoreImport_ImportedGenModel()
+	 * @model
+	 * @generated
+	 */
+	String getImportedGenModel();
+
+	/**
+	 * Sets the value of the '{@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport#getImportedGenModel <em>Imported Gen Model</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Imported Gen Model</em>' attribute.
+	 * @see #getImportedGenModel()
+	 * @generated
+	 */
+	void setImportedGenModel(String value);
 
 } // EcoreImport

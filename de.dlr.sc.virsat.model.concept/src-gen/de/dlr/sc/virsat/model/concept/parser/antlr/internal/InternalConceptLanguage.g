@@ -1519,9 +1519,33 @@ ruleEcoreImport returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_3=';'
+		(
+			otherlv_3='genModel'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getEcoreImportAccess().getGenModelKeyword_3_0());
+			}
+			(
+				(
+					lv_importedGenModel_4_0=RULE_STRING
+					{
+						newLeafNode(lv_importedGenModel_4_0, grammarAccess.getEcoreImportAccess().getImportedGenModelSTRINGTerminalRuleCall_3_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getEcoreImportRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"importedGenModel",
+							lv_importedGenModel_4_0,
+							"org.eclipse.xtext.common.Terminals.STRING");
+					}
+				)
+			)
+		)?
+		otherlv_5=';'
 		{
-			newLeafNode(otherlv_3, grammarAccess.getEcoreImportAccess().getSemicolonKeyword_3());
+			newLeafNode(otherlv_5, grammarAccess.getEcoreImportAccess().getSemicolonKeyword_4());
 		}
 	)
 ;

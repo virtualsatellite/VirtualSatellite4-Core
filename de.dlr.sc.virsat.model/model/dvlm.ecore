@@ -156,6 +156,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EcoreImport">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNsURI" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedGenModel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IEImports">
       <eStructuralFeatures xsi:type="ecore:EReference" name="ecoreImports" upperBound="-1"

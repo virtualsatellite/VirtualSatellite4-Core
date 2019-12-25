@@ -89,6 +89,7 @@ public class EcoreImportItemProvider
 			super.getPropertyDescriptors(object);
 
 			addImportedNsURIPropertyDescriptor(object);
+			addImportedGenModelPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -107,6 +108,28 @@ public class EcoreImportItemProvider
 				 getString("_UI_EcoreImport_importedNsURI_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_EcoreImport_importedNsURI_feature", "_UI_EcoreImport_type"),
 				 ConceptsPackage.Literals.ECORE_IMPORT__IMPORTED_NS_URI,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Imported Gen Model feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addImportedGenModelPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_EcoreImport_importedGenModel_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_EcoreImport_importedGenModel_feature", "_UI_EcoreImport_type"),
+				 ConceptsPackage.Literals.ECORE_IMPORT__IMPORTED_GEN_MODEL,
 				 true,
 				 false,
 				 false,
@@ -174,6 +197,7 @@ public class EcoreImportItemProvider
 
 		switch (notification.getFeatureID(EcoreImport.class)) {
 			case ConceptsPackage.ECORE_IMPORT__IMPORTED_NS_URI:
+			case ConceptsPackage.ECORE_IMPORT__IMPORTED_GEN_MODEL:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

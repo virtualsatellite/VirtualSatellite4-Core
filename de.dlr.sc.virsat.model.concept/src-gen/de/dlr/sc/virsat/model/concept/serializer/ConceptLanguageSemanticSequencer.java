@@ -336,16 +336,10 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *     EcoreImport returns EcoreImport
 	 *
 	 * Constraint:
-	 *     importedNsURI=STRING
+	 *     (importedNsURI=STRING importedGenModel=STRING?)
 	 */
 	protected void sequence_EcoreImport(ISerializationContext context, EcoreImport semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ConceptsPackage.Literals.ECORE_IMPORT__IMPORTED_NS_URI) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ConceptsPackage.Literals.ECORE_IMPORT__IMPORTED_NS_URI));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getEcoreImportAccess().getImportedNsURISTRINGTerminalRuleCall_2_0(), semanticObject.getImportedNsURI());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

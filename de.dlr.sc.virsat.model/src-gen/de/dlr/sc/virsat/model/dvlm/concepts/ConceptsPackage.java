@@ -416,13 +416,22 @@ public interface ConceptsPackage extends EPackage {
 	int ECORE_IMPORT__IMPORTED_NS_URI = 0;
 
 	/**
+	 * The feature id for the '<em><b>Imported Gen Model</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ECORE_IMPORT__IMPORTED_GEN_MODEL = 1;
+
+	/**
 	 * The number of structural features of the '<em>Ecore Import</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ECORE_IMPORT_FEATURE_COUNT = 1;
+	int ECORE_IMPORT_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Ecore Import</em>' class.
@@ -663,6 +672,17 @@ public interface ConceptsPackage extends EPackage {
 	EAttribute getEcoreImport_ImportedNsURI();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport#getImportedGenModel <em>Imported Gen Model</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Imported Gen Model</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport#getImportedGenModel()
+	 * @see #getEcoreImport()
+	 * @generated
+	 */
+	EAttribute getEcoreImport_ImportedGenModel();
+
+	/**
 	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.concepts.IEImports <em>IE Imports</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -861,6 +881,14 @@ public interface ConceptsPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ECORE_IMPORT__IMPORTED_NS_URI = eINSTANCE.getEcoreImport_ImportedNsURI();
+
+		/**
+		 * The meta object literal for the '<em><b>Imported Gen Model</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ECORE_IMPORT__IMPORTED_GEN_MODEL = eINSTANCE.getEcoreImport_ImportedGenModel();
 
 		/**
 		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.concepts.impl.IEImportsImpl <em>IE Imports</em>}' class.
