@@ -194,6 +194,7 @@
 				<module>de.dlr.sc.virsat.team.feature</module>
 				<module>de.dlr.sc.virsat.server.feature</module>
 				<module>de.dlr.sc.virsat.test.feature</module>
+				<module>de.dlr.sc.virsat.model.ext.core.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.ps.feature</module>
