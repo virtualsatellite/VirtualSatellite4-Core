@@ -58,6 +58,11 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance
 import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -462,6 +467,23 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 					'''	
 				}	
+			}
+			
+			override caseEReferenceProperty(EReferenceProperty property) {
+				importManager.register(BeanPropertyString);
+				importManager.register(IBeanList);
+				importManager.register(TypeSafeArrayInstanceList);
+			
+				return '''
+				private IBeanList<BeanPropertyEReference> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyEReference.class);
+				
+				«declareSafeAccessArrayMethod(property, importManager)»
+				
+				public IBeanList<BeanPropertyEReference> «propertyMethodGet(property)»() {
+					«propertyMethodSafeAccess(property)»;
+					return «property.name»;
+				}
+				'''	
 			}			
 		}.doSwitch(property)
 	}
@@ -809,6 +831,41 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 					'''
 				}	
+			}	
+			override caseEReferenceProperty(EReferenceProperty property) {
+				importManager.register(ReferencePropertyInstance);
+				importManager.register(CategoryAssignment);
+				importManager.register(BeanCategoryAssignmentFactory);
+				importManager.register(Command);
+				importManager.register(SetCommand);
+				importManager.register(EditingDomain);
+				importManager.register(PropertyinstancesPackage);
+				importManager.register(CoreException);
+				importManager.register(BeanPropertyEReference);
+				importManager.register(EReferencePropertyInstance)
+				importManager.register(EObject);
+			
+				return '''
+				private BeanPropertyEReference «property.name» = new BeanPropertyEReference();
+				
+				«declareSafeAccessAttributeMethod(property, EReferencePropertyInstance)»
+				
+				public Command «propertyMethodSet(property)»(EditingDomain ed, EObject value) {
+					«propertyMethodSafeAccess(property)»;
+					return this.«property.name».setValue(ed, value);
+				}
+
+				public void «propertyMethodSet(property)»(EObject value) {
+					«propertyMethodSafeAccess(property)»;
+					this.«property.name».setValue(value);
+				}
+
+				public EObject «propertyMethodGet(property)»() {
+					«propertyMethodSafeAccess(property)»;
+					return «property.name».getValue();
+				}
+
+				'''	
 			}			
 		}.doSwitch(property)
 	}
