@@ -837,14 +837,9 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				}	
 			}	
 			override caseEReferenceProperty(EReferenceProperty property) {
-				importManager.register(ReferencePropertyInstance);
 				importManager.register(CategoryAssignment);
-				importManager.register(BeanCategoryAssignmentFactory);
 				importManager.register(Command);
-				importManager.register(SetCommand);
 				importManager.register(EditingDomain);
-				importManager.register(PropertyinstancesPackage);
-				importManager.register(CoreException);
 				importManager.register(BeanPropertyEReference);
 				importManager.register(EReferencePropertyInstance)
 				importManager.register(EObject);

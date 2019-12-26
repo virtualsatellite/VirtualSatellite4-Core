@@ -2073,14 +2073,9 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       
       @Override
       public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
-        importManager.register(ReferencePropertyInstance.class);
         importManager.register(CategoryAssignment.class);
-        importManager.register(BeanCategoryAssignmentFactory.class);
         importManager.register(Command.class);
-        importManager.register(SetCommand.class);
         importManager.register(EditingDomain.class);
-        importManager.register(PropertyinstancesPackage.class);
-        importManager.register(CoreException.class);
         importManager.register(BeanPropertyEReference.class);
         importManager.register(EReferencePropertyInstance.class);
         importManager.register(EObject.class);
