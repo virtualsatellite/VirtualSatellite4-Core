@@ -71,6 +71,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -2223,20 +2224,14 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       String _importedGenModel = eImport.getImportedGenModel();
       boolean _tripleNotEquals = (_importedGenModel != null);
       if (_tripleNotEquals) {
-        final URI genModelURI = URI.createPlatformResourceURI(eImport.getImportedGenModel(), true);
-        final Resource genModelResource = resource.getResourceSet().getResource(genModelURI, true);
-        if (((genModelResource != null) && (genModelResource.getContents().get(0) instanceof GenModel))) {
-          EObject _get_1 = genModelResource.getContents().get(0);
-          GenModel loadedGenModel = ((GenModel) _get_1);
-          List<GenPackage> _allGenPackagesWithClassifiers = loadedGenModel.getAllGenPackagesWithClassifiers();
-          for (final GenPackage package_ : _allGenPackagesWithClassifiers) {
-            boolean _equals = package_.getNSURI().equals(nsURI);
-            if (_equals) {
-              genPackage = package_;
-            }
-          }
-        }
+        final URI genModelURI = URI.createPlatformPluginURI(eImport.getImportedGenModel(), true);
+        genPackage = this.loadGenPackage(genModelURI, nsURI, resource.getResourceSet());
       }
+    }
+    if (((genPackage == null) && (eClassPackage.eResource() != null))) {
+      final URI ecoreURI = eClassPackage.eResource().getURI();
+      final URI genModelURI_1 = ecoreURI.trimFileExtension().appendFileExtension("genmodel");
+      genPackage = this.loadGenPackage(genModelURI_1, nsURI, resource.getResourceSet());
     }
     if ((genPackage != null)) {
       typeClass = "";
@@ -2256,6 +2251,26 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       typeClass = (_typeClass_1 + _plus_1);
     }
     return typeClass;
+  }
+  
+  /**
+   * Load a GenModel package of a specified EPackage from a GenModel URI
+   */
+  protected GenPackage loadGenPackage(final URI genModelUri, final String nsUri, final ResourceSet resourceSet) {
+    Resource genModelResource = null;
+    genModelResource = resourceSet.getResource(genModelUri, true);
+    if (((genModelResource != null) && (genModelResource.getContents().get(0) instanceof GenModel))) {
+      EObject _get = genModelResource.getContents().get(0);
+      GenModel loadedGenModel = ((GenModel) _get);
+      List<GenPackage> _allGenPackagesWithClassifiers = loadedGenModel.getAllGenPackagesWithClassifiers();
+      for (final GenPackage package_ : _allGenPackagesWithClassifiers) {
+        boolean _equals = package_.getNSURI().equals(nsUri);
+        if (_equals) {
+          return package_;
+        }
+      }
+    }
+    return null;
   }
   
   /**
