@@ -20,6 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.Propertydefini
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
+import de.dlr.sc.virsat.model.external.tests.AExternalModelTest;
 import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
@@ -36,7 +37,7 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(ConceptLanguageTestInjectorProvider.class)
 @SuppressWarnings("all")
-public class GenerateCategoryBeansTest {
+public class GenerateCategoryBeansTest extends AExternalModelTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
@@ -54,6 +55,7 @@ public class GenerateCategoryBeansTest {
     ConceptsPackage.eINSTANCE.eClass();
     CategoriesPackage.eINSTANCE.eClass();
     PropertydefinitionsPackage.eINSTANCE.eClass();
+    this.loadExternalPackage();
   }
   
   @Test
@@ -372,6 +374,84 @@ public class GenerateCategoryBeansTest {
       final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
       GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanTypesAndReferencesArrays.java");
       GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanTypesAndReferencesArrays.java");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testCreateForEReferenceWithoutGenmodel() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept testConcept{");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("EImport \"http://www.virsat.sc.dlr.de/external/tests\";");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Category TestCategory {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("EReference testEReference of Type tests.ExternalTestType;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      this.concept = this._parseHelper.parse(_builder, this.resourceSet);
+      final Category category = this.concept.getCategories().get(0);
+      final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
+      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testCreateForEReferenceWithRegisteredGenmodel() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept testConcept{");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("EImport \"http://www.virsat.sc.dlr.de/external/tests\" genModel \"de.dlr.sc.virsat.model.test/model/ExternalModel.genmodel\";");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Category TestCategory {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("EReference testEReference of Type tests.ExternalTestType;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      this.concept = this._parseHelper.parse(_builder, this.resourceSet);
+      final Category category = this.concept.getCategories().get(0);
+      final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
+      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
