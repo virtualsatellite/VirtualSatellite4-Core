@@ -234,8 +234,8 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 		'''.parse(resourceSet)
 		
 		val category = concept.categories.get(0)
-    	val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
-    	
+		val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
+		
 		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java")
     }
     
@@ -256,8 +256,8 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 		'''.parse(resourceSet)
 		
 		val category = concept.categories.get(0)
-    	val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
-    	
+		val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
+		
 		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java")
     }
     

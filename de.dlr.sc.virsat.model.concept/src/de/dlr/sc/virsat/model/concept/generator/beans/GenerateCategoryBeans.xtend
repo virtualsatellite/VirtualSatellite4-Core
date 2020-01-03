@@ -914,7 +914,6 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 		//Try to resolve package from GenModel import
 		for(eImport : concept.ecoreImports) {
 			if(eImport.importedGenModel !== null) {
-				
 				val genModelURI = URI.createPlatformPluginURI(eImport.importedGenModel, true)
 				genPackage = loadGenPackage(genModelURI, nsURI, resource.resourceSet)
 			}
