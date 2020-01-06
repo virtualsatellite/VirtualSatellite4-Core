@@ -16,7 +16,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.testing,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.external.lib.apache.poi,
- de.dlr.sc.virsat.concept.unittest.util
+ de.dlr.sc.virsat.concept.unittest.util,
+ org.eclipse.xtext.ui.testing,
+ org.eclipse.xtext.ecore,
+ org.eclipse.xtext.ui.ecore
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.dlr.sc.virsat.model.concept,
  de.dlr.sc.virsat.model.concept.test

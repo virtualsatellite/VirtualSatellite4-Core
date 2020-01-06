@@ -115,6 +115,7 @@
 <setEntry value="org.eclipse.rcp:default"/>
 <setEntry value="org.eclipse.team.svn:default"/>
 <setEntry value="org.eclipse.xtext.runtime:default"/>
+<setEntry value="org.eclipse.xtext.ui:default"/>
 <setEntry value="org.eclipse.xtext.xbase.lib:default"/>
 <setEntry value="org.eclipse.xtext.xbase:default"/>
 </setAttribute>
