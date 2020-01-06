@@ -345,25 +345,28 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void saveAll(boolean supressRemoveDanglingReferences) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
-
-		try {
-			this.writeExclusive(() -> {
-				List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
-				for (Resource resource : resources) {
-					saveResource(resource, supressRemoveDanglingReferences);
-					virSatResourceSet.updateDiagnostic(resource);
-					virSatResourceSet.notifyDiagnosticListeners(resource);
-				}
-				
-				maintainDirtyResources();
-			});
-		} catch (InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(
-				Status.WARNING,
-				Activator.getPluginId(),
-				"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
-			);
-		}
+		
+		// First lock the workspace then lock the transaction
+		this.getVirSatCommandStack().executeInWorkspace(() -> {
+			try {
+				this.writeExclusive(() -> {
+					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
+					for (Resource resource : resources) {
+						saveResource(resource, supressRemoveDanglingReferences);
+						virSatResourceSet.updateDiagnostic(resource);
+						virSatResourceSet.notifyDiagnosticListeners(resource);
+					}
+					
+					maintainDirtyResources();
+				});
+			} catch (InterruptedException e) {
+				Activator.getDefault().getLog().log(new Status(
+					Status.WARNING,
+					Activator.getPluginId(),
+					"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
+				);
+			}
+		});
 
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished try saving all resources"));
 	}
@@ -375,13 +378,15 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void removeResource(Resource emfResource) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: About to unload a resource"));
-		if (emfResource != null) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: ActuallyUnloaded Resource URI (" + emfResource.getURI().toPlatformString(true) + ")"));
-			virSatResourceSet.removeResource(emfResource);
-			// If the resource has been removed we don't need to monitor its dirty state anymore
-			isResourceDirty.remove(emfResource);
-			fireNotifyResourceEvent(Collections.singleton(emfResource), VirSatTransactionalEditingDomain.EVENT_UNLOAD);
-		}
+		this.getVirSatCommandStack().executeInWorkspace(() -> {
+			if (emfResource != null) {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: ActuallyUnloaded Resource URI (" + emfResource.getURI().toPlatformString(true) + ")"));
+				virSatResourceSet.removeResource(emfResource);
+				// If the resource has been removed we don't need to monitor its dirty state anymore
+				isResourceDirty.remove(emfResource);
+				fireNotifyResourceEvent(Collections.singleton(emfResource), VirSatTransactionalEditingDomain.EVENT_UNLOAD);
+			}
+		});
 	}
 	
 	/**
@@ -390,33 +395,35 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	public void reloadAll() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Started reloading all resources"));
 
-		// Make sure that no Change Events are fired while a resource is reloaded
-		synchronized (accumulatedResourceChangeEvents) {
-			// Clear all Accumulated Resource Change Events because at the end of this method
-			// we will notify about all resources being reloaded.
-			clearAccumulatedRecourceChangeEvents();
-			
-			// take the lock on recently changed resources. So that all resources will be reloaded
-			// in one go. No one should interfere at this point.
-			synchronized (recentlyChangedResource) {
-				// In case that a resource is properly unloaded 
-				// The command stack should be flushed and the Clipboard
-				// should be brought back into a clean state
-				VirSatEditingDomainClipBoard.INSTANCE.flushClipboard(this);
-				VirSatTransactionalEditingDomain.this.getCommandStack().flush();
-
-				// Now reload all resources and make sure that all of them are marked as unchanged.
-				virSatResourceSet.realoadAll();
-				recentlyChangedResource.clear();
+		this.getVirSatCommandStack().executeInWorkspace(() -> {
+			// Make sure that no Change Events are fired while a resource is reloaded
+			synchronized (accumulatedResourceChangeEvents) {
+				// Clear all Accumulated Resource Change Events because at the end of this method
+				// we will notify about all resources being reloaded.
+				clearAccumulatedRecourceChangeEvents();
 				
-				// After performing a reload all there are no more dirty resources
-				isResourceDirty.clear();
-			
-				// Now start notifying everyone about the change of resources
-				List<Resource> reloadedResources = virSatResourceSet.getResources();
-				fireNotifyResourceEvent(new HashSet<>(reloadedResources), VirSatTransactionalEditingDomain.EVENT_RELOAD);
+				// take the lock on recently changed resources. So that all resources will be reloaded
+				// in one go. No one should interfere at this point.
+				synchronized (recentlyChangedResource) {
+					// In case that a resource is properly unloaded 
+					// The command stack should be flushed and the Clipboard
+					// should be brought back into a clean state
+					VirSatEditingDomainClipBoard.INSTANCE.flushClipboard(this);
+					VirSatTransactionalEditingDomain.this.getCommandStack().flush();
+	
+					// Now reload all resources and make sure that all of them are marked as unchanged.
+					virSatResourceSet.realoadAll();
+					recentlyChangedResource.clear();
+					
+					// After performing a reload all there are no more dirty resources
+					isResourceDirty.clear();
+				
+					// Now start notifying everyone about the change of resources
+					List<Resource> reloadedResources = virSatResourceSet.getResources();
+					fireNotifyResourceEvent(new HashSet<>(reloadedResources), VirSatTransactionalEditingDomain.EVENT_RELOAD);
+				}
 			}
-		}
+		});
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished reloading all resources"));
 	}
@@ -436,7 +443,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param resource The resource to be saved
 	 * @param supressRemoveDanglingReferences set to true in case the resource is should not be cleared of dangling references before the save
 	 */
-	public void saveResource(Resource resource, boolean supressRemoveDanglingReferences) {
+	protected void saveResource(Resource resource, boolean supressRemoveDanglingReferences) {
 		if (resource != null) {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving resource (" + resource.getURI().toPlatformString(true) + ")"));
 			
@@ -489,13 +496,22 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	}
 	
 	/**
+	 * Special method to save a resource without obeying write permissions
+	 * @param resource the resource to be saved
+	 */
+	public void saveResourceIgnorePermissions(Resource resource) {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Saving resource ignoring write permissions (" + resource.getURI().toPlatformString(true) + ")"));
+		this.getVirSatCommandStack().executeInWorkspace(() -> internallySaveResource(resource, true));
+	}
+	
+	/**
 	 * Performs the actual save of an resource, only visible to the outside for the special case of
 	 * needing to ignore checks such as rights management. Needed for example when changing the discipline
 	 * of a resource since this means giving the rights away.
 	 * @param resource the resource to save
 	 * @param overrideWritePermissions the flag to give permission to ignore rights management
 	 */
-	public void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
+	private void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
 		try {
 			this.writeExclusive(() -> {
 				// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer

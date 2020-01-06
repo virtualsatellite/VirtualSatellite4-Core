@@ -951,7 +951,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			disciplineContainer.setAssignedDiscipline(discipline);
 			Resource resource = disciplineContainer.eResource();
 			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(discipline);
-			ed.internallySaveResource(resource, true);
+			ed.saveResourceIgnorePermissions(resource);
 		}
 	}
 
