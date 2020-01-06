@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLME
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.ArrayInstanceItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMComposedPropertyInstanceItemProviderTest;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMERefererencePropertyInstanceItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMEnumUnitPropertyInstanceItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMPropertyinstancesItemProviderAdapterFactoryTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMRefererencePropertyInstanceItemProviderTest;
@@ -101,6 +102,7 @@ import junit.framework.JUnit4TestAdapter;
 				DVLMEnumUnitPropertyInstanceItemProviderTest.class,
 				DVLMComposedPropertyInstanceItemProviderTest.class,
 				DVLMRefererencePropertyInstanceItemProviderTest.class,
+				DVLMERefererencePropertyInstanceItemProviderTest.class,
 				DVLMResourcePropertyInstanceItemProviderTest.class,
 				DVLMUnitValuePropertyInstanceItemProviderTest.class,
 				DVLMValuePropertyInstanceItemProviderTest.class,
