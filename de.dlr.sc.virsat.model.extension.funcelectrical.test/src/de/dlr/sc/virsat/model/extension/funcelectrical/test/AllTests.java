@@ -13,9 +13,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelExport.FuncElecExporterTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.FuncElecImporterTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.ImportValidatorTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter.FuncElecExporterTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.FuncElecImporterTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.ImportValidatorTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.html.HTMLExporterTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.html.ImageProviderTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelperTest;
