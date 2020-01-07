@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import de.dlr.sc.virsat.excel.ExcelImporter;
 import de.dlr.sc.virsat.excel.Fault;
 import de.dlr.sc.virsat.excel.commands.ImportCommand;
+import de.dlr.sc.virsat.excel.importer.ExcelImporter;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.ui.Activator;
