@@ -402,6 +402,11 @@ public class GenerateCategoryBeansTest extends AExternalModelTest {
       _builder.newLine();
       _builder.append("\t\t");
       _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("EReference testEReferenceArray[] of Type tests.ExternalTestType;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
       _builder.append("\t");
       _builder.append("}");
       _builder.newLine();
@@ -438,6 +443,11 @@ public class GenerateCategoryBeansTest extends AExternalModelTest {
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("EReference testEReference of Type tests.ExternalTestType;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("EReference testEReferenceArray[] of Type tests.ExternalTestType;");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.newLine();

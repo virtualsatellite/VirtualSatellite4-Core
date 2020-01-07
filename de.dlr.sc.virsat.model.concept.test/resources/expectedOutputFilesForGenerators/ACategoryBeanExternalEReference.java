@@ -12,14 +12,17 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
-import org.eclipse.emf.ecore.EObject;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
@@ -53,6 +56,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	
 	// property name constants
 	public static final String PROPERTY_TESTEREFERENCE = "testEReference";
+	public static final String PROPERTY_TESTEREFERENCEARRAY = "testEReferenceArray";
 	
 	
 	
@@ -77,7 +81,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	// *****************************************************************
 	// * Attribute: testEReference
 	// *****************************************************************
-	private BeanPropertyEReference testEReference = new BeanPropertyEReference();
+	private BeanPropertyEReference<ExternalTestType> testEReference = new BeanPropertyEReference<ExternalTestType>();
 	
 	private void safeAccessTestEReference() {
 		if (testEReference.getTypeInstance() == null) {
@@ -85,7 +89,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
-	public Command setTestEReference(EditingDomain ed, EObject value) {
+	public Command setTestEReference(EditingDomain ed, ExternalTestType value) {
 		safeAccessTestEReference();
 		return this.testEReference.setValue(ed, value);
 	}
@@ -97,9 +101,25 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	
 	public ExternalTestType getTestEReference() {
 		safeAccessTestEReference();
-		return (ExternalTestType) testEReference.getValue();
+		return testEReference.getValue();
 	}
 	
+	
+	// *****************************************************************
+	// * Array Attribute: testEReferenceArray
+	// *****************************************************************
+	private IBeanList<BeanPropertyEReference<ExternalTestType>> testEReferenceArray = new TypeSafeEReferenceArrayInstanceList<ExternalTestType>();
+	
+	private void safeAccessTestEReferenceArray() {
+		if (testEReferenceArray.getArrayInstance() == null) {
+			testEReferenceArray.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testEReferenceArray"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyEReference<ExternalTestType>> getTestEReferenceArray() {
+		safeAccessTestEReferenceArray();
+		return testEReferenceArray;
+	}
 	
 	
 }

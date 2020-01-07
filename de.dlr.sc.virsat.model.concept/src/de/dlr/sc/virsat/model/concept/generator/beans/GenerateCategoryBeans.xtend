@@ -72,6 +72,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import java.io.IOException
 import de.dlr.sc.virsat.model.concept.Activator
 import org.eclipse.core.runtime.Status
+import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -482,13 +483,21 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyEReference);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
+				importManager.register(TypeSafeEReferenceArrayInstanceList);
+				
+				val typeClass = getEObjectClass(property)
+				val genPackageSpecified = typeClass !== null
+				if(genPackageSpecified) {
+					importManager.register(typeClass)
+				}
+				val referenceType = '''«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF»'''
 			
 				return '''
-				private IBeanList<BeanPropertyEReference> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyEReference.class);
+				private IBeanList<BeanPropertyEReference<«referenceType»>> «property.name» = new TypeSafeEReferenceArrayInstanceList<«referenceType»>();
 				
 				«declareSafeAccessArrayMethod(property, importManager)»
 				
-				public IBeanList<BeanPropertyEReference> «propertyMethodGet(property)»() {
+				public IBeanList<BeanPropertyEReference<«referenceType»>> «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
 				}
@@ -847,34 +856,36 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(EditingDomain);
 				importManager.register(BeanPropertyEReference);
 				importManager.register(EReferencePropertyInstance)
-				importManager.register(EObject);
 				
 				val typeClass = getEObjectClass(property)
 				val genPackageSpecified = typeClass !== null
 				if(genPackageSpecified) {
 					importManager.register(typeClass)
+				} else {
+					importManager.register(EObject);
 				}
-			
+				val referenceType = '''«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF»'''
+				
 				return '''
-				private BeanPropertyEReference «property.name» = new BeanPropertyEReference();
+				private BeanPropertyEReference<«referenceType»> «property.name» = new BeanPropertyEReference<«referenceType»>();
 				
 				«declareSafeAccessAttributeMethod(property, EReferencePropertyInstance)»
 				
-				public Command «propertyMethodSet(property)»(EditingDomain ed, EObject value) {
+				public Command «propertyMethodSet(property)»(EditingDomain ed, «referenceType» value) {
 					«propertyMethodSafeAccess(property)»;
 					return this.«property.name».setValue(ed, value);
 				}
-
-				public void «propertyMethodSet(property)»(«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF» value) {
+				
+				public void «propertyMethodSet(property)»(«referenceType» value) {
 					«propertyMethodSafeAccess(property)»;
 					this.«property.name».setValue(value);
 				}
-
-				public «IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF» «propertyMethodGet(property)»() {
+				
+				public «referenceType» «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
-					return «IF genPackageSpecified»(«property.referenceType.name») «ENDIF»«property.name».getValue();
+					return «property.name».getValue();
 				}
-
+				
 				'''	
 			}			
 		}.doSwitch(property)

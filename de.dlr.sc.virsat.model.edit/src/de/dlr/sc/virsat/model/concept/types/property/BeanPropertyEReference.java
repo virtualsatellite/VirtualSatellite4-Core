@@ -14,25 +14,34 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.ABeanObject;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 
 /**
- *
+ * @param <Type> the reference type
  */
-public class BeanPropertyEReference extends ABeanEObjectProperty {
+public class BeanPropertyEReference<Type extends EObject> extends ABeanObject<EReferencePropertyInstance> implements IBeanProperty<EReferencePropertyInstance, Type> {
 
-	@Override
 	public Command setValue(EditingDomain ed, EObject value) {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.EREFERENCE_PROPERTY_INSTANCE__REFERENCE, value);
 	}
+
+	public boolean isSet() {
+		return ti.getReference() != null;
+	}
 	
-	@Override
-	public void setValue(EObject value) {
+	public void unset() {
+		ti.setReference(null);
+	}
+	
+	public void setValue(Type value) {
 		ti.setReference(value);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public EObject getValue() {
-		return ti.getReference();
+	public Type getValue() {
+		return (Type) ti.getReference();
 	}
 }

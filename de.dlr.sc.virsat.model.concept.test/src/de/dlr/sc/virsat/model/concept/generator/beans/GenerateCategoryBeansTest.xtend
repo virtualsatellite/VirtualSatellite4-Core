@@ -228,6 +228,8 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 					
 					EReference testEReference of Type tests.ExternalTestType;
 					
+					EReference testEReferenceArray[] of Type tests.ExternalTestType;
+					
 				}
 				
 			}
@@ -249,6 +251,8 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 				Category TestCategory {
 					
 					EReference testEReference of Type tests.ExternalTestType;
+					
+					EReference testEReferenceArray[] of Type tests.ExternalTestType;
 					
 				}
 				
