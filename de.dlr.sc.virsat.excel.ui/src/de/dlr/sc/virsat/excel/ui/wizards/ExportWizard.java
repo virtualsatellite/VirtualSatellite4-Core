@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import de.dlr.sc.virsat.excel.ExcelExporter;
+import de.dlr.sc.virsat.excel.exporter.ExcelExporter;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.project.ui.Activator;
 

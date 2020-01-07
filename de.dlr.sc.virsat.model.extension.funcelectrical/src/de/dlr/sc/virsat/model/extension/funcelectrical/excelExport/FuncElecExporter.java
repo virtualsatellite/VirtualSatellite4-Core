@@ -27,8 +27,8 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
-import de.dlr.sc.virsat.excel.ExcelExportHelper;
-import de.dlr.sc.virsat.excel.IExport;
+import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
+import de.dlr.sc.virsat.excel.exporter.IExport;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;

@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.model.extension.funcelectrical.excelImport;
+package de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,10 +22,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.excel.Fault;
+import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.FuncElecImporter;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 

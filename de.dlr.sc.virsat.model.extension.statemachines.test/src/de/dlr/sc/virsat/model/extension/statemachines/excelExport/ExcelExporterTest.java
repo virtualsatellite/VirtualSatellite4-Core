@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.statemachines.Activator;
-import de.dlr.sc.virsat.model.extension.statemachines.excelExporter.StateMachineExporter;
+import de.dlr.sc.virsat.model.extension.statemachines.excel.exporter.StateMachineExporter;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;

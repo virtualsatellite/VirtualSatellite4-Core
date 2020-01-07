@@ -20,8 +20,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.excel.Activator;
-import de.dlr.sc.virsat.excel.Fault;
-import de.dlr.sc.virsat.excel.IImport;
+import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 

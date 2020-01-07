@@ -14,6 +14,9 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
+import de.dlr.sc.virsat.excel.fault.Fault;
+import de.dlr.sc.virsat.excel.fault.FaultType;
+
 
 /**
  * This class tests the Fault class.

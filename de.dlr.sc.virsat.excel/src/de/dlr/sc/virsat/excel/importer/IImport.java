@@ -7,12 +7,14 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.excel;
+package de.dlr.sc.virsat.excel.importer;
 
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
+
+import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 
 /**

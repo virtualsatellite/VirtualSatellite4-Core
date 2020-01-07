@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.excelImport;
+package de.dlr.sc.virsat.model.extension.statemachines.excel.importer;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,9 +18,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
-import de.dlr.sc.virsat.excel.ExcelImportHelper;
-import de.dlr.sc.virsat.excel.Fault;
-import de.dlr.sc.virsat.excel.IImport;
+import de.dlr.sc.virsat.excel.fault.Fault;
+import de.dlr.sc.virsat.excel.importer.ExcelImportHelper;
+import de.dlr.sc.virsat.excel.importer.IImport;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;

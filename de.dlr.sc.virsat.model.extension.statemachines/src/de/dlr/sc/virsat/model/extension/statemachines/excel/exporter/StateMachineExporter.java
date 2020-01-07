@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.excelExporter;
+package de.dlr.sc.virsat.model.extension.statemachines.excel.exporter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,8 +24,8 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
-import de.dlr.sc.virsat.excel.ExcelExportHelper;
-import de.dlr.sc.virsat.excel.IExport;
+import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
+import de.dlr.sc.virsat.excel.exporter.IExport;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;

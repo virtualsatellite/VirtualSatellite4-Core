@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.model.extension.funcelectrical.excelImport;
+package de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer;
 
 
 
@@ -24,10 +24,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
-import de.dlr.sc.virsat.excel.Fault;
-import de.dlr.sc.virsat.excel.FaultType;
+import de.dlr.sc.virsat.excel.fault.Fault;
+import de.dlr.sc.virsat.excel.fault.FaultType;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.ImportValidator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 
 

@@ -7,7 +7,8 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.excel;
+package de.dlr.sc.virsat.excel.fault;
+
 /**
 * Class for the possible faults  which can happen during the import 
 * 

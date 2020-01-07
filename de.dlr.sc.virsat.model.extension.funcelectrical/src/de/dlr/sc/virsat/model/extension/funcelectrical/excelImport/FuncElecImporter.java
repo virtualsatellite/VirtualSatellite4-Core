@@ -18,9 +18,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
-import de.dlr.sc.virsat.excel.ExcelImportHelper;
-import de.dlr.sc.virsat.excel.Fault;
-import de.dlr.sc.virsat.excel.IImport;
+import de.dlr.sc.virsat.excel.fault.Fault;
+import de.dlr.sc.virsat.excel.importer.ExcelImportHelper;
+import de.dlr.sc.virsat.excel.importer.IImport;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.Repository;
