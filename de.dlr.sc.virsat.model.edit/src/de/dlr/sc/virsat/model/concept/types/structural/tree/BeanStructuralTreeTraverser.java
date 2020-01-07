@@ -36,11 +36,11 @@ public class BeanStructuralTreeTraverser {
 	/**
 	 * Traverse a subtree of a given node
 	 * @param node the node from where to start traversing
-	 * @param parent the closest matching parent of node (or null)
+	 * @param matchingParent the closest matching parent of node (or null)
 	 */
-	private void traverseRecursive(IBeanStructuralElementInstance node, IBeanStructuralElementInstance parent) {
+	private void traverseRecursive(IBeanStructuralElementInstance node, IBeanStructuralElementInstance matchingParent) {
 		// Remember the parent of the previous recursion
-		IBeanStructuralElementInstance nextParent = parent;
+		IBeanStructuralElementInstance nextParent = matchingParent;
 		
 		// First check if the traverser found a match.
 		// if yes start processing it, by handing over the node as well as its parent.
@@ -50,7 +50,7 @@ public class BeanStructuralTreeTraverser {
 		// when processing the children.
 		boolean isMatching = matcher.isMatching(node);
 		if (isMatching) {
-			matcher.processMatch(node, parent);
+			matcher.processMatch(node, matchingParent);
 			nextParent = node;
 		}
 		
