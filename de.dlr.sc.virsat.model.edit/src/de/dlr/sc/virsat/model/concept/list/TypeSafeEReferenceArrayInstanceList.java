@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EObject;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 
 public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends AArrayInstanceList<BeanPropertyEReference<ETYPE>> {
 
@@ -38,7 +40,11 @@ public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends 
 		if (o instanceof BeanPropertyEReference<?>) {
 			BeanPropertyEReference<ETYPE> categoryBean = (BeanPropertyEReference<ETYPE>) o;
 			APropertyInstance ca = categoryBean.getTypeInstance();
-			return ai.getArrayInstances().contains(ca);
+			for (APropertyInstance pi : ai.getArrayInstances()) {
+				if (pi.getUuid().equals(ca.getUuid())) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -77,7 +83,14 @@ public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends 
 
 	@Override
 	protected APropertyInstance createAddPi(BeanPropertyEReference<ETYPE> bean) {
-		return bean.getTypeInstance();
+		EReferencePropertyInstance cpi;
+		if (bean.getTypeInstance() != null) {
+			cpi = bean.getTypeInstance();
+		} else {
+			cpi = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
+		}
+		cpi.setType(ai.getType());
+		return cpi;
 	}
 
 	@SuppressWarnings("unchecked")
