@@ -26,19 +26,17 @@ import de.dlr.sc.virsat.excel.exporter.IExport;
 
 /**
  * This class test the ExcelExporter class.
- * @author muel_s8
  *
+ * @author muel_s8
  */
-
 @SuppressWarnings("restriction")
 public class ExcelExporterTest {
-	
+
 	/**
 	 * Mockup exporter accepting Strings
+	 * 
 	 * @author muel_s8
-	 *
 	 */
-	
 	public class StringExporter implements IExport {
 
 		@Override
@@ -50,11 +48,11 @@ public class ExcelExporterTest {
 		public boolean canExport(Object selection) {
 			return selection instanceof String;
 		}
-
 	}
+
 	private IExtensionRegistry registry;
 	private boolean executed = false;
-	
+
 	@Before
 	public void setUp() {
 		registry = new ExtensionRegistry(null, null, null) {
@@ -71,7 +69,7 @@ public class ExcelExporterTest {
 			}
 		};
 	}
-	
+
 	@Test
 	public void testCanExport() throws CoreException {
 		ExcelExporter exporter = new ExcelExporter(registry);
@@ -80,7 +78,7 @@ public class ExcelExporterTest {
 		boolean canExportObject = exporter.canExport(new Object());
 		assertFalse("String exporter cannot export an Object", canExportObject);
 	}
-	
+
 	@Test
 	public void testExport() throws CoreException {
 		ExcelExporter exporter = new ExcelExporter(registry);

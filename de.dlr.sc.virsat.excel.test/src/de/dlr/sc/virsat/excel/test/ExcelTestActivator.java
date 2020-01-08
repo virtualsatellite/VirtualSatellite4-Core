@@ -16,21 +16,21 @@ import java.net.URL;
 /**
  * Activator of test Fragment as central info hub, even though
  * Fragments do not have an OSGI/Equinox Activator such as a plugin
+ * 
  * @author fisc_ph
- *
  */
 public class ExcelTestActivator {
 
 	/**
-	 * Hidden construcotr of activator class
+	 * Hidden constructor of activator class
 	 */
 	private ExcelTestActivator() {
 	}
-	
+
 	public static final String FRAGMENT_ID = "de.dlr.sc.virsat.excel.test";
 
 	/**
-	 * Method to access the fragments contents from the resource folder and to ahnd it back as string
+	 * Method to access the fragments contents from the resource folder and to hand it back as string
 	 * @param resourcePath the path to the resource starting with "resource/"
 	 * @return the content of the resource as string
 	 * @throws IOException throws
@@ -39,7 +39,6 @@ public class ExcelTestActivator {
 		URL url;
 		url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
 		InputStream inputStream = url.openConnection().getInputStream();
-
 		return inputStream;
 	}
 }

@@ -17,11 +17,10 @@ import org.junit.Test;
 import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.fault.FaultType;
 
-
 /**
  * This class tests the Fault class.
- * @author muel_s8
  *
+ * @author muel_s8
  */
 
 public class FaultTest {
@@ -41,5 +40,4 @@ public class FaultTest {
 		Fault fault3 = new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, 1, 1);
 		assertEquals("Comparing two faults that are equal", fault1, fault3);
 	}
-	
 }

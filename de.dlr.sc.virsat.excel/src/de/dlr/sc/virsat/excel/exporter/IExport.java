@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * General Interface To export data on Excel
  * @author bell_er
- *
  */
 public interface IExport {
 
@@ -24,7 +23,6 @@ public interface IExport {
 	 * @param path the export path
 	 * @param useDefaultTemplate true if using the default template false otherwise
 	 * @param templatePath the path of the user selected template
-	 *
 	 */
 	void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath);
 
@@ -32,7 +30,6 @@ public interface IExport {
 	 * Can Export?
 	 * @param selection the oject to be exported
 	 * @return true when can export false otherwise
-	 *
 	 */
 	boolean canExport(Object selection);
 
