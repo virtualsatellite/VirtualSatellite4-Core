@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.model.extension.statemachines.excelImport;
+package de.dlr.sc.virsat.model.extension.statemachines.excel.importer;
 
 import static org.junit.Assert.assertEquals;
 

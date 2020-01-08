@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.funcelectrical.excelExport;
+package de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter;
 
 import java.io.File;
 import java.io.FileOutputStream;
