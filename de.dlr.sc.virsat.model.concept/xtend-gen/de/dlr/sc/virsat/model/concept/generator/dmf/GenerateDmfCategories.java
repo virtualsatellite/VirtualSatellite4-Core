@@ -16,6 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.DynamicArrayModifier;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
@@ -300,6 +301,13 @@ public class GenerateDmfCategories {
               return null;
             }
             final EReference eReference = EcoreFactory.eINSTANCE.createEReference();
+            return eReference;
+          }
+          
+          @Override
+          public EStructuralFeature caseEReferenceProperty(final EReferenceProperty object) {
+            final EReference eReference = EcoreFactory.eINSTANCE.createEReference();
+            eReference.setEType(object.getReferenceType());
             return eReference;
           }
         }.doSwitch(it_1);

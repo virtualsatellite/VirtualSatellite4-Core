@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.codegen.ecore.genmodel.GenResourceKind
 import java.util.Date
 import java.util.Calendar
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
 
 /**
  * This generator generates an eCore model with eClasses out of described categories
@@ -261,6 +262,13 @@ SPDX-License-Identifier: EPL-2.0";
 						val eReference = EcoreFactory.eINSTANCE.createEReference;
 						return eReference;
 					}
+					
+					override caseEReferenceProperty(EReferenceProperty object) {
+						val eReference = EcoreFactory.eINSTANCE.createEReference;
+						eReference.EType = object.referenceType
+						return eReference;
+					}
+					
 				}.doSwitch(it);
 				
 				// In case no StructuralFeature for the Property could be created
