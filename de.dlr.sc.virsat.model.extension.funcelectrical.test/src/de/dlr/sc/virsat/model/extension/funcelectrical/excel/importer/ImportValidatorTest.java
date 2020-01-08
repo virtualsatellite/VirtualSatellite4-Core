@@ -28,7 +28,6 @@ import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.fault.FaultType;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.ImportValidator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 
 

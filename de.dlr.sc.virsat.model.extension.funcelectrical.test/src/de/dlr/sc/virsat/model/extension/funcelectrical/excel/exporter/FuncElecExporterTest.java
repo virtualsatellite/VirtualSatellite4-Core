@@ -26,7 +26,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter.FuncElecExporter;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
 
