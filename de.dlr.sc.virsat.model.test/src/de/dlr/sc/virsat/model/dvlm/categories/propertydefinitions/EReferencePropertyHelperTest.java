@@ -21,6 +21,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.external.tests.AExternalModelTest;
 
 public class EReferencePropertyHelperTest extends AExternalModelTest {
@@ -38,6 +39,10 @@ public class EReferencePropertyHelperTest extends AExternalModelTest {
 		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
 		Category testCategory = CategoriesFactory.eINSTANCE.createCategory();
 		propertyDefinition = PropertydefinitionsFactory.eINSTANCE.createEReferenceProperty();
+		EcoreImport eImport = ConceptsFactory.eINSTANCE.createEcoreImport();
+		
+		eImport.setImportedNsURI("http://www.virsat.sc.dlr.de/external/tests");
+		concept.getEcoreImports().add(eImport);
 		
 		concept.getCategories().add(testCategory);
 		testCategory.getProperties().add(propertyDefinition);

@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider;
 
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
@@ -32,17 +30,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
 public class DVLMERefererencePropertyInstanceItemProviderTest {
 
-	private ComposedAdapterFactory adapterFactory;
-	
-	@Before
-	public void setup() {
-		adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-	}
 	
 	@Test
 	public void testGetText() {
-		DVLMERefererencePropertyInstanceItemProvider dvlmRpiip = new DVLMERefererencePropertyInstanceItemProvider(adapterFactory);
-		
+		PropertyinstancesItemProviderAdapterFactory adapterFactory = new DVLMPropertyinstancesItemProviderAdapterFactory();
+		DVLMERefererencePropertyInstanceItemProvider dvlmRpiip = (DVLMERefererencePropertyInstanceItemProvider) adapterFactory.createEReferencePropertyInstanceAdapter();
 		EReferenceProperty rp = PropertydefinitionsFactory.eINSTANCE.createEReferenceProperty();
 		rp.setName("ERP");
 		EReferencePropertyInstance rpi = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();

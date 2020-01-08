@@ -21,6 +21,7 @@ import de.dlr.sc.virsat.model.concept.migrator.ConceptMigratorTest;
 import de.dlr.sc.virsat.model.concept.migrator.CreateMigrateConceptToLatestCommandTest;
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignmentTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBooleanTest;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnumTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloatTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
@@ -85,6 +86,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanPropertyStringTest.class,
 				BeanPropertyBooleanTest.class,
 				BeanPropertyEnumTest.class,
+				BeanPropertyEReference.class,
 				BeanCategoryAssignmentTest.class,
 				TransactionalEditingDomainHelperTest.class,
 				BeanStructuralElementInstanceTest.class,

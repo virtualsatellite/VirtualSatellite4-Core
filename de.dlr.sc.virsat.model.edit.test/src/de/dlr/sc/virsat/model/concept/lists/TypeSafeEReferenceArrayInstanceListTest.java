@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,9 +68,6 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		testPropertyValue = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
@@ -106,9 +102,13 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		final int INDEX = 2;
 		testList.add(INDEX, bean);
 		assertEquals(INDEX, testList.indexOf(testList.get(INDEX)));
+		assertEquals(INDEX, testList.lastIndexOf(testList.get(INDEX)));
 		
 		testList.removeAll(Collections.singletonList(bean));
 		assertFalse("Bean should be removed", testList.contains(bean));
+		final int INDEX_NOT_EXISTENT = -1;
+		assertEquals("Index should be not existent", INDEX_NOT_EXISTENT, testList.indexOf(bean));
+		assertEquals("Index should be not existent", INDEX_NOT_EXISTENT, testList.lastIndexOf(bean));
 		
 		BeanPropertyEReference<CategoryAssignment> bean2 = new BeanPropertyEReference<CategoryAssignment>();
 		eReferencePropertyInstance = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
@@ -121,7 +121,11 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		testList.set(SET_INDEX, bean);
 		assertEquals(testList.subList(SET_INDEX, SET_INDEX + 1).get(0).getTypeInstance().getUuid(), bean.getTypeInstance().getUuid());
 		
-		testList.add(bean);
+		final int INDEX_FOR_LIST = 0;
+		testList.addAll(INDEX_FOR_LIST, Collections.singletonList(bean));
+		assertTrue("Bean should be found in list", testList.contains(bean));
+		assertEquals("Bean should be found in list", INDEX_FOR_LIST + 1, testList.indexOf(bean));
+		
 		testList.retainAll(Collections.singletonList(bean2));
 		assertTrue("Bean should be found in list", testList.contains(bean2));
 		assertFalse("Bean should be removed", testList.contains(bean));
