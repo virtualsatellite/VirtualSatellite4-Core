@@ -246,7 +246,7 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
     	concept = '''
 			Concept testConcept{
 				
-				EImport "http://www.virsat.sc.dlr.de/external/tests" genModel "de.dlr.sc.virsat.model.test/model/ExternalModel.genmodel";
+				EImport "http://www.virsat.sc.dlr.de/external/tests" genModel "de.dlr.sc.virsat.model.external.tests/model/ExternalModel.genmodel";
 					
 				Category TestCategory {
 					
