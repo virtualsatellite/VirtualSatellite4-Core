@@ -19,8 +19,6 @@ import de.dlr.sc.virsat.excel.fault.FaultType;
 
 /**
  * This class tests the Fault class.
- *
- * @author muel_s8
  */
 
 public class FaultTest {

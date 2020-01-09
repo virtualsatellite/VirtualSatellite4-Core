@@ -19,8 +19,6 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 
 /**
  * General Interface To import data from Excel
- *
- * @author bell_er
  */
 public interface IImport {
 

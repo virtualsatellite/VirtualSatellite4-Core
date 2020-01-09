@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.excel.fault;
 
 /**
 * Class for the possible faults which can happen during the import
-*
-* @author Bell_er
 */
 public class Fault {
 	private FaultType faultType;
@@ -24,8 +22,6 @@ public class Fault {
 	* @param faultType the type of the fault
 	* @param sheetNumber the number of the sheet which fault has occurred
 	* @param lineNumber the number of the line which fault has occurred
-	*
-	* @author Bell_er
 	*/
 	public Fault(FaultType faultType, int sheetNumber, int lineNumber) {
 		this.faultType = faultType;
@@ -36,8 +32,6 @@ public class Fault {
 	/**
 	* getter for fault type
 	* @return faultType returns fault type
-	*
-	* @author Bell_er
 	*/
 	public FaultType getFaultType() {
 		return faultType;
@@ -46,8 +40,6 @@ public class Fault {
 	/**
 	* setter for fault type
 	* @param faultType fault type to be set
-	*
-	* @author Bell_er
 	*/
 	public void setFaultType(FaultType faultType) {
 		this.faultType = faultType;
@@ -56,8 +48,6 @@ public class Fault {
 	/**
 	* getter for line number
 	* @return lineNumber returns line Number
-	*
-	* @author Bell_er
 	*/
 	public int getLineNumber() {
 		return lineNumber;
@@ -66,8 +56,6 @@ public class Fault {
 	/**
 	* setter for line number
 	* @param lineNumber line number to be set
-	*
-	* @author Bell_er
 	*/
 	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
@@ -76,8 +64,6 @@ public class Fault {
 	/**
 	* getter for sheet number
 	* @return sheetNumber returns sheet number
-	*
-	* @author Bell_er
 	*/
 	public int getSheetNumber() {
 		return sheetNumber;
@@ -86,8 +72,6 @@ public class Fault {
 	/**
 	* setter for sheet number
 	* @param sheetNumber sheet number to be set
-	*
-	* @author Bell_er
 	*/
 	public void setSheetNumber(int sheetNumber) {
 		this.sheetNumber = sheetNumber;
@@ -104,9 +88,9 @@ public class Fault {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Fault && obj != null) {
-			Fault other = (Fault) obj;
+	public boolean equals(Object object) {
+		if (object instanceof Fault && object != null) {
+			Fault other = (Fault) object;
 			return faultType == other.faultType && lineNumber == other.lineNumber && sheetNumber == other.sheetNumber;
 		}
 

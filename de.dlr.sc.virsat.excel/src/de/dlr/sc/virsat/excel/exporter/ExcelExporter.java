@@ -17,8 +17,6 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * Class for exporting excel
- *
- * @author bell_er
  */
 public class ExcelExporter {
 	private static final String IEXPORT_ID = "de.dlr.sc.virsat.excel.export";
@@ -49,8 +47,8 @@ public class ExcelExporter {
 	 */
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) throws CoreException {
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IEXPORT_ID);
-		for (IConfigurationElement ice : config) {
-			Object object = ice.createExecutableExtension("class");
+		for (IConfigurationElement iConfElement : config) {
+			Object object = iConfElement.createExecutableExtension("class");
 			if (object instanceof IExport) {
 				((IExport) object).export(eObject, path, useDefaultTemplate, templatePath);
 			}
@@ -66,8 +64,8 @@ public class ExcelExporter {
 	public boolean canExport(Object object) throws CoreException {
 		boolean canExport = false;
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IEXPORT_ID);
-		for (IConfigurationElement ice : config) {
-			Object obj = ice.createExecutableExtension("class");
+		for (IConfigurationElement iConfElement : config) {
+			Object obj = iConfElement.createExecutableExtension("class");
 			if (obj instanceof IExport) {
 				canExport = ((IExport) obj).canExport(object);
 				if (canExport) {

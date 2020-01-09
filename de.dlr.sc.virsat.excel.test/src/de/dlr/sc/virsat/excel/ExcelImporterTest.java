@@ -36,16 +36,12 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * This class test the ExcelExporter class.
- *
- * @author muel_s8
  */
 @SuppressWarnings("restriction")
 public class ExcelImporterTest {
 
 	/**
 	 * Mockup exporter accepting repositories
-	 *
-	 * @author muel_s8
 	 */
 	public class RepositoryImporter implements IImport {
 

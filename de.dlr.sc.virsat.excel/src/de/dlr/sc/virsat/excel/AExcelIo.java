@@ -12,8 +12,6 @@ package de.dlr.sc.virsat.excel;
 
 /**
  * Abstract class for EXCEL IO that carries information about the Sheet layouts
- *
- * @author fisc_ph
  */
 public abstract class AExcelIo {
 

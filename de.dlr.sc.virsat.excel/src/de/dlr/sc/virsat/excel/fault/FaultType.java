@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.excel.fault;
 
 /**
 * Enumerator for the possible fault types which can happen during the import
-*
-* @author Bell_er
 */
 
 public enum FaultType {

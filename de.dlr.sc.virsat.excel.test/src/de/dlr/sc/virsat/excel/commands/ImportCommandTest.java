@@ -36,10 +36,7 @@ public class ImportCommandTest extends AConceptProjectTestCase {
 
 	/**
 	 * Mock ExcelImporter
-	 *
-	 * @author muel_s8
 	 */
-
 	public class MockExcelImporter extends ExcelImporter {
 		EObject object;
 		Repository repository;

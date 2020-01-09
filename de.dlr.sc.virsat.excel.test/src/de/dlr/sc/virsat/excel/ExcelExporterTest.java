@@ -26,16 +26,12 @@ import de.dlr.sc.virsat.excel.exporter.IExport;
 
 /**
  * This class test the ExcelExporter class.
- *
- * @author muel_s8
  */
 @SuppressWarnings("restriction")
 public class ExcelExporterTest {
 
 	/**
 	 * Mockup exporter accepting Strings
-	 * 
-	 * @author muel_s8
 	 */
 	public class StringExporter implements IExport {
 

@@ -16,8 +16,6 @@ import java.net.URL;
 /**
  * Activator of test Fragment as central info hub, even though
  * Fragments do not have an OSGI/Equinox Activator such as a plugin
- * 
- * @author fisc_ph
  */
 public class ExcelTestActivator {
 

@@ -20,8 +20,6 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Executable command that performs the actual import operation.
- *
- * @author muel_s8
  */
 public class ImportCommand extends RecordingCommand {
 

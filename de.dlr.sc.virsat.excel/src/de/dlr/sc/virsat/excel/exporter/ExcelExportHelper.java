@@ -28,8 +28,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Class for common code to export excel
- *
- * @author bell_er
  */
 public class ExcelExportHelper {
 	protected static final int ADDZEROIFLESS = 10;
@@ -37,16 +35,12 @@ public class ExcelExportHelper {
 
 	/**
 	* Simple constructor
-	*
-	* @author Bell_er
 	*/
 	public ExcelExportHelper() {
 	}
 
 	/**
 	* returns the workbook
-	*
-	* @author Bell_er
 	* @return wb returns the workbook
 	*/
 	public XSSFWorkbook getWb() {
@@ -63,8 +57,6 @@ public class ExcelExportHelper {
 
 	/**
 	* sets the workbook
-	*
-	* @author Bell_er
 	* @param wb the workbook
 	*/
 	public void setWb(XSSFWorkbook wb) {
@@ -73,14 +65,12 @@ public class ExcelExportHelper {
 
 	/**
 	* sets the workbook
-	* @param fis input stream for the template or default template
-	*
-	* @author Bell_er
+	* @param iStream input stream for the template or default template
 	*/
-	public void setWb(InputStream fis) {
+	public void setWb(InputStream iStream) {
 
 		try {
-			wb = new XSSFWorkbook(fis);
+			wb = new XSSFWorkbook(iStream);
 		} catch (IOException e) {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel", "Failed to create the workbook ", e);
 			DVLMEditPlugin.getPlugin().getLog().log(status);
