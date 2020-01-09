@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -73,10 +74,12 @@ public class ActiveConceptConfigurationElementTest {
 
 		BasicCommandStack fulkaCommandStack = new BasicCommandStack();
 		ourEditingDomain = new AdapterFactoryEditingDomain(adapterFactory, fulkaCommandStack, new HashMap<Resource, Boolean>());
+		UserRegistry.getInstance().setSuperUser(true);
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		UserRegistry.getInstance().setSuperUser(false);
 	}
 
 	@Rule
@@ -92,13 +95,17 @@ public class ActiveConceptConfigurationElementTest {
 	    Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
 
 	    Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
+	    conceptSourceA.setName("conceptA");
 	    Concept conceptSourceB = ConceptsFactory.eINSTANCE.createConcept();
+	    conceptSourceB.setName("conceptB");
 	    
 	    resourceAConcept.getContents().add(conceptSourceA);
 	    resourceBConcept.getContents().add(conceptSourceB);
 
 	    StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
+	    seSourceA.setName("seA");
 	    StructuralElement seSourceB = StructuralFactory.eINSTANCE.createStructuralElement();
+	    seSourceB.setName("seB");
 	    seSourceB.getApplicableFor().add(seSourceA);
 	    
 	    conceptSourceA.getStructuralElements().add(seSourceA);
@@ -107,14 +114,8 @@ public class ActiveConceptConfigurationElementTest {
 	    Repository repository = DVLMFactory.eINSTANCE.createRepository();
 	    resourceRepository.getContents().add(repository);
 	    
-		// Adding Concept B before A will fail
-		expectedException.expect(RuntimeException.class);
-		Command failCommand = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
-		failCommand.execute();
-		assertTrue("ActiveConcepts are not present", repository.getActiveConcepts().isEmpty());
-		
 		// Concept A should be added without any trouble
-		expectedException = ExpectedException.none();
+		//expectedException = ExpectedException.none();
 		Command addConceptA = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceA, repository);
 		addConceptA.execute();
 		
@@ -129,6 +130,34 @@ public class ActiveConceptConfigurationElementTest {
 		assertNotSame("Should not be the same object, should be copied", seSourceB, targetConceptBSe);
 		assertThat("The Copied SE in ConceptB is now pointing to the copied one in ConceptA", targetConceptBSe.getApplicableFor(), hasItem(targetConceptASe));
 		assertThat("The Copied SE in ConceptB is not pointing to the original one in ConceptA", targetConceptBSe.getApplicableFor(), not(hasItem(seSourceA)));
+
+		// Now try to unload the resource for conceptA.
+		// This should bring the Reference in ConceptB into a proxy state
+		resourceAConcept.unload();
+		assertTrue("Reference is in a proxy state", seSourceB.getApplicableFor().get(0).eIsProxy());
+		
+		// Now try to add the concept B again. It has to be removed first.
+		// The proxied object should still be resolved by its URI Fragment so the added concept
+		// should be well linked into the existing concept.,
+		repository.getActiveConcepts().remove(1);
+		Command addConceptBAgain = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
+		addConceptBAgain.execute();
+		assertEquals("Has correct amount of activeConcept", 2, repository.getActiveConcepts().size());
+
+		targetConceptBSe = repository.getActiveConcepts().get(1).getStructuralElements().get(0);
+		assertNotSame("Should not be the same object, should be copied", seSourceB, targetConceptBSe);
+		assertThat("The Copied SE in ConceptB is now pointing to the copied one in ConceptA", targetConceptBSe.getApplicableFor(), hasItem(targetConceptASe));
+		assertThat("The Copied SE in ConceptB is not pointing to the original one in ConceptA", targetConceptBSe.getApplicableFor(), not(hasItem(seSourceA)));
+		
+		// Finally try to break things by cleaning the repository and trying to add the concept
+		// with reference first. resolving the reference is not possible and should create an error.
+		repository.getActiveConcepts().clear();
+		
+		
+		// Adding Concept B before A will fail
+		expectedException.expect(RuntimeException.class);
+		Command failCommand = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
+		failCommand.execute();
 	}
 	
 	@Test
