@@ -69,6 +69,10 @@
 			id="de.dlr.sc.virsat.model.extension.tests.TestMassParameters"
 			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestMassParameters">
 		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.EReferenceTest"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest">
+		</CategoryAssignmentBean>
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
 		<StructuralElementInstanceBean

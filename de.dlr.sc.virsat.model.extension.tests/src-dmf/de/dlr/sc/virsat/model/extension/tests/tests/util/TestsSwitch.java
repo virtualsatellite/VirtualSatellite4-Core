@@ -206,6 +206,15 @@ public class TestsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TestsPackage.EREFERENCE_TEST: {
+				EReferenceTest eReferenceTest = (EReferenceTest)theEObject;
+				T result = caseEReferenceTest(eReferenceTest);
+				if (result == null) result = caseDObject(eReferenceTest);
+				if (result == null) result = caseIUuid(eReferenceTest);
+				if (result == null) result = caseIName(eReferenceTest);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -417,6 +426,21 @@ public class TestsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTestMassParameters(TestMassParameters object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EReference Test</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EReference Test</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEReferenceTest(EReferenceTest object) {
 		return null;
 	}
 

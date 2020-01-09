@@ -9,6 +9,8 @@
  *******************************************************************************/
 Concept de.dlr.sc.virsat.model.extension.tests hasDMF description "A pure test concept to check that everything is working as expected" { 
 	
+	EImport "http://www.virsat.sc.dlr.de/external/tests";
+	
 	StructuralElement TestStructuralElement description "StructuralElement for testing code generator" {
 		IsRootStructuralElement;
 		Inherits From All;
@@ -129,6 +131,12 @@ Concept de.dlr.sc.virsat.model.extension.tests hasDMF description "A pure test c
 		Cardinality 1;
 				 
 		Type mass of Category TestParameter quantityKind "Mass";
+	}
+	
+	Category EReferenceTest {
+		Applicable For All;
+		
+		EReference eReferenceTest of Type tests.ExternalTestType;
 	}
 }
 

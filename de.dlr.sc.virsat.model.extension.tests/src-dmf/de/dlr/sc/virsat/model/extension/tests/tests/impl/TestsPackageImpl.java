@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage;
+import de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBase;
@@ -36,6 +37,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -148,6 +150,13 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass eReferenceTestEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum enumTestEnumEEnum = null;
 
 	/**
@@ -199,6 +208,8 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		// Initialize simple dependencies
 		DVLMPackage.eINSTANCE.eClass();
+		de.dlr.sc.virsat.model.external.tests.TestsPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theTestsPackage.createPackageContents();
@@ -560,6 +571,26 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * @generated
 	 */
 	@Override
+	public EClass getEReferenceTest() {
+		return eReferenceTestEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getEReferenceTest_EReferenceTest() {
+		return (EReference)eReferenceTestEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EEnum getEnumTestEnum() {
 		return enumTestEnumEEnum;
 	}
@@ -641,6 +672,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		testMassParametersEClass = createEClass(TEST_MASS_PARAMETERS);
 		createEReference(testMassParametersEClass, TEST_MASS_PARAMETERS__MASS);
 
+		eReferenceTestEClass = createEClass(EREFERENCE_TEST);
+		createEReference(eReferenceTestEClass, EREFERENCE_TEST__EREFERENCE_TEST);
+
 		// Create enums
 		enumTestEnumEEnum = createEEnum(ENUM_TEST_ENUM);
 	}
@@ -670,6 +704,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		// Obtain other dependent packages
 		DmfPackage theDmfPackage = (DmfPackage)EPackage.Registry.INSTANCE.getEPackage(DmfPackage.eNS_URI);
+		de.dlr.sc.virsat.model.external.tests.TestsPackage theTestsPackage_1 = (de.dlr.sc.virsat.model.external.tests.TestsPackage)EPackage.Registry.INSTANCE.getEPackage(de.dlr.sc.virsat.model.external.tests.TestsPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -692,6 +727,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		testCategoryExtendsEClass.getESuperTypes().add(this.getTestCategoryBase());
 		testParameterEClass.getESuperTypes().add(theDmfPackage.getDObject());
 		testMassParametersEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		eReferenceTestEClass.getESuperTypes().add(theDmfPackage.getDObject());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(testCategoryAllPropertyEClass, TestCategoryAllProperty.class, "TestCategoryAllProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -741,6 +777,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		initEClass(testMassParametersEClass, TestMassParameters.class, "TestMassParameters", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTestMassParameters_Mass(), this.getTestParameter(), null, "mass", null, 0, 1, TestMassParameters.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(eReferenceTestEClass, EReferenceTest.class, "EReferenceTest", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEReferenceTest_EReferenceTest(), theTestsPackage_1.getExternalTestType(), null, "eReferenceTest", null, 0, 1, EReferenceTest.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(enumTestEnumEEnum, EnumTestEnum.class, "EnumTestEnum");

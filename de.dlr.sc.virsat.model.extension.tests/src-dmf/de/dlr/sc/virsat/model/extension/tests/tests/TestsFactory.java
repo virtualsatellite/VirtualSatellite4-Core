@@ -146,6 +146,15 @@ public interface TestsFactory extends EFactory {
 	TestMassParameters createTestMassParameters();
 
 	/**
+	 * Returns a new object of class '<em>EReference Test</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>EReference Test</em>'.
+	 * @generated
+	 */
+	EReferenceTest createEReferenceTest();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

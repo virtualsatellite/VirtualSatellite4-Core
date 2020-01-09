@@ -61,4 +61,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="mass" eType="#//TestParameter"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EReferenceTest" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eReferenceTest" eType="ecore:EClass ../../de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore#//ExternalTestType"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -77,6 +77,7 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 			case TestsPackage.TEST_CATEGORY_EXTENDS: return createTestCategoryExtends();
 			case TestsPackage.TEST_PARAMETER: return createTestParameter();
 			case TestsPackage.TEST_MASS_PARAMETERS: return createTestMassParameters();
+			case TestsPackage.EREFERENCE_TEST: return createEReferenceTest();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -253,6 +254,17 @@ public class TestsFactoryImpl extends EFactoryImpl implements TestsFactory {
 	public TestMassParameters createTestMassParameters() {
 		TestMassParametersImpl testMassParameters = new TestMassParametersImpl();
 		return testMassParameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReferenceTest createEReferenceTest() {
+		EReferenceTestImpl eReferenceTest = new EReferenceTestImpl();
+		return eReferenceTest;
 	}
 
 	/**
