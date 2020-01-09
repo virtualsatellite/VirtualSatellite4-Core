@@ -73,6 +73,7 @@ import java.io.IOException
 import de.dlr.sc.virsat.model.concept.Activator
 import org.eclipse.core.runtime.Status
 import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -485,7 +486,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 				importManager.register(TypeSafeEReferenceArrayInstanceList);
 				
-				val typeClass = getEObjectClass(property)
+				val typeClass = new ExternalGenModelHelper().getEObjectClass(property)
 				val genPackageSpecified = typeClass !== null
 				if(genPackageSpecified) {
 					importManager.register(typeClass)
@@ -857,7 +858,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyEReference);
 				importManager.register(EReferencePropertyInstance)
 				
-				val typeClass = getEObjectClass(property)
+				val typeClass = new ExternalGenModelHelper().getEObjectClass(property)
 				val genPackageSpecified = typeClass !== null
 				if(genPackageSpecified) {
 					importManager.register(typeClass)
@@ -914,57 +915,6 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 		return "safeAccess" + property.name.toFirstUpper +"()";
 	}
 	
-	protected def getEObjectClass(EReferenceProperty property) {
-		val eClassPackage = property.referenceType.eContainer as EPackage
-		val concept = property.eResource.contents.get(0) as Concept
-		val resource = property.eResource
-		val nsURI = eClassPackage.nsURI
-		var String typeClass = null
-		var GenPackage genPackage
-		
-		//Try to resolve package from GenModel import
-		for(eImport : concept.ecoreImports) {
-			if(eImport.importedGenModel !== null) {
-				val genModelURI = URI.createPlatformPluginURI(eImport.importedGenModel, true)
-				genPackage = loadGenPackage(genModelURI, nsURI, resource.resourceSet)
-			}
-		}
-		
-		//Try to resolve package from EPackage path
-		if(genPackage === null && eClassPackage.eResource !== null) {
-			val ecoreURI = eClassPackage.eResource.URI
-			val genModelURI = ecoreURI.trimFileExtension.appendFileExtension("genmodel")
-			genPackage = loadGenPackage(genModelURI, nsURI, resource.resourceSet)
-		}
-		
-		
-		//If package could be found get class name
-		if(genPackage !== null) {
-			typeClass = ""
-			if(genPackage.basePackage !== null) {
-				typeClass = genPackage.basePackage + "."
-			}
-			typeClass += genPackage.NSName
-			typeClass += "." + property.referenceType.name
-		}
-		return typeClass
-	}
-	
-	/*
-	 * Load a GenModel package of a specified EPackage from a GenModel URI 
-	 */
-	protected def loadGenPackage(URI genModelUri, String nsUri, ResourceSet resourceSet) {
-		var Resource genModelResource
-		genModelResource = resourceSet.getResource(genModelUri, true)
-		if(genModelResource !== null && genModelResource.contents.get(0) instanceof GenModel) {
-			var loadedGenModel = genModelResource.contents.get(0) as GenModel
-			for(package : loadedGenModel.allGenPackagesWithClassifiers) {
-				if(package.NSURI.equals(nsUri)) {
-					return package
-				}
-			}
-		}
-	}
 	
 	/**
 	 * This method hands back the class type

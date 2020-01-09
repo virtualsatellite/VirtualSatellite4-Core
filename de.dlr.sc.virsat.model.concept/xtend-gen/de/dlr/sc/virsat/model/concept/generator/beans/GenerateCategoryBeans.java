@@ -13,6 +13,7 @@ import com.google.common.collect.Iterables;
 import de.dlr.sc.virsat.model.concept.generator.AGeneratorGapGenerator;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ImportManager;
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper;
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
@@ -58,21 +59,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropert
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.codegen.ecore.genmodel.GenModel;
-import org.eclipse.emf.codegen.ecore.genmodel.GenPackage;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -1014,7 +1008,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
         importManager.register(TypeSafeEReferenceArrayInstanceList.class);
-        final String typeClass = GenerateCategoryBeans.this.getEObjectClass(property);
+        final String typeClass = new ExternalGenModelHelper().getEObjectClass(property);
         final boolean genPackageSpecified = (typeClass != null);
         if (genPackageSpecified) {
           importManager.register(typeClass);
@@ -2102,7 +2096,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(EditingDomain.class);
         importManager.register(BeanPropertyEReference.class);
         importManager.register(EReferencePropertyInstance.class);
-        final String typeClass = GenerateCategoryBeans.this.getEObjectClass(property);
+        final String typeClass = new ExternalGenModelHelper().getEObjectClass(property);
         final boolean genPackageSpecified = (typeClass != null);
         if (genPackageSpecified) {
           importManager.register(typeClass);
@@ -2226,69 +2220,6 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     String _plus = ("safeAccess" + _firstUpper);
     return (_plus + "()");
-  }
-  
-  protected String getEObjectClass(final EReferenceProperty property) {
-    EObject _eContainer = property.getReferenceType().eContainer();
-    final EPackage eClassPackage = ((EPackage) _eContainer);
-    EObject _get = property.eResource().getContents().get(0);
-    final Concept concept = ((Concept) _get);
-    final Resource resource = property.eResource();
-    final String nsURI = eClassPackage.getNsURI();
-    String typeClass = null;
-    GenPackage genPackage = null;
-    EList<EcoreImport> _ecoreImports = concept.getEcoreImports();
-    for (final EcoreImport eImport : _ecoreImports) {
-      String _importedGenModel = eImport.getImportedGenModel();
-      boolean _tripleNotEquals = (_importedGenModel != null);
-      if (_tripleNotEquals) {
-        final URI genModelURI = URI.createPlatformPluginURI(eImport.getImportedGenModel(), true);
-        genPackage = this.loadGenPackage(genModelURI, nsURI, resource.getResourceSet());
-      }
-    }
-    if (((genPackage == null) && (eClassPackage.eResource() != null))) {
-      final URI ecoreURI = eClassPackage.eResource().getURI();
-      final URI genModelURI_1 = ecoreURI.trimFileExtension().appendFileExtension("genmodel");
-      genPackage = this.loadGenPackage(genModelURI_1, nsURI, resource.getResourceSet());
-    }
-    if ((genPackage != null)) {
-      typeClass = "";
-      String _basePackage = genPackage.getBasePackage();
-      boolean _tripleNotEquals_1 = (_basePackage != null);
-      if (_tripleNotEquals_1) {
-        String _basePackage_1 = genPackage.getBasePackage();
-        String _plus = (_basePackage_1 + ".");
-        typeClass = _plus;
-      }
-      String _typeClass = typeClass;
-      String _nSName = genPackage.getNSName();
-      typeClass = (_typeClass + _nSName);
-      String _typeClass_1 = typeClass;
-      String _name = property.getReferenceType().getName();
-      String _plus_1 = ("." + _name);
-      typeClass = (_typeClass_1 + _plus_1);
-    }
-    return typeClass;
-  }
-  
-  /**
-   * Load a GenModel package of a specified EPackage from a GenModel URI
-   */
-  protected GenPackage loadGenPackage(final URI genModelUri, final String nsUri, final ResourceSet resourceSet) {
-    Resource genModelResource = null;
-    genModelResource = resourceSet.getResource(genModelUri, true);
-    if (((genModelResource != null) && (genModelResource.getContents().get(0) instanceof GenModel))) {
-      EObject _get = genModelResource.getContents().get(0);
-      GenModel loadedGenModel = ((GenModel) _get);
-      List<GenPackage> _allGenPackagesWithClassifiers = loadedGenModel.getAllGenPackagesWithClassifiers();
-      for (final GenPackage package_ : _allGenPackagesWithClassifiers) {
-        boolean _equals = package_.getNSURI().equals(nsUri);
-        if (_equals) {
-          return package_;
-        }
-      }
-    }
-    return null;
   }
   
   /**

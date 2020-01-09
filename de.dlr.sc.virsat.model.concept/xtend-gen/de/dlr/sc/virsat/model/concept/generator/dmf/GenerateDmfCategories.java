@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.generator.dmf;
 
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
@@ -33,8 +34,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.codegen.ecore.generator.Generator;
@@ -98,6 +101,8 @@ public class GenerateDmfCategories {
   
   private String platformPluginUriStringForEcoreModel;
   
+  private Set<EPackage> eReferenceEPackages = new HashSet<EPackage>();
+  
   /**
    * This method serialized the data model into the given format
    * @param fileNameExtension the extension of the target format to serialize to. Can be either XMI or XML for the  moment
@@ -144,25 +149,27 @@ public class GenerateDmfCategories {
             _ePackages.add(resourceEPackage);
           }
         }
+        final Consumer<EPackage> _function = (EPackage it) -> {
+          ecoreImporter.getEPackages().add(it);
+        };
+        this.eReferenceEPackages.forEach(_function);
         ecoreImporter.adjustEPackages(monitor);
         final EPackage genEPackage = ecoreImporter.getEPackages().get(0);
         ModelConverter.EPackageConvertInfo _ePackageConvertInfo = ecoreImporter.getEPackageConvertInfo(genEPackage);
         _ePackageConvertInfo.setConvert(true);
         final List<GenModel> genModels = ecoreImporter.getExternalGenModels();
-        final Consumer<GenModel> _function = (GenModel it) -> {
-          final Consumer<GenPackage> _function_1 = (GenPackage it_1) -> {
-            boolean _equals = it_1.getBasePackage().equals(dataModel.getName());
-            boolean _not_1 = (!_equals);
-            if (_not_1) {
+        final Consumer<GenModel> _function_1 = (GenModel it) -> {
+          final Consumer<GenPackage> _function_2 = (GenPackage it_1) -> {
+            if (((it_1.getBasePackage() != null) && (!it_1.getBasePackage().equals(dataModel.getName())))) {
               List<GenPackage> _referencedGenPackages = ecoreImporter.getReferencedGenPackages();
               _referencedGenPackages.add(it_1);
               ModelConverter.ReferencedGenPackageConvertInfo _referenceGenPackageConvertInfo = ecoreImporter.getReferenceGenPackageConvertInfo(it_1);
               _referenceGenPackageConvertInfo.setValidReference(true);
             }
           };
-          it.getGenPackages().forEach(_function_1);
+          it.getGenPackages().forEach(_function_2);
         };
-        genModels.forEach(_function);
+        genModels.forEach(_function_1);
         ecoreImporter.prepareGenModelAndEPackages(monitor);
         GenPackage _get = ecoreImporter.getGenModel().getGenPackages().get(0);
         _get.setBasePackage(dataModel.getName());
@@ -185,10 +192,10 @@ public class GenerateDmfCategories {
         GenModel _genModel_4 = ecoreImporter.getGenModel();
         _genModel_4.setCopyrightText(
           "Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.\r\n\r\nThis program and the accompanying materials are made available under the\r\nterms of the Eclipse Public License 2.0 which is available at\r\nhttp://www.eclipse.org/legal/epl-2.0.\r\n\r\nSPDX-License-Identifier: EPL-2.0");
-        final Consumer<GenPackage> _function_1 = (GenPackage it) -> {
+        final Consumer<GenPackage> _function_2 = (GenPackage it) -> {
           it.setResource(GenResourceKind.XMI_LITERAL);
         };
-        ecoreImporter.getGenModel().getGenPackages().forEach(_function_1);
+        ecoreImporter.getGenModel().getGenPackages().forEach(_function_2);
         ecoreImporter.saveGenModelAndEPackages(monitor);
         ecoreImporter.getGenModel().reconcile();
         GenModel _genModel_5 = ecoreImporter.getGenModel();
@@ -308,6 +315,9 @@ public class GenerateDmfCategories {
           public EStructuralFeature caseEReferenceProperty(final EReferenceProperty object) {
             final EReference eReference = EcoreFactory.eINSTANCE.createEReference();
             eReference.setEType(object.getReferenceType());
+            EObject _eContainer = eReference.getEType().eContainer();
+            GenerateDmfCategories.this.eReferenceEPackages.add(((EPackage) _eContainer));
+            new ExternalGenModelHelper().resolveGenPackage(object);
             return eReference;
           }
         }.doSwitch(it_1);
