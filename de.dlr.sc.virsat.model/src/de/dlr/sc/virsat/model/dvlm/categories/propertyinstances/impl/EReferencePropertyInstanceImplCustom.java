@@ -34,6 +34,9 @@ public class EReferencePropertyInstanceImplCustom extends EReferencePropertyInst
 		if (newValue == null) {
 			return true;
 		}
+		if (newValue.eIsProxy()) {
+			return true;
+		}
 		EClass type = new EReferencePropertyHelper().getResolvedEClassType((EReferenceProperty) this.getType());
 		EClass newInstanceEClass = newValue.eClass();
 		if (equalsEClass(type, newInstanceEClass)) {
