@@ -1,35 +1,25 @@
-/*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
- *
- * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.tests.tests.provider;
+/**
+ */
+package de.dlr.sc.virsat.model.external.tests.provider;
 
-import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
-import de.dlr.sc.virsat.model.external.tests.provider.ExternalModelEditPlugin;
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
- * This is the central singleton for the Concept edit plugin.
+ * This is the central singleton for the ExternalModel edit plugin.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public final class ConceptEditPlugin extends EMFPlugin {
+public final class ExternalModelEditPlugin extends EMFPlugin {
 	/**
 	 * Keep track of the singleton.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final ConceptEditPlugin INSTANCE = new ConceptEditPlugin();
+	public static final ExternalModelEditPlugin INSTANCE = new ExternalModelEditPlugin();
 
 	/**
 	 * Keep track of the singleton.
@@ -45,12 +35,9 @@ public final class ConceptEditPlugin extends EMFPlugin {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ConceptEditPlugin() {
+	public ExternalModelEditPlugin() {
 		super
 		  (new ResourceLocator [] {
-		     DVLMEditPlugin.INSTANCE,
-		     ExternalModelEditPlugin.INSTANCE,
-		     EcoreEditPlugin.INSTANCE,
 		   });
 	}
 
