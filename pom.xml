@@ -57,6 +57,7 @@
 				<module>de.dlr.sc.virsat.model.ui</module>
 				<module>de.dlr.sc.virsat.model.test</module>
 				<module>de.dlr.sc.virsat.model.external.tests</module>
+				<module>de.dlr.sc.virsat.model.external.tests.edit</module>
 
 				<module>de.dlr.sc.virsat.model.calculation</module>
 				<module>de.dlr.sc.virsat.model.calculation.test</module>
