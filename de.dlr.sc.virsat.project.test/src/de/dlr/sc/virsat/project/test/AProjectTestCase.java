@@ -21,6 +21,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.junit.rules.Timeout;
+
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
@@ -38,9 +40,9 @@ public abstract class AProjectTestCase {
 
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
 	
-//	@Rule
-//	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
-//	
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE = "true"; 
