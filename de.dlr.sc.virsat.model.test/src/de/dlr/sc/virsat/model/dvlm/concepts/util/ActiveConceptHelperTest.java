@@ -72,13 +72,13 @@ public class ActiveConceptHelperTest {
 	private static final String TEST_CONCEPT_ID = "de.dlr.sc.virsat.model.concept.test"; 
 	private static final String TEST_DISPLAY_NAME = "Concept"; 
 	private static final String TEST_VERSION = "1.0"; 
-	private static final String TEST_INVALID_ID = "de.dlr.sc.virsat.model.concept.test.invalid"; 
-	private static final String TEST_CATEGORY_ID_ONE = "de.dlr.sc.virsat.model.concept.catOne"; 
-	private static final String TEST_CATEGORY_ID_TWO = "de.dlr.sc.virsat.model.concept.catTWo"; 
-	private static final String TEST_CATEGORY_ID_THREE = "de.dlr.sc.virsat.model.concept.catThree"; 
+	private static final String TEST_INVALID_ID = "invalid"; 
+	private static final String TEST_CATEGORY_ID_ONE = "catOne"; 
+	private static final String TEST_CATEGORY_ID_TWO = "catTWo"; 
+	private static final String TEST_CATEGORY_ID_THREE = "catThree"; 
 
-	private static final String TEST_SE_ID_ONE = "de.dlr.sc.virsat.model.concept.seOne"; 
-	private static final String TEST_SE_ID_TWO = "de.dlr.sc.virsat.model.concept.seTWo"; 
+	private static final String TEST_SE_ID_ONE = "seOne"; 
+	private static final String TEST_SE_ID_TWO = "seTWo"; 
 
 	@Before
 	public void setup() {
@@ -145,6 +145,32 @@ public class ActiveConceptHelperTest {
 
 	@Test
 	public void testGetCategoryByConceptAndCategoryId() {
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CATEGORY_ID_ONE);
+		assertEquals("Found the correct Category", testCategoryOne, category);
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryFqn() {
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + "." + TEST_CATEGORY_ID_ONE);
+		assertEquals("Found the correct Category", testCategoryOne, category);
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryIncorrectFqn() {
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + ".incorrect." + TEST_CATEGORY_ID_ONE);
+		assertNull("Did not find category for invalid fqn", category); 
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryNullNameAndFqn() {
+		testConcept.setName(null);
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + TEST_CATEGORY_ID_ONE);
+		assertNull("Did not find category by fqn because category name is null", category); 
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryNullNameAndCategoryName() {
+		testConcept.setName(null);
 		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CATEGORY_ID_ONE);
 		assertEquals("Found the correct Category", testCategoryOne, category);
 	}

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.concepts.util;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -219,15 +220,35 @@ public class ActiveConceptHelper {
 	/**
 	 * Method to access a category from a given Concept
 	 * @param concept the concept in which to look for the category
-	 * @param categoryId the id of the category to look for
+	 * @param categoryFqn the id or FQN of the category to look for
 	 * @return the category or null it doesn't exist
 	 */
-	public static Category getCategory(Concept concept, String categoryId) {
+	public static Category getCategory(Concept concept, String categoryFqn) {
+		// Now take the final part of the FQN which is the category name and search for it.
+		String [] fqnParts = categoryFqn.split(FQID_DELIMITER_REGEX);
+		String categoryId = fqnParts[fqnParts.length - 1];
+		
+		// In case the array has more than one element it should consist of the concept FQN plus
+		// the category name. Therefore the fqn of the category should be checked
+		if (fqnParts.length > 1) {
+			if (concept.getName() == null) {
+				return null;
+			}
+			
+			String rebuildFQN = concept.getName() + FQID_DELIMITER + categoryId;
+			if (!rebuildFQN.equals(categoryFqn)) {
+				return null;
+			}
+		}
+
+		// Now search for the category
 		for (Category cat : concept.getCategories()) {
 			if (categoryId.equals(cat.getName())) {
 				return cat;
 			}
 		}
+		
+		// In case nothing could be found, return a null pointer
 		return null;
 	}
 	
