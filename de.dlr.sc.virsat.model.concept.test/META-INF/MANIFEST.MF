@@ -25,4 +25,3 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.dlr.sc.virsat.model.concept,
  de.dlr.sc.virsat.model.concept.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.concept.test
-Import-Package: de.dlr.sc.virsat.model.external.tests
