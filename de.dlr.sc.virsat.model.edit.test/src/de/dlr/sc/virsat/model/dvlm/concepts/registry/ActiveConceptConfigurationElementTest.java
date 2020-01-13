@@ -52,8 +52,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProvide
  * This test case will handle the copying of concepts into the repository.
  * In particular on concepts referencing each other the copying has to
  * follow some smart rules
- * @author fisc_ph
- *
  */
 public class ActiveConceptConfigurationElementTest {
 
@@ -83,39 +81,38 @@ public class ActiveConceptConfigurationElementTest {
 	}
 
 	@Rule
-    public ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException expectedException = ExpectedException.none();
 	
 	@Test
 	public void testCreateAddActiveConceptCommand() {
-	    ResourceSet resSetConceptSource = new ResourceSetImpl();
-	    Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
-	    Resource resourceBConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptBSource.xmi"));
+		ResourceSet resSetConceptSource = new ResourceSetImpl();
+		Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
+		Resource resourceBConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptBSource.xmi"));
 
-	    ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
-	    Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
+		ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
+		Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
 
-	    Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
-	    conceptSourceA.setName("conceptA");
-	    Concept conceptSourceB = ConceptsFactory.eINSTANCE.createConcept();
-	    conceptSourceB.setName("conceptB");
-	    
-	    resourceAConcept.getContents().add(conceptSourceA);
-	    resourceBConcept.getContents().add(conceptSourceB);
+		Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
+		conceptSourceA.setName("conceptA");
+		Concept conceptSourceB = ConceptsFactory.eINSTANCE.createConcept();
+		conceptSourceB.setName("conceptB");
 
-	    StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
-	    seSourceA.setName("seA");
-	    StructuralElement seSourceB = StructuralFactory.eINSTANCE.createStructuralElement();
-	    seSourceB.setName("seB");
-	    seSourceB.getApplicableFor().add(seSourceA);
-	    
-	    conceptSourceA.getStructuralElements().add(seSourceA);
-	    conceptSourceB.getStructuralElements().add(seSourceB);
-	    
-	    Repository repository = DVLMFactory.eINSTANCE.createRepository();
-	    resourceRepository.getContents().add(repository);
-	    
+		resourceAConcept.getContents().add(conceptSourceA);
+		resourceBConcept.getContents().add(conceptSourceB);
+
+		StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
+		seSourceA.setName("seA");
+		StructuralElement seSourceB = StructuralFactory.eINSTANCE.createStructuralElement();
+		seSourceB.setName("seB");
+		seSourceB.getApplicableFor().add(seSourceA);
+
+		conceptSourceA.getStructuralElements().add(seSourceA);
+		conceptSourceB.getStructuralElements().add(seSourceB);
+
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		resourceRepository.getContents().add(repository);
+
 		// Concept A should be added without any trouble
-		//expectedException = ExpectedException.none();
 		Command addConceptA = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceA, repository);
 		addConceptA.execute();
 		
@@ -165,19 +162,19 @@ public class ActiveConceptConfigurationElementTest {
 		// SImple test of adding a concept without command
 		// most of the cases are the same as with adding a Concept by command, thus this test case intends
 		// to just execute the code once and check for some primitive result.
-	    ResourceSet resSetConceptSource = new ResourceSetImpl();
-	    Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
+		ResourceSet resSetConceptSource = new ResourceSetImpl();
+		Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
 
-	    ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
-	    Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
+		ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
+		Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
 
-	    Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
-	    resourceAConcept.getContents().add(conceptSourceA);
-	    StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
-	    conceptSourceA.getStructuralElements().add(seSourceA);
-	    
-	    Repository repository = DVLMFactory.eINSTANCE.createRepository();
-	    resourceRepository.getContents().add(repository);
+		Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
+		resourceAConcept.getContents().add(conceptSourceA);
+		StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
+		conceptSourceA.getStructuralElements().add(seSourceA);
+
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		resourceRepository.getContents().add(repository);
 		
 		// Concept A should be added without any trouble
 		expectedException = ExpectedException.none();
