@@ -613,8 +613,8 @@ public class ActiveConceptHelper {
 	public static Set<String> getConceptDependencies(Concept concept) {
 		Set<String> importedConceptIds = new HashSet<>();
 		concept.getImports().forEach(conceptImport -> {
-			String cleanedConcpetImport = getConceptFromImport(conceptImport);
-			importedConceptIds.add(cleanedConcpetImport);
+			String cleanedConceptImport = getConceptFromImport(conceptImport);
+			importedConceptIds.add(cleanedConceptImport);
 		});
 		return importedConceptIds;
 	}
