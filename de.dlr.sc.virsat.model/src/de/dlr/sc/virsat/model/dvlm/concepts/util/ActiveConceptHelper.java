@@ -20,7 +20,6 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -32,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
@@ -46,9 +46,6 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
  * The class is based on the concept of FullQualified Identifiers
  * AFQID for a Property has three parts "concept.category.property"
  * The FQID may also be of two parts only: "concept.property"
- * 
- * @author kova_an
- *
  */
 public class ActiveConceptHelper {
 
@@ -592,5 +589,33 @@ public class ActiveConceptHelper {
 	public static final String getDmfNsUriForConcept(Concept concept) {
 		String conceptName = VirSatEcoreUtil.getNameOfFqn(concept.getName());
 		return MODEL_URI_PREFIX + concept.getVersion() + "/" + VirSatEcoreUtil.getNameOfFqn(conceptName);
+	}
+
+	/**
+	 * The method hands back the ConceptID of an Imported NameSpace. An
+	 * Imported NameSpace always consists of the ConceptID + the ElemenID.
+	 * E.G. de.dlr.testConcept.testCategory
+	 * @param conceptImport The Import Object for importing the NameSpace
+	 * @return the cleaned ID of the concept to be imported
+	 */
+	public static String getConceptFromImport(ConceptImport conceptImport) {
+		String importedNameSpace = conceptImport.getImportedNamespace();
+		int lastIndexOfDot =  importedNameSpace.lastIndexOf(FQID_DELIMITER);
+		String importedConceptId = importedNameSpace.substring(0, lastIndexOfDot);
+		return importedConceptId;
+	}
+	
+	/**
+	 * This method hands back the IDs of concepts which are imported
+	 * @param concept the concept for which to get all imported concepts
+	 * @return A set of Strings with all IDs
+	 */
+	public static Set<String> getConceptDependencies(Concept concept) {
+		Set<String> importedConceptIds = new HashSet<>();
+		concept.getImports().forEach(conceptImport -> {
+			String cleanedConcpetImport = getConceptFromImport(conceptImport);
+			importedConceptIds.add(cleanedConcpetImport);
+		});
+		return importedConceptIds;
 	}
 }

@@ -44,6 +44,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -52,8 +53,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * 
- * @author fisc_ph
- *
  */
 public class ActiveConceptHelperTest {
 
@@ -505,5 +504,38 @@ public class ActiveConceptHelperTest {
 		assertTrue("Can be assigned", ActiveConceptHelper.isSafeAssignableFrom(PropertydefinitionsPackage.Literals.APROPERTY, floatProperty));
 		assertTrue("Can be assigned", ActiveConceptHelper.isSafeAssignableFrom(PropertydefinitionsPackage.Literals.FLOAT_PROPERTY, floatProperty));
 		assertFalse("Can not be assigned", ActiveConceptHelper.isSafeAssignableFrom(PropertydefinitionsPackage.Literals.INT_PROPERTY, floatProperty));
+	}
+	
+	@Test
+	public void testExtractConceptFromImport() {
+		ConceptImport ci1 = ConceptsFactory.eINSTANCE.createConceptImport();
+		ConceptImport ci2 = ConceptsFactory.eINSTANCE.createConceptImport();
+		
+		ci1.setImportedNamespace(TEST_CATEGORY_ID_ONE + ".*");
+		ci2.setImportedNamespace(TEST_CATEGORY_ID_ONE + "." + TEST_SE_ID_ONE);
+		
+		assertEquals("Identified correct concept", TEST_CATEGORY_ID_ONE, ActiveConceptHelper.getConceptFromImport(ci1));
+		assertEquals("Identified correct concept", TEST_CATEGORY_ID_ONE, ActiveConceptHelper.getConceptFromImport(ci2));
+	}
+	
+	@Test
+	public void testGetConceptDependencies() {
+		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
+		ConceptImport ci1 = ConceptsFactory.eINSTANCE.createConceptImport();
+		ConceptImport ci2 = ConceptsFactory.eINSTANCE.createConceptImport();
+		ConceptImport ci3 = ConceptsFactory.eINSTANCE.createConceptImport();
+		
+		ci1.setImportedNamespace(TEST_CATEGORY_ID_ONE + ".*");
+		ci2.setImportedNamespace(TEST_CATEGORY_ID_ONE + "." + TEST_SE_ID_ONE);
+		ci3.setImportedNamespace(TEST_CATEGORY_ID_TWO + "." + TEST_SE_ID_ONE);
+		
+		concept.getImports().add(ci1);
+		concept.getImports().add(ci2);
+		concept.getImports().add(ci3);
+		
+		Set<String> importedConceptIds = ActiveConceptHelper.getConceptDependencies(concept);
+		
+		assertThat("Identified correct concept", importedConceptIds, hasItems(TEST_CATEGORY_ID_ONE, TEST_CATEGORY_ID_TWO));
+		assertEquals("Identified correct amount of IDs", 2, importedConceptIds.size());
 	}
 }
