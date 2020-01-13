@@ -7,7 +7,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.tests hasDMF description "A pure test concept to check that everything is working as expected" { 
+Concept de.dlr.sc.virsat.model.extension.tests 
+	version 1.1
+ 	hasDMF 
+ 	description "A pure test concept to check that everything is working as expected" { 
+	Import de.dlr.sc.virsat.model.extension.maturity.*;
+	
 	
 	StructuralElement TestStructuralElement description "StructuralElement for testing code generator" {
 		IsRootStructuralElement;
@@ -129,6 +134,15 @@ Concept de.dlr.sc.virsat.model.extension.tests hasDMF description "A pure test c
 		Cardinality 1;
 				 
 		Type mass of Category TestParameter quantityKind "Mass";
+	}
+
+	/* test Case that tends to fail at migration */
+	 Category TestCrossLinkedParametersWithCalculation {
+		Applicable For All;
+				 
+		FloatProperty calcedTrl quantityKind "Mass";
+		
+		Ref: calcedTrl = Maturity.trl; 
 	}
 }
 
