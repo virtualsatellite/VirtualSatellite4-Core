@@ -17,9 +17,12 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 
 /**
- * Wraps a command and memorizes all VirSatRecordableCommands executed during the execution of this command.
- * Recorded commands will be undone/redone accordingly.
- * @author muel_s8
+ * Wraps a command and memorizes all IVirSatRecordableCommands executed
+ * during the execution of this command. This allows to handle additional
+ * business logic such as removing files from SEIs within a Recording command.
+ * Such logic can be chained to this command. Within the VirSatCommand Stack,
+ * such IVirSatRecordableCommands will be automatically added and redorder to this
+ * command. Recorded commands will be undone/redone accordingly.
  *
  */
 
@@ -45,6 +48,9 @@ public class VirSatRecordingCommand extends AbstractCommand {
 	
 	@Override
 	public boolean canExecute() {
+		// Only executed the actual command, since the commands that
+		// get chained to this command are already executed by the
+		// WorkspaceCommand Stack
 		return cmd.canExecute();
 	}
 

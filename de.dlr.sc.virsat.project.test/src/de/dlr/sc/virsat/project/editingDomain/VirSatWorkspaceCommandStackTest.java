@@ -37,7 +37,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * test Cases for Workspace Command Stack
- * @author fisc_ph
  *
  */
 public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {

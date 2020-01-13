@@ -16,10 +16,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.transaction.RollbackException;
-import org.eclipse.emf.transaction.impl.InternalTransaction;
-
-import de.dlr.sc.virsat.project.Activator;
 
 /**
  * This job performs a save a save all operation.
@@ -69,25 +65,7 @@ public class VirSatSaveJob extends WorkspaceJob {
 			return Status.CANCEL_STATUS;
 		}
 		
-		try {
-			// Bundle all transactions such as removing dangling references during the save
-			// into one big transaction. Also check for active transactions so we
-			// don't cause any deadlocks
-			if (editingDomain.getActiveTransaction() == null) {
-				if (supressRemoveDanglingReferences) {
-					editingDomain.saveAll(false, supressRemoveDanglingReferences);
-				} else {
-					InternalTransaction tx = editingDomain.startTransaction(false, null);
-					editingDomain.saveAll(false, supressRemoveDanglingReferences);
-					tx.commit();
-				}
-			} else {
-				schedule();
-			}
-			
-		} catch (InterruptedException | RollbackException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatSaveJob: Saving failed", e));
-		}
+		editingDomain.saveAll(supressRemoveDanglingReferences);
 		
 		return Status.OK_STATUS;
 	}
