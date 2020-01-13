@@ -483,7 +483,6 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 			override caseEReferenceProperty(EReferenceProperty property) {
 				importManager.register(BeanPropertyEReference);
 				importManager.register(IBeanList);
-				importManager.register(TypeSafeArrayInstanceList);
 				importManager.register(TypeSafeEReferenceArrayInstanceList);
 				
 				val typeClass = new ExternalGenModelHelper().getEObjectClass(property)

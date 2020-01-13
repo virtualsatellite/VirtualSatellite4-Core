@@ -12,7 +12,6 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;

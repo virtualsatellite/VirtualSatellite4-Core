@@ -1006,7 +1006,6 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
         importManager.register(BeanPropertyEReference.class);
         importManager.register(IBeanList.class);
-        importManager.register(TypeSafeArrayInstanceList.class);
         importManager.register(TypeSafeEReferenceArrayInstanceList.class);
         final String typeClass = new ExternalGenModelHelper().getEObjectClass(property);
         final boolean genPackageSpecified = (typeClass != null);
