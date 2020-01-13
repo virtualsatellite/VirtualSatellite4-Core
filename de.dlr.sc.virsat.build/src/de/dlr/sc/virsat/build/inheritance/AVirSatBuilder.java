@@ -110,6 +110,6 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 		}
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Finished Custom build", null));
-		return null; //new IProject[]{project};
+		return null; 
 	}
 }
