@@ -18,6 +18,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+
 import org.junit.Rule;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;

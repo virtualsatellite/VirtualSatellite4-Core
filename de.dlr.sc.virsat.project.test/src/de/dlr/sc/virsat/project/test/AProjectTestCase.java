@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Abstract test case which creates a project for further testing
@@ -121,8 +122,26 @@ public abstract class AProjectTestCase {
 		UserRegistry.getInstance().setUser(previousUser, 356);
 		//CHECKSTYLE:ON
 	}
+	
+	protected VirSatProjectCommons projectCommons;
+	protected  VirSatResourceSet rs;
+	
 	/**
-	 * Creates the editing domain
+	 * This method creates an unmanaged ResourceSet which is non transactional.
+	 * The method also creates a repository
+	 */
+	protected void addResourceSetAndRepository() {
+		projectCommons = new VirSatProjectCommons(testProject);
+		projectCommons.createProjectStructure(null);
+
+		rs = VirSatResourceSet.createUnmanagedResourceSet(testProject);
+		rs.initializeModelsAndResourceSet();
+		repository = rs.getRepository();
+	}
+	
+	/**
+	 * Creates the editing domain and a repository for test cases.
+	 * This includes a ResourceSet with Transactional Editing Domain
 	 * 
 	 */
 	protected void addEditingDomainAndRepository() {

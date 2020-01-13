@@ -28,6 +28,8 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOtherTe
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryExtendsTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanATest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArrayTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCrossLinkedParametersWithCalculationTest;
+import de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllPropertyTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArrayTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArrayTest;
@@ -55,9 +57,11 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
 	TestCategoryExtendsTest.class,
 	TestParameterTest.class,
 	TestMassParametersTest.class,
+	TestCrossLinkedParametersWithCalculationTest.class,
 	TestStructuralElementTest.class,
 	TestStructuralElementOtherTest.class,
 	Migrator1v0Test.class,
+	Migrator1v1Test.class,
 				})
 
 /**
