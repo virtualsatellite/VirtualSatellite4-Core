@@ -20,7 +20,9 @@ import org.eclipse.emf.common.command.Command;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
+import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -29,6 +31,7 @@ import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Abstract test case which creates a project for further testing
@@ -40,7 +43,7 @@ public abstract class AProjectTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
 	
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
@@ -119,8 +122,26 @@ public abstract class AProjectTestCase {
 		UserRegistry.getInstance().setUser(previousUser, 356);
 		//CHECKSTYLE:ON
 	}
+	
+	protected VirSatProjectCommons projectCommons;
+	protected  VirSatResourceSet rs;
+	
 	/**
-	 * Creates the editing domain
+	 * This method creates an unmanaged ResourceSet which is non transactional.
+	 * The method also creates a repository
+	 */
+	protected void addResourceSetAndRepository() {
+		projectCommons = new VirSatProjectCommons(testProject);
+		projectCommons.createProjectStructure(null);
+
+		rs = VirSatResourceSet.createUnmanagedResourceSet(testProject);
+		rs.initializeModelsAndResourceSet();
+		repository = rs.getRepository();
+	}
+	
+	/**
+	 * Creates the editing domain and a repository for test cases.
+	 * This includes a ResourceSet with Transactional Editing Domain
 	 * 
 	 */
 	protected void addEditingDomainAndRepository() {

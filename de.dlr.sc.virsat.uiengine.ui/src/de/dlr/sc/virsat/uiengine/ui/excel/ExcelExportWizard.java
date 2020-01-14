@@ -24,10 +24,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
-import de.dlr.sc.virsat.uieingine.ui.Activator;
-
-
-
+import de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin;
 
 /**
  * Wizard for exporting Excel files.
@@ -94,7 +91,7 @@ public class ExcelExportWizard extends Wizard implements INewWizard {
 			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO",
 					"Successfully exported to excel file to " + file.getAbsolutePath()));
 		} catch (Exception e) {
-			Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! ", e);
+			Status status = new Status(Status.ERROR, DVLMEditorPlugin.getPlugin().getSymbolicName(), "Failed to perform an export operation! ", e);
 			DVLMEditPlugin.getPlugin().getLog().log(status);
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			return false;
