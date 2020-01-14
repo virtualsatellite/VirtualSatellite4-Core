@@ -42,13 +42,13 @@
 <extension
       point="de.dlr.sc.virsat.excel.export">
    <Exporter
-         class="de.dlr.sc.virsat.model.extension.statemachines.excelExporter.StateMachineExporter">
+         class="de.dlr.sc.virsat.model.extension.statemachines.excel.exporter.StateMachineExporter">
    </Exporter>
 </extension>
 <extension
       point="de.dlr.sc.virsat.excel.import">
 	<Importer
-       class="de.dlr.sc.virsat.model.extension.statemachines.excelImport.SMImporter">
+       class="de.dlr.sc.virsat.model.extension.statemachines.excel.importer.SMImporter">
 	</Importer>
 </extension>
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
