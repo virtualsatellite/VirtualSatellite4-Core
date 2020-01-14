@@ -60,6 +60,9 @@
     <genClasses ecoreClass="concept.ecore#//TestMassParameters">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference concept.ecore#//TestMassParameters/mass"/>
     </genClasses>
+    <genClasses ecoreClass="concept.ecore#//TestCrossLinkedParametersWithCalculation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCrossLinkedParametersWithCalculation/calcedTrl"/>
+    </genClasses>
     <genClasses ecoreClass="concept.ecore#//EReferenceTest">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference concept.ecore#//EReferenceTest/eReferenceTest"/>
     </genClasses>

@@ -161,8 +161,7 @@ public class ActiveConceptConfigurationElement {
 					IConceptTypeDefinition typeDefinition = (IConceptTypeDefinition) key;
 			
 					// Get the fragment URI of the concept we want to reference to
-					Resource resource = typeDefinition.eResource();
-					String uriFragment = resource.getURIFragment(typeDefinition); 
+					String uriFragment = EcoreUtil.getURI(typeDefinition).fragment();
 
 					// ask the repository if there is such an object with the given URI fragment
 					Resource repoResource = repository.eResource();

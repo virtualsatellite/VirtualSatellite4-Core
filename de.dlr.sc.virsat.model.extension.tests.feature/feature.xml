@@ -22,6 +22,10 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
+   <requires>
+      <import feature="de.dlr.sc.virsat.model.extension.maturity.feature" version="4.10.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="de.dlr.sc.virsat.model.extension.tests"
          download-size="0"

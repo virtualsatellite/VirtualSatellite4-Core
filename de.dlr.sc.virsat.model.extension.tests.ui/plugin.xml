@@ -72,6 +72,10 @@
 		pathToImage="resources/icons/TestMassParameters.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation"
+		pathToImage="resources/icons/TestCrossLinkedParametersWithCalculation.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.tests.EReferenceTest"
 		pathToImage="resources/icons/EReferenceTest.gif">
 	</conceptImage>

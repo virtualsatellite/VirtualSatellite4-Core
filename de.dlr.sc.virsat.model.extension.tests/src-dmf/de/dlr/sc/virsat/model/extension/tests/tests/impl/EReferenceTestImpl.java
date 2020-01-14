@@ -15,9 +15,12 @@ import de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**

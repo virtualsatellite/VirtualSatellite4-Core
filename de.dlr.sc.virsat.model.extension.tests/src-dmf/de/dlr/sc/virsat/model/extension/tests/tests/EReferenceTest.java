@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 
 /**
@@ -29,7 +30,6 @@ import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
  * @generated
  */
 public interface EReferenceTest extends DObject {
-
 	/**
 	 * Returns the value of the '<em><b>EReference Test</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -51,4 +51,5 @@ public interface EReferenceTest extends DObject {
 	 * @generated
 	 */
 	void setEReferenceTest(ExternalTestType value);
+
 } // EReferenceTest

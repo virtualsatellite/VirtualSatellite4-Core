@@ -22,6 +22,7 @@ import junit.framework.JUnit4TestAdapter;
 import de.dlr.sc.virsat.model.extension.maturity.model.MaturityTest;
 import de.dlr.sc.virsat.model.extension.maturity.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.maturity.migrator.Migrator1v1Test;
+import de.dlr.sc.virsat.model.extension.maturity.validator.StructuralElementInstanceValidatorTest;
 
 /**
  * 
@@ -32,6 +33,7 @@ import de.dlr.sc.virsat.model.extension.maturity.migrator.Migrator1v1Test;
 	MaturityTest.class,
 	Migrator1v0Test.class,
 	Migrator1v1Test.class,
+	StructuralElementInstanceValidatorTest.class,
 				})
 
 /**

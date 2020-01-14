@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 	<concept
 	          id="de.dlr.sc.virsat.model.extension.tests"
-	          version="1.0"
+	          version="1.2"
 	          xmi="concept/concept.xmi">
 	    </concept>
 	</extension>
@@ -70,6 +70,10 @@
 			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestMassParameters">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCrossLinkedParametersWithCalculation">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.tests.EReferenceTest"
 			caBean="de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest">
 		</CategoryAssignmentBean>
@@ -93,12 +97,28 @@
 		xmi="concept/concept_v1_0.xmi">
 	</migrator>
 </extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.tests"
+		version="1.1"
+		class="de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v1"
+		xmi="concept/concept_v1_1.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.tests"
+		version="1.2"
+		class="de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v2"
+		xmi="concept/concept_v1_2.xmi">
+	</migrator>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated concept -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dmf/v1.0/tests"
+            uri="http://www.virsat.sc.dlr.de/dmf/v1.2/tests"
             class="de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage"
             genModel="concept/concept.genmodel"/>
    </extension>
