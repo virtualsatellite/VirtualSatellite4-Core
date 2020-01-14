@@ -71,12 +71,6 @@
   <categories name="TestMassParameters" isApplicableForAll="true" cardinality="1">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="mass" type="de.dlr.sc.virsat.model.extension.tests.TestParameter" quantityKindName="Mass"/>
   </categories>
-<<<<<<< HEAD
-  <categories name="EReferenceTest" isApplicableForAll="true">
-    <properties xsi:type="dvlm_cppd:EReferenceProperty" name="eReferenceTest">
-      <referenceType href="platform:/resource/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore#//ExternalTestType"/>
-    </properties>
-=======
    <categories name="TestCrossLinkedParametersWithCalculation" isApplicableForAll="true">
     <equationDefinitions>
       <expression xsi:type="dvlm_calc:ReferencedDefinitionInput">
@@ -85,7 +79,6 @@
       <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation.calcedTrl"/>
     </equationDefinitions>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="calcedTrl" quantityKindName="Mass"/>
->>>>>>> refs/remotes/origin/development
   </categories>
   <structuralElements name="TestStructuralElement" description="StructuralElement for testing code generator" isApplicableForAll="true" isCanInheritFromAll="true" isRootStructuralElement="true"/>
   <structuralElements name="TestStructuralElementOther" description="Another StructuralElement for bean structural element instance helper" isApplicableForAll="true" isCanInheritFromAll="true"/>
