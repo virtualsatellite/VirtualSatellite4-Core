@@ -15,6 +15,9 @@ Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Bundle-Activator: de.dlr.sc.virsat.excel.Activator
 Export-Package: de.dlr.sc.virsat.excel,
- de.dlr.sc.virsat.excel.commands
+ de.dlr.sc.virsat.excel.commands,
+ de.dlr.sc.virsat.excel.exporter,
+ de.dlr.sc.virsat.excel.fault,
+ de.dlr.sc.virsat.excel.importer
 Automatic-Module-Name: de.dlr.sc.virsat.excel
 

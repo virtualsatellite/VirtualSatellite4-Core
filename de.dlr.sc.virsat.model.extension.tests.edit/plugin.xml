@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated concept -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dmf/v1.0/tests"
+            uri="http://www.virsat.sc.dlr.de/dmf/v1.1/tests"
             class="de.dlr.sc.virsat.model.extension.tests.tests.provider.TestsItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider

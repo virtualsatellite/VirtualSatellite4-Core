@@ -16,9 +16,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.junit.Before;
@@ -32,19 +31,14 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * test Case for the Validator Builder
- * @author fisc_ph
- *
  */
 public class VirSatValidatorBuilderTest extends ABuilderTest {
 
-	Set<IStructuralElementInstanceValidator> seiValidators = new HashSet<>();
-	//Set<IRepositoryValidator> repoValidators = new HashSet<>();
+	List<IStructuralElementInstanceValidator> seiValidators = new LinkedList<>();
 
 	/**
 	 * test Validator to be injected in the validation builder
 	 * will remember how it got called 
-	 * @author fisc_ph
-	 *
 	 */
 	private class TestSeiValidator implements IStructuralElementInstanceValidator {
 
@@ -81,12 +75,23 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
 			}
+			
+			@Override
+			protected List<IStructuralElementInstanceValidator> getSeiValidators() {
+				return seiValidators;
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			protected List<IRepositoryValidator> getRepoValidators() {
+				return Collections.EMPTY_LIST;
+			}
 		};
 		
 		assertEquals("tested Correct Amount of Seis", 0, testSeiValidator.seis.size());
 		assertFalse("Not yet called", testSeiValidator.gotCalled);
 		
-		builder.fullBuild(null, seiValidators, Collections.<IRepositoryValidator>emptySet());
+		builder.fullBuild(null);
 		
 		//CHECKSTYLE:OFF
 		assertEquals("tested Correct Amount of Seis", 3, testSeiValidator.seis.size());
@@ -99,7 +104,7 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 		testSeiValidator.gotCalled = false;
 		testSeiValidator.seis.clear();
 		
-		builder.fullBuild(null, seiValidators, Collections.<IRepositoryValidator>emptySet());
+		builder.fullBuild(null);
 		
 		assertEquals("tested Correct Amount of Seis", 2, testSeiValidator.seis.size());
 		assertTrue("Not yet called", testSeiValidator.gotCalled);
@@ -118,12 +123,23 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
 			}
+			
+			@Override
+			protected List<IStructuralElementInstanceValidator> getSeiValidators() {
+				return seiValidators;
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			protected List<IRepositoryValidator> getRepoValidators() {
+				return Collections.EMPTY_LIST;
+			}
 		};
 		
 		assertEquals("tested Correct Amount of Seis", 0, testSeiValidator.seis.size());
 		assertFalse("Not yet called", testSeiValidator.gotCalled);
 		
-		builder.incrementalBuild(null, seiValidators, Collections.<IRepositoryValidator>emptySet());
+		builder.incrementalBuild(null, null);
 		
 		//CHECKSTYLE:OFF
 		assertEquals("tested Correct Amount of Seis", 3, testSeiValidator.seis.size());
