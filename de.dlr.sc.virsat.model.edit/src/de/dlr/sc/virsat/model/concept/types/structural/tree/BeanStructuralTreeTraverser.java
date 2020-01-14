@@ -56,7 +56,7 @@ public class BeanStructuralTreeTraverser {
 		
 		// Now check if the children should be processed.
 		// if yes recursively loop over all of them.
-		if (matcher.processChildren(node, isMatching)) {
+		if (matcher.continueTraverseChildren(node, isMatching)) {
 			for (IBeanStructuralElementInstance child : node.getChildren(IBeanStructuralElementInstance.class)) {
 				traverseRecursive(child, nextParent);
 			}

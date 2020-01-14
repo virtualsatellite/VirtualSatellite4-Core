@@ -41,7 +41,7 @@ public interface IBeanStructuralTreeTraverserMatcher {
 	 * @param isMatching the matching result which the traverser evaluated before.
 	 * @return true in case the children should be processed. false in case not.
 	 */
-	default boolean processChildren(IBeanStructuralElementInstance treeNode, boolean isMatching) {
+	default boolean continueTraverseChildren(IBeanStructuralElementInstance treeNode, boolean isMatching) {
 		return true;
 	}
 }
