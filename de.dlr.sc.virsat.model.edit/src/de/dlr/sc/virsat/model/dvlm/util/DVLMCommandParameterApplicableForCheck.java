@@ -9,7 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.util;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.command.CommandParameter;
+
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 
 
 /**
@@ -17,14 +20,24 @@ import org.eclipse.emf.edit.command.CommandParameter;
  * @author fisc_ph
  *
  */
-public class DVLMCommandParameterApplicableForCheck extends DVLMApplicableForCheck {
+public class DVLMCommandParameterApplicableForCheck {
 
+	//TODO: Consider new name for class
+	protected ADVLMExtendedModelCapabilityCheck dvlmCapabilityCheck;
+	
 	/**
 	 * Constructor
 	 * @param commandParameter The owning object on which the check should be executed
 	 */
 	public DVLMCommandParameterApplicableForCheck(CommandParameter commandParameter) {
-		super(commandParameter.getOwner(), commandParameter.getEReference() != null && commandParameter.getEReference().isContainment());
+		EReference eReference = commandParameter.getEReference();
+		if (eReference != null) {
+			if (eReference.equals(InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS)) {
+				dvlmCapabilityCheck = new DVLMCanInheritFromCheck(commandParameter.getOwner(), false);
+			} else {
+				dvlmCapabilityCheck = new DVLMApplicableForCheck(commandParameter.getOwner(), eReference.isContainment());
+			}
+		}
 	}
 
 	/**
@@ -37,11 +50,11 @@ public class DVLMCommandParameterApplicableForCheck extends DVLMApplicableForChe
 		// At the moment we only check commands in case they are trying to add something
 		// to containments. For referencing properties we should consider some other mechanism
 		// but this is not yet implemented.
-		if (commandParameter.getEReference() != null) {
-			boolean isValidAsCollection = isValidObjectCollection(commandParameter.getCollection());
+		if (dvlmCapabilityCheck != null) {
+			boolean isValidAsCollection = dvlmCapabilityCheck.isValidObjectCollection(commandParameter.getCollection());
 			Object valueObject = commandParameter.getValue();
-			boolean isValidAsValue = (valueObject ==  null) ? true : isValidObject(valueObject);
-			return isValidAsCollection & isValidAsValue;
+			boolean isValidAsValue = (valueObject ==  null) ? true : dvlmCapabilityCheck.isValidObject(valueObject);
+			return isValidAsCollection && isValidAsValue;
 		} 
 		
 		// All other references are most likely fine for us

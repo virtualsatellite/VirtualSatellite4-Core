@@ -4,6 +4,7 @@ import java.util.Collections;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
+import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -26,9 +27,17 @@ public class DragAndDropInheritanceHelper {
 			StructuralElementInstance dragSei = (StructuralElementInstance) dragObject;
 			StructuralElementInstance dropSei = (StructuralElementInstance) dropObject;
 			
+			// When replacing the rule is as follows:
+			// 1. Identify the type of the object to be dropped as new type
+			// 2. See if there is an inheritance to a SEI of the identified type.
+			// 3. If yes replace it.
+			// 4. If not than add the drop object as new inheritance.
 			if (dropOperation == DndOperation.REPLACE_INHERITANCE) {
+				
+				// Get type of drop object
 				StructuralElement dragSeType = dragSei.getType();
 				
+				// try to identify Type of drop object in the given list of superSeis.
 				for (StructuralElementInstance dropSuperSei : dropSei.getSuperSeis()) {
 					if (dropSuperSei.getType().equals(dragSeType)) {
 						Command replaceCommand = ReplaceCommand.create(
@@ -41,6 +50,15 @@ public class DragAndDropInheritanceHelper {
 						return replaceCommand;
 					}
 				}
+				
+				// None found, then add it
+				Command addCommand = AddCommand.create(
+					ed,
+					dropSei,
+					InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS,
+					Collections.singleton(dragSei)
+				);
+				return addCommand;
 			}
 
 		}

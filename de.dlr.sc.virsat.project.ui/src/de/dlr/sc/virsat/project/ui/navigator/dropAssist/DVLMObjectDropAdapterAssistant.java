@@ -130,7 +130,14 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 			delegateDropAdapter = defaultCopyPasteDropAdapter;
 		}
 			
-		return delegateFunction.apply(delegateDropAdapter); 
+		IStatus delegateStatus = delegateFunction.apply(delegateDropAdapter);
+		
+		if (!delegateStatus.isOK()) {
+			delegateDropAdapter = defaultCopyPasteDropAdapter;
+			delegateStatus = delegateFunction.apply(delegateDropAdapter);
+		}
+		
+		return delegateStatus; 
 	}
 	
 	@Override
