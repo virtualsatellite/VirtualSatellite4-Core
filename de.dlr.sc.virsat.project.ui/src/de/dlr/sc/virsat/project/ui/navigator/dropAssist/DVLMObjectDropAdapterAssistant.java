@@ -9,98 +9,164 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.ui.navigator.dropAssist;
 
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
-import org.eclipse.ui.navigator.CommonViewer;
-
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard.ClipboardState;
-import de.dlr.sc.virsat.project.editingDomain.commands.VirSatPasteFromClipboardCommand;
-import de.dlr.sc.virsat.project.ui.navigator.VirSatNavigator;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.project.Activator;
 
 /**
- * VirSat Drop Assitant to copy and paste SEIs and CAs in the Navigator
- * @author fisc_ph
- *
+ * Drop Assistant for VirSat Navigator that delegates calls to concept specific drop assistants
  */
 public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 
-	/**
-	 * Method to create a Drop Command based on the Copy Paste functionality
-	 * @param target The object to witch to drop to
-	 * @param operation the type of DND operation
-	 * @return the ccommand if it is creatable or null in case it could not be created
-	 */
-	private Command createDropCommand(Object target, int operation) {
-		Command dropCommand = null;
+	protected Map<String, CommonDropAdapterAssistant> mapConceptIdToDelegateDropAdapter;
+	
+	protected CommonDropAdapterAssistant defaultCopyPasteDropAdapter;
+	
+	public static final String EXTENSION_POINT_NAVIGATOR = "de.dlr.sc.virsat.project.navigator";
+	public static final String EXTENSION_POINT_DROP_ASSISTANT_CONTRIBUTION = "DVLMConceptDropAssistant";
+	
+	public static final String EXTENSION_POINT_DROP_ASSISTANT_CONCEPT_ID = "conceptId";
+	public static final String EXTENSION_POINT_DROP_ASSISTANT_IMPLEMENTATION = "class";
+	
+	@Override
+	protected void doInit() {
+		initDropAssistantMap();
 		
-		if (target instanceof EObject) {
-			EObject eObject = (EObject) target;
-			VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
-			ISelection selection = LocalSelectionTransfer.getTransfer().getSelection();
-			
-			if (selection instanceof IStructuredSelection) {
-				IStructuredSelection structerdSelection = (IStructuredSelection) selection;
+		defaultCopyPasteDropAdapter = new DVLMDefaultCopyAndPasteDropAdapterAssistant();
+		defaultCopyPasteDropAdapter.init(getContentService());
+	}
+
+	/**
+	 * Reads out the extension point to initialize the map of
+	 * concept ids vs. drop adapters
+	 */
+	protected void initDropAssistantMap() {
+		// Re initialize the map of drop assistants
+		mapConceptIdToDelegateDropAdapter = new HashMap<>();
+	
+		// Now start looping over all Navigator extensions to find the possible registered drop assistants
+		IConfigurationElement[] navigatorExtensions = Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_NAVIGATOR);
+		for (IConfigurationElement navigatorExtension : navigatorExtensions) {
+	
+			// See if there is a drop Adapter registered in the navigator extension
+			IConfigurationElement[] dropExtensions = navigatorExtension.getChildren(EXTENSION_POINT_DROP_ASSISTANT_CONTRIBUTION);
+			for (IConfigurationElement dropExtension : dropExtensions) {
 				
-				@SuppressWarnings("unchecked")
-				Collection<Object> dndObjects = structerdSelection.toList();
-					
-				if (operation == DND.DROP_COPY) {
-					dropCommand = VirSatPasteFromClipboardCommand.create(virSatEd, eObject, dndObjects, ClipboardState.COPY);
-				} else if (operation == DND.DROP_MOVE) {
-					dropCommand = VirSatPasteFromClipboardCommand.create(virSatEd, eObject, dndObjects, ClipboardState.CUT);
+				String conceptId = dropExtension.getAttribute(EXTENSION_POINT_DROP_ASSISTANT_CONCEPT_ID);
+				CommonDropAdapterAssistant dropAdapter;
+				try {
+					dropAdapter = (CommonDropAdapterAssistant) dropExtension.createExecutableExtension(EXTENSION_POINT_DROP_ASSISTANT_IMPLEMENTATION);
+					dropAdapter.init(getContentService());
+					if (!mapConceptIdToDelegateDropAdapter.containsKey(conceptId)) {
+						mapConceptIdToDelegateDropAdapter.put(conceptId, dropAdapter);
+					} else {
+						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Cannot register two drop adapter for the same concept: " + conceptId));
+					}
+				} catch (CoreException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to create executable extension for drop adapter in concept: " + dropExtension.getContributor() + "->" + conceptId + " because: " + e.getMessage()));
 				}
 			}
 		}
-		return dropCommand;
+	}
+
+	/**
+	 * Call this method to get a drop adapter for a given object.
+	 * The method checks if the object belongs to a concept and hands
+	 * back the drop adapter which is in the map if it exists
+	 * @param object the object for which to find a specialized drop adapter 
+	 * @return null in case there is no specific drop adapter for the given object.
+	 */
+	protected CommonDropAdapterAssistant getDelegateDropAdapter(Object object) {
+		// To call a concept drop assistant the object where to drop at needs
+		// to be a dvlm instance. Once this is clear it is possible to detect the
+		// type of the object and the concept corresponding to it.
+		Concept concept = null;
+		if (object instanceof StructuralElementInstance) {
+			StructuralElementInstance sei = (StructuralElementInstance) object;
+			concept = ActiveConceptHelper.getConcept(sei.getType());
+		} else if (object instanceof ATypeInstance) {
+			ATypeInstance ti = (ATypeInstance) object;
+			concept = ActiveConceptHelper.getConcept(ti.getType());
+		}
+	
+		// In case we found a concept try to get a drop adapter for it
+		if (concept != null) {
+			// now ask the map for the drop assistant and hand it back
+			String conceptId = concept.getName();
+			CommonDropAdapterAssistant dropAdapterAssitant = mapConceptIdToDelegateDropAdapter.get(conceptId);
+			return dropAdapterAssitant;
+		}
+		
+		return null;
+	}
+	
+	private CommonDropAdapterAssistant delegateDropAdapter;
+	
+	/**
+	 * This method gets usually called by the delegates from the validate methods.
+	 * It first tries to identify a delegate drop adapter. If it cannot be found, it sets
+	 * the default copy and paste drop adapter as the delegate on. Then it runs the delegation method
+	 * with the identified drop adapter.
+	 * @param dropTarget the object where to drop at
+	 * @param delegateFunction the method to be executed with the delegated drop adapter
+	 * @return the result of the method call.
+	 */
+	protected IStatus selectDelegateDropAdapter(Object dropTarget, Function<CommonDropAdapterAssistant, IStatus> delegateFunction) {
+		delegateDropAdapter = getDelegateDropAdapter(dropTarget);
+
+		if (delegateDropAdapter == null) {
+			delegateDropAdapter = defaultCopyPasteDropAdapter;
+		}
+			
+		return delegateFunction.apply(delegateDropAdapter); 
 	}
 	
 	@Override
-	public IStatus validateDrop(Object target, int operation, TransferData transferType) {		
-		Command dropCommand = createDropCommand(target, operation);
-		if ((dropCommand != null) && (dropCommand.canExecute())) {
-			return Status.OK_STATUS;
-		} else {
-			return Status.CANCEL_STATUS;
-		}
+	public IStatus validateDrop(Object target, int operation, TransferData transferType) {
+		// Set the delegated drop adapter when validating
+		return selectDelegateDropAdapter(target,
+			dropAdapter -> dropAdapter.validateDrop(target, operation, transferType));
 	}
 
 	@Override
 	public IStatus handleDrop(CommonDropAdapter aDropAdapter, DropTargetEvent aDropTargetEvent, Object aTarget) {
-		Command dropCommand = createDropCommand(aTarget, aDropTargetEvent.detail);
-		if (aTarget instanceof EObject) {
-			EObject eObject = (EObject) aTarget;
-			VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
-			if (virSatEd != null) {
-				virSatEd.getCommandStack().execute(dropCommand);
-				
-				// Trying to set the selection in the Navigator to the target of the newly dropped object
-				VirSatNavigator navigator = (VirSatNavigator) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(VirSatNavigator.VIRSAT_NAVIGATOR_ID);
-				if (navigator != null) {
-					CommonViewer commonViewer = navigator.getCommonViewer();
-					if (commonViewer != null) {
-						commonViewer.setSelection(new StructuredSelection(aTarget));
-						return Status.OK_STATUS;
-					}
-				}
-			}
-		}
+		// use the drop adpater which was valid
+		return delegateDropAdapter.handleDrop(aDropAdapter, aDropTargetEvent, aTarget);
+	}
+
+	@Override
+	public IStatus validatePluginTransferDrop(IStructuredSelection aDragSelection, Object aDropTarget) {
+		return selectDelegateDropAdapter(aDropTarget,
+			dropAdapter -> dropAdapter.validatePluginTransferDrop(aDragSelection, aDropTarget));
+	}
+
+	@Override
+	public IStatus handlePluginTransferDrop(IStructuredSelection aDragSelection, Object aDropTarget) {
+		return delegateDropAdapter.handlePluginTransferDrop(aDragSelection, aDropTarget);
+	}
+
+	@Override
+	public void setCommonDropAdapter(CommonDropAdapter dropAdapter) {
+		super.setCommonDropAdapter(dropAdapter);
 		
-		return Status.CANCEL_STATUS;
+		mapConceptIdToDelegateDropAdapter.values().forEach(delegateDropAdapter -> delegateDropAdapter.setCommonDropAdapter(dropAdapter));
+		
+		defaultCopyPasteDropAdapter.setCommonDropAdapter(dropAdapter);
 	}
 }

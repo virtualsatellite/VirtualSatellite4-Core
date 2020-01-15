@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="de.dlr.sc.virsat.project.navigator" name="VirSat Project Navigator" schema="schema/de.dlr.sc.virsat.project.navigator.exsd"/>
    <extension
          point="org.eclipse.ui.newWizards">
       <category
