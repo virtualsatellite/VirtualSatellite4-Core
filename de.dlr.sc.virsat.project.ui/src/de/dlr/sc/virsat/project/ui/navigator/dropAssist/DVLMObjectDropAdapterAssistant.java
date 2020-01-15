@@ -38,7 +38,7 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 	
 	protected CommonDropAdapterAssistant defaultCopyPasteDropAdapter;
 	
-	public static final String EXTENSION_POINT_NAVIGATOR = "de.dlr.sc.virsat.project.navigator";
+	public static final String EXTENSION_POINT_NAVIGATOR = "de.dlr.sc.virsat.project.ui.navigator";
 	public static final String EXTENSION_POINT_DROP_ASSISTANT_CONTRIBUTION = "DVLMConceptDropAssistant";
 	
 	public static final String EXTENSION_POINT_DROP_ASSISTANT_CONCEPT_ID = "conceptId";
@@ -63,15 +63,11 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 		// Now start looping over all Navigator extensions to find the possible registered drop assistants
 		IConfigurationElement[] navigatorExtensions = Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_NAVIGATOR);
 		for (IConfigurationElement navigatorExtension : navigatorExtensions) {
-	
-			// See if there is a drop Adapter registered in the navigator extension
-			IConfigurationElement[] dropExtensions = navigatorExtension.getChildren(EXTENSION_POINT_DROP_ASSISTANT_CONTRIBUTION);
-			for (IConfigurationElement dropExtension : dropExtensions) {
-				
-				String conceptId = dropExtension.getAttribute(EXTENSION_POINT_DROP_ASSISTANT_CONCEPT_ID);
+			if (EXTENSION_POINT_DROP_ASSISTANT_CONTRIBUTION.equals(navigatorExtension.getName())) {
+				String conceptId = navigatorExtension.getAttribute(EXTENSION_POINT_DROP_ASSISTANT_CONCEPT_ID);
 				CommonDropAdapterAssistant dropAdapter;
 				try {
-					dropAdapter = (CommonDropAdapterAssistant) dropExtension.createExecutableExtension(EXTENSION_POINT_DROP_ASSISTANT_IMPLEMENTATION);
+					dropAdapter = (CommonDropAdapterAssistant) navigatorExtension.createExecutableExtension(EXTENSION_POINT_DROP_ASSISTANT_IMPLEMENTATION);
 					dropAdapter.init(getContentService());
 					if (!mapConceptIdToDelegateDropAdapter.containsKey(conceptId)) {
 						mapConceptIdToDelegateDropAdapter.put(conceptId, dropAdapter);
@@ -79,7 +75,7 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Cannot register two drop adapter for the same concept: " + conceptId));
 					}
 				} catch (CoreException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to create executable extension for drop adapter in concept: " + dropExtension.getContributor() + "->" + conceptId + " because: " + e.getMessage()));
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to create executable extension for drop adapter in concept: " + navigatorExtension.getContributor() + "->" + conceptId + " because: " + e.getMessage()));
 				}
 			}
 		}

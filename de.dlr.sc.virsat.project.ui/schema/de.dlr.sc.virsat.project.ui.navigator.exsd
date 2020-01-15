@@ -3,7 +3,7 @@
 <schema targetNamespace="de.dlr.sc.virsat.project.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.dlr.sc.virsat.project.ui" id="de.dlr.sc.virsat.project.navigator" name="VirSat Project Navigator"/>
+         <meta.schema plugin="de.dlr.sc.virsat.project.ui" id="navigator" name="VirSat Project Navigator"/>
       </appinfo>
       <documentation>
          Extension point to modify and customize functionality of the generic VirSat Project Navigator. E.g. customizing the Drag and Drop Behaviour.
