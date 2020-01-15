@@ -11,9 +11,13 @@ package de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,6 +64,34 @@ public class EReferencePropertyHelperTest extends AExternalModelTest {
 		assertEquals("EClass should be resolved from the registered package", TEST_CLASS_NAME, helper.getResolvedEClassType(propertyDefinition).getName());
 		EPackage registeredPackage = helper.getEPackageOfType(propertyDefinition);
 		assertNotEquals("Resolved package from registry should not be the locally loaded one", loadExternalPackage(), registeredPackage);
+	}
+	
+	@Test
+	public void testActivateEClassType() {
+		EReferencePropertyHelper helper = new EReferencePropertyHelper();
+		
+		//Create proxy by unloading an element
+		EClass eClassProxy = (EClass) loadExternalPackage().getEClassifiers().get(0);
+		eClassProxy.eResource().unload();
+		
+		//Test URI
+		final String TEST_PROJECT = "de.dlr.sc.virsat.model.test";
+		final String TEST_PATH = "model/test.ecore";
+		final String TEST_FRAGMENT = "ExternalTestType";
+		URI testURI = URI.createPlatformResourceURI(TEST_PROJECT + "/" + TEST_PATH + TEST_FRAGMENT, true);
+		testURI = testURI.appendFragment(TEST_FRAGMENT);
+		((InternalEObject) eClassProxy).eSetProxyURI(testURI);
+		assertTrue("Test proxy should now have a ResourceURI NOT a PluginURI", ((InternalEObject) eClassProxy).eProxyURI().isPlatformResource());
+		
+		//Test activation
+		EClass activeEClass = helper.activateEClassType(eClassProxy);
+		
+		URI activeURI = ((InternalEObject) activeEClass).eProxyURI();
+		assertTrue("Type's URI should be Plugin URI now", activeURI.isPlatformPlugin());
+		assertNotNull("Fragment should have been copied", activeURI.fragment());
+		assertEquals("Fragement should be kept", TEST_FRAGMENT, activeURI.fragment());
+		assertTrue("Should still contain project", activeURI.toString().contains(TEST_PROJECT));
+		assertTrue("Should still contain project path", activeURI.toString().contains(TEST_PATH));
 	}
 	
 }

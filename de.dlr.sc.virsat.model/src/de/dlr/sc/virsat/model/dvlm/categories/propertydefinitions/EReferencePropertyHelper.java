@@ -50,5 +50,19 @@ public class EReferencePropertyHelper {
 		return (EPackage) getResolvedEClassType(propertyDefinition).eContainer();
 	}
 	
-
+	/**
+	 * Activate the EClass type so that it is resolvable in the plugin instance. If type is 
+	 * a proxy, then the proxy URI needs to be converted to a PlattformPluginURI 
+	 * @param type the type to activate
+	 * @return the active type
+	 */
+	public EClass activateEClassType(EClass type) {
+		if (type.eIsProxy()) {
+			URI proxyURI = ((InternalEObject) type).eProxyURI();
+			URI activeURI = URI.createPlatformPluginURI(proxyURI.toPlatformString(true), true);
+			activeURI = activeURI.appendFragment(proxyURI.fragment());
+			((InternalEObject) type).eSetProxyURI(activeURI);
+		}
+		return type;
+	}
 }

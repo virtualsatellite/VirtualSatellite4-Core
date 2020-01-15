@@ -25,6 +25,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
@@ -145,12 +146,12 @@ public class ActiveConceptConfigurationElement {
 			@Override
 			public EObject get(Object key) {
 				
-				// For EReferences to external EClasses ignore activation 
-				// -> without its registration an external EObject cannot be 
-				// loaded anyway. VirSat does not ensure external model's storage.
+				// For EReferences to external EClasses ignore concept 
+				// activation and convert URIs instead
+				// VirSat does not ensure external model's storage.
 				// We only enable non-containment references.
 				if (key instanceof EClass) {
-					return (EClass) key;
+					return new EReferencePropertyHelper().activateEClassType((EClass) key);
 				}
 				
 				EObject eObject = super.get(key);
