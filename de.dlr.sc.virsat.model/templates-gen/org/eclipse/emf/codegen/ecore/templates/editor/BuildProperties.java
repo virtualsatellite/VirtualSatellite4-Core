@@ -25,10 +25,9 @@ public class BuildProperties
   protected final String TEXT_8 = NL + "source.";
   protected final String TEXT_9 = " = ";
   protected final String TEXT_10 = NL + "output.";
-  protected final String TEXT_11 = " = ";
-  protected final String TEXT_12 = "bin";
-  protected final String TEXT_13 = "war/WEB-INF/classes";
-  protected final String TEXT_14 = NL;
+  protected final String TEXT_11 = "bin";
+  protected final String TEXT_12 = "war/WEB-INF/classes";
+  protected final String TEXT_13 = NL;
 
   public String generate(Object argument)
   {
@@ -76,13 +75,13 @@ public class BuildProperties
     }}
     stringBuffer.append(TEXT_10);
     stringBuffer.append(pluginClassesLocation);
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_9);
     if (genModel.getRuntimePlatform() != GenRuntimePlatform.GWT) {
-    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_11);
     } else {
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_12);
     }
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_13);
     return stringBuffer.toString();
   }
 }

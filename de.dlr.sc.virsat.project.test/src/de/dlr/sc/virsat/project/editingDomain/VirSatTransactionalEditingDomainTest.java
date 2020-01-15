@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -67,7 +67,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 
 	private VirSatResourceSet rs;
-	private VirSatTransactionalEditingDomain rsEd;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -76,25 +75,21 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		VirSatTransactionalEditingDomain.clearResourceEventListener();
 
-		rs = VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
+		addEditingDomainAndRepository();
+
+		rs = editingDomain.getResourceSet(); 
+
 		UserRegistry.getInstance().setSuperUser(true);
-		
-		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
-		rsEd.getCommandStack().execute(cmd);
-		rsEd.saveAll();
-		
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	@After
 	public void tearDown() throws CoreException {
+		VirSatTransactionalEditingDomain.clearResourceEventListener();
 		super.tearDown();
-		
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
 		UserRegistry.getInstance().setSuperUser(false);
 	}
 
@@ -120,6 +115,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 			
 			List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
 			stackTraces.add(stackTrace);
+			this.notify();
 		}
 	}
 
@@ -143,29 +139,29 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter);
 		
-		rsEd.saveAll();
+		editingDomain.saveAll();
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		assertEquals("Event has been fired as often as expected", 1, eventCounter.counter);
 		
-		rsEd.saveAll();
+		editingDomain.saveAll();
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		assertEquals("Event has been fired as often as expected", 2, eventCounter.counter);
 		
 		Discipline discipline2 = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd2 = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline2);
-		rsEd.getCommandStack().execute(cmd2);
+		Command cmd2 = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline2);
+		editingDomain.getCommandStack().execute(cmd2);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
-		rsEd.saveAll(false, false);
+		editingDomain.saveAll(false);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -177,7 +173,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	public void testSaveResource() {
 		Resource rmResource = rs.getRoleManagementResource();
 		RoleManagement rm = rs.getRoleManagement();
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -192,17 +188,17 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter);
 		
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 		assertEquals("Event has been fired as often as expected", 0, eventCounter.counter);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		assertEquals("Event has been fired as often as expected", 1, eventCounter.counter);
 		
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		assertEquals("Event has been fired as often as expected", 2, eventCounter.counter);
@@ -217,9 +213,9 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		Resource rmResource = rs.getRoleManagementResource();
 		Resource repoResource = rs.getRepositoryResource();
 	
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 		
-		RecordingCommand recCmd = new RecordingCommand(rsEd) {
+		RecordingCommand recCmd = new RecordingCommand(editingDomain) {
 			@Override
 			public void doExecute() {
 				rmResource.getContents().clear();
@@ -228,19 +224,19 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 				repoResource.getContents().add(rpi);
 			}
 		};
-		rsEd.getCommandStack().execute(recCmd);
+		editingDomain.getCommandStack().execute(recCmd);
 
 		// Save the RPI but not the CA
-		rsEd.saveResource(repoResource);
+		editingDomain.saveResource(repoResource);
 		
 		// Now start reloading, which will cause the RPI in the RepoResource to have a dangling proxy 
 		// to the non saved CA in the other resource.
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		rs = null;
-		rsEd = null;
+		editingDomain = null;
 		rs = VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
+		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
 		Resource repoResource2 = rs.getRepositoryResource();
 		ReferencePropertyInstance danglingRpi = (ReferencePropertyInstance) repoResource2.getContents().get(0);
@@ -251,15 +247,15 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		assertEquals("We have errors", 1, repoResource2.getErrors().size());
 		
 		// now save it and tell to remove the dangling references
-		rsEd.saveResource(repoResource2);
+		editingDomain.saveResource(repoResource2);
 		
 		// Now load it a third time and make sure there is no dangling reference
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		rs = null;
-		rsEd = null;
+		editingDomain = null;
 		rs = VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
+		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
 		repoResource2 = rs.getRepositoryResource();
 		danglingRpi = (ReferencePropertyInstance) repoResource2.getContents().get(0);
@@ -272,15 +268,15 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		// Create empty role management
 		Resource rmResource = rs.getRoleManagementResource();
 		RoleManagement rm = rs.getRoleManagement();
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 		
 		// Add a discpline
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		UserRegistry.getInstance().setSuperUser(false);
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 		
 		boolean isChanged = VirSatResourceSetUtil.isChanged(rmResource, Collections.EMPTY_MAP, Collections.EMPTY_MAP);
 		assertTrue("Resource is still changed since we have no write permission", isChanged);
@@ -292,8 +288,8 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		Resource rmResource = rs.getRoleManagementResource();
 		RoleManagement rm = rs.getRoleManagement();
 		
-		rsEd.saveResource(rmResource);
-		assertFalse("The resource is sotred, therefore it is not dirty", rsEd.isDirty(rmResource));
+		editingDomain.saveResource(rmResource);
+		assertFalse("The resource is sotred, therefore it is not dirty", editingDomain.isDirty(rmResource));
 
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -312,17 +308,17 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		assertEquals("Listener is just added", 0, eventCounter.counter);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		assertThat("The roleManagement has been changed", rm.getDisciplines(), hasItem(discipline));  
 		assertEquals("The Listener should ahve been triggered by now", 1, eventCounter.counter);
-		assertTrue("The resource is changed, therefore it is dirty", rsEd.isDirty(rmResource));
+		assertTrue("The resource is changed, therefore it is dirty", editingDomain.isDirty(rmResource));
 		
-		rsEd.saveResource(rmResource);
-		assertFalse("The resource is sotred, therefore it is not dirty", rsEd.isDirty(rmResource));
+		editingDomain.saveResource(rmResource);
+		assertFalse("The resource is sotred, therefore it is not dirty", editingDomain.isDirty(rmResource));
 	}
 	
 	@Test
@@ -331,13 +327,13 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		RoleManagement rm = rs.getRoleManagement();
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		assertThat("The roleManagement has been changed", rm.getDisciplines(), hasItem(discipline));  
-		assertTrue("One of the resources is dirty, therefore the editing domain is dirty", rsEd.isDirty());
-		rsEd.saveResource(rmResource);
-		assertFalse("All resources are saved, therefore the editing domain is not dirty", rsEd.isDirty());
+		assertTrue("One of the resources is dirty, therefore the editing domain is dirty", editingDomain.isDirty());
+		editingDomain.saveResource(rmResource);
+		assertFalse("All resources are saved, therefore the editing domain is not dirty", editingDomain.isDirty());
 	}
 
 	@Test
@@ -347,15 +343,15 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 
 		Resource rmResource = rs.getRoleManagementResource();
 		RoleManagement rm = rs.getRoleManagement();
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter1);
 		assertEquals("Listener is just added", 0, eventCounter1.counter);
 		assertEquals("Listener is just added", 0, eventCounter2.counter);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -364,8 +360,8 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter2);
 		Discipline discipline2 = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd2 = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline2);
-		rsEd.getCommandStack().execute(cmd2);
+		Command cmd2 = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline2);
+		editingDomain.getCommandStack().execute(cmd2);
 
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -380,7 +376,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 
 		Resource rmResource = rs.getRoleManagementResource();
 		RoleManagement rm = rs.getRoleManagement();
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter1);
 		VirSatTransactionalEditingDomain.addResourceEventListener(eventCounter2);
@@ -388,8 +384,8 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		assertEquals("Listener is just added", 0, eventCounter2.counter);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -398,8 +394,8 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 
 		VirSatTransactionalEditingDomain.removeResourceEventListener(eventCounter1);
 		Discipline discipline2 = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd2 = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline2);
-		rsEd.getCommandStack().execute(cmd2);
+		Command cmd2 = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline2);
+		editingDomain.getCommandStack().execute(cmd2);
 
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -409,7 +405,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 
 	@Test
 	public void testGetResourceSet() {
-		ResourceSet testRs = rsEd.getResourceSet();
+		ResourceSet testRs = editingDomain.getResourceSet();
 		assertEquals("ResourceSet is correctly attached to Editing Domain", rs, testRs);
 	}
 	
@@ -417,25 +413,82 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	public void testCreateCommand() {
 		Resource rmResource = rs.getRoleManagementResource();
 		RoleManagement rm = rs.getRoleManagement();
-		rsEd.saveResource(rmResource);
+		editingDomain.saveResource(rmResource);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		Command cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		// First Check for the CutCommand
-		Command command = CutToClipboardCommand.create(rsEd, rm.getDisciplines());
+		Command command = CutToClipboardCommand.create(editingDomain, rm.getDisciplines());
 		assertTrue("Got correct VirSat Command", command instanceof VirSatCutToClipboardCommand);
 
-		command = CopyToClipboardCommand.create(rsEd, rm.getDisciplines());
+		command = CopyToClipboardCommand.create(editingDomain, rm.getDisciplines());
 		assertTrue("Got correct VirSat Command", command instanceof VirSatCopyToClipboardCommand);
 		
-		rsEd.getCommandStack().execute(command);
+		editingDomain.getCommandStack().execute(command);
 		
-		command = PasteFromClipboardCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES);
+		command = PasteFromClipboardCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES);
 		assertTrue("Got correct VirSat Command", command instanceof VirSatPasteFromClipboardCommand);
 		
-		command = DeleteCommand.create(rsEd, rm.getDisciplines());
+		command = DeleteCommand.create(editingDomain, rm.getDisciplines());
 		assertTrue("Got correct VirSat Command", command instanceof DeleteStructuralElementInstanceCommand);
+	}
+	
+	class ResourceEventTypeCounter extends ResourceEventCounter {
+		
+		protected Thread expectedThread = Thread.currentThread();
+		
+		protected boolean hasChangeEvents = false;
+		protected boolean hasReloadEvents = false;
+		
+		@Override
+		public void resourceEvent(Set<Resource> resources, int event) {
+			synchronized (this) {
+				// We had event changed messages in the past, which should not be fired.
+				// try to make sure they are not fired when all resources are reloaded
+				hasChangeEvents = (event == VirSatTransactionalEditingDomain.EVENT_CHANGED) ? true : hasChangeEvents;
+				hasReloadEvents = (event == VirSatTransactionalEditingDomain.EVENT_RELOAD) ? true : hasReloadEvents;
+				
+				assertEquals("matching expected thread", expectedThread, Thread.currentThread());
+				
+				super.resourceEvent(resources, event);
+			}
+		}
+	};
+	
+	@Test
+	public void testReloadAll() {
+		ResourceEventTypeCounter eventCheck = new ResourceEventTypeCounter();
+		
+		synchronized (eventCheck) {
+			Resource rmResource = rs.getRoleManagementResource();
+			RoleManagement rm = rs.getRoleManagement();
+			editingDomain.saveResource(rmResource);
+			
+			Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+			Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+			editingDomain.getCommandStack().execute(cmd);
+			editingDomain.saveAll();
+		
+			VirSatTransactionalEditingDomain.addResourceEventListener(eventCheck);
+			
+			editingDomain.reloadAll();
+		
+			assertFalse("There are no change events", eventCheck.hasChangeEvents);
+			assertTrue("There are relaod events", eventCheck.hasReloadEvents);
+			
+			assertTrue("All resourceSet Resources triggered for relaod", eventCheck.triggeredResources.containsAll(rs.getResources()));
+			
+			VirSatResourceSet rsNew = editingDomain.getResourceSet();
+			RoleManagement rmNew = rsNew.getRoleManagement();
+			Resource rmResourceNew = rsNew.getRoleManagementResource();
+			
+			assertEquals("The resourceSet should not have changed", rs, rsNew);
+			assertNotSame("Loaded a new RoleManagement", rm, rmNew);
+			assertEquals("The Resource stays the same", rmResource, rmResourceNew);
+			
+			VirSatTransactionalEditingDomain.removeResourceEventListener(eventCheck);
+		}
 	}
 }

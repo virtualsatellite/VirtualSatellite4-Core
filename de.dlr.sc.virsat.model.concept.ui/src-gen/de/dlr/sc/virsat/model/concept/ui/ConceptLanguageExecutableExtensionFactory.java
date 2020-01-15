@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.concept.ui;
 
 import com.google.inject.Injector;
 import de.dlr.sc.virsat.model.concept.ui.internal.ConceptActivator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
 
@@ -22,12 +23,13 @@ public class ConceptLanguageExecutableExtensionFactory extends AbstractGuiceAwar
 
 	@Override
 	protected Bundle getBundle() {
-		return ConceptActivator.getInstance().getBundle();
+		return Platform.getBundle(ConceptActivator.PLUGIN_ID);
 	}
 	
 	@Override
 	protected Injector getInjector() {
-		return ConceptActivator.getInstance().getInjector(ConceptActivator.DE_DLR_SC_VIRSAT_MODEL_CONCEPT_CONCEPTLANGUAGE);
+		ConceptActivator activator = ConceptActivator.getInstance();
+		return activator != null ? activator.getInjector(ConceptActivator.DE_DLR_SC_VIRSAT_MODEL_CONCEPT_CONCEPTLANGUAGE) : null;
 	}
-	
+
 }

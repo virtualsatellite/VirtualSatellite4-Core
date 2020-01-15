@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.types.structural;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -174,6 +175,13 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	<SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getSuperSeis(Class<SEI_TYPE> beanSeiClazz);
 
 	/**
+	 * @param beanSeiClazz The Type of SuperSeis of interest
+	 * @param <SEI_TYPE> the generic of the BeanStructuralElementInstance
+	 * @return all Bean-wrapped StructuralElementInstances of a given Type which this one inherits directly or indirectly
+	 */
+	<SEI_TYPE extends IBeanStructuralElementInstance> Set<SEI_TYPE> getAllSuperSeis(Class<SEI_TYPE> beanSeiClazz);
+	
+	/**
 	 * Call this method to get the parent SEI of this CA which is of a given type
 	 * @param beanSeiClazz the BeanClass defining the type to look for
 	 * @param <SEI_TYPE> Generic class type
@@ -229,4 +237,10 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	 * @return boolean if there is a Category
 	 */
 	<BEAN_TYPE extends IBeanCategoryAssignment> boolean hasCategory(Class<BEAN_TYPE> catBeanClazz);
+	
+	/**
+	 * Checks if the current Bean SEI can be a root element.
+	 * @return true if this SEI is of SE that can be on root level
+	 */
+	boolean canBeRoot();
 }

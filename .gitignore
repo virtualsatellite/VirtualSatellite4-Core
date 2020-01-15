@@ -4,7 +4,10 @@
 **/temp/
 **/*._trace
 **/*.xtendbin
+*.docs.feature/**/*.pdf
 /bin/
 /deploy/
 /swtbot/
 /report/
+/commit_authors.txt
+/id_ed25519

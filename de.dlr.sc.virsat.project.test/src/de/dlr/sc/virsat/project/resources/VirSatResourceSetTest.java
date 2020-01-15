@@ -39,7 +39,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -349,7 +348,6 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertNotNull("ResourceSet does exist", rsExsistingDispline);
 	}
 	
-	@Ignore
 	@Test
 	public void testReloadResourceWithCommand() {
 		UserRegistry.getInstance().setSuperUser(true);
@@ -381,8 +379,8 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		rsEd.reloadAll();
 
 		// Now anew role management is actually loaded
-		Resource resource2 = rs.reloadResource(resource1);
 		RoleManagement rmNew = rs.getRoleManagement();
+		Resource resource2 = rmNew.eResource();
 		
 		assertEquals("The resource itself actually stays the same", resource1, resource2);
 		assertNotSame("The model objects are different", rmOld, rmNew);
@@ -565,9 +563,9 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		protected boolean triggeredDiagnosticUpdate = false; 
 		
 		@Override
-		public void updateDiagnostic(Resource resource) {
+		public boolean updateDiagnostic(Resource resource) {
 			triggeredDiagnosticUpdate = true;
-			super.updateDiagnostic(resource);
+			return super.updateDiagnostic(resource);
 		}
 	}
 	

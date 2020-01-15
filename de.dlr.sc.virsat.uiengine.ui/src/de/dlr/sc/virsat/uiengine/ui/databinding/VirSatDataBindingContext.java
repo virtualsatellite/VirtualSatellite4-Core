@@ -25,9 +25,9 @@ import de.dlr.sc.virsat.uiengine.ui.databinding.properties.IVirSatObservableValu
  * @author fisc_ph
  *
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class VirSatDataBindingContext extends DataBindingContext {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	protected UpdateValueStrategy createTargetToModelUpdateValueStrategy(IObservableValue fromValue, IObservableValue toValue) {
 		return new VirSatUpdateValueStrategy();
@@ -41,7 +41,6 @@ public class VirSatDataBindingContext extends DataBindingContext {
 	 *
 	 */
 	class VirSatUpdateValueStrategy extends UpdateValueStrategy {
-		@SuppressWarnings("rawtypes")
 		@Override
 		protected IStatus doSet(IObservableValue observableValue, Object value) {
 			if (observableValue instanceof IVirSatObservableValue) {

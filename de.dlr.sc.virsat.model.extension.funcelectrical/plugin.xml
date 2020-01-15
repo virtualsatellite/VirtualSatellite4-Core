@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+	<concept
+	          id="de.dlr.sc.virsat.model.extension.funcelectrical"
+	          version="2.0"
+	          xmi="concept/concept.xmi">
+	    </concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="de.dlr.sc.virsat.model.extension.funcelectrical"
+				class="de.dlr.sc.virsat.model.extension.funcelectrical.validator.StructuralElementInstanceValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceType"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.PowerInterfaceType"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.PowerInterfaceType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.FixedVoltageDefinition"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.FixedVoltageDefinition">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.RangedVoltageDefinition"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.RangedVoltageDefinition">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.DataInterfaceType"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.DataInterfaceType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.ThermalReferencePoint"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.ThermalReferencePoint">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.Interface"
+			caBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface">
+		</CategoryAssignmentBean>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceTypeCollection"
+			seiBean="de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollection">
+		</StructuralElementInstanceBean>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+<extension
+       point="de.dlr.sc.virsat.excel.export">
+    <Exporter
+          class="de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter.FuncElecExporter">
+    </Exporter>
+ </extension>
+ <extension
+       point="de.dlr.sc.virsat.excel.import">
+    <Importer
+          class="de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.FuncElecImporter">
+    </Importer>
+ </extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.funcelectrical"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.extension.funcelectrical.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.funcelectrical"
+		version="2.0"
+		class="de.dlr.sc.virsat.model.extension.funcelectrical.migrator.Migrator2v0"
+		xmi="concept/concept_v2_0.xmi">
+	</migrator>
+</extension>
+<extension
+      id="de.dlr.sc.virsat.problem.markers.validation.fea"
+      name="VirSat FuncElectrical Validator Problem Marker"
+      point="org.eclipse.core.resources.markers">
+   <persistent
+         value="true">
+   </persistent>
+   <super
+         type="de.dlr.sc.virsat.problem.markers.validation">
+   </super>
+   <attribute
+         name="SecondIUuid">
+   </attribute>
+</extension>
+<extension
+      point="de.dlr.sc.virsat.project.markerHelper">
+   <markerHelper
+         markerHelper="de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelper"
+         markerType="de.dlr.sc.virsat.problem.markers.validation.fea">
+   </markerHelper>
+</extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

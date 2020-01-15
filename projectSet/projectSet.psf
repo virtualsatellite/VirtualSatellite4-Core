@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.egit.core.GitProvider">
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,."/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.apps"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.apps.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.apps.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.apps.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.branding.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.branding.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.build"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.build.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.build.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.build.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.commons"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.commons.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.commons.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.commons.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.concept.unittest.util"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.dependencies.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.docs.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.apache.poi"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.commons.cli"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.commons.math"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.jfreechart"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.nebula.incubation"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.protobuf"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.spotbugs"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.vtk.linux.x86_64"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.vtk.win32.x86_64"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.z3"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.zmq.linux.x86_64"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.external.lib.zmq.win32.x86_64"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.graphiti"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.graphiti.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.graphiti.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.graphiti.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.javadoc.api"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.javadoc.api.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.license.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.ide"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.calculation.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept.ide"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept.p2updatesite"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.concept.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.edit"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.edit.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.budget.mass"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.budget.mass.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.budget.mass.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.budget.mass.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.maturity"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.maturity.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.maturity.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.maturity.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.ps"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.ps.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.ps.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.ps.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.tests"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.tests.edit"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.tests.edit.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.tests.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.tests.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.tests.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.visualisation"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.visualisation.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.visualisation.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.extension.visualisation.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.model.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.p2updatesite"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.performance.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.product"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.project.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.qudv.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.team.ui"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.swtbot.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.target"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.target.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.test"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.test.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.uiengine.feature"/>
+<project reference="1.0,https://github.com/virtualsatellite/VirtualSatellite4-Core.git,development,de.dlr.sc.virsat.uiengine.ui"/>
+</provider>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1447947932302_11" label="VirSat Branding" name="VirSat Branding">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.license.feature" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.branding.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.branding.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1464952586702_16" label="VirSat Build, Validate and Inheritance" name="VirSat Build, Validate and Inheritance">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.build.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.build" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.build.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.build.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1440666732979_3" label="VirSat Data Model" name="VirSat Data Model">
+<item elementID="=de.dlr.sc.virsat.model.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.commons.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.commons.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.edit" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.commons.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.edit.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.commons" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1456990663004_15" label="VirSat Data Model Apps" name="VirSat Data Model Apps">
+<item elementID="=de.dlr.sc.virsat.apps.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.apps.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.apps.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.apps" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1455204607665_31" label="VirSat Data Model Calculation" name="VirSat Data Model Calculation">
+<item elementID="=de.dlr.sc.virsat.model.calculation.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.calculation.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.calculation.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.calculation" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.calculation.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1442824485063_10" label="VirSat Data Model Concept" name="VirSat Data Model Concept">
+<item elementID="=de.dlr.sc.virsat.model.concept.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.concept" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.concept.feature" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.concept.p2updatesite" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.concept.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.concept.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1446126921772_11" label="VirSat Data Model Extension" name="VirSat Data Model Extension">
+<item elementID="=de.dlr.sc.virsat.model.extension.maturity.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.tests.edit.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.maturity" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.ps.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.extension.maturity.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.budget.mass" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.extension.ps.feature" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.extension.budget.mass.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.tests.edit" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.budget.mass.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.ps.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.ps" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.maturity.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.budget.mass.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1440666933204_8" label="VirSat External Libraries" name="VirSat External Libraries">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.external.lib.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.apache.poi" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.zmq.win32.x86_64" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.spotbugs" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.commons.math" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.jfreechart" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.nebula.incubation" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.vtk.linux.x86_64" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.vtk.win32.x86_64" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.commons.cli" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.protobuf" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.z3" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.external.lib.zmq.linux.x86_64" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1440666721841_2" label="VirSat General" name="VirSat General">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.p2updatesite" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.product" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.javadoc.api.feature" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.dependencies.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.javadoc.api" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.docs.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.target" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.target.feature" type="4"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1493036240348_23" label="VirSat Graphiti" name="VirSat Graphiti">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.graphiti.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.graphiti.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.graphiti.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.graphiti" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1440666743385_4" label="VirSat Project" name="VirSat Project">
+<item elementID="=de.dlr.sc.virsat.project.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.project.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.project" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.project.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1440666757315_5" label="VirSat SVN" name="VirSat SVN">
+<item elementID="=de.dlr.sc.virsat.svn.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.svn" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.svn.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.svn.feature" type="4"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1440666881787_7" label="VirSat Test" name="VirSat Test">
+<item elementID="=de.dlr.sc.virsat.model.extension.tests.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.performance.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.extension.tests.feature" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.test.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.tests.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.concept.unittest.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.swtbot.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1454326779477_22" label="VirSat UI Engine" name="VirSat UI Engine">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.uiengine.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.qudv.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.uiengine.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1470327390924_19" label="VirSat Visualization" name="VirSat Visualization">
+<item elementID="=de.dlr.sc.virsat.model.extension.visualisation" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/de.dlr.sc.virsat.model.extension.visualisation.feature" type="4"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.visualisation.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=de.dlr.sc.virsat.model.extension.visualisation.test" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+</psf>

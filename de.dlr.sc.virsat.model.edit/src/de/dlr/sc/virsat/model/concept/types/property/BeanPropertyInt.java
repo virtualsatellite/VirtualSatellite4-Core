@@ -14,6 +14,7 @@ import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 
 /**
  * Class to wrap IntPropertyInstances
@@ -22,6 +23,20 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
  */
 public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 
+	/**
+	 * Standard Constructor
+	 */
+	public BeanPropertyInt() {
+	}
+	
+	/**
+	 * Constructor to directly set the type instance
+	 * @param uvpi the type instance to be used
+	 */
+	public BeanPropertyInt(UnitValuePropertyInstance uvpi) {
+		setTypeInstance(uvpi);
+	}
+	
 	@Override
 	public Command setValue(EditingDomain ed, Long value) {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, Long.toString(value));

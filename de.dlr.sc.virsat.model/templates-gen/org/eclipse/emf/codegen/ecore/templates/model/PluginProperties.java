@@ -22,7 +22,6 @@ public class PluginProperties
   protected final String TEXT_6 = NL + "_UI_";
   protected final String TEXT_7 = "_content_type = ";
   protected final String TEXT_8 = " File";
-  protected final String TEXT_9 = NL;
 
   public String generate(Object argument)
   {
@@ -62,7 +61,7 @@ public class PluginProperties
     stringBuffer.append(TEXT_8);
     }
     }
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_5);
     return stringBuffer.toString();
   }
 }

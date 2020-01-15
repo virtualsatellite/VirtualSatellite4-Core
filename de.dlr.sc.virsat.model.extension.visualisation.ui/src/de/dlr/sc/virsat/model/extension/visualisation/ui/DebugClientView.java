@@ -304,10 +304,10 @@ public class DebugClientView extends ViewPart {
 			@Override
 			public void handleEvent(Event event) {
 				if (sceneGraphClient == null || geometryFileClient == null) {
+					DebugClientVisUpdateHandler.setDebugClientView(debugClientView);
 					debugClientTreeManager = new TreeManager();
 					sceneGraphClient = new SceneGraphClient(debugClientTreeManager, DebugClientVisUpdateHandler.getInstance());
 					geometryFileClient = new GeometryFileClient(debugClientTreeManager, DebugClientVisUpdateHandler.getInstance());
-					DebugClientVisUpdateHandler.setDebugClientView(debugClientView);
 					connectionState.setText("Client connected");
 					subEndpointDescription.setText(CommunicationClient.IP_ADDRESS);
 					pubEndpointDescription.setText(CommunicationClient.IP_ADDRESS);

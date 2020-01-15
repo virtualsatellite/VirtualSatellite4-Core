@@ -388,7 +388,9 @@ public class VtkTreeManager extends vtkPanel {
 		} else if (node.hasNone()) {
 			updateNoneAttribute(node, parent);
 		}
+		updateHighlightedObjectIfSelected(node, parent);
 	}
+
 	/**
 	 * Updates transformattributes (position, rotation) of a node.
 	 * @param node parallel protobuf node
@@ -403,18 +405,26 @@ public class VtkTreeManager extends vtkPanel {
 		actor.GetProperty().SetColor(color[0], color[1], color[2]);
 		
 		actor.GetProperty().SetOpacity(1 - node.getOpacity());
-		//If there is a selected object transform the local coordinate system and the bounding box (highlighted) according to the new parameters
+	}
+
+	/**
+	 * Updates the highlighting bounding box for the node if it is a selected object
+	 * @param node to check if selected and update bounding box of
+	 * @param parent vtk actor of the node parent
+	 */
+	private void updateHighlightedObjectIfSelected(SceneGraphNode node, ActorVtk parent) {
+		ActorVtk actor = actorMap.get(node.getID());
+
 		if (selectedActor != null) {
 			if (selectedActor.getId().equals(actor.getId())) {
+				highlightSource.SetBounds(selectedActor.GetMapper().GetBounds());
 				localAxes.SetUserTransform(parent.GetUserTransform());
 				highlightActor.SetUserTransform(actor.GetUserTransform());
 			}
 		}
-		
-		
-		
 	}
-	 /**
+
+	/**
 	 * Create the transformation of a child node according to the parmamerts from protobuf node and parents transformation
 	 * @param node current protobuf node
 	 * @param linearTransform linear transformation of from parent
@@ -714,7 +724,6 @@ public class VtkTreeManager extends vtkPanel {
 	 * @param uuid ID which might belong to a visualized object
 	 */
 	public void checkIdAndCreateAxes(String uuid) {
-		
 		if (uuid != null) {
 			if (actorMap.containsKey(uuid)) {
 				selectedActor = actorMap.get(uuid);
@@ -731,8 +740,6 @@ public class VtkTreeManager extends vtkPanel {
 				
 			}
 		}
-		
-		
 	}
 
 	/**
@@ -784,7 +791,7 @@ public class VtkTreeManager extends vtkPanel {
 	 * The highlighting is done with the help of a visible bounding box
 	 * @param id ID of highlighted object
 	 */
-	public void highlightObject(String id) {
+	public void highlightIfSelectedObject(String id) {
 		if (id != null) {
 			if (actorMap.containsKey(id)) {
 				if (selectedActor != null) {

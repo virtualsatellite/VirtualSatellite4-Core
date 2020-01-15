@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v6/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd" name="de.dlr.sc.virsat.model.extension.tests" description="A pure test concept to check that everything is working as expected" DMF="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v6/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v6/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd" name="de.dlr.sc.virsat.model.extension.tests" description="A pure test concept to check that everything is working as expected" version="1.1" DMF="true">
+    <imports importedNamespace="de.dlr.sc.virsat.model.extension.maturity.*"/>
   <categories name="TestCategoryAllProperty" description="TestCategory for testing all property Types once" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:StringProperty" name="testString"/>
     <properties xsi:type="dvlm_cppd:IntProperty" name="testInt"/>
@@ -69,6 +70,15 @@
   </categories>
   <categories name="TestMassParameters" isApplicableForAll="true" cardinality="1">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="mass" type="de.dlr.sc.virsat.model.extension.tests.TestParameter" quantityKindName="Mass"/>
+  </categories>
+   <categories name="TestCrossLinkedParametersWithCalculation" isApplicableForAll="true">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:ReferencedDefinitionInput">
+        <reference xsi:type="dvlm_cppd:EnumProperty" href="platform:/resource/de.dlr.sc.virsat.model.extension.maturity/concept/concept.concept#de.dlr.sc.virsat.model.extension.maturity.Maturity.trl"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation.calcedTrl"/>
+    </equationDefinitions>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="calcedTrl" quantityKindName="Mass"/>
   </categories>
   <structuralElements name="TestStructuralElement" description="StructuralElement for testing code generator" isApplicableForAll="true" isCanInheritFromAll="true" isRootStructuralElement="true"/>
   <structuralElements name="TestStructuralElementOther" description="Another StructuralElement for bean structural element instance helper" isApplicableForAll="true" isCanInheritFromAll="true"/>

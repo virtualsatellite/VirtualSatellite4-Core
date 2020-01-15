@@ -256,6 +256,9 @@
                   isRoot="true"
                   pattern="de.dlr.sc.virsat.project.ui.navigator.LinkHelper">
             </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.filters.startsWithDot">
+            </contentExtension>
          </includes>
      </viewerContentBinding>
       <viewerActionBinding

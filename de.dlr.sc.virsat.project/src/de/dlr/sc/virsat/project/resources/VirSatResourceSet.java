@@ -1061,7 +1061,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			disciplineContainer.setAssignedDiscipline(discipline);
 			Resource resource = disciplineContainer.eResource();
 			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(discipline);
-			ed.internallySaveResource(resource, false, true);
+			ed.saveResourceIgnorePermissions(resource);
 		}
 	}
 
@@ -1188,7 +1188,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * 
 	 * @param resource the resource of which to update the diagnostic
 	 */
-	public void updateDiagnostic(Resource resource) {
+	public boolean updateDiagnostic(Resource resource) {
+		boolean changes = false;
 		if (resource != null) {
 			Diagnostic diagnostic = analyzeResourceProblems(resource);
 
@@ -1201,22 +1202,25 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			
 			if (diagnostic.getSeverity() != Diagnostic.OK) {
 				resourceToDiagnosticMap.put(resource, diagnostic);
-				Activator.getDefault().getLog().log(new Status(
-					Status.INFO, Activator.getPluginId(), Status.INFO,
-					"VirSatResourceSet: Current Diagnostic Map adding Resource (" + resource.getURI().toPlatformString(true) + ")",
-					null
-				));
+				changes = true;
+				Activator.getDefault().getLog()
+						.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
+								"VirSatResourceSet: Current Diagnostic Map adding Resource ("
+										+ resource.getURI().toPlatformString(true) + ")",
+								null));
 			} else {
 				if (resourceToDiagnosticMap.containsKey(resource)) {
-					Activator.getDefault().getLog().log(new Status(
-						Status.INFO, Activator.getPluginId(), Status.INFO,
-						"VirSatResourceSet: Current Diagnostic Map removing Resource (" + resource.getURI().toPlatformString(true) + ")",
-						null
-					));
+					Activator.getDefault().getLog()
+							.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
+									"VirSatResourceSet: Current Diagnostic Map removing Resource ("
+											+ resource.getURI().toPlatformString(true) + ")",
+									null));
 					resourceToDiagnosticMap.remove(resource);
+					changes = true;
 				}
 			}
 		}
+		return changes;
 	}
 
 	/**

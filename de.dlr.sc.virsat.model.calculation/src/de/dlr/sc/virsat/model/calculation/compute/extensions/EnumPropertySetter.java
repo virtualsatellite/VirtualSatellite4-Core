@@ -11,14 +11,14 @@ package de.dlr.sc.virsat.model.calculation.compute.extensions;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.dlr.sc.virsat.model.calculation.compute.IExpressionResult;
 import de.dlr.sc.virsat.model.calculation.compute.IResultSetter;
-import de.dlr.sc.virsat.model.calculation.compute.problem.UnknownExpressionProblem;
 import de.dlr.sc.virsat.model.calculation.compute.problem.EvaluationProblem;
 import de.dlr.sc.virsat.model.calculation.compute.problem.IncompatibleQuantityKindsProblem;
+import de.dlr.sc.virsat.model.calculation.compute.problem.UnknownExpressionProblem;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -63,7 +63,7 @@ public class EnumPropertySetter implements IResultSetter {
 		
 		AUnit targetUnit = ((EnumUnitPropertyInstance) instance).getUnit();
 		if (targetUnit != null) {
-			HashMap<AQuantityKind, Double> targetBaseQuantityKinds = QudvUnitHelper.getInstance().getBaseQuantityKinds(targetUnit.getQuantityKind());
+			Map<AQuantityKind, Double> targetBaseQuantityKinds = QudvUnitHelper.getInstance().getBaseQuantityKinds(targetUnit.getQuantityKind());
 			boolean compatibleQuantityKinds = QudvUnitHelper.getInstance().haveSameQuantityKind(targetBaseQuantityKinds, result.getQuantityKinds());
 			if (!compatibleQuantityKinds) {
 				IncompatibleQuantityKindsProblem incompatibleQuantityKindsProblem = new IncompatibleQuantityKindsProblem(instance, targetBaseQuantityKinds, result.getQuantityKinds());

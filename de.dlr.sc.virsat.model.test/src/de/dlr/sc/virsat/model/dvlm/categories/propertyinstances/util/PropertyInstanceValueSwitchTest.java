@@ -29,6 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 
 /**
  * 
@@ -38,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 public class PropertyInstanceValueSwitchTest {
 
 	private PropertyInstanceValueSwitch pivSwitch;
+	private static final String ELEMENT_NAME = "Name";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -46,13 +48,23 @@ public class PropertyInstanceValueSwitchTest {
 
 	@Test
 	public void testCaseReferencePropertyInstanceToPropertyInstance() {
-		ValuePropertyInstance vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
+		CategoryAssignment referenceTarget = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		referenceTarget.setName(ELEMENT_NAME);
 		ReferencePropertyInstance rpi = PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
-		rpi.setReference(vpi);
+		rpi.setReference(referenceTarget);
 		
 		ATypeInstance getDisplayedType = pivSwitch.doSwitch(rpi);
 		
-		assertEquals("Got the referenced property", vpi, getDisplayedType);
+		assertEquals("Got the referenced property", referenceTarget, getDisplayedType);
+		
+		String labelDefault = pivSwitch.getValueString(rpi);
+		final String expected = ELEMENT_NAME + " - " + ActiveConceptHelper.getContainerQualifedNameForInstance(referenceTarget);
+		assertEquals(labelDefault, expected);
+		
+		pivSwitch.setShowLocationForReferenceValues(false);
+		String labelWithoutLocation = pivSwitch.getValueString(rpi);
+		final String expectedWithoutLocation = ELEMENT_NAME;
+		assertEquals(labelWithoutLocation, expectedWithoutLocation);
 	}
 	
 	@Test

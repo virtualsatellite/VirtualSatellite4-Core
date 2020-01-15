@@ -28,6 +28,10 @@ JFreeChart
 
  * License: GNU Lesser General Public Licence (LGPL), 2.1
 
+JSON Simple
+
+ * License: Apache License, 2.0
+
 Nebula Widgets Incubation
 
  * License: Eclipse Public License, 1.0
@@ -43,10 +47,6 @@ Spotbugs-Annotations
 The Visualization Toolkit (VTK)
 
  * License: BSD
-
-Microsoft Z3 Solver
-
- * License: MIT
 
 Microsoft Z3 Solver
 

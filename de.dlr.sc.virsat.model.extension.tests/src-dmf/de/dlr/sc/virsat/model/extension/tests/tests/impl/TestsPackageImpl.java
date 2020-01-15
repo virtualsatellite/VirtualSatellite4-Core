@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryExtends;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray;
+import de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWithCalculation;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestMassParameters;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestParameter;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsFactory;
@@ -148,6 +149,13 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass testCrossLinkedParametersWithCalculationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum enumTestEnumEEnum = null;
 
 	/**
@@ -178,7 +186,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link TestsPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -192,7 +200,8 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		if (isInited) return (TestsPackage)EPackage.Registry.INSTANCE.getEPackage(TestsPackage.eNS_URI);
 
 		// Obtain or create and register package
-		TestsPackageImpl theTestsPackage = (TestsPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TestsPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TestsPackageImpl());
+		Object registeredTestsPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		TestsPackageImpl theTestsPackage = registeredTestsPackage instanceof TestsPackageImpl ? (TestsPackageImpl)registeredTestsPackage : new TestsPackageImpl();
 
 		isInited = true;
 
@@ -208,7 +217,6 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		// Mark meta-data to indicate it can't be changed
 		theTestsPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(TestsPackage.eNS_URI, theTestsPackage);
 		return theTestsPackage;
@@ -219,6 +227,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryAllProperty() {
 		return testCategoryAllPropertyEClass;
 	}
@@ -228,6 +237,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryAllProperty_TestString() {
 		return (EAttribute)testCategoryAllPropertyEClass.getEStructuralFeatures().get(0);
 	}
@@ -237,6 +247,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryAllProperty_TestInt() {
 		return (EAttribute)testCategoryAllPropertyEClass.getEStructuralFeatures().get(1);
 	}
@@ -246,6 +257,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryAllProperty_TestFloat() {
 		return (EAttribute)testCategoryAllPropertyEClass.getEStructuralFeatures().get(2);
 	}
@@ -255,6 +267,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryAllProperty_TestBool() {
 		return (EAttribute)testCategoryAllPropertyEClass.getEStructuralFeatures().get(3);
 	}
@@ -264,6 +277,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryAllProperty_TestResource() {
 		return (EAttribute)testCategoryAllPropertyEClass.getEStructuralFeatures().get(4);
 	}
@@ -273,6 +287,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryAllProperty_TestEnum() {
 		return (EAttribute)testCategoryAllPropertyEClass.getEStructuralFeatures().get(5);
 	}
@@ -282,6 +297,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryComposition() {
 		return testCategoryCompositionEClass;
 	}
@@ -291,6 +307,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryComposition_TestSubCategory() {
 		return (EReference)testCategoryCompositionEClass.getEStructuralFeatures().get(0);
 	}
@@ -300,6 +317,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryReference() {
 		return testCategoryReferenceEClass;
 	}
@@ -309,6 +327,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryReference_TestRefCategory() {
 		return (EReference)testCategoryReferenceEClass.getEStructuralFeatures().get(0);
 	}
@@ -318,6 +337,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryIntrinsicArray() {
 		return testCategoryIntrinsicArrayEClass;
 	}
@@ -327,6 +347,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryIntrinsicArray_TestStringArrayDynamic() {
 		return (EAttribute)testCategoryIntrinsicArrayEClass.getEStructuralFeatures().get(0);
 	}
@@ -336,6 +357,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryIntrinsicArray_TestStringArrayStatic() {
 		return (EAttribute)testCategoryIntrinsicArrayEClass.getEStructuralFeatures().get(1);
 	}
@@ -345,6 +367,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryCompositionArray() {
 		return testCategoryCompositionArrayEClass;
 	}
@@ -354,6 +377,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryCompositionArray_TestCompositionArrayDynamic() {
 		return (EReference)testCategoryCompositionArrayEClass.getEStructuralFeatures().get(0);
 	}
@@ -363,6 +387,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryCompositionArray_TestCompositionArrayStatic() {
 		return (EReference)testCategoryCompositionArrayEClass.getEStructuralFeatures().get(1);
 	}
@@ -372,6 +397,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryReferenceArray() {
 		return testCategoryReferenceArrayEClass;
 	}
@@ -381,6 +407,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryReferenceArray_TestCategoryReferenceArrayDynamic() {
 		return (EReference)testCategoryReferenceArrayEClass.getEStructuralFeatures().get(0);
 	}
@@ -390,6 +417,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryReferenceArray_TestCategoryReferenceArrayStatic() {
 		return (EReference)testCategoryReferenceArrayEClass.getEStructuralFeatures().get(1);
 	}
@@ -399,6 +427,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryBeanA() {
 		return testCategoryBeanAEClass;
 	}
@@ -408,6 +437,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryBeanB() {
 		return testCategoryBeanBEClass;
 	}
@@ -417,6 +447,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryBeanAbstract() {
 		return testCategoryBeanAbstractEClass;
 	}
@@ -426,6 +457,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryBeanConcrete() {
 		return testCategoryBeanConcreteEClass;
 	}
@@ -435,6 +467,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryBase() {
 		return testCategoryBaseEClass;
 	}
@@ -444,6 +477,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryBase_TestArray() {
 		return (EReference)testCategoryBaseEClass.getEStructuralFeatures().get(0);
 	}
@@ -453,6 +487,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryBase_TestBaseProperty() {
 		return (EAttribute)testCategoryBaseEClass.getEStructuralFeatures().get(1);
 	}
@@ -462,6 +497,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestCategoryBase_TestReference() {
 		return (EReference)testCategoryBaseEClass.getEStructuralFeatures().get(2);
 	}
@@ -471,6 +507,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestCategoryExtends() {
 		return testCategoryExtendsEClass;
 	}
@@ -480,6 +517,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestCategoryExtends_TestExtendsProperty() {
 		return (EAttribute)testCategoryExtendsEClass.getEStructuralFeatures().get(0);
 	}
@@ -489,6 +527,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestParameter() {
 		return testParameterEClass;
 	}
@@ -498,6 +537,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getTestParameter_DefaultValue() {
 		return (EAttribute)testParameterEClass.getEStructuralFeatures().get(0);
 	}
@@ -507,6 +547,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getTestMassParameters() {
 		return testMassParametersEClass;
 	}
@@ -516,6 +557,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getTestMassParameters_Mass() {
 		return (EReference)testMassParametersEClass.getEStructuralFeatures().get(0);
 	}
@@ -525,6 +567,27 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EClass getTestCrossLinkedParametersWithCalculation() {
+		return testCrossLinkedParametersWithCalculationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getTestCrossLinkedParametersWithCalculation_CalcedTrl() {
+		return (EAttribute)testCrossLinkedParametersWithCalculationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EEnum getEnumTestEnum() {
 		return enumTestEnumEEnum;
 	}
@@ -534,6 +597,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public TestsFactory getTestsFactory() {
 		return (TestsFactory)getEFactoryInstance();
 	}
@@ -605,6 +669,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		testMassParametersEClass = createEClass(TEST_MASS_PARAMETERS);
 		createEReference(testMassParametersEClass, TEST_MASS_PARAMETERS__MASS);
 
+		testCrossLinkedParametersWithCalculationEClass = createEClass(TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION);
+		createEAttribute(testCrossLinkedParametersWithCalculationEClass, TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__CALCED_TRL);
+
 		// Create enums
 		enumTestEnumEEnum = createEEnum(ENUM_TEST_ENUM);
 	}
@@ -656,6 +723,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		testCategoryExtendsEClass.getESuperTypes().add(this.getTestCategoryBase());
 		testParameterEClass.getESuperTypes().add(theDmfPackage.getDObject());
 		testMassParametersEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testCrossLinkedParametersWithCalculationEClass.getESuperTypes().add(theDmfPackage.getDObject());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(testCategoryAllPropertyEClass, TestCategoryAllProperty.class, "TestCategoryAllProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -705,6 +773,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		initEClass(testMassParametersEClass, TestMassParameters.class, "TestMassParameters", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTestMassParameters_Mass(), this.getTestParameter(), null, "mass", null, 0, 1, TestMassParameters.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(testCrossLinkedParametersWithCalculationEClass, TestCrossLinkedParametersWithCalculation.class, "TestCrossLinkedParametersWithCalculation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTestCrossLinkedParametersWithCalculation_CalcedTrl(), ecorePackage.getEDouble(), "calcedTrl", null, 0, 1, TestCrossLinkedParametersWithCalculation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(enumTestEnumEEnum, EnumTestEnum.class, "EnumTestEnum");

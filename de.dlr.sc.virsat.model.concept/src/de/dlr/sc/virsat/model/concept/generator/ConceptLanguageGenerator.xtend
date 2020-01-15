@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnipp
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateAllTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateCategoryTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests
+import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTests
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi
@@ -106,6 +107,7 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			new GenerateCategoryTests().serializeModel(dataModel, fsa);
 			new GenerateStructuralElementTests().serializeModel(dataModel, fsa);
 			new GenerateMigratorTests().serializeModel(dataModel, fsa);
+			new GenerateValidatorTests().serializeModel(dataModel, fsa);
 			new GenerateAllTests().serializeModel(dataModel, fsa);
 		}
 	}

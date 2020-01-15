@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
@@ -23,12 +24,16 @@ import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
+import org.hamcrest.core.StringStartsWith;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
+import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -41,6 +46,7 @@ import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
+import de.dlr.sc.virsat.swtbot.util.VirSatWaitForProjectBuilder;
 
 /**
  * Base class for performing SWTBot tests.
@@ -48,11 +54,11 @@ import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
  *
  */
 public class ASwtBotTestCase {
-
+	
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
-	private static final int WAIT_BEFORE_SYNCING_UI_THREAD_100 = 100;
+	public static final int SWTBOT_GENERAL_WAIT_TIME = 250;
 	
 	protected SWTWorkbenchBot bot;
 	protected Concept conceptPs;
@@ -60,6 +66,11 @@ public class ASwtBotTestCase {
 	
 	protected static final String PROJECTNAME = "SWTBotTestProject";
 	protected IProject project;
+	
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	
+	@Rule
+	public DisableOnDebug globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	
 	@Rule 
 	public TestName testMethodName = new TestName();
@@ -125,9 +136,9 @@ public class ASwtBotTestCase {
 	 */
 	protected void clickOnComboBox(String comboboxLabel) {
 		bot.checkBoxWithLabel(comboboxLabel).click();
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
+
 	/**
 	 * saves the editors
 	 *
@@ -145,11 +156,23 @@ public class ASwtBotTestCase {
 	 */
 	protected SWTBotTreeItem openEditor(SWTBotTreeItem item) {
 		SWTBotTreeItem newItem = item.doubleClick();
-		bot.saveAllEditors();
+		waitForEditor(item);
 		waitForEditingDomainAndUiThread();
 		return newItem;
-		
 	}
+	
+	/**
+	 * Waits for the editor of the passed item to open.
+	 * The editor is identified using the name of the item,
+	 * so it cant distinguish between editors of items with the same name!
+	 * @param item the item whose editor we are waiting for
+	 */
+	protected void waitForEditor(SWTBotTreeItem item) {
+		String label = item.getText();
+		Matcher<IEditorReference> matcher = withPartName(StringStartsWith.startsWith(label + " -> "));
+		bot.waitUntil(Conditions.waitForEditor(matcher));
+	}
+	
 	/**
 	 * closes the dialog and waits
 	 * @param buttonName the name of the button which closes the dialog
@@ -172,6 +195,7 @@ public class ASwtBotTestCase {
 		bot.textWithLabel("Project name:").setText(projectName);
 		bot.button("Finish").click();
 		waitForEditingDomainAndUiThread();
+		project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 	}
 
 	/**
@@ -190,7 +214,6 @@ public class ASwtBotTestCase {
 		bot.button("Add from Registry").click();
 		bot.button("Select All").click();
 		bot.button("OK").click();
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -202,7 +225,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void delete(SWTBotTreeItem item) {
 		item.contextMenu().menu("Delete").click(); 
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -215,7 +237,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void setText(String name, String value) {
 		bot.textWithLabel(name).setText(value);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread(); 
 	}
 	
@@ -229,7 +250,6 @@ public class ASwtBotTestCase {
 	protected void rename(SWTBotTreeItem item, String newName) {
 		openEditor(item);
 		bot.textWithLabel("Name").setText(newName);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -241,7 +261,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void paste(SWTBotTreeItem item) {
 		item.contextMenu().menu("Paste").click();
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -265,7 +284,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void renameField(String labelName, String value) {
 		bot.textWithLabel(labelName).setText(value);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -288,7 +306,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void undo(SWTBotTreeItem item) {
 		item.contextMenu().menu("Undo").click();	
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -304,28 +321,18 @@ public class ASwtBotTestCase {
 		createProject(projectName);
 		waitForEditingDomainAndUiThread();
 		addAllConcepts(projectName);
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
 		return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 	}
 	
 	/**
-	 * propagates the inheritance
-	 *
+	 * This method makes sure all builders are executed.
+	 * It further checks that all UI Threads ahve executed.
 	 */
-	protected void propagateInheritance() {
-		bot.saveAllEditors();
-		waitForEditingDomainAndUiThread();
+	protected void waitForAllBuildersAndUiThread() {
+		bot.waitUntil(new VirSatWaitForProjectBuilder(1));
 		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (inheritance builder)"));
-	}
-	/**
-	 * waits for calculation builder 
-	 *
-	 */
-	protected void waitCalculationBuilder() {
-		bot.saveAllEditors();
 		waitForEditingDomainAndUiThread();
-		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (calculation builder)"));
 	}
 	
 	/**
@@ -404,7 +411,7 @@ public class ASwtBotTestCase {
 	protected SWTBotSection getSWTBotSection(String sectionName) {
 		@SuppressWarnings("unchecked")
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
-		SWTBotSection composite = new SWTBotSection((Section) bot.widget(matcher, 0), matcher);
+		SWTBotSection composite = new SWTBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
 	}
 	
@@ -447,7 +454,6 @@ public class ASwtBotTestCase {
 	 * returns the repository
 	 * @param project the project
 	 * @return rep the repository
-	 * @author bell_er
 	 *
 	 */
 	public static Repository getRepository(IProject project) {
@@ -455,6 +461,37 @@ public class ASwtBotTestCase {
 		Repository rep = resSetRepositoryTarget.getRepository();
 		return rep;
 		
+	}
+	
+	/**
+	 * A Runnable lock to make sure that the display thread executed all messages
+	 *
+	 */
+	static class WaitForRunnable implements Runnable {
+		
+		private Boolean gotExecuted = false;
+		
+		@Override
+		public synchronized void run() {
+			gotExecuted = true;
+			notify();
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Wait For Runnable UI Thread: " + Thread.currentThread()));
+		}
+		
+		/**
+		 * Call this method to make sure the runnable got executed
+		 * THis method blocks until the runnable got called.
+		 */
+		synchronized void waitForExecution() {
+			while (!gotExecuted) {
+				try {
+					wait(SWTBOT_GENERAL_WAIT_TIME);
+				} catch (InterruptedException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not go to sleep Thread: " + Thread.currentThread()));
+				}
+			}
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Runnable got Executed Thread: " + Thread.currentThread()));
+		}
 	}
 	
 	/**
@@ -467,19 +504,23 @@ public class ASwtBotTestCase {
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		// Wait a little time, so we give other UI threads / runnables to get started or queued in between
-
 		try {
-			Thread.sleep(WAIT_BEFORE_SYNCING_UI_THREAD_100);
+			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}
 
 		// Now throw in a runnable to the queue but execute it blocking, thus this method will only leave in case
 		// all other runnables queued before have been executed.
-		Display.getDefault().syncExec(() -> {
-			// Using the project activator to get access to the logging
-			// The SWT Bot Tests don't have their own logger / activator and the project plugin is the closest in this context.
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "SWTBot Test: Sync Execution of UI Thread"));
-		});
+		WaitForRunnable defaultDisplayWaitFor = new WaitForRunnable();
+		Display.getDefault().asyncExec(defaultDisplayWaitFor);
+		defaultDisplayWaitFor.waitForExecution();
+
+		// Add some grace time just for the res
+		try {
+			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
+		}
 	}
 }

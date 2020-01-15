@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core UI Tests with SwtBot
 Bundle-SymbolicName: de.dlr.sc.virsat.swtbot.test
-Bundle-Version: 4.9.3.qualifier
+Bundle-Version: 4.10.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.swt,
@@ -23,7 +23,6 @@ Require-Bundle: org.eclipse.swt,
  de.dlr.sc.virsat.external.lib.commons.math,
  de.dlr.sc.virsat.external.lib.jfreechart,
  de.dlr.sc.virsat.external.lib.protobuf,
- de.dlr.sc.virsat.javadoc.api,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.calculation,
  de.dlr.sc.virsat.model.calculation.ui,
@@ -38,8 +37,8 @@ Require-Bundle: org.eclipse.swt,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.qudv.ui,
- de.dlr.sc.virsat.svn,
- de.dlr.sc.virsat.svn.ui,
+ de.dlr.sc.virsat.team,
+ de.dlr.sc.virsat.team.ui,
  de.dlr.sc.virsat.test,
  de.dlr.sc.virsat.uiengine.ui,
  de.dlr.sc.virsat.concept.unittest.util,

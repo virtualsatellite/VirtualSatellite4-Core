@@ -2,13 +2,13 @@
 <feature
       id="de.dlr.sc.virsat.external.lib.feature"
       label="VirSat Core External Libraries feature"
-      version="4.9.3.qualifier"
+      version="4.10.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
-      DLR SC VirSat SVN Model Connector
+      DLR SC VirSat External Libraries Feature
 German Aerospace Center (DLR e.V.)
 Simulation and Software Technology
    </description>
@@ -123,6 +123,20 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.spotbugs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.json-simple"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.jersey"
          download-size="0"
          install-size="0"
          version="0.0.0"

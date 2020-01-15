@@ -29,12 +29,9 @@ public class ManifestMF
   protected final String TEXT_12 = NL + " ";
   protected final String TEXT_13 = NL + "Require-Bundle: ";
   protected final String TEXT_14 = ";visibility:=reexport";
-  protected final String TEXT_15 = ",";
-  protected final String TEXT_16 = NL + " ";
-  protected final String TEXT_17 = ";visibility:=reexport";
-  protected final String TEXT_18 = NL + "Eclipse-LazyStart: true";
-  protected final String TEXT_19 = NL + "Bundle-ActivationPolicy: lazy";
-  protected final String TEXT_20 = NL;
+  protected final String TEXT_15 = NL + "Eclipse-LazyStart: true";
+  protected final String TEXT_16 = NL + "Bundle-ActivationPolicy: lazy";
+  protected final String TEXT_17 = NL;
 
   public String generate(Object argument)
   {
@@ -86,18 +83,18 @@ public class ManifestMF
     if (!pluginID.startsWith("org.eclipse.core.runtime")){
     stringBuffer.append(TEXT_14);
     } while(requiredPluginIterator.hasNext()) { pluginID = requiredPluginIterator.next();
-    stringBuffer.append(TEXT_15);
-    stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_12);
     stringBuffer.append(pluginID);
     if (!pluginID.startsWith("org.eclipse.core.runtime") && !pluginID.equals("org.eclipse.xtext.xbase.lib") && !pluginID.equals("org.eclipse.emf.ecore.xcore.lib")) {
-    stringBuffer.append(TEXT_17);
+    stringBuffer.append(TEXT_14);
     }}
     }
     if (genModel.getRuntimeVersion() == GenRuntimeVersion.EMF22 || genModel.getRuntimeVersion() == GenRuntimeVersion.EMF23) {
-    stringBuffer.append(TEXT_18);
+    stringBuffer.append(TEXT_15);
     }
-    stringBuffer.append(TEXT_19);
-    stringBuffer.append(TEXT_20);
+    stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_17);
     return stringBuffer.toString();
   }
 }

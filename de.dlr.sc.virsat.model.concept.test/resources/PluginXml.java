@@ -1,25 +1,26 @@
-/**
- * This file is part of the VirSat project.
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
- * Copyright (c) 2008-2017
- * German Aerospace Center (DLR), Simulation and Software Technology, Germany
- * All rights reserved
- * 
- */
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package testProject_ResourceAccessBuilderTest;
 public class PluginXml {
 	public static class commands {
 		public static class CommandcreateStudyApp {
 			public static final String ID = "de.dlr.sc.virsat.model.extension.testResource.ui.command.createStudyApp";
-			public static final String NAME = "S2tep Example Study App";
+			public static final String NAME = "Example Study App";
 		}	
 		public static class CommandcreateReplaceITApp {
 			public static final String ID = "de.dlr.sc.virsat.model.extension.testResource.ui.command.createReplaceITApp";
-			public static final String NAME = "S2tep Replace Interface Types App";
+			public static final String NAME = "Replace Interface Types App";
 		}	
 		public static class CommandcreateAddUnitApp {
 			public static final String ID = "de.dlr.sc.virsat.model.extension.testResource.ui.command.createAddUnitApp";
-			public static final String NAME = "S2tep Add Unit App";
+			public static final String NAME = "Add Unit App";
 		}	
 	}
 	public static class conceptImages {

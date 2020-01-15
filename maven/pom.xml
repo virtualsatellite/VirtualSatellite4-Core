@@ -9,17 +9,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
-	<artifactId>de.dlr.sc.virsat</artifactId>
-	<version>4.9.3-SNAPSHOT</version>
+	<artifactId>de.dlr.sc.virsat.parent</artifactId>
+	<version>4.10.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.0.0</tycho-version>
-		<tycho-extras-version>1.0.0</tycho-extras-version>
+		<tycho-version>1.4.0</tycho-version>
+		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.9.3</build.version>
+		<build.version>4.10.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
+		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
 		<build.folder.p2>p2</build.folder.p2>
 		<build.folder.bin>bin</build.folder.bin>
@@ -57,6 +58,7 @@
 			<id>development</id>
 			<properties>
 				<build.qualifier>'d'yyyyMMddHHmm</build.qualifier>
+				<maven.build.timestamp.format>'d'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>development</build.folder.type>
 				<build.file.win32>VirSat_Core_Development_Win32.zip</build.file.win32>
 				<build.file.linux>VirSat_Core_Development_Linux.tar.gz</build.file.linux>
@@ -66,6 +68,7 @@
 			<id>integration</id>
 			<properties>
 				<build.qualifier>'i'yyyyMMddHHmm</build.qualifier>
+				<maven.build.timestamp.format>'i'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>integration/${build.version}</build.folder.type>
 				<build.file.win32>VirSat_Core_Integration_${build.version}_Win32.zip</build.file.win32>
 				<build.file.linux>VirSat_Core_Integration_${build.version}_Linux.tar.gz</build.file.linux>
@@ -76,6 +79,7 @@
 			<properties>
 				<build.deploy.release>true</build.deploy.release>
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
+				<maven.build.timestamp.format>'r'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>release/${build.version}/${TRAVIS_BUILD_NUMBER}</build.folder.type>
 				<build.file.win32>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Win32.zip</build.file.win32>
 				<build.file.linux>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Linux.tar.gz</build.file.linux>
@@ -122,12 +126,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>3.0.0</version>
+						<version>3.1.0</version>
 						<dependencies>
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>8.8</version>
+								<version>8.26</version>
 							</dependency>
 						</dependencies>
 						<executions>
@@ -135,7 +139,7 @@
 								<id>validate</id>
 								<phase>validate</phase>
 								<configuration>
-									<configLocation>checkStylesDefinition.xml</configLocation>
+									<configLocation>../checkStylesDefinition.xml</configLocation>
 									<propertyExpansion>samedir=.</propertyExpansion>
 									<encoding>UTF-8</encoding>
 									<consoleOutput>true</consoleOutput>
@@ -170,8 +174,9 @@
 								the process. Apparently something is wrong -->
 							<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
-							<showEclipseLog>true</showEclipseLog>
-							<testFailureIgnore>true</testFailureIgnore>
+							<showEclipseLog>false</showEclipseLog>
+							<testFailureIgnore>false</testFailureIgnore>
+							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
 						</configuration>
@@ -261,7 +266,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.9.3-SNAPSHOT</version>
+							<version>4.10.0-SNAPSHOT</version>
 							<classifier>virsat</classifier>
 						</artifact>
 					</target>
@@ -279,6 +284,19 @@
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.asciidoctor</groupId>
+										<artifactId>asciidoctor-maven-plugin</artifactId>
+										<versionRange>[2.0.0-RC.1,)</versionRange>
+										<goals>
+											<goal>process-asciidoc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.eclipse.tycho.extras</groupId>
