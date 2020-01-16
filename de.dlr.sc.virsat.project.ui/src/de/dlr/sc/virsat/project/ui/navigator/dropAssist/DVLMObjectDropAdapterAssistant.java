@@ -37,6 +37,7 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 	protected Map<String, CommonDropAdapterAssistant> mapConceptIdToDelegateDropAdapter;
 	
 	protected CommonDropAdapterAssistant defaultCopyPasteDropAdapter;
+	protected CommonDropAdapterAssistant defaultInheritanceDropAdapter;
 	
 	public static final String EXTENSION_POINT_NAVIGATOR = "de.dlr.sc.virsat.project.ui.navigator";
 	public static final String EXTENSION_POINT_DROP_ASSISTANT_CONTRIBUTION = "DVLMConceptDropAssistant";
@@ -49,6 +50,7 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 		initDropAssistantMap();
 		
 		defaultCopyPasteDropAdapter = new DVLMDefaultCopyAndPasteDropAdapterAssistant();
+		defaultInheritanceDropAdapter = new DVLMDefaultInheritanceDropAdapterAssistant();
 		defaultCopyPasteDropAdapter.init(getContentService());
 	}
 
@@ -132,6 +134,13 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 			
 		IStatus delegateStatus = delegateFunction.apply(delegateDropAdapter);
 		
+		// If there is a cancel status try the default inheritance drop adapter
+		if (!delegateStatus.isOK()) {
+			delegateDropAdapter = defaultInheritanceDropAdapter;
+			delegateStatus = delegateFunction.apply(delegateDropAdapter);
+		}
+
+		// If there is still a cancel status try the default copy and paste adapter
 		if (!delegateStatus.isOK()) {
 			delegateDropAdapter = defaultCopyPasteDropAdapter;
 			delegateStatus = delegateFunction.apply(delegateDropAdapter);
@@ -149,7 +158,7 @@ public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
 
 	@Override
 	public IStatus handleDrop(CommonDropAdapter aDropAdapter, DropTargetEvent aDropTargetEvent, Object aTarget) {
-		// use the drop adpater which was valid
+		// use the drop adapter which was valid
 		return delegateDropAdapter.handleDrop(aDropAdapter, aDropTargetEvent, aTarget);
 	}
 

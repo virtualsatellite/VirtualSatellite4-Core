@@ -24,6 +24,7 @@ Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.editingDomain,
  de.dlr.sc.virsat.project.editingDomain.commands,
+ de.dlr.sc.virsat.project.editingDomain.commands.dnd,
  de.dlr.sc.virsat.project.editingDomain.util,
  de.dlr.sc.virsat.project.markers,
  de.dlr.sc.virsat.project.resources,
