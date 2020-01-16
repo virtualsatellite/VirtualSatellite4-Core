@@ -28,29 +28,24 @@ import de.dlr.sc.virsat.excel.exporter.ExcelExporter;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.project.ui.Activator;
 
-
 /**
  * Wizard for exporting Excel files.
- * 
- * @author muel_s8
- *
  */
-
 public class ExportWizard extends Wizard implements INewWizard {
 
 	private static final String ID = "de.dlr.sc.virsat.excel.ui.export";
-	
+
 	private ExportPage page;
 	private IContainer model;
 	private ISelection selection;
+	
 	/**
 	 * Create a new export wizard
 	 */
-
 	public ExportWizard() {
 		super();
 		setWindowTitle("Export to Excel");
-		
+
 		// Setup persistency if necessary
         IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
         IDialogSettings wizardSettings = pluginSettings.getSection(ID);
@@ -64,13 +59,12 @@ public class ExportWizard extends Wizard implements INewWizard {
 	/**
 	 * Set the root element for the element selection
 	 * 
-	 * @param iContainer
-	 *            root element for the export selection
+	 * @param iContainer root element for the export selection
 	 */
-
 	public void setModel(IContainer iContainer) {
 		this.model = iContainer;
 	}
+
 	/**
 	 * Set the selection for the new window
 	 * @param selection to be set
@@ -82,7 +76,6 @@ public class ExportWizard extends Wizard implements INewWizard {
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		setModel(ResourcesPlugin.getWorkspace().getRoot());
-
 	}
 
 	/**
@@ -107,15 +100,17 @@ public class ExportWizard extends Wizard implements INewWizard {
 			DVLMEditPlugin.getPlugin().getLog().log(status);
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			return false;
-		} 
+		}
 		return true;
 	}
+	
 	@Override
 	public void addPages() {
 		super.addPages();
 		page = new ExportPage(model, selection);
 		addPage(page);
 	}
+	
 	@Override
 	public boolean canFinish() {
 		ExcelExporter ee = new ExcelExporter();
@@ -130,4 +125,3 @@ public class ExportWizard extends Wizard implements INewWizard {
 		return (canExport && page.isComplete());
 	}
 }
-

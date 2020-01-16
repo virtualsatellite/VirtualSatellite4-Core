@@ -27,7 +27,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -66,15 +66,16 @@ public class Activator extends AbstractUIPlugin {
         URL fileURL = bundle.getEntry(path);
         return fileURL;
 	}
-	
+
 	/**
 	 * Method that directly hands back an image descriptor from the current Bundle resources
-	 * @param path The path to the resource 
+	 * @param path The path to the resource
 	 * @return the according ImageDescriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return Activator.imageDescriptorFromPlugin(pluginId, path);
 	}
+	
 	/**
 	 * Returns the plugin id
 	 *
