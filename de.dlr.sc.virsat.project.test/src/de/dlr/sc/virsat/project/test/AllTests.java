@@ -20,6 +20,7 @@ import de.dlr.sc.virsat.project.editingDomain.commands.VirSatCopyToClipboardComm
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatCutToClipboardCommandTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoardTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatPasteFromClipboardCommandTest;
+import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelperTest;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelperTest;
 import de.dlr.sc.virsat.project.resources.VirSatDanglingReferencesTest;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResourceTest;
@@ -54,6 +55,7 @@ import junit.framework.JUnit4TestAdapter;
 				VirSatCopyToClipboardCommandTest.class,
 				VirSatCutToClipboardCommandTest.class,
 				VirSatPasteFromClipboardCommandTest.class,
+				VirSatDragAndDropInheritanceCommandHelperTest.class,
 				CreateAddSeiWithFileStructureCommandTest.class,
 				AssignDisciplineCommandTest.class,
 				VirSatProblemMarkerHelperTest.class,

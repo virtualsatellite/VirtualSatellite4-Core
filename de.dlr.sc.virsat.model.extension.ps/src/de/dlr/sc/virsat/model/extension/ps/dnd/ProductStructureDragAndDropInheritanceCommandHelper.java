@@ -50,7 +50,12 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 
 	protected Map<Class<? extends IBeanStructuralElementInstance>, Class<? extends IBeanStructuralElementInstance>> mapDropBeanToCreateBean;
 	
+	/**
+	 * Constructor
+	 */
 	public ProductStructureDragAndDropInheritanceCommandHelper() {
+		
+		// Populate map with information about which Bean to create for which drop target
 		mapDropBeanToCreateBean = new HashMap<>();
 		
 		mapDropBeanToCreateBean.put(ConfigurationTree.class, ElementConfiguration.class);
@@ -98,21 +103,35 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 		return UnexecutableCommand.INSTANCE;
 	}	
 	
-	
+	/**
+	 * Call this method to create a BeanSei for a given drop Target SEI
+	 * @param ed The editing domain in which the object will be dropped
+	 * @param dragObjects The objects preferably SEIs which are dragged
+	 * @param dropSei the SEI to which the objects shall get dropped
+	 * @return A BeanSEI with corresponding to the drop target with correct name and discipline
+	 */
 	public IBeanStructuralElementInstance createBeanStructuralElementInstanceForDrop(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, StructuralElementInstance dropSei) {
+		// When creating a new object and setting the inheritance link at the same time
+		// then there should be only one element in the list anyway, so get the first one.
 		Object dragObject = dragObjects.iterator().next();
 		
 		try {
 			if (dragObject instanceof StructuralElementInstance) {
+				// Identify the concept
 				VirSatResourceSet virSatResourceSet = ed.getResourceSet();
 				Repository currentRepository = virSatResourceSet.getRepository();
 				Concept concept = new ActiveConceptHelper(currentRepository).getConcept(Activator.getPluginId());
 				
+				// Create a bean for the given dropSEI
 				BeanStructuralElementInstanceFactory bsf = new BeanStructuralElementInstanceFactory();
 				IBeanStructuralElementInstance dropBeanSei = bsf.getInstanceFor(dropSei);
 				
+				// Use the created bean to decide which type of bean should be created for adding to the dropSEI
 				Class<? extends IBeanStructuralElementInstance> dropBeanSeiClass = dropBeanSei.getClass();
 				Class<? extends IBeanStructuralElementInstance> createBeanSeiClass = mapDropBeanToCreateBean.get(dropBeanSeiClass);
+				
+				// If there is a suggestion to it and if it was successful to identify the concept
+				// Then it it is possible to create a new BeanSei and to set it up correctly
 				if (createBeanSeiClass != null && concept != null) {
 					Constructor<? extends IBeanStructuralElementInstance> createBeanSeiConstructor = createBeanSeiClass.getDeclaredConstructor(Concept.class);
 					IBeanStructuralElementInstance createBeanSei = (IBeanStructuralElementInstance) createBeanSeiConstructor.newInstance(concept);
@@ -125,6 +144,7 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 					String name = dragSei.getName(); 
 					createSei.setName(name);
 					
+					// Now fix naming clashes
 					DVLMCopiedNameHelper dcnh = new DVLMCopiedNameHelper();
 					dcnh.updateCopiedNames(dropSei.getChildren(), Collections.singleton(createSei));
 	
@@ -138,6 +158,8 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 					"Encountered a problem when trying to create a product structure drag and drop command: " + e.getMessage()
 			));
 		}
+		
+		// in case of error or if it is not possible to create a correct SEI return null
 		return null;
 	}
 }

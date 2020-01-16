@@ -22,7 +22,6 @@ import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
  */
 public class DVLMCommandParameterApplicableForCheck {
 
-	//TODO: Consider new name for class
 	protected ADVLMExtendedModelCapabilityCheck dvlmCapabilityCheck;
 	
 	/**
