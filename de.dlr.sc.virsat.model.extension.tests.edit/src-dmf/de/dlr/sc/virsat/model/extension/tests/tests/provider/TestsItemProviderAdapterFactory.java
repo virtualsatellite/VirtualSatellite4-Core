@@ -378,6 +378,29 @@ public class TestsItemProviderAdapterFactory extends TestsAdapterFactory impleme
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWithCalculation} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected TestCrossLinkedParametersWithCalculationItemProvider testCrossLinkedParametersWithCalculationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWithCalculation}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createTestCrossLinkedParametersWithCalculationAdapter() {
+		if (testCrossLinkedParametersWithCalculationItemProvider == null) {
+			testCrossLinkedParametersWithCalculationItemProvider = new TestCrossLinkedParametersWithCalculationItemProvider(this);
+		}
+
+		return testCrossLinkedParametersWithCalculationItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -495,6 +518,7 @@ public class TestsItemProviderAdapterFactory extends TestsAdapterFactory impleme
 		if (testCategoryExtendsItemProvider != null) testCategoryExtendsItemProvider.dispose();
 		if (testParameterItemProvider != null) testParameterItemProvider.dispose();
 		if (testMassParametersItemProvider != null) testMassParametersItemProvider.dispose();
+		if (testCrossLinkedParametersWithCalculationItemProvider != null) testCrossLinkedParametersWithCalculationItemProvider.dispose();
 	}
 
 }

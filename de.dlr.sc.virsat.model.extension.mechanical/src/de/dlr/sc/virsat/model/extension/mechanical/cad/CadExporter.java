@@ -145,7 +145,7 @@ public class CadExporter {
 			}
 			
 			@Override
-			public void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
+			public void processMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
 				JsonObject jsonProduct = transformElement(treeNode);
 				mapBeansToJsonProducts.put(treeNode, jsonProduct);
 				jsonProduct.put(CadProperties.PRODUCT_CHILDREN.getKey(), new JsonArray());

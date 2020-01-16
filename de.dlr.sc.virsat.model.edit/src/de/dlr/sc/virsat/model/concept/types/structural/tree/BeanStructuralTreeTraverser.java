@@ -23,7 +23,7 @@ public class BeanStructuralTreeTraverser {
 	/**
 	 * Traverses the tree starting from the given root
 	 * calling {@link IBeanStructuralTreeTraverserMatcher#isMatching(IBeanStructuralElementInstance)}
-	 * on all nodes and {@link IBeanStructuralTreeTraverserMatcher#foundMatch(IBeanStructuralElementInstance, IBeanStructuralElementInstance)}
+	 * on all nodes and {@link IBeanStructuralTreeTraverserMatcher#processMatch(IBeanStructuralElementInstance, IBeanStructuralElementInstance)}
 	 * on all found matches
 	 * @param root traverse the subtree of this bean
 	 * @param matcher matcher for callbacks
@@ -35,17 +35,31 @@ public class BeanStructuralTreeTraverser {
 
 	/**
 	 * Traverse a subtree of a given node
-	 * @param node 
-	 * @param parent the closest matching parent of node (or null)
+	 * @param node the node from where to start traversing
+	 * @param matchingParent the closest matching parent of node (or null)
 	 */
-	private void traverseRecursive(IBeanStructuralElementInstance node, IBeanStructuralElementInstance parent) {
-		IBeanStructuralElementInstance nextParent = parent;
-		if (matcher.isMatching(node)) {
-			matcher.foundMatch(node, parent);
+	private void traverseRecursive(IBeanStructuralElementInstance node, IBeanStructuralElementInstance matchingParent) {
+		// Remember the parent of the previous recursion
+		IBeanStructuralElementInstance nextParent = matchingParent;
+		
+		// First check if the traverser found a match.
+		// if yes start processing it, by handing over the node as well as its parent.
+		// This is e.g. needed by the visualization to create the tree nodes for the
+		// protobuf data model which can be transmitted to another visualization client.
+		// then remember the current node as the next parent to hand over the correct parent
+		// when processing the children.
+		boolean isMatching = matcher.isMatching(node);
+		if (isMatching) {
+			matcher.processMatch(node, matchingParent);
 			nextParent = node;
 		}
-		for (IBeanStructuralElementInstance child : node.getChildren(IBeanStructuralElementInstance.class)) {
-			traverseRecursive(child, nextParent);
+		
+		// Now check if the children should be processed.
+		// if yes recursively loop over all of them.
+		if (matcher.continueTraverseChildren(node, isMatching)) {
+			for (IBeanStructuralElementInstance child : node.getChildren(IBeanStructuralElementInstance.class)) {
+				traverseRecursive(child, nextParent);
+			}
 		}
 	}
 }

@@ -31,6 +31,7 @@ import org.hamcrest.core.StringStartsWith;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
 import org.junit.rules.Timeout;
 
@@ -57,7 +58,7 @@ public class ASwtBotTestCase {
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
-	public static final int GENERAL_SWTBOT_WAIT_TIME = 100;
+	public static final int SWTBOT_GENERAL_WAIT_TIME = 250;
 	
 	protected SWTWorkbenchBot bot;
 	protected Concept conceptPs;
@@ -69,7 +70,7 @@ public class ASwtBotTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
 	
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS);
+	public DisableOnDebug globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	
 	@Rule 
 	public TestName testMethodName = new TestName();
@@ -158,7 +159,6 @@ public class ASwtBotTestCase {
 		waitForEditor(item);
 		waitForEditingDomainAndUiThread();
 		return newItem;
-		
 	}
 	
 	/**
@@ -331,8 +331,8 @@ public class ASwtBotTestCase {
 	 */
 	protected void waitForAllBuildersAndUiThread() {
 		bot.waitUntil(new VirSatWaitForProjectBuilder(1));
-		waitForEditingDomainAndUiThread();
 		bot.waitUntil(Conditions.waitForJobs(ResourcesPlugin.FAMILY_AUTO_BUILD, "eclipse auto builders (inheritance builder)"));
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
@@ -485,7 +485,7 @@ public class ASwtBotTestCase {
 		synchronized void waitForExecution() {
 			while (!gotExecuted) {
 				try {
-					wait(GENERAL_SWTBOT_WAIT_TIME);
+					wait(SWTBOT_GENERAL_WAIT_TIME);
 				} catch (InterruptedException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not go to sleep Thread: " + Thread.currentThread()));
 				}
@@ -505,7 +505,7 @@ public class ASwtBotTestCase {
 		
 		// Wait a little time, so we give other UI threads / runnables to get started or queued in between
 		try {
-			Thread.sleep(GENERAL_SWTBOT_WAIT_TIME);
+			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}
@@ -518,7 +518,7 @@ public class ASwtBotTestCase {
 
 		// Add some grace time just for the res
 		try {
-			Thread.sleep(GENERAL_SWTBOT_WAIT_TIME);
+			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
 		}
