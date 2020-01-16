@@ -29,6 +29,7 @@ import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonViewer;
 
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard.ClipboardState;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatPasteFromClipboardCommand;
 import de.dlr.sc.virsat.project.ui.navigator.VirSatNavigator;
 
@@ -58,7 +59,7 @@ public class DVLMDefaultCopyAndPasteDropAdapterAssistant extends ADVLMDropAdapat
 	}
 
 	@Override
-	protected Command createDropCommand(AdapterFactoryEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
+	protected Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
 		Command dropCommand = UnexecutableCommand.INSTANCE;
 		if (operation == DND.DROP_COPY) {
 			dropCommand = VirSatPasteFromClipboardCommand.create(ed, dropObject, dragObjects, ClipboardState.COPY);

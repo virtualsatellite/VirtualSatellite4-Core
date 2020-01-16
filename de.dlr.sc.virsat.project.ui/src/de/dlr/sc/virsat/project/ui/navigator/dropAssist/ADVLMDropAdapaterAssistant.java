@@ -47,7 +47,7 @@ public abstract class ADVLMDropAdapaterAssistant extends CommonDropAdapterAssist
 	 * @param dropObject the object to which the drag operation is supposed to be dropped
 	 * @return the command for executing the drag and drop operation
 	 */
-	protected abstract Command createDropCommand(AdapterFactoryEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject);
+	protected abstract Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject);
 
 	/**
 	 * Method to determine which objects have been selected by the drag and drop operation

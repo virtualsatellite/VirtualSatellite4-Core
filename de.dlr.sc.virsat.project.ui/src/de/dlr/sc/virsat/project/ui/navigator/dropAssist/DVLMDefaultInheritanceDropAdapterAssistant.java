@@ -13,11 +13,14 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.dnd.DND;
 
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper;
 import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper.DndOperation;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
@@ -36,12 +39,18 @@ public class DVLMDefaultInheritanceDropAdapterAssistant extends ADVLMDropAdapate
 	}
 	
 	@Override
-	protected Command createDropCommand(AdapterFactoryEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
-		return VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
-				ed,
-				dragObjects,
-				DndOperation.REPLACE_INHERITANCE,
-				dropObject
-		);
+	protected Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
+		if (operation == DND.DROP_COPY || operation == DND.DROP_MOVE) {
+			return VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
+					ed,
+					dragObjects,
+					(operation == DND.DROP_COPY)
+						? DndOperation.ADD_INHERITANCE
+						: DndOperation.REPLACE_INHERITANCE,
+					dropObject
+			);
+		} else {
+			return UnexecutableCommand.INSTANCE;
+		}
 	}
 }
