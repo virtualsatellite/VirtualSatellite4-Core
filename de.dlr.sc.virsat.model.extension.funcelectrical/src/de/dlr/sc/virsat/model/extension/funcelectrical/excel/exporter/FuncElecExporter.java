@@ -67,23 +67,20 @@ public class FuncElecExporter implements IExport {
 			String selectedSEIType = sei.getType().getName();
 			if (Stream.of(EXPORTABLE_SEIS).anyMatch(exportable -> exportable.equals(selectedSEIType))) {
 				InputStream iStream = null;
+				String spezificError = "Template not found.";
 				try {
 					if (useDefaultTemplate) {
 						iStream = Activator.getResourceContentAsString(defaultTemplatePath);
 					} else {
 						iStream = Activator.getResourceContentAsString(templatePath);
 					}
-				} catch (IOException e) {
-					Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not locate the template file"));
-				}
-				export(sei, iStream);
-
-				File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + ".xlsx");
-				try {
+					export(sei, iStream);
+					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + ".xlsx");
+					spezificError = "Output not found.";
 					FileOutputStream out = new FileOutputStream(file);
 					helper.getWb().write(out);
 				} catch (IOException e) {
-					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! ", e);
+					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + spezificError, e);
 					DVLMEditPlugin.getPlugin().getLog().log(status);
 					ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 				}
