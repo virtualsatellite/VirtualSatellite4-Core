@@ -47,7 +47,6 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 			CategoryAssignment ca = (CategoryAssignment) eObject;
 			final String defaultTemplatePath = "/resources/StateMachineExportTemplate.xlsx";
 			// find the export template
-			String spezificError = "Template not found.";
 			try {
 				InputStream iStream = null;
 				if (useDefaultTemplate) {
@@ -60,12 +59,11 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 				String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".xlsx";
 				// and write the results
 				File file = new File(newPath);
-				//find the export destination
-				spezificError = "Output not found.";
+				// find the export destination
 				FileOutputStream out = new FileOutputStream(file);
 				wb.write(out);
 			} catch (IOException e) {
-				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + spezificError, e);
+				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! \n" + e.getMessage(), e);
 				Activator.getDefault().getLog().log(status);
 				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			}
