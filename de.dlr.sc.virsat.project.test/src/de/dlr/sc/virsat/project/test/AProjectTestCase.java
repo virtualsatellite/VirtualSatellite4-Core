@@ -163,12 +163,27 @@ public abstract class AProjectTestCase {
 		return TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName();
 	}
 	
+	
 	/**
 	 * Simple method to execute code as part of a recording command
-	 * @param function the lambda to be executed. 
+	 * @param runnable the lambda to be executed with no parameters and no return value. 
+	 */
+	protected <T> void executeAsCommand(Runnable runnable) {
+		// Now wrap the lambda into a recording command and execute it
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				runnable.run();
+			}
+		});
+	}
+		
+	/**
+	 * Simple method to execute code as part of a recording command
+	 * @param supplier the lambda to be executed with no parameters. 
 	 * @return the result of the executed lambda
 	 */
-	protected <T> T executeAsCommand(Supplier<T> function) {
+	protected <T> T executeAsCommand(Supplier<T> supplier) {
 		
 		// Simple class to store object of the given generic type T
 		class Store {
@@ -183,7 +198,7 @@ public abstract class AProjectTestCase {
 			@Override
 			protected void doExecute() {
 				// execute the lambda and remember the result
-				store.object = function.get();
+				store.object = supplier.get();
 			}
 		});
 		
