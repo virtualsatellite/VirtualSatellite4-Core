@@ -11,12 +11,14 @@ package de.dlr.sc.virsat.project.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -159,5 +161,33 @@ public abstract class AProjectTestCase {
 	 */
 	protected String getProjectName() {
 		return TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName();
+	}
+	
+	/**
+	 * Simple method to execute code as part of a recording command
+	 * @param function the lambda to be executed. 
+	 * @return the result of the executed lambda
+	 */
+	protected <T> T executeAsCommand(Supplier<T> function) {
+		
+		// Simple class to store object of the given generic type T
+		class Store {
+			T object;
+		}
+		
+		// Initialize it as final to hand back the result from the executed command scope
+		final Store store = new Store();
+		
+		// Now wrap the lambda into a recording command and execute it
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				// execute the lambda and remember the result
+				store.object = function.get();
+			}
+		});
+		
+		// Finally hand back the result of the executed command
+		return store.object;
 	}
 }

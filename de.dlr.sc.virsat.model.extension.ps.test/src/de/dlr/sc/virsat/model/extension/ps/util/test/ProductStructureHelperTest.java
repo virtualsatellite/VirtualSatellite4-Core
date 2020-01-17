@@ -12,22 +12,18 @@ package de.dlr.sc.virsat.model.extension.ps.util.test;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
+import de.dlr.sc.virsat.model.extension.ps.Activator;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
@@ -37,14 +33,12 @@ import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureC
 
 /**
  * Test Case for Generating Tree
- * @author bell_er
  *
  */
 public class ProductStructureHelperTest extends AConceptProjectTestCase {
-	private static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
-	private static final String EXTENSION_ID = "de.dlr.sc.virsat.model.Concept";
-
-	private static final int THREE = 3;
+	private static final String CONCEPT_ID_PS = Activator.getPluginId();
+	
+	private static final int AMOUNT_CT_SUBSYTEMS = 3;
 
 	ElementDefinition ed;
 	ElementConfiguration ec;
@@ -68,48 +62,27 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 	StructuralElementInstance seiED1;
 	StructuralElementInstance seiED2;
 	
-
-
-	Concept conceptEgscc;
+	Concept conceptPs;
 
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		UserRegistry.getInstance().setSuperUser(true);
-
 		addEditingDomainAndRepository();
-		
-
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IConfigurationElement[] configSections = registry.getConfigurationElementsFor(EXTENSION_ID);
-
-		ActiveConceptConfigurationElement acElement = ActiveConceptConfigurationElement.getPropperAddActiveConceptConfigurationElement(configSections, CONCEPT_ID_EGSCC);
-		Command command = acElement.createAddActiveConceptCommand(editingDomain, repository);
-		editingDomain.getCommandStack().execute(command);
-
-
-		ActiveConceptHelper acHelper = new ActiveConceptHelper(repository);
-		conceptEgscc = acHelper.getConcept(CONCEPT_ID_EGSCC);
-		
+		conceptPs = executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_PS));
+			
 		// get Structural elements
+		StructuralElement productTree = ActiveConceptHelper.getStructuralElement(conceptPs, "ProductTree");
+		StructuralElement productTreeDomain = ActiveConceptHelper.getStructuralElement(conceptPs, "ProductTreeDomain");
+		StructuralElement elementDefinition = ActiveConceptHelper.getStructuralElement(conceptPs, "ElementDefinition");
 		
-		StructuralElement productTree = ActiveConceptHelper.getStructuralElement(conceptEgscc, "ProductTree");
-		StructuralElement productTreeDomain = ActiveConceptHelper.getStructuralElement(conceptEgscc, "ProductTreeDomain");
-		StructuralElement elementDefinition = ActiveConceptHelper.getStructuralElement(conceptEgscc, "ElementDefinition");
+		StructuralElement configurationTree = ActiveConceptHelper.getStructuralElement(conceptPs, "ConfigurationTree");	
+		StructuralElement elementConfiguration = ActiveConceptHelper.getStructuralElement(conceptPs, "ElementConfiguration");
 		
-		
-		StructuralElement configurationTree = ActiveConceptHelper.getStructuralElement(conceptEgscc, "ConfigurationTree");	
-		StructuralElement elementConfiguration = ActiveConceptHelper.getStructuralElement(conceptEgscc, "ElementConfiguration");
-		
-		StructuralElement assemblyTree = ActiveConceptHelper.getStructuralElement(conceptEgscc, "AssemblyTree");
-		StructuralElement elementOccurence = ActiveConceptHelper.getStructuralElement(conceptEgscc, "ElementOccurence");
-		
+		StructuralElement assemblyTree = ActiveConceptHelper.getStructuralElement(conceptPs, "AssemblyTree");
+		StructuralElement elementOccurence = ActiveConceptHelper.getStructuralElement(conceptPs, "ElementOccurence");
 		
 		// Create A configuration Tree And its Children
-		
 		seiCT = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		
 		seiCT.setType(configurationTree);
 		
 		ct = new ConfigurationTree(seiCT);
@@ -163,7 +136,6 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 		
 		copyAT = (StructuralElementInstance) DVLMCopier.makeCopyKeepUuids(seiAT);
 	}
-	
 
 	@Test
 	public void testConfigTreeToAssemblyTree()  { 
@@ -176,8 +148,9 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 	@Test
 	public void testDuplicate()  { 
 		ProductStructureHelper.duplicate(seiEC2);
-		assertEquals(THREE, seiCT.getChildren().size());
+		assertEquals(AMOUNT_CT_SUBSYTEMS, seiCT.getChildren().size());
 	}	
+
 	@Test
 	public void testProductTreeToConfigurationTree()  { 
 		Command commandAddStructuralElementInstance = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, seiPT);
@@ -186,11 +159,11 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 		assertEquals(1, ct.getStructuralElementInstance().getChildren().size());
 		assertEquals(2, ct.getStructuralElementInstance().getChildren().get(0).getChildren().size());
 	}
-	
+
 	@Test
 	public void testConfigure()  { 
 		StructuralElementInstance newChildEo  = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		newChildEo.setType(ActiveConceptHelper.getStructuralElement(conceptEgscc, "ElementOccurence"));
+		newChildEo.setType(ActiveConceptHelper.getStructuralElement(conceptPs, "ElementOccurence"));
 		newChildEo.setName("ElementOccurence35");
 		copyAT.getChildren().add(newChildEo);
 
@@ -221,5 +194,4 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 		copyAT.getChildren().remove(toRemove);
 		assertEquals(seiAT.getChildren().size(), 2);
 	}
-
 }
