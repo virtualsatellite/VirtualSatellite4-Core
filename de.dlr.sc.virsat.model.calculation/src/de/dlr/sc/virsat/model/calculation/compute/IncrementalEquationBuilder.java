@@ -213,7 +213,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 	};
 	
 	/**
-	 * Writes all errors from resourceSet to log and shows them in a UI dialog
+	 * Writes all errors from resourceSet to log
 	 * @param resourceSet resource set to get errors from
 	 */
 	private void reportResourceSetErrors(VirSatResourceSet resourceSet) {
@@ -233,14 +233,11 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 	 */
 	private Status getResourceErrorStatus(Resource resource, Resource.Diagnostic error) {
 		Status status;
-		if (error instanceof Throwable) {
-			status = new Status(Status.ERROR, Activator.getPluginId(), 
-					"Error in resource " + resource, (Throwable) error);
-		} else {
-			status = new Status(Status.ERROR, Activator.getPluginId(), 
-					String.format("Error in resource %s: %s, location %s, line %d, column %d",
-							resource.toString(), error.getMessage(), error.getLocation(), error.getLine(), error.getColumn()));
-		}
+		Throwable exception = error instanceof Throwable ? (Throwable) error : null;
+		status = new Status(Status.ERROR, Activator.getPluginId(),
+				String.format("IncrementalEquationBuilder: error in resource %s: %s", resource.toString(),
+						error.getMessage()),
+				exception);
 		return status;
 	}
 
