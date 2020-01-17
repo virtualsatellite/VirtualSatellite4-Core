@@ -65,6 +65,10 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	@Rule
 	public final ExpectedException expectedException = ExpectedException.none();
 	
+	@Override
+	protected void addProjectFileStructure() {
+	}
+	
 	@Test
 	public void testCreateProjectStructure() {
 		VirSatProjectCommons virSatProject = new VirSatProjectCommons(testProject); 

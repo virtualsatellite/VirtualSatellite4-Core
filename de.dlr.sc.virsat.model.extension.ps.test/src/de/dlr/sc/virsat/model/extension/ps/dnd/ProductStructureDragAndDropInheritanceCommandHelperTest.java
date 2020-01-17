@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.hasItem;
 
 import java.util.Collections;
 
@@ -114,7 +116,12 @@ public class ProductStructureDragAndDropInheritanceCommandHelperTest extends ACo
 		);
 		
 		assertEquals("Got new element with correct inheritance", ed, ct.getChildren(ElementConfiguration.class).get(0).getSuperSeis(ElementDefinition.class).get(0));
-	
+		assertThat(
+				"Created Resource for new bean",
+				editingDomain.getResourceSet().getResources(),
+				hasItem(ct.getChildren(ElementConfiguration.class).get(0).getStructuralElementInstance().eResource())
+		);
+		
 		// Now add a second time as a selection of SEI instead of bean
 		editingDomain.getVirSatCommandStack().execute(
 			psDndHelper.createDropCommand(
@@ -125,6 +132,11 @@ public class ProductStructureDragAndDropInheritanceCommandHelperTest extends ACo
 		);
 		
 		assertEquals("Got new element with correct inheritance", ed, ct.getChildren(ElementConfiguration.class).get(1).getSuperSeis(ElementDefinition.class).get(0));
+		assertThat(
+				"Created Resource for new bean",
+				editingDomain.getResourceSet().getResources(),
+				hasItem(ct.getChildren(ElementConfiguration.class).get(1).getStructuralElementInstance().eResource())
+		);
 	}
 
 	@Test

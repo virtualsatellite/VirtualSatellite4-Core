@@ -32,13 +32,12 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Abstract test case which creates a project for further testing
- * @author fisc_ph
- *
  */
 public abstract class AProjectTestCase {
 
@@ -53,7 +52,8 @@ public abstract class AProjectTestCase {
 	protected IProject testProject;
 	protected VirSatTransactionalEditingDomain editingDomain;
 	protected Repository repository;
-	
+	protected VirSatProjectCommons projectCommons;
+	protected VirSatResourceSet rs;
 	
 	private List<IProject> testProjects = new ArrayList<>();
 	
@@ -85,11 +85,18 @@ public abstract class AProjectTestCase {
 		}
 
 		testProject = createTestProject(getProjectName());
+		projectCommons = new VirSatProjectCommons(testProject);
+		addProjectFileStructure();
 
 		previousUser = UserRegistry.getInstance().getUserName();
 		setUserAndRights();
 		
+		VirSatEditingDomainClipBoard.INSTANCE.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();  
+	}
+
+	protected void addProjectFileStructure() {
+		projectCommons.createProjectStructure(null);
 	}
 	
 	private String previousUser;
@@ -125,17 +132,11 @@ public abstract class AProjectTestCase {
 		//CHECKSTYLE:ON
 	}
 	
-	protected VirSatProjectCommons projectCommons;
-	protected  VirSatResourceSet rs;
-	
 	/**
 	 * This method creates an unmanaged ResourceSet which is non transactional.
 	 * The method also creates a repository
 	 */
 	protected void addResourceSetAndRepository() {
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-
 		rs = VirSatResourceSet.createUnmanagedResourceSet(testProject);
 		rs.initializeModelsAndResourceSet();
 		repository = rs.getRepository();
@@ -154,6 +155,7 @@ public abstract class AProjectTestCase {
 		editingDomain.saveAll();
 
 		repository = resSetRepositoryTarget.getRepository();
+		rs = editingDomain.getResourceSet();
 	}
 	
 	/**

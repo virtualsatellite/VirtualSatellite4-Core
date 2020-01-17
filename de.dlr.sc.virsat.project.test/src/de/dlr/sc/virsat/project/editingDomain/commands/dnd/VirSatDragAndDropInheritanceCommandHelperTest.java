@@ -38,7 +38,6 @@ public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestC
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		createTestProject("testInheritanceDragAndDrop");
 		addEditingDomainAndRepository();
 		
 		StructuralElement seTypeA = StructuralFactory.eINSTANCE.createStructuralElement();
