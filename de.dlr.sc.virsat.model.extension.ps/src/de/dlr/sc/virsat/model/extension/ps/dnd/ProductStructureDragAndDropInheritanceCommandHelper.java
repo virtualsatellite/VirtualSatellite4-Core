@@ -21,9 +21,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.command.UnexecutableCommand;
+
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
@@ -37,9 +37,6 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductStorageDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper;
-import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper.DndOperation;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 
 /**
@@ -49,6 +46,7 @@ import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureC
 public class ProductStructureDragAndDropInheritanceCommandHelper {
 
 	protected Map<Class<? extends IBeanStructuralElementInstance>, Class<? extends IBeanStructuralElementInstance>> mapDropBeanToCreateBean;
+	protected BeanStructuralElementInstanceFactory bsf;
 	
 	/**
 	 * Constructor
@@ -66,6 +64,8 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 
 		mapDropBeanToCreateBean.put(ProductStorageDomain.class, ElementRealization.class);
 		mapDropBeanToCreateBean.put(ElementRealization.class, ElementRealization.class);
+		
+		bsf = new BeanStructuralElementInstanceFactory();
 	}
 	
 	/**
@@ -75,83 +75,93 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 	 * @param dropOperation the kind of operation
 	 * @param dropSei the SEI where the superSEIs should be changed
 	 * @return The command to add or replace a superSEI
+	 * @throws CoreException 
 	 */
-	public Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, StructuralElementInstance dropSei) {
-		IBeanStructuralElementInstance createSeiBean = createBeanStructuralElementInstanceForDrop(ed, dragObjects, dropSei);
+	public Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, IBeanStructuralElementInstance dropBeanSei) {
+		// Identify the dragObject and create a Bean for it;
+		Object dragObject = dragObjects.iterator().hasNext() ? dragObjects.iterator().next() : null;
 		
-		if (createSeiBean != null) {
-			StructuralElementInstance createSei = createSeiBean.getStructuralElementInstance();
-			Command addSeiCommand = CreateAddSeiWithFileStructureCommand.create(
-					ed,
-					dropSei,
-					createSei
-			);
-			Command setInheritanceCommand = VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
-					ed,
-					dragObjects,
-					DndOperation.ADD_INHERITANCE,
-					createSei
-			);
-			
-			CompoundCommand commandCreateSeiAndSetInheritance = new CompoundCommand();
-			commandCreateSeiAndSetInheritance.append(addSeiCommand);
-			commandCreateSeiAndSetInheritance.append(setInheritanceCommand);
-
-			return commandCreateSeiAndSetInheritance;
+		// In case the drag object is a SEI cast it to a bean
+		if (dragObject instanceof StructuralElementInstance) {
+			try {
+				dragObject = bsf.getInstanceFor((StructuralElementInstance) dragObject);
+			} catch (CoreException e) {
+				Activator.getDefault().getLog().log(new Status(
+						Status.INFO,
+						Activator.getPluginId(),
+						"Encountered a problem when trying to cast a Bean SEI: " + e.getMessage()
+				));
+			}
 		}
 		
+		// if the dragObject is a BEAN Sei continue
+		if (dragObject instanceof IBeanStructuralElementInstance) {
+			// Create the new SEI that will be placed as new child
+			IBeanStructuralElementInstance dragBeanSei = (IBeanStructuralElementInstance) dragObject; 
+			IBeanStructuralElementInstance createSeiBean = createBeanStructuralElementInstanceForDrop(dragBeanSei, dropBeanSei);
+			
+			// if it could be created prepare the commands for adding it as child and
+			// for adding the inheritance link.
+			if (createSeiBean != null) {
+				Command addSeiCommand = CreateAddSeiWithFileStructureCommand.create(
+						ed,
+						dropBeanSei.getStructuralElementInstance(),
+						createSeiBean.getStructuralElementInstance()
+				);
+				Command setInheritanceCommand = createSeiBean.addSuperSei(
+						ed,
+						dragBeanSei
+				);
+				
+				CompoundCommand commandCreateSeiAndSetInheritance = new CompoundCommand();
+				commandCreateSeiAndSetInheritance.append(addSeiCommand);
+				commandCreateSeiAndSetInheritance.append(setInheritanceCommand);
+	
+				return commandCreateSeiAndSetInheritance;
+			}
+		}
+			
+		// In all other case hand back an unexecutable command
 		return UnexecutableCommand.INSTANCE;
 	}	
 	
 	/**
 	 * Call this method to create a BeanSei for a given drop Target SEI
 	 * @param ed The editing domain in which the object will be dropped
-	 * @param dragObjects The objects preferably SEIs which are dragged
+	 * @param beanDragSei The objects preferably SEIs which are dragged
 	 * @param dropSei the SEI to which the objects shall get dropped
 	 * @return A BeanSEI with corresponding to the drop target with correct name and discipline
 	 */
-	public IBeanStructuralElementInstance createBeanStructuralElementInstanceForDrop(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, StructuralElementInstance dropSei) {
-		// When creating a new object and setting the inheritance link at the same time
-		// then there should be only one element in the list anyway, so get the first one.
-		Object dragObject = dragObjects.iterator().next();
-		
+	public IBeanStructuralElementInstance createBeanStructuralElementInstanceForDrop(IBeanStructuralElementInstance dragBeanSei, IBeanStructuralElementInstance dropBeanSei) {
 		try {
-			if (dragObject instanceof StructuralElementInstance) {
-				// Identify the concept
-				VirSatResourceSet virSatResourceSet = ed.getResourceSet();
-				Repository currentRepository = virSatResourceSet.getRepository();
-				Concept concept = new ActiveConceptHelper(currentRepository).getConcept(Activator.getPluginId());
+			// Identify the concept
+			Concept concept = ActiveConceptHelper.getConcept(dropBeanSei.getStructuralElementInstance().getType());
+			
+			// Use the created bean to decide which type of bean should be created for adding to the dropSEI
+			Class<? extends IBeanStructuralElementInstance> dropBeanSeiClass = dropBeanSei.getClass();
+			Class<? extends IBeanStructuralElementInstance> createBeanSeiClass = mapDropBeanToCreateBean.get(dropBeanSeiClass);
+			
+			// If there is a suggestion to it and if it was successful to identify the concept
+			// Then it it is possible to create a new BeanSei and to set it up correctly
+			if (createBeanSeiClass != null && concept != null) {
+				Constructor<? extends IBeanStructuralElementInstance> createBeanSeiConstructor = createBeanSeiClass.getDeclaredConstructor(Concept.class);
+				IBeanStructuralElementInstance createBeanSei = (IBeanStructuralElementInstance) createBeanSeiConstructor.newInstance(concept);
+				StructuralElementInstance createSei = createBeanSei.getStructuralElementInstance();
+				StructuralElementInstance dropSei = dropBeanSei.getStructuralElementInstance();
 				
-				// Create a bean for the given dropSEI
-				BeanStructuralElementInstanceFactory bsf = new BeanStructuralElementInstanceFactory();
-				IBeanStructuralElementInstance dropBeanSei = bsf.getInstanceFor(dropSei);
+				// Now copy the name and the disciplines accordingly
+				Discipline discipline = dropBeanSei.getStructuralElementInstance().getAssignedDiscipline(); 
+				createSei.setAssignedDiscipline(discipline);
+				String name = dragBeanSei.getName(); 
+				createSei.setName(name);
 				
-				// Use the created bean to decide which type of bean should be created for adding to the dropSEI
-				Class<? extends IBeanStructuralElementInstance> dropBeanSeiClass = dropBeanSei.getClass();
-				Class<? extends IBeanStructuralElementInstance> createBeanSeiClass = mapDropBeanToCreateBean.get(dropBeanSeiClass);
-				
-				// If there is a suggestion to it and if it was successful to identify the concept
-				// Then it it is possible to create a new BeanSei and to set it up correctly
-				if (createBeanSeiClass != null && concept != null) {
-					Constructor<? extends IBeanStructuralElementInstance> createBeanSeiConstructor = createBeanSeiClass.getDeclaredConstructor(Concept.class);
-					IBeanStructuralElementInstance createBeanSei = (IBeanStructuralElementInstance) createBeanSeiConstructor.newInstance(concept);
-					StructuralElementInstance createSei = createBeanSei.getStructuralElementInstance();
-					
-					// Now copy the name and the disciplines accordingly
-					StructuralElementInstance dragSei = (StructuralElementInstance) dragObject;
-					Discipline discipline = dropSei.getAssignedDiscipline(); 
-					createSei.setAssignedDiscipline(discipline);
-					String name = dragSei.getName(); 
-					createSei.setName(name);
-					
-					// Now fix naming clashes
-					DVLMCopiedNameHelper dcnh = new DVLMCopiedNameHelper();
-					dcnh.updateCopiedNames(dropSei.getChildren(), Collections.singleton(createSei));
-	
-					return createBeanSei;
-				}
+				// Now fix naming clashes
+				DVLMCopiedNameHelper dcnh = new DVLMCopiedNameHelper();
+				dcnh.updateCopiedNames(dropSei.getChildren(), Collections.singleton(createSei));
+
+				return createBeanSei;
 			}
-		} catch (CoreException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Activator.getDefault().getLog().log(new Status(
 					Status.INFO,
 					Activator.getPluginId(),

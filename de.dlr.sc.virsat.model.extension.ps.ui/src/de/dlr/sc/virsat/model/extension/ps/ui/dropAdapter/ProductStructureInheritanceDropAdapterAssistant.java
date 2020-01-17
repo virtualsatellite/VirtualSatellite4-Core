@@ -11,11 +11,17 @@ package de.dlr.sc.virsat.model.extension.ps.ui.dropAdapter;
 
 import java.util.Collection;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.dnd.DND;
+
+import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.ps.Activator;
 import de.dlr.sc.virsat.model.extension.ps.dnd.ProductStructureDragAndDropInheritanceCommandHelper;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMDefaultInheritanceDropAdapterAssistant;
@@ -28,19 +34,30 @@ import de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMDefaultInheritanceDr
  */
 public class ProductStructureInheritanceDropAdapterAssistant extends DVLMDefaultInheritanceDropAdapterAssistant {
 	
+	private BeanStructuralElementInstanceFactory bsf;
+	protected ProductStructureDragAndDropInheritanceCommandHelper psDndCommandHelper;
+	
 	public ProductStructureInheritanceDropAdapterAssistant() {
 		psDndCommandHelper = new ProductStructureDragAndDropInheritanceCommandHelper();
+		bsf = new BeanStructuralElementInstanceFactory();
 	}
-	
-	protected ProductStructureDragAndDropInheritanceCommandHelper psDndCommandHelper;
 	
 	@Override
 	protected Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
-		// Product Structure DND Operations only if ALT is pressed with drag and drop
-		if ((operation == DND.DROP_LINK) && (dropObject instanceof StructuralElementInstance)) {
-			StructuralElementInstance dropSei = (StructuralElementInstance) dropObject;
-			Command createSeiAndAddInheritanceCommand = psDndCommandHelper.createDropCommand(ed, dragObjects, dropSei);
-			return createSeiAndAddInheritanceCommand;
+		try {
+			// Product Structure DND Operations only if ALT is pressed with drag and drop
+			if ((operation == DND.DROP_LINK) && (dropObject instanceof StructuralElementInstance)) {
+				StructuralElementInstance dropSei = (StructuralElementInstance) dropObject;
+				IBeanStructuralElementInstance dopBeanSei = bsf.getInstanceFor(dropSei);
+				Command createSeiAndAddInheritanceCommand = psDndCommandHelper.createDropCommand(ed, dragObjects, dopBeanSei);
+				return createSeiAndAddInheritanceCommand;
+			}
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"Encountered a problem when trying to cast a Bean SEI for PS inheritance drag and drop operation: " + e.getMessage()
+			));
 		}
 		return UnexecutableCommand.INSTANCE;
 	}
