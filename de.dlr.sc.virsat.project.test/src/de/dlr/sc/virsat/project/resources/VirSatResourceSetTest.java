@@ -546,16 +546,10 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	}
 	
 	/**
-	 * A simple resource set to test the enw adapter for logging null objects in the
-	 * resource contents.
-	 *
+	 * Test resource set that tracks updateDiagnostic call for testing resourceNullContentAdapter.
 	 */
 	class TestVirSatResourceSet extends VirSatResourceSet {
 	
-		/**
-		 * Simple constructor
-		 * @param project the project on whcih to create the reosurceset
-		 */
 		protected TestVirSatResourceSet(IProject project) {
 			super(project);
 		}
@@ -614,7 +608,6 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 			}
 		};
 		
-		// Also run the diagnostics which should detect the
 		assertNull("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource));
 
 		// Now add the null object and see that the diagnostics are running as expected
@@ -623,8 +616,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		nullableResource.getContents().add(null);
 		assertTrue("Now the diagnostics is triggered", resSet.triggeredDiagnosticUpdate);
 
-		assertEquals("There are no critical diagnostics yet", 
-			resSet.getResourceToDiagnosticsMap().get(nullableResource).getChildren().get(0).getMessage(),
-			"Restart Virtual Satellite! Found NULL object in resource content: null");
+		assertTrue("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource)
+				.getChildren().get(0).getMessage().contains("Found NULL object in resource content"));
 	}
 }

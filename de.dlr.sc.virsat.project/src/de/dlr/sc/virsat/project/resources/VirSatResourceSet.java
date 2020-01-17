@@ -145,7 +145,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	};
 
 	/**
-	 * This content checks the EMF resources for NULL objects.
+	 * This content adapter checks the EMF resources for NULL objects.
 	 * Usually their content lists are free of NULL objects and don't allow to have
 	 * them included. In some cases it can still happen. This class is supposed
 	 * to spot these rare cases.
@@ -303,7 +303,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				basicDiagnostic.merge(new BasicDiagnostic(
 					Diagnostic.ERROR,
 					Activator.getPluginId(), 0,
-					"Restart Virtual Satellite! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
+					"Error! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
 					new Object[] { resource }
 				));
 			}
