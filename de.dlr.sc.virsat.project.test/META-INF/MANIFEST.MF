@@ -7,6 +7,7 @@ Fragment-Host: de.dlr.sc.virsat.project
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore,
+ org.hamcrest.library
 Export-Package: de.dlr.sc.virsat.project.test
 Automatic-Module-Name: de.dlr.sc.virsat.project.test
