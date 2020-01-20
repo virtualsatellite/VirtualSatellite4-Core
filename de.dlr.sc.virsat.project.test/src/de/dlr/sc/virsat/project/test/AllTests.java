@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSetUtilTest2;
 import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommandTest;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommandTest;
 import de.dlr.sc.virsat.project.resources.dmf.DmfResourceSaveCommandTest;
+import de.dlr.sc.virsat.project.structure.VirSatProjectBuilderTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommonsTest;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNatureTest;
@@ -46,6 +47,7 @@ import junit.framework.JUnit4TestAdapter;
 				VirSatTransactionalEditingDomainTest.class,
 				VirSatProjectResourceTest.class,
 				VirSatProjectNatureTest.class,
+				VirSatProjectBuilderTest.class,
 				VirSatResourceSetUtilTest2.class,
 				VirSatDanglingReferencesTest.class, //Disabled for the current Release
 				VirSatResourceSetUtilTest.class,
