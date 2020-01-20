@@ -87,9 +87,10 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 				dragObject = bsf.getInstanceFor((StructuralElementInstance) dragObject);
 			} catch (CoreException e) {
 				Activator.getDefault().getLog().log(new Status(
-						Status.INFO,
+						Status.WARNING,
 						Activator.getPluginId(),
-						"Encountered a problem when trying to cast a Bean SEI: " + e.getMessage()
+						"Encountered a problem when trying to cast a Bean SEI: ",
+						e
 				));
 			}
 		}
@@ -130,7 +131,7 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 	 * @param ed The editing domain in which the object will be dropped
 	 * @param beanDragSei The objects preferably SEIs which are dragged
 	 * @param dropSei the SEI to which the objects shall get dropped
-	 * @return A BeanSEI with corresponding to the drop target with correct name and discipline
+	 * @return A BeanSEI corresponding to the drop target with correct name and discipline
 	 */
 	public IBeanStructuralElementInstance createBeanStructuralElementInstanceForDrop(IBeanStructuralElementInstance dragBeanSei, IBeanStructuralElementInstance dropBeanSei) {
 		try {
@@ -163,9 +164,10 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 			}
 		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			Activator.getDefault().getLog().log(new Status(
-					Status.INFO,
+					Status.WARNING,
 					Activator.getPluginId(),
-					"Encountered a problem when trying to create a product structure drag and drop command: " + e.getMessage()
+					"Encountered a problem when trying to create a product structure drag and drop command: ",
+					e
 			));
 		}
 		
