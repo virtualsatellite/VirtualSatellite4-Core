@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -40,6 +41,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
+import de.dlr.sc.virsat.team.ui.util.svn.VirSatSvnRevisionStatusUtil;
 
 /**
  * a class to define the commit action
@@ -78,9 +80,20 @@ public class SVNCommitAction extends CommitAction {
 					selectionChanged(null, newStructuredSelection);
 					checkSelection(newStructuredSelection);
 					try {
+						Activator.getDefault().getLog()
+								.log(new Status(IStatus.INFO, Activator.getPluginId(),
+										"SVN: Before commit on:\n" + new VirSatSvnRevisionStatusUtil()
+												.getWorkspaceChangedStatus(selectedProject)));
+
 						super.execute(event);
+
+						Activator.getDefault().getLog()
+								.log(new Status(IStatus.INFO, Activator.getPluginId(),
+										"SVN: After commit on:\n" + new VirSatSvnRevisionStatusUtil()
+												.getWorkspaceChangedStatus(selectedProject)));
 					} catch (Exception e) {
-						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to execute call to SVN in Custom Commit! " + e.getMessage()));
+						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+								"SVN: Failed to execute call to SVN in Custom Commit! " + e.getMessage()));
 					}
 				}
 			}, ResourcesPlugin.getWorkspace().getRoot(), IWorkspace.AVOID_UPDATE, null);
