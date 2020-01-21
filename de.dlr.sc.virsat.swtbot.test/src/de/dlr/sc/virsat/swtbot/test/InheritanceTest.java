@@ -165,7 +165,6 @@ public class InheritanceTest extends ASwtBotTestCase {
 		waitForAllBuildersAndUiThread();
 		
 		openEditor(elementOccurence);
-		//waitForAllBuildersAndUiThread();
 		assertEquals("Received override from EC1", "docFromEc1", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		
 		// now drag the other and verify
@@ -173,7 +172,6 @@ public class InheritanceTest extends ASwtBotTestCase {
 		waitForAllBuildersAndUiThread();
 		
 		openEditor(elementOccurence);
-		//waitForAllBuildersAndUiThread();
 		assertEquals("Received override from EC2", "docFromEc2", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 	}
 }

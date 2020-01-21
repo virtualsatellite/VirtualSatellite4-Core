@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.project.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
@@ -187,24 +188,19 @@ public abstract class AProjectTestCase {
 	 */
 	protected <T> T executeAsCommand(Supplier<T> supplier) {
 		
-		// Simple class to store object of the given generic type T
-		class Store {
-			T object;
-		}
-		
-		// Initialize it as final to hand back the result from the executed command scope
-		final Store store = new Store();
+		// Use a final vector to store the return object from the lambda expression
+		final Vector<T> store = new Vector<>();
 		
 		// Now wrap the lambda into a recording command and execute it
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
 				// execute the lambda and remember the result
-				store.object = supplier.get();
+				store.add(supplier.get());
 			}
 		});
 		
 		// Finally hand back the result of the executed command
-		return store.object;
+		return store.firstElement();
 	}
 }

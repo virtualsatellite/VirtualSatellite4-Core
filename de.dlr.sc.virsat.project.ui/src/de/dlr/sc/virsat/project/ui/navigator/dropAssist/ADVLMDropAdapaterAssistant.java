@@ -29,10 +29,6 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
  */
 public abstract class ADVLMDropAdapaterAssistant extends CommonDropAdapterAssistant {
 
-	public ADVLMDropAdapaterAssistant() {
-		super();
-	}
-
 	protected VirSatTransactionalEditingDomain ed;
 	protected Command validatedDropCommand;
 	protected EObject validatedDropObject;
