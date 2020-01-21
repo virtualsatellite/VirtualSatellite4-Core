@@ -62,17 +62,17 @@ public class ExcelExporter {
 	 * @throws CoreException
 	 */
 	public boolean canExport(Object object) throws CoreException {
-		boolean canExport = false;
+		boolean canBeExported = false;
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IEXPORT_ID);
 		for (IConfigurationElement iConfElement : config) {
 			Object obj = iConfElement.createExecutableExtension("class");
 			if (obj instanceof IExport) {
-				canExport = ((IExport) obj).canExport(object);
-				if (canExport) {
+				canBeExported = ((IExport) obj).canExport(object);
+				if (canBeExported) {
 					break;
 				}
 			}
 		}
-		return canExport;
+		return canBeExported;
 	}
 }
