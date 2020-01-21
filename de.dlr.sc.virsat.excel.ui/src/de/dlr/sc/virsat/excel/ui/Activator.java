@@ -49,7 +49,6 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -78,7 +77,6 @@ public class Activator extends AbstractUIPlugin {
 	
 	/**
 	 * Returns the plugin id
-	 *
 	 * @return pluginId
 	 */
 	public static String getPluginId() {
