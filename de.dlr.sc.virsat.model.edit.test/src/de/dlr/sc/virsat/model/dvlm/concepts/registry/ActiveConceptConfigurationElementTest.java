@@ -193,7 +193,7 @@ public class ActiveConceptConfigurationElementTest {
 			}
 		};
 
-		String expectedConceptNameWithVersion = "DisplayName – de.dlr.sc.model.dvlm.noid [1.0]";
+		String expectedConceptNameWithVersion = "DisplayName - de.dlr.sc.model.dvlm.noid [1.0]";
 		String conceptNameWithVersion = acce.getConceptNameWithVersion();
 
 		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
