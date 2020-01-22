@@ -224,14 +224,13 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 	
 	@Override
 	public int indexOf(Object o) {
-		if (o != null && !(o instanceof IBeanObject<?>)) {
+		if (!(o instanceof IBeanObject<?>)) {
 			return INDEX_DOES_NOT_EXIST;
 		}
-		ATypeInstance ti = null;
-		if (o instanceof IBeanObject<?>) {
-			IBeanObject<?> categoryBean = (IBeanObject<?>) o;
-			ti = categoryBean.getTypeInstance();
-		}
+
+		IBeanObject<?> categoryBean = (IBeanObject<?>) o;
+		ATypeInstance ti = categoryBean.getTypeInstance();
+		
 		for (int i = 0; i < ai.getArrayInstances().size(); i++) {
 			APropertyInstance pi = ai.getArrayInstances().get(i);
 			ReferencePropertyInstance cpi = (ReferencePropertyInstance) pi;
@@ -245,14 +244,13 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 
 	@Override
 	public int lastIndexOf(Object o) {
-		if (o != null && !(o instanceof IBeanObject<?>)) {
+		if (!(o instanceof IBeanObject<?>)) {
 			return INDEX_DOES_NOT_EXIST;
 		}
-		ATypeInstance ti = null;
-		if (o instanceof IBeanObject<?>) {
-			IBeanObject<?> categoryBean = (IBeanObject<?>) o;
-			ti = categoryBean.getTypeInstance();
-		}
+		
+		IBeanObject<?> categoryBean = (IBeanObject<?>) o;
+		ATypeInstance ti = categoryBean.getTypeInstance();
+		
 		for (int i = ai.getArrayInstances().size() - 1; i >= 0; i--) {
 			APropertyInstance pi = ai.getArrayInstances().get(i);
 			ReferencePropertyInstance cpi = (ReferencePropertyInstance) pi;

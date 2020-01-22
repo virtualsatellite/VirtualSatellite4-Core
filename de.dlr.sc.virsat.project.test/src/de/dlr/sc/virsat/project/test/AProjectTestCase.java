@@ -124,7 +124,7 @@ public abstract class AProjectTestCase {
 	}
 	
 	protected VirSatProjectCommons projectCommons;
-	protected  VirSatResourceSet rs;
+	protected VirSatResourceSet rs;
 	
 	/**
 	 * This method creates an unmanaged ResourceSet which is non transactional.

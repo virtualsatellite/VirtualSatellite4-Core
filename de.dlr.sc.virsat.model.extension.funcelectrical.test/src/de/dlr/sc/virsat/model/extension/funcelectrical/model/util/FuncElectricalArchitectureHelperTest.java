@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
@@ -33,8 +32,6 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollection;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Test Case for Functional Electric Architecture Helper
@@ -49,18 +46,13 @@ public class FuncElectricalArchitectureHelperTest extends AConceptProjectTestCas
 	private static final String CONCEPT_ID_FUNCELECTRICAL = Activator.getPluginId();
 	private static final int THREE = 3;
 
-	Concept conceptPs;
-	Concept conceptFea;
+	private Concept conceptPs;
+	private Concept conceptFea;
 
-	InterfaceTypeCollection itc;
-	InterfaceType it1;
-	InterfaceType it2;
-	InterfaceType it3;
-
-	VirSatResourceSet resSet;
-	VirSatProjectCommons projectCommons;
-	IResource fileRepo;
-	IResource fileItc;
+	private InterfaceTypeCollection itc;
+	private InterfaceType it1;
+	private InterfaceType it2;
+	private InterfaceType it3;
 
 	@Before
 	public void setUp() throws CoreException {

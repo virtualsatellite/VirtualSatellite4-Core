@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.server.VirSatJettyServer;
 
 public abstract class AGitAndJettyServerTest {
 
-	protected static File pathToTempUpstreamRepository;
+	protected File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
 	
 	@BeforeClass

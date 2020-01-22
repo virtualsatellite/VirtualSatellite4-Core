@@ -286,7 +286,9 @@ public class DerivedUnitWizardPageOne extends AUnitWizardPage {
 		
 		//we need at least one entry in the hashmap and symbol and name of the unit
 		if (symbolNotEmpty && nameNotEmpty && unitFactorsNotEmpty) { 
-			String convPrevStr = (symbol.getText() + " = ");
+			StringBuilder convPrevStr = new StringBuilder();
+			convPrevStr.append(symbol.getText());
+			convPrevStr.append(" = ");
 			//we can calculate the preview
 			for (AUnit currentUnit : hm.keySet()) {
 				Double value = hm.get(currentUnit);
@@ -295,10 +297,11 @@ public class DerivedUnitWizardPageOne extends AUnitWizardPage {
 					cannotCreatePreview();
 					return;
 				} else {
-					convPrevStr += currentUnit.getSymbol() + getUnicodeEscapeStatement(value);
+					convPrevStr.append(currentUnit.getSymbol());
+					convPrevStr.append(getUnicodeEscapeStatement(value));
 				}
 			}
-			conversionPreview.setText(convPrevStr);
+			conversionPreview.setText(convPrevStr.toString());
 			setPageComplete(true);
 		} else {
 			cannotCreatePreview();

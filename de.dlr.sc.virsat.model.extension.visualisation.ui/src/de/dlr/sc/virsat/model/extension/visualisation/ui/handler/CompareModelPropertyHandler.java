@@ -47,7 +47,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  */
 public class CompareModelPropertyHandler extends AbstractHandler implements IHandler {
 
-	private static VtkClientView vtkViewer = null;
+	private VtkClientView vtkViewer = null;
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

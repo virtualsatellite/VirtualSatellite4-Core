@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.databinding.Binding;
@@ -1099,9 +1100,10 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		PropertyInstanceHelper piHelper = new PropertyInstanceHelper();
 		
 		// Update all text value fields depending on rights
-		for (String propertyFqn : mapPropertyToTextValue.keySet()) {
+		for (Entry<String, Text> entry : mapPropertyToTextValue.entrySet()) {
+			String propertyFqn = entry.getKey();
+			Text textValue = entry.getValue();
 			APropertyInstance pi = caHelper.getPropertyInstance(propertyFqn);
-			Text textValue = mapPropertyToTextValue.get(propertyFqn);
 			textValue.setEditable(uiEnabled && !piHelper.isCalculated(pi));
 		}
 
@@ -1120,8 +1122,9 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			comboViewerUnit.getCombo().setEnabled(uiEnabled);
 		}
 
-		for (String propertyFqn : mapPropertyToTextReferenceName.keySet()) {
-			Text textReferenceName = mapPropertyToTextReferenceName.get(propertyFqn);
+		for (Entry<String, Text> entry : mapPropertyToTextReferenceName.entrySet()) {
+			String propertyFqn = entry.getKey();
+			Text textReferenceName = entry.getValue();
 			if (textReferenceName != null) {
 				textReferenceName.setText(getLabelOfReferencedAti(propertyFqn));
 			}
@@ -1146,9 +1149,11 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		}
 		
 		// update icons for problems in properties
-		for (String apropFqn : mapPropertyToLabelPropertyIcon.keySet()) {
+		for (Entry<String, Label> entry : mapPropertyToLabelPropertyIcon.entrySet()) {
+			String apropFqn = entry.getKey();
+			Label label = entry.getValue();
 			APropertyInstance propertyInstance = caHelper.getPropertyInstance(apropFqn);
-			Label label = mapPropertyToLabelPropertyIcon.get(apropFqn);
+			
 			AProperty property = (AProperty) propertyInstance.getType();
 			Image problemImage = getProblemImage(property);
 			if (problemImage == null) {

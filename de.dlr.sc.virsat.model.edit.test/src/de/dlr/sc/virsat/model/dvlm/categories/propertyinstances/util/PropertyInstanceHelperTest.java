@@ -242,7 +242,7 @@ public class PropertyInstanceHelperTest extends ABeanPropertyTest {
 	 * @author fisc_ph
 	 *
 	 */
-	class TestTypeInstanceSetterProvider implements ITypeInstanceSetterProvider<ITypeInstanceSetter> {
+	static class TestTypeInstanceSetterProvider implements ITypeInstanceSetterProvider<ITypeInstanceSetter> {
 		
 		//CHECKSTYLE:OFF
 		public boolean hitIsApplicableFor = false;

@@ -514,20 +514,17 @@ public class QudvUnitHelperTest {
 		AQuantityKind mass = qudvHelper.createSimpleQuantityKind("mass", "M", "heavy Mass", "http://mass.virsat.dlr.de");
 		AQuantityKind time = qudvHelper.createSimpleQuantityKind("Time", "T", "timeQK", "");
 		
-		Map<AQuantityKind, Double> factorMap = new HashMap<AQuantityKind, Double>();
-		Map<AQuantityKind, Double> forceBaseMap = new HashMap<AQuantityKind, Double>();
-		Map<AQuantityKind, Double> accelerationBaseMap = new HashMap<AQuantityKind, Double>();
-		
 		// some coefficient 
 		final Double M2 = -2.0;
 		
 		//force as a derived quantity kind
+		Map<AQuantityKind, Double> factorMap = new HashMap<AQuantityKind, Double>();
 		factorMap.clear();
 		factorMap.put(length, 1.0);
 		factorMap.put(time, M2);
 		DerivedQuantityKind acceleration = qudvHelper.createAndAddDerivedQuantityKind("acceleration", "L¹ T⁻²", "accelerationQK", "",  factorMap);
 		
-		accelerationBaseMap = qudvHelper.getBaseQuantityKinds(acceleration);
+		Map<AQuantityKind, Double> accelerationBaseMap = qudvHelper.getBaseQuantityKinds(acceleration);
 		
 		//check for the right number of elements in the forceBaseMap
 		assertEquals(2, accelerationBaseMap.size());
@@ -550,7 +547,7 @@ public class QudvUnitHelperTest {
 
 		DerivedQuantityKind force = qudvHelper.createAndAddDerivedQuantityKind("Force", "L¹ M¹ T⁻²", "forceQK", "",  factorMap);
 		
-		forceBaseMap = qudvHelper.getBaseQuantityKinds(force);
+		Map<AQuantityKind, Double> forceBaseMap = qudvHelper.getBaseQuantityKinds(force);
 		
 		//check for the right number of elements in the forceBaseMap
 		assertEquals(3, forceBaseMap.size());

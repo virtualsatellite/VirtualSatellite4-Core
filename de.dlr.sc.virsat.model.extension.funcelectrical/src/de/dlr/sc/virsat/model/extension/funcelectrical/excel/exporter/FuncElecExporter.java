@@ -51,7 +51,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  *
  */
 public class FuncElecExporter implements IExport {
-	private final String defaultTemplatePath = "/resources/ExcelExportTemplate.xlsx";
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportTemplate.xlsx";
 	private ExcelExportHelper helper;
 
 	public static final String[] EXPORTABLE_SEIS = { 
@@ -73,7 +73,7 @@ public class FuncElecExporter implements IExport {
 				InputStream is = null;
 				try {
 					if (useDefaultTemplate) {
-						is = Activator.getResourceContentAsString(defaultTemplatePath);
+						is = Activator.getResourceContentAsString(DEFAULT_TEMPLATE_PATH);
 					} else {
 						is = Activator.getResourceContentAsString(templatePath);
 					}

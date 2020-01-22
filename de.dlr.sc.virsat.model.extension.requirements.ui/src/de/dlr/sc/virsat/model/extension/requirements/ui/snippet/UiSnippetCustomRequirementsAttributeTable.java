@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.build.marker.ui.EsfMarkerImageProvider;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
@@ -81,8 +80,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 	protected Set<RequirementType> requirementTypes = new HashSet<RequirementType>();
 	protected int maxNumberAttributes = 0;
-
-	protected EsfMarkerImageProvider emip = new EsfMarkerImageProvider();
 
 	protected TableViewerColumn colStatus = null;
 	protected List<TableViewerColumn> attColumns;

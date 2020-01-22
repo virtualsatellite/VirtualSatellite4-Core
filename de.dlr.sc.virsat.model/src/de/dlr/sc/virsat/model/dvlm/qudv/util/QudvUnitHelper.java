@@ -1352,7 +1352,7 @@ public class QudvUnitHelper {
 
 		boolean flag = false;
 		Map<AQuantityKind, Double> outputQKbaseMap = getBaseQuantityKinds(unit2QK);
-		 Map<AQuantityKind, Double> inputQKbaseMap = getBaseQuantityKinds(unit1QK);
+		Map<AQuantityKind, Double> inputQKbaseMap = getBaseQuantityKinds(unit1QK);
 	
 		//now the only thing left to do is comparing the input and output map
 		flag = haveSameQuantityKind(inputQKbaseMap, outputQKbaseMap);

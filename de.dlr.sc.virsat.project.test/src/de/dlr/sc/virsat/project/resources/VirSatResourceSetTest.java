@@ -548,7 +548,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	/**
 	 * Test resource set that tracks updateDiagnostic call for testing resourceNullContentAdapter.
 	 */
-	class TestVirSatResourceSet extends VirSatResourceSet {
+	static class TestVirSatResourceSet extends VirSatResourceSet {
 	
 		protected TestVirSatResourceSet(IProject project) {
 			super(project);

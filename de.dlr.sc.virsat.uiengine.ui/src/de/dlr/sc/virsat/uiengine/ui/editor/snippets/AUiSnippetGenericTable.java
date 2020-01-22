@@ -693,7 +693,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 			ComposedPropertyInstance selectedCpi = (ComposedPropertyInstance) selectedObject;
 			ATypeInstance referencedTypeInstance = selectedCpi.getTypeInstance();
 
-			if (referencedTypeInstance instanceof CategoryAssignment) {
+			if (referencedTypeInstance != null) {
 				selectedCa = (CategoryAssignment) referencedTypeInstance;
 			}
 		} else if (selectedObject instanceof UnitValuePropertyInstance) {

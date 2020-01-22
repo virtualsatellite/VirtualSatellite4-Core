@@ -98,7 +98,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	 * @author fisc_ph
 	 *
 	 */
-	private class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
+	private static class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
 		protected Resource firstResource;
 		protected int triggeredEvent;
@@ -258,7 +258,9 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
 		repoResource2 = rs.getRepositoryResource();
-		danglingRpi = (ReferencePropertyInstance) repoResource2.getContents().get(0);
+		
+		// Trigger EMF to try to resolve the reference 
+		repoResource2.getContents().get(0);
 		
 		assertTrue("No errors anymore", repoResource2.getErrors().isEmpty());
 	}

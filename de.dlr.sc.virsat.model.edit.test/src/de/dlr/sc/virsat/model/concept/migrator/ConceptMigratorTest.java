@@ -39,7 +39,7 @@ public class ConceptMigratorTest extends AConceptMigratorTest {
 	 *
 	 */
 	
-	private class TestMigrator implements IMigrator {
+	private static class TestMigrator implements IMigrator {
 		private String version;
 		
 		/**

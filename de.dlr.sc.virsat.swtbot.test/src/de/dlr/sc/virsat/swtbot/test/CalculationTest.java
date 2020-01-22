@@ -37,15 +37,14 @@ public class CalculationTest extends ASwtBotTestCase {
 	private static final int THREE = 3;
 	private SWTBotTreeItem repositoryNavigatorItem;
 
-	SWTBotTreeItem productTree;
-	SWTBotTreeItem productTreeDomain;
-	SWTBotTreeItem elementDefinition;
+	private SWTBotTreeItem productTree;
+	private SWTBotTreeItem productTreeDomain;
 	
-	SWTBotTreeItem massEquipment1;
-	SWTBotTreeItem massEquipment2;
-	SWTBotTreeItem massSummary;
+	private SWTBotTreeItem massEquipment1;
+	private SWTBotTreeItem massEquipment2;
+	private SWTBotTreeItem massSummary;
 	
-	protected Concept conceptMass;
+	private Concept conceptMass;
 	
 	@Before
 	public void before() throws Exception {

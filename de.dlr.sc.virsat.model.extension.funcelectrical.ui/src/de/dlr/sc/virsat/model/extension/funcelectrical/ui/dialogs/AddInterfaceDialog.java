@@ -84,12 +84,9 @@ public class AddInterfaceDialog extends ElementTreeSelectionDialog {
 	protected int fHeight = 18;
 	//CHECKSTYLE:ON
 
-	protected boolean fDoubleClickSelects;
-
 	@Override
 	public void setDoubleClickSelects(boolean doubleClickSelects) {
 		super.setDoubleClickSelects(doubleClickSelects);
-		fDoubleClickSelects = doubleClickSelects;
 	}
 	
 	@Override

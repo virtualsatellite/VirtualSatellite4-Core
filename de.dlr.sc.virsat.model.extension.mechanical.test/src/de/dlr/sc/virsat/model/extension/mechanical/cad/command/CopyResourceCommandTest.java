@@ -32,9 +32,9 @@ import org.junit.Test;
 public class CopyResourceCommandTest {
 	
 	private static final String TEST_FILE_NAME = "dummy.test";
-	private static List<String> testContent;
-	private static Path testFolderPath;
-	private static Path testFile;
+	private List<String> testContent;
+	private Path testFolderPath;
+	private Path testFile;
 	
 	@Before
 	public void setUp() throws CoreException, IOException {

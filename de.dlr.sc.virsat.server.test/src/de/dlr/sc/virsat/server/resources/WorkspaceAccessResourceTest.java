@@ -12,6 +12,8 @@ package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -96,7 +98,9 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		// Add a file to repo one and commit it
 		// now add a file to the local repository
 		File newFile = new File(pathToTempLocalRepository1.getAbsolutePath().toString() + "/test.dat");
-		newFile.createNewFile();
+		if (!newFile.createNewFile()) {
+			fail("Cannot proceed with test case: Failed to create test.dat file");
+		}
 		
 		final String COMMIT_MESSAGE = "Commit a first file";
 		
