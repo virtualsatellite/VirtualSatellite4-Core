@@ -10,21 +10,15 @@
 package de.dlr.sc.virsat.model.calculation.compute;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.xtext.resource.XtextResource;
 import org.junit.Before;
 
@@ -33,15 +27,7 @@ import com.google.inject.Injector;
 import de.dlr.sc.virsat.model.calculation.EquationDSLStandaloneSetup;
 import de.dlr.sc.virsat.model.calculation.resource.EquationSectionVirSatAwareXtextResourceSet;
 import de.dlr.sc.virsat.model.calculation.resource.EquationSectionXtextResource;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.PropertyinstancesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.provider.DVLMDVLMItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.resource.provider.DVLMResourceItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
-import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 
 /**
  * Abstract base class that needs to test something involved with equations.
@@ -63,28 +49,7 @@ public class AEquationTest {
 	@Before 
 	public void setUp() throws Exception {
 		contents = new ArrayList<>();
-		
 		UserRegistry.getInstance().setSuperUser(true);
-		
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-		adapterFactory.addAdapterFactory(new DVLMResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMDVLMItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMStructuralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new GeneralItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ConceptsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new DVLMCategoriesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PropertydefinitionsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PropertyinstancesItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		BasicCommandStack commandStack = new BasicCommandStack() {
-			@Override
-			public void execute(Command command) {
-				command.execute();
-			}
-		};
-		
-		editingDomain = new AdapterFactoryEditingDomain(adapterFactory, commandStack, new HashMap<Resource, Boolean>());
-	
 	}
 	
 	/**

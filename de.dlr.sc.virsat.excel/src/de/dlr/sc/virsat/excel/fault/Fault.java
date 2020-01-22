@@ -91,7 +91,7 @@ public class Fault {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Fault && obj != null) {
+		if (obj instanceof Fault) {
 			Fault other = (Fault) obj;
 			return faultType == other.faultType && lineNumber == other.lineNumber && sheetNumber == other.sheetNumber;
 		}

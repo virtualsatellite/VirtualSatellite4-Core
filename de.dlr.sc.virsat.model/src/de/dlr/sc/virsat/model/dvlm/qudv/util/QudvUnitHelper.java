@@ -1351,11 +1351,9 @@ public class QudvUnitHelper {
 		}
 
 		boolean flag = false;
-		Map<AQuantityKind, Double> outputQKbaseMap = new HashMap<AQuantityKind, Double>();
-		outputQKbaseMap = getBaseQuantityKinds(unit2QK); 
-		Map<AQuantityKind, Double> inputQKbaseMap = new HashMap<AQuantityKind, Double>();
-		inputQKbaseMap = getBaseQuantityKinds(unit1QK);
-		
+		Map<AQuantityKind, Double> outputQKbaseMap = getBaseQuantityKinds(unit2QK);
+		 Map<AQuantityKind, Double> inputQKbaseMap = getBaseQuantityKinds(unit1QK);
+	
 		//now the only thing left to do is comparing the input and output map
 		flag = haveSameQuantityKind(inputQKbaseMap, outputQKbaseMap);
 		return flag;
@@ -1391,9 +1389,9 @@ public class QudvUnitHelper {
 		
 		} else { 
 			areSame = true;
-			for (AQuantityKind key: map1.keySet()) {
+			for (Entry<AQuantityKind, Double> entry1: map1.entrySet()) {
 				//maybe I need to add my precision comparison here!
-				if (!map1.get(key).equals(map2.get(key))) {
+				if (!entry1.getValue().equals(map2.get(entry1.getKey()))) {
 					areSame = false;
 				}
 			}
@@ -1418,8 +1416,7 @@ public class QudvUnitHelper {
 				AQuantityKind currentQK = qkFactor.getQuantityKind();
 				if (currentQK instanceof DerivedQuantityKind) {
 					DerivedQuantityKind currentDQK = (DerivedQuantityKind) currentQK;
-					Map<AQuantityKind, Double> subMap = new HashMap<AQuantityKind, Double>();
-					subMap = getBaseQuantityKinds(currentDQK);
+					Map<AQuantityKind, Double> subMap = getBaseQuantityKinds(currentDQK);
 					
 					//before we can merge the maps we need to apply the exponent of the current QK
 					Double calcExponent;
@@ -1457,16 +1454,18 @@ public class QudvUnitHelper {
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
 
 		//include elements from the first map and add or subtract values of the second map if they exist
-		for (AQuantityKind x : map1.keySet()) {
-			Double y = map2.get(x);
+		for (Entry<AQuantityKind, Double> entry1 : map1.entrySet()) {
+			AQuantityKind qk = entry1.getKey(); 
+			Double x = entry1.getValue();
+			Double y = map2.get(qk);
 			if (y == null) {
-				merged.put(x, map1.get(x));
+				merged.put(qk, x);
 			} else {
 	
 				if (calcMethod == QudvCalcMethod.SUBTRACT) {
-					merged.put(x, map1.get(x) - y);
+					merged.put(qk, x - y);
 				} else { // calcMethod == QudvCalcMethod.ADD)
-					merged.put(x, map1.get(x) + y);
+					merged.put(qk, x + y);
 				}
 			}
 		}
@@ -1536,14 +1535,14 @@ public class QudvUnitHelper {
 	 * @return the converted string
 	 */
 	public String convertToString(Map<AQuantityKind, Double> quantityKinds) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		Iterator<Entry<AQuantityKind, Double>> iterator = quantityKinds.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<AQuantityKind, Double> m = (Map.Entry<AQuantityKind, Double>) iterator.next();
-			AQuantityKind currentUnit = m.getKey(); 
-			result += currentUnit.getSymbol() + convertFactorToUnicodeSymbol(m.getValue());
+			AQuantityKind currentUnit = m.getKey();
+			result.append(currentUnit.getSymbol() + convertFactorToUnicodeSymbol(m.getValue()));
 		}
-		return result;
+		return result.toString();
 	}
 
 	public static final String SUPERSCRIPT_MINUS = "\u207b";

@@ -47,7 +47,7 @@ public class StructuralElementInstanceHelper {
 	public  ICategoryAssignmentContainer getRoot() {
 
 		StructuralElementInstance eContainer = sei.getParent();
-		while ((eContainer != null) && (eContainer.getParent() != null) && (eContainer.getParent() instanceof StructuralElementInstance)) {
+		while ((eContainer != null) && (eContainer.getParent() != null)) {
 			eContainer = eContainer.getParent();
 		}	
 		return (ICategoryAssignmentContainer) ((eContainer ==  null) ? sei : eContainer);

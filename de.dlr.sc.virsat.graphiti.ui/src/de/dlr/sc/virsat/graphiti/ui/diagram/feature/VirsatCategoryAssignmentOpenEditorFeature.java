@@ -93,8 +93,8 @@ public class VirsatCategoryAssignmentOpenEditorFeature extends AbstractCustomFea
         			IWorkbench workbench = PlatformUI.getWorkbench();
         			IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
         			IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
-        			if (ie.getTypeInstance() instanceof IInstance) {
-        				IInstance iInstance = (IInstance) ie.getTypeInstance();
+        			IInstance iInstance = (IInstance) ie.getTypeInstance();
+        			if (iInstance != null) {
         				URIEditorInput editorInput = new VirSatUriEditorInput(resourceUri, iInstance);
         				workbenchPage.openEditor(editorInput, GenericEditor.EDITOR_ID);
         			} else {

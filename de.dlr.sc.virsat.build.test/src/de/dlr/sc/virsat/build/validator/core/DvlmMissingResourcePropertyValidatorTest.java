@@ -13,6 +13,7 @@ package de.dlr.sc.virsat.build.validator.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,15 +47,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
 
 public class DvlmMissingResourcePropertyValidatorTest extends ABuilderTest {
 
-	protected Category cDocument;
-	protected CategoryAssignment caDocument;
+	private Category cDocument;
+	private CategoryAssignment caDocument;
 
-	protected ResourceProperty rp;
-	protected ResourcePropertyInstance rpi;
+	private ResourceProperty rp;
+	private ResourcePropertyInstance rpi;
 
-	protected URI resourceUri;
-	protected IPath resourcePath;
-	protected File fileNewDocument;
+	private File fileNewDocument;
 
 	@Before
 	public void setUp() throws Exception {
@@ -83,7 +82,9 @@ public class DvlmMissingResourcePropertyValidatorTest extends ABuilderTest {
 		String filePath = seiEdObc.eResource().getURI().toPlatformString(true).replace("StructuralElement.dvlm", "documents/newFile.txt");
 
 		fileNewDocument = new File(root + "/" + filePath);
-		fileNewDocument.createNewFile();
+		if (!fileNewDocument.createNewFile()) {
+			fail("Could not setup test case: Failed to create new document file!");
+		}
 
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 
@@ -100,7 +101,9 @@ public class DvlmMissingResourcePropertyValidatorTest extends ABuilderTest {
 		assertTrue("validator brings no error", seiValidator.validate(seiEdObc));
 
 		// now delete locally created file
-		fileNewDocument.delete();
+		if (!fileNewDocument.delete()) {
+			fail("Could not proceed with test case: Failed to delete document file!");
+		}
 		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		// now again check for dvlm validator marker, there should be one warning

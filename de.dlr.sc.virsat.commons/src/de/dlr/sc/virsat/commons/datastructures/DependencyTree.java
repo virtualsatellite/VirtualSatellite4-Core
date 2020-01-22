@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -138,9 +139,9 @@ public class DependencyTree<T> {
 	 */
 	public void removeNode(T node) {
 		children.remove(node);
-		for (T object : children.keySet()) {
-			
-			List<T> dependencies = children.get(object);
+		for (Entry<T, List<T>> childEntry : children.entrySet()) {
+			T object = childEntry.getKey();
+			List<T> dependencies = childEntry.getValue();
 			dependencies.remove(node);
 
 			List<T> succParents = parents.get(object);
@@ -214,9 +215,10 @@ public class DependencyTree<T> {
 	public T hasCycle() {
 		// Check for all nodes if there is an edge to a node of lower height
 	
-		for (T object : children.keySet()) {
+		for (Entry<T, List<T>> childEntry : children.entrySet()) {
+			T object = childEntry.getKey();
+			List<T> dependencies = childEntry.getValue();
 			int height = heights.get(object);
-			List<T> dependencies = children.get(object);
 			for (T dependency : dependencies) {
 				int heightDependency = heights.get(dependency);
 				if (heightDependency < height || dependency == object) {
