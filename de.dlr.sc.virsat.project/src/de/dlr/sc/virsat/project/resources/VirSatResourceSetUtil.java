@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
@@ -157,8 +158,9 @@ public class VirSatResourceSetUtil {
 	public static void removeDanglingReferences(Resource resource) {
 		Map<EObject, Collection<Setting>> unresolvedProxies = EcoreUtil.UnresolvedProxyCrossReferencer.find(resource);
 		
-		for (EObject proxy : unresolvedProxies.keySet()) {
-			Collection<Setting> settings = unresolvedProxies.get(proxy);
+		for (Entry<EObject, Collection<Setting>> entry : unresolvedProxies.entrySet()) {
+			EObject proxy = entry.getKey();
+			Collection<Setting> settings = entry.getValue();
 			for (Setting setting : settings) {
 				EObject eContainer = setting.getEObject();
 				EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();

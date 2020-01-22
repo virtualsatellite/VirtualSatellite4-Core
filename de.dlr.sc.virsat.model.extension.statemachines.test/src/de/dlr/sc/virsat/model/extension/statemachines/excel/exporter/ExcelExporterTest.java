@@ -35,7 +35,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.Activator;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Test Case for Exporting to Excel
@@ -44,20 +43,16 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
  */
 public class ExcelExporterTest {
 
-	private static final String CONCEPT_ID_STATE_MACHINES = "de.dlr.sc.virsat.model.extension.statemachines";
-
-
-	VirSatTransactionalEditingDomain domain;
-	ABeanStructuralElementInstance aBean;
-	StateMachine sm;
+	private ABeanStructuralElementInstance aBean;
+	private StateMachine sm;
 	
-	Concept conceptStateMachines;
+	private Concept conceptStateMachines;
 		
 	@Before
 	public void setUp() throws CoreException {
 		UserRegistry.getInstance().setSuperUser(true);
 	
-		conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_STATE_MACHINES + "/concept/concept.xmi");
+		conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(Activator.getPluginId() + "/concept/concept.xmi");
 		
 		sm = new StateMachine(conceptStateMachines);
 		

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -1243,7 +1244,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 
 		Map<EObject, Collection<Setting>> externalCrossReferences = EcoreUtil.ExternalCrossReferencer.find(eObject);
-		for (EObject referencedEObject : externalCrossReferences.keySet()) {
+		for (Entry<EObject, Collection<Setting>> entry : externalCrossReferences.entrySet()) {
+			EObject referencedEObject = entry.getKey();
 			Resource resource = referencedEObject.eResource();
 			if (resource == null) {
 				// Only consider external cross references that are directly contained by the resource
@@ -1251,7 +1253,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				// If they are not ignored, external dangling references of child seis are are considered
 				// dangling references of the parent.
 				List<EObject> referencingObjectsInResource = new ArrayList<>();
-				Collection<Setting> settings = externalCrossReferences.get(referencedEObject);
+				Collection<Setting> settings = entry.getValue();
 				for (Setting setting : settings) {
 					EObject referencingObject = setting.getEObject();
 					if (referencingObject.eResource() == eObject.eResource()) {

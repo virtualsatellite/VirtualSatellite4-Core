@@ -18,8 +18,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.xtext.resource.XtextResource;
+import org.junit.After;
 import org.junit.Before;
 
 import com.google.inject.Injector;
@@ -43,13 +43,16 @@ public class AEquationTest {
 	protected EquationSectionVirSatAwareXtextResourceSet esResourceSet;
 	protected EquationSectionXtextResource esResource;
 	protected List<EObject> contents;
-	protected EditingDomain editingDomain;
-	
 	
 	@Before 
 	public void setUp() throws Exception {
 		contents = new ArrayList<>();
 		UserRegistry.getInstance().setSuperUser(true);
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		UserRegistry.getInstance().setSuperUser(false);
 	}
 	
 	/**

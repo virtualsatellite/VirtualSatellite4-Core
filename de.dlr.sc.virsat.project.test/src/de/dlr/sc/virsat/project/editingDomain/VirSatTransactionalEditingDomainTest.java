@@ -101,7 +101,6 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	private static class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
 		protected Resource firstResource;
-		protected int triggeredEvent;
 		protected int counter = 0;
 
 		protected List<List<StackTraceElement>> stackTraces = new ArrayList<>();
@@ -109,7 +108,6 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
 			triggeredResources.addAll(resources);
-			triggeredEvent = event;
 			counter++;
 			firstResource = resources.iterator().next();
 			

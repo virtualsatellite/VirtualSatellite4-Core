@@ -595,8 +595,7 @@ public class QudvUnitHelperTest {
 		map2.put(electricCurrent, 4.2);
 		
 		//now merge the maps and make some checks
-		Map<AQuantityKind, Double> mergedMap = new HashMap<AQuantityKind, Double>();
-		mergedMap = qudvHelper.mergeMaps(map1, map2, QudvUnitHelper.QudvCalcMethod.ADD);
+		Map<AQuantityKind, Double> mergedMap = qudvHelper.mergeMaps(map1, map2, QudvUnitHelper.QudvCalcMethod.ADD);
 		
 		//check if all four keys are present
 		assertEquals(3, mergedMap.size());

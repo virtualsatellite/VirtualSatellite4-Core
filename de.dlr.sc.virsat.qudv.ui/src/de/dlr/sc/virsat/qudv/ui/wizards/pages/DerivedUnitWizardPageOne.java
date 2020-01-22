@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.qudv.ui.wizards.pages;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -290,8 +291,9 @@ public class DerivedUnitWizardPageOne extends AUnitWizardPage {
 			convPrevStr.append(symbol.getText());
 			convPrevStr.append(" = ");
 			//we can calculate the preview
-			for (AUnit currentUnit : hm.keySet()) {
-				Double value = hm.get(currentUnit);
+			for (Entry<AUnit, Double> entry : hm.entrySet()) {
+				AUnit currentUnit = entry.getKey();
+				Double value = entry.getValue();
 				
 				if (Double.isNaN(value)) {
 					cannotCreatePreview();

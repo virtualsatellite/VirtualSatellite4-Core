@@ -1471,12 +1471,14 @@ public class QudvUnitHelper {
 		}
 
 		//include elements from the second map
-		for (AQuantityKind x : map2.keySet()) {
-			if (merged.get(x) == null) {
+		for (Entry<AQuantityKind, Double> entry2 : map2.entrySet()) {
+			AQuantityKind qk = entry2.getKey();
+			Double x = entry2.getValue();
+			if (merged.get(qk) == null) {
 				if (calcMethod == QudvCalcMethod.SUBTRACT) {
-					merged.put(x, -map2.get(x));
+					merged.put(qk, -x);
 				} else {
-					merged.put(x, map2.get(x));
+					merged.put(qk, x);
 				}
 			}
 		}
@@ -1486,7 +1488,6 @@ public class QudvUnitHelper {
 			Map.Entry<AQuantityKind, Double> entry = iter.next();
 			if (Math.abs(entry.getValue()) < ERROR) {
 				iter.remove();
-				//break; // if we only want to remove the first match.
 			}
 		}
 		

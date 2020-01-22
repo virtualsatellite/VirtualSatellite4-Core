@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.swtbot.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
@@ -109,8 +110,9 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 		
 		// Check if all scheduled jobs are also considered done
 		message = "";
-		for (String jobNameWithIndex : mapJobScheduleCounters.keySet()) {
-			Integer scheduleCounter = mapJobScheduleCounters.get(jobNameWithIndex);
+		for (Entry<String, Integer> entry : mapJobScheduleCounters.entrySet()) {
+			String jobNameWithIndex = entry.getKey();
+			Integer scheduleCounter = entry.getValue();
 			if (scheduleCounter != 0) {
 				message += "Job < " + jobNameWithIndex + "> is not >>done<< as often it got >>scheduled<< ...\n";
 			}

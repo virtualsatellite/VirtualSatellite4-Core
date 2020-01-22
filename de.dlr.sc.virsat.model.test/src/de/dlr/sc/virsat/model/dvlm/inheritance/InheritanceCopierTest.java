@@ -1344,7 +1344,7 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	
 		Equation eq = eqSection.getEquations().get(0);
 		
-		IEquationResult eqResult = (TypeInstanceResult) eq.getResult();
+		IEquationResult eqResult = eq.getResult();
 		assertTrue("Referenced result of equation of copied CA has correct type", eqResult instanceof TypeInstanceResult);
 		
 		TypeInstanceResult tir = (TypeInstanceResult) eqResult;
