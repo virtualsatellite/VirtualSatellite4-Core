@@ -196,11 +196,6 @@ public class DVLMUnresolvedReferenceExceptionTest {
 	}
 
 	@Test
-	public void testGetLocation() {
-		
-	}
-
-	@Test
 	public void testGetLine() {
 		CategoryAssignment obj1 = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 		
