@@ -71,7 +71,7 @@ public class VirSatValidationMarkerHelperTest extends ATestCase {
 	}
 	
 	@Test
-	public void testCreateDVLMValidationMarker() {
+	public void testCreateDVLMValidationMarker() throws CoreException {
 		IMarker markerRepo = vvmHelper.createDVLMValidationMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
 		IMarker markerSei  = vvmHelper.createDVLMValidationMarker(IMarker.SEVERITY_WARNING, "This is a marker on the SeiContaining", seiContaining);
 		
@@ -79,20 +79,15 @@ public class VirSatValidationMarkerHelperTest extends ATestCase {
 		assertFalse("Marker is created", markerSei == null);
 		assertTrue("Marker is placed correctly", vvmHelper.getAllMarkers(repo).contains(markerRepo));
 		assertTrue("Marker is placed correctly", vvmHelper.getAllMarkers(seiContaining).contains(markerSei));
-		
-		try {
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_DVLM_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_DVLM_VALIDATION_PROBLEM_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_DVLM_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_DVLM_VALIDATION_PROBLEM_MARKER));
 	}
 	
 	@Test
-	public void testCreateInheritanceValidationMarker() {
+	public void testCreateInheritanceValidationMarker() throws CoreException {
 		IMarker markerRepo = vvmHelper.createInheritanceValidationMarker(IMarker.SEVERITY_WARNING, "This is an inheritance marker", repo, seiContained);
 		IMarker markerSei  = vvmHelper.createInheritanceValidationMarker(IMarker.SEVERITY_WARNING, "This is an inheritance marker", seiContaining, seiContained);
 		
@@ -101,19 +96,14 @@ public class VirSatValidationMarkerHelperTest extends ATestCase {
 		assertTrue("Marker is placed correctly", vvmHelper.getAllMarkers(repo).contains(markerRepo));
 		assertTrue("Marker is placed correctly", vvmHelper.getAllMarkers(seiContaining).contains(markerSei));
 		
-		try {
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_INH_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_INH_VALIDATION_PROBLEM_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_INH_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_INH_VALIDATION_PROBLEM_MARKER));
 	}
 	
 	@Test
-	public void testCreateEMFValidationMarker() {
+	public void testCreateEMFValidationMarker() throws CoreException {
 		IMarker markerRepo = vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo, DVLMPackage.Literals.REPOSITORY__ACTIVE_CONCEPTS);
 		IMarker markerSei  = vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_WARNING, "This is a marker on the SeiContaining", seiContaining, GeneralPackage.Literals.IDESCRIPTION__DESCRIPTION);
 		
@@ -122,15 +112,10 @@ public class VirSatValidationMarkerHelperTest extends ATestCase {
 		assertTrue("Marker is placed correctly", vvmHelper.getAllMarkers(repo).contains(markerRepo));
 		assertTrue("Marker is placed correctly", vvmHelper.getAllMarkers(seiContaining).contains(markerSei));
 		
-		try {
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_EMF_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_EMF_VALIDATION_PROBLEM_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatValidationMarkerHelper.ID_EMF_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatValidationMarkerHelper.ID_EMF_VALIDATION_PROBLEM_MARKER));
 	}
 	
 	@Test

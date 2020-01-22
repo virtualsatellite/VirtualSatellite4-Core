@@ -87,7 +87,6 @@ public class ConceptOutputConfigurationProviderTest {
 					assertFalse("SetDerivedProperty is set correctly", outputConf.isSetDerivedProperty());
 					break;
 				default:
-					assertTrue("All names are correct", false);
 					break;
 			}
 		}
