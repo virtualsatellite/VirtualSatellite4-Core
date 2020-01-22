@@ -219,12 +219,13 @@ public class ConstraintTablePage extends WizardPage {
 	 * @return string
 	 */
 	private String getDisplay(List<State> states) {
-		String string = "";
+		StringBuilder stringBuilder = new StringBuilder();
 
 		for (State s : states) {
-			string = string + s.getName() + ", ";
+			stringBuilder.append(s.getName());
+			stringBuilder.append(", ");
 		}
-		return string;
+		return stringBuilder.toString();
 	}
 	
 	

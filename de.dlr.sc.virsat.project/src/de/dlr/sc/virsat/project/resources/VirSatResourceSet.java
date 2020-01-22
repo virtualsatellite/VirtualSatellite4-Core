@@ -163,20 +163,22 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 					// Check if the new value is a null object
 					Object newValue = notification.getNewValue();
 					if ((newValue == null) && (eventType != Notification.REMOVE)) {
-						String errorMessage = "Found NULL object in EMF Resource\n";
-						errorMessage       += "---------------------------------\n";
+						StringBuilder errorMessage = new StringBuilder();
+						errorMessage.append("Found NULL object in EMF Resource\n");
+						errorMessage.append("---------------------------------\n");
 						String uri = resource.getURI().toPlatformString(true);
-						errorMessage       += "Resource: " + uri + "\n";
-						errorMessage       += "Event Type: " + eventType + "\n"; 
-						errorMessage       += "Stacktrace:\n";
+						errorMessage.append("Resource: " + uri + "\n");
+						errorMessage.append("Event Type: " + eventType + "\n");
+						errorMessage.append("Stacktrace:\n");
 						
 						for (StackTraceElement se : Thread.currentThread().getStackTrace()) {
-							errorMessage   += se.toString() + "\n";
+							errorMessage.append(se.toString());
+							errorMessage.append("\n");
 						}
 						
 						// Now throw the message on the log and create a diagnostics report
 						Activator.getDefault().getLog().log(
-							new Status(Status.ERROR, Activator.getPluginId(), errorMessage)
+							new Status(Status.ERROR, Activator.getPluginId(), errorMessage.toString())
 						);
 						
 						// Now where it is certain that there is something wrong with the content of the resource,

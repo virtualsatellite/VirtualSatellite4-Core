@@ -149,28 +149,28 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 			// Add necessary table columns
 			for (int i = 0; i < maxNumberAttributes; i++) {
-				String columnName = "";
+				StringBuilder columnName = new StringBuilder();
 				for (RequirementType requirementType : requirementTypes) {
 
 					if (requirementType.getAttributes().size() > i) {
 						String name = requirementType.getAttributes().get(i).getName();
-						boolean notYetSpecified = !columnName.contains(name);
+						boolean notYetSpecified = columnName.indexOf(name) != -1;
 						
 						// Add separator if column is used for different attributes
-						if (!columnName.equals("") && notYetSpecified) {
-							columnName += COLUMN_ATTRIBUTE_SEPARATOR;
+						if (columnName.length() != 0 && notYetSpecified) {
+							columnName.append(COLUMN_ATTRIBUTE_SEPARATOR);
 						}
 
 						if (notYetSpecified) {
-							columnName += name;
+							columnName.append(name);
 						}
 					}
 				}
 
 				if (attColumns.size() > i) {
-					attColumns.get(i).getColumn().setText(columnName);
+					attColumns.get(i).getColumn().setText(columnName.toString());
 				} else {
-					TableViewerColumn newColumn = (TableViewerColumn) createDefaultColumn(columnName);
+					TableViewerColumn newColumn = (TableViewerColumn) createDefaultColumn(columnName.toString());
 					newColumn.getColumn().addControlListener(this);
 					newColumn.setEditingSupport(new RequirementsAttributeValuePerColumnEditingSupport(editingDomain, columnViewer, i));
 					attColumns.add(newColumn);
