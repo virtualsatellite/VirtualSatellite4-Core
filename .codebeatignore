@@ -2,4 +2,6 @@
 **/xtend-gen/**
 **/src-dmf/**
 **/templates-gen/**
-Activator.java
+**/Activator.java
+**/ui/**
+**/test/**
