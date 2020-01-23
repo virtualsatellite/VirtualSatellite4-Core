@@ -4,6 +4,6 @@
 **/templates-gen/**
 **/Activator.java
 **/ui/**
-**/test/**
+*.test/**
 **/migrator/**
 **/validator/**
