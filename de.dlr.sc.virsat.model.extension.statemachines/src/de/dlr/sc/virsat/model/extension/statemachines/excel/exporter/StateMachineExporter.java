@@ -69,8 +69,7 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 			String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".xlsx";
 			// and write the results	
 			File file = new File(newPath);
-			try {
-				FileOutputStream out = new FileOutputStream(file);
+			try (FileOutputStream out = new FileOutputStream(file)) {
 				wb.write(out);
 			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!", e);
