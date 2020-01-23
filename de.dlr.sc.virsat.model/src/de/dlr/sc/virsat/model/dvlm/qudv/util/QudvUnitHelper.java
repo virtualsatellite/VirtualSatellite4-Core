@@ -1231,8 +1231,11 @@ public class QudvUnitHelper {
 		Resource resource = new XMLResourceImpl();
 		resource.getContents().add(systemOfUnits);
 		FileOutputStream fileOut = new FileOutputStream(destination);
-		resource.save(fileOut, WRITE_OPTIONS);
-		fileOut.close();
+		try {
+			resource.save(fileOut, WRITE_OPTIONS);
+		} finally {
+			fileOut.close();
+		}
 	}
 	
 	/**
@@ -1244,9 +1247,15 @@ public class QudvUnitHelper {
 	public SystemOfUnits importModelFromFile(String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();
 		FileInputStream fileIn = new FileInputStream(destination);
-		resource.load(fileIn, READ_OPTIONS);
+		
+		try {
+			resource.load(fileIn, READ_OPTIONS);
+		} finally {
+			fileIn.close();
+		}
+		
 		EObject root = resource.getContents().get(0);
-		fileIn.close();
+		
 		if (root instanceof SystemOfUnits) {
 			return (SystemOfUnits) root;
 		}

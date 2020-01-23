@@ -247,8 +247,7 @@ public class QudvUnitHelperTest {
 		
 		assertTrue(sou1.getUnit().contains(simpleUnit));		
 		
-		SystemOfUnits importedSoU = null;
-		importedSoU = qudvHelper.importModelFromFile(destination);
+		SystemOfUnits importedSoU = qudvHelper.importModelFromFile(destination);
 
 		assertNotNull("System of Units got correctly loaded", importedSoU);
 		

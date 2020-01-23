@@ -71,17 +71,11 @@ public class ExcelExporter {
 	 *
 	 */
 	public void export(ColumnViewer columnViewer, String path, String type) throws CoreException {
-
-		FileOutputStream out;
 		File file = new File(path);
-		try {
-			out = new FileOutputStream(file);
-
-
+		try (FileOutputStream out = new FileOutputStream(file)) {
 			XSSFWorkbook wb = createWorkbookFromTable(columnViewer, type);
 			wb.write(out);
-
-			out.close();
+			
 			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO",
 					"Successfully exported to excel file to " + file.getAbsolutePath()));
 		} catch (Exception e) {

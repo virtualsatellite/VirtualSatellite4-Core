@@ -5,3 +5,6 @@
 **/Activator.java
 **/ui/**
 **/test/**
+**/propertyTester/**
+**/migrator/**
+**/validator/**
