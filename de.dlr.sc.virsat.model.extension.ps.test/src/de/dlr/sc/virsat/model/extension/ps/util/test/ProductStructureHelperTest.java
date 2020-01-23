@@ -26,8 +26,6 @@ import de.dlr.sc.virsat.model.dvlm.util.DVLMCopier;
 import de.dlr.sc.virsat.model.extension.ps.Activator;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
-import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.util.ProductStructureHelper;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 
@@ -40,29 +38,24 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 	
 	private static final int AMOUNT_CT_SUBSYTEMS = 3;
 
-	ElementDefinition ed;
-	ElementConfiguration ec;
-	ElementConfiguration ec2;
-	ConfigurationTree ct;
+	private ConfigurationTree ct;
 
-	StructuralElementInstance seiInterfaceTypeCollection;
+	private StructuralElementInstance seiCT;
+	private StructuralElementInstance seiEC1;
+	private StructuralElementInstance seiEC2;
 	
-	StructuralElementInstance seiCT;
-	StructuralElementInstance seiEC1;
-	StructuralElementInstance seiEC2;
+	private StructuralElementInstance copyAT;
+	private StructuralElementInstance seiAT;
+	private StructuralElementInstance seiEO1;
+	private StructuralElementInstance seiEO2;
+	private StructuralElementInstance seiEO3;
 	
-	StructuralElementInstance copyAT;
-	StructuralElementInstance seiAT;
-	StructuralElementInstance seiEO1;
-	StructuralElementInstance seiEO2;
-	StructuralElementInstance seiEO3;
+	private StructuralElementInstance seiPT;
+	private StructuralElementInstance seiPTD;
+	private StructuralElementInstance seiED1;
+	private StructuralElementInstance seiED2;
 	
-	StructuralElementInstance seiPT;
-	StructuralElementInstance seiPTD;
-	StructuralElementInstance seiED1;
-	StructuralElementInstance seiED2;
-	
-	Concept conceptPs;
+	private Concept conceptPs;
 
 	@Before
 	public void setUp() throws CoreException {
