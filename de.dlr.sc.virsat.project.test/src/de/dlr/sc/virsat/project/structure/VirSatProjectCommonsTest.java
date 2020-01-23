@@ -57,8 +57,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * 
- * @author fisc_ph
- *
  */
 public class VirSatProjectCommonsTest extends AProjectTestCase {
 
@@ -67,6 +65,9 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	
 	@Override
 	protected void addProjectFileStructure() {
+		// Don't create the test projects file structure.
+		// The actual creation is tested in the test cases.
+		// Otherwise test cases fail, since folders are already present
 	}
 	
 	@Test
