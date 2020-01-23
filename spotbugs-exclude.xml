@@ -63,6 +63,10 @@
 			where it is not clear if they are good or bad practice or necessary.
 			Should be rechecked in the future. -->
 			<Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" />
+			
+			<!-- Ignore this warning, since it is not clear if it is a false positive or not.
+			Should be rechecked in the future. -->
+			<Bug pattern="MS_PKGPROTECT" />
 		</Or>
 	</Match>
 </FindBugsFilter>
