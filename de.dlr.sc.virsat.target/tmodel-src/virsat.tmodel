@@ -42,6 +42,7 @@
 	}
 	
 	RepositoryLocation SubversionConnector url "http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" {
+		Unit org.polarion.eclipse.team.svn.connector.feature.group version 6.0.4.I20161211-1700;
 		Unit org.polarion.eclipse.team.svn.connector.svnkit18.feature.group version 6.0.4.I20161211-1700;
 	}
 }

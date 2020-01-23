@@ -35,6 +35,7 @@
 		<repository location="https://download.eclipse.org/technology/subversive/4.0/update-site/"/>
 		</location>              
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.polarion.eclipse.team.svn.connector.feature.group" version="6.0.4.I20161211-1700"/>
 		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.feature.group" version="6.0.4.I20161211-1700"/>
 		<repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/"/>
 		</location>              
