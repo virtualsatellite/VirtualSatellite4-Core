@@ -120,7 +120,7 @@ public class ConceptMigrationHelperTest extends AConceptMigratorTest {
 		assertTrue("Structural element instance is still there", repository.getRootEntities().contains(seiA));
 		StructuralElement seA = (StructuralElement) seiA.getType();
 		cmHelper.removeStructuralElement(seA);
-		assertTrue("Structural element instances have been cleaned up", !repository.getRootEntities().contains(seiA));
+		assertFalse("Structural element instances have been cleaned up", repository.getRootEntities().contains(seiA));
 	}
 	
 	@Test
@@ -128,7 +128,7 @@ public class ConceptMigrationHelperTest extends AConceptMigratorTest {
 		assertTrue("Category Assignment is still there", seiA.getCategoryAssignments().contains(caA));
 		Category cA = (Category) caA.getType();
 		cmHelper.removeCategory(cA);
-		assertTrue("Category Assignments have been cleaned up", !seiA.getCategoryAssignments().contains(caA));
+		assertFalse("Category Assignments have been cleaned up", seiA.getCategoryAssignments().contains(caA));
 	}
 	
 	@Test

@@ -9,12 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.provider;
 
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -67,7 +66,7 @@ public class DVLMRepositoryItemProviderTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testGetChildren() {
+	public void testGetChildren() throws IOException {
 	    StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 	    se.setIsApplicableForAll(true);
 		se.setName("Test_StructuralElement");
@@ -112,11 +111,7 @@ public class DVLMRepositoryItemProviderTest {
 	    
 		assertThat("The Children Collection contains the correct elements", children, hasItems(concept, sei1, sei2));
 		
-		try {
-			resourceSei1.delete(null);
-		} catch (IOException e) {
-			assertTrue("Throws no exception", false);
-		}
+		resourceSei1.delete(null);
 		
 		children = (Collection<Object>) rip.getChildren(repo);
 		    
