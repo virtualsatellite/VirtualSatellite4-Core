@@ -23,7 +23,7 @@ This ticket captures all release related work of the VirtualSatellite4-Core rele
   - [ ] Adjust DVLM version number in EquationDSL.xtext and run GenerateEquationDSL.mwe2
   - [ ] Regenerate concept.xmi of all relevant projects (launch "VirSat Core Concept IDE", import projects (with nested), build all)
 - [ ] Update the Java API Doc being registered in the Java doc plugin
-- [ ] Make sure application launches without errors
+- [ ] Make sure application launches without errors from the product launcher
 - [ ] Merge integration branch into development branch (Pull Request named "Integration 4.x.x - Remerge Versions")
 
 2. Perform integration on integration branch:
