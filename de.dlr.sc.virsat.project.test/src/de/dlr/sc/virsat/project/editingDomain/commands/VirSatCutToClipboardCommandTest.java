@@ -33,47 +33,23 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
-import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard.ClipboardState;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Tests for the Copy Clipboard Command
- * @author fisc_ph
  *
  */
 public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 
-	private VirSatProjectCommons projectCommons;
-	private VirSatTransactionalEditingDomain rsEd;
-	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
-		VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-
-		UserRegistry.getInstance().setSuperUser(true);
-	}
-
-	@Override
-	public void tearDown() throws CoreException {
-		UserRegistry.getInstance().setSuperUser(false);
-		super.tearDown();
-		
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
+		addEditingDomainAndRepository();
 	}
 
 	@Test
@@ -81,7 +57,7 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> cas = new ArrayList<>();
 		cas.add(CategoriesFactory.eINSTANCE.createCategoryAssignment());
 
-		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, cas);
+		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, cas);
 		
 		assertTrue("Command can be undone", one.canUndo());
 	}
@@ -99,7 +75,7 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 
 		sei.getCategoryAssignments().add(ca);
 
-		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, sei.getCategoryAssignments());
+		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, sei.getCategoryAssignments());
 		
 		assertTrue("Command can be executed", one.canExecute());
 		
@@ -107,7 +83,7 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 		superCa.setType(c);
 		ca.getSuperTis().add(superCa);
 
-		Command two = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, sei.getCategoryAssignments());
+		Command two = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, sei.getCategoryAssignments());
 		
 		assertFalse("Command can not be executed", two.canExecute());
 	}
@@ -125,8 +101,8 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 		disciplines.add(RolesFactory.eINSTANCE.createDiscipline());
 		disciplines.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
-		Command two = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, disciplines);
+		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
+		Command two = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, disciplines);
 		
 		assertTrue("Correct Command", one instanceof VirSatCutToClipboardCommand);
 		assertTrue("Correct Command", two instanceof UnexecutableCommand);
@@ -137,11 +113,11 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		one.execute();
 		
-		assertEquals("Correct Objects in ED", rsEd.getClipboard(), seis);
-		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd), ClipboardState.CUT);
+		assertEquals("Correct Objects in ED", editingDomain.getClipboard(), seis);
+		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain), ClipboardState.CUT);
 	}
 
 	@Test
@@ -149,11 +125,11 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		one.undo();
 		
-		assertNull("Correct Objects in ED", rsEd.getClipboard());
-		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd), ClipboardState.EMPTY);
+		assertNull("Correct Objects in ED", editingDomain.getClipboard());
+		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain), ClipboardState.EMPTY);
 	}
 
 	@Test
@@ -161,37 +137,37 @@ public class VirSatCutToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCutToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		one.undo();
 		one.redo();
 		
-		assertEquals("Correct Objects in ED", rsEd.getClipboard(), seis);
-		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd), ClipboardState.CUT);
+		assertEquals("Correct Objects in ED", editingDomain.getClipboard(), seis);
+		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain), ClipboardState.CUT);
 	}
 	
 	@Test
 	public void testCutRepo() {
-		assertNull("Clipboard is empty", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 		
 		Repository repo = DVLMFactory.eINSTANCE.createRepository();
-		boolean canExecute = VirSatCutToClipboardCommand.create(rsEd, Collections.singleton(repo)).canExecute();
+		boolean canExecute = VirSatCutToClipboardCommand.create(editingDomain, Collections.singleton(repo)).canExecute();
 		
 		assertFalse("Cannot cut repository", canExecute);
-		assertNull("Clipboard is still empty", rsEd.getClipboard());
-		assertEquals("Clipboard still has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is still empty", editingDomain.getClipboard());
+		assertEquals("Clipboard still has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutRoleManagement() {
-		assertNull("Clipboard is empty", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 		
 		RoleManagement rm = RolesFactory.eINSTANCE.createRoleManagement();
-		boolean canExecute = VirSatCutToClipboardCommand.create(rsEd, Collections.singleton(rm)).canExecute();
+		boolean canExecute = VirSatCutToClipboardCommand.create(editingDomain, Collections.singleton(rm)).canExecute();
 		
 		assertFalse("Cannot cut role management", canExecute);
-		assertNull("Clipboard is still emptyd", rsEd.getClipboard());
-		assertEquals("Clipboard still has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is still emptyd", editingDomain.getClipboard());
+		assertEquals("Clipboard still has empty state", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 }

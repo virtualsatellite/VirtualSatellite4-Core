@@ -463,6 +463,8 @@ public class ASwtBotTestCase {
 		
 	}
 	
+	
+	
 	/**
 	 * A Runnable lock to make sure that the display thread executed all messages
 	 *

@@ -26,40 +26,20 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard.ClipboardState;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Tests for the Copy Clipboard Command
- * @author fisc_ph
  *
  */
 public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 
-	private VirSatProjectCommons projectCommons;
-	private VirSatTransactionalEditingDomain rsEd;
-	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
-		VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-	}
-
-	@Override
-	public void tearDown() throws CoreException {
-		super.tearDown();
-		
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
+		addEditingDomainAndRepository();
 	}
 
 	@Test
@@ -67,7 +47,7 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		
 		assertTrue("Command can be undone", one.canUndo());
 	}
@@ -77,7 +57,7 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		
 		assertTrue("Command can be undone", one.canExecute());
 	}
@@ -95,8 +75,8 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		disciplines.add(RolesFactory.eINSTANCE.createDiscipline());
 		disciplines.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
-		Command two = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, disciplines);
+		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
+		Command two = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, disciplines);
 		
 		assertTrue("Correct Command", one instanceof VirSatCopyToClipboardCommand);
 		assertTrue("Correct Command", two instanceof UnexecutableCommand);
@@ -107,11 +87,11 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		one.execute();
 		
-		assertEquals("Correct Objects in ED", rsEd.getClipboard(), seis);
-		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd), ClipboardState.COPY);
+		assertEquals("Correct Objects in ED", editingDomain.getClipboard(), seis);
+		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain), ClipboardState.COPY);
 	}
 
 	@Test
@@ -119,11 +99,11 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		one.undo();
 		
-		assertNull("Correct Objects in ED", rsEd.getClipboard());
-		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd), ClipboardState.EMPTY);
+		assertNull("Correct Objects in ED", editingDomain.getClipboard());
+		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain), ClipboardState.EMPTY);
 	}
 
 	@Test
@@ -131,11 +111,11 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		List<EObject> seis = new ArrayList<>();
 		seis.add(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 
-		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) rsEd, seis);
+		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		one.undo();
 		one.redo();
 		
-		assertEquals("Correct Objects in ED", rsEd.getClipboard(), seis);
-		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd), ClipboardState.COPY);
+		assertEquals("Correct Objects in ED", editingDomain.getClipboard(), seis);
+		assertEquals("Correct Clipboard State", VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain), ClipboardState.COPY);
 	}
 }
