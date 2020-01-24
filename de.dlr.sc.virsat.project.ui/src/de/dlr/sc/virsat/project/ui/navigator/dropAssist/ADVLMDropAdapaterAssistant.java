@@ -55,7 +55,8 @@ public abstract class ADVLMDropAdapaterAssistant extends CommonDropAdapterAssist
 		if (dropObject instanceof EObject) {
 			validatedDragObjects = getSelectedDragObjects();
 			validatedDropObject = (EObject) dropObject;
-			ed = VirSatEditingDomainRegistry.INSTANCE.getEd((EObject) dropObject);
+			ed = VirSatEditingDomainRegistry.INSTANCE.getEd(validatedDropObject);
+
 			validatedDropCommand = createDropCommand(
 				ed,
 				validatedDragObjects,
