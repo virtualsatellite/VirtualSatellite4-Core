@@ -94,6 +94,8 @@ Germany
       <feature id="org.eclipse.emf.edit.ui" installMode="root"/>
       <feature id="org.eclipse.emf.transaction" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.editor" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.edit" installMode="root"/>
       <feature id="org.eclipse.emf.edapt.runtime.feature" installMode="root"/>
       <feature id="org.eclipse.emf.workspace" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
@@ -123,6 +125,7 @@ Germany
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
+      <feature id="org.eclipse.xtext.ui" installMode="root"/>
    </features>
 
    <configurations>
