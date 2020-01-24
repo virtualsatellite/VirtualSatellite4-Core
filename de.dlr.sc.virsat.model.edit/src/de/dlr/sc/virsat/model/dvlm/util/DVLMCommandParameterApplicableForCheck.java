@@ -16,9 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 
 
 /**
- * This class extends the ApplicableFor checks to be used with EMF CommandParameters
- * @author fisc_ph
- *
+ * This class wraps the ApplicableFor checks to be used with EMF CommandParameters
  */
 public class DVLMCommandParameterApplicableForCheck {
 

@@ -49,7 +49,8 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 	protected BeanStructuralElementInstanceFactory bsf;
 	
 	/**
-	 * Constructor
+	 * Constructor instantiating the internal map of which drop objects
+	 * expect which child object to be created.
 	 */
 	public ProductStructureDragAndDropInheritanceCommandHelper() {
 		

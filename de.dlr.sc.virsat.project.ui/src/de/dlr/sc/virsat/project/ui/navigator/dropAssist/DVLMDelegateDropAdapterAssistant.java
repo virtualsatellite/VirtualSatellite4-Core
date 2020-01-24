@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.project.Activator;
 /**
  * Drop Assistant for VirSat Navigator that delegates calls to concept specific drop assistants
  */
-public class DVLMObjectDropAdapterAssistant extends CommonDropAdapterAssistant {
+public class DVLMDelegateDropAdapterAssistant extends CommonDropAdapterAssistant {
 
 	protected Map<String, CommonDropAdapterAssistant> mapConceptIdToDelegateDropAdapter;
 	

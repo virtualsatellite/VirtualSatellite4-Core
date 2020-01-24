@@ -31,8 +31,8 @@ public abstract class ADVLMDropAdapaterAssistant extends CommonDropAdapterAssist
 
 	protected VirSatTransactionalEditingDomain ed;
 	protected Command validatedDropCommand;
-	protected EObject validatedDropObject;
-	protected Collection<Object> validatedDragObjects;
+	protected EObject dropEObjects;
+	protected Collection<Object> dragObjects;
 
 	/**
 	 * Method to create the command which will be used for the validate and handle drop
@@ -53,14 +53,14 @@ public abstract class ADVLMDropAdapaterAssistant extends CommonDropAdapterAssist
 	@Override
 	public IStatus validateDrop(Object dropObject, int operation, TransferData transferType) {
 		if (dropObject instanceof EObject) {
-			validatedDragObjects = getSelectedDragObjects();
-			validatedDropObject = (EObject) dropObject;
+			dragObjects = getSelectedDragObjects();
+			dropEObjects = (EObject) dropObject;
 			ed = VirSatEditingDomainRegistry.INSTANCE.getEd((EObject) dropObject);
 			validatedDropCommand = createDropCommand(
 				ed,
-				validatedDragObjects,
+				dragObjects,
 				operation,
-				validatedDropObject
+				dropEObjects
 			);
 			
 			
@@ -72,7 +72,7 @@ public abstract class ADVLMDropAdapaterAssistant extends CommonDropAdapterAssist
 	@Override
 	public IStatus handleDrop(CommonDropAdapter aDropAdapter, DropTargetEvent aDropTargetEvent, Object handleDropObject) {
 		Collection<Object> handleDragObjects = getSelectedDragObjects();
-		if (handleDropObject == validatedDropObject && handleDragObjects.equals(validatedDragObjects)) {
+		if (handleDropObject == dropEObjects && handleDragObjects.equals(dragObjects)) {
 			ed.getVirSatCommandStack().execute(validatedDropCommand);
 			return Status.OK_STATUS;
 		}
