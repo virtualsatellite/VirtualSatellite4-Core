@@ -29,7 +29,8 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * Test Cases for the ClipBoard Command Helper
-W */
+ */
+
 public class VirSatClipboardCommandHelperTest {
 
 	@Test
