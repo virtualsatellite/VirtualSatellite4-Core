@@ -64,7 +64,6 @@
 <plugin id="de.dlr.sc.virsat.project"></plugin>
 <plugin id="de.dlr.sc.virsat.project.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.qudv.ui"></plugin>
-<plugin id="de.dlr.sc.virsat.server"></plugin>
 <plugin id="de.dlr.sc.virsat.target"></plugin>
 <plugin id="de.dlr.sc.virsat.team"></plugin>
 <plugin id="de.dlr.sc.virsat.team.ui"></plugin>
