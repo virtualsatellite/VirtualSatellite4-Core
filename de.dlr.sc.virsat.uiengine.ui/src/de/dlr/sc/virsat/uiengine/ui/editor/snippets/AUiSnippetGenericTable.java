@@ -358,27 +358,27 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 			
 			@Override
 			public void mouseScrolled(MouseEvent e) {
-				System.out.println(e);
+				boolean scrollUp = e.count > 0;
 				
 				int iPosition = table.getVerticalBar().getSelection();
 				int iMaxDown =  table.getVerticalBar().getMaximum();
 				int page = table.getVerticalBar().getPageIncrement();
 				
+				System.out.println(String.format("%d - %d - %d", iPosition, iMaxDown, page));
 				
-				if (iPosition >=10) {
-					Event event = new Event();
-					event.detail =  SWT.PAGE_DOWN;
+				boolean delegateUp = (iPosition == 0) && scrollUp;
+				boolean delegateDown = (iPosition >= iMaxDown - page) && !scrollUp;
+				
+				if (delegateUp || delegateDown) {
 					Composite composite = sectionBody.getParent().getParent().getParent().getParent();
-					System.out.println(composite);
 					ScrollBar nextVScrollBar = composite.getVerticalBar();
-					if(nextVScrollBar != null) {
-						System.out.println(nextVScrollBar);
+					if (nextVScrollBar != null) {
 						int iNextPosition = nextVScrollBar.getSelection();
-						nextVScrollBar.setSelection(iNextPosition + 3);
+						int iIncrement = nextVScrollBar.getIncrement();
+						nextVScrollBar.setSelection(iNextPosition - iIncrement * e.count);
 						ScrolledForm sf = (ScrolledForm) composite;
 						Control content = sf.getContent();
 						
-						if (content == null) return;
 						Point location = content.getLocation ();
 						ScrollBar vBar = nextVScrollBar ;
 						int vSelection = vBar.getSelection ();
