@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.EventObject;
 import java.util.List;
 
-import javax.swing.text.Position;
-
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -53,29 +51,20 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.RedirectingTable;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IEditorActionBarContributor;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
@@ -97,8 +86,6 @@ import de.dlr.sc.virsat.uiengine.ui.excel.ExcelExportWizard;
 
 /**
  * abstract class ui snippet generic table implements the ui snippet for generic tables
- * @author leps_je
- *
  */
 public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 
@@ -351,45 +338,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 		gridDataTable.heightHint = DEFAULT_TABLE_HEIGHT;
 		gridDataTable.widthHint = DEFAULT_TABLE_WIDTH;
 
-		Table table = new Table(sectionBody, style | toolkit.getBorderStyle() | toolkit.getOrientation());
-		toolkit.adapt(table, false, false);
-		
-		table.addMouseWheelListener(new MouseWheelListener() {
-			
-			@Override
-			public void mouseScrolled(MouseEvent e) {
-				boolean scrollUp = e.count > 0;
-				
-				int iPosition = table.getVerticalBar().getSelection();
-				int iMaxDown =  table.getVerticalBar().getMaximum();
-				int page = table.getVerticalBar().getPageIncrement();
-				
-				System.out.println(String.format("%d - %d - %d", iPosition, iMaxDown, page));
-				
-				boolean delegateUp = (iPosition == 0) && scrollUp;
-				boolean delegateDown = (iPosition >= iMaxDown - page) && !scrollUp;
-				
-				if (delegateUp || delegateDown) {
-					Composite composite = sectionBody.getParent().getParent().getParent().getParent();
-					ScrollBar nextVScrollBar = composite.getVerticalBar();
-					if (nextVScrollBar != null) {
-						int iNextPosition = nextVScrollBar.getSelection();
-						int iIncrement = nextVScrollBar.getIncrement();
-						nextVScrollBar.setSelection(iNextPosition - iIncrement * e.count);
-						ScrolledForm sf = (ScrolledForm) composite;
-						Control content = sf.getContent();
-						
-						Point location = content.getLocation ();
-						ScrollBar vBar = nextVScrollBar ;
-						int vSelection = vBar.getSelection ();
-						content.setLocation (location.x, -vSelection);
-						
-					}
-				}
-			}
-		});
-		
-		//Table table = toolkit.createTable(sectionBody, SWT.MULTI | SWT.FULL_SELECTION);
+		Table table = toolkit.createTable(sectionBody, SWT.MULTI | SWT.FULL_SELECTION);
 		table.setLayoutData(gridDataTable);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
