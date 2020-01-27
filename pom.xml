@@ -42,7 +42,8 @@
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
-				<module>de.dlr.sc.virsat.external.lib.jersey</module>
+				<!-- TODO: Enable jersey plugin. Not used yet, so disabling it for now. -->
+				<!-- <module>de.dlr.sc.virsat.external.lib.jersey</module>  -->
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>
@@ -97,8 +98,9 @@
 				<module>de.dlr.sc.virsat.team.ui</module>
 				<module>de.dlr.sc.virsat.team.test</module>
 
-				<module>de.dlr.sc.virsat.server</module>
-				<module>de.dlr.sc.virsat.server.test</module>
+				<!-- TODO: Enable Server plugins. Not used yet, so disabling them for now. -->
+				<!-- <module>de.dlr.sc.virsat.server</module>  -->
+				<!-- <module>de.dlr.sc.virsat.server.test</module>  -->
 
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>
