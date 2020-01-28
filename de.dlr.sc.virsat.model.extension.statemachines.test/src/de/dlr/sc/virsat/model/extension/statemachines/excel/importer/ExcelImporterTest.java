@@ -43,11 +43,11 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 public class ExcelImporterTest {
 	private static final String CONCEPT_ID_MACHINES = "de.dlr.sc.virsat.model.extension.statemachines";
 
-	private static final int STATENOTEXISTING = 6;
-	private static final int STATEWITHOUTUUID = 5;
-	private static final int STATEWITHOUTNAME = 3;
-	private static final int EXPECTEDSTATECOUNT = 4;
-	private static final int EXPECTEDTRANSITIONCOUNT = 4;
+	private static final int STATE_NOT_EXISTING = 6;
+	private static final int STATE_WITHOUT_UUID = 5;
+	private static final int STATE_WITHOUT_NAME = 3;
+	private static final int EXPECTED_STATECOUNT = 4;
+	private static final int EXPECTED_TRANSITIONCOUNT = 4;
 
 	ABeanStructuralElementInstance aBeanSei;
 
@@ -119,8 +119,8 @@ public class ExcelImporterTest {
 
 		SMImporter se = new SMImporter();
 		se.importExcel(stateMaschine.getTypeInstance(), null, wb);
-		assertEquals(EXPECTEDSTATECOUNT, stateMaschine.getStates().size());
-		assertEquals(EXPECTEDTRANSITIONCOUNT, stateMaschine.getTransitions().size());
+		assertEquals(EXPECTED_STATECOUNT, stateMaschine.getStates().size());
+		assertEquals(EXPECTED_TRANSITIONCOUNT, stateMaschine.getTransitions().size());
 		assertEquals("statenew2", stateMaschine.getStates().get(0).getName());
 		assertEquals("transitionnew2", stateMaschine.getTransitions().get(0).getName());
 		assertEquals("state4", stateMaschine.getTransitions().get(1).getStateFrom().getName());
@@ -139,10 +139,10 @@ public class ExcelImporterTest {
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE));
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
 
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATEWITHOUTNAME - 1));
-		expectedFault.add(new Fault(FaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATEWITHOUTUUID - 1));
-		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATENOTEXISTING - 1));
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATENOTEXISTING - 1));
+		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_WITHOUT_NAME - 1));
+		expectedFault.add(new Fault(FaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_WITHOUT_UUID - 1));
+		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
+		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
 
 		ImportValidator iValidator = new ImportValidator(stateMaschine.getTypeInstance(), wb);
 

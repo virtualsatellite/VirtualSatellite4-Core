@@ -53,8 +53,8 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFaults.add(new Fault(FaultType.INTERFACE_END_UUID_NOT_FOUND, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE));
 		expectedFaults.add(new Fault(FaultType.INTERFACE_TYPE_DOES_NOT_EXIST, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
 		expectedFaults.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 2));
-		expectedFaults.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_END, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBEROFINTERFACES));
-		expectedFaults.add(new Fault(FaultType.INTERFACE_END_NAME_IS_NOT_SET, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBEROFINTERFACES + 1));
+		expectedFaults.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_END, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES));
+		expectedFaults.add(new Fault(FaultType.INTERFACE_END_NAME_IS_NOT_SET, interfaceEndSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES + 1));
 
 		ImportValidator iValidator = new ImportValidator(elementDef.getStructuralElementInstance(), wb);
 		ArrayList<Fault> faults = (ArrayList<Fault>) iValidator.validate();
@@ -74,8 +74,8 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FaultType.INTERFACE_TYPE_UUID_NOT_FOUND, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE));
 		expectedFault.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
-		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_TYPE, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBEROFINTERFACES));
-		expectedFault.add(new Fault(FaultType.INTERFACE_TYPE_NAME_IS_NOT_SET, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBEROFINTERFACES));
+		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_TYPE, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES));
+		expectedFault.add(new Fault(FaultType.INTERFACE_TYPE_NAME_IS_NOT_SET, interfaceTypeSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES));
 		ImportValidator iValidator = new ImportValidator(ifaceTypeCollection.getStructuralElementInstance(), wb);
 		ArrayList<Fault> fault = (ArrayList<Fault>) iValidator.validate();
 		assertEquals(expectedFault, fault);

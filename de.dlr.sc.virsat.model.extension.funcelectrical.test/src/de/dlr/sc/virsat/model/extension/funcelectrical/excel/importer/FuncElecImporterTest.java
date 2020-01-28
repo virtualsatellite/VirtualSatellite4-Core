@@ -52,7 +52,7 @@ public class FuncElecImporterTest extends ExcelTestCase {
 		assertTrue("Succesfully called the validator", faults.isEmpty());
 
 		feImporter.importExcel(ifaceTypeCollection.getStructuralElementInstance(), repository, wb);
-		assertEquals(NUMBEROFINTERFACES, ifaceTypeCollection.getStructuralElementInstance().getCategoryAssignments().size());
+		assertEquals(NUMBER_OF_INTERFACES, ifaceTypeCollection.getStructuralElementInstance().getCategoryAssignments().size());
 		assertEquals("FILL", ifaceTypeCollection.getStructuralElementInstance().getCategoryAssignments().get(0).getName());
 		assertEquals("HILL", ifaceTypeCollection.getStructuralElementInstance().getCategoryAssignments().get(1).getName());
 		assertEquals("PILL", ifaceTypeCollection.getStructuralElementInstance().getCategoryAssignments().get(2).getName());
@@ -72,7 +72,7 @@ public class FuncElecImporterTest extends ExcelTestCase {
 		feImporter.importExcel(elementDef.getStructuralElementInstance(), repository, wb);
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(elementDef.getStructuralElementInstance(), InterfaceEnd.class);
-		assertEquals(NUMBEROFINTERFACES, elementDef.getStructuralElementInstance().getCategoryAssignments().size());
+		assertEquals(NUMBER_OF_INTERFACES, elementDef.getStructuralElementInstance().getCategoryAssignments().size());
 
 		assertEquals("POW_SOMETHING", seiInterfaceEnds.get(0).getName());
 		assertEquals("POW_OUT_C", seiInterfaceEnds.get(1).getName());

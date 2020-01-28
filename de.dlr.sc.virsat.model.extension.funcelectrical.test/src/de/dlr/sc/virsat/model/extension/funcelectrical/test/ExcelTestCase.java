@@ -37,7 +37,7 @@ public class ExcelTestCase extends AConceptTestCase {
 	protected static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	protected static final String CONCEPT_ID_FUNCELECTRICAL = Activator.getPluginId();
 	protected static final String EXTENSION_ID = "de.dlr.sc.virsat.model.Concept";
-	protected static final int NUMBEROFINTERFACES = 3;
+	protected static final int NUMBER_OF_INTERFACES = 3;
 
 	protected Repository repository;
 	protected InterfaceTypeCollection ifaceTypeCollection;
