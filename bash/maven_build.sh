@@ -21,6 +21,13 @@ set -e
 # displayed in case of usage issues
 COMMAND=$0
 
+# set general variables to correctly execute the build process
+OVERTARGET_VERSION=1.1.0.r201903120902
+OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
+OVERTARGET_GROUP=de.dlr.sc.overtarget
+JUNIT_DEBUG_PROJECT_TEST_CASE=true
+SWTBOT_SCREENSHOT=true
+
 # this method gives some little usage info
 printUsage() {
 	echo "usage: ${COMMAND} -j [surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"

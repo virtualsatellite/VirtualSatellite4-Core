@@ -54,14 +54,6 @@ env:
   # API Token for access to github
   # ---------------------------------------------
   - secure: "POYGzbPXLBDe2BsehzJ7QUZ4toQ1Pbi2VdH8ZTSN9zqipLbBVnsMghs7Zf80C+AK1nKbY2DPWHwaWR6LE3MRhA9X3xeyYgJ/53J4JeMw1ORYpavVXJC9t8d+fMVCJhALzjQYz7PmE4ba/MHgr/UnoeNL2v1M/9mUpMbfD490jPUdOQjqpy0/FvM5HhXcQEwexUPsNsR+DffVSSmJ62aXHPM2pgKYaH0pnY5OYwm4t7v7lp8GgQf+b163+rD2LyLIEeLiQ1msXAqaRSBznuu2wqi7N3ZC176i864fRHf8M4RYbWqA0BneCd0keAQJLvpcPBoyE1T0XKYvjz5JdjbuNDX1p4waLo7CnU+UJzuCQ5hnkrDm7YJhwQY007T2kudUTPl0dP0TeoJsDtz30vvBC82equJA5+0xPb1BvvDmdKFkfF7gOGh05qjhAo3TJ8D5CXXFmdPr9VApYv0zqzh0hR5p+5FHkDmKhzJ7xg4jpo04IXa8ztBCjoB4dyLnUDhyTABtA5/uoRuMA4I7nc25mKL6Z9fz8O8HadAInlJFXyodQOrvD68k2Bf9WJWreZMKcLJiOWQC0bbPNa6ABrRpiuzdUdWEpzNjJJYktmPl+JwHAJ4Fa3CHaNFILaLLC9Z3gtrdNT2+PkME8u0sfVWZ1nU4nNO9EGUItcBEFhkCnZE="
-  # ---------------------------------------------
-  # Setup Overtarget Repository and Version
-  # ---------------------------------------------
-  - OVERTARGET_VERSION=1.1.0.r201903120902
-  - OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
-  - OVERTARGET_GROUP=de.dlr.sc.overtarget
-  - JUNIT_DEBUG_PROJECT_TEST_CASE=true
-  - SWTBOT_SCREENSHOT=true
 
 before_script:
   # -----------------------------------
