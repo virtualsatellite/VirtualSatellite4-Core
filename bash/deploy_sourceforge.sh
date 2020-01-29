@@ -34,7 +34,10 @@ printUsage() {
 
 uploadSwtBot() {
 	cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
-	rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
+	REPO_SLUG_CLEAN=$(sed -e 's/\//\_/g' <<< ${REPO_SLUG})
+	TEST_ARTEFACTS = SwtBot_${REPO_SLUG_CLEAN}_${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_${TRAVIS_JOB_NUMBER}.zip
+	zip ${TEST_ARTEFACTS} $TRAVIS_BUILD_DIR/swtbot/*
+	rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/${TEST_ARTEFACTS} dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
 }
 
 uploadDevelopment() {
