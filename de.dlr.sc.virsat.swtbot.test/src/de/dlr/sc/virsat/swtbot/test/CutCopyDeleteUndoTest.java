@@ -129,7 +129,8 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 		StructuralElementInstance seiCt1 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree")).findFirst().get();
 
 		StructuralElementInstance ec1 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_1")).findFirst().get();
-		StructuralElementInstance ec2 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_2")).findFirst().get();
+		//StructuralElementInstance ec2 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_2")).findFirst().get();
+		StructuralElementInstance ec2 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_X")).findFirst().get();
 		
 		assertNotNull("Correct SEI exists", ec1);
 		assertNotNull("Correct SEI exists", ec2);
