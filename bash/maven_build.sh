@@ -30,7 +30,7 @@ export SWTBOT_SCREENSHOT=true
 
 # this method gives some little usage info
 printUsage() {
-	echo "usage: ${COMMAND} -j [surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
+	echo "usage: ${COMMAND} -j [dependencies|surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
 	echo ""
 	echo "Options:"
 	echo " -j, --jobs <jobname>	    The name of the Travis-CI job to be build."
@@ -53,7 +53,7 @@ printUsage() {
 
 callMavenDependencies() {
 	mkdir -p ./OverTarget
-	travis_retry curl -v -L -o ./OverTarget/OverTarget.jar ${OVERTARGET_REPO}/${OVERTARGET_GROUP}.language_${OVERTARGET_VERSION}.jar/download#
+	curl -v -L -o ./OverTarget/OverTarget.jar ${OVERTARGET_REPO}/${OVERTARGET_GROUP}.language_${OVERTARGET_VERSION}.jar/download
 	mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=${OVERTARGET_GROUP} -DartifactId=${OVERTARGET_GROUP}.language -Dversion=${OVERTARGET_VERSION} -Dpackaging=jar
 }
 
@@ -140,7 +140,7 @@ done
 
 case $MAVEN_PROFILE in
     dependencies )      callMavenDependencies
-                        exit
+                        exit 0
                         ;;
     development )       ;;
     integration )       ;;
