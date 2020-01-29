@@ -505,7 +505,7 @@ public class ASwtBotTestCase {
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
-		// Wait a little time, so we give other UI threads / runnables to get started or queued in between
+		// Wait a little time, so we give other UI threads / runnables the chance to get started or queued in between
 		try {
 			Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 		} catch (InterruptedException e) {
