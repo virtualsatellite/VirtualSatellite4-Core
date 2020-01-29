@@ -37,6 +37,7 @@ printUsage() {
 	echo " -p, --profile <profile>  The name of the maven profile to be build."
 	echo ""
 	echo "Jobname:"
+	echo " dependencies  Downloads and installs maven dependencies, e.g. overtarget."
 	echo " surefire      To run all surefire tests including junit and swtbot."
 	echo " spotbugs      To run spotbugs static code analysis."
 	echo " checkstyle    To run checkstyle for testing style guidelines."
@@ -48,6 +49,12 @@ printUsage() {
 	echo " release          Maven profile for release builds. Fails to overwrite deployments."
 	echo ""
 	echo "Copyright by DLR (German Aerospace Center)"
+}
+
+callMavenDependencies()
+	mkdir -p ./OverTarget
+	travis_retry curl -v -L -o ./OverTarget/OverTarget.jar ${OVERTARGET_REPO}/${OVERTARGET_GROUP}.language_${OVERTARGET_VERSION}.jar/download#
+	mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=${OVERTARGET_GROUP} -DartifactId=${OVERTARGET_GROUP}.language -Dversion=${OVERTARGET_VERSION} -Dpackaging=jar
 }
 
 checkforMavenProblems() {
@@ -132,6 +139,9 @@ while [ "$1" != "" ]; do
 done
 
 case $MAVEN_PROFILE in
+    dependencies )      callMavenDependencies
+                        exit
+                        ;;
     development )       ;;
     integration )       ;;
     release )           ;;
@@ -142,16 +152,16 @@ esac
 # Decide which job to run
 case $TRAVIS_JOB in
     surefire )          callMavenSurefire
-    					exit
+                        exit
                         ;;
     spotbugs )      	callMavenSpotbugs
-    					exit
+                        exit
                         ;;
     checkstyle )      	callMavenCheckstyle
-    					exit
+                        exit
                         ;;
     assemble )      	callMavenAssemble
-    					exit
+                        exit
                         ;;
     * )                 printUsage
                         exit 1
