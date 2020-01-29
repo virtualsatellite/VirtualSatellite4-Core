@@ -139,9 +139,6 @@ while [ "$1" != "" ]; do
 done
 
 case $MAVEN_PROFILE in
-    dependencies )      callMavenDependencies
-                        exit
-                        ;;
     development )       ;;
     integration )       ;;
     release )           ;;
@@ -151,6 +148,9 @@ esac
 
 # Decide which job to run
 case $TRAVIS_JOB in
+    dependencies )      callMavenDependencies
+                        exit
+                        ;;
     surefire )          callMavenSurefire
                         exit
                         ;;
