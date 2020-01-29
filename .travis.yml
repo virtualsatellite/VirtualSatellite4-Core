@@ -63,7 +63,7 @@ before_script:
   # -------------------------------------------------------------------
   # create adirectory for Overtarget and try to receive language plugin
   # -------------------------------------------------------------------
-  - bash/maven_build.sh -j dependencies 
+  - bash/maven_build.sh -j dependencies -p dependencies
   # --------------------------------------------------------------
   # Setup environment variables for correct linking of vtk and zmq
   # --------------------------------------------------------------

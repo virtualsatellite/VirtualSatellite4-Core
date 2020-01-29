@@ -30,7 +30,7 @@ export SWTBOT_SCREENSHOT=true
 
 # this method gives some little usage info
 printUsage() {
-	echo "usage: ${COMMAND} -j [dependencies|surefire|spotbugs|checkstyle|assemble] -p [development|integration|release]"
+	echo "usage: ${COMMAND} -j [dependencies|surefire|spotbugs|checkstyle|assemble] -p [dependencies|development|integration|release]"
 	echo ""
 	echo "Options:"
 	echo " -j, --jobs <jobname>	    The name of the Travis-CI job to be build."
@@ -44,6 +44,7 @@ printUsage() {
 	echo " assemble      To run full assemble including the java docs build."
 	echo ""
 	echo "Profile:"
+	echo " dependencies     To be set when calling the update dependencies.
 	echo " development      Maven profile for development and feature builds."
 	echo " integration      Maven profile for integration builds."
 	echo " release          Maven profile for release builds. Fails to overwrite deployments."
@@ -139,6 +140,7 @@ while [ "$1" != "" ]; do
 done
 
 case $MAVEN_PROFILE in
+    dependencies )      ;;
     development )       ;;
     integration )       ;;
     release )           ;;
