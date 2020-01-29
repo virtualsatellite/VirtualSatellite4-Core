@@ -190,9 +190,9 @@ public class ExportPage extends WizardPage {
 		label1 = new Label(composite1, SWT.NONE);
 		label1.setText("Template");
 
-		// destination name entry field
+        // destination name entry field
 		templateField = new Combo(composite1, SWT.SINGLE | SWT.BORDER);
-		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+        data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
         final int widthHint = 250;
         data.widthHint = widthHint;
         templateField.setLayoutData(data);

@@ -49,7 +49,7 @@ public class ExcelImporterTest {
 	private static final int EXPECTED_STATECOUNT = 4;
 	private static final int EXPECTED_TRANSITIONCOUNT = 4;
 
-	ABeanStructuralElementInstance aBeanSei;
+	ABeanStructuralElementInstance elementDefinition;
 
 	Concept conceptStateMachines;
 
@@ -60,9 +60,9 @@ public class ExcelImporterTest {
 
 		UserRegistry.getInstance().setSuperUser(true);
 
-		conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
+	    conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
 
-		stateMaschine = new StateMachine(conceptStateMachines);
+	    stateMaschine = new StateMachine(conceptStateMachines);
 
 		State state1 = new State(conceptStateMachines);
 		state1.setName("state1");
@@ -106,10 +106,10 @@ public class ExcelImporterTest {
 		stateMaschine.getTransitions().add(transition4);
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		sei.setType(ActiveConceptHelper.getCategory(conceptStateMachines, StateMachine.class.getSimpleName()).getApplicableFor().get(0));
-		aBeanSei = new ElementDefinition(sei);
-		aBeanSei.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
-		aBeanSei.setName("BATTERY");
-		aBeanSei.add(stateMaschine);
+		elementDefinition = new ElementDefinition(sei);
+		elementDefinition.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
+		elementDefinition.setName("BATTERY");
+		elementDefinition.add(stateMaschine);
 	}
 
 	@Test

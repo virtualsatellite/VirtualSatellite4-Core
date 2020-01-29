@@ -45,7 +45,8 @@ public class SMImporter implements IImport {
 
 	/**
 	 * imports the transitions
-	 */	private void importTransitions() {
+	 */
+	private void importTransitions() {
 		final Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_TRANSITIONS);
 
 		if (sheet == null) {
