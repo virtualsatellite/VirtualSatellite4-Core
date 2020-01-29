@@ -44,7 +44,7 @@ printUsage() {
 	echo " assemble      To run full assemble including the java docs build."
 	echo ""
 	echo "Profile:"
-	echo " dependencies     To be set when calling the update dependencies.
+	echo " dependencies     To be set when calling the update dependencies."
 	echo " development      Maven profile for development and feature builds."
 	echo " integration      Maven profile for integration builds."
 	echo " release          Maven profile for release builds. Fails to overwrite deployments."
