@@ -62,3 +62,5 @@ Import-Package: org.zeromq,
  vtk.rendering,
  vtk.rendering.awt
 Automatic-Module-Name: de.dlr.sc.virsat.swtbot.test
+Export-Package: de.dlr.sc.virsat.swtbot.test,
+ de.dlr.sc.virsat.swtbot.util
