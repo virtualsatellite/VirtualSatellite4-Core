@@ -34,7 +34,6 @@ import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBo
  * test cases for the ClipBoard class that extends the ClipBoard functionality of
  * an AdapterFactoryEditingDomain by providing additional information about the state
  * of the objects in the ClipBoard
- * @author fisc_ph
  *
  */
 public class VirSatEditingDomainClipBoardTest {

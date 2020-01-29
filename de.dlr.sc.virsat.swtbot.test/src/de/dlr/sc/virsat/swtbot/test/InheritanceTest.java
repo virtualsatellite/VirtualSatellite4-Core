@@ -14,7 +14,9 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertNotEnabled;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertText;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
@@ -28,10 +30,9 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
+
 /**
  * This class tests the inheritance
- * @author bell_Er
- *
  */
 public class InheritanceTest extends ASwtBotTestCase {
 	private SWTBotTreeItem repositoryNavigatorItem;
@@ -139,6 +140,38 @@ public class InheritanceTest extends ASwtBotTestCase {
 		waitForAllBuildersAndUiThread();
 		assertEquals("newDocName", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		assertEquals("overriden note", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_NOTE));
+	}
+	
+	@Test
+	public void inheritanceTypingDragAndDrop() {
+		rename(elementConfiguration, "ec_1");
+		SWTBotTreeItem elementConfiguration2 = addElement(ElementConfiguration.class, conceptPs, configurationTree);
+		rename(elementConfiguration2, "ec_2");
 		
+		SWTBotTreeItem documentEc1 = addElement(Document.class, conceptPs, elementConfiguration);
+		SWTBotTreeItem documentEc2 = addElement(Document.class, conceptPs, elementConfiguration2);
+
+		openEditor(documentEc1);
+		setText(Document.PROPERTY_DOCUMENTNAME, "docFromEc1");
+
+		openEditor(documentEc2);
+		setText(Document.PROPERTY_DOCUMENTNAME, "docFromEc2");
+		
+		// There are no documents yet with the ElementOccurrence
+		assertThat("There is only the documents folder", elementOccurence.getItems(), arrayWithSize(1));
+		
+		// Now drag the first inheritance
+		elementConfiguration.dragAndDrop(elementOccurence);
+		waitForAllBuildersAndUiThread();
+		
+		openEditor(elementOccurence);
+		assertEquals("Received override from EC1", "docFromEc1", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
+		
+		// now drag the other and verify
+		elementConfiguration2.dragAndDrop(elementOccurence);
+		waitForAllBuildersAndUiThread();
+		
+		openEditor(elementOccurence);
+		assertEquals("Received override from EC2", "docFromEc2", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 	}
 }

@@ -45,17 +45,13 @@ public class VirSatProblemMarkerHelperTest extends ATestCase {
 
 	//CHECKSTYLE:OFF
 	@Test
-	public void testCreateMarkerHelper() {
+	public void testCreateMarkerHelper() throws CoreException {
 		IMarker markerRepo = vpmh.createMarker(ID_TESTMARKER, IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
 		IMarker markerCa = vpmh.createMarker(VirSatProblemMarkerHelper.ID_VIRSAT_PROBLEM_MARKER, IMarker.SEVERITY_WARNING, "This is a marker on the CaOfContainingSei", caOfContainingSei);
 
 		IMarker markerSei = null;
-		try {
-			markerSei = fileSeiContaining.createMarker(IMarker.PROBLEM);
-		} catch (CoreException e) {
-			assertTrue("Did not expect exception", false);
-			e.printStackTrace();
-		}
+		markerSei = fileSeiContaining.createMarker(IMarker.PROBLEM);
+		
 		assertFalse("There is a marker created", markerSei == null);
 		
 		IMarkerHelper helperMarkerRepo = VirSatProblemMarkerHelper.createMarkerHelper(markerRepo);
@@ -211,19 +207,14 @@ public class VirSatProblemMarkerHelperTest extends ATestCase {
 		assertEquals("Correct Identifier Type", VirSatProblemMarkerHelper.ID_TYPE_NOT_VALID, idTypeOfWhatever);
 	}
 	
-	private void assertEqualsMarkerHierarchy(IResource res, int eq1, int eq2, int eq3) {
-		try {
-			assertEquals("Correct Amount of all Markers", eq1, res.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
-			assertEquals("Correct Amount of VirSat Markers", eq2, res.findMarkers(VirSatProblemMarkerHelper.ID_VIRSAT_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE).length);
-			assertEquals("Correct Amount of VirSat Test Markers", eq3, res.findMarkers(ID_TESTMARKER, true, IResource.DEPTH_INFINITE).length);
-		} catch (CoreException e) {
-			assertTrue("Could not find Markers in VirSatProblemMarkerHelperTest", false);
-			e.printStackTrace();
-		}
+	private void assertEqualsMarkerHierarchy(IResource res, int eq1, int eq2, int eq3) throws CoreException {
+		assertEquals("Correct Amount of all Markers", eq1, res.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
+		assertEquals("Correct Amount of VirSat Markers", eq2, res.findMarkers(VirSatProblemMarkerHelper.ID_VIRSAT_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE).length);
+		assertEquals("Correct Amount of VirSat Test Markers", eq3, res.findMarkers(ID_TESTMARKER, true, IResource.DEPTH_INFINITE).length);
 	}
 	
 	@Test
-	public void testCreateMarker_OnResource() {
+	public void testCreateMarker_OnResource() throws CoreException {
 		assertEqualsMarkerHierarchy(fileRepo, 0, 0, 0);
 		assertEqualsMarkerHierarchy(fileSeiContaining, 0, 0, 0);
 		assertEqualsMarkerHierarchy(fileSeiContained, 0, 0, 0);
@@ -259,7 +250,7 @@ public class VirSatProblemMarkerHelperTest extends ATestCase {
 	}
 	
 	@Test
-	public void testCreateMarker_OnObject() {
+	public void testCreateMarker_OnObject() throws CoreException {
 		assertEqualsMarkerHierarchy(fileRepo, 0, 0, 0);
 		assertEqualsMarkerHierarchy(fileSeiContaining, 0, 0, 0);
 		assertEqualsMarkerHierarchy(fileSeiContained, 0, 0, 0);
@@ -307,12 +298,8 @@ public class VirSatProblemMarkerHelperTest extends ATestCase {
 		assertEqualsMarkerHierarchy(fileSeiContaining, 2, 2, 1);
 		assertEqualsMarkerHierarchy(fileSeiContained, 2, 2, 2);		
 				
-		try {
-			fileSeiContained.delete(true, null);
-		} catch (CoreException e) {
-			assertTrue("Could not delete file of SEI", false);
-			e.printStackTrace();
-		}
+		fileSeiContained.delete(true, null);
+		
 		marker = vpmh.createMarker(ID_TESTMARKER, IMarker.SEVERITY_WARNING, "This is a marker on the SeiContained with a deleted resource", fileSeiContained);
 		assertTrue("The Marker is null", null == marker);
 		
@@ -329,14 +316,9 @@ public class VirSatProblemMarkerHelperTest extends ATestCase {
 	}
 	
 	@Test 
-	public void testCreateVirSatMarker() {
+	public void testCreateVirSatMarker() throws CoreException {
 		vpmh.createVirSatMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
-		try {
-			assertEquals("Correct Amount of VirSat Markers", 1, fileRepo.findMarkers(VirSatProblemMarkerHelper.ID_VIRSAT_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE).length);
-		} catch (CoreException e) {
-			assertTrue("Did not expect to get Exception", false);
-			e.printStackTrace();
-		}
+		assertEquals("Correct Amount of VirSat Markers", 1, fileRepo.findMarkers(VirSatProblemMarkerHelper.ID_VIRSAT_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE).length);
 	}
 
 	@Test

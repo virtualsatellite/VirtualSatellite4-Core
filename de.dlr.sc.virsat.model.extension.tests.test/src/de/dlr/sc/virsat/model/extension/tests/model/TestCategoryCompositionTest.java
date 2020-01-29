@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,14 +33,6 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		tcComposition = new TestCategoryComposition(concept);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void test() {
-	}
-	
 	@Test
 	public void testStringProperty() {
 		final String TEST_VALUE_ONE = "ValOne";

@@ -121,6 +121,8 @@ Germany
       <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
       <feature id="org.eclipse.graphiti.feature" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
+      <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
+      <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
    </features>
 
    <configurations>
@@ -131,10 +133,6 @@ Germany
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
-
-   <repositories>
-      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
-   </repositories>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
