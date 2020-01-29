@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-import de.dlr.sc.virsat.excel.ExcelImporter;
+import de.dlr.sc.virsat.excel.importer.ExcelImporter;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 

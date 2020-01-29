@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -24,8 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,10 +35,8 @@ import org.eclipse.emf.edit.command.CutToClipboardCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -60,44 +57,17 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * This class tests the Transactional Editing Domain for Virtual Satellite
- * 
- * @author fisc_ph
- *
  */
 public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
-
-	private VirSatResourceSet rs;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
-
-		
 		addEditingDomainAndRepository();
-
-		rs = editingDomain.getResourceSet(); 
-
-		UserRegistry.getInstance().setSuperUser(true);
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-	}
-
-	@After
-	public void tearDown() throws CoreException {
-		super.tearDown();
-		
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
-		UserRegistry.getInstance().setSuperUser(false);
 	}
 
 	/**
 	 * Test class that can be added as a resource listener to the editing domain
-	 * @author fisc_ph
-	 *
 	 */
 	private class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
@@ -116,6 +86,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 			
 			List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
 			stackTraces.add(stackTrace);
+			this.notify();
 		}
 	}
 
@@ -161,7 +132,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
-		editingDomain.saveAll(false, false);
+		editingDomain.saveAll(false);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -433,5 +404,62 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		command = DeleteCommand.create(editingDomain, rm.getDisciplines());
 		assertTrue("Got correct VirSat Command", command instanceof DeleteStructuralElementInstanceCommand);
+	}
+	
+	class ResourceEventTypeCounter extends ResourceEventCounter {
+		
+		protected Thread expectedThread = Thread.currentThread();
+		
+		protected boolean hasChangeEvents = false;
+		protected boolean hasReloadEvents = false;
+		
+		@Override
+		public void resourceEvent(Set<Resource> resources, int event) {
+			synchronized (this) {
+				// We had event changed messages in the past, which should not be fired.
+				// try to make sure they are not fired when all resources are reloaded
+				hasChangeEvents = (event == VirSatTransactionalEditingDomain.EVENT_CHANGED) ? true : hasChangeEvents;
+				hasReloadEvents = (event == VirSatTransactionalEditingDomain.EVENT_RELOAD) ? true : hasReloadEvents;
+				
+				assertEquals("matching expected thread", expectedThread, Thread.currentThread());
+				
+				super.resourceEvent(resources, event);
+			}
+		}
+	};
+	
+	@Test
+	public void testReloadAll() {
+		ResourceEventTypeCounter eventCheck = new ResourceEventTypeCounter();
+		
+		synchronized (eventCheck) {
+			Resource rmResource = rs.getRoleManagementResource();
+			RoleManagement rm = rs.getRoleManagement();
+			editingDomain.saveResource(rmResource);
+			
+			Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+			Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+			editingDomain.getCommandStack().execute(cmd);
+			editingDomain.saveAll();
+		
+			VirSatTransactionalEditingDomain.addResourceEventListener(eventCheck);
+			
+			editingDomain.reloadAll();
+		
+			assertFalse("There are no change events", eventCheck.hasChangeEvents);
+			assertTrue("There are relaod events", eventCheck.hasReloadEvents);
+			
+			assertTrue("All resourceSet Resources triggered for relaod", eventCheck.triggeredResources.containsAll(rs.getResources()));
+			
+			VirSatResourceSet rsNew = editingDomain.getResourceSet();
+			RoleManagement rmNew = rsNew.getRoleManagement();
+			Resource rmResourceNew = rsNew.getRoleManagementResource();
+			
+			assertEquals("The resourceSet should not have changed", rs, rsNew);
+			assertNotSame("Loaded a new RoleManagement", rm, rmNew);
+			assertEquals("The Resource stays the same", rmResource, rmResourceNew);
+			
+			VirSatTransactionalEditingDomain.removeResourceEventListener(eventCheck);
+		}
 	}
 }

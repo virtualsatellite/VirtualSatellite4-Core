@@ -7,6 +7,7 @@
       <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
       <text>
          Virtual Satellite 4 - DVLM Core
+
 Version 4.10.0
 
 Copyright 2019 - Simulation and Software Technology (DLR)
@@ -121,6 +122,8 @@ Germany
       <feature id="org.eclipse.graphiti.feature" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.ext.core.feature" installMode="root"/>
+      <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
+      <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
    </features>
 
    <configurations>

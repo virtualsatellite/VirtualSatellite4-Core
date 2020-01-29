@@ -28,50 +28,37 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Test case for testing the AssignDisciplineCommand.
- * @author muel_s8
- *
  */
 public class AssignDisciplineCommandTest extends AProjectTestCase {
 
-	private VirSatResourceSet rs;
-	private VirSatTransactionalEditingDomain rsEd;
-	private VirSatProjectCommons projectCommons;
-	
 	private StructuralElementInstance sei;
 	private Discipline discipline;
 	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
+		addEditingDomainAndRepository();
 		
 		discipline = RolesFactory.eINSTANCE.createDiscipline();
 		sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 
-		rs = VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-		
-		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = rs.initializeModelsAndResourceSet(null, editingDomain);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		RoleManagement rm = rs.getRoleManagement();
 		
-		cmd = AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-		rsEd.getCommandStack().execute(cmd);
+		cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		cmd = new CreateSeiResourceAndFileCommand(rs, sei);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(cmd);
 		
-		rsEd.saveAll();
+		editingDomain.saveAll();
 	}
 
 	@Override
@@ -102,14 +89,13 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		assertTrue("Command can be executed", cmd.canExecute());
 		
 		UserRegistry.getInstance().setSuperUser(true);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("Assigned Discipline is correct", discipline, sei.getAssignedDiscipline());
-		assertFalse("Since we always save the resource in the AssignDisciplineCommand, it should not be dirty", rsEd.isDirty(seiResource));
+		assertFalse("Since we always save the resource in the AssignDisciplineCommand, it should not be dirty", editingDomain.isDirty(seiResource));
 		UserRegistry.getInstance().setSuperUser(false);
 		
 		cmd = new AssignDisciplineCommand(rs, sei, null);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("Assigned Discipline has not changed since we dont have any rights", discipline, sei.getAssignedDiscipline());
 	}
-
 }
