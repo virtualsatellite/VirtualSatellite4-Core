@@ -140,7 +140,7 @@ done
 
 case $MAVEN_PROFILE in
     dependencies )      callMavenDependencies
-                        exit 0
+                        exit
                         ;;
     development )       ;;
     integration )       ;;
