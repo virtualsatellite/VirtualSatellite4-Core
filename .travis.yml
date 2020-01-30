@@ -76,12 +76,14 @@ jobs:
     - stage: build-test
       name: Build and Test - Surefire - Test Sourceforge Upload
       script:
-      - mkdir ${TRAVIS_HOME}/swtbot
-      - echo "test" > ${TRAVIS_HOME}/swtbot/test.txt
-      - echo "test" > ${TRAVIS_HOME}/swtbot/test2.txt
-      - echo "test" > ${TRAVIS_HOME}/swtbot/test3.txt
-      - echo "test" > ${TRAVIS_HOME}/swtbot/test4.png
-      - echo "test" > ${TRAVIS_HOME}/swtbot/test5.png
+      - mkdir swtbot
+      - echo "test" > swtbot/test.txt
+      - echo "test" > swtbot/test2.txt
+      - echo "test" > swtbot/test3.txt
+      - echo "test" > swtbot/test4.png
+      - echo "test" > swtbot/test5.png
+      - pwd
+      - tree
       - bash/maven_build.sh -j fail -p dependencies
 
  
