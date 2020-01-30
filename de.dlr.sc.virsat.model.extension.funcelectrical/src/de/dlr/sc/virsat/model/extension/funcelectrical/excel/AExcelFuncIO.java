@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.funcelectrical;
+package de.dlr.sc.virsat.model.extension.funcelectrical.excel;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
 
