@@ -82,6 +82,6 @@ jobs:
       - echo "test" > ${TRAVIS_HOME}/swtbot/test3.txt
       - echo "test" > ${TRAVIS_HOME}/swtbot/test4.png
       - echo "test" > ${TRAVIS_HOME}/swtbot/test5.png
-      - exit 1
+      - bash/maven_build.sh -j fail -p dependencies
 
  
