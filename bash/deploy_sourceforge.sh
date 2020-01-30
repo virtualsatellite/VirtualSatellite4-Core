@@ -35,7 +35,7 @@ printUsage() {
 uploadSwtBot() {
 	cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
 	REPO_SLUG_CLEAN=$(sed -e 's/\//\_/g' <<< ${REPO_SLUG})
-	echo "Test Artifacts: Collecting all reports in: ${$TRAVIS_BUILD_DIR}/swtbot"
+	echo "Test Artifacts: Collecting all reports in: ${TRAVIS_BUILD_DIR}/swtbot"
 	TEST_ARTIFACTS_ZIP=SwtBot_${REPO_SLUG}_${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_${TRAVIS_JOB_NUMBER}
 	echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
 	TEST_ARTIFACTS_ZIP=$(sed -e 's/\//\_/g' <<< ${TEST_ARTEFACTS_ZIP})
