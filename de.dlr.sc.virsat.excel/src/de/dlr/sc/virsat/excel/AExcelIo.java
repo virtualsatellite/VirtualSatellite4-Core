@@ -32,14 +32,5 @@ public abstract class AExcelIo {
 	public static final int INTERFACEEND_COLUMN_INTERFACEEND_NAME = 2;
 	public static final int INTERFACEEND_COLUMN_INTERFACEEND_TYPE = 3;
 
-	public static final int STATE_COLUMN_STATE_NAME = 2;
-
-	public static final int TRANSITION_COLUMN_TRANSITION_NAME = 2;
-	public static final int TRANSITION_COLUMN_TRANSITION_FROM = 3;
-	public static final int TRANSITION_COLUMN_TRANSITION_TO = 4;
-
 	public static final String TEMPLATE_SHEETNAME_HEADER = "Header";
-
-	public static final String TEMPLATE_SHEETNAME_STATES = "States";
-	public static final String TEMPLATE_SHEETNAME_TRANSITIONS = "Transitions";
 }

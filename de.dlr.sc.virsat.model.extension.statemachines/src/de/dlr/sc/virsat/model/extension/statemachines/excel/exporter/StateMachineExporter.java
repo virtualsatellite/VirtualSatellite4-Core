@@ -23,13 +23,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 
-import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
 import de.dlr.sc.virsat.excel.exporter.IExport;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.statemachines.Activator;
+import de.dlr.sc.virsat.model.extension.statemachines.excel.AExcelStatIO;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
@@ -100,19 +100,19 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 	* Creates the data sheet for States and populates it with the data
 	*/
 	private void createDataSheetStates() {
-		XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_STATES);
+		XSSFSheet sheet = wb.getSheet(AExcelStatIO.TEMPLATE_SHEETNAME_STATES);
 		if (sheet == null) {
-			sheet = wb.createSheet(AExcelIo.TEMPLATE_SHEETNAME_STATES);
+			sheet = wb.createSheet(AExcelStatIO.TEMPLATE_SHEETNAME_STATES);
 		}
 		StateMachine stateMaschine = new StateMachine(exportCa);
 		IBeanList<State> states = stateMaschine.getStates();
-		nullChecker(states.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
+		nullChecker(states.size() + AExcelStatIO.COMMON_ROW_START_TABLE, sheet, AExcelStatIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
 		// for each interface end, fill out a row
-		int i = AExcelIo.COMMON_ROW_START_TABLE;
+		int i = AExcelStatIO.COMMON_ROW_START_TABLE;
 		for (State state : states) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(state.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(getCreationHelper().createRichTextString(state.getName()));
+			row.getCell(AExcelStatIO.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(state.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelStatIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(getCreationHelper().createRichTextString(state.getName()));
 			i++;
 		}
 	}
@@ -121,25 +121,25 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 	* Creates the data sheet for Transitions and populates it with the data
 	*/
 	private void createDataSheetTransitions() {
-		XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_TRANSITIONS);
+		XSSFSheet sheet = wb.getSheet(AExcelStatIO.TEMPLATE_SHEETNAME_TRANSITIONS);
 		if (sheet == null) {
-			sheet = wb.createSheet(AExcelIo.TEMPLATE_SHEETNAME_TRANSITIONS);
+			sheet = wb.createSheet(AExcelStatIO.TEMPLATE_SHEETNAME_TRANSITIONS);
 		}
 
 		StateMachine stateMaschine = new StateMachine(exportCa);
 		IBeanList<Transition> transitions = stateMaschine.getTransitions();
-		nullChecker(transitions.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACE_COLUMN_INTERFACE_TO + 1);
-		int i = AExcelIo.COMMON_ROW_START_TABLE;
+		nullChecker(transitions.size() + AExcelStatIO.COMMON_ROW_START_TABLE, sheet, AExcelStatIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
+		int i = AExcelStatIO.COMMON_ROW_START_TABLE;
 
 		for (Transition transition : transitions) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(transition.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_NAME).setCellValue(getCreationHelper().createRichTextString(transition.getName()));
+			row.getCell(AExcelStatIO.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(transition.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_NAME).setCellValue(getCreationHelper().createRichTextString(transition.getName()));
 			if (transition.getStateFrom() != null) {
-				row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_FROM).setCellValue(getCreationHelper().createRichTextString(transition.getStateFrom().getName()));
+				row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_FROM).setCellValue(getCreationHelper().createRichTextString(transition.getStateFrom().getName()));
 			}
 			if (transition.getStateTo() != null) {
-				row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_TO).setCellValue(getCreationHelper().createRichTextString(transition.getStateTo().getName()));
+				row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_TO).setCellValue(getCreationHelper().createRichTextString(transition.getStateTo().getName()));
 			}
 			i++;
 		}
