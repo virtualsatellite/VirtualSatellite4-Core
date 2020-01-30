@@ -76,6 +76,7 @@ jobs:
     - stage: build-test
       name: Build and Test - Surefire - Test Sourceforge Upload
       script:
+      - mkdir ${TRAVIS_HOME}/swtbot
       - echo "test" > ${TRAVIS_HOME}/swtbot/test.txt
       - echo "test" > ${TRAVIS_HOME}/swtbot/test2.txt
       - echo "test" > ${TRAVIS_HOME}/swtbot/test3.txt
