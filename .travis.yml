@@ -55,19 +55,6 @@ env:
   # ---------------------------------------------
   - secure: "POYGzbPXLBDe2BsehzJ7QUZ4toQ1Pbi2VdH8ZTSN9zqipLbBVnsMghs7Zf80C+AK1nKbY2DPWHwaWR6LE3MRhA9X3xeyYgJ/53J4JeMw1ORYpavVXJC9t8d+fMVCJhALzjQYz7PmE4ba/MHgr/UnoeNL2v1M/9mUpMbfD490jPUdOQjqpy0/FvM5HhXcQEwexUPsNsR+DffVSSmJ62aXHPM2pgKYaH0pnY5OYwm4t7v7lp8GgQf+b163+rD2LyLIEeLiQ1msXAqaRSBznuu2wqi7N3ZC176i864fRHf8M4RYbWqA0BneCd0keAQJLvpcPBoyE1T0XKYvjz5JdjbuNDX1p4waLo7CnU+UJzuCQ5hnkrDm7YJhwQY007T2kudUTPl0dP0TeoJsDtz30vvBC82equJA5+0xPb1BvvDmdKFkfF7gOGh05qjhAo3TJ8D5CXXFmdPr9VApYv0zqzh0hR5p+5FHkDmKhzJ7xg4jpo04IXa8ztBCjoB4dyLnUDhyTABtA5/uoRuMA4I7nc25mKL6Z9fz8O8HadAInlJFXyodQOrvD68k2Bf9WJWreZMKcLJiOWQC0bbPNa6ABrRpiuzdUdWEpzNjJJYktmPl+JwHAJ4Fa3CHaNFILaLLC9Z3gtrdNT2+PkME8u0sfVWZ1nU4nNO9EGUItcBEFhkCnZE="
 
-before_script:
-  # -----------------------------------
-  # Startup the metacity window manager
-  # -----------------------------------
-  - metacity --sm-disable --replace 2> metacity.err &
-  # -------------------------------------------------------------------
-  # create adirectory for Overtarget and try to receive language plugin
-  # -------------------------------------------------------------------
-  - bash/maven_build.sh -j dependencies -p dependencies
-  # --------------------------------------------------------------
-  # Setup environment variables for correct linking of vtk and zmq
-  # --------------------------------------------------------------
-  - source bash/setup_environment.sh
   
 after_failure:
   # ----------------------------------------
@@ -89,7 +76,7 @@ jobs:
     - stage: build-test
       name: Build and Test - Surefire - Test Sourceforge Upload
       script:
-      - echo "test" > ${TRAVIS_HOME}/swtbot/test.txt   
+      - echo "test" > ${TRAVIS_HOME}/swtbot/test.txt
       - echo "test" > ${TRAVIS_HOME}/swtbot/test2.txt
       - echo "test" > ${TRAVIS_HOME}/swtbot/test3.txt
       - echo "test" > ${TRAVIS_HOME}/swtbot/test4.png
