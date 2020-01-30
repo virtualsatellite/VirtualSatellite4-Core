@@ -75,6 +75,9 @@ callMavenSurefire() {
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn clean install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
+	# Always try too upload coverage reports as soon as possible
+	echo "CodeCov"
+	bash <(curl -s https://codecov.io/bash)
 	checkforMavenProblems
 	echo "Check for failed test cases:"
 	(grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
@@ -82,8 +85,6 @@ callMavenSurefire() {
 	ant jacocoPrepareDependencies
 	ant jacocoReport 2>&1 | tee ant.log
 	(grep -n "\(Rule violated\|BUILD FAILED\)" ant.log || exit 0 && exit 1;)
-	echo "CodeCov"
-	bash <(curl -s https://codecov.io/bash)
 }
 
 callMavenSpotbugs() {
