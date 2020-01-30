@@ -41,7 +41,7 @@ uploadSwtBot() {
 	echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
 	TEST_ARTEFACTS_ZIP=$(sed -e 's/\./\_/g' <<< ${TEST_ARTEFACTS_ZIP}).zip
 	echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
-	zip ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} ${TRAVIS_BUILD_DIR}/swtbot/*
+	zip ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} swtbot/*
 	echo "Test Artifacts: Starting upload to SourceForge..."
 	ls -lh ${TRAVIS_BUILD_DIR}/swtbot/
 	rsync -e ssh -avP ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
