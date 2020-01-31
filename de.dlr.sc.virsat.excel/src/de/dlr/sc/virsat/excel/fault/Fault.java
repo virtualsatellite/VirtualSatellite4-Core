@@ -38,14 +38,6 @@ public class Fault {
 	}
 
 	/**
-	* setter for fault type
-	* @param faultType fault type to be set
-	*/
-	public void setFaultType(FaultType faultType) {
-		this.faultType = faultType;
-	}
-
-	/**
 	* getter for line number
 	* @return lineNumber returns line Number
 	*/
@@ -54,27 +46,11 @@ public class Fault {
 	}
 
 	/**
-	* setter for line number
-	* @param lineNumber line number to be set
-	*/
-	public void setLineNumber(int lineNumber) {
-		this.lineNumber = lineNumber;
-	}
-
-	/**
 	* getter for sheet number
 	* @return sheetNumber returns sheet number
 	*/
 	public int getSheetNumber() {
 		return sheetNumber;
-	}
-
-	/**
-	* setter for sheet number
-	* @param sheetNumber sheet number to be set
-	*/
-	public void setSheetNumber(int sheetNumber) {
-		this.sheetNumber = sheetNumber;
 	}
 
 	@Override
