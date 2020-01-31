@@ -82,9 +82,9 @@ public class ExcelExporterTest {
 		InputStream iStream = Activator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
 		StateMachineExporter sme = new StateMachineExporter();
-		sme.setWb(wb);
+		sme.helper.setWb(wb);
 		sme.exportData(stateMaschine.getTypeInstance());
-		wb = sme.getWb();
+		wb = sme.helper.getWb();
 		Sheet sheet = wb.getSheet(AExcelStatIO.TEMPLATE_SHEETNAME_STATES);
 
 		for (int i = 0; i < stateMaschine.getStates().size(); ++i) {
