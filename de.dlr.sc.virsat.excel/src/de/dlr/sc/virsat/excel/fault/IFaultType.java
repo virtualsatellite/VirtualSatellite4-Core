@@ -10,10 +10,8 @@
 package de.dlr.sc.virsat.excel.fault;
 
 /**
-* Enumerator for the possible fault types which can happen during the import
-*/
-public enum FaultType implements IFaultType {
-	 STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH,
-	 STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH,
-	 DELETE_COLUMN_CAN_BE_EMPTY_OR_1;
+ * This interface is for all possible faults which can happen during import
+ */
+public interface IFaultType {
+	
 }

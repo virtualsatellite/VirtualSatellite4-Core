@@ -13,7 +13,7 @@ package de.dlr.sc.virsat.excel.fault;
 * Class for the possible faults which can happen during the import
 */
 public class Fault {
-	private FaultType faultType;
+	private IFaultType faultType;
 	private int lineNumber;
 	private int sheetNumber;
 
@@ -23,7 +23,7 @@ public class Fault {
 	* @param sheetNumber the number of the sheet which fault has occurred
 	* @param lineNumber the number of the line which fault has occurred
 	*/
-	public Fault(FaultType faultType, int sheetNumber, int lineNumber) {
+	public Fault(IFaultType faultType, int sheetNumber, int lineNumber) {
 		this.faultType = faultType;
 		this.lineNumber = lineNumber;
 		this.sheetNumber = sheetNumber;
@@ -33,7 +33,7 @@ public class Fault {
 	* getter for fault type
 	* @return faultType returns fault type
 	*/
-	public FaultType getFaultType() {
+	public IFaultType getFaultType() {
 		return faultType;
 	}
 

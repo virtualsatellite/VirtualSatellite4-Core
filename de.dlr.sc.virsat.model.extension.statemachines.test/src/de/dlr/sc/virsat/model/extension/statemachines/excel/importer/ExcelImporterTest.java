@@ -139,10 +139,10 @@ public class ExcelImporterTest {
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE));
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + 1));
 
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_NAME - 1));
-		expectedFault.add(new Fault(FaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_UUID - 1));
-		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_NAME - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_UUID - 1));
+		expectedFault.add(new Fault(StatFaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
 
 		ImportValidator iValidator = new ImportValidator(stateMaschine.getTypeInstance(), wb);
 

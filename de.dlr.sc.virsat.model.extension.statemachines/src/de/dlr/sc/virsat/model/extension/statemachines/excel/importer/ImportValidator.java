@@ -90,12 +90,12 @@ public class ImportValidator {
 			if ("".equals(tempUUID)) {
 
 				if (tempDelete.equals(AExcelStatIO.COMMON_DELETEMARK_VALUE)) {
-					faultList.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_TRANSITION, sheetIndex, i));
+					faultList.add(new Fault(StatFaultType.CANT_DELETE_NON_EXISTING_TRANSITION, sheetIndex, i));
 				}
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, transitions);
 				if (check < 0) {
-					faultList.add(new Fault(FaultType.TRANSITION_UUID_NOT_FOUND, sheetIndex, i));
+					faultList.add(new Fault(StatFaultType.TRANSITION_UUID_NOT_FOUND, sheetIndex, i));
 				}
 			}
 			// control the delete column, value of this column can be 1 or nothing	
@@ -106,13 +106,13 @@ public class ImportValidator {
 			String tempTransitionFrom = Objects.toString(row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_FROM), "");
 			int check = ExcelImportHelper.containsABeanCategoryAssignmentName(tempTransitionFrom, states);
 			if (check < 0) {
-				faultList.add(new Fault(FaultType.FROM_STATE_NOT_FOUND, sheetIndex, i));
+				faultList.add(new Fault(StatFaultType.FROM_STATE_NOT_FOUND, sheetIndex, i));
 			}
 			// Control if the ToState does exist or not
 			String tempTransitionTo = Objects.toString(row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_TO), "");
 			check = ExcelImportHelper.containsABeanCategoryAssignmentName(tempTransitionTo, states);
 			if (check < 0) {
-				faultList.add(new Fault(FaultType.TO_STATE_NOT_FOUND, sheetIndex, i));
+				faultList.add(new Fault(StatFaultType.TO_STATE_NOT_FOUND, sheetIndex, i));
 			}
 		}
 	}
@@ -140,12 +140,12 @@ public class ImportValidator {
 			String tempDelete = Objects.toString(row.getCell(AExcelStatIO.COMMON_COLUMN_DELETE), "");
 			if ("".equals(tempUUID)) {
 				if (tempDelete.equals(AExcelStatIO.COMMON_DELETEMARK_VALUE)) {
-					faultList.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_STATE, sheetIndex, i));
+					faultList.add(new Fault(StatFaultType.CANT_DELETE_NON_EXISTING_STATE, sheetIndex, i));
 				}
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, states);
 				if (check < 0) {
-					faultList.add(new Fault(FaultType.STATE_UUID_NOT_FOUND, sheetIndex, i));
+					faultList.add(new Fault(StatFaultType.STATE_UUID_NOT_FOUND, sheetIndex, i));
 				}
 			}
 			// control the delete column, value of this column can be 1 or nothing
@@ -155,7 +155,7 @@ public class ImportValidator {
 			//State_name cannot be null
 			String tempStateName = Objects.toString(row.getCell(AExcelStatIO.STATE_COLUMN_STATE_NAME), "");
 			if ("".equals(tempStateName)) {
-				faultList.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, sheetIndex, i));
+				faultList.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, sheetIndex, i));
 			}
 		}
 	}

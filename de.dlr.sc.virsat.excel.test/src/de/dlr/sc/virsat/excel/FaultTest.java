@@ -20,7 +20,6 @@ import de.dlr.sc.virsat.excel.fault.FaultType;
 /**
  * This class tests the Fault class.
  */
-
 public class FaultTest {
 
 	@Test
