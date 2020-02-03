@@ -69,7 +69,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  */
 public class VirSatResourceSetTest extends AProjectTestCase {
 
-	private VirSatProjectCommons projectCommons;
 	private StructuralElementInstance sei1;
 	private StructuralElementInstance sei2;
 	private StructuralElementInstance sei3;
@@ -77,10 +76,6 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		UserRegistry.getInstance().setSuperUser(true);
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
 		
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsRootStructuralElement(true);

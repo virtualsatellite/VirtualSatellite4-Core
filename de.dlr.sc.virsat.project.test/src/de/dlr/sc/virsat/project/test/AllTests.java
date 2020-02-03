@@ -20,6 +20,7 @@ import de.dlr.sc.virsat.project.editingDomain.commands.VirSatCopyToClipboardComm
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatCutToClipboardCommandTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoardTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatPasteFromClipboardCommandTest;
+import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelperTest;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelperTest;
 import de.dlr.sc.virsat.project.resources.VirSatDanglingReferencesTest;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResourceTest;
@@ -29,6 +30,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSetUtilTest2;
 import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommandTest;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommandTest;
 import de.dlr.sc.virsat.project.resources.dmf.DmfResourceSaveCommandTest;
+import de.dlr.sc.virsat.project.structure.VirSatProjectBuilderTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommonsTest;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNatureTest;
@@ -45,6 +47,7 @@ import junit.framework.JUnit4TestAdapter;
 				VirSatTransactionalEditingDomainTest.class,
 				VirSatProjectResourceTest.class,
 				VirSatProjectNatureTest.class,
+				VirSatProjectBuilderTest.class,
 				VirSatResourceSetUtilTest2.class,
 				VirSatDanglingReferencesTest.class, //Disabled for the current Release
 				VirSatResourceSetUtilTest.class,
@@ -54,6 +57,7 @@ import junit.framework.JUnit4TestAdapter;
 				VirSatCopyToClipboardCommandTest.class,
 				VirSatCutToClipboardCommandTest.class,
 				VirSatPasteFromClipboardCommandTest.class,
+				VirSatDragAndDropInheritanceCommandHelperTest.class,
 				CreateAddSeiWithFileStructureCommandTest.class,
 				AssignDisciplineCommandTest.class,
 				VirSatProblemMarkerHelperTest.class,
