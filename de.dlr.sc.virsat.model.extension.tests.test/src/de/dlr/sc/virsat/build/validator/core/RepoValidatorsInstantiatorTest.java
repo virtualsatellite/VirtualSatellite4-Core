@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.build.validator.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class RepoValidatorsInstantiatorTest extends ATestConceptTestCase {
 		List<IStructuralElementInstanceValidator> seiValidators = validatorsInstantiator.getSeiValidators();
 		List<IRepositoryValidator> repoValidators = validatorsInstantiator.getRepoValidators();
 
-		assertTrue("There are core SEI validators", !seiValidators.isEmpty());
+		assertFalse("There are core SEI validators", seiValidators.isEmpty());
 		assertTrue("Concept-specific validator not included",
 				seiValidators.stream().noneMatch(v -> v instanceof StructuralElementInstanceValidator));
 		assertTrue("There is a core repo validator",

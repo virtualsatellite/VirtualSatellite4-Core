@@ -25,8 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -37,7 +35,6 @@ import org.eclipse.emf.edit.command.CutToClipboardCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,43 +57,17 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * This class tests the Transactional Editing Domain for Virtual Satellite
- * 
- * @author fisc_ph
- *
  */
 public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
-
-	private VirSatResourceSet rs;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
-
-		
 		addEditingDomainAndRepository();
-
-		rs = editingDomain.getResourceSet(); 
-
-		UserRegistry.getInstance().setSuperUser(true);
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-	}
-
-	@After
-	public void tearDown() throws CoreException {
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
-		super.tearDown();
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
-		UserRegistry.getInstance().setSuperUser(false);
 	}
 
 	/**
 	 * Test class that can be added as a resource listener to the editing domain
-	 * @author fisc_ph
-	 *
 	 */
 	private class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
