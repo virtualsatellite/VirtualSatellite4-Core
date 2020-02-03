@@ -209,7 +209,7 @@ public class ImportValidator {
 	/**
 	 * Validates the Interface Type Collection
 	 */
-	public void validateIntefaceTypes() {
+	private void validateIntefaceTypes() {
 		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
 
 		if (sheet == null) {
@@ -253,7 +253,7 @@ public class ImportValidator {
 	/**
 	 * Validates the Header Pages for all
 	 */
-	public void validateHeaders() {
+	private void validateHeaders() {
 
 		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
 		final int sheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
