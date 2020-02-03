@@ -39,8 +39,6 @@ public class VirSatEditingDomainClipBoard {
 	/**
 	 * Enums describing the current State of the CLipboard
 	 * The ClipBoard is used for Cut Copy and Paste Action
-	 * @author fisc_ph
-	 *
 	 */
 	public enum ClipboardState {
 		CUT, COPY, EMPTY
@@ -119,5 +117,9 @@ public class VirSatEditingDomainClipBoard {
 	public void cutClipboard(AdapterFactoryEditingDomain ed, Collection<?> collection) {
 		ed.setClipboard((Collection<Object>) collection);
 		setClipboardState(ed, ClipboardState.CUT);
+	}
+
+	public void clear() {
+		editingDomainClipboardStates.clear();
 	}
 }

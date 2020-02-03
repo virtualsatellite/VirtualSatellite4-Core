@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.model.extension.ps.dnd.ProductStructureDragAndDropInheritanceCommandHelperTest;
 import de.dlr.sc.virsat.model.extension.ps.util.test.ProductStructureHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -27,7 +28,8 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({		
-		ProductStructureHelperTest.class
+		ProductStructureHelperTest.class,
+		ProductStructureDragAndDropInheritanceCommandHelperTest.class
 				})
 
 /**

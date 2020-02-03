@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.concept.generator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Set;
 
@@ -87,7 +88,7 @@ public class ConceptOutputConfigurationProviderTest {
 					assertFalse("SetDerivedProperty is set correctly", outputConf.isSetDerivedProperty());
 					break;
 				default:
-					assertTrue("All names are correct", false);
+					fail("Unexpected configuration name");
 					break;
 			}
 		}
