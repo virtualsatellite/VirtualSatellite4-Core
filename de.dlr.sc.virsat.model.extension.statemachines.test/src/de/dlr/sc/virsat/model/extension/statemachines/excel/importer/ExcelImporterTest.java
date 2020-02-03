@@ -113,7 +113,7 @@ public class ExcelImporterTest {
 	}
 
 	@Test
-	public void test() throws IOException {
+	public void importExcelTest() throws IOException {
 		InputStream iStream = Activator.getResourceContentAsString("/resources/StateMachineTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
 

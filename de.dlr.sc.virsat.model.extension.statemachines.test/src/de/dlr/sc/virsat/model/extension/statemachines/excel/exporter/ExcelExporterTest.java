@@ -78,7 +78,7 @@ public class ExcelExporterTest {
 	}
 
 	@Test
-	public void test() throws IOException {		
+	public void exportDateTest() throws IOException {		
 		InputStream iStream = Activator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
 		StateMachineExporter sme = new StateMachineExporter();
