@@ -33,6 +33,7 @@ printUsage() {
 }
 
 uploadSwtBot() {
+	cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
 	rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
 }
 

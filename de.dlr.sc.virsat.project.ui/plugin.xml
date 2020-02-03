@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="de.dlr.sc.virsat.project.ui.navigator" name="VirSat Project Navigator" schema="schema/de.dlr.sc.virsat.project.ui.navigator.exsd"/>
    <extension
          point="org.eclipse.ui.newWizards">
       <category
@@ -140,7 +141,7 @@
             </or>
          </triggerPoints>
          <dropAssistant
-               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMObjectDropAdapterAssistant"
+               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMDelegateDropAdapterAssistant"
                id="de.dlr.sc.virsat.project.ui.navigator.dropAssistant">
             <possibleDropTargets></possibleDropTargets>
          </dropAssistant>
@@ -187,7 +188,7 @@
             </or>
          </triggerPoints>
          <dropAssistant
-               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMObjectDropAdapterAssistant"
+               class="de.dlr.sc.virsat.project.ui.navigator.dropAssist.DVLMDelegateDropAdapterAssistant"
                id="de.dlr.sc.virsat.project.ui.navigator.dropAssistant">
             <possibleDropTargets></possibleDropTargets>
          </dropAssistant>

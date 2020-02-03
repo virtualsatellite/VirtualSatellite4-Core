@@ -146,6 +146,15 @@ public interface TestsFactory extends EFactory {
 	TestMassParameters createTestMassParameters();
 
 	/**
+	 * Returns a new object of class '<em>Test Cross Linked Parameters With Calculation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Test Cross Linked Parameters With Calculation</em>'.
+	 * @generated
+	 */
+	TestCrossLinkedParametersWithCalculation createTestCrossLinkedParametersWithCalculation();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

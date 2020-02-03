@@ -40,6 +40,9 @@ public class VirSatProjectSaveablesProvider extends SaveablesProvider {
 	private VirSatTransactionalEditingDomain.IResourceEventListener dirtyChangeListener = new VirSatTransactionalEditingDomain.IResourceEventListener() {
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
+			if (resources.isEmpty()) {
+				return;
+			}
 			Resource firstResource = resources.iterator().next();
 			ResourceSet resourceSet = firstResource.getResourceSet();
 			if (resourceSet instanceof VirSatResourceSet) {

@@ -22,12 +22,14 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ui.provider.ActiveConceptsContentProvider;
 import de.dlr.sc.virsat.model.ui.provider.ActiveConceptsLabelProvider;
 
 /**
- * Creates a selection dialog for active concept selection
- *
+ * Creates a selection dialog for active concept selection.
+ * It also deals as a factory for creating ActiveConfigurationElements
+ * for the selected Concepts.
  */
 public class ActiveConceptSelectionDialogFactory {
 	
@@ -58,15 +60,26 @@ public class ActiveConceptSelectionDialogFactory {
 						}
 					}
 
+					/**
+					 * recursive method to check all required imports and imports of imports of a
+					 * given ActiveConceptConfigurationElement
+					 * @param checkedElement the ActiveConfigurationElement with a concept for which to tick the downstream imports
+					 */
 					private void checkRequired(ActiveConceptConfigurationElement checkedElement) {
+						// actually load the concept
 						Concept concept = checkedElement.loadConceptFromPlugin();
+						
+						// Loop over all imports and identify the actual concept
 						for (ConceptImport conceptImport : concept.getImports()) {
-							String importedConceptName = conceptImport.getImportedNamespace().replace(".*", "");
+							String importedConceptName = ActiveConceptHelper.getConceptFromImport(conceptImport);
+
+							// Now loop over all possible objects in the list of possible concepts in the dialog
 							Object[] objects = contentProvider.getElements(getViewer().getInput());
-							
 							for (Object object : objects) {
 								ActiveConceptConfigurationElement acce = (ActiveConceptConfigurationElement) object;
 								
+								// If the object in the dialogs list matches the name of the imported namespace,
+								// than tick it and check if that one requires further imports.
 								if (importedConceptName.equals(acce.getId())) {
 									getViewer().setChecked(acce, true);
 									checkRequired(acce);

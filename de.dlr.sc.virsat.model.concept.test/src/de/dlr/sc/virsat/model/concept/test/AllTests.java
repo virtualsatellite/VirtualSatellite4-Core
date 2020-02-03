@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnipp
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateAllTestsTest;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateCategoryTestsTest;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTestsTest;
+import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTestsTest;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTestsTest;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidatorTest;
 import de.dlr.sc.virsat.model.concept.project.ConceptProjectGenerationRunnableTest;
@@ -86,6 +87,7 @@ import junit.framework.JUnit4TestAdapter;
 				ConceptFragmentTestManifestGeneratorTest.class,
 				GenerateAllTestsTest.class,
 				GenerateMigratorTestsTest.class,
+				GenerateValidatorTestsTest.class,
 				ResourceAccessBuilderTest.class
 				})
 

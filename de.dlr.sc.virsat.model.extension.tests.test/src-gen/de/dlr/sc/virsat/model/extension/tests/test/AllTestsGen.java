@@ -17,24 +17,26 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import junit.framework.JUnit4TestAdapter;
-
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestParameterTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestMassParametersTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOtherTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryExtendsTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanATest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArrayTest;
+import de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v0Test;
+import de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllPropertyTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArrayTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArrayTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanATest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanBTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanConcreteTest;
-import de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v0Test;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArrayTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryExtendsTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArrayTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArrayTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCrossLinkedParametersWithCalculationTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestMassParametersTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestParameterTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOtherTest;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementTest;
+import de.dlr.sc.virsat.model.extension.tests.validator.StructuralElementInstanceValidatorTest;
+import junit.framework.JUnit4TestAdapter;
 
 /**
  * 
@@ -55,9 +57,12 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
 	TestCategoryExtendsTest.class,
 	TestParameterTest.class,
 	TestMassParametersTest.class,
+	TestCrossLinkedParametersWithCalculationTest.class,
 	TestStructuralElementTest.class,
 	TestStructuralElementOtherTest.class,
 	Migrator1v0Test.class,
+	Migrator1v1Test.class,
+	StructuralElementInstanceValidatorTest.class
 				})
 
 /**

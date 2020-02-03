@@ -44,6 +44,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -52,8 +53,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * 
- * @author fisc_ph
- *
  */
 public class ActiveConceptHelperTest {
 
@@ -70,13 +69,15 @@ public class ActiveConceptHelperTest {
 	private ActiveConceptHelper acHelper;
 	
 	private static final String TEST_CONCEPT_ID = "de.dlr.sc.virsat.model.concept.test"; 
-	private static final String TEST_INVALID_ID = "de.dlr.sc.virsat.model.concept.test.invalid"; 
-	private static final String TEST_CATEGORY_ID_ONE = "de.dlr.sc.virsat.model.concept.catOne"; 
-	private static final String TEST_CATEGORY_ID_TWO = "de.dlr.sc.virsat.model.concept.catTWo"; 
-	private static final String TEST_CATEGORY_ID_THREE = "de.dlr.sc.virsat.model.concept.catThree"; 
+	private static final String TEST_DISPLAY_NAME = "Concept"; 
+	private static final String TEST_VERSION = "1.0"; 
+	private static final String TEST_INVALID_ID = "invalid"; 
+	private static final String TEST_CATEGORY_ID_ONE = "catOne"; 
+	private static final String TEST_CATEGORY_ID_TWO = "catTWo"; 
+	private static final String TEST_CATEGORY_ID_THREE = "catThree"; 
 
-	private static final String TEST_SE_ID_ONE = "de.dlr.sc.virsat.model.concept.seOne"; 
-	private static final String TEST_SE_ID_TWO = "de.dlr.sc.virsat.model.concept.seTWo"; 
+	private static final String TEST_SE_ID_ONE = "seOne"; 
+	private static final String TEST_SE_ID_TWO = "seTWo"; 
 
 	@Before
 	public void setup() {
@@ -84,6 +85,8 @@ public class ActiveConceptHelperTest {
 		
 		testConcept = ConceptsFactory.eINSTANCE.createConcept();
 		testConcept.setName(TEST_CONCEPT_ID);
+		testConcept.setDisplayName(TEST_DISPLAY_NAME);
+		testConcept.setVersion(TEST_VERSION);
 		
 		testCategoryOne = CategoriesFactory.eINSTANCE.createCategory();
 		testCategoryTwo = CategoriesFactory.eINSTANCE.createCategory();
@@ -141,6 +144,32 @@ public class ActiveConceptHelperTest {
 
 	@Test
 	public void testGetCategoryByConceptAndCategoryId() {
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CATEGORY_ID_ONE);
+		assertEquals("Found the correct Category", testCategoryOne, category);
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryFqn() {
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + "." + TEST_CATEGORY_ID_ONE);
+		assertEquals("Found the correct Category", testCategoryOne, category);
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryIncorrectFqn() {
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + ".incorrect." + TEST_CATEGORY_ID_ONE);
+		assertNull("Did not find category for invalid fqn", category); 
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryNullNameAndFqn() {
+		testConcept.setName(null);
+		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + TEST_CATEGORY_ID_ONE);
+		assertNull("Did not find category by fqn because category name is null", category); 
+	}
+
+	@Test
+	public void testGetCategoryByConceptAndCategoryNullNameAndCategoryName() {
+		testConcept.setName(null);
 		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CATEGORY_ID_ONE);
 		assertEquals("Found the correct Category", testCategoryOne, category);
 	}
@@ -213,6 +242,23 @@ public class ActiveConceptHelperTest {
 		
 		AProperty returnedPropertyOne = ActiveConceptHelper.getProperty(testCategoryOne, ID_ONE);
 		assertEquals("the id one one existed in the category", propertyOne, returnedPropertyOne);
+	}
+	
+	@Test
+	public void testGetConceptNameWithVersion() {
+		Concept concept = testConcept;
+		String version = "[" + TEST_VERSION + "]";
+
+		String expectedConceptNameWithVersion = TEST_DISPLAY_NAME + " - " + TEST_CONCEPT_ID + " " + version;
+		String conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
+
+		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
+		
+		concept.setDisplayName(null);
+		expectedConceptNameWithVersion = TEST_CONCEPT_ID + " " + version;
+		conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
+		
+		assertEquals("The concept without a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
 	}
 	
 	@Test
@@ -458,5 +504,38 @@ public class ActiveConceptHelperTest {
 		assertTrue("Can be assigned", ActiveConceptHelper.isSafeAssignableFrom(PropertydefinitionsPackage.Literals.APROPERTY, floatProperty));
 		assertTrue("Can be assigned", ActiveConceptHelper.isSafeAssignableFrom(PropertydefinitionsPackage.Literals.FLOAT_PROPERTY, floatProperty));
 		assertFalse("Can not be assigned", ActiveConceptHelper.isSafeAssignableFrom(PropertydefinitionsPackage.Literals.INT_PROPERTY, floatProperty));
+	}
+	
+	@Test
+	public void testExtractConceptFromImport() {
+		ConceptImport ci1 = ConceptsFactory.eINSTANCE.createConceptImport();
+		ConceptImport ci2 = ConceptsFactory.eINSTANCE.createConceptImport();
+		
+		ci1.setImportedNamespace(TEST_CATEGORY_ID_ONE + ".*");
+		ci2.setImportedNamespace(TEST_CATEGORY_ID_ONE + "." + TEST_SE_ID_ONE);
+		
+		assertEquals("Identified correct concept", TEST_CATEGORY_ID_ONE, ActiveConceptHelper.getConceptFromImport(ci1));
+		assertEquals("Identified correct concept", TEST_CATEGORY_ID_ONE, ActiveConceptHelper.getConceptFromImport(ci2));
+	}
+	
+	@Test
+	public void testGetConceptDependencies() {
+		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
+		ConceptImport ci1 = ConceptsFactory.eINSTANCE.createConceptImport();
+		ConceptImport ci2 = ConceptsFactory.eINSTANCE.createConceptImport();
+		ConceptImport ci3 = ConceptsFactory.eINSTANCE.createConceptImport();
+		
+		ci1.setImportedNamespace(TEST_CATEGORY_ID_ONE + ".*");
+		ci2.setImportedNamespace(TEST_CATEGORY_ID_ONE + "." + TEST_SE_ID_ONE);
+		ci3.setImportedNamespace(TEST_CATEGORY_ID_TWO + "." + TEST_SE_ID_ONE);
+		
+		concept.getImports().add(ci1);
+		concept.getImports().add(ci2);
+		concept.getImports().add(ci3);
+		
+		Set<String> importedConceptIds = ActiveConceptHelper.getConceptDependencies(concept);
+		
+		assertThat("Identified correct concept", importedConceptIds, hasItems(TEST_CATEGORY_ID_ONE, TEST_CATEGORY_ID_TWO));
+		assertEquals("Identified correct amount of IDs", 2, importedConceptIds.size());
 	}
 }

@@ -27,8 +27,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.junit.Test;
 
 
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -40,22 +38,15 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard.ClipboardState;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /** 
  * Test Cases for the Paste COmmand
- * @author fisc_ph
- *
  */
 public class VirSatPasteFromClipboardCommandTest extends AProjectTestCase {
 
-	private VirSatProjectCommons projectCommons;
-	private VirSatTransactionalEditingDomain rsEd;
-	
 	private StructuralElement se;
 	private StructuralElementInstance parentSeiOld;
 	private StructuralElementInstance parentSeiNew;
@@ -72,18 +63,10 @@ public class VirSatPasteFromClipboardCommandTest extends AProjectTestCase {
 	private Discipline discipline1;
 	private Discipline discipline2;
 	
-	private Repository repo;
-	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
-		VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-		UserRegistry.getInstance().setSuperUser(true);
+		addEditingDomainAndRepository();
 		
 		se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsApplicableForAll(true);
@@ -131,8 +114,7 @@ public class VirSatPasteFromClipboardCommandTest extends AProjectTestCase {
 		
 		rm1.getDisciplines().add(discipline1);
 		
-		repo = DVLMFactory.eINSTANCE.createRepository();
-		repo.getRootEntities().add(rootSei);
+		executeAsCommand(() -> repository.getRootEntities().add(rootSei));
 	}
 
 	@Override
@@ -146,120 +128,120 @@ public class VirSatPasteFromClipboardCommandTest extends AProjectTestCase {
 	
 	@Test
 	public void testCutSeiToSei() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getChildren()).execute();
-		VirSatPasteFromClipboardCommand.create(rsEd, parentSeiNew).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getChildren()).execute();
+		VirSatPasteFromClipboardCommand.create(editingDomain, parentSeiNew).execute();
 		
 		assertTrue("there are no children in the old Sei anymore", parentSeiOld.getChildren().isEmpty());
 		assertThat("Child has moved to new parentSei", parentSeiNew.getChildren(), hasItems(childSei));
 
-		assertNull("Clipboard is empty after cut command", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty after cut command", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCopySeiToSei() {
-		rsEd.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(rsEd, parentSeiOld.getChildren()));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, parentSeiOld));
+		editingDomain.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(editingDomain, parentSeiOld.getChildren()));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, parentSeiOld));
 		
 		assertEquals("There are now two child SEIs", 2, parentSeiOld.getChildren().size());
 
 		assertEquals("SEI has correct Name", "RW_1", parentSeiOld.getChildren().get(0).getName());
 		assertEquals("SEI has correct Name", "RW_2", parentSeiOld.getChildren().get(1).getName());
 		
-		assertNotNull("Clipboard is not empty after copy command", rsEd.getClipboard());
-		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after copy command", editingDomain.getClipboard());
+		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 
 	@Test
 	public void testCutSeiToRepository() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getChildren()).execute();
-		VirSatPasteFromClipboardCommand.create(rsEd, repo).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getChildren()).execute();
+		editingDomain.getCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, repository));
 		
-		assertThat("Child has moved to new parentSei", repo.getRootEntities(), hasItems(childSei));
+		assertThat("Child has moved to new parentSei", repository.getRootEntities(), hasItems(childSei));
 		assertTrue("there are no children in the old Sei anymore", parentSeiOld.getChildren().isEmpty());
 
-		assertNull("Clipboard is empty after cut command", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty after cut command", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCopySeiToRepository() {
 		rootSei.setAssignedDiscipline(discipline1);
-		repo.setAssignedDiscipline(discipline2);
-		rsEd.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(rsEd, Arrays.asList(rootSei)));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, repo));
+		executeAsCommand(() -> repository.setAssignedDiscipline(discipline2));
+		editingDomain.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(editingDomain, Arrays.asList(rootSei)));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, repository));
 		
-		assertEquals("There are now two child SEIs", 2, repo.getRootEntities().size());
+		assertEquals("There are now two child SEIs", 2, repository.getRootEntities().size());
 
-		assertEquals("SEI has correct Name", "SC",   repo.getRootEntities().get(0).getName());
-		assertEquals("SEI has correct Name", "SC_2", repo.getRootEntities().get(1).getName());
-		assertEquals("SEI has correct Discipline", discipline2, repo.getRootEntities().get(1).getAssignedDiscipline());
-		assertNotNull("Clipboard is not empty after copy command", rsEd.getClipboard());
-		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertEquals("SEI has correct Name", "SC",   repository.getRootEntities().get(0).getName());
+		assertEquals("SEI has correct Name", "SC_2", repository.getRootEntities().get(1).getName());
+		assertEquals("SEI has correct Discipline", discipline2, repository.getRootEntities().get(1).getAssignedDiscipline());
+		assertNotNull("Clipboard is not empty after copy command", editingDomain.getClipboard());
+		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutRootSeiToSei() {
-		Resource resource = rsEd.getResourceSet().getRepositoryResource();
-		Resource seiResource = rsEd.getResourceSet().getStructuralElementInstanceResource(parentSeiNew);
-		Resource childResource = rsEd.getResourceSet().getStructuralElementInstanceResource(rootSei);
-		rsEd.getCommandStack().execute(AddCommand.create(rsEd, resource, Resource.RESOURCE__CONTENTS, repo));
-		rsEd.getCommandStack().execute(AddCommand.create(rsEd, seiResource, Resource.RESOURCE__CONTENTS, parentSeiNew));
-		rsEd.getCommandStack().execute(AddCommand.create(rsEd, childResource, Resource.RESOURCE__CONTENTS, rootSei));
+		Resource resource = editingDomain.getResourceSet().getRepositoryResource();
+		Resource seiResource = editingDomain.getResourceSet().getStructuralElementInstanceResource(parentSeiNew);
+		Resource childResource = editingDomain.getResourceSet().getStructuralElementInstanceResource(rootSei);
+		editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, resource, Resource.RESOURCE__CONTENTS, repository));
+		editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, seiResource, Resource.RESOURCE__CONTENTS, parentSeiNew));
+		editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, childResource, Resource.RESOURCE__CONTENTS, rootSei));
 		
 		// Added the Repo transactionally in order to be found by the paste command
 		
-		rsEd.getCommandStack().execute(VirSatCutToClipboardCommand.create(rsEd, repo.getRootEntities()));
-		Command cmd = VirSatPasteFromClipboardCommand.create(rsEd, parentSeiNew);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(VirSatCutToClipboardCommand.create(editingDomain, repository.getRootEntities()));
+		Command cmd = VirSatPasteFromClipboardCommand.create(editingDomain, parentSeiNew);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		assertThat("Root element has moved to new parentSei", parentSeiNew.getChildren(), hasItems(rootSei));
-		assertTrue("there are no children in the repository anymore", repo.getRootEntities().isEmpty());
+		assertTrue("there are no children in the repository anymore", repository.getRootEntities().isEmpty());
 
-		assertNull("Clipboard is empty after cut command", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty after cut command", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutSeiToCa() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getChildren()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getChildren()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, ca1).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, ca1).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutSeiToRoleManagement() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getChildren()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getChildren()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, rm1).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, rm1).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 
 	@Test
 	public void testCutDisciplineToRoleManagement() {
-		VirSatCutToClipboardCommand.create(rsEd, rm1.getDisciplines()).execute();
-		VirSatPasteFromClipboardCommand.create(rsEd, rm2).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, rm1.getDisciplines()).execute();
+		VirSatPasteFromClipboardCommand.create(editingDomain, rm2).execute();
 		
 		assertThat("Discipline has moved to new role management", rm2.getDisciplines(), hasItems(discipline1));
 		assertTrue("there are no discipline in the role management anymore", rm1.getDisciplines().isEmpty());
 
-		assertNull("Clipboard is empty after cut command", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty after cut command", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCopyDisciplineToRoleManagement() {
-		rsEd.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(rsEd, rm1.getDisciplines()));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, rm2));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, rm2));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, rm2));
+		editingDomain.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(editingDomain, rm1.getDisciplines()));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, rm2));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, rm2));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, rm2));
 		
 		//CHECKSTYLE:OFF
 		assertEquals("Correct Amount of Disciplines", 1, rm1.getDisciplines().size());
@@ -270,121 +252,121 @@ public class VirSatPasteFromClipboardCommandTest extends AProjectTestCase {
 		assertEquals("Discipline has correct name", "Disc_A_2", rm2.getDisciplines().get(1).getName());
 		assertEquals("Discipline has correct name", "Disc_A_3", rm2.getDisciplines().get(2).getName());
 
-		assertNotNull("Clipboard is not empty after copy command", rsEd.getClipboard());
-		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after copy command", editingDomain.getClipboard());
+		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutDisciplineToDiscipline() {
-		VirSatCutToClipboardCommand.create(rsEd, rm1.getDisciplines()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, rm1.getDisciplines()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, discipline2).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, discipline2).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutDisciplineToSei() {
-		VirSatCutToClipboardCommand.create(rsEd, rm1.getDisciplines()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, rm1.getDisciplines()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, childSei).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, childSei).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutDisciplineToRepository() {
-		VirSatCutToClipboardCommand.create(rsEd, rm1.getDisciplines()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, rm1.getDisciplines()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, repo).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, repository).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutDisciplineToCa() {
-		VirSatCutToClipboardCommand.create(rsEd, rm1.getDisciplines()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, rm1.getDisciplines()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, ca1).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, ca1).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCutCaToSei() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getCategoryAssignments()).execute();
-		VirSatPasteFromClipboardCommand.create(rsEd, parentSeiNew).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getCategoryAssignments()).execute();
+		VirSatPasteFromClipboardCommand.create(editingDomain, parentSeiNew).execute();
 		
 		assertThat("Category assignment has moved to new sei", parentSeiNew.getCategoryAssignments(), hasItems(ca1));
 		assertTrue("There are no category assignments in the old sei anymore", parentSeiOld.getCategoryAssignments().isEmpty());
 
-		assertNull("Clipboard is empty after cut command", rsEd.getClipboard());
-		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNull("Clipboard is empty after cut command", editingDomain.getClipboard());
+		assertEquals("Clipboard has empty state after cut and paste", ClipboardState.EMPTY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCopyCaToSei() {
-		rsEd.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(rsEd, parentSeiOld.getCategoryAssignments()));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, parentSeiOld));
-		rsEd.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(rsEd, parentSeiOld));
+		editingDomain.getVirSatCommandStack().execute(VirSatCopyToClipboardCommand.create(editingDomain, parentSeiOld.getCategoryAssignments()));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, parentSeiOld));
+		editingDomain.getVirSatCommandStack().execute(VirSatPasteFromClipboardCommand.create(editingDomain, parentSeiOld));
 		
 		assertEquals("SEI has correct CA", "CA_A",   parentSeiOld.getCategoryAssignments().get(0).getName());
 		assertEquals("SEI has correct CA", "CA_A_2",   parentSeiOld.getCategoryAssignments().get(1).getName());
 		assertEquals("SEI has correct CA", "CA_A_3",   parentSeiOld.getCategoryAssignments().get(2).getName());
 
-		assertNotNull("Clipboard is not empty after copy command", rsEd.getClipboard());
-		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after copy command", editingDomain.getClipboard());
+		assertEquals("Clipboard remians in copy state", ClipboardState.COPY, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCaToCa() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getCategoryAssignments()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getCategoryAssignments()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, ca2).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, ca2).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCaToRepository() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getCategoryAssignments()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getCategoryAssignments()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, repo).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, repository).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCaToRoleManagement() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getCategoryAssignments()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getCategoryAssignments()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, rm1).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, rm1).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 	
 	@Test
 	public void testCaToDiscipline() {
-		VirSatCutToClipboardCommand.create(rsEd, parentSeiOld.getCategoryAssignments()).execute();
+		VirSatCutToClipboardCommand.create(editingDomain, parentSeiOld.getCategoryAssignments()).execute();
 		
-		boolean canExecute = VirSatPasteFromClipboardCommand.create(rsEd, discipline1).canExecute();
+		boolean canExecute = VirSatPasteFromClipboardCommand.create(editingDomain, discipline1).canExecute();
 		assertFalse("Cannot execute paste on invalid owner", canExecute);
 
-		assertNotNull("Clipboard is not empty after canExecute check", rsEd.getClipboard());
-		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(rsEd));
+		assertNotNull("Clipboard is not empty after canExecute check", editingDomain.getClipboard());
+		assertEquals("Clipboard is still in cut state", ClipboardState.CUT, VirSatEditingDomainClipBoard.INSTANCE.getClipboardState(editingDomain));
 	}
 }

@@ -13,9 +13,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelExport.ExcelExporterTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.ExcelImporterTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.ImportValidatorTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter.FuncElecExporterTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.FuncElecImporterTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.ImportValidatorTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.html.HTMLExporterTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.html.ImageProviderTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelperTest;
@@ -32,9 +32,9 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({ ValidatorTest.class,
 				HTMLExporterTest.class,
-				ExcelExporterTest.class,
+				FuncElecExporterTest.class,
 				ImportValidatorTest.class,
-				ExcelImporterTest.class,
+				FuncElecImporterTest.class,
 				ImageProviderTest.class,
 				FuncElectricalArchitectureHelperTest.class, 
 				VirSatFuncelectricalMarkerHelperTest.class})

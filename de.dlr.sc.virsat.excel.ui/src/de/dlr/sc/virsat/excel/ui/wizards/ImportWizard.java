@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import de.dlr.sc.virsat.excel.ExcelImporter;
-import de.dlr.sc.virsat.excel.Fault;
 import de.dlr.sc.virsat.excel.commands.ImportCommand;
+import de.dlr.sc.virsat.excel.fault.Fault;
+import de.dlr.sc.virsat.excel.importer.ExcelImporter;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.ui.Activator;
@@ -106,7 +106,7 @@ public class ImportWizard extends Wizard implements INewWizard {
 		TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
     	try {
     		ExcelImporter ei = new ExcelImporter();
-	    	List<Fault> faultList =   ei.validate(eObject, wb);
+	    	List<Fault> faultList = ei.validate(eObject, wb);
 	    	if (faultList.isEmpty()) {
 	    		ImportCommand importCommand = new ImportCommand(eObject, wb, ed);
 	    		ed.getCommandStack().execute(importCommand);

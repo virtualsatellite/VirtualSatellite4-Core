@@ -21,6 +21,7 @@ import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfigurationTest;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementRealizationTest;
+import de.dlr.sc.virsat.model.extension.ps.validator.StructuralElementInstanceValidatorTest;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomainTest;
 import de.dlr.sc.virsat.model.extension.ps.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinitionTest;
@@ -30,6 +31,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ProductStorageDomainTest;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductStorageTest;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTreeTest;
 import de.dlr.sc.virsat.model.extension.ps.migrator.Migrator1v0Test;
+import de.dlr.sc.virsat.model.extension.ps.migrator.Migrator1v2Test;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurenceTest;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeTest;
 
@@ -52,6 +54,8 @@ import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeTest;
 	ElementRealizationTest.class,
 	Migrator1v0Test.class,
 	Migrator1v1Test.class,
+	Migrator1v2Test.class,
+	StructuralElementInstanceValidatorTest.class,
 				})
 
 /**
