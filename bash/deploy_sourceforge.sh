@@ -37,10 +37,8 @@ uploadSwtBot() {
 		echo "Test Artifacts: Collecting all reports in: ${TRAVIS_BUILD_DIR}/swtbot"
 		cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
 		TEST_ARTEFACTS_ZIP=SwtBot_${TRAVIS_REPO_SLUG}_${TRAVIS_BRANCH}_${TRAVIS_JOB_NUMBER}_${TRAVIS_COMMIT}
-		echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
-		TEST_ARTEFACTS_ZIP=$(sed -e 's/\//\_/g' <<< ${TEST_ARTEFACTS_ZIP})
-		echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
-		TEST_ARTEFACTS_ZIP=$(sed -e 's/\./\_/g' <<< ${TEST_ARTEFACTS_ZIP}).zip
+		# Remove "/" "\" and "." from filename and attach .zip to it
+		TEST_ARTEFACTS_ZIP=$(sed  -e 's/[\/.]/\_/g' <<< ${TEST_ARTEFACTS_ZIP}).zip
 		echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
 		zip ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} swtbot/*
 		echo "Test Artifacts: Starting upload to SourceForge..."
