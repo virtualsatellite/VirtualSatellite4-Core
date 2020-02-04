@@ -14,7 +14,9 @@ import javax.servlet.Servlet;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.auth.AuthFilter;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
+import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.WorkspaceAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
@@ -34,6 +36,9 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		private ModelAccessRestApplication() {
 			register(AccessTestResource.class);
 			register(WorkspaceAccessResource.class);
+			register(AuthTestResource.class);
+
+			register(AuthFilter.class);
 		}
 	}
 }

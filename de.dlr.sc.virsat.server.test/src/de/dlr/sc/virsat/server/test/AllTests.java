@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccessTest;
 import de.dlr.sc.virsat.server.resources.AccessTestResourceTest;
+import de.dlr.sc.virsat.server.resources.AuthTestResourceTest;
 import de.dlr.sc.virsat.server.resources.WorkspaceAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.WorkspaceUserContextTest;
 import junit.framework.JUnit4TestAdapter;
@@ -29,7 +30,8 @@ import junit.framework.JUnit4TestAdapter;
 	VirSatGitAccessTest.class,
 	WorkspaceAccessResourceTest.class,
 	AccessTestResourceTest.class,
-	WorkspaceUserContextTest.class
+	WorkspaceUserContextTest.class,
+	AuthTestResourceTest.class,
 })
 
 public class AllTests {
