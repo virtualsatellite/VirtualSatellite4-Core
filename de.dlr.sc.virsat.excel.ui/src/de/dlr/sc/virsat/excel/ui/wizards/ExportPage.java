@@ -190,31 +190,31 @@ public class ExportPage extends WizardPage {
 		label1 = new Label(composite1, SWT.NONE);
 		label1.setText("Template");
 
-        // destination name entry field
+		// destination name entry field
 		templateField = new Combo(composite1, SWT.SINGLE | SWT.BORDER);
-        data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-        final int widthHint = 250;
-        data.widthHint = widthHint;
-        templateField.setLayoutData(data);
+		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+		final int widthHint = 250;
+		data.widthHint = widthHint;
+		templateField.setLayoutData(data);
 
-        String defaultTemplate = wizardSettings.get(DEFAULT_TEMPLATE_KEY);
-        if (defaultTemplate != null) {
-        	templateField.setText(defaultTemplate);
-        	template = true;
-        }
+		String defaultTemplate = wizardSettings.get(DEFAULT_TEMPLATE_KEY);
+		if (defaultTemplate != null) {
+			templateField.setText(defaultTemplate);
+			template = true;
+		}
 
-        // destination browse button
-        final Button destinationBrowseButton = new Button(composite1, SWT.PUSH);
-        destinationBrowseButton.setText(BUTTON_TEXT);
-        destinationBrowseButton.addListener(SWT.Selection, new Listener() {
-        	
+		// destination browse button
+		final Button destinationBrowseButton = new Button(composite1, SWT.PUSH);
+		destinationBrowseButton.setText(BUTTON_TEXT);
+		destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+
 			@Override
 			public void handleEvent(Event event) {
 				FileDialog dialog = new FileDialog(getContainer().getShell(), SWT.OPEN | SWT.SHEET);
 				dialog.setText(DIALOG_TEXT);
 				dialog.setFilterExtensions(DIALOG_EXTENSIONS);
 
-		        if (destinationField.getText().equals("")) {
+				if (destinationField.getText().equals("")) {
 					dialog.setFileName(DIALOG_DEFAULT_FILE_NAME);
 				}
 
@@ -228,8 +228,8 @@ public class ExportPage extends WizardPage {
 					setPageComplete(isComplete());
 				}
 			}
-        });
-        setButtonLayoutData(destinationBrowseButton);
+		});
+		setButtonLayoutData(destinationBrowseButton);
 	}
 
 	/**
@@ -297,42 +297,42 @@ public class ExportPage extends WizardPage {
 		lblDestination = new Label(composite, SWT.NONE);
 		lblDestination.setText("Destination :");
 
-        // destination name entry field
+		// destination name entry field
 		destinationField = new Combo(composite, SWT.SINGLE | SWT.BORDER);
-        data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-        final int widthHint = 250;
-        data.widthHint = widthHint;
-        destinationField.setLayoutData(data);
+		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+		final int widthHint = 250;
+		data.widthHint = widthHint;
+		destinationField.setLayoutData(data);
 
-        String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
-        if (defaultDestination != null) {
-        	destinationField.setText(defaultDestination);
-        	destination = true;
-        }
+		String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
+		if (defaultDestination != null) {
+			destinationField.setText(defaultDestination);
+			destination = true;
+		}
 
-        // destination browse button
-        final Button destinationBrowseButton = new Button(composite, SWT.PUSH);
-        destinationBrowseButton.setText(BUTTON_TEXT);
-        destinationBrowseButton.addListener(SWT.Selection, new Listener() {
-        	
+		// destination browse button
+		final Button destinationBrowseButton = new Button(composite, SWT.PUSH);
+		destinationBrowseButton.setText(BUTTON_TEXT);
+		destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+
 			@Override
 			public void handleEvent(Event event) {
 
-		        DirectoryDialog dialog = new DirectoryDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
-		        dialog.setText(DIALOG_TEXT);
+				DirectoryDialog dialog = new DirectoryDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
+				dialog.setText(DIALOG_TEXT);
 
-		        String selectedDirectoryName = dialog.open();
+				String selectedDirectoryName = dialog.open();
 
-		        if (selectedDirectoryName != null) {
-		            setErrorMessage(null);
-		            destinationField.setText(selectedDirectoryName);
-		            destination = true;
-		            wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
-		            setPageComplete(isComplete());
-		        }
+				if (selectedDirectoryName != null) {
+					setErrorMessage(null);
+					destinationField.setText(selectedDirectoryName);
+					destination = true;
+					wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
+					setPageComplete(isComplete());
+				}
 			}
-        });
-        setButtonLayoutData(destinationBrowseButton);
+		});
+		setButtonLayoutData(destinationBrowseButton);
 	}
 
 	/**

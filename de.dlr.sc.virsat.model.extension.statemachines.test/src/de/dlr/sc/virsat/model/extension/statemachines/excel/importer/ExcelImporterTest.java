@@ -60,9 +60,9 @@ public class ExcelImporterTest {
 
 		UserRegistry.getInstance().setSuperUser(true);
 
-	    conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
+		conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
 
-	    stateMaschine = new StateMachine(conceptStateMachines);
+		stateMaschine = new StateMachine(conceptStateMachines);
 
 		State state1 = new State(conceptStateMachines);
 		state1.setName("state1");
