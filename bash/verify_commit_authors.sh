@@ -40,12 +40,12 @@ echo "[Info] ------------------------------------"
 
 echo "[Info] Checking .mailmap"
 
-git diff --quiet development .mailmap
+git diff --quiet development... .mailmap
 CHANGED_MAILMAP=$?
 
 echo "[Info] Checking known_authors.txt"
 
-git diff --quiet development known_authors.txt
+git diff --quiet development... known_authors.txt
 CHANGED_KNOWN_AUTHORS=$?
 
 echo "[Info] ------------------------------------"
