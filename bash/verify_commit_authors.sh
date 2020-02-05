@@ -40,6 +40,9 @@ echo "[Info] ------------------------------------"
 
 echo "[Info] Checking .mailmap"
 
+# here we need to use the ... to actually see the diff of a file for just the branch
+# using .. would compare the head of development with head of the current branch. Thus
+# showing both differences.
 git diff --quiet development... .mailmap
 CHANGED_MAILMAP=$?
 
@@ -75,6 +78,9 @@ echo "[Info] Create commit authors file"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
+# here we have to use .. and not ... . Only .. shows the log of the particular branch
+# and negates the ones from the first one, which is development. Be aware this is opposite behavior 
+# compared to the git diff
 git log development.. --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
