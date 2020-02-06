@@ -116,6 +116,7 @@ import de.dlr.sc.virsat.uiengine.ui.databinding.VirSatDataBindingContext;
 import de.dlr.sc.virsat.uiengine.ui.editor.registry.GenericEditorRegistry;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSectionSnippet;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+import de.dlr.sc.virsat.uiengine.ui.swt.forms.VirSatFormToolKit;
 
 /**
  * Implements our generic editor which is building the UI
@@ -1224,5 +1225,10 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	 */
 	public EObject getEditorModelObject() {
 		return editorModelObject;
+	}
+	
+	@Override
+	protected FormToolkit createToolkit(Display display) {
+		return new VirSatFormToolKit(display);
 	}
 }

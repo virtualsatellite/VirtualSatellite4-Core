@@ -157,34 +157,24 @@ public class VirSatEquationMarkerHelperTest extends ATestCase {
 	}
 	
 	@Test
-	public void testCreateCyclicEquationMarker() {
+	public void testCreateCyclicEquationMarker() throws CoreException {
 		IMarker markerC = vemHelper.createCyclicEquationMarker(eq1OfContainingSei);
 		
 		assertFalse("Marker is created", markerC == null);
 		assertTrue("Marker is placed correctly", vemHelper.getAllMarkersForObjectAndContents(seiContaining).contains(markerC));
 		
-		try {
-			assertTrue("Marker has correct type", markerC.isSubtypeOf(VirSatEquationMarkerHelper.ID_EQUATION_MARKER));
-			assertTrue("Marker has correct type", markerC.isSubtypeOf(VirSatEquationMarkerHelper.ID_CYCLIC_EQUATION_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+		assertTrue("Marker has correct type", markerC.isSubtypeOf(VirSatEquationMarkerHelper.ID_EQUATION_MARKER));
+		assertTrue("Marker has correct type", markerC.isSubtypeOf(VirSatEquationMarkerHelper.ID_CYCLIC_EQUATION_MARKER));
 	}
 	
 	@Test
-	public void testCreateOutdatedEquationMarker() {
+	public void testCreateOutdatedEquationMarker() throws CoreException {
 		IMarker markerO = vemHelper.createEvaluationProblemMarker(new EvaluationProblem(eq2OfContainingSei));
 		
 		assertFalse("Marker is created", markerO == null);
 		assertTrue("Marker is placed correctly", vemHelper.getAllMarkersForObjectAndContents(seiContaining).contains(markerO));
 		
-		try {
-			assertTrue("Marker has correct type", markerO.isSubtypeOf(VirSatEquationMarkerHelper.ID_EQUATION_MARKER));
-			assertTrue("Marker has correct type", markerO.isSubtypeOf(VirSatEquationMarkerHelper.ID_EVALUATION_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+		assertTrue("Marker has correct type", markerO.isSubtypeOf(VirSatEquationMarkerHelper.ID_EQUATION_MARKER));
+		assertTrue("Marker has correct type", markerO.isSubtypeOf(VirSatEquationMarkerHelper.ID_EVALUATION_MARKER));
 	}
 }

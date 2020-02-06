@@ -108,7 +108,7 @@ public class VirSatInheritanceMarkerHelperTest extends ATestCase {
 	}
 	
 	@Test
-	public void testCreateInheritanceMarker() {
+	public void testCreateInheritanceMarker() throws CoreException {
 		IMarker markerRepo = vimHelper.createInheritanceMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
 		IMarker markerSei  = vimHelper.createInheritanceMarker(IMarker.SEVERITY_WARNING, "This is a marker on the SeiContaining", seiContaining);
 		
@@ -117,13 +117,8 @@ public class VirSatInheritanceMarkerHelperTest extends ATestCase {
 		assertTrue("Marker is placed correctly", vimHelper.getAllMarkers(repo).contains(markerRepo));
 		assertTrue("Marker is placed correctly", vimHelper.getAllMarkers(seiContaining).contains(markerSei));
 		
-		try {
-			assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatInheritanceMarkerHelper.ID_INHERITANCE_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatInheritanceMarkerHelper.ID_INHERITANCE_PROBLEM_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+		assertTrue("Marker has correct type", markerRepo.isSubtypeOf(VirSatInheritanceMarkerHelper.ID_INHERITANCE_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerSei.isSubtypeOf(VirSatInheritanceMarkerHelper.ID_INHERITANCE_PROBLEM_MARKER));
 	}
 	
 }

@@ -249,7 +249,7 @@ public class ActiveConceptHelperTest {
 		Concept concept = testConcept;
 		String version = "[" + TEST_VERSION + "]";
 
-		String expectedConceptNameWithVersion = TEST_DISPLAY_NAME + " – " + TEST_CONCEPT_ID + " " + version;
+		String expectedConceptNameWithVersion = TEST_DISPLAY_NAME + " - " + TEST_CONCEPT_ID + " " + version;
 		String conceptNameWithVersion = ActiveConceptHelper.getConceptNameWithVersion(concept);
 
 		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);

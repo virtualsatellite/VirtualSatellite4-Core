@@ -60,13 +60,13 @@
 <extension
        point="de.dlr.sc.virsat.excel.export">
     <Exporter
-          class="de.dlr.sc.virsat.model.extension.funcelectrical.excelExport.FuncElecExporter">
+          class="de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter.FuncElecExporter">
     </Exporter>
  </extension>
  <extension
        point="de.dlr.sc.virsat.excel.import">
     <Importer
-          class="de.dlr.sc.virsat.model.extension.funcelectrical.excelImport.FuncElecImporter">
+          class="de.dlr.sc.virsat.model.extension.funcelectrical.excel.importer.FuncElecImporter">
     </Importer>
  </extension>
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">

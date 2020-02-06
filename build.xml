@@ -33,8 +33,8 @@ SPDX-License-Identifier: EPL-2.0
 	     ===================================================== -->
 	<target name="jacocoPrepareDependencies" description="Install Jacoco Dependencies">
 		<mkdir dir="${user.home}/.ant/lib"/>
-		<get dest="${user.home}/.ant/lib/jacoco.jar" src="http://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
-		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="http://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+		<get dest="${user.home}/.ant/lib/jacoco.jar" src="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
+		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="https://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
 	</target>
 
 	<target name="jacocoReport">

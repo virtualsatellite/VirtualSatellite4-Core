@@ -196,7 +196,7 @@ public class ActiveConceptHelper {
 		if (concept.getDisplayName() == null) {
 			return concept.getName() + formattedVersion;
 		} else {
-			return concept.getDisplayName() + " – " + concept.getName() + formattedVersion;
+			return concept.getDisplayName() + " - " + concept.getName() + formattedVersion;
 		}
 	}
 	
