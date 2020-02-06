@@ -49,7 +49,7 @@ import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 
 /**
  * This class handles the functionality for creating a CellEditingSUpport for
- * IntPropertyInstances String PropertyInstances and FloatPropertyInstances
+ * EReferencePropertyInstances
  * 
  *
  */

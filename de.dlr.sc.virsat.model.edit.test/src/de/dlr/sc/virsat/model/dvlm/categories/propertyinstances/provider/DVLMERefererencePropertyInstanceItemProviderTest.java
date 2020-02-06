@@ -23,13 +23,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
 /**
- * This class tests the DVLMReferencePropertyInstanceItemProvider
- * @author muel_s8
+ * This class tests the DVLMEReferencePropertyInstanceItemProvider
  *
  */
 
 public class DVLMERefererencePropertyInstanceItemProviderTest {
-
 	
 	@Test
 	public void testGetText() {

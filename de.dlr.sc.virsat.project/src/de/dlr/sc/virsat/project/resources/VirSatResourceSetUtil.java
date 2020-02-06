@@ -164,13 +164,14 @@ public class VirSatResourceSetUtil {
 				EObject eContainer = setting.getEObject();
 				EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
 				
+				//Ignore external references
 				if (!eStructuralFeature.equals(PropertydefinitionsPackage.Literals.EREFERENCE_PROPERTY__REFERENCE_TYPE)) {
 					if (eStructuralFeature.isMany()) {
 						((EList<?>) eContainer.eGet(eStructuralFeature)).remove(proxy);
 					} else {
 						eContainer.eUnset(eStructuralFeature);
 					}
-				} //Ignore external references
+				} 
 				
 			}
 		}

@@ -68,7 +68,6 @@ public class BeanPropertyEReferenceTest {
 	
 	@Test
 	public void testValueHandling() {
-		
 		assertFalse("No value should be set at this point", testBean.isSet());
 		
 		testBean.setValue(testPropertyValue);

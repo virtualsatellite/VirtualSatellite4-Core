@@ -170,8 +170,6 @@ public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends 
 		super.add(index, element);
 		ai.getArrayInstances().add(index, element.getTypeInstance());
 	}
-	
-	
 
 	@Override
 	public BeanPropertyEReference<ETYPE> remove(int index) {
@@ -181,7 +179,6 @@ public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends 
 		return oldBean;
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object o) {
