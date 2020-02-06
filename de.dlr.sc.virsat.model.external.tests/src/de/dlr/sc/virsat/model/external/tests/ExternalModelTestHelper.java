@@ -15,18 +15,22 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-public class AExternalModelTest {
+public class ExternalModelTestHelper {
 	
 	protected EPackage testExternalPackage;
 	protected ResourceSet resourceSet;
 	private static final String PLATFORM_MODEL_PATH = "/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore";
 	
-	protected EPackage loadExternalPackage() {
+	public EPackage loadExternalPackage() {
 		resourceSet = new ResourceSetImpl();
 		URI metamodelURI = URI.createPlatformPluginURI(PLATFORM_MODEL_PATH, true);
 		Resource metamodelResource = resourceSet.getResource(metamodelURI, true);
 		testExternalPackage = (EPackage) metamodelResource.getContents().get(0);
 		return testExternalPackage;
+	}
+	
+	public ResourceSet getResourceSet() {
+		return resourceSet;
 	}
 
 }
