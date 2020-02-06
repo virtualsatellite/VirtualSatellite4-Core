@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.10.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.11.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
       <text>
          Virtual Satellite 4 - DVLM Core
 
-Version 4.10.0
+Version 4.11.0
 
 Copyright 2019 - Simulation and Software Technology (DLR)
 
@@ -94,6 +94,8 @@ Germany
       <feature id="org.eclipse.emf.edit.ui" installMode="root"/>
       <feature id="org.eclipse.emf.transaction" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.editor" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.edit" installMode="root"/>
       <feature id="org.eclipse.emf.edapt.runtime.feature" installMode="root"/>
       <feature id="org.eclipse.emf.workspace" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
@@ -123,6 +125,7 @@ Germany
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
+      <feature id="org.eclipse.xtext.ui" installMode="root"/>
    </features>
 
    <configurations>

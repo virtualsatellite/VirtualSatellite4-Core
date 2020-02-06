@@ -7,10 +7,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server;
+package de.dlr.sc.virsat.server.jetty;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
+
 import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 
 /**
@@ -46,6 +49,7 @@ public class VirSatJettyServer {
 	 * @throws InterruptedException
 	 */
 	public VirSatJettyServer start() throws Exception, InterruptedException {
+		
 		server = new Server(VIRSAT_JETTY_PORT);
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);

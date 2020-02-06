@@ -45,25 +45,22 @@ import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatWorkspaceLabelP
 
 /**
  * Page to select the resource that is to be exported/will be used as a root for import.
- * @author muel_s8
- *
  */
-
 public class ImportPage extends WizardPage {
-	
+
 	private static final String DIALOG_TEXT = "Select target";
 	private static final String DIALOG_DEFAULT_FILE_NAME = "file.xlsx";
 	private static final String[] DIALOG_EXTENSIONS = { "*.xlsx" };
-	
+
 	private static final String BUTTON_TEXT = "Browse";
 	private static final String FILE_LABEL = "XLSX file";
-	
+
 	private static final int ROWS = 3;
-	
+
 	// Keys for the dialog settings
 	private static final String DESTINATION_FILE_KEY = "DESTINATION_FILE";
 	private static final String DESCRIPTION = "Import the selected xlsx file and integrate data.";
-	private static final String DESTINATION = "Select the import file:";	
+	private static final String DESTINATION = "Select the import file:";
 
 	private IContainer model;
 	private Object selection;
@@ -71,7 +68,7 @@ public class ImportPage extends WizardPage {
 	private Composite content;
 	private Combo destinationField;
 	private boolean destination;
-	
+
 	private IDialogSettings wizardSettings;
 
 	/**
@@ -79,8 +76,7 @@ public class ImportPage extends WizardPage {
 	 * @param model the root element for the selection on where to integrate the import data
 	 * @param preSelect the initial selection to be transferred into import/export window
 	 */
-	
-	protected ImportPage(IContainer model,  ISelection preSelect) {
+	protected ImportPage(IContainer model, ISelection preSelect) {
 		super("Select element and destination");
 		setTitle("Select element and destination");
 		setDescription(DESCRIPTION);
@@ -92,48 +88,45 @@ public class ImportPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		wizardSettings = getDialogSettings();
-		
+
 		content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 		content.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
-		
+
 		createTreeUI();
 		createFileDestinationUI();
-	
-		
+
 	    setControl(content);
-	    
+
 	    setPageComplete(isComplete());
 	}
-	
+
 	/**
 	 * Checks if the page has been sufficiently filled with user data
 	 * @return true iff the page is complete
 	 */
 	public boolean isComplete() {
-		
 		return destination;
 	}
-	
+
 	/**
 	 * Create the Treeviewer
 	 */
-	
 	private void createTreeUI() {
-		
+
 		TreeViewer treeViewer = new TreeViewer(content, SWT.BORDER);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
-		
+
 		VirSatComposedContentProvider cp = new VirSatComposedContentProvider();
 		cp.registerSubContentProvider(new VirSatWorkspaceContentProvider());
 		cp.registerSubContentProvider(new VirSatProjectContentProvider());
-		
+
 		VirSatComposedLabelProvider lp = new VirSatComposedLabelProvider();
 		lp.registerSubLabelProvider(new VirSatWorkspaceLabelProvider());
 		lp.registerSubLabelProvider(new VirSatProjectLabelProvider());
-		
+
 		VirSatFilteredWrappedTreeContentProvider filteredCP = new VirSatFilteredWrappedTreeContentProvider(cp);
-		
+
 		// Filter for elements that can be imported and exported together with their parents
 		filteredCP.addClassFilter(StructuralElementInstance.class);
 		filteredCP.addClassFilter(CategoryAssignment.class);
@@ -142,20 +135,20 @@ public class ImportPage extends WizardPage {
 
 		treeViewer.setContentProvider(filteredCP);
 		treeViewer.setLabelProvider(lp);
-		
+
 		if (null == preSelect) {
 			treeViewer.setInput(model);
 		} else {
-			
 			IStructuredSelection selection2 = (IStructuredSelection) preSelect;
 			StructuralElementInstance sc = (StructuralElementInstance) selection2.getFirstElement();
-			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(sc); 
+			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(sc);
 			Repository rep = ed.getResourceSet().getRepository();
 			treeViewer.setInput(rep);
 			treeViewer.setSelection((TreeSelection) preSelect);
 			selection = treeViewer.getStructuredSelection().getFirstElement();
 		}
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				selection = treeViewer.getStructuredSelection().getFirstElement();
@@ -165,51 +158,52 @@ public class ImportPage extends WizardPage {
 	}
 
 	/**
-	 * Create the dialog for selecting the file which wil be exported to/imported from
+	 * Create the dialog for selecting the file which will be exported to/imported from
 	 */
-	
+
 	private void createFileDestinationUI() {
 		Label label = new Label(content, SWT.FILL);
 		label.setText(DESTINATION);
-		
+
 		Composite composite = new Composite(content, SWT.FILL);
 		composite.setLayout(new GridLayout(ROWS, false));
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
 		composite.setLayoutData(data);
-		
+
 		label = new Label(composite, SWT.NONE);
-		label.setText(FILE_LABEL);		
-		
+		label.setText(FILE_LABEL);
+
         // destination name entry field
 		destinationField = new Combo(composite, SWT.SINGLE | SWT.BORDER);
         data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
         final int widthHint = 250;
         data.widthHint = widthHint;
         destinationField.setLayoutData(data);
-        
+
         String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
         if (defaultDestination != null) {
         	destinationField.setText(defaultDestination);
         	destination = true;
         }
-        
+
         // destination browse button
         final Button destinationBrowseButton = new Button(composite, SWT.PUSH);
         destinationBrowseButton.setText(BUTTON_TEXT);
         destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+ 
 			@Override
 			public void handleEvent(Event event) {
-				
+
 		        FileDialog dialog = new FileDialog(getContainer().getShell(), SWT.OPEN | SWT.SHEET);
 		        dialog.setText(DIALOG_TEXT);
 		        dialog.setFilterExtensions(DIALOG_EXTENSIONS);
-				
+
 		        if (destinationField.getText().equals("")) {
 					dialog.setFileName(DIALOG_DEFAULT_FILE_NAME);
 				}
-				
+
 		        String selectedDirectoryName = dialog.open();
-		        
+
 		        if (selectedDirectoryName != null) {
 		        	destination = true;
 		            setErrorMessage(null);
@@ -226,16 +220,14 @@ public class ImportPage extends WizardPage {
 	 * Get the selected object
 	 * @return the selected object
 	 */
-	
 	public Object getSelection() {
 		return selection;
 	}
-	
+
 	/**
 	 * Get the destination of the target file
 	 * @return path to the target file
-	 */
-	
+	 */	
 	public String getDestination() {
 		return destinationField.getText();
 	}

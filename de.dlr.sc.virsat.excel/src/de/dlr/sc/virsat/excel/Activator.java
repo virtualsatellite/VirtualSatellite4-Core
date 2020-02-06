@@ -12,14 +12,11 @@ package de.dlr.sc.virsat.excel;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-
 /**
  * Plugin activator
- *
  */
-
 public class Activator extends Plugin {
-	
+
 	private static String pluginId;
 	// The shared instance
 	private static Activator plugin;
@@ -45,7 +42,6 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -54,15 +50,14 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the plugin id
-	 *
 	 * @return pluginId
 	 */
 	public static String getPluginId() {
 		return pluginId;
 	}
+
 	/**
-	 * Sets the plugin id 
-	 *
+	 * Sets the plugin id
 	 * @param pluginId the plugin id
 	 */
 	private static void setPluginId(String pluginId) {

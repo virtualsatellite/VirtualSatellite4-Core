@@ -19,8 +19,6 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 
 /**
  * General Interface To import data from Excel
- * @author bell_er
- *
  */
 public interface IImport {
 
@@ -29,7 +27,6 @@ public interface IImport {
 	 * @param object object
 	 * @param repository the StructuralElementInstance
 	 * @param wb XSSFWorkbook
-	 *
 	 */
 	void importExcel(EObject object, Repository repository, XSSFWorkbook wb);
 
@@ -41,7 +38,7 @@ public interface IImport {
 	boolean canImport(EObject object);
 	
 	/**
-	 * Import validator  functionality
+	 * Import validator functionality
 	 * @param object object
 	 * @param wb XSSFWorkbooks
 	 * @return possible fault list if cannot be imported

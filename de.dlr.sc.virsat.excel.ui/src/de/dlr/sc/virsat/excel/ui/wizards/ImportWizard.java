@@ -39,26 +39,22 @@ import de.dlr.sc.virsat.project.ui.Activator;
 
 /**
  * Wizard for importing Excel files.
- * @author muel_s8
- *
  */
-
 public class ImportWizard extends Wizard implements INewWizard {
 
 	public static final String ID = "de.dlr.sc.virsat.excel.ui.import";
-	
+
 	private ImportPage page;
 	private IContainer model;
 	private ISelection selection;
-	
+
 	/**
 	 * Create a new import wizard
 	 */
-	
 	public ImportWizard() {
 		super();
 		setWindowTitle("Import from Excel");
-		
+
 		// Setup persistency if necessary
         IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
         IDialogSettings wizardSettings = pluginSettings.getSection(ID);
@@ -68,7 +64,7 @@ public class ImportWizard extends Wizard implements INewWizard {
         }
         setDialogSettings(wizardSettings);
 	}
-	
+
 	/**
 	 * Set the root element for the import selection
 	 * @param iContainer root element for the import selection
@@ -76,6 +72,7 @@ public class ImportWizard extends Wizard implements INewWizard {
 	public void setModel(IContainer iContainer) {
 		this.model = iContainer;
 	}
+
 	/**
 	 * Set the selection for the new window
 	 * @param selection to be set
@@ -83,7 +80,7 @@ public class ImportWizard extends Wizard implements INewWizard {
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
 	}
-	
+
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		setModel(ResourcesPlugin.getWorkspace().getRoot());
@@ -92,7 +89,7 @@ public class ImportWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		EObject eObject = (EObject) page.getSelection();
-		
+
 		// Read the file
     	String path = page.getDestination();
     	File file = new File(path);
@@ -112,12 +109,11 @@ public class ImportWizard extends Wizard implements INewWizard {
 	    		ed.getCommandStack().execute(importCommand);
 	    	    DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO", "Successfully imported excel file " + file.getAbsolutePath()));
 	    	    return true;
-	    	}	
+	    	}
 	    	String errorMessage = "";
 	    	for (int i = 0; i < faultList.size(); i++) {
-	    		errorMessage = errorMessage + faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n";
-	     		
-	    	} 	
+	    		errorMessage = errorMessage + faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n";	     		
+	    	}
 	    	page.setErrorMessage(errorMessage);
     	} catch (Exception e) {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to perform an import operation! ", e);
@@ -125,15 +121,13 @@ public class ImportWizard extends Wizard implements INewWizard {
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Import failed", status);
 			return false;
     	}
-    	
 		return false;
 	}
-	
+
     @Override
     public void addPages() {
         super.addPages();
         page = new ImportPage(model, selection);
         addPage(page);
     }
-
 }

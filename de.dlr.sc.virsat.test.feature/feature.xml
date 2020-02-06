@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.test.feature"
       label="VirSat Core General Tests Feature"
-      version="4.10.0.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       license-feature="de.dlr.sc.virsat.license.feature">
 
@@ -80,7 +80,7 @@ by German Aerospace Center (DLR e.V.)
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="de.dlr.sc.virsat.server"/>
-      <import feature="de.dlr.sc.virsat.server.feature" version="4.10.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.server.feature" version="4.11.0.qualifier"/>
    </requires>
 
    <plugin

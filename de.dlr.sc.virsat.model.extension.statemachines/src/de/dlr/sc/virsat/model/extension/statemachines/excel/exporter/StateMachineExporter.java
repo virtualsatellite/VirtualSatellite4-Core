@@ -34,57 +34,45 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 
-
-
-
 /**
  * Class for exporting excel
- * @author bell_er
- *
  */
 public class StateMachineExporter extends ExcelExportHelper implements IExport {
-	
+
 	CategoryAssignment exportCa;
-	
+
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
-		if (eObject instanceof CategoryAssignment) {		
+		if (eObject instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) eObject;
 			final String defaultTemplatePath = "/resources/StateMachineExportTemplate.xlsx";
 			// find the export template
 			try {
-				InputStream is = null;
+				InputStream iStream = null;
 				if (useDefaultTemplate) {
-					is = Activator.getResourceContentAsString(defaultTemplatePath);
+					iStream = Activator.getResourceContentAsString(defaultTemplatePath);
 				} else {
-					is = new FileInputStream(templatePath);
+					iStream = new FileInputStream(templatePath);
 				}
-				wb = new XSSFWorkbook(is);
-			} catch (IOException e) {
-				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to find the Template!", e);
-				Activator.getDefault().getLog().log(status);
-			}
-			
-			exportData(ca);
-			String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".xlsx";
-			// and write the results	
-			File file = new File(newPath);
-			try {
+				wb = new XSSFWorkbook(iStream);
+				exportData(ca);
+				String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".xlsx";
+				// and write the results
+				File file = new File(newPath);
+				// find the export destination
 				FileOutputStream out = new FileOutputStream(file);
 				wb.write(out);
 			} catch (IOException e) {
-				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!", e);
+				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! \n" + e.getMessage(), e);
 				Activator.getDefault().getLog().log(status);
 				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			}
 		}
 	}
-	
+
 	/**
 	 * Exports the state machine
 	 * @param ca object to be exported
-	 * @author  Bell_er
-	 * 
 	 */
 	public void exportData(CategoryAssignment ca) {
 		exportCa = ca;
@@ -94,7 +82,7 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 		// create the state sheet
 		createDataSheetStates();
 		// create the transition sheet
-		createDataSheetTransitions();	
+		createDataSheetTransitions();
 	}
 
 	@Override
@@ -110,55 +98,49 @@ public class StateMachineExporter extends ExcelExportHelper implements IExport {
 
 	/**
 	* Creates the data sheet for States and populates it with the data
-	* 
-	* @author  Bell_er
-	* 
 	*/
 	private void createDataSheetStates() {
 		XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_STATES);
 		if (sheet == null) {
 			sheet = wb.createSheet(AExcelIo.TEMPLATE_SHEETNAME_STATES);
 		}
-		StateMachine sm = new StateMachine(exportCa);
-		IBeanList<State> states =  sm.getStates();
+		StateMachine stateMaschine = new StateMachine(exportCa);
+		IBeanList<State> states = stateMaschine.getStates();
 		nullChecker(states.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
 		// for each interface end, fill out a row
 		int i = AExcelIo.COMMON_ROW_START_TABLE;
-		for (State s : states) {
+		for (State state : states) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(s.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(getCreationHelper().createRichTextString(s.getName()));
+			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(state.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(getCreationHelper().createRichTextString(state.getName()));
 			i++;
 		}
 	}
-	
+
 	/**
 	* Creates the data sheet for Transitions and populates it with the data
-	* 
-	* @author  Bell_er
-	* 
 	*/
 	private void createDataSheetTransitions() {
 		XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_TRANSITIONS);
 		if (sheet == null) {
 			sheet = wb.createSheet(AExcelIo.TEMPLATE_SHEETNAME_TRANSITIONS);
-		}	
-	
-		StateMachine sm = new StateMachine(exportCa);
-		IBeanList<Transition> transitions =  sm.getTransitions();
+		}
+
+		StateMachine stateMaschine = new StateMachine(exportCa);
+		IBeanList<Transition> transitions = stateMaschine.getTransitions();
 		nullChecker(transitions.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACE_COLUMN_INTERFACE_TO + 1);
 		int i = AExcelIo.COMMON_ROW_START_TABLE;
-		
-		for (Transition t : transitions) {
+
+		for (Transition transition : transitions) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(t.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_NAME).setCellValue(getCreationHelper().createRichTextString(t.getName()));
-			if (t.getStateFrom() != null) {
-				row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_FROM).setCellValue(getCreationHelper().createRichTextString(t.getStateFrom().getName()));
+			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(getCreationHelper().createRichTextString(transition.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_NAME).setCellValue(getCreationHelper().createRichTextString(transition.getName()));
+			if (transition.getStateFrom() != null) {
+				row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_FROM).setCellValue(getCreationHelper().createRichTextString(transition.getStateFrom().getName()));
 			}
-			if (t.getStateTo() != null) {
-				row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_TO).setCellValue(getCreationHelper().createRichTextString(t.getStateTo().getName()));
-			}	
+			if (transition.getStateTo() != null) {
+				row.getCell(AExcelIo.TRANSITION_COLUMN_TRANSITION_TO).setCellValue(getCreationHelper().createRichTextString(transition.getStateTo().getName()));
+			}
 			i++;
 		}
 	}

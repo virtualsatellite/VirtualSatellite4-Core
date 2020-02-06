@@ -24,46 +24,33 @@ import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
-
 /**
  * Class for Importing Excel files.
- * 
- * @author bell_er
- *
  */
 public class ExcelImporter {
 	private static final String IIMPORT_ID = "de.dlr.sc.virsat.excel.import";
 	private IExtensionRegistry registry;
-	
+
 	/**
 	* Simple constructor
-	* 
-	* @author  Bell_er
 	*/
 	public ExcelImporter() {
 		registry = Platform.getExtensionRegistry();
 	}
-	
-	
+
 	/**
 	* Constructor injecting an extension registry. Needed for testing.
-	* 
 	* @param registry the registry
-	* @author  muel_s8
 	*/
 	public ExcelImporter(IExtensionRegistry registry) {
 		this.registry = registry;
 	}
-	
+
 	/**
 	* Imports depending on the type of the Structural element
 	* @param object element to be imported
 	* @param repository repository of the element
 	* @param wb the workbook
-	* 
-	* 
-	* @author  Bell_er
-	* 
 	*/
 	public void importExcel(EObject object, Repository repository, XSSFWorkbook wb) {
 		IImport importer = getImporter(object);
@@ -71,14 +58,12 @@ public class ExcelImporter {
 			importer.importExcel(object, repository, wb);
 		}
 	}
+
 	/**
-	* Validates the input excel file 
+	* Validates the input excel file
 	* @param object element to be imported
 	* @param wb the workbook
-	* 
 	* @return the fault List
-	* @author  Bell_er
-	* 
 	*/
 	public List<Fault> validate(EObject object, XSSFWorkbook wb) {
 		IImport importer = getImporter(object);
@@ -87,27 +72,27 @@ public class ExcelImporter {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Gets an applicable importer for the given EObject if there is any.
 	 * If there is no registered importer for the EObject, null will be returned.
 	 * This will take the firstly found importer.
-	 * @param object the eObject
+	 * @param eObject the eObject
 	 * @return the importer
 	 */
-	private IImport getImporter(EObject object) {
+	private IImport getImporter(EObject eObject) {
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IIMPORT_ID);
-		for (IConfigurationElement e : config) {
-			Object o = null;
+		for (IConfigurationElement iConfElement : config) {
+			Object object = null;
 			try {
-				o = e.createExecutableExtension("class");
+				object = iConfElement.createExecutableExtension("class");
 			} catch (CoreException e1) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an excel import operation! ", e1);
-				DVLMEditPlugin.getPlugin().getLog().log(status);	
+				DVLMEditPlugin.getPlugin().getLog().log(status);
 			}
-			if (o instanceof IImport) {
-				IImport importer = (IImport) o;
-				if (importer.canImport(object)) {
+			if (object instanceof IImport) {
+				IImport importer = (IImport) object;
+				if (importer.canImport(eObject)) {
 					return importer;
 				}
 			}
