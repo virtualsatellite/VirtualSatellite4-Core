@@ -33,8 +33,20 @@ printUsage() {
 }
 
 uploadSwtBot() {
-	cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
-	rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
+	if [ "$(ls -A ${TRAVIS_BUILD_DIR}/swtbot)" ]; then
+		echo "Test Artifacts: Collecting all reports in: ${TRAVIS_BUILD_DIR}/swtbot"
+		cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
+		TEST_ARTEFACTS_ZIP=SwtBot_${TRAVIS_REPO_SLUG}_${TRAVIS_BRANCH}_${TRAVIS_JOB_NUMBER}_${TRAVIS_COMMIT}
+		# Remove "/" "\" and "." from filename and attach .zip to it
+		TEST_ARTEFACTS_ZIP=$(sed  -e 's/[\/.]/\_/g' <<< ${TEST_ARTEFACTS_ZIP}).zip
+		echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
+		zip ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} swtbot/*
+		echo "Test Artifacts: Starting upload to SourceForge..."
+		ls -lh ${TRAVIS_BUILD_DIR}/swtbot/
+		rsync -e ssh -avP ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
+	else
+		echo "Test Artifacts:No files in folder: ${TRAVIS_BUILD_DIR}/swtbot"
+	fi
 }
 
 uploadDevelopment() {
