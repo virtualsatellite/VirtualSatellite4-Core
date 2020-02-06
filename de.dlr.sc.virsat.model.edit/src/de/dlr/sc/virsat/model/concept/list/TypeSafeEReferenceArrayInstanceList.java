@@ -59,8 +59,7 @@ public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends 
 
 		ai.getArrayInstances().forEach((pi) -> {
 			try {
-				BeanPropertyEReference<ETYPE> bean;
-				bean = new BeanPropertyEReference<ETYPE>();
+				BeanPropertyEReference<ETYPE> bean = new BeanPropertyEReference<ETYPE>();
 				bean.setATypeInstance(pi);
 				beanList.add(bean);
 			} catch (Exception e) {
@@ -151,8 +150,7 @@ public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends 
 
 	@Override
 	public BeanPropertyEReference<ETYPE> get(int index) {
-		BeanPropertyEReference<ETYPE> bean = null;
-		bean = new BeanPropertyEReference<ETYPE>();
+		BeanPropertyEReference<ETYPE> bean = new BeanPropertyEReference<ETYPE>();
 		bean.setATypeInstance(ai.getArrayInstances().get(index));
 		return bean;
 	}
