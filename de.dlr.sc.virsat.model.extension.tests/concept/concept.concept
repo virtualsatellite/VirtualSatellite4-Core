@@ -19,7 +19,6 @@ Concept de.dlr.sc.virsat.model.extension.tests
 		IsRootStructuralElement;
 		Inherits From All;
 		Applicable For All;
-	 
 	}
 	
 	StructuralElement TestStructuralElementOther description "Another StructuralElement for bean structural element instance helper" {

@@ -142,6 +142,10 @@
 		name="Add TestMassParameters">
 	</command>
 	<command
+		id="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestCrossLinkedParametersWithCalculation"
+		name="Add TestCrossLinkedParametersWithCalculation">
+	</command>
+	<command
 		id="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest"
 		name="Add EReferenceTest">
 	</command>
@@ -221,6 +225,11 @@
 	      icon="resources/icons/TestMassParameters.gif">
 	</image>
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestCrossLinkedParametersWithCalculation"
+	      disabledIcon="resources/icons/TestCrossLinkedParametersWithCalculation_disabled.gif"
+	      icon="resources/icons/TestCrossLinkedParametersWithCalculation.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest"
 	      disabledIcon="resources/icons/EReferenceTest_disabled.gif"
 	      icon="resources/icons/EReferenceTest.gif">
@@ -288,6 +297,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.tests.ui.handler.AddTestMassParametersHandler"
 		commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestMassParameters">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.tests.ui.handler.AddTestCrossLinkedParametersWithCalculationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestCrossLinkedParametersWithCalculation">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.tests.ui.handler.AddEReferenceTestHandler"
@@ -633,6 +646,28 @@
 			</visibleWhen>
 		</command>
 		<command
+			commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestCrossLinkedParametersWithCalculation"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.tests.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
 			commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest"
 			style="push">
 			<visibleWhen
@@ -920,6 +955,16 @@
 		      id="de.dlr.sc.virsat.model.extension.tests.section.uiSnippetTestMassParameters"
 		      section="de.dlr.sc.virsat.model.extension.tests.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.tests.ui.snippet.UiSnippetSectionTestMassParameters">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.tests.table.uiSnippetTestCrossLinkedParametersWithCalculation"
+		      section="de.dlr.sc.virsat.model.extension.tests.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.tests.ui.snippet.UiSnippetTableTestCrossLinkedParametersWithCalculation">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.tests.section.uiSnippetTestCrossLinkedParametersWithCalculation"
+		      section="de.dlr.sc.virsat.model.extension.tests.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.tests.ui.snippet.UiSnippetSectionTestCrossLinkedParametersWithCalculation">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.tests.table.uiSnippetEReferenceTest"

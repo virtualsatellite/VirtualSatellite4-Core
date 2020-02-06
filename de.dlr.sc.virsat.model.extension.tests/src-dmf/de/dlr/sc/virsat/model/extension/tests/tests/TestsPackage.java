@@ -48,7 +48,7 @@ public interface TestsPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dmf/v1.2/tests";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dmf/v1.1/tests";
 
 	/**
 	 * The package namespace name.
