@@ -17,7 +17,6 @@ import de.dlr.sc.virsat.model.dvlm.general.IName;
 
 /**
  * Overrides the getText method for reference property instances
- * @author muel_s8
  *
  */
 public class DVLMERefererencePropertyInstanceItemProvider extends EReferencePropertyInstanceItemProvider {
