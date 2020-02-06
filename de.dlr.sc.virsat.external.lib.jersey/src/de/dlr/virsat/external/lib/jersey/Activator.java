@@ -16,6 +16,4 @@ import de.dlr.sc.virsat.external.lib.LibPlugin;
  *
  */
 public class Activator extends LibPlugin {
-
-	
 }

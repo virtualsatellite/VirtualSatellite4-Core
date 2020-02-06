@@ -7,8 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-
-package de.dlr.sc.virsat.server;
+package de.dlr.sc.virsat.server.servlet;
 
 import javax.servlet.Servlet;
 
