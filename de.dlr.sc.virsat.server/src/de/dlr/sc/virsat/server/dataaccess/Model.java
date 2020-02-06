@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.data;
+package de.dlr.sc.virsat.server.dataaccess;
 
 public class Model {
 
