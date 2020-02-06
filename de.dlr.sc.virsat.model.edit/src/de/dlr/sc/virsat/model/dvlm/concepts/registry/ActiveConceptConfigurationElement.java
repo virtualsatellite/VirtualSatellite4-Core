@@ -147,7 +147,10 @@ public class ActiveConceptConfigurationElement {
 			public EObject get(Object key) {
 				
 				// For EReferences to external EClasses ignore concept 
-				// activation and convert URIs instead
+				// activation and convert URIs instead. The URI needs to be
+				// transformed from a PluginResourceURI to a PlattformPluginURI so 
+				// that it can be resolved from the VirSat project in the eclipse runtime
+				// instance.
 				// VirSat does not ensure external model's storage.
 				// We only enable non-containment references.
 				if (key instanceof EClass) {
