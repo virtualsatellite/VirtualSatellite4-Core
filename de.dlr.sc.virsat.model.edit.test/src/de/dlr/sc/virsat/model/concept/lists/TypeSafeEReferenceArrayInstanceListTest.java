@@ -46,6 +46,8 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 	private ArrayInstance propertyInstance;
 	
 	private CategoryAssignment testPropertyValue;
+	private BeanPropertyEReference<CategoryAssignment> bean;
+	private EReferencePropertyInstance eReferencePropertyInstance;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -58,31 +60,28 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		testConcept.getCategories().add(testCategory);
 		testCategory.getProperties().add(testProperty);
 		
-		
 		testCA = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 		propertyInstance = PropertyinstancesFactory.eINSTANCE.createArrayInstance();
 		propertyInstance.setType(testProperty);
 		testProperty.setReferenceType(testCA.eClass());
 		testCA.getPropertyInstances().add(propertyInstance);
 		helper = new CategoryAssignmentHelper(testCA);
-		
-		testPropertyValue = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-	}
 
+		//Create test bean value
+		bean = new BeanPropertyEReference<CategoryAssignment>();
+		eReferencePropertyInstance = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
+		eReferencePropertyInstance.setType(testProperty);
+		bean.setTypeInstance(eReferencePropertyInstance);
+		testPropertyValue = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		bean.setValue(testPropertyValue);
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testList() {
+	public void testAddListValue() {
 		//Create test array instance
 		IBeanList<BeanPropertyEReference<CategoryAssignment>> testList = new TypeSafeEReferenceArrayInstanceList<CategoryAssignment>();
 		testList.setArrayInstance((ArrayInstance) helper.getPropertyInstance(PROPERTY_NAME));
-		
-		//Create new value
-		BeanPropertyEReference<CategoryAssignment> bean = new BeanPropertyEReference<CategoryAssignment>();
-		EReferencePropertyInstance eReferencePropertyInstance = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
-		eReferencePropertyInstance.setType(testProperty);
-		bean.setTypeInstance(eReferencePropertyInstance);
-		bean.setValue(testPropertyValue);
 		
 		//Add new value
 		testList.add(bean);
@@ -92,9 +91,27 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		
 		assertTrue("Bean should be found in list", testList.contains(bean));
 		
+	}
+	
+	@Test
+	public void testRemoveListValue() {
+		//Create test array instance
+		IBeanList<BeanPropertyEReference<CategoryAssignment>> testList = new TypeSafeEReferenceArrayInstanceList<CategoryAssignment>();
+		testList.setArrayInstance((ArrayInstance) helper.getPropertyInstance(PROPERTY_NAME));
+		
+		testList.add(bean);
+		assertTrue("Bean should be found in list", testList.contains(bean));
+		
 		//Remove value
 		testList.remove(0);
 		assertFalse("Bean should be removed", testList.contains(bean));
+	}
+	
+	@Test
+	public void testListIndexHandling() {
+		//Create test array instance
+		IBeanList<BeanPropertyEReference<CategoryAssignment>> testList = new TypeSafeEReferenceArrayInstanceList<CategoryAssignment>();
+		testList.setArrayInstance((ArrayInstance) helper.getPropertyInstance(PROPERTY_NAME));
 		
 		//Check indexing
 		testList.add(new BeanPropertyEReference<CategoryAssignment>());
@@ -105,10 +122,26 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		assertEquals(INDEX, testList.indexOf(testList.get(INDEX)));
 		assertEquals(INDEX, testList.lastIndexOf(testList.get(INDEX)));
 		
-		testList.removeAll(Collections.singletonList(bean));
+		testList.remove(bean);
 		assertFalse("Bean should be removed", testList.contains(bean));
 		assertEquals("Index should be not existent", AArrayInstanceList.INDEX_DOES_NOT_EXIST, testList.indexOf(bean));
 		assertEquals("Index should be not existent", AArrayInstanceList.INDEX_DOES_NOT_EXIST, testList.lastIndexOf(bean));
+		
+	}
+	
+	@Test
+	public void testListAllOperations() {
+		//Create test array instance
+		IBeanList<BeanPropertyEReference<CategoryAssignment>> testList = new TypeSafeEReferenceArrayInstanceList<CategoryAssignment>();
+		testList.setArrayInstance((ArrayInstance) helper.getPropertyInstance(PROPERTY_NAME));
+		
+		testList.add(new BeanPropertyEReference<CategoryAssignment>());
+		testList.add(new BeanPropertyEReference<CategoryAssignment>());
+		testList.add(new BeanPropertyEReference<CategoryAssignment>());
+		testList.add(bean);
+		
+		testList.removeAll(Collections.singletonList(bean));
+		assertFalse("Bean should be removed", testList.contains(bean));
 		
 		BeanPropertyEReference<CategoryAssignment> bean2 = new BeanPropertyEReference<CategoryAssignment>();
 		eReferencePropertyInstance = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
