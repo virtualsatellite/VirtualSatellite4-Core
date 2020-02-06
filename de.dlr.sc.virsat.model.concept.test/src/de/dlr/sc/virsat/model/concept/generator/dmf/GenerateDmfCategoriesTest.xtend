@@ -30,14 +30,15 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
-import de.dlr.sc.virsat.model.external.tests.AExternalModelTest
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)
-class GenerateDmfCategoriesTest extends AExternalModelTest {
+class GenerateDmfCategoriesTest {
 
 	@Inject extension ParseHelper<Concept>
+	protected ExternalModelTestHelper helper = new ExternalModelTestHelper;
 
 	static val TEST_CONCEPT_NAME = "testConcept";
 	static val TEST_FQN_NAME = "de.dlr.sc.virsat.model.extension" + "." + TEST_CONCEPT_NAME;
@@ -50,7 +51,7 @@ class GenerateDmfCategoriesTest extends AExternalModelTest {
 		ConceptsPackage.eINSTANCE.eClass
 		CategoriesPackage.eINSTANCE.eClass
 		PropertydefinitionsPackage.eINSTANCE.eClass
-		loadExternalPackage
+		helper.loadExternalPackage()
 	}
 	
 	@Test
@@ -275,9 +276,9 @@ class GenerateDmfCategoriesTest extends AExternalModelTest {
 				}
 				
 			}
-	    '''.parse(resourceSet)
-	    
-	    dmfCategoriesGenerator.initResources(concept);
+		'''.parse(helper.resourceSet)
+		
+		dmfCategoriesGenerator.initResources(concept);
 		val ePackage = dmfCategoriesGenerator.createEPackageFromConcept(concept);
 		
 		dmfCategoriesGenerator.createCategoryEClassesInEPackage(concept, ePackage);

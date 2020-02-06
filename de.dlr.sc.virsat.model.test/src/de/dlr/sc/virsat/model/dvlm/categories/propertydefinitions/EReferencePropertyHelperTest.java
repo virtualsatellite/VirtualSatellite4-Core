@@ -26,18 +26,20 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport;
-import de.dlr.sc.virsat.model.external.tests.AExternalModelTest;
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 
-public class EReferencePropertyHelperTest extends AExternalModelTest {
+public class EReferencePropertyHelperTest {
 	
 	private EReferenceProperty propertyDefinition;
+	private ExternalModelTestHelper helper = new ExternalModelTestHelper();
+	private EPackage testExternalPackage;
 	private static final String PROPERTY_TEST_NAME = "testEReference";
 	private static final String TEST_CLASS_NAME = "ExternalTestType";
 	
 	@Before
 	public void setUp() throws Exception {
 		//Load external metamodel
-		loadExternalPackage();
+		testExternalPackage = helper.loadExternalPackage();
 		
 		//Prepare EReference property
 		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
@@ -63,7 +65,7 @@ public class EReferencePropertyHelperTest extends AExternalModelTest {
 		testExternalPackage.eResource().unload();
 		assertEquals("EClass should be resolved from the registered package", TEST_CLASS_NAME, helper.getResolvedEClassType(propertyDefinition).getName());
 		EPackage registeredPackage = helper.getEPackageOfType(propertyDefinition);
-		assertNotEquals("Resolved package from registry should not be the locally loaded one", loadExternalPackage(), registeredPackage);
+		assertNotEquals("Resolved package from registry should not be the locally loaded one", testExternalPackage, registeredPackage);
 	}
 	
 	@Test
@@ -71,7 +73,7 @@ public class EReferencePropertyHelperTest extends AExternalModelTest {
 		EReferencePropertyHelper helper = new EReferencePropertyHelper();
 		
 		//Create proxy by unloading an element
-		EClass eClassProxy = (EClass) loadExternalPackage().getEClassifiers().get(0);
+		EClass eClassProxy = (EClass) testExternalPackage.getEClassifiers().get(0);
 		eClassProxy.eResource().unload();
 		
 		//Test URI

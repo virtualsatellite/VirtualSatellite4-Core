@@ -20,7 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.Propertydefini
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import de.dlr.sc.virsat.model.external.tests.AExternalModelTest;
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
@@ -37,10 +37,12 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(ConceptLanguageTestInjectorProvider.class)
 @SuppressWarnings("all")
-public class GenerateCategoryBeansTest extends AExternalModelTest {
+public class GenerateCategoryBeansTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
+  
+  protected ExternalModelTestHelper helper = new ExternalModelTestHelper();
   
   private Concept concept;
   
@@ -55,7 +57,7 @@ public class GenerateCategoryBeansTest extends AExternalModelTest {
     ConceptsPackage.eINSTANCE.eClass();
     CategoriesPackage.eINSTANCE.eClass();
     PropertydefinitionsPackage.eINSTANCE.eClass();
-    this.loadExternalPackage();
+    this.helper.loadExternalPackage();
   }
   
   @Test
@@ -414,7 +416,7 @@ public class GenerateCategoryBeansTest extends AExternalModelTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      this.concept = this._parseHelper.parse(_builder, this.resourceSet);
+      this.concept = this._parseHelper.parse(_builder, this.helper.getResourceSet());
       final Category category = this.concept.getCategories().get(0);
       final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
       GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java");
@@ -458,7 +460,7 @@ public class GenerateCategoryBeansTest extends AExternalModelTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      this.concept = this._parseHelper.parse(_builder, this.resourceSet);
+      this.concept = this._parseHelper.parse(_builder, this.helper.getResourceSet());
       final Category category = this.concept.getCategories().get(0);
       final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
       GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java");

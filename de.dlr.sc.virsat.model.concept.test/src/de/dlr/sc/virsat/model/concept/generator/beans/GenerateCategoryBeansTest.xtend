@@ -17,7 +17,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.Propertydefini
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
-import de.dlr.sc.virsat.model.external.tests.AExternalModelTest
 import javax.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
@@ -26,12 +25,14 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)
-class GenerateCategoryBeansTest extends AExternalModelTest {
+class GenerateCategoryBeansTest {
 
 	@Inject extension ParseHelper<Concept>
+	protected ExternalModelTestHelper helper = new ExternalModelTestHelper;
 
 	Concept concept
 	val TEST_CONCEPT_NAME = "testConcept"
@@ -43,7 +44,7 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 		ConceptsPackage.eINSTANCE.eClass
 		CategoriesPackage.eINSTANCE.eClass
 		PropertydefinitionsPackage.eINSTANCE.eClass
-		loadExternalPackage
+		helper.loadExternalPackage
 	}
 	
 	@Test
@@ -233,7 +234,7 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 				}
 				
 			}
-		'''.parse(resourceSet)
+		'''.parse(helper.resourceSet)
 		
 		val category = concept.categories.get(0)
 		val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
@@ -257,7 +258,7 @@ class GenerateCategoryBeansTest extends AExternalModelTest {
 				}
 				
 			}
-		'''.parse(resourceSet)
+		'''.parse(helper.resourceSet)
 		
 		val category = concept.categories.get(0)
 		val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)

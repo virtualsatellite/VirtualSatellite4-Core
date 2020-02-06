@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,8 +22,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProp
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
-import de.dlr.sc.virsat.model.external.tests.AExternalModelTest;
 import de.dlr.sc.virsat.model.external.tests.Container;
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 import de.dlr.sc.virsat.model.external.tests.TestsFactory;
 
@@ -30,17 +31,19 @@ import de.dlr.sc.virsat.model.external.tests.TestsFactory;
  * 
  * Test validation of EClass of EObject value added to the reference
  */
-public class EReferencePropertyInstanceImplCustomTest extends AExternalModelTest {
+public class EReferencePropertyInstanceImplCustomTest {
 
 	private EReferencePropertyInstance propertyInstance;
 	private EReferenceProperty propertyDefinition;
+	private ExternalModelTestHelper helper = new ExternalModelTestHelper();
+	private EPackage testExternalPackage;
 	private static final String PROPERTY_TEST_NAME = "testEReference";
 	private static final String TEST_CLASS_NAME = "ExternalTestType";
 	
 	@Before
 	public void setUp() throws Exception {
 		//Load external metamodel
-		loadExternalPackage();
+		testExternalPackage = helper.loadExternalPackage();
 		
 		//Prepare EReference property
 		propertyDefinition = PropertydefinitionsFactory.eINSTANCE.createEReferenceProperty();

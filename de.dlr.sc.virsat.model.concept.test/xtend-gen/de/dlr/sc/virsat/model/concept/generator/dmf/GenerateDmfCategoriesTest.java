@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayMod
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.external.tests.AExternalModelTest;
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import javax.inject.Inject;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -47,10 +47,12 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(ConceptLanguageTestInjectorProvider.class)
 @SuppressWarnings("all")
-public class GenerateDmfCategoriesTest extends AExternalModelTest {
+public class GenerateDmfCategoriesTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
+  
+  protected ExternalModelTestHelper helper = new ExternalModelTestHelper();
   
   private static final String TEST_CONCEPT_NAME = "testConcept";
   
@@ -67,7 +69,7 @@ public class GenerateDmfCategoriesTest extends AExternalModelTest {
     ConceptsPackage.eINSTANCE.eClass();
     CategoriesPackage.eINSTANCE.eClass();
     PropertydefinitionsPackage.eINSTANCE.eClass();
-    this.loadExternalPackage();
+    this.helper.loadExternalPackage();
   }
   
   @Test
@@ -410,7 +412,7 @@ public class GenerateDmfCategoriesTest extends AExternalModelTest {
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
-      final Concept concept = this._parseHelper.parse(_builder, this.resourceSet);
+      final Concept concept = this._parseHelper.parse(_builder, this.helper.getResourceSet());
       this.dmfCategoriesGenerator.initResources(concept);
       final EPackage ePackage = this.dmfCategoriesGenerator.createEPackageFromConcept(concept);
       this.dmfCategoriesGenerator.createCategoryEClassesInEPackage(concept, ePackage);
