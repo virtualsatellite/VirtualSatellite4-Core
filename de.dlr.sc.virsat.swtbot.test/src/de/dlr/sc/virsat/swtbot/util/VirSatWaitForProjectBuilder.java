@@ -65,7 +65,7 @@ public class VirSatWaitForProjectBuilder extends DefaultCondition implements IJo
 			// Wait until all jobs that may interfere with this condition are done
 			while (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) {
 				try {
-					wait(ASwtBotTestCase.GENERAL_SWTBOT_WAIT_TIME);
+					wait(ASwtBotTestCase.SWTBOT_GENERAL_WAIT_TIME);
 				} catch (InterruptedException e) {
 					setErrorState("Could not wait for cleaned JobManager due to: " + e.getMessage());
 				}

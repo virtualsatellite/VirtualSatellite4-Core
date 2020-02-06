@@ -34,7 +34,7 @@ public class MockMatcher implements IBeanStructuralTreeTraverserMatcher {
 	}
 
 	@Override
-	public void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
+	public void processMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
 		assertFalse(foundMatches.containsKey(treeNode));
 		foundMatches.put(treeNode, matchingParent);
 	}

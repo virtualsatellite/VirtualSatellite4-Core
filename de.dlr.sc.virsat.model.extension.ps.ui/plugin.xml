@@ -708,5 +708,12 @@
 				            commandId="de.dlr.sc.virsat.model.extension.ps.ui.command.Configure">
      				 </handler>
 					</extension>
+     <extension
+           point="de.dlr.sc.virsat.project.ui.navigator">
+        <DVLMConceptDropAssistant
+              class="de.dlr.sc.virsat.model.extension.ps.ui.dropAdapter.ProductStructureInheritanceDropAdapterAssistant"
+              conceptId="de.dlr.sc.virsat.model.extension.ps">
+        </DVLMConceptDropAssistant>
+     </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

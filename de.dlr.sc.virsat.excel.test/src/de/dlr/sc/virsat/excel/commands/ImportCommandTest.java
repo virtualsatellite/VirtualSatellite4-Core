@@ -18,16 +18,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
-import de.dlr.sc.virsat.excel.ExcelImporter;
+import de.dlr.sc.virsat.excel.importer.ExcelImporter;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
- *  Test class for the import command
+ * Test class for the import command
  */
 public class ImportCommandTest extends AConceptProjectTestCase {
-	
+
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
@@ -36,15 +36,12 @@ public class ImportCommandTest extends AConceptProjectTestCase {
 
 	/**
 	 * Mock ExcelImporter
-	 * @author muel_s8
-	 *
 	 */
-	
 	public class MockExcelImporter extends ExcelImporter {
 		EObject object;
 		Repository repository;
 		XSSFWorkbook wb;
-		
+
 		@Override
 		public void importExcel(EObject object, Repository repository, XSSFWorkbook wb) {
 			this.object = object;
@@ -52,7 +49,7 @@ public class ImportCommandTest extends AConceptProjectTestCase {
 			this.wb = wb;
 		}
 	}
-	
+
 	@Test
 	public void testImportCommand() {
 		MockExcelImporter mockImporter = new MockExcelImporter();
@@ -60,10 +57,9 @@ public class ImportCommandTest extends AConceptProjectTestCase {
 		XSSFWorkbook wb = new XSSFWorkbook();
 		ImportCommand command = new ImportCommand(object, wb, editingDomain, mockImporter);
 		command.execute();
-		
+
 		assertEquals(object, mockImporter.object);
 		assertEquals(wb, mockImporter.wb);
 		assertEquals(editingDomain.getResourceSet().getRepository(), mockImporter.repository);
 	}
-
 }

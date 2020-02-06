@@ -136,6 +136,10 @@ public class TestsAdapterFactory extends AdapterFactoryImpl {
 				return createTestMassParametersAdapter();
 			}
 			@Override
+			public Adapter caseTestCrossLinkedParametersWithCalculation(TestCrossLinkedParametersWithCalculation object) {
+				return createTestCrossLinkedParametersWithCalculationAdapter();
+			}
+			@Override
 			public Adapter caseIUuid(IUuid object) {
 				return createIUuidAdapter();
 			}
@@ -360,6 +364,20 @@ public class TestsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTestMassParametersAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWithCalculation <em>Test Cross Linked Parameters With Calculation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWithCalculation
+	 * @generated
+	 */
+	public Adapter createTestCrossLinkedParametersWithCalculationAdapter() {
 		return null;
 	}
 
