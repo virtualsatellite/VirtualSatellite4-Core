@@ -40,12 +40,15 @@ echo "[Info] ------------------------------------"
 
 echo "[Info] Checking .mailmap"
 
-git diff --quiet development .mailmap
+# here we need to use the ... to actually see the diff of a file for just the branch
+# using .. would compare the head of development with head of the current branch. Thus
+# showing both differences.
+git diff --quiet development... .mailmap
 CHANGED_MAILMAP=$?
 
 echo "[Info] Checking known_authors.txt"
 
-git diff --quiet development known_authors.txt
+git diff --quiet development... known_authors.txt
 CHANGED_KNOWN_AUTHORS=$?
 
 echo "[Info] ------------------------------------"
@@ -75,14 +78,17 @@ echo "[Info] Create commit authors file"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git log development... --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
+# here we have to use .. and not ... . Only .. shows the log of the particular branch
+# and negates the ones from the first one, which is development. Be aware this is opposite behavior 
+# compared to the git diff
+git log development.. --pretty=format:"%aN" | sort | uniq > ./commit_authors.txt
 
 echo "[Info] ------------------------------------"
 echo "[Info] List of Commits and Authors"
 echo "[Info] ------------------------------------"
 echo "[Info] "
 
-git --no-pager log development... --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%aN>%Creset" --abbrev-commit --reverse
+git --no-pager log development.. --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%aN>%Creset" --abbrev-commit --reverse
 
 echo ""
 echo "[Info] ------------------------------------"
