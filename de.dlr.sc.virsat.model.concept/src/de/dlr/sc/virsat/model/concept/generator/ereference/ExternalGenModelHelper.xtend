@@ -28,9 +28,9 @@ class ExternalGenModelHelper {
 		var genPackage = resolveGenPackage(property)
 		
 		//If package could be found get class name
-		if(genPackage !== null) {
+		if (genPackage !== null) {
 			typeClass = ""
-			if(genPackage.basePackage !== null) {
+			if (genPackage.basePackage !== null) {
 				typeClass = genPackage.basePackage + "."
 			}
 			typeClass += genPackage.NSName
@@ -50,15 +50,15 @@ class ExternalGenModelHelper {
 		var GenPackage genPackage = null
 		
 		//Try to resolve package from GenModel import
-		for(eImport : concept.ecoreImports) {
-			if(eImport.importedGenModel !== null) {
+		for (eImport : concept.ecoreImports) {
+			if (eImport.importedGenModel !== null) {
 				val genModelURI = URI.createPlatformPluginURI(eImport.importedGenModel, true)
 				genPackage = loadGenPackage(genModelURI, nsURI, resource.resourceSet)
 			}
 		}
 		
 		//Try to resolve package from EPackage path
-		if(genPackage === null && eClassPackage.eResource !== null) {
+		if (genPackage === null && eClassPackage.eResource !== null) {
 			val ecoreURI = eClassPackage.eResource.URI
 			val genModelURI = ecoreURI.trimFileExtension.appendFileExtension("genmodel")
 			genPackage = loadGenPackage(genModelURI, nsURI, resource.resourceSet)
@@ -72,10 +72,10 @@ class ExternalGenModelHelper {
 	def loadGenPackage(URI genModelUri, String nsUri, ResourceSet resourceSet) {
 		var Resource genModelResource
 		genModelResource = resourceSet.getResource(genModelUri, true)
-		if(genModelResource !== null && genModelResource.contents.get(0) instanceof GenModel) {
+		if (genModelResource !== null && genModelResource.contents.get(0) instanceof GenModel) {
 			var loadedGenModel = genModelResource.contents.get(0) as GenModel
-			for(package : loadedGenModel.allGenPackagesWithClassifiers) {
-				if(package.NSURI.equals(nsUri)) {
+			for (package : loadedGenModel.allGenPackagesWithClassifiers) {
+				if (package.NSURI.equals(nsUri)) {
 					return package
 				}
 			}
