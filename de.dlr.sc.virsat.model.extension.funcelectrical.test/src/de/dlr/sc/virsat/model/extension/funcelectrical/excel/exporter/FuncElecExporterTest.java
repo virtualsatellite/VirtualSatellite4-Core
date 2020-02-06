@@ -29,84 +29,80 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
 
-
 /**
  * Test Case for Exporting to Excel
- * @author bell_er
- *
  */
 public class FuncElecExporterTest extends ExcelTestCase {
-	
+
 	@Test
-	public void canExport()  { 	
-		FuncElecExporter fe = new FuncElecExporter();
-		assertEquals(true, fe.canExport(ec.getStructuralElementInstance()));
+	public void canExport() {
+		FuncElecExporter feExporter = new FuncElecExporter();
+		assertEquals(true, feExporter.canExport(elementConf.getStructuralElementInstance()));
 	}
-	
+
 	@Test
-	public void testExportTypes()  { 		
-		StructuralElementInstance sei = itc.getStructuralElementInstance();
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(itc.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
-		XSSFWorkbook wb = fe.getWb();
+	public void testExportTypes() { 		
+		StructuralElementInstance sei = ifaceTypeCollection.getStructuralElementInstance();
+		FuncElecExporter feExporter = new FuncElecExporter();
+		feExporter.export(ifaceTypeCollection.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
+		XSSFWorkbook wb = feExporter.getWb();
 
 		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
-
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
 			Cell cell = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 	}
-	
+
 	@Test
-	public void testExportInterfaceEnds() throws IOException  { 		
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
-		StructuralElementInstance sei = ed.getStructuralElementInstance();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
+	public void testExportInterfaceEnds() throws IOException {
+		InputStream iStream = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
+		StructuralElementInstance sei = elementDef.getStructuralElementInstance();
+
+		FuncElecExporter feExporter = new FuncElecExporter();
+		feExporter.export(sei, iStream);
+		Workbook wb = feExporter.getWb();
 
 		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
+			Cell cell = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		Row row = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
 		assertNull("Line after alle entries correctly empty", row);
 	}
-	
+
 	@Test
-	public void testExportInterfaces() throws IOException  { 	
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
-		
-		StructuralElementInstance sei = ec.getStructuralElementInstance();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
-			
+	public void testExportInterfaces() throws IOException {
+		InputStream iStream = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
+
+		StructuralElementInstance sei = elementConf.getStructuralElementInstance();
+
+		FuncElecExporter feExporter = new FuncElecExporter();
+		feExporter.export(sei, iStream);
+		Workbook wb = feExporter.getWb();
+
 		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME);
+			Cell cell = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME);
 			assertEquals("Interface exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
-	
+
 	@Test
-	public void testExportTypesIntoEmptyWorkbook() throws IOException  { 		
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
-		
-		StructuralElementInstance sei = itc.getStructuralElementInstance();
-	
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
-			
+	public void testExportTypesIntoEmptyWorkbook() throws IOException {
+		InputStream iStream = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
+
+		StructuralElementInstance sei = ifaceTypeCollection.getStructuralElementInstance();
+
+		FuncElecExporter feExporter = new FuncElecExporter();
+		feExporter.export(sei, iStream);
+		Workbook wb = feExporter.getWb();
+
 		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
-		
+
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
 			Cell cell = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
@@ -114,38 +110,38 @@ public class FuncElecExporterTest extends ExcelTestCase {
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
-	
+
 	@Test
-	public void testExportInterfacesIntoEmptyWorkbook() throws IOException  { 
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
-		
-		StructuralElementInstance sei = ed.getStructuralElementInstance();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
+	public void testExportInterfacesIntoEmptyWorkbook() throws IOException {
+		InputStream iStream = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
+
+		StructuralElementInstance sei = elementDef.getStructuralElementInstance();
+
+		FuncElecExporter feExporter = new FuncElecExporter();
+		feExporter.export(sei, iStream);
+		Workbook wb = feExporter.getWb();
 
 		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
+			Cell cell = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
-	
+
 	@Test
-	public void testExportInterfaceEndsIntoEmptyWorkbook() throws IOException  { 
-		InputStream is = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
-		
-		StructuralElementInstance sei = ec2.getStructuralElementInstance();
-		
-		FuncElecExporter fe = new FuncElecExporter();
-		fe.export(sei, is);
-		Workbook wb = fe.getWb();
+	public void testExportInterfaceEndsIntoEmptyWorkbook() throws IOException {
+		InputStream iStream = TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
+
+		StructuralElementInstance sei = elementConf2.getStructuralElementInstance();
+
+		FuncElecExporter feExporter = new FuncElecExporter();
+		feExporter.export(sei, iStream);
+		Workbook wb = feExporter.getWb();
 
 		Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell =  sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
+			Cell cell = sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + i).getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
 			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelIo.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
