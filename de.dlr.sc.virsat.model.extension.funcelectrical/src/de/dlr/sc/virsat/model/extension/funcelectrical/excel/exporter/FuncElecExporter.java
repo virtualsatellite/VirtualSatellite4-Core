@@ -61,10 +61,10 @@ public class FuncElecExporter implements IExport {
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
 		StructuralElementInstance parentSc = (StructuralElementInstance) eObject;
-		ArrayList <StructuralElementInstance> seiList = new ArrayList<StructuralElementInstance>();
-		seiList.add(parentSc);
-		seiList.addAll(parentSc.getDeepChildren());
-		for (StructuralElementInstance sei : seiList) {
+		ArrayList <StructuralElementInstance> seis = new ArrayList<StructuralElementInstance>();
+		seis.add(parentSc);
+		seis.addAll(parentSc.getDeepChildren());
+		for (StructuralElementInstance sei : seis) {
 			String selectedSEIType = sei.getType().getName();
 			if (Stream.of(EXPORTABLE_SEIS).anyMatch(exportable -> exportable.equals(selectedSEIType))) {
 				InputStream iStream = null;
@@ -79,7 +79,7 @@ public class FuncElecExporter implements IExport {
 					FileOutputStream out = new FileOutputStream(file);
 					helper.getWb().write(out);
 				} catch (IOException e) {
-					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! \n" + e.getMessage(), e);
+					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
 					DVLMEditPlugin.getPlugin().getLog().log(status);
 					ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 				}

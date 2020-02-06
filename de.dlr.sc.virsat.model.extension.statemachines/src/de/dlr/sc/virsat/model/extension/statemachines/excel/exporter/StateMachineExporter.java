@@ -63,7 +63,7 @@ public class StateMachineExporter implements IExport {
 				FileOutputStream out = new FileOutputStream(file);
 				helper.getWb().write(out);
 			} catch (IOException e) {
-				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! \n" + e.getMessage(), e);
+				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
 				Activator.getDefault().getLog().log(status);
 				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			}

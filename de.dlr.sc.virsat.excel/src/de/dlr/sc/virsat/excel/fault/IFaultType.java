@@ -10,7 +10,9 @@
 package de.dlr.sc.virsat.excel.fault;
 
 /**
- * This interface is for all possible faults which can happen during import
+ * This interface is for all possible faults which can happen during import.
+ * It is empty but needed because all Fault are generated the same way. 
+ * All Fault-Enums implement this Interface.
  */
 public interface IFaultType {
 	
