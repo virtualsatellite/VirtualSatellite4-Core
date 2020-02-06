@@ -18,6 +18,7 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.list.AArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
@@ -106,9 +107,8 @@ public class TypeSafeEReferenceArrayInstanceListTest {
 		
 		testList.removeAll(Collections.singletonList(bean));
 		assertFalse("Bean should be removed", testList.contains(bean));
-		final int INDEX_NOT_EXISTENT = -1;
-		assertEquals("Index should be not existent", INDEX_NOT_EXISTENT, testList.indexOf(bean));
-		assertEquals("Index should be not existent", INDEX_NOT_EXISTENT, testList.lastIndexOf(bean));
+		assertEquals("Index should be not existent", AArrayInstanceList.INDEX_DOES_NOT_EXIST, testList.indexOf(bean));
+		assertEquals("Index should be not existent", AArrayInstanceList.INDEX_DOES_NOT_EXIST, testList.lastIndexOf(bean));
 		
 		BeanPropertyEReference<CategoryAssignment> bean2 = new BeanPropertyEReference<CategoryAssignment>();
 		eReferencePropertyInstance = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
