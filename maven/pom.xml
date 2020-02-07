@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.parent</artifactId>
-	<version>4.10.0-SNAPSHOT</version>
+	<version>4.11.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -18,7 +18,7 @@
 		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.10.0</build.version>
+		<build.version>4.11.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -60,8 +60,10 @@
 				<build.qualifier>'d'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'d'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>development</build.folder.type>
-				<build.file.win32>VirSat_Core_Development_Win32.zip</build.file.win32>
-				<build.file.linux>VirSat_Core_Development_Linux.tar.gz</build.file.linux>
+				<build.file.core.win32>VirSat_Core_Development_Win32.zip</build.file.core.win32>
+				<build.file.core.linux>VirSat_Core_Development_Linux.tar.gz</build.file.core.linux>
+				<build.file.server.win32>VirSat_Server_Development_Win32.zip</build.file.server.win32>
+				<build.file.server.linux>VirSat_Server_Development_Linux.tar.gz</build.file.server.linux>
 			</properties>
 		</profile>
 		<profile>
@@ -70,8 +72,10 @@
 				<build.qualifier>'i'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'i'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>integration/${build.version}</build.folder.type>
-				<build.file.win32>VirSat_Core_Integration_${build.version}_Win32.zip</build.file.win32>
-				<build.file.linux>VirSat_Core_Integration_${build.version}_Linux.tar.gz</build.file.linux>
+				<build.file.core.win32>VirSat_Core_Integration_${build.version}_Win32.zip</build.file.core.win32>
+				<build.file.core.linux>VirSat_Core_Integration_${build.version}_Linux.tar.gz</build.file.core.linux>
+				<build.file.server.win32>VirSat_Server_Integration_${build.version}_Win32.zip</build.file.server.win32>
+				<build.file.server.linux>VirSat_Server_Integration_${build.version}_Linux.tar.gz</build.file.server.linux>
 			</properties>
 		</profile>
 		<profile>
@@ -81,8 +85,10 @@
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'r'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>release/${build.version}/${TRAVIS_BUILD_NUMBER}</build.folder.type>
-				<build.file.win32>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Win32.zip</build.file.win32>
-				<build.file.linux>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Linux.tar.gz</build.file.linux>
+				<build.file.core.win32>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Win32.zip</build.file.core.win32>
+				<build.file.core.linux>VirSat_Core_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Linux.tar.gz</build.file.core.linux>
+				<build.file.server.win32>VirSat_Server_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Win32.zip</build.file.server.win32>
+				<build.file.server.linux>VirSat_Server_Release_${build.version}_${TRAVIS_BUILD_NUMBER}_Linux.tar.gz</build.file.server.linux>
 			</properties>
 		</profile>
 		<profile>
@@ -266,7 +272,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.10.0-SNAPSHOT</version>
+							<version>4.11.0-SNAPSHOT</version>
 							<classifier>virsat</classifier>
 						</artifact>
 					</target>

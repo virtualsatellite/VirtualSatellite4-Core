@@ -31,5 +31,17 @@ public interface IBeanStructuralTreeTraverserMatcher {
 	 * @param matchingParent the closest parent of the node that also matches the criteria.
 	 *        Can be null if the node does not have a matching parent
 	 */
-	void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent);
+	void processMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent);
+	
+	/**
+	 * This method tells if the children of the current node should be processed or not.
+	 * 
+	 * Default behavior is that all children are processed.
+	 * @param treeNode the node of which the children should be processed or not.
+	 * @param isMatching the matching result which the traverser evaluated before.
+	 * @return true in case the children should be processed. false in case not.
+	 */
+	default boolean continueTraverseChildren(IBeanStructuralElementInstance treeNode, boolean isMatching) {
+		return true;
+	}
 }

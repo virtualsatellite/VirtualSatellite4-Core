@@ -19,8 +19,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.runtime.CoreException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
@@ -29,21 +27,8 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Test Cases for the VirSat Project Nature
- * @author fisc_ph
- *
  */
 public class VirSatProjectNatureTest extends AProjectTestCase {
-
-	@Before
-	@Override
-	public void setUp() throws CoreException {
-		super.setUp();
-	}
-
-	@After
-	public void tearDown() throws CoreException {
-		super.tearDown();
-	}
 
 	@Test
 	public void testConfigure() throws CoreException {

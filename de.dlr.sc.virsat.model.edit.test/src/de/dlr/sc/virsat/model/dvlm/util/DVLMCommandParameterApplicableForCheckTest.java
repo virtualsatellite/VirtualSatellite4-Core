@@ -36,6 +36,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.Prope
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.PropertyinstancesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMDVLMItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.resource.provider.DVLMResourceItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
@@ -107,7 +108,7 @@ public class DVLMCommandParameterApplicableForCheckTest {
 	}
 
 	@Test
-	public void testIsValidCommandParameterAddToStructuralElementInstance() {
+	public void testIsValidCommandParameterAddChildrenToStructuralElementInstance() {
 		StructuralElement seAccept = StructuralFactory.eINSTANCE.createStructuralElement();
 		StructuralElement seFail = StructuralFactory.eINSTANCE.createStructuralElement();
 		
@@ -128,7 +129,7 @@ public class DVLMCommandParameterApplicableForCheckTest {
 		StructuralElementInstance seiForFail = new StructuralInstantiator().generateInstance(seForFail, "relFail");
 		StructuralElementInstance seiForAll = new StructuralInstantiator().generateInstance(seForAll, "RelAcceptAll");
 
-
+		// Try adding children to the root sei
 		Command failCommand = AddCommand.create(ed, seiRoot, StructuralPackage.Literals.STRUCTURAL_ELEMENT_INSTANCE__CHILDREN, seiForFail);
 		assertFalse("Cannot execute the command", failCommand.canExecute());
 		
@@ -136,6 +137,39 @@ public class DVLMCommandParameterApplicableForCheckTest {
 		assertTrue("Can execute the command", acceptCommand.canExecute());
 
 		Command allCommand = AddCommand.create(ed, seiRoot, StructuralPackage.Literals.STRUCTURAL_ELEMENT_INSTANCE__CHILDREN, seiForAll);
+		assertTrue("Can execute the command", allCommand.canExecute());
+	}
+	
+	@Test
+	public void testIsValidCommandParameterAddSuperSeisToStructuralElementInstance() {
+		StructuralElement seAccept = StructuralFactory.eINSTANCE.createStructuralElement();
+		StructuralElement seFail = StructuralFactory.eINSTANCE.createStructuralElement();
+		
+		seAccept.getCanInheritFrom().add(seAccept);
+		seFail.getCanInheritFrom().add(seFail);
+		
+		StructuralElementInstance seiSuper = new StructuralInstantiator().generateInstance(seAccept, "Se_Super");
+		
+		StructuralElement seForAccept = StructuralFactory.eINSTANCE.createStructuralElement();
+		StructuralElement seForFail = StructuralFactory.eINSTANCE.createStructuralElement();
+		StructuralElement seForAll = StructuralFactory.eINSTANCE.createStructuralElement();
+		
+		seForAll.setIsCanInheritFromAll(true);
+		seForAccept.getCanInheritFrom().add(seAccept);
+		seForFail.getCanInheritFrom().add(seFail);
+		
+		StructuralElementInstance seiForAccept = new StructuralInstantiator().generateInstance(seForAccept, "RelAccept");
+		StructuralElementInstance seiForFail = new StructuralInstantiator().generateInstance(seForFail, "relFail");
+		StructuralElementInstance seiForAll = new StructuralInstantiator().generateInstance(seForAll, "RelAcceptAll");
+
+		// Try inheriting from the super sei
+		Command failCommand = AddCommand.create(ed, seiForFail, InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS, seiSuper);
+		assertFalse("Cannot execute the command", failCommand.canExecute());
+		
+		Command acceptCommand = AddCommand.create(ed, seiForAccept, InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS, seiSuper);
+		assertTrue("Can execute the command", acceptCommand.canExecute());
+
+		Command allCommand = AddCommand.create(ed, seiForAll, InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS, seiSuper);
 		assertTrue("Can execute the command", allCommand.canExecute());
 	}
 }

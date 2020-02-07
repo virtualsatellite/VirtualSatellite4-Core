@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.10.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-consoleLog -console
+      </programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <launcher name="VirSat4_Server">
+      <win useIco="true">
+         <ico path="../de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat_MultiRes.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+   </vm>
+
+   <plugins>
+      <plugin id="de.dlr.sc.virsat.apps"/>
+      <plugin id="de.dlr.sc.virsat.apps.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.apps.ui"/>
+      <plugin id="de.dlr.sc.virsat.branding.ui"/>
+      <plugin id="de.dlr.sc.virsat.build"/>
+      <plugin id="de.dlr.sc.virsat.build.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.build.ui"/>
+      <plugin id="de.dlr.sc.virsat.commons"/>
+      <plugin id="de.dlr.sc.virsat.commons.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.commons.ui"/>
+      <plugin id="de.dlr.sc.virsat.concept.unittest.util"/>
+      <plugin id="de.dlr.sc.virsat.excel"/>
+      <plugin id="de.dlr.sc.virsat.excel.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.excel.ui"/>
+      <plugin id="de.dlr.sc.virsat.external.lib"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.apache.poi"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.commons.cli"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.commons.math"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.jersey"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.jfreechart"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.json-simple"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.nebula.incubation"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.protobuf"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.spotbugs"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.vtk.linux.x86_64"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.vtk.win32.x86_64"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.z3"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.zmq.linux.x86_64"/>
+      <plugin id="de.dlr.sc.virsat.external.lib.zmq.win32.x86_64"/>
+      <plugin id="de.dlr.sc.virsat.graphiti"/>
+      <plugin id="de.dlr.sc.virsat.graphiti.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.graphiti.ui"/>
+      <plugin id="de.dlr.sc.virsat.javadoc.api"/>
+      <plugin id="de.dlr.sc.virsat.model"/>
+      <plugin id="de.dlr.sc.virsat.model.calculation"/>
+      <plugin id="de.dlr.sc.virsat.model.calculation.ide"/>
+      <plugin id="de.dlr.sc.virsat.model.calculation.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.calculation.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.concept"/>
+      <plugin id="de.dlr.sc.virsat.model.concept.ide"/>
+      <plugin id="de.dlr.sc.virsat.model.concept.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.concept.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.edit"/>
+      <plugin id="de.dlr.sc.virsat.model.edit.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.mass"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.power"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.power.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.power.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.maturity"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.maturity.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.maturity.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.mechanical"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.mechanical.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.mechanical.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.ps"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.ps.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.ps.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.requirements"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.requirements.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.requirements.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.statemachines"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.statemachines.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.statemachines.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests.edit"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests.edit.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.visualisation"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.visualisation.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.visualisation.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.ui"/>
+      <plugin id="de.dlr.sc.virsat.performance.test"/>
+      <plugin id="de.dlr.sc.virsat.project"/>
+      <plugin id="de.dlr.sc.virsat.project.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.project.ui"/>
+      <plugin id="de.dlr.sc.virsat.qudv.ui"/>
+      <plugin id="de.dlr.sc.virsat.server"/>
+      <plugin id="de.dlr.sc.virsat.server.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.swtbot.test"/>
+      <plugin id="de.dlr.sc.virsat.target"/>
+      <plugin id="de.dlr.sc.virsat.team"/>
+      <plugin id="de.dlr.sc.virsat.team.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.team.ui"/>
+      <plugin id="de.dlr.sc.virsat.test"/>
+      <plugin id="de.dlr.sc.virsat.uiengine.ui"/>
+   </plugins>
+
+   <features>
+      <feature id="de.dlr.sc.virsat.apps.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.branding.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.build.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.commons.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.dependencies.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.docs.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.excel.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.external.lib.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.graphiti.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.javadoc.api.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.license.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.calculation.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.concept.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.power.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.funcelectrical.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.maturity.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.ps.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.requirements.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.statemachines.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.visualisation.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.server.feature" installMode="root"/>
+      <feature id="org.eclipse.help" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.project.feature" installMode="root"/>
+      <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.edit" installMode="root"/>
+      <feature id="org.eclipse.xtext.runtime" installMode="root"/>
+      <feature id="org.eclipse.emf.transaction" installMode="root"/>
+      <feature id="org.eclipse.xtext.xbase" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding.edit" installMode="root"/>
+      <feature id="org.eclipse.emf.edit.ui" installMode="root"/>
+      <feature id="org.eclipse.rcp" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.workspace" installMode="root"/>
+      <feature id="org.eclipse.pde" installMode="root"/>
+      <feature id="org.eclipse.emf.edapt.runtime.feature" installMode="root"/>
+      <feature id="org.eclipse.jdt" installMode="root"/>
+      <feature id="org.eclipse.emf.common" installMode="root"/>
+      <feature id="org.eclipse.graphiti.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.uiengine.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
+      <feature id="org.eclipse.ocl" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.compare" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
+      <feature id="org.eclipse.platform" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding" installMode="root"/>
+      <feature id="org.eclipse.emf.validation" installMode="root"/>
+      <feature id="org.eclipse.e4.rcp" installMode="root"/>
+      <feature id="org.eclipse.emf" installMode="root"/>
+      <feature id="org.eclipse.xtext.sdk" installMode="root"/>
+      <feature id="org.eclipse.jgit" installMode="root"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+   </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
+
+</product>
