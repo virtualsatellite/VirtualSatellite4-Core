@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.ext.core.core.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
