@@ -24,7 +24,6 @@ public class GenericCategoryTest {
 	@Test
 	public void testGenericCategory() {
 		GenericCategoryMockupImpl impl = new GenericCategoryMockupImpl();
-		assertNotNull(impl);
 		assertEquals("Eclass is not correct", CorePackage.Literals.GENERIC_CATEGORY, impl.eStaticClass());
 	}
 

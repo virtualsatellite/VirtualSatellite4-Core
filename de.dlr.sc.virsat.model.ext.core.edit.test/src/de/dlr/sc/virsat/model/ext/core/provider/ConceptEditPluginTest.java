@@ -23,7 +23,7 @@ public class ConceptEditPluginTest {
 	@Test
 	public void testCreateEditPlugin() {
 
-		assertEquals("Plugin and edit resource locator should be the sam objects",
+		assertEquals("Plugin and edit resource locator should be the same objects",
 				ConceptEditPlugin.INSTANCE.getPluginResourceLocator(), ConceptEditPlugin.getPlugin());
 	}
 }
