@@ -9,10 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.util;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 /**
@@ -42,6 +47,10 @@ public class DVLMReferenceCheck {
 		if (object instanceof ReferencePropertyInstance) {
 			ReferencePropertyInstance referencePropertyInstance = (ReferencePropertyInstance) object;
 			ReferenceProperty referenceProperty = (ReferenceProperty) referencePropertyInstance.getType();
+			return isValid(referenceProperty, referencedObject);
+		} else if (object instanceof EReferencePropertyInstance) {
+			EReferencePropertyInstance referencePropertyInstance = (EReferencePropertyInstance) object;
+			EReferenceProperty referenceProperty = (EReferenceProperty) referencePropertyInstance.getType();
 			return isValid(referenceProperty, referencedObject);
 		}
 		
@@ -80,6 +89,38 @@ public class DVLMReferenceCheck {
 			} else {
 				return referencedType.equals(typeDefinition);
 			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Performs the validity check
+	 * @param referenceProperty the type of the referencing object
+	 * @param referencedObject the referenced object
+	 * @return whether object is allowed to be set to reference to referencedObject
+	 */
+	public static boolean isValid(EReferenceProperty referenceProperty, Object referencedObject) {
+		
+		if (referencedObject instanceof EObject) {
+			EObject referencedInstance = (EObject) referencedObject;
+			
+			// In case we have a proxy dont know the type of the referencedObject
+			if (referencedInstance.eIsProxy()) {
+				return true;
+			}
+			
+			// If we can get the type, then compare with to the allowed type
+			EClass typeDefinition = referencedInstance.eClass();
+			
+			// If we have no types, then we consider them to be of any type
+			if (referenceProperty == null || typeDefinition == null) {
+				return true;
+			}
+			
+			EClass referencedType = referenceProperty.getReferenceType();
+			
+			return referencedType.equals(typeDefinition);
 		}
 		
 		return true;

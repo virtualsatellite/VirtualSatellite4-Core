@@ -270,6 +270,11 @@ public class CategoryAssignmentItemProvider extends ATypeInstanceItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(CategoriesPackage.Literals.CATEGORY_ASSIGNMENT__PROPERTY_INSTANCES,
+				 PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CategoriesPackage.Literals.CATEGORY_ASSIGNMENT__PROPERTY_INSTANCES,
 				 PropertyinstancesFactory.eINSTANCE.createComposedPropertyInstance()));
 
 		newChildDescriptors.add
