@@ -73,6 +73,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -162,6 +163,9 @@ public class StructuralPackageImpl extends EPackageImpl implements StructuralPac
 		StructuralPackageImpl theStructuralPackage = (StructuralPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof StructuralPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new StructuralPackageImpl());
 
 		isInited = true;
+
+		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		DVLMPackageImpl theDVLMPackage = (DVLMPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DVLMPackage.eNS_URI) instanceof DVLMPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DVLMPackage.eNS_URI) : DVLMPackage.eINSTANCE);

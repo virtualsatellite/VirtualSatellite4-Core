@@ -15,9 +15,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryTest;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelperTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelperTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstanceTest;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.EReferencePropertyInstanceImplCustomTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitchTest;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelperTest;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiatorTest;
@@ -93,6 +95,8 @@ import junit.framework.JUnit4TestAdapter;
 				CategoryTest.class,
 				ConceptTest.class,
 				QudvUnitHelperTest.class,
+				EReferencePropertyHelperTest.class,
+				EReferencePropertyInstanceImplCustomTest.class
 				})
 
 /**

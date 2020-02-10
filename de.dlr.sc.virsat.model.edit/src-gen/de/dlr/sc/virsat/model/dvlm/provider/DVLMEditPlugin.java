@@ -27,6 +27,7 @@ import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -76,6 +77,7 @@ public final class DVLMEditPlugin extends EMFPlugin {
 	public DVLMEditPlugin() {
 		super
 		  (new ResourceLocator [] {
+		     EcoreEditPlugin.INSTANCE,
 		   });
 	}
 

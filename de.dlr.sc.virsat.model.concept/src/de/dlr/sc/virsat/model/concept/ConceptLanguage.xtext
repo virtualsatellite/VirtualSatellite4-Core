@@ -34,9 +34,10 @@ Concept returns Concepts::Concept:
 		(DMF?='hasDMF')?
 	)
 	'{'
-		(imports+=ConceptImport)* 
-		(structuralElements+=StructuralElement)*
-		(relations+=ARelation)*
+		((imports+=ConceptImport)* &
+		(ecoreImports+=EcoreImport)* )
+		(structuralElements+=StructuralElement)* 
+		(relations+=ARelation)* 
 		(categories+=Category)*
 	'}';
 
@@ -97,6 +98,12 @@ ConceptImport returns Concepts::ConceptImport:
    ';'
 ;
 
+EcoreImport returns Concepts::EcoreImport:
+	{Concepts::EcoreImport}
+   'EImport' importedNsURI = STRING ('genModel' importedGenModel=STRING)?
+   ';'
+;
+
 // ***************************************************************************************
 // The Properties
 // ***************************************************************************************
@@ -109,6 +116,7 @@ AProperty returns PropertyDefinitions::AProperty:
 	BooleanProperty |
 	EnumProperty |
 	ReferenceProperty |
+	EReferenceProperty |
 	ResourceProperty
 ;
 
@@ -187,6 +195,13 @@ EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
 ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
 	'Reference' name=ID (arrayModifier=ArrayModifier)?
 	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+	('description' description=EString)?
+	';'
+	;
+	
+EReferenceProperty returns PropertyDefinitions::EReferenceProperty:
+	'EReference' name=ID (arrayModifier=ArrayModifier)?
+	'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
 	('description' description=EString)?
 	';'
 	;

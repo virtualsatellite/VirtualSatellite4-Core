@@ -241,6 +241,11 @@ public class ArrayInstanceItemProvider extends APropertyInstanceItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES,
+				 PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES,
 				 PropertyinstancesFactory.eINSTANCE.createComposedPropertyInstance()));
 
 		newChildDescriptors.add

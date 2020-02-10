@@ -24,6 +24,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypePrope
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.DynamicArrayModifier;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
@@ -84,6 +85,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -113,6 +115,13 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 	 * @generated
 	 */
 	private EClass referencePropertyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass eReferencePropertyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -244,6 +253,9 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 
 		isInited = true;
 
+		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
+
 		// Obtain or create and register interdependencies
 		DVLMPackageImpl theDVLMPackage = (DVLMPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DVLMPackage.eNS_URI) instanceof DVLMPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DVLMPackage.eNS_URI) : DVLMPackage.eINSTANCE);
 		StructuralPackageImpl theStructuralPackage = (StructuralPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(StructuralPackage.eNS_URI) instanceof StructuralPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(StructuralPackage.eNS_URI) : StructuralPackage.eINSTANCE);
@@ -370,6 +382,24 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 	 */
 	public EReference getReferenceProperty_ReferenceType() {
 		return (EReference)referencePropertyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getEReferenceProperty() {
+		return eReferencePropertyEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEReferenceProperty_ReferenceType() {
+		return (EReference)eReferencePropertyEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -582,6 +612,9 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		referencePropertyEClass = createEClass(REFERENCE_PROPERTY);
 		createEReference(referencePropertyEClass, REFERENCE_PROPERTY__REFERENCE_TYPE);
 
+		eReferencePropertyEClass = createEClass(EREFERENCE_PROPERTY);
+		createEReference(eReferencePropertyEClass, EREFERENCE_PROPERTY__REFERENCE_TYPE);
+
 		iIntrinsicTypePropertyEClass = createEClass(IINTRINSIC_TYPE_PROPERTY);
 		createEAttribute(iIntrinsicTypePropertyEClass, IINTRINSIC_TYPE_PROPERTY__DEFAULT_VALUE);
 
@@ -640,6 +673,7 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		// Obtain other dependent packages
 		CategoriesPackage theCategoriesPackage = (CategoriesPackage)EPackage.Registry.INSTANCE.getEPackage(CategoriesPackage.eNS_URI);
 		CalculationPackage theCalculationPackage = (CalculationPackage)EPackage.Registry.INSTANCE.getEPackage(CalculationPackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		GeneralPackage theGeneralPackage = (GeneralPackage)EPackage.Registry.INSTANCE.getEPackage(GeneralPackage.eNS_URI);
 
 		// Create type parameters
@@ -651,6 +685,7 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		composedPropertyEClass.getESuperTypes().add(this.getAProperty());
 		composedPropertyEClass.getESuperTypes().add(theCalculationPackage.getIEquationDefinitionInput());
 		referencePropertyEClass.getESuperTypes().add(this.getAProperty());
+		eReferencePropertyEClass.getESuperTypes().add(this.getAProperty());
 		aQudvTypePropertyEClass.getESuperTypes().add(theCalculationPackage.getIEquationDefinitionInput());
 		aQudvTypePropertyEClass.getESuperTypes().add(this.getAProperty());
 		intPropertyEClass.getESuperTypes().add(this.getAQudvTypeProperty());
@@ -678,6 +713,9 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 
 		initEClass(referencePropertyEClass, ReferenceProperty.class, "ReferenceProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getReferenceProperty_ReferenceType(), theCategoriesPackage.getATypeDefinition(), null, "referenceType", null, 1, 1, ReferenceProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(eReferencePropertyEClass, EReferenceProperty.class, "EReferenceProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEReferenceProperty_ReferenceType(), theEcorePackage.getEClass(), null, "referenceType", null, 0, 1, EReferenceProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(iIntrinsicTypePropertyEClass, IIntrinsicTypeProperty.class, "IIntrinsicTypeProperty", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIIntrinsicTypeProperty_DefaultValue(), ecorePackage.getEString(), "defaultValue", null, 0, 1, IIntrinsicTypeProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

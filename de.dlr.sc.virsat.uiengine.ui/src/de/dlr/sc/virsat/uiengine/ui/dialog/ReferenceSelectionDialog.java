@@ -10,11 +10,12 @@
 package de.dlr.sc.virsat.uiengine.ui.dialog;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -49,12 +50,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.project.ui.contentProvider.EClassFilteredListContentProvider;
+import de.dlr.sc.virsat.project.ui.contentProvider.ResourceFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredListContentProvider;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatFilteredWrappedListLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.project.ui.navigator.commonSorter.VirSatNavigatorSeiSorter;
-import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 import de.dlr.sc.virsat.uiengine.ui.dialog.provider.ReferenceSelectionFilteredTransactionalContentProvider;
 
 /**
@@ -117,6 +119,30 @@ public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
 		VirSatFilteredListContentProvider cpList = new VirSatFilteredListContentProvider();
 		cpList.addClassFilterToGetElement(CategoryAssignment.class);
 		cpList.addCategoryIdFilterToGetElement(ActiveConceptHelper.getFullQualifiedId(referencedType));
+		
+		VirSatFilteredWrappedListLabelProvider lpList = new VirSatFilteredWrappedListLabelProvider(new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory));
+		
+		return new ReferenceSelectionDialog(parent, lpTree, cpTree, lpList, cpList);
+	}
+	
+	/**
+	 * Creates a reference selection dialog for choosing a reference to a category
+	 * @param parent the shell
+	 * @param referencedType the type that wants that we want to reference
+	 * @param fileEndings the file endings of the instance model of the ECLass
+	 * @param adapterFactory the adapter factory
+	 * @return the created reference selection dialog
+	 */
+	public static ReferenceSelectionDialog createERefernceSelectionDialog(Shell parent, EClass referencedType, Set<String> fileEndings, AdapterFactory adapterFactory) {
+		
+
+		ResourceFilteredWrappedTreeContentProvider cpTree = new ResourceFilteredWrappedTreeContentProvider(adapterFactory);
+		VirSatTransactionalAdapterFactoryLabelProvider lpTree = new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory);
+		
+		cpTree.addSupportedFileEndings(fileEndings);
+		
+		EClassFilteredListContentProvider cpList = new EClassFilteredListContentProvider();
+		cpList.addSupportedEClass(referencedType);
 		
 		VirSatFilteredWrappedListLabelProvider lpList = new VirSatFilteredWrappedListLabelProvider(new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory));
 		
@@ -380,9 +406,8 @@ public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
 	 */
 	
 	private void updateInputList() {
-		VirSatSelectionHelper selHelper = new VirSatSelectionHelper(treeViewer.getSelection());
-		EObject eObject = selHelper.getFirstEObject();
-		tableViewer.setInput(eObject);
+		IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+		tableViewer.setInput(selection.getFirstElement());
 	}
 	
 	/**

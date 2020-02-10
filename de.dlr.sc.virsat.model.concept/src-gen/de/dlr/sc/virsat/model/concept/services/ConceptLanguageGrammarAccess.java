@@ -59,8 +59,11 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cDMFAssignment_3_4 = (Assignment)cUnorderedGroup_3.eContents().get(4);
 		private final Keyword cDMFHasDMFKeyword_3_4_0 = (Keyword)cDMFAssignment_3_4.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cImportsAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cImportsConceptImportParserRuleCall_5_0 = (RuleCall)cImportsAssignment_5.eContents().get(0);
+		private final UnorderedGroup cUnorderedGroup_5 = (UnorderedGroup)cGroup.eContents().get(5);
+		private final Assignment cImportsAssignment_5_0 = (Assignment)cUnorderedGroup_5.eContents().get(0);
+		private final RuleCall cImportsConceptImportParserRuleCall_5_0_0 = (RuleCall)cImportsAssignment_5_0.eContents().get(0);
+		private final Assignment cEcoreImportsAssignment_5_1 = (Assignment)cUnorderedGroup_5.eContents().get(1);
+		private final RuleCall cEcoreImportsEcoreImportParserRuleCall_5_1_0 = (RuleCall)cEcoreImportsAssignment_5_1.eContents().get(0);
 		private final Assignment cStructuralElementsAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cStructuralElementsStructuralElementParserRuleCall_6_0 = (RuleCall)cStructuralElementsAssignment_6.eContents().get(0);
 		private final Assignment cRelationsAssignment_7 = (Assignment)cGroup.eContents().get(7);
@@ -73,17 +76,15 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//	{Concepts::Concept}
 		//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
 		//	('description' description=EString)? & DMF?='hasDMF'?)
-		//	'{'
-		//	imports+=ConceptImport*
-		//	structuralElements+=StructuralElement*
+		//	'{' (imports+=ConceptImport* & ecoreImports+=EcoreImport*) structuralElements+=StructuralElement*
 		//	relations+=ARelation*
 		//	categories+=Category*
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{Concepts::Concept} 'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? &
-		//beta?='beta'? & ('description' description=EString)? & DMF?='hasDMF'?) '{' imports+=ConceptImport*
-		//structuralElements+=StructuralElement* relations+=ARelation* categories+=Category* '}'
+		//beta?='beta'? & ('description' description=EString)? & DMF?='hasDMF'?) '{' (imports+=ConceptImport* &
+		//ecoreImports+=EcoreImport*) structuralElements+=StructuralElement* relations+=ARelation* categories+=Category* '}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Concepts::Concept}
@@ -153,11 +154,20 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 		
+		//imports+=ConceptImport* & ecoreImports+=EcoreImport*
+		public UnorderedGroup getUnorderedGroup_5() { return cUnorderedGroup_5; }
+		
 		//imports+=ConceptImport*
-		public Assignment getImportsAssignment_5() { return cImportsAssignment_5; }
+		public Assignment getImportsAssignment_5_0() { return cImportsAssignment_5_0; }
 		
 		//ConceptImport
-		public RuleCall getImportsConceptImportParserRuleCall_5_0() { return cImportsConceptImportParserRuleCall_5_0; }
+		public RuleCall getImportsConceptImportParserRuleCall_5_0_0() { return cImportsConceptImportParserRuleCall_5_0_0; }
+		
+		//ecoreImports+=EcoreImport*
+		public Assignment getEcoreImportsAssignment_5_1() { return cEcoreImportsAssignment_5_1; }
+		
+		//EcoreImport
+		public RuleCall getEcoreImportsEcoreImportParserRuleCall_5_1_0() { return cEcoreImportsEcoreImportParserRuleCall_5_1_0; }
 		
 		//structuralElements+=StructuralElement*
 		public Assignment getStructuralElementsAssignment_6() { return cStructuralElementsAssignment_6; }
@@ -928,6 +938,55 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//';'
 		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
+	public class EcoreImportElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.EcoreImport");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cEcoreImportAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cEImportKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cImportedNsURIAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cImportedNsURISTRINGTerminalRuleCall_2_0 = (RuleCall)cImportedNsURIAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cGenModelKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cImportedGenModelAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cImportedGenModelSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cImportedGenModelAssignment_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//EcoreImport Concepts::EcoreImport:
+		//	{Concepts::EcoreImport}
+		//	'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)?
+		//	';';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{Concepts::EcoreImport} 'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)? ';'
+		public Group getGroup() { return cGroup; }
+		
+		//{Concepts::EcoreImport}
+		public Action getEcoreImportAction_0() { return cEcoreImportAction_0; }
+		
+		//'EImport'
+		public Keyword getEImportKeyword_1() { return cEImportKeyword_1; }
+		
+		//importedNsURI=STRING
+		public Assignment getImportedNsURIAssignment_2() { return cImportedNsURIAssignment_2; }
+		
+		//STRING
+		public RuleCall getImportedNsURISTRINGTerminalRuleCall_2_0() { return cImportedNsURISTRINGTerminalRuleCall_2_0; }
+		
+		//('genModel' importedGenModel=STRING)?
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//'genModel'
+		public Keyword getGenModelKeyword_3_0() { return cGenModelKeyword_3_0; }
+		
+		//importedGenModel=STRING
+		public Assignment getImportedGenModelAssignment_3_1() { return cImportedGenModelAssignment_3_1; }
+		
+		//STRING
+		public RuleCall getImportedGenModelSTRINGTerminalRuleCall_3_1_0() { return cImportedGenModelSTRINGTerminalRuleCall_3_1_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
+	}
 	public class APropertyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.AProperty");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -938,18 +997,19 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cBooleanPropertyParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		private final RuleCall cEnumPropertyParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		private final RuleCall cReferencePropertyParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
-		private final RuleCall cResourcePropertyParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cEReferencePropertyParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final RuleCall cResourcePropertyParserRuleCall_8 = (RuleCall)cAlternatives.eContents().get(8);
 		
 		//// ***************************************************************************************
 		//// The Properties
 		//// ***************************************************************************************
 		//AProperty PropertyDefinitions::AProperty:
 		//	ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty
-		//	| ResourceProperty;
+		//	| EReferenceProperty | ResourceProperty;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty |
-		//ResourceProperty
+		//EReferenceProperty | ResourceProperty
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ComposedProperty
@@ -973,8 +1033,11 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//ReferenceProperty
 		public RuleCall getReferencePropertyParserRuleCall_6() { return cReferencePropertyParserRuleCall_6; }
 		
+		//EReferenceProperty
+		public RuleCall getEReferencePropertyParserRuleCall_7() { return cEReferencePropertyParserRuleCall_7; }
+		
 		//ResourceProperty
-		public RuleCall getResourcePropertyParserRuleCall_7() { return cResourcePropertyParserRuleCall_7; }
+		public RuleCall getResourcePropertyParserRuleCall_8() { return cResourcePropertyParserRuleCall_8; }
 	}
 	public class ArrayModifierElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.ArrayModifier");
@@ -1793,6 +1856,80 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//QualifiedName
 		public RuleCall getReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1() { return cReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1; }
+		
+		//('description' description=EString)?
+		public Group getGroup_6() { return cGroup_6; }
+		
+		//'description'
+		public Keyword getDescriptionKeyword_6_0() { return cDescriptionKeyword_6_0; }
+		
+		//description=EString
+		public Assignment getDescriptionAssignment_6_1() { return cDescriptionAssignment_6_1; }
+		
+		//EString
+		public RuleCall getDescriptionEStringParserRuleCall_6_1_0() { return cDescriptionEStringParserRuleCall_6_1_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
+	}
+	public class EReferencePropertyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.EReferenceProperty");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cEReferenceKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cArrayModifierAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cArrayModifierArrayModifierParserRuleCall_2_0 = (RuleCall)cArrayModifierAssignment_2.eContents().get(0);
+		private final Keyword cOfKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cTypeKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cReferenceTypeAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final CrossReference cReferenceTypeEClassCrossReference_5_0 = (CrossReference)cReferenceTypeAssignment_5.eContents().get(0);
+		private final RuleCall cReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1 = (RuleCall)cReferenceTypeEClassCrossReference_5_0.eContents().get(1);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cDescriptionKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Assignment cDescriptionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cDescriptionEStringParserRuleCall_6_1_0 = (RuleCall)cDescriptionAssignment_6_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		
+		//EReferenceProperty PropertyDefinitions::EReferenceProperty:
+		//	'EReference' name=ID arrayModifier=ArrayModifier?
+		//	'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description' description=EString)?
+		//	';';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'EReference' name=ID arrayModifier=ArrayModifier? 'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description'
+		//description=EString)? ';'
+		public Group getGroup() { return cGroup; }
+		
+		//'EReference'
+		public Keyword getEReferenceKeyword_0() { return cEReferenceKeyword_0; }
+		
+		//name=ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//arrayModifier=ArrayModifier?
+		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
+		
+		//ArrayModifier
+		public RuleCall getArrayModifierArrayModifierParserRuleCall_2_0() { return cArrayModifierArrayModifierParserRuleCall_2_0; }
+		
+		//'of'
+		public Keyword getOfKeyword_3() { return cOfKeyword_3; }
+		
+		//'Type'
+		public Keyword getTypeKeyword_4() { return cTypeKeyword_4; }
+		
+		//referenceType=[ecore::EClass|QualifiedName]
+		public Assignment getReferenceTypeAssignment_5() { return cReferenceTypeAssignment_5; }
+		
+		//[ecore::EClass|QualifiedName]
+		public CrossReference getReferenceTypeEClassCrossReference_5_0() { return cReferenceTypeEClassCrossReference_5_0; }
+		
+		//QualifiedName
+		public RuleCall getReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1() { return cReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1; }
 		
 		//('description' description=EString)?
 		public Group getGroup_6() { return cGroup_6; }
@@ -2951,6 +3088,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final ARelationElements pARelation;
 	private final CategoryElements pCategory;
 	private final ConceptImportElements pConceptImport;
+	private final EcoreImportElements pEcoreImport;
 	private final APropertyElements pAProperty;
 	private final ArrayModifierElements pArrayModifier;
 	private final DynmaicArrayModifierElements pDynmaicArrayModifier;
@@ -2963,6 +3101,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	private final EnumPropertyElements pEnumProperty;
 	private final EnumValueDefinitionElements pEnumValueDefinition;
 	private final ReferencePropertyElements pReferenceProperty;
+	private final EReferencePropertyElements pEReferenceProperty;
 	private final ResourcePropertyElements pResourceProperty;
 	private final EquationDefinitionElements pEquationDefinition;
 	private final EquationDefinitionResultElements pEquationDefinitionResult;
@@ -3022,6 +3161,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pARelation = new ARelationElements();
 		this.pCategory = new CategoryElements();
 		this.pConceptImport = new ConceptImportElements();
+		this.pEcoreImport = new EcoreImportElements();
 		this.pAProperty = new APropertyElements();
 		this.pArrayModifier = new ArrayModifierElements();
 		this.pDynmaicArrayModifier = new DynmaicArrayModifierElements();
@@ -3034,6 +3174,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		this.pEnumProperty = new EnumPropertyElements();
 		this.pEnumValueDefinition = new EnumValueDefinitionElements();
 		this.pReferenceProperty = new ReferencePropertyElements();
+		this.pEReferenceProperty = new EReferencePropertyElements();
 		this.pResourceProperty = new ResourcePropertyElements();
 		this.pEquationDefinition = new EquationDefinitionElements();
 		this.pEquationDefinitionResult = new EquationDefinitionResultElements();
@@ -3110,9 +3251,7 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	//	{Concepts::Concept}
 	//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
 	//	('description' description=EString)? & DMF?='hasDMF'?)
-	//	'{'
-	//	imports+=ConceptImport*
-	//	structuralElements+=StructuralElement*
+	//	'{' (imports+=ConceptImport* & ecoreImports+=EcoreImport*) structuralElements+=StructuralElement*
 	//	relations+=ARelation*
 	//	categories+=Category*
 	//	'}';
@@ -3205,12 +3344,24 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getConceptImportAccess().getRule();
 	}
 	
+	//EcoreImport Concepts::EcoreImport:
+	//	{Concepts::EcoreImport}
+	//	'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)?
+	//	';';
+	public EcoreImportElements getEcoreImportAccess() {
+		return pEcoreImport;
+	}
+	
+	public ParserRule getEcoreImportRule() {
+		return getEcoreImportAccess().getRule();
+	}
+	
 	//// ***************************************************************************************
 	//// The Properties
 	//// ***************************************************************************************
 	//AProperty PropertyDefinitions::AProperty:
 	//	ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty
-	//	| ResourceProperty;
+	//	| EReferenceProperty | ResourceProperty;
 	public APropertyElements getAPropertyAccess() {
 		return pAProperty;
 	}
@@ -3348,6 +3499,18 @@ public class ConceptLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getReferencePropertyRule() {
 		return getReferencePropertyAccess().getRule();
+	}
+	
+	//EReferenceProperty PropertyDefinitions::EReferenceProperty:
+	//	'EReference' name=ID arrayModifier=ArrayModifier?
+	//	'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description' description=EString)?
+	//	';';
+	public EReferencePropertyElements getEReferencePropertyAccess() {
+		return pEReferenceProperty;
+	}
+	
+	public ParserRule getEReferencePropertyRule() {
+		return getEReferencePropertyAccess().getRule();
 	}
 	
 	//ResourceProperty PropertyDefinitions::ResourceProperty:

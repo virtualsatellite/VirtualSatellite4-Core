@@ -7,19 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.tests.tests;
+package de.dlr.sc.virsat.model.extension.tests.ui.command;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Maturity</b></em>'.
- * <!-- end-user-doc -->
- *
- *
- * @see de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage#getMaturity()
- * @model
- * @generated
+ * Auto Generated Class inheriting from Generator Gap Class
+ * 
+ * This class is generated once, do your changes here
+ * 
+ * 
+ * 
  */
-public interface Maturity extends DObject {
-} // Maturity
+public class CreateAddEReferenceTestCommand extends ACreateAddEReferenceTestCommand {
+}
