@@ -97,6 +97,10 @@ public class PropertydefinitionsAdapterFactory extends AdapterFactoryImpl {
 				return createReferencePropertyAdapter();
 			}
 			@Override
+			public Adapter caseEReferenceProperty(EReferenceProperty object) {
+				return createEReferencePropertyAdapter();
+			}
+			@Override
 			public Adapter caseIIntrinsicTypeProperty(IIntrinsicTypeProperty object) {
 				return createIIntrinsicTypePropertyAdapter();
 			}
@@ -227,6 +231,20 @@ public class PropertydefinitionsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createReferencePropertyAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty <em>EReference Property</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+	 * @generated
+	 */
+	public Adapter createEReferencePropertyAdapter() {
 		return null;
 	}
 

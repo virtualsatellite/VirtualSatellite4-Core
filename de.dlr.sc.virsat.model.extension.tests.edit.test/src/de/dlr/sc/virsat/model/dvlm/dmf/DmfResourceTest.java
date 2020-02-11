@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.dvlm.dmf;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -38,6 +40,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
@@ -46,6 +49,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
@@ -54,6 +58,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsFactory;
+import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -73,6 +78,8 @@ public class DmfResourceTest extends AConceptTestCase {
 	private VirSatTransactionalEditingDomain ed;
 	private Concept concept;
 	
+	protected EPackage testExternalPackage;
+	private static final String PLATFORM_MODEL_PATH = "/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -104,6 +111,10 @@ public class DmfResourceTest extends AConceptTestCase {
 				resSet.getRepository().getActiveConcepts().add(concept);
 			}
 		});
+		
+		URI metamodelURI = URI.createPlatformPluginURI(PLATFORM_MODEL_PATH, true);
+		Resource metamodelResource = resSet.getResource(metamodelURI, true);
+		testExternalPackage = (EPackage) metamodelResource.getContents().get(0);
 	}
 
 	@After
@@ -293,6 +304,51 @@ public class DmfResourceTest extends AConceptTestCase {
 		assertEquals("DMF property same as Bean property", dmfCategoryAssignmentReferenced, dmfCategoryAssignmentArray.getTestCategoryReferenceArrayStatic().get(0));
 	}
 
+	@Test
+	public void testLoadCategoryAssignmentWithEReference() throws IOException {
+		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
+		EReferenceTest beanTestCategoryAssignment = new EReferenceTest(concept);
+		
+		final ExternalTestType TEST_EREFERENCE_VALUE = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
+		
+		beanTestCategoryAssignment.setEReferenceTest(TEST_EREFERENCE_VALUE);
+		
+		beanTestStructuralElement.add(beanTestCategoryAssignment);
+
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+			}
+		});
+
+		ed.saveAll();
+
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		
+		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
+		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
+		m.put(DmfResource.DMF_FILENAME_EXTENSION, new DmfResourceFactory());
+
+		URI originalSeiUri = resSei.getURI();
+		URI dmfSeiUri = originalSeiUri.appendFileExtension(DmfResource.DMF_FILENAME_EXTENSION);
+
+		ResourceSet dmfResourceSet = new ResourceSetImpl();
+		Resource dmfResource = dmfResourceSet.getResource(dmfSeiUri, true);
+		
+		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
+		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
+		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+
+		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
+		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
+		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0) instanceof de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest);
+		
+		de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest dmfCategoryAssignment = (de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest) dObjectContainer.getObjects().get(0);
+		assertNotNull("The EReference value should be transfered to the DMF object", dmfCategoryAssignment.getEReferenceTest());
+		assertEquals("The EReference value should be the same as set on the DVLM category", TEST_EREFERENCE_VALUE, dmfCategoryAssignment.getEReferenceTest());
+	}
+	
 	
 	@Test
 	public void testLoadReferencedCategorySameContainment() throws IOException {
@@ -546,6 +602,65 @@ public class DmfResourceTest extends AConceptTestCase {
 		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING, beanTestCategoryAssignment.getTestString());
 		assertEquals("DMF property same as Bean property", TEST_VALUE_ENUM, beanTestCategoryAssignment.getTestEnum());
 		assertEquals("DMF property same as Bean property", TEST_VALUE_BOOL, beanTestCategoryAssignment.getTestBool());
+	}
+	
+	@Test
+	public void testSaveDObjectWithEReference() throws IOException {
+		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
+		
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+			}
+		});
+
+		ed.saveAll();
+
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		
+		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
+		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
+		m.put(DmfResource.DMF_FILENAME_EXTENSION, new DmfResourceFactory());
+
+		URI originalSeiUri = resSei.getURI();
+		URI dmfSeiUri = originalSeiUri.appendFileExtension(DmfResource.DMF_FILENAME_EXTENSION);
+
+		ResourceSet dmfResourceSet = new ResourceSetImpl();
+		Resource dmfResource = dmfResourceSet.getResource(dmfSeiUri, true);
+		
+		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
+		de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest dmfCategoryAssignment = TestsFactory.eINSTANCE.createEReferenceTest();
+		dObjectContainer.getObjects().add(dmfCategoryAssignment);
+		
+		final ExternalTestType TEST_EREFERENCE_VALUE = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
+		URI testExternalModelInstanceURI = originalSeiUri.trimFileExtension().appendFileExtension("etests");
+		Resource testExternalModelInstanceResource = resSet.createResource(testExternalModelInstanceURI);
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				testExternalModelInstanceResource.getContents().add(TEST_EREFERENCE_VALUE);
+			}
+		});
+		
+		dmfCategoryAssignment.setEReferenceTest(TEST_EREFERENCE_VALUE);
+		
+		testExternalModelInstanceResource.save(Collections.EMPTY_MAP);
+		dmfResource.save(Collections.EMPTY_MAP);
+		
+		resSei.unload();
+		resSei.load(Collections.EMPTY_MAP);
+		
+		StructuralElementInstance sei = (StructuralElementInstance) resSei.getContents().get(0);
+		assertFalse("Sei has a category assignment", sei.getCategoryAssignments().isEmpty());
+		CategoryAssignment ca = sei.getCategoryAssignments().get(0);
+		EReferenceTest beanTestCategoryAssignment = new EReferenceTest(ca);
+		
+		assertNotNull("EReference value should have bean saved and loaded on model level", ((EReferencePropertyInstance) ca.getPropertyInstances().get(0)).getReference());
+		assertNotNull("EReference value should have bean saved and loaded on bean level", beanTestCategoryAssignment.getEReferenceTest());
+		assertEquals("EReference value should be same as set in DMF", TEST_EREFERENCE_VALUE, beanTestCategoryAssignment.getEReferenceTest());
+		assertEquals("EReference value should be same as set in DMF", TEST_EREFERENCE_VALUE, beanTestCategoryAssignment.getEReferenceTest());
+		assertEquals("EReference value should be same as set in DMF", TEST_EREFERENCE_VALUE.eResource().getURI().toString(), beanTestCategoryAssignment.getEReferenceTest().eResource().getURI().toString());
 	}
 	
 	@Test

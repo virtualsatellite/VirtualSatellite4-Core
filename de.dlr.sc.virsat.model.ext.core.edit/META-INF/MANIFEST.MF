@@ -15,5 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  de.dlr.sc.virsat.model;visibility:=reexport,
- de.dlr.sc.virsat.model.edit;visibility:=reexport
+ de.dlr.sc.virsat.model.edit;visibility:=reexport,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy

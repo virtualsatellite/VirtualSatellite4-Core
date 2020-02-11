@@ -36,6 +36,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArrayTe
 import de.dlr.sc.virsat.model.extension.tests.validator.StructuralElementInstanceValidatorTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanBTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanConcreteTest;
+import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTestTest;
 import de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
 
@@ -59,6 +60,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
 	TestParameterTest.class,
 	TestMassParametersTest.class,
 	TestCrossLinkedParametersWithCalculationTest.class,
+	EReferenceTestTest.class,
 	TestStructuralElementTest.class,
 	TestStructuralElementOtherTest.class,
 	Migrator1v0Test.class,

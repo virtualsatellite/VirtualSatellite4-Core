@@ -14,6 +14,7 @@ import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
  * This is the central singleton for the Concept edit plugin.
@@ -48,6 +49,7 @@ public final class ConceptEditPlugin extends EMFPlugin {
 		super
 		  (new ResourceLocator [] {
 		     DVLMEditPlugin.INSTANCE,
+		     EcoreEditPlugin.INSTANCE,
 		   });
 	}
 

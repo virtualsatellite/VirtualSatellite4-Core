@@ -5,7 +5,7 @@
     editorDirectory="/de.dlr.sc.virsat.model.ext.core.editor/src-dmf" modelPluginID="de.dlr.sc.virsat.model.ext.core"
     modelName="Concept" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="/de.dlr.sc.virsat.model.ext.core.tests/src-dmf" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm ../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
     operationReflection="true" importOrganizing="true">
   <foreignModel>/de.dlr.sc.virsat.model.ext.core/concept/concept.ecore</foreignModel>
   <genPackages prefix="Core" basePackage="de.dlr.sc.virsat.model.ext.core" resource="XMI"
