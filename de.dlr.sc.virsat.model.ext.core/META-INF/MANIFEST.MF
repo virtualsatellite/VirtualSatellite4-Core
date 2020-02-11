@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.ext.core;singleton:=true
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -18,12 +18,12 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.ext.core,
+ de.dlr.sc.virsat.model.ext.core.core,
+ de.dlr.sc.virsat.model.ext.core.core.impl,
+ de.dlr.sc.virsat.model.ext.core.core.util,
  de.dlr.sc.virsat.model.ext.core.infrastructure,
  de.dlr.sc.virsat.model.ext.core.migrator,
  de.dlr.sc.virsat.model.ext.core.model,
- de.dlr.sc.virsat.model.ext.core.validator,
- de.dlr.sc.virsat.model.ext.core.core,
- de.dlr.sc.virsat.model.ext.core.core.impl,
- de.dlr.sc.virsat.model.ext.core.core.util
+ de.dlr.sc.virsat.model.ext.core.validator
 Automatic-Module-Name: de.dlr.sc.virsat.model.ext.core
 Bundle-Activator: de.dlr.sc.virsat.model.ext.core.Activator

@@ -32,7 +32,7 @@ import org.junit.Before;
  * Concept for core language elements
  * 
  */	
-	public abstract class AStructuralElementInstanceValidatorTest {
+public abstract class AStructuralElementInstanceValidatorTest {
 
 	StructuralElementInstance testSei;
 

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: de.dlr.sc.virsat.model.external.tests;singleton:=true
+Bundle-Version: 4.11.0.qualifier
+Bundle-ClassPath: .
+Automatic-Module-Name: de.dlr.sc.virsat.model.external.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.dlr.sc.virsat.model.external.tests,
+ de.dlr.sc.virsat.model.external.tests.impl,
+ de.dlr.sc.virsat.model.external.tests.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin

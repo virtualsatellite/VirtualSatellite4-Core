@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.junit.Test;
 
 
@@ -33,31 +32,17 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * Tests the Creation of resources and files for a structural element instance
- * @author muel_s8
- *
  */
-
 public class CreateSeiResourceAndFileCommandTest extends AProjectTestCase {
 
-	private VirSatProjectCommons projectCommons;
 	private StructuralElementInstance sei1;
-	
-	private VirSatResourceSet rs;
-	private TransactionalEditingDomain rsEd;
 	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
+		addEditingDomainAndRepository();
 		sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-
-		rs = VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 	}
-	
 	
 	@Override
 	public void tearDown() throws CoreException {
@@ -79,10 +64,13 @@ public class CreateSeiResourceAndFileCommandTest extends AProjectTestCase {
 		assertTrue("Command can always undo", cmd.canUndo());
 	}
 
+	private static final int AMOUNT_PROJECT_RESOURCE_WITH_SEI = 4;
+	private static final int AMOUNT_PROJECT_RESOURCES_NO_SEI = 3;
+	
 	@Test
 	public void testUndo() {
 		Command cmd = new CreateSeiResourceAndFileCommand(rs, sei1);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(cmd);
 
 		IFile file = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folder = projectCommons.getStructuralElemntInstanceFolder(sei1);
@@ -90,20 +78,20 @@ public class CreateSeiResourceAndFileCommandTest extends AProjectTestCase {
 		// Check that the necessary files have been created
 		assertTrue("File got correctly created", file.exists());
 		assertTrue("Folder got correctly creatred", folder.exists());
-		assertEquals("ResourceSet has a new resource", 1, rs.getResources().size());
+		assertEquals("ResourceSet has a new resource", AMOUNT_PROJECT_RESOURCE_WITH_SEI, rs.getResources().size());
 
-		rsEd.getCommandStack().undo();
+		editingDomain.getCommandStack().undo();
 
 		// Check that all files got deleted and that the resource has been removed from the resource set
 		assertFalse("File got correctly created", file.exists());
 		assertFalse("Folder got correctly creatred", folder.exists());
-		assertEquals("ResourceSet is now empty", 0, rs.getResources().size());
+		assertEquals("ResourceSet is now empty", AMOUNT_PROJECT_RESOURCES_NO_SEI, rs.getResources().size());
 	}
 
 	@Test
 	public void testExecute() {
 		Command cmd = new CreateSeiResourceAndFileCommand(rs, sei1);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		IFile file = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folder = projectCommons.getStructuralElemntInstanceFolder(sei1);		
@@ -115,7 +103,7 @@ public class CreateSeiResourceAndFileCommandTest extends AProjectTestCase {
 		assertTrue("Folder got correctly creatred", folderDocs.exists());
 
 		// Make sure the resource contained in the resource set is the newly created one
-		assertEquals("ResourceSet has a new resource", 1, rs.getResources().size());
+		assertEquals("ResourceSet has a new resource", AMOUNT_PROJECT_RESOURCE_WITH_SEI, rs.getResources().size());
 		Resource resourceO = rs.getStructuralElementInstanceResource(sei1);
 		assertThat("Contains correct resource", rs.getResources(), hasItems(resourceO));
 	}
@@ -123,7 +111,7 @@ public class CreateSeiResourceAndFileCommandTest extends AProjectTestCase {
 	@Test
 	public void testRedo() {
 		Command cmd = new CreateSeiResourceAndFileCommand(rs, sei1);
-		rsEd.getCommandStack().execute(cmd);
+		editingDomain.getCommandStack().execute(cmd);
 
 		IFile file = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folder = projectCommons.getStructuralElemntInstanceFolder(sei1);
@@ -131,20 +119,20 @@ public class CreateSeiResourceAndFileCommandTest extends AProjectTestCase {
 		// Check that the necessary files have been created
 		assertTrue("File got correctly created", file.exists());
 		assertTrue("Folder got correctly creatred", folder.exists());
-		assertEquals("ResourceSet has a new resource", 1, rs.getResources().size());
+		assertEquals("ResourceSet has a new resource", AMOUNT_PROJECT_RESOURCE_WITH_SEI, rs.getResources().size());
 
-		rsEd.getCommandStack().undo();
+		editingDomain.getCommandStack().undo();
 
 		// Check that all files got deleted and that the resource has been removed from the resource set
 		assertFalse("File got correctly created", file.exists());
 		assertFalse("Folder got correctly creatred", folder.exists());
-		assertEquals("ResourceSet is now empty", 0, rs.getResources().size());
+		assertEquals("ResourceSet is now empty", AMOUNT_PROJECT_RESOURCES_NO_SEI, rs.getResources().size());
 		
-		rsEd.getCommandStack().redo();
+		editingDomain.getCommandStack().redo();
 		
 		// Check that the necessary files have been recreated
 		assertTrue("File got correctly created", file.exists());
 		assertTrue("Folder got correctly creatred", folder.exists());
-		assertEquals("ResourceSet has a new resource", 1, rs.getResources().size());
+		assertEquals("ResourceSet has a new resource", AMOUNT_PROJECT_RESOURCE_WITH_SEI, rs.getResources().size());
 	}
 }

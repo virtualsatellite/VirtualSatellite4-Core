@@ -14,53 +14,41 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-import de.dlr.sc.virsat.excel.ExcelImporter;
+import de.dlr.sc.virsat.excel.importer.ExcelImporter;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Executable command that performs the actual import operation.
- * 
- * @author muel_s8
- *
  */
-
 public class ImportCommand extends RecordingCommand {
 
 	private EObject eObject;
 	private XSSFWorkbook wb;
 	private VirSatTransactionalEditingDomain domain;
-	private ExcelImporter ei;
+	private ExcelImporter excelImporter;
 
 	/**
 	 * Create a new import command
-	 * 
-	 * @param eObject
-	 *            will be used as the root object for integrating the data
-	 * @param wb
-	 *            the excel file
-	 * @param domain
-	 *            transaction domain
+	 * @param eObject will be used as the root object for integrating the data
+	 * @param wb the excel file
+	 * @param domain transaction domain
 	 */
 	public ImportCommand(EObject eObject, XSSFWorkbook wb, TransactionalEditingDomain domain) {
 		this(eObject, wb, domain, new ExcelImporter());
 	}
-	
+
 	/**
 	 * Create a new import command
-	 * 
-	 * @param eObject
-	 *            will be used as the root object for integrating the data
-	 * @param wb
-	 *            the excel file
-	 * @param domain
-	 *            transaction domain
-	 * @param ei excel importer to use
+	 * @param eObject will be used as the root object for integrating the data
+	 * @param wb the excel file
+	 * @param domain transaction domain
+	 * @param excelImporter excel importer to use
 	 */
-	public ImportCommand(EObject eObject, XSSFWorkbook wb, TransactionalEditingDomain domain, ExcelImporter ei) {
+	public ImportCommand(EObject eObject, XSSFWorkbook wb, TransactionalEditingDomain domain, ExcelImporter excelImporter) {
 		super(domain);
 
-		this.ei = ei;
+		this.excelImporter = excelImporter;
 		this.domain = (VirSatTransactionalEditingDomain) domain;
 		this.eObject = eObject;
 		this.wb = wb;
@@ -69,7 +57,6 @@ public class ImportCommand extends RecordingCommand {
 	@Override
 	protected void doExecute() {
 		Repository repository = domain.getResourceSet().getRepository();
-		ei.importExcel(eObject, repository, wb);
+		excelImporter.importExcel(eObject, repository, wb);
 	}
-
 }

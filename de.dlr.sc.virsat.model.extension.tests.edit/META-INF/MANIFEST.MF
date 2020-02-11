@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.tests.edit;singleton:=true
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.extension.tests.tests.provider.ConceptEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -14,8 +14,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport,
  de.dlr.sc.virsat.model;visibility:=reexport,
  de.dlr.sc.virsat.model.edit;visibility:=reexport,
- de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
- de.dlr.sc.virsat.model.ext.core.edit;visibility:=reexport,
- de.dlr.sc.virsat.model.extension.tests;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.edit;visibility:=reexport,
+ de.dlr.sc.virsat.model.extension.tests;visibility:=reexport,
+ de.dlr.sc.virsat.model.external.tests;visibility:=reexport,
+ de.dlr.sc.virsat.model.external.tests.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.tests.edit

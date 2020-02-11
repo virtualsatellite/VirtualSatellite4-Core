@@ -22,10 +22,8 @@ public class CorePackageTest {
 	@Test
 	public void testCoreFactory() {
 
-		GenericCategory category = CoreFactory.eINSTANCE.createGenericCategory();
 		CorePackage corePackage = CoreFactory.eINSTANCE.getCorePackage();
 
-		assertNotNull("Category should not be null", category);
 		assertNull("Package should not be initialized yet", corePackage);
 		assertNotNull("Package should be initialized now", CorePackage.eINSTANCE);
 

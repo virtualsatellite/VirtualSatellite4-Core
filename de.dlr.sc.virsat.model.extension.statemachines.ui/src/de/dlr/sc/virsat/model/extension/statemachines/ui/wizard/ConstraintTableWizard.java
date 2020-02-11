@@ -38,7 +38,7 @@ public class ConstraintTableWizard extends Wizard implements INewWizard {
 	 */
 	public ConstraintTableWizard() {
 		super();
-		setWindowTitle("Constraint Table");
+		setWindowTitle("Constraint Table (Beta)");
 	}
 
 	@Override

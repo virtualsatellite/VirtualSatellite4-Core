@@ -46,21 +46,18 @@ import de.dlr.sc.virsat.project.ui.navigator.contentProvider.VirSatWorkspaceCont
 import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatProjectLabelProvider;
 import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatWorkspaceLabelProvider;
 
-
 /**
  * Page to select the resource that is to be exported
- * @author muel_s8
- *
  */
 public class ExportPage extends WizardPage {
 	private static final String DIALOG_TEXT = "Select target";
 	private static final String DIALOG_DEFAULT_FILE_NAME = "file.xlsx";
 	private static final String[] DIALOG_EXTENSIONS = { "*.xlsx" };
-	
+
 	private static final String BUTTON_TEXT = "Browse";
-	
+
 	private static final int ROWS = 3;
-	
+
 	// Keys for the dialog settings
 	private static final String DESTINATION_FILE_KEY = "DESTINATION_FILE";
 	private static final String USE_DEFAULT_TEMPLATE_KEY = "USE_DEFAULT_TEMPLATE";
@@ -68,8 +65,6 @@ public class ExportPage extends WizardPage {
 	private static final String DESCRIPTION = "Export the selected element to a folder";
 	private static final String DESTINATION = "Select the export destination:";
 
-	
-	
 	private IContainer model;
 	private Object selection;
 	private ISelection preSelect;
@@ -83,29 +78,28 @@ public class ExportPage extends WizardPage {
 	private Button btnCheckButton;
 	private boolean destination;
 	private boolean template;
-	
+
 	private IDialogSettings wizardSettings;
 	private Label lblDestination;
-	
 	
 	/**
 	 * Create a new page for export
 	 * @param model the root element for the selection on what to export
 	 * @param preSelect the initial selection to be transferred into import/export window
 	 */
-	protected ExportPage(IContainer model,  ISelection preSelect) {
+	protected ExportPage(IContainer model, ISelection preSelect) {
 		super("Select element and destination");
 		setTitle("Select element and destination");
 		setDescription(DESCRIPTION);
 		this.model = model;
 		this.preSelect = preSelect;
 		setPageComplete(false);
-
 	}
+
 	@Override
 	public void createControl(Composite parent) {
 		wizardSettings = getDialogSettings();
-		
+
 		content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 		content.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
@@ -125,7 +119,6 @@ public class ExportPage extends WizardPage {
 			}
 		}
 
-
 		setControl(content);
 
 		setPageComplete(isComplete());
@@ -136,10 +129,9 @@ public class ExportPage extends WizardPage {
 	 * @return true iff the page is complete
 	 */
 	public boolean isComplete() {
-		
 		return destination && template;
 	}
-	
+
 	/**
 	 * Create the check box button for using or not using default template
 	 */
@@ -147,9 +139,10 @@ public class ExportPage extends WizardPage {
 		composite2 = new Composite(content, SWT.NONE);
 		composite2.setLayout(new GridLayout(1, false));
 		composite2.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
-		
+
 		btnCheckButton = new Button(composite2, SWT.CHECK);
 		btnCheckButton.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				wizardSettings.put(USE_DEFAULT_TEMPLATE_KEY, btnCheckButton.getSelection());
@@ -164,7 +157,7 @@ public class ExportPage extends WizardPage {
 	 */
 	private void handleSelectedCheckButton() {
 		composite1.setEnabled(!composite1.getEnabled());
-		
+
 		if (composite1.getVisible()) {
 			template = true;
 		} else {
@@ -174,11 +167,11 @@ public class ExportPage extends WizardPage {
 				template = true;
 			}
 		}
-		
+
 		composite1.setVisible(!composite1.getVisible());
 		setPageComplete(selection != null && template && destination);
 	}
-	
+
 	/**
 	 * Create the dialog for selecting the template
 	 */
@@ -188,76 +181,76 @@ public class ExportPage extends WizardPage {
 		composite1.setLayout(new GridLayout(ROWS, false));
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
 		composite1.setLayoutData(data);
-		
+
 		label2 = new Label(composite1, SWT.SHADOW_IN);
 		label2.setText("Select the template ");
 		new Label(composite1, SWT.NONE);
 		new Label(composite1, SWT.NONE);
-		
-		label1 = new Label(composite1, SWT.NONE);
-		label1.setText("Template");		
-		
-        // destination name entry field
-		templateField = new Combo(composite1, SWT.SINGLE | SWT.BORDER);
-        data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-        final int widthHint = 250;
-        data.widthHint = widthHint;
-        templateField.setLayoutData(data);
 
-        String defaultTemplate = wizardSettings.get(DEFAULT_TEMPLATE_KEY);
-        if (defaultTemplate != null) {
-        	templateField.setText(defaultTemplate);
-        	template = true;
-        }
-        
-        // destination browse button
-        final Button destinationBrowseButton = new Button(composite1, SWT.PUSH);
-        destinationBrowseButton.setText(BUTTON_TEXT);
-        destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+		label1 = new Label(composite1, SWT.NONE);
+		label1.setText("Template");
+
+		// destination name entry field
+		templateField = new Combo(composite1, SWT.SINGLE | SWT.BORDER);
+		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+		final int widthHint = 250;
+		data.widthHint = widthHint;
+		templateField.setLayoutData(data);
+
+		String defaultTemplate = wizardSettings.get(DEFAULT_TEMPLATE_KEY);
+		if (defaultTemplate != null) {
+			templateField.setText(defaultTemplate);
+			template = true;
+		}
+
+		// destination browse button
+		final Button destinationBrowseButton = new Button(composite1, SWT.PUSH);
+		destinationBrowseButton.setText(BUTTON_TEXT);
+		destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+
 			@Override
 			public void handleEvent(Event event) {
 				FileDialog dialog = new FileDialog(getContainer().getShell(), SWT.OPEN | SWT.SHEET);
 				dialog.setText(DIALOG_TEXT);
 				dialog.setFilterExtensions(DIALOG_EXTENSIONS);
-				
-		        if (destinationField.getText().equals("")) {
+
+				if (destinationField.getText().equals("")) {
 					dialog.setFileName(DIALOG_DEFAULT_FILE_NAME);
 				}
-		        
+
 				String selectedDirectoryName = dialog.open();
-				
+
 				if (selectedDirectoryName != null) {
 					template = true;
 					setErrorMessage(null);
 					templateField.setText(selectedDirectoryName);
 					wizardSettings.put(DEFAULT_TEMPLATE_KEY, selectedDirectoryName);
 					setPageComplete(isComplete());
-				} 
-
+				}
 			}
-        });
-        setButtonLayoutData(destinationBrowseButton);
+		});
+		setButtonLayoutData(destinationBrowseButton);
 	}
 
 	/**
 	 * Create the Treeviewer
 	 */
-	
+
 	private void createTreeUI() {
-		
+
 		TreeViewer treeViewer = new TreeViewer(content, SWT.BORDER);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
-		
+
 		VirSatComposedContentProvider cp = new VirSatComposedContentProvider();
 		cp.registerSubContentProvider(new VirSatWorkspaceContentProvider());
 		cp.registerSubContentProvider(new VirSatProjectContentProvider());
-		
+
 		VirSatComposedLabelProvider lp = new VirSatComposedLabelProvider();
 		lp.registerSubLabelProvider(new VirSatWorkspaceLabelProvider());
 		lp.registerSubLabelProvider(new VirSatProjectLabelProvider());
-		
+
 		VirSatFilteredWrappedTreeContentProvider filteredCP = new VirSatFilteredWrappedTreeContentProvider(cp);
-		
+
 		// Filter for elements that can be imported and exported together with their parents
 		filteredCP.addClassFilter(StructuralElementInstance.class);
 		filteredCP.addClassFilter(CategoryAssignment.class);
@@ -266,20 +259,20 @@ public class ExportPage extends WizardPage {
 
 		treeViewer.setContentProvider(filteredCP);
 		treeViewer.setLabelProvider(lp);
-		
+
 		if (null == preSelect) {
 			treeViewer.setInput(model);
 		} else {
-			
 			IStructuredSelection selection2 = (IStructuredSelection) preSelect;
 			StructuralElementInstance sc = (StructuralElementInstance) selection2.getFirstElement();
-			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(sc); 
+			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(sc);
 			Repository rep = ed.getResourceSet().getRepository();
 			treeViewer.setInput(rep);
 			treeViewer.setSelection((TreeSelection) preSelect);
 			selection = treeViewer.getStructuredSelection().getFirstElement();
 		}
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				selection = treeViewer.getStructuredSelection().getFirstElement();
@@ -289,83 +282,83 @@ public class ExportPage extends WizardPage {
 	}
 
 	/**
-	 * Create the dialog for selecting the file which wil be exported to/imported from
+	 * Create the dialog for selecting the file which will be exported to/imported from
 	 */
-	
+
 	private void createFileDestinationUI() {
 		Label label = new Label(content, SWT.FILL);
 		label.setText(DESTINATION);
-		
+
 		Composite composite = new Composite(content, SWT.FILL);
 		composite.setLayout(new GridLayout(ROWS, false));
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
 		composite.setLayoutData(data);
-		
+
 		lblDestination = new Label(composite, SWT.NONE);
-		lblDestination.setText("Destination :");		
-		
-        // destination name entry field
+		lblDestination.setText("Destination :");
+
+		// destination name entry field
 		destinationField = new Combo(composite, SWT.SINGLE | SWT.BORDER);
-        data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-        final int widthHint = 250;
-        data.widthHint = widthHint;
-        destinationField.setLayoutData(data);
-        
-        String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
-        if (defaultDestination != null) {
-        	destinationField.setText(defaultDestination);
-        	destination = true;
-        }
-        
-        // destination browse button
-        final Button destinationBrowseButton = new Button(composite, SWT.PUSH);
-        destinationBrowseButton.setText(BUTTON_TEXT);
-        destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+		final int widthHint = 250;
+		data.widthHint = widthHint;
+		destinationField.setLayoutData(data);
+
+		String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
+		if (defaultDestination != null) {
+			destinationField.setText(defaultDestination);
+			destination = true;
+		}
+
+		// destination browse button
+		final Button destinationBrowseButton = new Button(composite, SWT.PUSH);
+		destinationBrowseButton.setText(BUTTON_TEXT);
+		destinationBrowseButton.addListener(SWT.Selection, new Listener() {
+
 			@Override
-			public void handleEvent(Event event) {			
-		
-		        DirectoryDialog dialog = new DirectoryDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
-		        dialog.setText(DIALOG_TEXT);
-		        
-		        String selectedDirectoryName = dialog.open();
-		        
-		        if (selectedDirectoryName != null) {
-		            setErrorMessage(null);
-		            destinationField.setText(selectedDirectoryName);
-		            destination = true;
-		            wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
-		            setPageComplete(isComplete());
-		        }
+			public void handleEvent(Event event) {
+
+				DirectoryDialog dialog = new DirectoryDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
+				dialog.setText(DIALOG_TEXT);
+
+				String selectedDirectoryName = dialog.open();
+
+				if (selectedDirectoryName != null) {
+					setErrorMessage(null);
+					destinationField.setText(selectedDirectoryName);
+					destination = true;
+					wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
+					setPageComplete(isComplete());
+				}
 			}
-        });
-        setButtonLayoutData(destinationBrowseButton);
+		});
+		setButtonLayoutData(destinationBrowseButton);
 	}
 
 	/**
 	 * Get the selected object
 	 * @return the selected object
 	 */
-	
 	public Object getSelection() {
 		return selection;
 	}
-	
+
 	/**
 	 * Get the destination of the target file
 	 * @return path to the target file
 	 */
-	
 	public String getDestination() {
 		return destinationField.getText();
 	}
+
 	/**
 	 * Get the destination of the template file
 	 * @return path to the template file
-	 */
-	
+	 */	
 	public String getTemplate() {
 		return templateField.getText();
 	}
+
 	/**
 	 * Whether the user chose to use the default template
 	 * @return true iff the user wishes to use the default template

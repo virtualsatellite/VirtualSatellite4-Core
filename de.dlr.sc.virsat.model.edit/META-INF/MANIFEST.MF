@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.edit;singleton:=true
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -49,6 +49,8 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.core.commands,
  de.dlr.sc.virsat.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.eclipse.emf.transaction;visibility:=reexport,
  org.eclipse.emf.edapt.migration,
  org.eclipse.emf.edapt.history,

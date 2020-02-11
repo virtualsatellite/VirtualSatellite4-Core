@@ -12,12 +12,8 @@
 	
 	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"{
 		Unit org.antlr.runtime version 3.2.0.v201101311130; 
-		Unit com.sun.jersey  version 1.17.0.v201503170330;
-		Unit org.glassfish.jersey.containers.servlet version 2.22.1.v20161103-0227;
-		Unit org.glassfish.jersey.containers.servlet.core  version 2.22.1.v20161103-0227;
-		Unit org.glassfish.jersey.core.jersey-client  version 2.22.1.v20161103-1916;
-		Unit org.glassfish.jersey.core.jersey-common  version 2.22.1.v20181004-1955;
-		Unit org.glassfish.jersey.core.jersey-server  version 2.22.1.v20181004-1955; 
+		Unit org.apache.commons.io version 2.6.0.v20190123-2029;
+		Unit org.apache.commons.io.source version 2.6.0.v20190123-2029; 
 	}
 	
 	// Purely named Eclipse. The name is important for target models having this one as 
@@ -43,5 +39,10 @@
 	
 	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.0/update-site/" {
 		Unit org.eclipse.team.svn.feature.group version 4.0.5.I20170425-1700;
+	}
+	
+	RepositoryLocation SubversionConnector url "http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" {
+		Unit org.polarion.eclipse.team.svn.connector.feature.group version 6.0.4.I20161211-1700;
+		Unit org.polarion.eclipse.team.svn.connector.svnkit18.feature.group version 6.0.4.I20161211-1700;
 	}
 }

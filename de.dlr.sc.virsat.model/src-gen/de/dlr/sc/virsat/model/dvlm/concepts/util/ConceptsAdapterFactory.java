@@ -98,6 +98,14 @@ public class ConceptsAdapterFactory extends AdapterFactoryImpl {
 				return createIConceptTypeDefinitionAdapter();
 			}
 			@Override
+			public Adapter caseEcoreImport(EcoreImport object) {
+				return createEcoreImportAdapter();
+			}
+			@Override
+			public Adapter caseIEImports(IEImports object) {
+				return createIEImportsAdapter();
+			}
+			@Override
 			public Adapter caseIQualifiedName(IQualifiedName object) {
 				return createIQualifiedNameAdapter();
 			}
@@ -192,6 +200,34 @@ public class ConceptsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIConceptTypeDefinitionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport <em>Ecore Import</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport
+	 * @generated
+	 */
+	public Adapter createEcoreImportAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.dvlm.concepts.IEImports <em>IE Imports</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.dvlm.concepts.IEImports
+	 * @generated
+	 */
+	public Adapter createIEImportsAdapter() {
 		return null;
 	}
 

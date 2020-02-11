@@ -58,6 +58,22 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance
 import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage
+import org.eclipse.emf.codegen.ecore.genmodel.GenModel
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.codegen.ecore.genmodel.GenPackage
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.Resource
+import java.io.IOException
+import de.dlr.sc.virsat.model.concept.Activator
+import org.eclipse.core.runtime.Status
+import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -462,6 +478,30 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 					'''	
 				}	
+			}
+			
+			override caseEReferenceProperty(EReferenceProperty property) {
+				importManager.register(BeanPropertyEReference);
+				importManager.register(IBeanList);
+				importManager.register(TypeSafeEReferenceArrayInstanceList);
+				
+				val typeClass = new ExternalGenModelHelper().getEObjectClass(property)
+				val genPackageSpecified = typeClass !== null
+				if(genPackageSpecified) {
+					importManager.register(typeClass)
+				}
+				val referenceType = '''«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF»'''
+			
+				return '''
+				private IBeanList<BeanPropertyEReference<«referenceType»>> «property.name» = new TypeSafeEReferenceArrayInstanceList<«referenceType»>();
+				
+				«declareSafeAccessArrayMethod(property, importManager)»
+				
+				public IBeanList<BeanPropertyEReference<«referenceType»>> «propertyMethodGet(property)»() {
+					«propertyMethodSafeAccess(property)»;
+					return «property.name»;
+				}
+				'''	
 			}			
 		}.doSwitch(property)
 	}
@@ -809,6 +849,44 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 					'''
 				}	
+			}	
+			override caseEReferenceProperty(EReferenceProperty property) {
+				importManager.register(CategoryAssignment);
+				importManager.register(Command);
+				importManager.register(EditingDomain);
+				importManager.register(BeanPropertyEReference);
+				importManager.register(EReferencePropertyInstance)
+				
+				val typeClass = new ExternalGenModelHelper().getEObjectClass(property)
+				val genPackageSpecified = typeClass !== null
+				if(genPackageSpecified) {
+					importManager.register(typeClass)
+				} else {
+					importManager.register(EObject);
+				}
+				val referenceType = '''«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF»'''
+				
+				return '''
+				private BeanPropertyEReference<«referenceType»> «property.name» = new BeanPropertyEReference<«referenceType»>();
+				
+				«declareSafeAccessAttributeMethod(property, EReferencePropertyInstance)»
+				
+				public Command «propertyMethodSet(property)»(EditingDomain ed, «referenceType» value) {
+					«propertyMethodSafeAccess(property)»;
+					return this.«property.name».setValue(ed, value);
+				}
+				
+				public void «propertyMethodSet(property)»(«referenceType» value) {
+					«propertyMethodSafeAccess(property)»;
+					this.«property.name».setValue(value);
+				}
+				
+				public «referenceType» «propertyMethodGet(property)»() {
+					«propertyMethodSafeAccess(property)»;
+					return «property.name».getValue();
+				}
+				
+				'''	
 			}			
 		}.doSwitch(property)
 	}
@@ -835,6 +913,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	protected def propertyMethodSafeAccess(AProperty property) {
 		return "safeAccess" + property.name.toFirstUpper +"()";
 	}
+	
 	
 	/**
 	 * This method hands back the class type

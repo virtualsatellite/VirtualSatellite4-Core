@@ -39,7 +39,7 @@ public class HasLevelTreeTraverserMatcher implements IBeanStructuralTreeTraverse
 	}
 
 	@Override
-	public void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
+	public void processMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent) {
 		levelElements.add(treeNode);
 	}
 

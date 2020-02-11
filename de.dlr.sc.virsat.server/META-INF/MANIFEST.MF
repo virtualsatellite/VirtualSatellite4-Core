@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Headless Rest Jetty Server
+Bundle-SymbolicName: de.dlr.sc.virsat.server;singleton:=true
+Bundle-Version: 4.11.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.server.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jetty.http,
+ org.eclipse.jetty.io,
+ org.eclipse.jetty.security,
+ org.eclipse.jetty.server,
+ org.eclipse.jetty.servlet,
+ org.eclipse.jetty.util,
+ de.dlr.sc.virsat.external.lib.jersey,
+ javax.servlet,
+ org.eclipse.jgit,
+ org.slf4j.api,
+ org.apache.commons.io,
+ org.bouncycastle.bcpg,
+ org.bouncycastle.bcprov,
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.server,
+ de.dlr.sc.virsat.server.dataaccess,
+ de.dlr.sc.virsat.server.jetty,
+ de.dlr.sc.virsat.server.resources
+Automatic-Module-Name: de.dlr.sc.virsat.server

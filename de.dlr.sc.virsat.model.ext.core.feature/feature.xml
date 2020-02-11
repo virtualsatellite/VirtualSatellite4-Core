@@ -2,13 +2,13 @@
 <feature
       id="de.dlr.sc.virsat.model.ext.core.feature"
       label="VirSat Core Model Concept Core Feature"
-      version="4.10.0.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
-      Feature for documentation and release notes.
+      Feature for concept langauge core artifacs.
  German Aerospace Center (DLR e.V.)
  Simulation and Software Technology
    </description>

@@ -127,6 +127,52 @@ public class ConceptsItemProviderAdapterFactory extends ConceptsAdapterFactory i
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EcoreImportItemProvider ecoreImportItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.dvlm.concepts.EcoreImport}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEcoreImportAdapter() {
+		if (ecoreImportItemProvider == null) {
+			ecoreImportItemProvider = new EcoreImportItemProvider(this);
+		}
+
+		return ecoreImportItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.concepts.IEImports} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected IEImportsItemProvider ieImportsItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.dvlm.concepts.IEImports}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createIEImportsAdapter() {
+		if (ieImportsItemProvider == null) {
+			ieImportsItemProvider = new IEImportsItemProvider(this);
+		}
+
+		return ieImportsItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -227,6 +273,8 @@ public class ConceptsItemProviderAdapterFactory extends ConceptsAdapterFactory i
 	public void dispose() {
 		if (conceptItemProvider != null) conceptItemProvider.dispose();
 		if (conceptImportItemProvider != null) conceptImportItemProvider.dispose();
+		if (ecoreImportItemProvider != null) ecoreImportItemProvider.dispose();
+		if (ieImportsItemProvider != null) ieImportsItemProvider.dispose();
 	}
 
 }

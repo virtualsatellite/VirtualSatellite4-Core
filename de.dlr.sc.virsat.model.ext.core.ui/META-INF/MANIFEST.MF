@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Concept Core UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.ext.core.ui;singleton:=true
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.ext.core,
  org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,8 +17,5 @@ Require-Bundle: de.dlr.sc.virsat.model.ext.core,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.concept.core.ui
-Export-Package: de.dlr.sc.virsat.model.ext.core.propertyTester,
- de.dlr.sc.virsat.model.ext.core.ui.command,
- de.dlr.sc.virsat.model.ext.core.ui.handler,
- de.dlr.sc.virsat.model.ext.core.ui.snippet
+Export-Package: de.dlr.sc.virsat.model.ext.core.propertyTester
 Bundle-Vendor: DLR (German Aerospace Center)

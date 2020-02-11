@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.junit.Test;
 
 /**
- * @author fran_tb
  *
  */
 public class CoreResourceFactoryImplTest {

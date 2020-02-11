@@ -149,6 +149,19 @@ public class PropertyinstancesSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case PropertyinstancesPackage.EREFERENCE_PROPERTY_INSTANCE: {
+				EReferencePropertyInstance eReferencePropertyInstance = (EReferencePropertyInstance)theEObject;
+				T result = caseEReferencePropertyInstance(eReferencePropertyInstance);
+				if (result == null) result = caseAPropertyInstance(eReferencePropertyInstance);
+				if (result == null) result = caseIOverridableInheritanceLink(eReferencePropertyInstance);
+				if (result == null) result = caseATypeInstance(eReferencePropertyInstance);
+				if (result == null) result = caseIUuid(eReferencePropertyInstance);
+				if (result == null) result = caseIComment(eReferencePropertyInstance);
+				if (result == null) result = caseIInstance(eReferencePropertyInstance);
+				if (result == null) result = caseIInheritanceLink(eReferencePropertyInstance);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case PropertyinstancesPackage.COMPOSED_PROPERTY_INSTANCE: {
 				ComposedPropertyInstance composedPropertyInstance = (ComposedPropertyInstance)theEObject;
 				T result = caseComposedPropertyInstance(composedPropertyInstance);
@@ -277,6 +290,21 @@ public class PropertyinstancesSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseReferencePropertyInstance(ReferencePropertyInstance object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EReference Property Instance</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EReference Property Instance</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEReferencePropertyInstance(EReferencePropertyInstance object) {
 		return null;
 	}
 

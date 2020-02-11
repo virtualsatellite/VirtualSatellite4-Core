@@ -16,6 +16,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,12 +29,15 @@ import de.dlr.sc.virsat.model.calculation.test.util.ExpressionUtil;
 import de.dlr.sc.virsat.model.dvlm.calculation.AExpression;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
+import de.dlr.sc.virsat.model.dvlm.calculation.EquationDefinition;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationIntermediateResult;
 import de.dlr.sc.virsat.model.dvlm.calculation.Function;
 import de.dlr.sc.virsat.model.dvlm.calculation.MathOperator;
 import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
 import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedDefinitionInput;
 import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedInput;
+import de.dlr.sc.virsat.model.dvlm.calculation.SetFunction;
+import de.dlr.sc.virsat.model.dvlm.calculation.TypeDefinitionResult;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -791,6 +798,69 @@ public class ExpressionHelperTest extends AEquationTest {
 		ca1.getEquationSection().getEquations().add(equation4);
 		NumberLiteralResult resultExpression4 = (NumberLiteralResult) exprHelper.evaluate(equation4.getExpression());
 		assertEquals("Min correct", 10, Double.valueOf(resultExpression4.getNumberLiteral().getValue()), EPSILON);
+	}
+	
+	@Test
+	public void testNestedSetFunction() {
+		// Create a common root category
+		Category cat = createCategory("Mass");
+		IntProperty value = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
+		value.setName("value");
+		cat.getProperties().add(value);
+		
+		// Setup a summary equation in the category
+		EquationDefinition eqDef = CalculationFactory.eINSTANCE.createEquationDefinition();
+		TypeDefinitionResult tdResult = CalculationFactory.eINSTANCE.createTypeDefinitionResult();
+		tdResult.setReference(value);
+		
+		SetFunction summary = CalculationFactory.eINSTANCE.createSetFunction();
+		summary.setOperator("summary");
+		summary.setTypeDefinition(value);
+		
+		eqDef.setResult(tdResult);
+		eqDef.setExpression(summary);
+		cat.getEquationDefinitions().add(eqDef);
+		
+		// Setup the data model:
+		// root
+		//	-- CA: massRoot
+		//	-- Eq: massRoot = summary{Mass.value}
+		//	-- Sei: Mid
+		//		-- CA: massMid
+		//		-- Eq: massMid = summary{Mass.value}
+		//		-- Sei: Leaf
+		//			-- CA: massLeaf
+		StructuralElementInstance seiRoot = createStructuralElementInstance("System", se);
+		CategoryAssignment caRoot = new CategoryInstantiator().generateInstance(cat, "massRoot");
+		seiRoot.getCategoryAssignments().add(caRoot);
+		
+		StructuralElementInstance seiMid = createStructuralElementInstance("AOCS", se);
+		CategoryAssignment caMid = new CategoryInstantiator().generateInstance(cat, "massMid");
+		// For the test case assume caMid has already been computed
+		((ValuePropertyInstance) caMid.getPropertyInstances().get(0)).setValue("1");
+		seiMid.getCategoryAssignments().add(caMid);
+		seiRoot.getChildren().add(seiMid);
+		
+		StructuralElementInstance seiLeaf = createStructuralElementInstance("ReactionWheel", se);
+		CategoryAssignment caLeaf = new CategoryInstantiator().generateInstance(cat, "massLeaf");
+		// caLeaf just has a value and not equations
+		caLeaf.getEquationSection().getEquations().clear();
+		((ValuePropertyInstance) caRoot.getPropertyInstances().get(0)).setValue("1");
+		seiLeaf.getCategoryAssignments().add(caLeaf);
+		seiMid.getChildren().add(seiLeaf);
+		
+		// Cant use the common test resource setup since in this test case
+		// we need multiple seis each properly inserted into its own resource
+		ResourceSet resSet = new ResourceSetImpl();
+		Resource resRoot = resSet.createResource(URI.createURI("resRoot"));
+		resRoot.getContents().add(seiRoot);
+		Resource resMid = resSet.createResource(URI.createURI("resMid"));
+		resMid.getContents().add(seiMid);
+		Resource resLeaf = resSet.createResource(URI.createURI("resLeaf"));
+		resLeaf.getContents().add(seiLeaf);
+		
+		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(caRoot.getEquationSection().getEquations().get(0).getExpression());
+		assertEquals("Summary correct", 1, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test

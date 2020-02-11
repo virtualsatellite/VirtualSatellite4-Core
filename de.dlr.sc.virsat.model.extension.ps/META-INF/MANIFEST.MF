@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Product Structure
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.ps;singleton:=true
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -15,6 +15,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.model.extension.ps.dnd,
  de.dlr.sc.virsat.model.extension.ps.model,
  de.dlr.sc.virsat.model.extension.ps.util,
  de.dlr.sc.virsat.model.extension.ps.validator

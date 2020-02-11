@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RecordingCommand;
 
 import com.google.common.base.Function;
@@ -68,6 +69,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.Propertyd
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
@@ -105,6 +107,7 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	private IMatchEngine.Factory.Registry matchRegistry;
 	private IDiffEngine diffEngine;
 	private BatchMerger merger;
+	private VirSatTransactionalEditingDomain virSatEd;
 	
 	/**
 	 * Standard constructor
@@ -119,6 +122,7 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 		this.dObjects = dObjects;
 		this.repository = virSatEd.getResourceSet().getRepository();
 		this.acHelper = new ActiveConceptHelper(repository);
+		this.virSatEd = virSatEd;
 		
 		setupMatchRegistry();
 		setupMergeRegistry();
@@ -247,7 +251,7 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 	 * @return a category assignment if suitable one exists and null if not
 	 */
 	private CategoryAssignment findCategoryAssignmentForDObject(DObject dObject) {
-		return (CategoryAssignment) sei.eResource().getEObject(dObject.getUuid().toString());
+		return (CategoryAssignment) safeGetSei().eResource().getEObject(dObject.getUuid().toString());
 	}
 	
 	/**
@@ -468,6 +472,15 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 					}
 					
 					@Override
+					public CategoryAssignment caseEReferencePropertyInstance(EReferencePropertyInstance erpi) {
+						Object value = (EObject) dGet(dObject, feature, erpi);
+						if (value instanceof EObject) {
+							erpi.setReference((EObject) value);
+						}
+						return ca;
+					}
+
+					@Override
 					public CategoryAssignment caseComposedPropertyInstance(ComposedPropertyInstance cpi) {
 						Object value = dGet(dObject, feature, cpi);
 						if (value != null) {
@@ -527,6 +540,17 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 				}.doSwitch(pi);
 			}
 		});
+	}
+	
+	/**
+	 * Get the current structural element. This method ensures that a potential proxy is resolved.
+	 * @return the SEI
+	 */
+	public StructuralElementInstance safeGetSei() {
+		if (sei.eIsProxy()) {
+			sei = (StructuralElementInstance) EcoreUtil.resolve(sei, virSatEd.getResourceSet());
+		}
+		return sei;
 	}
 	
 }

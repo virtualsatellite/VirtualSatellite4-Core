@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 
 /**
- * Prepares a concept for a enhanced serialization in XMI and activates
+ * Prepares a concept for an enhanced serialization in XMI and activates
  * concept language core features such as a GenericCategory
  */
 @SuppressWarnings("all")

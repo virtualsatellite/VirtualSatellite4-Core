@@ -109,7 +109,7 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	import org.junit.Before;
 	
 	«ConceptGeneratorUtil.generateAClassHeader(concept)»
-		public abstract class «concept.abstractClassName»Test {
+	public abstract class «concept.abstractClassName»Test {
 	
 		StructuralElementInstance testSei;
 	
@@ -129,12 +129,12 @@ class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
 	import static org.junit.Assert.assertTrue;
 	
 	«ConceptGeneratorUtil.generateClassHeader(concept)»
-		public class «concept.concreteClassName»Test extends «concept.abstractClassName»Test {
+	public class «concept.concreteClassName»Test extends «concept.abstractClassName»Test {
 	
 		@Test	
 		public void test«concept.concreteClassName»() { 
-		StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
-		assertTrue(validator.validate(testSei));
+			StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
+			assertTrue(validator.validate(testSei));
 		}
 	}
 	'''

@@ -112,7 +112,7 @@ public class VirSatFuncelectricalMarkerHelperTest extends ATestCase {
 	}
 	
 	@Test
-	public void testCreateFEAValidationMarker_OnTwoObjects() {
+	public void testCreateFEAValidationMarker_OnTwoObjects() throws CoreException {
 		IMarker markerCas = vfmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, "This is a marker on the CAs", ca1OfContainedSei, ca2OfContainedSei);
 		IMarker markerVpis  = vfmHelper.createFEAValidationMarker(IMarker.SEVERITY_WARNING, "This is a marker on the VPIs", vpiOfCa1OfContainedSei, vpiOfCa2OfContainedSei);
 		
@@ -124,13 +124,8 @@ public class VirSatFuncelectricalMarkerHelperTest extends ATestCase {
 		assertTrue("Marker is placed correctly", vfmHelper.getAllMarkers(vpiOfCa2OfContainedSei).contains(markerVpis));
 		assertEquals("Not to much marker", 2, vfmHelper.getAllMarkersForObjectAndContents(seiContained).size());
 		
-		try {
-			assertTrue("Marker has correct type", markerCas.isSubtypeOf(VirSatFuncelectricalMarkerHelper.ID_FEA_VALIDATION_PROBLEM_MARKER));
-			assertTrue("Marker has correct type", markerVpis.isSubtypeOf(VirSatFuncelectricalMarkerHelper.ID_FEA_VALIDATION_PROBLEM_MARKER));
-		} catch (CoreException e) {
-			assertTrue("Expected no exception", false);
-			e.printStackTrace();
-		}
+		assertTrue("Marker has correct type", markerCas.isSubtypeOf(VirSatFuncelectricalMarkerHelper.ID_FEA_VALIDATION_PROBLEM_MARKER));
+		assertTrue("Marker has correct type", markerVpis.isSubtypeOf(VirSatFuncelectricalMarkerHelper.ID_FEA_VALIDATION_PROBLEM_MARKER));
 	}
 	//CHECKSTYLE:ON
 }

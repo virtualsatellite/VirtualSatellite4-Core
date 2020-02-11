@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
@@ -79,6 +80,11 @@ public class PropertyInstanceEditingSupportFactory {
     		@Override
     		public EditingSupport caseReferenceProperty(ReferenceProperty property) {
 				return new ReferencePropertyCellEditingSupport(editingDomain, viewer, property);
+    		};
+    		
+    		@Override
+    		public EditingSupport caseEReferenceProperty(EReferenceProperty property) {
+				return new EReferencePropertyCellEditingSupport(editingDomain, viewer, property);
     		};
     		
     		@Override

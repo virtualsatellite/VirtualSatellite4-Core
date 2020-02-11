@@ -1,5 +1,64 @@
 VirSat Core Release Notes
 -------------------------
+Release 4.10.0 (29th November 2019)
+----------------------------------
+
+New Features:
+   Upgraded to Eclipse 2019-06 - #XX Feature
+   Updated Product Structure Concept to version 1.2 using improved inheritance definitions - #239 Feature
+   Transitioned Power Budget Concept to open source - #226 Feature
+   Transitioned State Machines Concept to open source - #225 Feature
+   Transitioned Functional Electrical Architecture Concept to open source - #224 Feature
+   Implemented visual ui warning when using beta functionality - #205 Feature
+   Implemented git support in addition to svn support - #195 Feature
+   Implemented simple JSON import / export for interfacing with CAD applications (beta) - #148 #149 Feature
+   Implemented data model extension for Requirements Concept (beta) - #127 Feature
+   Validation rules can now be suppressed - #97 Feature
+   SuperUser mode now has recogniceable ui layout - #76 Feature 
+   Created Developer Manual - #249 Feature
+   Created User Manual - #73 #110 Feature
+   Improved the visualised comparison logic and ui - #58 #64 Feature 
+
+Usability Updates:
+   Supporting keyboard navigation in tables - #146 Comfort/usability
+   The UUID field of an element is now selectable - #88 Comfort/usability
+   Improved layout of commit dialogue - #77 Comfort/usability
+   3D viewer no longer has to be restarted to register new projects - #66 Comfort/usability
+
+Fixed Bugs:
+    Fixed issue of VTK and ZMQ causing nullpointer exceptions on linux - #318 Bug
+    Fixed issue of validators from inactive concepts being executed - #313 Bug
+    Fixed issue of update listeners in the ui being triggered multiple times on every command - #299  Bug 
+    Fixed issue of DMF models sometimes not properly resolving other DMF models in different resources - #259 Bug
+    Fixed issue of validator giving an incorrect warning for URIs with spaces - #87 Bug
+    Fixed issue of multiline strings not being shown correctly under linux in the navigator - #79 Bug
+    Fixed issue of 3D axes not appearing when closing and reopening the 3D viewer - #60 Bug
+    Fixed issue of the visualisation debug client throwing nullpointer exceptions upon the first connection attempt - #55 Bug
+    Fixed issue of color picker in visualisation throwing nullpointer exceptions - #49 Bug
+    Fixed issue of 3D viewer not occupying the full viewing field - #44 Bug
+    Fixed issue of visualised bounding box not adjusting to new shapes - #43 Bug
+    Fixed issue of Virtual Satellite crashing if multiple instances are run on the same computer - #42 Bug
+    Fixed comparison functions of the visualisation concept throwing nullpointer exceptions - #40 Bug
+    Fixed issue of some visualisation concept UI elements appearing despite the concept not being enabled - #39 Bug
+    Fixed issue of scenegraph updates appearing in the command stack history - #38 Bug
+    Fixed issue of copying elements with nested elements of another discipline - #26 Bug
+    Fixed issue of calculation engine not correctly computing quantities - #24 Bug
+
+Release 4.9.3 (19th December 2019)
+----------------------------------
+
+Usability Updates:
+	Improved logging and error reporting #391 #392 #394
+
+Release 4.9.2 (21st November 2019)
+----------------------------------
+
+New Features:
+		
+Usability Updates:
+	
+Fixed Bugs:
+	Fixed crash on opening multiple instances of VirSat
 
 Release 4.9.1 (15th July 2019)
 ----------------------------------

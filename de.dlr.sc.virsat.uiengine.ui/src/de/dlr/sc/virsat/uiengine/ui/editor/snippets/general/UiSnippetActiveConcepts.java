@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.dialogs.Dialog;
@@ -44,8 +41,8 @@ import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.project.Activator;
@@ -58,8 +55,6 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 /**
  * the class ui snippet active concepts implements the interface ui snippet for the active concept part
- * @author leps_je
- *
  */
 public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable implements IUiSnippet {
 
@@ -71,6 +66,7 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 	private static final String BUTTON_ADD_TEXT = "Add from Registry";
 	private static final String BUTTON_UPDATEALL_TEXT = "Update all Concepts";
 	
+	private static final String COLUMN_TEXT_CONCEPT = "Concept Name";
 	private static final String COLUMN_TEXT_CONCEPT_ID = "Concept ID";
 	private static final String COLUMN_TEXT_ACTIVE = "Active";
 	private static final String COLUMN_TEXT_VERSION = "Version";
@@ -89,10 +85,14 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
+		// Column Concept Concept Name
+		TableViewerColumn columnConceptDisplayName = createDefaultColumn(tableViewer, COLUMN_TEXT_CONCEPT);
+		columnConceptDisplayName.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, ConceptsPackage.Literals.CONCEPT__DISPLAY_NAME));
+		
 		// Column Concept Id
 		TableViewerColumn columnConceptId = createDefaultColumn(tableViewer, COLUMN_TEXT_CONCEPT_ID);
 		columnConceptId.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.IQUALIFIED_NAME__NAME));
-
+				
 		// Column Concept Is Active
 		TableViewerColumn columnConceptIsActive = createDefaultColumn(tableViewer, COLUMN_TEXT_ACTIVE);
 		columnConceptIsActive.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, ConceptsPackage.Literals.IACTIVE_CONCEPT__ACTIVE));
@@ -141,21 +141,14 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 						
 						// Now create the dependencies using the concept names as identifiers
 						for (Concept concept : selectedConcepts.values()) {
-							EcoreUtil.CrossReferencer.find(Collections.singleton(concept)).forEach((object, settings) -> {
-								if (object instanceof IConceptTypeDefinition) {
-									IConceptTypeDefinition typeDefinition = (IConceptTypeDefinition) object;
-									EObject container = typeDefinition.eContainer();
-									if (container != concept && container instanceof Concept) {
-										String dependency = ((Concept) container).getName();
-										dependencyTree.addDependencies(concept.getName(), new String[] { dependency });
-									}
-								}
-							});	
+							List<String> conceptDependencyIds = new ArrayList<>(ActiveConceptHelper.getConceptDependencies(concept));
+							dependencyTree.addDependencies(concept.getName(), conceptDependencyIds);
 						}
 						
 						List<String> orderedConcepts = dependencyTree.getLinearOrder();
 						
-						// And then install them
+						// And then install them by using the ordered list of concept names
+						// and the map of concept names pointing to the already preloaded concepts
 						for (String conceptName : orderedConcepts) {
 							if (selectedConcepts.containsKey(conceptName)) {
 								handleAddSelected(selectedConcepts.get(conceptName), editingDomain);

@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.concept.unittest.util.test;
 
 import org.eclipse.emf.transaction.RecordingCommand;
 
+import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
@@ -32,7 +33,14 @@ public abstract class AConceptProjectTestCase extends AProjectTestCase {
 	 * @return the test concept
 	 */
 	protected Concept loadConceptFromPlugin(String pluginName) {
-		Concept concept = ActiveConceptConfigurationElement.loadConceptViaConceptName(pluginName);
+		String conceptXmiPluginPath = pluginName + "/concept/concept.xmi";
+		Concept concept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
+		return concept;
+	}
+	
+	protected Concept loadConceptAndInstallToRepository(String conceptId) {
+		Concept concept = loadConceptFromPlugin(conceptId);
+		concept = ActiveConceptConfigurationElement.createCopyConceptToRepository(concept, repository);
 		return concept;
 	}
 	

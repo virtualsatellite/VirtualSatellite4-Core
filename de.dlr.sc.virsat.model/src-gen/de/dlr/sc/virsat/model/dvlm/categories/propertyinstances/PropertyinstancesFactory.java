@@ -56,6 +56,15 @@ public interface PropertyinstancesFactory extends EFactory {
 	ReferencePropertyInstance createReferencePropertyInstance();
 
 	/**
+	 * Returns a new object of class '<em>EReference Property Instance</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>EReference Property Instance</em>'.
+	 * @generated
+	 */
+	EReferencePropertyInstance createEReferencePropertyInstance();
+
+	/**
 	 * Returns a new object of class '<em>Composed Property Instance</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
