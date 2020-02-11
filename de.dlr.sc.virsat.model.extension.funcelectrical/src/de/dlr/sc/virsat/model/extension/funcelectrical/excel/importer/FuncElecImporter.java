@@ -17,7 +17,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
 
-import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.importer.ExcelImportHelper;
 import de.dlr.sc.virsat.excel.importer.IImport;
@@ -29,6 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.AExcelFuncIO;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
@@ -104,42 +104,42 @@ public class FuncElecImporter implements IImport {
 	private void importInterfaceEnds() {
 		BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
 
-		final Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
+		final Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 
 		if (sheet == null) {
 			return;
 		}
 
 		// go through each row to find out what to do
-		for (int i = AExcelIo.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
-			if (ExcelImportHelper.isEmpty(i, sheet, AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1)) {
+		for (int i = AExcelFuncIO.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
+			if (ExcelImportHelper.isEmpty(i, sheet, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1)) {
 				continue;
 			}
 
 			Row row = sheet.getRow(i);
 			// Get the UUID of the first interface end
-			String tempUUID = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_UUID), "");
+			String tempUUID = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID), "");
 			// figure out if we are creating a new InterfaceEnd
 			if ("".equals(tempUUID)) {
 				InterfaceEnd ifaceEnd = new InterfaceEnd(concept);
 				// change the name if it is not empty , if it is empty throw a fault
-				ifaceEnd.setName(row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME).toString());
+				ifaceEnd.setName(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).toString());
 				// if interfaceType exists, set it, if it does not exist throw a fault
-				int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).toString(), ifaceTypes);
+				int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).toString(), ifaceTypes);
 				ifaceEnd.setType(ifaceTypes.get(interfaceTypeIndex));
 				beanSei.add(ifaceEnd);
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, seiInterfaceEnds);
 				// Control the delete column if element is deleted move to the next row
-				String tempDelete = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_DELETE), "");
-				if (tempDelete.contains(AExcelIo.COMMON_DELETEMARK_VALUE)) {
+				String tempDelete = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_DELETE), "");
+				if (tempDelete.contains(AExcelFuncIO.COMMON_DELETEMARK_VALUE)) {
 					beanSei.remove(seiInterfaceEnds.get(check));
 				} else {
 					// change the name if it is not empty , if it is empty throw a fault
-					String tempInterfaceEndName = Objects.toString(row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME).toString(), "");
+					String tempInterfaceEndName = Objects.toString(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).toString(), "");
 					seiInterfaceEnds.get(check).setName(tempInterfaceEndName);
 					// if type exists change the type, if not return a fault
-					int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).toString(), ifaceTypes);
+					int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).toString(), ifaceTypes);
 					seiInterfaceEnds.get(check).setType(ifaceTypes.get(interfaceTypeIndex));
 				}
 			}
@@ -150,14 +150,14 @@ public class FuncElecImporter implements IImport {
 	* Imports the interfaces to Element Configuration
 	*/
 	private void importInterfaces() {
-		final Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
+		final Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 
 		if (sheet == null) {
 			return;
 		}
 		// go through each row to find out what to do
-		for (int i = AExcelIo.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
-			if (ExcelImportHelper.isEmpty(i, sheet, AExcelIo.INTERFACE_COLUMN_INTERFACE_TO + 1)) {
+		for (int i = AExcelFuncIO.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
+			if (ExcelImportHelper.isEmpty(i, sheet, AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO + 1)) {
 				continue;
 			}
 
@@ -165,34 +165,34 @@ public class FuncElecImporter implements IImport {
 			// set our root element to a element configuration
 			BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
 			// Get the UUID of the first interface
-			String tempUUID = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_UUID), "");
+			String tempUUID = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID), "");
 			// figure out if we are creating a new interface type
 			if ("".equals(tempUUID)) {
 				//create new interface and add it to our interface collection
 				Interface iface = new Interface(concept);
-				iface.setName(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME).toString());
-				int check = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_FROM).toString(), ecInterfaceEnds);
+				iface.setName(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME).toString());
+				int check = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_FROM).toString(), ecInterfaceEnds);
 				iface.setInterfaceEndFrom(ecInterfaceEnds.get(check));
-				check = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_TO).toString(), ecInterfaceEnds);
+				check = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO).toString(), ecInterfaceEnds);
 				iface.setInterfaceEndTo(ecInterfaceEnds.get(check));
 				beanSei.add(iface);
 				// creation is done, continue the import with the next row in excel
 			} else {
 				// Control the delete column if element is deleted move to the next row
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, ifaces);
-				String tempDelete = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_DELETE), "");
-				if (tempDelete.toString().contains(AExcelIo.COMMON_DELETEMARK_VALUE)) {
+				String tempDelete = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_DELETE), "");
+				if (tempDelete.toString().contains(AExcelFuncIO.COMMON_DELETEMARK_VALUE)) {
 					beanSei.remove(ifaces.get(check));
 				} else {
 					// Change the InterfaceName by controlling if it is empty or not
-					String tempInterfaceName = Objects.toString(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME), "");
+					String tempInterfaceName = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME), "");
 					ifaces.get(check).setName(tempInterfaceName);
 					// Change the From interface end
-					String tempInterfaceFrom = Objects.toString(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_FROM), "");
+					String tempInterfaceFrom = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_FROM), "");
 					int check2 = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(tempInterfaceFrom, ecInterfaceEnds);
 					ifaces.get(check).setInterfaceEndFrom(ecInterfaceEnds.get(check2));
 					// Change the To interface end
-					String tempInterfaceTo = Objects.toString(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_TO), "");
+					String tempInterfaceTo = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO), "");
 					check2 = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(tempInterfaceTo, ecInterfaceEnds);
 					ifaces.get(check).setInterfaceEndTo(ecInterfaceEnds.get(check2));
 				}
@@ -204,7 +204,7 @@ public class FuncElecImporter implements IImport {
 	* Imports the Interface Type Collection
 	*/
 	private void importInterfaceTypes() {
-		final Sheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
+		final Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES);
 
 		if (sheet == null) {
 			return;
@@ -212,29 +212,29 @@ public class FuncElecImporter implements IImport {
 		// set our root element to a interface type collection
 		InterfaceTypeCollection ifaceTypeCollection = new InterfaceTypeCollection(sei);
 		// go through each row to find out what to do
-		for (int i = AExcelIo.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
-			if (ExcelImportHelper.isEmpty(i, sheet, AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1)) {
+		for (int i = AExcelFuncIO.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
+			if (ExcelImportHelper.isEmpty(i, sheet, AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1)) {
 				continue;
 			}
 			Row row = sheet.getRow(i);
 			// Get the UUID of the first interface type
-			String tempUUID = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_UUID), "");
+			String tempUUID = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID), "");
 			// figure out if we are creating a new interface type
 			if ("".equals(tempUUID)) {
 				//create new interface type and add it to our interface type collection
 				InterfaceType ifaceTyp = new InterfaceType(concept);
-				ifaceTyp.setName(row.getCell(AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME).toString());
+				ifaceTyp.setName(row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME).toString());
 				ifaceTypeCollection.add(ifaceTyp);
 				// creation is done, continue the import with the next row in excel
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, ifaceCTypes);
 				// Control the delete column if element is deleted move to the next row
-				String tempDelete = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_DELETE), "");
-				if (tempDelete.contains(AExcelIo.COMMON_DELETEMARK_VALUE)) {
+				String tempDelete = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_DELETE), "");
+				if (tempDelete.contains(AExcelFuncIO.COMMON_DELETEMARK_VALUE)) {
 					ifaceTypeCollection.remove(ifaceCTypes.get(check));
 				} else {
 					// Change the InterfaceTypeName by controlling if it is empty or not
-					String tempInterfaceType = Objects.toString(row.getCell(AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME), "");
+					String tempInterfaceType = Objects.toString(row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME), "");
 					ifaceCTypes.get(check).setName(tempInterfaceType);
 				}
 			}

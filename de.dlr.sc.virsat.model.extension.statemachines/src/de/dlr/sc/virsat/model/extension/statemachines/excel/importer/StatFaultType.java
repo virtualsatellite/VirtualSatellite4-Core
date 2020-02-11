@@ -7,13 +7,19 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.excel.fault;
+package de.dlr.sc.virsat.model.extension.statemachines.excel.importer;
+
+import de.dlr.sc.virsat.excel.fault.IFaultType;
 
 /**
-* Enumerator for the possible fault types which can happen during the import
+* Enumerator for the possible fault types which can happen during statemaschine import
 */
-public enum FaultType implements IFaultType {
-	 STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH,
-	 STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH,
-	 DELETE_COLUMN_CAN_BE_EMPTY_OR_1;
+public enum StatFaultType implements IFaultType {
+		 STATE_NAME_IS_NOT_SET,
+		 STATE_UUID_NOT_FOUND,
+		 CANT_DELETE_NON_EXISTING_TRANSITION,
+		 CANT_DELETE_NON_EXISTING_STATE,
+		 TRANSITION_UUID_NOT_FOUND,
+		 FROM_STATE_NOT_FOUND,
+		 TO_STATE_NOT_FOUND;
 }
