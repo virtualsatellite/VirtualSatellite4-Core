@@ -18,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.emf.ecore.EObject;
 
-import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.fault.FaultType;
 import de.dlr.sc.virsat.excel.importer.ExcelImportHelper;
@@ -27,6 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.AExcelFuncIO;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
@@ -95,7 +95,7 @@ public class ImportValidator {
 			validateInterfaces();
 			validateInterfaceEnds();
 		} else {
-			faultList.add(new Fault(FaultType.CAN_ONLY_IMPORT_ELEMENT_DEFINITON_OR_INTERFACE_TYPE_COLLECTION, -1, -1));
+			faultList.add(new Fault(FuncFaultType.CAN_ONLY_IMPORT_ELEMENT_DEFINITON_OR_INTERFACE_TYPE_COLLECTION, -1, -1));
 		}
 
 		return faultList;
@@ -106,47 +106,47 @@ public class ImportValidator {
 	 */
 	private void validateInterfaceEnds() {
 
-		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
+		final XSSFSheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 
 		if (sheet == null) {
 			return;
 		}
 
-		final int sheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
+		final int sheetIndex = wb.getSheetIndex(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 
 		// Travel through all rows to find a fault
-		for (int i = AExcelIo.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
+		for (int i = AExcelFuncIO.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
 			// if the row is empty move on the next rows
-			if (ExcelImportHelper.isEmpty(i, sheet, AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1)) {
+			if (ExcelImportHelper.isEmpty(i, sheet, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1)) {
 				continue;
 			}
 			Row row = sheet.getRow(i);
-			String tempUUID = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_UUID), "");
-			String tempDelete = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_DELETE), "");
+			String tempUUID = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID), "");
+			String tempDelete = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_DELETE), "");
 			if ("".equals(tempUUID)) {
-				if (tempDelete.equals(AExcelIo.COMMON_DELETEMARK_VALUE)) {
-					faultList.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_END, sheetIndex, i));
+				if (tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE)) {
+					faultList.add(new Fault(FuncFaultType.CANT_DELETE_NON_EXISTING_INTERFACE_END, sheetIndex, i));
 				}
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, seiInterfaceEnds);
 				if (check < 0) {
-					faultList.add(new Fault(FaultType.INTERFACE_END_UUID_NOT_FOUND, sheetIndex, i));
+					faultList.add(new Fault(FuncFaultType.INTERFACE_END_UUID_NOT_FOUND, sheetIndex, i));
 				}
 			}
 			// control the delete column, value of this column can be 1 or nothing
-			if (!(tempDelete.equals(AExcelIo.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
+			if (!(tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
 				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
 			}
 			//Interface_end_name cannot be null
-			String tempInterfaceEndName = Objects.toString(row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME), "");
+			String tempInterfaceEndName = Objects.toString(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME), "");
 			if ("".equals(tempInterfaceEndName)) {
-				faultList.add(new Fault(FaultType.INTERFACE_END_NAME_IS_NOT_SET, sheetIndex, i));
+				faultList.add(new Fault(FuncFaultType.INTERFACE_END_NAME_IS_NOT_SET, sheetIndex, i));
 			}
 			// control if the interface Type Exists
-			String type = Objects.toString(row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE), "");
+			String type = Objects.toString(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE), "");
 			int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(type, ifaceTypes);
 			if (interfaceTypeIndex < 0) {
-				faultList.add(new Fault(FaultType.INTERFACE_TYPE_DOES_NOT_EXIST, sheetIndex, i));
+				faultList.add(new Fault(FuncFaultType.INTERFACE_TYPE_DOES_NOT_EXIST, sheetIndex, i));
 			}
 		}
 	}
@@ -155,53 +155,53 @@ public class ImportValidator {
 	 * Validates the interfaces when importing in element configuration
 	 */
 	private void validateInterfaces() {
-		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
+		final XSSFSheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 
 		if (sheet == null) {
 			return;
 		}
-		final int sheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
+		final int sheetIndex = wb.getSheetIndex(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 
 		// Travel through all rows to find a fault
-		for (int i = AExcelIo.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
+		for (int i = AExcelFuncIO.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
 			// if the row is empty move on the next rows
-			if (ExcelImportHelper.isEmpty(i, sheet, AExcelIo.INTERFACE_COLUMN_INTERFACE_TO + 1)) {
+			if (ExcelImportHelper.isEmpty(i, sheet, AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO + 1)) {
 				continue;
 			}
 			Row row = sheet.getRow(i);
-			String tempUUID = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_UUID), "");
-			String tempDelete = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_DELETE), "");
+			String tempUUID = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID), "");
+			String tempDelete = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_DELETE), "");
 			if ("".equals(tempUUID)) {
 
-				if (tempDelete.equals(AExcelIo.COMMON_DELETEMARK_VALUE)) {
-					faultList.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE, sheetIndex, i));
+				if (tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE)) {
+					faultList.add(new Fault(FuncFaultType.CANT_DELETE_NON_EXISTING_INTERFACE, sheetIndex, i));
 				}
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, ifaces);
 				if (check < 0) {
-					faultList.add(new Fault(FaultType.INTERFACE_UUID_NOT_FOUND, sheetIndex, i));
+					faultList.add(new Fault(FuncFaultType.INTERFACE_UUID_NOT_FOUND, sheetIndex, i));
 				}
 			}
 			// control the delete column, value of this column can be 1 or nothing
-			if (!(tempDelete.equals(AExcelIo.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
+			if (!(tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
 				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
 			}
 			// Control if the interfaceType is empty or not
-			String tempInterfaceName = Objects.toString(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME), "");
+			String tempInterfaceName = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME), "");
 			if ("".equals(tempInterfaceName)) {
-				faultList.add(new Fault(FaultType.INTERFACE_NAME_IS_NOT_SET, sheetIndex, i));
+				faultList.add(new Fault(FuncFaultType.INTERFACE_NAME_IS_NOT_SET, sheetIndex, i));
 			}
 			// Control if the FromInterfaceEnd does exist or not
-			String tempInterfaceFrom = Objects.toString(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_FROM), "");
+			String tempInterfaceFrom = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_FROM), "");
 			int check = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(tempInterfaceFrom, ecInterfaceEnds);
 			if (check < 0) {
-				faultList.add(new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, sheetIndex, i));
+				faultList.add(new Fault(FuncFaultType.FROM_INTERFACE_END_NOT_FOUND, sheetIndex, i));
 			}
 			// Control if the ToInterfaceEnd does exist or not
-			String tempInterfaceTo = Objects.toString(row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_TO), "");
+			String tempInterfaceTo = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO), "");
 			check = ExcelImportHelper.containsABeanCategoryAssignmentFullQualifiedInstanceName(tempInterfaceTo, ecInterfaceEnds);
 			if (check < 0) {
-				faultList.add(new Fault(FaultType.TO_INTERFACE_END_NOT_FOUND, sheetIndex, i));
+				faultList.add(new Fault(FuncFaultType.TO_INTERFACE_END_NOT_FOUND, sheetIndex, i));
 			}
 		}
 	}
@@ -209,43 +209,43 @@ public class ImportValidator {
 	/**
 	 * Validates the Interface Type Collection
 	 */
-	private void validateIntefaceTypes() {
-		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
+	public void validateIntefaceTypes() {
+		final XSSFSheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES);
 
 		if (sheet == null) {
 			return;
 		}
 
-		final int sheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
+		final int sheetIndex = wb.getSheetIndex(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES);
 
 		// Travel through all rows to find a fault
-		for (int i = AExcelIo.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
+		for (int i = AExcelFuncIO.COMMON_ROW_START_TABLE; i < sheet.getLastRowNum(); i++) {
 			// if the row is empty move on the next rows
-			if (ExcelImportHelper.isEmpty(i, sheet, AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1)) {
+			if (ExcelImportHelper.isEmpty(i, sheet, AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1)) {
 				continue;
 			}
 			Row row = sheet.getRow(i);
 			// Get the UUID of the first element in excel
-			String tempUUID = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_UUID), "");
-			String tempDelete = Objects.toString(row.getCell(AExcelIo.COMMON_COLUMN_DELETE), "");
+			String tempUUID = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID), "");
+			String tempDelete = Objects.toString(row.getCell(AExcelFuncIO.COMMON_COLUMN_DELETE), "");
 			if ("".equals(tempUUID)) {
-				if (tempDelete.equals(AExcelIo.COMMON_DELETEMARK_VALUE)) {
-					faultList.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_INTERFACE_TYPE, sheetIndex, i));
+				if (tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE)) {
+					faultList.add(new Fault(FuncFaultType.CANT_DELETE_NON_EXISTING_INTERFACE_TYPE, sheetIndex, i));
 				}
 			} else {
 				int check = ExcelImportHelper.containsABeanCategoryAssignmentUUID(tempUUID, itcTypes);
 				if (check < 0) {
-					faultList.add(new Fault(FaultType.INTERFACE_TYPE_UUID_NOT_FOUND, sheetIndex, i));
+					faultList.add(new Fault(FuncFaultType.INTERFACE_TYPE_UUID_NOT_FOUND, sheetIndex, i));
 				}
 			}
 			// control the delete column, value of this column can be 1 or nothing
-			if (!(tempDelete.equals(AExcelIo.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
+			if (!(tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
 				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
 			}
 			// Control if the interfaceType is empty or not
-			String tempInterfaceType = Objects.toString(row.getCell(AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME), "");
+			String tempInterfaceType = Objects.toString(row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME), "");
 			if ("".equals(tempInterfaceType)) {
-				faultList.add(new Fault(FaultType.INTERFACE_TYPE_NAME_IS_NOT_SET, sheetIndex, i));
+				faultList.add(new Fault(FuncFaultType.INTERFACE_TYPE_NAME_IS_NOT_SET, sheetIndex, i));
 			}
 		}
 	}
@@ -253,20 +253,20 @@ public class ImportValidator {
 	/**
 	 * Validates the Header Pages for all
 	 */
-	private void validateHeaders() {
+	public void validateHeaders() {
 
-		final XSSFSheet sheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
-		final int sheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
+		final XSSFSheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_HEADER);
+		final int sheetIndex = wb.getSheetIndex(AExcelFuncIO.TEMPLATE_SHEETNAME_HEADER);
 
 		// Control if we are importing the correct Structural element by comparing UUIDs
-		String tempUUID = Objects.toString(sheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENTUUID).getCell(1), "");
+		String tempUUID = Objects.toString(sheet.getRow(AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTUUID).getCell(1), "");
 		if (!(importSei.getUuid().toString().equals(tempUUID))) {
-			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, sheetIndex, AExcelIo.HEADER_ROW_STRUCTURALELEMENTUUID));
+			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, sheetIndex, AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTUUID));
 		}
 		// Control if we are importing the correct Structural element by comparing NAMEs
-		String tempName = Objects.toString(sheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENTNAME).getCell(1), "");
+		String tempName = Objects.toString(sheet.getRow(AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTNAME).getCell(1), "");
 		if (!(importSei.getName().toString().equals(tempName))) {
-			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, sheetIndex, AExcelIo.HEADER_ROW_STRUCTURALELEMENTNAME));
+			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, sheetIndex, AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTNAME));
 		}
 	}
 }

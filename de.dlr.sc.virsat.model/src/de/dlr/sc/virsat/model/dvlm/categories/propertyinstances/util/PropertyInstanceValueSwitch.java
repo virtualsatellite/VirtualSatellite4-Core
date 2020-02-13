@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.IUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
@@ -214,6 +215,17 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 							valueString = ((IName) referencedTi).getName();
 						}
 					}
+					return valueString;
+				} else {
+					return "";
+				}
+			}
+			
+			public String caseEReferencePropertyInstance(EReferencePropertyInstance object) {
+				if (object.getReference() != null) {
+					
+					EObject value = object.getReference();
+					String valueString = value.toString() + " - " + value.eResource().getURI().lastSegment().toString();
 					return valueString;
 				} else {
 					return "";

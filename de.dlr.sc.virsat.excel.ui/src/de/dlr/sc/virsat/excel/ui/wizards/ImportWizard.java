@@ -56,13 +56,13 @@ public class ImportWizard extends Wizard implements INewWizard {
 		setWindowTitle("Import from Excel");
 
 		// Setup persistency if necessary
-        IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
-        IDialogSettings wizardSettings = pluginSettings.getSection(ID);
-        if (wizardSettings == null) {
-            wizardSettings = new DialogSettings(ID);
-            pluginSettings.addSection(wizardSettings);
-        }
-        setDialogSettings(wizardSettings);
+		IDialogSettings pluginSettings = Activator.getDefault().getDialogSettings();
+		IDialogSettings wizardSettings = pluginSettings.getSection(ID);
+		if (wizardSettings == null) {
+			wizardSettings = new DialogSettings(ID);
+			pluginSettings.addSection(wizardSettings);
+		}
+		setDialogSettings(wizardSettings);
 	}
 
 	/**
@@ -91,9 +91,9 @@ public class ImportWizard extends Wizard implements INewWizard {
 		EObject eObject = (EObject) page.getSelection();
 
 		// Read the file
-    	String path = page.getDestination();
-    	File file = new File(path);
-    	XSSFWorkbook wb = null;
+		String path = page.getDestination();
+		File file = new File(path);
+		XSSFWorkbook wb = null;
 		try {
 			wb = new XSSFWorkbook(new FileInputStream(file));
 		} catch (IOException e) {
@@ -101,33 +101,33 @@ public class ImportWizard extends Wizard implements INewWizard {
 			DVLMEditPlugin.getPlugin().getLog().log(status);
 		}
 		TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
-    	try {
-    		ExcelImporter ei = new ExcelImporter();
-	    	List<Fault> faultList = ei.validate(eObject, wb);
-	    	if (faultList.isEmpty()) {
-	    		ImportCommand importCommand = new ImportCommand(eObject, wb, ed);
-	    		ed.getCommandStack().execute(importCommand);
-	    	    DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO", "Successfully imported excel file " + file.getAbsolutePath()));
-	    	    return true;
-	    	}
-	    	String errorMessage = "";
-	    	for (int i = 0; i < faultList.size(); i++) {
-	    		errorMessage = errorMessage + faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n";	     		
-	    	}
-	    	page.setErrorMessage(errorMessage);
-    	} catch (Exception e) {
+		try {
+			ExcelImporter ei = new ExcelImporter();
+			List<Fault> faultList = ei.validate(eObject, wb);
+			if (faultList.isEmpty()) {
+				ImportCommand importCommand = new ImportCommand(eObject, wb, ed);
+				ed.getCommandStack().execute(importCommand);
+				DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO", "Successfully imported excel file " + file.getAbsolutePath()));
+				return true;
+			}
+			String errorMessage = "";
+			for (int i = 0; i < faultList.size(); i++) {
+				errorMessage = errorMessage + faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n";	     		
+			}
+			page.setErrorMessage(errorMessage);
+		} catch (Exception e) {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to perform an import operation! ", e);
 			DVLMEditPlugin.getPlugin().getLog().log(status);
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Import failed", status);
 			return false;
-    	}
+		}
 		return false;
 	}
 
-    @Override
-    public void addPages() {
-        super.addPages();
-        page = new ImportPage(model, selection);
-        addPage(page);
-    }
+	@Override
+	public void addPages() {
+		super.addPages();
+		page = new ImportPage(model, selection);
+		addPage(page);
+	}
 }

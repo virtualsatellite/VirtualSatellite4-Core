@@ -18,23 +18,26 @@
 # displayed in case of usage issues
 COMMAND=$0
 
-# This method decrypts the SSH secret to upload it to sourceforge
-sourceforgeDecryptSecret() {
-	eval "$(ssh-agent -s)"
-	mkdir -p -m 700 /tmp/.sourceforge_ssh
-	openssl aes-256-cbc -K $DECRYPT_KEY -iv $DECRYPT_IV -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
-	chmod 600 /tmp/.sourceforge_ssh/id_ed25519
-	ssh-add /tmp/.sourceforge_ssh/id_ed25519
-}
-
 # this method gives some little usage info
 printUsage() {
-    echo "usage: ${COMMAND} -k SECRET -i SECRET -u [swtbot|development|integration|release]"
+    echo "usage: ${COMMAND} -u [swtbot|development|integration|release]"
 }
 
 uploadSwtBot() {
-	cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
-	rsync -e ssh -avP $TRAVIS_BUILD_DIR/swtbot/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
+	if [ "$(ls -A ${TRAVIS_BUILD_DIR}/swtbot)" ]; then
+		echo "Test Artifacts: Collecting all reports in: ${TRAVIS_BUILD_DIR}/swtbot"
+		cp $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.swtbot.test/target/surefire-reports/* $TRAVIS_BUILD_DIR/swtbot/
+		TEST_ARTEFACTS_ZIP=SwtBot_${TRAVIS_REPO_SLUG}_${TRAVIS_BRANCH}_${TRAVIS_JOB_NUMBER}_${TRAVIS_COMMIT}
+		# Remove "/" "\" and "." from filename and attach .zip to it
+		TEST_ARTEFACTS_ZIP=$(sed  -e 's/[\/.]/\_/g' <<< ${TEST_ARTEFACTS_ZIP}).zip
+		echo "Test Artifacts: About to zip all artifacts into: ${TEST_ARTEFACTS_ZIP}"
+		zip ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} swtbot/*
+		echo "Test Artifacts: Starting upload to SourceForge..."
+		ls -lh ${TRAVIS_BUILD_DIR}/swtbot/
+		rsync -e ssh -avP ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
+	else
+		echo "Test Artifacts:No files in folder: ${TRAVIS_BUILD_DIR}/swtbot"
+	fi
 }
 
 uploadDevelopment() {
@@ -59,13 +62,7 @@ uploadRelease() {
 # process all command line arguments
 while [ "$1" != "" ]; do
     case $1 in
-        -k | --key )            shift
-                                DECRYPT_KEY=$1
-                                ;;
-        -i | --iv )    			shift
-                                DECRYPT_IV=$1
-                                ;;
-        -u | --upload ) 		shift
+        -u | --upload )         shift
                                 UPLOAD=$1
                                 ;;
         -h | --help )           printUsage
@@ -82,17 +79,17 @@ sourceforgeDecryptSecret
 
 # Decide what to upload
 case $UPLOAD in
-    swtbot )           	uploadSwtBot
-    					exit
+    swtbot )            uploadSwtBot
+                        exit
                         ;;
-    development )      	uploadDevelopment
-    					exit
+    development )       uploadDevelopment
+                        exit
                         ;;
-    integration )      	uploadIntegration
-    					exit
+    integration )       uploadIntegration
+                        exit
                         ;;
-    release )      		uploadRelease
-    					exit
+    release )           uploadRelease
+                        exit
                         ;;
     * )                 printUsage
                         exit 1

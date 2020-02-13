@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
-import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.fault.FaultType;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
@@ -33,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.statemachines.Activator;
+import de.dlr.sc.virsat.model.extension.statemachines.excel.AExcelStatIO;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
@@ -60,9 +60,9 @@ public class ExcelImporterTest {
 
 		UserRegistry.getInstance().setSuperUser(true);
 
-	    conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
+		conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
 
-	    stateMaschine = new StateMachine(conceptStateMachines);
+		stateMaschine = new StateMachine(conceptStateMachines);
 
 		State state1 = new State(conceptStateMachines);
 		state1.setName("state1");
@@ -132,17 +132,17 @@ public class ExcelImporterTest {
 		InputStream iStream = Activator.getResourceContentAsString("/resources/StateMachineIVTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
 
-		int headerSheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
-		int stateSheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_STATES);
+		int headerSheetIndex = wb.getSheetIndex(AExcelStatIO.TEMPLATE_SHEETNAME_HEADER);
+		int stateSheetIndex = wb.getSheetIndex(AExcelStatIO.TEMPLATE_SHEETNAME_STATES);
 
 		ArrayList<Fault> expectedFault = new ArrayList<Fault>();
-		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE));
-		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
+		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE));
+		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + 1));
 
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_WITHOUT_NAME - 1));
-		expectedFault.add(new Fault(FaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_WITHOUT_UUID - 1));
-		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_NAME - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_UUID - 1));
+		expectedFault.add(new Fault(StatFaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
 
 		ImportValidator iValidator = new ImportValidator(stateMaschine.getTypeInstance(), wb);
 
