@@ -9,9 +9,9 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
+import de.dlr.sc.virsat.model.concept.generator.core.ConceptLanguageImplicitSuperTypeHandler;
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;

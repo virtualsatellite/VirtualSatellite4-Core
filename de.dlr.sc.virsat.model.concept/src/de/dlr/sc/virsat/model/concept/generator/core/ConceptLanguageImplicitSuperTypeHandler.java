@@ -7,15 +7,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.ext.core.infrastructure;
+package de.dlr.sc.virsat.model.concept.generator.core;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ext.core.Activator;
 
@@ -64,7 +64,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 	 * @return the language core concept
 	 */
 	public static Concept loadLangaugeCoreConceptFromPlugin() {
-		return ActiveConceptConfigurationElement.loadConceptFromPlugin(Activator.getPluginId() + CONCEPT_XMI_PATH);
+		return ConceptResourceLoader.loadConceptFromPlugin(Activator.getPluginId() + CONCEPT_XMI_PATH);
 	}
 
 }

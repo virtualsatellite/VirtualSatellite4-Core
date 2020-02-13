@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.dmf;
 
+import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
@@ -30,7 +31,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayMod
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import java.io.ByteArrayOutputStream;
@@ -143,7 +143,9 @@ public class GenerateDmfCategories {
         ecoreImporter.setModelLocation(this.platformPluginUriStringForEcoreModel);
         EList<Resource> _resources = this.ecoreModelResourceSet.getResources();
         for (final Resource resource : _resources) {
-          {
+          int _size = resource.getContents().size();
+          boolean _greaterThan = (_size > 0);
+          if (_greaterThan) {
             EObject _get = resource.getContents().get(0);
             final EPackage resourceEPackage = ((EPackage) _get);
             List<EPackage> _ePackages = ecoreImporter.getEPackages();
@@ -172,8 +174,8 @@ public class GenerateDmfCategories {
         };
         genModels.forEach(_function_1);
         ecoreImporter.prepareGenModelAndEPackages(monitor);
-        GenPackage _get = ecoreImporter.getGenModel().getGenPackages().get(0);
-        _get.setBasePackage(dataModel.getName());
+        GenPackage _get_1 = ecoreImporter.getGenModel().getGenPackages().get(0);
+        _get_1.setBasePackage(dataModel.getName());
         GenModel _genModel = ecoreImporter.getGenModel();
         String _modelDirectory = ecoreImporter.getGenModel().getModelDirectory();
         String _plus_2 = (_modelDirectory + "-dmf");
@@ -441,7 +443,7 @@ public class GenerateDmfCategories {
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
     EObject _get = ap.eResource().getContents().get(0);
     Concept concept = ((Concept) _get);
-    URI ecoreUri = ActiveConceptConfigurationElement.getConceptDMFResourceUri(concept.getName());
+    URI ecoreUri = ConceptResourceLoader.getConceptDMFResourceUri(concept.getName());
     if ((ecoreUri == null)) {
       final URI rpUri = ap.eResource().getURI();
       final String ecorePath = rpUri.toString().replace(".concept", ".ecore").replace(".xmi", ".ecore");

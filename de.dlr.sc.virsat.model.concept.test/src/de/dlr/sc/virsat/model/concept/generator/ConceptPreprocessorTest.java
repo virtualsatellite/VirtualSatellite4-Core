@@ -25,12 +25,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.model.concept.generator.core.ConceptLanguageImplicitSuperTypeHandler;
 import de.dlr.sc.virsat.model.concept.test.MockupFileSystemAccess;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
-import de.dlr.sc.virsat.model.ext.core.infrastructure.ConceptLanguageImplicitSuperTypeHandler;
 
 /**
  *
