@@ -267,26 +267,5 @@ public class ActiveConceptConfigurationElement {
 		Concept concept = acce.loadConceptFromPlugin();
 		return concept;
 	}
-	
-	/**
-	 * Method to load a concept from its XMI file by using the concept name
-	 * @param conceptName the concept name
-	 * @return the loaded concept
-	 */
-	public static Concept loadConceptViaConceptName(String conceptName) {
-		return loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
-	}
-	
-	/**
-	 * Method to get a cocnept's DMF ecore model URI by using the concept name
-	 * @param conceptName the concept name
-	 * @return the loaded DMF ecore model
-	 */
-	public static URI getConceptDMFResourceUri(String conceptName) {
-		Concept loadedConcept = loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
-		if (loadedConcept != null) {
-			return loadedConcept.eResource().getURI().trimFileExtension().appendFileExtension("ecore");
-		}
-		return null;
-	}
+
 };

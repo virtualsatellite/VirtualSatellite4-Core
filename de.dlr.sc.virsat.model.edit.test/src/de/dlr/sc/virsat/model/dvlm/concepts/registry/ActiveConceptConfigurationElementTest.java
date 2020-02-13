@@ -60,7 +60,6 @@ public class ActiveConceptConfigurationElementTest {
 	private EditingDomain ourEditingDomain;
 	private static final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.tests";
 	private static final String TEST_CONCEPT_URI = "de.dlr.sc.virsat.model.extension.tests/concept/concept.xmi";
-	private static final String TEST_CONCEPT_DMF_URI = "platform:/plugin/de.dlr.sc.virsat.model.extension.tests/concept/concept.ecore";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -212,24 +211,6 @@ public class ActiveConceptConfigurationElementTest {
 		assertEquals(TEST_CONCEPT_NAME, testConcept.getName());
 		
 		assertNull("Should not result in exception and be null", ActiveConceptConfigurationElement.loadConceptFromPlugin(null));
-		
-	}
-	
-	@Test
-	public void testLoadConceptViaConceptName() {
-		
-		Concept testConcept = ActiveConceptConfigurationElement.loadConceptViaConceptName(TEST_CONCEPT_NAME);
-		assertNotNull("Test concept should exist and not be null", testConcept);
-		assertEquals(TEST_CONCEPT_NAME, testConcept.getName());
-		
-	}
-	
-	@Test
-	public void testLoadConceptDMFResourceViaConceptName() {
-		
-		URI dmfURI = ActiveConceptConfigurationElement.getConceptDMFResourceUri(TEST_CONCEPT_NAME);
-		assertNotNull("Test resource should exist and not be null", dmfURI);
-		assertEquals("DMF URI should be as the concept URI but with ecore ending", TEST_CONCEPT_DMF_URI, dmfURI.toString());
 		
 	}
 }
