@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edapt.migration.ReleaseUtils;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -251,11 +250,6 @@ public class ActiveConceptConfigurationElement {
 	 * @return loaded concept
 	 */
 	public static Concept loadConceptFromPlugin(String conceptXmiFilePath) {
-		//Check if path has valid concept plugin namespace
-		if (conceptXmiFilePath == null 
-				|| ReleaseUtils.getNamespaceURI(URI.createPlatformPluginURI(conceptXmiFilePath, true)) == null) {
-			return null;
-		}
 		ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(null) {
 			@Override
 			protected String getConceptXmiPluginPath() {
@@ -266,5 +260,4 @@ public class ActiveConceptConfigurationElement {
 		Concept concept = acce.loadConceptFromPlugin();
 		return concept;
 	}
-
 };
