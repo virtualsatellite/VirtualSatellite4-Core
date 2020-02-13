@@ -29,17 +29,14 @@ public class ConceptResourceLoader {
 	private static final String MODEL_TYPE_DMF_EXTENSION = "ecore";
 	private static final String PROJECT_CONCEPT_LOCATION_PATH = "/concept/concept.xmi";
 	
-	private ConceptResourceLoader() {
-	}
+	protected static ConceptResourceLoader instance;
 	
 	/**
 	 * Method to load a concept from an XMI file
 	 * @param conceptXmiFilePath path to the concept.xmi, e.g. "de.dlr.sc.virsat.model.extension.tests/concept/concept.xmi"
 	 * @return loaded concept
 	 */
-	public static Concept loadConceptFromPlugin(String conceptXmiFilePath) {
-		Resource.Factory.Registry factoryRegistry = Resource.Factory.Registry.INSTANCE;
-		factoryRegistry.getExtensionToFactoryMap().put(MODEL_TYPE_XMI_EXTENSION, new XMIResourceFactoryImpl());
+	public Concept loadConceptFromPlugin(String conceptXmiFilePath) {
 
 		URI conceptResourceUri = URI.createPlatformResourceURI(conceptXmiFilePath, true);
 		
@@ -55,7 +52,7 @@ public class ConceptResourceLoader {
 	 * @param conceptName the concept name
 	 * @return the loaded concept
 	 */
-	public static Concept loadConceptByName(String conceptName) {
+	public Concept loadConceptByName(String conceptName) {
 		return loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
 	}
 	
@@ -64,12 +61,39 @@ public class ConceptResourceLoader {
 	 * @param conceptName the concept name
 	 * @return the loaded DMF ecore model
 	 */
-	public static URI getConceptDMFResourceUri(String conceptName) {
+	public URI getConceptDMFResourceUri(String conceptName) {
 		Concept loadedConcept = loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
 		if (loadedConcept != null) {
 			return loadedConcept.eResource().getURI().trimFileExtension().appendFileExtension(MODEL_TYPE_DMF_EXTENSION);
 		}
 		return null;
+	}
+	
+	/**
+	 * Hand over instance of resource loader
+	 * @return
+	 */
+	public static ConceptResourceLoader getInstance() {
+		if (instance == null) {
+			instance = new ConceptResourceLoader();
+		}
+		return instance;
+	}
+	
+	/**
+	 * Method to inject custom resource loader for unit testing
+	 * @param injectedInstance the test instance
+	 */
+	public static void injectInstance(ConceptResourceLoader injectedInstance) {
+		instance = injectedInstance;
+	}
+	
+	/**
+	 * Singlton constructor - create by getInstnace
+	 */
+	protected ConceptResourceLoader() {
+		Resource.Factory.Registry factoryRegistry = Resource.Factory.Registry.INSTANCE;
+		factoryRegistry.getExtensionToFactoryMap().put(MODEL_TYPE_XMI_EXTENSION, new XMIResourceFactoryImpl());
 	}
 
 }

@@ -397,7 +397,7 @@ SPDX-License-Identifier: EPL-2.0";
 		// ecore based categories model. After that load the resource and find
 		// the eclass which is referenced by its name 
 		var concept = ap.eResource.contents.get(0) as Concept
-		var ecoreUri = ConceptResourceLoader.getConceptDMFResourceUri(concept.name)
+		var ecoreUri = ConceptResourceLoader.instance.getConceptDMFResourceUri(concept.name)
 		if(ecoreUri === null) {
 			//If concept is not registered via extension then check next to the concept file
 			val rpUri = ap.eResource.URI;

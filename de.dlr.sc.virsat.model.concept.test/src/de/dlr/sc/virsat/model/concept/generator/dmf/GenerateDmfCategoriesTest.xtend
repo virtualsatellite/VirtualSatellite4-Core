@@ -32,6 +32,8 @@ import org.junit.runner.RunWith
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
 import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper
+import de.dlr.sc.virsat.model.concept.test.MockupConceptResourceLoader
+import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)
@@ -42,6 +44,7 @@ class GenerateDmfCategoriesTest {
 
 	static val TEST_CONCEPT_NAME = "testConcept";
 	static val TEST_FQN_NAME = "de.dlr.sc.virsat.model.extension" + "." + TEST_CONCEPT_NAME;
+	static val TEST_CONCEPT_XMI_PATH = TEST_FQN_NAME + "/concept/concept.xmi"
 	static val TEST_CATEGORY_NAME = "testCategory";
 	static val TEST_CONCEPT_VERSION = "2";
 	val dmfCategoriesGenerator = new GenerateDmfCategories();
@@ -200,6 +203,9 @@ class GenerateDmfCategoriesTest {
 				}
 			}
 	    '''.parse
+	    val testLoader = new MockupConceptResourceLoader()
+	    testLoader.addTestConceptInstance(TEST_CONCEPT_XMI_PATH, concept)
+	    ConceptResourceLoader.injectInstance(testLoader)
 		
 		dmfCategoriesGenerator.initResources(concept);
 		val ePackage = dmfCategoriesGenerator.createEPackageFromConcept(concept);
@@ -241,6 +247,10 @@ class GenerateDmfCategoriesTest {
 			}
 	    '''.parse
 		
+		val testLoader = new MockupConceptResourceLoader()
+	    testLoader.addTestConceptInstance(TEST_CONCEPT_XMI_PATH, concept)
+	    ConceptResourceLoader.injectInstance(testLoader)
+		
 		dmfCategoriesGenerator.initResources(concept);
 		val ePackage = dmfCategoriesGenerator.createEPackageFromConcept(concept);
 		
@@ -257,7 +267,6 @@ class GenerateDmfCategoriesTest {
 
 		Assert.assertTrue("Base EClass is abstract", eClassExtended.abstract);		
 		Assert.assertTrue("EClass correctly extends base EClass", eClassExtending.ESuperTypes.contains(eClassExtended));
-
 	}
 	
 	@Test

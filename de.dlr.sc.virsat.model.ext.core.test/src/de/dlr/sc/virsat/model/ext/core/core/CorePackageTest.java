@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.ext.core.core;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -22,9 +21,6 @@ public class CorePackageTest {
 	@Test
 	public void testCoreFactory() {
 
-		CorePackage corePackage = CoreFactory.eINSTANCE.getCorePackage();
-
-		assertNull("Package should not be initialized yet", corePackage);
 		assertNotNull("Package should be initialized now", CorePackage.eINSTANCE);
 
 	}

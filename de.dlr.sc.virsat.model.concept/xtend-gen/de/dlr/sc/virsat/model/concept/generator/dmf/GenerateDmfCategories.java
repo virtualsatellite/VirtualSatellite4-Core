@@ -443,7 +443,7 @@ public class GenerateDmfCategories {
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
     EObject _get = ap.eResource().getContents().get(0);
     Concept concept = ((Concept) _get);
-    URI ecoreUri = ConceptResourceLoader.getConceptDMFResourceUri(concept.getName());
+    URI ecoreUri = ConceptResourceLoader.getInstance().getConceptDMFResourceUri(concept.getName());
     if ((ecoreUri == null)) {
       final URI rpUri = ap.eResource().getURI();
       final String ecorePath = rpUri.toString().replace(".concept", ".ecore").replace(".xmi", ".ecore");

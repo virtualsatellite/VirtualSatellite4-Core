@@ -63,7 +63,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 	 * @return the language core concept
 	 */
 	public static Concept loadLangaugeCoreConceptFromPlugin() {
-		return ConceptResourceLoader.loadConceptFromPlugin(Activator.getPluginId() + CONCEPT_XMI_PATH);
+		return ConceptResourceLoader.getInstance().loadConceptFromPlugin(Activator.getPluginId() + CONCEPT_XMI_PATH);
 	}
 
 }
