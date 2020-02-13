@@ -27,25 +27,22 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.excel.fault.Fault;
+import de.dlr.sc.virsat.excel.importer.ExcelImporter;
+import de.dlr.sc.virsat.excel.importer.IImport;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * This class test the ExcelExporter class.
- * @author muel_s8
- *
  */
-
 @SuppressWarnings("restriction")
 public class ExcelImporterTest {
 
 	/**
 	 * Mockup exporter accepting repositories
-	 * @author muel_s8
-	 *
 	 */
-	
 	public class RepositoryImporter implements IImport {
 
 		@Override
@@ -64,11 +61,10 @@ public class ExcelImporterTest {
 		}
 	}
 
-	
 	private static final List<Fault>FAULT_LIST = new ArrayList<>();
 	private IExtensionRegistry registry;
 	private boolean executed = false;
-	
+
 	@Before
 	public void setUp() {
 		registry = new ExtensionRegistry(null, null, null) {
@@ -85,7 +81,7 @@ public class ExcelImporterTest {
 			}
 		};
 	}
-	
+
 	@Test
 	public void testImport() throws CoreException {
 		ExcelImporter importer = new ExcelImporter(registry);
@@ -95,7 +91,7 @@ public class ExcelImporterTest {
 		importer.importExcel(DVLMFactory.eINSTANCE.createRepository(), null, null);
 		assertTrue("Importer has been executed", executed);
 	}
-	
+
 	@Test
 	public void testValidate() throws CoreException {
 		ExcelImporter importer = new ExcelImporter(registry);
@@ -104,5 +100,4 @@ public class ExcelImporterTest {
 		List<Fault> validImportFaults = importer.validate(DVLMFactory.eINSTANCE.createRepository(), null);
 		assertSame("A valid input, so the fault list of the importer is returned", FAULT_LIST, validImportFaults);
 	}
-
 }

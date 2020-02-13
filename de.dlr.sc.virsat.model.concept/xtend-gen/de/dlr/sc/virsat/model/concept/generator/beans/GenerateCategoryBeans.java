@@ -13,16 +13,19 @@ import com.google.common.collect.Iterables;
 import de.dlr.sc.virsat.model.concept.generator.AGeneratorGapGenerator;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ImportManager;
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper;
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
@@ -34,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
@@ -46,6 +50,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.Propertyd
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
@@ -61,6 +66,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -994,6 +1000,64 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.newLine();
           return _builder_1;
         }
+      }
+      
+      @Override
+      public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
+        importManager.register(BeanPropertyEReference.class);
+        importManager.register(IBeanList.class);
+        importManager.register(TypeSafeEReferenceArrayInstanceList.class);
+        final String typeClass = new ExternalGenModelHelper().getEObjectClass(property);
+        final boolean genPackageSpecified = (typeClass != null);
+        if (genPackageSpecified) {
+          importManager.register(typeClass);
+        }
+        StringConcatenation _builder = new StringConcatenation();
+        {
+          if (genPackageSpecified) {
+            String _name = property.getReferenceType().getName();
+            _builder.append(_name);
+          } else {
+            _builder.append("EObject");
+          }
+        }
+        final String referenceType = _builder.toString();
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("private IBeanList<BeanPropertyEReference<");
+        _builder_1.append(referenceType);
+        _builder_1.append(">> ");
+        String _name_1 = property.getName();
+        _builder_1.append(_name_1);
+        _builder_1.append(" = new TypeSafeEReferenceArrayInstanceList<");
+        _builder_1.append(referenceType);
+        _builder_1.append(">();");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.newLine();
+        CharSequence _declareSafeAccessArrayMethod = GenerateCategoryBeans.this.declareSafeAccessArrayMethod(property, importManager);
+        _builder_1.append(_declareSafeAccessArrayMethod);
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.newLine();
+        _builder_1.append("public IBeanList<BeanPropertyEReference<");
+        _builder_1.append(referenceType);
+        _builder_1.append(">> ");
+        String _propertyMethodGet = GenerateCategoryBeans.this.propertyMethodGet(property);
+        _builder_1.append(_propertyMethodGet);
+        _builder_1.append("() {");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        String _propertyMethodSafeAccess = GenerateCategoryBeans.this.propertyMethodSafeAccess(property);
+        _builder_1.append(_propertyMethodSafeAccess, "\t");
+        _builder_1.append(";");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        _builder_1.append("return ");
+        String _name_2 = property.getName();
+        _builder_1.append(_name_2, "\t");
+        _builder_1.append(";");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("}");
+        _builder_1.newLine();
+        return _builder_1;
       }
     }.doSwitch(property);
   }
@@ -2022,6 +2086,111 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.newLine();
           return _builder_1;
         }
+      }
+      
+      @Override
+      public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
+        importManager.register(CategoryAssignment.class);
+        importManager.register(Command.class);
+        importManager.register(EditingDomain.class);
+        importManager.register(BeanPropertyEReference.class);
+        importManager.register(EReferencePropertyInstance.class);
+        final String typeClass = new ExternalGenModelHelper().getEObjectClass(property);
+        final boolean genPackageSpecified = (typeClass != null);
+        if (genPackageSpecified) {
+          importManager.register(typeClass);
+        } else {
+          importManager.register(EObject.class);
+        }
+        StringConcatenation _builder = new StringConcatenation();
+        {
+          if (genPackageSpecified) {
+            String _name = property.getReferenceType().getName();
+            _builder.append(_name);
+          } else {
+            _builder.append("EObject");
+          }
+        }
+        final String referenceType = _builder.toString();
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("private BeanPropertyEReference<");
+        _builder_1.append(referenceType);
+        _builder_1.append("> ");
+        String _name_1 = property.getName();
+        _builder_1.append(_name_1);
+        _builder_1.append(" = new BeanPropertyEReference<");
+        _builder_1.append(referenceType);
+        _builder_1.append(">();");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.newLine();
+        CharSequence _declareSafeAccessAttributeMethod = GenerateCategoryBeans.this.declareSafeAccessAttributeMethod(property, EReferencePropertyInstance.class);
+        _builder_1.append(_declareSafeAccessAttributeMethod);
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.newLine();
+        _builder_1.append("public Command ");
+        String _propertyMethodSet = GenerateCategoryBeans.this.propertyMethodSet(property);
+        _builder_1.append(_propertyMethodSet);
+        _builder_1.append("(EditingDomain ed, ");
+        _builder_1.append(referenceType);
+        _builder_1.append(" value) {");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        String _propertyMethodSafeAccess = GenerateCategoryBeans.this.propertyMethodSafeAccess(property);
+        _builder_1.append(_propertyMethodSafeAccess, "\t");
+        _builder_1.append(";");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        _builder_1.append("return this.");
+        String _name_2 = property.getName();
+        _builder_1.append(_name_2, "\t");
+        _builder_1.append(".setValue(ed, value);");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("}");
+        _builder_1.newLine();
+        _builder_1.newLine();
+        _builder_1.append("public void ");
+        String _propertyMethodSet_1 = GenerateCategoryBeans.this.propertyMethodSet(property);
+        _builder_1.append(_propertyMethodSet_1);
+        _builder_1.append("(");
+        _builder_1.append(referenceType);
+        _builder_1.append(" value) {");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        String _propertyMethodSafeAccess_1 = GenerateCategoryBeans.this.propertyMethodSafeAccess(property);
+        _builder_1.append(_propertyMethodSafeAccess_1, "\t");
+        _builder_1.append(";");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        _builder_1.append("this.");
+        String _name_3 = property.getName();
+        _builder_1.append(_name_3, "\t");
+        _builder_1.append(".setValue(value);");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("}");
+        _builder_1.newLine();
+        _builder_1.newLine();
+        _builder_1.append("public ");
+        _builder_1.append(referenceType);
+        _builder_1.append(" ");
+        String _propertyMethodGet = GenerateCategoryBeans.this.propertyMethodGet(property);
+        _builder_1.append(_propertyMethodGet);
+        _builder_1.append("() {");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        String _propertyMethodSafeAccess_2 = GenerateCategoryBeans.this.propertyMethodSafeAccess(property);
+        _builder_1.append(_propertyMethodSafeAccess_2, "\t");
+        _builder_1.append(";");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("\t");
+        _builder_1.append("return ");
+        String _name_4 = property.getName();
+        _builder_1.append(_name_4, "\t");
+        _builder_1.append(".getValue();");
+        _builder_1.newLineIfNotEmpty();
+        _builder_1.append("}");
+        _builder_1.newLine();
+        _builder_1.newLine();
+        return _builder_1;
       }
     }.doSwitch(property);
   }

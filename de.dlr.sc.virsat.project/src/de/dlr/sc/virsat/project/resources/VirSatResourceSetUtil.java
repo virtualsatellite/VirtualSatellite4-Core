@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.project.Activator;
 
 /**
@@ -87,7 +88,10 @@ public class VirSatResourceSetUtil {
 			// First try to store the current Resource into Memory
 			InMemoryByteArrayOutputStream inMemoryBuffer = new InMemoryByteArrayOutputStream();
 			try {
+				boolean resourceSendsNotifications = resource.eDeliver();
+				resource.eSetDeliver(false);
 				resource.save(inMemoryBuffer, saveOptions);
+				resource.eSetDeliver(resourceSendsNotifications);
 			} finally {
 				inMemoryBuffer.close();
 			}
@@ -159,11 +163,16 @@ public class VirSatResourceSetUtil {
 			for (Setting setting : settings) {
 				EObject eContainer = setting.getEObject();
 				EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
-				if (eStructuralFeature.isMany()) {
-					((EList<?>) eContainer.eGet(eStructuralFeature)).remove(proxy);
-				} else {
-					eContainer.eUnset(eStructuralFeature);
-				}
+				
+				//Ignore external references
+				if (!eStructuralFeature.equals(PropertydefinitionsPackage.Literals.EREFERENCE_PROPERTY__REFERENCE_TYPE)) {
+					if (eStructuralFeature.isMany()) {
+						((EList<?>) eContainer.eGet(eStructuralFeature)).remove(proxy);
+					} else {
+						eContainer.eUnset(eStructuralFeature);
+					}
+				} 
+				
 			}
 		}
 	}

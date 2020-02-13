@@ -22,6 +22,7 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 				de.dlr.sc.virsat.commons.test.AllTests.class,
+//				de.dlr.sc.virsat.server.test.AllTests.class, // Disabled for 4.11.0 release
 //				de.dlr.sc.virsat.team.test.AllTests.class, // There are no tests yet
 				de.dlr.sc.virsat.model.test.AllTests.class,
 				de.dlr.sc.virsat.model.edit.test.AllTests.class,
@@ -53,8 +54,6 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.model.extension.statemachines.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.funcelectrical.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.funcelectrical.test.AllTestsGen.class,
-				de.dlr.sc.virsat.model.extension.requirements.test.AllTests.class,
-				de.dlr.sc.virsat.model.extension.requirements.test.AllTestsGen.class,
 				de.dlr.sc.virsat.excel.test.AllTests.class,
 				de.dlr.sc.virsat.graphiti.test.AllTests.class,
 				})

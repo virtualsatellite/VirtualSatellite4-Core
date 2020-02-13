@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.target.feature"
       label="VirSat Core Target Feature"
-      version="4.9.1.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       license-feature="de.dlr.sc.virsat.license.feature">
 

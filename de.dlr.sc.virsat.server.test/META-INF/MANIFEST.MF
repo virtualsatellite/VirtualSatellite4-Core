@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Headless Rest Jetty Server Tests
+Bundle-SymbolicName: de.dlr.sc.virsat.server.test
+Bundle-Version: 4.11.0.qualifier
+Fragment-Host: de.dlr.sc.virsat.server;bundle-version="0.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.junit
+Export-Package: de.dlr.sc.virsat.server.test
+Automatic-Module-Name: de.dlr.sc.virsat.server.test

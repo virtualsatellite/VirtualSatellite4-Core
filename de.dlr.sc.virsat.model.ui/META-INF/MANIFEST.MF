@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Data Model UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.ui;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.model.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.model.edit;visibility:=reexport,

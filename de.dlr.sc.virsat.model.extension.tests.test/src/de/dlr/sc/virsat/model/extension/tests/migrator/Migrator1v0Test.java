@@ -16,9 +16,18 @@ package de.dlr.sc.virsat.model.extension.tests.migrator;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCrossLinkedParametersWithCalculation;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
+
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.calculation.EquationDefinition;
+import de.dlr.sc.virsat.model.dvlm.calculation.IEquationDefinitionInput;
+import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedDefinitionInput;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
 
 // *****************************************************************
 // * Class Declaration
@@ -49,6 +58,19 @@ public class Migrator1v0Test extends AMigrator1v0Test {
 		Concept conceptPrevious = EcoreUtil.copy(conceptCurrent);
 		
 		testMigrator1v0.migrate(conceptPrevious, conceptCurrent, conceptNext);
+	}
+	
+	@Test
+	public void testForProxiedReference() {
+		
+		// Load the category and check if the concept
+		Category category = ActiveConceptHelper.getCategory(conceptMigrateFrom, TestCrossLinkedParametersWithCalculation.FULL_QUALIFIED_CATEGORY_NAME);
+		EquationDefinition eq = category.getEquationDefinitions().get(0);
+		ReferencedDefinitionInput rdi = (ReferencedDefinitionInput) eq.getExpression();
+
+		IEquationDefinitionInput equationInput = rdi.getReference();
+		
+		assertTrue("The property referencing into the Maturity concept is still in proxy state", equationInput.eIsProxy());
 	}
 	
 }

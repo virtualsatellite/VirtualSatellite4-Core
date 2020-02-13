@@ -65,7 +65,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
@@ -87,8 +86,6 @@ import de.dlr.sc.virsat.uiengine.ui.excel.ExcelExportWizard;
 
 /**
  * abstract class ui snippet generic table implements the ui snippet for generic tables
- * @author leps_je
- *
  */
 public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 
@@ -279,6 +276,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 */
 	protected ColumnViewer createColumnViewer(FormToolkit toolkit) {
 		Table table = createDefaultTable(toolkit, sectionBody);
+				
 		table.setData("org.eclipse.swtbot.widget.key", "table" + categoryId);
 		return new TableViewer(table);
 	}

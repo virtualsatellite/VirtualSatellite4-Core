@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.calculation.feature"
       label="VirSat Core Model Calculation feature"
-      version="4.9.1.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -108,7 +108,7 @@ by German Aerospace Center (DLR e.V.)
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.xbase" version="2.10.0.v201605250459"/>
-      <import feature="de.dlr.sc.virsat.build.feature" version="4.9.1.qualifier"/>
+      <import feature="de.dlr.sc.virsat.build.feature" version="4.11.0.qualifier"/>
    </requires>
 
    <plugin

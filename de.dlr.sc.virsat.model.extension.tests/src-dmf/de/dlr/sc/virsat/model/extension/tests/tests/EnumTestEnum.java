@@ -1,12 +1,12 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
 import java.util.Arrays;
@@ -68,10 +68,6 @@ public enum EnumTestEnum implements Enumerator {
 	/**
 	 * The '<em><b>LOW</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>LOW</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #LOW
 	 * @model
@@ -83,10 +79,6 @@ public enum EnumTestEnum implements Enumerator {
 	/**
 	 * The '<em><b>MEDIUM</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>MEDIUM</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #MEDIUM
 	 * @model
@@ -98,10 +90,6 @@ public enum EnumTestEnum implements Enumerator {
 	/**
 	 * The '<em><b>HIGH</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>HIGH</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #HIGH
 	 * @model
@@ -113,10 +101,6 @@ public enum EnumTestEnum implements Enumerator {
 	/**
 	 * The '<em><b>INCREDIBLE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>INCREDIBLE</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #INCREDIBLE
 	 * @model
@@ -239,6 +223,7 @@ public enum EnumTestEnum implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getValue() {
 	  return value;
 	}
@@ -248,6 +233,7 @@ public enum EnumTestEnum implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 	  return name;
 	}
@@ -257,6 +243,7 @@ public enum EnumTestEnum implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getLiteral() {
 	  return literal;
 	}

@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.extension.budget.mass.feature"
       label="VirSat Core Model Extension Mass Budgets Feature"
-      version="4.9.1.qualifier"
+      version="4.11.0.qualifier"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 

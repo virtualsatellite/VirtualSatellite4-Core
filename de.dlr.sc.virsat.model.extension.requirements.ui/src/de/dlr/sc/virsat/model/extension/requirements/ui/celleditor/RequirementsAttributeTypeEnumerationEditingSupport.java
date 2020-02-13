@@ -56,30 +56,11 @@ public class RequirementsAttributeTypeEnumerationEditingSupport extends EnumProp
 	}
 	
 	/**
-	 * constructor of the value property cell editing support instantiate the editor
-	 * @param toolKit the swt toolkit
-	 * @param editingDomain the editing domain
-	 * @param viewer the table viewer
-	 * @param property an aproperty
-	 * @param showEmptyField 
-	 * @param valueSwitch 
-	 */
-	public RequirementsAttributeTypeEnumerationEditingSupport(FormToolkit toolKit, EditingDomain editingDomain, ColumnViewer viewer, EnumProperty property, PropertyInstanceValueSwitch valueSwitch, boolean showEmptyField) {
-		super(editingDomain, viewer, property);
-		this.toolKit = toolKit;
-		setupValues(property);
-	}
-	
-	/**
 	 * Constructs the list of values available as type
 	 * @param ep the enmueration property
 	 */
 	protected void setupValues(EnumProperty ep) {
-		if (comboItems == null) {
-			comboItems = new ArrayList<>();
-		} else {
-			comboItems.clear();
-		}
+		comboItems = new ArrayList<>();
 		comboItems.add("");
 		ep.getValues().forEach((evd) -> {
 			comboItems.add(evd.getName());
@@ -112,7 +93,7 @@ public class RequirementsAttributeTypeEnumerationEditingSupport extends EnumProp
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), this.toolKit, editingDomain,
 						type.getEnumeration().getATypeInstance());
 				dialog.open();
-			} else if (type.getEnumeration().getLiterals().size() > 0) {
+			} else if (!type.getEnumeration().getLiterals().isEmpty()) {
 				editingDomain.getCommandStack().execute(new RecordingCommand((TransactionalEditingDomain) editingDomain) {
 					@Override
 					protected void doExecute() {

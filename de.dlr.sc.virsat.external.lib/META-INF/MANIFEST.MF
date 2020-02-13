@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - General External Library Functionality
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)

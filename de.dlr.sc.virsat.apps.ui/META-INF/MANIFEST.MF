@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Apps UI
 Bundle-SymbolicName: de.dlr.sc.virsat.apps.ui;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.apps.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,

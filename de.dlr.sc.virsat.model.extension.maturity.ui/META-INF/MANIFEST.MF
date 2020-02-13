@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Maturity UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.maturity.ui;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.edit,

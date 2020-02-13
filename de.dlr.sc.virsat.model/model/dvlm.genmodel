@@ -7,7 +7,8 @@
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testsDirectory="/de.dlr.sc.virsat.model.test/src-gen"
     importerID="org.eclipse.emf.importer.ecore" containmentProxies="true" complianceLevel="8.0"
     copyrightFields="false" testsPluginID="de.dlr.sc.virsat.model.test" fontProviders="true"
-    operationReflection="true" importOrganizing="true">
+    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore" operationReflection="true"
+    importOrganizing="true">
   <foreignModel>dvlm.ecore</foreignModel>
   <genPackages prefix="DVLM" basePackage="de.dlr.sc.virsat.model" disposableProviderFactory="true"
       ecorePackage="dvlm.ecore#/">
@@ -19,6 +20,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference dvlm.ecore#//Repository/unitManagement"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//Repository/activeConcepts"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//Repository/suppressedValidators"/>
     </genClasses>
     <nestedGenPackages prefix="Structural" basePackage="de.dlr.sc.virsat.model.dvlm"
         disposableProviderFactory="true" ecorePackage="dvlm.ecore#//structural">
@@ -37,7 +39,8 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/relationInstances"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/children"/>
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference dvlm.ecore#//structural/StructuralElementInstance/parent"/>
-        <genOperations ecoreOperation="dvlm.ecore#//structural/StructuralElementInstance/getDeepChildren"/>
+        <genOperations ecoreOperation="dvlm.ecore#//structural/StructuralElementInstance/getDeepChildren"
+            body="EList&lt;StructuralElementInstance> children = new  org.eclipse.emf.common.util.BasicEList&lt;>();&#xD;&#xA;for (StructuralElementInstance structuralElementInstance : getChildren()) {&#xD;&#xA;&#x9;children.add(structuralElementInstance);&#xD;&#xA;&#x9;EList&lt;StructuralElementInstance> nestedChildren = structuralElementInstance.getDeepChildren();&#xD;&#xA;&#x9;children.addAll(nestedChildren);&#xD;&#xA;}&#xD;&#xA;&#xD;&#xA;return children;"/>
       </genClasses>
       <genClasses ecoreClass="dvlm.ecore#//structural/GeneralRelation">
         <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
@@ -72,10 +75,12 @@
       <genClasses image="false" ecoreClass="dvlm.ecore#//general/IAssignedDiscipline">
         <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference dvlm.ecore#//general/IAssignedDiscipline/assignedDiscipline"/>
-        <genOperations ecoreOperation="dvlm.ecore#//general/IAssignedDiscipline/getContainedIAssignedDisciplines"/>
+        <genOperations ecoreOperation="dvlm.ecore#//general/IAssignedDiscipline/getContainedIAssignedDisciplines"
+            body="EList&lt;IAssignedDiscipline> containedIAssignedDiscipline = new org.eclipse.emf.common.util.BasicEList&lt;>();&#xD;&#xA;org.eclipse.emf.common.util.TreeIterator&lt;Object> iter = org.eclipse.emf.ecore.util.EcoreUtil.getAllContents(this, true);&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;iter.forEachRemaining((object) -> {&#xD;&#xA;&#x9;if (object instanceof IAssignedDiscipline) {&#xD;&#xA;&#x9;&#x9;containedIAssignedDiscipline.add((IAssignedDiscipline) object);&#xD;&#xA;&#x9;}&#xD;&#xA;});&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;return containedIAssignedDiscipline;"/>
       </genClasses>
       <genClasses image="false" ecoreClass="dvlm.ecore#//general/IInstance">
-        <genOperations ecoreOperation="dvlm.ecore#//general/IInstance/getFullQualifiedInstanceName"/>
+        <genOperations ecoreOperation="dvlm.ecore#//general/IInstance/getFullQualifiedInstanceName"
+            body="return de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper.getFullQualifedNameForInstance(this);"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Concepts" basePackage="de.dlr.sc.virsat.model.dvlm"
@@ -87,7 +92,9 @@
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/version"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/DMF"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/displayName"/>
-        <genOperations ecoreOperation="dvlm.ecore#//concepts/Concept/getNonAbstractCategories"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/Concept/beta"/>
+        <genOperations ecoreOperation="dvlm.ecore#//concepts/Concept/getNonAbstractCategories"
+            body="EList&lt;Category> allCategories = new org.eclipse.emf.common.util.BasicEList&lt;>();&#xD;&#xA;&#xD;&#xA;for (Category category : getCategories()) {&#xD;&#xA;&#x9;if (!category.isIsAbstract()) {&#xD;&#xA;&#x9;&#x9;allCategories.add(category);&#xD;&#xA;&#x9;}&#xD;&#xA;}&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;return allCategories;"/>
       </genClasses>
       <genClasses ecoreClass="dvlm.ecore#//concepts/ConceptImport">
         <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/ConceptImport/importedNamespace"/>
@@ -99,6 +106,13 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/IImports/imports"/>
       </genClasses>
       <genClasses image="false" ecoreClass="dvlm.ecore#//concepts/IConceptTypeDefinition"/>
+      <genClasses ecoreClass="dvlm.ecore#//concepts/EcoreImport">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/EcoreImport/importedNsURI"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//concepts/EcoreImport/importedGenModel"/>
+      </genClasses>
+      <genClasses ecoreClass="dvlm.ecore#//concepts/IEImports">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//concepts/IEImports/ecoreImports"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Roles" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"
         ecorePackage="dvlm.ecore#//roles">
@@ -126,19 +140,24 @@
       <genClasses image="false" ecoreClass="dvlm.ecore#//categories/ATypeInstance">
         <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference dvlm.ecore#//categories/ATypeInstance/type"/>
-        <genOperations ecoreOperation="dvlm.ecore#//categories/ATypeInstance/getCategoryAssignmentContainer"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/ATypeInstance/getCategoryAssignmentContainer"
+            body="return de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper.getContainerFor(this);"/>
       </genClasses>
       <genClasses ecoreClass="dvlm.ecore#//categories/Category">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/Category/properties"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/Category/isAbstract"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference dvlm.ecore#//categories/Category/extendsCategory"/>
-        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllProperties"/>
-        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/isExtensionOf">
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllProperties"
+            body="EList&lt;AProperty> allProperties = new org.eclipse.emf.common.util.BasicEList&lt;>();&#xD;&#xA;allProperties.addAll(getProperties());&#xD;&#xA;&#xD;&#xA;// In case this category inherits from another one (extends another category) that their properties should eb added as well&#xD;&#xA;if (extendsCategory != null) {&#xD;&#xA;&#x9;allProperties.addAll(extendsCategory.getAllProperties());&#xD;&#xA;}&#xD;&#xA;&#x9;&#xD;&#xA;return allProperties;"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/isExtensionOf"
+            body="Category category = this;&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;while (category != null) {&#xD;&#xA;&#x9;if (category.equals(typeDefinition)) {&#xD;&#xA;&#x9;&#x9;return true;&#xD;&#xA;&#x9;}&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;&#x9;category = category.getExtendsCategory();&#xD;&#xA;}&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;return false;">
           <genParameters ecoreParameter="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition"/>
         </genOperations>
-        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllEquationDefinitions"/>
-        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getCardinality"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllEquationDefinitions"
+            body="EList&lt;EquationDefinition> allEquationDefinitions = new org.eclipse.emf.common.util.BasicEList&lt;>();&#xD;&#xA;allEquationDefinitions.addAll(getEquationDefinitions());&#xD;&#xA;&#xD;&#xA;// In case this category inherits from another one (extends another category) that their equation definitions should be added as well&#xD;&#xA;if (extendsCategory != null) {&#xD;&#xA;&#x9;allEquationDefinitions.addAll(extendsCategory.getAllEquationDefinitions());&#xD;&#xA;}&#xD;&#xA;&#x9;&#xD;&#xA;return allEquationDefinitions;"/>
+        <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getCardinality"
+            body="// If the cardinality is 0, check if we are extending from some category and then take their cardinality&#xD;&#xA;return cardinality == 0 &amp;&amp; getExtendsCategory() != null ? getExtendsCategory().getCardinality() : cardinality;"/>
       </genClasses>
       <genClasses ecoreClass="dvlm.ecore#//categories/CategoryAssignment">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/CategoryAssignment/propertyInstances"/>
@@ -160,6 +179,10 @@
         <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/ReferenceProperty">
           <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/ReferenceProperty/referenceType"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/EReferenceProperty">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/EReferenceProperty/referenceType"/>
         </genClasses>
         <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/IIntrinsicTypeProperty">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertydefinitions/IIntrinsicTypeProperty/defaultValue"/>
@@ -198,14 +221,20 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertyinstances/ValuePropertyInstance/value"/>
         </genClasses>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance">
-          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/getValueToBaseUnit"/>
-          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit">
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/getValueToBaseUnit"
+              body="double value = Double.parseDouble(getValue());&#xD;&#xA;AUnit unit = getUnit();&#xD;&#xA;if (unit != null) {&#xD;&#xA;&#x9;value = de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.getInstance().convertFromSourceUnitToBaseUnit(unit, value);&#xD;&#xA;}&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;return value;"/>
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit"
+              body="AUnit unit = getUnit();&#xD;&#xA;if (unit != null) {&#xD;&#xA;&#x9;double targetValue = de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.getInstance().convertFromBaseUnitToTargetUnit(unit, value);&#xD;&#xA;&#x9;String textualValue = Double.toString(targetValue);&#xD;&#xA;&#x9;setValue(textualValue);&#xD;&#xA;} else {&#xD;&#xA;&#x9;setValue(Double.toString(value));&#xD;&#xA;}">
             <genParameters ecoreParameter="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value"/>
           </genOperations>
         </genClasses>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ReferencePropertyInstance">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/ReferencePropertyInstance/reference"/>
+        </genClasses>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/EReferencePropertyInstance">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/EReferencePropertyInstance/reference"/>
         </genClasses>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ComposedPropertyInstance">
           <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertyinstances/ComposedPropertyInstance/typeInstance"/>
@@ -215,10 +244,12 @@
         </genClasses>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance">
           <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/resourceUri"/>
-          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri">
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri"
+              body="if (uri != null) {&#xD;&#xA;&#x9;setResourceUri(uri.toPlatformString(false));&#xD;&#xA;} else {&#xD;&#xA;&#x9;setResourceUri(null);&#xD;&#xA;}">
             <genParameters ecoreParameter="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri"/>
           </genOperations>
-          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/getUri"/>
+          <genOperations ecoreOperation="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/getUri"
+              body="if (resourceUri == null) {&#xD;&#xA;&#x9;return null;&#xD;&#xA;}&#xD;&#xA;return URI.createPlatformResourceURI(resourceUri, false);"/>
         </genClasses>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertyinstances/EnumUnitPropertyInstance">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"

@@ -30,7 +30,6 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.junit.Test;
 
 
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMPropertyinstancesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
@@ -47,9 +46,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
@@ -61,22 +58,11 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 
 	private StructuralElementInstance sei1;
 	private StructuralElementInstance sei2;
-	private Repository repo;
-	
-	private VirSatProjectCommons projectCommons;
-	private VirSatResourceSet rs;
-	private VirSatTransactionalEditingDomain rsEd;
 	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
-		rs = VirSatResourceSet.getResourceSet(testProject, false);
-		rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-		UserRegistry.getInstance().setSuperUser(true);
+		addEditingDomainAndRepository();
 		
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsApplicableForAll(true);
@@ -88,11 +74,11 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		sei1.setType(se);
 		sei2.setType(se);
 		
-		Command cmd = rs.initializeModelsAndResourceSet(null, rsEd);
-		rsEd.getCommandStack().execute(cmd);
-		rsEd.saveAll();
+		Command cmd = rs.initializeModelsAndResourceSet(null, editingDomain);
+		editingDomain.getCommandStack().execute(cmd);
+		editingDomain.saveAll();
 		
-		repo = rs.getRepository();
+		repository = rs.getRepository();
 	}
 	
 	@Override
@@ -115,7 +101,6 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 //			try {
 //				Thread.sleep(10000);
 //			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
 //		}
@@ -124,8 +109,8 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 	
 	@Test
 	public void testCreateAndAddSeiInRepo() {
-		Command cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei1);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei1);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		IFile file = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folder = projectCommons.getStructuralElemntInstanceFolder(sei1);
@@ -139,20 +124,20 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		assertThat("Contains correct resource", rs.getResources(), hasItems(resourceO));
 		
 		// Check that the sei got added to the repository
-		assertThat("Structural element instance is correctly added to repository", repo.getRootEntities(), hasItems(sei1));
+		assertThat("Structural element instance is correctly added to repository", repository.getRootEntities(), hasItems(sei1));
 	}
 	
 	@Test
 	public void testCreateAndAddSeiInSei() {
 		// Create file structure and everything for parent sei
-		Command cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei1);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei1);
+		editingDomain.getCommandStack().execute(cmd);
 		
-		rsEd.saveAll();
+		editingDomain.saveAll();
 		
 		// Create the actual command to test
-		cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, sei1, sei2);
-		rsEd.getCommandStack().execute(cmd);
+		cmd = CreateAddSeiWithFileStructureCommand.create(editingDomain, sei1, sei2);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		IFile file = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folder = projectCommons.getStructuralElemntInstanceFolder(sei1);
@@ -190,7 +175,7 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		EditingDomain ed = new AdapterFactoryEditingDomain(adapterFactory, new BasicCommandStack());
 		
 		// Add a SEI to the Repository but don't create the file structures here
-		Command cmd = CreateAddSeiWithFileStructureCommand.create(ed, repo, sei1);
+		Command cmd = CreateAddSeiWithFileStructureCommand.create(ed, repository, sei1);
 		ed.getCommandStack().execute(cmd);
 		
 		// Add a second SEI to the first one
@@ -205,7 +190,7 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		assertFalse("File were not created", file2.exists());
 
 		// Check that the SEI got added to the other SEI and Repo
-		assertThat("SEI is correctly added to parent Repo", repo.getRootEntities(), hasItems(sei1));
+		assertThat("SEI is correctly added to parent Repo", repository.getRootEntities(), hasItems(sei1));
 		assertThat("SEI is correctly added to parent SEI", sei1.getChildren(), hasItems(sei2));
 	}
 	
@@ -215,8 +200,8 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		seis.add(sei1);
 		seis.add(sei2);
 		
-		Command cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, repo, seis);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, seis);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		IFile fileSei1 = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folderSei1 = projectCommons.getStructuralElemntInstanceFolder(sei1);
@@ -236,15 +221,15 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		assertThat("Contains correct resource", rs.getResources(), hasItems(resource1, resource2));
 		
 		// Check that the seis got added to the repository
-		assertThat("Structural element instance is correctly added to repository", repo.getRootEntities(), hasItems(sei1, sei2));
+		assertThat("Structural element instance is correctly added to repository", repository.getRootEntities(), hasItems(sei1, sei2));
 	}
 	
 	@Test
 	public void testCreateAndAddSeiWithChild() {
 		sei1.getChildren().add(sei2);
 		
-		Command cmd = CreateAddSeiWithFileStructureCommand.create(rsEd, repo, sei1);
-		rsEd.getCommandStack().execute(cmd);
+		Command cmd = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei1);
+		editingDomain.getCommandStack().execute(cmd);
 		
 		IFile fileSei1 = projectCommons.getStructuralElementInstanceFile(sei1);
 		IFolder folderSei1 = projectCommons.getStructuralElemntInstanceFolder(sei1);
@@ -264,7 +249,7 @@ public class CreateAddSeiWithFileStructureCommandTest extends AProjectTestCase {
 		assertThat("Contains correct resource", rs.getResources(), hasItems(resource1, resource2));
 		
 		// Check that the seis got added to the repository
-		assertThat("Structural element instance is correctly added to repository", repo.getRootEntities(), hasItems(sei1));
+		assertThat("Structural element instance is correctly added to repository", repository.getRootEntities(), hasItems(sei1));
 		assertThat("Child Structural element instance is correctly is still a child", sei1.getChildren(), hasItems(sei2));
 	}
 

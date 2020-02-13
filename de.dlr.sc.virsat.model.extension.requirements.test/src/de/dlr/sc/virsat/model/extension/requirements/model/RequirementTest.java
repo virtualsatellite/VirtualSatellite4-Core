@@ -47,7 +47,6 @@ public class RequirementTest extends AConceptProjectTestCase {
 	}
 	
 	private static final String INITIAL_REQUIREMENT_NAME = "Requirement1";
-	private static final String REQUIREMENT_NAME_PREFIX = "Req";
 	private static final String IDENTIFIER_ATTRIBUTE_VALUE = "Attribute1";
 	private static final String STRING_ATTRIBUTE_VALUE = "Attribute1";
 	
@@ -66,7 +65,7 @@ public class RequirementTest extends AConceptProjectTestCase {
 		
 		assertEquals(testRequirement.getName(), INITIAL_REQUIREMENT_NAME);
 		testRequirement.updateNameFromAttributes();
-		assertEquals(testRequirement.getName(), REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
+		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
 	}
 	
 	@Test
@@ -97,7 +96,7 @@ public class RequirementTest extends AConceptProjectTestCase {
 		
 		assertEquals(testRequirement.getName(), INITIAL_REQUIREMENT_NAME);
 		testRequirement.updateNameFromAttributes();
-		assertEquals(testRequirement.getName(), REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE + IDENTIFIER_ATTRIBUTE_VALUE);
+		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE + IDENTIFIER_ATTRIBUTE_VALUE);
 	}
 	
 	@Test
@@ -114,7 +113,7 @@ public class RequirementTest extends AConceptProjectTestCase {
 		assertEquals(testRequirement.getName(), INITIAL_REQUIREMENT_NAME);
 		Command command = testRequirement.updateNameFromAttributes(editingDomain);
 		command.execute();
-		assertEquals(testRequirement.getName(), REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
+		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
 	}
 
 }

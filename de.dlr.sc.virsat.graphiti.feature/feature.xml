@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.graphiti.feature"
       label="VirSat Core Graphiti feature"
-      version="4.9.1.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -41,10 +41,10 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="org.eclipse.graphiti.mm" version="0.14.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.transaction" version="1.8.0" match="compatible"/>
       <import feature="org.eclipse.graphiti.feature" version="0.13.2.v20161129-0820"/>
-      <import feature="de.dlr.sc.virsat.branding.feature" version="4.9.1.qualifier"/>
-      <import feature="de.dlr.sc.virsat.project.feature" version="4.9.1.qualifier"/>
-      <import feature="de.dlr.sc.virsat.uiengine.feature" version="4.9.1.qualifier"/>
-      <import feature="de.dlr.sc.virsat.license.feature" version="4.9.1.qualifier"/>
+      <import feature="de.dlr.sc.virsat.branding.feature" version="4.11.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.project.feature" version="4.11.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.uiengine.feature" version="4.11.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.license.feature" version="4.11.0.qualifier"/>
       <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>

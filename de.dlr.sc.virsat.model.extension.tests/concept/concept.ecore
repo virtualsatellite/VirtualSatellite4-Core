@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tests" nsURI="http://www.virsat.sc.dlr.de/dmf/v1.0/tests" nsPrefix="dmf_tests">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tests" nsURI="http://www.virsat.sc.dlr.de/dmf/v1.1/tests" nsPrefix="dmf_tests">
   <eClassifiers xsi:type="ecore:EClass" name="TestCategoryAllProperty" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testInt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -60,5 +60,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="TestMassParameters" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mass" eType="#//TestParameter"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TestCrossLinkedParametersWithCalculation"
+      eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="calcedTrl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EReferenceTest" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eReferenceTest" eType="ecore:EClass ../../de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore#//ExternalTestType"/>
   </eClassifiers>
 </ecore:EPackage>

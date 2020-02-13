@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Product Structure UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.ps.ui;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.ps,
  org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -13,7 +13,8 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.ps,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.uiengine.ui,
- de.dlr.sc.virsat.external.lib.nebula.incubation
+ de.dlr.sc.virsat.external.lib.nebula.incubation,
+ org.eclipse.ui.navigator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)

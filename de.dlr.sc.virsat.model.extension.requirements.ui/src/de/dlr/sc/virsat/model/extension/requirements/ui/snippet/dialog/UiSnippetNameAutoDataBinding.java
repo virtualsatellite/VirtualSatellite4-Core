@@ -29,9 +29,6 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIName;
 public class UiSnippetNameAutoDataBinding extends UiSnippetIName {
 
 
-	/* (non-Javadoc)
-	 * @see de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIName#createSwt(org.eclipse.ui.forms.widgets.FormToolkit, org.eclipse.emf.edit.domain.EditingDomain, org.eclipse.swt.widgets.Composite, org.eclipse.emf.ecore.EObject)
-	 */
 	@Override
 	public void createSwt(FormToolkit toolkit, EditingDomain editingDomain, Composite composite, EObject initModel) {
 
@@ -39,8 +36,5 @@ public class UiSnippetNameAutoDataBinding extends UiSnippetIName {
 		setDataBinding(new VirSatDataBindingContext(), editingDomain, initModel);
 		updateState(true);
 	}
-
-	
-	
 
 }

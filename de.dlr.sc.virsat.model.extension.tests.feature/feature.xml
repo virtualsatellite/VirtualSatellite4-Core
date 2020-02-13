@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.extension.tests.feature"
       label="VirSat Core Model Extension Test Concept Feature"
-      version="4.9.1.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       license-feature="de.dlr.sc.virsat.license.feature">
 
@@ -22,6 +22,10 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
+   <requires>
+      <import feature="de.dlr.sc.virsat.model.extension.maturity.feature" version="4.10.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="de.dlr.sc.virsat.model.extension.tests"
          download-size="0"
@@ -38,6 +42,20 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.model.extension.tests.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.external.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.external.tests.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"

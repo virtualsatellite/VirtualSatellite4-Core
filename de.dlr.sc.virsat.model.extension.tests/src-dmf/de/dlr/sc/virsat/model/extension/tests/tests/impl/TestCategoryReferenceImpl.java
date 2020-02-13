@@ -1,15 +1,16 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
@@ -69,6 +70,7 @@ public class TestCategoryReferenceImpl extends DObjectImpl implements TestCatego
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public TestCategoryAllProperty getTestRefCategory() {
 		if (testRefCategory != null && testRefCategory.eIsProxy()) {
 			InternalEObject oldTestRefCategory = (InternalEObject)testRefCategory;
@@ -95,6 +97,7 @@ public class TestCategoryReferenceImpl extends DObjectImpl implements TestCatego
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestRefCategory(TestCategoryAllProperty newTestRefCategory) {
 		TestCategoryAllProperty oldTestRefCategory = testRefCategory;
 		testRefCategory = newTestRefCategory;

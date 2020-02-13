@@ -42,7 +42,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Concept extends IQualifiedName, IDescription, IActiveConcept, IImports {
+public interface Concept extends IQualifiedName, IDescription, IActiveConcept, IImports, IEImports {
 	/**
 	 * Returns the value of the '<em><b>Categories</b></em>' containment reference list.
 	 * The list contents are of type {@link de.dlr.sc.virsat.model.dvlm.categories.Category}.
@@ -204,7 +204,6 @@ public interface Concept extends IQualifiedName, IDescription, IActiveConcept, I
 	 * returns all categories from the concept which are not abstract.
 	 * <!-- end-model-doc -->
 	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='EList&lt;Category&gt; allCategories = new org.eclipse.emf.common.util.BasicEList&lt;&gt;();\r\n\r\nfor (Category category : getCategories()) {\r\n\tif (!category.isIsAbstract()) {\r\n\t\tallCategories.add(category);\r\n\t}\r\n}\r\n\t\t\t\r\nreturn allCategories;'"
 	 * @generated
 	 */
 	EList<Category> getNonAbstractCategories();

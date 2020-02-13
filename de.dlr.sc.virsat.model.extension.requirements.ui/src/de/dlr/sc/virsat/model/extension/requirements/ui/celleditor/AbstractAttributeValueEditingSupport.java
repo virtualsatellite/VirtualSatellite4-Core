@@ -27,12 +27,12 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementAttributeCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementAttributeCommand;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
 
@@ -43,15 +43,11 @@ import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingS
 public abstract class AbstractAttributeValueEditingSupport extends APropertyCellEditingSupport  {
 	
 	/**
-	 * @param editingDomain
-	 *            the editing domain
-	 * @param viewer
-	 *            the column viewer
-	 * @param property 
-	 *            the property to be edited
+	 * @param editingDomain the editing domain
+	 * @param viewer the column viewer
 	 */
-	public AbstractAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property) {
-		super(editingDomain, viewer, property);
+	public AbstractAttributeValueEditingSupport(EditingDomain editingDomain, ColumnViewer viewer) {
+		super(editingDomain, viewer, getAttributeValueProperty((VirSatTransactionalEditingDomain) editingDomain));
 		this.domain = (VirSatTransactionalEditingDomain) editingDomain;
 		this.viewer = viewer;
 	}
@@ -119,8 +115,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the boolean string to an integer
 	 * 
-	 * @param stringValue
-	 *            the boolean string
+	 * @param stringValue the boolean string
 	 * @return the integer value
 	 */
 	protected Integer getBooleanValue(String stringValue) {
@@ -190,10 +185,8 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the user input to a boolean-string value
 	 * 
-	 * @param element
-	 *            the editor subject
-	 * @param userInputValue
-	 *            the user input
+	 * @param element the editor subject
+	 * @param userInputValue the user input
 	 */
 	protected void setBooleanValue(Object element, Object userInputValue) {
 		if (userInputValue instanceof Integer) {
@@ -208,10 +201,8 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the user input to a integer-string value
 	 * 
-	 * @param element
-	 *            the editor subject
-	 * @param userInputValue
-	 *            the user input
+	 * @param element the editor subject
+	 * @param userInputValue the user input
 	 */
 	protected void setIntegerValue(Object element, Object userInputValue) {
 		Integer newValue = null;
@@ -235,10 +226,8 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Transform the user input to a integer-string value
 	 * 
-	 * @param element
-	 *            the editor subject
-	 * @param userInputValue
-	 *            the user input
+	 * @param element the editor subject
+	 * @param userInputValue the user input
 	 */
 	protected void setRealValue(Object element, Object userInputValue) {
 		Double newValue = null;
@@ -287,7 +276,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 			CategoryAssignment caRequirement) {
 		Requirement requirement = new Requirement(caRequirement);
 		AttributeValue newAttributeInstance = new AttributeValue((CategoryAssignment) attributeInstance.eContainer());
-		Command command = InitializeRequirementAttributeCommand.create(domain,
+		Command command = new InitializeRequirementAttributeCommand(domain,
 				getAttributeDefinition(requirement), requirement, newAttributeInstance);
 		domain.getCommandStack().execute(command);
 	}
@@ -316,8 +305,7 @@ public abstract class AbstractAttributeValueEditingSupport extends APropertyCell
 	/**
 	 * Get the property definition of the attribute's value
 	 * 
-	 * @param editingDomain
-	 *            the editing domain
+	 * @param editingDomain the editing domain
 	 * @return the property definition
 	 */
 	protected static AProperty getAttributeValueProperty(VirSatTransactionalEditingDomain editingDomain) {

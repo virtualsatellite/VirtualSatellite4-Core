@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat</artifactId>
-	<version>4.9.1-SNAPSHOT</version>
+	<version>4.11.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<profiles>
 		<profile>
@@ -42,6 +42,7 @@
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
+				<module>de.dlr.sc.virsat.external.lib.jersey</module>
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>
@@ -55,6 +56,8 @@
 				<module>de.dlr.sc.virsat.model.edit.test</module>
 				<module>de.dlr.sc.virsat.model.ui</module>
 				<module>de.dlr.sc.virsat.model.test</module>
+				<module>de.dlr.sc.virsat.model.external.tests</module>
+				<module>de.dlr.sc.virsat.model.external.tests.edit</module>
 
 				<module>de.dlr.sc.virsat.model.calculation</module>
 				<module>de.dlr.sc.virsat.model.calculation.test</module>
@@ -95,6 +98,9 @@
 				<module>de.dlr.sc.virsat.team</module>
 				<module>de.dlr.sc.virsat.team.ui</module>
 				<module>de.dlr.sc.virsat.team.test</module>
+
+				<module>de.dlr.sc.virsat.server</module>
+				<module>de.dlr.sc.virsat.server.test</module>
 
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>
@@ -159,6 +165,12 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>doc</id>
+			<modules>
+				<module>de.dlr.sc.virsat.javadoc.api</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>deploy</id>
 			<modules>
 				<module>de.dlr.sc.virsat.target.feature</module>
@@ -176,6 +188,7 @@
 				<module>de.dlr.sc.virsat.project.feature</module>
 				<module>de.dlr.sc.virsat.graphiti.feature</module>
 				<module>de.dlr.sc.virsat.team.feature</module>
+				<module>de.dlr.sc.virsat.server.feature</module>
 				<module>de.dlr.sc.virsat.test.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.mechanical.feature</module>
@@ -195,12 +208,6 @@
 				<module>de.dlr.sc.virsat.product</module>
 				<module>de.dlr.sc.virsat.p2updatesite</module>
 				<module>de.dlr.sc.virsat.model.concept.p2updatesite</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>doc</id>
-			<modules>
-				<module>de.dlr.sc.virsat.javadoc.api</module>
 			</modules>
 		</profile>
 	</profiles>

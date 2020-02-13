@@ -10,7 +10,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7"
             class="de.dlr.sc.virsat.model.dvlm.DVLMPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -18,7 +18,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/s"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/s"
             class="de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -26,7 +26,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/g"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/g"
             class="de.dlr.sc.virsat.model.dvlm.general.GeneralPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -34,7 +34,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/c"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/c"
             class="de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -42,7 +42,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/r"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/r"
             class="de.dlr.sc.virsat.model.dvlm.roles.RolesPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -50,7 +50,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/u"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/u"
             class="de.dlr.sc.virsat.model.dvlm.units.UnitsPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -58,7 +58,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/t"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/t"
             class="de.dlr.sc.virsat.model.dvlm.types.TypesPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -66,7 +66,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp"
             class="de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -74,7 +74,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppd"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd"
             class="de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -82,7 +82,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/cp/cppi"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi"
             class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -90,7 +90,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/qudv"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/qudv"
             class="de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -98,7 +98,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/calc"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/calc"
             class="de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -106,7 +106,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/i"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/i"
             class="de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -114,7 +114,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->
       <package
-            uri="http://www.virsat.sc.dlr.de/dvlm/v6/dmf"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/dmf"
             class="de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage"
             genModel="model/dvlm.genmodel"/>
    </extension>
@@ -123,6 +123,14 @@
       <migrator
             path="model/dvlm.history">
       </migrator>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImplCustom"
+            predecessor="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi">
+      </factory>
    </extension>
   
 </plugin>

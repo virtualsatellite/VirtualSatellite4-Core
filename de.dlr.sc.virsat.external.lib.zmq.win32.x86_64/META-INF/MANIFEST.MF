@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit Win32
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-NativeCode: native_lib/zmq/jzmq.dll;

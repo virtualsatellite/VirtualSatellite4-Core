@@ -65,6 +65,8 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 		switch (eClass.getClassifierID()) {
 			case ConceptsPackage.CONCEPT: return createConcept();
 			case ConceptsPackage.CONCEPT_IMPORT: return createConceptImport();
+			case ConceptsPackage.ECORE_IMPORT: return createEcoreImport();
+			case ConceptsPackage.IE_IMPORTS: return createIEImports();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -88,6 +90,26 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	public ConceptImport createConceptImport() {
 		ConceptImportImpl conceptImport = new ConceptImportImpl();
 		return conceptImport;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EcoreImport createEcoreImport() {
+		EcoreImportImpl ecoreImport = new EcoreImportImpl();
+		return ecoreImport;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IEImports createIEImports() {
+		IEImportsImpl ieImports = new IEImportsImpl();
+		return ieImports;
 	}
 
 	/**

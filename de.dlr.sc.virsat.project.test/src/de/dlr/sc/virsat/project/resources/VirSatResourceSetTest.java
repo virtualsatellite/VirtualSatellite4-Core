@@ -28,13 +28,17 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -65,7 +69,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  */
 public class VirSatResourceSetTest extends AProjectTestCase {
 
-	private VirSatProjectCommons projectCommons;
 	private StructuralElementInstance sei1;
 	private StructuralElementInstance sei2;
 	private StructuralElementInstance sei3;
@@ -73,10 +76,6 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		UserRegistry.getInstance().setSuperUser(true);
-		
-		projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
 		
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsRootStructuralElement(true);
@@ -344,7 +343,6 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertNotNull("ResourceSet does exist", rsExsistingDispline);
 	}
 	
-	@Ignore
 	@Test
 	public void testReloadResourceWithCommand() {
 		UserRegistry.getInstance().setSuperUser(true);
@@ -376,8 +374,8 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		rsEd.reloadAll();
 
 		// Now anew role management is actually loaded
-		Resource resource2 = rs.reloadResource(resource1);
 		RoleManagement rmNew = rs.getRoleManagement();
+		Resource resource2 = rmNew.eResource();
 		
 		assertEquals("The resource itself actually stays the same", resource1, resource2);
 		assertNotSame("The model objects are different", rmOld, rmNew);
@@ -540,5 +538,80 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("Resource got deserialized from persistant storage", resSei2.isLoaded());
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1.isLoaded());
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
+	}
+	
+	/**
+	 * Test resource set that tracks updateDiagnostic call for testing resourceNullContentAdapter.
+	 */
+	class TestVirSatResourceSet extends VirSatResourceSet {
+	
+		protected TestVirSatResourceSet(IProject project) {
+			super(project);
+		}
+		
+		protected boolean triggeredDiagnosticUpdate = false; 
+		
+		@Override
+		public boolean updateDiagnostic(Resource resource) {
+			triggeredDiagnosticUpdate = true;
+			return super.updateDiagnostic(resource);
+		}
+	}
+	
+	@Test
+	public void testNullObjectResourceAdapter() {
+		// get a very simple Resource set and only add the ResourceNullCOntentAdapter to it.
+		TestVirSatResourceSet resSet = new TestVirSatResourceSet(testProject);
+		resSet.eAdapters().add(resSet.resourceNullContentAdapter);
+		
+		Resource resource = new ResourceImpl();
+		assertThat("ResourceAdapter is not yet added", resource.eAdapters(), not(hasItems(resSet.resourceNullContentAdapter)));
+
+		resSet.getResources().add(resource);
+		assertThat("ResourceAdapter is now added", resource.eAdapters(), hasItems(resSet.resourceNullContentAdapter));
+		
+		// Try to add a Sei to the resource, the content adapter should not show up on this eObject
+		resource.getContents().add(sei1);
+		assertThat("ResourceAdapter is not added to SEI", sei1.eAdapters(), not(hasItems(resSet.resourceNullContentAdapter)));
+
+		// Adding the SEI above was fine, thus the diagnostics should not have been triggered
+		assertFalse("Diagnostic update is not yet triggered", resSet.triggeredDiagnosticUpdate);
+
+		// now remove the SEI and make sure, the diagnostic update did not get triggered as well
+		resource.getContents().remove(sei1);
+		assertFalse("Diagnostic update is not yet triggered", resSet.triggeredDiagnosticUpdate);
+
+		// Now create a resource which allows nulls to be set
+		Resource nullableResource = new ResourceImpl() {
+			@SuppressWarnings("serial")
+			@Override
+			public EList<EObject> getContents() {
+				if (contents == null) {
+					contents = new ResourceImpl.ContentsEList<EObject>() {
+						@Override
+						protected boolean canContainNull() {
+							return true;
+						};
+
+						@Override
+						public NotificationChain inverseAdd(EObject object, NotificationChain notifications) {
+							return notifications;
+						}
+					};
+				}
+				return contents;
+			}
+		};
+		
+		assertNull("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource));
+
+		// Now add the null object and see that the diagnostics are running as expected
+		resSet.getResources().add(nullableResource);
+		nullableResource.setURI(URI.createURI("uri://TestUri.uri"));
+		nullableResource.getContents().add(null);
+		assertTrue("Now the diagnostics is triggered", resSet.triggeredDiagnosticUpdate);
+
+		assertTrue("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource)
+				.getChildren().get(0).getMessage().contains("Found NULL object in resource content"));
 	}
 }

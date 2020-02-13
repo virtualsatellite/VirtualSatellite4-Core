@@ -14,8 +14,8 @@
 	<parent>
 		<relativePath>../maven/pom.xml</relativePath>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<artifactId>de.dlr.sc.virsat</artifactId>
-		<version>4.9.1-SNAPSHOT</version>
+		<artifactId>de.dlr.sc.virsat.parent</artifactId>
+		<version>4.11.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.dlr.sc.virsat.product</artifactId>
@@ -27,8 +27,10 @@
 			<properties>
 				<build.folder.application>VirSat4_Core_Application</build.folder.application>
 				<build.folder.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
-				<build.file.win32.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.win32}</build.file.win32.fullpath>
-				<build.file.linux.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.linux}</build.file.linux.fullpath>
+				<build.file.core.win32.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.core.win32}</build.file.core.win32.fullpath>
+				<build.file.core.linux.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.core.linux}</build.file.core.linux.fullpath>
+				<build.file.server.win32.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.server.win32}</build.file.server.win32.fullpath>
+				<build.file.server.linux.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}/${build.file.server.linux}</build.file.server.linux.fullpath>
 			</properties>
 
 			<build>
@@ -93,14 +95,23 @@
 										<!-- ANT Script Start -->
 										<mkdir dir="${build.folder.fullpath}" />
 
-										<delete file="${build.file.win32.fullpath}" />
-										<delete file="${build.file.linux.fullpath}" />
+										<delete file="${build.file.core.win32.fullpath}" />
+										<delete file="${build.file.core.linux.fullpath}" />
+										<delete file="${build.file.server.win32.fullpath}" />
+										<delete file="${build.file.server.linux.fullpath}" />
 
-										<zip destfile="${build.file.win32.fullpath}"
+										<zip destfile="${build.file.core.win32.fullpath}"
 											basedir="./target/products/de.dlr.virsat.core.product/win32/win32/x86_64" />
-										<tar destfile="${build.file.linux.fullpath}"
+										<tar destfile="${build.file.core.linux.fullpath}"
 											basedir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64"
 											compression="gzip" />
+										
+										<zip destfile="${build.file.server.win32.fullpath}"
+											basedir="./target/products/de.dlr.virsat.server.product/win32/win32/x86_64" />
+										<tar destfile="${build.file.server.linux.fullpath}"
+											basedir="./target/products/de.dlr.virsat.server.product/linux/gtk/x86_64"
+											compression="gzip" />
+										
 										<!-- ANT Script Stop -->
 									</target>
 								</configuration>

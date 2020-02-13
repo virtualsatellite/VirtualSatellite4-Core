@@ -43,12 +43,9 @@ public class UiSnippetTableRequirementsConfigurationTypeDefinitionsRequirementTy
 	/**
 	 * this method creates the add button and his functionality
 	 * 
-	 * @param toolkit
-	 *            the toolkit to be used to create the button
-	 * @param editingDomain
-	 *            the editing domain an which the button might act on
-	 * @param compositeButtons
-	 *            the composite in which the button should be placed
+	 * @param toolkit the toolkit to be used to create the button
+	 * @param editingDomain the editing domain an which the button might act on
+	 * @param compositeButtons the composite in which the button should be placed
 	 */
 	protected void createAddButton(FormToolkit toolkit, EditingDomain editingDomain, Composite compositeButtons) {
 		if ((style & STYLE_ADD_BUTTON) != 0) {

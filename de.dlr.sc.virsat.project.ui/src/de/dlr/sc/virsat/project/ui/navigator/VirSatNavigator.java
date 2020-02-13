@@ -178,13 +178,32 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 		// previous SEI but the expanded state on the new item got lost
 		return new CommonViewer(getViewSite().getId(), aParent,	SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL) {
 			
+			private boolean enableStackTrace = false;
+			
 			private PaletteObjectDropAdapterAssistant paletteObjectDropAdapterAssistant = new PaletteObjectDropAdapterAssistant(); 
 			
 			@Override
 			protected void internalRefresh(Object element, boolean updateLabels) {
+				// Save the expanded state of all elements and try to unfold them later
+				// This method is used in particular in case resources get reloaded
+				// Usually the navigator maps already opened elements by their providers and
+				// the actual objects. This does not work for a resource reload, since it will
+				// be different objects
+				StringBuilder stackTraceBuilder = new StringBuilder("No Stack Trace");
+
+				// Give some detailed information from where the method got called
+				if (enableStackTrace) {
+					for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+						stackTraceBuilder.append(ste.toString() + "\n");
+					}
+				}
+				
+				// Now start logging and processing
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatNavigator Starting and internal refresh\n" + stackTraceBuilder.toString()));
 				Object [] expandedObjects = getExpandedElements();
 				super.internalRefresh(element, updateLabels);
 				setExpandedElements(expandedObjects);
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatNavigator: Finished and internal refresh"));
 			}
 			
 			@Override

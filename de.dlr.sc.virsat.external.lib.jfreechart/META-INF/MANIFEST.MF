@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - JFreeChart
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.jfreechart;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.external.lib.jfreechart.Activator
 Require-Bundle: de.dlr.sc.virsat.external.lib,
  org.eclipse.swt,

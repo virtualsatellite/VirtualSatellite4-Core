@@ -1,15 +1,16 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBase;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -107,6 +109,7 @@ public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBas
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<TestCategoryBase> getTestArray() {
 		if (testArray == null) {
 			testArray = new EObjectContainmentEList<TestCategoryBase>(TestCategoryBase.class, this, TestsPackage.TEST_CATEGORY_BASE__TEST_ARRAY);
@@ -119,6 +122,7 @@ public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBas
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getTestBaseProperty() {
 		return testBaseProperty;
 	}
@@ -128,6 +132,7 @@ public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBas
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestBaseProperty(int newTestBaseProperty) {
 		int oldTestBaseProperty = testBaseProperty;
 		testBaseProperty = newTestBaseProperty;
@@ -140,6 +145,7 @@ public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBas
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public TestCategoryBase getTestReference() {
 		if (testReference != null && testReference.eIsProxy()) {
 			InternalEObject oldTestReference = (InternalEObject)testReference;
@@ -166,6 +172,7 @@ public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBas
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setTestReference(TestCategoryBase newTestReference) {
 		TestCategoryBase oldTestReference = testReference;
 		testReference = newTestReference;
@@ -277,7 +284,7 @@ public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBas
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (testBaseProperty: ");
 		result.append(testBaseProperty);
 		result.append(')');

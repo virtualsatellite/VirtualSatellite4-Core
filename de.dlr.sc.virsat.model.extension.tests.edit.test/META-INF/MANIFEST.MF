@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Test Concept Edit Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.tests.edit.test;singleton:=true
-Bundle-Version: 4.9.1.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
 Fragment-Host: de.dlr.sc.virsat.model.extension.tests.edit
@@ -13,6 +13,7 @@ Require-Bundle: org.junit,
  org.eclipse.emf.edit,
  org.eclipse.emf.ecore.xmi,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.concept.unittest.util
+ de.dlr.sc.virsat.concept.unittest.util,
+ de.dlr.sc.virsat.model.external.tests
 Export-Package: de.dlr.sc.virsat.model.extension.tests.edit.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.tests.edit.test

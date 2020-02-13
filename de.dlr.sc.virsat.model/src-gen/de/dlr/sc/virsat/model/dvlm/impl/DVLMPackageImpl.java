@@ -63,10 +63,12 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitsPackage;
 
 import de.dlr.sc.virsat.model.dvlm.units.impl.UnitsPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -128,6 +130,9 @@ public class DVLMPackageImpl extends EPackageImpl implements DVLMPackage {
 		DVLMPackageImpl theDVLMPackage = (DVLMPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof DVLMPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new DVLMPackageImpl());
 
 		isInited = true;
+
+		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		StructuralPackageImpl theStructuralPackage = (StructuralPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(StructuralPackage.eNS_URI) instanceof StructuralPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(StructuralPackage.eNS_URI) : StructuralPackage.eINSTANCE);
@@ -235,6 +240,15 @@ public class DVLMPackageImpl extends EPackageImpl implements DVLMPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getRepository_SuppressedValidators() {
+		return (EAttribute)repositoryEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public DVLMFactory getDVLMFactory() {
 		return (DVLMFactory)getEFactoryInstance();
 	}
@@ -263,6 +277,7 @@ public class DVLMPackageImpl extends EPackageImpl implements DVLMPackage {
 		createEReference(repositoryEClass, REPOSITORY__ROLE_MANAGEMENT);
 		createEReference(repositoryEClass, REPOSITORY__UNIT_MANAGEMENT);
 		createEReference(repositoryEClass, REPOSITORY__ACTIVE_CONCEPTS);
+		createEAttribute(repositoryEClass, REPOSITORY__SUPPRESSED_VALIDATORS);
 	}
 
 	/**
@@ -328,6 +343,7 @@ public class DVLMPackageImpl extends EPackageImpl implements DVLMPackage {
 		initEReference(getRepository_RoleManagement(), theRolesPackage.getRoleManagement(), null, "roleManagement", null, 1, 1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRepository_UnitManagement(), theUnitsPackage.getUnitManagement(), null, "unitManagement", null, 1, 1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRepository_ActiveConcepts(), theConceptsPackage.getConcept(), null, "activeConcepts", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRepository_SuppressedValidators(), ecorePackage.getEString(), "suppressedValidators", null, 0, -1, Repository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

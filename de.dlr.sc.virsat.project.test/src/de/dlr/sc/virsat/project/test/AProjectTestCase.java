@@ -11,38 +11,50 @@ package de.dlr.sc.virsat.project.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
+import org.junit.rules.TestRule;
+import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Abstract test case which creates a project for further testing
- * @author fisc_ph
- *
  */
 public abstract class AProjectTestCase {
 
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
+	
+	@Rule
+	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
+	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE = "true"; 
 	protected IProject testProject;
 	protected VirSatTransactionalEditingDomain editingDomain;
 	protected Repository repository;
-	
+	protected VirSatProjectCommons projectCommons;
+	protected VirSatResourceSet rs;
 	
 	private List<IProject> testProjects = new ArrayList<>();
 	
@@ -74,11 +86,18 @@ public abstract class AProjectTestCase {
 		}
 
 		testProject = createTestProject(getProjectName());
+		projectCommons = new VirSatProjectCommons(testProject);
+		addProjectFileStructure();
 
 		previousUser = UserRegistry.getInstance().getUserName();
 		setUserAndRights();
 		
+		VirSatEditingDomainClipBoard.INSTANCE.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();  
+	}
+
+	protected void addProjectFileStructure() {
+		projectCommons.createProjectStructure(null);
 	}
 	
 	private String previousUser;
@@ -113,8 +132,20 @@ public abstract class AProjectTestCase {
 		UserRegistry.getInstance().setUser(previousUser, 356);
 		//CHECKSTYLE:ON
 	}
+	
 	/**
-	 * Creates the editing domain
+	 * This method creates an unmanaged ResourceSet which is non transactional.
+	 * The method also creates a repository
+	 */
+	protected void addResourceSetAndRepository() {
+		rs = VirSatResourceSet.createUnmanagedResourceSet(testProject);
+		rs.initializeModelsAndResourceSet();
+		repository = rs.getRepository();
+	}
+	
+	/**
+	 * Creates the editing domain and a repository for test cases.
+	 * This includes a ResourceSet with Transactional Editing Domain
 	 * 
 	 */
 	protected void addEditingDomainAndRepository() {
@@ -125,6 +156,7 @@ public abstract class AProjectTestCase {
 		editingDomain.saveAll();
 
 		repository = resSetRepositoryTarget.getRepository();
+		rs = editingDomain.getResourceSet();
 	}
 	
 	/**
@@ -132,5 +164,43 @@ public abstract class AProjectTestCase {
 	 */
 	protected String getProjectName() {
 		return TEST_PROJECT_NAME + "_" + this.getClass().getSimpleName();
+	}
+	
+	
+	/**
+	 * Simple method to execute code as part of a recording command
+	 * @param runnable the lambda to be executed with no parameters and no return value. 
+	 */
+	protected <T> void executeAsCommand(Runnable runnable) {
+		// Now wrap the lambda into a recording command and execute it
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				runnable.run();
+			}
+		});
+	}
+		
+	/**
+	 * Simple method to execute code as part of a recording command
+	 * @param supplier the lambda to be executed with no parameters. 
+	 * @return the result of the executed lambda
+	 */
+	protected <T> T executeAsCommand(Supplier<T> supplier) {
+		
+		// Use a final vector to store the return object from the lambda expression
+		final Vector<T> store = new Vector<>();
+		
+		// Now wrap the lambda into a recording command and execute it
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				// execute the lambda and remember the result
+				store.add(supplier.get());
+			}
+		});
+		
+		// Finally hand back the result of the executed command
+		return store.firstElement();
 	}
 }

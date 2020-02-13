@@ -32,6 +32,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  */
 public  class Requirement extends ARequirement {
 	
+	public static final String REQUIREMENT_NAME_PREFIX = "Req";
+	
 	/**
 	 * Constructor of Concept Class
 	 */
@@ -77,7 +79,7 @@ public  class Requirement extends ARequirement {
 	 * @return the name derived from the attributes
 	 */
 	protected String getNameFromAttributes() {
-		String newReqName = "Req";
+		String newReqName = REQUIREMENT_NAME_PREFIX;
 		for (AttributeValue child : getElements()) {
 			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
 				newReqName += child.getValue();

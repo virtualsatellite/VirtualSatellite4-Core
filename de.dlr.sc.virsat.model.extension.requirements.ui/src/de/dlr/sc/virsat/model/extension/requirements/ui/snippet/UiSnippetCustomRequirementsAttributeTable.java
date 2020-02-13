@@ -50,12 +50,12 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
@@ -93,18 +93,12 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	 * constructor of the abstract UI snippet array instance category table
 	 * instantiate the ID of the concept and the active category id
 	 * 
-	 * @param conceptId
-	 *            the id of the concept
-	 * @param categoryId
-	 *            the id of the category
-	 * @param arrayInstanceId
-	 *            the array instance id
-	 * @param activeForCategoryId
-	 *            the active for the category id
-	 * @param fullQualifiedCategoryId
-	 *            the full qualified category id
-	 * @param style
-	 *            The style as binary mask defining which buttons should be
+	 * @param conceptId the id of the concept
+	 * @param categoryId the id of the category
+	 * @param arrayInstanceId the array instance id
+	 * @param activeForCategoryId the active for the category id
+	 * @param fullQualifiedCategoryId the full qualified category id
+	 * @param style The style as binary mask defining which buttons should be
 	 *            displayed with the given table (e.g. Add/Remove/Drill-Down)
 	 */
 	public UiSnippetCustomRequirementsAttributeTable(String conceptId, String categoryId, String arrayInstanceId,
@@ -116,8 +110,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * Implementation of the createTableColumns Method
 	 * 
-	 * @param editingDomain
-	 *            the editing domain which shall be used to provide the editing
+	 * @param editingDomain the editing domain which shall be used to provide the editing
 	 *            support in the columns
 	 */
 	protected void createTableColumns(EditingDomain editingDomain) {
@@ -162,9 +155,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 				String columnName = "";
 				for (RequirementType requirementType : requirementTypes) {
 
-					String name = "";
 					if (requirementType.getAttributes().size() > i) {
-						name = requirementType.getAttributes().get(i).getName();
+						String name = requirementType.getAttributes().get(i).getName();
 						boolean notYetSpecified = !columnName.contains(name);
 						
 						// Add separator if column is used for different attributes
@@ -176,7 +168,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 							columnName += name;
 						}
 					}
-
 				}
 
 				if (attColumns.size() > i) {
@@ -207,8 +198,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * Refresh the table if a requirement with new type was added
 	 * 
-	 * @param editingDomain
-	 *            the editing domain
+	 * @param editingDomain the editing domain
 	 */
 	protected void refreshTable(EditingDomain editingDomain) {
 		createTableColumns(editingDomain);
@@ -220,12 +210,9 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	/**
 	 * this method creates the add button and his functionality
 	 * 
-	 * @param toolkit
-	 *            the toolkit to be used to create the button
-	 * @param editingDomain
-	 *            the editing domain an which the button might act on
-	 * @param compositeButtons
-	 *            the composite in which the button should be placed
+	 * @param toolkit the toolkit to be used to create the button
+	 * @param editingDomain the editing domain an which the button might act on
+	 * @param compositeButtons the composite in which the button should be placed
 	 */
 	protected void createAddButton(FormToolkit toolkit, EditingDomain editingDomain, Composite compositeButtons) {
 		if ((style & STYLE_ADD_BUTTON) != 0) {
@@ -249,42 +236,11 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 					ATypeDefinition referencePropertyType = ((ReferenceProperty) propertyInstance.getType())
 							.getReferenceType();
 
-					ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(
-							Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
-					dialog.setInput(model.eResource());
-
-					// select first config collection
-					for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
-							.getRootEntities()) {
-						if (sei.getType().getFullQualifiedName()
-								.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
-							dialog.setInitialSelection(sei);
-							break;
-						}
-					}
-
-					dialog.setAllowMultiple(false);
-					dialog.setDoubleClickSelects(true);
-
-					if (dialog.open() == Dialog.OK) {
-						Object selection = dialog.getFirstResult();
-						if (selection instanceof CategoryAssignment) {
-							initializeRequirement(editingDomain, (CategoryAssignment) selection, newRequirement);
-						} else if (selection instanceof StructuralElementInstance) {
-							List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
-									.getNestedCategoryAssignments((StructuralElementInstance) selection,
-											RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
-							if (!reqTypesOfSelection.isEmpty()) {
-								initializeRequirement(editingDomain, reqTypesOfSelection.get(0), newRequirement);
-							}
-						}
-					} else {
-
-						// Clean up
-						Command cmd = createDeleteCommand(editingDomain, affectedObjects);
-						editingDomain.getCommandStack().execute(cmd);
-					}
+					createAddRequirementDialog(editingDomain, affectedObjects, arrayInstance, newRequirement,
+							referencePropertyType);
 				}
+
+				
 
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
@@ -296,14 +252,58 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	}
 
 	/**
+	 * @param editingDomain the editing domain of the new requirement
+	 * @param affectedObjects affected elements of the add operation
+	 * @param arrayInstance the array instance of the requirement table
+	 * @param newRequirement the new requirement
+	 * @param referencePropertyType the property type of the requirement
+	 */
+	protected void createAddRequirementDialog(EditingDomain editingDomain, Collection<?> affectedObjects,
+			ComposedPropertyInstance arrayInstance, CategoryAssignment newRequirement,
+			ATypeDefinition referencePropertyType) {
+		ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(
+				Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
+		dialog.setInput(model.eResource());
+
+		// select first config collection
+		for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
+				.getRootEntities()) {
+			if (sei.getType().getFullQualifiedName()
+					.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
+				dialog.setInitialSelection(sei);
+				break;
+			}
+		}
+
+		dialog.setAllowMultiple(false);
+		dialog.setDoubleClickSelects(true);
+
+		if (dialog.open() == Dialog.OK) {
+			Object selection = dialog.getFirstResult();
+			if (selection instanceof CategoryAssignment) {
+				initializeRequirement(editingDomain, (CategoryAssignment) selection, newRequirement);
+			} else if (selection instanceof StructuralElementInstance) {
+				List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
+						.getNestedCategoryAssignments((StructuralElementInstance) selection,
+								RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
+				if (!reqTypesOfSelection.isEmpty()) {
+					initializeRequirement(editingDomain, reqTypesOfSelection.get(0), newRequirement);
+				}
+			}
+		} else {
+			// Clean up
+			Command cmd = createDeleteCommand(editingDomain, affectedObjects);
+			editingDomain.getCommandStack().execute(cmd);
+		}
+	}
+	
+	
+	/**
 	 * Initialize a new requirement from a given requirement type
 	 * 
-	 * @param editingDomain
-	 *            the editing domain
-	 * @param requirementType
-	 *            the req type
-	 * @param newRequirement
-	 *            the new requirment
+	 * @param editingDomain the editing domain
+	 * @param requirementType the req type
+	 * @param newRequirement the new requirment
 	 */
 	protected void initializeRequirement(EditingDomain editingDomain, CategoryAssignment requirementType,
 			CategoryAssignment newRequirement) {
@@ -319,9 +319,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	 * Persist the width of all columns
 	 */
 	protected void saveColumnWidth() {
-		URI uri = model.eResource().getURI();
-		IPath path = new Path(uri.toPlatformString(false)); 
-		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		IFile file = getModelIFile();
 		for (TableViewerColumn column : attColumns) {
 			try {
 				String width = String.valueOf(column.getColumn().getWidth());
@@ -337,9 +335,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	 * Load the width of all columns
 	 */
 	protected void restoreColumnWitdh() {
-		URI uri = model.eResource().getURI();
-		IPath path = new Path(uri.toPlatformString(false)); 
-		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		IFile file = getModelIFile();
 		controlListenerActive = false; //disable listner otherwise it triggers in these resize events
 		for (TableViewerColumn column : attColumns) {
 			try {
@@ -354,7 +350,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		}
 		controlListenerActive = true;
 	}
-	
 	
 	/**
 	 * Create a qualified id for the column width
@@ -372,6 +367,16 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		return new QualifiedName(qualifier, COLUMN_PREFIX + column);
 	}
 	
+	/**
+	 * Get IFile of the current model element
+	 * @return the ifile
+	 */
+	private IFile getModelIFile() {
+		URI uri = model.eResource().getURI();
+		IPath path = new Path(uri.toPlatformString(false)); 
+		return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+	}
+	
 	@Override
 	public void controlResized(ControlEvent e) {
 		if (controlListenerActive) {
@@ -381,8 +386,6 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	
 	@Override
 	public void controlMoved(ControlEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
