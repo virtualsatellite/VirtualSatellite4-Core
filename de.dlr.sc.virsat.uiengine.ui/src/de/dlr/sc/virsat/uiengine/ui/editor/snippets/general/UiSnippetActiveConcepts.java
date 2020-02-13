@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.dialogs.Dialog;
@@ -136,7 +135,6 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 						// Create a map conceptName -> concept and add all concept names to the dependency tree
 						for (Object object : selectedObjects) {
 							Concept concept = ((ActiveConceptConfigurationElement) object).loadConceptFromPlugin();
-							EcoreUtil.resolveAll(concept);
 							selectedConcepts.put(concept.getName(), concept);
 							dependencyTree.addDependencies(concept.getName(), new String[] {});
 						}

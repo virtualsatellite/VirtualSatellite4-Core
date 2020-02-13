@@ -20,8 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ext.core.Activator;
 
 /**
- * @author fran_tb
- *
+ * Class that adds the GenericCategory as super categroy of all categories
  */
 public class ConceptLanguageImplicitSuperTypeHandler {
 	

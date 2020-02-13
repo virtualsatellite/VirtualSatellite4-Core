@@ -55,7 +55,7 @@ public class ConceptResourceLoader {
 	 * @param conceptName the concept name
 	 * @return the loaded concept
 	 */
-	public static Concept loadConceptViaConceptName(String conceptName) {
+	public static Concept loadConceptByName(String conceptName) {
 		return loadConceptFromPlugin(conceptName + PROJECT_CONCEPT_LOCATION_PATH);
 	}
 	
