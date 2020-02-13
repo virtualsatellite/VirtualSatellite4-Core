@@ -19,7 +19,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.ext.core.core.CorePackageTest;
 import de.dlr.sc.virsat.model.ext.core.core.util.CoreResourceFactoryImplTest;
-import de.dlr.sc.virsat.model.ext.core.infrastucture.ConceptLanguageImplicitSuperTypeHandlerTest;
 import de.dlr.sc.virsat.model.ext.core.validator.StructuralElementInstanceValidatorTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -30,7 +29,6 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({StructuralElementInstanceValidatorTest.class,
-	ConceptLanguageImplicitSuperTypeHandlerTest.class,
 	CorePackageTest.class,
 	CoreResourceFactoryImplTest.class
 	})
