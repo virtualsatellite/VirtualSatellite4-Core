@@ -44,7 +44,6 @@ public class ActiveConceptConfigurationElement {
 	private static final String EXTENSION_POINT_ID_SNIPPETS_ID = "id";
 	private static final String EXTENSION_POINT_ID_SNIPPETS_XMI = "xmi";
 	private static final String EXTENSION_POINT_ID_SNIPPETS_VERSION = "version";
-	private static final String PROJECT_CONCEPT_LOCATION_PATH = "/concept/concept.xmi";
 	
 	private IConfigurationElement configElement;
 	
