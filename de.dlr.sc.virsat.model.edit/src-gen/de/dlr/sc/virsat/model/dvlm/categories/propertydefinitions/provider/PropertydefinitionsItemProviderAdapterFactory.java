@@ -127,6 +127,29 @@ public class PropertydefinitionsItemProviderAdapterFactory extends Propertydefin
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EReferencePropertyItemProvider eReferencePropertyItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEReferencePropertyAdapter() {
+		if (eReferencePropertyItemProvider == null) {
+			eReferencePropertyItemProvider = new EReferencePropertyItemProvider(this);
+		}
+
+		return eReferencePropertyItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -434,6 +457,7 @@ public class PropertydefinitionsItemProviderAdapterFactory extends Propertydefin
 	public void dispose() {
 		if (composedPropertyItemProvider != null) composedPropertyItemProvider.dispose();
 		if (referencePropertyItemProvider != null) referencePropertyItemProvider.dispose();
+		if (eReferencePropertyItemProvider != null) eReferencePropertyItemProvider.dispose();
 		if (intPropertyItemProvider != null) intPropertyItemProvider.dispose();
 		if (floatPropertyItemProvider != null) floatPropertyItemProvider.dispose();
 		if (stringPropertyItemProvider != null) stringPropertyItemProvider.dispose();

@@ -1,12 +1,12 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage;
@@ -917,7 +917,6 @@ public interface TestsPackage extends EPackage {
 	 */
 	int TEST_MASS_PARAMETERS_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCrossLinkedParametersWithCalculationImpl <em>Test Cross Linked Parameters With Calculation</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -974,6 +973,61 @@ public interface TestsPackage extends EPackage {
 	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.EReferenceTestImpl <em>EReference Test</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.dlr.sc.virsat.model.extension.tests.tests.impl.EReferenceTestImpl
+	 * @see de.dlr.sc.virsat.model.extension.tests.tests.impl.TestsPackageImpl#getEReferenceTest()
+	 * @generated
+	 */
+	int EREFERENCE_TEST = 15;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_TEST__UUID = DmfPackage.DOBJECT__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_TEST__NAME = DmfPackage.DOBJECT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>EReference Test</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_TEST__EREFERENCE_TEST = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>EReference Test</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_TEST_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>EReference Test</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_TEST_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum <em>Enum Test Enum</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -981,7 +1035,7 @@ public interface TestsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.extension.tests.tests.impl.TestsPackageImpl#getEnumTestEnum()
 	 * @generated
 	 */
-	int ENUM_TEST_ENUM = 15;
+	int ENUM_TEST_ENUM = 16;
 
 
 	/**
@@ -1366,6 +1420,27 @@ public interface TestsPackage extends EPackage {
 	EAttribute getTestCrossLinkedParametersWithCalculation_CalcedTrl();
 
 	/**
+	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest <em>EReference Test</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>EReference Test</em>'.
+	 * @see de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest
+	 * @generated
+	 */
+	EClass getEReferenceTest();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest#getEReferenceTest <em>EReference Test</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>EReference Test</em>'.
+	 * @see de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest#getEReferenceTest()
+	 * @see #getEReferenceTest()
+	 * @generated
+	 */
+	EReference getEReferenceTest_EReferenceTest();
+
+	/**
 	 * Returns the meta object for enum '{@link de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum <em>Enum Test Enum</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1715,6 +1790,24 @@ public interface TestsPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__CALCED_TRL = eINSTANCE.getTestCrossLinkedParametersWithCalculation_CalcedTrl();
+
+		/**
+		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.EReferenceTestImpl <em>EReference Test</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.dlr.sc.virsat.model.extension.tests.tests.impl.EReferenceTestImpl
+		 * @see de.dlr.sc.virsat.model.extension.tests.tests.impl.TestsPackageImpl#getEReferenceTest()
+		 * @generated
+		 */
+		EClass EREFERENCE_TEST = eINSTANCE.getEReferenceTest();
+
+		/**
+		 * The meta object literal for the '<em><b>EReference Test</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EREFERENCE_TEST__EREFERENCE_TEST = eINSTANCE.getEReferenceTest_EReferenceTest();
 
 		/**
 		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum <em>Enum Test Enum</em>}' enum.

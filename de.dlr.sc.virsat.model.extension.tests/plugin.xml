@@ -73,6 +73,10 @@
 			id="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation"
 			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCrossLinkedParametersWithCalculation">
 		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.EReferenceTest"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest">
+		</CategoryAssignmentBean>
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
 		<StructuralElementInstanceBean

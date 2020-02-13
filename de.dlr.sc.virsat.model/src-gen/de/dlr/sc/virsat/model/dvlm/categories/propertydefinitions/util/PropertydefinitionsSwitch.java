@@ -116,6 +116,17 @@ public class PropertydefinitionsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case PropertydefinitionsPackage.EREFERENCE_PROPERTY: {
+				EReferenceProperty eReferenceProperty = (EReferenceProperty)theEObject;
+				T result = caseEReferenceProperty(eReferenceProperty);
+				if (result == null) result = caseAProperty(eReferenceProperty);
+				if (result == null) result = caseATypeDefinition(eReferenceProperty);
+				if (result == null) result = caseIDescription(eReferenceProperty);
+				if (result == null) result = caseIConceptTypeDefinition(eReferenceProperty);
+				if (result == null) result = caseIQualifiedName(eReferenceProperty);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case PropertydefinitionsPackage.IINTRINSIC_TYPE_PROPERTY: {
 				IIntrinsicTypeProperty iIntrinsicTypeProperty = (IIntrinsicTypeProperty)theEObject;
 				T result = caseIIntrinsicTypeProperty(iIntrinsicTypeProperty);
@@ -283,6 +294,21 @@ public class PropertydefinitionsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseReferenceProperty(ReferenceProperty object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EReference Property</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EReference Property</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEReferenceProperty(EReferenceProperty object) {
 		return null;
 	}
 

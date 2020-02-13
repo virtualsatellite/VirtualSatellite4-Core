@@ -15,7 +15,9 @@ import de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWit
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -41,6 +43,7 @@ public class TestCrossLinkedParametersWithCalculationImpl extends DObjectImpl im
 	 * @ordered
 	 */
 	protected static final double CALCED_TRL_EDEFAULT = 0.0;
+
 	/**
 	 * The cached value of the '{@link #getCalcedTrl() <em>Calced Trl</em>}' attribute.
 	 * <!-- begin-user-doc -->

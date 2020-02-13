@@ -61,6 +61,15 @@ public class DVLMPropertyinstancesItemProviderAdapterFactory extends Propertyins
 	}
 	
 	@Override
+	public Adapter createEReferencePropertyInstanceAdapter() {
+		if (eReferencePropertyInstanceItemProvider == null) {
+			eReferencePropertyInstanceItemProvider = new DVLMERefererencePropertyInstanceItemProvider(this);
+		}
+
+		return eReferencePropertyInstanceItemProvider;
+	}
+	
+	@Override
 	public Adapter createUnitValuePropertyInstanceAdapter() {
 		if (unitValuePropertyInstanceItemProvider == null) {
 			unitValuePropertyInstanceItemProvider = new DVLMUnitValuePropertyInstanceItemProvider(this);
