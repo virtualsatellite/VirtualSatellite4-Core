@@ -11,14 +11,12 @@ package de.dlr.sc.virsat.model.dvlm.concepts.registry;
 
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
@@ -45,10 +43,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
+import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 
 /**
  * This test case will handle the copying of concepts into the repository.
@@ -58,8 +56,6 @@ import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactor
 public class ActiveConceptConfigurationElementTest {
 
 	private EditingDomain ourEditingDomain;
-	private static final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.tests";
-	private static final String TEST_CONCEPT_URI = "de.dlr.sc.virsat.model.extension.tests/concept/concept.xmi";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -201,16 +197,5 @@ public class ActiveConceptConfigurationElementTest {
 		String conceptNameWithVersion = acce.getConceptNameWithVersion();
 
 		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
-	}
-	
-	@Test
-	public void testLoadConceptFromPlugin() {
-		
-		Concept testConcept = ActiveConceptConfigurationElement.loadConceptFromPlugin(TEST_CONCEPT_URI);
-		assertNotNull("Test concept should exist and not be null", testConcept);
-		assertEquals(TEST_CONCEPT_NAME, testConcept.getName());
-		
-		assertNull("Should not result in exception and be null", ActiveConceptConfigurationElement.loadConceptFromPlugin(null));
-		
 	}
 }
