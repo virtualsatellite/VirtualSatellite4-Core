@@ -12,15 +12,11 @@ package de.dlr.sc.virsat.model.concept.generator.beans;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
@@ -42,7 +38,7 @@ public class GenerateCategoryBeansTest {
   @Extension
   private ParseHelper<Concept> _parseHelper;
   
-  protected ExternalModelTestHelper helper = new ExternalModelTestHelper();
+  protected /* ExternalModelTestHelper */Object helper /* Skipped initializer because of errors */;
   
   private Concept concept;
   
@@ -54,10 +50,9 @@ public class GenerateCategoryBeansTest {
   
   @Before
   public void setUp() {
-    ConceptsPackage.eINSTANCE.eClass();
-    CategoriesPackage.eINSTANCE.eClass();
-    PropertydefinitionsPackage.eINSTANCE.eClass();
-    this.helper.loadExternalPackage();
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe field GenerateCategoryBeansTest.helper refers to the missing type ExternalModelTestHelper"
+      + "\nloadExternalPackage cannot be resolved");
   }
   
   @Test
@@ -383,89 +378,15 @@ public class GenerateCategoryBeansTest {
   
   @Test
   public void testCreateForEReferenceWithoutGenmodel() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("Concept testConcept{");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("EImport \"http://www.virsat.sc.dlr.de/external/tests\";");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("Category TestCategory {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("EReference testEReference of Type tests.ExternalTestType;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("EReference testEReferenceArray[] of Type tests.ExternalTestType;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this.concept = this._parseHelper.parse(_builder, this.helper.getResourceSet());
-      final Category category = this.concept.getCategories().get(0);
-      final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
-      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe field GenerateCategoryBeansTest.helper refers to the missing type ExternalModelTestHelper"
+      + "\nresourceSet cannot be resolved");
   }
   
   @Test
   public void testCreateForEReferenceWithRegisteredGenmodel() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("Concept testConcept{");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("EImport \"http://www.virsat.sc.dlr.de/external/tests\" genModel \"de.dlr.sc.virsat.model.external.tests/model/ExternalModel.genmodel\";");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("Category TestCategory {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("EReference testEReference of Type tests.ExternalTestType;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("EReference testEReferenceArray[] of Type tests.ExternalTestType;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this.concept = this._parseHelper.parse(_builder, this.helper.getResourceSet());
-      final Category category = this.concept.getCategories().get(0);
-      final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
-      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe field GenerateCategoryBeansTest.helper refers to the missing type ExternalModelTestHelper"
+      + "\nresourceSet cannot be resolved");
   }
 }
