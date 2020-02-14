@@ -87,6 +87,8 @@ public class AuthFilter implements ContainerRequestFilter {
 		String username = tokenizer.nextToken();
 		String password = tokenizer.nextToken();
 		
+		// Maybe check if the user is known here and delete the has any valid server role check?
+		
 		// Check if roles are specified
 		if (resourceMethod.isAnnotationPresent(RolesAllowed.class)) {
 			
@@ -107,8 +109,20 @@ public class AuthFilter implements ContainerRequestFilter {
 		
 	}
 	
+	
+	/**
+	 * @param username of the user to be authorized
+	 * @param password of the user to be authorized
+	 * @param roles permitted for the requested resource
+	 * @return boolean if the user is authorized
+	 */
 	public boolean isAuthorized(String username, String password, List<String> roles) {
-		return true;
+		
+		// Get user and roles here using a file or LDAP
+		
+		String role = BasicServerUserHandler.getInstance().getUserRole(username, password);
+		
+		return roles.contains(role);
 	}
 	
 }
