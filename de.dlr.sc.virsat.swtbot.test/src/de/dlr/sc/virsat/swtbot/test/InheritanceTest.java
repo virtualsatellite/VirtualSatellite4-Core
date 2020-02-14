@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
-
-
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertNotEnabled;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertText;
 import static org.junit.Assert.assertEquals;
@@ -30,6 +28,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
+import de.dlr.sc.virsat.swtbot.util.SwtBotDebugHelper;
 
 /**
  * This class tests the inheritance
@@ -47,77 +46,123 @@ public class InheritanceTest extends ASwtBotTestCase {
 
 	SWTBotTreeItem assemblyTree;
 	SWTBotTreeItem elementOccurence;
-	static final String NAME = "Name";
+	static final String NAME = "Name"; 
 	
 	@Before
 	public void before() throws Exception {
 		super.before();
 		// create the necessary items for the test
-		repositoryNavigatorItem = bot.tree().expandNode(PROJECTNAME, "Repository");
+		SwtBotDebugHelper.logCodeLine();
+		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
+		SwtBotDebugHelper.logCodeLine();
 		productTree = addElement(ProductTree.class, conceptPs, repositoryNavigatorItem);
+		SwtBotDebugHelper.logCodeLine();
 		productTreeDomain = addElement(ProductTreeDomain.class, conceptPs, productTree);
+		SwtBotDebugHelper.logCodeLine();
 		elementDefinition = addElement(ElementDefinition.class, conceptPs, productTreeDomain);
+		SwtBotDebugHelper.logCodeLine();
 		document = addElement(Document.class, conceptPs, elementDefinition);
 
+		SwtBotDebugHelper.logCodeLine();
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
+		SwtBotDebugHelper.logCodeLine();
 		elementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
 
+		SwtBotDebugHelper.logCodeLine();
 		assemblyTree = addElement(AssemblyTree.class, conceptPs, repositoryNavigatorItem);
+		SwtBotDebugHelper.logCodeLine();
 		elementOccurence = addElement(ElementOccurence.class, conceptPs, assemblyTree);
+		SwtBotDebugHelper.logCodeLine();
 	}
 
 	@Test
 	public void multiLevelInheritancePropagationUITest() {
+		SwtBotDebugHelper.logCodeLine();
+		
 		//Create inheritance link between two SEIs, save
+		SwtBotDebugHelper.logCodeLine();
 		addInheritance(elementConfiguration, "PT: ProductTree", "PTD: ProductTreeDomain", "ED: ElementDefinition");
+		
 		//Create another inheritance link from sub-sub Sei to sub Sei
+		SwtBotDebugHelper.logCodeLine();
 		addInheritance(elementOccurence, "CT: ConfigurationTree", "EC: ElementConfiguration");
-
+		
 		// change the super document
+		SwtBotDebugHelper.logCodeLine();
 		rename(document, "NewDocument");	
 		
-		waitForAllBuildersAndUiThread();
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		SwtBotDebugHelper.logCodeLine();
 		expand(elementConfiguration);
+		SwtBotDebugHelper.logCodeLine();
 		waitForEditingDomainAndUiThread();
 		
+		SwtBotDebugHelper.logCodeLine();
 		SWTBotTreeItem newDocument = openEditor(elementConfiguration.getNode("D: NewDocument"));
+		SwtBotDebugHelper.logCodeLine();
 		assertText("NewDocument", bot.textWithLabel(NAME));
 		//Make change in sub sei
+		SwtBotDebugHelper.logCodeLine();
 		renameField(Document.PROPERTY_DOCUMENTNAME, "NewName");
+		SwtBotDebugHelper.logCodeLine();
 		save();
+		SwtBotDebugHelper.logCodeLine();
 		assertTrue(bot.checkBoxWithLabel(Document.PROPERTY_DOCUMENTNAME).isChecked());
 		
+		SwtBotDebugHelper.logCodeLine();
 		expand(elementOccurence);
 		
+		SwtBotDebugHelper.logCodeLine();
 		assertText("NewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
+		SwtBotDebugHelper.logCodeLine();
 		openEditor(document);
 		// Change a value in super Sei in a field which is overriden in sub Sei
+		SwtBotDebugHelper.logCodeLine();
 		renameField(Document.PROPERTY_DOCUMENTNAME, "NewNewName");
-		waitForAllBuildersAndUiThread();
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		SwtBotDebugHelper.logCodeLine();
 		openEditor(newDocument); 
+		SwtBotDebugHelper.logCodeLine();
 		assertText("NewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
 		// Remove override flag, save
+		SwtBotDebugHelper.logCodeLine();
+		SwtBotDebugHelper.logCodeLine();
 		clickOnComboBox(Document.PROPERTY_DOCUMENTNAME);
-		waitForAllBuildersAndUiThread();
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		SwtBotDebugHelper.logCodeLine();
 		openEditor(newDocument); 
+		SwtBotDebugHelper.logCodeLine();
 		assertText("NewNewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
 
 		//Try to rename inherited CA
+		SwtBotDebugHelper.logCodeLine();
 		renameField(NAME, "asdasdasd");
+		SwtBotDebugHelper.logCodeLine();
 		bot.closeAllEditors();
+		SwtBotDebugHelper.logCodeLine();
 		openEditor(newDocument); 
+		SwtBotDebugHelper.logCodeLine();
 		assertText("NewDocument", bot.textWithLabel(NAME));
 
 		//Try to delete an inherited CA
+		SwtBotDebugHelper.logCodeLine();
 		assertNotEnabled(newDocument.contextMenu().menu("Delete"));
 
 		//Delete CA which is inherited
+		SwtBotDebugHelper.logCodeLine();
 		document.contextMenu().menu("Delete").click();
-		waitForAllBuildersAndUiThread();
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		SwtBotDebugHelper.logCodeLine();
 		assertEquals(1, elementConfiguration.getItems().length);
+		SwtBotDebugHelper.logCodeLine();
 		assertEquals(1, elementOccurence.getItems().length);
+		SwtBotDebugHelper.logCodeLine();
 	}
 	
 	@Test
@@ -126,7 +171,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		setText(Document.PROPERTY_DOCUMENTNAME, "docName");
 		setText(Document.PROPERTY_NOTE, "docNote");
 		addInheritance(elementConfiguration, "PT: ProductTree", "PTD: ProductTreeDomain", "ED: ElementDefinition");
-		waitForAllBuildersAndUiThread();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
 		assertEquals("docName", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		assertEquals("docNote", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_NOTE));
 		bot.tableWithId("tableDocument").click(0, 2);
@@ -137,7 +182,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		setText(Document.PROPERTY_NOTE, "newNote");
 
 		openEditor(elementConfiguration);
-		waitForAllBuildersAndUiThread();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
 		assertEquals("newDocName", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		assertEquals("overriden note", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_NOTE));
 	}
@@ -151,7 +196,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		SWTBotTreeItem documentEc1 = addElement(Document.class, conceptPs, elementConfiguration);
 		SWTBotTreeItem documentEc2 = addElement(Document.class, conceptPs, elementConfiguration2);
 
-		openEditor(documentEc1);
+		openEditor(documentEc1);  
 		setText(Document.PROPERTY_DOCUMENTNAME, "docFromEc1");
 
 		openEditor(documentEc2);
@@ -162,14 +207,14 @@ public class InheritanceTest extends ASwtBotTestCase {
 		
 		// Now drag the first inheritance
 		elementConfiguration.dragAndDrop(elementOccurence);
-		waitForAllBuildersAndUiThread();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
 		
 		openEditor(elementOccurence);
 		assertEquals("Received override from EC1", "docFromEc1", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		
 		// now drag the other and verify
 		elementConfiguration2.dragAndDrop(elementOccurence);
-		waitForAllBuildersAndUiThread();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
 		
 		openEditor(elementOccurence);
 		assertEquals("Received override from EC2", "docFromEc2", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
