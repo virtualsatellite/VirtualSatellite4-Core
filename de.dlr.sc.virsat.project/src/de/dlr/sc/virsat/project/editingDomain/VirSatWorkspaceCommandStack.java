@@ -240,8 +240,14 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Check for save trigger"));
 		if (triggerSave) {
 			Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Save tiggered Scheduling Save Job."));
-			// This boolean has to be reset first, otherwise the save all will be executed in
-			// a workspace operation which calls the saveTriggerAll again and then calls saveAll in an infinite loop
+			// The trigger boolean to save all may be set from a command that requires saving. e.g. creating a new SEI.
+			// When this command is executed, it will be given to the command stack wrapping it into a workspace
+			// locked operation and running it in executeInWorkspaceWithSaveCheck. This method will:
+			// 1. set the boolean to false
+			// 2. execute the commands which may set the trigger
+			// 3. call the save all
+			// Synchronizing all involved methods ensures that no other command can be executed. In consequence the
+			// triggerSave variable cannot be altered unexpectedly between executing a command and saving.
 			editingDomain.saveAll(true);
 		}
 	}
