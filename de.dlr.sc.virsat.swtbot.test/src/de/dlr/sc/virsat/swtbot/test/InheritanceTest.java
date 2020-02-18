@@ -129,7 +129,7 @@ public class InheritanceTest extends ASwtBotTestCase {
 		waitForAllBuildersAndUiThread();
 		assertEquals("docName", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
 		assertEquals("docNote", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_NOTE));
-		bot.tableWithId("tableDocument").click(0, 2);
+		bot.tableWithId("tableDocument").doubleClick(0, 2);
 		bot.text("docNote", 0).setText("overriden note");
 		
 		openEditor(document); 
