@@ -26,13 +26,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 
-import de.dlr.sc.virsat.excel.AExcelIo;
+
 import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
 import de.dlr.sc.virsat.excel.exporter.IExport;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
+import de.dlr.sc.virsat.model.extension.funcelectrical.excel.AExcelFuncIO;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
@@ -42,69 +43,60 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
 
-
-
-
 /**
  * Class for exporting excel
- * @author bell_er
- *
  */
 public class FuncElecExporter implements IExport {
 	private final String defaultTemplatePath = "/resources/ExcelExportTemplate.xlsx";
 	private ExcelExportHelper helper;
 
-	public static final String[] EXPORTABLE_SEIS = { 
+	public static final String[] EXPORTABLE_SEIS = {
 			ElementDefinition.class.getSimpleName(),
-			ElementConfiguration.class.getSimpleName(), 
-			InterfaceTypeCollection.class.getSimpleName(), 
+			ElementConfiguration.class.getSimpleName(),
+			InterfaceTypeCollection.class.getSimpleName(),
 			ElementRealization.class.getSimpleName(),
 			ElementOccurence.class.getSimpleName()
 	};
+
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
 		StructuralElementInstance parentSc = (StructuralElementInstance) eObject;
-		ArrayList <StructuralElementInstance> allSei = new ArrayList<StructuralElementInstance>();
-		allSei.add(parentSc);
-		allSei.addAll(parentSc.getDeepChildren());
-		for (StructuralElementInstance sc : allSei) {
-			String selectedSEIType = sc.getType().getName();
+		ArrayList <StructuralElementInstance> seis = new ArrayList<StructuralElementInstance>();
+		seis.add(parentSc);
+		seis.addAll(parentSc.getDeepChildren());
+		for (StructuralElementInstance sei : seis) {
+			String selectedSEIType = sei.getType().getName();
 			if (Stream.of(EXPORTABLE_SEIS).anyMatch(exportable -> exportable.equals(selectedSEIType))) {
-				InputStream is = null;
+				InputStream iStream = null;
 				try {
 					if (useDefaultTemplate) {
-						is = Activator.getResourceContentAsString(defaultTemplatePath);
+						iStream = Activator.getResourceContentAsString(defaultTemplatePath);
 					} else {
-						is = Activator.getResourceContentAsString(templatePath);
+						iStream = Activator.getResourceContentAsString(templatePath);
 					}
-				} catch (IOException e) {
-					Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not locate the template file"));
-				}
-				export(sc, is);
-
-				File file = new File(path + "/" + sc.getFullQualifiedInstanceName() + ".xlsx");
-				try {
+					export(sei, iStream);
+					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + ".xlsx");
 					FileOutputStream out = new FileOutputStream(file);
 					helper.getWb().write(out);
 				} catch (IOException e) {
-					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation! ", e);
+					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
 					DVLMEditPlugin.getPlugin().getLog().log(status);
 					ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 				}
 			}
 		}
 	}
+
 	/**
 	 * Exports depending on the type of the Structural element
-	 * @param sc StructuralElementInstance to be exported
-	 * @param fis the output
-	 * @author  Bell_er
+	 * @param sei StructuralElementInstance to be exported
+	 * @param iStream the output
 	 */
-	public void export(StructuralElementInstance sc, InputStream fis) {
+	public void export(StructuralElementInstance sei, InputStream iStream) {
 		helper = new ExcelExportHelper();
-		helper.setWb(fis);
-		helper.setHeaders(sc);
-		exportData(sc);
+		helper.setWb(iStream);
+		helper.setHeaders(sei);
+		exportData(sei);
 	}
 
 	@Override
@@ -124,17 +116,17 @@ public class FuncElecExporter implements IExport {
 		String exportSeiTypeName = exportSei.getType().getName();
 		if (exportSeiTypeName.equals(InterfaceTypeCollection.class.getSimpleName())) {
 			// when exporting interface Type collection those sheets are not needed
-			removeSheets(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS, AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
+			removeSheets(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS, AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 			createDataSheetInterfaceTypes(exportSei);	
 		} else if (exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementRealization.class.getSimpleName())) {
 			// when exporting ElementDefinition or ElementRealization those sheets are not needed
-			removeSheets(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES, AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
+			removeSheets(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES, AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 			createDataSheetInterfaceEnds(exportSei);
 		} else if (exportSeiTypeName.equals(ElementConfiguration.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementOccurence.class.getSimpleName())) {
 			// when exporting ElementConfiguration or ElementOccurence that sheet is not needed
-			removeSheets(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
+			removeSheets(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES);
 			createDataSheetInterfaceEnds(exportSei);
 			createDataSheetInterfaces(exportSei);
 		}
@@ -145,10 +137,10 @@ public class FuncElecExporter implements IExport {
 	 * @param values the sheets to be removed
 	 */
 	private void removeSheets(String... values) {
-		for (String a:values) {
-			int sheetIndex  =  helper.getWb().getSheetIndex(a);
+		for (String number : values) {
+			int sheetIndex = helper.getWb().getSheetIndex(number);
 			if (sheetIndex >= 0) {
-				helper.getWb().removeSheetAt(helper.getWb().getSheetIndex(a));
+				helper.getWb().removeSheetAt(helper.getWb().getSheetIndex(number));
 			}
 		}
 	}
@@ -156,24 +148,22 @@ public class FuncElecExporter implements IExport {
 	/**
 	 * Creates the data sheet for interface and populates it with the data
 	 * @param exportSei Structural element instance to be exported
-	 * @author  Bell_er
-	 * 
 	 */
 	private void createDataSheetInterfaces(StructuralElementInstance exportSei) {
-		XSSFSheet sheet = createSheetIfNeeded(AExcelIo.TEMPLATE_SHEETNAME_INTERFACES);
+		XSSFSheet sheet = createSheetIfNeeded(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<Interface> seiInterfaces = bCaHelper.getAllBeanCategories(exportSei, Interface.class);	
-		helper.nullChecker(seiInterfaces.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACE_COLUMN_INTERFACE_TO + 1);
-		int i = AExcelIo.COMMON_ROW_START_TABLE;
+		helper.nullChecker(seiInterfaces.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, sheet, AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
+		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
 		for (Interface iface : seiInterfaces) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(iface.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(iface.getName()));
+			row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(iface.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(iface.getName()));
 			if (iface.getInterfaceEndFrom() != null) {
-				row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_FROM).setCellValue(helper.getCreationHelper().createRichTextString(iface.getInterfaceEndFrom().getTypeInstance().getFullQualifiedInstanceName()));
+				row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_FROM).setCellValue(helper.getCreationHelper().createRichTextString(iface.getInterfaceEndFrom().getTypeInstance().getFullQualifiedInstanceName()));
 			}
 			if (iface.getInterfaceEndTo() != null) {
-				row.getCell(AExcelIo.INTERFACE_COLUMN_INTERFACE_TO).setCellValue(helper.getCreationHelper().createRichTextString(iface.getInterfaceEndTo().getTypeInstance().getFullQualifiedInstanceName()));	
+				row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO).setCellValue(helper.getCreationHelper().createRichTextString(iface.getInterfaceEndTo().getTypeInstance().getFullQualifiedInstanceName()));	
 			}
 			i++;
 		}
@@ -182,22 +172,19 @@ public class FuncElecExporter implements IExport {
 	/**
 	 * Creates the data sheet for interface type collection and populates it with the data
 	 * @param exportSei Structural element instance to be exported
-	 * @author  Bell_er
-	 * 
 	 */
 	private void createDataSheetInterfaceTypes(StructuralElementInstance exportSei) {
-		XSSFSheet sheet = createSheetIfNeeded(AExcelIo.TEMPLATE_SHEETNAME_INTERFACETYPES);
+		XSSFSheet sheet = createSheetIfNeeded(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES);
 		// get all the interface types from the model
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceType> seiInterfaceTypes = bCaHelper.getAllBeanCategories(exportSei, InterfaceType.class);
 
-		helper.nullChecker(seiInterfaceTypes.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1);
-		int i = AExcelIo.COMMON_ROW_START_TABLE;
-		for (InterfaceType ift : seiInterfaceTypes) {
+		helper.nullChecker(seiInterfaceTypes.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, sheet, AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1);
+		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
+		for (InterfaceType ifaceType : seiInterfaceTypes) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(ift.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(ift.getName()));
-
+			row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(ifaceType.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(ifaceType.getName()));
 			i++;
 		}
 	}
@@ -205,24 +192,22 @@ public class FuncElecExporter implements IExport {
 	/**
 	 * Creates the data sheet for Element Definition and populates it with the data
 	 * @param exportSei Structural element instance to be exported
-	 * @author  Bell_er
-	 * 
 	 */
 	private void createDataSheetInterfaceEnds(StructuralElementInstance exportSei) {
-		XSSFSheet sheet = createSheetIfNeeded(AExcelIo.TEMPLATE_SHEETNAME_INTERFACEENDS);
+		XSSFSheet sheet = createSheetIfNeeded(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		// get all the interface ends
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(exportSei, InterfaceEnd.class);
-		helper.nullChecker(seiInterfaceEnds.size() + AExcelIo.COMMON_ROW_START_TABLE, sheet, AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
+		helper.nullChecker(seiInterfaceEnds.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, sheet, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
 
 		// for each interface end, fill out a row
-		int i = AExcelIo.COMMON_ROW_START_TABLE;
-		for (InterfaceEnd ife : seiInterfaceEnds) {
+		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
+		for (InterfaceEnd ifaceEnd : seiInterfaceEnds) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelIo.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(ife.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(helper.getCreationHelper().createRichTextString(ife.getName()));
-			row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(""));
-			row.getCell(AExcelIo.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getIfeTypeName(ife)));
+			row.getCell(AExcelFuncIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(ifaceEnd.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(helper.getCreationHelper().createRichTextString(ifaceEnd.getName()));
+			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(""));
+			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getIfeTypeName(ifaceEnd)));
 			i++;
 		}
 	}
@@ -242,16 +227,15 @@ public class FuncElecExporter implements IExport {
 	
 	/**
 	 * returns the type of an interface end if exists
-	 * @author  Bell_er
-	 * @param ife interface end object
+	 * @param ifaceEnd interface end object
 	 * @return interface type name if exists else ""
 	 */
-	private String getIfeTypeName(InterfaceEnd ife) {
-		InterfaceType ift = ife.getType();
-		if (ift == null) {
+	private String getIfeTypeName(InterfaceEnd ifaceEnd) {
+		InterfaceType ifaceType = ifaceEnd.getType();
+		if (ifaceType == null) {
 			return "";
 		} else {
-			return Objects.toString(ift.getName(), "");
+			return Objects.toString(ifaceType.getName(), "");
 		}
 	}
 	

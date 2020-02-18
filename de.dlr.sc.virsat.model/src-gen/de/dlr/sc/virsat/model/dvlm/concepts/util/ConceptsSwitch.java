@@ -83,6 +83,7 @@ public class ConceptsSwitch<T> extends Switch<T> {
 				if (result == null) result = caseIDescription(concept);
 				if (result == null) result = caseIActiveConcept(concept);
 				if (result == null) result = caseIImports(concept);
+				if (result == null) result = caseIEImports(concept);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -108,6 +109,18 @@ public class ConceptsSwitch<T> extends Switch<T> {
 				IConceptTypeDefinition iConceptTypeDefinition = (IConceptTypeDefinition)theEObject;
 				T result = caseIConceptTypeDefinition(iConceptTypeDefinition);
 				if (result == null) result = caseIQualifiedName(iConceptTypeDefinition);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ConceptsPackage.ECORE_IMPORT: {
+				EcoreImport ecoreImport = (EcoreImport)theEObject;
+				T result = caseEcoreImport(ecoreImport);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ConceptsPackage.IE_IMPORTS: {
+				IEImports ieImports = (IEImports)theEObject;
+				T result = caseIEImports(ieImports);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -187,6 +200,36 @@ public class ConceptsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIConceptTypeDefinition(IConceptTypeDefinition object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Ecore Import</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Ecore Import</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEcoreImport(EcoreImport object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IE Imports</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IE Imports</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIEImports(IEImports object) {
 		return null;
 	}
 

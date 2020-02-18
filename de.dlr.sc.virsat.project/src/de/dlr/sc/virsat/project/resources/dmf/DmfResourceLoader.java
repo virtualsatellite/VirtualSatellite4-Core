@@ -38,6 +38,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
@@ -333,6 +334,12 @@ public class DmfResourceLoader {
 					dSet(dObject, feature, rpi.getResourceUri());
 					return dObject;
 				};
+
+				@Override
+				public DObject caseEReferencePropertyInstance(EReferencePropertyInstance object) {
+					dSet(dObject, feature, object.getReference());
+					return dObject;
+				}
 
 				@Override
 				public DObject caseComposedPropertyInstance(ComposedPropertyInstance cpi) {

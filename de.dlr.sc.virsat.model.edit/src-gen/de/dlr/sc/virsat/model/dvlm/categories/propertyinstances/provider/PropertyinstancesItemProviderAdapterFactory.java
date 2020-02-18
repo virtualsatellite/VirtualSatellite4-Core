@@ -150,6 +150,29 @@ public class PropertyinstancesItemProviderAdapterFactory extends Propertyinstanc
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EReferencePropertyInstanceItemProvider eReferencePropertyInstanceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEReferencePropertyInstanceAdapter() {
+		if (eReferencePropertyInstanceItemProvider == null) {
+			eReferencePropertyInstanceItemProvider = new EReferencePropertyInstanceItemProvider(this);
+		}
+
+		return eReferencePropertyInstanceItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -343,6 +366,7 @@ public class PropertyinstancesItemProviderAdapterFactory extends Propertyinstanc
 		if (valuePropertyInstanceItemProvider != null) valuePropertyInstanceItemProvider.dispose();
 		if (unitValuePropertyInstanceItemProvider != null) unitValuePropertyInstanceItemProvider.dispose();
 		if (referencePropertyInstanceItemProvider != null) referencePropertyInstanceItemProvider.dispose();
+		if (eReferencePropertyInstanceItemProvider != null) eReferencePropertyInstanceItemProvider.dispose();
 		if (composedPropertyInstanceItemProvider != null) composedPropertyInstanceItemProvider.dispose();
 		if (arrayInstanceItemProvider != null) arrayInstanceItemProvider.dispose();
 		if (resourcePropertyInstanceItemProvider != null) resourcePropertyInstanceItemProvider.dispose();

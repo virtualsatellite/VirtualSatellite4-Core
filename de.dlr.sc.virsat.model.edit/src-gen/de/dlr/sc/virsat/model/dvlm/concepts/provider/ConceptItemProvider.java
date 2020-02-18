@@ -313,6 +313,7 @@ public class ConceptItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ConceptsPackage.Literals.IIMPORTS__IMPORTS);
+			childrenFeatures.add(ConceptsPackage.Literals.IE_IMPORTS__ECORE_IMPORTS);
 			childrenFeatures.add(ConceptsPackage.Literals.CONCEPT__CATEGORIES);
 			childrenFeatures.add(ConceptsPackage.Literals.CONCEPT__STRUCTURAL_ELEMENTS);
 			childrenFeatures.add(ConceptsPackage.Literals.CONCEPT__RELATIONS);
@@ -402,6 +403,7 @@ public class ConceptItemProvider
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case ConceptsPackage.CONCEPT__IMPORTS:
+			case ConceptsPackage.CONCEPT__ECORE_IMPORTS:
 			case ConceptsPackage.CONCEPT__CATEGORIES:
 			case ConceptsPackage.CONCEPT__STRUCTURAL_ELEMENTS:
 			case ConceptsPackage.CONCEPT__RELATIONS:
@@ -426,6 +428,11 @@ public class ConceptItemProvider
 			(createChildParameter
 				(ConceptsPackage.Literals.IIMPORTS__IMPORTS,
 				 ConceptsFactory.eINSTANCE.createConceptImport()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(ConceptsPackage.Literals.IE_IMPORTS__ECORE_IMPORTS,
+				 ConceptsFactory.eINSTANCE.createEcoreImport()));
 
 		newChildDescriptors.add
 			(createChildParameter
