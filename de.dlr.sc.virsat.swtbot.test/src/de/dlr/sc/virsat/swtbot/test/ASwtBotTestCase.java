@@ -424,7 +424,7 @@ public class ASwtBotTestCase {
 	 * @param newValue the new value
 	 */
 	protected void setTableValue(SWTBotTable table, int rowPosition, int columnPosition, String oldValue, String newValue) {
-		table.click(rowPosition, columnPosition);
+		table.doubleClick(rowPosition, columnPosition);
 		bot.text(oldValue).setText(newValue);		
 	}
 	/**
