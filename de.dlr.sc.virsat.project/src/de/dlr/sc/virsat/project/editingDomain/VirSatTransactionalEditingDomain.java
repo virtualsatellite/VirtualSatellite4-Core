@@ -26,6 +26,7 @@ import org.eclipse.core.commands.operations.IOperationHistoryListener;
 import org.eclipse.core.commands.operations.OperationHistoryEvent;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
@@ -347,7 +348,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 		
 		// First lock the workspace then lock the transaction
-		this.getVirSatCommandStack().executeInWorkspace(() -> {
+		executeInWorkspace(() -> {
 			try {
 				this.writeExclusive(() -> {
 					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
@@ -378,7 +379,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void removeResource(Resource emfResource) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: About to unload a resource"));
-		this.getVirSatCommandStack().executeInWorkspace(() -> {
+		executeInWorkspace(() -> {
 			if (emfResource != null) {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: ActuallyUnloaded Resource URI (" + emfResource.getURI().toPlatformString(true) + ")"));
 				virSatResourceSet.removeResource(emfResource);
@@ -395,7 +396,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	public void reloadAll() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Started reloading all resources"));
 
-		this.getVirSatCommandStack().executeInWorkspace(() -> {
+		executeInWorkspace(() -> {
 			// Make sure that no Change Events are fired while a resource is reloaded
 			synchronized (accumulatedResourceChangeEvents) {
 				// Clear all Accumulated Resource Change Events because at the end of this method
@@ -484,8 +485,11 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			// in recentlySavedResource BUT the resource has not changed then, the WokrspaceSynchronizer will NOT trigger
 			// and the resource will stay listed in recentlySavedResource indefinitely.
 			if (virSatResourceSet.hasWritePermission(resource) && virSatResourceSet.isChanged(resource)) {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Has write permission and found changes thus saving (" + resource.getURI().toPlatformString(true) + ")"));
 				internallySaveResource(resource, false);
 				fireNotifyResourceEvent(Collections.singleton(resource), VirSatTransactionalEditingDomain.EVENT_CHANGED);
+			} else {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Has no write permission or no changes thus not saving (" + resource.getURI().toPlatformString(true) + ")"));
 			}
 			
 			// Mark the resource as not dirty in either case
@@ -501,7 +505,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void saveResourceIgnorePermissions(Resource resource) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Saving resource ignoring write permissions (" + resource.getURI().toPlatformString(true) + ")"));
-		this.getVirSatCommandStack().executeInWorkspace(() -> internallySaveResource(resource, true));
+		executeInWorkspace(() -> internallySaveResource(resource, true));
 	}
 	
 	/**
@@ -714,18 +718,21 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * Intended to be used by test cases.
 	 */
 	public static void waitForFiringOfAccumulatedResourceChangeEvents() {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Waiting for Events to be fired"));
 		while (true) {
 			synchronized (accumulatedResourceChangeEvents) {
 				try {
 					accumulatedResourceChangeEvents.wait(ResourceChangeEventThread.SLEEP_TIME);
 				} catch (InterruptedException e) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread failed to wait ", e));
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread got interrupted", e));
+					break;
 				}
 				if (accumulatedResourceChangeEvents.isEmpty()) {
 					break;
 				}
 			}
 		}
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: All events fired Queue is empty"));
 	}
 	
 	/**
@@ -934,5 +941,21 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		} else {
 			return super.createCommand(commandClass, commandParameter);
 		}
+	}
+	
+	/**
+	 * Call this method from the calls for executing a command. This method maintains the order
+	 * of executing the command as a wrapped workspace operation as well as saving the files in the
+	 * right point of time.
+	 * @param runnable the runnable that implements the call to the execution of the command
+	 */
+	protected void executeInWorkspace(Runnable runnable) {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Starting to execute runnable as workspace operation"));
+		try {
+			ResourcesPlugin.getWorkspace().run(action -> runnable.run(), null);
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Failed to execute runnable as workspace operation", e));
+		}
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished to execute runnable as workspace operation"));
 	}
 }

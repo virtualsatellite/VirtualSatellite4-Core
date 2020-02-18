@@ -102,7 +102,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProvide
 import de.dlr.sc.virsat.model.dvlm.util.DVLMUnresolvedReferenceException;
 import de.dlr.sc.virsat.model.ui.editor.input.VirSatUriEditorInput;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatSaveJob;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
@@ -888,9 +887,8 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 		if (!hasProblematicModelObject && hasWriteAccess) {
 			updateProblemIndication = false;
 			
-			VirSatSaveJob saveJob = new VirSatSaveJob(editingDomain);
-			saveJob.scheduleIfNoSaveJobPending();
-		
+			editingDomain.saveAll();
+			
 			updateProblemIndication = true;
 			updateProblemIndication();
 			
