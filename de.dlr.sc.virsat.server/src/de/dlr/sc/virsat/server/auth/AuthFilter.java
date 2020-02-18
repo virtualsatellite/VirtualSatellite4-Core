@@ -41,6 +41,12 @@ public class AuthFilter implements ContainerRequestFilter {
 	@Context
 	private ResourceInfo resourceInfo;
 	
+	private IServerUserHandler userHandler;
+	
+	public AuthFilter() {
+		userHandler = new ServerUserHandlerFactory().getServerUserHandler();
+	}
+	
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		filterAuthenticated(requestContext);
@@ -87,7 +93,13 @@ public class AuthFilter implements ContainerRequestFilter {
 		String username = tokenizer.nextToken();
 		String password = tokenizer.nextToken();
 		
-		// Maybe check if the user is known here and delete the has any valid server role check?
+		ServerUser user = userHandler.getUser(username, password);
+		
+		// Check if the user is known
+		if (user == null) {
+			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(NOT_AUTHORIZED).build());
+			return;
+		}
 		
 		// Check if roles are specified
 		if (resourceMethod.isAnnotationPresent(RolesAllowed.class)) {
@@ -96,14 +108,14 @@ public class AuthFilter implements ContainerRequestFilter {
 			RolesAllowed rolesAnnotation = resourceMethod.getAnnotation(RolesAllowed.class);
 			List<String> roles = Arrays.asList(rolesAnnotation.value());
 			
-			if (!isAuthorized(username, password, roles)) {
+			if (!isAuthorized(user, roles)) {
 				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(NOT_AUTHORIZED).build());
 			}
 			return;
 		} 
 		
 		// Check if the user has any valid server role
-		if (!isAuthorized(username, password, ServerRoles.getAllRoles())) {
+		if (!isAuthorized(user, ServerRoles.getAllRoles())) {
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(NOT_AUTHORIZED).build());
 		}
 		
@@ -111,18 +123,13 @@ public class AuthFilter implements ContainerRequestFilter {
 	
 	
 	/**
-	 * @param username of the user to be authorized
-	 * @param password of the user to be authorized
+	 * @param user the user to be authorized
 	 * @param roles permitted for the requested resource
 	 * @return boolean if the user is authorized
 	 */
-	public boolean isAuthorized(String username, String password, List<String> roles) {
+	public boolean isAuthorized(ServerUser user, List<String> roles) {
 		
-		// Get user and roles here using a file or LDAP
-		
-		String role = BasicServerUserHandler.getInstance().getUserRole(username, password);
-		
-		return roles.contains(role);
+		return roles.contains(user.getServerRole());
 	}
 	
 }

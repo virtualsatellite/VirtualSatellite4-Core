@@ -12,36 +12,27 @@ package de.dlr.sc.virsat.server.auth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasicServerUserHandler {
+public class BasicServerUserHandler implements IServerUserHandler {
 
-	private static BasicServerUserHandler instance = null;
-	
 	private List<ServerUser> users = new ArrayList<ServerUser>();
 	
-	private BasicServerUserHandler() { 
+	public BasicServerUserHandler() { 
+		readUsersFromFile();
+	}
+	
+	public void readUsersFromFile() {
 		// demo users
 		ServerUser user1 = new ServerUser("admin", "password", ServerRoles.ADMIN);
 		ServerUser user2 = new ServerUser("user", "password", ServerRoles.USER);
 		users.add(user1);
 		users.add(user2);
 	}
-	
-	public static BasicServerUserHandler getInstance() {
-		if (instance == null) {
-			instance = new BasicServerUserHandler();
-		}
-		return instance;
-	}
-	
-	/**
-	 * @param username of the user
-	 * @param password of the user
-	 * @return the role of the user if the user exists, null otherwise
-	 */
-	public String getUserRole(String username, String password) {
+
+	@Override
+	public ServerUser getUser(String username, String password) {
 		for (ServerUser user : users) {
 			if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-				return user.getServerRole();
+				return user;
 			}
 		}
 		return null;

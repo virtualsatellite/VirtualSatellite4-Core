@@ -25,6 +25,8 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.auth.AuthFilter;
+import de.dlr.sc.virsat.server.auth.BasicServerUserHandler;
+import de.dlr.sc.virsat.server.auth.ServerConfiguration;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class AuthTestResourceTest extends AGitAndJettyServerTest {
@@ -36,6 +38,8 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		
 		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
 		WebTarget target = client.target(uri);
+		
+		ServerConfiguration.getInstance().setServerUserHandler(BasicServerUserHandler.class.getName());
 		
 		String serverResponse = target.
 			path("/rest").
@@ -77,6 +81,8 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		
 		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
 		WebTarget target = client.target(uri);
+		
+		ServerConfiguration.getInstance().setServerUserHandler(BasicServerUserHandler.class.getName());
 		
 		String serverResponse = target.
 			path("/rest").
@@ -144,6 +150,8 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		
 		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
 		WebTarget target = client.target(uri);
+		
+		ServerConfiguration.getInstance().setServerUserHandler(BasicServerUserHandler.class.getName());
 		
 		String encodedUser = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("user:password".getBytes());
 		String serverResponse = target.
