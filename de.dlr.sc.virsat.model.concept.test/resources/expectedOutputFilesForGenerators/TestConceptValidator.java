@@ -18,18 +18,19 @@ import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValid
 // *****************************************************************
 
 /**
- * Auto Generated Abstract Generator Gap Class
+ * Auto Generated Class inheriting from Generator Gap Class
  * 
- * Don't Manually modify this class
+ * This class is generated once, do your changes here
  * 
  * 
  * 
- */	
-@Deprecated
-public abstract class AStructuralElementInstanceValidator implements IStructuralElementInstanceValidator {
+ */
+public class TestConceptValidator extends ATestConceptValidator implements IStructuralElementInstanceValidator {
 
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
-		return true;
+		//TODO: Implement custom validation for concept
+		return super.validate(sei);
 	}
 }
+

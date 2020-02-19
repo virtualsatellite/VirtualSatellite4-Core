@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateCategoryTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests;
+import de.dlr.sc.virsat.model.concept.generator.validator.GenerateDeprecatedValidator;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -72,6 +73,12 @@ public class ConceptLanguageGenerator implements IGenerator2 {
       final IExtensionRegistry extensionPointRegistry = Platform.getExtensionRegistry();
       final IConfigurationElement[] configElements = extensionPointRegistry.getConfigurationElementsFor(this.ID_EXTENSION_POINT_GENERATOR);
       boolean generateCode = true;
+      EObject _get = resource.getContents().get(0);
+      Concept dataModel = ((Concept) _get);
+      String _replace = dataModel.getName().replace(".", "/");
+      String _plus = ("../src/" + _replace);
+      String _plus_1 = (_plus + "/validator/StructuralElementInstanceValidator.java");
+      final boolean hasDeprecatedValidator = fsa.isFile(_plus_1);
       for (final IConfigurationElement configElement : configElements) {
         {
           Object _createExecutableExtension = configElement.createExecutableExtension(this.ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS);
@@ -80,8 +87,6 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         }
       }
       if (generateCode) {
-        EObject _get = resource.getContents().get(0);
-        final Concept dataModel = ((Concept) _get);
         new GenerateDmfCategories().serializeModel(dataModel, fsa);
         new GenerateConceptXmi().serializeModel(dataModel, fsa);
         new GenerateConceptImages().serializeModel(dataModel, fsa);
@@ -108,6 +113,12 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         new GenerateMigratorTests().serializeModel(dataModel, fsa);
         new GenerateValidatorTests().serializeModel(dataModel, fsa);
         new GenerateAllTests().serializeModel(dataModel, fsa);
+        if ((hasDeprecatedValidator == true)) {
+          new GenerateDeprecatedValidator().serializeModel(dataModel, fsa);
+          GeneratePluginXml _generatePluginXml_1 = new GeneratePluginXml();
+          PluginXmlReader _pluginXmlReader_2 = new PluginXmlReader();
+          _generatePluginXml_1.serializeModelDeprecatedValidator(dataModel, _pluginXmlReader_2, fsa);
+        }
       }
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
