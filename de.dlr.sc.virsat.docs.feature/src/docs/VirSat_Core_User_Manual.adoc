@@ -320,7 +320,7 @@ NOTE: Whenever you commit and update, you do it for the whole project.
 
 === Sharing a new project to git
 
-Virtual Satellite also provides two modes of using git. A basic and an advanced mode. The basic mode simplifies the transition from SVN to git by providing the classical SVN actions. The advanced mode uses the eclipse default git implementation and provides all git actions. See the EGit <<https://wiki.eclipse.org/EGit/User_Guide,documentation>> for more information.
+Virtual Satellite also provides two modes of using git. A basic and an advanced mode. The basic mode simplifies the transition from SVN to git by providing the classical SVN actions. The advanced mode uses the eclipse default git implementation and provides all git actions. See the EGit https://wiki.eclipse.org/EGit/User_Guide[documentation] for more information.
 
 The following steps can be applied to use Virtual Satellite with the basic git mode.
 
