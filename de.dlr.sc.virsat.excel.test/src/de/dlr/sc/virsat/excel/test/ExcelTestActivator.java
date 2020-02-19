@@ -25,7 +25,7 @@ public class ExcelTestActivator {
 	private ExcelTestActivator() {
 	}
 
-	public static final String FRAGMENT_ID = "de.dlr.sc.virsat.excel.test";
+	private static final String FRAGMENT_ID = "de.dlr.sc.virsat.excel.test";
 
 	/**
 	 * Method to access the fragments contents from the resource folder and to hand it back as string
