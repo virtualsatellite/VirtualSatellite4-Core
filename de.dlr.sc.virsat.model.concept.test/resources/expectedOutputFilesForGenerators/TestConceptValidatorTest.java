@@ -7,8 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package testConcept.validator;
-
+package de.dlr.sc.virsat.model.extension.testConcept.validator;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
@@ -30,11 +29,11 @@ import static org.junit.Assert.assertTrue;
  * 
  *
  */
-public class StructuralElementInstanceValidatorTest extends AStructuralElementInstanceValidatorTest {
+public class TestConceptValidatorTest extends ATestConceptValidatorTest {
 
-	@Test	
-	public void testStructuralElementInstanceValidator() { 
-		StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();
+	@Test
+	public void testTestConceptValidator() {
+		TestConceptValidator validator = new TestConceptValidator();
 		assertTrue(validator.validate(testSei));
 	}
 }

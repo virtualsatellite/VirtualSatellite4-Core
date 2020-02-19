@@ -2,17 +2,25 @@
 <?eclipse version="3.4"?>
 <plugin>
 	<extension point="de.dlr.sc.virsat.model.Concept">
-	<concept
-	          id="testConcept"
-	          version="1.1"
-	          xmi="concept/concept.xmi">
-	    </concept>
+		<concept
+			id="testConcept"
+			version="1.1"
+			xmi="concept/concept.xmi">
+		</concept>
 	</extension>
 	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
 		<dvlmValidator>
 			<seiValidator
 				id="testConcept"
 				class="testConcept.validator.TestConceptValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="testConcept.deprecated"
+				class="testConcept.validator.StructuralElementInstanceValidator">
 			</seiValidator>
 		</dvlmValidator>
 	</extension>

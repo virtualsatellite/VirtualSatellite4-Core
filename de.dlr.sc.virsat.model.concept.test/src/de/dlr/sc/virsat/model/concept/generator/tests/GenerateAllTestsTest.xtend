@@ -31,7 +31,7 @@ class GenerateAllTestsTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept"
 	val TEST_CATEGORY_NAME = "testCategory"
 	val TEST_STRUCTURAL_ELEMENT_NAME = "testStructuralElement"
 	val generateAllTests = new GenerateAllTests();
@@ -57,11 +57,11 @@ class GenerateAllTestsTest {
 		val category = concept.categories.get(0)
 		val concreteClassfileName = generateAllTests.createConcreteClassFileName(concept, category)
 		val abstractClassfileName = generateAllTests.createAbstractClassFileName(concept, category)
-		val expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/test/AllTests.java"
-		val expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/test/AllTestsGen.java"
+		val expectedConcreteClassFileName = "../../" + TEST_CONCEPT_NAME + ".test/src/" + TEST_CONCEPT_NAME.replace(".","/") + "/test/AllTests.java"
+		val expectedAbstractClassFileName = "../../" + TEST_CONCEPT_NAME + ".test/src-gen/" + TEST_CONCEPT_NAME.replace(".","/") + "/test/AllTestsGen.java"
 
-		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName,	concreteClassfileName)
-		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName,	abstractClassfileName)
+		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName)
+		Assert.assertEquals("Abstract file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
 	}
 	
 	@Test

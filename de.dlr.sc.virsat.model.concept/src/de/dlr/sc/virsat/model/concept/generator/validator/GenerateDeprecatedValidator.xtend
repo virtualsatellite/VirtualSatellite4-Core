@@ -18,56 +18,28 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.generator.IFileSystemAccess
 
-class GenerateValidator extends AGeneratorGapGenerator<EObject> {
+class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject> {
 	
-	override protected getPackage(Concept concept) {
+	override getPackage(Concept concept) {
 		concept.name + "." + PACKAGE_FOLDER;
 	}
 	
-	/**
-	 * This method gets the concept name which is usually in a form like this "de.dlr.sc.virsat.model.extension.conceptName". 
-	 * It splits the name after every dot and only takes the last element as the name.
-	 * The first letter is capitalized, since it will be used as a class name.
-	 */
-	static def getValidatorName(Concept concept) {
-		val name = concept.name
-		val String[] arrOfName = name.split("\\.")
-		val shortName = arrOfName.last
-		
-		val validatorName = shortName.substring(0,1).toUpperCase() + shortName.substring(1) 
-		return validatorName + "Validator";
-	}
-	
-	static def getConcreteClassName(Concept concept) {
-		getValidatorName(concept);
-	}
-	
-	static def getAbstractClassName(Concept concept) {
-		"A" + getValidatorName(concept);
-	}
-	
-	override createConcreteClassFileName(Concept concept, EObject eObject) {
-		 concept.packageFolder + "/" + concept.concreteClassName + ".java"
+	static def getAbstractClassName(EObject typeDefinition) {
+		"AStructuralElementInstanceValidator";
 	}
 	
 	override createAbstractClassFileName(Concept concept, EObject eObject) {
-		 concept.packageFolder + "/" + concept.abstractClassName + ".java"
+		concept.packageFolder + "/" + "AStructuralElementInstanceValidator.java"
 	}
-	
+		
 	public static val PACKAGE_FOLDER = "validator";
 	
 	override serializeModel(Concept concept, IFileSystemAccess fsa) {
 		// ************************************************************************************
-		// Abstract Class
+		// Old Class
 		// ************************************************************************************
 		var fileOutputAClass = createAbstractClass(concept, concept);
 		fsa.generateFile(createAbstractClassFileName(concept, concept), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutputAClass);
-
-		// ************************************************************************************
-		// Concrete Class
-		// ************************************************************************************
-		var fileOutputClass = createConcreteClass(concept, concept);
-		fsa.generateFile(createConcreteClassFileName(concept, concept), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_GENERATE_ONCE, fileOutputClass);
 	}
 
 	/**
@@ -104,7 +76,8 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateAClassHeader(concept)»
-	public abstract class «concept.abstractClassName» implements IStructuralElementInstanceValidator {
+	@Deprecated
+	public abstract class «conceptPart.abstractClassName» implements IStructuralElementInstanceValidator {
 
 		@Override
 		public boolean validate(StructuralElementInstance sei) {
@@ -112,26 +85,12 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 		}
 	}
 	'''
-
-	/**
-	 *	Entry method to write the class body 
-	 */
-	override protected declareClass(Concept concept, EObject conceptPart, ImportManager importManager) '''
-	«importManager.register(StructuralElementInstance)»
-	«importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator")»
 	
-	// *****************************************************************
-	// * Class Declaration
-	// *****************************************************************
-	
-	«ConceptGeneratorUtil.generateClassHeader(concept)»
-	public class «concept.concreteClassName» extends «concept.abstractClassName» implements IStructuralElementInstanceValidator {
-
-		@Override
-		public boolean validate(StructuralElementInstance sei) {
-			//TODO: Implement custom validation for concept
-			return super.validate(sei);
-		}
+	override protected declareClass(Concept concept, EObject type, ImportManager manager) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	'''
+	
+	override createConcreteClassFileName(Concept concept, EObject conceptPart) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 }

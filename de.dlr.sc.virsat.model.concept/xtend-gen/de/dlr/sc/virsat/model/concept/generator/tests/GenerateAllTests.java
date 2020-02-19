@@ -13,6 +13,7 @@ import de.dlr.sc.virsat.model.concept.generator.AGeneratorGapGenerator;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ImportManager;
 import de.dlr.sc.virsat.model.concept.generator.tests.AllMigratorsReader;
+import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -333,10 +334,13 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     allMigratorsReader.migrators.forEach(_function_1);
     String _fullQualifiedName = concept.getFullQualifiedName();
     String _plus = (_fullQualifiedName + ".validator.");
-    String _plus_1 = (_plus + "StructuralElementInstanceValidator");
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    String _plus_1 = (_plus + _validatorName);
     String _plus_2 = (_plus_1 + "Test");
     importManager.register(_plus_2);
-    listOfTests.add(("StructuralElementInstanceValidator" + "Test"));
+    String _validatorName_1 = GenerateValidator.getValidatorName(concept);
+    String _plus_3 = (_validatorName_1 + "Test");
+    listOfTests.add(_plus_3);
     StringConcatenation _builder = new StringConcatenation();
     {
       for(final String test : listOfTests) {

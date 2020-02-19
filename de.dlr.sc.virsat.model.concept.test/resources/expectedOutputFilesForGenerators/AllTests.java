@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package testConcept.test;
+package de.dlr.sc.virsat.model.extension.testConcept.test;
 
 // *****************************************************************
 // * Import Statements
