@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    copyrightText="Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.&#xD;&#xA;&#xD;&#xA;This program and the accompanying materials are made available under the&#xD;&#xA;terms of the Eclipse Public License 2.0 which is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-2.0.&#xD;&#xA;&#xD;&#xA;SPDX-License-Identifier: EPL-2.0"
+    modelDirectory="/de.dlr.sc.virsat.model.ext.core/src-dmf" editDirectory="/de.dlr.sc.virsat.model.ext.core.edit/src-dmf"
+    editorDirectory="/de.dlr.sc.virsat.model.ext.core.editor/src-dmf" modelPluginID="de.dlr.sc.virsat.model.ext.core"
+    modelName="Concept" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="/de.dlr.sc.virsat.model.ext.core.tests/src-dmf" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm ../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>/de.dlr.sc.virsat.model.ext.core/concept/concept.ecore</foreignModel>
+  <genPackages prefix="Core" basePackage="de.dlr.sc.virsat.model.ext.core" resource="XMI"
+      disposableProviderFactory="true" ecorePackage="concept.ecore#/">
+    <genClasses image="false" ecoreClass="concept.ecore#//GenericCategory"/>
+  </genPackages>
+</genmodel:GenModel>

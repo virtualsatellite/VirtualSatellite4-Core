@@ -34,6 +34,8 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.project.test.AllTests.class,
 				de.dlr.sc.virsat.build.test.AllTests.class,
 				de.dlr.sc.virsat.apps.test.AllTests.class,
+				de.dlr.sc.virsat.model.ext.core.test.AllTests.class,
+				de.dlr.sc.virsat.model.ext.core.edit.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.ps.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.ps.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.maturity.test.AllTests.class,

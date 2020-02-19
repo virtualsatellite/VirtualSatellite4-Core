@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="core" nsURI="http://www.virsat.sc.dlr.de/dmf/v1.0/core" nsPrefix="dmf_core">
+  <eClassifiers xsi:type="ecore:EClass" name="GenericCategory" abstract="true" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject"/>
+</ecore:EPackage>
