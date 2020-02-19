@@ -24,18 +24,16 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.SelfDescribing;
 
 /**
- * This class is used to communicate with UI thread
- * 
- * @author bell_Er
- *
+ * This class is used to deal with the Editor sections of the
+ * Virtual Satellite Generic Editor.
  */
-public class SWTBotSection extends AbstractSWTBotControl<Section> {
+public class SwtBotSection extends AbstractSWTBotControl<Section> {
 
 	/**
 	 * @param section section to create 
 	 * @throws WidgetNotFoundException if the widget is not found
 	 */
-	public SWTBotSection(Section section) throws WidgetNotFoundException {
+	public SwtBotSection(Section section) throws WidgetNotFoundException {
 		super(section);
 	}
 
@@ -44,7 +42,7 @@ public class SWTBotSection extends AbstractSWTBotControl<Section> {
 	 * @param description the description
 	 * @throws WidgetNotFoundException if the widget is not found
 	 */
-	public SWTBotSection(Section section, SelfDescribing description) throws WidgetNotFoundException {
+	public SwtBotSection(Section section, SelfDescribing description) throws WidgetNotFoundException {
 		super(section, description);
 	}
 
@@ -64,7 +62,7 @@ public class SWTBotSection extends AbstractSWTBotControl<Section> {
 	 * Then if the actual widget is expanded, it collapses the widget. If the widget is collapsed, it expands it.
 	 * @return the current 
 	 */
-	public SWTBotSection click() {
+	public SwtBotSection click() {
 		syncExec(new BoolResult() {
 			public Boolean run() {
 				widget.setExpanded(!widget.isExpanded());
