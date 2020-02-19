@@ -36,7 +36,7 @@ import de.dlr.sc.virsat.project.Activator;
 public class VirSatValidatorBuilder extends AVirSatBuilder {
 
 	public VirSatValidatorBuilder() {
-		super(new VirSatValidationMarkerHelper());
+		super("Validation Builder", new VirSatValidationMarkerHelper());
 		this.vvmHelper = (VirSatValidationMarkerHelper) this.vpmHelper;
 	}
 
@@ -118,6 +118,7 @@ public class VirSatValidatorBuilder extends AVirSatBuilder {
 	
 	@Override
 	public ISchedulingRule getRule(int kind, Map<String, String> args) {
+		// Validation Builder is not critical and does not need specific locking on the workspace
 		return null;
 	}
 }
