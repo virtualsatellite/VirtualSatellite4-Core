@@ -16,6 +16,7 @@ import java.net.URI;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -40,6 +41,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 			path("/atr").
 			path("/data").
 			request().
+			header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
 			accept(MediaType.APPLICATION_JSON).
 			get(Response.class)
 			.toString();
@@ -49,6 +51,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 				path("atr").
 				path("data").
 				request().
+				header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
 				accept(MediaType.APPLICATION_JSON).
 				get(String.class);
 		

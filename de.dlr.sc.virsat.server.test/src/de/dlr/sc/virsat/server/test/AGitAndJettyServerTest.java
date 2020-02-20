@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.server.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
+
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jgit.api.Git;
@@ -19,6 +21,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import de.dlr.sc.virsat.server.auth.AuthFilter;
+import de.dlr.sc.virsat.server.auth.ServerConfiguration;
+import de.dlr.sc.virsat.server.auth.TestServerUserHandler;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 
 public abstract class AGitAndJettyServerTest {
@@ -26,6 +31,7 @@ public abstract class AGitAndJettyServerTest {
 	protected static File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+	protected static final String DEFAULT_AUTHORIZATION_HEADER = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("user:password".getBytes());
 	
 	public static File makeAbsolute(File relativePath) throws IOException {
 		return new File(WORKSPACE_ROOT, relativePath.toString());
@@ -35,6 +41,8 @@ public abstract class AGitAndJettyServerTest {
 	public static void setUpClass() throws InterruptedException, Exception {
 		server = new VirSatJettyServer();
 		server.start();
+		
+		ServerConfiguration.getInstance().setServerUserHandler(TestServerUserHandler.class.getName());
 	}
 
 	
