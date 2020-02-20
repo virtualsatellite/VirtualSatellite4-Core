@@ -169,21 +169,12 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
-	 * @param item Tree item for which a diagram editor gets opened
-	 * @return Graphiti GEF Editor handle that SWTBot can work on
-	 */
-	protected SWTBotGefEditor openDiagramEditorForTreeItem(SWTBotTreeItem item) {
-		SWTGefBot gefBot = new SWTGefBot();
-		item.contextMenu().menu("Open Diagram Editor").click();
-		waitForEditingDomainAndUiThread();		
-		String editorTitle = bot.editors().get(1).getTitle();				
-		SWTBotGefEditor editor = gefBot.gefEditor(editorTitle);
-		return editor;
-	}
-	
-	/**
 	 * @param item Tree item that is beeing dragged
 	 * @param diagramEditor Graphiti diagram editor which the tree item is beeing dragged onto
+	 * 
+	 * We can only drop tree items to canvas elements. SWTBotGefViewer's canvas element is not 
+	 * capable of beeing accessed directly from external classes though. Further more SWTBotGefViewer's 
+	 * canvas member gets populated during runtime only. Hence we use reflections to get a hold on it here.
 	 */
 	protected void dragTreeItemToDiagramEditor(SWTBotTreeItem item, SWTBotGefEditor diagramEditor) {
 		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
