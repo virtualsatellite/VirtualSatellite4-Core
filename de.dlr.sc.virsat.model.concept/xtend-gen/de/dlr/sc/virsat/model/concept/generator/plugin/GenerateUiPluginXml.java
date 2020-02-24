@@ -250,7 +250,7 @@ public class GenerateUiPluginXml {
     _builder.append(_declareEditorSection, "\t");
     _builder.newLineIfNotEmpty();
     {
-      boolean _isEmpty = concept.getCategories().isEmpty();
+      boolean _isEmpty = concept.getNonAbstractCategories().isEmpty();
       boolean _not = (!_isEmpty);
       if (_not) {
         _builder.append("\t");
