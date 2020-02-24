@@ -246,7 +246,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				private void updateTriggerFullReload(IResource wsDvlmResource, boolean removeFromRecentlySavedResources) {
 					URI changedResourceUri = URI.createPlatformResourceURI(wsDvlmResource.getFullPath().toString(), true);
 					String fileExtension = wsDvlmResource.getFileExtension();
-					if (VirSatProjectCommons.FILENAME_EXTENSION.equals(fileExtension)) {
+					if (fileExtension.startsWith(VirSatProjectCommons.FILENAME_EXTENSION)) {
 						// First check if the resource which is changed is not on the list of
 						// recently resources than trigger a full reload for all resources.
 						if (!recentlyChangedResource.contains(changedResourceUri)) {
