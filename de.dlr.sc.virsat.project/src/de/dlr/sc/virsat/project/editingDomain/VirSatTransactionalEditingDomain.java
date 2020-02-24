@@ -251,7 +251,8 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 							// First check if the resource which is changed is not on the list of
 							// recently resources than trigger a full reload for all resources.
 							if (!recentlyChangedResource.contains(changedResourceUri)) {
-								Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
+								Activator.getDefault().getLog().
+									log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
 								triggerFullReload = true;
 							} 
 							
