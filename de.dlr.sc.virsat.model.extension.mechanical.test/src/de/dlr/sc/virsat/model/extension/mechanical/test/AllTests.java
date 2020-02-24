@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.extension.mechanical.cad.CadFileHandlerTest;
 import de.dlr.sc.virsat.model.extension.mechanical.cad.CadImporterTest;
 import de.dlr.sc.virsat.model.extension.mechanical.cad.command.CopyResourceCommandTest;
 import de.dlr.sc.virsat.model.extension.mechanical.cad.util.CadHelperTest;
-import de.dlr.sc.virsat.model.extension.mechanical.validator.StructuralElementInstanceValidatorTest;
+import de.dlr.sc.virsat.model.extension.mechanical.validator.MechanicalValidatorTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -32,7 +32,7 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	StructuralElementInstanceValidatorTest.class,
+	MechanicalValidatorTest.class,
 	CadExporterTest.class,
 	CadFileHandlerTest.class,
 	CadImporterTest.class,
