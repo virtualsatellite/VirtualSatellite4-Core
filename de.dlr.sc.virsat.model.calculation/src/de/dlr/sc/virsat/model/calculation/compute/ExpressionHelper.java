@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.calculation.compute;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -25,9 +26,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.calculation.Activator;
 import de.dlr.sc.virsat.model.calculation.compute.extensions.UnresolvedExpressionResult;
@@ -60,15 +59,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedProperty
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
+import de.dlr.sc.virsat.model.dvlm.tree.IStructuralElementInstanceTreeTraverserMatcher;
+import de.dlr.sc.virsat.model.dvlm.tree.TreeTraverser;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 
 /**
  * Evaluates expressions and equations.
- * @author muel_s8
- *
  */
-
 public class ExpressionHelper {
 
 	private List<IExpressionEvaluator> evaluators;
@@ -79,7 +76,6 @@ public class ExpressionHelper {
 	 * ExpressionHelper with extensions registered by plugins and
 	 * per default also for handling number literals.
 	 */
-
 	public ExpressionHelper() {
 		evaluators = new ArrayList<>();
 		inputGetters = new ArrayList<>();
@@ -89,9 +85,8 @@ public class ExpressionHelper {
 	}
 
 	/**
-	 * Processes extensiosn registered by plugins.
+	 * Processes extension registered by plugins.
 	 */
-
 	private void processExtensions() {
 		// Register all plugin extensions
 
@@ -148,7 +143,6 @@ public class ExpressionHelper {
 	 * @param expression The expression to be evaluated
 	 * @return The result of the evaluation
 	 */
-
 	public IExpressionResult evaluate(AExpression expression) {
 		return evaluate(expression, new HashMap<>());
 	}
@@ -159,7 +153,6 @@ public class ExpressionHelper {
 	 * @param interimResultMap map of previously computed results
 	 * @return The result of the evaluation
 	 */
-
 	public IExpressionResult evaluate(EObject object, Map<EObject, IExpressionResult> interimResultMap) {
 
 		if (interimResultMap.containsKey(object)) {
@@ -293,58 +286,87 @@ public class ExpressionHelper {
 
 	/**
 	 * Gets a list of a all type instances that the passed set function would use as input
-	 * @param object the set function
+	 * @param setFunction the set function
 	 * @return  a list of all type instances the set function will use for its computation and is thus dependent on
 	 */
-	private List<ATypeInstance> getSetFunctionInput(SetFunction object) {
-		ATypeDefinition typeDefinition = object.getTypeDefinition();
-		String filterName = object.getFilterName();
+	private List<ATypeInstance> getSetFunctionInput(SetFunction setFunction) {
+		ATypeDefinition typeDefinition = setFunction.getTypeDefinition();
+		String filterName = setFunction.getFilterName();
 		boolean filterForName = filterName != null && !filterName.equals("");
 
 		// Grab the structural element instance the set function belongs to
-		StructuralElementInstance sei = getStructuralElementInstance(object);
+		StructuralElementInstance sei = getStructuralElementInstance(setFunction);
 		if (sei == null) {
 			return new ArrayList<>();
 		}
 
-		// Find all applicable instances that are directly or indirectly contained by the sei
-		List<EObject> containers = new ArrayList<>();
-		containers.add(sei);
-		containers.addAll(StructuralElementInstanceHelper.getDeepChildren(sei, object.getDepth(), 0));
-
+		// Store the inputs to the set function
 		List<ATypeInstance> inputs = new ArrayList<>();
-		
+
 		// Find all child seis that also compute the set function
-		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, object, inputs);
+		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, setFunction, inputs);
+		
+		// Find all applicable TypeInstances that are directly or indirectly contained by the sei
+		TreeTraverser<StructuralElementInstance> treeTraverser = new TreeTraverser<>();
+		treeTraverser.traverse(sei, new IStructuralElementInstanceTreeTraverserMatcher() {
+			
+			@Override
+			public boolean isMatching(StructuralElementInstance treeSei) {
+				boolean isMatching = false;
+				// Get all nested TypeInstances to the current treeSei and see if one
+				// is matching to the definition of what is referenced by the SET function
+				Collection<ATypeInstance> typeInstances = VirSatEcoreUtil.getAllContentsOfType(sei.getCategoryAssignments(), ATypeInstance.class, true);
+				typeInstances.addAll(sei.getCategoryAssignments());
+				
+				// Loop over all identified ATypeInstances
+				for (ATypeInstance aTypeInstance : typeInstances) {
+					boolean correctType = aTypeInstance.getType() == typeDefinition;
+					boolean notComputedByChild = !childrenWithSetFunction.contains(treeSei);
+					if (correctType && notComputedByChild) {
+						// For composed property instances we have to get the category assignment
+						// to be able to work with them, thus try to decompose it
+						ATypeInstance decomposedTypeInstance = aTypeInstance;
+						if (decomposedTypeInstance instanceof ComposedPropertyInstance) {
+							decomposedTypeInstance = ((ComposedPropertyInstance) aTypeInstance).getTypeInstance();
+						}
 
-		TreeIterator<Object> treeIter = EcoreUtil.getAllProperContents(containers, true);
-		while (treeIter.hasNext()) {
-			Object potentialATypeInstance = treeIter.next();
-			if (potentialATypeInstance instanceof ATypeInstance) {
-				ATypeInstance aTypeInstance = (ATypeInstance) potentialATypeInstance;
-
-				boolean correctType = aTypeInstance.getType() == typeDefinition;
-				boolean notComputedByChild = !childrenWithSetFunction.contains(getStructuralElementInstance(aTypeInstance));
-
-				if (correctType && notComputedByChild) {
-					// For composed property instances we have to get the category assignment
-					// to be able to work with them
-					if (aTypeInstance instanceof ComposedPropertyInstance) {
-						aTypeInstance = ((ComposedPropertyInstance) aTypeInstance).getTypeInstance();
-					}
-
-					boolean correctName = !filterForName || hasCorrectName(aTypeInstance, filterName);
-					if (correctName) {
-						inputs.add(aTypeInstance);
+						// In case a name filter is set for the Set function make sure to apply it.
+						// If all properties are correct, remember the decomposed Type Instance as an input
+						// remember that we definitely had a match and continue with all the other items and check
+						// if they are potential inputs. Saving the match is important, so that the tree traverser
+						// can count the levels of nesting and levels of matches correctly						
+						boolean correctName = !filterForName || hasCorrectName(decomposedTypeInstance, filterName);
+						if (correctName) {
+							inputs.add(decomposedTypeInstance);
+							isMatching = true;
+						}
 					}
 				}
+				
+				// return the result to decide if the current node will be counted
+				// for the matching levels or not
+				return isMatching;
 			}
-		}
+			
+			@Override
+			public boolean continueTraverseChildren(StructuralElementInstance treeNode, boolean isMatching, int processedLevel, int matchedLevel) {
+				// Compare the depth of found matches with the depth set by the set function
+				int targetDepth = setFunction.getDepth();
+				boolean isDepthInfinite = targetDepth == AAdvancedFunctionOp.DEPTH_INFINITE;
+				boolean isDepthNotReached = targetDepth == matchedLevel; 
+				return isDepthInfinite || isDepthNotReached;
+			}
+
+			@Override
+			public void processMatch(StructuralElementInstance treeNode, StructuralElementInstance matchingParent) {
+				// Nothing special has to be processed with the SEIs that have Set functions in their calculations
+			}
+		});
 
 		// Get the CA in which the current Set resides. All TypeInstances of this category shall not be
 		// part of the inputs to be processed by this SetFunction. Accordingly they have to be removed
 		// from the Set's inputs
-		CategoryAssignment currentCa = VirSatEcoreUtil.getEContainerOfClass(object, CategoryAssignment.class);
+		CategoryAssignment currentCa = VirSatEcoreUtil.getEContainerOfClass(setFunction, CategoryAssignment.class);
 		if (currentCa != null) {
 			for (APropertyInstance pi : currentCa.getPropertyInstances()) {
 				inputs.remove(pi);
@@ -458,7 +480,6 @@ public class ExpressionHelper {
 	 * @param object the reference to the definition
 	 * @return the resolved equation input if it exists, null otherwise
 	 */
-
 	public IEquationInput getReferencedDefinitionInput(ReferencedInput object) {
 		IEquationDefinitionInput reference = object.getDefinition().getReference();
 
@@ -699,7 +720,7 @@ public class ExpressionHelper {
 	/**
 	 * Get the equation associated with this expression
 	 * @param expression the expression
-	 * @return the equation asssociated with this expression
+	 * @return the equation associated with this expression
 	 */
 	public Equation getEquation(AExpression expression) {
 		EObject container = expression.eContainer();
@@ -708,5 +729,4 @@ public class ExpressionHelper {
 		}
 		return (Equation) container;
 	}
-
 }
