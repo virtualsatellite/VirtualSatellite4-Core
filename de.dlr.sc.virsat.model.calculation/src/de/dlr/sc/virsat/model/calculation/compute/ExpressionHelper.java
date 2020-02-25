@@ -316,7 +316,7 @@ public class ExpressionHelper {
 				// Get all nested TypeInstances to the current treeSei and see if one
 				// is matching to the definition of what is referenced by the SET function
 				Collection<ATypeInstance> typeInstances = VirSatEcoreUtil.getAllContentsOfType(sei.getCategoryAssignments(), ATypeInstance.class, true);
-				typeInstances.addAll(sei.getCategoryAssignments());
+				typeInstances.addAll(treeSei.getCategoryAssignments());
 				
 				// Loop over all identified ATypeInstances
 				for (ATypeInstance aTypeInstance : typeInstances) {
@@ -353,7 +353,7 @@ public class ExpressionHelper {
 				// Compare the depth of found matches with the depth set by the set function
 				int targetDepth = setFunction.getDepth();
 				boolean isDepthInfinite = targetDepth == AAdvancedFunctionOp.DEPTH_INFINITE;
-				boolean isDepthNotReached = targetDepth == matchedLevel; 
+				boolean isDepthNotReached =  matchedLevel <= targetDepth; 
 				return isDepthInfinite || isDepthNotReached;
 			}
 
