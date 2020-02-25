@@ -133,7 +133,7 @@ public class ASwtBotTestCase {
 					
 					// Now reset the workbench and remove the project
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Resetting Workbench"));
-					bot.resetWorkbench();
+					bot.closeAllEditors();
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Deleting project"));
 					ws.getRoot().getProject(SWTBOT_TEST_PROJECTNAME).delete(true, monitor);
 				}, null);
