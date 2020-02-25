@@ -177,6 +177,8 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 	@Override
 	protected Delegate createWorkspaceSynchronizerDelegate() {
 		// Disable the Graphitti default workspace synchronizer
+		// Otherwise the Graphiti workspace synchronizer will create his own 
+		// workspace synchronization requests in addition to ours
 		return null;
 	}
 	
