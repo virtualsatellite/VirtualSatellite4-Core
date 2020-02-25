@@ -7,7 +7,8 @@ Bundle-ClassPath: .
 Require-Bundle: de.dlr.sc.virsat.external.lib.commons.cli,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ de.dlr.sc.virsat.external.lib.matlabfile
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -39,6 +40,7 @@ Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.dvlm.inheritance,
  de.dlr.sc.virsat.model.dvlm.inheritance.impl,
  de.dlr.sc.virsat.model.dvlm.inheritance.util,
+ de.dlr.sc.virsat.model.dvlm.mat,
  de.dlr.sc.virsat.model.dvlm.qudv,
  de.dlr.sc.virsat.model.dvlm.qudv.impl,
  de.dlr.sc.virsat.model.dvlm.qudv.util,

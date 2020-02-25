@@ -15,6 +15,7 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.concept.unittest.util,
  de.dlr.sc.virsat.apps,
- de.dlr.sc.virsat.external.lib.spotbugs
+ de.dlr.sc.virsat.external.lib.spotbugs,
+ de.dlr.sc.virsat.external.lib.matlabfile
 Export-Package: de.dlr.sc.virsat.model.extension.tests.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.tests.test
