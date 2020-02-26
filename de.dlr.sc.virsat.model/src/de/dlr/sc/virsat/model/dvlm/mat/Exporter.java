@@ -11,9 +11,6 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 
 import java.io.IOException;
 
-import org.eclipse.emf.common.util.EList;
-
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
@@ -24,16 +21,9 @@ import us.hebi.matlab.mat.types.Struct;
  */
 public class Exporter {
 	
-	/**
-	 * creates a new .mat if needed
-	 * @param path path of the new .Mat
-	 */
-	public static void newMatFile(String path) throws IOException {
-		MatFile matfile = Mat5.newMatFile();
-		matfile.addArray("a", Mat5.newScalar(54));
-		Mat5.writeToFile(matfile, path);
+	private Exporter(StructuralElementInstance seiRoot) throws IOException {
+		exportSei(seiRoot);
 	}
-	
 	/**
 	 * creates a new .mat if needed
 	 * @param seiRoot path of the new .Mat

@@ -10,58 +10,73 @@
 package de.dlr.sc.virsat.model.dvlm.mat;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
+import us.hebi.matlab.mat.types.Struct;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
-public class ExporterTest extends AConceptTestCase{
+public class ExporterTest extends AConceptTestCase {
 	
+	private static final int NUMBEROFELEMENTS = 3;
 	private Concept concept;
+	private StructuralElementInstance sei;
 	
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() {
+		//get Test - StructuralElementInstance
 		prepareEditingDomain();
 		concept = loadConceptFromPlugin();
-//		final int testNumber1 = 5;
-//		final double testNumber2 = 3.4;
-//		final double testNumber3 = 4.2;
-//		final int testNumber4 = 4;
-//		final int testNumber5 = 2;
-//		int [] input = {testNumber1, testNumber4, testNumber5};
-//		MatFile matfile = Mat5.newMatFile();
-//		matfile.addArray("var1", Mat5.newLogicalScalar(true));
-//		matfile.addArray("var2", Mat5.newString("Test"));
-//		matfile.addArray("var3", Mat5.newScalar(testNumber1));
-//		matfile.addArray("var4", Mat5.newStruct()
-//				.set("a", Mat5.newComplexScalar(testNumber2, testNumber3))
-//				.set("b", Mat5.newStruct()
-//						.set("I", Mat5.newComplexScalar(testNumber3, testNumber1))
-//						.set("II", Mat5.newScalar(testNumber3))));
-//		Mat5.writeToFile(matfile, "Testfile.mat");
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(concept);
+		TestCategoryComposition tc1 = new TestCategoryComposition(concept);
+		TestStructuralElement tsei = new TestStructuralElement(concept);
+		tsei.add(tc);
+		tsei.add(tc1);
+		sei = tsei.getStructuralElementInstance();
+		sei.setName("testsei");
 	}
 	
 	@Test
-	public void ExportSeiTest() throws IOException {
-		TestCategoryAllProperty tc = new TestCategoryAllProperty(concept);
-		TestStructuralElement tsei = new TestStructuralElement(concept);
-		tsei.add(tc);
-		StructuralElementInstance sei = tsei.getStructuralElementInstance();
-		sei.setName("testsei");
-		//Exporter.newMatFile("data.mat");
+	public void canMatlabReadItTest() throws IOException {
 		Mat5.writeToFile(Exporter.exportSei(sei), "Testfile.mat");
 	}
-
+	@Test
+	public void typeUUIDTest() throws IOException {
+		MatFile testmat = Exporter.exportSei(sei);
+		assertEquals("Same UUID", sei.getUuid().toString(), shorter(testmat.getStruct(sei.getName()).get("UUID").toString()));
+		assertEquals("Same Type", sei.getType().getName(), shorter(testmat.getStruct(sei.getName()).get("Type").toString()));
+		
+	}
+	@Test
+	public void allCategoriesTest() throws IOException {
+		MatFile testmat = Exporter.exportSei(sei);
+		Struct matStruct = testmat.getStruct("testsei");
+		List<String> matCategories = matStruct.getFieldNames();
+		EList<CategoryAssignment> seiCategories = sei.getCategoryAssignments();
+		assertEquals("Number of Categories", sei.getCategoryAssignments().size(), matStruct.getFieldNames().size() - NUMBEROFELEMENTS);
+		for (int i = 0; i < seiCategories.size(); i++) {
+			assertTrue("Includes all Categories", matCategories.contains(seiCategories.get(i).getName()));
+		}
+		
+	}
+	
+	//Delete First and Last Character
+	public String shorter(String str) {
+		return str.substring(1, str.length() - 1);
+	}
 }
