@@ -51,7 +51,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  *
  */
 @SuppressWarnings("restriction")
-public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
+public class VirSatIndependenceSolverTest extends AConceptProjectTestCase {
 
 	private static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	private static final String UUID = "ea816464-cea3-4db7-ae91-31d37c60a63c";
@@ -119,7 +119,7 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		IDiagramTypeProvider dtp = GraphitiInternal.getEmfService().getDTPForDiagram(diagram);
 		GraphitiInternal.getEmfService().wireDTPToDiagram(diagram, dtp);
 		dtp.init(diagram, null);
-		BeanIndependenceSolver beanIndependenceSolver = new BeanIndependenceSolver(dtp);
+		VirSatIndependenceSolver beanIndependenceSolver = new VirSatIndependenceSolver(dtp);
 		String seiKey = beanIndependenceSolver.getKeyForBusinessObject(ed);
 		assertEquals(UUID, seiKey);
 

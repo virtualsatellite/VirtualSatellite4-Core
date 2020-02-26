@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolverTest;
+import de.dlr.sc.virsat.graphiti.diagram.VirSatIndependenceSolverTest;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -30,7 +30,7 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({	BeanIndependenceSolverTest.class,
+@SuiteClasses({	VirSatIndependenceSolverTest.class,
 				DiagramHelperTest.class
 				})
 

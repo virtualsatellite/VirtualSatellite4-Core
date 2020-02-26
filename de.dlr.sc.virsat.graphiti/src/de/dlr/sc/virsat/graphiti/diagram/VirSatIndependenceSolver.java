@@ -43,7 +43,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  *
  */
 
-public class BeanIndependenceSolver implements IIndependenceSolver {
+public class VirSatIndependenceSolver implements IIndependenceSolver {
 
 	private Map<String, Object> objectMap = new HashMap<String, Object>();
 	private IDiagramTypeProvider dtp;
@@ -55,7 +55,7 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 	 * @param dtp the diagram type provider
 	 */
 
-	public BeanIndependenceSolver(IDiagramTypeProvider dtp) {
+	public VirSatIndependenceSolver(IDiagramTypeProvider dtp) {
 		this.dtp = dtp;
 	}
 
@@ -65,18 +65,22 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 		if (object != null) {
 			if (object instanceof ABeanStructuralElementInstance) {
 				result = ((ABeanStructuralElementInstance) object).getStructuralElementInstance().getUuid().toString();
-
-				if (!objectMap.containsKey(result)) {
-					objectMap.put(result, object);
-				}
 			}
 
 			if (object instanceof ABeanObject) {
 				result = ((ABeanObject<?>) object).getTypeInstance().getUuid().toString();
+			}
 
-				if (!objectMap.containsKey(result)) {
-					objectMap.put(result, object);
-				}
+			if (object instanceof CategoryAssignment) {
+				result = ((CategoryAssignment) object).getUuid().toString();
+			}
+
+			if (object instanceof StructuralElementInstance) {
+				result = ((StructuralElementInstance) object).getUuid().toString();
+			}
+
+			if (result != null && !objectMap.containsKey(result)) {
+				objectMap.put(result, object);
 			}
 		}
 		return result;
@@ -86,19 +90,26 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 	public Object getBusinessObjectForKey(String key) {
 		if (objectMap.containsKey(key)) {
 			Object object = objectMap.get(key);
+			Resource resource = null;
 
 			if (object instanceof ABeanStructuralElementInstance) {
-				Resource resource = ((ABeanStructuralElementInstance) object).getStructuralElementInstance().eResource();
-				if (resource == null) {
-					objectMap.remove(key);
-				}
+				resource = ((ABeanStructuralElementInstance) object).getStructuralElementInstance().eResource();
 			}
 
 			if (object instanceof ABeanObject) {
-				Resource resource = ((ABeanObject<?>) object).getTypeInstance().eResource();
-				if (resource == null) {
-					objectMap.remove(key);
-				}
+				resource = ((ABeanObject<?>) object).getTypeInstance().eResource();
+			}
+
+			if (object instanceof CategoryAssignment) {
+				resource = ((CategoryAssignment) object).eResource();
+			}
+
+			if (object instanceof StructuralElementInstance) {
+				resource = ((StructuralElementInstance) object).eResource();
+			}
+
+			if (resource == null) {
+				objectMap.remove(key);
 			}
 		}
 

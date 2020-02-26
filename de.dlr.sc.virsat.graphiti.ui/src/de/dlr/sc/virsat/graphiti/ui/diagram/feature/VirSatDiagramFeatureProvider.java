@@ -22,7 +22,7 @@ import org.eclipse.graphiti.features.context.IMoveShapeContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 
-import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolver;
+import de.dlr.sc.virsat.graphiti.diagram.VirSatIndependenceSolver;
 import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
 
 /**
@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
  */
 public class VirSatDiagramFeatureProvider extends DefaultFeatureProvider {
 
-	private BeanIndependenceSolver beanIndependenceSolver;
+	private VirSatIndependenceSolver beanIndependenceSolver;
 	
 	/**
 	 * Default constructor
@@ -40,7 +40,7 @@ public class VirSatDiagramFeatureProvider extends DefaultFeatureProvider {
 	 */
 	public VirSatDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
-		beanIndependenceSolver = new BeanIndependenceSolver(dtp);
+		beanIndependenceSolver = new VirSatIndependenceSolver(dtp);
 		setIndependenceSolver(beanIndependenceSolver);
 	}
 	
@@ -79,7 +79,7 @@ public class VirSatDiagramFeatureProvider extends DefaultFeatureProvider {
 	 * Get the bean independence solver this feature provider uses
 	 * @return the bean independence solver used by this feature provider
 	 */
-	public BeanIndependenceSolver getBeanIndependenceSolver() {
+	public VirSatIndependenceSolver getBeanIndependenceSolver() {
 		return beanIndependenceSolver;
 	}
 

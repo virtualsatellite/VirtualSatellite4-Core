@@ -39,7 +39,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 
-import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolver;
+import de.dlr.sc.virsat.graphiti.diagram.VirSatIndependenceSolver;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.BeanDirectEditNameFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatCategoryAssingmentCopyFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatChangeColorFeature;
@@ -74,7 +74,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transi
  *
  */
 public class StateMachineDiagramFeatureProvider extends DefaultFeatureProvider {
-	private BeanIndependenceSolver beanIndependenceSolver;
+	private VirSatIndependenceSolver beanIndependenceSolver;
 
 	/**
 	 * Default constructor
@@ -83,7 +83,7 @@ public class StateMachineDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	public StateMachineDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
-		beanIndependenceSolver = new BeanIndependenceSolver(dtp);
+		beanIndependenceSolver = new VirSatIndependenceSolver(dtp);
 		setIndependenceSolver(beanIndependenceSolver);
 	}
 	
