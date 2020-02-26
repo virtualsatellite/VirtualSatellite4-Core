@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -306,6 +307,11 @@ public class ExpressionHelper {
 		// Find all child seis that also compute the set function
 		Set<StructuralElementInstance> childrenWithSetFunction = getChildrenWithSetFunction(sei, setFunction, inputs);
 		
+		// Get the CA in which the current Set resides. All TypeInstances of this category shall not be
+		// part of the inputs to be processed by this SetFunction. Accordingly they have to be removed
+		// from the Set's inputs
+		CategoryAssignment currentCa = VirSatEcoreUtil.getEContainerOfClass(setFunction, CategoryAssignment.class);
+		
 		// Find all applicable TypeInstances that are directly or indirectly contained by the sei
 		TreeTraverser<StructuralElementInstance> treeTraverser = new TreeTraverser<>();
 		treeTraverser.traverse(sei, new IStructuralElementInstanceTreeTraverserMatcher() {
@@ -315,8 +321,10 @@ public class ExpressionHelper {
 				boolean isMatching = false;
 				// Get all nested TypeInstances to the current treeSei and see if one
 				// is matching to the definition of what is referenced by the SET function
-				Collection<ATypeInstance> typeInstances = VirSatEcoreUtil.getAllContentsOfType(sei.getCategoryAssignments(), ATypeInstance.class, true);
-				typeInstances.addAll(treeSei.getCategoryAssignments());
+				List<CategoryAssignment> currentCas = new LinkedList<>(treeSei.getCategoryAssignments());
+				currentCas.remove(currentCa);
+				Collection<ATypeInstance> typeInstances = VirSatEcoreUtil.getAllContentsOfType(currentCas, ATypeInstance.class, true);
+				typeInstances.addAll(currentCas);
 				
 				// Loop over all identified ATypeInstances
 				for (ATypeInstance aTypeInstance : typeInstances) {
@@ -362,20 +370,6 @@ public class ExpressionHelper {
 				// Nothing special has to be processed with the SEIs that have Set functions in their calculations
 			}
 		});
-
-		// Get the CA in which the current Set resides. All TypeInstances of this category shall not be
-		// part of the inputs to be processed by this SetFunction. Accordingly they have to be removed
-		// from the Set's inputs
-		CategoryAssignment currentCa = VirSatEcoreUtil.getEContainerOfClass(setFunction, CategoryAssignment.class);
-		if (currentCa != null) {
-			for (APropertyInstance pi : currentCa.getPropertyInstances()) {
-				inputs.remove(pi);
-				if (pi instanceof ComposedPropertyInstance) {
-					ComposedPropertyInstance cpi = (ComposedPropertyInstance) pi;
-					inputs.remove(cpi.getTypeInstance());
-				}
-			}
-		}
 
 		return inputs;
 	}
