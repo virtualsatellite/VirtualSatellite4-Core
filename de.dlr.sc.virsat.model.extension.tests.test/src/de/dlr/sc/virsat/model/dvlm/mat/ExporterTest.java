@@ -56,13 +56,12 @@ public class ExporterTest extends AConceptTestCase{
 	@Test
 	public void ExportSeiTest() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(concept);
-		EList<Category> ca = tc.getConcept().getCategories();
 		TestStructuralElement tsei = new TestStructuralElement(concept);
+		tsei.add(tc);
 		StructuralElementInstance sei = tsei.getStructuralElementInstance();
 		sei.setName("testsei");
 		//Exporter.newMatFile("data.mat");
 		Mat5.writeToFile(Exporter.exportSei(sei), "Testfile.mat");
-		Mat5.writeToFile(Exporter.exportSei(sei, ca), "Testfile.mat");
 	}
 
 }

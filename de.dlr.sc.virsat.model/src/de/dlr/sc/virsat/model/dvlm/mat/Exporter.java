@@ -41,25 +41,14 @@ public class Exporter {
 	public static MatFile exportSei(StructuralElementInstance seiRoot) throws IOException {
 		MatFile matfile = Mat5.newMatFile();
 		
-		matfile.addArray(seiRoot.getName(), Mat5.newStruct()
-				.set("Name", Mat5.newString(seiRoot.getName()))
-				.set("UUID", Mat5.newString(seiRoot.getUuid().toString()))
-				.set("Children", Mat5.newString(seiRoot.getChildren().toString()))
-				.set("Categories", Mat5.newString(seiRoot.getCategoryAssignments().toString())));
-		return matfile;
-	}
-
-	public static MatFile exportSei(StructuralElementInstance seiRoot, EList<Category> ca) {
-		MatFile matfile = Mat5.newMatFile();
-		Struct Categories = Mat5.newStruct();
-		for (int i = 0; i < ca.size(); i++) {
-			Categories.set(ca.get(i).getName(), Mat5.newString(" "));
+		Struct myStruct = Mat5.newStruct();
+		myStruct.set("Type", Mat5.newString(seiRoot.getType().getName()))
+			.set("UUID", Mat5.newString(seiRoot.getUuid().toString()))
+			.set("Children", Mat5.newString(seiRoot.getChildren().toString()));
+		for (int i = 0; i < seiRoot.getCategoryAssignments().size(); i++) {
+			myStruct.set(seiRoot.getCategoryAssignments().get(i).getName(), Mat5.newString(" "));
 		}
-		matfile.addArray(seiRoot.getName(), Mat5.newStruct()
-				.set("Name", Mat5.newString(seiRoot.getName()))
-				.set("UUID", Mat5.newString(seiRoot.getUuid().toString()))
-				.set("Children", Mat5.newString(seiRoot.getChildren().toString()))
-				.set("Categories", Categories));
+		matfile.addArray(seiRoot.getName(), myStruct);
 		return matfile;
 	}
 }
