@@ -21,9 +21,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import de.dlr.sc.virsat.server.auth.AuthFilter;
 import de.dlr.sc.virsat.server.auth.ServerConfiguration;
-import de.dlr.sc.virsat.server.auth.TestServerUserHandler;
+import de.dlr.sc.virsat.server.auth.filter.AuthFilter;
+import de.dlr.sc.virsat.server.auth.userhandler.TestServerUserHandler;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 
 public abstract class AGitAndJettyServerTest {
@@ -31,7 +31,7 @@ public abstract class AGitAndJettyServerTest {
 	protected static File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
-	protected static final String DEFAULT_AUTHORIZATION_HEADER = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("user:password".getBytes());
+	protected static final String DEFAULT_AUTHORIZATION_HEADER = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.USER_NO_REPO.getBytes());
 	
 	public static File makeAbsolute(File relativePath) throws IOException {
 		return new File(WORKSPACE_ROOT, relativePath.toString());

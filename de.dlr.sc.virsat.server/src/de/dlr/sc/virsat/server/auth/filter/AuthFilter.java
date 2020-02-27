@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.auth;
+package de.dlr.sc.virsat.server.auth.filter;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -16,9 +16,11 @@ import java.util.Base64;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -26,17 +28,22 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-/*
- * Verifies clients are authenticated
- * And authorized
+import de.dlr.sc.virsat.server.auth.ServerRoles;
+import de.dlr.sc.virsat.server.auth.ServerUser;
+import de.dlr.sc.virsat.server.auth.userhandler.IServerUserHandler;
+import de.dlr.sc.virsat.server.auth.userhandler.ServerUserHandlerFactory;
+
+/**
+ * This filter verifies clients are authenticated and authorized (with Server Role)
  */
+@Priority(Priorities.AUTHENTICATION)
 public class AuthFilter implements ContainerRequestFilter {
 
 	public static final String BASIC_SCHEME = "Basic";
 	
-	private static final String ACCESS_DENIED = "Access denied.";
-	private static final String NO_AUTH_HEADER = "No authentification header found.";
-	private static final String NOT_AUTHORIZED = "Not authorized.";
+	public static final String ACCESS_DENIED = "Access denied.";
+	public static final String NO_AUTH_HEADER = "No authentification header found.";
+	public static final String NOT_AUTHORIZED = "Not authorized.";
 	
 	@Context
 	private ResourceInfo resourceInfo;
@@ -53,7 +60,13 @@ public class AuthFilter implements ContainerRequestFilter {
 	}
 
 	/** 
-	 * Checks for authentication Annotations @PermitAll, @DenyAll and @RolesAllowed
+	 * First checks for Authentication Annotations @PermitAll, @DenyAll
+	 * Then get's user data from request Header and checks if the user is known
+	 * Next checks for the @RolesAllowed Annotation
+	 * Checks if the has the requested role OR by default if the user has any valid server role
+	 * 
+	 * If the user is known, then a RepositorySecurityContext will be created
+	 * 
 	 * @param requestContext
 	 * @throws IOException
 	 */
@@ -101,6 +114,9 @@ public class AuthFilter implements ContainerRequestFilter {
 			return;
 		}
 		
+		// Set our custom security context that we can access in our resources and later filters
+		requestContext.setSecurityContext(new RepositorySecurityContext(user, BASIC_SCHEME));
+
 		// Check if roles are specified
 		if (resourceMethod.isAnnotationPresent(RolesAllowed.class)) {
 			
@@ -118,7 +134,6 @@ public class AuthFilter implements ContainerRequestFilter {
 		if (!isAuthorized(user, ServerRoles.getAllRoles())) {
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(NOT_AUTHORIZED).build());
 		}
-		
 	}
 	
 	

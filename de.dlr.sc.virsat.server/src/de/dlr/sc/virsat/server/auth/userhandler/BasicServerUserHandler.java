@@ -7,12 +7,32 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.auth;
+package de.dlr.sc.virsat.server.auth.userhandler;
 
-public class LdapServerUserHandler implements IServerUserHandler {
+import java.util.ArrayList;
+import java.util.List;
+
+import de.dlr.sc.virsat.server.auth.ServerUser;
+
+public class BasicServerUserHandler implements IServerUserHandler {
+
+	private List<ServerUser> users = new ArrayList<ServerUser>();
+	
+	public BasicServerUserHandler() { 
+		readUsersFromFile();
+	}
+	
+	public void readUsersFromFile() {
+		
+	}
 
 	@Override
 	public ServerUser getUser(String username, String password) {
+		for (ServerUser user : users) {
+			if (user.getName().equals(username) && user.getPassword().equals(password)) {
+				return user;
+			}
+		}
 		return null;
 	}
 }

@@ -14,16 +14,19 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 
+import de.dlr.sc.virsat.server.auth.ServerQueryParams;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 
 @Path("/auth")
 public class AuthTestResource {
-
+	
 	public static final String PERMITTED = "Permitted";
 	public static final String ADMIN_DATA = "Admin";
 	public static final String USER_DATA = "User";
 	public static final String GENERAL_DATA = "General";
+	public static final String REPOSITORY_DATA = "Repository";
 	
 	@GET
 	@Path("/denied")
@@ -56,5 +59,11 @@ public class AuthTestResource {
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public String getGeneralData() {
 		return GENERAL_DATA;
+	}
+	
+	@GET
+	@Path("/repository")
+	public String getRepository(@QueryParam(ServerQueryParams.REPOSITORY_UUID) String uuid) {
+		return REPOSITORY_DATA;
 	}
 }

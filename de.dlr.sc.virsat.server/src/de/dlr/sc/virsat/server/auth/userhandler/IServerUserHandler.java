@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.auth;
+package de.dlr.sc.virsat.server.auth.userhandler;
+
+import de.dlr.sc.virsat.server.auth.ServerUser;
 
 public interface IServerUserHandler {
 
