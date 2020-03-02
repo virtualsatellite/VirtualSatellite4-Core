@@ -21,8 +21,8 @@ public class TreeTraverser<TYPE> {
 	
 	/**
 	 * Traverses the tree starting from the given root
-	 * calling {@link IBeanStructuralTreeTraverserMatcher#isMatching(IBeanStructuralElementInstance)}
-	 * on all nodes and {@link IBeanStructuralTreeTraverserMatcher#processMatch(IBeanStructuralElementInstance, IBeanStructuralElementInstance)}
+	 * calling a typed {@link ITreeTraverserMatcher#isMatching(IBeanStructuralElementInstance)}
+	 * on all nodes and {@link ITreeTraverserMatcher#processMatch(IBeanStructuralElementInstance, IBeanStructuralElementInstance)}
 	 * on all found matches
 	 * @param root traverse the subtree of this bean
 	 * @param matcher matcher for callbacks
@@ -36,8 +36,10 @@ public class TreeTraverser<TYPE> {
 	 * Traverse a subtree of a given node
 	 * @param node the node from where to start traversing
 	 * @param matchingParent the closest matching parent of node (or null)
+	 * @param treeLevel represents the level of nesting of the tree for the current node.
+	 * @param matchedLevel represent the level of nested matches already identified up to the current node. 
 	 */
-	protected void traverseRecursive(TYPE node, TYPE matchingParent, int processedLevel, int matchingLevel) {
+	protected void traverseRecursive(TYPE node, TYPE matchingParent, int treeLevel, int matchingLevel) {
 		// Remember the parent of the previous recursion
 		TYPE nextParent = matchingParent;
 		
@@ -53,13 +55,13 @@ public class TreeTraverser<TYPE> {
 			nextParent = node;
 			matchingLevel++;
 		}
-		processedLevel++;
+		treeLevel++;
 		
 		// Now check if the children should be processed.
 		// if yes recursively loop over all of them.
-		if (matcher.continueTraverseChildren(node, isMatching, processedLevel, matchingLevel)) {
+		if (matcher.continueTraverseChildren(node, isMatching, treeLevel, matchingLevel)) {
 			for (TYPE child : matcher.getChildren(node)) {
-				traverseRecursive(child, nextParent, processedLevel, matchingLevel);
+				traverseRecursive(child, nextParent, treeLevel, matchingLevel);
 			}
 		}
 	}

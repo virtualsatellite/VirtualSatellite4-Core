@@ -367,7 +367,7 @@ public class ExpressionHelper {
 
 			@Override
 			public void processMatch(StructuralElementInstance treeNode, StructuralElementInstance matchingParent) {
-				// Nothing special has to be processed with the SEIs that have Set functions in their calculations
+				// Processing is done in the isMatching method
 			}
 		});
 
@@ -387,7 +387,7 @@ public class ExpressionHelper {
 	private Set<StructuralElementInstance> getChildrenWithSetFunction(StructuralElementInstance sei, SetFunction setFunction, List<ATypeInstance> inputs) {
 		Set<StructuralElementInstance> childrenWithSetFunction = new HashSet<>();
 
-		if (setFunction.getDepth() == -1) {
+		if (setFunction.getDepth() == AAdvancedFunctionOp.DEPTH_INFINITE) {
 			List<StructuralElementInstance> children = sei.getChildren();
 			for (StructuralElementInstance child : children) {
 				VirSatEcoreUtil.getAllContentsOfType(child.eResource(), Equation.class, true).forEachRemaining(eObject -> {

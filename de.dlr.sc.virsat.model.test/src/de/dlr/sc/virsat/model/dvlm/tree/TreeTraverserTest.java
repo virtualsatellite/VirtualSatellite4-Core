@@ -41,6 +41,8 @@ public class TreeTraverserTest {
 	StructuralElementInstance seiChild2Child;
 	StructuralElementInstance seiChild2ChildChild;
 	
+	public static final String NO_NAME = "NoSpecificName";
+	
 	@Before
 	public void setUp() throws Exception {
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
@@ -72,6 +74,9 @@ public class TreeTraverserTest {
 		
 		// Now set names for the 2 level and for the 3 level,
 		// Try to find them and check if the traverser reacts as expected
+		
+		seiChild1.setName(NO_NAME);
+		seiChild2.setName(NO_NAME);
 		seiRoot.setName("Root");
 		seiChild1Child.setName("ChildOf1");
 		seiChild2Child.setName("ChildOf2");
@@ -83,6 +88,16 @@ public class TreeTraverserTest {
 	 * Class to capture the results from the tree traversing
 	 */
 	class Result {
+
+		Result(StructuralElementInstance sei, int processedLevel, int matchedLevel) {
+			this.sei = sei;
+			this.nestingLevel = processedLevel;
+			this.matchingLevel = matchedLevel;
+		}
+
+		StructuralElementInstance sei;
+		int nestingLevel;
+		int matchingLevel;
 		
 		@Override
 		public int hashCode() {
@@ -94,27 +109,13 @@ public class TreeTraverserTest {
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			} else if (obj == null) {
-				return false;
-			} else if (getClass() != obj.getClass()) {
-				return false;
-			} else {
+			if (obj instanceof Result) {
 				Result other = (Result) obj;
 				return matchingLevel == other.matchingLevel && nestingLevel == other.nestingLevel && Objects.equals(sei, other.sei);
+			} else {
+				return false;
 			}
 		}
-		
-		Result(StructuralElementInstance sei, int processedLevel, int matchedLevel) {
-			this.sei = sei;
-			this.nestingLevel = processedLevel;
-			this.matchingLevel = matchedLevel;
-		}
-
-		StructuralElementInstance sei;
-		int nestingLevel;
-		int matchingLevel;
 	}
 	
 	@Test
@@ -132,7 +133,7 @@ public class TreeTraverserTest {
 			
 			@Override
 			public boolean isMatching(StructuralElementInstance treeNode) {
-				return treeNode.getName() != null;
+				return !NO_NAME.equals(treeNode.getName());
 			}
 			
 			@Override
@@ -141,6 +142,8 @@ public class TreeTraverserTest {
 				
 				// Try to make sure that the seiChild2ChildChild which is theoretically correct, still does not get found
 				boolean isChild2Child = treeNode == seiChild2Child;
+
+				// Also call the default implementation of the interface to have it included in the test.
 				return !isChild2Child && IStructuralElementInstanceTreeTraverserMatcher.super.continueTraverseChildren(treeNode, isMatching, nestingLevel, matchingLevel);
 			}
 		});

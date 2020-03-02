@@ -14,7 +14,7 @@ import java.util.Collection;
 
 
 /**
- * Interface for plugging different logic into {@link BeanStructuralTreeTraverser}
+ * Interface for plugging different logic into {@link TreeTraverser}
  * For example for building a tree consisting only of nodes with a certain Category attached
  * @param <TYPE> The type for which the matcher should apply
  */
@@ -40,10 +40,12 @@ public interface ITreeTraverserMatcher<TYPE> {
 	 * 
 	 * Default behavior is that all children are processed.
 	 * @param treeNode the node of which the children should be processed or not.
+	 * @param treeLevel represents the level of nesting of the tree for the current node.
+	 * @param matchedLevel represent the level of nested matches already identified up to the current node. 
 	 * @param isMatching the matching result which the traverser evaluated before.
 	 * @return true in case the children should be processed. false in case not.
 	 */
-	default boolean continueTraverseChildren(TYPE treeNode, boolean isMatching, int processedLevel, int matchedLevel) {
+	default boolean continueTraverseChildren(TYPE treeNode, boolean isMatching, int treeLevel, int matchedLevel) {
 		return true;
 	}
 	

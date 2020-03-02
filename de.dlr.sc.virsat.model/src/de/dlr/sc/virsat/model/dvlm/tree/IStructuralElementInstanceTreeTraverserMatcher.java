@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 
 /**
- * Interface for plugging different logic into {@link BeanStructuralTreeTraverser}
+ * Interface for plugging different logic into {@link BeanStructuralTreeTraverser} or a typed {@link TreeTraverser}
  * For example for building a tree consisting only of nodes with a certain Category attached
  */
 public interface IStructuralElementInstanceTreeTraverserMatcher extends ITreeTraverserMatcher<StructuralElementInstance> {
