@@ -217,11 +217,7 @@ public class Exporter {
 	private Array contentofProperty(ReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ReferenceProperty) {
-			BeanPropertyEReference<ReferenceProperty> bpr = new BeanPropertyEReference<ReferenceProperty>();
-			bpr.setATypeInstance(element);
 			struct.set("UUID", Mat5.newString(element.getUuid().toString()));
-			struct.set("Referenc", (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getValue().toString()));
-			struct.set("Referenc-Class", (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getClass().getName()));
 		}
 		
 		return struct;

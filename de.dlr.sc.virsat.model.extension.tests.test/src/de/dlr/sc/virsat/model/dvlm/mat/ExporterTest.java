@@ -42,7 +42,6 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-
 public class ExporterTest extends ATestConceptTestCase {
 	
 	private static final int NUMBEROFELEMENTS = 3;
@@ -87,32 +86,21 @@ public class ExporterTest extends ATestConceptTestCase {
 		TestCategoryBase tc9 = new TestCategoryBase(testConcept);
 		TestCategoryExtends tc10 = new TestCategoryExtends(testConcept);
 		
-
-
-
-
-		
 		tsei.add(tc);
 		tsei.add(tc1);
 		tsei.add(tc11);
 		tsei.add(tc12);
 		tsei.add(tc14);
-		
+		tsei.add(tc3);
+		tsei.add(tc4);		
 		tsei.add(tc6);
 		tsei.add(tc7);
 		tsei.add(tc8);
-		tsei.add(tc13);
-		
-//		tsei.add(tc2);	ERef != Ref
-		tsei.add(tc3);
-		tsei.add(tc4);		
-		tsei.add(tc5);	
-		tsei.add(tc9);		
+		tsei.add(tc13);		
+		tsei.add(tc2);
+		tsei.add(tc5);
+		tsei.add(tc9);
 		tsei.add(tc10);		
-		
-
-
-		
 		
 		Mat5.writeToFile(exporter.exportSei(sei), "Testfile.mat");
 	}
@@ -120,25 +108,20 @@ public class ExporterTest extends ATestConceptTestCase {
 	public void testExportSeitypeUUID() throws IOException {
 		MatFile testmat = exporter.exportSei(sei);
 		assertEquals("Same UUID", sei.getUuid().toString(), Exporter.shorter(testmat.getStruct(sei.getName()).get("UUID").toString()));
-		assertEquals("Same Type", sei.getType().getName(), Exporter.shorter(testmat.getStruct(sei.getName()).get("Type").toString()));
-		
+		assertEquals("Same Type", sei.getType().getName(), Exporter.shorter(testmat.getStruct(sei.getName()).get("Type").toString()));		
 	}
+	
 	@Test
-	public void testExportSeiallCategories() throws IOException {
-		
+	public void testExportSeiallCategories() throws IOException {		
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
 		tsei.add(tc);
 		tsei.add(tc1);
-
 		
 		MatFile testmat = exporter.exportSei(sei);
 		Struct matStruct = testmat.getStruct("testsei");
 		List<String> matCategoryAssinments = matStruct.getFieldNames();		
 		assertEquals("Number of CategoryAssinments", sei.getCategoryAssignments().size(), matStruct.getFieldNames().size() - NUMBEROFELEMENTS);
-		assertThat("Includes all CategoryAssinments", matCategoryAssinments, hasItems(TestCategoryAllProperty.class.getSimpleName(), TestCategoryComposition.class.getSimpleName()));
-		
+		assertThat("Includes all CategoryAssinments", matCategoryAssinments, hasItems(TestCategoryAllProperty.class.getSimpleName(), TestCategoryComposition.class.getSimpleName()));		
 	}
-	
-
 }
