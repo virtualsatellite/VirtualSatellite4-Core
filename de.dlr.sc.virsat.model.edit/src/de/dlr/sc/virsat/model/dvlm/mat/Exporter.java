@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.Propertyins
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.Array;
+import us.hebi.matlab.mat.types.Cell;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
 
@@ -57,58 +58,57 @@ public class Exporter {
 	public MatFile exportSei(StructuralElementInstance seiRoot) throws IOException {
 		MatFile matfile = Mat5.newMatFile();		
 		Struct myStruct = Mat5.newStruct();
-		myStruct.set("Type", Mat5.newString(seiRoot.getType().getName()))
-			.set("UUID", Mat5.newString(seiRoot.getUuid().toString()))
-			.set("Children", Mat5.newString(seiRoot.getChildren().toString()));
-		for (int i = 0; i < seiRoot.getCategoryAssignments().size(); i++) {
-			CategoryAssignment ca = seiRoot.getCategoryAssignments().get(i);
+		myStruct.set("type", Mat5.newString(seiRoot.getType().getName()))
+			.set("uuid", Mat5.newString(seiRoot.getUuid().toString()))
+			.set("children", Mat5.newString(seiRoot.getChildren().toString()));
+
+		for (CategoryAssignment ca : seiRoot.getCategoryAssignments()) {
 			myStruct.set(ca.getName(), exportCatAs(ca));
 		}
+
 		matfile.addArray(seiRoot.getName(), myStruct);
 		return matfile;
 	}
-	
+
 	/**
 	 * creates a new .mat with everything inside the selected CategoryAssinments
-	 * @param cas List of categoryAssinments
+	 * @param cas list of CategoryAssinments
 	 */	
 	public MatFile exportCas(EList<CategoryAssignment> cas) throws IOException {
 		MatFile matfile = Mat5.newMatFile();		
 		Struct myStruct = Mat5.newStruct();
-		for (int i = 0; i < cas.size(); i++) {
-			CategoryAssignment ca = cas.get(i);
+		for (CategoryAssignment ca : cas) {
 			myStruct.set(ca.getName(), exportCatAs(ca));
 		}
-		matfile.addArray("Input", myStruct);
+		matfile.addArray("inputs", myStruct);
 		return matfile;
 	}
 
 	/**
-	 * creates a new .mat-Struct with all Properties of an CategoryAssinment
+	 * creates a new .mat-struct with all properties of an CategoryAssinment
 	 * @param ca CategoryAssignment
 	 */
-	public Struct exportCatAs(CategoryAssignment ca) {
+	private Struct exportCatAs(CategoryAssignment ca) {
 		Struct struct = Mat5.newStruct();
 		EList<APropertyInstance> propertyInstances = ca.getPropertyInstances();
 
-		for (int i = 0; i < propertyInstances.size(); i++) {
-			APropertyInstance element = propertyInstances.get(i);
-			Array propertyArray = getrightProperty(element);
-			
-			struct.set(propertyInstances.get(i).getType().getName(), propertyArray);
+		for (APropertyInstance pi : propertyInstances) {
+			Array propertyArray = getRightProperty(pi);
+			struct.set(pi.getType().getName(), propertyArray);
 		}
+
 		return struct;
 	}
-	
+
 	/**
-	 * hands back write property with all values
+	 * hands back right property with all values
 	 * @param element APropertyInstance
 	 */
-	public Array getrightProperty(APropertyInstance element) {
+	private Array getRightProperty(APropertyInstance element) {
 		Array propertyArray = new PropertyinstancesSwitch<Array>() {
 			@Override
 			public Array caseUnitValuePropertyInstance(UnitValuePropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
@@ -123,7 +123,7 @@ public class Exporter {
 
 			@Override
 			public Array caseValuePropertyInstance(ValuePropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
@@ -151,50 +151,49 @@ public class Exporter {
 	}
 
 	//create a struct for the fitting PropertyInstance
-	
 	/**
-	 * creates a new .mat-Struct with all Information about UnitValuePropertyInstance
-	 * only UUID Quantity , unit and Value are saved
-	 * @param castElement PropertyInstance
+	 * creates a new .mat-struct with all information about UnitValuePropertyInstance
+	 * only unit and value are saved
+	 * @param element UnitValuePropertyInstance
 	 */
-	private Array contentofProperty(UnitValuePropertyInstance element) {
+	private Array contentOfProperty(UnitValuePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
-		
+
 		if (element.getType() instanceof FloatProperty) {
 			BeanPropertyFloat bpf = new BeanPropertyFloat(element);
-			struct.set("Unit", Mat5.newString(bpf.getUnit()));
-			struct.set("Value", (bpf.getValue() == Double.NaN) ? Mat5.newString("") : Mat5.newScalar(bpf.getValue()));
+			struct.set("unit", Mat5.newString(bpf.getUnit()));
+			struct.set("value", (bpf.getValue() == Double.NaN) ? Mat5.newString("") : Mat5.newScalar(bpf.getValue()));
 		} else if (element.getType() instanceof IntProperty) {
 			BeanPropertyInt bpi = new BeanPropertyInt(element);
-			struct.set("Unit", Mat5.newString(bpi.getUnit()));
-			struct.set("Value", (!bpi.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpi.getValue()));
+			struct.set("unit", Mat5.newString(bpi.getUnit()));
+			struct.set("value", (!bpi.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpi.getValue()));
 		}
 		return struct;
 	}
-	
+
 	/**
-	 * creates a new .mat-Struct with all Information about UnitValuePropertyInstance
-	 * only unit and Value are saved
-	 * @param castElement PropertyInstance
+	 * creates a new .mat-struct with all information about ValuePropertyInstance
+	 * only Value is saved
+	 * @param element ValuePropertyInstance
 	 */
-	private Struct contentofProperty(ValuePropertyInstance element) {
+	private Struct contentOfProperty(ValuePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof BooleanProperty) {
 			BeanPropertyBoolean bpb = new BeanPropertyBoolean();
 			bpb.setATypeInstance(element);
-			struct.set("Value", (!bpb.isSet()) ? Mat5.newString("") : Mat5.newLogicalScalar(bpb.getValue()));
+			struct.set("value", (!bpb.isSet()) ? Mat5.newString("") : Mat5.newLogicalScalar(bpb.getValue()));
 		} else if (element.getType() instanceof StringProperty) {
 			BeanPropertyString bps = new BeanPropertyString();
 			bps.setATypeInstance(element);
-			struct.set("Value", (!bps.isSet()) ? Mat5.newString("") : Mat5.newString(bps.getValue()));
+			struct.set("value", (!bps.isSet()) ? Mat5.newString("") : Mat5.newString(bps.getValue()));
 		}
 		return struct;
 	}
-	
+
 	/**
-	 * creates a new .mat-Struct with all Information about EReferencePropertyInstance
-	 * only UUID Referenz and Referenc-Class are saved
-	 * @param castElement PropertyInstance
+	 * creates a new .mat-struct with all information about EReferencePropertyInstance
+	 * only uuid, reference and reference-class are saved
+	 * @param element EReferencePropertyInstance
 	 */
 	private Array contentofProperty(EReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
@@ -202,77 +201,74 @@ public class Exporter {
 			
 			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>();
 			bpe.setATypeInstance(element);
-			struct.set("UUID", Mat5.newString(element.getUuid().toString()));
-			struct.set("Referenc", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
-			struct.set("Referenc-Class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getClass().getName()));
+			struct.set("reference", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
+			struct.set("reference-class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getClass().getName()));
 		}
 		return struct;
 	}
 	
 	/**
-	 * creates a new .mat-Struct with all Information about ReferencePropertyInstance
-	 * only UUID Referenz and Referenc-Class are saved
-	 * @param castElement PropertyInstance
+	 * creates a new .mat-struct with all information about ReferencePropertyInstance
+	 * only uuid and fullQualifiedInstanceName are saved
+	 * @param element ReferencePropertyInstance
 	 */
 	private Array contentofProperty(ReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ReferenceProperty) {
-			struct.set("UUID", Mat5.newString(element.getUuid().toString()));
+			struct.set("uuid", Mat5.newString(element.getUuid().toString()));
+			struct.set("name", Mat5.newString(element.getFullQualifiedInstanceName()));
 		}
-		
+
 		return struct;
 	}
 	
 	/**
-	 * creates a new .mat-Struct with all Information about ResourcePropertyInstance
-	 * only UUID instanceType and Property Type are saved
-	 * @param castElement PropertyInstance
+	 * creates a new .mat-struct with all information about ResourcePropertyInstance
+	 * only uri is saved
+	 * @param element ResourcePropertyInstance
 	 */
 	private Array contentofProperty(ResourcePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ResourceProperty) {
-			BeanPropertyResource bpr = new BeanPropertyResource();
-			bpr.setATypeInstance(element);			
-			struct.set("URI", (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getValue().toString()));
-			struct.set("File", (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getFile().getName()));
+			BeanPropertyResource bpr = new BeanPropertyResource(element);
+			struct.set("uri", (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getValue().toString()));
 		}
 		return struct;
 	}
 	
 	/**
-	 * creates a new .mat-Struct with all Information about EnumUnitPropertyInstance
-	 * only unit and value are saved
-	 * @param element PropertyInstance
+	 * creates a new .mat-struct with all information about EnumUnitPropertyInstance
+	 * only unit,value and name are saved
+	 * @param element EnumUnitPropertyInstance
 	 */	
 	private Array contentofProperty(EnumUnitPropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EnumProperty) {
-			BeanPropertyEnum bpe = new BeanPropertyEnum();
-			bpe.setATypeInstance(element);
-			struct.set("Unit", Mat5.newString(bpe.getUnit()));
-			struct.set("Value", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpe.getEnumValue()));
+			BeanPropertyEnum bpe = new BeanPropertyEnum(element);
+			struct.set("unit", Mat5.newString(bpe.getUnit()));
+			struct.set("value", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpe.getEnumValue()));
+			struct.set("name", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue()));
 		}
 		return struct;
 	}
 
 	/**
-	 * creates a new .mat-Struct with all Information about ArrayInstance
-	 * @param element PropertyInstance
+	 * creates a new .mat-struct with all information about ArrayInstance
+	 * @param element ArrayInstance
 	 */	
 	private Array contentofProperty(ArrayInstance element) {
-		Struct struct = Mat5.newStruct();
 		EList<APropertyInstance> propertyInstances = element.getArrayInstances();
+		Cell cell = Mat5.newCell(propertyInstances.size(), 1);
 		for (int i = 0; i < propertyInstances.size(); i++) {
 			APropertyInstance instanceElement = propertyInstances.get(i);
-			Array propertyArray = getrightProperty(instanceElement);
-			
-			struct.set(propertyInstances.get(i).getType().getName(), propertyArray);
+			Array propertyArray = getRightProperty(instanceElement);
+			cell.set(i, propertyArray);
 		}
-		return struct;
+		return cell;
 	}
 	
 	/**
-	 * creates a new .mat-Struct with all Information about ComposedPropertyInstance
+	 * creates a new .mat-struct with all information about ComposedPropertyInstance
 	 * @param element ComposedPropertyInstance
 	 */	
 	private Array contentofProperty(ComposedPropertyInstance element) {
@@ -280,7 +276,7 @@ public class Exporter {
 	}
 	
 	//Delete First and Last Character
-	public static String shorter(String str) {
+	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
 	}
 }
