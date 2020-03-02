@@ -29,12 +29,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.xmi.impl.BasicResourceHandler;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -72,12 +74,13 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	private StructuralElementInstance sei1;
 	private StructuralElementInstance sei2;
 	private StructuralElementInstance sei3;
+	private StructuralElement se;
 	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
 		
-		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsRootStructuralElement(true);
 
 		sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
@@ -538,6 +541,38 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("Resource got deserialized from persistant storage", resSei2.isLoaded());
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1.isLoaded());
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
+	}
+	
+	
+	
+	@Test
+	public void testAnalyzeModelProblems() {
+		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
+		
+		Resource resourceA = new ResourceImpl();
+		resSet.getResources().add(resourceA);
+		Resource resourceB = new ResourceImpl();
+		resSet.getResources().add(resourceB);
+
+		se.getCanInheritFrom().add(se);
+
+		resourceA.getContents().add(sei1);
+		resourceB.getContents().add(sei2);
+		
+		sei2.getSuperSeis().add(sei1);
+		
+		assertEquals("Objects are well contained", resourceA, sei1.eResource());
+		assertEquals("Objects are well contained", resourceB, sei2.eResource());
+		
+		Diagnostic diagnosticResult = resSet.analyzeModelProblems(resourceB);
+		assertEquals("No issues with the reosurce and the model", Diagnostic.OK, diagnosticResult.getSeverity());
+		
+		// Now remove sei1 from the resource which would make it a dangling reference
+		resourceA.getContents().remove(sei1);
+
+		diagnosticResult = resSet.analyzeModelProblems(resourceB);
+		assertEquals("No issues with the reosurce and the model", Diagnostic.OK, diagnosticResult.getSeverity());
+
 	}
 	
 	/**

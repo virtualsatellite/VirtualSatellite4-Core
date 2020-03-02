@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -308,5 +310,14 @@ public class VirSatEcoreUtil extends EcoreUtil {
 		
 		// Finally hand back the map, it will be an empty map, if there are no references outside the containment
 		return mapDeletedObjectReferencedBy;
+	}
+	
+	public BasicDiagnostic squashDiagnostics(List<BasicDiagnostic> diagnostics) {
+		BasicDiagnostic rootSquashedDiagnostic = null;
+		if (!diagnostics.isEmpty()) {
+			rootSquashedDiagnostic = diagnostics.remove(0);
+			diagnostics.forEach((diagnostic) -> rootSquashedDiagnostic.merge(diagnostic));
+		}
+		return rootSquashedDiagnostic;
 	}
 }

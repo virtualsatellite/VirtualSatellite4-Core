@@ -289,9 +289,17 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 		}
 		
+		Diagnostic modelDiagnostics = null;
+		if (!hasNullContent) {
+			// Analyze model can only be called if there are no null contents in the reosurce
+			modelDiagnostics = analyzeModelProblems(resource);
+			hasErrors &= modelDiagnostics.getSeverity() == Diagnostic.ERROR;
+			hasWarnings &= modelDiagnostics.getSeverity() == Diagnostic.WARNING;
+		}
+		
 		// Now build up the diagnostics
 		if (hasErrors || hasWarnings) {
-			BasicDiagnostic basicDiagnostic = new BasicDiagnostic(
+			BasicDiagnostic resourceDiagnostics = new BasicDiagnostic(
 				hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
 				Activator.getPluginId(), 0,
 				"Problems encountered in resource: " + resource.getURI().toPlatformString(true),
@@ -300,16 +308,18 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			
 			// Add the diagnostic message for the null content
 			if (hasNullContent) {
-				basicDiagnostic.merge(new BasicDiagnostic(
+				resourceDiagnostics.merge(new BasicDiagnostic(
 					Diagnostic.ERROR,
 					Activator.getPluginId(), 0,
 					"Error! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
 					new Object[] { resource }
 				));
+			} else if (modelDiagnostics != null) {
+				resourceDiagnostics.merge(modelDiagnostics);
 			}
 			
-			basicDiagnostic.merge(EcoreUtil.computeDiagnostic(resource, true));
-			return basicDiagnostic;
+			resourceDiagnostics.merge(EcoreUtil.computeDiagnostic(resource, true));
+			return resourceDiagnostics;
 		} else {
 			return Diagnostic.OK_INSTANCE;
 		}
@@ -1187,34 +1197,28 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * Updates the resources diagnostic entry in the resourceToDiagnosticMap
 	 * 
 	 * @param resource the resource of which to update the diagnostic
+	 * @return true in case that the resource to diagnostics map has been changed
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
 		if (resource != null) {
 			Diagnostic diagnostic = analyzeResourceProblems(resource);
-
-			for (EObject eObject : resource.getContents()) {
-				if (eObject != null) {
-					EObject resolvedEObject = EcoreUtil.resolve(eObject, this);
-					diagnostic = analyzeModelProblems(resolvedEObject, diagnostic);
-				}
-			}
 			
 			if (diagnostic.getSeverity() != Diagnostic.OK) {
 				resourceToDiagnosticMap.put(resource, diagnostic);
 				changes = true;
-				Activator.getDefault().getLog()
-						.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-								"VirSatResourceSet: Current Diagnostic Map adding Resource ("
-										+ resource.getURI().toPlatformString(true) + ")",
-								null));
+				Activator.getDefault().getLog().log(new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"VirSatResourceSet: Current Diagnostic Map adding Resource (" + resource.getURI().toPlatformString(true) + ")"
+				));
 			} else {
 				if (resourceToDiagnosticMap.containsKey(resource)) {
-					Activator.getDefault().getLog()
-							.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-									"VirSatResourceSet: Current Diagnostic Map removing Resource ("
-											+ resource.getURI().toPlatformString(true) + ")",
-									null));
+					Activator.getDefault().getLog().log(new Status(
+						Status.INFO,
+						Activator.getPluginId(),
+						"VirSatResourceSet: Current Diagnostic Map removing Resource (" + resource.getURI().toPlatformString(true) + ")"
+					));
 					resourceToDiagnosticMap.remove(resource);
 					changes = true;
 				}
@@ -1223,62 +1227,63 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		return changes;
 	}
 
+	private BasicDiagnostic createOrAddDiagnostic(BasicDiagnostic rootDiagnostic) {
+		
+	}
+	
 	/**
-	 * This method create EMF Diagnostics on the Model Object
+	 * This method create EMF Diagnostics on the Model Object in case fo detected problems
 	 * 
-	 * @param eObject
-	 *            The object to check for issues
-	 * @param resourceDiagnostics
-	 *            resource diagnostics which should be merged with the new
-	 *            Diagnostics
-	 * @return merged diagnostics including new ones on the actual object or the
-	 *         previous resource diagnostics
+	 * @param resource The resource to be checked for model issues
+	 * @param resourceDiagnostics resource diagnostics which should be merged with the new Diagnostics
+	 * @return merged diagnostics including new ones on the actual object previous resource diagnostics
 	 */
-	public Diagnostic analyzeModelProblems(EObject eObject, Diagnostic resourceDiagnostics) {
-		if (eObject.eIsProxy()) {
-			BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-					"Could not resolve Object, Object seems to be pending", new Object[] { eObject });
-			basicDiagnostic.merge(resourceDiagnostics);
-			return basicDiagnostic;
+	public Diagnostic analyzeModelProblems(Resource resource) {
+		List<EObject> resourceContents = resource.getContents();
+		
+		Diagnostic resourceDiagnostic = null;
+		
+		// First recheck the resource to be sure no issue exists
+		if (resourceContents.size() != 1) {
+			diagnostic.merge(new BasicDiagnostic(
+					Diagnostic.ERROR,
+					Activator.getPluginId(),
+					0,
+					"Wrong amount of objects contained in resource. Is (" + resourceContents.size() + ") but should be 1",
+					new Object[] { resource }
+			));
 		}
 
-		Map<EObject, Collection<Setting>> externalCrossReferences = EcoreUtil.ExternalCrossReferencer.find(eObject);
-		for (EObject referencedEObject : externalCrossReferences.keySet()) {
-			Resource resource = referencedEObject.eResource();
-			if (resource == null) {
-				// Only consider external cross references that are directly contained by the resource
-				// of the eObject. This is important for SEIs since here we have containment references. 
-				// If they are not ignored, external dangling references of child seis are are considered
-				// dangling references of the parent.
-				List<EObject> referencingObjectsInResource = new ArrayList<>();
-				Collection<Setting> settings = externalCrossReferences.get(referencedEObject);
-				for (Setting setting : settings) {
-					EObject referencingObject = setting.getEObject();
-					if (referencingObject.eResource() == eObject.eResource()) {
-						referencingObjectsInResource.add(referencingObject);
-					}
-				}
+		// Now check the state of each eObject if it can be resolved and if it is contained
+		EcoreUtil.getAllProperContents(resource, true).forEachRemaining((object) -> {
+			if (object instanceof EObject) {
+				EObject eObject = (EObject) object;
 				
-				if (!referencingObjectsInResource.isEmpty()) {
-					BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-							"Found uncontained object of potentialy dangling reference", new Object[] { eObject });
-					
-					for (EObject referencingObject : referencingObjectsInResource) {
-						basicDiagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-								"From: " + referencingObject.toString(),
-								new Object[] { referencingObject }));
-					}
-					
-					basicDiagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-							"To: " +  referencedEObject.toString(),
-							new Object[] { referencedEObject }));
-					basicDiagnostic.merge(resourceDiagnostics);
-					return basicDiagnostic;
+				// Check for proxy state
+				if (eObject.eIsProxy()) {
+					diagnostic.merge(new BasicDiagnostic(
+							Diagnostic.ERROR,
+							Activator.getPluginId(),
+							0,
+							"Could not resolve Object, Object seems to be pending",
+							new Object[] { eObject }
+					));
+				}
+
+				// Check containment
+				if (eObject.eResource() == null) {
+					diagnostic.merge(new BasicDiagnostic(
+							Diagnostic.ERROR,
+							Activator.getPluginId(),
+							0,
+							"Dangling Reference due to uncontained object.",
+							new Object[] { eObject }
+					));
 				}
 			}
-		}
-
-		return resourceDiagnostics;
+		});
+	
+		return diagnostic;
 	}
 	
 	/**
