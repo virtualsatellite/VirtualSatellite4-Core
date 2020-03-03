@@ -22,6 +22,7 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 				de.dlr.sc.virsat.commons.test.AllTests.class,
+//				de.dlr.sc.virsat.server.test.AllTests.class, // Disabled for 4.11.0 release
 //				de.dlr.sc.virsat.team.test.AllTests.class, // There are no tests yet
 				de.dlr.sc.virsat.model.test.AllTests.class,
 				de.dlr.sc.virsat.model.edit.test.AllTests.class,

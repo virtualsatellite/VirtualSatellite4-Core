@@ -206,6 +206,15 @@ public class TestsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case TestsPackage.TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION: {
+				TestCrossLinkedParametersWithCalculation testCrossLinkedParametersWithCalculation = (TestCrossLinkedParametersWithCalculation)theEObject;
+				T result = caseTestCrossLinkedParametersWithCalculation(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = caseDObject(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = caseIUuid(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = caseIName(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -417,6 +426,21 @@ public class TestsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTestMassParameters(TestMassParameters object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Test Cross Linked Parameters With Calculation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Test Cross Linked Parameters With Calculation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTestCrossLinkedParametersWithCalculation(TestCrossLinkedParametersWithCalculation object) {
 		return null;
 	}
 

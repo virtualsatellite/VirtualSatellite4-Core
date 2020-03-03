@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -64,6 +65,19 @@ public class ResourcePropertyCellEditingSupport extends APropertyCellEditingSupp
 				
 				dialog = new SelectOrUploadFileDialog(currentShell, SWT.OPEN, propertyDocumentsFolder);
 				return dialog.open();
+			}
+			
+			@Override
+			protected Button createButton(final Composite parent) {
+				// This override is needed to the following eclipse bug
+				// https://bugs.eclipse.org/bugs/show_bug.cgi?id=193081
+				Button button = super.createButton(parent);
+
+				// This listener hands back traversal control to the cell rather the button. 
+				// This is important if TableEditor functionality is used. if the button handles the traverse 
+				// signal, it will try to select the next button but not the next cell.
+				button.addListener(SWT.Traverse, (event) -> parent.notifyListeners(SWT.Traverse, event));
+				return button;
 			}
 		};
 		return editor;

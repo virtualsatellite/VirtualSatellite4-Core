@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model;singleton:=true
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Require-Bundle: de.dlr.sc.virsat.external.lib.commons.cli,
  org.eclipse.core.runtime,
@@ -48,6 +48,7 @@ Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.dvlm.structural,
  de.dlr.sc.virsat.model.dvlm.structural.impl,
  de.dlr.sc.virsat.model.dvlm.structural.util,
+ de.dlr.sc.virsat.model.dvlm.tree,
  de.dlr.sc.virsat.model.dvlm.types,
  de.dlr.sc.virsat.model.dvlm.types.impl,
  de.dlr.sc.virsat.model.dvlm.units,

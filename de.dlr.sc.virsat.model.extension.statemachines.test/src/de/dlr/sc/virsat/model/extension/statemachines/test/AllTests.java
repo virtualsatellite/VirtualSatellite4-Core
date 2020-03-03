@@ -17,8 +17,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.model.extension.statemachines.excelExport.ExcelExporterTest;
-import de.dlr.sc.virsat.model.extension.statemachines.excelImport.ExcelImporterTest;
+import de.dlr.sc.virsat.model.extension.statemachines.excel.exporter.ExcelExporterTest;
+import de.dlr.sc.virsat.model.extension.statemachines.excel.importer.ExcelImporterTest;
 import de.dlr.sc.virsat.model.extension.statemachines.util.test.ConstraintTableHelperTest;
 import de.dlr.sc.virsat.model.extension.statemachines.validator.ValidatorTest;
 import junit.framework.JUnit4TestAdapter;

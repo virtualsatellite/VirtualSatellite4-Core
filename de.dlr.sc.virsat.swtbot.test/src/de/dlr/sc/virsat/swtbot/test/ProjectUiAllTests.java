@@ -19,14 +19,15 @@ import org.junit.runners.Suite;
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({EditorTest.class,
-				NewProjectWizardTest.class,
-				CutCopyDeleteUndoTest.class,
-				InheritanceTest.class, 
-				CalculationTest.class,
-				ProductStructureTest.class
-				})
+
+@Suite.SuiteClasses({
+	EditorTest.class,
+	NewProjectWizardTest.class,
+	CutCopyDeleteUndoTest.class,
+	InheritanceTest.class, 
+	CalculationTest.class,
+	ProductStructureTest.class
+	})
 
 public class ProjectUiAllTests {
-
 }

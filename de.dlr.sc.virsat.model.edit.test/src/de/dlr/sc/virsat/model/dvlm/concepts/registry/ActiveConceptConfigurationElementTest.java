@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.dvlm.concepts.registry;
 
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -40,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -50,8 +52,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProvide
  * This test case will handle the copying of concepts into the repository.
  * In particular on concepts referencing each other the copying has to
  * follow some smart rules
- * @author fisc_ph
- *
  */
 public class ActiveConceptConfigurationElementTest {
 
@@ -72,48 +72,47 @@ public class ActiveConceptConfigurationElementTest {
 
 		BasicCommandStack fulkaCommandStack = new BasicCommandStack();
 		ourEditingDomain = new AdapterFactoryEditingDomain(adapterFactory, fulkaCommandStack, new HashMap<Resource, Boolean>());
+		UserRegistry.getInstance().setSuperUser(true);
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		UserRegistry.getInstance().setSuperUser(false);
 	}
 
 	@Rule
-    public ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException expectedException = ExpectedException.none();
 	
 	@Test
 	public void testCreateAddActiveConceptCommand() {
-	    ResourceSet resSetConceptSource = new ResourceSetImpl();
-	    Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
-	    Resource resourceBConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptBSource.xmi"));
+		ResourceSet resSetConceptSource = new ResourceSetImpl();
+		Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
+		Resource resourceBConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptBSource.xmi"));
 
-	    ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
-	    Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
+		ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
+		Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
 
-	    Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
-	    Concept conceptSourceB = ConceptsFactory.eINSTANCE.createConcept();
-	    
-	    resourceAConcept.getContents().add(conceptSourceA);
-	    resourceBConcept.getContents().add(conceptSourceB);
+		Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
+		conceptSourceA.setName("conceptA");
+		Concept conceptSourceB = ConceptsFactory.eINSTANCE.createConcept();
+		conceptSourceB.setName("conceptB");
 
-	    StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
-	    StructuralElement seSourceB = StructuralFactory.eINSTANCE.createStructuralElement();
-	    seSourceB.getApplicableFor().add(seSourceA);
-	    
-	    conceptSourceA.getStructuralElements().add(seSourceA);
-	    conceptSourceB.getStructuralElements().add(seSourceB);
-	    
-	    Repository repository = DVLMFactory.eINSTANCE.createRepository();
-	    resourceRepository.getContents().add(repository);
-	    
-		// Adding Concept B before A will fail
-		expectedException.expect(RuntimeException.class);
-		Command failCommand = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
-		failCommand.execute();
-		assertTrue("ActiveConcepts are not present", repository.getActiveConcepts().isEmpty());
-		
+		resourceAConcept.getContents().add(conceptSourceA);
+		resourceBConcept.getContents().add(conceptSourceB);
+
+		StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
+		seSourceA.setName("seA");
+		StructuralElement seSourceB = StructuralFactory.eINSTANCE.createStructuralElement();
+		seSourceB.setName("seB");
+		seSourceB.getApplicableFor().add(seSourceA);
+
+		conceptSourceA.getStructuralElements().add(seSourceA);
+		conceptSourceB.getStructuralElements().add(seSourceB);
+
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		resourceRepository.getContents().add(repository);
+
 		// Concept A should be added without any trouble
-		expectedException = ExpectedException.none();
 		Command addConceptA = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceA, repository);
 		addConceptA.execute();
 		
@@ -128,6 +127,34 @@ public class ActiveConceptConfigurationElementTest {
 		assertNotSame("Should not be the same object, should be copied", seSourceB, targetConceptBSe);
 		assertThat("The Copied SE in ConceptB is now pointing to the copied one in ConceptA", targetConceptBSe.getApplicableFor(), hasItem(targetConceptASe));
 		assertThat("The Copied SE in ConceptB is not pointing to the original one in ConceptA", targetConceptBSe.getApplicableFor(), not(hasItem(seSourceA)));
+
+		// Now try to unload the resource for conceptA.
+		// This should bring the Reference in ConceptB into a proxy state
+		resourceAConcept.unload();
+		assertTrue("Reference is in a proxy state", seSourceB.getApplicableFor().get(0).eIsProxy());
+		
+		// Now try to add the concept B again. It has to be removed first.
+		// The proxied object should still be resolved by its URI Fragment so the added concept
+		// should be well linked into the existing concept.,
+		repository.getActiveConcepts().remove(1);
+		Command addConceptBAgain = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
+		addConceptBAgain.execute();
+		assertEquals("Has correct amount of activeConcept", 2, repository.getActiveConcepts().size());
+
+		targetConceptBSe = repository.getActiveConcepts().get(1).getStructuralElements().get(0);
+		assertNotSame("Should not be the same object, should be copied", seSourceB, targetConceptBSe);
+		assertThat("The Copied SE in ConceptB is now pointing to the copied one in ConceptA", targetConceptBSe.getApplicableFor(), hasItem(targetConceptASe));
+		assertThat("The Copied SE in ConceptB is not pointing to the original one in ConceptA", targetConceptBSe.getApplicableFor(), not(hasItem(seSourceA)));
+		
+		// Finally try to break things by cleaning the repository and trying to add the concept
+		// with reference first. resolving the reference is not possible and should create an error.
+		repository.getActiveConcepts().clear();
+		
+		
+		// Adding Concept B before A will fail
+		expectedException.expect(RuntimeException.class);
+		Command failCommand = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
+		failCommand.execute();
 	}
 	
 	@Test
@@ -135,24 +162,40 @@ public class ActiveConceptConfigurationElementTest {
 		// SImple test of adding a concept without command
 		// most of the cases are the same as with adding a Concept by command, thus this test case intends
 		// to just execute the code once and check for some primitive result.
-	    ResourceSet resSetConceptSource = new ResourceSetImpl();
-	    Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
+		ResourceSet resSetConceptSource = new ResourceSetImpl();
+		Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
 
-	    ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
-	    Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
+		ResourceSet resSetRepositoryTarget = new ResourceSetImpl();
+		Resource resourceRepository = resSetRepositoryTarget.createResource(URI.createURI("conceptTest/repositoryTarget.xmi"));
 
-	    Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
-	    resourceAConcept.getContents().add(conceptSourceA);
-	    StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
-	    conceptSourceA.getStructuralElements().add(seSourceA);
-	    
-	    Repository repository = DVLMFactory.eINSTANCE.createRepository();
-	    resourceRepository.getContents().add(repository);
+		Concept conceptSourceA = ConceptsFactory.eINSTANCE.createConcept();
+		resourceAConcept.getContents().add(conceptSourceA);
+		StructuralElement seSourceA = StructuralFactory.eINSTANCE.createStructuralElement();
+		conceptSourceA.getStructuralElements().add(seSourceA);
+
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		resourceRepository.getContents().add(repository);
 		
 		// Concept A should be added without any trouble
 		expectedException = ExpectedException.none();
 		Concept activeConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(conceptSourceA, repository);
 		
 		assertNotSame("Should not be the same object, should be copied", activeConcept, conceptSourceA);
+	}
+	
+	@Test
+	public void testGetConceptNameWithVersion() {
+		ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(null) {
+			public Concept loadConceptFromPlugin() {
+				Concept concept = ConceptsFactory.eINSTANCE.createConcept();
+				concept.setDisplayName("DisplayName");
+				return concept;
+			}
+		};
+
+		String expectedConceptNameWithVersion = "DisplayName - de.dlr.sc.model.dvlm.noid [1.0]";
+		String conceptNameWithVersion = acce.getConceptNameWithVersion();
+
+		assertEquals("The concept with a display name is correctly displayed.", expectedConceptNameWithVersion, conceptNameWithVersion);
 	}
 }

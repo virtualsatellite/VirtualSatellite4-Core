@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
 <setAttribute key="additional_plugins">
-<setEntry value="de.dlr.sc.virsat.swtbot.test:4.9.1.qualifier:default:false"/>
+<setEntry value="de.dlr.sc.virsat.swtbot.test:4.10.0.qualifier:default:false"/>
 </setAttribute>
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="false"/>
@@ -25,7 +25,7 @@
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="SWTBOT_SCREENSHOT" value="false"/>
+<mapEntry key="SWTBOT_SCREENSHOT" value="true"/>
 </mapAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
@@ -65,8 +65,6 @@
 <setEntry value="org.eclipse.ecf.core.feature:default"/>
 <setEntry value="org.eclipse.ecf.core.ssl.feature:default"/>
 <setEntry value="org.eclipse.ecf.filetransfer.feature:default"/>
-<setEntry value="org.eclipse.ecf.filetransfer.httpclient4.feature:default"/>
-<setEntry value="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature:default"/>
 <setEntry value="org.eclipse.ecf.filetransfer.ssl.feature:default"/>
 <setEntry value="org.eclipse.emf.common.ui:default"/>
 <setEntry value="org.eclipse.emf.common:default"/>

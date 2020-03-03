@@ -29,11 +29,13 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * test class to test the builder for VirSat projects
- * @author scha_vo
- *
  */
 public class VirSatProjectBuilderTest extends AProjectTestCase {
 
+	@Override
+	protected void addProjectFileStructure() {
+	}
+	
 	@Rule
 	public final ExpectedException expectedException = ExpectedException.none();
 	

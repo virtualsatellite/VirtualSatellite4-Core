@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.concepts.util;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,7 +20,6 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
@@ -45,9 +46,6 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
  * The class is based on the concept of FullQualified Identifiers
  * AFQID for a Property has three parts "concept.category.property"
  * The FQID may also be of two parts only: "concept.property"
- * 
- * @author kova_an
- *
  */
 public class ActiveConceptHelper {
 
@@ -189,6 +187,20 @@ public class ActiveConceptHelper {
 	}
 	
 	/**
+	 * Method to get the concept name to display in concept selection dialog
+	 * @param concept the concept which name details are needed
+	 * @return the display name plus FQN and version or the FQN and version when there is no display name
+	 */
+	public static String getConceptNameWithVersion(Concept concept) {
+		String formattedVersion = " [" + concept.getVersion() + "]";
+		if (concept.getDisplayName() == null) {
+			return concept.getName() + formattedVersion;
+		} else {
+			return concept.getDisplayName() + " - " + concept.getName() + formattedVersion;
+		}
+	}
+	
+	/**
 	 * Method to get just the concept from the active concepts of the active repository
 	 * @param conceptId the id of the concept to look for
 	 * @return the concept or null in case it could not be found
@@ -205,15 +217,35 @@ public class ActiveConceptHelper {
 	/**
 	 * Method to access a category from a given Concept
 	 * @param concept the concept in which to look for the category
-	 * @param categoryId the id of the category to look for
+	 * @param categoryFqn the id or FQN of the category to look for
 	 * @return the category or null it doesn't exist
 	 */
-	public static Category getCategory(Concept concept, String categoryId) {
+	public static Category getCategory(Concept concept, String categoryFqn) {
+		// Now take the final part of the FQN which is the category name and search for it.
+		String [] fqnParts = categoryFqn.split(FQID_DELIMITER_REGEX);
+		String categoryId = fqnParts[fqnParts.length - 1];
+		
+		// In case the array has more than one element it should consist of the concept FQN plus
+		// the category name. Therefore the fqn of the category should be checked
+		if (fqnParts.length > 1) {
+			if (concept.getName() == null) {
+				return null;
+			}
+			
+			String rebuildFQN = concept.getName() + FQID_DELIMITER + categoryId;
+			if (!rebuildFQN.equals(categoryFqn)) {
+				return null;
+			}
+		}
+
+		// Now search for the category
 		for (Category cat : concept.getCategories()) {
 			if (categoryId.equals(cat.getName())) {
 				return cat;
 			}
 		}
+		
+		// In case nothing could be found, return a null pointer
 		return null;
 	}
 	
@@ -557,5 +589,33 @@ public class ActiveConceptHelper {
 	public static final String getDmfNsUriForConcept(Concept concept) {
 		String conceptName = VirSatEcoreUtil.getNameOfFqn(concept.getName());
 		return MODEL_URI_PREFIX + concept.getVersion() + "/" + VirSatEcoreUtil.getNameOfFqn(conceptName);
+	}
+
+	/**
+	 * The method hands back the ConceptID of an Imported NameSpace. An
+	 * Imported NameSpace always consists of the ConceptID + the ElemenID.
+	 * E.G. de.dlr.testConcept.testCategory
+	 * @param conceptImport The Import Object for importing the NameSpace
+	 * @return the cleaned ID of the concept to be imported
+	 */
+	public static String getConceptFromImport(ConceptImport conceptImport) {
+		String importedNameSpace = conceptImport.getImportedNamespace();
+		int lastIndexOfDot =  importedNameSpace.lastIndexOf(FQID_DELIMITER);
+		String importedConceptId = importedNameSpace.substring(0, lastIndexOfDot);
+		return importedConceptId;
+	}
+	
+	/**
+	 * This method hands back the IDs of concepts which are imported
+	 * @param concept the concept for which to get all imported concepts
+	 * @return A set of Strings with all IDs
+	 */
+	public static Set<String> getConceptDependencies(Concept concept) {
+		Set<String> importedConceptIds = new HashSet<>();
+		concept.getImports().forEach(conceptImport -> {
+			String cleanedConceptImport = getConceptFromImport(conceptImport);
+			importedConceptIds.add(cleanedConceptImport);
+		});
+		return importedConceptIds;
 	}
 }

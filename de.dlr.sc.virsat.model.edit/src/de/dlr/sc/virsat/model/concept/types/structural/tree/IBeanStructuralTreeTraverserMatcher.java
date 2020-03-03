@@ -10,26 +10,18 @@
 
 package de.dlr.sc.virsat.model.concept.types.structural.tree;
 
+import java.util.Collection;
+
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.tree.ITreeTraverserMatcher;
 
 /**
  * Interface for plugging different logic into {@link BeanStructuralTreeTraverser}
  * For example for building a tree consisting only of nodes with a certain Category attached
  */
-public interface IBeanStructuralTreeTraverserMatcher {
+public interface IBeanStructuralTreeTraverserMatcher extends ITreeTraverserMatcher<IBeanStructuralElementInstance> {
 
-	/**
-	 * Checks if the passed treeNode bean matches the desired criteria
-	 * @param treeNode node bean to check
-	 * @return true if this node matches, false otherwise
-	 */
-	boolean isMatching(IBeanStructuralElementInstance treeNode);
-	
-	/**
-	 * Processes the found match
-	 * @param treeNode a matching tree node
-	 * @param matchingParent the closest parent of the node that also matches the criteria.
-	 *        Can be null if the node does not have a matching parent
-	 */
-	void foundMatch(IBeanStructuralElementInstance treeNode, IBeanStructuralElementInstance matchingParent);
+	default Collection<IBeanStructuralElementInstance> getChildren(IBeanStructuralElementInstance treeNode) {
+		return treeNode.getChildren(IBeanStructuralElementInstance.class);
+	}
 }
