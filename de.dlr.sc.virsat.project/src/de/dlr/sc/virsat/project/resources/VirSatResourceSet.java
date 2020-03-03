@@ -42,7 +42,6 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -70,6 +69,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
+import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -264,66 +264,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 	}
 
-	/**
-	 * Returns a diagnostic describing the errors and warnings listed in the
-	 * resource and the specified exception (if any).
-	 * 
-	 * @param resource the resource
-	 * @return the diagnostic describing error/warning
-	 */
-	public Diagnostic analyzeResourceProblems(Resource resource) {
-		boolean hasErrors = !resource.getErrors().isEmpty();
-		boolean hasWarnings = !resource.getWarnings().isEmpty();
-		boolean hasNullContent = false;
-
-		// Loop over the contents to detect a null
-		for (EObject object : resource.getContents()) {
-			if (object == null) {
-				hasNullContent = true;
-				hasErrors = true;
-				Activator.getDefault().getLog().log(new Status(
-					Status.ERROR,
-					Activator.getPluginId(),
-					"Found NULL object in Resource content: " + resource.getURI().toPlatformString(true)
-				));
-			}
-		}
-		
-		Diagnostic modelDiagnostics = null;
-		if (!hasNullContent) {
-			// Analyze model can only be called if there are no null contents in the reosurce
-			modelDiagnostics = analyzeModelProblems(resource);
-			hasErrors &= modelDiagnostics.getSeverity() == Diagnostic.ERROR;
-			hasWarnings &= modelDiagnostics.getSeverity() == Diagnostic.WARNING;
-		}
-		
-		// Now build up the diagnostics
-		if (hasErrors || hasWarnings) {
-			BasicDiagnostic resourceDiagnostics = new BasicDiagnostic(
-				hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
-				Activator.getPluginId(), 0,
-				"Problems encountered in resource: " + resource.getURI().toPlatformString(true),
-				new Object[] { resource }
-			);
-			
-			// Add the diagnostic message for the null content
-			if (hasNullContent) {
-				resourceDiagnostics.merge(new BasicDiagnostic(
-					Diagnostic.ERROR,
-					Activator.getPluginId(), 0,
-					"Error! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
-					new Object[] { resource }
-				));
-			} else if (modelDiagnostics != null) {
-				resourceDiagnostics.merge(modelDiagnostics);
-			}
-			
-			resourceDiagnostics.merge(EcoreUtil.computeDiagnostic(resource, true));
-			return resourceDiagnostics;
-		} else {
-			return Diagnostic.OK_INSTANCE;
-		}
-	}
 
 	/**
 	 * Gets the internal map from the resources to the diagnostics
@@ -1202,10 +1142,23 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
 		if (resource != null) {
-			Diagnostic diagnostic = analyzeResourceProblems(resource);
+			// Run individualDiagnostics and merge them
 			
-			if (diagnostic.getSeverity() != Diagnostic.OK) {
-				resourceToDiagnosticMap.put(resource, diagnostic);
+			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
+			BasicDiagnostic resourceNullDiagnostic = analyzeResourceNullProblems(resource);
+			resourceDiagnostic.merge(resourceNullDiagnostic);
+			// In case there are null objects which should not be in the resource
+			// something went seriously wrong. No other analysis has to be executed
+			// If there are no null diagnostics, continue with the other checks
+			if (resourceDiagnostic.getSeverity() == Diagnostic.OK) {
+				BasicDiagnostic modelDiagnostic = analyzeModelProblems(resource);
+				resourceDiagnostic.merge(modelDiagnostic);
+			}
+
+			// Now check severity levels, and set the diagnostics map accordingly
+			// The map will be sued by the editors to display the error messages etc.
+			if (resourceDiagnostic.getSeverity() != Diagnostic.OK) {
+				resourceToDiagnosticMap.put(resource, resourceDiagnostic);
 				changes = true;
 				Activator.getDefault().getLog().log(new Status(
 					Status.INFO,
@@ -1227,33 +1180,81 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		return changes;
 	}
 
-	private BasicDiagnostic createOrAddDiagnostic(BasicDiagnostic rootDiagnostic) {
+	/**
+	 * Returns a diagnostic describing the errors and warnings listed in the
+	 * resource and the specified exception (if any).
+	 * 
+	 * @param resource the resource
+	 * @return the diagnostic describing error/warning
+	 */
+	public BasicDiagnostic analyzeResourceProblems(Resource resource) {
+		boolean hasErrors = !resource.getErrors().isEmpty();
+		boolean hasWarnings = !resource.getWarnings().isEmpty();
+		List<EObject> resourceContents = resource.getContents();
+		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Resource Diagnostics:");
 		
+		// Now process the diagnostics that are part of the resource
+		if (hasErrors || hasWarnings) {
+			returnDiagnostic.merge(new BasicDiagnostic(
+				hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
+				Activator.getPluginId(), 0,
+				"Problems encountered in resource: " + resource.getURI().toPlatformString(true),
+				new Object[] { resource }
+			));
+			
+			// Compute the diagnostics from the resource and add them to the given one.
+			returnDiagnostic.merge(EcoreUtil.computeDiagnostic(resource, true));
+		} 
+		
+		return returnDiagnostic;
+	}
+
+	/**
+	 * Analyzes the resource on special null errors. We have seen some rare cases,
+	 * where NPEs were caused by resource content which was null. Usually this should
+	 * never happen in EMF, still this check will report in case such issues may happen again
+	 * @param resource the resource to be checked
+	 * @return The diagnostics regarding null content in a resource
+	 */
+	public BasicDiagnostic analyzeResourceNullProblems(Resource resource) {
+		List<EObject> resourceContents = resource.getContents();
+		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Resource Null Diagnostics:");
+		
+		// Loop over the contents to detect a null
+		for (EObject object : resourceContents) {
+			if (object == null) {
+				// Add a diagnostic
+				returnDiagnostic.merge(new BasicDiagnostic(
+						Diagnostic.ERROR,
+						Activator.getPluginId(), 0,
+						"Error! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
+						new Object[] { resource }
+					));
+				
+				// Log the result
+				Activator.getDefault().getLog().log(new Status(
+					Status.ERROR,
+					Activator.getPluginId(),
+					"Found NULL object in Resource content: " + resource.getURI().toPlatformString(true)
+				));
+				
+				// don't test the other objects anymore. One diagnostic about a null object is enough
+				break;
+			}
+		}
+		
+		return returnDiagnostic;
 	}
 	
 	/**
-	 * This method create EMF Diagnostics on the Model Object in case fo detected problems
+	 * This method create EMF Diagnostics on the Model Object in case of detected problems
 	 * 
 	 * @param resource The resource to be checked for model issues
-	 * @param resourceDiagnostics resource diagnostics which should be merged with the new Diagnostics
-	 * @return merged diagnostics including new ones on the actual object previous resource diagnostics
+	 * @return the diagnostic on model issues
 	 */
-	public Diagnostic analyzeModelProblems(Resource resource) {
-		List<EObject> resourceContents = resource.getContents();
+	public BasicDiagnostic analyzeModelProblems(Resource resource) {
+		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Model Diagnostics:");
 		
-		Diagnostic resourceDiagnostic = null;
-		
-		// First recheck the resource to be sure no issue exists
-		if (resourceContents.size() != 1) {
-			diagnostic.merge(new BasicDiagnostic(
-					Diagnostic.ERROR,
-					Activator.getPluginId(),
-					0,
-					"Wrong amount of objects contained in resource. Is (" + resourceContents.size() + ") but should be 1",
-					new Object[] { resource }
-			));
-		}
-
 		// Now check the state of each eObject if it can be resolved and if it is contained
 		EcoreUtil.getAllProperContents(resource, true).forEachRemaining((object) -> {
 			if (object instanceof EObject) {
@@ -1261,7 +1262,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				
 				// Check for proxy state
 				if (eObject.eIsProxy()) {
-					diagnostic.merge(new BasicDiagnostic(
+					returnDiagnostic.merge(new BasicDiagnostic(
 							Diagnostic.ERROR,
 							Activator.getPluginId(),
 							0,
@@ -1272,7 +1273,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 				// Check containment
 				if (eObject.eResource() == null) {
-					diagnostic.merge(new BasicDiagnostic(
+					returnDiagnostic.merge(new BasicDiagnostic(
 							Diagnostic.ERROR,
 							Activator.getPluginId(),
 							0,
@@ -1283,7 +1284,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 		});
 	
-		return diagnostic;
+		return returnDiagnostic;
 	}
 	
 	/**
