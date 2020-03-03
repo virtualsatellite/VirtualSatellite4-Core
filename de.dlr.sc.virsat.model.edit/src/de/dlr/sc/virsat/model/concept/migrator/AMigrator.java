@@ -67,6 +67,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.IQualifiedEquationObject;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -202,6 +203,19 @@ public abstract class AMigrator implements IMigrator {
 	 * Override this method to inject the changes.
 	 */
 	protected void registerOldToNewIds() {
+	}
+	
+	@Override
+	public Set<String> getNewDependencies(Concept concept, IMigrator previousMigrator) {
+		Set<String> newDependencies = new HashSet<String>();
+		String conceptId = concept.getFullQualifiedName() + "/";
+		Concept conceptNext = loadConceptXmi(conceptId + getResource());
+		
+		//new dependencies are dependencies of newer concept minus old dependencies
+		newDependencies = ActiveConceptHelper.getConceptDependencies(conceptNext);
+		newDependencies.removeAll(ActiveConceptHelper.getConceptDependencies(concept));
+		
+		return newDependencies;
 	}
 	
 	@Override
