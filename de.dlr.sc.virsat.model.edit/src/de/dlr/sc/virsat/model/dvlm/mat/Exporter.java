@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.mat;
 
-import java.io.IOException;
 import org.eclipse.emf.common.util.EList;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
@@ -19,6 +18,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
@@ -49,38 +49,37 @@ import us.hebi.matlab.mat.types.Struct;
  * Class for exporting data to .mat
  */
 public class Exporter {
-	
 
 	/**
-	 * creates a new .mat with everything inside a sei
+	 * creates a new .mat with everything inside the given sei
 	 * @param seiRoot sei to export
 	 */
-	public MatFile exportSei(StructuralElementInstance seiRoot) throws IOException {
+	public MatFile exportSei(StructuralElementInstance seiRoot) {
 		MatFile matfile = Mat5.newMatFile();		
-		Struct myStruct = Mat5.newStruct();
-		myStruct.set("type", Mat5.newString(seiRoot.getType().getName()))
+		Struct struct = Mat5.newStruct();
+		struct.set("type", Mat5.newString(seiRoot.getType().getName()))
 			.set("uuid", Mat5.newString(seiRoot.getUuid().toString()))
 			.set("children", Mat5.newString(seiRoot.getChildren().toString()));
 
 		for (CategoryAssignment ca : seiRoot.getCategoryAssignments()) {
-			myStruct.set(ca.getName(), exportCatAs(ca));
+			struct.set(ca.getName(), exportCatAs(ca));
 		}
 
-		matfile.addArray(seiRoot.getName(), myStruct);
+		matfile.addArray(seiRoot.getName(), struct);
 		return matfile;
 	}
 
 	/**
 	 * creates a new .mat with everything inside the selected CategoryAssinments
 	 * @param cas list of CategoryAssinments
-	 */	
-	public MatFile exportCas(EList<CategoryAssignment> cas) throws IOException {
-		MatFile matfile = Mat5.newMatFile();		
-		Struct myStruct = Mat5.newStruct();
+	 */
+	public MatFile exportCas(EList<CategoryAssignment> cas) {
+		MatFile matfile = Mat5.newMatFile();
+		Struct struct = Mat5.newStruct();
 		for (CategoryAssignment ca : cas) {
-			myStruct.set(ca.getName(), exportCatAs(ca));
+			struct.set(ca.getName(), exportCatAs(ca));
 		}
-		matfile.addArray("inputs", myStruct);
+		matfile.addArray("inputs", struct);
 		return matfile;
 	}
 
@@ -113,12 +112,12 @@ public class Exporter {
 
 			@Override
 			public Array caseResourcePropertyInstance(ResourcePropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
 			public Array caseEnumUnitPropertyInstance(EnumUnitPropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
@@ -128,22 +127,22 @@ public class Exporter {
 
 			@Override
 			public Array caseReferencePropertyInstance(ReferencePropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
 			public Array caseEReferencePropertyInstance(EReferencePropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
 			public Array caseComposedPropertyInstance(ComposedPropertyInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 			@Override
 			public Array caseArrayInstance(ArrayInstance object) {
-				return contentofProperty(object);
+				return contentOfProperty(object);
 			}
 
 		}.doSwitch(element);
@@ -195,39 +194,46 @@ public class Exporter {
 	 * only uuid, reference and reference-class are saved
 	 * @param element EReferencePropertyInstance
 	 */
-	private Array contentofProperty(EReferencePropertyInstance element) {
+	private Array contentOfProperty(EReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EReferenceProperty) {
 			
 			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>();
 			bpe.setATypeInstance(element);
+			
 			struct.set("reference", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
-			struct.set("reference-class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getClass().getName()));
+			struct.set("reference-class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().getClass().getName()));
 		}
 		return struct;
 	}
-	
+
 	/**
 	 * creates a new .mat-struct with all information about ReferencePropertyInstance
 	 * only uuid and fullQualifiedInstanceName are saved
 	 * @param element ReferencePropertyInstance
 	 */
-	private Array contentofProperty(ReferencePropertyInstance element) {
+	private Array contentOfProperty(ReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ReferenceProperty) {
-			struct.set("uuid", Mat5.newString(element.getUuid().toString()));
-			struct.set("name", Mat5.newString(element.getFullQualifiedInstanceName()));
+			if (element.getReference() != null) {
+				ATypeInstance referencedTypeInstance = element.getReference();
+				struct.set("uuid", Mat5.newString(referencedTypeInstance.getUuid().toString()));
+				struct.set("fullQualifiedInstanceName", Mat5.newString(referencedTypeInstance.getFullQualifiedInstanceName()));
+			} else {
+				struct.set("uuid", Mat5.newString(""));
+				struct.set("fullQualifiedInstanceName", Mat5.newString(""));
+			}
 		}
 
 		return struct;
 	}
-	
+
 	/**
 	 * creates a new .mat-struct with all information about ResourcePropertyInstance
 	 * only uri is saved
 	 * @param element ResourcePropertyInstance
 	 */
-	private Array contentofProperty(ResourcePropertyInstance element) {
+	private Array contentOfProperty(ResourcePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ResourceProperty) {
 			BeanPropertyResource bpr = new BeanPropertyResource(element);
@@ -235,13 +241,13 @@ public class Exporter {
 		}
 		return struct;
 	}
-	
+
 	/**
 	 * creates a new .mat-struct with all information about EnumUnitPropertyInstance
 	 * only unit,value and name are saved
 	 * @param element EnumUnitPropertyInstance
-	 */	
-	private Array contentofProperty(EnumUnitPropertyInstance element) {
+	 */
+	private Array contentOfProperty(EnumUnitPropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EnumProperty) {
 			BeanPropertyEnum bpe = new BeanPropertyEnum(element);
@@ -255,8 +261,8 @@ public class Exporter {
 	/**
 	 * creates a new .mat-struct with all information about ArrayInstance
 	 * @param element ArrayInstance
-	 */	
-	private Array contentofProperty(ArrayInstance element) {
+	 */
+	private Array contentOfProperty(ArrayInstance element) {
 		EList<APropertyInstance> propertyInstances = element.getArrayInstances();
 		Cell cell = Mat5.newCell(propertyInstances.size(), 1);
 		for (int i = 0; i < propertyInstances.size(); i++) {
@@ -266,15 +272,15 @@ public class Exporter {
 		}
 		return cell;
 	}
-	
+
 	/**
 	 * creates a new .mat-struct with all information about ComposedPropertyInstance
 	 * @param element ComposedPropertyInstance
-	 */	
-	private Array contentofProperty(ComposedPropertyInstance element) {
+	 */
+	private Array contentOfProperty(ComposedPropertyInstance element) {
 		return exportCatAs(element.getTypeInstance());
 	}
-	
+
 	//Delete First and Last Character
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
