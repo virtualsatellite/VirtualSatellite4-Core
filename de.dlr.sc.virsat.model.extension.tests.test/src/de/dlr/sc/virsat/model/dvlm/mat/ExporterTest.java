@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.mat;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -27,7 +28,9 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
 
@@ -37,7 +40,7 @@ import static org.junit.Assert.assertThat;
 
 public class ExporterTest extends ATestConceptTestCase {
 
-	private static final int NUMBEROFELEMENTSWITHOUTCAS = 3;
+	private static final int NUMBEROFELEMENTSWITHOUTCAS = 2;
 	private static final int ENUMINFORMATION = 3;
 	private static final int ARRAYLENGTH = 4;
 	private StructuralElementInstance sei;
@@ -79,6 +82,20 @@ public class ExporterTest extends ATestConceptTestCase {
 		assertEquals("Same UUID", sei.getUuid().toString(), exporter.shorter(testmat.getStruct(sei.getName()).get("uuid").toString()));
 		assertEquals("Same Type", sei.getType().getName(), exporter.shorter(testmat.getStruct(sei.getName()).get("type").toString()));		
 		assertEquals("Number of Elements", NUMBEROFELEMENTSWITHOUTCAS, testmat.getStruct("testsei").getFieldNames().size());
+	}
+
+	@Test
+	public void testExportSeiHasChildren() throws IOException {
+		TestStructuralElementOther tsei2 = new TestStructuralElementOther(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		sei2.setName("testse4i");
+		sei2.setParent(sei);
+		TestStructuralElementOther tsei3 = new TestStructuralElementOther(testConcept);
+		StructuralElementInstance sei3 = tsei3.getStructuralElementInstance();
+		sei3.setName("testse3i");
+		sei3.setParent(sei);
+		MatFile testmat = exporter.exportSei(sei);
+		Mat5.writeToFile(testmat, "Matfile.mat");
 	}
 
 	@Test
@@ -152,7 +169,7 @@ public class ExporterTest extends ATestConceptTestCase {
 				exporter.shorter(struct.getStruct("testRefCategory").get("uuid").toString()),
 				"");
 		assertEquals("Reference UUID",
-				exporter.shorter(struct.getStruct("testRefCategory").get("fullQualifiedName").toString()),
+				exporter.shorter(struct.getStruct("testRefCategory").get("fullQualifiedInstanceName").toString()),
 				"");
 	}
 
@@ -169,7 +186,7 @@ public class ExporterTest extends ATestConceptTestCase {
 				exporter.shorter(struct.getStruct("testRefCategory").get("uuid").toString()),
 				tc1.getUuid().toString());
 		assertEquals("Reference UUID",
-				exporter.shorter(struct.getStruct("testRefCategory").get("fullQualifiedName").toString()),
+				exporter.shorter(struct.getStruct("testRefCategory").get("fullQualifiedInstanceName").toString()),
 				tc1.getName());
 	}
 

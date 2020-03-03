@@ -58,9 +58,16 @@ public class Exporter {
 		MatFile matfile = Mat5.newMatFile();		
 		Struct struct = Mat5.newStruct();
 		struct.set("type", Mat5.newString(seiRoot.getType().getName()))
-			.set("uuid", Mat5.newString(seiRoot.getUuid().toString()))
-			.set("children", Mat5.newString(seiRoot.getChildren().toString()));
-
+			.set("uuid", Mat5.newString(seiRoot.getUuid().toString()));
+		if (seiRoot.getChildren().size() > 0) {
+			Struct children = Mat5.newStruct();
+			for (StructuralElementInstance sei : seiRoot.getChildren()) {
+				MatFile child = exportSei(sei);
+				children.set(sei.getName(), child.getArray(sei.getName()));
+			}
+			struct.set("children", children);
+		}
+		
 		for (CategoryAssignment ca : seiRoot.getCategoryAssignments()) {
 			struct.set(ca.getName(), exportCatAs(ca));
 		}
@@ -95,7 +102,6 @@ public class Exporter {
 			Array propertyArray = getRightProperty(pi);
 			struct.set(pi.getType().getName(), propertyArray);
 		}
-
 		return struct;
 	}
 
@@ -224,7 +230,6 @@ public class Exporter {
 				struct.set("fullQualifiedInstanceName", Mat5.newString(""));
 			}
 		}
-
 		return struct;
 	}
 
