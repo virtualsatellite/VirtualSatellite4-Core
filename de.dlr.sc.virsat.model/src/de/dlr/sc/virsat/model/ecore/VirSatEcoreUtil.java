@@ -312,12 +312,17 @@ public class VirSatEcoreUtil extends EcoreUtil {
 		return mapDeletedObjectReferencedBy;
 	}
 	
-	public BasicDiagnostic squashDiagnostics(List<BasicDiagnostic> diagnostics) {
-		BasicDiagnostic rootSquashedDiagnostic = null;
-		if (!diagnostics.isEmpty()) {
-			rootSquashedDiagnostic = diagnostics.remove(0);
-			diagnostics.forEach((diagnostic) -> rootSquashedDiagnostic.merge(diagnostic));
-		}
+	/**
+	 * This method takes a list of diagnostics and squashes them into one
+	 * diagnostic with a list of children diagnostic
+	 * @param diagnostics the list of diagnostics to be squashed
+	 * @return the squashed diagnostics. The root will be the first item in the list.
+	 */
+	public static BasicDiagnostic squashDiagnostics(List<? extends BasicDiagnostic> diagnostics) {
+		final BasicDiagnostic rootSquashedDiagnostic = (diagnostics.isEmpty()) 
+				? (BasicDiagnostic) Diagnostic.OK_INSTANCE 
+				: diagnostics.remove(0);
+		diagnostics.forEach((diagnostic) -> rootSquashedDiagnostic.merge(diagnostic));
 		return rootSquashedDiagnostic;
 	}
 }
