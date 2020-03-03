@@ -575,7 +575,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		resourceA.getContents().remove(sei1);
 
 		diagnosticResult = resSet.analyzeModelProblems(resourceB);
-		assertEquals("The dangling reference should be detected", Diagnostic.ERROR, diagnosticResult.getSeverity());
+		assertEquals("The dangling reference should be detected", Diagnostic.WARNING, diagnosticResult.getSeverity());
 	}
 	
 	/**
