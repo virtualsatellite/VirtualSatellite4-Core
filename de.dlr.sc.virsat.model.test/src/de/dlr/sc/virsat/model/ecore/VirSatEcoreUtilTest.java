@@ -14,12 +14,10 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -485,26 +482,5 @@ public class VirSatEcoreUtilTest {
 		// Different story with the super SEI, it should tell us that it is referenced by the sub SEI
 		Map<EObject, List<EObject>> resultCase2 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(superSei), resSet);
 		assertThat("found referencing sub sei", resultCase2.get(superSei), hasItem(subSei));
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testSquashDiagnostics() {
-		BasicDiagnostic diagRoot = new BasicDiagnostic();
-		BasicDiagnostic diagChild1 = new BasicDiagnostic();
-		BasicDiagnostic diagChild2 = new BasicDiagnostic();
-		BasicDiagnostic diagChild3 = new BasicDiagnostic();
-		
-		List<BasicDiagnostic> diagnostics = new ArrayList<>();
-		diagnostics.add(diagRoot);
-		diagnostics.add(diagChild1);
-		diagnostics.add(diagChild2);
-		diagnostics.add(diagChild3);
-		
-		BasicDiagnostic diagSquashed = VirSatEcoreUtil.squashDiagnostics(diagnostics);
-		
-		assertSame("Root is first one from the list", diagRoot, diagSquashed);
-		
-		assertThat("Children consists of correct diagnostics", diagSquashed.getChildren(), allOf(hasItems(diagChild1, diagChild2, diagChild3)));
 	}
 }

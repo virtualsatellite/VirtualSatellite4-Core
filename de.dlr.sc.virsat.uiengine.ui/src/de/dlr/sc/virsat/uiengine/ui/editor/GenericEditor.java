@@ -587,7 +587,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 		}
 
 		Diagnostic diagnostic = editingDomain.getResourceSet().getResourceToDiagnosticsMap().get(resource);
-		boolean hasErrors = diagnostic != null && diagnostic.getSeverity() == Diagnostic.ERROR;
+		boolean hasErrors = diagnostic != null && diagnostic.getSeverity() != Diagnostic.OK;
 		if (!hasErrors) {
 			getSite().getShell().getDisplay().asyncExec(new Runnable() { 
 				public void run() {

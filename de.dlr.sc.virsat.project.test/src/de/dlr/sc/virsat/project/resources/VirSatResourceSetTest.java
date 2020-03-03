@@ -548,11 +548,16 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	public void testAnalyzeModelProblems() {
 		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
 		
+		// Contain the SE in a resource otherwise it will be identified as a dangling reference
+		Resource resourceSe = new ResourceImpl();
+		resourceSe.getContents().add(se);
+		
 		Resource resourceA = new ResourceImpl();
 		resSet.getResources().add(resourceA);
 		Resource resourceB = new ResourceImpl();
 		resSet.getResources().add(resourceB);
 
+		
 		se.getCanInheritFrom().add(se);
 
 		resourceA.getContents().add(sei1);
@@ -570,7 +575,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		resourceA.getContents().remove(sei1);
 
 		diagnosticResult = resSet.analyzeModelProblems(resourceB);
-		assertEquals("No issues with the reosurce and the model", Diagnostic.OK, diagnosticResult.getSeverity());
+		assertEquals("The dangling reference should be detected", Diagnostic.ERROR, diagnosticResult.getSeverity());
 	}
 	
 	/**

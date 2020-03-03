@@ -1190,7 +1190,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	public BasicDiagnostic analyzeResourceProblems(Resource resource) {
 		boolean hasErrors = !resource.getErrors().isEmpty();
 		boolean hasWarnings = !resource.getWarnings().isEmpty();
-		List<EObject> resourceContents = resource.getContents();
 		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Resource Diagnostics:");
 		
 		// Now process the diagnostics that are part of the resource
@@ -1259,28 +1258,20 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		EcoreUtil.getAllProperContents(resource, true).forEachRemaining((object) -> {
 			if (object instanceof EObject) {
 				EObject eObject = (EObject) object;
-				
-				// Check for proxy state
-				if (eObject.eIsProxy()) {
-					returnDiagnostic.merge(new BasicDiagnostic(
-							Diagnostic.ERROR,
-							Activator.getPluginId(),
-							0,
-							"Could not resolve Object, Object seems to be pending",
-							new Object[] { eObject }
-					));
-				}
 
-				// Check containment
-				if (eObject.eResource() == null) {
-					returnDiagnostic.merge(new BasicDiagnostic(
-							Diagnostic.ERROR,
-							Activator.getPluginId(),
-							0,
-							"Dangling Reference due to uncontained object.",
-							new Object[] { eObject }
-					));
-				}
+				// Check all cross references
+				eObject.eCrossReferences().forEach((eReferencedObject) -> {
+					// Check containment of all other objects
+					if (eReferencedObject.eResource() == null) {
+						returnDiagnostic.merge(new BasicDiagnostic(
+								Diagnostic.WARNING,
+								Activator.getPluginId(),
+								0,
+								"Found a dangling reference in due to uncontained object. Press save to fix.",
+								new Object[] { eReferencedObject, eObject }
+						));
+					}
+				});
 			}
 		});
 	
