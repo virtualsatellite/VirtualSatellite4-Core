@@ -32,10 +32,10 @@ public class BeanPropertyEReference<Type extends EObject> extends ABeanObject<ER
 	
 	/**
 	 * Constructor to directly set the type instance
-	 * @param uvpi the type instance to be used
+	 * @param erpi the type instance to be used
 	 */
 	public BeanPropertyEReference(EReferencePropertyInstance erpi) {
-		setTypeInstance(erpi);
+		super(erpi);
 	}
 	
 	public Command setValue(EditingDomain ed, EObject value) {

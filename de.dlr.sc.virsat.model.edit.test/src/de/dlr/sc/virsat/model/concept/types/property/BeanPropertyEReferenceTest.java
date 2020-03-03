@@ -78,5 +78,14 @@ public class BeanPropertyEReferenceTest {
 		testBean.unset();
 		assertFalse("No value should have been unset", testBean.isSet());
 	}
+	
+	@Test
+	public void testConstructor() {
+		EReferencePropertyInstance eRPI = PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
+		BeanPropertyEReference<CategoryAssignment> beanProperty = new BeanPropertyEReference<>();
+		beanProperty.setTypeInstance(eRPI);
+		BeanPropertyEReference<CategoryAssignment> beanProperty2 = new BeanPropertyEReference<>(eRPI);
+		assertEquals("Beans are identical", beanProperty2, beanProperty);
+	}
 
 }
