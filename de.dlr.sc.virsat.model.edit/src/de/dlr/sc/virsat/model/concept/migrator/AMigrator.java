@@ -68,6 +68,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -85,6 +86,7 @@ public abstract class AMigrator implements IMigrator {
 
 	private IMerger.Registry mergerRegistry;
 	private IMatchEngine.Factory.Registry matchRegistry;
+	private ConceptActivationHelper activationHelper;
 	
 	/**
 	 * Default Constructor
@@ -174,6 +176,15 @@ public abstract class AMigrator implements IMigrator {
 				super.removeFromTarget(diff, rightToLeft);
 				valueMatch.setRight(right);
 			}
+			
+			@Override
+			protected void addInTarget(ReferenceChange diff, boolean rightToLeft) {
+				//Activate types that are copied to repository via migration
+				EObject activeReferenceValue = activationHelper.getActiveType(diff.getValue());
+				diff.setValue(activeReferenceValue);
+				super.addInTarget(diff, rightToLeft);
+			}
+			
 		};
 		IMerger featureMapMerger = new FeatureMapChangeMerger();
 		IMerger resourceAttachmentMerger = new ResourceAttachmentChangeMerger();
@@ -237,7 +248,8 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptCurrent, IMigrator previousMigrator) {
 		String conceptId = conceptCurrent.getFullQualifiedName() + "/";
 		Concept conceptPrevious = loadConceptXmi(conceptId + previousMigrator.getResource());
-		Concept conceptNext = loadConceptXmi(conceptId + getResource());
+		Concept conceptNext =  loadConceptXmi(conceptId + getResource());
+		activationHelper = new ConceptActivationHelper(conceptCurrent);
 		
 		migrate(conceptPrevious, conceptCurrent, conceptNext);
 	}
