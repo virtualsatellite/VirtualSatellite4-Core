@@ -117,27 +117,25 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-					@Override
-					protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-						ConceptActivationHelper activationHelper = new ConceptActivationHelper((Repository) model);
-						ListSelectionDialog dialog = ActiveConceptSelectionDialogFactory.createActiveConceptSelectionDialog(composite.getShell(), (Repository) model, "Select a Concept to be added");
-						if (dialog.open() == Dialog.OK) {
-							Object[] selectedObjects = dialog.getResult();
-							
+				ConceptActivationHelper activationHelper = new ConceptActivationHelper((Repository) model);
+				ListSelectionDialog dialog = ActiveConceptSelectionDialogFactory.createActiveConceptSelectionDialog(composite.getShell(), (Repository) model, "Select a Concept to be added");
+				if (dialog.open() == Dialog.OK) {
+					Object[] selectedObjects = dialog.getResult();
+					WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
+						@Override
+						protected void execute(IProgressMonitor progressMonitor) throws CoreException {
 							activationHelper.handleAddConcepts(selectedObjects, editingDomain, progressMonitor);
 						}
+					};
+					
+					try {
+						operation.run(new NullProgressMonitor());
+					} catch (InvocationTargetException | InterruptedException exception) {
+						Status status = new Status(Status.ERROR, DVLMEditorPlugin.ID, "Failure while enabling concept! ", exception);
+						DVLMEditPlugin.getPlugin().getLog().log(status);
+						ErrorDialog.openError(Display.getDefault().getActiveShell(), "Failed to add Concept", "Failed to add Concept", status);
 					}
-				};
-				
-				try {
-					operation.run(new NullProgressMonitor());
-				} catch (InvocationTargetException | InterruptedException exception) {
-					Status status = new Status(Status.ERROR, DVLMEditorPlugin.ID, "Failure while enabling concept! ", exception);
-					DVLMEditPlugin.getPlugin().getLog().log(status);
-					ErrorDialog.openError(Display.getDefault().getActiveShell(), "Failed to add Concept", "Failed to add Concept", status);
 				}
-				
 			}
 
 			@Override
