@@ -42,7 +42,7 @@ import de.dlr.sc.virsat.project.ui.Activator;
  */
 public class ImportWizard extends Wizard implements INewWizard {
 
-	public static final String ID = "de.dlr.sc.virsat.excel.ui.import";
+	private static final String ID = "de.dlr.sc.virsat.excel.ui.import";
 
 	private ImportPage page;
 	private IContainer model;

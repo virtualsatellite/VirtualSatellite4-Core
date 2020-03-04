@@ -9,17 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.ui.wizard;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 import de.dlr.sc.virsat.project.Activator;
@@ -54,10 +51,8 @@ public class VirSatProjectWizard extends BasicNewProjectResourceWizard implement
 		VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(newProject);
 		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(newProject);
 
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-
+		try {
+			ResourcesPlugin.getWorkspace().run((progressMonitor) -> {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Started VirSat Project Initialization"));
 				// also attach Xtext nature
 				final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature";
@@ -76,17 +71,11 @@ public class VirSatProjectWizard extends BasicNewProjectResourceWizard implement
 
 				newProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Finished VirSat Project Initialization"));
-			}
-		};
-
-		// Try to fire the operation that has been created
-		try {
-			operation.run(new NullProgressMonitor());
-		} catch (InvocationTargetException | InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to initialize Project!", e));
-			return false;
+			}, null);
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatProjectWizard: Failure at Project creation", e));
 		}
-
+		
 		return true;
 	}
 }

@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.workspace.util.WorkspaceSynchronizer.Delegate;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.ui.editor.DefaultUpdateBehavior;
@@ -171,6 +172,14 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 	@Override
 	public void handleActivate() {
 		refreshDecorators();
+	}
+	
+	@Override
+	protected Delegate createWorkspaceSynchronizerDelegate() {
+		// Disable the Graphitti default workspace synchronizer
+		// Otherwise the Graphiti workspace synchronizer will create his own 
+		// workspace synchronization requests in addition to ours
+		return null;
 	}
 	
 }

@@ -132,5 +132,15 @@
             uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi">
       </factory>
    </extension>
+   <extension
+         point="de.dlr.sc.virsat.external.lib.commons.cli.CommandLineArguments">
+     <clArgs
+           command="superUser">
+     </clArgs>
+     <clArgs
+            attribute="user"
+            command="forcedUser">
+     </clArgs>
+   </extension>>
   
 </plugin>

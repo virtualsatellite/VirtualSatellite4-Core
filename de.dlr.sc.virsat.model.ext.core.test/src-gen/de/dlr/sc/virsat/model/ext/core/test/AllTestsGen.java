@@ -19,8 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
+import de.dlr.sc.virsat.model.ext.core.validator.CoreValidatorTest;
 import de.dlr.sc.virsat.model.ext.core.migrator.Migrator1v0Test;
-import de.dlr.sc.virsat.model.ext.core.validator.StructuralElementInstanceValidatorTest;
 
 /**
  * 
@@ -29,7 +29,7 @@ import de.dlr.sc.virsat.model.ext.core.validator.StructuralElementInstanceValida
 
 @SuiteClasses({
 	Migrator1v0Test.class,
-	StructuralElementInstanceValidatorTest.class,
+	CoreValidatorTest.class,
 				})
 
 /**

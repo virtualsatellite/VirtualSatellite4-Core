@@ -136,4 +136,10 @@
             restorable="true">
       </view>
    </extension>
+      <extension
+         point="de.dlr.sc.virsat.external.lib.commons.cli.CommandLineArguments">
+     <clArgs
+           command="ignoreBetaConcepts">
+     </clArgs>
+   </extension>>
 </plugin>

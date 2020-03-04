@@ -16,6 +16,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Set;
+
 import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.Match;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -36,6 +38,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -715,6 +718,29 @@ public class AMigratorTest {
 		final String RESOURCE_PATH = "TEST/concept.xmi";
 		migrator.setResource(RESOURCE_PATH);
 		assertEquals("Migrator path to concept resource has been set correctly", RESOURCE_PATH, migrator.getResource());
+	}
+	
+	@Test
+	public void testGetNewDependencies() {
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
+		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		
+		final String NEW_CONCEPT_DEPENDENCY = "de.dlr.test.concept.bla";
+		
+		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
+		conceptNext.setName("de.dlr.test.concept.migrate.se");
+		
+		ConceptImport conceptImport = ConceptsFactory.eINSTANCE.createConceptImport();
+		conceptImport.setImportedNamespace(NEW_CONCEPT_DEPENDENCY + ".*");
+		conceptNext.getImports().add(conceptImport);
+		
+		repository.getActiveConcepts().add(conceptCurrent);
+		
+		TestMigrator migrator = new TestMigrator();
+		Set<String> newDendencies = migrator.getNewDependencies(null, conceptCurrent, conceptNext);
+		
+		assertTrue("New dependency should be returned", newDendencies.contains(NEW_CONCEPT_DEPENDENCY));
 	}
 
 }

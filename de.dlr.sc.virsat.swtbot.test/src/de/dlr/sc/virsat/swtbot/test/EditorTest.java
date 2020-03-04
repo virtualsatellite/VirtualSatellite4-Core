@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
-import de.dlr.sc.virsat.swtbot.util.SWTBotSection;
+import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 
 /**
  * This class tests editor operations
@@ -41,7 +41,7 @@ public class EditorTest extends ASwtBotTestCase {
 	@Before
 	public void before() throws Exception {
 		super.before();
-		repositoryNavigatorItem = bot.tree().expandNode(PROJECTNAME, "Repository");
+		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
 		elementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
 		document = addElement(Document.class, conceptPs, elementConfiguration);
@@ -70,7 +70,7 @@ public class EditorTest extends ASwtBotTestCase {
 	@Test
 	public void collapseSections() {
 		openEditor(elementConfiguration);
-		SWTBotSection composite = getSWTBotSection(Document.class);
+		SwtBotSection composite = getSWTBotSection(Document.class);
 		composite.click();
 		save();
 		assertFalse(composite.isExpanded());
