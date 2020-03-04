@@ -97,7 +97,6 @@ public class BeanPropertyBooleanTest extends ABeanPropertyTest {
 		
 		beanProperty2.setTypeInstance(vpi);
 		assertEquals("Beans are identical", beanProperty2, beanProperty);
-		
 	}
 
 	@Test
