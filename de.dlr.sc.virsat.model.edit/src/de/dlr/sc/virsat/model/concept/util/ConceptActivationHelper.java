@@ -81,7 +81,7 @@ public class ConceptActivationHelper {
 
 		// In case we try to create a reference to an object which was not copied
 		// we should try to redirect that reference to an already active and existing concept
-		if (repository != null && type instanceof IConceptTypeDefinition) {
+		if (repository != null && repository.eResource() != null && type instanceof IConceptTypeDefinition) {
 			IConceptTypeDefinition typeDefinition = (IConceptTypeDefinition) type;
 	
 			// Get the fragment URI of the concept we want to reference to

@@ -249,7 +249,6 @@ public abstract class AMigrator implements IMigrator {
 		String conceptId = conceptCurrent.getFullQualifiedName() + "/";
 		Concept conceptPrevious = loadConceptXmi(conceptId + previousMigrator.getResource());
 		Concept conceptNext =  loadConceptXmi(conceptId + getResource());
-		activationHelper = new ConceptActivationHelper(conceptCurrent);
 		
 		migrate(conceptPrevious, conceptCurrent, conceptNext);
 	}
@@ -264,6 +263,7 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptPrevious, Concept conceptCurrent, Concept conceptNext) {
 		IComparisonScope scope = new DefaultComparisonScope(conceptNext, conceptCurrent,  conceptPrevious);
 		Comparison comparison = EMFCompare.builder().setMatchEngineFactoryRegistry(matchRegistry).build().compare(scope);
+		activationHelper = new ConceptActivationHelper(conceptCurrent);
 
 		List<Diff> differences = comparison.getDifferences();
 		cmHelper = new ConceptMigrationHelper(conceptCurrent);
