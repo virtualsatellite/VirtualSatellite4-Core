@@ -26,6 +26,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 	
 	private static final String CONCEPT_XMI_PATH = "/concept/concept.xmi";
 	private static final String GENERIC_CATEGORY_NAME = "GenericCategory";
+	private static final String IMPORT_POSTFIX_PATTERN = ".*";
 	
 	/**
 	 * Update a concept so that all categories extend the generic category
@@ -52,7 +53,7 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 		// Add concept of generic category as implicit import to 
 		// automatically load it when a concept with categories is loaded
 		ConceptImport implicitImport = ConceptsFactory.eINSTANCE.createConceptImport();
-		implicitImport.setImportedNamespace(Activator.getPluginId());
+		implicitImport.setImportedNamespace(Activator.getPluginId() + IMPORT_POSTFIX_PATTERN);
 		conceptWithImplicitSuperType.getImports().add(implicitImport);
 	
 		return conceptWithImplicitSuperType;
