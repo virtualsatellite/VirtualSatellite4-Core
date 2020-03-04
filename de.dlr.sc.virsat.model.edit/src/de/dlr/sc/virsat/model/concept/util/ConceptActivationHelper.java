@@ -41,8 +41,8 @@ import de.dlr.sc.virsat.model.edit.Activator;
 
 /**
  * This class helps activating concepts. Concepts are copied into the 
- * repository. Furthermore, It redirects references so that these can be 
- * resolved from a platform plugin. References to concepts are redirected 
+ * repository. Furthermore, this class redirects references so that these can be 
+ * resolved from a platform plugin. References to other concepts are redirected 
  * to their active version within the repository
  *
  */
@@ -105,7 +105,7 @@ public class ConceptActivationHelper {
 	
 	/**
 	 * Handle the activation of concept configuration elements
-	 * @param conceptConfigurationElements an iterable of concept configurations
+	 * @param conceptConfigurationElements an array of concept configurations
 	 * @param editingDomain the editing domain
 	 */
 	public void activateConcepts(Object[] conceptConfigurationElements, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
@@ -120,7 +120,8 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Handle the activation of concept configuration elements
+	 * Handle the activation of concepts. Resolves dependency chains. Required concepts
+	 * of required concepts are also activated.
 	 * @param conceptConfigurationElements a list of concept configurations
 	 * @param editingDomain the editing domain
 	 */
@@ -154,8 +155,8 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Handle a selected concept for activation. Checks if an older version is already in the repository and if so
-	 * migrates the existing concept to the latest version, otherwise the concept will be simply added to the active concepts
+	 * Prepare a selected concept for activation. Checks if an older version is already in the repository and if so
+	 * migrates it to the latest version, otherwise the concept will be simply added to the active concepts
 	 * This method does not check for dependency chains. Use handleAddConcepts() for that purpose
 	 * @param concept the selected concept
 	 * @param editingDomain the editing domain
@@ -195,7 +196,7 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Activate new required concepts by also considering potential dependency chains 
+	 * Activate new concept dependencies ->  also considering potential dependency chains 
 	 * @param concept the concept to be prepared for migration
 	 * @param editingDomain the editing domain
 	 */
