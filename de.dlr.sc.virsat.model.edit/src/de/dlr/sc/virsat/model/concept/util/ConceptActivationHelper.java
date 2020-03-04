@@ -108,7 +108,7 @@ public class ConceptActivationHelper {
 	 * @param conceptConfigurationElements an iterable of concept configurations
 	 * @param editingDomain the editing domain
 	 */
-	public void handleAddConcepts(Object[] conceptConfigurationElements, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
+	public void activateConcepts(Object[] conceptConfigurationElements, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		
 		List<Concept> concepts = new ArrayList<Concept>();
 		for (Object acce : conceptConfigurationElements) {
@@ -116,7 +116,7 @@ public class ConceptActivationHelper {
 				concepts.add(((ActiveConceptConfigurationElement) acce).loadConceptFromPlugin());
 			}
 		}
-		handleAddConcepts(concepts, editingDomain, progressMonitor);
+		activateConcepts(concepts, editingDomain, progressMonitor);
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class ConceptActivationHelper {
 	 * @param conceptConfigurationElements a list of concept configurations
 	 * @param editingDomain the editing domain
 	 */
-	public void handleAddConcepts(List<Concept> concepts, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
+	public void activateConcepts(List<Concept> concepts, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		
 		// Correctly sort the selected concepts depending on their dependencies
 		DependencyTree<String> dependencyTree = new DependencyTree<String>();
@@ -148,7 +148,7 @@ public class ConceptActivationHelper {
 		// and the map of concept names pointing to the already preloaded concepts
 		for (String conceptName : orderedConcepts) {
 			if (selectedConcepts.containsKey(conceptName)) {
-				handleAddConcept(selectedConcepts.get(conceptName), editingDomain, progressMonitor);
+				activateConcept(selectedConcepts.get(conceptName), editingDomain, progressMonitor);
 			}
 		}
 	}
@@ -160,7 +160,7 @@ public class ConceptActivationHelper {
 	 * @param concept the selected concept
 	 * @param editingDomain the editing domain
 	 */
-	protected void handleAddConcept(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
+	protected void activateConcept(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		boolean conceptIsInRepository = false;
 		
 		// Check if we already have this concept but with a different version added to the repository
@@ -216,7 +216,7 @@ public class ConceptActivationHelper {
 			concepts.add(ActiveConceptConfigurationElement.loadConceptFromPlugin(conceptName + CONCEPT_PATH));
 		}
 		
-		handleAddConcepts(concepts, editingDomain, progressMonitor);
+		activateConcepts(concepts, editingDomain, progressMonitor);
 	}
 	
 
