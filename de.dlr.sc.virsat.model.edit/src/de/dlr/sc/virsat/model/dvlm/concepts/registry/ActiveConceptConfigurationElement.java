@@ -14,7 +14,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -25,10 +24,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
 
 /**
@@ -139,6 +137,7 @@ public class ActiveConceptConfigurationElement {
 	 * @return the active Concept that has been created
 	 */
 	private static Concept createActiveConcept(Concept concept, Repository repository) {
+		ConceptActivationHelper helper = new ConceptActivationHelper(repository);
 		EcoreUtil.Copier copier = new EcoreUtil.Copier() {
 
 			private static final long serialVersionUID = 5925167870311468118L;
@@ -146,39 +145,13 @@ public class ActiveConceptConfigurationElement {
 			@Override
 			public EObject get(Object key) {
 				
-				// For EReferences to external EClasses ignore concept 
-				// activation and convert URIs instead. The URI needs to be
-				// transformed from a PluginResourceURI to a PlattformPluginURI so 
-				// that it can be resolved from the VirSat project in the eclipse runtime
-				// instance.
-				// VirSat does not ensure external model's storage.
-				// We only enable non-containment references.
-				if (key instanceof EClass) {
-					return new EReferencePropertyHelper().activateEClassType((EClass) key);
+				EObject eObject = super.get(key);
+				
+				// Activate types 
+				if (eObject == null && key instanceof EObject) {
+					return helper.getActiveType((EObject) key);
 				}
 				
-				EObject eObject = super.get(key);
-
-				// In case we try to create a reference to an object which was not copied
-				// we should try to redirect that reference to an already active and existing concept
-				if ((eObject == null) && (key instanceof IConceptTypeDefinition)) {
-					IConceptTypeDefinition typeDefinition = (IConceptTypeDefinition) key;
-			
-					// Get the fragment URI of the concept we want to reference to
-					String uriFragment = EcoreUtil.getURI(typeDefinition).fragment();
-
-					// ask the repository if there is such an object with the given URI fragment
-					Resource repoResource = repository.eResource();
-					EObject repoTypeDefinition = repoResource.getEObject(uriFragment);
-
-					// If not throw a warning that there is something missing
-					if (repoTypeDefinition == null) {
-						String fqId = ActiveConceptHelper.getFullQualifiedId(typeDefinition);
-					
-						throw new RuntimeException("Install missing concept first! Missing concept: " + fqId);
-					}
-					return repoTypeDefinition;
-				} 
 				return eObject;
 			}
 		};
