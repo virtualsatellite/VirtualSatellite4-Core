@@ -62,13 +62,13 @@ import org.eclipse.emf.edapt.spi.history.Release;
 import com.google.common.base.Function;
 
 import de.dlr.sc.virsat.model.concept.calculation.QualifiedEquationObjectHelper;
+import de.dlr.sc.virsat.model.concept.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationDefinition;
 import de.dlr.sc.virsat.model.dvlm.calculation.IQualifiedEquationObject;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;

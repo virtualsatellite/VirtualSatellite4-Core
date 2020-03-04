@@ -9,9 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
@@ -24,10 +28,12 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigrator;
+import de.dlr.sc.virsat.model.concept.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -35,7 +41,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.project.ui.migrator.handler.MigrateConceptToLatestHandler;
-import de.dlr.sc.virsat.project.ui.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EBooleanCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ActiveConceptSelectionDialogFactory;
@@ -111,19 +116,28 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 		buttonAdd.addSelectionListener(new SelectionListener() { 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ConceptActivationHelper activationHelper = new ConceptActivationHelper((Repository) model);
-				try {
-					ListSelectionDialog dialog = ActiveConceptSelectionDialogFactory.createActiveConceptSelectionDialog(composite.getShell(), (Repository) model, "Select a Concept to be added");
-					if (dialog.open() == Dialog.OK) {
-						Object[] selectedObjects = dialog.getResult();
-						
-						activationHelper.handleAddConcepts(selectedObjects, editingDomain);
+				
+				WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
+					@Override
+					protected void execute(IProgressMonitor progressMonitor) throws CoreException {
+						ConceptActivationHelper activationHelper = new ConceptActivationHelper((Repository) model);
+						ListSelectionDialog dialog = ActiveConceptSelectionDialogFactory.createActiveConceptSelectionDialog(composite.getShell(), (Repository) model, "Select a Concept to be added");
+						if (dialog.open() == Dialog.OK) {
+							Object[] selectedObjects = dialog.getResult();
+							
+							activationHelper.handleAddConcepts(selectedObjects, editingDomain, progressMonitor);
+						}
 					}
-				} catch (Exception ex) {
-					Status status = new Status(Status.ERROR, DVLMEditorPlugin.ID, "Failure while enabling concept! ", ex);
+				};
+				
+				try {
+					operation.run(new NullProgressMonitor());
+				} catch (InvocationTargetException | InterruptedException exception) {
+					Status status = new Status(Status.ERROR, DVLMEditorPlugin.ID, "Failure while enabling concept! ", exception);
 					DVLMEditPlugin.getPlugin().getLog().log(status);
 					ErrorDialog.openError(Display.getDefault().getActiveShell(), "Failed to add Concept", "Failed to add Concept", status);
 				}
+				
 			}
 
 			@Override

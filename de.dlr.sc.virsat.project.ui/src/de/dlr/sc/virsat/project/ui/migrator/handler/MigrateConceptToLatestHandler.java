@@ -28,11 +28,11 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigrator;
 import de.dlr.sc.virsat.model.concept.migrator.CreateMigrateConceptToLatestCommand;
+import de.dlr.sc.virsat.model.concept.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.ui.editingDomain.handler.AEditingDomainCommandHandler;
-import de.dlr.sc.virsat.project.ui.util.ConceptActivationHelper;
 
 /**
  * Handles upgrading a concept to the latest available version in the repository
@@ -57,7 +57,7 @@ public class MigrateConceptToLatestHandler extends AEditingDomainCommandHandler 
 					//If concept is active check if new dependencies have to be added before migration
 					if (concept.eContainer() != null && concept.eContainer() instanceof Repository) {
 						Repository repository = (Repository) concept.eContainer();
-						new ConceptActivationHelper(repository).handleNewDependencies(concept, ed);
+						new ConceptActivationHelper(repository).handleNewDependencies(concept, ed, progressMonitor);
 					}
 					
 					Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(concept, ed, progressMonitor);
