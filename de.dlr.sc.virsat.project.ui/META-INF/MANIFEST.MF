@@ -37,6 +37,5 @@ Export-Package: de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.project.ui.navigator.labelProvider,
  de.dlr.sc.virsat.project.ui.navigator.util,
  de.dlr.sc.virsat.project.ui.structure.command,
- de.dlr.sc.virsat.project.ui.transactional.handler,
- de.dlr.sc.virsat.project.ui.util
+ de.dlr.sc.virsat.project.ui.transactional.handler
 Automatic-Module-Name: de.dlr.sc.virsat.project.ui
