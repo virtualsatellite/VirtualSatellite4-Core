@@ -207,13 +207,28 @@ public abstract class AMigrator implements IMigrator {
 	
 	@Override
 	public Set<String> getNewDependencies(Concept concept, IMigrator previousMigrator) {
-		Set<String> newDependencies = new HashSet<String>();
+		
 		String conceptId = concept.getFullQualifiedName() + "/";
+		Concept conceptPrevious = loadConceptXmi(conceptId + previousMigrator.getResource());
 		Concept conceptNext = loadConceptXmi(conceptId + getResource());
+		
+		return getNewDependencies(conceptPrevious, concept, conceptNext);
+	}
+	
+	/**
+	 * Return new dependencies of new concept versions
+	 * @param conceptPrevious the previous concept version. A comparison between conceptPrevious
+	 * and the conceptCurrent should not yield any differences.
+	 * @param conceptCurrent the current concept as it is in the repository
+	 * @param conceptNext the next concept version
+	 * @return A set of new concept names
+	 */
+	public Set<String> getNewDependencies(Concept conceptPrevious, Concept conceptCurrent, Concept conceptNext) {
+		Set<String> newDependencies = new HashSet<String>();
 		
 		//new dependencies are dependencies of newer concept minus old dependencies
 		newDependencies = ActiveConceptHelper.getConceptDependencies(conceptNext);
-		newDependencies.removeAll(ActiveConceptHelper.getConceptDependencies(concept));
+		newDependencies.removeAll(ActiveConceptHelper.getConceptDependencies(conceptCurrent));
 		
 		return newDependencies;
 	}
