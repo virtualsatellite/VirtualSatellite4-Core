@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.xmi.DanglingHREFException;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -542,6 +543,33 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
 	}
 	
+	@Test
+	public void testAnalyzeResourceProblems() {
+		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
+		
+		// Contain the SE in a resource otherwise it will be identified as a dangling reference
+		Resource resourceSe = new ResourceImpl();
+		resourceSe.setURI(URI.createURI("uri://virsat.test/test"));
+		
+		Diagnostic noDiagnostic = resSet.analyzeResourceProblems(resourceSe);
+		assertEquals("No resource problem", Diagnostic.OK, noDiagnostic.getSeverity());
+
+		resourceSe.getErrors().add(new DanglingHREFException("Dangling Error", "here", 1, 1));
+		
+		Diagnostic errorDiagnostic = resSet.analyzeResourceProblems(resourceSe);
+		assertEquals("Now got errors", Diagnostic.ERROR, errorDiagnostic.getSeverity());
+		assertEquals("Got correct message", "DanglingHREFException: Dangling Error (here, 1, 1)", errorDiagnostic.getChildren().get(1).getMessage());
+
+		resourceSe.getErrors().clear();
+		resourceSe.getWarnings().add(new DanglingHREFException("Dangling Warning", "here", 1, 1));
+
+		Diagnostic warningDiagnostic = resSet.analyzeResourceProblems(resourceSe);
+		
+		// the XMI DanglingHREF Diagnostic is seen as a  throwable and thus reports as an Error instead of a warning 
+		assertEquals("Now got warning", Diagnostic.ERROR, warningDiagnostic.getSeverity());
+		assertEquals("Got correct message", "DanglingHREFException: Dangling Warning (here, 1, 1)", warningDiagnostic.getChildren().get(1).getMessage());
+	}
+		
 	@Test
 	public void testAnalyzeModelProblems() {
 		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
