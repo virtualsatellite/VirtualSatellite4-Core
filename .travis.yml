@@ -135,21 +135,21 @@ jobs:
       if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
       name: Build and Test - Surefire - Development and Features
       script:
-      - bash/maven_build.sh -j surefire -p development   
+      - bash/maven_build.sh -j surecoverage -p development   
     # ----------------------------
     # --- Integration Branches
     - stage: build-test
       if: branch = integration
       name: Build and Test - Surefire - Integration
       script:
-      - bash/maven_build.sh -j surefire -p integration   
+      - bash/maven_build.sh -j surecoverage -p integration   
     # ----------------------------
     # --- Release Tags
     - stage: build-test
       if: tag =~ /^Release/
       name: Build and Test - Surefire - Release
       script:
-      - bash/maven_build.sh -j surefire -p release   
+      - bash/maven_build.sh -j surecoverage -p release   
 
     # -----------------------------------------------------
     # Build and Test - Checkstyle Jobs

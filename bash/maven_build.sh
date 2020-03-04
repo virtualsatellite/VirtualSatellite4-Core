@@ -39,6 +39,7 @@ printUsage() {
 	echo "Jobname:"
 	echo " dependencies  Downloads and installs maven dependencies, e.g. overtarget."
 	echo " surefire      To run all surefire tests including junit and swtbot."
+	echo " surecoverage  To run all surefire tests including junit and swtbot and finally upload reports to codecov."
 	echo " spotbugs      To run spotbugs static code analysis."
 	echo " checkstyle    To run checkstyle for testing style guidelines."
 	echo " assemble      To run full assemble including the java docs build."
@@ -76,8 +77,6 @@ callMavenSurefire() {
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn clean install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
 	# Always try too upload coverage reports as soon as possible
-	echo "CodeCov"
-	bash <(curl -s https://codecov.io/bash)
 	checkforMavenProblems
 	echo "Check for failed test cases:"
 	(grep -n "<<< FAILURE!" maven.log || exit 0 && exit 1;)
@@ -86,6 +85,13 @@ callMavenSurefire() {
 	ant jacocoReport 2>&1 | tee ant.log
 	(grep -n "\(Rule violated\|BUILD FAILED\)" ant.log || exit 0 && exit 1;)
 }
+
+callMavenSurefireAndCoverage() {
+	callMavenSurefire
+	echo "CodeCov"
+	bash <(curl -s https://codecov.io/bash)
+}
+
 
 callMavenSpotbugs() {
 	echo "Maven - Spotbugs - ${MAVEN_PROFILE}"
@@ -155,6 +161,9 @@ case $TRAVIS_JOB in
                         exit
                         ;;
     surefire )          callMavenSurefire
+                        exit
+                        ;;
+    surecoverage )      callMavenSurefireAndCoverage
                         exit
                         ;;
     spotbugs )      	callMavenSpotbugs
