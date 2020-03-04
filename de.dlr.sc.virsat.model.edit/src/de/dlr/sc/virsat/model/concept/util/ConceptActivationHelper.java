@@ -120,8 +120,7 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Handle the activation of concepts. Resolves dependency chains. Required concepts
-	 * of required concepts are also activated.
+	 * Handle the activation of concepts. Resolves dependencies in correct order. 
 	 * @param conceptConfigurationElements a list of concept configurations
 	 * @param editingDomain the editing domain
 	 */
@@ -157,7 +156,6 @@ public class ConceptActivationHelper {
 	/**
 	 * Prepare a selected concept for activation. Checks if an older version is already in the repository and if so
 	 * migrates it to the latest version, otherwise the concept will be simply added to the active concepts
-	 * This method does not check for dependency chains. Use handleAddConcepts() for that purpose
 	 * @param concept the selected concept
 	 * @param editingDomain the editing domain
 	 */
@@ -196,7 +194,7 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Activate new concept dependencies ->  also considering potential dependency chains 
+	 * Activate new concept dependencies 
 	 * @param concept the concept to be prepared for migration
 	 * @param editingDomain the editing domain
 	 */
