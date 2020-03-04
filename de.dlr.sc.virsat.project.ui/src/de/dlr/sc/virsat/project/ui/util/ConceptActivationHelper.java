@@ -39,7 +39,8 @@ import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.migrator.handler.MigrateConceptToLatestHandler;
 
 /**
- *
+ * Class to handle the UI part of activating concepts. Also used to add concepts 
+ * when migration of concepts requires new concepts to be active
  */
 public class ConceptActivationHelper {
 	
@@ -68,7 +69,7 @@ public class ConceptActivationHelper {
 	
 	/**
 	 * Handle the activation of concept configuration elements
-	 * @param conceptConfigurationElements an iterable of concept configurations
+	 * @param conceptConfigurationElements a list of concept configurations
 	 * @param editingDomain the editing domain
 	 */
 	public void handleAddConcepts(List<Concept> concepts, EditingDomain editingDomain) {
@@ -101,8 +102,9 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Handle a selected concept to active. Checks if an older version is already in the repository and if so
+	 * Handle a selected concept for activation. Checks if an older version is already in the repository and if so
 	 * migrates the existing concept to the latest version, otherwise the concept will be simply added to the active concepts
+	 * This method does not check for dependency chains. Use handleAddConcepts() for that purpose
 	 * @param concept the selected concept
 	 * @param editingDomain the editing domain
 	 */
@@ -146,8 +148,8 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Active new required concepts to repository 
-	 * @param concept the concept to new migrated
+	 * Activate new required concepts by also considering potential dependency chains 
+	 * @param concept the concept to be prepared for migration
 	 * @param editingDomain the editing domain
 	 */
 	public void handleNewDependencies(Concept concept, EditingDomain editingDomain) {
