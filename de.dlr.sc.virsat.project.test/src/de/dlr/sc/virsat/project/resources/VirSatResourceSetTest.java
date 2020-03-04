@@ -542,8 +542,6 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
 	}
 	
-	
-	
 	@Test
 	public void testAnalyzeModelProblems() {
 		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
@@ -578,6 +576,49 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertEquals("The dangling reference should be detected", Diagnostic.WARNING, diagnosticResult.getSeverity());
 	}
 	
+	/**
+	 * A resource set which allows null contents
+	 *
+	 */
+	class NullableResource extends ResourceImpl {
+		@SuppressWarnings("serial")
+		@Override
+		public EList<EObject> getContents() {
+			if (contents == null) {
+				contents = new ResourceImpl.ContentsEList<EObject>() {
+					@Override
+					protected boolean canContainNull() {
+						return true;
+					};
+
+					@Override
+					public NotificationChain inverseAdd(EObject object, NotificationChain notifications) {
+						return notifications;
+					}
+				};
+			}
+			return contents;
+		}
+	}
+	
+	@Test
+	public void testAnalyzeResourceNullProblems() {
+		// Now create a resource which allows nulls to be set
+		// Usually an EMF resource set does not allow to have null contents. Still there were stack traces
+		// showing that somehow null content made its way into the resource set. 
+		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
+		Resource nullableResource = new NullableResource();
+		nullableResource.setURI(URI.createURI("uri://virsat.test/test"));
+
+		Diagnostic diagnosticNoNull = resSet.analyzeResourceNullProblems(nullableResource);
+		assertEquals("Got an ok diagnostic", Diagnostic.OK, diagnosticNoNull.getSeverity());
+		
+		nullableResource.getContents().add(null);
+
+		Diagnostic diagnosticNull = resSet.analyzeResourceNullProblems(nullableResource);
+		assertEquals("Got an ok diagnostic", Diagnostic.ERROR, diagnosticNull.getSeverity());
+	}
+
 	/**
 	 * Test resource set that tracks updateDiagnostic call for testing resourceNullContentAdapter.
 	 */
@@ -620,27 +661,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertFalse("Diagnostic update is not yet triggered", resSet.triggeredDiagnosticUpdate);
 
 		// Now create a resource which allows nulls to be set
-		Resource nullableResource = new ResourceImpl() {
-			@SuppressWarnings("serial")
-			@Override
-			public EList<EObject> getContents() {
-				if (contents == null) {
-					contents = new ResourceImpl.ContentsEList<EObject>() {
-						@Override
-						protected boolean canContainNull() {
-							return true;
-						};
-
-						@Override
-						public NotificationChain inverseAdd(EObject object, NotificationChain notifications) {
-							return notifications;
-						}
-					};
-				}
-				return contents;
-			}
-		};
-		
+		Resource nullableResource = new NullableResource();		
 		assertNull("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource));
 
 		// Now add the null object and see that the diagnostics are running as expected
@@ -652,4 +673,5 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource)
 				.getChildren().get(0).getMessage().contains("Found NULL object in resource content"));
 	}
+	
 }
