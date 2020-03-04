@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -131,9 +130,10 @@ public class ExporterTest extends ATestConceptTestCase {
 		tc.setTestFloat(2);
 		tc.setTestEnum("HIGH");
 		tc.setTestString("test");
+
 		tsei.add(tc);	//TestCategoryAllProperty
 		MatFile testmat = exporter.exportSei(sei);
-		
+
 		Struct struct = testmat.getStruct("testsei").getStruct(tc.getName());
 		assertEquals("Number of Instances", struct.getFieldNames().size(), sei.getCategoryAssignments().get(0).getPropertyInstances().size());
 		assertEquals("testString", struct.getStruct("testString").getFieldNames().size(), 1);
