@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +31,6 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
-import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
 
@@ -87,15 +87,23 @@ public class ExporterTest extends ATestConceptTestCase {
 	@Test
 	public void testExportSeiHasChildren() throws IOException {
 		TestStructuralElementOther tsei2 = new TestStructuralElementOther(testConcept);
-		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testse4i");
-		sei2.setParent(sei);
 		TestStructuralElementOther tsei3 = new TestStructuralElementOther(testConcept);
+		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		StructuralElementInstance sei3 = tsei3.getStructuralElementInstance();
-		sei3.setName("testse3i");
-		sei3.setParent(sei);
+		StructuralElementInstance sei4 = tsei4.getStructuralElementInstance();
+		sei2.setName("sei1Child");
+		sei3.setName("sei2Child");
+		sei4.setName("sei3Child");
+		sei2.setParent(sei);
+		sei3.setParent(sei2);
+		sei4.setParent(sei);
 		MatFile testmat = exporter.exportSei(sei);
-		Mat5.writeToFile(testmat, "Matfile.mat");
+		Struct struct = testmat.getStruct("testsei").getStruct("children");
+		List<String> childnames = struct.getFieldNames();
+		
+		assertThat("Includes all Children", childnames, hasItems("sei1Child", "sei3Child"));
+		assertThat("Child has Child", struct.getStruct("sei1Child").getStruct("children").getFieldNames(), hasItems("sei2Child"));
 	}
 
 	@Test
@@ -122,9 +130,10 @@ public class ExporterTest extends ATestConceptTestCase {
 		tc.setTestBool(true);
 		tc.setTestFloat(2);
 		tc.setTestEnum("HIGH");
+		tc.setTestString("test");
 		tsei.add(tc);	//TestCategoryAllProperty
-
 		MatFile testmat = exporter.exportSei(sei);
+		
 		Struct struct = testmat.getStruct("testsei").getStruct(tc.getName());
 		assertEquals("Number of Instances", struct.getFieldNames().size(), sei.getCategoryAssignments().get(0).getPropertyInstances().size());
 		assertEquals("testString", struct.getStruct("testString").getFieldNames().size(), 1);
@@ -138,6 +147,7 @@ public class ExporterTest extends ATestConceptTestCase {
 		assertEquals("Value of Enum", struct.getStruct("testEnum").get("value").toString(), "25.0");
 		assertEquals("Name of Enum", exporter.shorter(struct.getStruct("testEnum").get("name").toString()), "HIGH");
 		assertEquals("Value of Bool", struct.getStruct("testBool").get("value").toString(), "true");
+		assertEquals("Value of String", exporter.shorter(struct.getStruct("testString").get("value").toString()), "test");
 	}
 
 	@Test
