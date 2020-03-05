@@ -18,8 +18,19 @@ import org.eclipse.emf.common.util.EList;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyinstancesSwitch;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.format.Mat5;
+import us.hebi.matlab.mat.types.Array;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
 
@@ -31,10 +42,10 @@ public class Importer {
 	public void importSei(StructuralElementInstance sei, File file) throws IOException {
 		MatFile mat = Mat5.readFromFile(file);
 		//maybe check TODO ask!
-		//check for name, uuid and children (recursively)
-		//if (checkIfCorrectSei(sei, mat)) {
-		Struct struct = mat.getStruct(sei.getName());
-		importSei(sei, struct);
+		if (checkIfCorrectSei(sei, mat)) {
+			Struct struct = mat.getStruct(sei.getName());
+			importSei(sei, struct);
+		}
 	}
 
 	private void importSei(StructuralElementInstance sei, Struct struct) {
@@ -73,48 +84,156 @@ public class Importer {
 		}
 
 		//import all new CategoryAssinments
-		for (String nameMatCa : nameMatCas) {
-			seiCas.add(importNewCa(struct.get(nameMatCa)));
-		}
-	}
-
-	private CategoryAssignment importNewCa(Struct struct) {
-		return null;
+		//for (String nameMatCa : nameMatCas) {
+		//	seiCas.add(importNewCa(struct.get(nameMatCa),nameMatCa));
+		//}
 	}
 
 	private void importGivenCa(CategoryAssignment seiCa, Struct struct) {
-		EList<APropertyInstance> seiPI = seiCa.getPropertyInstances();
+		EList<APropertyInstance> seiAPIs = seiCa.getPropertyInstances();
+		List<String> nameMatAPIs = struct.getFieldNames();
 		
-		
-	
+		//import all given APropertyInstances
+		for (APropertyInstance seiAPI : seiAPIs) {
+			if (nameMatAPIs.contains(seiAPI.getType().getName())) {
+				importGivenAPI(seiAPI, struct.get(seiAPI.getType().getName()));
+				nameMatAPIs.remove(seiAPI.getType().getName());
+			} else {
+				seiAPIs.remove(seiAPI);
+			}
+		}
+
+		//import all new APropertyInstances
+		//for (String nameMatAPI : nameMatAPIs) {
+		//	seiAPIs.add(importNewAPI(struct.get(nameMatAPI)));
+		//}
 	}
 
+//	private CategoryAssignment importNewCa(Struct struct, String nameMatCa) {
+//		return null;
+//	}
+//
+//	private APropertyInstance importNewAPI(Struct struct) {
+//		return null;
+//	}
+
+
 
 	
-	private String getRigthProperty(Struct struct) {
-		List<String> fields = struct.getFieldNames();
-		if (fields.contains("uri") && fields.size() == 1) {
-			return "Resource";
-		} else if (fields.contains("value") && fields.size() == 1) {
-			return "Value";
-		} else if (fields.contains("value") && fields.contains("unit") && fields.size() == 2) {
-			return "Float";
-		} else if (fields.contains("unit") && fields.contains("value") && fields.contains("name") && fields.size() == 3) {
-			return "Enum";
-		} else if (fields.contains("uuid") && fields.contains("fullQualifiedInstanceName") && fields.size() == 2) {
-			return "Reference";
-		} else if (fields.contains("reference") && fields.contains("reference-class") && fields.size() == 2) {
-			return "EReference";
-		}
+	private void importGivenAPI(APropertyInstance seiAPI, Struct struct) {
+		getRightProperty(seiAPI, struct);
+	}
+
+	private Boolean getRightProperty(APropertyInstance element, Struct struct) {
+		Boolean done = new PropertyinstancesSwitch<Boolean>() {
+			@Override
+			public Boolean caseUnitValuePropertyInstance(UnitValuePropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseResourcePropertyInstance(ResourcePropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseEnumUnitPropertyInstance(EnumUnitPropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseValuePropertyInstance(ValuePropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseReferencePropertyInstance(ReferencePropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseEReferencePropertyInstance(EReferencePropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseComposedPropertyInstance(ComposedPropertyInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+			@Override
+			public Boolean caseArrayInstance(ArrayInstance object) {
+				return contentOfProperty(object, struct);
+			}
+
+		}.doSwitch(element);
+		return done;
+	}
+	
+	protected Boolean contentOfProperty(ArrayInstance object, Struct struct) {
+		// TODO Auto-generated method stub
 		return null;
 	}
+
+	protected Boolean contentOfProperty(ComposedPropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Boolean contentOfProperty(EReferencePropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Boolean contentOfProperty(ReferencePropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Boolean contentOfProperty(ValuePropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Boolean contentOfProperty(EnumUnitPropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Boolean contentOfProperty(ResourcePropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Boolean contentOfProperty(UnitValuePropertyInstance object, Struct struct) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	private String getRigthProperty(Struct struct) {
+//		List<String> fields = struct.getFieldNames();
+//		if (fields.contains("uri") && fields.size() == 1) {
+//			return "Resource";
+//		} else if (fields.contains("value") && fields.size() == 1) {
+//			return "Value";
+//		} else if (fields.contains("value") && fields.contains("unit") && fields.size() == 2) {
+//			return "Float";
+//		} else if (fields.contains("unit") && fields.contains("value") && fields.contains("name") && fields.size() == 3) {
+//			return "Enum";
+//		} else if (fields.contains("uuid") && fields.contains("fullQualifiedInstanceName") && fields.size() == 2) {
+//			return "Reference";
+//		} else if (fields.contains("reference") && fields.contains("reference-class") && fields.size() == 2) {
+//			return "EReference";
+//		}
+//		return null;
+//	}
 
 	/**
 	 * hands back boolean that represents if the MatFile and the sei are equal
 	 * @param sei StructuralElementInstance to test
 	 * @param mat MatFile to test
 	 */
-	protected boolean checkIfCorrectSei(StructuralElementInstance sei, MatFile mat) {
+	public boolean checkIfCorrectSei(StructuralElementInstance sei, MatFile mat) {
 		try {
 			Struct seiStruct = mat.getStruct(sei.getName());
 			return checkIfCorrectSei(sei, seiStruct);
@@ -165,20 +284,20 @@ public class Importer {
 		}
 
 		//check Category Assignments
-		
-		if (sei.getCategoryAssignments().size() == structFields.size()) {
-			if (sei.getCategoryAssignments().size() > 0) {
-				List<String> cas = new ArrayList<String>();
-				for (CategoryAssignment ca : sei.getCategoryAssignments()) {
-					cas.add(ca.getName());
-				}
-				if (!cas.equals(structFields)) {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
+//		
+//		if (sei.getCategoryAssignments().size() == structFields.size()) {
+//			if (sei.getCategoryAssignments().size() > 0) {
+//				List<String> cas = new ArrayList<String>();
+//				for (CategoryAssignment ca : sei.getCategoryAssignments()) {
+//					cas.add(ca.getName());
+//				}
+//				if (!cas.equals(structFields)) {
+//					return false;
+//				}
+//			}
+//		} else {
+//			return false;
+//		}
 		return true;
 	}
 
