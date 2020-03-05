@@ -37,12 +37,12 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.edit.Activator;
+import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
 /**
  * This class helps activating concepts. Concepts are copied into the 
- * repository. Furthermore, It redirects references so that these can be 
- * resolved from a platform plugin. References to concepts are redirected 
+ * repository. Furthermore, this class redirects references so that these can be 
+ * resolved from a platform plugin. References to other concepts are redirected 
  * to their active version within the repository
  *
  */
@@ -81,12 +81,12 @@ public class ConceptActivationHelper {
 
 		// In case we try to create a reference to an object which was not copied
 		// we should try to redirect that reference to an already active and existing concept
-		if (repository != null && type instanceof IConceptTypeDefinition) {
+		if (repository != null && repository.eResource() != null && type instanceof IConceptTypeDefinition) {
 			IConceptTypeDefinition typeDefinition = (IConceptTypeDefinition) type;
 	
 			// Get the fragment URI of the concept we want to reference to
 			String uriFragment = EcoreUtil.getURI(typeDefinition).fragment();
-
+		
 			// ask the repository if there is such an object with the given URI fragment
 			Resource repoResource = repository.eResource();
 			EObject repoTypeDefinition = repoResource.getEObject(uriFragment);
@@ -104,11 +104,11 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Handle the activation of concept configuration elements
-	 * @param conceptConfigurationElements an iterable of concept configurations
+	 * Handle the activation of concepts from their configuration elements
+	 * @param conceptConfigurationElements an array of concept configurations
 	 * @param editingDomain the editing domain
 	 */
-	public void handleAddConcepts(Object[] conceptConfigurationElements, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
+	public void activateConcepts(Object[] conceptConfigurationElements, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		
 		List<Concept> concepts = new ArrayList<Concept>();
 		for (Object acce : conceptConfigurationElements) {
@@ -116,15 +116,15 @@ public class ConceptActivationHelper {
 				concepts.add(((ActiveConceptConfigurationElement) acce).loadConceptFromPlugin());
 			}
 		}
-		handleAddConcepts(concepts, editingDomain, progressMonitor);
+		activateConcepts(concepts, editingDomain, progressMonitor);
 	}
 	
 	/**
-	 * Handle the activation of concept configuration elements
+	 * Handle the activation of concepts. Resolves dependencies in correct order. 
 	 * @param conceptConfigurationElements a list of concept configurations
 	 * @param editingDomain the editing domain
 	 */
-	public void handleAddConcepts(List<Concept> concepts, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
+	public void activateConcepts(List<Concept> concepts, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		
 		// Correctly sort the selected concepts depending on their dependencies
 		DependencyTree<String> dependencyTree = new DependencyTree<String>();
@@ -148,44 +148,40 @@ public class ConceptActivationHelper {
 		// and the map of concept names pointing to the already preloaded concepts
 		for (String conceptName : orderedConcepts) {
 			if (selectedConcepts.containsKey(conceptName)) {
-				handleAddConcept(selectedConcepts.get(conceptName), editingDomain, progressMonitor);
+				activateConcept(selectedConcepts.get(conceptName), editingDomain, progressMonitor);
 			}
 		}
 	}
 	
 	/**
-	 * Handle a selected concept for activation. Checks if an older version is already in the repository and if so
-	 * migrates the existing concept to the latest version, otherwise the concept will be simply added to the active concepts
-	 * This method does not check for dependency chains. Use handleAddConcepts() for that purpose
+	 * Prepare a selected concept for activation. Checks if an older version is already in the repository and if so
+	 * migrates it to the latest version, otherwise the concept will be simply added to the active concepts
 	 * @param concept the selected concept
 	 * @param editingDomain the editing domain
 	 */
-	protected void handleAddConcept(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
-		boolean conceptIsInRepository = false;
-		
+	protected void activateConcept(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
+
 		// Check if we already have this concept but with a different version added to the repository
+		Concept activeConcept = new ActiveConceptHelper(repository).getConcept(concept.getName());
+
+		boolean conceptIsInRepository = activeConcept != null;
 		
-		List<Concept> activeConcepts = repository.getActiveConcepts();
-		for (Concept activeConcept : activeConcepts) {
-			conceptIsInRepository = activeConcept.getName().equals(concept.getName());
-			
-			// There is a concept of an different version in the repository, ask if the user wants to migrate and do so
-			if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
-					
-				//If concept is active check if new dependencies have to be added before migration
-				if (concept.eContainer() != null && concept.eContainer() instanceof Repository) {
-					Repository repository = (Repository) concept.eContainer();
-					new ConceptActivationHelper(repository).handleNewDependencies(concept, editingDomain, progressMonitor);
-				}
+		// There is a concept of a different version in the repository
+		if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
 				
-				try {
-					Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(concept, (TransactionalEditingDomain) editingDomain, progressMonitor);
-					editingDomain.getCommandStack().execute(migrateToLatestCommand);
-				} catch (CoreException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to do migration on active concept: " + concept.getDisplayName(), e));
-				}
-				
+			//Check if new dependencies have to be added before migration
+			if (activeConcept.eContainer() != null && activeConcept.eContainer() instanceof Repository) {
+				Repository repository = (Repository) activeConcept.eContainer();
+				new ConceptActivationHelper(repository).handleNewDependencies(activeConcept, editingDomain, progressMonitor);
 			}
+			
+			try {
+				Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(activeConcept, (TransactionalEditingDomain) editingDomain, progressMonitor);
+				editingDomain.getCommandStack().execute(migrateToLatestCommand);
+			} catch (CoreException e) {
+				DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, "Failed to do migration on active concept: " + concept.getDisplayName(), e));
+			}
+			
 		}
 		
 		if (!conceptIsInRepository) {
@@ -195,7 +191,7 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Activate new required concepts by also considering potential dependency chains 
+	 * Activate new concept dependencies 
 	 * @param concept the concept to be prepared for migration
 	 * @param editingDomain the editing domain
 	 */
@@ -209,14 +205,14 @@ public class ConceptActivationHelper {
 				migrator.getNewDependencies(concept, previousMigrator).stream().forEach(key -> newRequiredConcepts.add(key));
 			}
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform loading new depencies for migration!", e));
+			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, "Failed to perform loading new depencies for migration!", e));
 		}
 		
 		for (String conceptName : newRequiredConcepts) {
 			concepts.add(ActiveConceptConfigurationElement.loadConceptFromPlugin(conceptName + CONCEPT_PATH));
 		}
 		
-		handleAddConcepts(concepts, editingDomain, progressMonitor);
+		activateConcepts(concepts, editingDomain, progressMonitor);
 	}
 	
 

@@ -124,7 +124,7 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 					WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
 						@Override
 						protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-							activationHelper.handleAddConcepts(selectedObjects, editingDomain, progressMonitor);
+							activationHelper.activateConcepts(selectedObjects, editingDomain, progressMonitor);
 						}
 					};
 					

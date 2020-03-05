@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edapt.common.IResourceSetFactory;
 import org.eclipse.emf.edapt.internal.migration.execution.ValidationLevel;
 import org.eclipse.emf.edapt.migration.MigrationException;
@@ -87,6 +88,7 @@ public abstract class AMigrator implements IMigrator {
 	private IMerger.Registry mergerRegistry;
 	private IMatchEngine.Factory.Registry matchRegistry;
 	private ConceptActivationHelper activationHelper;
+	private Concept newNonActiveConcept;
 	
 	/**
 	 * Default Constructor
@@ -179,9 +181,13 @@ public abstract class AMigrator implements IMigrator {
 			
 			@Override
 			protected void addInTarget(ReferenceChange diff, boolean rightToLeft) {
-				//Activate types that are copied to repository via migration
-				EObject activeReferenceValue = activationHelper.getActiveType(diff.getValue());
-				diff.setValue(activeReferenceValue);
+				//Activate new types that are copied to repository via migration
+				String fragement = EcoreUtil.getURI(diff.getValue()).fragment().replace("/", "");
+				//Only activate if types are not in the concept resource itself
+				if (newNonActiveConcept.eResource() != null && newNonActiveConcept.eResource().getEObject(fragement) == null) {
+					EObject activeReferenceValue = activationHelper.getActiveType(diff.getValue());
+					diff.setValue(activeReferenceValue);
+				}
 				super.addInTarget(diff, rightToLeft);
 			}
 			
@@ -248,8 +254,7 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptCurrent, IMigrator previousMigrator) {
 		String conceptId = conceptCurrent.getFullQualifiedName() + "/";
 		Concept conceptPrevious = loadConceptXmi(conceptId + previousMigrator.getResource());
-		Concept conceptNext =  loadConceptXmi(conceptId + getResource());
-		activationHelper = new ConceptActivationHelper(conceptCurrent);
+		Concept conceptNext = loadConceptXmi(conceptId + getResource());
 		
 		migrate(conceptPrevious, conceptCurrent, conceptNext);
 	}
@@ -264,6 +269,8 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptPrevious, Concept conceptCurrent, Concept conceptNext) {
 		IComparisonScope scope = new DefaultComparisonScope(conceptNext, conceptCurrent,  conceptPrevious);
 		Comparison comparison = EMFCompare.builder().setMatchEngineFactoryRegistry(matchRegistry).build().compare(scope);
+		activationHelper = new ConceptActivationHelper(conceptCurrent);
+		newNonActiveConcept = conceptNext;
 
 		List<Diff> differences = comparison.getDifferences();
 		cmHelper = new ConceptMigrationHelper(conceptCurrent);
@@ -648,6 +655,13 @@ public abstract class AMigrator implements IMigrator {
 		
 		String nsURI = ReleaseUtils.getNamespaceURI(conceptResourceUri);
 		Migrator migrator = MigratorRegistry.getInstance().getMigrator(nsURI);
+		
+		if (migrator == null) {
+			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, 
+					"Could not get DVLM migrator for concept resource: " + conceptResourceUri));
+			//Check that all dependent concepts and their plugins are available in platform...  
+			return new ResourceSetImpl();
+		}
 		
 		migrator.setResourceSetFactory(resSetFactory);
 		Release release = migrator.getRelease(conceptResourceUri).iterator().next();
