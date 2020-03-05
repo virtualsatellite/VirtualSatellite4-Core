@@ -37,7 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.edit.Activator;
+import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
 /**
  * This class helps activating concepts. Concepts are copied into the 
@@ -179,7 +179,7 @@ public class ConceptActivationHelper {
 				Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(activeConcept, (TransactionalEditingDomain) editingDomain, progressMonitor);
 				editingDomain.getCommandStack().execute(migrateToLatestCommand);
 			} catch (CoreException e) {
-				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to do migration on active concept: " + concept.getDisplayName(), e));
+				DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, "Failed to do migration on active concept: " + concept.getDisplayName(), e));
 			}
 			
 		}
@@ -205,7 +205,7 @@ public class ConceptActivationHelper {
 				migrator.getNewDependencies(concept, previousMigrator).stream().forEach(key -> newRequiredConcepts.add(key));
 			}
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform loading new depencies for migration!", e));
+			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, "Failed to perform loading new depencies for migration!", e));
 		}
 		
 		for (String conceptName : newRequiredConcepts) {
