@@ -56,7 +56,7 @@ public abstract class AProjectTestCase {
 	protected VirSatProjectCommons projectCommons;
 	protected VirSatResourceSet rs;
 	
-	private List<IProject> testProjects = new ArrayList<>();
+	protected List<IProject> testProjects = new ArrayList<>();
 	
 	/**
 	 * Use this method to create a new test project and to remember it for the test case.
