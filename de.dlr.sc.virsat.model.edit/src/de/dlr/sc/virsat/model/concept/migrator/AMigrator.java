@@ -254,7 +254,7 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptCurrent, IMigrator previousMigrator) {
 		String conceptId = conceptCurrent.getFullQualifiedName() + "/";
 		Concept conceptPrevious = loadConceptXmi(conceptId + previousMigrator.getResource());
-		Concept conceptNext =  loadConceptXmi(conceptId + getResource());
+		Concept conceptNext = loadConceptXmi(conceptId + getResource());
 		
 		migrate(conceptPrevious, conceptCurrent, conceptNext);
 	}

@@ -104,7 +104,7 @@ public class ConceptActivationHelper {
 	}
 	
 	/**
-	 * Handle the activation of concept configuration elements
+	 * Handle the activation of concepts from their configuration elements
 	 * @param conceptConfigurationElements an array of concept configurations
 	 * @param editingDomain the editing domain
 	 */
@@ -166,10 +166,10 @@ public class ConceptActivationHelper {
 
 		boolean conceptIsInRepository = activeConcept != null;
 		
-		// There is a concept of an different version in the repository, ask if the user wants to migrate and do so
+		// There is a concept of a different version in the repository
 		if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
 				
-			//If concept is active check if new dependencies have to be added before migration
+			//Check if new dependencies have to be added before migration
 			if (activeConcept.eContainer() != null && activeConcept.eContainer() instanceof Repository) {
 				Repository repository = (Repository) activeConcept.eContainer();
 				new ConceptActivationHelper(repository).handleNewDependencies(activeConcept, editingDomain, progressMonitor);

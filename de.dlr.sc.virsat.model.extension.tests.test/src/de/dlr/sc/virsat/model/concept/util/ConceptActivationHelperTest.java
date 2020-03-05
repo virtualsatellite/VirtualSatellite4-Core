@@ -57,6 +57,7 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 		activationHelper.activateConcepts(concepts, editingDomain, new NullProgressMonitor());
 
 		assertTrue("Concept has been added", repository.getActiveConcepts().size() == 2);
+		//Order is also important here
 		assertEquals("Maturity concept added", repository.getActiveConcepts().get(0).getName(), MATURITY_CONCEPT_NAME);
 		assertEquals("Test concept added", repository.getActiveConcepts().get(1).getName(), TEST_CONCEPT_NAME);
 	}
@@ -66,12 +67,9 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 		ConceptActivationHelper activationHelper = new ConceptActivationHelper(repository);
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
 		Concept maturityConcept = loadConceptFromPlugin(MATURITY_CONCEPT_NAME);
-		Concept testConceptOld = ConceptXmiLoader
-				.loadConceptFromPlugin(TEST_CONCEPT_NAME + "/concept/concept_v1_0.xmi");
-		activationHelper.activateConcepts(Collections.singletonList(maturityConcept), editingDomain,
-				new NullProgressMonitor());
-		activationHelper.activateConcepts(Collections.singletonList(testConceptOld), editingDomain,
-				new NullProgressMonitor());
+		Concept testConceptOld = ConceptXmiLoader.loadConceptFromPlugin(TEST_CONCEPT_NAME + "/concept/concept_v1_0.xmi");
+		activationHelper.activateConcepts(Collections.singletonList(maturityConcept), editingDomain, new NullProgressMonitor());
+		activationHelper.activateConcepts(Collections.singletonList(testConceptOld), editingDomain, new NullProgressMonitor());
 
 		assertEquals("Test concept version is old", activeConceptHelper.getConcept(TEST_CONCEPT_NAME).getVersion(),
 				testConceptOld.getVersion());
@@ -86,7 +84,7 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 		final int EXPECTED_CONCEPT_NUMBER = 3;
 		assertEquals("Concept has been added", EXPECTED_CONCEPT_NUMBER, repository.getActiveConcepts().size());
 		assertNotNull("Maturity concept added", activeConceptHelper.getConcept(MATURITY_CONCEPT_NAME));
-		assertNotNull("Maturity concept added", activeConceptHelper.getConcept(TEST_CONCEPT_NAME));
+		assertNotNull("Test concept is active", activeConceptHelper.getConcept(TEST_CONCEPT_NAME));
 		assertNotNull("Core concept has been added as part of the migration (it is a new dependency of test concept version 1.1)",
 				activeConceptHelper.getConcept(CORE_CONCEPT_NAME));
 		assertEquals("Test concept has been updated", activeConceptHelper.getConcept(TEST_CONCEPT_NAME).getVersion(),
@@ -98,12 +96,10 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 
 		ConceptActivationHelper activationHelper = new ConceptActivationHelper(repository);
 		ActiveConceptHelper conceptHelper = new ActiveConceptHelper(repository);
-		Concept activeMaturityConcept = executeAsCommand(
-				() -> loadConceptAndInstallToRepository(MATURITY_CONCEPT_NAME));
+		Concept activeMaturityConcept = executeAsCommand(() -> loadConceptAndInstallToRepository(MATURITY_CONCEPT_NAME));
 		Concept activeTestConcept = executeAsCommand(() -> loadConceptAndInstallToRepository(TEST_CONCEPT_NAME));
 
-		assertEquals("Active concept should be in repository", activeMaturityConcept.eResource(),
-				repository.eResource());
+		assertEquals("Active concept should be in repository", activeMaturityConcept.eResource(), repository.eResource());
 		assertEquals("Active concept should be in repository", activeTestConcept.eResource(), repository.eResource());
 
 		Concept testConcept = loadConceptFromPlugin(TEST_CONCEPT_NAME);
