@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edapt.common.IResourceSetFactory;
 import org.eclipse.emf.edapt.internal.migration.execution.ValidationLevel;
 import org.eclipse.emf.edapt.migration.MigrationException;
@@ -87,6 +88,7 @@ public abstract class AMigrator implements IMigrator {
 	private IMerger.Registry mergerRegistry;
 	private IMatchEngine.Factory.Registry matchRegistry;
 	private ConceptActivationHelper activationHelper;
+	private Concept newNonActiveConcept;
 	
 	/**
 	 * Default Constructor
@@ -179,9 +181,13 @@ public abstract class AMigrator implements IMigrator {
 			
 			@Override
 			protected void addInTarget(ReferenceChange diff, boolean rightToLeft) {
-				//Activate types that are copied to repository via migration
-				EObject activeReferenceValue = activationHelper.getActiveType(diff.getValue());
-				diff.setValue(activeReferenceValue);
+				//Activate new types that are copied to repository via migration
+				String fragement = EcoreUtil.getURI(diff.getValue()).fragment().replace("/", "");
+				//Only activate if types are not in the concept resource itself
+				if (newNonActiveConcept.eResource() != null && newNonActiveConcept.eResource().getEObject(fragement) == null) {
+					EObject activeReferenceValue = activationHelper.getActiveType(diff.getValue());
+					diff.setValue(activeReferenceValue);
+				}
 				super.addInTarget(diff, rightToLeft);
 			}
 			
@@ -264,6 +270,7 @@ public abstract class AMigrator implements IMigrator {
 		IComparisonScope scope = new DefaultComparisonScope(conceptNext, conceptCurrent,  conceptPrevious);
 		Comparison comparison = EMFCompare.builder().setMatchEngineFactoryRegistry(matchRegistry).build().compare(scope);
 		activationHelper = new ConceptActivationHelper(conceptCurrent);
+		newNonActiveConcept = conceptNext;
 
 		List<Diff> differences = comparison.getDifferences();
 		cmHelper = new ConceptMigrationHelper(conceptCurrent);

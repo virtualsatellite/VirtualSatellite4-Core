@@ -86,7 +86,7 @@ public class ConceptActivationHelper {
 	
 			// Get the fragment URI of the concept we want to reference to
 			String uriFragment = EcoreUtil.getURI(typeDefinition).fragment();
-
+		
 			// ask the repository if there is such an object with the given URI fragment
 			Resource repoResource = repository.eResource();
 			EObject repoTypeDefinition = repoResource.getEObject(uriFragment);
@@ -166,24 +166,26 @@ public class ConceptActivationHelper {
 		
 		List<Concept> activeConcepts = repository.getActiveConcepts();
 		for (Concept activeConcept : activeConcepts) {
-			conceptIsInRepository = activeConcept.getName().equals(concept.getName());
-			
-			// There is a concept of an different version in the repository, ask if the user wants to migrate and do so
-			if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
+			if (activeConcept.getName().equals(concept.getName())) {
+				conceptIsInRepository = activeConcept.getName().equals(concept.getName());
+				
+				// There is a concept of an different version in the repository, ask if the user wants to migrate and do so
+				if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
+						
+					//If concept is active check if new dependencies have to be added before migration
+					if (concept.eContainer() != null && concept.eContainer() instanceof Repository) {
+						Repository repository = (Repository) concept.eContainer();
+						new ConceptActivationHelper(repository).handleNewDependencies(concept, editingDomain, progressMonitor);
+					}
 					
-				//If concept is active check if new dependencies have to be added before migration
-				if (concept.eContainer() != null && concept.eContainer() instanceof Repository) {
-					Repository repository = (Repository) concept.eContainer();
-					new ConceptActivationHelper(repository).handleNewDependencies(concept, editingDomain, progressMonitor);
+					try {
+						Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(activeConcept, (TransactionalEditingDomain) editingDomain, progressMonitor);
+						editingDomain.getCommandStack().execute(migrateToLatestCommand);
+					} catch (CoreException e) {
+						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to do migration on active concept: " + concept.getDisplayName(), e));
+					}
+					
 				}
-				
-				try {
-					Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(concept, (TransactionalEditingDomain) editingDomain, progressMonitor);
-					editingDomain.getCommandStack().execute(migrateToLatestCommand);
-				} catch (CoreException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to do migration on active concept: " + concept.getDisplayName(), e));
-				}
-				
 			}
 		}
 		
