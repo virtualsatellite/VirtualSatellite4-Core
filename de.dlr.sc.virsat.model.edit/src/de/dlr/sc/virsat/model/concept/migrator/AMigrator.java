@@ -71,10 +71,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
-import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
+import de.dlr.sc.virsat.model.edit.Activator;
 
 /**
  * Abstract class to implement a migrator for a concept.
@@ -656,6 +656,13 @@ public abstract class AMigrator implements IMigrator {
 		String nsURI = ReleaseUtils.getNamespaceURI(conceptResourceUri);
 		Migrator migrator = MigratorRegistry.getInstance().getMigrator(nsURI);
 		
+		if (migrator == null) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), 
+					"Could not get DVLM migrator for concept resource: " + conceptResourceUri));
+			//Check that all dependent concepts and their plugins are available in platform...  
+			return new ResourceSetImpl();
+		}
+		
 		migrator.setResourceSetFactory(resSetFactory);
 		Release release = migrator.getRelease(conceptResourceUri).iterator().next();
 		try {
@@ -664,7 +671,7 @@ public abstract class AMigrator implements IMigrator {
 				return migrator.migrateAndLoad(Collections.singletonList(conceptResourceUri), release, null, new NullProgressMonitor());
 			} 
 		} catch (MigrationException e) {
-			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, Status.ERROR, "Failed to migrate a Concept", e));
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Failed to migrate a Concept", e));
 		}
 		
 		return resSetFactory.createResourceSet();
