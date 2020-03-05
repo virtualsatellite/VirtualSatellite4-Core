@@ -25,9 +25,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -35,11 +35,20 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
+import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 
 public class GitCommitHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(),
+				"Commit Message", "Please enter a commit message describing your changes", "");
+
+		if (commitMessageDialog.open() != Window.OK) {
+			// Commit canceled
+			return null;
+		}
+
 		IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
 
 		Set<IProject> selectedProjects = new HashSet<>();
@@ -53,7 +62,7 @@ public class GitCommitHandler extends AbstractHandler {
 				selectedProjects.add(project);
 			}
 		}
-
+		
 		IVirSatVersionControlBackend gitBackend = new VirSatGitVersionControlBackend();
 		
 		Job job = new Job("Virtual Satellite Git Commit And Push") {
@@ -67,7 +76,7 @@ public class GitCommitHandler extends AbstractHandler {
 						ed.writeExclusive(() -> {
 							ed.getCommandStack().flush();
 							try {
-								gitBackend.commit(project, "First Commit with new architecture", subMonitor.split(1));
+								gitBackend.commit(project, commitMessageDialog.getCommitMessage(), subMonitor.split(1));
 							} catch (Exception e) {
 								status.add(new Status(Status.ERROR, "id", "Error during Commit", e));
 							}
