@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.egit.ui.internal.credentials.EGitCredentialsProvider;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -38,6 +39,7 @@ import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
 
 public class GitCommitHandler extends AbstractHandler {
 
+	@SuppressWarnings("restriction")
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
@@ -54,7 +56,7 @@ public class GitCommitHandler extends AbstractHandler {
 			}
 		}
 
-		IVirSatVersionControlBackend gitBackend = new VirSatGitVersionControlBackend();
+		IVirSatVersionControlBackend gitBackend = new VirSatGitVersionControlBackend(new EGitCredentialsProvider());
 		
 		Job job = new Job("Virtual Satellite Git Commit And Push") {
 			
