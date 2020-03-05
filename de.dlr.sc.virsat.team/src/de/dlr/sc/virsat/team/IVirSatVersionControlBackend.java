@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.team;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -17,7 +18,7 @@ public interface IVirSatVersionControlBackend {
 
 	void commit(IProject project, String message, IProgressMonitor monitor) throws Exception;
 	
-	void checkout(IWorkspaceRoot wsRoot, String uri,  IProgressMonitor monitor) throws Exception;
+	void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor) throws Exception;
 	
 	void checkin(IProject project, String uri,  IProgressMonitor monitor) throws Exception;
 

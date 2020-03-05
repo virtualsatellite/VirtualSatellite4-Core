@@ -9,8 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.git;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
@@ -76,7 +78,14 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkout(IWorkspaceRoot wsRoot, String uri, IProgressMonitor monitor) throws Exception {
+	public void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor) throws Exception {
+		File pathRepoLocal = new File(projectDescription.getLocationURI());
+		
+		Git.cloneRepository()
+			.setCredentialsProvider(credentialsProvider)
+			.setURI(remoteUri)
+			.setDirectory(pathRepoLocal)
+			.call();
 	}
 
 	@Override

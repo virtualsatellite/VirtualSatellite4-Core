@@ -16,6 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.team.Activator;
 
+import org.eclipse.core.internal.resources.Resource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -23,34 +24,62 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.egit.core.GitProvider;
+import org.eclipse.egit.core.internal.util.ResourceUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.team.core.RepositoryProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 public class VirSatGitVersionControlBackendTest extends AProjectTestCase {
 
 	@Override
 	protected IProject createTestProject(String projectName) throws CoreException {
-		
-		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(getProjectName());
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
 		projectDescription.setLocationURI(pathGitRepoLocal1.toUri());
-		
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getProjectName());
-		
-		
+		return createTestProject(projectName, projectDescription, true);
+	}
+	
+	/**
+	 * This method is used to create a project on a given descriptor
+	 * which is supposed to have a location into a git repository.
+	 * The project creation waits until the Project is mapped as git Repository
+	 * @param projectName Name of the project to be created
+	 * @param projectDescription decriptor pointing to the git repository
+	 * @return an iproject which is mapped to the git repository
+	 * @throws CoreException
+	 */
+	@SuppressWarnings("restriction")
+	protected IProject createTestProject(String projectName, IProjectDescription projectDescription, boolean waitForMapping) throws CoreException {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		testProjects.add(project);
 		if (!project.exists()) {
 			project.create(projectDescription, null);
-			String location = project.getLocationURI().toString();
 			project.open(null);
+			project.refreshLocal(Resource.DEPTH_INFINITE, null);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Created new test project " +  project.getName()));
 		}
+		
+		if (waitForMapping) {
+			waitForProjectToGitRepoMapping(project);
+		}
 		return project;
+	}
+
+	@SuppressWarnings("restriction")
+	protected void waitForProjectToGitRepoMapping(IProject project) {
+		try {
+			while (!ResourceUtil.isSharedWithGit(project)) {
+				Thread.sleep(10);
+			}
+		} catch (InterruptedException e) {
+		}
 	}
 	
 	private Path pathGitRepoRemote;
@@ -59,7 +88,6 @@ public class VirSatGitVersionControlBackendTest extends AProjectTestCase {
 	private Repository gitRepoRemote;
 	private Repository gitRepoLocal1;
 	private Repository gitRepoLocal2;
-	
 	
 	@Before
 	public void setUp() throws CoreException  {
@@ -149,27 +177,34 @@ public class VirSatGitVersionControlBackendTest extends AProjectTestCase {
 	@Test
 	public void testUpdate() throws Exception {
 
-		final String TEST_FILE_NAME = "testFileA.txt";
-		
-		File fileInRemote = new File(pathGitRepoRemote.toString(), TEST_FILE_NAME);
-		fileInRemote.createNewFile();
-		
-		Git.wrap(gitRepoRemote).add().addFilepattern(".").call();
-		Git.wrap(gitRepoRemote).commit().setMessage("Inital Commit in Remote").call();
-
-		File fileInLocal = new File(testProject.getProject().getFullPath().toFile(), TEST_FILE_NAME);
-		
-		assertFalse("File does not yet exist in local", fileInLocal.exists());
-		
-		new VirSatGitVersionControlBackend(null).update(testProject, new NullProgressMonitor());
-		
-		assertTrue("File appeared from Remote repository in local one", fileInLocal.exists());
-
 	}
 
 	@Test
-	public void testCheckout() {
-		fail("Not yet implemented");
+	public void testCheckout() throws Exception {
+		// prepare Repository in localRepo1 and commit the files
+		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		rs.getStructuralElementInstanceResource(sei1);
+		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei1);
+		new VirSatGitVersionControlBackend(null).commit(testProject, "Initial Commit", new NullProgressMonitor());
+		
+		// Now prepare the checkout into another project with another local repository
+		String projectName = getProjectName() + "CheckOut";
+		Path pathGitRepoCheckout = Files.createTempDirectory("VirtualSatelliteGitCheckOut_");
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
+		projectDescription.setLocationURI(pathGitRepoCheckout.toUri());
+		
+		// Execute the checkout
+		new VirSatGitVersionControlBackend(null).checkout(projectDescription, pathGitRepoRemote.toUri().toString(), new NullProgressMonitor());
+
+		// Create the project and wait until it is mapped with the Git Providers
+		IProject projectCheckout = createTestProject(projectName, projectDescription, true);
+		
+		// Now check that the SEI has been well checked out in the project and on the file system
+		File seiInLocalCheckout = new File(pathGitRepoCheckout.toFile(), seiFile.getFullPath().removeFirstSegments(1).toOSString());
+		assertTrue("File also exists in local2 after pull", seiInLocalCheckout.exists());
+	
+		IFile seiInLocalCheckoutWorkspace = projectCheckout.getFile(seiFile.getFullPath().removeFirstSegments(1));
+		assertTrue("File also exists in workspace", seiInLocalCheckoutWorkspace.exists());
 	}
 
 	@Test

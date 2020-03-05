@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.model
+ de.dlr.sc.virsat.model,
+ org.eclipse.team.core
 Export-Package: de.dlr.sc.virsat.team.test
 Automatic-Module-Name: de.dlr.sc.virsat.team.test
