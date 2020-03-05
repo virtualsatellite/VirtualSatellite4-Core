@@ -19,12 +19,19 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
+import org.eclipse.jgit.transport.CredentialsProvider;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 @SuppressWarnings("restriction")
 public class VirSatGitVersionControlBackend implements IVirSatVersionControlBackend {
 
+	private CredentialsProvider credentialsProvider;
+	
+	public VirSatGitVersionControlBackend(CredentialsProvider credentialsProvider) {
+		this.credentialsProvider = credentialsProvider;
+	}
+	
 	public static final int PROGRESS_INDEX_COMMIT_PUSH_STEPS = 3;
 	
 	public static final int GIT_REMOTE_TIMEOUT = 30;
@@ -48,6 +55,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 
 		ProgressMonitor gitPushMonitor = new EclipseGitProgressTransformer(pushAndCommitMonitor.split(1));
 		Git.wrap(gitRepository).push()
+			.setCredentialsProvider(credentialsProvider)
 			.setProgressMonitor(gitPushMonitor)
 			.setTimeout(GIT_REMOTE_TIMEOUT)
 			.call();
@@ -60,8 +68,9 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(monitor);
 		
 		Git.wrap(gitRepository).pull()
-			.setTimeout(GIT_REMOTE_TIMEOUT)
+			.setCredentialsProvider(credentialsProvider)
 			.setProgressMonitor(gitMonitor)
+			.setTimeout(GIT_REMOTE_TIMEOUT)
 			.setStrategy(MergeStrategy.THEIRS)
 			.call();
 	}
