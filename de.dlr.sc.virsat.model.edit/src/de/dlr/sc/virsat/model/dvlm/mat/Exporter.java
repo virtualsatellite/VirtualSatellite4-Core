@@ -184,12 +184,10 @@ public class Exporter {
 	private Struct contentOfProperty(ValuePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof BooleanProperty) {
-			BeanPropertyBoolean bpb = new BeanPropertyBoolean();
-			bpb.setATypeInstance(element);
+			BeanPropertyBoolean bpb = new BeanPropertyBoolean(element);
 			struct.set("value", (!bpb.isSet()) ? Mat5.newString("") : Mat5.newLogicalScalar(bpb.getValue()));
 		} else if (element.getType() instanceof StringProperty) {
-			BeanPropertyString bps = new BeanPropertyString();
-			bps.setATypeInstance(element);
+			BeanPropertyString bps = new BeanPropertyString(element);
 			struct.set("value", (!bps.isSet()) ? Mat5.newString("") : Mat5.newString(bps.getValue()));
 		}
 		return struct;
@@ -204,8 +202,7 @@ public class Exporter {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EReferenceProperty) {
 			
-			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>();
-			bpe.setATypeInstance(element);
+			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
 			
 			struct.set("reference", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
 			struct.set("reference-class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().getClass().getName()));
