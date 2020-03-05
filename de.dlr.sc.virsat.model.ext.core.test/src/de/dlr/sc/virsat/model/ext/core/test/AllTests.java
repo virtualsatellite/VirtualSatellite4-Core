@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import de.dlr.sc.virsat.model.ext.core.core.CorePackageTest;
 import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryTest;
 import de.dlr.sc.virsat.model.ext.core.core.util.CoreResourceFactoryImplTest;
-import de.dlr.sc.virsat.model.ext.core.validator.StructuralElementInstanceValidatorTest;
+import de.dlr.sc.virsat.model.ext.core.validator.CoreValidatorTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -29,7 +29,7 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({StructuralElementInstanceValidatorTest.class,
+@SuiteClasses({CoreValidatorTest.class,
 	CorePackageTest.class,
 	GenericCategoryTest.class,
 	CoreResourceFactoryImplTest.class,
