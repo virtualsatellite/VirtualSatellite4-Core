@@ -9,22 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * the activator is the entry point for this plugin
- * @author scha_vo
- *
  */
-public class Activator implements BundleActivator {
+public class Activator extends Plugin {
 
 	private static BundleContext context;
 
-	/**
-	 * getter method to retrieve the context
-	 * @return {@link BundleContext} the context of the bundle in the OSGi Framework bundle context  
-	 */
 	static BundleContext getContext() {
 		return context;
 	}
@@ -38,5 +32,4 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
 	}
-
 }
