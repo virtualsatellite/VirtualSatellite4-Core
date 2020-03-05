@@ -18,6 +18,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,14 +75,23 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	public void testCreateProjectStructure() {
 		VirSatProjectCommons virSatProject = new VirSatProjectCommons(testProject); 
 		
-		assertFalse("Folder does not yet exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_DATA).exists());
-		assertFalse("Folder does not yet exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_UNVERSIONED).exists());
+		IFolder dataFolder = testProject.getFolder(VirSatProjectCommons.FOLDERNAME_DATA);
+		IFolder unversionedFolder = testProject.getFolder(VirSatProjectCommons.FOLDERNAME_UNVERSIONED);
+		assertFalse("Folder does not yet exist", dataFolder.exists());
+		assertFalse("Folder does not yet exist", unversionedFolder.exists());
+		
+		File dataFile = new File(dataFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
+		File unversionedFile = new File(unversionedFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
+		assertFalse("File does not yet exist", dataFile.exists());
+		assertFalse("File does not yet exist", unversionedFile.exists());
 		
 		boolean result = virSatProject.createProjectStructure(null);
 		
 		assertTrue("Method was susccesfully executed", result);
-		assertTrue("Folder now exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_DATA).exists());
-		assertTrue("Folder now exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_UNVERSIONED).exists());
+		assertTrue("Folder now exist", dataFolder.exists());
+		assertTrue("Folder now exist", unversionedFolder.exists());
+		assertTrue("File now exist", dataFile.exists());
+		assertTrue("File now exist", unversionedFile.exists());
 	}
 	
 	@Test
@@ -112,18 +122,28 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		String fullFolderNameSei = VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX + seiUuid;
 		String fullFolderNameSeiDocuments = fullFolderNameSei + "/" + VirSatProjectCommons.FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS;
 		
-		assertFalse("Folder does not yet exist", testProject.getFolder(fullFolderNameSei).exists());
-		assertFalse("Folder does not yet exist", testProject.getFolder(fullFolderNameSeiDocuments).exists());
-		assertFalse("File does not yet exist", testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT).exists());
+		IFolder seiFolder = testProject.getFolder(fullFolderNameSei);
+		IFolder seiDocumentsFolder = testProject.getFolder(fullFolderNameSeiDocuments);
+		IFile seiFile = testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT);
+		File seiFolderFile = new File(seiFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
+		File seiDocumentsFolderFile = new File(seiDocumentsFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
+		
+		assertFalse("Folder does not yet exist", seiFolder.exists());
+		assertFalse("Folder does not yet exist", seiDocumentsFolder.exists());
+		assertFalse("File does not yet exist", seiFile.exists());
+		assertFalse("File does not yet exist", seiFolderFile.exists());
+		assertFalse("File does not yet exist", seiDocumentsFolderFile.exists());
 		
 		virSatProject.createFolderStructure(sei, null);
 		
-		assertTrue("Folder does exist now", testProject.getFolder(fullFolderNameSei).exists());
-		assertTrue("Folder does exist now", testProject.getFolder(fullFolderNameSeiDocuments).exists());
+		assertTrue("Folder does exist now", seiFolder.exists());
+		assertTrue("Folder does exist now", seiDocumentsFolder.exists());
 		// The actual StructuralElement.dvlm file is not created with this method
 		// this code magic happens in 
 		// Command initAndAddIsteCommand = resourceSet.initializeStructuralElement(iste, ed);
-		assertFalse("File does exist now", testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT).exists());
+		assertFalse("File does not exist now", seiFile.exists());
+		assertTrue("File does exist now", seiFolderFile.exists());
+		assertTrue("File does exist now", seiDocumentsFolderFile.exists());
 		
 	}
 	

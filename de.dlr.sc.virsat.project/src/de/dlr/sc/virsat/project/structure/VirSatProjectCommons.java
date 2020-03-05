@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.structure;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +52,8 @@ public class VirSatProjectCommons {
 	public static final String FILENAME_REPOSITORY = "Repository.dvlm";
 	public static final String FILENAME_UNIT_MANAGEMENT = "UnitManagement.dvlm";
 	public static final String FILENAME_ROLE_MANAGEMENT = "RoleManagement.dvlm";
+	public static final String FILENAME_EMPTY = ".empty";
+
 
 	private IProject project;
 	
@@ -76,13 +80,17 @@ public class VirSatProjectCommons {
 		try {
 			if (!folderData.exists()) {
 				folderData.create(IResource.NONE, true, pm);
+				File emptyFile = new File(folderData.getLocation().toOSString(), FILENAME_EMPTY);
+				emptyFile.createNewFile();
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_DATA, null));				
 			}
 			if (!folderUnversioned.exists()) {
 				folderUnversioned.create(IResource.NONE, true, pm);
+				File emptyFile = new File(folderUnversioned.getLocation().toOSString(), FILENAME_EMPTY);
+				emptyFile.createNewFile();
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_UNVERSIONED, null));
 			}
-		} catch (CoreException e) {
+		} catch (CoreException | IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not create folder or file in project!", e));
 			performFinish = false;
 		}
@@ -156,13 +164,17 @@ public class VirSatProjectCommons {
 		try {
 			if (!folderSei.exists()) {
 				folderSei.create(IResource.NONE, true, pm);
+				File emptyFile = new File(folderSei.getLocation().toOSString(), FILENAME_EMPTY);
+				emptyFile.createNewFile();
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + folderName, null));				
 			}
 			if (!folderSeiDocuments.exists()) {
 				folderSeiDocuments.create(IResource.NONE, true, pm);
+				File emptyFile = new File(folderSeiDocuments.getLocation().toOSString(), FILENAME_EMPTY);
+				emptyFile.createNewFile();
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS, null));
 			}
-		} catch (CoreException e) {
+		} catch (CoreException | IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not create folder or file for new structural element!", e));
 			performFinish = false;
 		}
