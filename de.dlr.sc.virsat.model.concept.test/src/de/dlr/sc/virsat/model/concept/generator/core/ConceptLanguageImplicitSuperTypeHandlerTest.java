@@ -75,7 +75,7 @@ public class ConceptLanguageImplicitSuperTypeHandlerTest {
 						.equals(testCategoryHasSuper.getExtendsCategory().getFullQualifiedName()));
 
 		ConceptImport importedConcept = updatedConcept.getImports().get(0);
-		assertEquals("The core concept should ba automatically added as implicit import", Activator.getPluginId(),
+		assertEquals("The core concept should be automatically added as implicit import", Activator.getPluginId(),
 				importedConcept.getImportedNamespace());
 		
 		assertNotEquals("The concept should be edited in a clone of it", testConcept, updatedConcept);

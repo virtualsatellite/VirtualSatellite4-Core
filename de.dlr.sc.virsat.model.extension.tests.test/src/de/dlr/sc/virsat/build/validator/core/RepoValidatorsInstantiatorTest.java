@@ -34,7 +34,7 @@ public class RepoValidatorsInstantiatorTest extends ATestConceptTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addResourceSetAndRepository();
-		addCoreConceptToRepository(repository);
+		loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 	}
 
 	@Test

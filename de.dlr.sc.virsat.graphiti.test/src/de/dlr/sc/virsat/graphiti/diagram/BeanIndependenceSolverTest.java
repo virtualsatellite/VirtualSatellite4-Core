@@ -105,7 +105,7 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		IFolder diagramFolder = testProject.getFolder("src/diagrams/");  
 		IFile diagramFile = diagramFolder.getFile("testDiagram" + "." + "test");  
 		URI uri = URI.createPlatformResourceURI(diagramFile.getFullPath().toString(), true);
-		DiagramHelper.createDiagram(uri, diagram, editingDomain.getResourceSet());
+		DiagramHelper.createDiagram(uri, diagram, rs);
 
 		IDiagramTypeProvider dtp = GraphitiInternal.getEmfService().getDTPForDiagram(diagram);
 		GraphitiInternal.getEmfService().wireDTPToDiagram(diagram, dtp);
@@ -130,11 +130,11 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				editingDomain.getResourceSet().getAndAddStructuralElementInstanceResource(sei2);
+				rs.getAndAddStructuralElementInstanceResource(sei2);
 			}
 		});
 
-		Resource resEd2 = editingDomain.getResourceSet().getStructuralElementInstanceResource(ed2.getStructuralElementInstance());
+		Resource resEd2 = rs.getStructuralElementInstanceResource(ed2.getStructuralElementInstance());
 		resEd2.getContents().add(ed2.getStructuralElementInstance());
 		Object sei2Object = beanIndependenceSolver.getBusinessObjectForKey(ed2.getUuid());
 		ABeanStructuralElementInstance aBean = (ABeanStructuralElementInstance) sei2Object;
@@ -143,14 +143,14 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				editingDomain.getResourceSet().getAndAddStructuralElementInstanceResource(sei);
+				rs.getAndAddStructuralElementInstanceResource(sei);
 			}
 		});
 
 		Boolean permission = DiagramHelper.hasDiagramWritePermission(sei);
 		assertEquals(true, permission);
 		
-		Resource resEd = editingDomain.getResourceSet().getStructuralElementInstanceResource(ed.getStructuralElementInstance());
+		Resource resEd = rs.getStructuralElementInstanceResource(ed.getStructuralElementInstance());
 		resEd.getContents().add(ed.getStructuralElementInstance());
 		Object obj = beanIndependenceSolver.getBusinessObjectForKey(seiKey);
 		aBean = (ABeanStructuralElementInstance) obj;
