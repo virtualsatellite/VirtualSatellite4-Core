@@ -35,6 +35,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
 import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
@@ -62,6 +63,12 @@ public class GitCommitHandler extends AbstractHandler {
 				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd((EObject) object);
 				ed.saveAll();
 				IProject project = ed.getResourceSet().getProject();
+				selectedProjects.add(project);
+			} else if (object instanceof VirSatProjectResource) {
+				// project root object
+				IProject project = ((VirSatProjectResource) object).getWrappedProject();
+				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
+				ed.saveAll();
 				selectedProjects.add(project);
 			}
 		}
