@@ -160,33 +160,28 @@ public class ConceptActivationHelper {
 	 * @param editingDomain the editing domain
 	 */
 	protected void activateConcept(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
-		boolean conceptIsInRepository = false;
-		
+
 		// Check if we already have this concept but with a different version added to the repository
+		Concept activeConcept = new ActiveConceptHelper(repository).getConcept(concept.getName());
+
+		boolean conceptIsInRepository = activeConcept != null;
 		
-		List<Concept> activeConcepts = repository.getActiveConcepts();
-		for (Concept activeConcept : activeConcepts) {
-			if (activeConcept.getName().equals(concept.getName())) {
-				conceptIsInRepository = activeConcept.getName().equals(concept.getName());
+		// There is a concept of an different version in the repository, ask if the user wants to migrate and do so
+		if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
 				
-				// There is a concept of an different version in the repository, ask if the user wants to migrate and do so
-				if (conceptIsInRepository && !activeConcept.getVersion().equals(concept.getVersion())) {
-						
-					//If concept is active check if new dependencies have to be added before migration
-					if (concept.eContainer() != null && concept.eContainer() instanceof Repository) {
-						Repository repository = (Repository) concept.eContainer();
-						new ConceptActivationHelper(repository).handleNewDependencies(concept, editingDomain, progressMonitor);
-					}
-					
-					try {
-						Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(activeConcept, (TransactionalEditingDomain) editingDomain, progressMonitor);
-						editingDomain.getCommandStack().execute(migrateToLatestCommand);
-					} catch (CoreException e) {
-						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to do migration on active concept: " + concept.getDisplayName(), e));
-					}
-					
-				}
+			//If concept is active check if new dependencies have to be added before migration
+			if (activeConcept.eContainer() != null && activeConcept.eContainer() instanceof Repository) {
+				Repository repository = (Repository) activeConcept.eContainer();
+				new ConceptActivationHelper(repository).handleNewDependencies(activeConcept, editingDomain, progressMonitor);
 			}
+			
+			try {
+				Command migrateToLatestCommand = CreateMigrateConceptToLatestCommand.create(activeConcept, (TransactionalEditingDomain) editingDomain, progressMonitor);
+				editingDomain.getCommandStack().execute(migrateToLatestCommand);
+			} catch (CoreException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to do migration on active concept: " + concept.getDisplayName(), e));
+			}
+			
 		}
 		
 		if (!conceptIsInRepository) {

@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.concept.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 
 	public static final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.tests";
 	public static final String MATURITY_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.maturity";
+	public static final String CORE_CONCEPT_NAME = "de.dlr.sc.virsat.model.ext.core";
 
 	@Before
 	public void setup() {
@@ -58,30 +60,37 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 		assertEquals("Maturity concept added", repository.getActiveConcepts().get(0).getName(), MATURITY_CONCEPT_NAME);
 		assertEquals("Test concept added", repository.getActiveConcepts().get(1).getName(), TEST_CONCEPT_NAME);
 	}
-	
+
 	@Test
 	public void testActivateConceptsAndMigrate() {
 		ConceptActivationHelper activationHelper = new ConceptActivationHelper(repository);
+		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
 		Concept maturityConcept = loadConceptFromPlugin(MATURITY_CONCEPT_NAME);
-		Concept testConceptOld = ConceptXmiLoader.loadConceptFromPlugin(TEST_CONCEPT_NAME + "/concept/concept_v1_0.xmi");
-		activationHelper.activateConcepts(Collections.singletonList(maturityConcept), editingDomain, new NullProgressMonitor());
-		activationHelper.activateConcepts(Collections.singletonList(testConceptOld), editingDomain, new NullProgressMonitor());
-		
-		assertEquals("Test concept version is old", repository.getActiveConcepts().get(1).getVersion(), testConceptOld.getVersion());
-		
+		Concept testConceptOld = ConceptXmiLoader
+				.loadConceptFromPlugin(TEST_CONCEPT_NAME + "/concept/concept_v1_0.xmi");
+		activationHelper.activateConcepts(Collections.singletonList(maturityConcept), editingDomain,
+				new NullProgressMonitor());
+		activationHelper.activateConcepts(Collections.singletonList(testConceptOld), editingDomain,
+				new NullProgressMonitor());
+
+		assertEquals("Test concept version is old", activeConceptHelper.getConcept(TEST_CONCEPT_NAME).getVersion(),
+				testConceptOld.getVersion());
+
 		Concept testConcept = loadConceptFromPlugin(TEST_CONCEPT_NAME);
 		List<Concept> concepts = new ArrayList<Concept>();
 		concepts.add(maturityConcept);
 		concepts.add(testConcept);
 
-		
-
 		activationHelper.activateConcepts(concepts, editingDomain, new NullProgressMonitor());
 
-		assertEquals("Concept has been added", 2, repository.getActiveConcepts().size());
-		assertEquals("Maturity concept added", repository.getActiveConcepts().get(0).getName(), MATURITY_CONCEPT_NAME);
-		assertEquals("Test concept added", repository.getActiveConcepts().get(1).getName(), TEST_CONCEPT_NAME);
-		assertEquals("Test concept has been updated", repository.getActiveConcepts().get(1).getVersion(), testConcept.getVersion());
+		final int EXPECTED_CONCEPT_NUMBER = 3;
+		assertEquals("Concept has been added", EXPECTED_CONCEPT_NUMBER, repository.getActiveConcepts().size());
+		assertNotNull("Maturity concept added", activeConceptHelper.getConcept(MATURITY_CONCEPT_NAME));
+		assertNotNull("Maturity concept added", activeConceptHelper.getConcept(TEST_CONCEPT_NAME));
+		assertNotNull("Core concept has been added as part of the migration (it is a new dependency of test concept version 1.1)",
+				activeConceptHelper.getConcept(CORE_CONCEPT_NAME));
+		assertEquals("Test concept has been updated", activeConceptHelper.getConcept(TEST_CONCEPT_NAME).getVersion(),
+				testConcept.getVersion());
 	}
 
 	@Test
