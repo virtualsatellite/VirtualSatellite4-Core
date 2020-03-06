@@ -57,15 +57,15 @@ public class MatExporter {
 	public MatFile exportSei(StructuralElementInstance seiRoot) {
 		MatFile matfile = Mat5.newMatFile();		
 		Struct struct = Mat5.newStruct();
-		struct.set("type", Mat5.newString(seiRoot.getType().getName()))
-			.set("uuid", Mat5.newString(seiRoot.getUuid().toString()));
+		struct.set(MatHelper.TYPE, Mat5.newString(seiRoot.getType().getName()))
+			.set(MatHelper.UUID, Mat5.newString(seiRoot.getUuid().toString()));
 		if (seiRoot.getChildren().size() > 0) {
 			Struct children = Mat5.newStruct();
 			for (StructuralElementInstance sei : seiRoot.getChildren()) {
 				MatFile child = exportSei(sei);
 				children.set(sei.getName(), child.getArray(sei.getName()));
 			}
-			struct.set("children", children);
+			struct.set(MatHelper.CHILDREN, children);
 		}
 		
 		for (CategoryAssignment ca : seiRoot.getCategoryAssignments()) {
@@ -86,7 +86,7 @@ public class MatExporter {
 		for (CategoryAssignment ca : cas) {
 			struct.set(ca.getName(), exportCatAs(ca));
 		}
-		matfile.addArray("inputs", struct);
+		matfile.addArray(MatHelper.INPUTS, struct);
 		return matfile;
 	}
 
@@ -165,12 +165,12 @@ public class MatExporter {
 
 		if (element.getType() instanceof FloatProperty) {
 			BeanPropertyFloat bpf = new BeanPropertyFloat(element);
-			struct.set("unit", Mat5.newString(bpf.getUnit()));
-			struct.set("value", (bpf.getValue() == Double.NaN) ? Mat5.newString("") : Mat5.newScalar(bpf.getValue()));
+			struct.set(MatHelper.UNIT, Mat5.newString(bpf.getUnit()));
+			struct.set(MatHelper.VALUE, (bpf.getValue() == Double.NaN) ? Mat5.newString("") : Mat5.newScalar(bpf.getValue()));
 		} else if (element.getType() instanceof IntProperty) {
 			BeanPropertyInt bpi = new BeanPropertyInt(element);
-			struct.set("unit", Mat5.newString(bpi.getUnit()));
-			struct.set("value", (!bpi.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpi.getValue()));
+			struct.set(MatHelper.UNIT, Mat5.newString(bpi.getUnit()));
+			struct.set(MatHelper.VALUE, (!bpi.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpi.getValue()));
 		}
 		return struct;
 	}
@@ -184,10 +184,10 @@ public class MatExporter {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof BooleanProperty) {
 			BeanPropertyBoolean bpb = new BeanPropertyBoolean(element);
-			struct.set("value", (!bpb.isSet()) ? Mat5.newString("") : Mat5.newLogicalScalar(bpb.getValue()));
+			struct.set(MatHelper.VALUE, (!bpb.isSet()) ? Mat5.newString("") : Mat5.newLogicalScalar(bpb.getValue()));
 		} else if (element.getType() instanceof StringProperty) {
 			BeanPropertyString bps = new BeanPropertyString(element);
-			struct.set("value", (!bps.isSet()) ? Mat5.newString("") : Mat5.newString(bps.getValue()));
+			struct.set(MatHelper.VALUE, (!bps.isSet()) ? Mat5.newString("") : Mat5.newString(bps.getValue()));
 		}
 		return struct;
 	}
@@ -201,8 +201,8 @@ public class MatExporter {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EReferenceProperty) {
 			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
-			struct.set("reference", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
-			struct.set("reference-class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().getClass().getName()));
+			struct.set(MatHelper.REF, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
+			struct.set(MatHelper.REFCLASS, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().getClass().getName()));
 		}
 		return struct;
 	}
@@ -215,13 +215,13 @@ public class MatExporter {
 	private Array contentOfProperty(ReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ReferenceProperty) {
+			ATypeInstance referencedTypeInstance = element.getReference();
 			if (element.getReference() != null) {
-				ATypeInstance referencedTypeInstance = element.getReference();
-				struct.set("uuid", Mat5.newString(referencedTypeInstance.getUuid().toString()));
-				struct.set("fullQualifiedInstanceName", Mat5.newString(referencedTypeInstance.getFullQualifiedInstanceName()));
+				struct.set(MatHelper.UUID, Mat5.newString(referencedTypeInstance.getUuid().toString()));
+				struct.set(MatHelper.FULLNAME, Mat5.newString(referencedTypeInstance.getFullQualifiedInstanceName()));
 			} else {
-				struct.set("uuid", Mat5.newString(""));
-				struct.set("fullQualifiedInstanceName", Mat5.newString(""));
+				struct.set(MatHelper.UUID, Mat5.newString(""));
+				struct.set(MatHelper.FULLNAME, Mat5.newString(""));
 			}
 		}
 		return struct;
@@ -236,7 +236,7 @@ public class MatExporter {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof ResourceProperty) {
 			BeanPropertyResource bpr = new BeanPropertyResource(element);
-			struct.set("uri", (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getValue().toString()));
+			struct.set(MatHelper.URI, (!bpr.isSet()) ? Mat5.newString("") : Mat5.newString(bpr.getValue().toString()));
 		}
 		return struct;
 	}
@@ -250,9 +250,9 @@ public class MatExporter {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EnumProperty) {
 			BeanPropertyEnum bpe = new BeanPropertyEnum(element);
-			struct.set("unit", Mat5.newString(bpe.getUnit()));
-			struct.set("value", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpe.getEnumValue()));
-			struct.set("name", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue()));
+			struct.set(MatHelper.UNIT, Mat5.newString(bpe.getUnit()));
+			struct.set(MatHelper.VALUE, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newScalar(bpe.getEnumValue()));
+			struct.set(MatHelper.NAME, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue()));
 		}
 		return struct;
 	}
