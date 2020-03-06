@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
@@ -19,10 +20,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 
 public class ImporterTest extends ATestConceptTestCase {
@@ -30,13 +33,13 @@ public class ImporterTest extends ATestConceptTestCase {
 	private StructuralElementInstance sei;
 	private TestStructuralElement tsei;
 	private MatExporter exporter;
-	private Importer importer;
+	private MatImporter importer;
 	private MatFile mat;
 
 	@Before
 	public void setUp() throws CoreException {
 		exporter = new MatExporter();
-		importer = new Importer();
+		importer = new MatImporter();
 		super.setUp();
 		addResourceSetAndRepository();
 		loadTestConcept();
@@ -109,6 +112,16 @@ public class ImporterTest extends ATestConceptTestCase {
 	public void testCheckIfCorrectSeiWrongCAs() throws IOException {
 		TestCategoryComposition tc = new TestCategoryComposition(testConcept);
 		tsei.add(tc);
-		assertFalse("Not the same children", importer.checkIfCorrectSei(sei, mat));
+		assertTrue("Not the same children", importer.checkIfCorrectSei(sei, mat));
+	}
+	@Test
+	public void testCheck() throws IOException {
+		mat = exporter.exportSei(sei);
+		Mat5.writeToFile(mat, "TestFile.mat");
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
+		
+		importer.importSei(sei, "TestFile.mat" );
+		
 	}
 }
