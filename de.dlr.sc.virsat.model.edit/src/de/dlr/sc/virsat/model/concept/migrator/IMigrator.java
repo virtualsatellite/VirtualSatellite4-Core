@@ -35,7 +35,7 @@ public interface IMigrator {
 	/**
 	 * Migrates the concept to the internally implemented version
 	 * @param concept the concept to be migrated
-	 * @param previousMigrator the previously executed migrator, can be null if none was executed before
+	 * @param previousMigrator the previously executed migrator
 	 */
 	void migrate(Concept concept, IMigrator previousMigrator);
 	

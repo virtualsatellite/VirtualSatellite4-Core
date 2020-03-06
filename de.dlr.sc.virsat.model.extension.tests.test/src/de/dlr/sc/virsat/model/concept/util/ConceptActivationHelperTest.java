@@ -44,6 +44,12 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 		addEditingDomainAndRepository();
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructor() {
+		//Should result in exception as concept is not active. Test expects exception
+		new ConceptActivationHelper(loadConceptFromPlugin(TEST_CONCEPT_NAME));
+	}
+	
 	@Test
 	public void testActivateConcepts() {
 		Concept testConcept = loadConceptFromPlugin(TEST_CONCEPT_NAME);

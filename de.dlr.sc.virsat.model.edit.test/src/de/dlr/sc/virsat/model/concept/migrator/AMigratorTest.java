@@ -738,7 +738,7 @@ public class AMigratorTest {
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		TestMigrator migrator = new TestMigrator();
-		Set<String> newDendencies = migrator.getNewDependencies(null, conceptCurrent, conceptNext);
+		Set<String> newDendencies = migrator.getNewDependencies(conceptCurrent, conceptNext);
 		
 		assertTrue("New dependency should be returned", newDendencies.contains(NEW_CONCEPT_DEPENDENCY));
 	}
