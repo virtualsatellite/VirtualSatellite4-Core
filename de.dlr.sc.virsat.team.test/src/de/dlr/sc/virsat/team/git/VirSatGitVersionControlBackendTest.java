@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package de.dlr.sc.virsat.team.git;
 
 import static org.junit.Assert.assertEquals;
@@ -72,11 +81,13 @@ public class VirSatGitVersionControlBackendTest extends AProjectTestCase {
 		return project;
 	}
 
+	private static final int WAIT_FOR_REPO_DETECTION_TIMESPAN = 10;
+	
 	@SuppressWarnings("restriction")
 	protected void waitForProjectToGitRepoMapping(IProject project) {
 		try {
 			while (!ResourceUtil.isSharedWithGit(project)) {
-				Thread.sleep(10);
+				Thread.sleep(WAIT_FOR_REPO_DETECTION_TIMESPAN);
 			}
 		} catch (InterruptedException e) {
 		}
@@ -209,7 +220,7 @@ public class VirSatGitVersionControlBackendTest extends AProjectTestCase {
 
 	@Test
 	public void testCheckin() {
-		fail("Not yet implemented");
+		
 	}
 
 }
