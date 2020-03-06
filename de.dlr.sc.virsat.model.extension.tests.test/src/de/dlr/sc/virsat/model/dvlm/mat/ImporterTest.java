@@ -29,13 +29,13 @@ public class ImporterTest extends ATestConceptTestCase {
 
 	private StructuralElementInstance sei;
 	private TestStructuralElement tsei;
-	private Exporter exporter;
+	private MatExporter exporter;
 	private Importer importer;
 	private MatFile mat;
 
 	@Before
 	public void setUp() throws CoreException {
-		exporter = new Exporter();
+		exporter = new MatExporter();
 		importer = new Importer();
 		super.setUp();
 		addResourceSetAndRepository();
