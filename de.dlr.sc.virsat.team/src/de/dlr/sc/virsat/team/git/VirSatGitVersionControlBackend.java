@@ -16,13 +16,15 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
+import org.eclipse.egit.core.GitProvider;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
-
+import org.eclipse.jgit.transport.URIish;
+import org.eclipse.team.core.RepositoryProvider;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 @SuppressWarnings("restriction")
@@ -34,26 +36,18 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		this.credentialsProvider = credentialsProvider;
 	}
 	
-	public static final int PROGRESS_INDEX_COMMIT_PUSH_STEPS = 3;
+	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 3;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 4;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 2;
 	
 	public static final int GIT_REMOTE_TIMEOUT = 30;
 	
 	@Override
 	public void commit(IProject project, String message, IProgressMonitor monitor) throws Exception {
-		SubMonitor pushAndCommitMonitor = SubMonitor.convert(monitor, "Virtual Satellite git push and commit", PROGRESS_INDEX_COMMIT_PUSH_STEPS);
+		SubMonitor pushAndCommitMonitor = SubMonitor.convert(monitor, "Virtual Satellite git push and commit", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
 		
 		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
-		
-		pushAndCommitMonitor.split(1).subTask("adding new files to index");
-		Git.wrap(gitRepository).add()
-			.addFilepattern(".")
-			.call();		
-		
-		pushAndCommitMonitor.split(1).subTask("commiting files");
-		Git.wrap(gitRepository).commit()
-			.setAll(true)
-			.setMessage(message)
-			.call();
+		doCommit(gitRepository, message, pushAndCommitMonitor);
 
 		ProgressMonitor gitPushMonitor = new EclipseGitProgressTransformer(pushAndCommitMonitor.split(1));
 		Git.wrap(gitRepository).push()
@@ -63,12 +57,34 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.call();
 	}
 
+	/**
+	 * Method to add all unstaged files and commit them to the local repository
+	 * @param gitRepository the repository on which to perform the commit
+	 * @param message a message to be used for the commit
+	 * @param pushAndCommitMonitor A SubMonitor for progress Reporting. 
+	 * @throws Exception 
+	 */
+	protected void doCommit(Repository gitRepository, String message, SubMonitor pushAndCommitMonitor) throws Exception {
+		pushAndCommitMonitor.split(1).subTask("Adding new files to index");
+		Git.wrap(gitRepository).add()
+			.addFilepattern(".")
+			.call();		
+		
+		pushAndCommitMonitor.split(1).subTask("Commiting files");
+		Git.wrap(gitRepository).commit()
+			.setAll(true)
+			.setMessage(message)
+			.call();
+	}
+
 	@Override
 	public void update(IProject project,  IProgressMonitor monitor) throws Exception {
-		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
-	
-		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(monitor);
+		SubMonitor commitAndPullMonitor = SubMonitor.convert(monitor, "Virtual Satellite git commit and pull", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
 		
+		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
+		doCommit(gitRepository, "Local commit before pull", commitAndPullMonitor);
+
+		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
 		Git.wrap(gitRepository).pull()
 			.setCredentialsProvider(credentialsProvider)
 			.setProgressMonitor(gitMonitor)
@@ -79,8 +95,11 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 
 	@Override
 	public void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor) throws Exception {
+		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite git clone", PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS);
+		
 		File pathRepoLocal = new File(projectDescription.getLocationURI());
 		
+		checkoutMonitor.split(1).subTask("Cloning remote Repository");
 		Git.cloneRepository()
 			.setCredentialsProvider(credentialsProvider)
 			.setURI(remoteUri)
@@ -90,6 +109,26 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 
 	@Override
 	public void checkin(IProject project, String uri, IProgressMonitor monitor) throws Exception {
+		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite git init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
+		
+		File pathRepoLocal = new File(project.getLocationURI());
+		
+		checkInMonitor.split(1).subTask("Initializing local repository");
+		Repository initRepo = Git.init()
+			.setDirectory(pathRepoLocal)
+			.call()
+			.getRepository();
+		
+		checkInMonitor.split(1).subTask("Setting remote origin");
+		Git.wrap(initRepo)
+			.remoteAdd()
+			.setUri(new URIish(uri))
+			.setName("origin")
+			.call();
+		
+		doCommit(initRepo, "Initial commit to local repository", checkInMonitor);
+		
+		RepositoryProvider.map(project, GitProvider.ID);
 	}
 
 }

@@ -20,7 +20,7 @@ public interface IVirSatVersionControlBackend {
 	
 	void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor) throws Exception;
 	
-	void checkin(IProject project, String uri,  IProgressMonitor monitor) throws Exception;
+	void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception;
 
 	void update(IProject project, IProgressMonitor monitor) throws Exception;
 
