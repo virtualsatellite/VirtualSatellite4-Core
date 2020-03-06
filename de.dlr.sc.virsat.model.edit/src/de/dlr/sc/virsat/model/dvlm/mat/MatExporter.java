@@ -155,7 +155,6 @@ public class MatExporter {
 		return propertyArray;
 	}
 
-	//create a struct for the fitting PropertyInstance
 	/**
 	 * creates a new .mat-struct with all information about UnitValuePropertyInstance
 	 * only unit and value are saved
@@ -201,9 +200,7 @@ public class MatExporter {
 	private Array contentOfProperty(EReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
 		if (element.getType() instanceof EReferenceProperty) {
-			
 			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
-			
 			struct.set("reference", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
 			struct.set("reference-class", (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().getClass().getName()));
 		}
@@ -283,7 +280,8 @@ public class MatExporter {
 		return exportCatAs(element.getTypeInstance());
 	}
 
-	//Delete First and Last Character
+	//Delete First and Last Character of a string.
+	//It is needed because matlab generates '' around strings
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
 	}
