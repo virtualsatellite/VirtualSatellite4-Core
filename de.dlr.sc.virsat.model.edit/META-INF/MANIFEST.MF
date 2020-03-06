@@ -31,6 +31,7 @@ Export-Package: de.dlr.sc.virsat.model.concept.list,
  de.dlr.sc.virsat.model.dvlm.dmf.provider,
  de.dlr.sc.virsat.model.dvlm.general.provider,
  de.dlr.sc.virsat.model.dvlm.inheritance.provider,
+ de.dlr.sc.virsat.model.dvlm.mat,
  de.dlr.sc.virsat.model.dvlm.provider,
  de.dlr.sc.virsat.model.dvlm.qudv.provider,
  de.dlr.sc.virsat.model.dvlm.qudv.util,
@@ -55,6 +56,7 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.emf.edapt.migration,
  org.eclipse.emf.edapt.history,
  org.eclipse.emf.compare;visibility:=reexport,
- com.google.guava
+ com.google.guava,
+ de.dlr.sc.virsat.external.lib.matlabfile
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.edit
