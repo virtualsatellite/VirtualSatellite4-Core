@@ -48,7 +48,7 @@ import us.hebi.matlab.mat.types.Struct;
 /**
  * Class for exporting data to .mat
  */
-public class Exporter {
+public class MatExporter {
 
 	/**
 	 * creates a new .mat with everything inside the given sei

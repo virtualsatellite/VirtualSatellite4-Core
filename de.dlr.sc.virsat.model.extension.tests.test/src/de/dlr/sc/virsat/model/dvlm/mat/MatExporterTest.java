@@ -37,18 +37,18 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class ExporterTest extends ATestConceptTestCase {
+public class MatExporterTest extends ATestConceptTestCase {
 
 	private static final int NUMBEROFELEMENTSWITHOUTCAS = 2;
 	private static final int ENUMINFORMATION = 3;
 	private static final int ARRAYLENGTH = 4;
 	private StructuralElementInstance sei;
 	private TestStructuralElement tsei;
-	private Exporter exporter;
+	private MatExporter exporter;
 
 	@Before
 	public void setUp() throws CoreException {
-		exporter = new Exporter();
+		exporter = new MatExporter();
 		super.setUp();
 		addResourceSetAndRepository();
 		loadTestConcept();
