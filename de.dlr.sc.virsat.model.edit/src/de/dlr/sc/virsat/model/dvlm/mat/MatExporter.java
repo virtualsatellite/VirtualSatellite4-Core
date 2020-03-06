@@ -280,8 +280,11 @@ public class MatExporter {
 		return exportCatAs(element.getTypeInstance());
 	}
 
-	//Delete First and Last Character of a string.
-	//It is needed because matlab generates '' around strings
+	/**
+	 * Delete First and Last Character of a string.
+	 * It is needed because matlab generates '' around strings
+	 * @param str String that should be shorted
+	 */
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
 	}
