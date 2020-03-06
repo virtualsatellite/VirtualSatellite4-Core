@@ -108,7 +108,7 @@ jobs:
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
-      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
       name: Build and Test - SpotBugs - Development and Features
       script:
       - bash/maven_build.sh -j spotbugs -p development
@@ -122,7 +122,7 @@ jobs:
     # ----------------------------
     # --- Release Tags
     - stage: build-test
-      if: tag =~ /^Release/
+      if: (branch =~ /^master/) OR (tag =~ /^Release/)
       name: Build and Test - SpotBugs - Release
       script:
       - bash/maven_build.sh -j spotbugs -p release   
@@ -132,7 +132,7 @@ jobs:
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
-      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
       name: Build and Test - Surefire - Development and Features
       script:
       - bash/maven_build.sh -j surecoverage -p development   
@@ -146,7 +146,7 @@ jobs:
     # ----------------------------
     # --- Release Tags
     - stage: build-test
-      if: tag =~ /^Release/
+      if: (branch =~ /^master/) OR (tag =~ /^Release/)
       name: Build and Test - Surefire - Release
       script:
       - bash/maven_build.sh -j surecoverage -p release   
@@ -156,7 +156,7 @@ jobs:
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
-      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
       name: Build and Test - Checkstyle - Development and Features
       script:
       - bash/maven_build.sh -j checkstyle -p development   
@@ -170,7 +170,7 @@ jobs:
     # ----------------------------
     # --- Release Tags
     - stage: build-test
-      if: tag =~ /^Release/
+      if: (branch =~ /^master/) OR (tag =~ /^Release/)
       name: Build and Test - Checkstyle - Release
       script:
       - bash/maven_build.sh -j checkstyle -p release   
@@ -185,6 +185,13 @@ jobs:
       name: Build-Assemble-Deploy - Feature
       script:
       - bash/maven_build.sh -j assemble -p development   
+
+    # For simulating the assemble steps but not actually deploying
+    - stage: build-assemble-deploy
+      if: (branch =~ /^master/) AND NOT (tag =~ /^Release/)
+      name: Build-Assemble - Release (no Deploy)
+      script:
+      - bash/maven_build.sh -j assemble -p release   
 
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.

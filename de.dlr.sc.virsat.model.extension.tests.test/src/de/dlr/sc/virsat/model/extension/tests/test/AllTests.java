@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.level.HierarchyLevelCheck
 import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTraverserTest;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelperTest;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelperTest;
-import de.dlr.sc.virsat.model.dvlm.mat.ExporterTest;
+import de.dlr.sc.virsat.model.dvlm.mat.MatExporterTest;
 import de.dlr.sc.virsat.model.dvlm.mat.ImporterTest;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommandAcceptanceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllPropertyTest;
@@ -70,8 +70,8 @@ import junit.framework.JUnit4TestAdapter;
 				HierarchyLevelCheckerTest.class,
 				ModelAPITest.class,
 				RepoValidatorsInstantiatorTest.class,
-				ExporterTest.class,
-				ImporterTest.class
+				ImporterTest.class,
+				MatExporterTest.class
 				})
 
 /**

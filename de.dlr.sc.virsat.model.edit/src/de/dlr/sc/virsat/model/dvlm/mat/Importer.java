@@ -27,13 +27,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyinstancesSwitch;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.format.Mat5;
-import us.hebi.matlab.mat.types.Array;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
-
+ 
 /**
  * Class for exporting data to .mat
  */
