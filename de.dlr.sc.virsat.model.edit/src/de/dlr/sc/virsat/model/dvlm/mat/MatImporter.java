@@ -15,8 +15,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
@@ -57,19 +57,19 @@ import us.hebi.matlab.mat.types.Cell;
  * Class for exporting data to .mat
  */
 public class MatImporter {
-
+	StructuralElementInstance sei;
 	/**
 	 * checks if mat and sei fit together
 	 * @param sei sei which should be changed
 	 * @param matFile MatFile that includes all Information
 	 */
 	public void importSei(StructuralElementInstance sei, String matFile) throws IOException {
+		this.sei = sei;
 		MatFile mat = Mat5.readFromFile(matFile);
-		//maybe check TODO ask!
-//		if (checkIfCorrectSei(sei, mat)) {
+		if (checkIfCorrectSei(sei, mat)) {
 			Struct struct = mat.getStruct(sei.getName());
 			importSei(sei, struct);
-//		}
+		}
 	}
 
 	/**
@@ -259,23 +259,43 @@ public class MatImporter {
 		if (element.getType() instanceof EReferenceProperty) {
 			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
 			if ("''".equals(struct.get(MatHelper.URI).toString())) {
-				bpe.setValue(null);
+				bpe.unset();
 			} else {
-				element.eResource().setURI(URI.createPlatformResourceURI(shorter(struct.get(MatHelper.URI).toString()), true));
+				URI uri = URI.createPlatformPluginURI(shorter(struct.get(MatHelper.URI).toString()), true);
+				Resource res = new ResourceSetImpl().getResource(uri, true);
+				EObject eReferenceValue = res.getEObject(uri.fragment());
+				element.setReference(eReferenceValue);
 			}
 		}
 		return true;
 	}
 
+	/**
+	 * import a given ReferencePropertyInstance
+	 * 
+	 * updates reference
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	protected Boolean contentOfProperty(ReferencePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof ReferenceProperty) {
-			ATypeInstance rpi = element.getReference();
-			BeanPropertyResource bpr = new BeanPropertyResource();
-			// TODO Ask what should be done if something changed
+			if ("''".equals(struct.get(MatHelper.UUID).toString())) {
+				element.setReference(null);
+			} else {
+				EList<Resource> res = sei.eResource().getResourceSet().getResources();
+				for (Resource re : res) {
+					EObject ref = re.getEObject(shorter(struct.get(MatHelper.UUID).toString()));
+					if (ref != null) {
+						if (ref instanceof ATypeInstance) {
+							element.setReference((ATypeInstance) ref);
+						} 
+					}
+				}
+			}
 		}
 		return true;
 	}
-	
+
 	/**
 	 * import a given ValuePropertyInstance
 	 * 
@@ -429,22 +449,6 @@ public class MatImporter {
 				return false;
 			}
 		}
-
-		//check Category Assignments
-//		
-//		if (sei.getCategoryAssignments().size() == structFields.size()) {
-//			if (sei.getCategoryAssignments().size() > 0) {
-//				List<String> cas = new ArrayList<String>();
-//				for (CategoryAssignment ca : sei.getCategoryAssignments()) {
-//					cas.add(ca.getName());
-//				}
-//				if (!cas.equals(structFields)) {
-//					return false;
-//				}
-//			}
-//		} else {
-//			return false;
-//		}
 		return true;
 	}
 
