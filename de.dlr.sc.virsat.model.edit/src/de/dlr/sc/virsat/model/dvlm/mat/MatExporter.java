@@ -202,7 +202,7 @@ public class MatExporter {
 		if (element.getType() instanceof EReferenceProperty) {
 			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
 			struct.set(MatHelper.REF, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
-			struct.set(MatHelper.REFCLASS, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().getClass().getName()));
+			struct.set(MatHelper.URI, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(element.eResource().getURI().toString()));
 		}
 		return struct;
 	}

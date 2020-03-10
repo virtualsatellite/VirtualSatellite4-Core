@@ -25,7 +25,6 @@ public class MatHelper {
 	static final String FULLNAME = "fullQualifiedInstanceName";
 	static final String URI = "uri";
 	static final String REF = "reference";
-	static final String REFCLASS = "reference-class";
 	static final String INPUTS = "inputs";
 	static final String CHILDREN = "children";
 	static final String TYPE = "type";
