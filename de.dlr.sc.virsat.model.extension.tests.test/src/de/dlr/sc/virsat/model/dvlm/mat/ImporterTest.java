@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
@@ -116,12 +115,25 @@ public class ImporterTest extends ATestConceptTestCase {
 	}
 	@Test
 	public void testCheck() throws IOException {
-		mat = exporter.exportSei(sei);
-		Mat5.writeToFile(mat, "TestFile.mat");
+		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
+		StructuralElementInstance sei2 = tsei4.getStructuralElementInstance();
+		sei2.setName("child1");
+		sei2.setParent(sei);
+		TestStructuralElementOther tsei1 = new TestStructuralElementOther(testConcept);
+		StructuralElementInstance sei3 = tsei1.getStructuralElementInstance();
+		sei3.setName("child2");
+		sei3.setParent(sei);
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
+		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
+		tsei.add(tc1);
+
+
 		
-		importer.importSei(sei, "TestFile.mat" );
 		
+		importer.importSei(sei, "TestFile2.mat");
+		
+		mat = exporter.exportSei(sei);
+		Mat5.writeToFile(mat, "TestFile1.mat");
 	}
 }

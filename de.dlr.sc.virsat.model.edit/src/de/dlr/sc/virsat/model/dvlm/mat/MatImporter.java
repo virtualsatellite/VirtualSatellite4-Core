@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.mat;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +40,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyinstancesSwitch;
-import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.format.Mat5;
-import us.hebi.matlab.mat.types.Char;
 import us.hebi.matlab.mat.types.MatFile;
-import us.hebi.matlab.mat.types.ObjectStruct;
 import us.hebi.matlab.mat.types.Struct;
  
 /**
@@ -54,32 +50,44 @@ import us.hebi.matlab.mat.types.Struct;
  */
 public class MatImporter {
 
-	public void importSei(StructuralElementInstance sei, String matf) throws IOException {
-		MatFile mat = Mat5.readFromFile(matf);
+	/**
+	 * checks if mat and sei fit together
+	 * @param sei sei which should be changed
+	 * @param matFile MatFile that includes all Information
+	 */
+	public void importSei(StructuralElementInstance sei, String matFile) throws IOException {
+		MatFile mat = Mat5.readFromFile(matFile);
 		//maybe check TODO ask!
-		if (checkIfCorrectSei(sei, mat)) {
+//		if (checkIfCorrectSei(sei, mat)) {
 			Struct struct = mat.getStruct(sei.getName());
-			Char a = struct.getChar("uuid");
 			importSei(sei, struct);
-		}
+//		}
 	}
 
+	/**
+	 * split up children and CategoryAssinments
+	 * @param sei sei which should be changed
+	 * @param seiStruct MatStruct that includes all Information
+	 */
 	private void importSei(StructuralElementInstance sei, Struct seiStruct) {
-		//import children recursively
-		if (seiStruct.getFieldNames().contains(MatHelper.CHILDREN)) {
+		try {
 			Struct matChildren = seiStruct.getStruct(MatHelper.CHILDREN);
 			EList<StructuralElementInstance> seiChildren = sei.getChildren();
 			for (StructuralElementInstance seiChild : seiChildren) {
 				importSei(seiChild, matChildren.getStruct(seiChild.getName()));
 			}
-			seiStruct.remove(MatHelper.CHILDREN);
+		} catch (Exception e) {
 		}
-		seiStruct.remove(MatHelper.TYPE);
-		seiStruct.remove(MatHelper.UUID);
+		
 		EList<CategoryAssignment> seiCas = sei.getCategoryAssignments();
 		importCas(seiCas, seiStruct);
 	}
 
+	/**
+	 * split up CategoryAssinment
+	 * @param seiCas List of CategoryAssinments which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private void importCas(EList<CategoryAssignment> seiCas, Struct struct) {
 		
 		List<String> nameMatCas = struct.getFieldNames();
@@ -88,12 +96,13 @@ public class MatImporter {
 			nameSeiCas.add(seiCa.getName());
 		}
 
-		for (CategoryAssignment seiCa : seiCas) {
-			if (nameMatCas.contains(seiCa.getName())) { //import all given CategoryAssinments
-				importGivenCa(seiCa, struct.get(seiCa.getName()));
-				nameMatCas.remove(seiCa.getName());
-			} else { //delete old ones
-				seiCas.remove(seiCa);
+		for (int i = 0; i < seiCas.size();) {
+			if (nameMatCas.contains(seiCas.get(i).getName())) { //import all given CategoryAssinments
+				importGivenCa(seiCas.get(i), struct.get(seiCas.get(i).getName()));
+				nameMatCas.remove(seiCas.get(i).getName());
+				i++;
+			} else {
+				seiCas.remove(i);
 			}
 		}
 
@@ -103,8 +112,11 @@ public class MatImporter {
 		//}
 	}
 	
-	//TODO is this working for subcat
-
+	/**
+	 * split up PropertyInstances
+	 * @param seiCa CategoryAssinments which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private void importGivenCa(CategoryAssignment seiCa, Struct struct) {
 		EList<APropertyInstance> seiAPIs = seiCa.getPropertyInstances();
 		List<String> nameMatAPIs = struct.getFieldNames();
@@ -133,13 +145,22 @@ public class MatImporter {
 //		return null;
 //	}
 
-
-
-	
+	/**
+	 * import a given Property
+	 * @param seiAPI PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private void importGivenAPI(APropertyInstance seiAPI, Struct struct) {
 		getRightPropertyBySei(seiAPI, struct);
 	}
 
+	/**
+	 * import a given Property as Instance of
+	 * 
+	 * return value is not needed or used
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private Boolean getRightPropertyBySei(APropertyInstance element, Struct struct) {
 		Boolean done = new PropertyinstancesSwitch<Boolean>() {
 			@Override
@@ -204,28 +225,42 @@ public class MatImporter {
 	protected Boolean contentOfProperty(ReferencePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof ReferenceProperty) {
 			ATypeInstance rTI = element.getReference();
-			rTI.setUuid(struct.get("uuid"));
-			rTI.setComment(struct.get(MatHelper.FULLNAME));
+			//rTI.setUuid(struct.get("uuid"));
+			//rTI.setComment(struct.get(MatHelper.FULLNAME));
 		}
 		return true;
 	}
-
+	
+	/**
+	 * import a given ValuePropertyInstance
+	 * 
+	 * updates value
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	protected Boolean contentOfProperty(ValuePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof BooleanProperty) {
 			BeanPropertyBoolean bpb = new BeanPropertyBoolean(element);
-			bpb.setValue(struct.get("value"));
+			bpb.setValue(struct.get(MatHelper.VALUE).toString().equals("1.0"));
 		} else if (element.getType() instanceof StringProperty) {
 			BeanPropertyString bps = new BeanPropertyString(element);
-			bps.setValue(struct.get("value"));
+			bps.setValue(shorter(struct.get(MatHelper.VALUE).toString()));
 		}
 		return true;
 	}
 
+	/**
+	 * import a given EnumUnitPropertyInstance
+	 * 
+	 * updates name and unit. value is updates automatically
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private Boolean contentOfProperty(EnumUnitPropertyInstance element, Struct struct) {
 		if (element.getType() instanceof EnumProperty) {
 			BeanPropertyEnum bpe = new BeanPropertyEnum(element);
-			bpe.setValue(struct.get("name"));
-			bpe.setUnit(struct.get("unit"));
+			bpe.setValue(shorter(struct.get(MatHelper.NAME).toString()));
+			bpe.setUnit(shorter(struct.get(MatHelper.UNIT).toString()));
 		}
 		return true;
 	}
@@ -233,7 +268,7 @@ public class MatImporter {
 	private Boolean contentOfProperty(ResourcePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof ResourceProperty) {
 			BeanPropertyResource bpr = new BeanPropertyResource(element);
-			bpr.setValue(struct.get("uri"));
+			//bpr.setValue(struct.get("uri"));
 		}
 		return true;
 	}
@@ -241,12 +276,20 @@ public class MatImporter {
 	private Boolean contentOfProperty(UnitValuePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof FloatProperty) {
 			BeanPropertyFloat bpf = new BeanPropertyFloat(element);
-			bpf.setUnit(struct.get("Unit"));
-			bpf.setValue(struct.get("Value"));
+			bpf.setUnit(shorter(struct.get("unit").toString()));
+			if ("NaN".equals(struct.get("value").toString()) || "''".equals(struct.get("value").toString())) {
+				bpf.setValue(Double.NaN);
+			} else {
+				bpf.setValue(Double.valueOf(struct.get("value").toString()));
+			}
 		} else if (element.getType() instanceof IntProperty) {
 			BeanPropertyInt bpi = new BeanPropertyInt(element);
-			bpi.setUnit(struct.get("Unit"));
-			bpi.setValue(struct.get("Value"));
+			bpi.setUnit(shorter(struct.get("unit").toString()));
+			if ("NaN".equals(struct.get("value").toString()) || "''".equals(struct.get("value").toString())) {
+				//
+			} else {
+				bpi.setValue(Long.valueOf(struct.get("value").toString()));
+			}
 		}
 		return true;
 	}
