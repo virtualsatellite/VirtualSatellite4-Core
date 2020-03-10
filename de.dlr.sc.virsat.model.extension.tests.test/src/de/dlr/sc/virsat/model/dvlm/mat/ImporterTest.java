@@ -21,6 +21,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
@@ -115,20 +116,23 @@ public class ImporterTest extends ATestConceptTestCase {
 	}
 	@Test
 	public void testCheck() throws IOException {
-		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
-		StructuralElementInstance sei2 = tsei4.getStructuralElementInstance();
-		sei2.setName("child1");
-		sei2.setParent(sei);
-		TestStructuralElementOther tsei1 = new TestStructuralElementOther(testConcept);
-		StructuralElementInstance sei3 = tsei1.getStructuralElementInstance();
-		sei3.setName("child2");
-		sei3.setParent(sei);
-		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc);
-		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
-		tsei.add(tc1);
+//		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
+//		StructuralElementInstance sei2 = tsei4.getStructuralElementInstance();
+//		sei2.setName("child1");
+//		sei2.setParent(sei);
+//		TestStructuralElementOther tsei1 = new TestStructuralElementOther(testConcept);
+//		StructuralElementInstance sei3 = tsei1.getStructuralElementInstance();
+//		sei3.setName("child2");
+//		sei3.setParent(sei);
+//		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+//		tsei.add(tc);
+		TestCategoryIntrinsicArray tc = new TestCategoryIntrinsicArray(testConcept);
+		tsei.add(tc);	//TestCategoryIntrinsicArray
+//		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
+//		tsei.add(tc1);
 
-
+		mat = exporter.exportSei(sei);
+		Mat5.writeToFile(mat, "TestFile.mat");
 		
 		
 		importer.importSei(sei, "TestFile2.mat");

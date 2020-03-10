@@ -12,8 +12,10 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
@@ -124,6 +126,7 @@ public class MatImporter {
 		//import all given APropertyInstances
 		for (APropertyInstance seiAPI : seiAPIs) {
 			if (nameMatAPIs.contains(seiAPI.getType().getName())) {
+				System.out.println(seiAPI.getType().getName());
 				importGivenAPI(seiAPI, struct.get(seiAPI.getType().getName()));
 				nameMatAPIs.remove(seiAPI.getType().getName());
 			} else {
@@ -207,13 +210,22 @@ public class MatImporter {
 		return done;
 	}
 	
-	protected Boolean contentOfProperty(ArrayInstance object, Struct struct) {
+	protected Boolean contentOfProperty(ArrayInstance element, Struct struct) {
 		// TODO Auto-generated method stub
+		System.out.println("an Array");
 		return true;
 	}
 
-	protected Boolean contentOfProperty(ComposedPropertyInstance object, Struct struct) {
-		// TODO Auto-generated method stub
+	/**
+	 * import a given ComposedPropertyInstance
+	 * 
+	 * updates everything inside it
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
+	protected Boolean contentOfProperty(ComposedPropertyInstance element, Struct struct) {
+		CategoryAssignment ca = element.getTypeInstance();	
+		importGivenCa(ca, struct);
 		return true;
 	}
 
@@ -224,9 +236,8 @@ public class MatImporter {
 
 	protected Boolean contentOfProperty(ReferencePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof ReferenceProperty) {
-			ATypeInstance rTI = element.getReference();
-			//rTI.setUuid(struct.get("uuid"));
-			//rTI.setComment(struct.get(MatHelper.FULLNAME));
+			ATypeInstance rpi = element.getReference();
+			// TODO Ask what should be done if something changed
 		}
 		return true;
 	}
@@ -265,30 +276,48 @@ public class MatImporter {
 		return true;
 	}
 
+	/**
+	 * import a given ResourcePropertyInstance
+	 * 
+	 * updates uri
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private Boolean contentOfProperty(ResourcePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof ResourceProperty) {
 			BeanPropertyResource bpr = new BeanPropertyResource(element);
-			//bpr.setValue(struct.get("uri"));
+			if ("''".equals(struct.get(MatHelper.URI).toString())) {
+				bpr.unset();
+			} else {
+				bpr.setValue(URI.createPlatformResourceURI(shorter(struct.get(MatHelper.URI).toString()), true));
+			}
 		}
 		return true;
 	}
 
+	/**
+	 * import a given UnitValuePropertyInstance
+	 * 
+	 * updates value and unit
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
 	private Boolean contentOfProperty(UnitValuePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof FloatProperty) {
 			BeanPropertyFloat bpf = new BeanPropertyFloat(element);
-			bpf.setUnit(shorter(struct.get("unit").toString()));
-			if ("NaN".equals(struct.get("value").toString()) || "''".equals(struct.get("value").toString())) {
-				bpf.setValue(Double.NaN);
+			bpf.setUnit(shorter(struct.get(MatHelper.UNIT).toString()));
+			if ("NaN".equals(struct.get(MatHelper.VALUE).toString()) || "''".equals(struct.get(MatHelper.VALUE).toString())) {
+				bpf.unset();
 			} else {
-				bpf.setValue(Double.valueOf(struct.get("value").toString()));
+				bpf.setValue(Double.valueOf(struct.get(MatHelper.VALUE).toString()));
 			}
 		} else if (element.getType() instanceof IntProperty) {
 			BeanPropertyInt bpi = new BeanPropertyInt(element);
-			bpi.setUnit(shorter(struct.get("unit").toString()));
-			if ("NaN".equals(struct.get("value").toString()) || "''".equals(struct.get("value").toString())) {
-				//
+			bpi.setUnit(shorter(struct.get(MatHelper.UNIT).toString()));
+			if ("NaN".equals(struct.get(MatHelper.VALUE).toString()) || "''".equals(struct.get(MatHelper.VALUE).toString())) {
+				bpi.unset();
 			} else {
-				bpi.setValue(Long.valueOf(struct.get("value").toString()));
+				bpi.setValue(Long.valueOf(struct.get(MatHelper.VALUE).toString()));
 			}
 		}
 		return true;
@@ -385,7 +414,11 @@ public class MatImporter {
 		return true;
 	}
 
-	//Delete First and Last Character
+	/**
+	 * Delete First and Last Character of a string.
+	 * It is needed because matlab generates '' around strings
+	 * @param str String that should be shorted
+	 */
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
 	}
