@@ -12,12 +12,15 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
@@ -26,6 +29,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
@@ -41,11 +45,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.ArrayInstanceImpl;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyinstancesSwitch;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
+import us.hebi.matlab.mat.types.Cell;
  
 /**
  * Class for exporting data to .mat
@@ -126,8 +132,11 @@ public class MatImporter {
 		//import all given APropertyInstances
 		for (APropertyInstance seiAPI : seiAPIs) {
 			if (nameMatAPIs.contains(seiAPI.getType().getName())) {
-				System.out.println(seiAPI.getType().getName());
-				importGivenAPI(seiAPI, struct.get(seiAPI.getType().getName()));
+				if (!(seiAPI instanceof ArrayInstanceImpl)) {
+					importGivenAPI(seiAPI, struct.get(seiAPI.getType().getName()));
+				} else {
+					importGivenAPI(seiAPI, struct);
+				}
 				nameMatAPIs.remove(seiAPI.getType().getName());
 			} else {
 				seiAPIs.remove(seiAPI);
@@ -203,16 +212,26 @@ public class MatImporter {
 
 			@Override
 			public Boolean caseArrayInstance(ArrayInstance object) {
-				return contentOfProperty(object, struct);
+				return contentOfProperty(object, struct.getCell(object.getType().getName()));
 			}
 
 		}.doSwitch(element);
 		return done;
 	}
 	
-	protected Boolean contentOfProperty(ArrayInstance element, Struct struct) {
-		// TODO Auto-generated method stub
-		System.out.println("an Array");
+	/**
+	 * import a given ArrayInstance
+	 * 
+	 * updates everything inside it
+	 * @param element PropertyInstance which should be changed
+	 * @param cell MatCell that includes all Information
+	 */
+	protected Boolean contentOfProperty(ArrayInstance element, Cell cell) {
+		EList<APropertyInstance> propertyInstances = element.getArrayInstances();
+		int [] dims = cell.getDimensions();
+		for (int i = 0; i < dims[0]; i++) {
+			importGivenAPI(propertyInstances.get(i), cell.get(i));
+		}
 		return true;
 	}
 
@@ -229,14 +248,29 @@ public class MatImporter {
 		return true;
 	}
 
-	protected Boolean contentOfProperty(EReferencePropertyInstance object, Struct struct) {
-		// TODO Auto-generated method stub
+	/**
+	 * import a given EReferencePropertyInstance
+	 * 
+	 * updates value
+	 * @param element PropertyInstance which should be changed
+	 * @param struct MatStruct that includes all Information
+	 */
+	protected Boolean contentOfProperty(EReferencePropertyInstance element, Struct struct) {
+		if (element.getType() instanceof EReferenceProperty) {
+			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
+			if ("''".equals(struct.get(MatHelper.URI).toString())) {
+				bpe.setValue(null);
+			} else {
+				element.eResource().setURI(URI.createPlatformResourceURI(shorter(struct.get(MatHelper.URI).toString()), true));
+			}
+		}
 		return true;
 	}
 
 	protected Boolean contentOfProperty(ReferencePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof ReferenceProperty) {
 			ATypeInstance rpi = element.getReference();
+			BeanPropertyResource bpr = new BeanPropertyResource();
 			// TODO Ask what should be done if something changed
 		}
 		return true;
