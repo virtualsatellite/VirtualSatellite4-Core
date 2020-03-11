@@ -77,16 +77,15 @@ public class MatImporter {
 	 * @param sei sei which should be changed
 	 * @param seiStruct MatStruct that includes all Information
 	 */
-	private void importSei(StructuralElementInstance sei, Struct seiStruct) {
-		try {
+	public void importSei(StructuralElementInstance sei, Struct seiStruct) {
+		if (seiStruct.getFieldNames().contains(MatHelper.CHILDREN)) {
 			Struct matChildren = seiStruct.getStruct(MatHelper.CHILDREN);
 			EList<StructuralElementInstance> seiChildren = sei.getChildren();
 			for (StructuralElementInstance seiChild : seiChildren) {
 				importSei(seiChild, matChildren.getStruct(seiChild.getName()));
 			}
-		} catch (Exception e) {
+			seiStruct.remove(MatHelper.CHILDREN);
 		}
-		
 		EList<CategoryAssignment> seiCas = sei.getCategoryAssignments();
 		importCas(seiCas, seiStruct);
 	}
@@ -130,16 +129,17 @@ public class MatImporter {
 		List<String> nameMatAPIs = struct.getFieldNames();
 		
 		//import all given APropertyInstances
-		for (APropertyInstance seiAPI : seiAPIs) {
-			if (nameMatAPIs.contains(seiAPI.getType().getName())) {
-				if (!(seiAPI instanceof ArrayInstanceImpl)) {
-					importGivenAPI(seiAPI, struct.get(seiAPI.getType().getName()));
+		for (int i = 0; i < seiAPIs.size();) {
+			if (nameMatAPIs.contains(seiAPIs.get(i).getType().getName())) {
+				if (!(seiAPIs instanceof ArrayInstanceImpl)) {
+					importGivenAPI(seiAPIs.get(i), struct.get(seiAPIs.get(i).getType().getName()));
 				} else {
-					importGivenAPI(seiAPI, struct);
+					importGivenAPI(seiAPIs.get(i), struct);
 				}
-				nameMatAPIs.remove(seiAPI.getType().getName());
+				nameMatAPIs.remove(seiAPIs.get(i).getType().getName());
+				i++;
 			} else {
-				seiAPIs.remove(seiAPI);
+				seiAPIs.remove(seiAPIs.get(i));
 			}
 		}
 
