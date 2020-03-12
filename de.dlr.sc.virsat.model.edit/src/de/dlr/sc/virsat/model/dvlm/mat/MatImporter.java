@@ -306,7 +306,15 @@ public class MatImporter {
 	protected Boolean contentOfProperty(ValuePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof BooleanProperty) {
 			BeanPropertyBoolean bpb = new BeanPropertyBoolean(element);
-			bpb.setValue(struct.get(MatHelper.VALUE).toString().equals("1.0"));
+			if (!struct.get(MatHelper.VALUE).toString().equals("''")) {
+				if (struct.get(MatHelper.VALUE).toString().equals("true")) {
+					bpb.setValue(true);
+				} else {
+					bpb.setValue(false);
+				}
+			} else {
+				bpb.unset();
+			}
 		} else if (element.getType() instanceof StringProperty) {
 			BeanPropertyString bps = new BeanPropertyString(element);
 			bps.setValue(shorter(struct.get(MatHelper.VALUE).toString()));
@@ -371,7 +379,8 @@ public class MatImporter {
 			if ("NaN".equals(struct.get(MatHelper.VALUE).toString()) || "''".equals(struct.get(MatHelper.VALUE).toString())) {
 				bpi.unset();
 			} else {
-				bpi.setValue(Long.valueOf(struct.get(MatHelper.VALUE).toString()));
+				double value = Double.valueOf(struct.get(MatHelper.VALUE).toString());
+				bpi.setValue((long) value);
 			}
 		}
 		return true;

@@ -13,10 +13,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,10 +28,9 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
-import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 
-public class ImporterTest extends ATestConceptTestCase {
+public class MatImporterTest extends ATestConceptTestCase {
 
 	private StructuralElementInstance sei;
 	private TestStructuralElement tsei;
@@ -121,7 +120,7 @@ public class ImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportAPIDeleteAPI() throws IOException {
+	public void testImportAPIDeleteAPI() {
 		
 		EReferenceTest tc2 = new EReferenceTest(testConcept);
 		tsei.add(tc2);
@@ -137,20 +136,88 @@ public class ImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesRemoveAll() throws IOException {
+	public void testImportOfValuesRemoveAll() {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
 		mat = exporter.exportSei(sei);
+
+		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
+		tc1.setTestBool(true);
+		tc1.setTestFloat(2);
+		tc1.setTestEnum("HIGH");
+		tc1.setTestString("test");
+		tc1.setTestInt(1);
+		//Resource not working
+		tc1.setTestResource(URI.createFileURI("TestFile.mat"));
+		sei2.setName("testsei");
+		sei2.setUuid(sei.getUuid());
+		tsei2.add(tc1);
+		importer.importSei(sei2, mat.getStruct(sei2.getName()));
+
+		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
+		EList<APropertyInstance> caSei2 = sei.getCategoryAssignments().get(0).getPropertyInstances();
+		assertTrue("same number of elements", caSei.size() == caSei2.size());
+		for (int i = 0; i < caSei.size(); i++) {
+			assertTrue("same" + caSei.get(i).getFullQualifiedInstanceName(), caSei.get(i).equals(caSei2.get(i)));
+		}
+	}
+	
+	@Test
+	public void testImportOfValuesAddAll() {
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
 		tc.setTestBool(true);
 		tc.setTestFloat(2);
 		tc.setTestEnum("HIGH");
 		tc.setTestString("test");
 		tc.setTestInt(1);
+		//Resource not working
 		tc.setTestResource(URI.createFileURI("TestFile.mat"));
-		Mat5.writeToFile(exporter.exportSei(sei), "TestFile.mat");
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		mat = exporter.exportSei(sei);
 		
+		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		sei2.setName("testsei");
+		sei2.setUuid(sei.getUuid());
+		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
+		tsei2.add(tc1);
+		importer.importSei(sei2, mat.getStruct(sei2.getName()));
+
+		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
+		EList<APropertyInstance> caSei2 = sei.getCategoryAssignments().get(0).getPropertyInstances();
+		assertTrue("same number of elements", caSei.size() == caSei2.size());
+		for (int i = 0; i < caSei.size(); i++) {
+			assertTrue("same" + caSei.get(i).getFullQualifiedInstanceName(), caSei.get(i).equals(caSei2.get(i)));
+		}
 	}
+	
+	@Test
+	public void testImportOfValuesChangeNothingEmpty() {
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
+		mat = exporter.exportSei(sei);
+		importer.importSei(sei, mat.getStruct(sei.getName()));
+		assertTrue("Sei is same", sei.equals(sei));
+	}
+	
+	@Test
+	public void testImportOfValuesChangeNothingValues() {
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
+		tc.setTestBool(true);
+		tc.setTestFloat(2);
+		tc.setTestEnum("HIGH");
+		tc.setTestString("test");
+		tc.setTestInt(1);
+		//Resource not working
+		tc.setTestResource(URI.createFileURI("TestFile.mat"));
+		mat = exporter.exportSei(sei);
+		importer.importSei(sei, mat.getStruct(sei.getName()));
+		assertTrue("Sei is same", sei.equals(sei));
+	}
+	
 	
 //	@Test
 //	public void testCheck() throws IOException {
