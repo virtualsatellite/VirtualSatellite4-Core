@@ -38,13 +38,23 @@ public class ConceptResourceLoader {
 	 */
 	public Concept loadConceptFromPlugin(String conceptXmiFilePath) {
 
-		URI conceptResourceUri = URI.createPlatformResourceURI(conceptXmiFilePath, true);
+		URI conceptResourceUri = getUriFromPath(conceptXmiFilePath);
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
 		Resource resource = resourceSet.getResource(conceptResourceUri, true);
 		Concept concept = (Concept) resource.getContents().get(0);
 		return concept;
+	}
+	
+	/**
+	 * Get a platform URI from a path as string
+	 * 
+	 * @param path the path which should be use to create the URI from; must be of the form: /project-name/path
+	 * @return the URI
+	 */
+	protected URI getUriFromPath(String path) {
+		return URI.createPlatformResourceURI(path, true);
 	}
 	
 	/**
