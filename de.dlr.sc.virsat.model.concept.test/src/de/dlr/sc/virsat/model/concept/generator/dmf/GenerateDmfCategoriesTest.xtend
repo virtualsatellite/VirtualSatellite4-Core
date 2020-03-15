@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
 import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper
 import de.dlr.sc.virsat.model.concept.test.MockupConceptResourceLoader
-import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)

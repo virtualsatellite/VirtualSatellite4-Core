@@ -10,8 +10,8 @@
 package de.dlr.sc.virsat.model.concept.generator.dmf;
 
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
-import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.concept.generator.dmf.GenerateDmfCategories;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.concept.test.MockupConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;

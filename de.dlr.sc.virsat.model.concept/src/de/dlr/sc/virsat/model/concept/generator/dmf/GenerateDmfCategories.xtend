@@ -59,7 +59,7 @@ import java.util.ArrayList
 import java.util.List
 import java.util.Set
 import java.util.HashSet
-import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader
 
 /**
  * This generator generates an eCore model with eClasses out of described categories

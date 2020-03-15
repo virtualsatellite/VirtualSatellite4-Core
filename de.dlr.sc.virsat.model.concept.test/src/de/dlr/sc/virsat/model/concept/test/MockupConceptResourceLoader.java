@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**

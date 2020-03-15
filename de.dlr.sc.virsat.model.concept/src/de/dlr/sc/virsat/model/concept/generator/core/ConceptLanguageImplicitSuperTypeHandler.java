@@ -11,7 +11,7 @@ package de.dlr.sc.virsat.model.concept.generator.core;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import de.dlr.sc.virsat.model.concept.builder.resources.ConceptResourceLoader;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
