@@ -139,6 +139,8 @@ public class AMigratorTest {
 		Concept conceptPrevious = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptPrevious.setName("de.dlr.test.concept.migrate.se");
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -176,6 +178,8 @@ public class AMigratorTest {
 	public void testMigrateChangeStructuralElement() {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
@@ -301,6 +305,8 @@ public class AMigratorTest {
 	public void testMigrateAddCategory() {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
@@ -336,6 +342,8 @@ public class AMigratorTest {
 	public void testMigrateChangeCategory() {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
