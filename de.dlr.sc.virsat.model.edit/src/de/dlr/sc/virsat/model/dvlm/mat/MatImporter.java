@@ -78,6 +78,7 @@ public class MatImporter {
 	 * @param seiStruct MatStruct that includes all Information
 	 */
 	public void importSei(StructuralElementInstance sei, Struct seiStruct) {
+		this.sei = sei;
 		if (seiStruct.getFieldNames().contains(MatHelper.CHILDREN)) {
 			Struct matChildren = seiStruct.getStruct(MatHelper.CHILDREN);
 			EList<StructuralElementInstance> seiChildren = sei.getChildren();
@@ -282,6 +283,7 @@ public class MatImporter {
 			if ("''".equals(struct.get(MatHelper.UUID).toString())) {
 				element.setReference(null);
 			} else {
+				//StructuralElementInstance sei2 = sei;
 				EList<Resource> res = sei.eResource().getResourceSet().getResources();
 				for (Resource re : res) {
 					EObject ref = re.getEObject(shorter(struct.get(MatHelper.UUID).toString()));
@@ -317,7 +319,12 @@ public class MatImporter {
 			}
 		} else if (element.getType() instanceof StringProperty) {
 			BeanPropertyString bps = new BeanPropertyString(element);
-			bps.setValue(shorter(struct.get(MatHelper.VALUE).toString()));
+			if (!struct.get(MatHelper.VALUE).toString().equals("''")) {
+				bps.setValue(shorter(struct.get(MatHelper.VALUE).toString()));
+			} else {
+				bps.unset();
+			}
+			
 		}
 		return true;
 	}
@@ -351,7 +358,7 @@ public class MatImporter {
 			if ("''".equals(struct.get(MatHelper.URI).toString())) {
 				bpr.unset();
 			} else {
-				bpr.setValue(URI.createPlatformResourceURI(shorter(struct.get(MatHelper.URI).toString()), true));
+				bpr.setValue(URI.createURI(shorter(struct.get(MatHelper.URI).toString()), true));
 			}
 		}
 		return true;
