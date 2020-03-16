@@ -14,8 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -61,7 +59,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testCheckIfCorrectSeiCorrect() {
 		assertTrue("Is the same", importer.checkIfCorrectSei(sei, mat));
 		sei.setName("Testsein");
-		assertFalse("Not the same", importer.checkIfCorrectSei(sei, mat));
+		assertFalse("Not the same name", importer.checkIfCorrectSei(sei, mat));
 	}
 
 	@Test
@@ -303,7 +301,9 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesERef() throws IOException {
+	public void testImportOfValuesERef() {
+		ExternalTestType testERef = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
+		
 		//empty and import empty
 		EReferenceTest tc = new EReferenceTest(testConcept);
 		tsei.add(editingDomain, tc);
@@ -319,12 +319,8 @@ public class MatImporterTest extends ATestConceptTestCase {
 		assertEquals("same Reference from empty to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
 
 		//values and import empty
-		ExternalTestType testERef = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
 		tc1.setEReferenceTest(editingDomain, testERef);
-		System.out.println(tc1.getEReferenceTest());
 		importer.importSei(sei2, mat1.getStruct(sei.getName()));
-		System.out.println(tc1.getEReferenceTest());
-		System.out.println(tc.getEReferenceTest());
 		assertEquals("same Reference from value to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
 
 		//empty and import values

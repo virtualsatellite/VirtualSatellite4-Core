@@ -150,14 +150,6 @@ public class MatImporter {
 		//}
 	}
 
-//	private CategoryAssignment importNewCa(Struct struct, String nameMatCa) {
-//		return null;
-//	}
-//
-//	private APropertyInstance importNewAPI(Struct struct) {
-//		return null;
-//	}
-
 	/**
 	 * import a given Property
 	 * @param seiAPI PropertyInstance which should be changed
@@ -392,24 +384,6 @@ public class MatImporter {
 		}
 		return true;
 	}
-
-//	private String getRigthProperty(Struct struct) {
-//		List<String> fields = struct.getFieldNames();
-//		if (fields.contains("uri") && fields.size() == 1) {
-//			return "Resource";
-//		} else if (fields.contains("value") && fields.size() == 1) {
-//			return "Value";
-//		} else if (fields.contains("value") && fields.contains("unit") && fields.size() == 2) {
-//			return "Float";
-//		} else if (fields.contains("unit") && fields.contains("value") && fields.contains("name") && fields.size() == 3) {
-//			return "Enum";
-//		} else if (fields.contains("uuid") && fields.contains("fullQualifiedInstanceName") && fields.size() == 2) {
-//			return "Reference";
-//		} else if (fields.contains("reference") && fields.contains("reference-class") && fields.size() == 2) {
-//			return "EReference";
-//		}
-//		return null;
-//	}
 
 	/**
 	 * hands back boolean that represents if the MatFile and the sei are equal
