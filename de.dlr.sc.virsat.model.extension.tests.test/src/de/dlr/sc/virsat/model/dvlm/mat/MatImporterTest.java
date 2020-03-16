@@ -278,20 +278,20 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setName("testsei");
 		sei2.setUuid(sei.getUuid());
 		importer.importSei(sei2, mat.getStruct(sei.getName()));
-		assertEquals("same Reference empty", tc1.getTestRefCategory(), tc.getTestRefCategory()); //empty to empty
+		assertEquals("same EReference from empty to empty", tc1.getTestRefCategory(), tc.getTestRefCategory()); //empty to empty
 
 		//values and import empty
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
 		tc1.setTestRefCategory(editingDomain, tc2);
 		importer.importSei(sei2, mat1.getStruct(sei.getName()));
-		assertEquals("same Reference", tc1.getTestRefCategory(), tc.getTestRefCategory());
+		assertEquals("same EReference from value to empty", tc1.getTestRefCategory(), tc.getTestRefCategory());
 
 		//empty and import values
 		tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat.getStruct(sei.getName()));
-		assertEquals("same Reference", tc1.getTestRefCategory(), tc.getTestRefCategory());
+		assertEquals("same Reference from empty to value", tc1.getTestRefCategory(), tc.getTestRefCategory());
 
 		//values and import values
 		tc.setTestRefCategory(editingDomain, tc2);
@@ -299,9 +299,9 @@ public class MatImporterTest extends ATestConceptTestCase {
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat.getStruct(sei.getName()));
-		assertEquals("same Reference", tc1.getTestRefCategory(), tc.getTestRefCategory());
+		assertEquals("same Reference from value to value", tc1.getTestRefCategory(), tc.getTestRefCategory());
 	}
-	
+
 	@Test
 	public void testImportOfValuesERef() throws IOException {
 		//empty and import empty
@@ -327,17 +327,19 @@ public class MatImporterTest extends ATestConceptTestCase {
 		System.out.println(tc.getEReferenceTest());
 		assertEquals("same Reference from value to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
 
-		//works till here
-//		//empty and import values
-//		tc1.setEReferenceTest(TEST_EREFERENCE_VALUE);
-//		mat = exporter.exportSei(sei2);
-//		Mat5.writeToFile(mat, "TestFile.mat");
-//		importer.importSei(sei, mat.getStruct(sei.getName()));
-//		assertEquals("same Reference empty", tc1.getEReferenceTest(), tc.getEReferenceTest()); //empty to empty
-//
-//		//values and import values
-//		MatFile mat2 = exporter.exportSei(sei2);
-//		importer.importSei(sei, mat2.getStruct(sei.getName()));
-//		assertEquals("same Reference empty", tc1.getEReferenceTest(), tc.getEReferenceTest()); //empty to empty
+		//empty and import values
+		tc1.setEReferenceTest(editingDomain, testERef);
+		editingDomain.saveAll();
+		mat = exporter.exportSei(sei2);
+		importer.importSei(sei, mat.getStruct(sei.getName()));
+		assertEquals("same Reference from empty to value", tc1.getEReferenceTest(), tc.getEReferenceTest());
+
+		//values and import values
+		tc1.setEReferenceTest(editingDomain, testERef);
+		tc.setEReferenceTest(editingDomain, testERef);
+		editingDomain.saveAll();
+		mat = exporter.exportSei(sei2);
+		importer.importSei(sei, mat.getStruct(sei.getName()));
+		assertEquals("same Reference from value to value", tc1.getEReferenceTest(), tc.getEReferenceTest());
 	}
 }
