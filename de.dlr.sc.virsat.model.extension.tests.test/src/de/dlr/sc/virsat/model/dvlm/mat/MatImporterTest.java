@@ -31,8 +31,8 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 import us.hebi.matlab.mat.types.MatFile;
-import us.hebi.matlab.mat.types.Struct;
 
 public class MatImporterTest extends ATestConceptTestCase {
 
@@ -48,12 +48,12 @@ public class MatImporterTest extends ATestConceptTestCase {
 		exporter = new MatExporter();
 		importer = new MatImporter();
 		super.setUp();
-		addResourceSetAndRepository();
-		loadTestConcept();
+		addEditingDomainAndRepository();
+		executeAsCommand(() -> loadTestConcept());
 		tsei = new TestStructuralElement(testConcept);
 		sei = tsei.getStructuralElementInstance();
 		sei.setName("testsei");
-		repository.getRootEntities().add(sei);
+		executeAsCommand(() -> repository.getRootEntities().add(sei));
 		mat = exporter.exportSei(sei);
 	}
 
@@ -207,7 +207,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
 		mat = exporter.exportSei(sei);
-		
+
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		sei2.setName("testsei");
@@ -265,57 +265,79 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesRef() throws IOException {
+	public void testImportOfValuesRef() {
+		//empty and import empty
 		TestCategoryReference tc = new TestCategoryReference(testConcept);
-		tsei.add(tc);
+		tsei.add(editingDomain, tc);
 		mat = exporter.exportSei(sei);
 		MatFile mat1 = exporter.exportSei(sei);
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		TestCategoryReference tc1 = new TestCategoryReference(testConcept);
-		tsei2.add(tc1);
+		tsei2.add(editingDomain, tc1);
 		sei2.setName("testsei");
 		sei2.setUuid(sei.getUuid());
 		importer.importSei(sei2, mat.getStruct(sei.getName()));
 		assertEquals("same Reference empty", tc1.getTestRefCategory(), tc.getTestRefCategory()); //empty to empty
 
+		//values and import empty
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
-		tc1.setTestRefCategory(tc2);
+		tc1.setTestRefCategory(editingDomain, tc2);
 		importer.importSei(sei2, mat1.getStruct(sei.getName()));
 		assertEquals("same Reference", tc1.getTestRefCategory(), tc.getTestRefCategory());
 
-		tc1.setTestRefCategory(tc2);
-		tc.setTestRefCategory(tc2);
-		MatFile mat2 = exporter.exportSei(sei2);
-		Struct stru = mat2.getStruct(sei.getName());
-		importer.importSei(sei, stru);
+		//empty and import values
+		tc1.setTestRefCategory(editingDomain, tc2);
+		editingDomain.saveAll();
+		mat = exporter.exportSei(sei2);
+		importer.importSei(sei, mat.getStruct(sei.getName()));
+		assertEquals("same Reference", tc1.getTestRefCategory(), tc.getTestRefCategory());
+
+		//values and import values
+		tc.setTestRefCategory(editingDomain, tc2);
+		tc1.setTestRefCategory(editingDomain, tc2);
+		editingDomain.saveAll();
+		mat = exporter.exportSei(sei2);
+		importer.importSei(sei, mat.getStruct(sei.getName()));
 		assertEquals("same Reference", tc1.getTestRefCategory(), tc.getTestRefCategory());
 	}
 	
-//	@Test
-//	public void testCheck() throws IOException {
-//		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
-//		StructuralElementInstance sei2 = tsei4.getStructuralElementInstance();
-//		sei2.setName("child1");
-//		sei2.setParent(sei);
-//		TestStructuralElementOther tsei1 = new TestStructuralElementOther(testConcept);
-//		StructuralElementInstance sei3 = tsei1.getStructuralElementInstance();
-//		sei3.setName("child2");
-//		sei3.setParent(sei);
-//		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
-//		tsei.add(tc2);
-//		TestCategoryIntrinsicArray tc = new TestCategoryIntrinsicArray(testConcept);
-//		tsei.add(tc);	//TestCategoryIntrinsicArray
-//		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
-//		tsei.add(tc1);
-//		tc.getTestStringArrayStatic().get(0).setValue("hallo");
-//		mat = exporter.exportSei(sei);
+	@Test
+	public void testImportOfValuesERef() throws IOException {
+		//empty and import empty
+		EReferenceTest tc = new EReferenceTest(testConcept);
+		tsei.add(editingDomain, tc);
+		mat = exporter.exportSei(sei);
+		MatFile mat1 = exporter.exportSei(sei);
+		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		EReferenceTest tc1 = new EReferenceTest(testConcept);
+		tsei2.add(editingDomain, tc1);
+		sei2.setName("testsei");
+		sei2.setUuid(sei.getUuid());
+		importer.importSei(sei2, mat.getStruct(sei.getName()));
+		assertEquals("same Reference from empty to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
+
+		//values and import empty
+		ExternalTestType testERef = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
+		tc1.setEReferenceTest(editingDomain, testERef);
+		System.out.println(tc1.getEReferenceTest());
+		importer.importSei(sei2, mat1.getStruct(sei.getName()));
+		System.out.println(tc1.getEReferenceTest());
+		System.out.println(tc.getEReferenceTest());
+		assertEquals("same Reference from value to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
+
+		//works till here
+//		//empty and import values
+//		tc1.setEReferenceTest(TEST_EREFERENCE_VALUE);
+//		mat = exporter.exportSei(sei2);
 //		Mat5.writeToFile(mat, "TestFile.mat");
-//		
+//		importer.importSei(sei, mat.getStruct(sei.getName()));
+//		assertEquals("same Reference empty", tc1.getEReferenceTest(), tc.getEReferenceTest()); //empty to empty
 //
-//		importer.importSei(sei, "TestFile2.mat");
-//		
-//		mat = exporter.exportSei(sei);
-//		Mat5.writeToFile(mat, "TestFile1.mat");
-//	}
+//		//values and import values
+//		MatFile mat2 = exporter.exportSei(sei2);
+//		importer.importSei(sei, mat2.getStruct(sei.getName()));
+//		assertEquals("same Reference empty", tc1.getEReferenceTest(), tc.getEReferenceTest()); //empty to empty
+	}
 }
