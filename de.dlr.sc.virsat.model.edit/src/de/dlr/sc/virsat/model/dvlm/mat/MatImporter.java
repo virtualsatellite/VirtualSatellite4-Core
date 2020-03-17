@@ -397,8 +397,8 @@ public class MatImporter {
 		if (structFields.contains("type") && structFields.contains("uuid")) {
 			String matSeiType = shorter(seiStruct.getChar("type").toString()); 
 			String matSeiUUID = shorter(seiStruct.getChar("uuid").toString());
-			structFields.remove(0);
-			structFields.remove(0);
+			structFields.remove("type");
+			structFields.remove("uuid");
 			if (!matSeiType.equals(sei.getType().getName()) || !matSeiUUID.equals(sei.getUuid().toString())) {
 				return false;
 			}
