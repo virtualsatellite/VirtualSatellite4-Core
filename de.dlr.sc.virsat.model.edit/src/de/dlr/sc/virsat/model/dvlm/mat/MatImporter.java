@@ -48,7 +48,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.ArrayInstanceImpl;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyinstancesSwitch;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
 import us.hebi.matlab.mat.types.Cell;
@@ -58,14 +57,14 @@ import us.hebi.matlab.mat.types.Cell;
  */
 public class MatImporter {
 	StructuralElementInstance sei;
+	
 	/**
 	 * checks if mat and sei fit together
 	 * @param sei sei which should be changed
 	 * @param matFile MatFile that includes all Information
 	 */
-	public void importSei(StructuralElementInstance sei, String matFile) throws IOException {
+	public void importSei(StructuralElementInstance sei, MatFile mat) throws IOException {
 		this.sei = sei;
-		MatFile mat = Mat5.readFromFile(matFile);
 		if (checkIfCorrectSei(sei, mat)) {
 			Struct struct = mat.getStruct(sei.getName());
 			importSei(sei, struct);
@@ -78,7 +77,6 @@ public class MatImporter {
 	 * @param seiStruct MatStruct that includes all Information
 	 */
 	public void importSei(StructuralElementInstance sei, Struct seiStruct) {
-		this.sei = sei;
 		if (seiStruct.getFieldNames().contains(MatHelper.CHILDREN)) {
 			Struct matChildren = seiStruct.getStruct(MatHelper.CHILDREN);
 			EList<StructuralElementInstance> seiChildren = sei.getChildren();

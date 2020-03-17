@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -108,21 +110,21 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportCasDeleteCas() {
+	public void testImportCasDeleteCas() throws IOException {
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc2);
 		mat = exporter.exportSei(sei);
 		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
 		tsei.add(tc1);
 		assertTrue("Sei has two CategoryAssinments", sei.getCategoryAssignments().size() == 2);
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		importer.importSei(sei, mat);
 		assertTrue("Only one CategoryAssinment", sei.getCategoryAssignments().size() == 1);
 		assertTrue("Right CategoryAssinment included",
 				sei.getCategoryAssignments().get(0).getName().equals(tc2.getName()));
 	}
 
 	@Test
-	public void testImportAPIDeleteAPI() {
+	public void testImportAPIDeleteAPI() throws IOException {
 		EReferenceTest tc2 = new EReferenceTest(testConcept);
 		tsei.add(tc2);
 		TestCategoryAllProperty tc3 = new TestCategoryAllProperty(testConcept);
@@ -132,12 +134,12 @@ public class MatImporterTest extends ATestConceptTestCase {
 		mat = exporter.exportSei(sei);
 		sei.getCategoryAssignments().get(0).getPropertyInstances().add(nInstance);
 		assertEquals("CategoryAssinment has seven PropertyInstances", sei.getCategoryAssignments().get(0).getPropertyInstances().size(), NUMBEROFELEMENTS + 1);
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		importer.importSei(sei, mat);
 		assertTrue("Instance deleted", sei.getCategoryAssignments().get(0).getPropertyInstances().size() == NUMBEROFELEMENTS);
 	}
 
 	@Test
-	public void testImportOfValuesRemoveAll() {
+	public void testImportOfValuesRemoveAll() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
 		mat = exporter.exportSei(sei);
@@ -155,7 +157,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setName("testsei");
 		sei2.setUuid(sei.getUuid());
 		tsei2.add(tc1);
-		importer.importSei(sei2, mat.getStruct(sei2.getName()));
+		importer.importSei(sei2, mat);
 
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
@@ -169,7 +171,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesAddAll() {
+	public void testImportOfValuesAddAll() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
 		tc.setTestBool(true);
@@ -187,7 +189,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
 		tsei2.add(tc1);
-		importer.importSei(sei2, mat.getStruct(sei2.getName()));
+		importer.importSei(sei2, mat);
 
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
@@ -201,7 +203,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesChangeNothingEmpty() {
+	public void testImportOfValuesChangeNothingEmpty() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
 		mat = exporter.exportSei(sei);
@@ -212,7 +214,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
 		tsei2.add(tc1);
-		importer.importSei(sei2, mat.getStruct(sei2.getName()));
+		importer.importSei(sei2, mat);
 
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
@@ -225,7 +227,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesChangeNothingValues() {
+	public void testImportOfValuesChangeNothingValues() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
 		tc.setTestBool(true);
@@ -249,7 +251,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tc1.setTestInt(1);
 		tc1.setTestResource(testUri);
 		tsei2.add(tc1);
-		importer.importSei(sei2, mat.getStruct(sei2.getName()));
+		importer.importSei(sei2, mat);
 
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
@@ -263,7 +265,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportOfValuesRef() {
+	public void testImportOfValuesRef() throws IOException {
 		//empty and import empty
 		TestCategoryReference tc = new TestCategoryReference(testConcept);
 		tsei.add(editingDomain, tc);
@@ -275,20 +277,20 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(editingDomain, tc1);
 		sei2.setName("testsei");
 		sei2.setUuid(sei.getUuid());
-		importer.importSei(sei2, mat.getStruct(sei.getName()));
+		importer.importSei(sei2, mat);
 		assertEquals("same EReference from empty to empty", tc1.getTestRefCategory(), tc.getTestRefCategory()); //empty to empty
 
 		//values and import empty
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
 		tc1.setTestRefCategory(editingDomain, tc2);
-		importer.importSei(sei2, mat1.getStruct(sei.getName()));
+		importer.importSei(sei2, mat1);
 		assertEquals("same EReference from value to empty", tc1.getTestRefCategory(), tc.getTestRefCategory());
 
 		//empty and import values
 		tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		importer.importSei(sei, mat);
 		assertEquals("same Reference from empty to value", tc1.getTestRefCategory(), tc.getTestRefCategory());
 
 		//values and import values
@@ -296,12 +298,12 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		importer.importSei(sei, mat);
 		assertEquals("same Reference from value to value", tc1.getTestRefCategory(), tc.getTestRefCategory());
 	}
 
 	@Test
-	public void testImportOfValuesERef() {
+	public void testImportOfValuesERef() throws IOException {
 		ExternalTestType testERef = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
 		
 		//empty and import empty
@@ -315,19 +317,19 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(editingDomain, tc1);
 		sei2.setName("testsei");
 		sei2.setUuid(sei.getUuid());
-		importer.importSei(sei2, mat.getStruct(sei.getName()));
+		importer.importSei(sei2, mat);
 		assertEquals("same Reference from empty to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
 
 		//values and import empty
 		tc1.setEReferenceTest(editingDomain, testERef);
-		importer.importSei(sei2, mat1.getStruct(sei.getName()));
+		importer.importSei(sei2, mat1);
 		assertEquals("same Reference from value to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
 
 		//empty and import values
 		tc1.setEReferenceTest(editingDomain, testERef);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		importer.importSei(sei, mat);
 		assertEquals("same Reference from empty to value", tc1.getEReferenceTest(), tc.getEReferenceTest());
 
 		//values and import values
@@ -335,7 +337,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tc.setEReferenceTest(editingDomain, testERef);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat.getStruct(sei.getName()));
+		importer.importSei(sei, mat);
 		assertEquals("same Reference from value to value", tc1.getEReferenceTest(), tc.getEReferenceTest());
 	}
 }
