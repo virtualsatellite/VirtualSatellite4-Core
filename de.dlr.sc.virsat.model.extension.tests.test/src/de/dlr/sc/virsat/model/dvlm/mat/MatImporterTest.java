@@ -42,6 +42,12 @@ public class MatImporterTest extends ATestConceptTestCase {
 	private MatImporter importer;
 	private MatFile mat;
 	private static final int NUMBEROFELEMENTS = 6;
+	private static final String TEST_STRING = "testString";
+	private static final int TEST_INT = 1;
+	private static final float TEST_FLOAT = 2;
+	private static final String TEST_ENUM_VALUE = "HIGH";
+	private static final String TEST_SEI = "testsei";
+	private static final Boolean TEST_BOOL = false;
 
 	@Before
 	public void setUp() throws CoreException {
@@ -52,7 +58,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		executeAsCommand(() -> loadTestConcept());
 		tsei = new TestStructuralElement(testConcept);
 		sei = tsei.getStructuralElementInstance();
-		sei.setName("testsei");
+		sei.setName(TEST_SEI);
 		executeAsCommand(() -> repository.getRootEntities().add(sei));
 		mat = exporter.exportSei(sei);
 	}
@@ -68,7 +74,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testCheckIfCorrectSeiWrongUUID() {
 		TestStructuralElementOther tsei2 = new TestStructuralElementOther(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setType(sei.getType());
 		assertFalse("Not the same uuid", importer.checkIfCorrectSei(sei2, mat));
 	}
@@ -77,7 +83,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testCheckIfCorrectSeiWrongType() {
 		TestStructuralElementOther tsei2 = new TestStructuralElementOther(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		assertFalse("Not the same type", importer.checkIfCorrectSei(sei2, mat));
 	}
@@ -86,7 +92,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testCheckIfCorrectSeiWrongNumberOfChildren() {
 		TestStructuralElementOther tsei2 = new TestStructuralElementOther(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setParent(sei);
 		assertFalse("Not the same number of children", importer.checkIfCorrectSei(sei, mat));
 	}
@@ -95,17 +101,20 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testCheckIfCorrectSeiWrongChildren() {
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setParent(sei);
 		mat = exporter.exportSei(sei);
+
 		TestStructuralElementOther tsei3 = new TestStructuralElementOther(testConcept);
 		StructuralElementInstance sei3 = tsei3.getStructuralElementInstance();
 		sei3.setName("testseiChild");
+		sei2.setParent(sei3);
+
 		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
 		StructuralElementInstance sei4 = tsei4.getStructuralElementInstance();
 		sei4.setName("testseiChild2");
-		sei2.setParent(sei3);
 		sei4.setParent(sei);
+
 		assertFalse("Not the same children", importer.checkIfCorrectSei(sei, mat));
 	}
 
@@ -125,15 +134,22 @@ public class MatImporterTest extends ATestConceptTestCase {
 
 	@Test
 	public void testImportAPIDeleteAPI() throws IOException {
+		//create a SEI and an PropertyInstance
 		EReferenceTest tc2 = new EReferenceTest(testConcept);
 		tsei.add(tc2);
 		TestCategoryAllProperty tc3 = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc3);
 		APropertyInstance nInstance = sei.getCategoryAssignments().get(0).getPropertyInstances().get(0);
 		sei.getCategoryAssignments().remove(0);
+
+		//get .mat with one Category Assignment 
 		mat = exporter.exportSei(sei);
+
+		//add one ProperyInstance to this
 		sei.getCategoryAssignments().get(0).getPropertyInstances().add(nInstance);
 		assertEquals("CategoryAssinment has seven PropertyInstances", sei.getCategoryAssignments().get(0).getPropertyInstances().size(), NUMBEROFELEMENTS + 1);
+
+		//import should delete 7th PropertyInstance
 		importer.importSei(sei, mat);
 		assertTrue("Instance deleted", sei.getCategoryAssignments().get(0).getPropertyInstances().size() == NUMBEROFELEMENTS);
 	}
@@ -147,11 +163,11 @@ public class MatImporterTest extends ATestConceptTestCase {
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
-		tc1.setTestBool(false);
-		tc1.setTestFloat(2);
-		tc1.setTestEnum("HIGH");
-		tc1.setTestString("test");
-		tc1.setTestInt(1);
+		tc1.setTestBool(TEST_BOOL);
+		tc1.setTestFloat(TEST_FLOAT);
+		tc1.setTestEnum(TEST_ENUM_VALUE);
+		tc1.setTestString(TEST_STRING);
+		tc1.setTestInt(TEST_INT);
 		URI testUri =  URI.createPlatformResourceURI("Testresource", false);
 		tc1.setTestResource(testUri);
 		sei2.setName("testsei");
@@ -232,7 +248,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei.add(tc);
 		tc.setTestBool(true);
 		tc.setTestFloat(2);
-		tc.setTestEnum("HIGH");
+		tc.setTestEnum("NO");
 		tc.setTestString("test");
 		tc.setTestInt(1);
 		URI testUri = URI.createPlatformPluginURI("Testresource", true);
@@ -260,7 +276,8 @@ public class MatImporterTest extends ATestConceptTestCase {
 		assertEquals("same testBool", tc1.getTestBool(), tc.getTestBool());
 		assertEquals(tc1.getTestFloat(), tc.getTestFloat(), 0);
 		assertEquals("same testResource", tc1.getTestResource(), tc.getTestResource());
-		assertEquals("same testEnum", tc1.getTestEnum(), tc.getTestEnum());
+		assertEquals("same testEnumValue", tc1.getTestEnumBean().getValue(), tc.getTestEnumBean().getValue());
+		assertEquals("same testEnumValue", tc1.getTestEnumBean().getUnit(), tc.getTestEnumBean().getUnit());
 		assertEquals("same testInt", tc1.getTestInt(), tc.getTestInt());
 	}
 
