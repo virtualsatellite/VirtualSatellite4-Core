@@ -111,11 +111,6 @@ public class MatImporter {
 				seiCas.remove(i);
 			}
 		}
-
-		//import all new CategoryAssinments
-		//for (String nameMatCa : nameMatCas) {
-		//	seiCas.add(importNewCa(struct.get(nameMatCa),nameMatCa));
-		//}
 	}
 	
 	/**
@@ -141,11 +136,6 @@ public class MatImporter {
 				seiAPIs.remove(seiAPIs.get(i));
 			}
 		}
-
-		//import all new APropertyInstances
-		//for (String nameMatAPI : nameMatAPIs) {
-		//	seiAPIs.add(importNewAPI(struct.get(nameMatAPI)));
-		//}
 	}
 
 	/**
@@ -205,7 +195,6 @@ public class MatImporter {
 			public Boolean caseArrayInstance(ArrayInstance object) {
 				return contentOfProperty(object, struct.getCell(object.getType().getName()));
 			}
-
 		}.doSwitch(element);
 		return done;
 	}
@@ -273,7 +262,6 @@ public class MatImporter {
 			if ("''".equals(struct.get(MatHelper.UUID).toString())) {
 				element.setReference(null);
 			} else {
-				//StructuralElementInstance sei2 = sei;
 				EList<Resource> res = sei.eResource().getResourceSet().getResources();
 				for (Resource re : res) {
 					EObject ref = re.getEObject(shorter(struct.get(MatHelper.UUID).toString()));
@@ -314,7 +302,6 @@ public class MatImporter {
 			} else {
 				bps.unset();
 			}
-			
 		}
 		return true;
 	}
