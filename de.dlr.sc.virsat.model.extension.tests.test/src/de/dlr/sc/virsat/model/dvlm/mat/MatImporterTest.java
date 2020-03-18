@@ -99,12 +99,14 @@ public class MatImporterTest extends ATestConceptTestCase {
 
 	@Test
 	public void testCheckIfCorrectSeiWrongChildren() {
+		//set up sei with one child
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		sei2.setName(TEST_SEI);
 		sei2.setParent(sei);
 		mat = exporter.exportSei(sei);
 
+		//change sei to have 2 children and one of this children have also a child
 		TestStructuralElementOther tsei3 = new TestStructuralElementOther(testConcept);
 		StructuralElementInstance sei3 = tsei3.getStructuralElementInstance();
 		sei3.setName("testseiChild");
@@ -175,6 +177,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(tc1);
 		importer.importSei(sei2, mat);
 
+		//checks if the import deletes all values
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
@@ -207,6 +210,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(tc1);
 		importer.importSei(sei2, mat);
 
+		//checks if the import adds all Values
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
@@ -232,6 +236,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(tc1);
 		importer.importSei(sei2, mat);
 
+		//checks that if the same sei is imported and everything is empty, it stays empty
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
@@ -269,6 +274,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(tc1);
 		importer.importSei(sei2, mat);
 
+		//checks if the same seiis imported and everything has a value, the value doesnt change
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
