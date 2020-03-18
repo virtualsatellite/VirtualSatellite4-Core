@@ -147,7 +147,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 
 		//add one ProperyInstance to this
 		sei.getCategoryAssignments().get(0).getPropertyInstances().add(nInstance);
-		assertEquals("CategoryAssinment has seven PropertyInstances", sei.getCategoryAssignments().get(0).getPropertyInstances().size(), NUMBEROFELEMENTS + 1);
+		assertEquals("CategoryAssinment has seven PropertyInstances", NUMBEROFELEMENTS + 1, sei.getCategoryAssignments().get(0).getPropertyInstances().size());
 
 		//import should delete 7th PropertyInstance
 		importer.importSei(sei, mat);
@@ -170,7 +170,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tc1.setTestInt(TEST_INT);
 		URI testUri =  URI.createPlatformResourceURI("Testresource", false);
 		tc1.setTestResource(testUri);
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		tsei2.add(tc1);
 		importer.importSei(sei2, mat);
@@ -178,11 +178,11 @@ public class MatImporterTest extends ATestConceptTestCase {
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
-		assertEquals("same testString", tc1.getTestString(), tc.getTestString());
-		assertEquals("same testBool", tc1.getTestBool(), tc.getTestBool());
-		assertEquals(tc1.getTestFloat(), tc.getTestFloat(), 0);
-		assertEquals("same testResource", tc1.getTestResource(), tc.getTestResource());
-		assertEquals("same testEnum", tc1.getTestEnum(), tc.getTestEnum());
+		assertEquals("same testString", tc.getTestString(), tc1.getTestString());
+		assertEquals("same testBool", tc.getTestBool(), tc1.getTestBool());
+		assertEquals(tc.getTestFloat(), tc1.getTestFloat(), 0);
+		assertEquals("same testResource", tc.getTestResource(), tc1.getTestResource());
+		assertEquals("same testEnum", tc.getTestEnum(), tc1.getTestEnum());
 		
 	}
 
@@ -190,18 +190,18 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testImportOfValuesAddAll() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
-		tc.setTestBool(true);
-		tc.setTestFloat(2);
-		tc.setTestEnum("HIGH");
-		tc.setTestString("test");
-		tc.setTestInt(1);
+		tc.setTestBool(TEST_BOOL);
+		tc.setTestFloat(TEST_FLOAT);
+		tc.setTestEnum(TEST_ENUM_VALUE);
+		tc.setTestString(TEST_STRING);
+		tc.setTestInt(TEST_INT);
 		URI testUri = URI.createPlatformPluginURI("Testresource", true);
 		tc.setTestResource(testUri);
 		mat = exporter.exportSei(sei);
 
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
 		tsei2.add(tc1);
@@ -210,12 +210,12 @@ public class MatImporterTest extends ATestConceptTestCase {
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
-		assertEquals("same testString", tc1.getTestString(), tc.getTestString());
-		assertEquals("same testBool", tc1.getTestBool(), tc.getTestBool());
-		assertEquals(tc1.getTestFloat(), tc.getTestFloat(), 0);
-		assertEquals("same testResource", tc1.getTestResource(), tc.getTestResource());
-		assertEquals("same testEnum", tc1.getTestEnum(), tc.getTestEnum());
-		assertEquals("same testInt", tc1.getTestInt(), tc.getTestInt());
+		assertEquals("same testString", TEST_STRING, tc1.getTestString());
+		assertEquals("same testBool", TEST_BOOL, tc1.getTestBool());
+		assertEquals(TEST_FLOAT, tc1.getTestFloat(), 0);
+		assertEquals("same testResource", tc.getTestResource(), tc1.getTestResource());
+		assertEquals("same testEnum", TEST_ENUM_VALUE, tc1.getTestEnum());
+		assertEquals("same testInt", TEST_INT, tc1.getTestInt());
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
 		tsei2.add(tc1);
@@ -235,36 +235,36 @@ public class MatImporterTest extends ATestConceptTestCase {
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
-		assertEquals("same testString", tc1.getTestString(), tc.getTestString());
-		assertEquals("same testBool", tc1.getTestBool(), tc.getTestBool());
-		assertEquals(tc1.getTestFloat(), tc.getTestFloat(), 0);
-		assertEquals("same testResource", tc1.getTestResource(), tc.getTestResource());
-		assertEquals("same testEnum", tc1.getTestEnum(), tc.getTestEnum());
+		assertEquals("same testString", tc.getTestString(), tc1.getTestString());
+		assertEquals("same testBool", tc.getTestBool(), tc1.getTestBool());
+		assertEquals(tc.getTestFloat(), tc1.getTestFloat(), 0);
+		assertEquals("same testResource", tc.getTestResource(), tc1.getTestResource());
+		assertEquals("same testEnum", tc.getTestEnum(), tc1.getTestEnum());
 	}
 
 	@Test
 	public void testImportOfValuesChangeNothingValues() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
 		tsei.add(tc);
-		tc.setTestBool(true);
-		tc.setTestFloat(2);
-		tc.setTestEnum("NO");
-		tc.setTestString("test");
-		tc.setTestInt(1);
+		tc.setTestBool(TEST_BOOL);
+		tc.setTestFloat(TEST_FLOAT);
+		tc.setTestEnum(TEST_ENUM_VALUE);
+		tc.setTestString(TEST_STRING);
+		tc.setTestInt(TEST_INT);
 		URI testUri = URI.createPlatformPluginURI("Testresource", true);
 		tc.setTestResource(testUri);
 		mat = exporter.exportSei(sei);
 
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
-		tc1.setTestBool(true);
-		tc1.setTestFloat(2);
-		tc1.setTestEnum("HIGH");
-		tc1.setTestString("test");
-		tc1.setTestInt(1);
+		tc1.setTestBool(TEST_BOOL);
+		tc1.setTestFloat(TEST_FLOAT);
+		tc1.setTestEnum(TEST_ENUM_VALUE);
+		tc1.setTestString(TEST_STRING);
+		tc1.setTestInt(TEST_INT);
 		tc1.setTestResource(testUri);
 		tsei2.add(tc1);
 		importer.importSei(sei2, mat);
@@ -272,13 +272,13 @@ public class MatImporterTest extends ATestConceptTestCase {
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
-		assertEquals("same testString", tc1.getTestString(), tc.getTestString());
-		assertEquals("same testBool", tc1.getTestBool(), tc.getTestBool());
-		assertEquals(tc1.getTestFloat(), tc.getTestFloat(), 0);
-		assertEquals("same testResource", tc1.getTestResource(), tc.getTestResource());
-		assertEquals("same testEnumValue", tc1.getTestEnumBean().getValue(), tc.getTestEnumBean().getValue());
-		assertEquals("same testEnumValue", tc1.getTestEnumBean().getUnit(), tc.getTestEnumBean().getUnit());
-		assertEquals("same testInt", tc1.getTestInt(), tc.getTestInt());
+		assertEquals("same testString", TEST_STRING, tc1.getTestString());
+		assertEquals("same testBool", TEST_BOOL, tc1.getTestBool());
+		assertEquals(TEST_FLOAT, tc1.getTestFloat(), 0);
+		assertEquals("same testResource", tc.getTestResource(), tc1.getTestResource());
+		assertEquals("same testEnumValue", tc.getTestEnumBean().getValue(), tc1.getTestEnumBean().getValue());
+		assertEquals("same testEnumValue", tc.getTestEnumBean().getUnit(), tc1.getTestEnumBean().getUnit());
+		assertEquals("same testInt", TEST_INT, tc1.getTestInt());
 	}
 
 	@Test
@@ -292,23 +292,23 @@ public class MatImporterTest extends ATestConceptTestCase {
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		TestCategoryReference tc1 = new TestCategoryReference(testConcept);
 		tsei2.add(editingDomain, tc1);
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		importer.importSei(sei2, mat);
-		assertEquals("same EReference from empty to empty", tc1.getTestRefCategory(), tc.getTestRefCategory()); //empty to empty
+		assertEquals("same EReference from empty to empty", tc.getTestRefCategory(), tc1.getTestRefCategory()); //empty to empty
 
 		//values and import empty
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
 		tc1.setTestRefCategory(editingDomain, tc2);
 		importer.importSei(sei2, mat1);
-		assertEquals("same EReference from value to empty", tc1.getTestRefCategory(), tc.getTestRefCategory());
+		assertEquals("same EReference from value to empty", tc.getTestRefCategory(), tc1.getTestRefCategory());
 
 		//empty and import values
 		tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat);
-		assertEquals("same Reference from empty to value", tc1.getTestRefCategory(), tc.getTestRefCategory());
+		assertEquals("same Reference from empty to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
 
 		//values and import values
 		tc.setTestRefCategory(editingDomain, tc2);
@@ -316,7 +316,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat);
-		assertEquals("same Reference from value to value", tc1.getTestRefCategory(), tc.getTestRefCategory());
+		assertEquals("same Reference from value to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
 	}
 
 	@Test
@@ -332,22 +332,22 @@ public class MatImporterTest extends ATestConceptTestCase {
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		EReferenceTest tc1 = new EReferenceTest(testConcept);
 		tsei2.add(editingDomain, tc1);
-		sei2.setName("testsei");
+		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		importer.importSei(sei2, mat);
-		assertEquals("same Reference from empty to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
+		assertEquals("same Reference from empty to empty", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
 		//values and import empty
 		tc1.setEReferenceTest(editingDomain, testERef);
 		importer.importSei(sei2, mat1);
-		assertEquals("same Reference from value to empty", tc1.getEReferenceTest(), tc.getEReferenceTest());
+		assertEquals("same Reference from value to empty", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
 		//empty and import values
 		tc1.setEReferenceTest(editingDomain, testERef);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat);
-		assertEquals("same Reference from empty to value", tc1.getEReferenceTest(), tc.getEReferenceTest());
+		assertEquals("same Reference from empty to value", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
 		//values and import values
 		tc1.setEReferenceTest(editingDomain, testERef);
@@ -355,6 +355,6 @@ public class MatImporterTest extends ATestConceptTestCase {
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat);
-		assertEquals("same Reference from value to value", tc1.getEReferenceTest(), tc.getEReferenceTest());
+		assertEquals("same Reference from value to value", tc.getEReferenceTest(), tc1.getEReferenceTest());
 	}
 }
