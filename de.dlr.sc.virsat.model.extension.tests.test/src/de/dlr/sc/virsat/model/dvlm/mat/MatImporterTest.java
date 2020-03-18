@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
@@ -291,30 +292,38 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testImportOfValuesRef() throws IOException {
 		//empty and import empty
 		TestCategoryReference tc = new TestCategoryReference(testConcept);
-		tsei.add(editingDomain, tc);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
+		editingDomain.saveAll();
 		mat = exporter.exportSei(sei);
 		MatFile mat1 = exporter.exportSei(sei);
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		TestCategoryReference tc1 = new TestCategoryReference(testConcept);
-		tsei2.add(editingDomain, tc1);
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
+		editingDomain.saveAll();
 		importer.importSei(sei2, mat);
 		assertEquals("same EReference from empty to empty", tc.getTestRefCategory(), tc1.getTestRefCategory()); //empty to empty
-
+		System.out.println(tc.getTestRefCategory());
+		
 		//values and import empty
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
-		tc1.setTestRefCategory(editingDomain, tc2);
+		cmd = tc1.setTestRefCategory(editingDomain, tc2);
+		editingDomain.getCommandStack().execute(cmd);
 		importer.importSei(sei2, mat1);
 		assertEquals("same EReference from value to empty", tc.getTestRefCategory(), tc1.getTestRefCategory());
+		System.out.println(tc.getTestRefCategory());
 
 		//empty and import values
-		tc1.setTestRefCategory(editingDomain, tc2);
-		editingDomain.saveAll();
+		cmd = tc1.setTestRefCategory(editingDomain, tc2);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat);
 		assertEquals("same Reference from empty to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
+		System.out.println(tc.getTestRefCategory());
 
 		//values and import values
 		tc.setTestRefCategory(editingDomain, tc2);
@@ -323,6 +332,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		mat = exporter.exportSei(sei2);
 		importer.importSei(sei, mat);
 		assertEquals("same Reference from value to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
+		System.out.println(tc.getTestRefCategory());
 	}
 
 	@Test
