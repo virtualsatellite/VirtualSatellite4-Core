@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.types;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 /**
  * Core functionality for a Concept Bean and abstract implementation to the interface
@@ -61,5 +62,21 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 	@Override
 	public String getUuid() {
 		return ti.getUuid().toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ABeanObject) {
+			ABeanObject<?> rhsBeanObject = (ABeanObject<?>) obj;
+			return ti.equals(rhsBeanObject.getTypeInstance());
+		} else if (obj instanceof CategoryAssignment) {
+			return ti.equals(obj);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return ti.hashCode();
 	}
 }

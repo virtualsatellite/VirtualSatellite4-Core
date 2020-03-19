@@ -72,4 +72,10 @@ public class BeanPropertyStringTest extends ABeanPropertyTest {
 		
 		assertEquals("Value correctly set", TEST_STRING, beanProperty.getValue());
 	}
+	
+	@Test
+	public void testConstructor() {
+		BeanPropertyString beanProperty2 = new BeanPropertyString(vpi);
+		assertEquals("Beans are identical", beanProperty2, beanProperty);
+	}
 }
