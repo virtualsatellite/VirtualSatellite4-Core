@@ -20,14 +20,18 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
 import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
@@ -48,7 +52,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	private static final float TEST_FLOAT = 2;
 	private static final String TEST_ENUM_VALUE = "HIGH";
 	private static final String TEST_SEI = "testsei";
-	private static final Boolean TEST_BOOL = false;
+	private static final Boolean TEST_BOOL = true;
 
 	@Before
 	public void setUp() throws CoreException {
@@ -77,6 +81,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		sei2.setName(TEST_SEI);
 		sei2.setType(sei.getType());
+		executeAsCommand(() -> repository.getRootEntities().add(sei2));
 		assertFalse("Not the same uuid", importer.checkIfCorrectSei(sei2, mat));
 	}
 
@@ -86,50 +91,22 @@ public class MatImporterTest extends ATestConceptTestCase {
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
+		executeAsCommand(() -> repository.getRootEntities().add(sei2));
 		assertFalse("Not the same type", importer.checkIfCorrectSei(sei2, mat));
-	}
-
-	@Test
-	public void testCheckIfCorrectSeiWrongNumberOfChildren() {
-		TestStructuralElementOther tsei2 = new TestStructuralElementOther(testConcept);
-		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName(TEST_SEI);
-		sei2.setParent(sei);
-		assertFalse("Not the same number of children", importer.checkIfCorrectSei(sei, mat));
-	}
-
-	@Test
-	public void testCheckIfCorrectSeiWrongChildren() {
-		//set up sei with one child
-		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
-		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
-		sei2.setName(TEST_SEI);
-		sei2.setParent(sei);
-		mat = exporter.exportSei(sei);
-
-		//change sei to have 2 children and one of this children have also a child
-		TestStructuralElementOther tsei3 = new TestStructuralElementOther(testConcept);
-		StructuralElementInstance sei3 = tsei3.getStructuralElementInstance();
-		sei3.setName("testseiChild");
-		sei2.setParent(sei3);
-
-		TestStructuralElementOther tsei4 = new TestStructuralElementOther(testConcept);
-		StructuralElementInstance sei4 = tsei4.getStructuralElementInstance();
-		sei4.setName("testseiChild2");
-		sei4.setParent(sei);
-
-		assertFalse("Not the same children", importer.checkIfCorrectSei(sei, mat));
 	}
 
 	@Test
 	public void testImportCasDeleteCas() throws IOException {
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc2);
+		Command cmd = tsei.add(editingDomain, tc2);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei);
 		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
-		tsei.add(tc1);
+		cmd = tsei.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
 		assertTrue("Sei has two CategoryAssinments", sei.getCategoryAssignments().size() == 2);
-		importer.importSei(sei, mat);
+		cmd = importer.importSei(editingDomain, sei, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertTrue("Only one CategoryAssinment", sei.getCategoryAssignments().size() == 1);
 		assertTrue("Right CategoryAssinment included",
 				sei.getCategoryAssignments().get(0).getName().equals(tc2.getName()));
@@ -139,9 +116,11 @@ public class MatImporterTest extends ATestConceptTestCase {
 	public void testImportAPIDeleteAPI() throws IOException {
 		//create a SEI and an PropertyInstance
 		EReferenceTest tc2 = new EReferenceTest(testConcept);
-		tsei.add(tc2);
+		Command cmd = tsei.add(editingDomain, tc2);
+		editingDomain.getCommandStack().execute(cmd);
 		TestCategoryAllProperty tc3 = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc3);
+		cmd = tsei.add(editingDomain, tc3);
+		editingDomain.getCommandStack().execute(cmd);
 		APropertyInstance nInstance = sei.getCategoryAssignments().get(0).getPropertyInstances().get(0);
 		sei.getCategoryAssignments().remove(0);
 
@@ -153,31 +132,42 @@ public class MatImporterTest extends ATestConceptTestCase {
 		assertEquals("CategoryAssinment has seven PropertyInstances", NUMBEROFELEMENTS + 1, sei.getCategoryAssignments().get(0).getPropertyInstances().size());
 
 		//import should delete 7th PropertyInstance
-		importer.importSei(sei, mat);
+		cmd = importer.importSei(editingDomain, sei, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertTrue("Instance deleted", sei.getCategoryAssignments().get(0).getPropertyInstances().size() == NUMBEROFELEMENTS);
 	}
 
 	@Test
 	public void testImportOfValuesRemoveAll() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei);
 		
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
-		tc1.setTestBool(TEST_BOOL);
-		tc1.setTestFloat(TEST_FLOAT);
-		tc1.setTestEnum(TEST_ENUM_VALUE);
-		tc1.setTestString(TEST_STRING);
-		tc1.setTestInt(TEST_INT);
+		cmd = tc1.setTestBool(editingDomain, TEST_BOOL);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestFloat(editingDomain, TEST_FLOAT);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestEnum(editingDomain, TEST_ENUM_VALUE);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestInt(editingDomain, TEST_INT);
+		editingDomain.getCommandStack().execute(cmd);
 		URI testUri =  URI.createPlatformResourceURI("Testresource", false);
-		tc1.setTestResource(testUri);
+		cmd = tc1.setTestResource(editingDomain, testUri);
+		editingDomain.getCommandStack().execute(cmd);
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
-		tsei2.add(tc1);
-		importer.importSei(sei2, mat);
-
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
+		executeAsCommand(() -> repository.getRootEntities().add(sei2));
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
+		
 		//checks if the import deletes all values
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
@@ -187,20 +177,26 @@ public class MatImporterTest extends ATestConceptTestCase {
 		assertEquals(tc.getTestFloat(), tc1.getTestFloat(), 0);
 		assertEquals("same testResource", tc.getTestResource(), tc1.getTestResource());
 		assertEquals("same testEnum", tc.getTestEnum(), tc1.getTestEnum());
-		
 	}
 
 	@Test
 	public void testImportOfValuesAddAll() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc);
-		tc.setTestBool(TEST_BOOL);
-		tc.setTestFloat(TEST_FLOAT);
-		tc.setTestEnum(TEST_ENUM_VALUE);
-		tc.setTestString(TEST_STRING);
-		tc.setTestInt(TEST_INT);
-		URI testUri = URI.createPlatformPluginURI("Testresource", true);
-		tc.setTestResource(testUri);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestBool(editingDomain, TEST_BOOL);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestFloat(editingDomain, TEST_FLOAT);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestEnum(editingDomain, TEST_ENUM_VALUE);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestInt(editingDomain, TEST_INT);
+		editingDomain.getCommandStack().execute(cmd);
+		URI testUri =  URI.createPlatformResourceURI("Testresource", false);
+		cmd = tc.setTestResource(editingDomain, testUri);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei);
 
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
@@ -208,9 +204,12 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
-		tsei2.add(tc1);
-		importer.importSei(sei2, mat);
-
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
+		executeAsCommand(() -> repository.getRootEntities().add(sei2));
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
+		
 		//checks if the import adds all Values
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
@@ -226,7 +225,8 @@ public class MatImporterTest extends ATestConceptTestCase {
 	@Test
 	public void testImportOfValuesChangeNothingEmpty() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei);
 
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
@@ -234,8 +234,10 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
-		tsei2.add(tc1);
-		importer.importSei(sei2, mat);
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
 
 		//checks that if the same sei is imported and everything is empty, it stays empty
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
@@ -251,14 +253,21 @@ public class MatImporterTest extends ATestConceptTestCase {
 	@Test
 	public void testImportOfValuesChangeNothingValues() throws IOException {
 		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc);
-		tc.setTestBool(TEST_BOOL);
-		tc.setTestFloat(TEST_FLOAT);
-		tc.setTestEnum(TEST_ENUM_VALUE);
-		tc.setTestString(TEST_STRING);
-		tc.setTestInt(TEST_INT);
-		URI testUri = URI.createPlatformPluginURI("Testresource", true);
-		tc.setTestResource(testUri);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestBool(editingDomain, TEST_BOOL);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestFloat(editingDomain, TEST_FLOAT);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestEnum(editingDomain, TEST_ENUM_VALUE);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setTestInt(editingDomain, TEST_INT);
+		editingDomain.getCommandStack().execute(cmd);
+		URI testUri =  URI.createPlatformResourceURI("Testresource", false);
+		cmd = tc.setTestResource(editingDomain, testUri);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei);
 
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
@@ -266,16 +275,24 @@ public class MatImporterTest extends ATestConceptTestCase {
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
 		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
-		tc1.setTestBool(TEST_BOOL);
-		tc1.setTestFloat(TEST_FLOAT);
-		tc1.setTestEnum(TEST_ENUM_VALUE);
-		tc1.setTestString(TEST_STRING);
-		tc1.setTestInt(TEST_INT);
-		tc1.setTestResource(testUri);
-		tsei2.add(tc1);
-		importer.importSei(sei2, mat);
+		cmd = tc1.setTestBool(editingDomain, TEST_BOOL);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestFloat(editingDomain, TEST_FLOAT);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestEnum(editingDomain, TEST_ENUM_VALUE);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestInt(editingDomain, TEST_INT);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc1.setTestResource(editingDomain, testUri);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
 
-		//checks if the same seiis imported and everything has a value, the value doesnt change
+		//checks if the same seis imported and everything has a value, the value doesn't change
 		EList<APropertyInstance> caSei = sei.getCategoryAssignments().get(0).getPropertyInstances();
 		EList<APropertyInstance> caSei2 = sei2.getCategoryAssignments().get(0).getPropertyInstances();
 		assertTrue("same number of elements", caSei.size() == caSei2.size());
@@ -294,18 +311,17 @@ public class MatImporterTest extends ATestConceptTestCase {
 		TestCategoryReference tc = new TestCategoryReference(testConcept);
 		Command cmd = tsei.add(editingDomain, tc);
 		editingDomain.getCommandStack().execute(cmd);
-		editingDomain.saveAll();
 		mat = exporter.exportSei(sei);
 		MatFile mat1 = exporter.exportSei(sei);
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		executeAsCommand(() -> repository.getRootEntities().add(sei2));
 		TestCategoryReference tc1 = new TestCategoryReference(testConcept);
 		cmd = tsei2.add(editingDomain, tc1);
 		editingDomain.getCommandStack().execute(cmd);
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
-		editingDomain.saveAll();
-		importer.importSei(sei2, mat);
+		importer.importSei(editingDomain, sei2, mat);
 		assertEquals("same EReference from empty to empty", tc.getTestRefCategory(), tc1.getTestRefCategory()); //empty to empty
 		System.out.println(tc.getTestRefCategory());
 		
@@ -313,7 +329,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
 		cmd = tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.getCommandStack().execute(cmd);
-		importer.importSei(sei2, mat1);
+		importer.importSei(editingDomain, sei2, mat1);
 		assertEquals("same EReference from value to empty", tc.getTestRefCategory(), tc1.getTestRefCategory());
 		System.out.println(tc.getTestRefCategory());
 
@@ -321,7 +337,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		cmd = tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat);
+		importer.importSei(editingDomain, sei, mat);
 		assertEquals("same Reference from empty to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
 		System.out.println(tc.getTestRefCategory());
 
@@ -330,7 +346,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tc1.setTestRefCategory(editingDomain, tc2);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat);
+		importer.importSei(editingDomain, sei, mat);
 		assertEquals("same Reference from value to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
 		System.out.println(tc.getTestRefCategory());
 	}
@@ -341,36 +357,105 @@ public class MatImporterTest extends ATestConceptTestCase {
 		
 		//empty and import empty
 		EReferenceTest tc = new EReferenceTest(testConcept);
-		tsei.add(editingDomain, tc);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei);
 		MatFile mat1 = exporter.exportSei(sei);
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		EReferenceTest tc1 = new EReferenceTest(testConcept);
-		tsei2.add(editingDomain, tc1);
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
-		importer.importSei(sei2, mat);
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from empty to empty", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
 		//values and import empty
-		tc1.setEReferenceTest(editingDomain, testERef);
-		importer.importSei(sei2, mat1);
+		cmd = tc1.setEReferenceTest(editingDomain, testERef);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = importer.importSei(editingDomain, sei2, mat1);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from value to empty", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
 		//empty and import values
-		tc1.setEReferenceTest(editingDomain, testERef);
-		editingDomain.saveAll();
+		cmd = tc1.setEReferenceTest(editingDomain, testERef);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat);
+		cmd = importer.importSei(editingDomain, sei, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from empty to value", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
 		//values and import values
-		tc1.setEReferenceTest(editingDomain, testERef);
-		tc.setEReferenceTest(editingDomain, testERef);
-		editingDomain.saveAll();
+		cmd = tc1.setEReferenceTest(editingDomain, testERef);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tc.setEReferenceTest(editingDomain, testERef);
+		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei2);
-		importer.importSei(sei, mat);
+		cmd = importer.importSei(editingDomain, sei, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from value to value", tc.getEReferenceTest(), tc1.getEReferenceTest());
+		System.out.println(tc.getEReferenceTest());
+	}
+	
+	@Test 
+	public void testImportOfValuesComposend() throws IOException {
+		
+		//delete Value with mat
+		TestCategoryComposition tc = new TestCategoryComposition(testConcept);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
+		mat = exporter.exportSei(sei);
+		
+		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
+		cmd = tc1.getTestSubCategory().setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
+		sei2.setName(TEST_SEI);
+		sei2.setUuid(sei.getUuid());
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
+		assertEquals("same composed Category", null, tc1.getTestSubCategory().getTestString());
+		
+		//set Value with mat
+		cmd = tc.getTestSubCategory().setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		mat = exporter.exportSei(sei);
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
+		assertEquals("same composed Category", TEST_STRING, tc1.getTestSubCategory().getTestString());
+	}
+	
+	@Test
+	public void testImportOfValuesArray() throws IOException {
+		TestCategoryCompositionArray tc = new TestCategoryCompositionArray(testConcept);
+		Command cmd = tsei.add(editingDomain, tc);
+		editingDomain.getCommandStack().execute(cmd);
+		mat = exporter.exportSei(sei);
+		
+		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		TestCategoryCompositionArray tc1 = new TestCategoryCompositionArray(testConcept);
+		cmd = tc1.getTestCompositionArrayStatic().get(0).setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		cmd = tsei2.add(editingDomain, tc1);
+		editingDomain.getCommandStack().execute(cmd);
+		sei2.setName(TEST_SEI);
+		sei2.setUuid(sei.getUuid());
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
+		assertEquals("same composed Category", null, tc1.getTestCompositionArrayStatic().get(0).getTestString());
+		
+		//set Value with mat
+		cmd = tc1.getTestCompositionArrayStatic().get(0).setTestString(editingDomain, TEST_STRING);
+		editingDomain.getCommandStack().execute(cmd);
+		mat = exporter.exportSei(sei);
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
+		assertEquals("same composed Category", TEST_STRING, tc1.getTestCompositionArrayStatic().get(0).getTestString());
 	}
 }
