@@ -256,7 +256,7 @@ public class MatImporter {
 			if ("''".equals(struct.get(MatHelper.URI).toString())) {
 				importCommand.append(bpe.setValue(editingDomain, null));
 			} else {
-				URI uri = URI.createPlatformPluginURI(shorter(struct.get(MatHelper.URI).toString()), true);
+				URI uri = URI.createURI(shorter(struct.get(MatHelper.URI).toString()), true);
 				Resource res = new ResourceSetImpl().getResource(uri, true);
 				EObject eReferenceValue = res.getEObject(uri.fragment());
 				importCommand.append(SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, eReferenceValue));
@@ -335,8 +335,9 @@ public class MatImporter {
 		if (element.getType() instanceof EnumProperty) {
 			BeanPropertyEnum bpe = new BeanPropertyEnum(element);
 			importCommand.append(bpe.setValue(editingDomain, shorter(struct.get(MatHelper.NAME).toString())));
-//			Command cmd = SetCommand.create(editingDomain, bpe, PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT, shorter(struct.get(MatHelper.UNIT).toString()));
-//			importCommand.append(cmd);
+			if (!struct.get(MatHelper.UNIT).toString().equals("''")) {
+				importCommand.append(bpe.setUnit(editingDomain, shorter(struct.get(MatHelper.UNIT).toString())));
+			}
 		}
 		return true;
 	}
@@ -370,7 +371,9 @@ public class MatImporter {
 	private Boolean contentOfProperty(CompoundCommand importCommand, UnitValuePropertyInstance element, Struct struct) {
 		if (element.getType() instanceof FloatProperty) {
 			BeanPropertyFloat bpf = new BeanPropertyFloat(element);
-//			importCommand.append(bpf.setUnit(editingDomain, shorter(struct.get(MatHelper.UNIT).toString())));
+			if (!struct.get(MatHelper.UNIT).toString().equals("''")) {
+				importCommand.append(bpf.setUnit(editingDomain, shorter(struct.get(MatHelper.UNIT).toString())));
+			}
 			if ("NaN".equals(struct.get(MatHelper.VALUE).toString()) || "''".equals(struct.get(MatHelper.VALUE).toString())) {
 				Command cmd = SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, null);
 				importCommand.append(cmd);
@@ -379,11 +382,11 @@ public class MatImporter {
 			}
 		} else if (element.getType() instanceof IntProperty) {
 			BeanPropertyInt bpi = new BeanPropertyInt(element);
-//			Command cmd = SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT, shorter(struct.get(MatHelper.UNIT).toString()));
-//			importCommand.append(cmd);
+			if (!struct.get(MatHelper.UNIT).toString().equals("''")) {
+				importCommand.append(bpi.setUnit(editingDomain, shorter(struct.get(MatHelper.UNIT).toString())));
+			}
 			if ("NaN".equals(struct.get(MatHelper.VALUE).toString()) || "''".equals(struct.get(MatHelper.VALUE).toString())) {
-				Command cmd = SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, null);
-				importCommand.append(cmd);
+				importCommand.append(SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, null));
 			} else {
 				double value = Double.valueOf(struct.get(MatHelper.VALUE).toString());
 				importCommand.append(bpi.setValue(editingDomain, (long) value));
