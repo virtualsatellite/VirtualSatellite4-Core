@@ -55,6 +55,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 	private static final String TEST_ENUM_VALUE = "HIGH";
 	private static final String TEST_SEI = "testsei";
 	private static final Boolean TEST_BOOL = true;
+	private static final String TEST_UNIT = "Kilogram";
 
 	@Before
 	public void setUp() throws CoreException {
@@ -92,7 +93,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		floatPropertyStruct.set(MatHelper.VALUE, Mat5.newScalar(TEST_FLOAT));
 		
 		Struct enumPropertyStruct = Mat5.newStruct();
-		enumPropertyStruct.set(MatHelper.UNIT, Mat5.newString("Kilogram"));
+		enumPropertyStruct.set(MatHelper.UNIT, Mat5.newString(TEST_UNIT));
 		enumPropertyStruct.set(MatHelper.VALUE, Mat5.newString("25"));
 		enumPropertyStruct.set(MatHelper.NAME, Mat5.newString(TEST_ENUM_VALUE));
 
@@ -299,7 +300,7 @@ public class MatImporterTest extends ATestConceptTestCase {
 		//Reference test target
 		final TestCategoryAllProperty TEST_REFERENCE_TARGET = new TestCategoryAllProperty(testConcept);
 		
-		//empty and import empty
+		//prepare test data
 		TestCategoryReference tc = new TestCategoryReference(testConcept);
 		Command cmd = tsei.add(editingDomain, tc);
 		editingDomain.getCommandStack().execute(cmd);
