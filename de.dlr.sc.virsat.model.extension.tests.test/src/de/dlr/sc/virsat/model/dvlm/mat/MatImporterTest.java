@@ -38,7 +38,9 @@ import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
+import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.MatFile;
+import us.hebi.matlab.mat.types.Struct;
 
 public class MatImporterTest extends ATestConceptTestCase {
 
@@ -47,7 +49,6 @@ public class MatImporterTest extends ATestConceptTestCase {
 	private MatExporter exporter;
 	private MatImporter importer;
 	private MatFile mat;
-	private static final int NUMBEROFELEMENTS = 6;
 	private static final String TEST_STRING = "testString";
 	private static final int TEST_INT = 1;
 	private static final float TEST_FLOAT = 2;
@@ -69,6 +70,58 @@ public class MatImporterTest extends ATestConceptTestCase {
 		mat = exporter.exportSei(sei);
 	}
 
+	@Test
+	public void testWithoutExport() throws IOException {
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
+		//Create Mat
+		MatFile matfile = Mat5.newMatFile();
+		
+		Struct boolPropertyStruct = Mat5.newStruct();
+		boolPropertyStruct.set(MatHelper.VALUE, Mat5.newLogicalScalar(TEST_BOOL));
+		
+		Struct stringPropertyStruct = Mat5.newStruct();
+		stringPropertyStruct.set(MatHelper.VALUE, Mat5.newString(TEST_STRING));
+		
+		Struct intPropertyStruct = Mat5.newStruct();
+		intPropertyStruct.set(MatHelper.UNIT, Mat5.newString(""));
+		intPropertyStruct.set(MatHelper.VALUE, Mat5.newScalar(TEST_INT));
+		
+		Struct floatPropertyStruct = Mat5.newStruct();
+		floatPropertyStruct.set(MatHelper.UNIT, Mat5.newString(""));
+		floatPropertyStruct.set(MatHelper.VALUE, Mat5.newScalar(TEST_FLOAT));
+		
+		Struct enumPropertyStruct = Mat5.newStruct();
+		enumPropertyStruct.set(MatHelper.UNIT, Mat5.newString("Kilogram"));
+		enumPropertyStruct.set(MatHelper.VALUE, Mat5.newString("25"));
+		enumPropertyStruct.set(MatHelper.NAME, Mat5.newString(TEST_ENUM_VALUE));
+
+		Struct resourcePropertyStruct = Mat5.newStruct();
+		resourcePropertyStruct.set(MatHelper.URI, Mat5.newString(""));
+		
+		Struct caStruct = Mat5.newStruct();
+		caStruct.set("testString", stringPropertyStruct);
+		caStruct.set("testInt", intPropertyStruct);
+		caStruct.set("testFloat", floatPropertyStruct);
+		caStruct.set("testResource", resourcePropertyStruct);
+		caStruct.set("testEnum", enumPropertyStruct);
+		caStruct.set("testBool", boolPropertyStruct);
+		
+		Struct struct = Mat5.newStruct();
+		struct.set(MatHelper.TYPE, Mat5.newString(sei.getType().getName()))
+			  .set(MatHelper.UUID, Mat5.newString(sei.getUuid().toString()));
+		struct.set(tc.getName(), caStruct);
+		matfile.addArray(sei.getName(), struct);
+		Command cmd = importer.importSei(editingDomain, sei, matfile);
+		editingDomain.getCommandStack().execute(cmd);
+		assertEquals("Is the same", TEST_STRING, tc.getTestString());
+		assertEquals("Is the same", TEST_ENUM_VALUE, tc.getTestEnum());
+		assertEquals("Is the same", TEST_BOOL, tc.getTestBool());
+		assertEquals("Is the same", TEST_INT, tc.getTestInt());
+		assertEquals(TEST_FLOAT, tc.getTestFloat(), 0);
+		assertEquals("Is the same", null, tc.getTestResource());
+	}
+	
 	@Test
 	public void testCheckIfCorrectSeiCorrect() {
 		assertTrue("Is the same", importer.checkIfCorrectSei(sei, mat));
