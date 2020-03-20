@@ -259,7 +259,7 @@ public class MatImporter {
 				URI uri = URI.createURI(shorter(struct.get(MatHelper.URI).toString()), true);
 				Resource res = new ResourceSetImpl().getResource(uri, true);
 				EObject eReferenceValue = res.getEObject(uri.fragment());
-				importCommand.append(SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, eReferenceValue));
+				importCommand.append(bpe.setValue(editingDomain, eReferenceValue));
 				
 			}
 		}

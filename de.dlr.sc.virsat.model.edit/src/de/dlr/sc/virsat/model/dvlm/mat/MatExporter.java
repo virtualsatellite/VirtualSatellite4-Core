@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
@@ -201,7 +202,8 @@ public class MatExporter {
 		EObject value = element.getReference();
 		if (value != null && value.eResource() != null) {
 			struct.set(MatHelper.REF, Mat5.newString(value.toString()));
-			struct.set(MatHelper.URI, Mat5.newString(value.eResource().getURI().toString()));
+			struct.set(MatHelper.URI, Mat5.newString(EcoreUtil.getURI(value).toString()));
+			
 		} else {
 			struct.set(MatHelper.REF, Mat5.newString(""));
 			struct.set(MatHelper.URI, Mat5.newString(""));
