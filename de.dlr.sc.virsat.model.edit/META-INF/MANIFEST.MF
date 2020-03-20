@@ -20,6 +20,7 @@ Export-Package: de.dlr.sc.virsat.model.concept.list,
  de.dlr.sc.virsat.model.concept.types.structural.level,
  de.dlr.sc.virsat.model.concept.types.structural.tree,
  de.dlr.sc.virsat.model.concept.types.util,
+ de.dlr.sc.virsat.model.concept.util,
  de.dlr.sc.virsat.model.dvlm.calculation.provider,
  de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider,
  de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider,
@@ -57,6 +58,7 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.emf.edapt.history,
  org.eclipse.emf.compare;visibility:=reexport,
  com.google.guava,
+ de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.external.lib.matlabfile
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.edit
