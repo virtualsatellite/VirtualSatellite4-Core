@@ -10,9 +10,9 @@
 package de.dlr.sc.virsat.model.dvlm.mat;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
@@ -21,7 +21,6 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
@@ -199,10 +198,13 @@ public class MatExporter {
 	 */
 	private Array contentOfProperty(EReferencePropertyInstance element) {
 		Struct struct = Mat5.newStruct();
-		if (element.getType() instanceof EReferenceProperty) {
-			BeanPropertyEReference<EReferenceProperty> bpe = new BeanPropertyEReference<EReferenceProperty>(element);
-			struct.set(MatHelper.REF, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(bpe.getValue().toString()));
-			struct.set(MatHelper.URI, (!bpe.isSet()) ? Mat5.newString("") : Mat5.newString(element.eResource().getURI().toString()));
+		EObject value = element.getReference();
+		if (value != null && value.eResource() != null) {
+			struct.set(MatHelper.REF, Mat5.newString(value.toString()));
+			struct.set(MatHelper.URI, Mat5.newString(value.eResource().getURI().toString()));
+		} else {
+			struct.set(MatHelper.REF, Mat5.newString(""));
+			struct.set(MatHelper.URI, Mat5.newString(""));
 		}
 		return struct;
 	}
