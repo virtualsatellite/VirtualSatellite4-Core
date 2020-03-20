@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.dvlm.mat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +35,9 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
+import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 import us.hebi.matlab.mat.types.MatFile;
 
 public class MatImporterTest extends ATestConceptTestCase {
@@ -259,6 +264,9 @@ public class MatImporterTest extends ATestConceptTestCase {
 
 	@Test
 	public void testImportOfValuesRef() throws IOException {
+		//Reference test target
+		final TestCategoryAllProperty TEST_REFERENCE_TARGET = new TestCategoryAllProperty(testConcept);
+		
 		//empty and import empty
 		TestCategoryReference tc = new TestCategoryReference(testConcept);
 		Command cmd = tsei.add(editingDomain, tc);
@@ -273,82 +281,89 @@ public class MatImporterTest extends ATestConceptTestCase {
 		editingDomain.getCommandStack().execute(cmd);
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
-		importer.importSei(editingDomain, sei2, mat);
-		assertEquals("same EReference from empty to empty", tc.getTestRefCategory(), tc1.getTestRefCategory()); //empty to empty
-		System.out.println(tc.getTestRefCategory());
 		
-		//values and import empty
-		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
-		cmd = tc1.setTestRefCategory(editingDomain, tc2);
+		//Add SEI into resource to be able to resolve references in the resourceset
+		sei.getCategoryAssignments().add(TEST_REFERENCE_TARGET.getTypeInstance());	//Add it to the resource so that it can be found
+		editingDomain.getCommandStack().execute(new CreateSeiResourceAndFileCommand(rs, sei));
+		
+		//Check that no value is added if imported empty
+		importer.importSei(editingDomain, sei2, mat);
+		assertEquals("same Reference from empty to empty", tc.getTestRefCategory(), tc1.getTestRefCategory()); //empty to empty
+		
+		//Check that values are overwritten if deleted externaly
+		cmd = tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET);  //Add reference value internally
 		editingDomain.getCommandStack().execute(cmd);
 		importer.importSei(editingDomain, sei2, mat1);
-		assertEquals("same EReference from value to empty", tc.getTestRefCategory(), tc1.getTestRefCategory());
-		System.out.println(tc.getTestRefCategory());
+		assertNull("same Reference from value to empty", tc.getTestRefCategory());
 
-		//empty and import values
-		cmd = tc1.setTestRefCategory(editingDomain, tc2);
-		editingDomain.getCommandStack().execute(cmd);
-		mat = exporter.exportSei(sei2);
+		//Set new reference and validate that it is imported
+		executeAsCommand(() -> tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET));
+		mat = exporter.exportSei(sei2); //export new reference to check import
 		importer.importSei(editingDomain, sei, mat);
-		assertEquals("same Reference from empty to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
-		System.out.println(tc.getTestRefCategory());
+		assertEquals("same Reference from empty to value", TEST_REFERENCE_TARGET, tc.getTestRefCategory());
 
-		//values and import values
-		tc.setTestRefCategory(editingDomain, tc2);
-		tc1.setTestRefCategory(editingDomain, tc2);
+		//Check that value is not wrongly removed or changed
+		tc.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET); 
+		tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
 		importer.importSei(editingDomain, sei, mat);
-		assertEquals("same Reference from value to value", tc.getTestRefCategory(), tc1.getTestRefCategory());
+		assertEquals("same Reference from value to value", TEST_REFERENCE_TARGET, tc.getTestRefCategory());
 		System.out.println(tc.getTestRefCategory());
 	}
 
 	@Test
 	public void testImportOfValuesERef() throws IOException {
-		ExternalTestType testERef = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
+		//Test reference value
+		final ExternalTestType TEST_EREF_MODEL_VALUE = new ExternalModelTestHelper().loadExternalTypeInstance();
 		
-		//empty and import empty
+		//Prepare test data
 		EReferenceTest tc = new EReferenceTest(testConcept);
-		Command cmd = tsei.add(editingDomain, tc);
-		editingDomain.getCommandStack().execute(cmd);
+		tsei.add(tc);
 		mat = exporter.exportSei(sei);
 		MatFile mat1 = exporter.exportSei(sei);
 		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
 		EReferenceTest tc1 = new EReferenceTest(testConcept);
-		cmd = tsei2.add(editingDomain, tc1);
-		editingDomain.getCommandStack().execute(cmd);
+		tsei2.add(tc1);
 		sei2.setName(TEST_SEI);
 		sei2.setUuid(sei.getUuid());
-		cmd = importer.importSei(editingDomain, sei2, mat);
+		
+		//Check that no value is added if imported empty
+		Command cmd = importer.importSei(editingDomain, sei2, mat);
 		editingDomain.getCommandStack().execute(cmd);
-		assertEquals("same Reference from empty to empty", tc.getEReferenceTest(), tc1.getEReferenceTest());
+		assertEquals("No value should have been added", tc.getEReferenceTest(), tc1.getEReferenceTest());
 
-		//values and import empty
-		cmd = tc1.setEReferenceTest(editingDomain, testERef);
+		//Try import of empty value and check that old value is removed
+		cmd = tc1.setEReferenceTest(editingDomain, TEST_EREF_MODEL_VALUE);
 		editingDomain.getCommandStack().execute(cmd);
 		cmd = importer.importSei(editingDomain, sei2, mat1);
 		editingDomain.getCommandStack().execute(cmd);
-		assertEquals("same Reference from value to empty", tc.getEReferenceTest(), tc1.getEReferenceTest());
+		assertNull("Value should be removed", tc.getEReferenceTest());
 
-		//empty and import values
-		cmd = tc1.setEReferenceTest(editingDomain, testERef);
+		//Try import reference value
+		cmd = tc1.setEReferenceTest(editingDomain, TEST_EREF_MODEL_VALUE);
 		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei2);
 		cmd = importer.importSei(editingDomain, sei, mat);
 		editingDomain.getCommandStack().execute(cmd);
-		assertEquals("same Reference from empty to value", tc.getEReferenceTest(), tc1.getEReferenceTest());
+		assertNotNull("Value should be added", tc.getEReferenceTest());
+		// URI + fragment combination is only clear identifier of external model elements
+		assertEquals("Value should be added and in the same resource as test element", 
+				EcoreUtil.getURI(TEST_EREF_MODEL_VALUE), EcoreUtil.getURI(tc.getEReferenceTest()));
 
-		//values and import values
-		cmd = tc1.setEReferenceTest(editingDomain, testERef);
+		//Check that value is not wrongly removed or changed
+		cmd = tc1.setEReferenceTest(editingDomain, TEST_EREF_MODEL_VALUE);
 		editingDomain.getCommandStack().execute(cmd);
-		cmd = tc.setEReferenceTest(editingDomain, testERef);
+		cmd = tc.setEReferenceTest(editingDomain, TEST_EREF_MODEL_VALUE);
 		editingDomain.getCommandStack().execute(cmd);
 		mat = exporter.exportSei(sei2);
 		cmd = importer.importSei(editingDomain, sei, mat);
 		editingDomain.getCommandStack().execute(cmd);
-		assertEquals("same Reference from value to value", tc.getEReferenceTest(), tc1.getEReferenceTest());
-		System.out.println(tc.getEReferenceTest());
+		assertNotNull("Value should not have bean removed", tc.getEReferenceTest());
+		// URI + fragment combination is only clear identifier of external model elements
+		assertEquals("Value should be from same resource as before", 
+				EcoreUtil.getURI(TEST_EREF_MODEL_VALUE), EcoreUtil.getURI(tc.getEReferenceTest()));
 	}
 	
 	@Test 
