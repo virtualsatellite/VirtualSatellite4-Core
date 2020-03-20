@@ -95,39 +95,19 @@ public class MatImporterTest extends ATestConceptTestCase {
 	}
 
 	@Test
-	public void testImportCasDeleteCas() throws IOException {
-		TestCategoryAllProperty tc2 = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc2);
+	public void testImportUnit() throws IOException {
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
+		tc.getTestFloatBean().setUnit("Kilogram");
 		mat = exporter.exportSei(sei);
-		TestCategoryComposition tc1 = new TestCategoryComposition(testConcept);
-		tsei.add(tc1);
-		assertTrue("Sei has two CategoryAssinments", sei.getCategoryAssignments().size() == 2);
-		editingDomain.getCommandStack().execute(importer.importSei(editingDomain, sei, mat));
-		assertTrue("Only one CategoryAssinment", sei.getCategoryAssignments().size() == 1);
-		assertTrue("Right CategoryAssinment included",
-				sei.getCategoryAssignments().get(0).getName().equals(tc2.getName()));
-	}
-
-	@Test
-	public void testImportAPIDeleteAPI() throws IOException {
-		//create a SEI and an PropertyInstance
-		EReferenceTest tc2 = new EReferenceTest(testConcept);
-		tsei.add(tc2);
-		TestCategoryAllProperty tc3 = new TestCategoryAllProperty(testConcept);
-		tsei.add(tc3);
-		APropertyInstance nInstance = sei.getCategoryAssignments().get(0).getPropertyInstances().get(0);
-		sei.getCategoryAssignments().remove(0);
-
-		//get .mat with one Category Assignment 
-		mat = exporter.exportSei(sei);
-
-		//add one ProperyInstance to this
-		sei.getCategoryAssignments().get(0).getPropertyInstances().add(nInstance);
-		assertEquals("CategoryAssinment has seven PropertyInstances", NUMBEROFELEMENTS + 1, sei.getCategoryAssignments().get(0).getPropertyInstances().size());
-
-		//import should delete 7th PropertyInstance
-		editingDomain.getCommandStack().execute(importer.importSei(editingDomain, sei, mat));
-		assertTrue("Instance deleted", sei.getCategoryAssignments().get(0).getPropertyInstances().size() == NUMBEROFELEMENTS);
+		TestStructuralElement tsei2 = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei2 = tsei2.getStructuralElementInstance();
+		sei2.setName(TEST_SEI);
+		sei2.setUuid(sei.getUuid());
+		TestCategoryAllProperty tc1 = new TestCategoryAllProperty(testConcept);
+		tsei2.add(tc1);
+		editingDomain.getCommandStack().execute(importer.importSei(editingDomain, sei2, mat));
+		assertEquals("Unit set", "Kilogram", tc1.getTestFloatBean().getUnit());
 	}
 
 	@Test
@@ -261,7 +241,6 @@ public class MatImporterTest extends ATestConceptTestCase {
 		assertEquals("same testInt", TEST_INT, tc1.getTestInt());
 	}
 
-
 	@Test
 	public void testImportOfValuesRef() throws IOException {
 		//Reference test target
@@ -287,19 +266,22 @@ public class MatImporterTest extends ATestConceptTestCase {
 		editingDomain.getCommandStack().execute(new CreateSeiResourceAndFileCommand(rs, sei));
 		
 		//Check that no value is added if imported empty
-		importer.importSei(editingDomain, sei2, mat);
+		cmd = importer.importSei(editingDomain, sei2, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from empty to empty", tc.getTestRefCategory(), tc1.getTestRefCategory()); //empty to empty
 		
 		//Check that values are overwritten if deleted externaly
 		cmd = tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET);  //Add reference value internally
 		editingDomain.getCommandStack().execute(cmd);
-		importer.importSei(editingDomain, sei2, mat1);
+		cmd = importer.importSei(editingDomain, sei2, mat1);
+		editingDomain.getCommandStack().execute(cmd);
 		assertNull("same Reference from value to empty", tc.getTestRefCategory());
 
 		//Set new reference and validate that it is imported
-		executeAsCommand(() -> tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET));
+		editingDomain.getCommandStack().execute(tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET));
 		mat = exporter.exportSei(sei2); //export new reference to check import
-		importer.importSei(editingDomain, sei, mat);
+		cmd = importer.importSei(editingDomain, sei, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from empty to value", TEST_REFERENCE_TARGET, tc.getTestRefCategory());
 
 		//Check that value is not wrongly removed or changed
@@ -307,7 +289,8 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tc1.setTestRefCategory(editingDomain, TEST_REFERENCE_TARGET);
 		editingDomain.saveAll();
 		mat = exporter.exportSei(sei2);
-		importer.importSei(editingDomain, sei, mat);
+		cmd = importer.importSei(editingDomain, sei, mat);
+		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same Reference from value to value", TEST_REFERENCE_TARGET, tc.getTestRefCategory());
 		System.out.println(tc.getTestRefCategory());
 	}

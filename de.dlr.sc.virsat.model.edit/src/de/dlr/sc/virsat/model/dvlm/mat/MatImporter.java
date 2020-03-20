@@ -114,13 +114,10 @@ public class MatImporter {
 			nameSeiCas.add(seiCa.getName());
 		}
 
-		for (int i = 0; i < seiCas.size();) {
+		for (int i = 0; i < seiCas.size(); i++) {
 			if (nameMatCas.contains(seiCas.get(i).getName())) { //import all given CategoryAssinments
 				importGivenCa(importCommand, seiCas.get(i), struct.get(seiCas.get(i).getName()));
 				nameMatCas.remove(seiCas.get(i).getName());
-				i++;
-			} else {
-				seiCas.remove(i);
 			}
 		}
 	}
@@ -135,7 +132,7 @@ public class MatImporter {
 		List<String> nameMatAPIs = struct.getFieldNames();
 		
 		//import all given APropertyInstances
-		for (int i = 0; i < seiAPIs.size();) {
+		for (int i = 0; i < seiAPIs.size(); i++) {
 			if (nameMatAPIs.contains(seiAPIs.get(i).getType().getName())) {
 				if (!(seiAPIs.get(i) instanceof ArrayInstanceImpl)) {
 					importGivenAPI(importCommand, seiAPIs.get(i), struct.get(seiAPIs.get(i).getType().getName()));
@@ -143,9 +140,6 @@ public class MatImporter {
 					importGivenAPI(importCommand, seiAPIs.get(i), struct);
 				}
 				nameMatAPIs.remove(seiAPIs.get(i).getType().getName());
-				i++;
-			} else {
-				seiAPIs.remove(seiAPIs.get(i));
 			}
 		}
 	}
