@@ -137,7 +137,7 @@ public class MatImporter {
 		//import all given APropertyInstances
 		for (int i = 0; i < seiAPIs.size();) {
 			if (nameMatAPIs.contains(seiAPIs.get(i).getType().getName())) {
-				if (!(seiAPIs instanceof ArrayInstanceImpl)) {
+				if (!(seiAPIs.get(i) instanceof ArrayInstanceImpl)) {
 					importGivenAPI(importCommand, seiAPIs.get(i), struct.get(seiAPIs.get(i).getType().getName()));
 				} else {
 					importGivenAPI(importCommand, seiAPIs.get(i), struct);

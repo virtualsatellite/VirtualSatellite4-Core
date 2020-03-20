@@ -420,8 +420,8 @@ public class MatImporterTest extends ATestConceptTestCase {
 		//set Value with mat
 		cmd = tc1.getTestCompositionArrayStatic().get(0).setTestString(editingDomain, TEST_STRING);
 		editingDomain.getCommandStack().execute(cmd);
-		mat = exporter.exportSei(sei);
-		cmd = importer.importSei(editingDomain, sei2, mat);
+		mat = exporter.exportSei(sei2);
+		cmd = importer.importSei(editingDomain, sei, mat);
 		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("same composed Category", TEST_STRING, tc1.getTestCompositionArrayStatic().get(0).getTestString());
 	}
