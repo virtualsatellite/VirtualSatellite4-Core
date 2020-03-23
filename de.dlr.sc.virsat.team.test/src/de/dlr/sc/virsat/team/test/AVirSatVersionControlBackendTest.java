@@ -64,17 +64,9 @@ public class AVirSatVersionControlBackendTest extends AProjectTestCase {
 		}
 		return project;
 	}
-
-	private static final int WAIT_FOR_REPO_DETECTION_TIMESPAN = 10;
 	
 	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
 		project.refreshLocal(Resource.DEPTH_INFINITE, null);
-		try {
-			while (!ResourceUtil.isSharedWithGit(project)) {
-				Thread.sleep(WAIT_FOR_REPO_DETECTION_TIMESPAN);
-			}
-		} catch (InterruptedException e) {
-		}
 	}
 
 	protected Path pathRepoRemote;

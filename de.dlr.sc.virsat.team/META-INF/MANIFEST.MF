@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.jgit,
  org.eclipse.egit.core,
- org.eclipse.team.core
+ org.eclipse.team.core,
+ org.eclipse.team.svn.core;bundle-version="4.0.5"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true

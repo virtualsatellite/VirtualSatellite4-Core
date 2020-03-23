@@ -14,8 +14,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.egit.core.internal.util.ResourceUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Before;
@@ -23,6 +25,7 @@ import org.junit.Before;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.test.AVirSatVersionControlBackendTest;
 
+@SuppressWarnings("restriction")
 public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBackendTest {
 	
 	@Before
@@ -50,5 +53,18 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 		super.setUp();
 
 		backend = new VirSatGitVersionControlBackend(null);
+	}
+	
+	private static final int WAIT_FOR_REPO_DETECTION_TIMESPAN = 10;
+	
+	@Override
+	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
+		super.waitForProjectToRepoMapping(project);
+		try {
+			while (!ResourceUtil.isSharedWithGit(project)) {
+				Thread.sleep(WAIT_FOR_REPO_DETECTION_TIMESPAN);
+			}
+		} catch (InterruptedException e) {
+		}
 	}
 }
