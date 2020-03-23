@@ -15,19 +15,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import de.dlr.sc.virsat.external.lib.commons.cli.Activator;
-
 /**
  * Class for storing configuration properties for VirSat Server.
  * Properties should be loaded from a property file on startup, and can be then accessed.
  */
 public class ServerConfiguration {
 	
-
-	private static final String CONFIG_FILE_CLI_PARAM = "configFile";
-	private static Properties properties = null;
+	private static Properties properties;
 	private static String propertiesFilePath;
-
 	
 	private ServerConfiguration() { }
 	
@@ -37,10 +32,10 @@ public class ServerConfiguration {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public static void loadProperties() throws FileNotFoundException, IOException {
-		propertiesFilePath = getPropertiesFilePath();
+	public static void loadProperties(String filePath) throws FileNotFoundException, IOException {
+		propertiesFilePath = filePath;
 		properties = new Properties();
-		properties.load(new BufferedReader(new FileReader(propertiesFilePath)));
+		properties.load(new BufferedReader(new FileReader(filePath)));
 	}
 	
 	
@@ -48,21 +43,7 @@ public class ServerConfiguration {
 		return properties;
 	}
 
-
-	/**
-	 * Get the properties file path - uses path specified from CLI or default file 
-	 * @return the configuration file path
-	 */
 	public static String getPropertiesFilePath() {
-		boolean isCustomConfigFileSet = Activator.getCommandLineManager().isCommandLineOptionSet(CONFIG_FILE_CLI_PARAM);
-		if (isCustomConfigFileSet) {
-			propertiesFilePath = Activator.getCommandLineManager().getCommandLineOptionParameter(CONFIG_FILE_CLI_PARAM);
-		} 
 		return propertiesFilePath;
 	}
-	
-	public static void setPropertiesFilePath(String filePath) {
-		propertiesFilePath = filePath;
-	}
-
 }

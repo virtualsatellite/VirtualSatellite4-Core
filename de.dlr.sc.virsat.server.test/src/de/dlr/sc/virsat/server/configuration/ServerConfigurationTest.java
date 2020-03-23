@@ -34,8 +34,7 @@ public class ServerConfigurationTest {
 		Path propertiesFile = Files.createTempFile("testProperties", ".properties");
 		Files.write(propertiesFile, (testKey + ":" + testValue).getBytes());
 		
-		ServerConfiguration.setPropertiesFilePath(propertiesFile.toString());
-		ServerConfiguration.loadProperties();
+		ServerConfiguration.loadProperties(propertiesFile.toString());
 		Properties properties = ServerConfiguration.getProperties();
 		assertEquals(1, properties.size());
 		assertEquals(testValue, properties.getProperty(testKey));
