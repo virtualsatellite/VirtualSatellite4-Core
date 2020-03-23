@@ -9,6 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.configuration;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -17,21 +21,33 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
 	
-	private static final String CONFIG_FILE = "configFile";
+
+	private static final String CONFIG_FILE_CLI_PARAM = "configFile";
 	private static Properties properties = null;
+	private static String propertiesFilePath;
+
 	
 	private ServerConfiguration() { }
 	
 	/**
 	 * Loads a properties file into memory
 	 * @param filePath path to file containing properties in java properties format
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static void loadProperties(String filePath) {
+	public static void loadProperties(String filePath) throws FileNotFoundException, IOException {
+		propertiesFilePath = filePath;
+		properties = new Properties();
+		properties.load(new BufferedReader(new FileReader(filePath)));
 	}
 	
 	
 	public static Properties getProperties() {
 		return properties;
 	}
-	
+
+	public static String getPropertiesFilePath() {
+		return propertiesFilePath;
+	}
+
 }
