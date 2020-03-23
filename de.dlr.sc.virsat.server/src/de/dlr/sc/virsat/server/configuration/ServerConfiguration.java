@@ -17,7 +17,8 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
 	
-	private static Properties properties = null;
+	private static Properties properties;
+	private static String propertiesFilePath;
 	
 	private ServerConfiguration() { }
 	
@@ -33,5 +34,7 @@ public class ServerConfiguration {
 		return properties;
 	}
 
-	
+	public static String getPropertiesFilePath() {
+		return propertiesFilePath;
+	}
 }
