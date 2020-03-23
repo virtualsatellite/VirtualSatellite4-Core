@@ -111,7 +111,7 @@ public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
 		
 		MockMatcher matcher = new MockMatcher(node -> node.getName().endsWith("matches")) {
 			@Override
-			public boolean continueTraverseChildren(IBeanStructuralElementInstance treeNode, boolean isMatching) {
+			public boolean continueTraverseChildren(IBeanStructuralElementInstance treeNode, boolean isMatching, int treeLevel, int matchingLevel) {
 				return !(treeNode.equals(n1));
 			}
 		};

@@ -65,6 +65,7 @@ public class ExpressionUtil {
 	public static List<Equation> getAllEquationsFrom(ResourceSet resourceSet, Resource resource, String equationString) {
 		InputStream in = new ByteArrayInputStream(equationString.getBytes());
 		try {
+			resource.unload();
 			resource.load(in, resourceSet.getLoadOptions());
 		} catch (IOException e) {
 			fail("Could not load equation....");
