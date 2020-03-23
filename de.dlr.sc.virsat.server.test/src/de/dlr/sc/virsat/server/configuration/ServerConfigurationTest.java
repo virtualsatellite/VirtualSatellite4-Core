@@ -22,7 +22,7 @@ public class ServerConfigurationTest {
 
 	@Test
 	public void testDefaultProperties() throws IOException {
-		String expectedDefaultPropertiesFilePath = "/resources/default_configuration.properties";
+		String expectedDefaultPropertiesFilePath = "/resources/server.properties";
 		assertEquals(expectedDefaultPropertiesFilePath, ServerConfiguration.getPropertiesFilePath());
 	}
 
