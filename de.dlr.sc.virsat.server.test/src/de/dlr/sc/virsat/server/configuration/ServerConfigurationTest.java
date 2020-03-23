@@ -18,16 +18,16 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-class ServerConfigurationTest {
+public class ServerConfigurationTest {
 
 	@Test
-	void testDefaultProperties() throws IOException {
+	public void testDefaultProperties() throws IOException {
 		String expectedDefaultPropertiesFilePath = "/resources/default_configuration.properties";
 		assertEquals(expectedDefaultPropertiesFilePath, ServerConfiguration.getPropertiesFilePath());
 	}
 
 	@Test
-	void testLoadProperties() throws IOException {
+	public void testLoadProperties() throws IOException {
 		final String testKey = "testKey";
 		final String testValue = "testValue";
 		
