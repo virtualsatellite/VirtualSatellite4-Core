@@ -16,7 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import de.dlr.sc.virsat.server.data.Model;
+import de.dlr.sc.virsat.server.dataaccess.Model;
 
 /**
  * Simple test resource for debugging purposes

@@ -16,21 +16,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+
 /**
  * Class for common code to import excel
- * 
- * @author bell_er
- *
  */
 public class ExcelImportHelper {
+
 	/**
 	* Checks the row, if all of the fields are empty or not
-	* 
-	* @author  Bell_er
 	* @param rowNumber the row number which we are checking
 	* @param sheet the excel data sheet
 	* @param cellCount expected cell number in each row
-	* @return if the row is empty true,else false
+	* @return if the row is empty true, else false
 	*/
 	public static boolean isEmpty(int rowNumber, Sheet sheet, int cellCount) {
 		Row row = sheet.getRow(rowNumber);
@@ -45,23 +42,20 @@ public class ExcelImportHelper {
 		}
 		return true;
 	}
+
 	/**
 	 * helper for importing
-	 * @author bell_er
 	 */
 	private ExcelImportHelper() {
-		
 	}
-	
+
 	/**
 	* Searches the given UUID in the list to know if it is contained the list
-	* 
-	* @author  Bell_er
-	* @param tempUUID given UUID  
+	* @param tempUUID given UUID
 	* @param aBeanCategoryAssignmentList list to be searched for
 	* @return the index of the given UUID if it is contained in the list. Returns -1 if it does not contained in the list
 	*/
-	public static int  containsABeanCategoryAssignmentUUID(String tempUUID, List<? extends ABeanCategoryAssignment> aBeanCategoryAssignmentList) {
+	public static int containsABeanCategoryAssignmentUUID(String tempUUID, List<? extends ABeanCategoryAssignment> aBeanCategoryAssignmentList) {
 		for (int i = 0; i < aBeanCategoryAssignmentList.size(); i++) {
 			if (aBeanCategoryAssignmentList.get(i).getUuid().equals(tempUUID)) {
 				return i;
@@ -69,15 +63,14 @@ public class ExcelImportHelper {
 		}
 		return -1;
 	}
+
 	/**
 	 * Searches the given fullQualifiedInstanceName in the given list
-	 * 
-	 * @author  Bell_er
 	 * @param fullQualifiedInstanceName given fullQualifiedInstanceName
 	 * @param aBeanCategoryAssignmentList list to be searched
 	 * @return the index of the given fullQualifiedInstanceName if it is contained in the List. Returns -1 if it does not contained in the List
 	 */
-	public static int  containsABeanCategoryAssignmentFullQualifiedInstanceName(String fullQualifiedInstanceName, List<? extends ABeanCategoryAssignment> aBeanCategoryAssignmentList) {
+	public static int containsABeanCategoryAssignmentFullQualifiedInstanceName(String fullQualifiedInstanceName, List<? extends ABeanCategoryAssignment> aBeanCategoryAssignmentList) {
 		for (int i = 0; i < aBeanCategoryAssignmentList.size(); i++) {
 			if (aBeanCategoryAssignmentList.get(i).getTypeInstance().getFullQualifiedInstanceName().equals(fullQualifiedInstanceName)) {
 				return i;
@@ -85,15 +78,14 @@ public class ExcelImportHelper {
 		}
 		return -1;
 	}
+
 	/**
 	* Searches the given name in the list to know if it is contained the list
-	* 
-	* @author  Bell_er
-	* @param name given name 
+	* @param name given name
 	* @param aBeanCategoryAssignmentList list to be searched for
 	* @return the index of the given UUID if it is contained in the list. Returns -1 if it does not contained in the list
 	*/
-	public static int  containsABeanCategoryAssignmentName(String name, List<? extends ABeanCategoryAssignment> aBeanCategoryAssignmentList) {
+	public static int containsABeanCategoryAssignmentName(String name, List<? extends ABeanCategoryAssignment> aBeanCategoryAssignmentList) {
 		for (int i = 0; i < aBeanCategoryAssignmentList.size(); i++) {
 			if (aBeanCategoryAssignmentList.get(i).getName().equals(name)) {
 				return i;

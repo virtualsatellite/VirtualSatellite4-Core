@@ -11,16 +11,17 @@ Concept de.dlr.sc.virsat.model.extension.tests
 	version 1.1
  	hasDMF 
  	description "A pure test concept to check that everything is working as expected" { 
+ 		
 	Import de.dlr.sc.virsat.model.extension.maturity.*;
-	
+	Import de.dlr.sc.virsat.model.ext.core.*;	//New dependency from 1.0 -> 1.1 test for migration
+	EImport "http://www.virsat.sc.dlr.de/external/tests";
 	
 	StructuralElement TestStructuralElement description "StructuralElement for testing code generator" {
 		IsRootStructuralElement;
 		Inherits From All;
 		Applicable For All;
-	 
 	}
-
+	
 	StructuralElement TestStructuralElementOther description "Another StructuralElement for bean structural element instance helper" {
 		Inherits From All; 
 		Applicable For All;  
@@ -144,5 +145,12 @@ Concept de.dlr.sc.virsat.model.extension.tests
 		
 		Ref: calcedTrl = Maturity.trl; 
 	}
+	
+	Category EReferenceTest {
+		Applicable For All;
+		
+		EReference eReferenceTest of Type tests.ExternalTestType;
+	}
+		
 }
 

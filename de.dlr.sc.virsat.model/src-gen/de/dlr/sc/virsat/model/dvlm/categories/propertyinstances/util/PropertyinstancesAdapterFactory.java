@@ -106,6 +106,10 @@ public class PropertyinstancesAdapterFactory extends AdapterFactoryImpl {
 				return createReferencePropertyInstanceAdapter();
 			}
 			@Override
+			public Adapter caseEReferencePropertyInstance(EReferencePropertyInstance object) {
+				return createEReferencePropertyInstanceAdapter();
+			}
+			@Override
 			public Adapter caseComposedPropertyInstance(ComposedPropertyInstance object) {
 				return createComposedPropertyInstanceAdapter();
 			}
@@ -236,6 +240,20 @@ public class PropertyinstancesAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createReferencePropertyInstanceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance <em>EReference Property Instance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
+	 * @generated
+	 */
+	public Adapter createEReferencePropertyInstanceAdapter() {
 		return null;
 	}
 

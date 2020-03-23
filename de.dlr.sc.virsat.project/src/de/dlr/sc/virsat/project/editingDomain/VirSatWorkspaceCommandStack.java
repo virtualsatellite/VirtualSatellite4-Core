@@ -71,10 +71,11 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * right point of time.
 	 * @param runnable the runnable that implements the call to the execution of the command
 	 */
-	protected void executeInWorkspace(Runnable runnable) {
+	protected synchronized void executeInWorkspaceWithSaveCheck(Runnable runnable) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Starting to execute command as workspace operation"));
 
 		try {
+			triggerSave = false;
 			// Run all execute, undo, et.c in a workspace operation. This way deadlocks can be avoided,
 			// since no two commands can run at the same time. There used to be deadlocks with the builders
 			// which were obtaining locks in the opposite order. E.g. when creating a SEI first the Command was executed
@@ -100,9 +101,9 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * @param command The command to be executed.
 	 */
 	public void executeNoUndo(Command command) {
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute Command with no UnDo"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute Command with no undo"));
 		
-		executeInWorkspace(() -> {
+		editingDomain.executeInWorkspace(() -> {
 			// Check if the command is execute able and prepare it (happens in canExecute)
 			if (command.canExecute()) {
 				// Wrap it into an EMF operation and execute the command ourselves without
@@ -115,6 +116,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 				}
 			}
 		});
+
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Finished execute Command with no undo"));
 	}
 	
 	@Override
@@ -135,8 +138,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		
 		final Command executeCommand = command;
 
-		executeInWorkspace(() -> {
-			triggerSave = false;
+		executeInWorkspaceWithSaveCheck(() -> {
 			try {
 				// Try to see if there is already a transaction going on in the editing domain,
 				// which is associated with this Command Stack.
@@ -156,6 +158,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 				// Command Stack which opens a transaction and starts executing the command. Or in case there is a transaction
 				// it will be just placed on the stack as the next command.
 				if (!usableTransactionExists) {
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute command to execute in its own transaction"));
 					// No active transaction means we have to execute the command as a
 					// top-level command
 					super.execute(executeCommand, options);
@@ -167,8 +170,10 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 					// Now when e.g. an undo is triggered, the chained commands will be undone as well within the
 					// same atomic transaction.
 					if (executeCommand != null && executeCommand.canExecute()) {
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute Command within existing write transaction"));
 						executeCommand.execute();
 						if (getActiveCommand() instanceof VirSatRecordingCommand) {
+							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Chaining command to VirSatRecordingCommand"));
 							getActiveCommand().chain(executeCommand);
 						}
 					}
@@ -182,8 +187,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	@Override
 	public void undo() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Undo Command"));
-		executeInWorkspace(() -> {
-			triggerSave = false;
+		executeInWorkspaceWithSaveCheck(() -> {
 			super.undo();
 		});
 	}
@@ -191,8 +195,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	@Override
 	public void redo() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Redo Command"));
-		executeInWorkspace(() -> {
-			triggerSave = false;
+		executeInWorkspaceWithSaveCheck(() -> {
 			super.redo();
 		});
 	}
@@ -224,7 +227,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	/**
 	 * Trigger a save all upon completion of the executing command
 	 */
-	public void triggerSaveAll() {
+	public synchronized void triggerSaveAll() {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Save all Triggered by Thread: " + Thread.currentThread().getName()));
 		triggerSave = true;
 	}
 	
@@ -232,12 +236,19 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * Check if the triggerSave flag has been set. If so, ask the editing domain to save everything
 	 * and reset the flag.
 	 */
-	private void checkTriggerSaveAll() {
+	private synchronized void checkTriggerSaveAll() {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Check for save trigger"));
 		if (triggerSave) {
-			Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "Executed command triggered save all on editing domain"));
-			VirSatSaveJob saveJob = new VirSatSaveJob(editingDomain, true);
-			saveJob.scheduleIfNoSaveJobPending();
-			triggerSave = false;
+			Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Save tiggered Scheduling Save Job."));
+			// The trigger boolean to save all may be set from a command that requires saving. e.g. creating a new SEI.
+			// When this command is executed, it will be given to the command stack wrapping it into a workspace
+			// locked operation and running it in executeInWorkspaceWithSaveCheck. This method will:
+			// 1. set the boolean to false
+			// 2. execute the commands which may set the trigger
+			// 3. call the save all
+			// Synchronizing all involved methods ensures that no other command can be executed. In consequence the
+			// triggerSave variable cannot be altered unexpectedly between executing a command and saving.
+			editingDomain.saveAll(true);
 		}
 	}
 }

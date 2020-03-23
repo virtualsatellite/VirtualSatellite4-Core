@@ -82,6 +82,7 @@ Germany
       <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.requirements.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.ext.core.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.docs.feature" installMode="root"/>
       <feature id="org.eclipse.platform" installMode="root"/>
       <feature id="org.eclipse.pde" installMode="root"/>
@@ -136,6 +137,10 @@ Germany
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
    </configurations>
+
+   <repositories>
+      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
+   </repositories>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>

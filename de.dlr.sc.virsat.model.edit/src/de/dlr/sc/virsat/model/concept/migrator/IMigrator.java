@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.migrator;
 
+import java.util.Set;
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
@@ -22,9 +24,19 @@ public interface IMigrator {
 	String EXTENSION_POINT_ID = "de.dlr.sc.virsat.model.edit.ConceptMigrator";
 	
 	/**
-	 * Migrates the concept to the internally implemented version
+	 * Returns new dependencies of the new concept version. These have to be activated
+	 * before migration can be done
 	 * @param concept the concept to be migrated
 	 * @param previousMigrator the previously executed migrator, can be null if none was executed before
+	 * @return a list of new required concept names
+
+	 */
+	Set<String> getNewDependencies(Concept concept, IMigrator previousMigrator);
+	
+	/**
+	 * Migrates the concept to the internally implemented version
+	 * @param concept the concept to be migrated
+	 * @param previousMigrator the previously executed migrator
 	 */
 	void migrate(Concept concept, IMigrator previousMigrator);
 	

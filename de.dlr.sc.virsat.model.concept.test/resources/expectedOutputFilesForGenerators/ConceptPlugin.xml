@@ -12,7 +12,7 @@
 		<dvlmValidator>
 			<seiValidator
 				id="testConcept"
-				class="testConcept.validator.StructuralElementInstanceValidator">
+				class="testConcept.validator.TestConceptValidator">
 			</seiValidator>
 		</dvlmValidator>
 	</extension>

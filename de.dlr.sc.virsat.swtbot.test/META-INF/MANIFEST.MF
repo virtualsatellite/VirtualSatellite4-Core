@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core UI Tests with SwtBot
-Bundle-SymbolicName: de.dlr.sc.virsat.swtbot.test
+Bundle-SymbolicName: de.dlr.sc.virsat.swtbot.test;singleton:=true
 Bundle-Version: 4.11.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
@@ -62,3 +62,7 @@ Import-Package: org.zeromq,
  vtk.rendering,
  vtk.rendering.awt
 Automatic-Module-Name: de.dlr.sc.virsat.swtbot.test
+Export-Package: de.dlr.sc.virsat.swtbot.test,
+ de.dlr.sc.virsat.swtbot.util
+Bundle-Activator: de.dlr.sc.virsat.swtbot.test.Activator
+Bundle-ActivationPolicy: lazy

@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package testConcept.validator;
+package de.dlr.sc.virsat.model.extension.testConcept.validator;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValid
  * 
  * 
  */	
+@Deprecated
 public abstract class AStructuralElementInstanceValidator implements IStructuralElementInstanceValidator {
 
 	@Override
@@ -32,4 +33,3 @@ public abstract class AStructuralElementInstanceValidator implements IStructural
 		return true;
 	}
 }
-

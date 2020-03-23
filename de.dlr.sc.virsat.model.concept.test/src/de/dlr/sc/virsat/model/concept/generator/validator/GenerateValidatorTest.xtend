@@ -29,45 +29,55 @@ class GenerateValidatorTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	val testConceptName = "testConcept"
+	val conceptID = "de.dlr.sc.virsat.model.extension.testConcept"
+	val expectedConceptShortName = "TestConcept"
 	val validatorGenerator = new GenerateValidator
 
 	@Before
 	def void setUp() {
 		ConceptsPackage.eINSTANCE.eClass
 		
-        concept = '''
-        	Concept «testConceptName»{}
-        '''.parse
+		concept = '''
+			Concept «conceptID»{}
+		'''.parse
+	}
+	
+	@Test 
+	def void testGetValidatorName() {
+		val validatorName = GenerateValidator.getValidatorName(concept)
+
+		val expectedValidatorName = expectedConceptShortName + "Validator"
+
+		Assert.assertEquals("Validator name for the generated validator is correct", expectedValidatorName, validatorName)
 	}
 	
 	@Test
-    def void testCreateConcreteClassFileName() {
-    	val fileName = validatorGenerator.createConcreteClassFileName(concept, concept)
-    	
-    	val expectedFileName = testConceptName + "/validator/StructuralElementInstanceValidator.java"
-    	
-    	Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName)
-    }
+	def void testCreateConcreteClassFileName() {
+		val fileName = validatorGenerator.createConcreteClassFileName(concept, concept)
+		
+		val expectedFileName = conceptID.replace(".","/") + "/" + "validator" + "/" + expectedConceptShortName + "Validator.java"
+		
+		Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName)
+	}
 	
 	@Test
-    def void testCreateAbstractClassFileName() {
-    	val fileName = validatorGenerator.createAbstractClassFileName(concept, concept)
-    	
-    	val expectedFileName = testConceptName + "/validator/AStructuralElementInstanceValidator.java"
-    	
-    	Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName)
-    }
+	def void testCreateAbstractClassFileName() {
+		val fileName = validatorGenerator.createAbstractClassFileName(concept, concept)
+		
+		val expectedFileName = conceptID.replace(".","/") + "/" + "validator" + "/A" + expectedConceptShortName + "Validator.java"
+		
+		Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName)
+	}
 
 	@Test
-    def void testCreateConcreteClass() {
-    	val classContents = validatorGenerator.createConcreteClass(concept, concept)
-		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidator.java")
-    }
+	def void testCreateConcreteClass() {
+		val classContents = validatorGenerator.createConcreteClass(concept, concept)
+		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidator.java")
+	}
 
 	@Test
-    def void testCreateAbstractClass() {
-    	val classContents = validatorGenerator.createAbstractClass(concept, concept)
-		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidator.java")
-    } 
+	def void testCreateAbstractClass() {
+		val classContents = validatorGenerator.createAbstractClass(concept, concept)
+		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidator.java")
+	}
 }

@@ -124,5 +124,23 @@
             path="model/dvlm.history">
       </migrator>
    </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImplCustom"
+            predecessor="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi">
+      </factory>
+   </extension>
+   <extension
+         point="de.dlr.sc.virsat.external.lib.commons.cli.CommandLineArguments">
+     <clArgs
+           command="superUser">
+     </clArgs>
+     <clArgs
+            attribute="user"
+            command="forcedUser">
+     </clArgs>
+   </extension>>
   
 </plugin>

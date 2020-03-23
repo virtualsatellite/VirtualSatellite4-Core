@@ -30,12 +30,15 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)
 class GenerateDmfCategoriesTest {
 
 	@Inject extension ParseHelper<Concept>
+	protected ExternalModelTestHelper helper = new ExternalModelTestHelper;
 
 	static val TEST_CONCEPT_NAME = "testConcept";
 	static val TEST_FQN_NAME = "de.dlr.sc.virsat.model.extension" + "." + TEST_CONCEPT_NAME;
@@ -48,6 +51,7 @@ class GenerateDmfCategoriesTest {
 		ConceptsPackage.eINSTANCE.eClass
 		CategoriesPackage.eINSTANCE.eClass
 		PropertydefinitionsPackage.eINSTANCE.eClass
+		helper.loadExternalPackage()
 	}
 	
 	@Test
@@ -254,6 +258,51 @@ class GenerateDmfCategoriesTest {
 		Assert.assertTrue("Base EClass is abstract", eClassExtended.abstract);		
 		Assert.assertTrue("EClass correctly extends base EClass", eClassExtending.ESuperTypes.contains(eClassExtended));
 
+	}
+	
+	@Test
+	def void testCreateEClassWithConceptEReference() {
+		val concept = '''
+			Concept testConcept hasDMF {
+				
+				EImport "http://www.virsat.sc.dlr.de/external/tests";
+					
+				Category TestCategory {
+					
+					EReference testEReference of Type tests.ExternalTestType;
+					
+					EReference testEReferenceArray[] of Type tests.ExternalTestType;
+					
+				}
+				
+			}
+		'''.parse(helper.resourceSet)
+		
+		dmfCategoriesGenerator.initResources(concept);
+		val ePackage = dmfCategoriesGenerator.createEPackageFromConcept(concept);
+		
+		dmfCategoriesGenerator.createCategoryEClassesInEPackage(concept, ePackage);
+
+		val eClass = ePackage.EClassifiers.get(0) as EClass;
+		val category = concept.categories.get(0);
+		
+		// Test non-array attribute
+		val eStructuralFeature = eClass.EStructuralFeatures.get(0);
+		val eProperty = category.properties.get(0) as EReferenceProperty;
+		Assert.assertEquals("Structural feature has correct name", eProperty.name, eStructuralFeature.name);
+		Assert.assertTrue("Structural feature is a reference", eStructuralFeature instanceof EReference);
+		val eReference = eStructuralFeature as EReference;
+		Assert.assertEquals("Reference has correct type", eProperty.referenceType, eReference.EType);
+
+		// Test correctness of the generated EReference attribute
+		val eStructuralArrayFeature = eClass.EStructuralFeatures.get(1);
+		val eArrayProperty = category.properties.get(1) as EReferenceProperty;
+		Assert.assertEquals("Structural feature has correct name", eArrayProperty.name, eStructuralArrayFeature.name);
+		Assert.assertTrue("Structural feature is a reference", eStructuralFeature instanceof EReference);
+		val eArrayReference = eStructuralFeature as EReference;
+		Assert.assertEquals("Reference has correct type", eArrayProperty.referenceType, eArrayReference.EType);
+		Assert.assertEquals("Upper bound of structural feature is set correctly", -1, eStructuralArrayFeature.upperBound);
+		
 	}
 
 }

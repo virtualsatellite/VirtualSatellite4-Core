@@ -354,6 +354,11 @@ public class CategoryItemProvider extends ATypeDefinitionItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(CategoriesPackage.Literals.CATEGORY__PROPERTIES,
+				 PropertydefinitionsFactory.eINSTANCE.createEReferenceProperty()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CategoriesPackage.Literals.CATEGORY__PROPERTIES,
 				 PropertydefinitionsFactory.eINSTANCE.createIntProperty()));
 
 		newChildDescriptors.add

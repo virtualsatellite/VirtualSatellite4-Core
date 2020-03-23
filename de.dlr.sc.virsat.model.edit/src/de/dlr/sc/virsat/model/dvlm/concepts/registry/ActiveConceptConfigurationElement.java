@@ -25,8 +25,8 @@ import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.concept.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
 
 /**
@@ -137,34 +137,21 @@ public class ActiveConceptConfigurationElement {
 	 * @return the active Concept that has been created
 	 */
 	private static Concept createActiveConcept(Concept concept, Repository repository) {
+		ConceptActivationHelper helper = new ConceptActivationHelper(repository);
 		EcoreUtil.Copier copier = new EcoreUtil.Copier() {
 
 			private static final long serialVersionUID = 5925167870311468118L;
 			
 			@Override
 			public EObject get(Object key) {
+				
 				EObject eObject = super.get(key);
-
-				// In case we try to create a reference to an object which was not copied
-				// we should try to redirect that reference to an already active and existing concept
-				if ((eObject == null) && (key instanceof IConceptTypeDefinition)) {
-					IConceptTypeDefinition typeDefinition = (IConceptTypeDefinition) key;
-			
-					// Get the fragment URI of the concept we want to reference to
-					String uriFragment = EcoreUtil.getURI(typeDefinition).fragment();
-
-					// ask the repository if there is such an object with the given URI fragment
-					Resource repoResource = repository.eResource();
-					EObject repoTypeDefinition = repoResource.getEObject(uriFragment);
-
-					// If not throw a warning that there is something missing
-					if (repoTypeDefinition == null) {
-						String fqId = ActiveConceptHelper.getFullQualifiedId(typeDefinition);
-					
-						throw new RuntimeException("Install missing concept first! Missing concept: " + fqId);
-					}
-					return repoTypeDefinition;
-				} 
+				
+				// Activate types 
+				if (eObject == null && key instanceof EObject) {
+					return helper.getActiveType((EObject) key);
+				}
+				
 				return eObject;
 			}
 		};

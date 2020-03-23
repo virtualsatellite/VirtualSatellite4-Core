@@ -69,6 +69,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.Propertyd
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
@@ -470,6 +471,15 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 						return ca;
 					}
 					
+					@Override
+					public CategoryAssignment caseEReferencePropertyInstance(EReferencePropertyInstance erpi) {
+						Object value = (EObject) dGet(dObject, feature, erpi);
+						if (value instanceof EObject) {
+							erpi.setReference((EObject) value);
+						}
+						return ca;
+					}
+
 					@Override
 					public CategoryAssignment caseComposedPropertyInstance(ComposedPropertyInstance cpi) {
 						Object value = dGet(dObject, feature, cpi);

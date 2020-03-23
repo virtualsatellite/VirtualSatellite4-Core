@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
-import de.dlr.sc.virsat.excel.AExcelIo;
 import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.fault.FaultType;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
@@ -33,41 +32,38 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.statemachines.Activator;
+import de.dlr.sc.virsat.model.extension.statemachines.excel.AExcelStatIO;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 
-
-
-
 /**
  * Test Case for Importing from Excel
- * @author bell_er
- *
  */
 public class ExcelImporterTest {
 	private static final String CONCEPT_ID_MACHINES = "de.dlr.sc.virsat.model.extension.statemachines";
 
-	private static final int FIVE = 5;
-	private static final int FOUR = 4;
-	private static final int EXPECTEDSTATECOUNT = 4;
-	private static final int EXPECTEDTRANSITIONCOUNT = 4;
-	
-	ABeanStructuralElementInstance ed;
+	private static final int STATE_NOT_EXISTING = 6;
+	private static final int STATE_WITHOUT_UUID = 5;
+	private static final int STATE_WITHOUT_NAME = 3;
+	private static final int EXPECTED_STATECOUNT = 4;
+	private static final int EXPECTED_TRANSITIONCOUNT = 4;
+
+	ABeanStructuralElementInstance elementDefinition;
 
 	Concept conceptStateMachines;
 
-	StateMachine sm;
-	
+	StateMachine stateMaschine;
+
 	@Before
 	public void setUp() throws Exception {
-		
+
 		UserRegistry.getInstance().setSuperUser(true);
 
-	    conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
-  
-	    sm = new StateMachine(conceptStateMachines);
-		
+		conceptStateMachines = ConceptXmiLoader.loadConceptFromPlugin(CONCEPT_ID_MACHINES + "/concept/concept.xmi");
+
+		stateMaschine = new StateMachine(conceptStateMachines);
+
 		State state1 = new State(conceptStateMachines);
 		state1.setName("state1");
 		state1.getTypeInstance().setUuid(new VirSatUuid("a899a13e-8f6e-434f-befe-6399240b1bfd"));
@@ -100,71 +96,71 @@ public class ExcelImporterTest {
 		transition4.getTypeInstance().setUuid(new VirSatUuid("47ba4f71-4a52-4245-a195-bd830aa0a23c"));
 		transition4.setStateFrom(state4);
 		transition4.setStateTo(state1);
-		sm.getStates().add(state1);
-		sm.getStates().add(state2);
-		sm.getStates().add(state3);
-		sm.getStates().add(state4);
-		sm.getTransitions().add(transition1);
-		sm.getTransitions().add(transition2);
-		sm.getTransitions().add(transition3);
-		sm.getTransitions().add(transition4);
+		stateMaschine.getStates().add(state1);
+		stateMaschine.getStates().add(state2);
+		stateMaschine.getStates().add(state3);
+		stateMaschine.getStates().add(state4);
+		stateMaschine.getTransitions().add(transition1);
+		stateMaschine.getTransitions().add(transition2);
+		stateMaschine.getTransitions().add(transition3);
+		stateMaschine.getTransitions().add(transition4);
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		sei.setType(ActiveConceptHelper.getCategory(conceptStateMachines, StateMachine.class.getSimpleName()).getApplicableFor().get(0));
-		ed = new ElementDefinition(sei);
-		ed.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
-		ed.setName("BATTERY"); 
-		ed.add(sm);
+		elementDefinition = new ElementDefinition(sei);
+		elementDefinition.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
+		elementDefinition.setName("BATTERY");
+		elementDefinition.add(stateMaschine);
 	}
-	
+
 	@Test
-	public void test() throws IOException  { 
-		InputStream is = Activator.getResourceContentAsString("/resources/StateMachineTest.xlsx");
-		XSSFWorkbook wb = new XSSFWorkbook(is);
-					
+	public void importExcelTest() throws IOException {
+		InputStream iStream = Activator.getResourceContentAsString("/resources/StateMachineTest.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(iStream);
+
 		SMImporter se = new SMImporter();
-		se.importExcel(sm.getTypeInstance(), null, wb);
-		assertEquals(EXPECTEDSTATECOUNT, sm.getStates().size());
-		assertEquals(EXPECTEDTRANSITIONCOUNT, sm.getTransitions().size());
-		assertEquals("statenew2", sm.getStates().get(0).getName());
-		assertEquals("transitionnew2", sm.getTransitions().get(0).getName());
-		assertEquals("state4", sm.getTransitions().get(1).getStateFrom().getName());
-		assertEquals("state3", sm.getTransitions().get(1).getStateTo().getName());
+		se.importExcel(stateMaschine.getTypeInstance(), null, wb);
+		assertEquals(EXPECTED_STATECOUNT, stateMaschine.getStates().size());
+		assertEquals(EXPECTED_TRANSITIONCOUNT, stateMaschine.getTransitions().size());
+		assertEquals("statenew2", stateMaschine.getStates().get(0).getName());
+		assertEquals("transitionnew2", stateMaschine.getTransitions().get(0).getName());
+		assertEquals("state4", stateMaschine.getTransitions().get(1).getStateFrom().getName());
+		assertEquals("state3", stateMaschine.getTransitions().get(1).getStateTo().getName());
 	}
-	
+
 	@Test
-	public void importValidatortest() throws IOException  { 
-		InputStream is = Activator.getResourceContentAsString("/resources/StateMachineIVTest.xlsx");
-		XSSFWorkbook wb = new XSSFWorkbook(is);
-		
-		int headerSheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
-		int stateSheetIndex = wb.getSheetIndex(AExcelIo.TEMPLATE_SHEETNAME_STATES);
-		
+	public void importValidatortest() throws IOException {
+		InputStream iStream = Activator.getResourceContentAsString("/resources/StateMachineIVTest.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(iStream);
+
+		int headerSheetIndex = wb.getSheetIndex(AExcelStatIO.TEMPLATE_SHEETNAME_HEADER);
+		int stateSheetIndex = wb.getSheetIndex(AExcelStatIO.TEMPLATE_SHEETNAME_STATES);
+
 		ArrayList<Fault> expectedFault = new ArrayList<Fault>();
-		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE));
-		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 1));
+		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE));
+		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + 1));
 
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + 2));
-		expectedFault.add(new Fault(FaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + FOUR));
-		expectedFault.add(new Fault(FaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + FIVE));
-		expectedFault.add(new Fault(FaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelIo.COMMON_ROW_START_TABLE + FIVE));
+		expectedFault.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_NAME - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_UUID_NOT_FOUND, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_WITHOUT_UUID - 1));
+		expectedFault.add(new Fault(StatFaultType.CANT_DELETE_NON_EXISTING_STATE, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
+		expectedFault.add(new Fault(StatFaultType.STATE_NAME_IS_NOT_SET, stateSheetIndex, AExcelStatIO.COMMON_ROW_START_TABLE + STATE_NOT_EXISTING - 1));
 
-		ImportValidator iv = new ImportValidator(sm.getTypeInstance(), wb);
-		
-		ArrayList<Fault> fault = (ArrayList<Fault>) iv.validate();
+		ImportValidator iValidator = new ImportValidator(stateMaschine.getTypeInstance(), wb);
+
+		ArrayList<Fault> fault = (ArrayList<Fault>) iValidator.validate();
 		assertEquals(expectedFault, fault);
 	}
-	
+
 	@Test
-	public void withoutSheetTest() throws IOException  { 
-		InputStream is = Activator.getResourceContentAsString("/resources/StateMachineTestWithoutSheets.xlsx");
-		XSSFWorkbook wb = new XSSFWorkbook(is);
-		
+	public void withoutSheetTest() throws IOException {
+		InputStream iStream = Activator.getResourceContentAsString("/resources/StateMachineTestWithoutSheets.xlsx");
+		XSSFWorkbook wb = new XSSFWorkbook(iStream);
+
 		assertEquals(wb.getNumberOfSheets(), 1);
 		wb.close();
-		
-		is = Activator.getResourceContentAsString("/resources/StateMachineTestWithoutTransitionsSheet.xlsx");
-		wb = new XSSFWorkbook(is);	
-			
+
+		iStream = Activator.getResourceContentAsString("/resources/StateMachineTestWithoutTransitionsSheet.xlsx");
+		wb = new XSSFWorkbook(iStream);
+
 		assertEquals(wb.getNumberOfSheets(), 2);
 		wb.close();
 	}

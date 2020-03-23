@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated ExternalModel -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/external/tests"
+            class="de.dlr.sc.virsat.model.external.tests.TestsPackage"
+            genModel="model/ExternalModel.genmodel"/>
+   </extension>
+
+</plugin>

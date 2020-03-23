@@ -51,6 +51,13 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.codegen.ecore.genmodel.GenResourceKind
 import java.util.Date
 import java.util.Calendar
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+import org.eclipse.emf.codegen.ecore.genmodel.GenPackage
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
+import java.util.ArrayList
+import java.util.List
+import java.util.Set
+import java.util.HashSet
 
 /**
  * This generator generates an eCore model with eClasses out of described categories
@@ -72,6 +79,7 @@ class GenerateDmfCategories {
 	Resource targetResource;
 	Resource dvlmResource;
 	String platformPluginUriStringForEcoreModel;
+	Set<EPackage> eReferenceEPackages = new HashSet
 	
 	/**
 	 * This method serialized the data model into the given format
@@ -115,6 +123,9 @@ class GenerateDmfCategories {
       			val resourceEPackage = resource.contents.get(0) as EPackage;
       			ecoreImporter.EPackages += resourceEPackage;
       		}
+      		eReferenceEPackages.forEach[
+      			ecoreImporter.EPackages.add(it);
+      		]
       		
       		ecoreImporter.adjustEPackages(monitor);
       		val genEPackage = ecoreImporter.EPackages.get(0);
@@ -125,7 +136,7 @@ class GenerateDmfCategories {
       		genModels.forEach[
       			it.genPackages.forEach[
       				// Check that we dont create reference loops
-      				if (!it.basePackage.equals(dataModel.name)) {
+      				if (it.basePackage !== null && !it.basePackage.equals(dataModel.name)) {
       					ecoreImporter.referencedGenPackages += it;
       					ecoreImporter.getReferenceGenPackageConvertInfo(it).validReference = true;
       				}
@@ -261,6 +272,15 @@ SPDX-License-Identifier: EPL-2.0";
 						val eReference = EcoreFactory.eINSTANCE.createEReference;
 						return eReference;
 					}
+					
+					override caseEReferenceProperty(EReferenceProperty object) {
+						val eReference = EcoreFactory.eINSTANCE.createEReference;
+						eReference.EType = object.referenceType
+						eReferenceEPackages += eReference.EType.eContainer as EPackage
+						new ExternalGenModelHelper().resolveGenPackage(object)
+						return eReference;
+					}
+					
 				}.doSwitch(it);
 				
 				// In case no StructuralFeature for the Property could be created

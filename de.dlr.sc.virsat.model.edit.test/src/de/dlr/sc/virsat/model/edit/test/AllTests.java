@@ -14,12 +14,14 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.concept.calculation.QualifiedEquationObjectHelperTest;
+import de.dlr.sc.virsat.model.concept.lists.TypeSafeEReferenceArrayInstanceListTest;
 import de.dlr.sc.virsat.model.concept.migrator.AMigratorTest;
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigrationHelperTest;
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigratorTest;
 import de.dlr.sc.virsat.model.concept.migrator.CreateMigrateConceptToLatestCommandTest;
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignmentTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBooleanTest;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReferenceTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnumTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloatTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
@@ -30,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLME
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.ArrayInstanceItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMComposedPropertyInstanceItemProviderTest;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMERefererencePropertyInstanceItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMEnumUnitPropertyInstanceItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMPropertyinstancesItemProviderAdapterFactoryTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.DVLMRefererencePropertyInstanceItemProviderTest;
@@ -83,6 +86,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanPropertyStringTest.class,
 				BeanPropertyBooleanTest.class,
 				BeanPropertyEnumTest.class,
+				BeanPropertyEReferenceTest.class,
 				BeanCategoryAssignmentTest.class,
 				TransactionalEditingDomainHelperTest.class,
 				BeanStructuralElementInstanceTest.class,
@@ -101,6 +105,7 @@ import junit.framework.JUnit4TestAdapter;
 				DVLMEnumUnitPropertyInstanceItemProviderTest.class,
 				DVLMComposedPropertyInstanceItemProviderTest.class,
 				DVLMRefererencePropertyInstanceItemProviderTest.class,
+				DVLMERefererencePropertyInstanceItemProviderTest.class,
 				DVLMResourcePropertyInstanceItemProviderTest.class,
 				DVLMUnitValuePropertyInstanceItemProviderTest.class,
 				DVLMValuePropertyInstanceItemProviderTest.class,
@@ -116,7 +121,8 @@ import junit.framework.JUnit4TestAdapter;
 				QualifiedEquationObjectHelperTest.class,
 				SetArrayInstanceCommandTest.class,
 				SetValuePropertyInstanceCommandTest.class,
-				PropertyInstanceHelperTest.class
+				PropertyInstanceHelperTest.class,
+				TypeSafeEReferenceArrayInstanceListTest.class
 				})
 
 /**

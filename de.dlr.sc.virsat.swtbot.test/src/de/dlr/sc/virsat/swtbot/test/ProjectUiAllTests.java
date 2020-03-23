@@ -25,7 +25,7 @@ import org.junit.runners.Suite;
 	NewProjectWizardTest.class,
 	CutCopyDeleteUndoTest.class,
 	InheritanceTest.class, 
-	CalculationTest.class,
+	CalculationTest.class,   
 	ProductStructureTest.class
 	})
 

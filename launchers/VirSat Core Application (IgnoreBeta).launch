@@ -40,6 +40,7 @@
 <setEntry value="de.dlr.sc.virsat.graphiti.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.license.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.calculation.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.ext.core.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.budget.mass.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.maturity.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.mechanical.feature:default"/>

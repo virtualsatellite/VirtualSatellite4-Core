@@ -38,7 +38,9 @@ public class GenerateValidatorTestsTest {
   
   private Concept concept;
   
-  private final String TEST_CONCEPT_NAME = "testConcept";
+  private final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept";
+  
+  private final String TEST_CONCEPT_SHORT_NAME = "TestConcept";
   
   private final GenerateValidatorTests generateValidatorTests = new GenerateValidatorTests();
   
@@ -55,19 +57,23 @@ public class GenerateValidatorTestsTest {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Concept ");
       _builder.append(this.TEST_CONCEPT_NAME);
-      _builder.append(" {");
+      _builder.append(" {}");
       _builder.newLineIfNotEmpty();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
       this.concept = this._parseHelper.parse(_builder);
       final String concreteClassfileName = this.generateValidatorTests.createConcreteClassFileName(this.concept, this.concept);
       final String abstractClassfileName = this.generateValidatorTests.createAbstractClassFileName(this.concept, this.concept);
-      final String expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/StructuralElementInstanceValidatorTest.java";
-      final String expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AStructuralElementInstanceValidatorTest.java";
+      String _replace = this.TEST_CONCEPT_NAME.replace(".", "/");
+      String _plus = ((("../../" + this.TEST_CONCEPT_NAME) + ".test/src/") + _replace);
+      String _plus_1 = (_plus + "/validator/");
+      String _plus_2 = (_plus_1 + this.TEST_CONCEPT_SHORT_NAME);
+      final String expectedConcreteClassFileName = (_plus_2 + "ValidatorTest.java");
+      String _replace_1 = this.TEST_CONCEPT_NAME.replace(".", "/");
+      String _plus_3 = ((("../../" + this.TEST_CONCEPT_NAME) + ".test/src-gen/") + _replace_1);
+      String _plus_4 = (_plus_3 + "/validator/A");
+      String _plus_5 = (_plus_4 + this.TEST_CONCEPT_SHORT_NAME);
+      final String expectedAbstractClassFileName = (_plus_5 + "ValidatorTest.java");
       Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName);
-      Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
+      Assert.assertEquals("Abstract file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -79,15 +85,13 @@ public class GenerateValidatorTestsTest {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("Concept ");
       _builder.append(this.TEST_CONCEPT_NAME);
-      _builder.append(" {");
+      _builder.append(" {}");
       _builder.newLineIfNotEmpty();
-      _builder.append("}");
-      _builder.newLine();
       this.concept = this._parseHelper.parse(_builder);
       final CharSequence concreteClassContents = this.generateValidatorTests.createConcreteClass(this.concept, this.concept);
       final CharSequence abstractClassContents = this.generateValidatorTests.createAbstractClass(this.concept, this.concept);
-      GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidatorTest.java");
-      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidatorTest.java");
+      GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidatorTest.java");
+      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidatorTest.java");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
