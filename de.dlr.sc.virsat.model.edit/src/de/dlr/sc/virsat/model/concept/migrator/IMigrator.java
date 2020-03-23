@@ -28,14 +28,15 @@ public interface IMigrator {
 	 * before migration can be done
 	 * @param concept the concept to be migrated
 	 * @param previousMigrator the previously executed migrator, can be null if none was executed before
-	 * @return a list of new required concepts
+	 * @return a list of new required concept names
+
 	 */
 	Set<String> getNewDependencies(Concept concept, IMigrator previousMigrator);
 	
 	/**
 	 * Migrates the concept to the internally implemented version
 	 * @param concept the concept to be migrated
-	 * @param previousMigrator the previously executed migrator, can be null if none was executed before
+	 * @param previousMigrator the previously executed migrator
 	 */
 	void migrate(Concept concept, IMigrator previousMigrator);
 	
