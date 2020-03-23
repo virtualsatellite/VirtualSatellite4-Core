@@ -1,5 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package de.dlr.sc.virsat.team.test;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -16,7 +26,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.egit.core.internal.util.ResourceUtil;
+import org.eclipse.egit.core.project.RepositoryMapping;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -171,6 +181,8 @@ public class AVirSatVersionControlBackendTest extends AProjectTestCase {
 		rs.getStructuralElementInstanceResource(sei1);
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei1);
 
+		assertNull("Project does not yet have a git mapping", RepositoryMapping.getMapping(projectCheckin));
+		
 		// Now checkin the project and transmit it to the remote bare repository
 		backend.checkin(projectCheckin, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
 		waitForProjectToRepoMapping(projectCheckin);
