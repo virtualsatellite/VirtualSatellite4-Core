@@ -21,7 +21,8 @@ import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
- *
+ * Test the concept resource loader class, to mock-up the URI handling in the IDE,
+ * this tests overwrites URI creation to use plugin URIs instead  
  */
 public class ConceptResourceLoaderTest {
 	

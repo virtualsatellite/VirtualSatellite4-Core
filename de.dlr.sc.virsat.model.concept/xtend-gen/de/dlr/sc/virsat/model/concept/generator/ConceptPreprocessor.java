@@ -20,6 +20,9 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 /**
  * Prepares a concept for an enhanced serialization in XMI and activates
  * concept language core features such as a GenericCategory
+ * 
+ * Transformations of the concept model that are required before generation should
+ * be done within this class
  */
 @SuppressWarnings("all")
 public class ConceptPreprocessor {

@@ -35,7 +35,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 
 /**
- *
+ * Test class for the concept preprocessor - checks that model adaption of the concept
+ * done before generating resource from it are correctly applied
  */
 public class ConceptPreprocessorTest extends AConceptProjectTestCase {
 	
