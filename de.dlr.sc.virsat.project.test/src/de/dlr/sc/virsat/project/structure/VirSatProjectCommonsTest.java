@@ -28,9 +28,11 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -360,4 +362,30 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertEquals("Got correct Resource", fileSc, VirSatProjectCommons.getWorkspaceResource(seiEdSc));
 	}
 	
+	@Test
+	public void testCreateFolderWithEmptyFile() throws CoreException {
+		VirSatProjectCommons virSatProject = new VirSatProjectCommons(testProject); 
+		
+		// Define an arbitrary folder and check that it gets well created with the .empty file
+		IFolder testFolder = testProject.getFolder("testFolder");
+		assertFalse("The fodler does not yet exist", testFolder.exists());
+		IFolder returnFolder = virSatProject.createFolderWithEmptyFile(testFolder, new NullProgressMonitor());
+		assertTrue("The folder does now exist", testFolder.exists());
+		assertTrue("The .empty file also exists", testFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+		assertEquals("Method hands back correct folder", testFolder, returnFolder);
+		
+		// Now call the method on a folder which already exists, only the file should be created
+		IFolder testFolder2 = testProject.getFolder("testFolder2");
+		testFolder2.create(IResource.NONE, true, new NullProgressMonitor());
+		assertTrue("The folder already exists", testFolder2.exists());
+		virSatProject.createFolderWithEmptyFile(testFolder2, new NullProgressMonitor());
+		assertTrue("The folder does still exist", testFolder2.exists());
+		assertTrue("The .empty file also exists", testFolder2.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+		
+		// now call it a second time on the same folder which already exists with the .empty file
+		// Noting special should happen no exception should be thrown
+		virSatProject.createFolderWithEmptyFile(testFolder2, new NullProgressMonitor());
+		assertTrue("The folder does still exist", testFolder2.exists());
+		assertTrue("The .empty file still exists", testFolder2.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+	}
 }
