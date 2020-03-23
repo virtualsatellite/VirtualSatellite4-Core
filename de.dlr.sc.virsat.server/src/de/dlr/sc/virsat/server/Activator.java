@@ -28,7 +28,7 @@ public class Activator extends Plugin {
 	// The CLI command line option for specifying a configuration file
 	private static final String CONFIG_FILE_CLI_PARAM = "configFile";
 	// The configuration file path and its default value
-	private static String propertiesFilePath = "resources/default_configuration.properties";
+	private static String propertiesFilePath = "resources/server.properties";
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
