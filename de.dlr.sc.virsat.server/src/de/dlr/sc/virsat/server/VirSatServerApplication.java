@@ -23,6 +23,7 @@ public class VirSatServerApplication implements IApplication {
 		System.out.println("Welcome to the Virtual Satellite 4 Headless Server");
 		System.out.println("--------------------------------------------------");
 		System.out.println("");
+		System.out.println("Using configuration file: " + Activator.getDefault().getPropertiesFilePath());
 		System.out.println("About to start the Jetty Server instance...");
 		
 		jettyServer = new VirSatJettyServer();

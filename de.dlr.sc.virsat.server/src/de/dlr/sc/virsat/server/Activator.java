@@ -9,6 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -28,13 +35,13 @@ public class Activator extends Plugin {
 	// The CLI command line option for specifying a configuration file
 	private static final String CONFIG_FILE_CLI_PARAM = "configFile";
 	// The configuration file path and its default value
-	private static String propertiesFilePath = "resources/server.properties";
+	private String propertiesFilePath = "resources/server.properties";
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		plugin = this;
 		pluginId = context.getBundle().getSymbolicName();
-		ServerConfiguration.loadProperties(getPropertiesFilePath());
+		ServerConfiguration.loadProperties(getPropertiesFileInputStream());
 	}
 
 	@Override
@@ -54,12 +61,18 @@ public class Activator extends Plugin {
 	 * Get the properties file path - uses path specified from CLI or default file 
 	 * @return the configuration file path
 	 */
-	public static String getPropertiesFilePath() {
+	public InputStream getPropertiesFileInputStream() throws IOException, FileNotFoundException {
 		CommandLineManager cliManager = de.dlr.sc.virsat.external.lib.commons.cli.Activator.getCommandLineManager();
 		boolean isCustomConfigFileSet = cliManager.isCommandLineOptionSet(CONFIG_FILE_CLI_PARAM);
 		if (isCustomConfigFileSet) {
 			propertiesFilePath = cliManager.getCommandLineOptionParameter(CONFIG_FILE_CLI_PARAM);
-		} 
+			return new FileInputStream(propertiesFilePath);
+		} else {
+			return FileLocator.openStream(getBundle(), new Path(propertiesFilePath), false); 
+		}
+	}
+
+	public String getPropertiesFilePath() {
 		return propertiesFilePath;
 	}
 	
