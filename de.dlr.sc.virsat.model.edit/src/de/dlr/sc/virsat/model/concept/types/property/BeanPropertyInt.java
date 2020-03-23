@@ -49,7 +49,9 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	
 	@Override
 	public Long getValue() throws NumberFormatException {
-		String stringValue = isSet() ? ti.getValue() : "";
-		return Long.parseLong(stringValue);
+		if (isSet()) {
+			return Long.parseLong(ti.getValue());
+		}
+		return null;
 	}
 }
