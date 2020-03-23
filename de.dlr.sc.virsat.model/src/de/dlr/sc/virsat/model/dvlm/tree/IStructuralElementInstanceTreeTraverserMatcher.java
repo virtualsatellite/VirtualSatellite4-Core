@@ -8,20 +8,20 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.model.concept.types.structural.tree;
+package de.dlr.sc.virsat.model.dvlm.tree;
 
 import java.util.Collection;
 
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.tree.ITreeTraverserMatcher;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+
 
 /**
- * Interface for plugging different logic into {@link BeanStructuralTreeTraverser}
+ * Interface for plugging different logic into {@link BeanStructuralTreeTraverser} or a typed {@link TreeTraverser}
  * For example for building a tree consisting only of nodes with a certain Category attached
  */
-public interface IBeanStructuralTreeTraverserMatcher extends ITreeTraverserMatcher<IBeanStructuralElementInstance> {
-
-	default Collection<IBeanStructuralElementInstance> getChildren(IBeanStructuralElementInstance treeNode) {
-		return treeNode.getChildren(IBeanStructuralElementInstance.class);
+public interface IStructuralElementInstanceTreeTraverserMatcher extends ITreeTraverserMatcher<StructuralElementInstance> {
+	
+	default Collection<StructuralElementInstance> getChildren(StructuralElementInstance treeNode) {
+		return treeNode.getChildren();
 	}
 }
