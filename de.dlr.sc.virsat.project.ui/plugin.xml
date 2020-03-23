@@ -38,7 +38,7 @@
       </view>
       <category
             id="de.dlr.sc.virsat.project.ui.view.catgeory.virsat.core"
-            name="Virtual Satellite">
+            name="VirSat">
       </category>
    </extension>
    <extension
