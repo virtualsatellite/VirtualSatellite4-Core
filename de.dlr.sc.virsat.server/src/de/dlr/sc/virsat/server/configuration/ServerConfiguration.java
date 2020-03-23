@@ -37,10 +37,10 @@ public class ServerConfiguration {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public static void loadProperties(String filePath) throws FileNotFoundException, IOException {
+	public static void loadProperties() throws FileNotFoundException, IOException {
 		propertiesFilePath = getPropertiesFilePath();
 		properties = new Properties();
-		properties.load(new BufferedReader(new FileReader(filePath)));
+		properties.load(new BufferedReader(new FileReader(propertiesFilePath)));
 	}
 	
 	
