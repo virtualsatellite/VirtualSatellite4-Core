@@ -142,12 +142,12 @@ public class MatExporterTest extends ATestConceptTestCase {
 		assertEquals("testBool", struct.getStruct("testBool").getFieldNames().size(), 1);
 		assertEquals("testResource", struct.getStruct("testResource").getFieldNames().size(), 1);
 		assertEquals("testEnum", struct.getStruct("testEnum").getFieldNames().size(), ENUMINFORMATION);
-		assertEquals("Unit of Float", exporter.shorter(struct.getStruct("testFloat").get("unit").toString()), "Kilogram");
-		assertEquals("Value of Float", struct.getStruct("testFloat").get("value").toString(), "2.0");
-		assertEquals("Value of Enum", struct.getStruct("testEnum").get("value").toString(), "25.0");
-		assertEquals("Name of Enum", exporter.shorter(struct.getStruct("testEnum").get("name").toString()), "HIGH");
-		assertEquals("Value of Bool", struct.getStruct("testBool").get("value").toString(), "true");
-		assertEquals("Value of String", exporter.shorter(struct.getStruct("testString").get("value").toString()), "test");
+		assertEquals("Unit of Float", exporter.shorter(struct.getStruct("testFloat").get(MatHelper.UNIT).toString()), "Kilogram");
+		assertEquals("Value of Float", struct.getStruct("testFloat").get(MatHelper.VALUE).toString(), "2.0");
+		assertEquals("Value of Enum", struct.getStruct("testEnum").get(MatHelper.VALUE).toString(), "25.0");
+		assertEquals("Name of Enum", exporter.shorter(struct.getStruct("testEnum").get(MatHelper.NAME).toString()), "HIGH");
+		assertEquals("Value of Bool", struct.getStruct("testBool").get(MatHelper.VALUE).toString(), "true");
+		assertEquals("Value of String", exporter.shorter(struct.getStruct("testString").get(MatHelper.VALUE).toString()), "test");
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class MatExporterTest extends ATestConceptTestCase {
 		assertEquals("testBool", struct.getStruct("testBool").getFieldNames().size(), 1);
 		assertEquals("testResource", struct.getStruct("testResource").getFieldNames().size(), 1);
 		assertEquals("testEnum", struct.getStruct("testEnum").getFieldNames().size(), ENUMINFORMATION);
-		assertEquals("Unit of Float", exporter.shorter(struct.getStruct("testFloat").get("unit").toString()), "Kilogram");
+		assertEquals("Unit of Float", exporter.shorter(struct.getStruct("testFloat").get(MatHelper.UNIT).toString()), "Kilogram");
 	}
 
 	@Test
@@ -176,10 +176,10 @@ public class MatExporterTest extends ATestConceptTestCase {
 		MatFile testmat = exporter.exportSei(sei);
 		Struct struct = testmat.getStruct("testsei").getStruct(tc.getName());
 		assertEquals("Reference UUID",
-				exporter.shorter(struct.getStruct("testRefCategory").get("uuid").toString()),
+				exporter.shorter(struct.getStruct("testRefCategory").get(MatHelper.UUID).toString()),
 				"");
 		assertEquals("Reference UUID",
-				exporter.shorter(struct.getStruct("testRefCategory").get("fullQualifiedInstanceName").toString()),
+				exporter.shorter(struct.getStruct("testRefCategory").get(MatHelper.FULLNAME).toString()),
 				"");
 	}
 
@@ -193,10 +193,10 @@ public class MatExporterTest extends ATestConceptTestCase {
 		MatFile testmat = exporter.exportSei(sei);
 		Struct struct = testmat.getStruct("testsei").getStruct(tc.getName());
 		assertEquals("Reference UUID",
-				exporter.shorter(struct.getStruct("testRefCategory").get("uuid").toString()),
+				exporter.shorter(struct.getStruct("testRefCategory").get(MatHelper.UUID).toString()),
 				tc1.getUuid().toString());
 		assertEquals("Reference UUID",
-				exporter.shorter(struct.getStruct("testRefCategory").get("fullQualifiedInstanceName").toString()),
+				exporter.shorter(struct.getStruct("testRefCategory").get(MatHelper.FULLNAME).toString()),
 				tc1.getName());
 	}
 
@@ -219,7 +219,7 @@ public class MatExporterTest extends ATestConceptTestCase {
 				struct.getCell("testCompositionArrayStatic").getNumElements(),
 				ARRAYLENGTH);
 		assertEquals("Unit of Float",
-				exporter.shorter(struct.getCell("testCompositionArrayStatic").getStruct(0).getStruct("testFloat").get("unit").toString()),
+				exporter.shorter(struct.getCell("testCompositionArrayStatic").getStruct(0).getStruct("testFloat").get(MatHelper.UNIT).toString()),
 				"Kilogram");
 	}
 
