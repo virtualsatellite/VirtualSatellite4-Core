@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.egit.core.internal.util.ResourceUtil;
-import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Before;
@@ -62,7 +61,7 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
 		super.waitForProjectToRepoMapping(project);
 		try {
-			while (!ResourceUtil.isSharedWithGit(project) && RepositoryMapping.getMapping(project) == null) {
+			while (!ResourceUtil.isSharedWithGit(project)) {
 				Thread.sleep(WAIT_FOR_REPO_DETECTION_TIMESPAN);
 			}
 		} catch (InterruptedException e) {

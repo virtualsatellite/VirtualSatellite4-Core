@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
-import org.eclipse.egit.core.GitProvider;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -24,7 +23,6 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.URIish;
-import org.eclipse.team.core.RepositoryProvider;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 @SuppressWarnings("restriction")
@@ -111,6 +109,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	public void checkin(IProject project, String uri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite git init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
 		
+
 		File pathRepoLocal = new File(project.getLocationURI());
 		
 		checkInMonitor.split(1).subTask("Initializing local repository");
@@ -127,8 +126,5 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.call();
 		
 		doCommit(initRepo, "Initial commit to local repository", checkInMonitor);
-		
-		RepositoryProvider.map(project, GitProvider.ID);
 	}
-
 }
