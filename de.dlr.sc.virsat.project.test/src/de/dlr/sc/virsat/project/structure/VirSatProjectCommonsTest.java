@@ -18,7 +18,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -82,8 +81,9 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertFalse("Folder does not yet exist", dataFolder.exists());
 		assertFalse("Folder does not yet exist", unversionedFolder.exists());
 		
-		File dataFile = new File(dataFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
-		File unversionedFile = new File(unversionedFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
+		IFile dataFile = dataFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		IFile unversionedFile = unversionedFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		
 		assertFalse("File does not yet exist", dataFile.exists());
 		assertFalse("File does not yet exist", unversionedFile.exists());
 		
@@ -127,8 +127,8 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		IFolder seiFolder = testProject.getFolder(fullFolderNameSei);
 		IFolder seiDocumentsFolder = testProject.getFolder(fullFolderNameSeiDocuments);
 		IFile seiFile = testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT);
-		File seiFolderFile = new File(seiFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
-		File seiDocumentsFolderFile = new File(seiDocumentsFolder.getLocation().toOSString(), VirSatProjectCommons.FILENAME_EMPTY);
+		IFile seiFolderFile = seiFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		IFile seiDocumentsFolderFile = seiDocumentsFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
 		
 		assertFalse("Folder does not yet exist", seiFolder.exists());
 		assertFalse("Folder does not yet exist", seiDocumentsFolder.exists());
@@ -146,7 +146,6 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertFalse("File does not exist now", seiFile.exists());
 		assertTrue("File does exist now", seiFolderFile.exists());
 		assertTrue("File does exist now", seiDocumentsFolderFile.exists());
-		
 	}
 	
 	@Test
