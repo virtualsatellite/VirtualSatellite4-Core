@@ -10,11 +10,13 @@
 package de.dlr.sc.virsat.team.svn;
 
 import java.io.File;
+import java.net.URI;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.connector.SVNDepth;
@@ -68,19 +70,23 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		checkoutMonitor.split(1);
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn init", 1);
 		
+		// Gets the last segment of the remote uri and maps so we can map
+		// the local project name to the remote project name
+		File remoteFile = new File(remoteUri);
+		String remoteRepoProjectName = remoteFile.getName();
+		
 		IRepositoryLocation remoteRepoLocation = SVNUtility.asRepositoryResource(remoteUri, true).getRepositoryLocation();
+		
 		// The signature requires the project to be passed as an array
 		IProject[] projects = { project };
-		// Use the local project name as the remote project name
-		IFolderNameMapper folderNameMapper = (p -> p.getName());
-		ShareProjectOperation shareProjectOpeation = new ShareProjectOperation(projects, remoteRepoLocation, folderNameMapper, project.getName(), 
-				ShareProjectOperation.LAYOUT_SINGLE, false);
-		shareProjectOpeation.run(checkInMonitor);
+		IFolderNameMapper folderNameMapper = (p -> remoteRepoProjectName);
+		ShareProjectOperation shareProjectOperation = new ShareProjectOperation(projects, remoteRepoLocation, 
+				folderNameMapper, remoteRepoProjectName, ShareProjectOperation.LAYOUT_SINGLE, false);
+		shareProjectOperation.run(checkInMonitor);
 		
 		checkInMonitor.split(1);
 	}
