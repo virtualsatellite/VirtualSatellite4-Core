@@ -40,7 +40,7 @@ import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 @SuppressWarnings("restriction")
-public class AVirSatVersionControlBackendTest extends AProjectTestCase {
+public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase {
 
 	protected IProject createTestProject(String projectName, URI fsProjectLocation, boolean waitForMapping) throws CoreException {
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
