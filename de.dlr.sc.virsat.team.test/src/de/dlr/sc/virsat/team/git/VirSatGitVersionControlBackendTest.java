@@ -76,9 +76,8 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
 		super.waitForProjectToRepoMapping(project);
 		try {
-			while (!ResourceUtil.isSharedWithGit(project) || RepositoryMapping.getMapping(project) == null) {
+			while (!ResourceUtil.isSharedWithGit(project) ) {
 				Thread.sleep(WAIT_FOR_REPO_DETECTION_TIMESPAN);
-				project.getWorkspace().getRoot().refreshLocal(Resource.DEPTH_INFINITE, new NullProgressMonitor());
 			}
 		} catch (InterruptedException e) {
 		}

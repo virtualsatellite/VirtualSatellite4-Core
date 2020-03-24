@@ -129,12 +129,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.setName("origin")
 			.call();
 		
-		if (RepositoryProvider.getProvider(project) != null) {
-			RepositoryProvider.unmap(project);
-		} 
+		doCommit(initRepo, "Initial commit to local repository", checkInMonitor);
 		
 		RepositoryProvider.map(project, GitProvider.ID);
-		
-		doCommit(initRepo, "Initial commit to local repository", checkInMonitor);
 	}
 }
