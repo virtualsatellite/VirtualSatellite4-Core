@@ -42,8 +42,7 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 @SuppressWarnings("restriction")
 public class AVirSatVersionControlBackendTest extends AProjectTestCase {
 
-	protected IProject createTestProject(String projectName, URI fsProjectLocation, boolean waitForMapping)
-			throws CoreException {
+	protected IProject createTestProject(String projectName, URI fsProjectLocation, boolean waitForMapping) throws CoreException {
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
 		projectDescription.setLocationURI(fsProjectLocation);
 		return createTestProject(projectName, projectDescription, waitForMapping);
@@ -59,8 +58,7 @@ public class AVirSatVersionControlBackendTest extends AProjectTestCase {
 	 * @return an IProject which is mapped to the repository
 	 * @throws CoreException
 	 */
-	protected IProject createTestProject(String projectName, IProjectDescription projectDescription,
-			boolean waitForMapping) throws CoreException {
+	protected IProject createTestProject(String projectName, IProjectDescription projectDescription, boolean waitForMapping) throws CoreException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		testProjects.add(project);
 		if (!project.exists()) {
