@@ -24,6 +24,9 @@ public class VirSatServerApplication implements IApplication {
 		System.out.println("--------------------------------------------------");
 		System.out.println("");
 		System.out.println("Using configuration file: " + Activator.getDefault().getPropertiesFilePath());
+		
+		//TODO load all repo configs from config files, check them out into a local workspace, initialize RepoRegistry
+		
 		System.out.println("About to start the Jetty Server instance...");
 		
 		jettyServer = new VirSatJettyServer();
@@ -46,7 +49,10 @@ public class VirSatServerApplication implements IApplication {
 		} catch (Exception e) {
 			System.out.println("Failed to shutdown Jetty instance");
 			e.printStackTrace();
-		}		
+		}
+		
+		//TODO save all repo configs from RepoRegistry to config files
+
 		System.out.println("--------------------------------------------------");
 	}
 }
