@@ -51,8 +51,20 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 		}
 
 		super.setUp();
-
+		
 		backend = new VirSatGitVersionControlBackend(null);
+	}
+	
+	@Override
+	protected IProject createTestProject(String projectName) throws CoreException {
+		testProject = super.createTestProject(projectName);
+		
+		// Try to ramp up the egit plugins as early as possible. Thus the RepositoryMapping
+		// starts working and tries to map new git repositories with newly created projects
+		// in the workspace. If this line is missing, the waitForProjectMapping is likely to
+		// stall all tests.
+		ResourceUtil.isSharedWithGit(testProject);
+		return testProject;
 	}
 	
 	private static final int WAIT_FOR_REPO_DETECTION_TIMESPAN = 10;
