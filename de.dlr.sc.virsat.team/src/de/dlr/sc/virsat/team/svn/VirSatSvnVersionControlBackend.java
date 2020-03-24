@@ -19,10 +19,14 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.connector.SVNDepth;
 import org.eclipse.team.svn.core.operation.CompositeOperation;
+import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.operation.local.AddToSVNOperation;
 import org.eclipse.team.svn.core.operation.local.CommitOperation;
 import org.eclipse.team.svn.core.operation.local.UpdateOperation;
-import org.eclipse.team.svn.core.operation.remote.CheckoutAsOperation;
+import org.eclipse.team.svn.core.operation.local.management.IShareProjectPrompt;
+import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation;
+import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation.IFolderNameMapper;
+import org.eclipse.team.svn.core.resource.IRepositoryLocation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
@@ -36,8 +40,10 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn commit", 1);
 		
 		// The SVN commit operation requires the parent file to be under version control
-		// Therefore we have to commit all the files/folder directly under the project
-		IResource[] files = project.members(IProject.NONE);
+		// Therefore we have to commit all the commtable files/folder directly under the project
+		// We only get the files directly under the project and let SVN take care of recursively searching
+		// for the contained files
+		IResource[] files = FileUtility.getResourcesRecursive(new IResource[] { project }, IStateFilter.SF_UNVERSIONED, 1);
 		CommitOperation commitOperation = new CommitOperation(files, message, true, true);
 		CompositeOperation compositeOperation = new CompositeOperation(commitOperation.getId(), commitOperation.getMessagesClass());
 		// SVN requires adding files to the repository before commiting them
@@ -54,18 +60,29 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 			throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn checkout", 1);
 		File pathRepoLocal = new File(projectDescription.getLocationURI());
-		IRepositoryResource svnRepositoryResource = SVNUtility.asRepositoryResource(remoteUri, true);
-		
-		CheckoutAsOperation checkoutAsOperation = new CheckoutAsOperation(pathRepoLocal.getName(), 
-				svnRepositoryResource, SVNDepth.INFINITY, true);
-		checkoutAsOperation.run(checkoutMonitor);
+		IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(remoteUri, true);
 
+		CheckoutAsOperation checkoutAsOperation = new CheckoutAsOperation(pathRepoLocal, remoteRepo, SVNDepth.INFINITY, true, true);
+		checkoutAsOperation.run(checkoutMonitor);
+		
 		checkoutMonitor.split(1);
 	}
 
+	@SuppressWarnings("restriction")
 	@Override
 	public void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception {
-		// TODO Auto-generated method stub
+		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn init", 1);
+		
+		IRepositoryLocation remoteRepoLocation = SVNUtility.asRepositoryResource(remoteUri, true).getRepositoryLocation();
+		// The signature requires the project to be passed as an array
+		IProject[] projects = { project };
+		// Use the local project name as the remote project name
+		IFolderNameMapper folderNameMapper = (p -> p.getName());
+		ShareProjectOperation shareProjectOpeation = new ShareProjectOperation(projects, remoteRepoLocation, folderNameMapper, project.getName(), 
+				ShareProjectOperation.LAYOUT_SINGLE, false);
+		shareProjectOpeation.run(checkInMonitor);
+		
+		checkInMonitor.split(1);
 	}
 
 	@Override
