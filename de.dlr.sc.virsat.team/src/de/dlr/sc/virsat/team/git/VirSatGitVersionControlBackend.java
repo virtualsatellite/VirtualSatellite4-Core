@@ -133,7 +133,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		
 		// Connects Eclipse to the created (existing) Git repository
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
-		ConnectProviderOperation operation = new ConnectProviderOperation(project);
-		operation.execute(null);
+		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project);
+		connectOperation.execute(null);
 	}
 }
