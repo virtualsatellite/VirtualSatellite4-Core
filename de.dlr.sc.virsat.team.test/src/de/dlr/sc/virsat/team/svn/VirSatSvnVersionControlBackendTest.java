@@ -15,12 +15,10 @@ import java.net.URI;
 import java.nio.file.Files;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNManager;
 import org.eclipse.team.svn.core.connector.ISVNManager.RepositoryKind;
@@ -50,6 +48,7 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 			
 			IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(uriToRemoteRepoPath.toString(), true);
 			
+			// There is no subersive API for creating a repository, have to manually build the svn repo
 			AbstractActionOperation createRemoteRepoOp = new AbstractActionOperation("Operation_CreateRepository", SVNMessages.class) {
 				protected void runImpl(IProgressMonitor monitor) throws Exception {
 					ISVNManager proxy = CoreExtensionsManager.instance().getSVNConnectorFactory().createManager();
@@ -60,7 +59,7 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 						msg.append("svnadmin create ");
 						msg.append("--fs-type ").append(repositoryType.toString().toLowerCase()).append(" ");
 						msg.append("\"").append(FileUtility.normalizePath(remoteRepoFilePath)).append("\"");
-						msg.append("\n"); //$NON-NLS-1$
+						msg.append("\n");
 						this.writeToConsole(IConsoleStream.LEVEL_CMD, msg.toString());
 						proxy.create(remoteRepoFilePath, repositoryType, null, ISVNManager.Options.NONE, new SVNProgressMonitor(this, monitor, null));
 					} finally {
@@ -69,17 +68,17 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 				}			
 			};
 			
-			createRemoteRepoOp.run(null);
+			createRemoteRepoOp.run(new NullProgressMonitor());
 			
 			pathRepoLocal1 = Files.createTempDirectory("VirtualSatelliteSvnLocal1_");
 			File filePathToProject = pathRepoLocal1.toFile();
 			CheckoutAsOperation checkoutAsOperation1 = new CheckoutAsOperation(filePathToProject, remoteRepo, SVNDepth.INFINITY, true, true);
-			checkoutAsOperation1.run(null);
+			checkoutAsOperation1.run(new NullProgressMonitor());
 			
 			pathRepoLocal2 = Files.createTempDirectory("VirtualSatelliteSvnLocal2_");
 			filePathToProject = pathRepoLocal2.toFile();
 			CheckoutAsOperation checkoutAsOperation2 = new CheckoutAsOperation(filePathToProject, remoteRepo, SVNDepth.INFINITY, true, true);
-			checkoutAsOperation2.run(null);
+			checkoutAsOperation2.run(new NullProgressMonitor());
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 					"Error during temp remote directory creation", e));
