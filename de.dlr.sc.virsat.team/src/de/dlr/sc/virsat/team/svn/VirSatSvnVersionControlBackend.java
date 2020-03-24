@@ -14,16 +14,17 @@ import java.io.File;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.connector.SVNDepth;
-import org.eclipse.team.svn.core.connector.SVNEntryInfo;
-import org.eclipse.team.svn.core.operation.IConsoleStream;
+import org.eclipse.team.svn.core.operation.CompositeOperation;
+import org.eclipse.team.svn.core.operation.local.AddToSVNOperation;
 import org.eclipse.team.svn.core.operation.local.CommitOperation;
 import org.eclipse.team.svn.core.operation.local.UpdateOperation;
 import org.eclipse.team.svn.core.operation.remote.CheckoutAsOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
+import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
@@ -34,13 +35,16 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	public void commit(IProject project, String message, IProgressMonitor monitor) throws Exception {
 		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn commit", 1);
 		
-		// The signature requires the project to be passed as an array
-		IResource[] projects = { project };
-		CommitOperation commitOperation = new CommitOperation(projects, message, true, true);
-		commitOperation.run(commitMonitor);
+		// The SVN commit operation requires the parent file to be under version control
+		// Therefore we have to commit all the files/folder directly under the project
+		IResource[] files = project.members(IProject.NONE);
+		CommitOperation commitOperation = new CommitOperation(files, message, true, true);
+		CompositeOperation compositeOperation = new CompositeOperation(commitOperation.getId(), commitOperation.getMessagesClass());
+		// SVN requires adding files to the repository before commiting them
+		compositeOperation.add(new AddToSVNOperation(files, true));
+		compositeOperation.add(commitOperation);
 		
-		File file = new File(project.getRawLocationURI().getRawPath());
-		SVNEntryInfo test = SVNUtility.getSVNInfo(file);
+		compositeOperation.run(commitMonitor);
 		
 		commitMonitor.split(1);
 	}
