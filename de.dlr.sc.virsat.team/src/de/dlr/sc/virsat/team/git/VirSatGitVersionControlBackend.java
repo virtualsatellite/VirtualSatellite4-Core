@@ -16,6 +16,8 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
+import org.eclipse.egit.core.GitProvider;
+import org.eclipse.egit.core.RepositoryUtil;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -23,6 +25,8 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.URIish;
+import org.eclipse.team.core.RepositoryProvider;
+
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 @SuppressWarnings("restriction")
@@ -124,6 +128,12 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.setUri(new URIish(uri))
 			.setName("origin")
 			.call();
+		
+		if (RepositoryProvider.getProvider(project) != null) {
+			RepositoryProvider.unmap(project);
+		} 
+		
+		RepositoryProvider.map(project, GitProvider.ID);
 		
 		doCommit(initRepo, "Initial commit to local repository", checkInMonitor);
 	}
