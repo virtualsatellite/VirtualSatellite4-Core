@@ -43,5 +43,6 @@ public class ServerConfigurationTest {
 		Properties properties = ServerConfiguration.getProperties();
 		assertEquals(1, properties.size());
 		assertEquals(testValue, properties.getProperty(testKey));
+		assertEquals(testValue, ServerConfiguration.getProperty(testKey));
 	}
 }

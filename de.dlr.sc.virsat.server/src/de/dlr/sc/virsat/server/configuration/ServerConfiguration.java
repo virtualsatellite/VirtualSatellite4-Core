@@ -37,5 +37,13 @@ public class ServerConfiguration {
 	public static Properties getProperties() {
 		return properties;
 	}
-
+	
+	/**
+	 * Convenience method for getting property value
+	 * @param key property key
+	 * @return property value
+	 */
+	public static String getProperty(String key) {
+		return properties.getProperty(key);
+	}
 }
