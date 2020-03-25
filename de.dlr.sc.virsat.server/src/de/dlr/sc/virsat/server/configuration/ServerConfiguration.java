@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.server.configuration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 /**
@@ -23,17 +24,25 @@ public class ServerConfiguration {
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
 	public static final String WORKSPACE_DIR_KEY = "workspace.dir";
 	
-	private static Properties properties;
+	private static Properties properties = new Properties();
 	
-	private ServerConfiguration() { }
+	private ServerConfiguration() { 	
+	}
 	
 	/**
 	 * Loads a properties file into memory
 	 * @param configFileInputStream input stream for the file containing properties in java properties format
 	 */
 	public static void loadProperties(InputStream configFileInputStream) throws FileNotFoundException, IOException {
-		properties = new Properties();
 		properties.load(configFileInputStream);
+	}
+	
+	/**
+	 * Saves properties from memory to file
+	 * @param configFileOutputStream the file output stream
+	 */
+	public static void saveProperties(OutputStream configFileOutputStream) throws IOException {
+		properties.store(configFileOutputStream, "");
 	}
 	
 	public static Properties getProperties() {
@@ -46,5 +55,13 @@ public class ServerConfiguration {
 
 	public static String getWorkspaceDir() {
 		return properties.getProperty(WORKSPACE_DIR_KEY);
+	}
+	
+	public static void setRepositoryConfigurationsDir(String repositoryConfigurationsDir) {
+		properties.setProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY, repositoryConfigurationsDir);
+	}
+	
+	public static void setWorkspaceDir(String workspaceDir) {
+		properties.setProperty(WORKSPACE_DIR_KEY, workspaceDir);
 	}
 }
