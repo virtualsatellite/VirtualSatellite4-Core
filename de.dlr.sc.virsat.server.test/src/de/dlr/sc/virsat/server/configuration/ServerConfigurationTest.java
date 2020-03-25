@@ -29,6 +29,8 @@ public class ServerConfigurationTest {
 		String expectedDefaultPropertiesFilePath = "resources/server.properties";
 		assertEquals(expectedDefaultPropertiesFilePath, Activator.getDefault().getPropertiesFilePath());
 		assertFalse("There are some configurations in the default configuration file", ServerConfiguration.getProperties().isEmpty());
+		assertFalse(ServerConfiguration.getRepositoryConfigurationsDir().isEmpty());
+		assertFalse(ServerConfiguration.getWorkspaceDir().isEmpty());
 	}
 
 	@Test
@@ -43,6 +45,5 @@ public class ServerConfigurationTest {
 		Properties properties = ServerConfiguration.getProperties();
 		assertEquals(1, properties.size());
 		assertEquals(testValue, properties.getProperty(testKey));
-		assertEquals(testValue, ServerConfiguration.getProperty(testKey));
 	}
 }

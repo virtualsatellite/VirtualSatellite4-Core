@@ -20,6 +20,9 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
 	
+	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
+	public static final String WORKSPACE_DIR_KEY = "workspace.dir";
+	
 	private static Properties properties;
 	
 	private ServerConfiguration() { }
@@ -33,17 +36,15 @@ public class ServerConfiguration {
 		properties.load(configFileInputStream);
 	}
 	
-	
 	public static Properties getProperties() {
 		return properties;
 	}
 	
-	/**
-	 * Convenience method for getting property value
-	 * @param key property key
-	 * @return property value
-	 */
-	public static String getProperty(String key) {
-		return properties.getProperty(key);
+	public static String getRepositoryConfigurationsDir() {
+		return properties.getProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY);
+	}
+
+	public static String getWorkspaceDir() {
+		return properties.getProperty(WORKSPACE_DIR_KEY);
 	}
 }
