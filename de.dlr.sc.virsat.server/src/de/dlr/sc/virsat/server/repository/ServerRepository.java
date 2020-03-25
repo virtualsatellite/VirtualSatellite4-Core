@@ -10,8 +10,7 @@
 package de.dlr.sc.virsat.server.repository;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jgit.lib.Repository;
-
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 
 /**
