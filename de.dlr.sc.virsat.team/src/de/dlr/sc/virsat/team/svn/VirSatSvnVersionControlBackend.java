@@ -10,13 +10,12 @@
 package de.dlr.sc.virsat.team.svn;
 
 import java.io.File;
-import java.net.URI;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.connector.SVNDepth;
@@ -24,12 +23,15 @@ import org.eclipse.team.svn.core.operation.CompositeOperation;
 import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.operation.local.AddToSVNOperation;
 import org.eclipse.team.svn.core.operation.local.CommitOperation;
+import org.eclipse.team.svn.core.operation.local.NotifyProjectStatesChangedOperation;
+import org.eclipse.team.svn.core.operation.local.RefreshResourcesOperation;
 import org.eclipse.team.svn.core.operation.local.UpdateOperation;
-import org.eclipse.team.svn.core.operation.local.management.IShareProjectPrompt;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation.IFolderNameMapper;
 import org.eclipse.team.svn.core.resource.IRepositoryLocation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
+import org.eclipse.team.svn.core.resource.IResourceProvider;
+import org.eclipse.team.svn.core.resource.events.ProjectStatesChangedEvent;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 
@@ -44,8 +46,8 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		// The SVN commit operation requires the parent file to be under version control
 		// Therefore we have to commit all the commtable files/folder directly under the project
 		// We only get the files directly under the project and let SVN take care of recursively searching
-		// for the contained files
-		IResource[] files = FileUtility.getResourcesRecursive(new IResource[] { project }, IStateFilter.SF_UNVERSIONED, 1);
+		// for the contained files.
+		IResource[] files = FileUtility.filterResources(project.members(IProject.NONE), IStateFilter.SF_UNVERSIONED);
 		CommitOperation commitOperation = new CommitOperation(files, message, true, true);
 		CompositeOperation compositeOperation = new CompositeOperation(commitOperation.getId(), commitOperation.getMessagesClass());
 		// SVN requires adding files to the repository before commiting them
@@ -65,7 +67,18 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(remoteUri, true);
 
 		CheckoutAsOperation checkoutAsOperation = new CheckoutAsOperation(pathRepoLocal, remoteRepo, SVNDepth.INFINITY, true, true);
-		checkoutAsOperation.run(checkoutMonitor);
+		CompositeOperation compositeOperation = new CompositeOperation(checkoutAsOperation.getId(), checkoutAsOperation.getMessagesClass());
+		compositeOperation.add(checkoutAsOperation);
+		compositeOperation.add(new RefreshResourcesOperation(new IResourceProvider() {
+			@Override
+			public IResource[] getResources() {
+				// Makes the SVN refresh operation update the meta information on the newly checked out project
+				IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectDescription.getName());
+				return new IResource[] { newProject };
+			}
+		}));
+		
+		compositeOperation.run(checkoutMonitor);
 		
 		checkoutMonitor.split(1);
 	}
@@ -86,7 +99,11 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		IFolderNameMapper folderNameMapper = (p -> remoteRepoProjectName);
 		ShareProjectOperation shareProjectOperation = new ShareProjectOperation(projects, remoteRepoLocation, 
 				folderNameMapper, remoteRepoProjectName, ShareProjectOperation.LAYOUT_SINGLE, false);
-		shareProjectOperation.run(checkInMonitor);
+		CompositeOperation compositeOperation = new CompositeOperation(shareProjectOperation.getId(), shareProjectOperation.getMessagesClass());
+		compositeOperation.add(shareProjectOperation);
+		// Send notifications that the project is now shared
+		compositeOperation.add(new NotifyProjectStatesChangedOperation(projects, ProjectStatesChangedEvent.ST_POST_SHARED));
+		compositeOperation.run(checkInMonitor);
 		
 		checkInMonitor.split(1);
 	}
