@@ -87,15 +87,17 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	protected Path pathRepoLocal2;
 
 	protected IProject projectRepoLocal1;
-	protected IProject projectRepoLocal2;
 
 	protected IVirSatVersionControlBackend backend;
+
+	private static final String PROJECT_CHECKIN_NAME = "VirSatRepoCheckin";
+	private static final String PROJECT_LOCAL_NAME = "VirSatRepoLocal";
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		
-		projectRepoLocal1 = createTestProject("VirSatRepoLocal", pathRepoLocal1, true);
+		projectRepoLocal1 = createTestProject(PROJECT_LOCAL_NAME, pathRepoLocal1, true);
 		projectCommons = new VirSatProjectCommons(projectRepoLocal1);
 	}
 
@@ -139,8 +141,10 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 
 		// Commit repository and SEI files with VirtualSatellite Backend
 		backend.commit(projectRepoLocal1, "First Simple Commit", new NullProgressMonitor());
+		
+		// Create the project again using another file system repository
 		projectRepoLocal1.delete(true, null);
-		projectRepoLocal2 = createTestProject("VirSatRepoLocal", pathRepoLocal2, true);
+		IProject projectRepoLocal2 = createTestProject(PROJECT_LOCAL_NAME, pathRepoLocal2, true);
 
 		// Checkout to local2 and see if SEI file has been transferred
 		backend.update(projectRepoLocal2, new NullProgressMonitor());
@@ -162,14 +166,14 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		// Now prepare the checkout into another project with another local repository
 		Path pathRepoCheckout = Files.createTempDirectory("VirtualSatelliteCheckOut_");
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace()
-				.newProjectDescription("VirSatRepoLocal");
+				.newProjectDescription(PROJECT_LOCAL_NAME);
 		projectDescription.setLocationURI(pathRepoCheckout.toUri());
 
 		// Execute the checkout
 		backend.checkout(projectDescription, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
 
 		// Create the project and wait until it is mapped with the Providers
-		IProject projectCheckout = createTestProject("VirSatRepoLocal", projectDescription, true);
+		IProject projectCheckout = createTestProject(PROJECT_LOCAL_NAME, projectDescription, true);
 
 		// Now check that the SEI has been well checked out in the project and on the
 		// file system
@@ -177,7 +181,6 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 				seiFile.getFullPath().toOSString());
 		assertTrue("File also exists in local2 after pull", seiInLocalCheckout.exists());
 
-		// TODO: check if we can remove .removeFirstSegments(1)
 		IFile seiInLocalCheckoutWorkspace = projectCheckout.getFile(seiFile.getFullPath().removeFirstSegments(1));
 		assertTrue("File also exists in workspace", seiInLocalCheckoutWorkspace.exists());
 	}
@@ -186,10 +189,11 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	public void testCheckin() throws Exception {
 		// Create a new full fledged Repository and try to check it into Repository
 		Path pathRepoCheckin = Files.createTempDirectory("VirtualSatelliteCheckIn_");
-		IProject projectCheckin = createTestProject("VirSatRepoCheckin", pathRepoCheckin, false);
+		IProject projectCheckin = createTestProject(PROJECT_CHECKIN_NAME, pathRepoCheckin, false);
 		addResourceSetAndRepository(projectCheckin);
 		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		rs.getStructuralElementInstanceResource(sei1);
+		projectCommons = new VirSatProjectCommons(projectCheckin);
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei1);
 
 		assertNull("Project does not yet have a git mapping", RepositoryMapping.getMapping(projectCheckin));
@@ -199,12 +203,16 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		waitForProjectToRepoMapping(projectCheckin);
 		backend.commit(projectCheckin, "Initial Commit", new NullProgressMonitor());
 
+		// Create the project again using another file system repository
+		projectCheckin.delete(true, null);
+		projectRepoLocal1 = createTestProject(PROJECT_CHECKIN_NAME, pathRepoLocal1, true);
+		
 		// Now update the project as Repo Local1
 		backend.update(projectRepoLocal1, new NullProgressMonitor());
 
 		// And check if the file is present
 		File seiInLocalRepo1 = new File(pathRepoLocal1.toFile(),
-				seiFile.getFullPath().removeFirstSegments(1).toOSString());
+				seiFile.getFullPath().toOSString());
 		assertTrue("File also exists in local1 after update", seiInLocalRepo1.exists());
 
 		projectRepoLocal1.refreshLocal(Resource.DEPTH_INFINITE, null);

@@ -114,7 +114,9 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	public void checkin(IProject project, String uri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite git init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
 		
-		File pathRepoLocal = new File(project.getLocationURI());
+		File pathProjectLocal = new File(project.getLocationURI());
+		File pathRepoLocal = pathProjectLocal.getParentFile();
+		File pathRepoLocalGit = new File(pathRepoLocal.toURI().resolve(".git"));
 		
 		checkInMonitor.split(1).subTask("Initializing local repository");
 		Repository initRepo = Git.init()
@@ -133,7 +135,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		
 		// Connects Eclipse to the created (existing) Git repository
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
-		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project);
+		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project, pathRepoLocalGit);
 		connectOperation.execute(null);
 	}
 }
