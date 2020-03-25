@@ -20,6 +20,7 @@ public class ExternalModelTestHelper {
 	protected EPackage testExternalPackage;
 	protected ResourceSet resourceSet;
 	private static final String PLATFORM_MODEL_PATH = "/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore";
+	private static final String PLATFORM_INSTANCE_MODEL_PATH = "/de.dlr.sc.virsat.model.external.tests/instance/InstanceModel.etests";
 	
 	public EPackage loadExternalPackage() {
 		resourceSet = new ResourceSetImpl();
@@ -27,6 +28,13 @@ public class ExternalModelTestHelper {
 		Resource metamodelResource = resourceSet.getResource(metamodelURI, true);
 		testExternalPackage = (EPackage) metamodelResource.getContents().get(0);
 		return testExternalPackage;
+	}
+	
+	public ExternalTestType loadExternalTypeInstance() {
+		resourceSet = new ResourceSetImpl();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_INSTANCE_MODEL_PATH, true);
+		Resource modelResource = resourceSet.getResource(modelURI, true);
+		return (ExternalTestType) modelResource.getContents().get(0);
 	}
 	
 	public ResourceSet getResourceSet() {

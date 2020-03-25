@@ -1,5 +1,23 @@
 VirSat Core Release Notes
 -------------------------
+
+Release 4.11.0 (28th February 2020)
+----------------------------------
+
+New Features:
+   Implemented functionality to provide concept specific drag & drop logic - #74 Feature
+   Integrated SVNKit into delivered product - #203 Comfort/usability Feature
+   Implemented support of semantical depth levels in set functions - #497 Feature
+
+Usability Updates:
+   Improved naming of concepts in concept selection dialog - #223 Comfort/usability
+
+Fixed Bugs:
+    Fixed issue of migrating concepts with references to other concepts - #417 Bug
+    Fixed potential deadlock issues - #283 Bug
+    Fixed issue of multi-selection not working in some tables - #467 Bug
+
+
 Release 4.10.0 (29th November 2019)
 ----------------------------------
 
