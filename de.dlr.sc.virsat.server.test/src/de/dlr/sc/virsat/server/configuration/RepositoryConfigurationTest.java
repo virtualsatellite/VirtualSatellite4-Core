@@ -18,29 +18,29 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 
+import de.dlr.sc.virsat.team.VersionControlSystem;
+
 public class RepositoryConfigurationTest {
 	
 	@Test
 	public void testLoadProperties() throws IOException {
-		
-		//The keys - only defined as private in the configuration itself; no need to expose
-		final String REMOTE_URL_KEY = "repository.remoteURI";
-		final String ACCOUNT_NAME_KEY = "repository.credentials.username";
-		final String ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
-		
+				
 		//Test data
 		final String TEST_REMOTE = "gitlab.dlr.de/fancy-project";
+		final String TEST_BACKEND = "GIT";
 		final String TEST_USER = "TestUser";
 		final String TEST_PASSWORD = "TestPassword";
 		
-		String testConfigFileString = REMOTE_URL_KEY + ":" + TEST_REMOTE + "\n" 
-				+ ACCOUNT_NAME_KEY + ":" + TEST_USER + "\n" 
-				+ ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
+		String testConfigFileString = RepositoryConfiguration.REMOTE_URL_KEY + ":" + TEST_REMOTE + "\n" 
+				+ RepositoryConfiguration.BACKEND_KEY + ":" + TEST_BACKEND + "\n" 
+				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_NAME_KEY + ":" + TEST_USER + "\n" 
+				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
 		InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8));
 		
 		// Check that all values are loaded
 		RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
 		assertEquals("Remote loaded", TEST_REMOTE, configuration.getRemoteUri());
+		assertEquals("Backend loaded", VersionControlSystem.GIT, configuration.getBackend());
 		assertEquals("Users loaded", TEST_USER, configuration.getFunctionalAccountName());
 		assertEquals("Password laoded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
 	}

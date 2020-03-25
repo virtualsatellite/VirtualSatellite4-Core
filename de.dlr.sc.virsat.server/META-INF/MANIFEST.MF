@@ -12,6 +12,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jetty.server,
  org.eclipse.jetty.servlet,
  org.eclipse.jetty.util,
+ de.dlr.sc.virsat.external.lib.commons.cli,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.team,
+ de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.external.lib.jersey,
  javax.servlet,
  org.eclipse.jgit,
@@ -19,10 +23,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.io,
  org.bouncycastle.bcpg,
  org.bouncycastle.bcprov,
- org.eclipse.core.resources,
- de.dlr.sc.virsat.external.lib.commons.cli,
- de.dlr.sc.virsat.model,
- de.dlr.sc.virsat.project
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true

@@ -21,7 +21,6 @@ import java.util.Properties;
 public class ServerConfiguration {
 	
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
-	public static final String WORKSPACE_DIR_KEY = "workspace.dir";
 	
 	private static Properties properties;
 	
@@ -42,9 +41,5 @@ public class ServerConfiguration {
 	
 	public static String getRepositoryConfigurationsDir() {
 		return properties.getProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY);
-	}
-
-	public static String getWorkspaceDir() {
-		return properties.getProperty(WORKSPACE_DIR_KEY);
 	}
 }
