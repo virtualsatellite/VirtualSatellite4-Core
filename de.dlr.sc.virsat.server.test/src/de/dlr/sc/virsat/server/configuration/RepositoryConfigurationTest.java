@@ -24,31 +24,34 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.team.VersionControlSystem;
+
 public class RepositoryConfigurationTest {
 	
 	//Test data
 	private static final String TEST_REMOTE = "gitlab.dlr.de/fancy-project";
 	private static final String TEST_USER = "TestUser";
 	private static final String TEST_PASSWORD = "TestPassword";
+	private static final String TEST_PROJECT = "TestProject";
+	private static final String TEST_BACKEND = "GIT";
 	
 	@Test
 	public void testLoadProperties() throws IOException {
 		
-		//The keys - only defined as private in the configuration itself; no need to expose
-		final String REMOTE_URL_KEY = "repository.remoteURI";
-		final String ACCOUNT_NAME_KEY = "repository.credentials.username";
-		final String ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
-		
-		String testConfigFileString = REMOTE_URL_KEY + ":" + TEST_REMOTE + "\n" 
-				+ ACCOUNT_NAME_KEY + ":" + TEST_USER + "\n" 
-				+ ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
+		String testConfigFileString = RepositoryConfiguration.REMOTE_URL_KEY + ":" + TEST_REMOTE + "\n" 
+				+ RepositoryConfiguration.PROJECT_NAME + ":" + TEST_PROJECT + "\n" 
+				+ RepositoryConfiguration.BACKEND_KEY + ":" + TEST_BACKEND + "\n" 
+				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_NAME_KEY + ":" + TEST_USER + "\n" 
+				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
 		InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8));
 		
 		// Check that all values are loaded
 		RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
 		assertEquals("Remote loaded", TEST_REMOTE, configuration.getRemoteUri());
+		assertEquals("Backend loaded", VersionControlSystem.GIT, configuration.getBackend());
 		assertEquals("Users loaded", TEST_USER, configuration.getFunctionalAccountName());
-		assertEquals("Password laoded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
+		assertEquals("Password loaded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
+		assertEquals("Project loaded",	TEST_PROJECT, configuration.getProjectName());
 	}
 	
 	@Test
@@ -56,7 +59,7 @@ public class RepositoryConfigurationTest {
 		
 		final String TEST_FILE_NAME = "test.properties";
 		
-		RepositoryConfiguration configuration = new RepositoryConfiguration(TEST_REMOTE, null, TEST_USER, TEST_PASSWORD);
+		RepositoryConfiguration configuration = new RepositoryConfiguration(TEST_REMOTE, VersionControlSystem.GIT, TEST_USER, TEST_PASSWORD, TEST_PROJECT);
 		OutputStream outputStream = new FileOutputStream(new File(TEST_FILE_NAME));
 		configuration.saveProperties(outputStream);
 		
@@ -65,13 +68,16 @@ public class RepositoryConfigurationTest {
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_PASSWORD));
+		assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
+		assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
 		
 		InputStream loadStream = new FileInputStream(new File(TEST_FILE_NAME));
 		RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
 		assertEquals("Remote loaded", TEST_REMOTE, importedConfiguration.getRemoteUri());
 		assertEquals("Users loaded", TEST_USER, importedConfiguration.getFunctionalAccountName());
 		assertEquals("Password laoded",	TEST_PASSWORD, importedConfiguration.getFunctionalAccountPassword());
-		
+		assertEquals("Project laoded",	TEST_PROJECT, importedConfiguration.getProjectName());
+		assertEquals("Backend loaded", VersionControlSystem.GIT, importedConfiguration.getBackend());
 	}
 
 }

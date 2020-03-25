@@ -15,22 +15,35 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import de.dlr.sc.virsat.team.VersionControlSystem;
+
+
 public class RepositoryConfiguration {
 
 	// Infrastructure
 	private Properties properties;
 	
 	// Properties key
-	protected static final String REMOTE_URL_KEY = "repository.remoteURI";
-	protected static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
-	protected static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
+	public static final String PROJECT_NAME = "project.name";
+	public static final String BACKEND_KEY = "repository.backend";
+	public static final String REMOTE_URL_KEY = "repository.remoteURI";
+	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
+	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
-	public RepositoryConfiguration(String remoteUri, String backend, String functionalAccountName, String functionalAccountPassword) {
+	/**
+	 * 
+	 * @param remoteUri
+	 * @param backend
+	 * @param functionalAccountName
+	 * @param functionalAccountPassword
+	 */
+	public RepositoryConfiguration(String remoteUri, VersionControlSystem backend, String functionalAccountName, String functionalAccountPassword, String projectName) {
 		properties = new Properties();
 		setRemoteUri(remoteUri);
-		setBackend(backend);
 		setFunctionalAccountName(functionalAccountName);
 		setFunctionalAccountPassword(functionalAccountPassword);
+		setBackend(backend);
+		setProjectName(projectName);
 	}
 	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
@@ -40,9 +53,9 @@ public class RepositoryConfiguration {
 
 	public void update(RepositoryConfiguration repository) {
 		setRemoteUri(repository.getRemoteUri());
-		setBackend(repository.getBackend());
 		setFunctionalAccountName(repository.getFunctionalAccountName());
 		setFunctionalAccountPassword(repository.getFunctionalAccountPassword());
+		setProjectName(repository.getProjectName());
 	}
 	
 	/**
@@ -69,11 +82,12 @@ public class RepositoryConfiguration {
 		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
-	public String getBackend() {
-		return "";
+	public VersionControlSystem getBackend() {
+		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
 	}
-
-	public void setBackend(String backend) {
+	
+	public void setBackend(VersionControlSystem backend) {
+		properties.setProperty(BACKEND_KEY, backend.name());
 	}
 
 	public String getFunctionalAccountName() {
@@ -90,5 +104,13 @@ public class RepositoryConfiguration {
 
 	public void setFunctionalAccountPassword(String functionalAccountPassword) {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
+	}
+	
+	public String getProjectName() {
+		return properties.getProperty(PROJECT_NAME);
+	}
+
+	public void setProjectName(String projectName) {
+		properties.setProperty(PROJECT_NAME, projectName);
 	}
 }

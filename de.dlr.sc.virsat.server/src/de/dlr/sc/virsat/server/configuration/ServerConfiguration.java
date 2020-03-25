@@ -22,12 +22,10 @@ import java.util.Properties;
 public class ServerConfiguration {
 	
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
-	public static final String WORKSPACE_DIR_KEY = "workspace.dir";
 	
 	private static Properties properties = new Properties();
 	
-	private ServerConfiguration() { 	
-	}
+	private ServerConfiguration() { }
 	
 	/**
 	 * Loads a properties file into memory
@@ -52,16 +50,9 @@ public class ServerConfiguration {
 	public static String getRepositoryConfigurationsDir() {
 		return properties.getProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY);
 	}
-
-	public static String getWorkspaceDir() {
-		return properties.getProperty(WORKSPACE_DIR_KEY);
-	}
 	
 	public static void setRepositoryConfigurationsDir(String repositoryConfigurationsDir) {
 		properties.setProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY, repositoryConfigurationsDir);
 	}
-	
-	public static void setWorkspaceDir(String workspaceDir) {
-		properties.setProperty(WORKSPACE_DIR_KEY, workspaceDir);
-	}
+
 }

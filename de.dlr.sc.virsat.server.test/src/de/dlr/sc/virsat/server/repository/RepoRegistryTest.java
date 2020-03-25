@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
+import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public class RepoRegistryTest {
 	
@@ -22,7 +23,7 @@ public class RepoRegistryTest {
 	public void testBasicAddGet() {
 		
 		//Create basic test repsoitory 
-		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", "", "", ""));
+		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", VersionControlSystem.GIT, "", "", ""));
 		
 		RepoRegistry.getInstance().addRepository(REPO_NAME, TEST_REPO);
 		
@@ -35,7 +36,7 @@ public class RepoRegistryTest {
 	public void testListAddGet() {
 		
 		//Create basic test repsoitory 
-		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", "", "", ""));
+		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", VersionControlSystem.GIT, "", "", ""));
 		
 		RepoRegistry.getInstance().getRepositories().put(REPO_NAME, TEST_REPO);
 		

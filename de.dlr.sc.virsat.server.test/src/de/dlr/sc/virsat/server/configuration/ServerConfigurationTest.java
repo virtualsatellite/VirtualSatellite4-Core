@@ -39,7 +39,6 @@ public class ServerConfigurationTest {
 		assertEquals(expectedDefaultPropertiesFilePath, Activator.getDefault().getPropertiesFilePath());
 		assertFalse("There are some configurations in the default configuration file", ServerConfiguration.getProperties().isEmpty());
 		assertFalse(ServerConfiguration.getRepositoryConfigurationsDir().isEmpty());
-		assertFalse(ServerConfiguration.getWorkspaceDir().isEmpty());
 	}
 
 	@Test
@@ -61,20 +60,15 @@ public class ServerConfigurationTest {
 		
 		final String TEST_FILE_NAME = "test.properties";
 		OutputStream outputStream = new FileOutputStream(new File(TEST_FILE_NAME));
-		ServerConfiguration.setWorkspaceDir(WORKSPACE_DIR);
 		ServerConfiguration.setRepositoryConfigurationsDir(REPOSITORY_CONFIGURATIONS_DIR);
 		ServerConfiguration.saveProperties(outputStream);
 		
 		InputStream inputStream = new FileInputStream(new File(TEST_FILE_NAME));
 		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
 		assertTrue("Contains value", stringFromInputStream.contains(REPOSITORY_CONFIGURATIONS_DIR));
-		assertTrue("Contains value", stringFromInputStream.contains(WORKSPACE_DIR));
 		
 		InputStream loadStream = new FileInputStream(new File(TEST_FILE_NAME));
 		ServerConfiguration.loadProperties(loadStream);
 		assertEquals("Remote loaded", REPOSITORY_CONFIGURATIONS_DIR, ServerConfiguration.getRepositoryConfigurationsDir());
-		assertEquals("Users loaded", WORKSPACE_DIR, ServerConfiguration.getWorkspaceDir());
-
-		
 	}
 }
