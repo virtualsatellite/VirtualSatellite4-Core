@@ -40,6 +40,10 @@ public class ServerRepository {
 		//checkout the project to workspace
 	}
 	
+	public RepositoryConfiguration getRepositoryConfiguration() {
+		return repositoryConfiguration;
+	}
+
 	public void updateOrCheckoutProject() {
 		retrieveProjectFromConfiguration();
 		
