@@ -9,46 +9,50 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.configuration;
 
-import de.dlr.sc.virsat.team.VersionControlSystem;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
+
+import de.dlr.sc.virsat.team.VersionControlSystem;
+
 
 public class RepositoryConfiguration {
 
 	// Infrastructure
 	private Properties properties;
 	
-	// Data
-	private String remoteUri;
-	private VersionControlSystem backend;
-	private String functionalAccountName;
-	private String functionalAccountPassword;
-	private String projectName;
-	
 	// Properties key
 	public static final String PROJECT_NAME = "project.name";
-	public static final String REMOTE_URL_KEY = "repository.remoteURI";
 	public static final String BACKEND_KEY = "repository.backend";
+	public static final String REMOTE_URL_KEY = "repository.remoteURI";
 	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
 	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
+	/**
+	 * 
+	 * @param remoteUri
+	 * @param backend
+	 * @param functionalAccountName
+	 * @param functionalAccountPassword
+	 */
 	public RepositoryConfiguration(String remoteUri, VersionControlSystem backend, String functionalAccountName, String functionalAccountPassword, String projectName) {
+		properties = new Properties();
 		setRemoteUri(remoteUri);
-		setBackend(backend);
 		setFunctionalAccountName(functionalAccountName);
 		setFunctionalAccountPassword(functionalAccountPassword);
+		setBackend(backend);
 		setProjectName(projectName);
 	}
 	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
+		properties = new Properties();
 		loadProperties(repoConfInputStream);
 	}
 
 	public void update(RepositoryConfiguration repository) {
 		setRemoteUri(repository.getRemoteUri());
-		setBackend(repository.getBackend());
 		setFunctionalAccountName(repository.getFunctionalAccountName());
 		setFunctionalAccountPassword(repository.getFunctionalAccountPassword());
 		setProjectName(repository.getProjectName());
@@ -59,52 +63,54 @@ public class RepositoryConfiguration {
 	 * @param configFileInputStream input stream for the file containing properties in java properties format
 	 */
 	public void loadProperties(InputStream configFileInputStream) throws FileNotFoundException, IOException {
-		properties = new Properties();
 		properties.load(configFileInputStream);
-		remoteUri = properties.getProperty(REMOTE_URL_KEY);
-		backend = VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
-		functionalAccountName = properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
-		functionalAccountPassword = properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
-		projectName = properties.getProperty(PROJECT_NAME);
+	}
+	
+	/**
+	 * Saves properties from memory to file
+	 * @param configFileOutputStream the file output stream
+	 */
+	public void saveProperties(OutputStream configFileOutputStream) throws IOException {
+		properties.store(configFileOutputStream, "");
 	}
 
 	public String getRemoteUri() {
-		return remoteUri;
+		return properties.getProperty(REMOTE_URL_KEY);
 	}
 
 	public void setRemoteUri(String remoteUri) {
-		this.remoteUri = remoteUri;
+		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
 	public VersionControlSystem getBackend() {
-		return backend;
+		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
 	}
-
+	
 	public void setBackend(VersionControlSystem backend) {
-		this.backend = backend;
+		properties.setProperty(BACKEND_KEY, backend.name());
 	}
 
 	public String getFunctionalAccountName() {
-		return functionalAccountName;
+		return properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 	}
 
 	public void setFunctionalAccountName(String functionalAccountName) {
-		this.functionalAccountName = functionalAccountName;
+		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
 	}
 
 	public String getFunctionalAccountPassword() {
-		return functionalAccountPassword;
+		return properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 	}
 
 	public void setFunctionalAccountPassword(String functionalAccountPassword) {
-		this.functionalAccountPassword = functionalAccountPassword;
+		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
 	}
 	
 	public String getProjectName() {
-		return projectName;
+		return properties.getProperty(PROJECT_NAME);
 	}
 
 	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+		properties.setProperty(PROJECT_NAME, projectName);
 	}
 }
