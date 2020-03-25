@@ -36,8 +36,10 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
+import de.dlr.sc.virsat.team.ui.Activator;
 
 
+@SuppressWarnings("restriction")
 public class GitUpdateHandler extends AbstractHandler {
 
 	@Override
@@ -78,11 +80,11 @@ public class GitUpdateHandler extends AbstractHandler {
 							try {
 								gitBackend.update(project, subMonitor);
 							} catch (Exception e) {
-								status.add(new Status(Status.ERROR, "id", "Error during update", e));
+								status.add(new Status(Status.ERROR, Activator.getPluginId(), "Error during update", e));
 							}
 						});
 					} catch (InterruptedException e) {
-						status.add(new Status(Status.ERROR, "id", "Transaction interruption during update", e));
+						status.add(new Status(Status.ERROR, Activator.getPluginId(), "Transaction interruption during update", e));
 					}
 				}
 				return Status.OK_STATUS;
@@ -93,7 +95,7 @@ public class GitUpdateHandler extends AbstractHandler {
 		job.schedule();
 
 		if (!status.isEmpty()) {
-			MultiStatus multiStatus = new MultiStatus("id", Status.ERROR, status.toArray(new Status[] {}), "Errors during update", status.get(0).getException());
+			MultiStatus multiStatus = new MultiStatus(Activator.getPluginId(), Status.ERROR, status.toArray(new Status[] {}), "Errors during update", status.get(0).getException());
 			ErrorDialog.openError(Display.getCurrent().getActiveShell(), "Update Error", "Error during update", multiStatus);
 		}
 		

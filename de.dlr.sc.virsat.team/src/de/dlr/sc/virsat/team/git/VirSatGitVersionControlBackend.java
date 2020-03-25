@@ -116,7 +116,6 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		
 		File pathProjectLocal = new File(project.getLocationURI());
 		File pathRepoLocal = pathProjectLocal.getParentFile();
-		File pathRepoLocalGit = new File(pathRepoLocal.toURI().resolve(".git"));
 		
 		checkInMonitor.split(1).subTask("Initializing local repository");
 		Repository initRepo = Git.init()
@@ -135,6 +134,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		
 		// Connects Eclipse to the created (existing) Git repository
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
+		// We need to .git file to associate the project with the repository
+		File pathRepoLocalGit = new File(pathRepoLocal.toURI().resolve(".git"));
 		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project, pathRepoLocalGit);
 		connectOperation.execute(null);
 	}

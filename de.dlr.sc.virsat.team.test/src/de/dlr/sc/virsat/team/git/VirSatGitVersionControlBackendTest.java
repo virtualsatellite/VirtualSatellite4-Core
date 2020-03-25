@@ -33,7 +33,6 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 		try {
 			pathRepoRemote = Files.createTempDirectory("VirtualSatelliteGitRemote_");
 			File fileGitRemoteRepo = pathRepoRemote.toFile();
-			fileGitRemoteRepo.mkdir();
 			Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
 
 			URI uriToRemoteRepoPath = pathRepoRemote.toUri();
@@ -41,7 +40,6 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 			File filePathToProject = pathRepoLocal1.toFile();
 			Git.cloneRepository().setURI(uriToRemoteRepoPath.toString()).setDirectory(filePathToProject).call();
 
-			uriToRemoteRepoPath = pathRepoRemote.toUri();
 			pathRepoLocal2 = Files.createTempDirectory("VirtualSatelliteGitLocal2_");
 			filePathToProject = pathRepoLocal2.toFile();
 			Git.cloneRepository().setURI(uriToRemoteRepoPath.toString()).setDirectory(filePathToProject).call();

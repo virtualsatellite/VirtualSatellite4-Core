@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.egit.ui.internal.credentials.EGitCredentialsProvider;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -38,11 +37,12 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
+import de.dlr.sc.virsat.team.ui.Activator;
 import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 
+@SuppressWarnings("restriction")
 public class GitCommitHandler extends AbstractHandler {
 
-	@SuppressWarnings("restriction")
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(),
@@ -88,11 +88,11 @@ public class GitCommitHandler extends AbstractHandler {
 							try {
 								gitBackend.commit(project, commitMessageDialog.getCommitMessage(), subMonitor.split(1));
 							} catch (Exception e) {
-								status.add(new Status(Status.ERROR, "id", "Error during Commit", e));
+								status.add(new Status(Status.ERROR, Activator.getPluginId(), "Error during Commit", e));
 							}
 						});
 					} catch (InterruptedException e) {
-						status.add(new Status(Status.ERROR, "id", "Transaction interruption during commit", e));
+						status.add(new Status(Status.ERROR, Activator.getPluginId(), "Transaction interruption during commit", e));
 					}
 				}
 				return Status.OK_STATUS;
@@ -103,7 +103,7 @@ public class GitCommitHandler extends AbstractHandler {
 		job.schedule();
 
 		if (!status.isEmpty()) {
-			MultiStatus multiStatus = new MultiStatus("id", Status.ERROR, status.toArray(new Status[] {}), "Errors during commit", status.get(0).getException());
+			MultiStatus multiStatus = new MultiStatus(Activator.getPluginId(), Status.ERROR, status.toArray(new Status[] {}), "Errors during commit", status.get(0).getException());
 			ErrorDialog.openError(Display.getCurrent().getActiveShell(), "Commit Error", "Error during commit", multiStatus);
 		}
 		
