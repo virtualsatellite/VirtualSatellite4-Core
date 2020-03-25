@@ -45,8 +45,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 
 	protected IProject createTestProject(String projectName, Path fsRepoLocation, boolean waitForMapping) throws CoreException {
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
-		URI fsProjectLocation = fsRepoLocation.resolve(projectName).toUri();
-		projectDescription.setLocationURI(fsProjectLocation);
+		projectDescription.setLocationURI(fsRepoLocation.toUri());
 		return createTestProject(projectName, projectDescription, waitForMapping);
 	}
 
@@ -61,6 +60,9 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	 * @throws CoreException
 	 */
 	protected IProject createTestProject(String projectName, IProjectDescription projectDescription, boolean waitForMapping) throws CoreException {
+		URI uriProjectLocal = projectDescription.getLocationURI().resolve(projectDescription.getName());
+		projectDescription.setLocationURI(uriProjectLocal);
+		
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		testProjects.add(project);
 		if (!project.exists()) {
@@ -160,21 +162,22 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		// Now prepare the checkout into another project with another local repository
 		Path pathRepoCheckout = Files.createTempDirectory("VirtualSatelliteCheckOut_");
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace()
-				.newProjectDescription("VirSatRepoLocalCheckout");
+				.newProjectDescription("VirSatRepoLocal");
 		projectDescription.setLocationURI(pathRepoCheckout.toUri());
 
 		// Execute the checkout
 		backend.checkout(projectDescription, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
 
 		// Create the project and wait until it is mapped with the Providers
-		IProject projectCheckout = createTestProject("VirSatRepoLocalCheckout", projectDescription, true);
+		IProject projectCheckout = createTestProject("VirSatRepoLocal", projectDescription, true);
 
 		// Now check that the SEI has been well checked out in the project and on the
 		// file system
 		File seiInLocalCheckout = new File(pathRepoCheckout.toFile(),
-				seiFile.getFullPath().removeFirstSegments(1).toOSString());
+				seiFile.getFullPath().toOSString());
 		assertTrue("File also exists in local2 after pull", seiInLocalCheckout.exists());
 
+		// TODO: check if we can remove .removeFirstSegments(1)
 		IFile seiInLocalCheckoutWorkspace = projectCheckout.getFile(seiFile.getFullPath().removeFirstSegments(1));
 		assertTrue("File also exists in workspace", seiInLocalCheckoutWorkspace.exists());
 	}
