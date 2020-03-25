@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.configuration;
 
+import de.dlr.sc.virsat.team.VersionControlSystem;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,18 +22,19 @@ public class RepositoryConfiguration {
 	
 	// Data
 	private String remoteUri;
-	private String backend; //check if we have an enum for git/svn
+	private VersionControlSystem backend;
 	private String functionalAccountName;
 	private String functionalAccountPassword;
 	private String projectName;
 	
 	// Properties key
-	private static final String PROJECT_NAME = "project.name";
-	private static final String REMOTE_URL_KEY = "repository.remoteURI";
-	private static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
-	private static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
+	public static final String PROJECT_NAME = "project.name";
+	public static final String REMOTE_URL_KEY = "repository.remoteURI";
+	public static final String BACKEND_KEY = "repository.backend";
+	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
+	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
-	public RepositoryConfiguration(String remoteUri, String backend, String functionalAccountName, String functionalAccountPassword, String projectName) {
+	public RepositoryConfiguration(String remoteUri, VersionControlSystem backend, String functionalAccountName, String functionalAccountPassword, String projectName) {
 		setRemoteUri(remoteUri);
 		setBackend(backend);
 		setFunctionalAccountName(functionalAccountName);
@@ -60,6 +62,7 @@ public class RepositoryConfiguration {
 		properties = new Properties();
 		properties.load(configFileInputStream);
 		remoteUri = properties.getProperty(REMOTE_URL_KEY);
+		backend = VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
 		functionalAccountName = properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 		functionalAccountPassword = properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 		projectName = properties.getProperty(PROJECT_NAME);
@@ -73,11 +76,11 @@ public class RepositoryConfiguration {
 		this.remoteUri = remoteUri;
 	}
 
-	public String getBackend() {
+	public VersionControlSystem getBackend() {
 		return backend;
 	}
 
-	public void setBackend(String backend) {
+	public void setBackend(VersionControlSystem backend) {
 		this.backend = backend;
 	}
 

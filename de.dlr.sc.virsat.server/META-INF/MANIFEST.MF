@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.bouncycastle.bcprov,
  org.eclipse.core.resources,
  de.dlr.sc.virsat.external.lib.commons.cli,
- de.dlr.sc.virsat.model
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.team
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
