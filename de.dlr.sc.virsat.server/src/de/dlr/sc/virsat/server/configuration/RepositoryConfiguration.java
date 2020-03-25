@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.server.configuration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 public class RepositoryConfiguration {
@@ -31,6 +32,7 @@ public class RepositoryConfiguration {
 	private static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
 	public RepositoryConfiguration(String remoteUri, String backend, String functionalAccountName, String functionalAccountPassword) {
+		properties = new Properties();
 		setRemoteUri(remoteUri);
 		setBackend(backend);
 		setFunctionalAccountName(functionalAccountName);
@@ -38,6 +40,7 @@ public class RepositoryConfiguration {
 	}
 	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
+		properties = new Properties();
 		loadProperties(repoConfInputStream);
 	}
 
@@ -53,11 +56,21 @@ public class RepositoryConfiguration {
 	 * @param configFileInputStream input stream for the file containing properties in java properties format
 	 */
 	public void loadProperties(InputStream configFileInputStream) throws FileNotFoundException, IOException {
-		properties = new Properties();
 		properties.load(configFileInputStream);
 		remoteUri = properties.getProperty(REMOTE_URL_KEY);
 		functionalAccountName = properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 		functionalAccountPassword = properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
+	}
+	
+	/**
+	 * Saves properties from memory to file
+	 * @param configFileOutputStream the file output stream
+	 */
+	public void saveProperties(OutputStream configFileOutputStream) throws IOException {
+		properties.setProperty(REMOTE_URL_KEY, remoteUri);
+		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
+		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
+		properties.store(configFileOutputStream, "");
 	}
 
 	public String getRemoteUri() {
