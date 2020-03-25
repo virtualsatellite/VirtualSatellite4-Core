@@ -35,6 +35,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
@@ -42,8 +43,9 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 @SuppressWarnings("restriction")
 public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase {
 
-	protected IProject createTestProject(String projectName, URI fsProjectLocation, boolean waitForMapping) throws CoreException {
+	protected IProject createTestProject(String projectName, Path fsRepoLocation, boolean waitForMapping) throws CoreException {
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
+		URI fsProjectLocation = fsRepoLocation.resolve(projectName).toUri();
 		projectDescription.setLocationURI(fsProjectLocation);
 		return createTestProject(projectName, projectDescription, waitForMapping);
 	}
@@ -91,8 +93,8 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	public void setUp() throws CoreException {
 		super.setUp();
 		
-		projectRepoLocal1 = createTestProject("VirSatRepoLocal1", pathRepoLocal1.toUri(), true);
-		projectRepoLocal2 = createTestProject("VirSatRepoLocal2", pathRepoLocal2.toUri(), true);
+		projectRepoLocal1 = createTestProject("VirSatRepoLocal", pathRepoLocal1, true);
+		projectCommons = new VirSatProjectCommons(projectRepoLocal1);
 	}
 
 	/**
@@ -135,12 +137,14 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 
 		// Commit repository and SEI files with VirtualSatellite Backend
 		backend.commit(projectRepoLocal1, "First Simple Commit", new NullProgressMonitor());
+		projectRepoLocal1.delete(true, null);
+		projectRepoLocal2 = createTestProject("VirSatRepoLocal", pathRepoLocal2, true);
 
 		// Checkout to local2 and see if SEI file has been transferred
 		backend.update(projectRepoLocal2, new NullProgressMonitor());
 
 		File seiInLocal2 = new File(pathRepoLocal2.toFile(),
-				seiFile.getFullPath().removeFirstSegments(1).toOSString());
+				seiFile.getFullPath().toOSString());
 		assertTrue("File also exists in local2 after pull", seiInLocal2.exists());
 	}
 
@@ -179,7 +183,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	public void testCheckin() throws Exception {
 		// Create a new full fledged Repository and try to check it into Repository
 		Path pathRepoCheckin = Files.createTempDirectory("VirtualSatelliteCheckIn_");
-		IProject projectCheckin = createTestProject("VirSatRepoCheckin", pathRepoCheckin.toUri(), false);
+		IProject projectCheckin = createTestProject("VirSatRepoCheckin", pathRepoCheckin, false);
 		addResourceSetAndRepository(projectCheckin);
 		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		rs.getStructuralElementInstanceResource(sei1);
