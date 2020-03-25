@@ -57,7 +57,7 @@
          </activeWhen>
       </handler>
  	  <handler
-            class="de.dlr.sc.virsat.team.ui.action.git.GitCommitAction"
+            class="de.dlr.sc.virsat.team.ui.action.git.GitCommitHandler"
             commandId="de.dlr.sc.virsat.team.ui.command.commit">
          <activeWhen>
             <with
@@ -73,7 +73,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="de.dlr.sc.virsat.team.ui.action.git.GitUpdateAction"
+            class="de.dlr.sc.virsat.team.ui.action.git.GitUpdateHandler"
             commandId="de.dlr.sc.virsat.team.ui.command.update">
          <activeWhen>
             <with
