@@ -9,6 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.repository;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
 /**
@@ -16,19 +25,39 @@ import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
  */
 public class ServerRepoHelper {
 	
-	public static String REPOSITORY_CONFIGURATIONS_DIR_PROPERTY = "repository.configurations.dir";
+	public static final String REPOSITORY_CONFIGURATIONS_DIR_PROPERTY = "repository.configurations.dir";
+	
+	private ServerRepoHelper() { }
 	
 	/**
-	 * Crawls repository configuration directory from ServerConfiguration, creates projects and registers them in RepoRegistry
+	 * Adds all known project configs to RepoRegistry
+	 * @throws IOException 
 	 */
-	public static void loadRepositoryConfigurations() {
+	public static void initRepoRegistry() throws IOException {
+		try (Stream<Path> paths = Files.walk(Paths.get(getRepositoryConfigurationDir()))) {
+		    paths
+		        .filter(Files::isRegularFile)
+		        .forEach(t -> {
+					try {
+						registerRepositoryConfiguration(t);
+					} catch (IOException e) {
+						throw new UncheckedIOException(e);
+					}
+				});
+		} 
 	}
 	
 	/**
-	 * Saves all configurations from RepoRegistry to property files
+	 * Creates RepositoryConfiguration for the given configuration file, creates a corresponding ServerRepository
+	 * and registers it in the RepoRegistry
+	 * @param repositoryConfigurationFile properties file for a repository
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static void saveRepositoryConfigurations() {
-		
+	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws FileNotFoundException, IOException {
+		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
+		ServerRepository serverRepository = new ServerRepository(config);
+		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
 	}
 
 	private static String getRepositoryConfigurationDir() {
