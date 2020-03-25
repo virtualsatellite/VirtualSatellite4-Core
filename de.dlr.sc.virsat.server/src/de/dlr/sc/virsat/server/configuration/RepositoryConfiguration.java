@@ -24,17 +24,20 @@ public class RepositoryConfiguration {
 	private String backend; //check if we have an enum for git/svn
 	private String functionalAccountName;
 	private String functionalAccountPassword;
+	private String projectName;
 	
 	// Properties key
+	private static final String PROJECT_NAME = "project.name";
 	private static final String REMOTE_URL_KEY = "repository.remoteURI";
 	private static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
 	private static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
-	public RepositoryConfiguration(String remoteUri, String backend, String functionalAccountName, String functionalAccountPassword) {
+	public RepositoryConfiguration(String remoteUri, String backend, String functionalAccountName, String functionalAccountPassword, String projectName) {
 		setRemoteUri(remoteUri);
 		setBackend(backend);
 		setFunctionalAccountName(functionalAccountName);
 		setFunctionalAccountPassword(functionalAccountPassword);
+		setProjectName(projectName);
 	}
 	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
@@ -46,6 +49,7 @@ public class RepositoryConfiguration {
 		setBackend(repository.getBackend());
 		setFunctionalAccountName(repository.getFunctionalAccountName());
 		setFunctionalAccountPassword(repository.getFunctionalAccountPassword());
+		setProjectName(repository.getProjectName());
 	}
 	
 	/**
@@ -58,6 +62,7 @@ public class RepositoryConfiguration {
 		remoteUri = properties.getProperty(REMOTE_URL_KEY);
 		functionalAccountName = properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 		functionalAccountPassword = properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
+		projectName = properties.getProperty(PROJECT_NAME);
 	}
 
 	public String getRemoteUri() {
@@ -90,5 +95,13 @@ public class RepositoryConfiguration {
 
 	public void setFunctionalAccountPassword(String functionalAccountPassword) {
 		this.functionalAccountPassword = functionalAccountPassword;
+	}
+	
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

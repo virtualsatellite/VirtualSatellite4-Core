@@ -22,7 +22,7 @@ public class RepoRegistryTest {
 	public void testBasicAddGet() {
 		
 		//Create basic test repsoitory 
-		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", "", "", ""));
+		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", "", "", "", ""));
 		
 		RepoRegistry.getInstance().addRepository(REPO_NAME, TEST_REPO);
 		
@@ -35,7 +35,7 @@ public class RepoRegistryTest {
 	public void testListAddGet() {
 		
 		//Create basic test repsoitory 
-		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", "", "", ""));
+		final ServerRepository TEST_REPO = new ServerRepository(new RepositoryConfiguration("", "", "", "", ""));
 		
 		RepoRegistry.getInstance().getRepositories().put(REPO_NAME, TEST_REPO);
 		
