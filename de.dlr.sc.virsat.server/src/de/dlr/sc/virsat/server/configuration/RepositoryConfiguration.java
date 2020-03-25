@@ -20,16 +20,10 @@ public class RepositoryConfiguration {
 	// Infrastructure
 	private Properties properties;
 	
-	// Data
-	private String remoteUri;
-	private String backend; //check if we have an enum for git/svn
-	private String functionalAccountName;
-	private String functionalAccountPassword;
-	
 	// Properties key
-	private static final String REMOTE_URL_KEY = "repository.remoteURI";
-	private static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
-	private static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
+	protected static final String REMOTE_URL_KEY = "repository.remoteURI";
+	protected static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
+	protected static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
 	public RepositoryConfiguration(String remoteUri, String backend, String functionalAccountName, String functionalAccountPassword) {
 		properties = new Properties();
@@ -57,9 +51,6 @@ public class RepositoryConfiguration {
 	 */
 	public void loadProperties(InputStream configFileInputStream) throws FileNotFoundException, IOException {
 		properties.load(configFileInputStream);
-		remoteUri = properties.getProperty(REMOTE_URL_KEY);
-		functionalAccountName = properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
-		functionalAccountPassword = properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 	}
 	
 	/**
@@ -67,41 +58,37 @@ public class RepositoryConfiguration {
 	 * @param configFileOutputStream the file output stream
 	 */
 	public void saveProperties(OutputStream configFileOutputStream) throws IOException {
-		properties.setProperty(REMOTE_URL_KEY, remoteUri);
-		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
-		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
 		properties.store(configFileOutputStream, "");
 	}
 
 	public String getRemoteUri() {
-		return remoteUri;
+		return properties.getProperty(REMOTE_URL_KEY);
 	}
 
 	public void setRemoteUri(String remoteUri) {
-		this.remoteUri = remoteUri;
+		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
 	public String getBackend() {
-		return backend;
+		return "";
 	}
 
 	public void setBackend(String backend) {
-		this.backend = backend;
 	}
 
 	public String getFunctionalAccountName() {
-		return functionalAccountName;
+		return properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 	}
 
 	public void setFunctionalAccountName(String functionalAccountName) {
-		this.functionalAccountName = functionalAccountName;
+		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
 	}
 
 	public String getFunctionalAccountPassword() {
-		return functionalAccountPassword;
+		return properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 	}
 
 	public void setFunctionalAccountPassword(String functionalAccountPassword) {
-		this.functionalAccountPassword = functionalAccountPassword;
+		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
 	}
 }
