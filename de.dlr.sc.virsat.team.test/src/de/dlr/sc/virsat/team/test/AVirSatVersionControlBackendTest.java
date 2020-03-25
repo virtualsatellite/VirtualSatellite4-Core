@@ -117,11 +117,6 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.walk(pathRepoLocal1).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			Files.walk(pathRepoLocal2).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			
-			
-			//Files.delete(pathRepoRemote);
-			//Files.delete(pathRepoLocal1);
-			//Files.delete(pathRepoLocal2);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 					"Error during temp remote directory creation", e));

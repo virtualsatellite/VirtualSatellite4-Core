@@ -14,22 +14,18 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNManager;
-import org.eclipse.team.svn.core.connector.ISVNManager.RepositoryKind;
 import org.eclipse.team.svn.core.connector.SVNDepth;
 import org.eclipse.team.svn.core.extension.CoreExtensionsManager;
 import org.eclipse.team.svn.core.operation.AbstractActionOperation;
-import org.eclipse.team.svn.core.operation.IConsoleStream;
 import org.eclipse.team.svn.core.operation.SVNProgressMonitor;
 import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
-import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.Before;
 
@@ -37,6 +33,8 @@ import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.test.AVirSatVersionControlBackendTest;
 
 public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBackendTest {
+	
+	private IRepositoryResource remoteRepo;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -46,22 +44,15 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 			URI uriToRemoteRepoPath = pathRepoRemote.toUri();
 			String remoteRepoFilePath = pathRepoRemote.toString();
 			
-			IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(uriToRemoteRepoPath.toString(), true);
+			remoteRepo = SVNUtility.asRepositoryResource(uriToRemoteRepoPath.toString(), true);
 			
 			// There is no subersive API for creating a repository, have to manually build the svn repo
 			AbstractActionOperation createRemoteRepoOp = new AbstractActionOperation("Operation_CreateRepository", SVNMessages.class) {
 				protected void runImpl(IProgressMonitor monitor) throws Exception {
 					ISVNManager proxy = CoreExtensionsManager.instance().getSVNConnectorFactory().createManager();
-					RepositoryKind repositoryType = ISVNManager.RepositoryKind.FSFS;
 					
-					try {					
-						StringBuffer msg = new StringBuffer();
-						msg.append("svnadmin create ");
-						msg.append("--fs-type ").append(repositoryType.toString().toLowerCase()).append(" ");
-						msg.append("\"").append(FileUtility.normalizePath(remoteRepoFilePath)).append("\"");
-						msg.append("\n");
-						this.writeToConsole(IConsoleStream.LEVEL_CMD, msg.toString());
-						proxy.create(remoteRepoFilePath, repositoryType, null, ISVNManager.Options.NONE, new SVNProgressMonitor(this, monitor, null));
+					try {
+						proxy.create(remoteRepoFilePath, ISVNManager.RepositoryKind.FSFS, null, ISVNManager.Options.NONE, new SVNProgressMonitor(this, monitor, null));
 					} finally {
 						proxy.dispose();
 					}
@@ -87,18 +78,5 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 		super.setUp();
 
 		backend = new VirSatSvnVersionControlBackend();
-	}
-	
-	private static final int WAIT_FOR_REPO_DETECTION_TIMESPAN = 10;
-	
-	@Override
-	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
-		super.waitForProjectToRepoMapping(project);
-		try {
-			while (!FileUtility.isConnected(project)) {
-				Thread.sleep(WAIT_FOR_REPO_DETECTION_TIMESPAN);
-			}
-		} catch (InterruptedException e) {
-		}
 	}
 }

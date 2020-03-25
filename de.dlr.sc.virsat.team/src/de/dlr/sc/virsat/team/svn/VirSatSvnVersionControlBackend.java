@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.team.svn;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -18,16 +20,22 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
+import org.eclipse.team.svn.core.SVNMessages;
+import org.eclipse.team.svn.core.connector.ISVNConnector;
 import org.eclipse.team.svn.core.connector.SVNDepth;
+import org.eclipse.team.svn.core.connector.SVNRevision;
+import org.eclipse.team.svn.core.operation.AbstractActionOperation;
 import org.eclipse.team.svn.core.operation.CompositeOperation;
+import org.eclipse.team.svn.core.operation.SVNProgressMonitor;
+import org.eclipse.team.svn.core.operation.file.AddToSVNOperation;
 import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
-import org.eclipse.team.svn.core.operation.local.AddToSVNOperation;
-import org.eclipse.team.svn.core.operation.local.CommitOperation;
+import org.eclipse.team.svn.core.operation.file.CommitOperation;
+import org.eclipse.team.svn.core.operation.file.SVNFileStorage;
 import org.eclipse.team.svn.core.operation.local.NotifyProjectStatesChangedOperation;
 import org.eclipse.team.svn.core.operation.local.RefreshResourcesOperation;
-import org.eclipse.team.svn.core.operation.local.UpdateOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation.IFolderNameMapper;
+import org.eclipse.team.svn.core.operation.remote.management.AddRepositoryLocationOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryLocation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
 import org.eclipse.team.svn.core.resource.IResourceProvider;
@@ -42,13 +50,26 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	@Override
 	public void commit(IProject project, String message, IProgressMonitor monitor) throws Exception {
 		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn commit", 1);
+	
+		File projectWorkingCopy = new File(FileUtility.getWorkingCopyPath(project));
 		
-		// The SVN commit operation requires the parent file to be under version control
-		// Therefore we have to commit all the commtable files/folder directly under the project
-		// We only get the files directly under the project and let SVN take care of recursively searching
-		// for the contained files.
-		IResource[] files = FileUtility.filterResources(project.members(IProject.NONE), IStateFilter.SF_UNVERSIONED);
-		CommitOperation commitOperation = new CommitOperation(files, message, true, true);
+		List<File> filesList = new ArrayList<>();
+	
+		// The subversive implementation sets a flag that requires the parent of a file that should be commited,
+		// to be under version control as well. We check here if the parent is under version control,
+		// and if so, then we can simply commit the project file. If not, we commit the commitable files under the
+		// project. We do not go any deeper and let SVN itself handle the recursive search for further commitables.
+		if (SVNUtility.hasSVNFolderInOrAbove(projectWorkingCopy.getParentFile())) {
+			filesList.add(projectWorkingCopy);
+		} else {
+			IResource[] resources = FileUtility.getResourcesRecursive(project.members(), IStateFilter.SF_UNVERSIONED, 0);
+			for (IResource resource : resources) {
+				filesList.add(new File(FileUtility.getWorkingCopyPath(resource)));
+			}
+		}
+		
+		File[] files = filesList.toArray(new File[0]);
+		CommitOperation commitOperation = new CommitOperation(files, message, true, false);
 		CompositeOperation compositeOperation = new CompositeOperation(commitOperation.getId(), commitOperation.getMessagesClass());
 		// SVN requires adding files to the repository before commiting them
 		compositeOperation.add(new AddToSVNOperation(files, true));
@@ -87,19 +108,15 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	public void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn init", 1);
 		
-		// Gets the last segment of the remote uri and maps so we can map
-		// the local project name to the remote project name
-		File remoteFile = new File(remoteUri);
-		String remoteRepoProjectName = remoteFile.getName();
-		
 		IRepositoryLocation remoteRepoLocation = SVNUtility.asRepositoryResource(remoteUri, true).getRepositoryLocation();
 		
 		// The signature requires the project to be passed as an array
 		IProject[] projects = { project };
-		IFolderNameMapper folderNameMapper = (p -> remoteRepoProjectName);
+		IFolderNameMapper folderNameMapper = (p -> p.getName());
 		ShareProjectOperation shareProjectOperation = new ShareProjectOperation(projects, remoteRepoLocation, 
-				folderNameMapper, remoteRepoProjectName, ShareProjectOperation.LAYOUT_SINGLE, false);
+				folderNameMapper, project.getName(), ShareProjectOperation.LAYOUT_SINGLE, false);
 		CompositeOperation compositeOperation = new CompositeOperation(shareProjectOperation.getId(), shareProjectOperation.getMessagesClass());
+		compositeOperation.add(new AddRepositoryLocationOperation(remoteRepoLocation));
 		compositeOperation.add(shareProjectOperation);
 		// Send notifications that the project is now shared
 		compositeOperation.add(new NotifyProjectStatesChangedOperation(projects, ProjectStatesChangedEvent.ST_POST_SHARED));
@@ -112,13 +129,27 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	public void update(IProject project, IProgressMonitor monitor) throws Exception {
 		SubMonitor updateMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn update", 1);
 		
-		// The signature requires the project to be passed as an array
-		IResource[] projects = { project };
-		UpdateOperation updateOperation = new UpdateOperation(projects, true);
-		updateOperation.run(updateMonitor);
+		// The default UpdateOperation provided by SubVersive was unstable and sometimes failed.
+		// The following is basically the update functionality without all the baggage.
+		AbstractActionOperation updateProjectOperation = new AbstractActionOperation("Operation_UpdateProject", SVNMessages.class) {
+			@Override
+			protected void runImpl(IProgressMonitor monitor) throws Exception {
+				File workingCopy = new File(FileUtility.getWorkingCopyPath(project));
+				IRepositoryLocation location = SVNFileStorage.instance().asRepositoryResource(workingCopy, false).getRepositoryLocation();
+				final ISVNConnector proxy = location.acquireSVNProxy();
+				String[] paths = FileUtility.asPathArray(new File[] { workingCopy });
+				
+				try {
+					proxy.update(paths, SVNRevision.HEAD, SVNDepth.INFINITY, ISVNConnector.Options.ALLOW_UNVERSIONED_OBSTRUCTIONS, new SVNProgressMonitor(this, monitor, null));
+				} finally {
+					location.releaseSVNProxy(proxy);
+				}
+			}	
+		};
+		
+		updateProjectOperation.run(updateMonitor);
 		
 		updateMonitor.split(1);
 	}
-
 }
 
