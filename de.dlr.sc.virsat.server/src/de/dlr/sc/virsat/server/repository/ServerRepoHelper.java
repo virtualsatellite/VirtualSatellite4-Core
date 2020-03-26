@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.repository;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,6 +59,20 @@ public class ServerRepoHelper {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
 		ServerRepository serverRepository = new ServerRepository(config);
 		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
+	}
+	
+	/**
+	 * Saves the given repositoryConfiguration into a file into repository configuration dir
+	 * with name like projectName.properties
+	 * @throws IOException 
+	 */
+	public static void saveRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException {
+		String fileName = repositoryConfiguration.getProjectName() + ".properties";
+		Path configFile = Paths.get(getRepositoryConfigurationDir(), fileName);
+
+		try (OutputStream propertiesStream = Files.newOutputStream(configFile)) {
+			repositoryConfiguration.saveProperties(propertiesStream);
+		}
 	}
 
 	private static String getRepositoryConfigurationDir() {
