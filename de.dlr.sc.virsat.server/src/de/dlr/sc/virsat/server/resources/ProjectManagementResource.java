@@ -9,20 +9,34 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
+import de.dlr.sc.virsat.server.configuration.SimpleConf;
 import de.dlr.sc.virsat.server.controller.RepoManagemantController;
-import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
+import de.dlr.sc.virsat.server.repository.RepoRegistry;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-public class RepoManagementResource {
+@Path(ProjectManagementResource.PATH)
+public class ProjectManagementResource {
 
-	public static final String PATH = "repository";
+	public static final String PATH = "/project";
 	public static final String PATH_ALL_REPOSITORIES = "repositories";
 	public static final String PARAM_NAME = "name";
 	public static final String PARAM_REMOTE_URL = "remoteURL";
@@ -32,51 +46,51 @@ public class RepoManagementResource {
 
 	private RepoManagemantController controller;
 
-	public RepoManagementResource() {
-
+	public ProjectManagementResource() {
+		controller = new RepoManagemantController();
 	}
 
 	@GET
-	@Path(PATH_ALL_REPOSITORIES)
-	public String getAllRepositories() {
-		return ""; //TODO return json with all registered repository names
+	public Response getAllRepositories() {
+		List<RepositoryConfiguration> configurations = new ArrayList<RepositoryConfiguration>();
+		for (Entry<String, ServerRepository> entry : RepoRegistry.getInstance().getRepositories().entrySet()) {
+			configurations.add(entry.getValue().getRepositoryConfiguration());
+		}
+		return Response.status(Response.Status.OK).entity(configurations).build();
 	}
 
 	
 	@GET
-	@Path(PATH)
-	public String getRepository(@QueryParam(PARAM_NAME) String repoName) {
-		String repoConfigJSON = ""; // Todo
-		controller.getRepository(repoName).getRepositoryConfiguration();
-		return repoConfigJSON;
+	@Path("/{projectName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRepository(@PathParam("projectName") String projectName) {
+		if (controller.getRepository(projectName) != null) {
+			RepositoryConfiguration configuration = controller.getRepository(projectName).getRepositoryConfiguration();
+			return Response.status(Response.Status.OK).entity(configuration).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 
 	@DELETE
-	@Path(PATH)
-	public String deleteRepository(@QueryParam(PARAM_NAME) String repoName) {
-		String responseJSON = ""; // Todo
+	@Path("/{projectName}")
+	public Response deleteRepository(@PathParam("projectName") String repoName) {
 		controller.deleteRepository(repoName);
-		return responseJSON;
+		return Response.status(Response.Status.OK).build();
 	}
 
 	@POST
-	@Path(PATH)
-	public String addRepository(@QueryParam(PARAM_NAME) String repoName, @QueryParam(PARAM_REMOTE_URL) String remoteURL,
-			@QueryParam(PARAM_BACKEND) String backend, @QueryParam(PARAM_USER) String userName,
-			@QueryParam(PARAM_PASSWORD) String password) {
-		String responseJSON = ""; // Todo
-		controller.addNewRepository(repoName, remoteURL, VersionControlSystem.valueOf(backend), userName, password);
-		return responseJSON;
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addRepository(RepositoryConfiguration configuration) {
+		controller.addNewRepository(configuration);
+		return Response.status(Response.Status.OK).build();
 	}
 	
 	@PUT
-	@Path(PATH)
-	public String updateRepository(@QueryParam(PARAM_NAME) String repoName, @QueryParam(PARAM_REMOTE_URL) String remoteURL,
-			@QueryParam(PARAM_BACKEND) String backend, @QueryParam(PARAM_USER) String userName,
-			@QueryParam(PARAM_PASSWORD) String password) {
-		String responseJSON = ""; // Todo
-		controller.updateRepository(repoName, remoteURL, VersionControlSystem.valueOf(backend), userName, password);
-		return responseJSON;
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateRepository(RepositoryConfiguration configuration) {
+		controller.updateRepository(configuration);
+		return Response.status(Response.Status.OK).build();
 	}
 
 }

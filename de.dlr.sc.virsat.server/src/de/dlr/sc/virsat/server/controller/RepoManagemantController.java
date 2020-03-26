@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.server.controller;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
-import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public class RepoManagemantController {
 	
@@ -23,19 +22,17 @@ public class RepoManagemantController {
 		return RepoRegistry.getInstance().getRepository(repoName);
 	}
 	
-	public void addNewRepository(String projectName, String remoteUri, VersionControlSystem backend, String functionalAccountName, String functionalAccountPassword) {
-		RepositoryConfiguration repoConfiguration = new RepositoryConfiguration(remoteUri, backend, functionalAccountName, functionalAccountPassword, projectName);
+	public void addNewRepository(RepositoryConfiguration repoConfiguration) {
 		ServerRepository repository = new ServerRepository(repoConfiguration);
-		RepoRegistry.getInstance().addRepository(projectName, repository);
+		RepoRegistry.getInstance().addRepository(repoConfiguration.getProjectName(), repository);
 	}
 	
 	public void deleteRepository(String repoName) {
 		RepoRegistry.getInstance().getRepositories().remove(repoName);
 	}
 	
-	public void updateRepository(String projectName, String remoteUri, VersionControlSystem backend, String functionalAccountName, String functionalAccountPassword) {
-		RepositoryConfiguration repoConfiguration = new RepositoryConfiguration(remoteUri, backend, functionalAccountName, functionalAccountPassword, projectName);
-		ServerRepository repo = RepoRegistry.getInstance().getRepository(projectName);
+	public void updateRepository(RepositoryConfiguration repoConfiguration) {
+		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoConfiguration.getProjectName());
 		repo.getRepositoryConfiguration().update(repoConfiguration);
 	}
 

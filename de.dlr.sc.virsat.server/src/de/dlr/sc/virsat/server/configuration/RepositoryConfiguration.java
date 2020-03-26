@@ -86,6 +86,10 @@ public class RepositoryConfiguration {
 		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
 	}
 	
+	public void setBackend(String backend) {
+		properties.setProperty(BACKEND_KEY, backend);
+	}
+	
 	public void setBackend(VersionControlSystem backend) {
 		properties.setProperty(BACKEND_KEY, backend.name());
 	}
