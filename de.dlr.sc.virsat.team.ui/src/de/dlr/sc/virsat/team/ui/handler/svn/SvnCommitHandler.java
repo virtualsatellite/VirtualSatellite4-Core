@@ -49,8 +49,8 @@ public class SvnCommitHandler extends AVersionControlCommitHandler {
 		CommitMessageDialog commitMessageDialog = super.createCommitMessageDialog();
 		
 		IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
-	    String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
-	    commitMessageDialog.setTemplates(templates);
+		String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
+		commitMessageDialog.setTemplates(templates);
 		
 		return commitMessageDialog;
 	}
