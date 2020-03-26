@@ -47,10 +47,13 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	public void commit(IProject project, String message, IProgressMonitor monitor) throws Exception {
 		SubMonitor pushAndCommitMonitor = SubMonitor.convert(monitor, "Virtual Satellite git push and commit", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
 		
+		// Get the repository mapped to the project
 		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
+		// Stage and commit all changes
 		doCommit(gitRepository, message, pushAndCommitMonitor.split(1));
 
 		ProgressMonitor gitPushMonitor = new EclipseGitProgressTransformer(pushAndCommitMonitor.split(1));
+		// Push the commit
 		Git.wrap(gitRepository).push()
 			.setCredentialsProvider(credentialsProvider)
 			.setProgressMonitor(gitPushMonitor)
@@ -84,10 +87,13 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	public void update(IProject project,  IProgressMonitor monitor) throws Exception {
 		SubMonitor commitAndPullMonitor = SubMonitor.convert(monitor, "Virtual Satellite git commit and pull", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
 		
+		// Get the repository mapped to the project
 		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
+		// Stage and commit all changes
 		doCommit(gitRepository, "Local commit before pull", commitAndPullMonitor.split(1));
 
 		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
+		// Pull from origin
 		Git.wrap(gitRepository).pull()
 			.setCredentialsProvider(credentialsProvider)
 			.setProgressMonitor(gitMonitor)
@@ -103,6 +109,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		File pathRepoLocal = new File(projectDescription.getLocationURI());
 		
 		checkoutMonitor.split(1).subTask("Cloning remote Repository");
+		// Clone into the location specified by the project description
 		Git.cloneRepository()
 			.setCredentialsProvider(credentialsProvider)
 			.setURI(remoteUri)
@@ -118,23 +125,26 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		File pathRepoLocal = pathProjectLocal.getParentFile();
 		
 		checkInMonitor.split(1).subTask("Initializing local repository");
+		// Initialize a new repository in the parent folder of the project
 		Repository initRepo = Git.init()
 			.setDirectory(pathRepoLocal)
 			.call()
 			.getRepository();
 		
 		checkInMonitor.split(1).subTask("Setting remote origin");
+		// Add the remote as origin
 		Git.wrap(initRepo)
 			.remoteAdd()
 			.setUri(new URIish(uri))
 			.setName("origin")
 			.call();
 		
+		// Stage and commit all changes
 		doCommit(initRepo, "Initial commit to local repository", checkInMonitor.split(1));
 		
-		// Connects Eclipse to the created (existing) Git repository
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
-		// We need to .git file to associate the project with the repository
+		// Connect Eclipse to the created (existing) Git repository
+		// By associating the .git file of the new repository explicit with the project
 		File pathRepoLocalGit = new File(pathRepoLocal.toURI().resolve(".git"));
 		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project, pathRepoLocalGit);
 		connectOperation.execute(null);

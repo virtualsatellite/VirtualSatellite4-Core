@@ -88,14 +88,6 @@
             </with>
          </activeWhen>
       </handler>
-      <handler
-            class="de.dlr.sc.virsat.team.ui.action.git.GitUpdateHandler"
-            commandId="de.dlr.sc.virsat.team.ui.command.vc.update">
-      </handler>
-      <handler
-            class="de.dlr.sc.virsat.team.ui.action.git.GitCommitHandler"
-            commandId="de.dlr.sc.virsat.team.ui.command.vc.commit">
-      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -132,38 +124,6 @@
                commandId="de.dlr.sc.virsat.team.ui.command.update"
                icon="resources/update.gif"
                label="Update Project from Repository"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:de.dlr.sc.virsat.project.ui.navigator.view">
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.command.vc.update"
-               icon="resources/update.gif"
-               label="Update Project from Version Control"
-               style="push">
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.command.vc.commit"
-               icon="resources/commit.gif"
-               label="Commit Project from Version Control"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu">
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.command.vc.update"
-               icon="resources/update.gif"
-               label="Update Project from Version Control"
-               style="push">
-         </command>
-         <command
-               commandId="de.dlr.sc.virsat.team.ui.command.vc.commit"
-               icon="resources/commit.gif"
-               label="Commit Project from Version Control"
                style="push">
          </command>
       </menuContribution>
