@@ -54,6 +54,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	public void commit(IProject project, String message, IProgressMonitor monitor) throws Exception {
 		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn commit", 1);
 	
+		// Perform an add + commit operation
 		commitMonitor.split(1).subTask("Commiting & adding files");
 		File[] files = getFilesToCommit(project);
 		CommitOperation commitOperation = new CommitOperation(files, message, true, false);
@@ -178,7 +179,6 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 			}
 		}
 		
-		// Perform an add + commit operation
 		return filesList.toArray(new File[0]);
 	}
 	
