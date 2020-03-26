@@ -58,6 +58,7 @@ public class GitCommitHandler extends AbstractHandler {
 		Set<IProject> selectedProjects = new HashSet<>();
 		List<IStatus> status = new ArrayList<>();
 		
+		// Get all projects associated with selected resources
 		for (Object object : selection.toList()) {
 			if (object instanceof EObject) {
 				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd((EObject) object);
@@ -65,7 +66,7 @@ public class GitCommitHandler extends AbstractHandler {
 				IProject project = ed.getResourceSet().getProject();
 				selectedProjects.add(project);
 			} else if (object instanceof VirSatProjectResource) {
-				// project root object
+				// Project root object
 				IProject project = ((VirSatProjectResource) object).getWrappedProject();
 				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
 				ed.saveAll();
@@ -95,17 +96,17 @@ public class GitCommitHandler extends AbstractHandler {
 						status.add(new Status(Status.ERROR, Activator.getPluginId(), "Transaction interruption during commit", e));
 					}
 				}
+				if (!status.isEmpty()) {
+					MultiStatus multiStatus = new MultiStatus(Activator.getPluginId(), Status.ERROR, status.toArray(new Status[] {}), "Errors during commit", status.get(0).getException());
+					ErrorDialog.openError(Display.getCurrent().getActiveShell(), "Commit Error", "Error during commit", multiStatus);
+					return Status.CANCEL_STATUS;
+				}
 				return Status.OK_STATUS;
 			}
 		};
 		
 		job.setUser(true);
 		job.schedule();
-
-		if (!status.isEmpty()) {
-			MultiStatus multiStatus = new MultiStatus(Activator.getPluginId(), Status.ERROR, status.toArray(new Status[] {}), "Errors during commit", status.get(0).getException());
-			ErrorDialog.openError(Display.getCurrent().getActiveShell(), "Commit Error", "Error during commit", multiStatus);
-		}
 		
 		return null;
 	}

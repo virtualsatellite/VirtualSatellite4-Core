@@ -43,6 +43,16 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 @SuppressWarnings("restriction")
 public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase {
 
+	/**
+	 * This method is used to create a project 
+	 * in a sub folder of a repository at given file system location.
+	 * The project creation waits until the Project is mapped as Repository.
+	 * 
+	 * @param projectName    name of the project to be created
+	 * @param fsRepoLocation Path of the repository in the file system
+	 * @return an IProject which is mapped to the repository
+	 * @throws CoreException
+	 */
 	protected IProject createTestProject(String projectName, Path fsRepoLocation, boolean waitForMapping) throws CoreException {
 		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
 		projectDescription.setLocationURI(fsRepoLocation.toUri());
@@ -50,19 +60,22 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	}
 
 	/**
-	 * This method is used to create a project on a given descriptor which is
-	 * supposed to have a location into a repository. The project creation waits
-	 * until the Project is mapped as Repository
+	 * This method is used to create a project 
+	 * in a sub folder of a repository at the location
+	 * specified by the given project descriptor.
+	 * The project creation waits until the Project is mapped as Repository.
 	 * 
-	 * @param projectName        Name of the project to be created
+	 * @param projectName        name of the project to be created
 	 * @param projectDescription descriptor pointing to the repository
 	 * @return an IProject which is mapped to the repository
 	 * @throws CoreException
 	 */
 	protected IProject createTestProject(String projectName, IProjectDescription projectDescription, boolean waitForMapping) throws CoreException {
+		// Create a new sub folder with the project name in the repository
 		URI uriProjectLocal = projectDescription.getLocationURI().resolve(projectDescription.getName());
 		projectDescription.setLocationURI(uriProjectLocal);
 		
+		// If the project does not exists already, create it
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		testProjects.add(project);
 		if (!project.exists()) {
@@ -72,12 +85,19 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 					new Status(Status.INFO, Activator.getPluginId(), "Created new test project " + project.getName()));
 		}
 
+		// Wait for the mapping to complete
 		if (waitForMapping) {
 			waitForProjectToRepoMapping(project);
 		}
 		return project;
 	}
 	
+	/**
+	 * Method to ensure the project is mapped to the repository.
+	 * Can be overwritten by the derived classes for specific handling.
+	 * @param project to be mapped
+	 * @throws CoreException
+	 */
 	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
 		project.refreshLocal(Resource.DEPTH_INFINITE, null);
 	}
