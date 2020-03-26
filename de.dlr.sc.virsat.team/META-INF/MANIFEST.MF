@@ -15,5 +15,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.team,
- de.dlr.sc.virsat.team.git
+ de.dlr.sc.virsat.team.git,
+ de.dlr.sc.virsat.team.svn
 Automatic-Module-Name: de.dlr.sc.virsat.team
