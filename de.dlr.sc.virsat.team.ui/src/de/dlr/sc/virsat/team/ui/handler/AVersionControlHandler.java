@@ -23,11 +23,20 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
+/**
+ * Abstract class to handle preparatory actions for perfoming
+ * a version control action.
+ *
+ */
 public abstract class AVersionControlHandler extends AbstractHandler {
 
 	protected Set<IProject> selectedProjects;
 	protected IVirSatVersionControlBackend backend;
 	
+	/**
+	 * Creates the version control backend
+	 * @return
+	 */
 	protected abstract IVirSatVersionControlBackend createVersionControlBackend();
 	
 	@Override

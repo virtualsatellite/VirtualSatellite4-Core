@@ -17,18 +17,29 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 
-import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 import de.dlr.sc.virsat.team.ui.util.VersionControlJob;
 
+/**
+ * This class handles common logic for performing a commit with some backend.
+ *
+ */
 public abstract class AVersionControlCommitHandler extends AVersionControlHandler {
-
-	protected abstract IVirSatVersionControlBackend createVersionControlBackend();
 	
+	/**
+	 * Override this method to provide some default proposed comment in the commit message dialog.
+	 * The default implementation just gives the empty string.
+	 * @return
+	 */
 	protected String getProposedComment() {
 		return "";
 	}
 	
+	/**
+	 * Creates the default commit message dialog.
+	 * Override for customization.
+	 * @return
+	 */
 	protected CommitMessageDialog createCommitMessageDialog() {
 		return new CommitMessageDialog(Display.getDefault().getActiveShell(),
 				"Commit Message", "Please enter a commit message describing your changes", getProposedComment());

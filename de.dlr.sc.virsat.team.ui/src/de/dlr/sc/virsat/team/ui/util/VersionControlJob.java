@@ -27,7 +27,8 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.team.ui.Activator;
 
 /**
- *
+ * This job handles preparatory work for the execution of some version control action
+ * and deals with error handling.
  */
 public abstract class VersionControlJob extends Job {
 
@@ -67,6 +68,12 @@ public abstract class VersionControlJob extends Job {
 		return Status.OK_STATUS;
 	}
 	
+	/**
+	 * Override to apply the actual backend operation
+	 * @param project the project to operate on
+	 * @param monitor a progress monitor
+	 * @throws Exception
+	 */
 	protected abstract void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception;
 
 }

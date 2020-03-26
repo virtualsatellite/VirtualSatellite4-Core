@@ -20,6 +20,10 @@ import de.dlr.sc.virsat.team.svn.VirSatSvnVersionControlBackend;
 import de.dlr.sc.virsat.team.ui.handler.AVersionControlUpdateHandler;
 import de.dlr.sc.virsat.team.ui.util.svn.VirSatSvnRevisionStatusUtil;
 
+/**
+ * This class performs an SVN update
+ *
+ */
 public class SvnUpdateHandler extends AVersionControlUpdateHandler {
 
 	@Override

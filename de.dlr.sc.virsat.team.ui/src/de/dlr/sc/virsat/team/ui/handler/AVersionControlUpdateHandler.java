@@ -15,12 +15,14 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.ui.util.VersionControlJob;
 
+/**
+ * 
+ * This class handles common logic for performing an update with some backend
+ *
+ */
 public abstract class AVersionControlUpdateHandler extends AVersionControlHandler {
-
-	protected abstract IVirSatVersionControlBackend createVersionControlBackend();
 	
 	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
 		backend.update(project, monitor);

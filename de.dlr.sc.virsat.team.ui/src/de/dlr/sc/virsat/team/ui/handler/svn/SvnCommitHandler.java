@@ -27,6 +27,11 @@ import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 import de.dlr.sc.virsat.team.ui.handler.AVersionControlCommitHandler;
 import de.dlr.sc.virsat.team.ui.util.svn.VirSatSvnRevisionStatusUtil;
 
+/**
+ * 
+ * This class performs an SVN Commit
+ *
+ */
 public class SvnCommitHandler extends AVersionControlCommitHandler {
 
 	@Override
