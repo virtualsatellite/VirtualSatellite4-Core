@@ -185,21 +185,13 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	/**
 	 * The SVN implementation catches all problems internally and doesn't give any notices of errors.
 	 * Checks the status of the operation and gives some approriate handling
-	 * either by throwing the internal exception that causes and error
-	 * or by logging if the status is only a warning
+	 * either by logging if the status if something went wrong
 	 * @param operation the operation to check
 	 * @throws Exception
 	 */
-	protected void checkStatus(AbstractActionOperation operation) throws Exception {
+	protected void checkStatus(AbstractActionOperation operation) {
 		IStatus status = operation.getStatus();
-		if (status.getSeverity() == IStatus.ERROR) {
-			if (status instanceof Exception) {
-				throw (Exception) status.getException();
-			} else {
-				// Handles unexpected throwables that are not exceptions 
-				throw new RuntimeException(status.getException());
-			}
-		} else if (status.getSeverity() != IStatus.OK) {
+		if (!status.isOK()) {
 			Activator.getDefault().getLog().log(status);
 		}
 	}
