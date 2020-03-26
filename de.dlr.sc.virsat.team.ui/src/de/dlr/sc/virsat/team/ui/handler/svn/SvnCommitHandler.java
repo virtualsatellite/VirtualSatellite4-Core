@@ -16,11 +16,16 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.team.svn.core.utility.FileUtility;
+import org.eclipse.team.svn.ui.SVNTeamUIPlugin;
+import org.eclipse.team.svn.ui.preferences.SVNTeamPreferences;
 import org.eclipse.team.svn.ui.synchronize.SVNChangeSetCapability;
 
 import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.svn.VirSatSvnVersionControlBackend;
+import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
 import de.dlr.sc.virsat.team.ui.handler.AVersionControlCommitHandler;
 import de.dlr.sc.virsat.team.ui.util.svn.VirSatSvnRevisionStatusUtil;
 
@@ -34,6 +39,17 @@ public class SvnCommitHandler extends AVersionControlCommitHandler {
 	@Override
 	protected String getProposedComment() {
 		return SVNChangeSetCapability.getProposedComment(selectedProjects.toArray(new IResource[0]));
+	}
+	
+	@Override
+	protected CommitMessageDialog createCommitMessageDialog() {
+		CommitMessageDialog commitMessageDialog = super.createCommitMessageDialog();
+		
+		IPreferenceStore store = SVNTeamUIPlugin.instance().getPreferenceStore();
+	    String[] templates = FileUtility.decodeStringToArray(SVNTeamPreferences.getCommentTemplatesString(store, SVNTeamPreferences.COMMENT_TEMPLATES_LIST_NAME));
+	    commitMessageDialog.setTemplates(templates);
+		
+		return commitMessageDialog;
 	}
 
 	@Override

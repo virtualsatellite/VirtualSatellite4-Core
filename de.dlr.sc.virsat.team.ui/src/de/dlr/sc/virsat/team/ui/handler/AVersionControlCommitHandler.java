@@ -29,10 +29,14 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 		return "";
 	}
 	
+	protected CommitMessageDialog createCommitMessageDialog() {
+		return new CommitMessageDialog(Display.getDefault().getActiveShell(),
+				"Commit Message", "Please enter a commit message describing your changes", getProposedComment());
+	}
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(),
-				"Commit Message", "Please enter a commit message describing your changes", getProposedComment());
+		CommitMessageDialog commitMessageDialog = createCommitMessageDialog();
 
 		if (commitMessageDialog.open() != Window.OK) {
 			// Commit canceled
