@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.team.svn;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 
@@ -60,6 +59,10 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 			};
 			
 			createRemoteRepoOp.run(new NullProgressMonitor());
+			if (!createRemoteRepoOp.getStatus().isOK()) {
+				throw createRemoteRepoOp.getStatus().getException();
+			}
+			
 			
 			pathRepoLocal1 = Files.createTempDirectory("VirtualSatelliteSvnLocal1_");
 			File filePathToProject = pathRepoLocal1.toFile();
@@ -70,8 +73,8 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 			filePathToProject = pathRepoLocal2.toFile();
 			CheckoutAsOperation checkoutAsOperation2 = new CheckoutAsOperation(filePathToProject, remoteRepo, SVNDepth.INFINITY, true, true);
 			checkoutAsOperation2.run(new NullProgressMonitor());
-		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+		} catch (Throwable e) {
+			throw new CoreException(new Status(Status.ERROR, Activator.getPluginId(),
 					"Error during temp remote directory creation", e));
 		}
 		
