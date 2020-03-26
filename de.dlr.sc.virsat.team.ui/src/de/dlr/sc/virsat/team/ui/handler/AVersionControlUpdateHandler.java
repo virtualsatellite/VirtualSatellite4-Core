@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
-import de.dlr.sc.virsat.team.ui.util.svn.VersionControlJob;
+import de.dlr.sc.virsat.team.ui.util.VersionControlJob;
 
 public abstract class AVersionControlUpdateHandler extends AVersionControlHandler {
 

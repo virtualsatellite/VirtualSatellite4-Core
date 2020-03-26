@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Display;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.ui.dialog.CommitMessageDialog;
-import de.dlr.sc.virsat.team.ui.util.svn.VersionControlJob;
+import de.dlr.sc.virsat.team.ui.util.VersionControlJob;
 
 public abstract class AVersionControlCommitHandler extends AVersionControlHandler {
 

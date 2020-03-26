@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.team.ui.util.svn;
+package de.dlr.sc.virsat.team.ui.util;
 
 import java.util.ArrayList;
 import java.util.List;
