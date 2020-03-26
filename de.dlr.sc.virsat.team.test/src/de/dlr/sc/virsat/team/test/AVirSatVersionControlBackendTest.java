@@ -134,9 +134,9 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	@After
 	public void tearDown() throws CoreException {
 		try {
-			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			Files.walk(pathRepoLocal1).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			Files.walk(pathRepoLocal2).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
+			Files.walk(pathRepoLocal1).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
+			Files.walk(pathRepoLocal2).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 					"Error during temp remote directory creation", e));
