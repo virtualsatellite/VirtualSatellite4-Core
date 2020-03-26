@@ -36,6 +36,7 @@ addons:
     - metacity
     - ant
     - expect
+    - svn
 
 install:
 - true
