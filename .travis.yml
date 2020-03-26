@@ -36,7 +36,6 @@ addons:
     - metacity
     - ant
     - expect
-    - subversion
 
 install:
 - true
