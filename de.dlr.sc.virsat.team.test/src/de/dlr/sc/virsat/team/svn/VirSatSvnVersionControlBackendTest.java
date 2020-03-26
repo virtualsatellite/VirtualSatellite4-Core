@@ -63,7 +63,6 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 				throw createRemoteRepoOp.getStatus().getException();
 			}
 			
-			
 			pathRepoLocal1 = Files.createTempDirectory("VirtualSatelliteSvnLocal1_");
 			File filePathToProject = pathRepoLocal1.toFile();
 			CheckoutAsOperation checkoutAsOperation1 = new CheckoutAsOperation(filePathToProject, remoteRepo, SVNDepth.INFINITY, true, true);
@@ -75,7 +74,7 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 			checkoutAsOperation2.run(new NullProgressMonitor());
 		} catch (Throwable e) {
 			throw new CoreException(new Status(Status.ERROR, Activator.getPluginId(),
-					"Error during temp remote directory creation", e));
+					"Error during temp directory creation", e));
 		}
 		
 		super.setUp();
