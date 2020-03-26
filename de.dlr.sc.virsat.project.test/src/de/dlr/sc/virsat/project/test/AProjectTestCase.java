@@ -56,7 +56,7 @@ public abstract class AProjectTestCase {
 	protected VirSatProjectCommons projectCommons;
 	protected VirSatResourceSet rs;
 	
-	private List<IProject> testProjects = new ArrayList<>();
+	protected List<IProject> testProjects = new ArrayList<>();
 	
 	/**
 	 * Use this method to create a new test project and to remember it for the test case.
@@ -122,8 +122,10 @@ public abstract class AProjectTestCase {
 		
 		// Make sure all projects that were created get removed again
 		for (IProject project : testProjects) {
-			project.delete(true, null);
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+			if (project.exists()) {
+				project.delete(true, null);
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+			}
 		}
 		
 		//CHECKSTYLE:OFF
