@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.repository;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,9 +25,7 @@ import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
  * Helper class to save, load and register server repository configurations
  */
 public class ServerRepoHelper {
-	
-	public static final String REPOSITORY_CONFIGURATIONS_DIR_PROPERTY = "repository.configurations.dir";
-	
+
 	private ServerRepoHelper() { }
 	
 	/**
@@ -34,10 +33,10 @@ public class ServerRepoHelper {
 	 * @throws IOException 
 	 */
 	public static void initRepoRegistry() throws IOException {
-		try (Stream<Path> paths = Files.walk(Paths.get(getRepositoryConfigurationDir()))) {
-		    paths
-		        .filter(Files::isRegularFile)
-		        .forEach(t -> {
+		try (Stream<Path> paths = Files.walk(Paths.get(ServerConfiguration.getRepositoryConfigurationsDir()))) {
+			paths
+				.filter(Files::isRegularFile)
+				.forEach(t -> {
 					try {
 						registerRepositoryConfiguration(t);
 					} catch (IOException e) {
@@ -59,8 +58,18 @@ public class ServerRepoHelper {
 		ServerRepository serverRepository = new ServerRepository(config);
 		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
 	}
+	
+	/**
+	 * Saves the given repositoryConfiguration into a file into repository configuration dir
+	 * with name like projectName.properties
+	 * @throws IOException 
+	 */
+	public static void saveRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException {
+		String fileName = repositoryConfiguration.getProjectName() + ".properties";
+		Path configFile = Paths.get(ServerConfiguration.getRepositoryConfigurationsDir(), fileName);
 
-	private static String getRepositoryConfigurationDir() {
-		return ServerConfiguration.getProperties().getProperty(REPOSITORY_CONFIGURATIONS_DIR_PROPERTY);
+		try (OutputStream propertiesStream = Files.newOutputStream(configFile)) {
+			repositoryConfiguration.saveProperties(propertiesStream);
+		}
 	}
 }
