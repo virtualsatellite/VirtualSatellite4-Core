@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -57,13 +58,15 @@ public class RepositoryConfigurationTest {
 	@Test
 	public void testSaveProperties() throws IOException {
 		
+		File wsRootFile = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toFile();
+		
 		final String TEST_FILE_NAME = "test.properties";
 		
 		RepositoryConfiguration configuration = new RepositoryConfiguration(TEST_REMOTE, VersionControlSystem.GIT, TEST_USER, TEST_PASSWORD, TEST_PROJECT);
-		OutputStream outputStream = new FileOutputStream(new File(TEST_FILE_NAME));
+		OutputStream outputStream = new FileOutputStream(new File(wsRootFile, TEST_FILE_NAME));
 		configuration.saveProperties(outputStream);
 		
-		InputStream inputStream = new FileInputStream(new File(TEST_FILE_NAME));
+		InputStream inputStream = new FileInputStream(new File(wsRootFile, TEST_FILE_NAME));
 		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
@@ -71,7 +74,7 @@ public class RepositoryConfigurationTest {
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
 		
-		InputStream loadStream = new FileInputStream(new File(TEST_FILE_NAME));
+		InputStream loadStream = new FileInputStream(new File(wsRootFile, TEST_FILE_NAME));
 		RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
 		assertEquals("Remote loaded", TEST_REMOTE, importedConfiguration.getRemoteUri());
 		assertEquals("Users loaded", TEST_USER, importedConfiguration.getFunctionalAccountName());

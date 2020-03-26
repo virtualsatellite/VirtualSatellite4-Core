@@ -23,7 +23,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 				de.dlr.sc.virsat.commons.test.AllTests.class,
 				de.dlr.sc.virsat.server.test.AllTests.class,
-//				de.dlr.sc.virsat.team.test.AllTests.class, // There are no tests yet
+				de.dlr.sc.virsat.team.test.AllTests.class,
 				de.dlr.sc.virsat.model.test.AllTests.class,
 				de.dlr.sc.virsat.model.edit.test.AllTests.class,
 				de.dlr.sc.virsat.model.concept.test.AllTests.class,

@@ -13,28 +13,20 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackendTest;
 import junit.framework.JUnit4TestAdapter;
 
-/**
- * 
- * @author scha_vo
- *
- */
 @RunWith(Suite.class)
 
-@SuiteClasses({ExampleTest.class})
+@SuiteClasses({
+	VirSatGitVersionControlBackendTest.class
+})
 
 public class AllTests {
 
-	/**
-	 * the constructor
-	 */
 	private AllTests() {
 	}
-	/**
-	 * initializes the test suite
-	 * @return a newt JUnit test adapter
-	 */
+
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
 	}	
