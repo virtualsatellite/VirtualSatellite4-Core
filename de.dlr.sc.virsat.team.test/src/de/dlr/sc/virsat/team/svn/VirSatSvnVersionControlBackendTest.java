@@ -56,7 +56,7 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 					} finally {
 						proxy.dispose();
 					}
-				}			
+				}
 			};
 			
 			createRemoteRepoOp.run(new NullProgressMonitor());
