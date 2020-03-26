@@ -44,8 +44,8 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 			filePathToProject = pathRepoLocal2.toFile();
 			Git.cloneRepository().setURI(uriToRemoteRepoPath.toString()).setDirectory(filePathToProject).call();
 		} catch (IOException | GitAPIException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"Error during temp remote directory creation", e));
+			throw new CoreException(new Status(Status.ERROR, Activator.getPluginId(),
+					"Error during temp directory creation", e));
 		}
 
 		super.setUp();
