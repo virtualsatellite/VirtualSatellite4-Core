@@ -11,7 +11,6 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  org.eclipse.team.core
 Export-Package: de.dlr.sc.virsat.team.git,
- de.dlr.sc.virsat.team.svn,
  de.dlr.sc.virsat.team.test
 Automatic-Module-Name: de.dlr.sc.virsat.team.test
 Import-Package: de.dlr.sc.virsat.project.test
