@@ -125,7 +125,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	}
 
 	@Test
-	public void testSimpleCommitAndUpdate() throws Throwable {
+	public void testSimpleCommitAndUpdate() throws Exception {
 
 		// Create a new SEI on the file system
 		addResourceSetAndRepository(projectRepoLocal1);
