@@ -63,8 +63,7 @@ public class ServerRepository {
 	
 	
 	public void retrieveEdAndResurceSetFromConfiguration() {
-		String projectName = repositoryConfiguration.getProjectName();
-		project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		retrieveProjectFromConfiguration();
 		
 		resourceSet = VirSatResourceSet.getResourceSet(project);
 		ed = VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
@@ -124,5 +123,17 @@ public class ServerRepository {
 				)
 			);
 		}
+	}
+
+	public IProject getProject() {
+		return project;
+	}
+
+	public VirSatResourceSet getResourceSet() {
+		return resourceSet;
+	}
+
+	public VirSatTransactionalEditingDomain getEd() {
+		return ed;
 	}
 }
