@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 public class RepoManagementResource {
 
 	public static final String PATH = "repository";
+	public static final String PATH_ALL_REPOSITORIES = "repositories";
 	public static final String PARAM_NAME = "name";
 	public static final String PARAM_REMOTE_URL = "remoteURL";
 	public static final String PARAM_USER = "user";
@@ -35,6 +36,13 @@ public class RepoManagementResource {
 
 	}
 
+	@GET
+	@Path(PATH_ALL_REPOSITORIES)
+	public String getAllRepositories() {
+		return ""; //TODO return json with all registered repository names
+	}
+
+	
 	@GET
 	@Path(PATH)
 	public String getRepository(@QueryParam(PARAM_NAME) String repoName) {
