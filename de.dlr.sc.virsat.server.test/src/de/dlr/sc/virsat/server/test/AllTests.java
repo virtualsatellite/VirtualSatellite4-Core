@@ -16,6 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfigurationTest;
 import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccessTest;
+import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
 import de.dlr.sc.virsat.server.resources.AccessTestResourceTest;
 import de.dlr.sc.virsat.server.resources.WorkspaceAccessResourceTest;
@@ -35,6 +36,7 @@ import junit.framework.JUnit4TestAdapter;
 	AccessTestResourceTest.class,
 	WorkspaceUserContextTest.class,
 	ServerConfigurationTest.class,
+	ServerRepoHelperTest.class,
 	RepositoryConfigurationTest.class
 })
 
