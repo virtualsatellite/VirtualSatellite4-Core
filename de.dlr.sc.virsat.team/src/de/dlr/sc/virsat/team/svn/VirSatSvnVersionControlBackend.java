@@ -44,6 +44,7 @@ import org.eclipse.team.svn.core.resource.IResourceProvider;
 import org.eclipse.team.svn.core.resource.events.ProjectStatesChangedEvent;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
+import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
@@ -169,11 +170,12 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		// The subversive implementation sets a flag that requires the parent of a file that should be commited,
 		// to be under version control as well. We check here if the parent is under version control,
 		// and if so, then we can simply commit the project file. If not, we commit the commitable files under the
-		// project. We do not go any deeper and let SVN itself handle the recursive search for further commitables.
+		// project. 
 		if (SVNUtility.hasSVNFolderInOrAbove(projectWorkingCopy.getParentFile())) {
 			filesList.add(projectWorkingCopy);
 		} else {
-			IResource[] resources = FileUtility.getResourcesRecursive(project.members(), IStateFilter.SF_UNVERSIONED, 0);
+			IStateFilter[] filters = { IStateFilter.SF_MODIFIED, IStateFilter.SF_UNVERSIONED };
+			IResource[] resources = FileUtility.getResourcesRecursive(project.members(), new OrStateFilter(filters));
 			for (IResource resource : resources) {
 				filesList.add(new File(FileUtility.getWorkingCopyPath(resource)));
 			}
