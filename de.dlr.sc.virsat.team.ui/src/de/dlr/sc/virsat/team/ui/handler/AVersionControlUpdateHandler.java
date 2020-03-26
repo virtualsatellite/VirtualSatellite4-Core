@@ -22,6 +22,10 @@ public abstract class AVersionControlUpdateHandler extends AVersionControlHandle
 
 	protected abstract IVirSatVersionControlBackend createVersionControlBackend();
 	
+	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
+		backend.update(project, monitor);
+	}
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
@@ -31,7 +35,7 @@ public abstract class AVersionControlUpdateHandler extends AVersionControlHandle
 			
 			@Override
 			protected void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception {
-				backend.update(project, monitor);
+				doUpdate(project, monitor);
 			}
 		};
 		

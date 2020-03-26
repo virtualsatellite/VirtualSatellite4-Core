@@ -34,22 +34,26 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 				"Commit Message", "Please enter a commit message describing your changes", getProposedComment());
 	}
 	
+	protected void doCommit(IProject project, String message, IProgressMonitor monitor) throws Exception {
+		backend.commit(project, message, monitor);
+	}
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		super.execute(event);
+		
 		CommitMessageDialog commitMessageDialog = createCommitMessageDialog();
 
 		if (commitMessageDialog.open() != Window.OK) {
 			// Commit canceled
 			return null;
 		}
-		
-		super.execute(event);
 
-		Job job = new VersionControlJob("Virtual Satellite Git Commit", selectedProjects) {
+		Job job = new VersionControlJob("Virtual Satellite Commit", selectedProjects) {
 			
 			@Override
 			protected void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception {
-				backend.commit(project, commitMessageDialog.getCommitMessage(), monitor);
+				doCommit(project, commitMessageDialog.getCommitMessage(), monitor);
 			}
 		};
 		

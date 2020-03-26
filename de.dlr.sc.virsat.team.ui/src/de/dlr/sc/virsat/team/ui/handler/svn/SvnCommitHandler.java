@@ -9,11 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.ui.handler.svn;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -51,26 +49,16 @@ public class SvnCommitHandler extends AVersionControlCommitHandler {
 		
 		return commitMessageDialog;
 	}
-
+	
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			for (IProject selectedProject : selectedProjects) {
-				Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: Before commit on:\n"
-								+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)));
-			}
-
-			super.execute(event);
-
-			for (IProject selectedProject : selectedProjects) {
-				Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: After commit on:\n"
-								+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)));
-			}
-		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SVN commit failed", e));
-		}
-
-		return null;
+	protected void doCommit(IProject project, String message, IProgressMonitor monitor) throws Exception {
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: Before commit on:\n"
+				+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(project)));
+		
+		super.doCommit(project, message, monitor);
+		
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: After commit on:\n"
+				+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(project)));
 	}
 	
 }

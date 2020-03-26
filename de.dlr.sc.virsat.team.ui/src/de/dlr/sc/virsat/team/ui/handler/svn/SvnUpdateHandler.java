@@ -9,10 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.ui.handler.svn;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -28,26 +26,15 @@ public class SvnUpdateHandler extends AVersionControlUpdateHandler {
 	protected IVirSatVersionControlBackend createVersionControlBackend() {
 		return new VirSatSvnVersionControlBackend();
 	}
-
+	
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			for (IProject selectedProject : selectedProjects) {
-				Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: Before update on:\n"
-								+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)));
-			}
-
-			super.execute(event);
-
-			for (IProject selectedProject : selectedProjects) {
-				Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: After update on:\n"
-								+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(selectedProject)));
-			}
-		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SVN Update failed", e));
-		}
-
-		return null;
+	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: Before update on:\n"
+				+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(project)));
+		
+		super.doUpdate(project, monitor);
+		
+		Activator.getDefault().getLog().log(new Status(IStatus.INFO, Activator.getPluginId(), "SVN: After update on:\n"
+				+ new VirSatSvnRevisionStatusUtil().getWorkspaceChangedStatus(project)));
 	}
-
 }
