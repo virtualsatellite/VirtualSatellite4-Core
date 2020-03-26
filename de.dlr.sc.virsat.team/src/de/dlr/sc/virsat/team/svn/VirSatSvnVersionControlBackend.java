@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.SVNMessages;
@@ -43,6 +44,7 @@ import org.eclipse.team.svn.core.resource.events.ProjectStatesChangedEvent;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 
+import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBackend {
@@ -68,6 +70,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 			}
 		}
 		
+		// Perform an add + commit operation
 		File[] files = filesList.toArray(new File[0]);
 		CommitOperation commitOperation = new CommitOperation(files, message, true, false);
 		CompositeOperation compositeOperation = new CompositeOperation(commitOperation.getId(), commitOperation.getMessagesClass());
@@ -75,7 +78,11 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		compositeOperation.add(new AddToSVNOperation(files, true));
 		compositeOperation.add(commitOperation);
 		
+		checkStatus(compositeOperation);
+		
 		compositeOperation.run(commitMonitor);
+		
+		checkStatus(compositeOperation);
 		
 		commitMonitor.split(1);
 	}
@@ -101,6 +108,8 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		
 		compositeOperation.run(checkoutMonitor);
 		
+		checkStatus(compositeOperation);
+		
 		checkoutMonitor.split(1);
 	}
 
@@ -121,6 +130,8 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		// Send notifications that the project is now shared
 		compositeOperation.add(new NotifyProjectStatesChangedOperation(projects, ProjectStatesChangedEvent.ST_POST_SHARED));
 		compositeOperation.run(checkInMonitor);
+		
+		checkStatus(compositeOperation);
 		
 		checkInMonitor.split(1);
 	}
@@ -149,7 +160,31 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		
 		updateProjectOperation.run(updateMonitor);
 		
+		checkStatus(updateProjectOperation);
+		
 		updateMonitor.split(1);
+	}
+	
+	/**
+	 * The SVN implementation catches all problems internally and doesn't give any notices of errors.
+	 * Checks the status of the operation and gives some approriate handling
+	 * either by throwing the internal exception that causes and error
+	 * or by logging if the status is only a warning
+	 * @param operation the operation to check
+	 * @throws Exception
+	 */
+	protected void checkStatus(AbstractActionOperation operation) throws Exception {
+		IStatus status = operation.getStatus();
+		if (status.getSeverity() == IStatus.ERROR) {
+			if (status instanceof Exception) {
+				throw (Exception) status.getException();
+			} else {
+				// Handles unexpected throwables that are not exceptions 
+				throw new RuntimeException(status.getException());
+			}
+		} else if (status.getSeverity() != IStatus.OK) {
+			Activator.getDefault().getLog().log(status);
+		}
 	}
 }
 
