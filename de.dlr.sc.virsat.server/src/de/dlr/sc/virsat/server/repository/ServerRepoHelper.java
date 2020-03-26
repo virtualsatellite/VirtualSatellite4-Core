@@ -25,9 +25,7 @@ import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
  * Helper class to save, load and register server repository configurations
  */
 public class ServerRepoHelper {
-	
-	public static final String REPOSITORY_CONFIGURATIONS_DIR_PROPERTY = "repository.configurations.dir";
-	
+
 	private ServerRepoHelper() { }
 	
 	/**
@@ -35,10 +33,10 @@ public class ServerRepoHelper {
 	 * @throws IOException 
 	 */
 	public static void initRepoRegistry() throws IOException {
-		try (Stream<Path> paths = Files.walk(Paths.get(getRepositoryConfigurationDir()))) {
-		    paths
-		        .filter(Files::isRegularFile)
-		        .forEach(t -> {
+		try (Stream<Path> paths = Files.walk(Paths.get(ServerConfiguration.getRepositoryConfigurationsDir()))) {
+			paths
+				.filter(Files::isRegularFile)
+				.forEach(t -> {
 					try {
 						registerRepositoryConfiguration(t);
 					} catch (IOException e) {
@@ -68,14 +66,10 @@ public class ServerRepoHelper {
 	 */
 	public static void saveRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException {
 		String fileName = repositoryConfiguration.getProjectName() + ".properties";
-		Path configFile = Paths.get(getRepositoryConfigurationDir(), fileName);
+		Path configFile = Paths.get(ServerConfiguration.getRepositoryConfigurationsDir(), fileName);
 
 		try (OutputStream propertiesStream = Files.newOutputStream(configFile)) {
 			repositoryConfiguration.saveProperties(propertiesStream);
 		}
-	}
-
-	private static String getRepositoryConfigurationDir() {
-		return ServerConfiguration.getProperties().getProperty(REPOSITORY_CONFIGURATIONS_DIR_PROPERTY);
 	}
 }
