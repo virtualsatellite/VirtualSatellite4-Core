@@ -43,6 +43,17 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 @SuppressWarnings("restriction")
 public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase {
 
+	private static final String PROJECT_CHECKIN_NAME = "VirSatRepoCheckin";
+	private static final String PROJECT_LOCAL_NAME = "VirSatRepoLocal";
+	
+	protected Path pathRepoRemote;
+	protected Path pathRepoLocal1;
+	protected Path pathRepoLocal2;
+
+	protected IProject projectRepoLocal1;
+
+	protected IVirSatVersionControlBackend backend;
+	
 	/**
 	 * This method is used to create a project 
 	 * in a sub folder of a repository at given file system location.
@@ -101,17 +112,6 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	protected void waitForProjectToRepoMapping(IProject project) throws CoreException {
 		project.refreshLocal(Resource.DEPTH_INFINITE, null);
 	}
-
-	protected Path pathRepoRemote;
-	protected Path pathRepoLocal1;
-	protected Path pathRepoLocal2;
-
-	protected IProject projectRepoLocal1;
-
-	protected IVirSatVersionControlBackend backend;
-
-	private static final String PROJECT_CHECKIN_NAME = "VirSatRepoCheckin";
-	private static final String PROJECT_LOCAL_NAME = "VirSatRepoLocal";
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -134,9 +134,9 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	@After
 	public void tearDown() throws CoreException {
 		try {
-			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			Files.walk(pathRepoLocal1).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			Files.walk(pathRepoLocal2).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
+			Files.walk(pathRepoLocal1).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
+			Files.walk(pathRepoLocal2).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 					"Error during temp remote directory creation", e));
