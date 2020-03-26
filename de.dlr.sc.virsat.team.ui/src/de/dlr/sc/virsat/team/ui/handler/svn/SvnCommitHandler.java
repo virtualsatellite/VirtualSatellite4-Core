@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.team.ui.handler.svn;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.team.svn.ui.synchronize.SVNChangeSetCapability;
 
 import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
@@ -27,6 +29,11 @@ public class SvnCommitHandler extends AVersionControlCommitHandler {
 	@Override
 	protected IVirSatVersionControlBackend createVersionControlBackend() {
 		return new VirSatSvnVersionControlBackend();
+	}
+	
+	@Override
+	protected String getProposedComment() {
+		return SVNChangeSetCapability.getProposedComment(selectedProjects.toArray(new IResource[0]));
 	}
 
 	@Override

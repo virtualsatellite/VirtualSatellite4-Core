@@ -25,10 +25,14 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 
 	protected abstract IVirSatVersionControlBackend createVersionControlBackend();
 	
+	protected String getProposedComment() {
+		return "";
+	}
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		CommitMessageDialog commitMessageDialog = new CommitMessageDialog(Display.getDefault().getActiveShell(),
-				"Commit Message", "Please enter a commit message describing your changes", "");
+				"Commit Message", "Please enter a commit message describing your changes", getProposedComment());
 
 		if (commitMessageDialog.open() != Window.OK) {
 			// Commit canceled
