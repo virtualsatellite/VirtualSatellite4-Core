@@ -36,6 +36,7 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 public class VirSatGitVersionControlBackend implements IVirSatVersionControlBackend {
 
 	private CredentialsProvider credentialsProvider;
+	public static final String BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE = "Backend Local Commit Before Pull: ";
 	
 	public VirSatGitVersionControlBackend(CredentialsProvider credentialsProvider) {
 		this.credentialsProvider = credentialsProvider;
@@ -95,7 +96,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		// Get the repository mapped to the project
 		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
 		// Stage and commit all changes
-		doCommit(gitRepository, "Local commit before pull", commitAndPullMonitor.split(1));
+		doCommit(gitRepository, BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE  + project.getName(), commitAndPullMonitor.split(1));
 
 		commitAndPullMonitor.split(1).subTask("Check if remotes exist");
 		// Get the remotes for the repository

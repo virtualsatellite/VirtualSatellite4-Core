@@ -173,7 +173,7 @@ public class ServerRepository {
 		atomicException.throwIfSet();
 	}
 	
-	public static final String SERVER_REPOSITORY_COMMIT_MESSAGE = "Server Commit for Project: ";
+	public static final String SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE = "Server Local Commit Before Push: ";
 	
 	/**
 	 * This method syncs the repository, which means it updates from remote
@@ -191,7 +191,7 @@ public class ServerRepository {
 				// in the backend. E.g. Usually Git should works like: 1. commit your changes locally. 2. Pull remote changes and merge.
 				// 3. push the merged changes.
 				versionControlBackEnd.update(project, new NullProgressMonitor());
-				versionControlBackEnd.commit(project, SERVER_REPOSITORY_COMMIT_MESSAGE + projectName, new NullProgressMonitor());
+				versionControlBackEnd.commit(project, SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE + projectName, new NullProgressMonitor());
 			} catch (Exception e) {
 				atomicException.set(e);
 			}
@@ -239,5 +239,7 @@ public class ServerRepository {
 		if (!project.exists()) {
 			checkoutRepository();
 		}
+		
+		syncRepository();
 	}
 }

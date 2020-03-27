@@ -10,19 +10,22 @@
 package de.dlr.sc.virsat.server.repository;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -146,7 +149,40 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 	
 	@Test
-	public void testUpdateOrCheckoutProject() {
-		fail("Not implemented yet");
+	public void testUpdateOrCheckoutProject() throws Exception {
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository.updateOrCheckoutProject();
+
+		IProject createdProject = testServerRepository.getProject();		
+		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+
+		ArrayList<RevCommit> commitList1 = StreamSupport
+			.stream(
+					Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
+					false
+				)
+			.collect(Collectors.toCollection(() -> new ArrayList<>()));
+		
+		assertThat("Commit List has expected size", commitList1, hasSize(2));
+		
+		// Add another file to the project when reconnecting, this file should create a new commit on the repository
+		testServerRepository.getProject().getFile("newTempFile.txt").create(new ByteArrayInputStream("test".getBytes()), true, null);
+		
+		// now call the method a second time, the project is already created thus it should only do the update
+		ServerRepository testServerRepository2 = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository2.updateOrCheckoutProject();
+		
+		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+
+		ArrayList<RevCommit> commitList2 = StreamSupport
+			.stream(
+					Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
+					false
+				)
+			.collect(Collectors.toCollection(() -> new ArrayList<>()));
+		
+		// CHECKSTYLE:OFF
+		assertThat("Commit List has expected size", commitList2, hasSize(4));
+		// CHECKSTYLE:ON
 	}
 }
