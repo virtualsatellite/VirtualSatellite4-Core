@@ -95,9 +95,16 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception {
+	public void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn init", 1);
 		
+		checkInMonitor.split(1).subTask("Moving project into local Repository");
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(project.getName());
+		projectDescription.setLocationURI(pathRepoLocal.toURI());
+		
+		project.move(projectDescription, true, monitor);
+		
+		checkInMonitor.split(1).subTask("Checking in local project");
 		IRepositoryLocation remoteRepoLocation = SVNUtility.asRepositoryResource(remoteUri, true).getRepositoryLocation();
 		
 		// The signature requires the project to be passed as an array
@@ -105,7 +112,6 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		// Use the local project name as the remote project name
 		IFolderNameMapper folderNameMapper = (p -> p.getName());
 		
-		checkInMonitor.split(1).subTask("Checking in local project");
 		ShareProjectOperation shareProjectOperation = new ShareProjectOperation(projects, remoteRepoLocation, 
 				folderNameMapper, project.getName(), ShareProjectOperation.LAYOUT_SINGLE, false);
 		CompositeOperation compositeOperation = new CompositeOperation(shareProjectOperation.getId(), shareProjectOperation.getMessagesClass());
