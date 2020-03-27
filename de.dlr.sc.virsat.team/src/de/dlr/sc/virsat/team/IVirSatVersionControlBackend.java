@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -33,11 +35,12 @@ public interface IVirSatVersionControlBackend {
 	/**
 	 * Creates a local checkout of a project from the version control system
 	 * @param projectDescription the project metadata
+	 * @param pathRepoLoacl the local path in which to checkout the project
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
 	 * @throws Exception
 	 */
-	void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor) throws Exception;
+	void checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 	
 	/**
 	 * Uploads a project to the version control system

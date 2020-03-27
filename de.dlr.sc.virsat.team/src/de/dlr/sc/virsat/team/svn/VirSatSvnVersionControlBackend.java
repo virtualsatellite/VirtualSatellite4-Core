@@ -70,10 +70,8 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor)
-			throws Exception {
+	public void checkout(IProjectDescription projectDescription,  File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn checkout", 1);
-		File pathRepoLocal = new File(projectDescription.getLocationURI());
 		IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(remoteUri, true);
 
 		checkoutMonitor.split(1).subTask("Checking out remote project");

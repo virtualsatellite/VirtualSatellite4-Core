@@ -185,7 +185,8 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		projectDescription.setLocationURI(pathRepoCheckout.toUri());
 
 		// Execute the checkout
-		backend.checkout(projectDescription, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
+		File pathRepoLocal = new File(projectDescription.getLocationURI());
+		backend.checkout(projectDescription, pathRepoLocal, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
 
 		// Create the project and wait until it is mapped with the Providers
 		IProject projectCheckout = createTestProject(PROJECT_LOCAL_NAME, projectDescription, true);

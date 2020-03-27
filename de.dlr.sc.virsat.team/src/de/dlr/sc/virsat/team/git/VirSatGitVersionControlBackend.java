@@ -103,10 +103,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor) throws Exception {
+	public void checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite git clone", PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS);
-		
-		File pathRepoLocal = new File(projectDescription.getLocationURI());
 		
 		checkoutMonitor.split(1).subTask("Cloning remote Repository");
 		// Clone into the location specified by the project description
@@ -117,6 +115,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.call();
 	}
 
+	public static final String INITIAL_COMMIT_MESSAGE = "Initial Commit on Checkin";
+	
 	@Override
 	public void checkin(IProject project, String uri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite git init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
@@ -140,7 +140,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.call();
 		
 		// Stage and commit all changes
-		doCommit(initRepo, "Initial commit to local repository", checkInMonitor.split(1));
+		doCommit(initRepo, INITIAL_COMMIT_MESSAGE, checkInMonitor.split(1));
 		
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
 		// Connect Eclipse to the created (existing) Git repository

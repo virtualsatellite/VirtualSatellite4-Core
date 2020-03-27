@@ -11,5 +11,5 @@ package de.dlr.sc.virsat.team;
 
 public enum VersionControlSystem {
 	GIT,
-	SVN
+	SVN;
 }
