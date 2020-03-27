@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -46,7 +47,7 @@ public class ServerRepository {
 	private File localRepositoryHome;
 	private File localRepository;
 	
-	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) {
+	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
 		this.repositoryConfiguration = repositoryConfiguration;
 		this.localRepositoryHome = localRepositoryHome;
 		this.localRepository = new File(localRepositoryHome, repositoryConfiguration.getProjectName());
@@ -55,7 +56,10 @@ public class ServerRepository {
 		String userName = Objects.toString(repositoryConfiguration.getFunctionalAccountName(), "");
 		String userPass = Objects.toString(repositoryConfiguration.getFunctionalAccountPassword(), "");
 	
-		VersionControlBackendProvider backendProvider = new VersionControlBackendProvider(repositoryConfiguration.getBackend(), userName, userPass);
+		VersionControlBackendProvider backendProvider = new VersionControlBackendProvider(
+				repositoryConfiguration.getBackend(), 
+				repositoryConfiguration.getRemoteUri(), 
+				userName, userPass);
 		versionControlBackEnd = backendProvider.createBackendImplementation();
 	}
 	

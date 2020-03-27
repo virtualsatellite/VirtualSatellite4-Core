@@ -19,6 +19,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -88,7 +89,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testRetrieveProjectFromConfiguration() {
+	public void testRetrieveProjectFromConfiguration() throws URISyntaxException {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
 		assertNull("Project is not yet correctly detected", testServerRepository.getProject());
@@ -99,7 +100,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testRetrieveEdAndResurceSetFromConfiguration() {
+	public void testRetrieveEdAndResurceSetFromConfiguration() throws URISyntaxException {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
 		assertNull("EditingDomain is not yet correctly detected", testServerRepository.getEd());
