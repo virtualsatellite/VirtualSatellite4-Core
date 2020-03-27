@@ -13,6 +13,7 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
@@ -23,7 +24,6 @@ import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.URIish;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
@@ -118,29 +118,26 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkin(IProject project, String uri, IProgressMonitor monitor) throws Exception {
+	public void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite git init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
 		
-		File pathProjectLocal = new File(project.getLocationURI());
-		File pathRepoLocal = pathProjectLocal.getParentFile();
-		
-		checkInMonitor.split(1).subTask("Initializing local repository");
-		// Initialize a new repository in the parent folder of the project
-		Repository initRepo = Git.init()
+		checkInMonitor.split(1).subTask("Cloning remote Repository");
+		// Clone into the location specified by the project description
+		Repository repo = Git.cloneRepository()
+			.setCredentialsProvider(credentialsProvider)
+			.setURI(remoteUri)
 			.setDirectory(pathRepoLocal)
 			.call()
 			.getRepository();
 		
-		checkInMonitor.split(1).subTask("Setting remote origin");
-		// Add the remote as origin
-		Git.wrap(initRepo)
-			.remoteAdd()
-			.setUri(new URIish(uri))
-			.setName("origin")
-			.call();
+		checkInMonitor.split(1).subTask("Moving project into local Repository");
+		// Changing the project to the target location lets eclipse know where we want to move the project
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(project.getName());
+		projectDescription.setLocationURI(pathRepoLocal.toURI().resolve(project.getName()));
+		project.move(projectDescription, true, monitor);
 		
 		// Stage and commit all changes
-		doCommit(initRepo, "Initial commit to local repository", checkInMonitor.split(1));
+		doCommit(repo, "Initial commit to local repository", checkInMonitor.split(1));
 		
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
 		// Connect Eclipse to the created (existing) Git repository

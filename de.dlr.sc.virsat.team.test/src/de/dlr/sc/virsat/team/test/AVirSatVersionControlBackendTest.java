@@ -214,7 +214,8 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		assertNull("Project does not yet have a git mapping", RepositoryMapping.getMapping(projectCheckin));
 		
 		// Now checkin the project and transmit it to the remote bare repository
-		backend.checkin(projectCheckin, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
+		Path pathRepoLocal = Files.createTempDirectory("VirtualSatelliteLocalCheckin_");
+		backend.checkin(projectCheckin, pathRepoLocal.toFile(), pathRepoRemote.toUri().toString(), new NullProgressMonitor());
 		waitForProjectToRepoMapping(projectCheckin);
 		backend.commit(projectCheckin, "Initial Commit", new NullProgressMonitor());
 
