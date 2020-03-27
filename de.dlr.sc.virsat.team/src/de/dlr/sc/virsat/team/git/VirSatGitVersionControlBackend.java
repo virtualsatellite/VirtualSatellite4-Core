@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.team.git;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -19,7 +20,9 @@ import org.eclipse.egit.core.EclipseGitProgressTransformer;
 import org.eclipse.egit.core.op.ConnectProviderOperation;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.BranchTrackingStatus;
 import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -93,6 +96,16 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		doCommit(gitRepository, "Local commit before pull", commitAndPullMonitor.split(1));
 
 		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
+		
+		String branch = Git.wrap(gitRepository).getRepository().getFullBranch();
+		
+		String remoteTrackingBranch = BranchTrackingStatus.of(gitRepository, branch).getRemoteTrackingBranch();
+		
+		
+		List<Ref> refs = Git.wrap(gitRepository).getRepository().getRefDatabase().getRefs();
+		refs = Git.wrap(gitRepository).branchList().call();
+		
+		
 		// Pull from origin
 		Git.wrap(gitRepository).pull()
 			.setCredentialsProvider(credentialsProvider)
