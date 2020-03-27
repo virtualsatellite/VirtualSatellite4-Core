@@ -10,10 +10,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jgit,
  org.eclipse.egit.core,
  org.eclipse.team.core,
- org.eclipse.team.svn.core
+ org.eclipse.team.svn.core,
+ org.polarion.eclipse.team.svn.connector,
+ org.polarion.eclipse.team.svn.connector.svnkit18
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.team,
- de.dlr.sc.virsat.team.git
+ de.dlr.sc.virsat.team.git,
+ de.dlr.sc.virsat.team.svn
 Automatic-Module-Name: de.dlr.sc.virsat.team
