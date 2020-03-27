@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.repository;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,6 +19,11 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 public class RepoRegistryTest {
 	
 	private static final String REPO_NAME = "TestRepository";
+	
+	@After
+	public void tearDown() {
+		RepoRegistry.getInstance().getRepositories().clear();
+	}
 	
 	@Test
 	public void testBasicAddGet() {

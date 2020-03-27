@@ -47,6 +47,7 @@ public class ProjectManagementResource {
 	}
 
 	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllRepositories() {
 		List<RepositoryConfiguration> configurations = new ArrayList<RepositoryConfiguration>();
 		for (Entry<String, ServerRepository> entry : RepoRegistry.getInstance().getRepositories().entrySet()) {
