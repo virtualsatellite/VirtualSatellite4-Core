@@ -104,13 +104,17 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 	
 	@Test
-
-	public void testRetrieveEdAndResurceSetFromConfiguration() throws URISyntaxException {
+	public void testRetrieveEdAndResurceSetFromConfiguration() throws URISyntaxException, CoreException {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
 		assertNull("No project retrieved yet", testServerRepository.getProject());
 		testServerRepository.retrieveProjectFromConfiguration();
 		assertNotNull("Project Exists", testServerRepository.getProject());
+		
+		testServerRepository.retrieveEdAndResurceSetFromConfiguration();
+		
+		assertNotNull("EditingDomain got set", testServerRepository.getEd());
+		assertNotNull("ResourceSet got set", testServerRepository.getResourceSet());
 	}
 	
 	@Test 
