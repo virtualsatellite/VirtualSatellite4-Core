@@ -186,10 +186,10 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 
 		// Execute the checkout
 		File pathRepoLocal = new File(projectDescription.getLocationURI());
-		backend.checkout(projectDescription, pathRepoLocal, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
-
-		// Create the project and wait until it is mapped with the Providers
-		IProject projectCheckout = createTestProject(PROJECT_LOCAL_NAME, projectDescription, true);
+		IProject projectCheckout = backend.checkout(projectDescription, pathRepoLocal, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
+		
+		assertTrue("Checked out project exists", projectCheckout.exists());
+		assertTrue("Checked out project is open", projectCheckout.isOpen());
 
 		// Now check that the SEI has been well checked out in the project and on the
 		// file system
