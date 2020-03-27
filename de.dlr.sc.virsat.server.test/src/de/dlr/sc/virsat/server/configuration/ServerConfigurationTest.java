@@ -31,7 +31,6 @@ import de.dlr.sc.virsat.server.Activator;
 public class ServerConfigurationTest {
 	
 	public static final String REPOSITORY_CONFIGURATIONS_DIR = "some/dir";
-	public static final String WORKSPACE_DIR = "workspace";
 
 	@Test
 	public void testDefaultProperties() throws IOException {

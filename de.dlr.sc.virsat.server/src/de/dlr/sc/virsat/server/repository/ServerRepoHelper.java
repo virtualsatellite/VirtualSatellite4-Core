@@ -43,6 +43,8 @@ public class ServerRepoHelper {
 						registerRepositoryConfiguration(t);
 					} catch (IOException e) {
 						throw new UncheckedIOException(e);
+					} catch (URISyntaxException e) {
+						throw new RuntimeException(e);
 					}
 				});
 		} 
@@ -56,9 +58,10 @@ public class ServerRepoHelper {
 	 * @throws FileNotFoundException 
 	 * @throws URISyntaxException 
 	 */
-	private static void registerRepositoryConfiguration(File localRepoHome, Path repositoryConfigurationFile) throws FileNotFoundException, IOException, URISyntaxException {
+	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws FileNotFoundException, IOException, URISyntaxException {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
-		ServerRepository serverRepository = new ServerRepository(localRepoHome, config);
+		
+		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), config);
 		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
 	}
 	
