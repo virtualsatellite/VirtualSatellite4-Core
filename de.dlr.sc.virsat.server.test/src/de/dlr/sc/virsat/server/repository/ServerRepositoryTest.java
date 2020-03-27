@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -80,12 +81,12 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testCheckoutRepository() throws Exception {
-		ServerRepository serverRepository = new ServerRepository(localRepoHome, testRepoConfig);
+	public void testRetrieveProjectFromConfiguration() throws Exception {
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
-		serverRepository.checkoutRepository();
+		testServerRepository.checkoutRepository();
 		
-		File localRepositoryFolder = serverRepository.getLocalRepositoryPath();
+		File localRepositoryFolder = testServerRepository.getLocalRepositoryPath();
 		File localRepositoryGitFolder = new File(localRepositoryFolder, ".git/");
 		
 		assertTrue("Local Repository Got Checked out", localRepositoryGitFolder.exists());
@@ -95,16 +96,17 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 	
 	@Test
-	public void testRetrieveProject() {
-		ServerRepository serverRepository = new ServerRepository(localRepoHome, testRepoConfig);
+
+	public void testRetrieveEdAndResurceSetFromConfiguration() throws URISyntaxException {
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
-		assertNull("No project retrieved yet", serverRepository.getProject());
-		serverRepository.retrieveProjectFromConfiguration();
-		assertNotNull("Project Exists", serverRepository.getProject());
+		assertNull("No project retrieved yet", testServerRepository.getProject());
+		testServerRepository.retrieveProjectFromConfiguration();
+		assertNotNull("Project Exists", testServerRepository.getProject());
 	}
 	
 	@Test 
-	public void testCreateVirSatProjectIfNeeded() throws CoreException {
+	public void testCreateVirSatProjectIfNeeded() throws CoreException, URISyntaxException {
 		ServerRepository serverRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		serverRepository.retrieveProjectFromConfiguration();
 		IProject createdProject = serverRepository.getProject();

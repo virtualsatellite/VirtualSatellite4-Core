@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -24,23 +25,16 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import de.dlr.sc.virsat.commons.exception.AtomicException;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
-import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
-import de.dlr.sc.virsat.team.VersionControlSystem;
-import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
-import de.dlr.sc.virsat.team.svn.VirSatSvnVersionControlBackend;
+import de.dlr.sc.virsat.team.VersionControlBackendProvider;
 
 /**
  * Entry point to the eclipse project
@@ -55,7 +49,7 @@ public class ServerRepository {
 	private File localRepositoryHome;
 	private File localRepository;
 	
-	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) {
+	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
 		this.repositoryConfiguration = repositoryConfiguration;
 		this.localRepositoryHome = localRepositoryHome;
 		this.localRepository = new File(localRepositoryHome, repositoryConfiguration.getProjectName());
@@ -64,16 +58,11 @@ public class ServerRepository {
 		String userName = Objects.toString(repositoryConfiguration.getFunctionalAccountName(), "");
 		String userPass = Objects.toString(repositoryConfiguration.getFunctionalAccountPassword(), "");
 	
-		if (repositoryConfiguration.getBackend() == VersionControlSystem.GIT) {
-			CredentialsProvider credentialProvider = new UsernamePasswordCredentialsProvider(userName, userPass);
-			versionControlBackEnd = new VirSatGitVersionControlBackend(credentialProvider);
-		} else if (repositoryConfiguration.getBackend() == VersionControlSystem.SVN) {
-			versionControlBackEnd = new VirSatSvnVersionControlBackend();
-			// TODO: SVN Authentication still needs to be implemented
-			// Hint New Location Wizzard Page, SVNUtil und SVNRepsoitoryLocation. These classes seem to manage the authentication
-		} else {
-			Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.getPluginId(), "Unknown Backend in Configuration"));
-		}
+		VersionControlBackendProvider backendProvider = new VersionControlBackendProvider(
+				repositoryConfiguration.getBackend(), 
+				repositoryConfiguration.getRemoteUri(), 
+				userName, userPass);
+		versionControlBackEnd = backendProvider.createBackendImplementation();
 	}
 	
 	public RepositoryConfiguration getRepositoryConfiguration() {
