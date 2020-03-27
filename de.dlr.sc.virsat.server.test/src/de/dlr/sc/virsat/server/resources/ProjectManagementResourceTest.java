@@ -21,6 +21,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -30,70 +31,123 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 
-	@Test
-	public void testGetAllProjectsEmptyInitially() throws IOException {
+	private RepositoryConfiguration testProjectConfiguration;
 
-		List<String> projects = getAllProjectsRequest();
-		
-		assertTrue(projects.isEmpty());
-	}
-	
-	@Test
-	public void testAddAndGetProject() throws IOException {
-
-		// Creating a new project
+	@Before
+	public void setUpProjectConfiguration() {
 		String projectName = "testProject";
 		String uri = "test.project.uri";
 		VersionControlSystem backend = VersionControlSystem.GIT;
 		String username = "username";
 		String password = "password";
 
-		RepositoryConfiguration projectConfiguration = new RepositoryConfiguration(uri, backend, username, password, projectName);
-		
-		Response addResponse = putRequest(projectName, projectConfiguration);
+		testProjectConfiguration = new RepositoryConfiguration(uri, backend, username, password, projectName);
+	}
+	
+	@Test
+	public void testGetAllProjectsEmptyInitially() throws IOException {
+		List<String> projects = getAllProjectsRequest();
+		assertTrue(projects.isEmpty());
+	}
+	
+	@Test
+	public void testAddAndGetProject() throws IOException {
+
+		String projectName = testProjectConfiguration.getProjectName();
+		Response addResponse = putRequest(projectName, testProjectConfiguration);
 		
 		assertEquals(Response.Status.OK, addResponse.getStatusInfo().toEnum());
 		assertTrue(RepoRegistry.getInstance().getRepositories().containsKey(projectName));
 		
-		// getting
 		RepositoryConfiguration receivedConfiguration = getRequest(projectName);
-		assertEquals(projectConfiguration, receivedConfiguration);
+		assertEquals(testProjectConfiguration, receivedConfiguration);
 		
-		String newPassword = "new password";
-		projectConfiguration.setFunctionalAccountPassword(newPassword);
+		List<String> projects = getAllProjectsRequest();
+		assertEquals(1, projects.size());
+		assertTrue(projects.contains(projectName));
 	}
 	
-	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
+	@Test
+	public void testUpdateProject() {
+		String projectName = testProjectConfiguration.getProjectName();
+		putRequest(projectName, testProjectConfiguration);
+		
+		testProjectConfiguration.setFunctionalAccountPassword("new password");
+		Response updateResponse = putRequest(projectName, testProjectConfiguration);
+		assertEquals(Response.Status.OK, updateResponse.getStatusInfo().toEnum());
+		
+		RepositoryConfiguration receivedConfiguration = getRequest(projectName);
+		assertEquals(testProjectConfiguration, receivedConfiguration);
+	}
+	
+	@Test
+	public void testDeleteProject() {
+		String projectName = testProjectConfiguration.getProjectName();
+		putRequest(projectName, testProjectConfiguration);
+		Response response = deleteRequest(projectName);
+		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
+		assertTrue(getAllProjectsRequest().isEmpty());
+	}
+	
+	@Test
+	public void testAddConfigurationForDifferentProject() {
+		String newProjectName = "newProject";
+		putRequest(newProjectName, testProjectConfiguration);
+		
+		RepositoryConfiguration receivedConfiguration = getRequest(newProjectName);
+		testProjectConfiguration.setProjectName(newProjectName);
+		assertEquals(testProjectConfiguration, receivedConfiguration);
+	}
+
+	@Test
+	public void testGetNonExistingProject() {
 		Response response = webTarget
-				.path("/management")
-				.path(ProjectManagementResource.PATH)
-				.path("/" + projectName)
+				.path("/management").path(ProjectManagementResource.PATH).path("/nonExistingProject")
+				.request()
+				.accept(MediaType.APPLICATION_JSON)
+				.get();
+		
+		assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo().toEnum());
+	}
+	
+	@Test
+	public void testAddInvalidProject() {
+		Response response = webTarget
+				.path("/management").path(ProjectManagementResource.PATH).path("/someProject")
+				.request()
+				.put(Entity.json("{\"name\":\"raspberry\"}"));
+		
+		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
+	}
+
+
+	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
+		return webTarget
+				.path("/management").path(ProjectManagementResource.PATH).path("/" + projectName)
 				.request()
 				.put(Entity.entity(configuration, MediaType.APPLICATION_JSON));
-		
-		return response;
 	}
 
 	private RepositoryConfiguration getRequest(String projectName) {
-		RepositoryConfiguration receivedConfiguration = webTarget
-				.path("/management")
-				.path(ProjectManagementResource.PATH)
-				.path("/" + projectName)
+		return webTarget
+				.path("/management").path(ProjectManagementResource.PATH).path("/" + projectName)
 				.request()
 				.accept(MediaType.APPLICATION_JSON)
 				.get(RepositoryConfiguration.class);
-		
-		return receivedConfiguration;
 	}
-	
+
+	private Response deleteRequest(String projectName) {
+		return webTarget
+				.path("/management").path(ProjectManagementResource.PATH).path("/" + projectName)
+				.request()
+				.delete();
+	}
+
 	private List<String> getAllProjectsRequest() {
-		List<String> projectNames = webTarget
-				.path("/management")
-				.path(ProjectManagementResource.PATH)
+		return webTarget
+				.path("/management").path(ProjectManagementResource.PATH)
 				.request()
 				.accept(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<String>>() { });
-				
-		return projectNames;
 	}
 }
