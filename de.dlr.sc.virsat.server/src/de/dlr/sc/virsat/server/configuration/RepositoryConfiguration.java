@@ -30,6 +30,10 @@ public class RepositoryConfiguration {
 	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
 	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
+	public RepositoryConfiguration() {
+		properties = new Properties();
+	}
+	
 	/**
 	 * 
 	 * @param remoteUri
@@ -117,4 +121,34 @@ public class RepositoryConfiguration {
 	public void setProjectName(String projectName) {
 		properties.setProperty(PROJECT_NAME, projectName);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RepositoryConfiguration other = (RepositoryConfiguration) obj;
+		if (properties == null) {
+			if (other.properties != null) {
+				return false;
+			}
+		} else if (!properties.equals(other.properties)) {
+			return false;
+		}
+		return true;
+	}	
 }

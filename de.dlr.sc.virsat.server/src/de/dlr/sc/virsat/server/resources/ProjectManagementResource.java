@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -49,11 +50,8 @@ public class ProjectManagementResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProjects() {
-		List<RepositoryConfiguration> configurations = new ArrayList<RepositoryConfiguration>();
-		for (Entry<String, ServerRepository> entry : RepoRegistry.getInstance().getRepositories().entrySet()) {
-			configurations.add(entry.getValue().getRepositoryConfiguration());
-		}
-		return Response.status(Response.Status.OK).entity(configurations).build();
+		List<String> projects = new ArrayList<>(RepoRegistry.getInstance().getRepositories().keySet());
+		return Response.status(Response.Status.OK).entity(projects).build();
 	}
 
 	
