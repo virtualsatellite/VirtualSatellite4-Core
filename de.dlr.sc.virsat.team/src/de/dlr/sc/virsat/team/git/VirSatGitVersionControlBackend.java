@@ -10,17 +10,17 @@
 package de.dlr.sc.virsat.team.git;
 
 import java.io.File;
-import java.util.List;
-
+import java.util.Collection;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
 import org.eclipse.egit.core.op.ConnectProviderOperation;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.BranchTrackingStatus;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -95,27 +95,29 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		// Stage and commit all changes
 		doCommit(gitRepository, "Local commit before pull", commitAndPullMonitor.split(1));
 
+		commitAndPullMonitor.split(1).subTask("Check if remotes exist");
+		// Get the remotes for the repository
+		String remoteUrl = gitRepository.getConfig().getString("remote", "origin", "url");
+		Collection<Ref> refs = Git.lsRemoteRepository()
+			.setRemote(remoteUrl)
+			.call();
+		
+		// Only perform a pull of the remote exists
 		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
 		
-		String branch = Git.wrap(gitRepository).getRepository().getBranch();
-		
-		String remoteTrackingBranch = BranchTrackingStatus.of(gitRepository, branch).getRemoteTrackingBranch();
-		
-		List<Ref> refs = Git.wrap(gitRepository).getRepository().getRefDatabase().getRefs();
-		refs = Git.wrap(gitRepository).branchList().call();
-		
-		
-		// Pull from origin
-		Git.wrap(gitRepository).pull()
-			.setCredentialsProvider(credentialsProvider)
-			.setProgressMonitor(gitMonitor)
-			.setTimeout(GIT_REMOTE_TIMEOUT)
-			.setStrategy(MergeStrategy.THEIRS)
-			.call();
+		if (!refs.isEmpty()) {
+			// Pull from origin
+			Git.wrap(gitRepository).pull()
+				.setCredentialsProvider(credentialsProvider)
+				.setProgressMonitor(gitMonitor)
+				.setTimeout(GIT_REMOTE_TIMEOUT)
+				.setStrategy(MergeStrategy.THEIRS)
+				.call();
+		}
 	}
 
 	@Override
-	public void checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
+	public IProject checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite git clone", PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS);
 		
 		checkoutMonitor.split(1).subTask("Cloning remote Repository");
@@ -125,6 +127,14 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.setURI(remoteUri)
 			.setDirectory(pathRepoLocal)
 			.call();
+		
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject();
+		project.create(projectDescription, new NullProgressMonitor());
+		project.open(new NullProgressMonitor());
+		
+		connect(project, pathRepoLocal, new NullProgressMonitor());
+		
+		return project;
 	}
 
 	public static final String INITIAL_COMMIT_MESSAGE = "Initial Commit on Checkin";
@@ -155,14 +165,12 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		doCommit(initRepo, INITIAL_COMMIT_MESSAGE, checkInMonitor.split(1));
 		
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
-		// Connect Eclipse to the created (existing) Git repository
-		// By associating the .git file of the new repository explicit with the project
 		connect(project, pathRepoLocal, checkInMonitor.split(1));
 	}
 
-	@Override
 	public void connect(IProject project, File pathRepoLocal, IProgressMonitor monitor) throws Exception {
 		SubMonitor.convert(monitor, "Connecting Project", 1);
+		// Connect Eclipse to the created (existing) Git repository
 		// By associating the .git file of the new repository explicit with the project
 		File pathRepoLocalGit = new File(pathRepoLocal.toURI().resolve(".git"));
 		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project, pathRepoLocalGit);

@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.team.VersionControlBackendProviderTest;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackendTest;
 import de.dlr.sc.virsat.team.svn.VirSatSvnVersionControlBackendTest;
 import junit.framework.JUnit4TestAdapter;
@@ -21,7 +22,8 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({
 	VirSatGitVersionControlBackendTest.class,
-	VirSatSvnVersionControlBackendTest.class
+	VirSatSvnVersionControlBackendTest.class,
+	VersionControlBackendProviderTest.class
 })
 
 public class AllTests {

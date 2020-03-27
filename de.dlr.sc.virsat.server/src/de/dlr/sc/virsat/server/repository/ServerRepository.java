@@ -104,10 +104,6 @@ public class ServerRepository {
 				);
 			
 				retrieveProjectFromConfiguration();
-				project.create(projectDescription, new NullProgressMonitor());
-				project.open(new NullProgressMonitor());
-				
-				versionControlBackEnd.connect(project, localRepositoryPath, new NullProgressMonitor());
 				
 				createVirSatProjectIfNeeded();
 				

@@ -40,7 +40,7 @@ public interface IVirSatVersionControlBackend {
 	 * @param monitor an update monitor
 	 * @throws Exception
 	 */
-	void checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
+	IProject checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 	
 	/**
 	 * Uploads a project to the version control system
@@ -58,6 +58,4 @@ public interface IVirSatVersionControlBackend {
 	 * @throws Exception
 	 */
 	void update(IProject project, IProgressMonitor monitor) throws Exception;
-
-	void connect(IProject project, File pathRepoLocal, IProgressMonitor monitor) throws Exception;
 }
