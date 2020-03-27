@@ -48,7 +48,7 @@ public class ProjectManagementResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllRepositories() {
+	public Response getAllProjects() {
 		List<RepositoryConfiguration> configurations = new ArrayList<RepositoryConfiguration>();
 		for (Entry<String, ServerRepository> entry : RepoRegistry.getInstance().getRepositories().entrySet()) {
 			configurations.add(entry.getValue().getRepositoryConfiguration());
@@ -60,7 +60,7 @@ public class ProjectManagementResource {
 	@GET
 	@Path("/{projectName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRepository(@PathParam("projectName") String projectName) {
+	public Response getProject(@PathParam("projectName") String projectName) {
 		if (controller.getRepository(projectName) != null) {
 			RepositoryConfiguration configuration = controller.getRepository(projectName).getRepositoryConfiguration();
 			return Response.status(Response.Status.OK).entity(configuration).build();
@@ -71,22 +71,28 @@ public class ProjectManagementResource {
 
 	@DELETE
 	@Path("/{projectName}")
-	public Response deleteRepository(@PathParam("projectName") String repoName) {
+	public Response deleteProject(@PathParam("projectName") String repoName) {
 		controller.deleteRepository(repoName);
 		return Response.status(Response.Status.OK).build();
 	}
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRepository(RepositoryConfiguration configuration) {
-		controller.addNewRepository(configuration);
-		return Response.status(Response.Status.OK).build();
-	}
-	
+	/**
+	 * Creates or updates a project configuration on the project specified by the URL.
+	 * URL project overrides project name in the passed configuration if they are different.
+	 * @param projectName
+	 * @param configuration
+	 * @return
+	 */
 	@PUT
+	@Path("/{projectName}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateRepository(RepositoryConfiguration configuration) {
-		controller.updateRepository(configuration);
+	public Response createOrUpdateProject(@PathParam("projectName") String projectName, RepositoryConfiguration configuration) {
+		configuration.setProjectName(projectName);
+		if (RepoRegistry.getInstance().getRepositories().containsKey(projectName)) {
+			controller.updateRepository(configuration);
+		} else {
+			controller.addNewRepository(configuration);
+		}
 		return Response.status(Response.Status.OK).build();
 	}
 
