@@ -9,10 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.configuration;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -24,26 +27,36 @@ public class RepositoryConfiguration {
 	private Properties properties;
 	
 	// Properties key
-	public static final String PROJECT_NAME = "project.name";
+	public static final String PROJECT_NAME_KEY = "project.name";
 	public static final String BACKEND_KEY = "repository.backend";
+	public static final String LOCAL_PATH_KEY = "repository.localPath";
 	public static final String REMOTE_URL_KEY = "repository.remoteURI";
 	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
 	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
 	/**
-	 * 
-	 * @param remoteUri
-	 * @param backend
-	 * @param functionalAccountName
-	 * @param functionalAccountPassword
+	 * Sets up a property file describing a project repository relation
+	 * @param projectName Name of the project
+	 * @param relativePath of the project in the local repository
+	 * @param remoteUri remote Uri pointing to the remote repository
+	 * @param backend Backend to be used for the repository, usually GIT or SVN
+	 * @param functionalAccountName a user for the functional account to communicate with the backend
+	 * @param functionalAccountPassword a password for the functional account
 	 */
-	public RepositoryConfiguration(String remoteUri, VersionControlSystem backend, String functionalAccountName, String functionalAccountPassword, String projectName) {
+	public RepositoryConfiguration(
+			String projectName,
+			File localPath,
+			URI remoteUri,
+			VersionControlSystem backend,
+			String functionalAccountName,
+			String functionalAccountPassword) {
 		properties = new Properties();
+		setProjectName(projectName);
+		setLocalPath(localPath);
 		setRemoteUri(remoteUri);
+		setBackend(backend);
 		setFunctionalAccountName(functionalAccountName);
 		setFunctionalAccountPassword(functionalAccountPassword);
-		setBackend(backend);
-		setProjectName(projectName);
 	}
 	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
@@ -51,11 +64,18 @@ public class RepositoryConfiguration {
 		loadProperties(repoConfInputStream);
 	}
 
-	public void update(RepositoryConfiguration repository) {
-		setRemoteUri(repository.getRemoteUri());
-		setFunctionalAccountName(repository.getFunctionalAccountName());
-		setFunctionalAccountPassword(repository.getFunctionalAccountPassword());
-		setProjectName(repository.getProjectName());
+	/**
+	 * Method to update a repository configuration with new values
+	 * @param repositoryBackend the repositoryConfiguration to be used to update the current one
+	 * @throws URISyntaxException
+	 */
+	public void update(RepositoryConfiguration repositoryBackend) throws URISyntaxException {
+		setProjectName(repositoryBackend.getProjectName());
+		setLocalPath(repositoryBackend.getLocalPath());
+		setRemoteUri(repositoryBackend.getRemoteUri());
+		setBackend(repositoryBackend.getBackend());
+		setFunctionalAccountName(repositoryBackend.getFunctionalAccountName());
+		setFunctionalAccountPassword(repositoryBackend.getFunctionalAccountPassword());
 	}
 	
 	/**
@@ -74,12 +94,12 @@ public class RepositoryConfiguration {
 		properties.store(configFileOutputStream, "");
 	}
 
-	public String getRemoteUri() {
-		return properties.getProperty(REMOTE_URL_KEY);
+	public URI getRemoteUri() throws URISyntaxException  {
+		return new URI(properties.getProperty(REMOTE_URL_KEY));
 	}
 
-	public void setRemoteUri(String remoteUri) {
-		properties.setProperty(REMOTE_URL_KEY, remoteUri);
+	public void setRemoteUri(URI remoteUri) {
+		properties.setProperty(REMOTE_URL_KEY, remoteUri.toString());
 	}
 
 	public VersionControlSystem getBackend() {
@@ -107,10 +127,18 @@ public class RepositoryConfiguration {
 	}
 	
 	public String getProjectName() {
-		return properties.getProperty(PROJECT_NAME);
+		return properties.getProperty(PROJECT_NAME_KEY);
 	}
 
 	public void setProjectName(String projectName) {
-		properties.setProperty(PROJECT_NAME, projectName);
+		properties.setProperty(PROJECT_NAME_KEY, projectName);
+	}
+
+	public File getLocalPath() {
+		return new File(properties.getProperty(LOCAL_PATH_KEY));
+	}
+
+	public void setLocalPath(File localPath) {
+		properties.setProperty(LOCAL_PATH_KEY, localPath.toString());
 	}
 }

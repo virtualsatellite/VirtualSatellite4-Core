@@ -13,8 +13,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -56,10 +59,10 @@ public class ServerRepoHelperTest {
 	}
 	
 	@Test
-	public void testSaveConfiguration() throws FileNotFoundException, IOException {
+	public void testSaveConfiguration() throws FileNotFoundException, IOException, URISyntaxException {
 		String projectName = "testProject";
-		String uri = "test.uri";
-		RepositoryConfiguration config = new RepositoryConfiguration(uri, VersionControlSystem.GIT, "", "", projectName);
+		URI uri = new URI("test.uri");
+		RepositoryConfiguration config = new RepositoryConfiguration(projectName, new File(""), uri, VersionControlSystem.GIT, "", "");
 		
 		String expectedFileName = projectName + ".properties";
 		Path configFilePath = configsDir.resolve(expectedFileName);
@@ -74,7 +77,7 @@ public class ServerRepoHelperTest {
 		assertEquals("Saved file contains correct URI", uri, loadedConfig.getRemoteUri());
 		
 		//Check overwriting
-		String newUri = "new.test.uri";
+		URI newUri = new URI("new.test.uri");
 		config.setRemoteUri(newUri);
 		ServerRepoHelper.saveRepositoryConfiguration(config);
 		loadedConfig = new RepositoryConfiguration(Files.newInputStream(configFilePath));
@@ -87,7 +90,7 @@ public class ServerRepoHelperTest {
 	 * @throws IOException 
 	 */
 	private void createTempRepoConfigFile(Path parentDir, String projectName, VersionControlSystem backend) throws IOException {
-		String fileContents = RepositoryConfiguration.PROJECT_NAME + ":" + projectName + System.lineSeparator()
+		String fileContents = RepositoryConfiguration.PROJECT_NAME_KEY + ":" + projectName + System.lineSeparator()
 				+ RepositoryConfiguration.BACKEND_KEY + ":" + backend;
 		Path tempFile = Files.createTempFile(parentDir, projectName, ".properties");
 		Files.write(tempFile, fileContents.getBytes());
