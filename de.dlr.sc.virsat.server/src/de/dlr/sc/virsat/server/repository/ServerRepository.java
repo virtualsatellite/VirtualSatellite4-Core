@@ -195,4 +195,11 @@ public class ServerRepository {
 	public VirSatTransactionalEditingDomain getEd() {
 		return ed;
 	}
+
+	/**
+	 * Checks out or updates the project and adds it into the workspace
+	 */
+	public void updateOrCheckoutProject() {
+		// TODO implementation
+	}
 }

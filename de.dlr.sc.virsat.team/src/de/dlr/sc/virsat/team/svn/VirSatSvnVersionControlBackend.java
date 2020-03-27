@@ -20,8 +20,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
+import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNConnector;
 import org.eclipse.team.svn.core.connector.SVNDepth;
@@ -34,17 +36,14 @@ import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.operation.file.CommitOperation;
 import org.eclipse.team.svn.core.operation.file.SVNFileStorage;
 import org.eclipse.team.svn.core.operation.local.NotifyProjectStatesChangedOperation;
-import org.eclipse.team.svn.core.operation.local.RefreshResourcesOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation.IFolderNameMapper;
 import org.eclipse.team.svn.core.operation.remote.management.AddRepositoryLocationOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryLocation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
-import org.eclipse.team.svn.core.resource.IResourceProvider;
 import org.eclipse.team.svn.core.resource.events.ProjectStatesChangedEvent;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
-import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
@@ -70,26 +69,22 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkout(IProjectDescription projectDescription,  File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
+	public IProject checkout(IProjectDescription projectDescription,  File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn checkout", 1);
 		IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(remoteUri, true);
 
 		checkoutMonitor.split(1).subTask("Checking out remote project");
 		CheckoutAsOperation checkoutAsOperation = new CheckoutAsOperation(pathRepoLocal, remoteRepo, SVNDepth.INFINITY, true, true);
-		CompositeOperation compositeOperation = new CompositeOperation(checkoutAsOperation.getId(), checkoutAsOperation.getMessagesClass());
-		compositeOperation.add(checkoutAsOperation);
-		compositeOperation.add(new RefreshResourcesOperation(new IResourceProvider() {
-			@Override
-			public IResource[] getResources() {
-				// Makes the SVN refresh operation update the meta information on the newly checked out project
-				IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectDescription.getName());
-				return new IResource[] { newProject };
-			}
-		}));
+		checkoutAsOperation.run(checkoutMonitor);
 		
-		compositeOperation.run(checkoutMonitor);
+		checkStatus(checkoutAsOperation);
 		
-		checkStatus(compositeOperation);
+		String projectName = projectDescription.getName();
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		project.create(projectDescription, checkoutMonitor.split(1));
+		project.open(new NullProgressMonitor());
+		
+		return project;
 	}
 
 	@Override

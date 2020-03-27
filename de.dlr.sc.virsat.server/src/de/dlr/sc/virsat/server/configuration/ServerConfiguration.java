@@ -22,6 +22,7 @@ import java.util.Properties;
 public class ServerConfiguration {
 	
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
+	public static final String PROJECT_REPOSITORIES_DIR_KEY = "project.repositories.dir";
 	
 	private static Properties properties = new Properties();
 	
@@ -55,4 +56,11 @@ public class ServerConfiguration {
 		properties.setProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY, repositoryConfigurationsDir);
 	}
 
+	public static String getProjectRepositoriesDir() {
+		return properties.getProperty(PROJECT_REPOSITORIES_DIR_KEY);
+	}
+
+	public static void setProjectRepositoriesDir(String projectRepositoriesDir) {
+		properties.setProperty(PROJECT_REPOSITORIES_DIR_KEY, projectRepositoriesDir);
+	}
 }
