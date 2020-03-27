@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.team.svn.core.resource.IRepositoryLocation;
+import org.eclipse.team.svn.core.resource.IRepositoryResource;
+import org.eclipse.team.svn.core.svnstorage.SVNRemoteStorage;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
@@ -48,10 +50,24 @@ public class VersionControlBackendProvider {
 			case SVN:
 				// SVN User authentification is done centrally by informing SVN which credentials
 				// we would like to use for a given repository location
-				IRepositoryLocation repositoryLocation = SVNUtility.asRepositoryResource(remoteUri.toString(), true).getRepositoryLocation();
+				IRepositoryResource repositoryResource = SVNUtility.asRepositoryResource(remoteUri.toString(), true);
+				IRepositoryLocation repositoryLocation = repositoryResource.getRepositoryLocation();
 				repositoryLocation.setUsername(userName);
 				repositoryLocation.setAuthorName(userName);
 				repositoryLocation.setPassword(userPass);
+				repositoryLocation.setPasswordSaved(true);
+				
+				// The following saves the credentials so that any subsequent operations
+				// on the repository location will re-use them
+				SVNRemoteStorage storage = SVNRemoteStorage.instance();
+				storage.addRepositoryLocation(repositoryLocation);
+				try {
+					storage.saveConfiguration();
+				} catch (Exception e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+							"Failed to save credentials information for svn", e));
+				}
+				
 				return new VirSatSvnVersionControlBackend();
 			default:
 				Activator.getDefault().getLog().log(new Status(IStatus.WARNING, Activator.getPluginId(), "Unknown Backend in Configuration"));
