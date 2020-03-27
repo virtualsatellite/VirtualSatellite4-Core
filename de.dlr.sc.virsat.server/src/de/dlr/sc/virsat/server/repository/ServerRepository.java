@@ -231,8 +231,13 @@ public class ServerRepository {
 
 	/**
 	 * Checks out or updates the project and adds it into the workspace
+	 * @throws Exception 
 	 */
-	public void updateOrCheckoutProject() {
-		// TODO implementation
+	public void updateOrCheckoutProject() throws Exception {
+		retrieveProjectFromConfiguration();
+		
+		if (!project.exists()) {
+			checkoutRepository();
+		}
 	}
 }

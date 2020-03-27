@@ -15,6 +15,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -141,5 +143,10 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		RevCommit logAfterSync = Git.open(pathRepoRemote.toFile()).log().call().iterator().next();
 		
 		assertThat("remote repo does not yet have a commit as expected", logAfterSync.getFullMessage(), containsString(""));
+	}
+	
+	@Test
+	public void testUpdateOrCheckoutProject() {
+		fail("Not implemented yet");
 	}
 }
