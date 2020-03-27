@@ -174,7 +174,15 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		connect(project, pathRepoLocal, checkInMonitor.split(1));
 	}
 
-	public void connect(IProject project, File pathRepoLocal, IProgressMonitor monitor) throws Exception {
+	/**
+	 * Internal method to connect a project with a path where the .git file should reside.
+	 * This is needed for correct repository to project mapping
+	 * @param project the project to be connected
+	 * @param pathRepoLocal the path in which the .git file should reside
+	 * @param monitor a monitor for watching the progress
+	 * @throws Exception May throw an exception in case connection fails
+	 */
+	protected void connect(IProject project, File pathRepoLocal, IProgressMonitor monitor) throws Exception {
 		SubMonitor.convert(monitor, "Connecting Project", 1);
 		// Connect Eclipse to the created (existing) Git repository
 		// By associating the .git file of the new repository explicit with the project

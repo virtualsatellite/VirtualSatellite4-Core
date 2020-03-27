@@ -39,7 +39,9 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlBackendProvider;
 
 /**
- * Entry point to the eclipse project
+ * Entry point to the eclipse project.
+ * The class maps a project to a repository of either SVN or GIT.
+ * It also offers functionality to checkout a project or commit to it.
  */
 public class ServerRepository {
 	
@@ -48,9 +50,17 @@ public class ServerRepository {
 	private VirSatResourceSet resourceSet;
 	private VirSatTransactionalEditingDomain ed;
 	private IVirSatVersionControlBackend versionControlBackEnd;
+	@SuppressWarnings("unused")
 	private File localRepositoryHome;
 	private File localRepository;
 	
+	/**
+	 * Constructor for a Server Repository.
+	 * @param localRepositoryHome The repository home in which mostly all projects checkout to.
+	 *  The actual checkout will happen into a sub folder with the name of the project. 
+	 * @param repositoryConfiguration a Repository configuration carrying all important information such as username password remote uri etc.
+	 * @throws URISyntaxException Make sure the URI is well formed.
+	 */
 	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
 		this.repositoryConfiguration = repositoryConfiguration;
 		this.localRepositoryHome = localRepositoryHome;
@@ -75,6 +85,11 @@ public class ServerRepository {
 		return localRepository;
 	}
 	
+	/**
+	 * Method to create a project description which makes sure that
+	 * the location is set to the correct path within the repository home.
+	 * @return returns the well constructed project description
+	 */
 	public IProjectDescription getProjectDescription() {
 		String projectName = repositoryConfiguration.getProjectName();		
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -88,6 +103,14 @@ public class ServerRepository {
 		return projectDescription;
 	}
 	
+	/**
+	 * Call this method to checkout a repository. The method will also
+	 * take care of transforming the project into a proper virtual satellite
+	 * project if it is not yet one. This means if checking out from an empty repository
+	 * a new project will be created which is completly set up and can be shared
+	 * with the next commit.
+	 * @throws Exception
+	 */
 	public void checkoutRepository() throws Exception {
 		AtomicException<Exception> atomicException = new AtomicException<>();
 		
@@ -115,13 +138,18 @@ public class ServerRepository {
 		atomicException.throwIfSet();
 	}
 	
-	public void createVirSatProjectIfNeeded() throws CoreException {
+	protected void createVirSatProjectIfNeeded() throws CoreException {
 		boolean hasVirSatNature = Arrays.asList(project.getDescription().getNatureIds()).contains(VirSatProjectNature.NATURE_ID);
 		if (!hasVirSatNature) {
 			VirSatProjectCommons.createNewProjectRunnable(project).run(new NullProgressMonitor());
 		}
 	}
 	
+	/**
+	 * Removes a repository and the project in the workspace as well
+	 * @throws CoreException
+	 * @throws IOException
+	 */
 	public void removeRepository() throws CoreException, IOException {
 		AtomicException<IOException> atomicException = new AtomicException<>();
 		
@@ -147,6 +175,11 @@ public class ServerRepository {
 	
 	public static final String SERVER_REPOSITORY_COMMIT_MESSAGE = "Server Commit for Project: ";
 	
+	/**
+	 * This method syncs the repository, which means it updates from remote
+	 * and then sends all the changes to remote
+	 * @throws Exception
+	 */
 	public void syncRepository() throws Exception {
 		AtomicException<Exception> atomicException = new AtomicException<>();
 		
