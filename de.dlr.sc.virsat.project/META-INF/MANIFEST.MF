@@ -31,5 +31,6 @@ Export-Package: de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.resources.command,
  de.dlr.sc.virsat.project.resources.dmf,
  de.dlr.sc.virsat.project.structure,
- de.dlr.sc.virsat.project.structure.command
+ de.dlr.sc.virsat.project.structure.command,
+ de.dlr.sc.virsat.project.structure.nature
 Automatic-Module-Name: de.dlr.sc.virsat.project

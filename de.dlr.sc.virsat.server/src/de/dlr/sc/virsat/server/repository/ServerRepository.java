@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -25,11 +26,12 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-
 import de.dlr.sc.virsat.commons.exception.AtomicException;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlBackendProvider;
@@ -101,6 +103,9 @@ public class ServerRepository {
 			
 				retrieveProjectFromConfiguration();
 				project.create(projectDescription, new NullProgressMonitor());
+				project.open(new NullProgressMonitor());
+				
+				createVirSatProjectIfNeeded();
 				
 				retrieveEdAndResurceSetFromConfiguration();
 			} catch (Exception e) {
@@ -109,6 +114,13 @@ public class ServerRepository {
 		});	
 		
 		atomicException.throwIfSet();
+	}
+	
+	public void createVirSatProjectIfNeeded() throws CoreException {
+		boolean hasVirSatNature = Arrays.asList(project.getDescription().getNatureIds()).contains(VirSatProjectNature.NATURE_ID);
+		if (!hasVirSatNature) {
+			VirSatProjectCommons.createNewProjectRunnable(project).run(new NullProgressMonitor());
+		}
 	}
 	
 	public void removeRepository() throws CoreException, IOException {
