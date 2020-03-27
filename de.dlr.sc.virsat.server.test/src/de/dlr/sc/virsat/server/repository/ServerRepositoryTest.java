@@ -9,9 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.repository;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,9 +110,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	
 	@Test 
 	public void testCreateVirSatProjectIfNeeded() throws CoreException, URISyntaxException {
-		ServerRepository serverRepository = new ServerRepository(localRepoHome, testRepoConfig);
-		serverRepository.retrieveProjectFromConfiguration();
-		IProject createdProject = serverRepository.getProject();
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository.retrieveProjectFromConfiguration();
+		IProject createdProject = testServerRepository.getProject();
 		
 		assertFalse("Project is not yet created", createdProject.exists());
 		createdProject.create(null);
@@ -117,14 +120,26 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		assertFalse("Project is not yet a virsat project", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
 		
-		serverRepository.createVirSatProjectIfNeeded();
+		testServerRepository.createVirSatProjectIfNeeded();
 	
 		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
 	}
 	
 	@Test
 	public void testSyncProject() throws Exception {
-		ServerRepository serverRepository = new ServerRepository(localRepoHome, testRepoConfig);
-		serverRepository.checkoutRepository();
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository.checkoutRepository();
+
+		IProject createdProject = testServerRepository.getProject();		
+		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+
+		testServerRepository.syncRepository();
+		
+		boolean logEntriesExist = Git.open(pathRepoRemote.toFile()).log().call().iterator().hasNext();
+		assertTrue("There are logs now", logEntriesExist);
+	
+		RevCommit logAfterSync = Git.open(pathRepoRemote.toFile()).log().call().iterator().next();
+		
+		assertThat("remote repo does not yet have a commit as expected", logAfterSync.getFullMessage(), containsString(""));
 	}
 }
