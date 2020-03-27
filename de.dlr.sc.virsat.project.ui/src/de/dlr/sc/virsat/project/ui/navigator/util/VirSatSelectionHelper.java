@@ -10,7 +10,9 @@
 package de.dlr.sc.virsat.project.ui.navigator.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -125,6 +127,28 @@ public class VirSatSelectionHelper {
 		}  
 		
 		return null;
+	}
+	
+	/**
+	 * Returns all projects of selection
+	 * @return selected projects
+	 */
+	public Set<IProject> getAllProjectResouces() {
+		Set<IProject> selectedProjects = new HashSet<>();
+		
+		for (Object object : structuredSelection.toList()) {
+			if (object instanceof EObject) {
+				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd((EObject) object);
+				IProject project = ed.getResourceSet().getProject();
+				selectedProjects.add(project);
+			} else if (object instanceof VirSatProjectResource) {
+				// Project root object
+				IProject project = ((VirSatProjectResource) object).getWrappedProject();
+				selectedProjects.add(project);
+			}
+		}
+		
+		return selectedProjects;
 	}
 
 	/**
