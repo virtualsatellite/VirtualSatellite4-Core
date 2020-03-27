@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+
 import de.dlr.sc.virsat.commons.exception.AtomicException;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -93,10 +94,11 @@ public class ServerRepository {
 			try {
 				
 				IProjectDescription projectDescription = getProjectDescription();
-				
+				File localRepositoryPath = getLocalRepositoryPath();
+								
 				versionControlBackEnd.checkout(
 						projectDescription,
-						getLocalRepositoryPath(),
+						localRepositoryPath,
 						repositoryConfiguration.getRemoteUri().toString(),
 						new NullProgressMonitor()
 				);
@@ -104,6 +106,8 @@ public class ServerRepository {
 				retrieveProjectFromConfiguration();
 				project.create(projectDescription, new NullProgressMonitor());
 				project.open(new NullProgressMonitor());
+				
+				versionControlBackEnd.connect(project, localRepositoryPath, new NullProgressMonitor());
 				
 				createVirSatProjectIfNeeded();
 				

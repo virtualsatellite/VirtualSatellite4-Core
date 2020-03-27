@@ -40,7 +40,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	}
 	
 	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 2;
-	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 4;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 5;
 	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 1;
 	public static final int PROGRESS_INDEX_DO_COMMIT_STEPS = 2;
 	
@@ -97,10 +97,9 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 
 		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
 		
-		String branch = Git.wrap(gitRepository).getRepository().getFullBranch();
+		String branch = Git.wrap(gitRepository).getRepository().getBranch();
 		
 		String remoteTrackingBranch = BranchTrackingStatus.of(gitRepository, branch).getRemoteTrackingBranch();
-		
 		
 		List<Ref> refs = Git.wrap(gitRepository).getRepository().getRefDatabase().getRefs();
 		refs = Git.wrap(gitRepository).branchList().call();
@@ -158,8 +157,16 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		checkInMonitor.split(1).subTask("Mapping Repository to Project");
 		// Connect Eclipse to the created (existing) Git repository
 		// By associating the .git file of the new repository explicit with the project
+		connect(project, pathRepoLocal, checkInMonitor.split(1));
+	}
+
+	@Override
+	public void connect(IProject project, File pathRepoLocal, IProgressMonitor monitor) throws Exception {
+		SubMonitor.convert(monitor, "Connecting Project", 1);
+		// By associating the .git file of the new repository explicit with the project
 		File pathRepoLocalGit = new File(pathRepoLocal.toURI().resolve(".git"));
 		ConnectProviderOperation connectOperation = new ConnectProviderOperation(project, pathRepoLocalGit);
 		connectOperation.execute(null);
 	}
+	
 }

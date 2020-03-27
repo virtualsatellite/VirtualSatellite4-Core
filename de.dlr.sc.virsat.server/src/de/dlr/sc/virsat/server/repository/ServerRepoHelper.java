@@ -9,10 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.repository;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,10 +54,11 @@ public class ServerRepoHelper {
 	 * @param repositoryConfigurationFile properties file for a repository
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
+	 * @throws URISyntaxException 
 	 */
-	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws FileNotFoundException, IOException {
+	private static void registerRepositoryConfiguration(File localRepoHome, Path repositoryConfigurationFile) throws FileNotFoundException, IOException, URISyntaxException {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
-		ServerRepository serverRepository = new ServerRepository(config);
+		ServerRepository serverRepository = new ServerRepository(localRepoHome, config);
 		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
 	}
 	

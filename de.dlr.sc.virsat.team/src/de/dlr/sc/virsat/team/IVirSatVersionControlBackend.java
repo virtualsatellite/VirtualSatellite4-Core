@@ -59,4 +59,5 @@ public interface IVirSatVersionControlBackend {
 	 */
 	void update(IProject project, IProgressMonitor monitor) throws Exception;
 
+	void connect(IProject project, File pathRepoLocal, IProgressMonitor monitor) throws Exception;
 }
