@@ -62,8 +62,8 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		testRepoConfig = new RepositoryConfiguration(
 				TEST_PROJECT_NAME,
-				new File(""),
-				pathRepoRemote.toUri(),
+				"",
+				pathRepoRemote.toUri().toString(),
 				VersionControlSystem.GIT,
 				"",
 				""

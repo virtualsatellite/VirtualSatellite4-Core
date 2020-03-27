@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -179,23 +180,24 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		backend.commit(projectRepoLocal1, "Initial Commit", new NullProgressMonitor());
 
 		// Now prepare the checkout into another project with another local repository
-		Path pathRepoCheckout = Files.createTempDirectory("VirtualSatelliteCheckOut_");
-		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace()
-				.newProjectDescription(PROJECT_LOCAL_NAME);
+		Path pathRepositoryHome = Files.createTempDirectory("VirtualSatelliteCheckOut_");
+		Path pathRepoCheckout = new File(pathRepositoryHome.toFile(), PROJECT_LOCAL_NAME).toPath();
+		
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(PROJECT_LOCAL_NAME);
 		projectDescription.setLocationURI(pathRepoCheckout.toUri());
-
+		
+		IProject projectRepoCheckout = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_LOCAL_NAME);
+		projectRepoCheckout.delete(true, true, null);
+		assertFalse("Repo does not yet exist", projectRepoCheckout.exists());
+		
 		// Execute the checkout
-		File pathRepoLocal = new File(projectDescription.getLocationURI());
-		backend.checkout(projectDescription, pathRepoLocal, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
-
-		// Create the project and wait until it is mapped with the Providers
-		IProject projectCheckout = createTestProject(PROJECT_LOCAL_NAME, projectDescription, true);
-
+		File pathRepoLocal = pathRepositoryHome.toFile();
+		IProject projectCheckout = backend.checkout(projectDescription, pathRepoLocal, pathRepoRemote.toUri().toString(), new NullProgressMonitor());
+	
 		// Now check that the SEI has been well checked out in the project and on the
 		// file system
-		File seiInLocalCheckout = new File(pathRepoCheckout.toFile(),
-				seiFile.getFullPath().toOSString());
-		assertTrue("File also exists in local2 after pull", seiInLocalCheckout.exists());
+		File seiInLocalCheckout = new File(pathRepositoryHome.toFile(), seiFile.getFullPath().toOSString());
+		assertTrue("File also exists in local2 after checkout", seiInLocalCheckout.exists());
 
 		IFile seiInLocalCheckoutWorkspace = projectCheckout.getFile(seiFile.getFullPath().removeFirstSegments(1));
 		assertTrue("File also exists in workspace", seiInLocalCheckoutWorkspace.exists());

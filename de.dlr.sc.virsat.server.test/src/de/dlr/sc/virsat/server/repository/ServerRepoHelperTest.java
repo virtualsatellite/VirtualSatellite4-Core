@@ -13,10 +13,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,8 +59,8 @@ public class ServerRepoHelperTest {
 	@Test
 	public void testSaveConfiguration() throws FileNotFoundException, IOException, URISyntaxException {
 		String projectName = "testProject";
-		URI uri = new URI("test.uri");
-		RepositoryConfiguration config = new RepositoryConfiguration(projectName, new File(""), uri, VersionControlSystem.GIT, "", "");
+		String uri = "test.uri";
+		RepositoryConfiguration config = new RepositoryConfiguration(projectName, "", uri, VersionControlSystem.GIT, "", "");
 		
 		String expectedFileName = projectName + ".properties";
 		Path configFilePath = configsDir.resolve(expectedFileName);
@@ -77,7 +75,7 @@ public class ServerRepoHelperTest {
 		assertEquals("Saved file contains correct URI", uri, loadedConfig.getRemoteUri());
 		
 		//Check overwriting
-		URI newUri = new URI("new.test.uri");
+		String newUri = "new.test.uri";
 		config.setRemoteUri(newUri);
 		ServerRepoHelper.saveRepositoryConfiguration(config);
 		loadedConfig = new RepositoryConfiguration(Files.newInputStream(configFilePath));

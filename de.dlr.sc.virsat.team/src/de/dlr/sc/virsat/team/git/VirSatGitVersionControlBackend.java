@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.team.git;
 
 import java.io.File;
 import java.util.Collection;
+
+import org.eclipse.core.internal.resources.Resource;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -39,9 +41,9 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		this.credentialsProvider = credentialsProvider;
 	}
 	
-	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 2;
-	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 5;
-	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 1;
+	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 3;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 3;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 4;
 	public static final int PROGRESS_INDEX_DO_COMMIT_STEPS = 2;
 	
 	public static final int GIT_REMOTE_TIMEOUT = 30;
@@ -114,10 +116,12 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 				.setStrategy(MergeStrategy.THEIRS)
 				.call();
 		}
+		
+		project.refreshLocal(Resource.DEPTH_INFINITE, commitAndPullMonitor.split(1));
 	}
 
 	@Override
-	public IProject checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
+	public IProject checkout(IProjectDescription projectDescription, File pathLocalRepository, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite git clone", PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS);
 		
 		checkoutMonitor.split(1).subTask("Cloning remote Repository");
@@ -125,14 +129,17 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		Git.cloneRepository()
 			.setCredentialsProvider(credentialsProvider)
 			.setURI(remoteUri)
-			.setDirectory(pathRepoLocal)
+			.setDirectory(pathLocalRepository)
 			.call();
 		
-		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject();
-		project.create(projectDescription, new NullProgressMonitor());
+		String projectName = projectDescription.getName();
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		project.create(projectDescription, checkoutMonitor.split(1));
 		project.open(new NullProgressMonitor());
 		
-		connect(project, pathRepoLocal, new NullProgressMonitor());
+		project.refreshLocal(Resource.DEPTH_INFINITE, checkoutMonitor.split(1));
+		
+		connect(project, pathLocalRepository, checkoutMonitor.split(1));
 		
 		return project;
 	}
@@ -164,7 +171,6 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		// Stage and commit all changes
 		doCommit(initRepo, INITIAL_COMMIT_MESSAGE, checkInMonitor.split(1));
 		
-		checkInMonitor.split(1).subTask("Mapping Repository to Project");
 		connect(project, pathRepoLocal, checkInMonitor.split(1));
 	}
 

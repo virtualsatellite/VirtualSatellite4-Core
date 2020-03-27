@@ -9,12 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.configuration;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
@@ -45,8 +43,8 @@ public class RepositoryConfiguration {
 	 */
 	public RepositoryConfiguration(
 			String projectName,
-			File localPath,
-			URI remoteUri,
+			String localPath,
+			String remoteUri,
 			VersionControlSystem backend,
 			String functionalAccountName,
 			String functionalAccountPassword) {
@@ -94,11 +92,11 @@ public class RepositoryConfiguration {
 		properties.store(configFileOutputStream, "");
 	}
 
-	public URI getRemoteUri() throws URISyntaxException  {
-		return new URI(properties.getProperty(REMOTE_URL_KEY));
+	public String getRemoteUri() {
+		return properties.getProperty(REMOTE_URL_KEY);
 	}
 
-	public void setRemoteUri(URI remoteUri) {
+	public void setRemoteUri(String remoteUri) {
 		properties.setProperty(REMOTE_URL_KEY, remoteUri.toString());
 	}
 
@@ -134,11 +132,11 @@ public class RepositoryConfiguration {
 		properties.setProperty(PROJECT_NAME_KEY, projectName);
 	}
 
-	public File getLocalPath() {
-		return new File(properties.getProperty(LOCAL_PATH_KEY));
+	public String getLocalPath() {
+		return properties.getProperty(LOCAL_PATH_KEY);
 	}
 
-	public void setLocalPath(File localPath) {
-		properties.setProperty(LOCAL_PATH_KEY, localPath.toString());
+	public void setLocalPath(String localPath) {
+		properties.setProperty(LOCAL_PATH_KEY, localPath);
 	}
 }

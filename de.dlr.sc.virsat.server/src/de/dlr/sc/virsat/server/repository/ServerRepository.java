@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,7 +62,7 @@ public class ServerRepository {
 	
 		VersionControlBackendProvider backendProvider = new VersionControlBackendProvider(
 				repositoryConfiguration.getBackend(), 
-				repositoryConfiguration.getRemoteUri(), 
+				new URI(repositoryConfiguration.getRemoteUri()), 
 				userName, userPass);
 		versionControlBackEnd = backendProvider.createBackendImplementation();
 	}
@@ -79,9 +80,9 @@ public class ServerRepository {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IProjectDescription projectDescription = workspace.newProjectDescription(projectName);
 		
-		File relativeLocalProjectPath = repositoryConfiguration.getLocalPath();
+		String relativeLocalProjectPath = repositoryConfiguration.getLocalPath();
 		File localRepositoryPath = getLocalRepositoryPath();
-		File projectInLocalRepositoryPath = new File(localRepositoryPath, relativeLocalProjectPath.toString());
+		File projectInLocalRepositoryPath = new File(localRepositoryPath, relativeLocalProjectPath);
 		projectDescription.setLocationURI(projectInLocalRepositoryPath.toURI());
 		
 		return projectDescription;
@@ -96,15 +97,13 @@ public class ServerRepository {
 				IProjectDescription projectDescription = getProjectDescription();
 				File localRepositoryPath = getLocalRepositoryPath();
 								
-				versionControlBackEnd.checkout(
+				project = versionControlBackEnd.checkout(
 						projectDescription,
 						localRepositoryPath,
 						repositoryConfiguration.getRemoteUri().toString(),
 						new NullProgressMonitor()
 				);
 			
-				retrieveProjectFromConfiguration();
-				
 				createVirSatProjectIfNeeded();
 				
 				retrieveEdAndResurceSetFromConfiguration();
