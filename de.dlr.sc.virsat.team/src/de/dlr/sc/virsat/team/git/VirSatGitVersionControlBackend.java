@@ -10,7 +10,7 @@
 package de.dlr.sc.virsat.team.git;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -20,7 +20,6 @@ import org.eclipse.egit.core.EclipseGitProgressTransformer;
 import org.eclipse.egit.core.op.ConnectProviderOperation;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.BranchTrackingStatus;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -39,7 +38,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		this.credentialsProvider = credentialsProvider;
 	}
 	
-	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 2;
+	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 3;
 	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 4;
 	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 1;
 	public static final int PROGRESS_INDEX_DO_COMMIT_STEPS = 2;
@@ -95,24 +94,24 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		// Stage and commit all changes
 		doCommit(gitRepository, "Local commit before pull", commitAndPullMonitor.split(1));
 
-		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
-		
-		String branch = Git.wrap(gitRepository).getRepository().getFullBranch();
-		
-		String remoteTrackingBranch = BranchTrackingStatus.of(gitRepository, branch).getRemoteTrackingBranch();
-		
-		
-		List<Ref> refs = Git.wrap(gitRepository).getRepository().getRefDatabase().getRefs();
-		refs = Git.wrap(gitRepository).branchList().call();
-		
-		
-		// Pull from origin
-		Git.wrap(gitRepository).pull()
-			.setCredentialsProvider(credentialsProvider)
-			.setProgressMonitor(gitMonitor)
-			.setTimeout(GIT_REMOTE_TIMEOUT)
-			.setStrategy(MergeStrategy.THEIRS)
+		commitAndPullMonitor.split(1).subTask("Check if remotes exist");
+		// Get the remotes for the repository
+		String remoteUrl = gitRepository.getConfig().getString("remote", "origin", "url");
+		Collection<Ref> refs = Git.lsRemoteRepository()
+			.setRemote(remoteUrl)
 			.call();
+		
+		// Only perform a pull of the remote exists
+		ProgressMonitor gitMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
+		if (!refs.isEmpty()) {
+			// Pull from origin
+			Git.wrap(gitRepository).pull()
+				.setCredentialsProvider(credentialsProvider)
+				.setProgressMonitor(gitMonitor)
+				.setTimeout(GIT_REMOTE_TIMEOUT)
+				.setStrategy(MergeStrategy.THEIRS)
+				.call();
+		}
 	}
 
 	@Override
