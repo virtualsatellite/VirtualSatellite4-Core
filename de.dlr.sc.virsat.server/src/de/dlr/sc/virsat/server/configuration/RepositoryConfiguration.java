@@ -54,7 +54,7 @@ public class RepositoryConfiguration {
 			VersionControlSystem backend,
 			String functionalAccountName,
 			String functionalAccountPassword) {
-		properties = new Properties();
+		this();
 		setProjectName(projectName);
 		setLocalPath(localPath);
 		setRemoteUri(remoteUri);
@@ -64,7 +64,7 @@ public class RepositoryConfiguration {
 	}
 	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
-		properties = new Properties();
+		this();
 		loadProperties(repoConfInputStream);
 	}
 
@@ -74,12 +74,7 @@ public class RepositoryConfiguration {
 	 * @throws URISyntaxException
 	 */
 	public void update(RepositoryConfiguration repositoryBackend) throws URISyntaxException {
-		setProjectName(repositoryBackend.getProjectName());
-		setLocalPath(repositoryBackend.getLocalPath());
-		setRemoteUri(repositoryBackend.getRemoteUri());
-		setBackend(repositoryBackend.getBackend());
-		setFunctionalAccountName(repositoryBackend.getFunctionalAccountName());
-		setFunctionalAccountPassword(repositoryBackend.getFunctionalAccountPassword());
+		this.properties.putAll(repositoryBackend.properties);
 	}
 	
 	/**

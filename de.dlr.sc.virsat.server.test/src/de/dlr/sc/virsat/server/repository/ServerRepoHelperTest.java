@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -68,7 +67,9 @@ public class ServerRepoHelperTest {
 	public void testSaveConfiguration() throws FileNotFoundException, IOException, URISyntaxException {
 		String projectName = "testProject";
 		URI uri = new URI("test.uri");
-		RepositoryConfiguration config = new RepositoryConfiguration(projectName, new File(""), uri, VersionControlSystem.GIT, "", "");
+		RepositoryConfiguration config = new RepositoryConfiguration();
+		config.setProjectName(projectName);
+		config.setRemoteUri(uri);
 		
 		String expectedFileName = projectName + ".properties";
 		Path configFilePath = configsDir.resolve(expectedFileName);

@@ -105,15 +105,8 @@ public class RepositoryConfigurationTest {
 				TEST_PASSWORD
 		);
 		
-		RepositoryConfiguration updatedConfiguration = new RepositoryConfiguration(
-				"",
-				new File(""),
-				new URI(""),
-				VersionControlSystem.SVN,
-				"",
-				""
-		);
-		
+		RepositoryConfiguration updatedConfiguration = new RepositoryConfiguration();
+
 		updatedConfiguration.update(configuration);
 		
 		assertEquals("Remote loaded", new URI(TEST_REMOTE), updatedConfiguration.getRemoteUri());
