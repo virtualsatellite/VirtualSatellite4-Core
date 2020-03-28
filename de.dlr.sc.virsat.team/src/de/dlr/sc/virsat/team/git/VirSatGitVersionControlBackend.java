@@ -82,11 +82,13 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.addFilepattern(".")
 			.call();		
 		
-		pushAndCommitMonitor.split(1).subTask("Commiting files");
-		Git.wrap(gitRepository).commit()
-			.setAll(true)
-			.setMessage(message)
-			.call();
+		if (Git.wrap(gitRepository).status().call().hasUncommittedChanges()) {
+			pushAndCommitMonitor.split(1).subTask("Commiting files");
+			Git.wrap(gitRepository).commit()
+				.setAll(true)
+				.setMessage(message)
+				.call();
+		}
 	}
 
 	@Override

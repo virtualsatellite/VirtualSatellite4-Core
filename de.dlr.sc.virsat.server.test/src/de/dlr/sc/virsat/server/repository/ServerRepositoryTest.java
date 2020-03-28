@@ -216,7 +216,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 				)
 			.collect(Collectors.toCollection(() -> new ArrayList<>()));
 		
-		assertThat("Commit List has expected size", commitList1, hasSize(2));
+		assertThat("Commit List has expected size", commitList1, hasSize(1));
 		
 		// Add another file to the project when reconnecting, this file should create a new commit on the repository
 		testServerRepository.getProject().getFile("newTempFile.txt").create(new ByteArrayInputStream("test".getBytes()), true, null);
@@ -235,7 +235,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			.collect(Collectors.toCollection(() -> new ArrayList<>()));
 		
 		// CHECKSTYLE:OFF
-		assertThat("Commit List has expected size", commitList2, hasSize(4));
+		assertThat("Commit List has expected size", commitList2, hasSize(2));
 		// CHECKSTYLE:ON
 	}
 }
