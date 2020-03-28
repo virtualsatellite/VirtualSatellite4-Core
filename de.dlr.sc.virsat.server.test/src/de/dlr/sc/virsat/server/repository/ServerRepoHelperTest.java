@@ -41,9 +41,9 @@ public class ServerRepoHelperTest {
 	
 	@Test
 	public void testLoadRepositoryConfigurations() throws IOException {
-		String svnProjectName = "SvnProject";
-		String gitProjectName = "GitProject";
-		createTempRepoConfigFile(configsDir, svnProjectName, VersionControlSystem.SVN);
+		String svnProjectName = "GitProject1";
+		String gitProjectName = "GitProject2";
+		createTempRepoConfigFile(configsDir, svnProjectName, VersionControlSystem.GIT);
 		createTempRepoConfigFile(configsDir, gitProjectName, VersionControlSystem.GIT);
 
 		RepoRegistry repoRegistry = RepoRegistry.getInstance();
@@ -52,7 +52,7 @@ public class ServerRepoHelperTest {
 		ServerRepoHelper.initRepoRegistry();
 		
 		assertEquals(2, repoRegistry.getRepositories().size());
-		assertEquals(VersionControlSystem.SVN, repoRegistry.getRepository(svnProjectName).getRepositoryConfiguration().getBackend());
+		assertEquals(VersionControlSystem.GIT, repoRegistry.getRepository(svnProjectName).getRepositoryConfiguration().getBackend());
 		assertEquals(VersionControlSystem.GIT, repoRegistry.getRepository(gitProjectName).getRepositoryConfiguration().getBackend());
 	}
 	
@@ -89,7 +89,8 @@ public class ServerRepoHelperTest {
 	 */
 	private void createTempRepoConfigFile(Path parentDir, String projectName, VersionControlSystem backend) throws IOException {
 		String fileContents = RepositoryConfiguration.PROJECT_NAME_KEY + ":" + projectName + System.lineSeparator()
-				+ RepositoryConfiguration.BACKEND_KEY + ":" + backend;
+				+ RepositoryConfiguration.BACKEND_KEY + ":" + backend + System.lineSeparator()
+				+ RepositoryConfiguration.REMOTE_URL_KEY + ":" + "uri/to/remote";
 		Path tempFile = Files.createTempFile(parentDir, projectName, ".properties");
 		Files.write(tempFile, fileContents.getBytes());
 	}
