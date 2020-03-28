@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 public class RepositoryConfiguration {
 
 	// Infrastructure
-	private Properties properties;
+	private Properties properties = new Properties();
 	
 	// Properties key
 	public static final String PROJECT_NAME_KEY = "project.name";
@@ -48,7 +48,6 @@ public class RepositoryConfiguration {
 			VersionControlSystem backend,
 			String functionalAccountName,
 			String functionalAccountPassword) {
-		properties = new Properties();
 		setProjectName(projectName);
 		setLocalPath(localPath);
 		setRemoteUri(remoteUri);
@@ -57,8 +56,11 @@ public class RepositoryConfiguration {
 		setFunctionalAccountPassword(functionalAccountPassword);
 	}
 	
+	public RepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) {
+		update(repositoryConfiguration);
+	}
+	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
-		properties = new Properties();
 		loadProperties(repoConfInputStream);
 	}
 
@@ -67,7 +69,7 @@ public class RepositoryConfiguration {
 	 * @param repositoryBackend the repositoryConfiguration to be used to update the current one
 	 * @throws URISyntaxException
 	 */
-	public void update(RepositoryConfiguration repositoryBackend) throws URISyntaxException {
+	public void update(RepositoryConfiguration repositoryBackend) {
 		setProjectName(repositoryBackend.getProjectName());
 		setLocalPath(repositoryBackend.getLocalPath());
 		setRemoteUri(repositoryBackend.getRemoteUri());

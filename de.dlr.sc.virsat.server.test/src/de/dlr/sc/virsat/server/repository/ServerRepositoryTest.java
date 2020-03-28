@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.server.repository;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -89,7 +90,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testRetrieveProjectFromConfiguration() throws Exception {
+	public void testCheckoutRepository() throws Exception {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
 		testServerRepository.checkoutRepository();
@@ -101,6 +102,54 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		IProject checkedOutProject = ResourcesPlugin.getWorkspace().getRoot().getProject(testRepoConfig.getProjectName());
 		assertTrue("The checked Out Project exists", checkedOutProject.exists());
+	}
+	
+	@Test
+	public void testCheckoutTwoProjectsFromOneRepository() throws Exception {
+		// Create two configurations with two Projects but both in their specific subfolder
+		// and the same remote repository
+		final String TEST_PROJECT_A = "testProjectA";
+		final String TEST_PROJECT_B = "testProjectB";
+		RepositoryConfiguration testRepoConfigA = testRepoConfig;
+		RepositoryConfiguration testRepoConfigB = new RepositoryConfiguration(testRepoConfig);
+		testRepoConfigA.setProjectName(TEST_PROJECT_A);
+		testRepoConfigB.setProjectName(TEST_PROJECT_B);
+		testRepoConfigA.setLocalPath(TEST_PROJECT_A);
+		testRepoConfigB.setLocalPath(TEST_PROJECT_B);
+	
+		ServerRepository testServerRepositoryA = new ServerRepository(localRepoHome, testRepoConfigA);
+		ServerRepository testServerRepositoryB = new ServerRepository(localRepoHome, testRepoConfigB);
+		
+		testServerRepositoryA.checkoutRepository();
+		
+		// Make sure there is no .git file in the repo local home
+		assertFalse("there is no .git in repo home", new File(localRepoHome, ".git/").exists());
+		
+		// make sure that the parent to the project folder has the .git
+		File testProjectPathA = testServerRepositoryA.getProject().getRawLocation().toFile();
+		File testProjectRepoA = testProjectPathA.getParentFile();
+		assertFalse("there is no .git in project", new File(testProjectPathA, ".git/").exists());
+		assertTrue("there is .git in repo", new File(testProjectRepoA, ".git/").exists());
+		
+		// Checkin projectA to make sure there are two projects when actually checking out B
+		testServerRepositoryA.syncRepository();
+		
+		testServerRepositoryB.checkoutRepository();
+		File testProjectPathB = testServerRepositoryB.getProject().getRawLocation().toFile();
+		File testProjectRepoB = testProjectPathB.getParentFile();
+		assertNotEquals("Path of Project A is different from Project B", testProjectPathA, testProjectPathB);
+		assertFalse("there is no .git in project", new File(testProjectPathB, ".git/").exists());
+		assertTrue("there is .git in repo", new File(testProjectRepoB, ".git/").exists());
+		
+		// Files of ProjectA will also exist in repo of ProjectB
+		assertTrue("ProjectA got checked out in ProjectB", new File(testProjectRepoB, TEST_PROJECT_A).exists());
+		
+		// now sync project B to send changes to the server, check that they are not yet in A, sync a and show project B appears there
+		testServerRepositoryB.syncRepository();
+		assertFalse("ProjectB is not yet in ProjectA", new File(testProjectRepoA, TEST_PROJECT_B).exists());
+		
+		testServerRepositoryA.syncRepository();
+		assertTrue("ProjectB is now in ProjectA", new File(testProjectRepoA, TEST_PROJECT_B).exists());
 	}
 	
 	@Test

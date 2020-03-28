@@ -54,6 +54,7 @@ public class ServerRepository {
 	private File localRepositoryHome;
 	private File localRepository;
 	
+	protected static final String PREFIX_LOCAL_REPO_NAME = "repo_";
 	/**
 	 * Constructor for a Server Repository.
 	 * @param localRepositoryHome The repository home in which mostly all projects checkout to.
@@ -64,7 +65,7 @@ public class ServerRepository {
 	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
 		this.repositoryConfiguration = repositoryConfiguration;
 		this.localRepositoryHome = localRepositoryHome;
-		this.localRepository = new File(localRepositoryHome, repositoryConfiguration.getProjectName());
+		this.localRepository = new File(localRepositoryHome, PREFIX_LOCAL_REPO_NAME + repositoryConfiguration.getProjectName());
 		
 		//checkout the project to workspace
 		String userName = Objects.toString(repositoryConfiguration.getFunctionalAccountName(), "");
