@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,6 +38,13 @@ public class ServerRepoHelperTest {
 		
 		// Overwrite path to repo config files
 		ServerConfiguration.getProperties().setProperty(ServerConfiguration.REPOSITORY_CONFIGURATIONS_DIR_KEY, configsDir.toString());
+
+		RepoRegistry.getInstance().getRepositories().clear();
+	}
+	
+	@After
+	public void tearDown() {
+		RepoRegistry.getInstance().getRepositories().clear();
 	}
 	
 	@Test
