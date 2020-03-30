@@ -56,7 +56,7 @@
 			<Bug pattern="SF_SWITCH_NO_DEFAULT" />
 
 			<!-- Ignore this warning since it is not clear from the documentation 
-				what the issue is. SHould be rechecked in the future. -->
+				what the issue is. Should be rechecked in the future. -->
 			<Bug pattern="UC_USELESS_OBJECT" />
 			
 			<!--  Ignore this warning since there are a few static assignments in the code
@@ -67,6 +67,10 @@
 			<!-- Ignore this warning, since it is not clear if it is a false positive or not.
 			Should be rechecked in the future. -->
 			<Bug pattern="MS_PKGPROTECT" />
+			
+			<!-- Ignore this warning, since there is a case where it makes sense to have
+			switch fallthrough. -->
+			<Bug pattern="SF_SWITCH_FALLTHROUGH" />
 		</Or>
 	</Match>
 </FindBugsFilter>
