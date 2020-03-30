@@ -58,7 +58,7 @@ public class ServerRepoHelper {
 	 * @throws FileNotFoundException 
 	 * @throws URISyntaxException 
 	 */
-	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws FileNotFoundException, IOException, URISyntaxException {
+	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws IOException, URISyntaxException {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
 		
 		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), config);
