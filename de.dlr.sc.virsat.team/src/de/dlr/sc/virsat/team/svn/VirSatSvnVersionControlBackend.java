@@ -20,7 +20,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
@@ -50,9 +49,14 @@ import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBackend {
 
+	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 1;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 2;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 3;
+	public static final int PROGRESS_INDEX_DO_COMMIT_STEPS = 1;
+	
 	@Override
 	public void commit(IProject project, String message, IProgressMonitor monitor) throws Exception {
-		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn commit", 1);
+		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn commit", PROGRESS_INDEX_DO_COMMIT_STEPS);
 	
 		// Perform an add + commit operation
 		commitMonitor.split(1).subTask("Commiting & adding files");
@@ -70,7 +74,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 
 	@Override
 	public IProject checkout(IProjectDescription projectDescription,  File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
-		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn checkout", 1);
+		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn checkout", PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS);
 		IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(remoteUri, true);
 
 		checkoutMonitor.split(1).subTask("Checking out remote project");
@@ -82,14 +86,20 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		String projectName = projectDescription.getName();
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		project.create(projectDescription, checkoutMonitor.split(1));
-		project.open(new NullProgressMonitor());
+		project.open(checkoutMonitor.split(1));
 		
 		return project;
 	}
 
 	@Override
-	public void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception {
-		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn init", 1);
+	public void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
+		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
+		
+		checkInMonitor.split(1).subTask("Moving project into local Repository");
+		// Setting the project description lets eclipse know where we want to move the project
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(project.getName());
+		projectDescription.setLocationURI(pathRepoLocal.toURI());
+		project.move(projectDescription, true, monitor);
 		
 		IRepositoryLocation remoteRepoLocation = SVNUtility.asRepositoryResource(remoteUri, true).getRepositoryLocation();
 		
@@ -113,14 +123,13 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 
 	@Override
 	public void update(IProject project, IProgressMonitor monitor) throws Exception {
-		SubMonitor updateMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn update", 1);
+		SubMonitor updateMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn update", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
 		
+		updateMonitor.split(1).subTask("Updating files");
 		UpdateProjectOperation updateProjectOperation = new UpdateProjectOperation(project);
 		updateProjectOperation.run(updateMonitor);
 		
 		checkStatus(updateProjectOperation);
-		
-		updateMonitor.split(1);
 	}
 	
 	// The default UpdateOperation provided by SubVersive was unstable and sometimes failed.

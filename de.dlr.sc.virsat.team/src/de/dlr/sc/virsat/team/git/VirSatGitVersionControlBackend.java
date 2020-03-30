@@ -17,7 +17,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.egit.core.EclipseGitProgressTransformer;
 import org.eclipse.egit.core.op.ConnectProviderOperation;
@@ -28,7 +27,6 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.URIish;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
@@ -43,7 +41,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	}
 	
 	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 3;
-	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 3;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 4;
 	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 4;
 	public static final int PROGRESS_INDEX_DO_COMMIT_STEPS = 2;
 	
@@ -138,7 +136,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		String projectName = projectDescription.getName();
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		project.create(projectDescription, checkoutMonitor.split(1));
-		project.open(new NullProgressMonitor());
+		project.open(checkoutMonitor.split(1));
 		
 		project.refreshLocal(Resource.DEPTH_INFINITE, checkoutMonitor.split(1));
 		
@@ -150,29 +148,25 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	public static final String INITIAL_COMMIT_MESSAGE = "Initial Commit on Checkin";
 	
 	@Override
-	public void checkin(IProject project, String uri, IProgressMonitor monitor) throws Exception {
+	public void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkInMonitor = SubMonitor.convert(monitor, "Virtual Satellite git init", PROGRESS_INDEX_COMMIT_CHECKIN_STEPS);
 		
-		File pathProjectLocal = new File(project.getLocationURI());
-		File pathRepoLocal = pathProjectLocal.getParentFile();
-		
-		checkInMonitor.split(1).subTask("Initializing local repository");
-		// Initialize a new repository in the parent folder of the project
-		Repository initRepo = Git.init()
+		checkInMonitor.split(1).subTask("Cloning remote Repository");
+		// Clone into the location specified by the project description
+		Repository repo = Git.cloneRepository()
+			.setCredentialsProvider(credentialsProvider)
+			.setURI(remoteUri)
 			.setDirectory(pathRepoLocal)
 			.call()
 			.getRepository();
 		
-		checkInMonitor.split(1).subTask("Setting remote origin");
-		// Add the remote as origin
-		Git.wrap(initRepo)
-			.remoteAdd()
-			.setUri(new URIish(uri))
-			.setName("origin")
-			.call();
+		// Changing the project to the target location lets eclipse know where we want to move the project
+		IProjectDescription projectDescription = ResourcesPlugin.getWorkspace().newProjectDescription(project.getName());
+		projectDescription.setLocationURI(pathRepoLocal.toURI().resolve(project.getName()));
+		project.move(projectDescription, true, checkInMonitor.split(1));
 		
 		// Stage and commit all changes
-		doCommit(initRepo, INITIAL_COMMIT_MESSAGE, checkInMonitor.split(1));
+		doCommit(repo, INITIAL_COMMIT_MESSAGE, checkInMonitor.split(1));
 		
 		connect(project, pathRepoLocal, checkInMonitor.split(1));
 	}

@@ -46,11 +46,12 @@ public interface IVirSatVersionControlBackend {
 	/**
 	 * Uploads a project to the version control system
 	 * @param project the project to upload
+	 * @param pathRepoLocal the local copy of the repository to checkin
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
 	 * @throws Exception
 	 */
-	void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception;
+	void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 
 	/**
 	 * Gets all remote changes for a project from the version control system
