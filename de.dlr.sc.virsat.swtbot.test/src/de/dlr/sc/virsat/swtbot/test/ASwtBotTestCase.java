@@ -58,12 +58,10 @@ import de.dlr.sc.virsat.swtbot.util.SwtThreadWatcher;
  */
 public class ASwtBotTestCase {
 	
-	public static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
-	
 	protected static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	protected static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	protected static final String SWTBOT_TEST_PROJECTNAME = "SWTBotTestProject";
-	
+	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
 	
 	protected SWTWorkbenchBot bot;

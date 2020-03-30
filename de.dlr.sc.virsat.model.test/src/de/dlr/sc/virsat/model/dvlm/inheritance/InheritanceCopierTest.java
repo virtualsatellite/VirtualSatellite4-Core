@@ -355,7 +355,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertEquals("Received the correct Value at Config Level, value is set to override", TEST_INT_VAL_2, copiedVpi3.getValue());
 	}
 	
-	@SuppressWarnings("unused")
 	@Test
 	public void testInheritOverrideReferencePropertyInstance() {
 		CategoryAssignment caRwIfeE1 = attachInterfaceEnd(seiEcRwI, "IfeRw1");
@@ -387,7 +386,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		//CHECKSTYLE:ON
 	}
 	
-	@SuppressWarnings("unused")
 	@Test
 	public void testInheritOverrideReferencePropertyInstanceFromDifferentSei() {
 		CategoryAssignment caRwIfe1 = attachInterfaceEnd(seiEcRwI, "IfeRw1");
@@ -1040,7 +1038,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	}
 	
 	
-	@SuppressWarnings("unused")
 	@Test
 	public void testUpdateWithAssignedDisciplines() {
 		final String TEST_VAL_1 = "1234";
