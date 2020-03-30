@@ -20,8 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
 import de.dlr.sc.virsat.excel.exporter.IExport;
@@ -65,8 +64,7 @@ public class StateMachineExporter implements IExport {
 				out.close();
 			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
-				Activator.getDefault().getLog().log(status);
-				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
+				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 			}
 		}
 	}
