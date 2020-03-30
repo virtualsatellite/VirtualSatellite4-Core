@@ -25,6 +25,7 @@ import org.junit.Before;
 
 import de.dlr.sc.virsat.team.AVirSatVersionControlBackendTest;
 import de.dlr.sc.virsat.team.Activator;
+import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
 
 public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBackendTest {
 	
