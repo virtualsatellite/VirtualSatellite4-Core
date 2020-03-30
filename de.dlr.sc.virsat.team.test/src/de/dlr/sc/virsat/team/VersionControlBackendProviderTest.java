@@ -29,8 +29,8 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
-import de.dlr.sc.virsat.team.svn.CreateSvnServerOperation;
 import de.dlr.sc.virsat.team.svn.VirSatSvnVersionControlBackend;
+import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
 
 public class VersionControlBackendProviderTest {
 	

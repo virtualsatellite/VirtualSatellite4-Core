@@ -31,7 +31,7 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.team.VersionControlSystem;
-import de.dlr.sc.virsat.team.svn.CreateSvnServerOperation;
+import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
 
 public class ServerRepoHelperTest {
 
