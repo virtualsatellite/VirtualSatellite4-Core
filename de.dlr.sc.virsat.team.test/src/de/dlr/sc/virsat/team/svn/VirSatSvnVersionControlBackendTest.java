@@ -23,8 +23,8 @@ import org.eclipse.team.svn.core.resource.IRepositoryResource;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.Before;
 
+import de.dlr.sc.virsat.team.AVirSatVersionControlBackendTest;
 import de.dlr.sc.virsat.team.Activator;
-import de.dlr.sc.virsat.team.test.AVirSatVersionControlBackendTest;
 
 public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBackendTest {
 	
