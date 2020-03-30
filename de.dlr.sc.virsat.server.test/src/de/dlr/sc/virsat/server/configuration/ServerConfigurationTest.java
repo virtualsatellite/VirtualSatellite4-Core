@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.Activator;
@@ -58,15 +59,18 @@ public class ServerConfigurationTest {
 	public void testSaveProperties() throws IOException {
 		
 		final String TEST_FILE_NAME = "test.properties";
-		OutputStream outputStream = new FileOutputStream(new File(TEST_FILE_NAME));
+		
+		File wsRootFile = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toFile();
+		
+		OutputStream outputStream = new FileOutputStream(new File(wsRootFile, TEST_FILE_NAME));
 		ServerConfiguration.setRepositoryConfigurationsDir(REPOSITORY_CONFIGURATIONS_DIR);
 		ServerConfiguration.saveProperties(outputStream);
 		
-		InputStream inputStream = new FileInputStream(new File(TEST_FILE_NAME));
+		InputStream inputStream = new FileInputStream(new File(wsRootFile, TEST_FILE_NAME));
 		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
 		assertTrue("Contains value", stringFromInputStream.contains(REPOSITORY_CONFIGURATIONS_DIR));
 		
-		InputStream loadStream = new FileInputStream(new File(TEST_FILE_NAME));
+		InputStream loadStream = new FileInputStream(new File(wsRootFile, TEST_FILE_NAME));
 		ServerConfiguration.loadProperties(loadStream);
 		assertEquals("Remote loaded", REPOSITORY_CONFIGURATIONS_DIR, ServerConfiguration.getRepositoryConfigurationsDir());
 	}
