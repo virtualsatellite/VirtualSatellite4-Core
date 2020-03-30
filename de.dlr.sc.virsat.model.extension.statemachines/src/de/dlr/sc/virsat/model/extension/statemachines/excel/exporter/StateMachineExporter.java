@@ -37,6 +37,8 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
  * Class for exporting excel
  */
 public class StateMachineExporter implements IExport {
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
+	
 	ExcelExportHelper helper = new ExcelExportHelper();
 	private CategoryAssignment exportCa;
 
@@ -44,12 +46,11 @@ public class StateMachineExporter implements IExport {
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
 		if (eObject instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) eObject;
-			final String defaultTemplatePath = "/resources/StateMachineExportTemplate.xlsx";
 			// find the export template
 			try {
 				InputStream iStream = null;
 				if (useDefaultTemplate) {
-					iStream = Activator.getResourceContentAsString(defaultTemplatePath);
+					iStream = Activator.getResourceContentAsString(DEFAULT_TEMPLATE_PATH);
 				} else {
 					iStream = new FileInputStream(templatePath);
 				}
