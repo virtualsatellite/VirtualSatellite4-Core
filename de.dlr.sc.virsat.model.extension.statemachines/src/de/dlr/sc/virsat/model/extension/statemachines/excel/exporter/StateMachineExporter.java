@@ -59,9 +59,9 @@ public class StateMachineExporter implements IExport {
 				// and write the results
 				File file = new File(newPath);
 				// find the export destination
-				FileOutputStream out = new FileOutputStream(file);
-				helper.getWb().write(out);
-				out.close();
+				try (FileOutputStream out = new FileOutputStream(file)) {
+					helper.getWb().write(out);
+				}
 			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
 				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
