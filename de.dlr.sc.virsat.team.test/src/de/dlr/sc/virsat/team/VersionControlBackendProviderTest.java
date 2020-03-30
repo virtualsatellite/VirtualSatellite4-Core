@@ -58,10 +58,13 @@ public class VersionControlBackendProviderTest {
 		CreateSvnServerOperation createRemoteRepoOp = new CreateSvnServerOperation(remoteRepoFilePath);
 		createRemoteRepoOp.runWithExceptionChecking(new NullProgressMonitor());
 		
+		final String USERNAME = "abc";
+		final String PASSWORD = "123";
+		
 		VersionControlBackendProvider backendProvider = new VersionControlBackendProvider(
 				VersionControlSystem.SVN, 
 				uriToRemoteRepoPath, 
-				"abc", "123");
+				USERNAME, PASSWORD);
 		
 		IVirSatVersionControlBackend backend = backendProvider.createBackendImplementation();
 		assertTrue("A svn backend was instantiated", backend instanceof VirSatSvnVersionControlBackend);
@@ -69,9 +72,9 @@ public class VersionControlBackendProviderTest {
 		// Rebuild the repository resource, it should now have the credentials associated with it
 		remoteRepo = SVNUtility.asRepositoryResource(uriToRemoteRepoPath.toString(), true);
 		
-		assertEquals("Username has been set correctly", "abc", remoteRepo.getRepositoryLocation().getUsername());
+		assertEquals("Username has been set correctly", USERNAME, remoteRepo.getRepositoryLocation().getUsername());
 		// The password is saved encrypted so instead of directly comparing them we just check that a password has been set
-		assertNotNull("A password has been set");
+		assertNotNull("A password has been set", remoteRepo.getRepositoryLocation().getPassword());
 		
 		// Cleanup
 		Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
