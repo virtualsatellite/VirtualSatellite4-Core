@@ -73,6 +73,8 @@ public class StructuralElementInstanceHelper {
 		return childSeis;
 	}
 	
+	public static final int DEPTH_INFINITE = -1;
+	
 	/**
 	 * Gets the deep children of a structural element instance until a given depth
 	 * @param sei the structural element instance
@@ -83,7 +85,7 @@ public class StructuralElementInstanceHelper {
 	public static List<StructuralElementInstance> getDeepChildren(StructuralElementInstance sei, int depth, int currentDepth) {
 		List<StructuralElementInstance> deepChildren = new ArrayList<>();
 
-		if (depth == -1 || currentDepth < depth) {
+		if (depth == DEPTH_INFINITE || currentDepth < depth) {
 			for (StructuralElementInstance structuralElementInstance : sei.getChildren()) {
 				deepChildren.add(structuralElementInstance);
 				List<StructuralElementInstance> nestedChildren = getDeepChildren(structuralElementInstance, depth, currentDepth + 1);
@@ -93,7 +95,6 @@ public class StructuralElementInstanceHelper {
 		
 		return deepChildren;
 	}
-
 
 	/**
 	 * @param sei 

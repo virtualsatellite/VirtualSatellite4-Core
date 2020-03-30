@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v7/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.tests" description="A pure test concept to check that everything is working as expected" version="1.1" DMF="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.extension.maturity.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <ecoreImports importedNsURI="http://www.virsat.sc.dlr.de/external/tests"/>
   <categories name="TestCategoryAllProperty" description="TestCategory for testing all property Types once" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:StringProperty" name="testString"/>
     <properties xsi:type="dvlm_cppd:IntProperty" name="testInt"/>
@@ -79,6 +81,11 @@
       <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation.calcedTrl"/>
     </equationDefinitions>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="calcedTrl" quantityKindName="Mass"/>
+  </categories>
+  <categories name="EReferenceTest" isApplicableForAll="true">
+    <properties xsi:type="dvlm_cppd:EReferenceProperty" name="eReferenceTest">
+      <referenceType href="platform:/resource/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore#//ExternalTestType"/>
+    </properties>
   </categories>
   <structuralElements name="TestStructuralElement" description="StructuralElement for testing code generator" isApplicableForAll="true" isCanInheritFromAll="true" isRootStructuralElement="true"/>
   <structuralElements name="TestStructuralElementOther" description="Another StructuralElement for bean structural element instance helper" isApplicableForAll="true" isCanInheritFromAll="true"/>

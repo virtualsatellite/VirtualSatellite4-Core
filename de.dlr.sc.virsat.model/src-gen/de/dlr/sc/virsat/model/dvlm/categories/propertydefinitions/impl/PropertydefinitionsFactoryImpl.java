@@ -65,6 +65,7 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 		switch (eClass.getClassifierID()) {
 			case PropertydefinitionsPackage.COMPOSED_PROPERTY: return createComposedProperty();
 			case PropertydefinitionsPackage.REFERENCE_PROPERTY: return createReferenceProperty();
+			case PropertydefinitionsPackage.EREFERENCE_PROPERTY: return createEReferenceProperty();
 			case PropertydefinitionsPackage.INT_PROPERTY: return createIntProperty();
 			case PropertydefinitionsPackage.FLOAT_PROPERTY: return createFloatProperty();
 			case PropertydefinitionsPackage.STRING_PROPERTY: return createStringProperty();
@@ -97,6 +98,16 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	public ReferenceProperty createReferenceProperty() {
 		ReferencePropertyImpl referenceProperty = new ReferencePropertyImpl();
 		return referenceProperty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReferenceProperty createEReferenceProperty() {
+		EReferencePropertyImpl eReferenceProperty = new EReferencePropertyImpl();
+		return eReferenceProperty;
 	}
 
 	/**

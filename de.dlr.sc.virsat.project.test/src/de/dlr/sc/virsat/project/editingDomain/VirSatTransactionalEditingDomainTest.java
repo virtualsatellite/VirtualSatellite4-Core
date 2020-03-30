@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -25,8 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -37,7 +36,7 @@ import org.eclipse.emf.edit.command.CutToClipboardCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.junit.After;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,43 +59,17 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
  * This class tests the Transactional Editing Domain for Virtual Satellite
- * 
- * @author fisc_ph
- *
  */
 public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
-
-	private VirSatResourceSet rs;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
-
-		
 		addEditingDomainAndRepository();
-
-		rs = editingDomain.getResourceSet(); 
-
-		UserRegistry.getInstance().setSuperUser(true);
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-	}
-
-	@After
-	public void tearDown() throws CoreException {
-		VirSatTransactionalEditingDomain.clearResourceEventListener();
-		super.tearDown();
-		VirSatResourceSet.clear();
-		VirSatEditingDomainRegistry.INSTANCE.clear();
-		UserRegistry.getInstance().setSuperUser(false);
 	}
 
 	/**
 	 * Test class that can be added as a resource listener to the editing domain
-	 * @author fisc_ph
-	 *
 	 */
 	private static class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
@@ -491,4 +464,23 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 			VirSatTransactionalEditingDomain.removeResourceEventListener(eventCheck);
 		}
 	}
+	
+	@Test
+	public void testRunExclusiveWithResult() throws InterruptedException {
+		Object expectedObject = new Object();
+		
+		Object result = editingDomain.runExclusive(new RunnableWithResult.Impl<Object>() {
+			@Override
+			public void run() {
+				setResult(expectedObject);
+			}
+		});
+	
+		assertEquals("Got correct object", expectedObject, result);
+		
+		// Hashcode is just called do do something and to complete the lambda, it has no further meaning.
+		Object resultNull = editingDomain.runExclusive(() -> expectedObject.hashCode());
+		assertNull("Result is null", resultNull);
+	}
+	
 }

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - Matlabfile
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.matlabfile
+Bundle-Version: 4.11.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.external.lib.matlabfile.Activator
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-ClassPath: .,
+ externalLib/mfl-core-0.5.6.jar
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8 
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.matlabfile
+Export-Package: de.dlr.sc.virsat.external.lib.matlabfile,
+ us.hebi.matlab.mat.format,
+ us.hebi.matlab.mat.types,
+ us.hebi.matlab.mat.util

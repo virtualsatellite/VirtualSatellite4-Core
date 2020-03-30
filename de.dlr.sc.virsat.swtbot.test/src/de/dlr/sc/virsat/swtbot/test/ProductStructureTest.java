@@ -36,7 +36,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 	public void before() throws Exception {
 		super.before();
 		// create the necessary items for the test
-		repositoryNavigatorItem = bot.tree().expandNode(PROJECTNAME, "Repository");
+		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
 		aocs = addElement(ElementConfiguration.class, conceptPs, configurationTree);
 		rename(aocs, "AOCS");

@@ -25,11 +25,12 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 @SuppressWarnings("all")
 public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
   public static String getConcreteClassName(final Concept concept) {
-    return "StructuralElementInstanceValidator";
+    return GenerateValidator.getValidatorName(concept);
   }
   
   public static String getAbstractClassName(final Concept concept) {
-    return "AStructuralElementInstanceValidator";
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    return ("A" + _validatorName);
   }
   
   @Override
@@ -199,17 +200,22 @@ public class GenerateValidatorTests extends AGeneratorGapGenerator<EObject> {
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@Test\t");
+    _builder.append("@Test");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public void test");
     String _concreteClassName_1 = GenerateValidatorTests.getConcreteClassName(concept);
     _builder.append(_concreteClassName_1, "\t");
-    _builder.append("() { ");
+    _builder.append("() {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
-    _builder.append("StructuralElementInstanceValidator validator = new StructuralElementInstanceValidator();");
-    _builder.newLine();
+    String _concreteClassName_2 = GenerateValidatorTests.getConcreteClassName(concept);
+    _builder.append(_concreteClassName_2, "\t\t");
+    _builder.append(" validator = new ");
+    String _concreteClassName_3 = GenerateValidatorTests.getConcreteClassName(concept);
+    _builder.append(_concreteClassName_3, "\t\t");
+    _builder.append("();");
+    _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("assertTrue(validator.validate(testSei));");
     _builder.newLine();

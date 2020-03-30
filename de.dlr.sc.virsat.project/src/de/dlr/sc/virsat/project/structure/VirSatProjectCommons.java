@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.structure;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,8 @@ public class VirSatProjectCommons {
 	public static final String FILENAME_REPOSITORY = "Repository.dvlm";
 	public static final String FILENAME_UNIT_MANAGEMENT = "UnitManagement.dvlm";
 	public static final String FILENAME_ROLE_MANAGEMENT = "RoleManagement.dvlm";
+	public static final String FILENAME_EMPTY = ".empty";
+
 
 	private IProject project;
 	
@@ -74,14 +77,8 @@ public class VirSatProjectCommons {
 		IFolder folderUnversioned = project.getFolder(FOLDERNAME_UNVERSIONED);
 
 		try {
-			if (!folderData.exists()) {
-				folderData.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_DATA, null));				
-			}
-			if (!folderUnversioned.exists()) {
-				folderUnversioned.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_UNVERSIONED, null));
-			}
+			createFolderWithEmptyFile(folderData, pm);
+			createFolderWithEmptyFile(folderUnversioned, pm);
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not create folder or file in project!", e));
 			performFinish = false;
@@ -149,19 +146,12 @@ public class VirSatProjectCommons {
 			performFinish = false;
 		}
 
-		String folderName = FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX + sei.getUuid().toString();
 		IFolder folderSei = project.getFolder(new Path(getStructuralElementInstancePath(sei)));
 		IFolder folderSeiDocuments = project.getFolder(new Path(getStructuralElementInstanceDocumentPath(sei)));
 		
 		try {
-			if (!folderSei.exists()) {
-				folderSei.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + folderName, null));				
-			}
-			if (!folderSeiDocuments.exists()) {
-				folderSeiDocuments.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS, null));
-			}
+			createFolderWithEmptyFile(folderSei, pm);
+			createFolderWithEmptyFile(folderSeiDocuments, pm);
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not create folder or file for new structural element!", e));
 			performFinish = false;
@@ -420,5 +410,40 @@ public class VirSatProjectCommons {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * This method creates a folder containing an empty file using the eclipse resource API
+	 * @param folder the folder which to create if it does not exist
+	 * @param pm a progress monitor
+	 * @return the folder which has been created
+	 * @throws CoreException exception forwarded from creating the folder or file.
+	 */
+	public IFolder createFolderWithEmptyFile(IFolder folder, IProgressMonitor pm) throws CoreException {
+		if (!folder.exists()) {
+			folder.create(IResource.NONE, true, pm);
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"VirSatProjectCommons: Successfully created folder " + folder.getName()
+				)
+			);
+		}
+		
+		// Create a .empty file, this is needed for e.g. git, otherwise folders are not persisted
+		IFile emptyFile = folder.getFile(FILENAME_EMPTY);
+		if (!emptyFile.exists()) {
+			emptyFile.create(new ByteArrayInputStream(new String("").getBytes()), true, pm);
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"VirSatProjectCommons: Successfully created empty file in folder " + folder.getName()
+				)
+			);
+		}
+		
+		return folder;
 	}
 }

@@ -15,9 +15,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryTest;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelperTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelperTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstanceTest;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.EReferencePropertyInstanceImplCustomTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitchTest;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelperTest;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiatorTest;
@@ -35,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistryTest;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelperTest;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiatorTest;
+import de.dlr.sc.virsat.model.dvlm.tree.TreeTraverserTest;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuidTest;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMApplicableForCheckTest;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCanInheritFromCheckTest;
@@ -57,6 +60,7 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
+				TreeTraverserTest.class,
 				EnumPropertyHelperTest.class,
 				VirSatUuidTest.class,
 				CategoryInstantiatorTest.class,
@@ -93,6 +97,8 @@ import junit.framework.JUnit4TestAdapter;
 				CategoryTest.class,
 				ConceptTest.class,
 				QudvUnitHelperTest.class,
+				EReferencePropertyHelperTest.class,
+				EReferencePropertyInstanceImplCustomTest.class
 				})
 
 /**

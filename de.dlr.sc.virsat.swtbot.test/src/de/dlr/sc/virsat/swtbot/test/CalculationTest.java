@@ -24,6 +24,7 @@ import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
+import de.dlr.sc.virsat.swtbot.util.SwtBotDebugHelper;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipment;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummary;
 
@@ -51,7 +52,7 @@ public class CalculationTest extends ASwtBotTestCase {
 		super.before();
 		// create the necessary items for the test
 		conceptMass = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.budget.mass.Activator.getPluginId() + "/concept/concept.xmi");	
-		repositoryNavigatorItem = bot.tree().expandNode(PROJECTNAME, "Repository");
+		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		productTree = addElement(ProductTree.class, conceptPs, repositoryNavigatorItem);
 		massEquipment1 = addElement(MassEquipment.class, conceptMass, productTree);
 		openEditor(massEquipment1);
@@ -60,31 +61,72 @@ public class CalculationTest extends ASwtBotTestCase {
 	@Test
 	public void calculationsForMassEquipmentTest() {
 		// test margin calculation
+		SwtBotDebugHelper.logCodeLine();
 		renameField(MassEquipment.PROPERTY_MASS, "45");
-		waitForAllBuildersAndUiThread(); 
+		
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		
+		SwtBotDebugHelper.logCodeLine();
 		assertText("54.0", bot.textWithLabel(MassEquipment.PROPERTY_MASSWITHMARGIN));
 		// add another mass equipment
+
+		SwtBotDebugHelper.logCodeLine();
 		productTreeDomain = addElement(ProductTreeDomain.class, conceptPs, productTree);	
+
+		SwtBotDebugHelper.logCodeLine();
 		massEquipment2 = addElement(MassEquipment.class, conceptMass, productTreeDomain);
+
+		SwtBotDebugHelper.logCodeLine();
 		openEditor(massEquipment2);
+
+		SwtBotDebugHelper.logCodeLine();
 		renameField(MassEquipment.PROPERTY_MASS, "55");
-		waitForAllBuildersAndUiThread(); 
+
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		 
 		// add massSummary and test calculation
+		SwtBotDebugHelper.logCodeLine();
 		massSummary = addElement(MassSummary.class, conceptMass, productTree);
+
+		SwtBotDebugHelper.logCodeLine();
 		openEditor(massSummary);
-		waitForAllBuildersAndUiThread(); 
+
+		SwtBotDebugHelper.logCodeLine();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		
+		SwtBotDebugHelper.logCodeLine();
 		assertText("100.0", bot.textWithLabel(MassEquipment.PROPERTY_MASS));
+ 
+		SwtBotDebugHelper.logCodeLine();
 		assertText("120.0", bot.textWithLabel(MassEquipment.PROPERTY_MASSWITHMARGIN));
+
+		SwtBotDebugHelper.logCodeLine();
 	}
 	
 	@Test
 	public void addRemoveEquationTest() {
+
+		SwtBotDebugHelper.logCodeLine();
 		bot.button("Add Equation").click();
+
+		SwtBotDebugHelper.logCodeLine();
 		SWTBotTable allPropertyTable = getSWTBotTable(massEquipment1, "Table Section for: Equations");
+
+		SwtBotDebugHelper.logCodeLine();
 		assertEquals(THREE, allPropertyTable.rowCount());
+
+		SwtBotDebugHelper.logCodeLine();
 		allPropertyTable.click(0, 0);
+
+		SwtBotDebugHelper.logCodeLine();
 		bot.button("Remove Equation").click();
+
+		SwtBotDebugHelper.logCodeLine();
 		assertEquals(2, allPropertyTable.rowCount());	
+
+		SwtBotDebugHelper.logCodeLine();
 	}
 	
 	@Test

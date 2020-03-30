@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.team.feature"
       label="VirSat Core Simple Team Connector feature"
-      version="4.10.0.qualifier"
+      version="4.11.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -25,21 +25,27 @@ by German Aerospace Center (DLR e.V.)
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jgit"/>
+      <import plugin="org.eclipse.egit.core"/>
+      <import plugin="org.eclipse.team.core" version="3.7.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.team.svn.core" version="4.0.5" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="de.dlr.sc.virsat.project"/>
       <import plugin="de.dlr.sc.virsat.project.ui"/>
       <import plugin="org.eclipse.team.svn" version="3.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.team.svn.ui" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.team.svn.core" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.team.core" version="3.7.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.team.ui" version="3.7.200" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.egit.ui"/>
       <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="org.eclipse.ui.ide"/>
       <import feature="org.eclipse.team.svn" version="4.0.4.I20170216-1700"/>
+      <import feature="org.eclipse.egit" version="5.4.0.201906121030-r"/>
+      <import feature="org.eclipse.jgit" version="5.4.0.201906121030-r"/>
+      <import feature="org.eclipse.jgit.ssh.apache" version="5.4.0.201906121030-r"/>
    </requires>
 
    <plugin

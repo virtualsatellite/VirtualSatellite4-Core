@@ -76,6 +76,10 @@
 		pathToImage="resources/icons/TestCrossLinkedParametersWithCalculation.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.tests.EReferenceTest"
+		pathToImage="resources/icons/EReferenceTest.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.tests.TestStructuralElement"
 		pathToImage="resources/icons/TestStructuralElement.gif">
 	</conceptImage>
@@ -140,6 +144,10 @@
 	<command
 		id="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestCrossLinkedParametersWithCalculation"
 		name="Add TestCrossLinkedParametersWithCalculation">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest"
+		name="Add EReferenceTest">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestStructuralElement"
@@ -222,6 +230,11 @@
 	      icon="resources/icons/TestCrossLinkedParametersWithCalculation.gif">
 	</image>
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest"
+	      disabledIcon="resources/icons/EReferenceTest_disabled.gif"
+	      icon="resources/icons/EReferenceTest.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestStructuralElement"
 	      disabledIcon="resources/icons/TestStructuralElement_disabled.gif"
 	      icon="resources/icons/TestStructuralElement.gif">
@@ -288,6 +301,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.tests.ui.handler.AddTestCrossLinkedParametersWithCalculationHandler"
 		commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddTestCrossLinkedParametersWithCalculation">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.tests.ui.handler.AddEReferenceTestHandler"
+		commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.tests.ui.handler.AddStructuralElementInstanceTestStructuralElementHandler"
@@ -650,6 +667,28 @@
 				</with>
 			</visibleWhen>
 		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.tests.ui.command.AddEReferenceTest"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.tests.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.tests.menu?after=structuralElements">
@@ -926,6 +965,16 @@
 		      id="de.dlr.sc.virsat.model.extension.tests.section.uiSnippetTestCrossLinkedParametersWithCalculation"
 		      section="de.dlr.sc.virsat.model.extension.tests.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.tests.ui.snippet.UiSnippetSectionTestCrossLinkedParametersWithCalculation">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.tests.table.uiSnippetEReferenceTest"
+		      section="de.dlr.sc.virsat.model.extension.tests.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.tests.ui.snippet.UiSnippetTableEReferenceTest">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.tests.section.uiSnippetEReferenceTest"
+		      section="de.dlr.sc.virsat.model.extension.tests.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.tests.ui.snippet.UiSnippetSectionEReferenceTest">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

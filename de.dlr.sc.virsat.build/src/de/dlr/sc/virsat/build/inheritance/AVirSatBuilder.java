@@ -10,11 +10,9 @@
 package de.dlr.sc.virsat.build.inheritance;
 
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 
@@ -45,13 +43,16 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 	 */
 	protected abstract void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor);
 
+	protected String builderName;
+	
 	/**
 	 * Constructor for the VirSatBuilder 
 	 * @param vpmHelper The generic VirSatProblemMarker
 	 */
-	public AVirSatBuilder(VirSatProblemMarkerHelper vpmHelper) {
+	public AVirSatBuilder(String builderName, VirSatProblemMarkerHelper vpmHelper) {
 		super();
 		this.vpmHelper = vpmHelper;
+		this.builderName = builderName;
 	}
 
 	/**
@@ -72,44 +73,56 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 	}
 
 	@Override
-	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Try to trigger custom build", null));
-		
-		IProject project = getVirSatProject();
-		VirSatTransactionalEditingDomain virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
-		IResourceDelta delta = getDelta(project);
-
-		if (virSatTed == null || !getResourceSet().isOpen()) {
-			return null;
-		}
-		
-		switch (kind) {  
-			case FULL_BUILD:
-				fullBuild(monitor);
-				break;  
-			case INCREMENTAL_BUILD:
-				if (delta == null) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Performing full build", null));
+	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) {
+		try {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Try to trigger custom build"));
+			
+			IProject project = getVirSatProject();
+			VirSatTransactionalEditingDomain virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
+			IResourceDelta delta = getDelta(project);
+	
+			if (virSatTed == null || !getResourceSet().isOpen()) {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Project Closed or not Transactional Editing Domain - no build"));
+				return null;
+			}
+			
+			switch (kind) {  
+				case FULL_BUILD:
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing full build - full build"));
 					fullBuild(monitor);
-				} else {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Performing incremental build", null));
-					incrementalBuild(delta, monitor);
-				}
-				break;
-			case AUTO_BUILD:
-				if (delta == null) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Performing full build", null));
-					fullBuild(monitor);
-				} else {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Performing incremental build", null));
-					incrementalBuild(delta, monitor);
-				}
-				break;
-			default:
-				break;  
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done full build - full build"));
+					break;  
+				case INCREMENTAL_BUILD:
+					if (delta == null) {
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing incremental Build - full build"));
+						fullBuild(monitor);
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done incremental Build - full build"));
+					} else {
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing incremental build - incremental build"));
+						incrementalBuild(delta, monitor);
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done incremental Build - full build"));
+					}
+					break;
+				case AUTO_BUILD:
+					if (delta == null) {
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing auto build - full build"));
+						fullBuild(monitor);
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done auto build - full build"));
+					} else {
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing auto build - incremental build"));
+						incrementalBuild(delta, monitor);
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done auto build - incremental build"));
+					}
+					break;
+				default:
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Unknown build mode"));
+					break;  
+			}
+			 
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Finished Custom build"));
+		} catch (Exception e) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Errored", e));
 		}
-		
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatBuilder: Finished Custom build", null));
 		return null; 
 	}
 }

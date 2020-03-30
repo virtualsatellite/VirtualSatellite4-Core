@@ -3,18 +3,5 @@
 <plugin>
    <extension-point id="CommandLineArguments" name="CommandLineArguments" schema="schema/CommandLineArguments.exsd"/>
    
-   <extension
-         point="de.dlr.sc.virsat.external.lib.commons.cli.CommandLineArguments">
-     <clArgs
-           command="superUser">
-     </clArgs>
-     <clArgs
-           command="ignoreBetaConcepts">
-     </clArgs>
-     <clArgs
-            attribute="user"
-            command="forcedUser">
-     </clArgs>
-   </extension>>
 </plugin>
     

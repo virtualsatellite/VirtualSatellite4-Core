@@ -35,6 +35,7 @@ addons:
     - libzmq-jni
     - metacity
     - ant
+    - expect
 
 install:
 - true
@@ -54,14 +55,6 @@ env:
   # API Token for access to github
   # ---------------------------------------------
   - secure: "POYGzbPXLBDe2BsehzJ7QUZ4toQ1Pbi2VdH8ZTSN9zqipLbBVnsMghs7Zf80C+AK1nKbY2DPWHwaWR6LE3MRhA9X3xeyYgJ/53J4JeMw1ORYpavVXJC9t8d+fMVCJhALzjQYz7PmE4ba/MHgr/UnoeNL2v1M/9mUpMbfD490jPUdOQjqpy0/FvM5HhXcQEwexUPsNsR+DffVSSmJ62aXHPM2pgKYaH0pnY5OYwm4t7v7lp8GgQf+b163+rD2LyLIEeLiQ1msXAqaRSBznuu2wqi7N3ZC176i864fRHf8M4RYbWqA0BneCd0keAQJLvpcPBoyE1T0XKYvjz5JdjbuNDX1p4waLo7CnU+UJzuCQ5hnkrDm7YJhwQY007T2kudUTPl0dP0TeoJsDtz30vvBC82equJA5+0xPb1BvvDmdKFkfF7gOGh05qjhAo3TJ8D5CXXFmdPr9VApYv0zqzh0hR5p+5FHkDmKhzJ7xg4jpo04IXa8ztBCjoB4dyLnUDhyTABtA5/uoRuMA4I7nc25mKL6Z9fz8O8HadAInlJFXyodQOrvD68k2Bf9WJWreZMKcLJiOWQC0bbPNa6ABrRpiuzdUdWEpzNjJJYktmPl+JwHAJ4Fa3CHaNFILaLLC9Z3gtrdNT2+PkME8u0sfVWZ1nU4nNO9EGUItcBEFhkCnZE="
-  # ---------------------------------------------
-  # Setup Overtarget Repository and Version
-  # ---------------------------------------------
-  - OVERTARGET_VERSION=1.1.0.r201903120902
-  - OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
-  - OVERTARGET_GROUP=de.dlr.sc.overtarget
-  - JUNIT_DEBUG_PROJECT_TEST_CASE=true
-  - SWTBOT_SCREENSHOT=true
 
 before_script:
   # -----------------------------------
@@ -71,13 +64,24 @@ before_script:
   # -------------------------------------------------------------------
   # create adirectory for Overtarget and try to receive language plugin
   # -------------------------------------------------------------------
-  - mkdir -p ./OverTarget
-  - travis_retry curl -v -L -o ./OverTarget/OverTarget.jar ${OVERTARGET_REPO}/${OVERTARGET_GROUP}.language_${OVERTARGET_VERSION}.jar/download#
-  - mvn install:install-file -Dfile=./OverTarget/OverTarget.jar -DgroupId=${OVERTARGET_GROUP} -DartifactId=${OVERTARGET_GROUP}.language -Dversion=${OVERTARGET_VERSION} -Dpackaging=jar
+  - bash/maven_build.sh -j dependencies -p dependencies
   # --------------------------------------------------------------
   # Setup environment variables for correct linking of vtk and zmq
   # --------------------------------------------------------------
   - source bash/setup_environment.sh
+  # --------------------------------------
+  # Start the ssh agent
+  # --------------------------------------
+  - eval "$(ssh-agent -s)"
+  # ----------------------------------------
+  # Decrypt the key for accessign the 
+  # deployment store and add it to ssh-agent
+  # ----------------------------------------
+  - mkdir -p -m 700 /tmp/.sourceforge_ssh
+  - openssl aes-256-cbc -K $encrypted_abcf28ac24e1_key -iv $encrypted_abcf28ac24e1_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
+  - chmod 600 /tmp/.sourceforge_ssh/id_ed25519
+  - bash/ssh-add-password.sh -k /tmp/.sourceforge_ssh/id_ed25519 -p ${ssh_password} 2>/dev/null
+
   
 after_failure:
   # ----------------------------------------
@@ -86,7 +90,7 @@ after_failure:
   # then try to deploy the screenshots from 
   # SWTBot to see what happened 
   # ----------------------------------------
-  - bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u swtbot
+  - bash/deploy_sourceforge.sh -u swtbot
   # ---------------------------------------
   # Show the debug output of Surefire Junit
   # ---------------------------------------
@@ -108,7 +112,7 @@ jobs:
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
-      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
       name: Build and Test - SpotBugs - Development and Features
       script:
       - bash/maven_build.sh -j spotbugs -p development
@@ -122,7 +126,7 @@ jobs:
     # ----------------------------
     # --- Release Tags
     - stage: build-test
-      if: tag =~ /^Release/
+      if: (branch =~ /^master/) OR (tag =~ /^Release/)
       name: Build and Test - SpotBugs - Release
       script:
       - bash/maven_build.sh -j spotbugs -p release   
@@ -132,31 +136,31 @@ jobs:
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
-      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
       name: Build and Test - Surefire - Development and Features
       script:
-      - bash/maven_build.sh -j surefire -p development   
+      - bash/maven_build.sh -j surecoverage -p development   
     # ----------------------------
     # --- Integration Branches
     - stage: build-test
       if: branch = integration
       name: Build and Test - Surefire - Integration
       script:
-      - bash/maven_build.sh -j surefire -p integration   
+      - bash/maven_build.sh -j surecoverage -p integration   
     # ----------------------------
     # --- Release Tags
     - stage: build-test
-      if: tag =~ /^Release/
+      if: (branch =~ /^master/) OR (tag =~ /^Release/)
       name: Build and Test - Surefire - Release
       script:
-      - bash/maven_build.sh -j surefire -p release   
+      - bash/maven_build.sh -j surecoverage -p release   
 
     # -----------------------------------------------------
     # Build and Test - Checkstyle Jobs
     # -----------------------------------------------------
     # --- Development and Feature Branches
     - stage: build-test
-      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (tag =~ /^Release/)
+      if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
       name: Build and Test - Checkstyle - Development and Features
       script:
       - bash/maven_build.sh -j checkstyle -p development   
@@ -170,7 +174,7 @@ jobs:
     # ----------------------------
     # --- Release Tags
     - stage: build-test
-      if: tag =~ /^Release/
+      if: (branch =~ /^master/) OR (tag =~ /^Release/)
       name: Build and Test - Checkstyle - Release
       script:
       - bash/maven_build.sh -j checkstyle -p release   
@@ -185,6 +189,13 @@ jobs:
       name: Build-Assemble-Deploy - Feature
       script:
       - bash/maven_build.sh -j assemble -p development   
+
+    # For simulating the assemble steps but not actually deploying
+    - stage: build-assemble-deploy
+      if: (branch =~ /^master/) AND NOT (tag =~ /^Release/)
+      name: Build-Assemble - Release (no Deploy)
+      script:
+      - bash/maven_build.sh -j assemble -p release   
 
     # -----------------------------------------------------------
     # Deploy Jobs for unsecured Development.
@@ -229,7 +240,7 @@ jobs:
           branch: development
       - provider: script
         skip_cleanup: true
-        script: bash bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u development
+        script: bash bash/deploy_sourceforge.sh -u development
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: development
@@ -281,7 +292,7 @@ jobs:
       # ---------------------------------------------    
       - provider: script
         skip_cleanup: true
-        script: bash bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u integration
+        script: bash bash/deploy_sourceforge.sh -u integration
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           branch: integration
@@ -318,7 +329,7 @@ jobs:
       # ---------------------------------------------    
       - provider: script
         skip_cleanup: true
-        script: bash bash/deploy_sourceforge.sh -k $encrypted_9c25c12f834a_key -i $encrypted_9c25c12f834a_iv -u release
+        script: bash bash/deploy_sourceforge.sh -u release
         on:
           repo: virtualsatellite/VirtualSatellite4-Core
           tags: true

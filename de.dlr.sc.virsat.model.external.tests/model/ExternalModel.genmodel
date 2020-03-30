@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.dlr.sc.virsat.model.external.tests/src-gen"
+    editDirectory="/de.dlr.sc.virsat.model.external.tests.edit/src-gen" editorDirectory="/de.dlr.sc.virsat.model.external.tests.editor/src-gen"
+    modelPluginID="de.dlr.sc.virsat.model.external.tests" modelName="ExternalModel"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" editPluginID="de.dlr.sc.virsat.model.external.tests.edit"
+    editorPluginID="de.dlr.sc.virsat.model.external.tests.editor" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>ExternalModel.ecore</foreignModel>
+  <genPackages prefix="Tests" basePackage="de.dlr.sc.virsat.model.external" disposableProviderFactory="true"
+      fileExtensions="etests" ecorePackage="ExternalModel.ecore#/">
+    <genClasses ecoreClass="ExternalModel.ecore#//ExternalTestType"/>
+    <genClasses ecoreClass="ExternalModel.ecore#//SuperType"/>
+    <genClasses ecoreClass="ExternalModel.ecore#//Container">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExternalModel.ecore#//Container/objects"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

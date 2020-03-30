@@ -9,8 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,24 +38,37 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 	@Before
 	public void before() throws Exception {
 		super.before();
-		repositoryNavigatorItem = bot.tree().expandNode(PROJECTNAME, "Repository");
+		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
 		elementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
+	}
+	
+	@Override
+	public void tearDown() throws CoreException {
+		// In case of cut and paste actions on a SEI, the editing domain is not triggered for a save
+		// operation. Since the SEI has been well stored to a parent before, it does not to be stored 
+		// after a cut and paste. If the state would get lost (i.e. Not Saving), the SEI would be back
+		// nested to it's previous parent. This is a different story for copy and paste, here new SEIs
+		// are created which have never been nested before. Here the Create SEI Command will trigger 
+		// save accordingly.
+		// To avoid the save dialog popping up, we save all editors before shutting down the workbench
+		buildCounter.executeInterlocked(() -> bot.menu("File").menu("Save All").click());
+		super.tearDown();
 	}
 	
 	@Test
 	public void cutCopyDeleteSeiTest() throws InterruptedException {
 		// test delete undo
 		delete(elementConfiguration);
-		assertEquals(1, configurationTree.getItems().length);
+		assertThat("An EC got deleted", configurationTree.getItems(), arrayWithSize(1));
 		undo(configurationTree);
-		assertEquals(2, configurationTree.getItems().length);
+		assertThat("The EC came back", configurationTree.getItems(), arrayWithSize(2));
 		
 		// test copy paste
 		int oldItemCount = repositoryNavigatorItem.getItems().length;
 		copy(configurationTree);
 		paste(repositoryNavigatorItem);
-		assertEquals(oldItemCount + 1, repositoryNavigatorItem.getItems().length);
+		assertThat("Pasted one element more", repositoryNavigatorItem.getItems(), arrayWithSize(oldItemCount + 1));
 
 		// test cut paste		
 		SWTBotTreeItem configurationTree2 = repositoryNavigatorItem.getNode("CT: ConfigurationTree_2");
@@ -59,50 +76,105 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 		cut(elementConfiguration);
 		paste(configurationTree2);
 		
-		for (StructuralElementInstance sc : getRepository(project).getRootEntities()) {
-			if (sc.getName().equals("CT: ConfigurationTree_2")) {
-				assertEquals(sc.getChildren().size(), 2);
-			}
-			if (sc.getName().equals("ConfigurationTree")) {
-				assertEquals(sc.getChildren().size(), 0);
-			}
-		}
+		StructuralElementInstance seiCt1 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree")).findFirst().get();
+		StructuralElementInstance seiCt2 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree_2")).findFirst().get();
+
+		assertNotNull("Correct SEI exists", seiCt1);
+		assertNotNull("Correct SEI exists", seiCt2);
+		
+		assertThat("Found correct amount of children", seiCt1.getChildren(), hasSize(0));
+		assertThat("Found correct amount of children", seiCt2.getChildren(), hasSize(2));
 	}
-	
+
+	@Test
+	public void dragAndDropMoveSei() throws InterruptedException {
+		// Create the Copy of the ConfiguratrionTree
+		int oldItemCount = repositoryNavigatorItem.getItems().length;
+		copy(configurationTree);
+		paste(repositoryNavigatorItem);
+		assertThat("Pasted one element more", repositoryNavigatorItem.getItems(), arrayWithSize(oldItemCount + 1));
+
+		// test cut paste		
+		SWTBotTreeItem configurationTree2 = repositoryNavigatorItem.getNode("CT: ConfigurationTree_2");
+		elementConfiguration = configurationTree.getNode("EC: ElementConfiguration");
+		
+		// Now do the drag and drop move operation
+		buildCounter.executeInterlocked(() -> {
+			elementConfiguration.dragAndDrop(configurationTree2);
+		});
+		
+		StructuralElementInstance seiCt1 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree")).findFirst().get();
+		StructuralElementInstance seiCt2 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree_2")).findFirst().get();
+
+		assertNotNull("Correct SEI exists", seiCt1);
+		assertNotNull("Correct SEI exists", seiCt2);
+		
+		assertThat("Found correct amount of children", seiCt1.getChildren(), hasSize(0));
+		assertThat("Found correct amount of children", seiCt2.getChildren(), hasSize(2));
+	}
+
 	@Test
 	public void cutCopyDeleteCaTest() {
 		SWTBotTreeItem document = addElement(Document.class, conceptPs, elementConfiguration);
 			
-		// test delete undo
+		// test delete undo, one element remains because of the documents folder
 		delete(document);
-		assertEquals(1, elementConfiguration.getItems().length);
+		assertThat("An document got deleted", elementConfiguration.getItems(), arrayWithSize(1));
 		
 		undo(elementConfiguration);
-		assertEquals(2, elementConfiguration.getItems().length);
+		assertThat("An document came back", elementConfiguration.getItems(), arrayWithSize(2));
 		
 		// test copy paste
+		// CHECKSTYLE:OFF
 		document = elementConfiguration.getNode("D: Document");
 		copy(document);
 		paste(elementConfiguration);
-		rename(elementConfiguration, "EC1");
+		assertThat("Pasted second document", elementConfiguration.getItems(), arrayWithSize(3));
+		// CHECKSTYLE:ON
 		
-		// Renaming the original document to IE1
-		rename(document, "IE1");
-
 		// Add a new element configuration into the config tree where we want to paste the document
+		rename(elementConfiguration, "ec_1");
 		SWTBotTreeItem newElementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
+		rename(newElementConfiguration, "ec_2");
 		
 		// Cut the document from its previous place and copy it to the new place
 		cut(document);
 		paste(newElementConfiguration);
 
-		// now search for the Element Configuration and check if there is a new CA attached to it
-		for (StructuralElementInstance sc : getRepository(project).getRootEntities()) {
-			for (StructuralElementInstance scChild : sc.getChildren()) {
-				if (scChild.getName().equals("ElementConfiguration")) {				
-					assertEquals(1, scChild.getCategoryAssignments().size());
-				}
-			}
-		}
+		StructuralElementInstance seiCt1 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree")).findFirst().get();
+
+		StructuralElementInstance ec1 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_1")).findFirst().get();
+		StructuralElementInstance ec2 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_2")).findFirst().get();
+		
+		assertNotNull("Correct SEI exists", ec1);
+		assertNotNull("Correct SEI exists", ec2);
+		
+		assertThat("Found correct amount of documents", ec1.getCategoryAssignments(), hasSize(1));
+		assertThat("Found correct amount of documents", ec2.getCategoryAssignments(), hasSize(1));
+	}
+	
+	@Test
+	public void dragAndDropMoveCa() {
+		SWTBotTreeItem document = addElement(Document.class, conceptPs, elementConfiguration);
+		
+		// Add a new element configuration into the config tree where we want to paste the document
+		rename(elementConfiguration, "ec_1");
+		SWTBotTreeItem newElementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
+		rename(newElementConfiguration, "ec_2");
+		
+		// now move the document with drag and drop
+		document.dragAndDrop(newElementConfiguration);
+		waitForEditingDomainAndUiThread();
+
+		StructuralElementInstance seiCt1 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree")).findFirst().get();
+
+		StructuralElementInstance ec1 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_1")).findFirst().get();
+		StructuralElementInstance ec2 = seiCt1.getChildren().stream().filter(sei -> sei.getName().equals("ec_2")).findFirst().get();
+		
+		assertNotNull("Correct SEI exists", ec1);
+		assertNotNull("Correct SEI exists", ec2);
+		
+		assertThat("Found correct amount of documents", ec1.getCategoryAssignments(), hasSize(0));
+		assertThat("Found correct amount of documents", ec2.getCategoryAssignments(), hasSize(1));
 	}
 }

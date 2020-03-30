@@ -47,6 +47,15 @@ public interface PropertydefinitionsFactory extends EFactory {
 	ReferenceProperty createReferenceProperty();
 
 	/**
+	 * Returns a new object of class '<em>EReference Property</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>EReference Property</em>'.
+	 * @generated
+	 */
+	EReferenceProperty createEReferenceProperty();
+
+	/**
 	 * Returns a new object of class '<em>Int Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -318,6 +318,161 @@ NOTE: Whenever you commit and update, you do it for the whole project.
 
 |===
 
+=== Sharing a new project to git
+
+Virtual Satellite also provides two modes of using git. A basic and an advanced mode. The basic mode simplifies the transition from SVN to git by providing the classical SVN actions. The advanced mode uses the eclipse default git implementation and provides all git actions. See the EGit https://wiki.eclipse.org/EGit/User_Guide[documentation] for more information.
+
+The following steps can be applied to use Virtual Satellite with the basic git mode.
+
+To share a project via git first switch to the GIT perspective and add a git repository:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the git perspective by selecting [Window -> Perspective -> Open Perspective -> Other] from the menu. In the dialog both select "Git". 
+
+NOTE: You can also switch the eclipse perspectives by using the icons in the top right corner! 
+
+|image:chapterSettingUpInfrastructure/git-perspective.png[Opening Git Perspective]
+
+|{counter:step}.
+|In the git perspective, in the "Git Repositories" view on the left, select the icon with the green arrow to clone an existing git repository.
+|image:chapterSettingUpInfrastructure/add-repository.png[Add Repository]
+
+|{counter:step}.
+|Add the git remote URL and insert your credentials. Then click [next]
+|image:chapterSettingUpInfrastructure/clone-repository.png[Add Repository]
+
+|{counter:step}.
+|Select synchronisation of all branches by clicking [next] again.
+|image:chapterSettingUpInfrastructure/branches.png[Select Branches]
+
+|{counter:step}.
+|Select the file location for the git repository on your local computer. Then click [Finish]
+|image:chapterSettingUpInfrastructure/clone-select-location.png[Local Location Dialog]
+
+|===
+
+Now you checked out a git repository. This can be used to share your project:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the _Project Explorer_ tab in the _Navigator_ view. 
+|image:chapterSettingUpInfrastructure/ProjectExplorer.png[Opening Project Explorer]
+
+|{counter:step}.
+|In the context menu of your project select menu:Context[Team > Share Project...].
+|image:chapterSettingUpInfrastructure/ShareProject.png[Share Project]
+
+|{counter:step}.
+|In the _Share Project Wizard_ select GIT and click [Next].
+|image:chapterSettingUpInfrastructure/share-git.png[Share Project Dialog]
+
+|{counter:step}.
+|On the next page select the repository you cloned before and click [Finish].
+|image:chapterSettingUpInfrastructure/select-repository.png[Select Repository]
+
+|{counter:step}.
+|Next you will see a commit dialog where you can write a commit message. Press btn:[OK] to commit your project to SVN.
+|image:chapterSettingUpInfrastructure/git-commit.png[Commit Dialog]
+
+|===
+
+Now your project is connected to a git repository and you can *Commit* and *Update* it (see <<Updating and committing a git project>>).
+
+
+=== Loading a project from git
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Open the git perspective by selecting [Window -> Perspective -> Open Perspective -> Other] from the menu. In the dialog both select "Git". 
+
+NOTE: You can also switch the eclipse perspective by using the icons in the top right corner! 
+
+|image:chapterSettingUpInfrastructure/git-perspective.png[Opening Git Perspective]
+
+|{counter:step}.
+|In the "Git Repositories" view on the left, click the button with the green arrow to clone an existing git repository.
+|image:chapterSettingUpInfrastructure/add-repository.png[Add Repository]
+
+|{counter:step}.
+|Add the git remote URL and insert your credentials. Then click [next]
+|image:chapterSettingUpInfrastructure/clone-repository.png[Add Repository]
+
+|{counter:step}.
+|Select synchronisation of all branches by clicking [next] again.
+|image:chapterSettingUpInfrastructure/branches.png[Select Branches]
+
+|{counter:step}.
+|Select the file location for the git repository on your local computer. Then click [Finish]
+|image:chapterSettingUpInfrastructure/clone-select-location.png[Local Location Dialog]
+
+|===
+
+Now you have cloned a git repository from which projects can be imported: 
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|To checkout the git repository's projects, right-click the repository and select "Import Projects" 
+|image:chapterSettingUpInfrastructure/import-projects.png[Import Projects]
+
+|{counter:step}.
+|Select the desired projects and press [Finish].
+|image:chapterSettingUpInfrastructure/select-import.png[Select Projects]
+
+|===
+
+Switch back to the Virtual Satellite Perspective to start modeling (Window -> Perspective -> Open Perspective -> Other -> VirSat Core; or with the icons in the top right corner). 
+
+=== Updating and committing a git project
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|To get the most recent changes from the repository, press menu:Context[Update Project from Repository] in _Navigator_. To upload your changes to the repository, press menu:Context[Commit Project to Repository] and optionally provide a commit message in the dialog that pops up.
+
+TIP: There are also icons for committing and updating in the icon bar of the _Navigator_.
+
+NOTE: Whenever you commit and update, you do it for the whole project.
+
+|image:chapterSettingUpInfrastructure/Committing.png[Committing and Updating]
+
+|===
+
+
 == Modeling with Virtual Satellite
 
 Learn here about the out of the box available modeling capabilities supported by Virtual Satellite.
@@ -1324,6 +1479,10 @@ where
 
 * *nameFilter* is optional and filters out all Categories that do not confirm to the nameFilter
 * *depth* is optional and limits the aggregation depth. The value -1 represents limitless aggregation and is set by default.
+
+NOTE: *depth* is defined as the amount of levels where the property or category in question was found. 
+ 
+
 
 Concepts may define new aggregation functions as necessary and may also allow other objects than properties to be used
 as aggregation inputs. By default Virtual Satellite CORE comes with a set of aggregation functions, namely:

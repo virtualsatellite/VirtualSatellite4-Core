@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Concept IDE Tools
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.concept
 Bundle-SymbolicName: de.dlr.sc.virsat.model.concept.test;singleton:=true
 Bundle-ActivationPolicy: lazy
@@ -16,7 +16,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.testing,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.external.lib.apache.poi,
- de.dlr.sc.virsat.concept.unittest.util
+ de.dlr.sc.virsat.concept.unittest.util,
+ org.eclipse.xtext.ui.testing,
+ org.eclipse.xtext.ecore,
+ org.eclipse.xtext.ui.ecore,
+ de.dlr.sc.virsat.model.external.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.dlr.sc.virsat.model.concept,
  de.dlr.sc.virsat.model.concept.test

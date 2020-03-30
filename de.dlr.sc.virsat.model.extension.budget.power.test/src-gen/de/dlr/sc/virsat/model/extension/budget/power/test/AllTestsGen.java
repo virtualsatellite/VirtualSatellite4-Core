@@ -21,9 +21,9 @@ import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.budget.power.model.PowerSummaryTest;
 import de.dlr.sc.virsat.model.extension.budget.power.migrator.Migrator1v0Test;
-import de.dlr.sc.virsat.model.extension.budget.power.validator.StructuralElementInstanceValidatorTest;
 import de.dlr.sc.virsat.model.extension.budget.power.model.PowerStateTest;
 import de.dlr.sc.virsat.model.extension.budget.power.model.PowerEquipmentTest;
+import de.dlr.sc.virsat.model.extension.budget.power.validator.PowerValidatorTest;
 
 /**
  * 
@@ -35,7 +35,7 @@ import de.dlr.sc.virsat.model.extension.budget.power.model.PowerEquipmentTest;
 	PowerSummaryTest.class,
 	PowerStateTest.class,
 	Migrator1v0Test.class,
-	StructuralElementInstanceValidatorTest.class,
+	PowerValidatorTest.class,
 				})
 
 /**

@@ -66,6 +66,7 @@ public class PropertyinstancesFactoryImpl extends EFactoryImpl implements Proper
 			case PropertyinstancesPackage.VALUE_PROPERTY_INSTANCE: return createValuePropertyInstance();
 			case PropertyinstancesPackage.UNIT_VALUE_PROPERTY_INSTANCE: return createUnitValuePropertyInstance();
 			case PropertyinstancesPackage.REFERENCE_PROPERTY_INSTANCE: return createReferencePropertyInstance();
+			case PropertyinstancesPackage.EREFERENCE_PROPERTY_INSTANCE: return createEReferencePropertyInstance();
 			case PropertyinstancesPackage.COMPOSED_PROPERTY_INSTANCE: return createComposedPropertyInstance();
 			case PropertyinstancesPackage.ARRAY_INSTANCE: return createArrayInstance();
 			case PropertyinstancesPackage.RESOURCE_PROPERTY_INSTANCE: return createResourcePropertyInstance();
@@ -103,6 +104,16 @@ public class PropertyinstancesFactoryImpl extends EFactoryImpl implements Proper
 	public ReferencePropertyInstance createReferencePropertyInstance() {
 		ReferencePropertyInstanceImpl referencePropertyInstance = new ReferencePropertyInstanceImpl();
 		return referencePropertyInstance;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReferencePropertyInstance createEReferencePropertyInstance() {
+		EReferencePropertyInstanceImpl eReferencePropertyInstance = new EReferencePropertyInstanceImpl();
+		return eReferencePropertyInstance;
 	}
 
 	/**

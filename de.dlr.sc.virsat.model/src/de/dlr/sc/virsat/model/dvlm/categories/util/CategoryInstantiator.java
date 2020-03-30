@@ -43,6 +43,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier;
@@ -315,6 +316,11 @@ public class CategoryInstantiator {
 			@Override
 			public APropertyInstance caseReferenceProperty(ReferenceProperty object) {
 				return PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
+			}
+			
+			@Override
+			public APropertyInstance caseEReferenceProperty(EReferenceProperty object) {
+				return PropertyinstancesFactory.eINSTANCE.createEReferencePropertyInstance();
 			}
 			
 			@Override

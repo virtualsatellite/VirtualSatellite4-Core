@@ -1,12 +1,12 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.util;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
@@ -212,6 +212,15 @@ public class TestsSwitch<T> extends Switch<T> {
 				if (result == null) result = caseDObject(testCrossLinkedParametersWithCalculation);
 				if (result == null) result = caseIUuid(testCrossLinkedParametersWithCalculation);
 				if (result == null) result = caseIName(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TestsPackage.EREFERENCE_TEST: {
+				EReferenceTest eReferenceTest = (EReferenceTest)theEObject;
+				T result = caseEReferenceTest(eReferenceTest);
+				if (result == null) result = caseDObject(eReferenceTest);
+				if (result == null) result = caseIUuid(eReferenceTest);
+				if (result == null) result = caseIName(eReferenceTest);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -441,6 +450,21 @@ public class TestsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTestCrossLinkedParametersWithCalculation(TestCrossLinkedParametersWithCalculation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EReference Test</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EReference Test</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEReferenceTest(EReferenceTest object) {
 		return null;
 	}
 

@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets;
 
 import java.util.Collection;
-import java.util.EventObject;
 import java.util.List;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -44,6 +43,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -65,7 +65,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
@@ -87,8 +86,6 @@ import de.dlr.sc.virsat.uiengine.ui.excel.ExcelExportWizard;
 
 /**
  * abstract class ui snippet generic table implements the ui snippet for generic tables
- * @author leps_je
- *
  */
 public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 
@@ -279,6 +276,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 */
 	protected ColumnViewer createColumnViewer(FormToolkit toolkit) {
 		Table table = createDefaultTable(toolkit, sectionBody);
+				
 		table.setData("org.eclipse.swtbot.widget.key", "table" + categoryId);
 		return new TableViewer(table);
 	}
@@ -288,25 +286,49 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 * @param tableViewer the table viewer
 	 */
 	protected void setupTableViewerKeyboardNavigation(TableViewer tableViewer) {
-		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer));
+		// The Focus Cell Manager is needed for the editor support of a table to correctly manage and display which cell
+		// of the editor is currently selected and highlighted. The way the FocusCellOwnerDraw... is instantiated, it will not
+		// remove row selection but will overlay it with cell selection.
+		TableViewerFocusCellManager focusCellManager = new TableViewerFocusCellManager(tableViewer, new FocusCellOwnerDrawHighlighter(tableViewer, false));
 
+		// The editor strategy is also needed for the editor support to decide, when a cell editor should be activated.
 		ColumnViewerEditorActivationStrategy activationSupport = new ColumnViewerEditorActivationStrategy(tableViewer) {
-		    protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
-		        if (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION) {
-		            EventObject source = event.sourceEvent;
-		            if (source instanceof MouseEvent && ((MouseEvent) source).button == MOUSE_EVENT_RIGHT_CLICK_BUTTON) {
-		            	return false;
-		            }
-		                
-		        }
-		        return super.isEditorActivationEvent(event) || (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.CR);
-		    }
+			
+			protected ViewerCell lastSelectedCell = null;
+			
+			@Override
+			protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
+				ViewerCell selectedCell = ((ViewerCell) event.getSource());
+
+				// Only open the cell editor on a single selection event. If more than one row is selected, don't open an editor
+				boolean singleSelect = tableViewer.getStructuredSelection().size() == 1;
+				
+				// Open an editor on double click of the left mouse button
+				boolean isLeftMouseSelect = event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION && ((MouseEvent) event.sourceEvent).button == 1;
+				
+				// Also open the editor if a single left click is performed on an already selected cell.
+				// but don't open the editor on a single click if it has not been selected before.
+				// After checking remember the current selection for the next check.
+				boolean isLeftMouseSelectAgain = event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION && ((MouseEvent) event.sourceEvent).button == 1 && selectedCell.equals(lastSelectedCell);
+				lastSelectedCell = selectedCell;
+				
+				// Also in case return is pressed a cell editor should be opened.
+				boolean isReturnPressed = (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.CR);
+				
+				// Now bring together all behavior with the standard behavior of traversing and programmatic calls to cell editors
+				return isReturnPressed || singleSelect && (isLeftMouseSelect
+						|| isLeftMouseSelectAgain
+						|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC
+						|| event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL
+						);
+			}
 		};
 
 		TableViewerEditor.create(tableViewer, focusCellManager, activationSupport, ColumnViewerEditor.TABBING_HORIZONTAL 
 				| ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
 				| ColumnViewerEditor.TABBING_VERTICAL 
-				| ColumnViewerEditor.KEYBOARD_ACTIVATION);
+				| ColumnViewerEditor.KEYBOARD_ACTIVATION
+		);
 	}
 	
 	/**

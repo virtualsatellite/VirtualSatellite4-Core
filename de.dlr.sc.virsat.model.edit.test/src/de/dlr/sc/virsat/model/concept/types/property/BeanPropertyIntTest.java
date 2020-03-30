@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.concept.types.property;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.command.Command;
@@ -89,18 +90,21 @@ public class BeanPropertyIntTest extends ABeanPropertyTest {
 		assertEquals("Value correctly set", TEST_INT, beanProperty.getValue());
 	}
 	
-	@Test(expected = NumberFormatException.class)
-	public void testGetValueExceptionNull() {
+	public void testGetValuenNull() {
 		uvpi.setValue(null);
-		beanProperty.getValue();
+		assertNull(beanProperty.getValue());
+	}
+
+	public void testGetValueEmpty() {
+		uvpi.setValue("");
+		assertNull(beanProperty.getValue());
 	}
 
 	@Test(expected = NumberFormatException.class)
-	public void testGetValueExceptionEmpty() {
-		uvpi.setValue("");
+	public void testGetInvalidValue() {
+		uvpi.setValue("invalid");
 		beanProperty.getValue();
 	}
-
 	
 	private Repository repo;
 	private Concept concept;

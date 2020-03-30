@@ -2,10 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Simple Team Connector Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.team.test
-Bundle-Version: 4.10.0.qualifier
+Bundle-Version: 4.11.0.qualifier
 Fragment-Host: de.dlr.sc.virsat.team;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
-Require-Bundle: org.junit
-Export-Package: de.dlr.sc.virsat.team.test
+Require-Bundle: org.junit,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.model,
+ org.eclipse.team.core
+Export-Package: de.dlr.sc.virsat.team.git,
+ de.dlr.sc.virsat.team.svn,
+ de.dlr.sc.virsat.team.test
 Automatic-Module-Name: de.dlr.sc.virsat.team.test
+Import-Package: de.dlr.sc.virsat.project.test
