@@ -31,8 +31,6 @@ import static org.junit.Assert.assertTrue;
 
 public class TreeTraverserTest {
 
-	StructuralElement se;
-	
 	StructuralElementInstance seiRoot;
 	StructuralElementInstance seiChild1;
 	StructuralElementInstance seiChild1Child;
@@ -87,7 +85,7 @@ public class TreeTraverserTest {
 	/**
 	 * Class to capture the results from the tree traversing
 	 */
-	class Result {
+	static class Result {
 
 		Result(StructuralElementInstance sei, int processedLevel, int matchedLevel) {
 			this.sei = sei;
