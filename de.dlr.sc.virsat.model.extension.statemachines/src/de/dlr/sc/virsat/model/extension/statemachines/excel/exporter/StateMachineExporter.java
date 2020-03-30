@@ -55,10 +55,10 @@ public class StateMachineExporter implements IExport {
 				}
 				helper.setWb(new XSSFWorkbook(iStream));
 				exportData(ca);
+				// find the export destination
 				String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".xlsx";
 				// and write the results
 				File file = new File(newPath);
-				// find the export destination
 				try (FileOutputStream out = new FileOutputStream(file)) {
 					helper.getWb().write(out);
 				}
