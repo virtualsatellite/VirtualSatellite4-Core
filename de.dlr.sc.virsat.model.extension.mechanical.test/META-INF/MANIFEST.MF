@@ -13,7 +13,8 @@ Require-Bundle: org.junit,
  org.eclipse.emf.ecore.xmi,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
- de.dlr.sc.virsat.concept.unittest.util
+ de.dlr.sc.virsat.concept.unittest.util,
+ de.dlr.sc.virsat.commons
 Export-Package: de.dlr.sc.virsat.model.extension.mechanical.cad,
  de.dlr.sc.virsat.model.extension.mechanical.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.mechanical.test

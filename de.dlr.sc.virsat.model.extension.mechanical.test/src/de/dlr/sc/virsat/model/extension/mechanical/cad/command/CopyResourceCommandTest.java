@@ -25,6 +25,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
+
 /**
  * Test class for the copy resource command
  *
@@ -38,7 +40,7 @@ public class CopyResourceCommandTest {
 	
 	@Before
 	public void setUp() throws CoreException, IOException {
-		testFolderPath = Files.createTempDirectory("cadTest");
+		testFolderPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		
 		testFile = Paths.get(testFolderPath.toString(), TEST_FILE_NAME);
 		testContent = Arrays.asList("solid test", "endsolid test");

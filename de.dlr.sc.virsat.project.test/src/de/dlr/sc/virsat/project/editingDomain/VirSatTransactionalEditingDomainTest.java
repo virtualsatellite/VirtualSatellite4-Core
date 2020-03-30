@@ -81,14 +81,16 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
-			triggeredResources.addAll(resources);
-			triggeredEvent = event;
-			counter++;
-			firstResource = resources.iterator().next();
-			
-			List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
-			stackTraces.add(stackTrace);
-			this.notify();
+			synchronized (this) {
+				triggeredResources.addAll(resources);
+				triggeredEvent = event;
+				counter++;
+				firstResource = resources.iterator().next();
+				
+				List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
+				stackTraces.add(stackTrace);
+				this.notify();
+			}
 		}
 	}
 

@@ -14,12 +14,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
-
 import org.eclipse.core.internal.resources.Resource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -29,10 +25,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.egit.core.project.RepositoryMapping;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -130,19 +125,6 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		repository = rs.getRepository();
 	}
 
-	@After
-	public void tearDown() throws CoreException {
-		try {
-			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
-			Files.walk(pathRepoLocal1).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
-			Files.walk(pathRepoLocal2).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(File::exists).forEach(File::delete);
-		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"Error during temp remote directory creation", e));
-		}
-		super.tearDown();
-	}
-
 	@Test
 	public void testSimpleCommitAndUpdate() throws Exception {
 
@@ -178,7 +160,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		backend.commit(projectRepoLocal1, "Initial Commit", new NullProgressMonitor());
 
 		// Now prepare the checkout into another project with another local repository
-		Path pathRepositoryHome = Files.createTempDirectory("VirtualSatelliteCheckOut_");
+		Path pathRepositoryHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteCheckOut_");
 		File pathRepoLocal = new File(pathRepositoryHome.toFile(), "repoLocal");
 		Path pathRepoCheckout = new File(pathRepoLocal, PROJECT_LOCAL_NAME).toPath();
 		
@@ -206,7 +188,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	@Test
 	public void testCheckin() throws Exception {
 		// Create a new full fledged Repository and try to check it into Repository
-		Path pathRepoCheckin = Files.createTempDirectory("VirtualSatelliteCheckIn_");
+		Path pathRepoCheckin = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteCheckIn_");
 		IProject projectCheckin = createTestProject(PROJECT_CHECKIN_NAME, pathRepoCheckin, false);
 		addResourceSetAndRepository(projectCheckin);
 		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
@@ -217,7 +199,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		assertNull("Project does not yet have a git mapping", RepositoryMapping.getMapping(projectCheckin));
 		
 		// Now checkin the project and transmit it to the remote bare repository
-		Path pathRepoLocal = Files.createTempDirectory("VirtualSatelliteLocalCheckin_");
+		Path pathRepoLocal = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalCheckin_");
 		backend.checkin(projectCheckin, pathRepoLocal.toFile(), pathRepoRemote.toUri().toString(), new NullProgressMonitor());
 		waitForProjectToRepoMapping(projectCheckin);
 		backend.commit(projectCheckin, "Initial Commit", new NullProgressMonitor());
