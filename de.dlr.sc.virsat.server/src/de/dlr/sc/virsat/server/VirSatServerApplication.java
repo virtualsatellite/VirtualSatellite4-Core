@@ -9,10 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server;
 
+import java.util.Map.Entry;
+
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
+import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
+import de.dlr.sc.virsat.server.repository.RepoRegistry;
+import de.dlr.sc.virsat.server.repository.ServerRepoHelper;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 public class VirSatServerApplication implements IApplication {
 
@@ -24,6 +30,32 @@ public class VirSatServerApplication implements IApplication {
 		System.out.println("--------------------------------------------------");
 		System.out.println("");
 		System.out.println("Using configuration file: " + Activator.getDefault().getPropertiesFilePath());
+		
+		System.out.println("Initializing repositories from configurations in " + ServerConfiguration.getRepositoryConfigurationsDir());
+		
+		try {
+			ServerRepoHelper.initRepoRegistry();
+		} catch (Exception e) {
+			System.out.println("Failed loading project configurations");
+			e.printStackTrace();
+		}
+		
+		if (RepoRegistry.getInstance().getRepositories().isEmpty()) {
+			System.out.println("No project configurations found");
+		} else {
+			for (Entry<String, ServerRepository> entry : RepoRegistry.getInstance().getRepositories().entrySet()) {
+				String projectName = entry.getKey();
+				System.out.println("Initializing project " + projectName);
+				ServerRepository serverRepository = entry.getValue();
+				try {
+					serverRepository.updateOrCheckoutProject();
+				} catch (Exception e) {
+					System.out.println("Failed initializing project " + projectName);
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		System.out.println("About to start the Jetty Server instance...");
 		
 		jettyServer = new VirSatJettyServer();
@@ -46,7 +78,8 @@ public class VirSatServerApplication implements IApplication {
 		} catch (Exception e) {
 			System.out.println("Failed to shutdown Jetty instance");
 			e.printStackTrace();
-		}		
+		}
+
 		System.out.println("--------------------------------------------------");
 	}
 }

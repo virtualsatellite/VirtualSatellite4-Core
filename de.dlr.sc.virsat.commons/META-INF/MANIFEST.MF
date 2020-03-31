@@ -12,5 +12,6 @@ Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.commons.datastructures,
- de.dlr.sc.virsat.commons.debug
+ de.dlr.sc.virsat.commons.debug,
+ de.dlr.sc.virsat.commons.exception
 Automatic-Module-Name: de.dlr.sc.virsat.commons

@@ -22,17 +22,23 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.Activator;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
 
 /**
@@ -52,6 +58,8 @@ public class VirSatProjectCommons {
 	public static final String FILENAME_UNIT_MANAGEMENT = "UnitManagement.dvlm";
 	public static final String FILENAME_ROLE_MANAGEMENT = "RoleManagement.dvlm";
 	public static final String FILENAME_EMPTY = ".empty";
+
+	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature";
 
 
 	private IProject project;
@@ -445,5 +453,46 @@ public class VirSatProjectCommons {
 		}
 		
 		return folder;
+	}
+	
+	public static final int PROGRESS_MONITOR_NEW_PROJECT_RUNNABLE_STEPS = 4;
+	
+	/**
+	 * This method creates a runnable to create a new Project in Virtual Satellite
+	 * @param ed the Editing DOmain to be used to create the Project
+	 * @param newProject The new Project which should be initialized
+	 * @return the runnable which initializes the whole project
+	 */
+	public static IWorkspaceRunnable createNewProjectRunnable(IProject newProject) {
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) throws CoreException {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Started VirSat Project Initialization"));
+				// Set up the Workspace Modification Unit to create the VirSat DataModel folder
+				// layout and to initialize the Data Model files with correct content
+				VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(newProject);
+				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(newProject);
+
+				SubMonitor progressMonitor = SubMonitor.convert(monitor, PROGRESS_MONITOR_NEW_PROJECT_RUNNABLE_STEPS);
+	
+				// Create the file structure and the files and add the Xtext Nature
+				VirSatProjectCommons projectCommons = new VirSatProjectCommons(newProject);
+				projectCommons.createProjectStructure(progressMonitor.split(1));
+				projectCommons.attachProjectNature(XTEXT_NATURE_ID);
+
+				// Create the actual resources and ResourceSet
+				Command initializeProjectCommand = resSet.initializeModelsAndResourceSet(progressMonitor.split(1), ed);
+			
+				// Trigger the command stack to save all files after they have been created
+				progressMonitor.split(1).setTaskName("Executing Project Initialization Command");
+				ed.getVirSatCommandStack().triggerSaveAll();
+				ed.getVirSatCommandStack().execute(initializeProjectCommand);
+
+				newProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor.split(1));
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Finished VirSat Project Initialization"));
+			}
+		};
+		
+		return runnable;
 	}
 }
