@@ -36,7 +36,8 @@ public class RepoRegistryTest {
 	}
 	
 	@Test
-	public void testListAddGet() throws URISyntaxException {
+	public void testGetRepositories() throws URISyntaxException {
+
 		
 		//Create basic test repsoitory 
 		final ServerRepository TEST_REPO = new ServerRepository(new File(""), new RepositoryConfiguration("", "", "", VersionControlSystem.GIT, "", ""));
