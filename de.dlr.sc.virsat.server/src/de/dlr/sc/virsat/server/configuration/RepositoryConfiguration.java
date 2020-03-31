@@ -66,7 +66,6 @@ public class RepositoryConfiguration {
 	/**
 	 * Method to update a repository configuration with new values
 	 * @param repositoryBackend the repositoryConfiguration to be used to update the current one
-	 * @throws URISyntaxException
 	 */
 	public void update(RepositoryConfiguration repositoryBackend) {
 		setProjectName(repositoryBackend.getProjectName());
