@@ -33,7 +33,10 @@ public class RepoRegistryTest {
 	@Test
 	public void testBasicAddGet() throws URISyntaxException {
 		//Create basic test repsoitory 
-		final ServerRepository TEST_REPO = new ServerRepository(new File(""), new RepositoryConfiguration("", "", "", VersionControlSystem.GIT, "", ""));
+		RepositoryConfiguration config = new RepositoryConfiguration();
+		config.setBackend(VersionControlSystem.GIT);
+		config.setRemoteUri("");
+		final ServerRepository TEST_REPO = new ServerRepository(new File(""), config);
 		
 		assertTrue("There is not Repository yet", RepoRegistry.getInstance().getRepositories().isEmpty());
 		
@@ -47,7 +50,10 @@ public class RepoRegistryTest {
 	@Test
 	public void testGetRepositories() throws URISyntaxException {
 		//Create basic test repsoitory 
-		final ServerRepository TEST_REPO = new ServerRepository(new File(""), new RepositoryConfiguration("", "", "", VersionControlSystem.GIT, "", ""));
+		RepositoryConfiguration config = new RepositoryConfiguration();
+		config.setBackend(VersionControlSystem.GIT);
+		config.setRemoteUri("");
+		final ServerRepository TEST_REPO = new ServerRepository(new File(""), config);
 		
 		RepoRegistry.getInstance().getRepositories().put(REPO_NAME, TEST_REPO);
 		
