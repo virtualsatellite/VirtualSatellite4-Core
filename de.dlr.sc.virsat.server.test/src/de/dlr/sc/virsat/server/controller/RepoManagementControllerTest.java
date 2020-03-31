@@ -24,16 +24,16 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-public class RepoManagemantControllerTest {
+public class RepoManagementControllerTest {
 
 	private static final String TEST_REPOSITORY_NAME = "testRepositoryName";
 	
-	private RepoManagemantController repoManagemantController;
+	private RepoManagementController repoManagemantController;
 	private RepositoryConfiguration testRepositoryConfiguration;
 	
 	@Before
 	public void setUp() {
-		repoManagemantController = new RepoManagemantController();
+		repoManagemantController = new RepoManagementController();
 		testRepositoryConfiguration = new RepositoryConfiguration();
 		testRepositoryConfiguration.setProjectName(TEST_REPOSITORY_NAME);
 		testRepositoryConfiguration.setBackend(VersionControlSystem.GIT);

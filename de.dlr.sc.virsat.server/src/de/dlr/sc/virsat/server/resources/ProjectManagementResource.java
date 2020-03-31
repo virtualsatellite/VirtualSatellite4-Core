@@ -23,7 +23,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
-import de.dlr.sc.virsat.server.controller.RepoManagemantController;
+import de.dlr.sc.virsat.server.controller.RepoManagementController;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
 @Path(ProjectManagementResource.PATH)
@@ -37,10 +37,10 @@ public class ProjectManagementResource {
 	public static final String PARAM_PASSWORD = "password";
 	public static final String PARAM_BACKEND = "backend";
 
-	private RepoManagemantController controller;
+	private RepoManagementController controller;
 
 	public ProjectManagementResource() {
-		controller = new RepoManagemantController();
+		controller = new RepoManagementController();
 	}
 
 	@GET

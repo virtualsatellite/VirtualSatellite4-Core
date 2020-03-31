@@ -20,9 +20,9 @@ import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
-public class RepoManagemantController {
+public class RepoManagementController {
 	
-	public RepoManagemantController() {
+	public RepoManagementController() {
 	}
 	
 	public ServerRepository getRepository(String repoName) {
