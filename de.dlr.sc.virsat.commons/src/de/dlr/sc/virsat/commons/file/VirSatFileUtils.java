@@ -36,18 +36,26 @@ public class VirSatFileUtils extends FileUtils {
 		@Override
 		public void run() {
 			File pathTempRoot = FileUtils.getTempDirectory();
-			List<File> subDirectories = Arrays.asList(pathTempRoot.listFiles(File::isDirectory));
-			subDirectories.stream()
-				.filter((file) -> file.getName().startsWith(TEMP_DIRECTORY_PRE_FIX))
-				.forEach((file) -> {
-					try {
-						FileUtils.deleteDirectory(file);
-					} catch (IOException e) {
-						System.err.println("VirSatFileUtils: Attention! Could not delete temporary directory (" + file.getAbsolutePath()
-								+ ") because, " + e.getMessage() + " Don't worry, these directories"
-								+ " are getting most likely deleted next time...");
-					}
-				});			
+			File[] subDirectoryFiles = pathTempRoot.listFiles(
+					File::isDirectory
+					);
+			
+			if (subDirectoryFiles != null) {
+				List<File> subDirectories = Arrays.asList(subDirectoryFiles);
+				
+				subDirectories.stream()
+						.filter((file) -> file.getName().startsWith(TEMP_DIRECTORY_PRE_FIX))
+						.forEach((file) -> {
+							try {
+								FileUtils.deleteDirectory(file);
+							} catch (IOException e) {
+								System.err.println("VirSatFileUtils: Attention! Could not delete temporary directory (" + file.getAbsolutePath()
+									+ ") because, " + e.getMessage() + " Don't worry, these directories"
+									+ " are getting most likely deleted next time...");
+							}
+						}
+					);
+			}
 		}
 	}
 	
@@ -60,7 +68,7 @@ public class VirSatFileUtils extends FileUtils {
 	 * @return the path of the newly generated temp folder
 	 * @throws IOException
 	 */
-	public static Path createAutoDeleteTempDirectory(String pathName) throws IOException {
+	public static synchronized Path createAutoDeleteTempDirectory(String pathName) throws IOException {
 		// Initialize the Delete thread on the JVM shutdown hook
 		if (deleteFilesOnExitThread ==  null) {
 			deleteFilesOnExitThread = new DelteFileOnExitThread();
