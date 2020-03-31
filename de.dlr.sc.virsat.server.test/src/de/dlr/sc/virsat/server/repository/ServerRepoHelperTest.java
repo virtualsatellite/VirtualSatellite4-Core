@@ -45,7 +45,7 @@ public class ServerRepoHelperTest {
 		configsDir = VirSatFileUtils.createAutoDeleteTempDirectory("test_repo_configs");
 		
 		// Overwrite path to repo config files
-		ServerConfiguration.getProperties().setProperty(ServerConfiguration.REPOSITORY_CONFIGURATIONS_DIR_KEY, configsDir.toString());
+		ServerConfiguration.setRepositoryConfigurationsDir(configsDir.toString());
 
 		RepoRegistry.getInstance().getRepositories().clear();
 		

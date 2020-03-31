@@ -60,17 +60,23 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			File fileGitRemoteRepo = pathRepoRemote.toFile();
 			Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
 		} catch (IOException | IllegalStateException | GitAPIException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"Error during repository setup", e));
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.ERROR,
+					Activator.getPluginId(),
+					"Error during repository setup",
+					e
+				)
+			);
 		}
 		
 		testRepoConfig = new RepositoryConfiguration(
-				TEST_PROJECT_NAME,
-				"",
-				pathRepoRemote.toUri().toString(),
-				VersionControlSystem.GIT,
-				"",
-				""
+			TEST_PROJECT_NAME,
+			"",
+			pathRepoRemote.toUri().toString(),
+			VersionControlSystem.GIT,
+			"",
+			""
 		); 
 	}
 
@@ -183,7 +189,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	
 		RevCommit logAfterSync = Git.open(pathRepoRemote.toFile()).log().call().iterator().next();
 		
-		assertThat("remote repo does not yet have a commit as expected", logAfterSync.getFullMessage(), containsString(""));
+		assertThat("There is no commit message expected", logAfterSync.getFullMessage(), containsString(""));
 	}
 	
 	@Test
@@ -196,10 +202,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 
 		ArrayList<RevCommit> commitList1 = StreamSupport
 			.stream(
-					Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
-					false
-				)
-			.collect(Collectors.toCollection(() -> new ArrayList<>()));
+				Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
+				false
+			).collect(Collectors.toCollection(() -> new ArrayList<>()));
 		
 		assertThat("Commit List has expected size", commitList1, hasSize(1));
 		
@@ -214,10 +219,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 
 		ArrayList<RevCommit> commitList2 = StreamSupport
 			.stream(
-					Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
-					false
-				)
-			.collect(Collectors.toCollection(() -> new ArrayList<>()));
+				Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
+				false
+			).collect(Collectors.toCollection(() -> new ArrayList<>()));
 		
 		// CHECKSTYLE:OFF
 		assertThat("Commit List has expected size", commitList2, hasSize(2));

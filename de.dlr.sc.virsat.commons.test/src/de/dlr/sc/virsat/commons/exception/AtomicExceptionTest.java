@@ -16,14 +16,6 @@ import org.junit.Test;
 
 public class AtomicExceptionTest {
 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testThrowIfSet() throws Exception {
 		AtomicException<Exception> ae = new AtomicException<>();

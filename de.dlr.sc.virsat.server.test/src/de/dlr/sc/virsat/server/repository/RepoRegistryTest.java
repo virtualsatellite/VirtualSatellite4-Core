@@ -9,10 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.repository;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.net.URISyntaxException;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -28,24 +30,27 @@ public class RepoRegistryTest {
 		//Create basic test repsoitory 
 		final ServerRepository TEST_REPO = new ServerRepository(new File(""), new RepositoryConfiguration("", "", "", VersionControlSystem.GIT, "", ""));
 		
+		assertTrue("There is not Repository yet", RepoRegistry.getInstance().getRepositories().isEmpty());
+		
 		RepoRegistry.getInstance().addRepository(REPO_NAME, TEST_REPO);
 		
 		ServerRepository returnedFromRegistry = RepoRegistry.getInstance().getRepository(REPO_NAME);
 		
-		Assert.assertEquals("Object should be the same as the one added", TEST_REPO, returnedFromRegistry);
+		assertEquals("Object should be the same as the one added", TEST_REPO, returnedFromRegistry);
 	}
 	
 	@Test
-	public void testListAddGet() throws URISyntaxException {
-		
+	public void testGetRepositories() throws URISyntaxException {
+
 		//Create basic test repsoitory 
 		final ServerRepository TEST_REPO = new ServerRepository(new File(""), new RepositoryConfiguration("", "", "", VersionControlSystem.GIT, "", ""));
 		
 		RepoRegistry.getInstance().getRepositories().put(REPO_NAME, TEST_REPO);
 		
+		assertEquals("COntains exactly one repository", 1, RepoRegistry.getInstance().getRepositories().size());
+		
 		ServerRepository returnedFromRegistry = RepoRegistry.getInstance().getRepositories().get(REPO_NAME);
 		
-		Assert.assertEquals("Object should be the same as the one added", TEST_REPO, returnedFromRegistry);
+		assertEquals("Object should be the same as the one added", TEST_REPO, returnedFromRegistry);
 	}
-
 }
