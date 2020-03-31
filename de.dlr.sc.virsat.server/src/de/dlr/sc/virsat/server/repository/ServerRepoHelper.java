@@ -17,8 +17,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
-
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
@@ -34,19 +32,18 @@ public class ServerRepoHelper {
 	 * @throws IOException 
 	 */
 	public static void initRepoRegistry() throws IOException {
-		try (Stream<Path> paths = Files.walk(Paths.get(ServerConfiguration.getRepositoryConfigurationsDir()))) {
-			paths
-				.filter(Files::isRegularFile)
-				.forEach(t -> {
-					try {
-						registerRepositoryConfiguration(t);
-					} catch (IOException e) {
-						throw new UncheckedIOException(e);
-					} catch (URISyntaxException e) {
-						throw new RuntimeException(e);
-					}
-				});
-		} 
+		Path serverConfigurationDirectory = Paths.get(ServerConfiguration.getRepositoryConfigurationsDir());
+		Files.walk(serverConfigurationDirectory)
+			.filter(Files::isRegularFile)
+			.forEach(potentialConfigFile -> {
+				try {
+					registerRepositoryConfiguration(potentialConfigFile);
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				} catch (URISyntaxException e) {
+					throw new RuntimeException(e);
+				}
+			});
 	}
 	
 	/**
