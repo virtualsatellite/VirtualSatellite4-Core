@@ -21,12 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.Activator;
 
 public class ServerConfigurationTest {
@@ -60,7 +60,7 @@ public class ServerConfigurationTest {
 		final String TEST_FILE_NAME = "test.properties";
 		
 		// Prepare Temporary Folder
-		File tempPath = Files.createTempDirectory("ServerConfigTest").toFile();
+		File tempPath =  VirSatFileUtils.createAutoDeleteTempDirectory("ServerConfigTest").toFile();
 				
 		OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME));
 		ServerConfiguration.setRepositoryConfigurationsDir(REPOSITORY_CONFIGURATIONS_DIR);
