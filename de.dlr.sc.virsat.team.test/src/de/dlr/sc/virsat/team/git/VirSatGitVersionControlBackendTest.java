@@ -22,8 +22,8 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Before;
 
+import de.dlr.sc.virsat.team.AVirSatVersionControlBackendTest;
 import de.dlr.sc.virsat.team.Activator;
-import de.dlr.sc.virsat.team.test.AVirSatVersionControlBackendTest;
 
 @SuppressWarnings("restriction")
 public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBackendTest {

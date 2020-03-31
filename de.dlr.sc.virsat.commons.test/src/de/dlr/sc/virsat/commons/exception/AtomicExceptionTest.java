@@ -10,19 +10,9 @@
 package de.dlr.sc.virsat.commons.exception;
 
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class AtomicExceptionTest {
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
 	public void testThrowIfSet() throws Exception {

@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.team.svn;
+package de.dlr.sc.virsat.team.test;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -18,7 +18,7 @@ import org.eclipse.team.svn.core.operation.AbstractActionOperation;
 import org.eclipse.team.svn.core.operation.SVNProgressMonitor;
 
 /**
- * This class is a helper class to enabled testing svn repositories
+ * This class is a helper class to enable testing svn repositories
  * by creating local server side svn repos.
  * This is needed since there is no subersive API for creating a repository, 
  * so we have to manually build the svn repo.

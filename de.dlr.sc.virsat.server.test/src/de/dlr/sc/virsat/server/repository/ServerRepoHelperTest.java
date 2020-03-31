@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -20,36 +20,69 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.apache.commons.io.FileUtils;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
+import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
+import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
 
 public class ServerRepoHelperTest {
 
 	private Path configsDir;
+	private Path svnPathRepoRemote;
+	private URI svnUriToRemoteRepoPath;
 	
 	@Before
-	public void setUp() throws IOException {
+	public void setUp() throws IOException, CoreException {
 		// Create temporary dir for repo config files
 		configsDir = Files.createTempDirectory("test_repo_configs");
 		
 		// Overwrite path to repo config files
-		ServerConfiguration.getProperties().setProperty(ServerConfiguration.REPOSITORY_CONFIGURATIONS_DIR_KEY, configsDir.toString());
-	}
+		ServerConfiguration.setRepositoryConfigurationsDir(configsDir.toString());
 
-	@After
-	public void tearDown() {
 		RepoRegistry.getInstance().getRepositories().clear();
+		
+		svnPathRepoRemote = Files.createTempDirectory("VirtualSatelliteSvnRemote_");
+		svnUriToRemoteRepoPath = svnPathRepoRemote.toUri();
+		String remoteRepoFilePath = svnPathRepoRemote.toString();
+		
+		SVNUtility.asRepositoryResource(svnUriToRemoteRepoPath.toString(), true);
+		
+		CreateSvnServerOperation createRemoteRepoOp = new CreateSvnServerOperation(remoteRepoFilePath);
+		createRemoteRepoOp.runWithExceptionChecking(new NullProgressMonitor());
+	}
+	
+	@After
+	public void tearDown() throws IOException {
+		RepoRegistry.getInstance().getRepositories().clear();
+		try {
+			FileUtils.forceDelete(configsDir.toFile());
+			FileUtils.forceDelete(svnPathRepoRemote.toFile());
+		} catch (Exception e) {
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.ERROR, 
+					Activator.getPluginId(),
+					"Error during test clean up", 
+					e
+				)
+			);
+		}
 	}
 
 	@Test
 	public void testLoadRepositoryConfigurations() throws IOException {
-		String svnProjectName = "SvnProject";
-		String gitProjectName = "GitProject";
+		String svnProjectName = "SvnProject1";
+		String gitProjectName = "GitProject2";
 		createTempRepoConfigFile(configsDir, svnProjectName, VersionControlSystem.SVN);
 		createTempRepoConfigFile(configsDir, gitProjectName, VersionControlSystem.GIT);
 
@@ -66,7 +99,8 @@ public class ServerRepoHelperTest {
 	@Test
 	public void testSaveConfiguration() throws FileNotFoundException, IOException, URISyntaxException {
 		String projectName = "testProject";
-		URI uri = new URI("test.uri");
+
+		String uri = "test.uri";
 		RepositoryConfiguration config = new RepositoryConfiguration();
 		config.setProjectName(projectName);
 		config.setRemoteUri(uri);
@@ -84,7 +118,7 @@ public class ServerRepoHelperTest {
 		assertEquals("Saved file contains correct URI", uri, loadedConfig.getRemoteUri());
 		
 		//Check overwriting
-		URI newUri = new URI("new.test.uri");
+		String newUri = "new.test.uri";
 		config.setRemoteUri(newUri);
 		ServerRepoHelper.saveRepositoryConfiguration(config);
 		loadedConfig = new RepositoryConfiguration(Files.newInputStream(configFilePath));
@@ -98,7 +132,8 @@ public class ServerRepoHelperTest {
 	 */
 	private void createTempRepoConfigFile(Path parentDir, String projectName, VersionControlSystem backend) throws IOException {
 		String fileContents = RepositoryConfiguration.PROJECT_NAME_KEY + ":" + projectName + System.lineSeparator()
-				+ RepositoryConfiguration.BACKEND_KEY + ":" + backend;
+				+ RepositoryConfiguration.BACKEND_KEY + ":" + backend + System.lineSeparator()
+				+ RepositoryConfiguration.REMOTE_URL_KEY + ":" + svnUriToRemoteRepoPath.toString();
 		Path tempFile = Files.createTempFile(parentDir, projectName, ".properties");
 		Files.write(tempFile, fileContents.getBytes());
 	}

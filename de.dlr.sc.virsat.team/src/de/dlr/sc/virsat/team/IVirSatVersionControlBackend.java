@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * The baseline level for manipulating the version control backend are projects.
  *
  */
-
 public interface IVirSatVersionControlBackend {
 
 	/**
@@ -35,21 +34,24 @@ public interface IVirSatVersionControlBackend {
 	/**
 	 * Creates a local checkout of a project from the version control system
 	 * @param projectDescription the project metadata
-	 * @param pathRepoLoacl the local path in which to checkout the project
+	 * @param pathRepoLocal the local path in which to checkout the project.
+	 *  .git or .svn folders should be created within. This folder is usually not your 
+	 *  repository home such as the git home folder.
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
 	 * @throws Exception
 	 */
-	void checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
+	IProject checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 	
 	/**
 	 * Uploads a project to the version control system
 	 * @param project the project to upload
+	 * @param pathRepoLocal the local copy of the repository to checkin
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
 	 * @throws Exception
 	 */
-	void checkin(IProject project, String remoteUri, IProgressMonitor monitor) throws Exception;
+	void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 
 	/**
 	 * Gets all remote changes for a project from the version control system
@@ -58,5 +60,4 @@ public interface IVirSatVersionControlBackend {
 	 * @throws Exception
 	 */
 	void update(IProject project, IProgressMonitor monitor) throws Exception;
-
 }

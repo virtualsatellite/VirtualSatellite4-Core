@@ -9,15 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.repository;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
-
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
@@ -33,17 +32,18 @@ public class ServerRepoHelper {
 	 * @throws IOException 
 	 */
 	public static void initRepoRegistry() throws IOException {
-		try (Stream<Path> paths = Files.walk(Paths.get(ServerConfiguration.getRepositoryConfigurationsDir()))) {
-			paths
-				.filter(Files::isRegularFile)
-				.forEach(t -> {
-					try {
-						registerRepositoryConfiguration(t);
-					} catch (IOException e) {
-						throw new UncheckedIOException(e);
-					}
-				});
-		} 
+		Path serverConfigurationDirectory = Paths.get(ServerConfiguration.getRepositoryConfigurationsDir());
+		Files.walk(serverConfigurationDirectory)
+			.filter(Files::isRegularFile)
+			.forEach(potentialConfigFile -> {
+				try {
+					registerRepositoryConfiguration(potentialConfigFile);
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				} catch (URISyntaxException e) {
+					throw new RuntimeException(e);
+				}
+			});
 	}
 	
 	/**
@@ -52,10 +52,12 @@ public class ServerRepoHelper {
 	 * @param repositoryConfigurationFile properties file for a repository
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
+	 * @throws URISyntaxException 
 	 */
-	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws FileNotFoundException, IOException {
+	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws IOException, URISyntaxException {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
-		ServerRepository serverRepository = new ServerRepository(config);
+		
+		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), config);
 		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
 	}
 	

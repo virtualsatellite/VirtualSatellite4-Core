@@ -10,17 +10,23 @@
 package de.dlr.sc.virsat.server.repository;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -38,6 +44,7 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
+import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
 
 public class ServerRepositoryTest extends AProjectTestCase {
 
@@ -56,17 +63,23 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			File fileGitRemoteRepo = pathRepoRemote.toFile();
 			Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
 		} catch (IOException | IllegalStateException | GitAPIException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"Error during repository setup", e));
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.ERROR,
+					Activator.getPluginId(),
+					"Error during repository setup",
+					e
+				)
+			);
 		}
 		
 		testRepoConfig = new RepositoryConfiguration(
-				TEST_PROJECT_NAME,
-				new File(""),
-				pathRepoRemote.toUri(),
-				VersionControlSystem.GIT,
-				"",
-				""
+			TEST_PROJECT_NAME,
+			"",
+			pathRepoRemote.toUri().toString(),
+			VersionControlSystem.GIT,
+			"",
+			""
 		); 
 	}
 
@@ -77,14 +90,20 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			Files.walk(localRepoHome.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
 			ResourcesPlugin.getWorkspace().getRoot().getProject(TEST_PROJECT_NAME).delete(true,  true, null);
 		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
-					"Error during temp remote directory creation", e));
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.ERROR,
+					Activator.getPluginId(),
+					"Error during temp remote directory creation",
+					e
+				)
+			);
 		}
 		super.tearDown();
 	}
 
 	@Test
-	public void testRetrieveProjectFromConfiguration() throws Exception {
+	public void testCheckoutRepository() throws Exception {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
 		testServerRepository.checkoutRepository();
@@ -99,13 +118,65 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 	
 	@Test
-
-	public void testRetrieveEdAndResurceSetFromConfiguration() throws URISyntaxException {
+	public void testCheckoutTwoProjectsFromOneRepository() throws Exception {
+		// Create two configurations with two Projects but both in their specific subfolder
+		// and the same remote repository
+		final String TEST_PROJECT_A = "testProjectA";
+		final String TEST_PROJECT_B = "testProjectB";
+		RepositoryConfiguration testRepoConfigA = testRepoConfig;
+		RepositoryConfiguration testRepoConfigB = new RepositoryConfiguration(testRepoConfig);
+		testRepoConfigA.setProjectName(TEST_PROJECT_A);
+		testRepoConfigB.setProjectName(TEST_PROJECT_B);
+		testRepoConfigA.setLocalPath(TEST_PROJECT_A);
+		testRepoConfigB.setLocalPath(TEST_PROJECT_B);
+	
+		ServerRepository testServerRepositoryA = new ServerRepository(localRepoHome, testRepoConfigA);
+		ServerRepository testServerRepositoryB = new ServerRepository(localRepoHome, testRepoConfigB);
+		
+		testServerRepositoryA.checkoutRepository();
+		
+		// Make sure there is no .git file in the repo local home
+		assertFalse("there is no .git in repo home", new File(localRepoHome, ".git/").exists());
+		
+		// make sure that the parent to the project folder has the .git
+		File testProjectPathA = testServerRepositoryA.getProject().getRawLocation().toFile();
+		File testProjectRepoA = testProjectPathA.getParentFile();
+		assertFalse("there is no .git in project", new File(testProjectPathA, ".git/").exists());
+		assertTrue("there is .git in repo", new File(testProjectRepoA, ".git/").exists());
+		
+		// Checkin projectA to make sure there are two projects when actually checking out B
+		testServerRepositoryA.syncRepository();
+		
+		testServerRepositoryB.checkoutRepository();
+		File testProjectPathB = testServerRepositoryB.getProject().getRawLocation().toFile();
+		File testProjectRepoB = testProjectPathB.getParentFile();
+		assertNotEquals("Path of Project A is different from Project B", testProjectPathA, testProjectPathB);
+		assertFalse("there is no .git in project", new File(testProjectPathB, ".git/").exists());
+		assertTrue("there is .git in repo", new File(testProjectRepoB, ".git/").exists());
+		
+		// Files of ProjectA will also exist in repo of ProjectB
+		assertTrue("ProjectA got checked out in ProjectB", new File(testProjectRepoB, TEST_PROJECT_A).exists());
+		
+		// now sync project B to send changes to the server, check that they are not yet in A, sync a and show project B appears there
+		testServerRepositoryB.syncRepository();
+		assertFalse("ProjectB is not yet in ProjectA", new File(testProjectRepoA, TEST_PROJECT_B).exists());
+		
+		testServerRepositoryA.syncRepository();
+		assertTrue("ProjectB is now in ProjectA", new File(testProjectRepoA, TEST_PROJECT_B).exists());
+	}
+	
+	@Test
+	public void testRetrieveEdAndResurceSetFromConfiguration() throws URISyntaxException, CoreException {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
 		assertNull("No project retrieved yet", testServerRepository.getProject());
 		testServerRepository.retrieveProjectFromConfiguration();
 		assertNotNull("Project Exists", testServerRepository.getProject());
+		
+		testServerRepository.retrieveEdAndResurceSetFromConfiguration();
+		
+		assertNotNull("EditingDomain got set", testServerRepository.getEd());
+		assertNotNull("ResourceSet got set", testServerRepository.getResourceSet());
 	}
 	
 	@Test 
@@ -140,6 +211,43 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	
 		RevCommit logAfterSync = Git.open(pathRepoRemote.toFile()).log().call().iterator().next();
 		
-		assertThat("remote repo does not yet have a commit as expected", logAfterSync.getFullMessage(), containsString(""));
+		assertThat("Commit before pull message expected", logAfterSync.getFullMessage(),
+				containsString(VirSatGitVersionControlBackend.BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE));
+	}
+	
+	@Test
+	public void testUpdateOrCheckoutProject() throws Exception {
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository.updateOrCheckoutProject();
+
+		IProject createdProject = testServerRepository.getProject();		
+		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+
+		ArrayList<RevCommit> commitList1 = StreamSupport
+			.stream(
+				Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
+				false
+			).collect(Collectors.toCollection(() -> new ArrayList<>()));
+		
+		assertThat("Commit List has expected size", commitList1, hasSize(1));
+		
+		// Add another file to the project when reconnecting, this file should create a new commit on the repository
+		testServerRepository.getProject().getFile("newTempFile.txt").create(new ByteArrayInputStream("test".getBytes()), true, null);
+		
+		// now call the method a second time, the project is already created thus it should only do the update
+		ServerRepository testServerRepository2 = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository2.updateOrCheckoutProject();
+		
+		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+
+		ArrayList<RevCommit> commitList2 = StreamSupport
+			.stream(
+				Git.open(pathRepoRemote.toFile()).log().call().spliterator(),
+				false
+			).collect(Collectors.toCollection(() -> new ArrayList<>()));
+		
+		// CHECKSTYLE:OFF
+		assertThat("Commit List has expected size", commitList2, hasSize(2));
+		// CHECKSTYLE:ON
 	}
 }

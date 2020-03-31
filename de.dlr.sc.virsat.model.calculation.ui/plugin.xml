@@ -513,7 +513,7 @@
 	<extension point="org.eclipse.ui.views">
 			<category 
 				id="de.dlr.sc.virsat.project.ui.view.VirSat"
-				name="VirSat">	
+				name="Virtual Satellite">	
 			</category>
 			<view id="de.dlr.sc.virsat.model.calculation.ui.views.domainRoundView"
 		    	name="Domain Round"

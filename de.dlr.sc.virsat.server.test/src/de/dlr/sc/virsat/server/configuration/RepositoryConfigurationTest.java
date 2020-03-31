@@ -19,12 +19,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-
+import java.nio.file.Files;
 import org.apache.commons.io.IOUtils;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -52,31 +50,34 @@ public class RepositoryConfigurationTest {
 		
 		// Check that all values are loaded
 		RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
-		assertEquals("Remote loaded", new URI(TEST_REMOTE), configuration.getRemoteUri());
+		assertEquals("Remote loaded", TEST_REMOTE, configuration.getRemoteUri());
 		assertEquals("Backend loaded", VersionControlSystem.GIT, configuration.getBackend());
 		assertEquals("Users loaded", TEST_USER, configuration.getFunctionalAccountName());
 		assertEquals("Password loaded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
 		assertEquals("Project loaded",	TEST_PROJECT, configuration.getProjectName());
-		assertEquals("Path loaded", new File(TEST_PATH), configuration.getLocalPath());
+		assertEquals("Path loaded", TEST_PATH, configuration.getLocalPath());
 	}
 	
 	@Test
 	public void testSaveProperties() throws IOException, URISyntaxException {
 		
-		File wsRootFile = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toFile();
 		final String TEST_FILE_NAME = "test.properties";
 		RepositoryConfiguration configuration = new RepositoryConfiguration(
 				TEST_PROJECT,
-				new File(TEST_PATH),
-				new URI(TEST_REMOTE),
+				TEST_PATH,
+				TEST_REMOTE,
 				VersionControlSystem.GIT,
 				TEST_USER,
 				TEST_PASSWORD
 		);
-		OutputStream outputStream = new FileOutputStream(new File(wsRootFile, TEST_FILE_NAME));
+		
+		// Prepare Temporary Folder
+		File tempPath = Files.createTempDirectory("RepoConfigTest").toFile();
+		
+		OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME));
 		configuration.saveProperties(outputStream);
 		
-		InputStream inputStream = new FileInputStream(new File(wsRootFile, TEST_FILE_NAME));
+		InputStream inputStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
 		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
@@ -84,36 +85,35 @@ public class RepositoryConfigurationTest {
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
 		assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
 		
-		InputStream loadStream = new FileInputStream(new File(wsRootFile, TEST_FILE_NAME));
+		InputStream loadStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
 		RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
-		assertEquals("Remote loaded", new URI(TEST_REMOTE), importedConfiguration.getRemoteUri());
+		assertEquals("Remote loaded", TEST_REMOTE, importedConfiguration.getRemoteUri());
 		assertEquals("Users loaded", TEST_USER, importedConfiguration.getFunctionalAccountName());
 		assertEquals("Password laoded",	TEST_PASSWORD, importedConfiguration.getFunctionalAccountPassword());
 		assertEquals("Project laoded",	TEST_PROJECT, importedConfiguration.getProjectName());
 		assertEquals("Backend loaded", VersionControlSystem.GIT, importedConfiguration.getBackend());
-		assertEquals("Path loaded", new File(TEST_PATH), importedConfiguration.getLocalPath());
+		assertEquals("Path loaded", TEST_PATH, importedConfiguration.getLocalPath());
 	}
 	
 	@Test
 	public void testUpdate() throws URISyntaxException {
 		RepositoryConfiguration configuration = new RepositoryConfiguration(
 				TEST_PROJECT,
-				new File(TEST_PATH),
-				new URI(TEST_REMOTE),
+				TEST_PATH,
+				TEST_REMOTE,
 				VersionControlSystem.GIT,
 				TEST_USER,
 				TEST_PASSWORD
 		);
 		
 		RepositoryConfiguration updatedConfiguration = new RepositoryConfiguration();
-
 		updatedConfiguration.update(configuration);
 		
-		assertEquals("Remote loaded", new URI(TEST_REMOTE), updatedConfiguration.getRemoteUri());
+		assertEquals("Remote loaded", TEST_REMOTE, updatedConfiguration.getRemoteUri());
 		assertEquals("Users loaded", TEST_USER, updatedConfiguration.getFunctionalAccountName());
 		assertEquals("Password laoded",	TEST_PASSWORD, updatedConfiguration.getFunctionalAccountPassword());
 		assertEquals("Project laoded",	TEST_PROJECT, updatedConfiguration.getProjectName());
 		assertEquals("Backend loaded", VersionControlSystem.GIT, updatedConfiguration.getBackend());
-		assertEquals("Path loaded", new File(TEST_PATH), updatedConfiguration.getLocalPath());
+		assertEquals("Path loaded", TEST_PATH, updatedConfiguration.getLocalPath());
 	}
 }

@@ -9,13 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.configuration;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -24,7 +21,7 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 public class RepositoryConfiguration {
 
 	// Infrastructure
-	private Properties properties;
+	private Properties properties = new Properties();
 	
 	// Properties key
 	public static final String PROJECT_NAME_KEY = "project.name";
@@ -34,9 +31,7 @@ public class RepositoryConfiguration {
 	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
 	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
 	
-	public RepositoryConfiguration() {
-		properties = new Properties();
-	}
+	public RepositoryConfiguration() { }
 	
 	/**
 	 * Sets up a property file describing a project repository relation
@@ -49,12 +44,11 @@ public class RepositoryConfiguration {
 	 */
 	public RepositoryConfiguration(
 			String projectName,
-			File localPath,
-			URI remoteUri,
+			String localPath,
+			String remoteUri,
 			VersionControlSystem backend,
 			String functionalAccountName,
 			String functionalAccountPassword) {
-		this();
 		setProjectName(projectName);
 		setLocalPath(localPath);
 		setRemoteUri(remoteUri);
@@ -63,17 +57,19 @@ public class RepositoryConfiguration {
 		setFunctionalAccountPassword(functionalAccountPassword);
 	}
 	
+	public RepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) {
+		update(repositoryConfiguration);
+	}
+	
 	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
-		this();
 		loadProperties(repoConfInputStream);
 	}
 
 	/**
 	 * Method to update a repository configuration with new values
 	 * @param repositoryBackend the repositoryConfiguration to be used to update the current one
-	 * @throws URISyntaxException
 	 */
-	public void update(RepositoryConfiguration repositoryBackend) throws URISyntaxException {
+	public void update(RepositoryConfiguration repositoryBackend) {
 		this.properties.putAll(repositoryBackend.properties);
 	}
 	
@@ -93,11 +89,11 @@ public class RepositoryConfiguration {
 		properties.store(configFileOutputStream, "");
 	}
 
-	public URI getRemoteUri() throws URISyntaxException  {
-		return new URI(properties.getProperty(REMOTE_URL_KEY));
+	public String getRemoteUri() {
+		return properties.getProperty(REMOTE_URL_KEY);
 	}
 
-	public void setRemoteUri(URI remoteUri) {
+	public void setRemoteUri(String remoteUri) {
 		properties.setProperty(REMOTE_URL_KEY, remoteUri.toString());
 	}
 
@@ -137,12 +133,12 @@ public class RepositoryConfiguration {
 		properties.setProperty(PROJECT_NAME_KEY, projectName);
 	}
 
-	public File getLocalPath() {
-		return new File(properties.getProperty(LOCAL_PATH_KEY));
+	public String getLocalPath() {
+		return properties.getProperty(LOCAL_PATH_KEY);
 	}
 
-	public void setLocalPath(File localPath) {
-		properties.setProperty(LOCAL_PATH_KEY, localPath.toString());
+	public void setLocalPath(String localPath) {
+		properties.setProperty(LOCAL_PATH_KEY, localPath);
 	}
 
 	@Override
