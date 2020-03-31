@@ -44,6 +44,7 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
+import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
 
 public class ServerRepositoryTest extends AProjectTestCase {
 
@@ -210,7 +211,8 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	
 		RevCommit logAfterSync = Git.open(pathRepoRemote.toFile()).log().call().iterator().next();
 		
-		assertThat("There is no commit message expected", logAfterSync.getFullMessage(), containsString(""));
+		assertThat("Commit before pull message expected", logAfterSync.getFullMessage(),
+				containsString(VirSatGitVersionControlBackend.BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE));
 	}
 	
 	@Test

@@ -44,6 +44,8 @@ import de.dlr.sc.virsat.team.VersionControlBackendProvider;
  * It also offers functionality to checkout a project or commit to it.
  */
 public class ServerRepository {
+
+	public static final String SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE = "Server Local Commit Before Push: ";
 	
 	private RepositoryConfiguration repositoryConfiguration;
 	private IProject project;
@@ -170,8 +172,6 @@ public class ServerRepository {
 		
 		atomicException.throwIfSet();
 	}
-	
-	public static final String SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE = "Server Local Commit Before Push: ";
 	
 	/**
 	 * This method syncs the repository, which means it updates from remote
