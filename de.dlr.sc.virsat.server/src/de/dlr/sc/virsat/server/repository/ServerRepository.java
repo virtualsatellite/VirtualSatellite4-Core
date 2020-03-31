@@ -50,8 +50,6 @@ public class ServerRepository {
 	private VirSatResourceSet resourceSet;
 	private VirSatTransactionalEditingDomain ed;
 	private IVirSatVersionControlBackend versionControlBackEnd;
-	@SuppressWarnings("unused")
-	private File localRepositoryHome;
 	private File localRepository;
 	
 	protected static final String PREFIX_LOCAL_REPO_NAME = "repo_";
@@ -64,7 +62,6 @@ public class ServerRepository {
 	 */
 	public ServerRepository(File localRepositoryHome, RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
 		this.repositoryConfiguration = repositoryConfiguration;
-		this.localRepositoryHome = localRepositoryHome;
 		this.localRepository = new File(localRepositoryHome, PREFIX_LOCAL_REPO_NAME + repositoryConfiguration.getProjectName());
 		
 		//checkout the project to workspace
