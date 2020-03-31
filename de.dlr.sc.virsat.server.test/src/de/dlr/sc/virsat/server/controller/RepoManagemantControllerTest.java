@@ -13,6 +13,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,17 +34,20 @@ public class RepoManagemantControllerTest {
 	@Before
 	public void setUp() {
 		repoManagemantController = new RepoManagemantController();
-		testRepositoryConfiguration = new RepositoryConfiguration("", VersionControlSystem.GIT, "", "", TEST_REPOSITORY_NAME);
+		testRepositoryConfiguration = new RepositoryConfiguration();
+		testRepositoryConfiguration.setProjectName(TEST_REPOSITORY_NAME);
+		testRepositoryConfiguration.setBackend(VersionControlSystem.GIT);
+		testRepositoryConfiguration.setRemoteUri("test.uri");
 	}
 	
 	@Test
-	public void testGetRepository() {
+	public void testGetRepository() throws URISyntaxException {
 		ServerRepository serverRepository = repoManagemantController.getRepository(TEST_REPOSITORY_NAME);
 		
 		assertNull("Initially no repository is found", serverRepository);
 		
-		ServerRepository testServerRepository = new ServerRepository(testRepositoryConfiguration);
-		ServerRepository testServerRepositoryOther = new ServerRepository(testRepositoryConfiguration);
+		ServerRepository testServerRepository = new ServerRepository(new File(""), testRepositoryConfiguration);
+		ServerRepository testServerRepositoryOther = new ServerRepository(new File(""), testRepositoryConfiguration);
 		RepoRegistry.getInstance().addRepository(TEST_REPOSITORY_NAME, testServerRepository);
 		RepoRegistry.getInstance().addRepository(TEST_REPOSITORY_NAME + "Other", testServerRepositoryOther);
 		serverRepository = repoManagemantController.getRepository("testRepositoryName");
@@ -50,7 +56,7 @@ public class RepoManagemantControllerTest {
 	}
 
 	@Test
-	public void testAddNewRepository() {
+	public void testAddNewRepository() throws URISyntaxException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -58,7 +64,7 @@ public class RepoManagemantControllerTest {
 	}
 
 	@Test
-	public void testDeleteRepository() {
+	public void testDeleteRepository() throws URISyntaxException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -71,13 +77,15 @@ public class RepoManagemantControllerTest {
 	}
 	
 	@Test
-	public void testUpdateRepository() {
+	public void testUpdateRepository() throws URISyntaxException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
 		
 		assertEquals("Initially the server repository is not updated", serverRepository.getRepositoryConfiguration().getRemoteUri(), testRepositoryConfiguration.getRemoteUri());
 		
-		RepositoryConfiguration repositoryConfigurationNew = new RepositoryConfiguration("new", VersionControlSystem.GIT, "", "", TEST_REPOSITORY_NAME);
+		RepositoryConfiguration repositoryConfigurationNew = new RepositoryConfiguration();
+		repositoryConfigurationNew.setProjectName(TEST_REPOSITORY_NAME);
+		repositoryConfigurationNew.setRemoteUri("new");
 		repoManagemantController.updateRepository(repositoryConfigurationNew);
 		
 		assertEquals("Correctly caused an updated on the server repository", serverRepository.getRepositoryConfiguration().getRemoteUri(), repositoryConfigurationNew.getRemoteUri());

@@ -40,8 +40,9 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 		VersionControlSystem backend = VersionControlSystem.GIT;
 		String username = "username";
 		String password = "password";
+		String localPath = "";
 
-		testProjectConfiguration = new RepositoryConfiguration(uri, backend, username, password, projectName);
+		testProjectConfiguration = new RepositoryConfiguration(projectName, localPath, uri, backend, username, password);
 	}
 	
 	@Test
