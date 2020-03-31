@@ -10,8 +10,6 @@
 package de.dlr.sc.virsat.commons.exception;
 
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class AtomicExceptionTest {

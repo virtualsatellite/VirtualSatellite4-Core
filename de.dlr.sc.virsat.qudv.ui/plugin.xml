@@ -29,7 +29,7 @@
       </wizard>
       <category
             id="de.dlr.virsat.global.category.import.virsat"
-            name="VirSat">
+            name="Virtual Satellite">
       </category>
    </extension>
    <extension
@@ -43,7 +43,7 @@
       </wizard>
       <category
             id="de.dlr.virsat.global.category.export.virsat"
-            name="VirSat">
+            name="Virtual Satellite">
       </category>
    </extension>
    <extension
