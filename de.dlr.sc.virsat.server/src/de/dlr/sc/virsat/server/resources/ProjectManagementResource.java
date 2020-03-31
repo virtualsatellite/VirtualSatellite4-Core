@@ -30,12 +30,6 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 public class ProjectManagementResource {
 
 	public static final String PATH = "/project";
-	public static final String PATH_ALL_REPOSITORIES = "repositories";
-	public static final String PARAM_NAME = "name";
-	public static final String PARAM_REMOTE_URL = "remoteURL";
-	public static final String PARAM_USER = "user";
-	public static final String PARAM_PASSWORD = "password";
-	public static final String PARAM_BACKEND = "backend";
 
 	private RepoManagementController controller;
 
