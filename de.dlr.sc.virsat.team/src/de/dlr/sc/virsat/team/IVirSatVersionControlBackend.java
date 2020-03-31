@@ -34,7 +34,7 @@ public interface IVirSatVersionControlBackend {
 	/**
 	 * Creates a local checkout of a project from the version control system
 	 * @param projectDescription the project metadata
-	 * @param pathRepoLoacl the local path in which to checkout the project.
+	 * @param pathRepoLocal the local path in which to checkout the project.
 	 *  .git or .svn folders should be created within. This folder is usually not your 
 	 *  repository home such as the git home folder.
 	 * @param remoteUri the uri of the version control system
