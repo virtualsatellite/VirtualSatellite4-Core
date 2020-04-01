@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.server.configuration;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 /**
@@ -20,7 +21,10 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
 	
-	private static Properties properties;
+	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
+	public static final String PROJECT_REPOSITORIES_DIR_KEY = "project.repositories.dir";
+	
+	private static Properties properties = new Properties();
 	
 	private ServerConfiguration() { }
 	
@@ -29,13 +33,34 @@ public class ServerConfiguration {
 	 * @param configFileInputStream input stream for the file containing properties in java properties format
 	 */
 	public static void loadProperties(InputStream configFileInputStream) throws FileNotFoundException, IOException {
-		properties = new Properties();
 		properties.load(configFileInputStream);
 	}
 	
+	/**
+	 * Saves properties from memory to file
+	 * @param configFileOutputStream the file output stream
+	 */
+	public static void saveProperties(OutputStream configFileOutputStream) throws IOException {
+		properties.store(configFileOutputStream, "");
+	}
 	
 	public static Properties getProperties() {
 		return properties;
 	}
+	
+	public static String getRepositoryConfigurationsDir() {
+		return properties.getProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY);
+	}
+	
+	public static void setRepositoryConfigurationsDir(String repositoryConfigurationsDir) {
+		properties.setProperty(REPOSITORY_CONFIGURATIONS_DIR_KEY, repositoryConfigurationsDir);
+	}
 
+	public static String getProjectRepositoriesDir() {
+		return properties.getProperty(PROJECT_REPOSITORIES_DIR_KEY);
+	}
+
+	public static void setProjectRepositoriesDir(String projectRepositoriesDir) {
+		properties.setProperty(PROJECT_REPOSITORIES_DIR_KEY, projectRepositoriesDir);
+	}
 }

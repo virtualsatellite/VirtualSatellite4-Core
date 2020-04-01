@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.team.svn.core.IStateFilter;
+import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNConnector;
 import org.eclipse.team.svn.core.connector.SVNDepth;
@@ -34,17 +35,14 @@ import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.operation.file.CommitOperation;
 import org.eclipse.team.svn.core.operation.file.SVNFileStorage;
 import org.eclipse.team.svn.core.operation.local.NotifyProjectStatesChangedOperation;
-import org.eclipse.team.svn.core.operation.local.RefreshResourcesOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation;
 import org.eclipse.team.svn.core.operation.local.management.ShareProjectOperation.IFolderNameMapper;
 import org.eclipse.team.svn.core.operation.remote.management.AddRepositoryLocationOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryLocation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
-import org.eclipse.team.svn.core.resource.IResourceProvider;
 import org.eclipse.team.svn.core.resource.events.ProjectStatesChangedEvent;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
-import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
@@ -53,7 +51,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 
 	public static final int PROGRESS_INDEX_COMMIT_UPDATE_STEPS = 1;
 	public static final int PROGRESS_INDEX_COMMIT_CHECKIN_STEPS = 2;
-	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 1;
+	public static final int PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS = 3;
 	public static final int PROGRESS_INDEX_DO_COMMIT_STEPS = 1;
 	
 	@Override
@@ -75,28 +73,22 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void checkout(IProjectDescription projectDescription, String remoteUri, IProgressMonitor monitor)
-			throws Exception {
+	public IProject checkout(IProjectDescription projectDescription,  File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception {
 		SubMonitor checkoutMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn checkout", PROGRESS_INDEX_COMMIT_CHECKOUT_STEPS);
-		File pathRepoLocal = new File(projectDescription.getLocationURI());
 		IRepositoryResource remoteRepo = SVNUtility.asRepositoryResource(remoteUri, true);
 
 		checkoutMonitor.split(1).subTask("Checking out remote project");
 		CheckoutAsOperation checkoutAsOperation = new CheckoutAsOperation(pathRepoLocal, remoteRepo, SVNDepth.INFINITY, true, true);
-		CompositeOperation compositeOperation = new CompositeOperation(checkoutAsOperation.getId(), checkoutAsOperation.getMessagesClass());
-		compositeOperation.add(checkoutAsOperation);
-		compositeOperation.add(new RefreshResourcesOperation(new IResourceProvider() {
-			@Override
-			public IResource[] getResources() {
-				// Makes the SVN refresh operation update the meta information on the newly checked out project
-				IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectDescription.getName());
-				return new IResource[] { newProject };
-			}
-		}));
+		checkoutAsOperation.run(checkoutMonitor);
 		
-		compositeOperation.run(checkoutMonitor);
+		checkStatus(checkoutAsOperation);
 		
-		checkStatus(compositeOperation);
+		String projectName = projectDescription.getName();
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		project.create(projectDescription, checkoutMonitor.split(1));
+		project.open(checkoutMonitor.split(1));
+		
+		return project;
 	}
 
 	@Override
@@ -109,7 +101,6 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		projectDescription.setLocationURI(pathRepoLocal.toURI());
 		project.move(projectDescription, true, monitor);
 		
-		checkInMonitor.split(1).subTask("Checking in local project");
 		IRepositoryLocation remoteRepoLocation = SVNUtility.asRepositoryResource(remoteUri, true).getRepositoryLocation();
 		
 		// The signature requires the project to be passed as an array
@@ -117,6 +108,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		// Use the local project name as the remote project name
 		IFolderNameMapper folderNameMapper = (p -> p.getName());
 		
+		checkInMonitor.split(1).subTask("Checking in local project");
 		ShareProjectOperation shareProjectOperation = new ShareProjectOperation(projects, remoteRepoLocation, 
 				folderNameMapper, project.getName(), ShareProjectOperation.LAYOUT_SINGLE, false);
 		CompositeOperation compositeOperation = new CompositeOperation(shareProjectOperation.getId(), shareProjectOperation.getMessagesClass());

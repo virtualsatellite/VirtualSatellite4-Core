@@ -71,22 +71,26 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	/**
 	 * Test class that can be added as a resource listener to the editing domain
 	 */
-	private static class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
+	private class ResourceEventCounter implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		protected Set<Resource> triggeredResources = new HashSet<>();
 		protected Resource firstResource;
+		protected int triggeredEvent;
 		protected int counter = 0;
 
 		protected List<List<StackTraceElement>> stackTraces = new ArrayList<>();
 		
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
-			triggeredResources.addAll(resources);
-			counter++;
-			firstResource = resources.iterator().next();
-			
-			List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
-			stackTraces.add(stackTrace);
-			this.notify();
+			synchronized (this) {
+				triggeredResources.addAll(resources);
+				triggeredEvent = event;
+				counter++;
+				firstResource = resources.iterator().next();
+				
+				List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
+				stackTraces.add(stackTrace);
+				this.notify();
+			}
 		}
 	}
 
@@ -204,8 +208,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		// to the non saved CA in the other resource.
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
-		rs = null;
-		editingDomain = null;
+		
 		rs = VirSatResourceSet.getResourceSet(testProject, false);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
@@ -223,8 +226,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		// Now load it a third time and make sure there is no dangling reference
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
-		rs = null;
-		editingDomain = null;
+		
 		rs = VirSatResourceSet.getResourceSet(testProject, false);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
