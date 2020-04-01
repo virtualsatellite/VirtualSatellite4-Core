@@ -1155,8 +1155,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				resourceDiagnostic.merge(modelDiagnostic);
 			}
 
-			// Now check severity levels, and set the diagnostics map accordingly
-			// The map will be sued by the editors to display the error messages etc.
+			// Now check severity levels, and set the diagnostics map accordingly.
+			// The map will be used by the editors to display the error messages etc.
 			if (resourceDiagnostic.getSeverity() != Diagnostic.OK) {
 				resourceToDiagnosticMap.put(resource, resourceDiagnostic);
 				changes = true;
@@ -1246,7 +1246,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 	
 	/**
-	 * This method create EMF Diagnostics on the Model Object in case of detected problems
+	 * This method creates EMF Diagnostics on the Model Object in case of detected problems
 	 * 
 	 * @param resource The resource to be checked for model issues
 	 * @return the diagnostic on model issues
@@ -1267,7 +1267,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 								Diagnostic.WARNING,
 								Activator.getPluginId(),
 								0,
-								"Found a dangling reference in due to uncontained object. Press save to fix.",
+								"Found a dangling reference due to an uncontained object. Press save to fix.",
 								new Object[] { eReferencedObject, eObject }
 						));
 					}
