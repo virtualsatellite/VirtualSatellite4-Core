@@ -54,7 +54,7 @@ public class VirSatEcoreUtil extends EcoreUtil {
 		List<T> result = new ArrayList<T>();
 		collection.forEach((collectionObject) -> {
 			if (collectionObject instanceof EObject) {
-				TreeIterator<?> iterator = getAllContents((EObject) collectionObject, true);
+				TreeIterator<?> iterator = getAllContents((EObject) collectionObject, resolve);
 				result.addAll(getAllContentsOfType(iterator, type)); 
 			}
 		});
