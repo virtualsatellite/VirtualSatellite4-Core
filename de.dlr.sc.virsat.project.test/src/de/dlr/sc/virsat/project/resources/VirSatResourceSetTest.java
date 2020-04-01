@@ -608,7 +608,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	 * A resource set which allows null contents
 	 *
 	 */
-	class NullableResource extends ResourceImpl {
+	static class NullableResource extends ResourceImpl {
 		@SuppressWarnings("serial")
 		@Override
 		public EList<EObject> getContents() {
