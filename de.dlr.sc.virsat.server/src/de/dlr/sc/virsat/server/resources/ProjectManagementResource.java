@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.controller.RepoManagementController;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 @Path(ProjectManagementResource.PATH)
 public class ProjectManagementResource {
@@ -53,9 +54,9 @@ public class ProjectManagementResource {
 	@Path("/{projectName}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProject(@PathParam("projectName") String projectName) {
-		ServerRepository repository = controller.getRepository(projectName)
-		if (repository != null) {
-			RepositoryConfiguration configuration = repository.getRepositoryConfiguration();
+		ServerRepository serverRepository = controller.getRepository(projectName);
+		if (serverRepository != null) {
+			RepositoryConfiguration configuration = serverRepository.getRepositoryConfiguration();
 			return Response.status(Response.Status.OK).entity(configuration).build();
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
