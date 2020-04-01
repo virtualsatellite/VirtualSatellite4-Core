@@ -1230,12 +1230,10 @@ public class QudvUnitHelper {
 	public void exportModeltoFile(SystemOfUnits systemOfUnits, String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();
 		resource.getContents().add(systemOfUnits);
-		FileOutputStream fileOut = new FileOutputStream(destination);
-		try {
+		
+		try (FileOutputStream fileOut = new FileOutputStream(destination)) {
 			resource.save(fileOut, WRITE_OPTIONS);
-		} finally {
-			fileOut.close();
-		}
+		} 
 	}
 	
 	/**

@@ -713,11 +713,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 			}
 		} else if (selectedObject instanceof ComposedPropertyInstance) {
 			ComposedPropertyInstance selectedCpi = (ComposedPropertyInstance) selectedObject;
-			ATypeInstance referencedTypeInstance = selectedCpi.getTypeInstance();
-
-			if (referencedTypeInstance != null) {
-				selectedCa = (CategoryAssignment) referencedTypeInstance;
-			}
+			selectedCa = selectedCpi.getTypeInstance();
 		} else if (selectedObject instanceof UnitValuePropertyInstance) {
 			UnitValuePropertyInstance selectedUvpi = (UnitValuePropertyInstance) selectedObject;
 			EObject eContainer = selectedUvpi.eContainer();
