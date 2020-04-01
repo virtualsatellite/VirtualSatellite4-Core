@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -161,13 +162,6 @@ public class RepositoryConfiguration {
 			return false;
 		}
 		RepositoryConfiguration other = (RepositoryConfiguration) obj;
-		if (properties == null) {
-			if (other.properties != null) {
-				return false;
-			}
-		} else if (!properties.equals(other.properties)) {
-			return false;
-		}
-		return true;
+		return Objects.equals(properties, other.properties);
 	}	
 }
