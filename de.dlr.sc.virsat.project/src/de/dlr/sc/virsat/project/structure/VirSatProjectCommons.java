@@ -300,15 +300,9 @@ public class VirSatProjectCommons {
 		List<IProject> virSatProjects = new ArrayList<IProject>();
 		IProject[] foundProjects = workspace.getRoot().getProjects();
 		try {
-
 			for (IProject project : foundProjects) {
-				if (project.isOpen()) {
-					IProjectDescription description;
-					description = project.getDescription();
-					List<String> natures = Arrays.asList(description.getNatureIds());
-					if (natures.contains(VirSatProjectNature.NATURE_ID)) {
-						virSatProjects.add(project);
-					}
+				if (project.isOpen() && isVirSatProject(project)) {
+					virSatProjects.add(project);
 				}
 			}
 		} catch (CoreException e) {
@@ -318,6 +312,19 @@ public class VirSatProjectCommons {
 		return virSatProjects;
 	}
 
+	/**
+	 * Use this method to test if a workspace project has the Virtual Satellite Nature attached
+	 * @param project the project to be tested
+	 * @return true in case the Virtual Satellite project nature could be found.
+	 * @throws CoreException
+	 */
+	public static boolean isVirSatProject(IProject project) throws CoreException {
+		IProjectDescription description;
+		description = project.getDescription();
+		List<String> natures = Arrays.asList(description.getNatureIds());
+		return natures.contains(VirSatProjectNature.NATURE_ID);
+	}
+	
 	/**
 	 * This method hands back the documents folder that we provide by convention.
 	 * @param sei The Structural Element Instance for which to get the folder
