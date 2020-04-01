@@ -63,7 +63,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testAddNewRepository() {
+	public void testAddNewRepository() throws URISyntaxException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -71,7 +71,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testDeleteRepository() {
+	public void testDeleteRepository() throws URISyntaxException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -84,7 +84,7 @@ public class RepoManagementControllerTest {
 	}
 	
 	@Test
-	public void testUpdateRepository() {
+	public void testUpdateRepository() throws URISyntaxException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
 		
@@ -99,7 +99,7 @@ public class RepoManagementControllerTest {
 	}
 	
 	@Test
-	public void testGetAllProjectNames() {
+	public void testGetAllProjectNames() throws URISyntaxException {
 		assertTrue("No projects registered initially", repoManagemantController.getAllProjectNames().isEmpty());
 
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);

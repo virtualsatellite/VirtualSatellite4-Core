@@ -82,10 +82,14 @@ public class ProjectManagementResource {
 		if (!validProjectConfiguration(configuration)) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
-		if (controller.getAllProjectNames().contains(projectName)) {
-			controller.updateRepository(configuration);
-		} else {
-			controller.addNewRepository(configuration);
+		try {
+			if (controller.getAllProjectNames().contains(projectName)) {
+				controller.updateRepository(configuration);
+			} else {
+				controller.addNewRepository(configuration);
+			}
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		return Response.status(Response.Status.OK).build();
 	}

@@ -13,9 +13,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Set;
 
-import org.eclipse.core.runtime.Status;
-
-import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
@@ -30,15 +27,11 @@ public class RepoManagementController {
 	/**
 	 * Adds and registers a new project
 	 * @param repoConfiguration project configuration
+	 * @throws URISyntaxException 
 	 */
-	public void addNewRepository(RepositoryConfiguration repoConfiguration) {
-		try {
-			ServerRepository repository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repoConfiguration);
-			RepoRegistry.getInstance().addRepository(repoConfiguration.getProjectName(), repository);
-		} catch (URISyntaxException e) {
-			String errorMessage = "Error adding repository configuration for project " + repoConfiguration.getProjectName();
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), errorMessage, e));
-		}
+	public void addNewRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException {
+		ServerRepository repository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repoConfiguration);
+		RepoRegistry.getInstance().addRepository(repoConfiguration.getProjectName(), repository);
 	}
 	
 	public void deleteRepository(String repoName) {

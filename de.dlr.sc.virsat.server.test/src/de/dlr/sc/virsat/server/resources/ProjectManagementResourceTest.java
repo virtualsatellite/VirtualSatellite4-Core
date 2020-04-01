@@ -121,6 +121,13 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
 	}
 
+	@Test
+	public void testAddProjectWithInvalidUri() {
+		testProjectConfiguration.setRemoteUri("[invalid]");
+		Response response = putRequest(testProjectConfiguration.getProjectName(), testProjectConfiguration);
+		
+		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
+	}
 
 	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
 		return webTarget
