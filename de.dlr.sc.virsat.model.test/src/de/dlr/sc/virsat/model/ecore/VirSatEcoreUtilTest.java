@@ -64,8 +64,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * Test Cases to test the VirSat Extensions on the EcoreUtil 
- * @author fisc_ph
- *
  */
 public class VirSatEcoreUtilTest {
 
@@ -438,9 +436,9 @@ public class VirSatEcoreUtilTest {
 		// though there are actual references in the model by the superTis
 		
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-        reg.getExtensionToFactoryMap().put("dvlm", new XMIResourceFactoryImpl());
+		reg.getExtensionToFactoryMap().put("dvlm", new XMIResourceFactoryImpl());
 
-        // Build the model
+		// Build the model
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsCanInheritFromAll(true);
 		
@@ -455,10 +453,10 @@ public class VirSatEcoreUtilTest {
 		repo.getRootEntities().add(superSei);
 		
 		ResourceSet resSet = new ResourceSetImpl();
-        Resource resourceRepo = resSet.createResource(URI.createURI("ecoreutiltest/ResInheritRepo.dvlm"));
-        Resource resourceSuperSei = resSet.createResource(URI.createURI("ecoreutiltest/ResInheritSeuperSei.dvlm"));
-        Resource resourceSubSei = resSet.createResource(URI.createURI("ecoreutiltest/ResInheritSubSei.dvlm"));
-        resourceRepo.getContents().add(repo);
+		Resource resourceRepo = resSet.createResource(URI.createURI("ecoreutiltest/ResInheritRepo.dvlm"));
+		Resource resourceSuperSei = resSet.createResource(URI.createURI("ecoreutiltest/ResInheritSeuperSei.dvlm"));
+		Resource resourceSubSei = resSet.createResource(URI.createURI("ecoreutiltest/ResInheritSubSei.dvlm"));
+		resourceRepo.getContents().add(repo);
 		resourceSuperSei.getContents().add(superSei);
 		resourceSubSei.getContents().add(subSei);
 		
