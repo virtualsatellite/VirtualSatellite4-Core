@@ -21,10 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,10 +33,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -58,8 +56,8 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		try {
-			pathRepoRemote = Files.createTempDirectory("VirtualSatelliteGitRemote_");
-			localRepoHome = Files.createTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
+			pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
+			localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
 			File fileGitRemoteRepo = pathRepoRemote.toFile();
 			Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
 		} catch (IOException | IllegalStateException | GitAPIException e) {
@@ -81,25 +79,6 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			"",
 			""
 		); 
-	}
-
-	@After
-	public void tearDown() throws CoreException {
-		try {
-			Files.walk(pathRepoRemote).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			Files.walk(localRepoHome.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			ResourcesPlugin.getWorkspace().getRoot().getProject(TEST_PROJECT_NAME).delete(true,  true, null);
-		} catch (IOException e) {
-			Activator.getDefault().getLog().log(
-				new Status(
-					Status.ERROR,
-					Activator.getPluginId(),
-					"Error during temp remote directory creation",
-					e
-				)
-			);
-		}
-		super.tearDown();
 	}
 
 	@Test

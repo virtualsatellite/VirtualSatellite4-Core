@@ -40,6 +40,7 @@ import org.junit.Test;
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.concept.unittest.util.test.ExecutionCheckCommand;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -307,7 +308,7 @@ public class CadImporterTest extends AConceptProjectTestCase {
 
 		JsonObject rootObject = createMappedJsonObjectWithProductAndConfiguration();
 
-		Path externalFolder = Files.createTempDirectory("cadTest");
+		Path externalFolder = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		Path externalStl = Paths.get(externalFolder.toString(), STL_TEST_FILENAME);
 		List<String> stlContent = Arrays.asList("solid test", "endsolid test");
 		Files.write(externalStl, stlContent);
