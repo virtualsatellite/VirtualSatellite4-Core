@@ -319,8 +319,8 @@ public class VirSatProjectCommons {
 	 * @throws CoreException
 	 */
 	public static boolean isVirSatProject(IProject project) throws CoreException {
-		IProjectDescription description;
-		description = project.getDescription();
+		IProjectDescription description = project.getDescription();
+
 		List<String> natures = Arrays.asList(description.getNatureIds());
 		return natures.contains(VirSatProjectNature.NATURE_ID);
 	}
