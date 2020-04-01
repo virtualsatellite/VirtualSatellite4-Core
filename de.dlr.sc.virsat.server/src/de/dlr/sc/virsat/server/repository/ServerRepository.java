@@ -28,7 +28,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import de.dlr.sc.virsat.commons.exception.AtomicException;
+import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -112,7 +112,7 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void checkoutRepository() throws Exception {
-		AtomicException<Exception> atomicException = new AtomicException<>();
+		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		
 		runInWorkspace((progress) -> {
 			try {
@@ -151,7 +151,7 @@ public class ServerRepository {
 	 * @throws IOException
 	 */
 	public void removeRepository() throws CoreException, IOException {
-		AtomicException<IOException> atomicException = new AtomicException<>();
+		AtomicExceptionReference<IOException> atomicException = new AtomicExceptionReference<>();
 		
 		runInWorkspace((progress) -> {
 			try {
@@ -179,7 +179,7 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void syncRepository() throws Exception {
-		AtomicException<Exception> atomicException = new AtomicException<>();
+		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		
 		runInWorkspace((progress) -> {
 			try {
