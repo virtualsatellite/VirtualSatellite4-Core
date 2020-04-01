@@ -189,6 +189,24 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		
 		assertThat("Project1 and 3 is contained", virSatProjects, hasItems(project1VirSat, project3VirSat));
 		assertThat("Project2 is not contained", virSatProjects, not(hasItem(project2Other)));
+		
+		// Close one project and check if it is not detected anymore
+		project1VirSat.close(null);
+		List<IProject> virSatProjects2 = VirSatProjectCommons.getAllVirSatProjects(ws);
+		assertThat("Project3 is contained", virSatProjects2, hasItems(project3VirSat));
+		assertThat("Project1 and 2 is not contained", virSatProjects2, not(hasItems(project1VirSat, project2Other)));
+	}
+	
+	@Test
+	public void testIsVirSatProject() throws CoreException {
+		IProject project1VirSat =  testProject;
+		IProject project2Other = createTestProject("testProject2Other");
+		
+		VirSatProjectCommons projectCommons1 = new VirSatProjectCommons(project1VirSat);
+		projectCommons1.attachProjectNature();
+		
+		assertTrue("Project 1 has the VirSat Nature", VirSatProjectCommons.isVirSatProject(project1VirSat));
+		assertFalse("Project 2 does not have the VirSat Nature", VirSatProjectCommons.isVirSatProject(project2Other));
 	}
 	
 	@Test
