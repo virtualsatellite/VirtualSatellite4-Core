@@ -46,16 +46,17 @@ public class RepositoryConfigurationTest {
 				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_NAME_KEY + ":" + TEST_USER + "\n" 
 				+ RepositoryConfiguration.LOCAL_PATH_KEY + ":" + TEST_PATH + "\n" 
 				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
-		InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8));
 		
-		// Check that all values are loaded
-		RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
-		assertEquals("Remote loaded", TEST_REMOTE, configuration.getRemoteUri());
-		assertEquals("Backend loaded", VersionControlSystem.GIT, configuration.getBackend());
-		assertEquals("Users loaded", TEST_USER, configuration.getFunctionalAccountName());
-		assertEquals("Password loaded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
-		assertEquals("Project loaded",	TEST_PROJECT, configuration.getProjectName());
-		assertEquals("Path loaded", TEST_PATH, configuration.getLocalPath());
+		try (InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8))) {
+			// Check that all values are loaded
+			RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
+			assertEquals("Remote loaded", TEST_REMOTE, configuration.getRemoteUri());
+			assertEquals("Backend loaded", VersionControlSystem.GIT, configuration.getBackend());
+			assertEquals("Users loaded", TEST_USER, configuration.getFunctionalAccountName());
+			assertEquals("Password loaded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
+			assertEquals("Project loaded",	TEST_PROJECT, configuration.getProjectName());
+			assertEquals("Path loaded", TEST_PATH, configuration.getLocalPath());
+		}
 	}
 	
 	@Test
@@ -74,25 +75,28 @@ public class RepositoryConfigurationTest {
 		// Prepare Temporary Folder
 		File tempPath =  VirSatFileUtils.createAutoDeleteTempDirectory("RepoConfigTest").toFile();
 		
-		OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME));
-		configuration.saveProperties(outputStream);
+		try (OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME))) {
+			configuration.saveProperties(outputStream);
+		}
 		
-		InputStream inputStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
-		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_PASSWORD));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
+		try (InputStream inputStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME))) {
+			String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_PASSWORD));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
+		}
 		
-		InputStream loadStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
-		RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
-		assertEquals("Remote loaded", TEST_REMOTE, importedConfiguration.getRemoteUri());
-		assertEquals("Users loaded", TEST_USER, importedConfiguration.getFunctionalAccountName());
-		assertEquals("Password laoded",	TEST_PASSWORD, importedConfiguration.getFunctionalAccountPassword());
-		assertEquals("Project laoded",	TEST_PROJECT, importedConfiguration.getProjectName());
-		assertEquals("Backend loaded", VersionControlSystem.GIT, importedConfiguration.getBackend());
-		assertEquals("Path loaded", TEST_PATH, importedConfiguration.getLocalPath());
+		try (InputStream loadStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME))) {
+			RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
+			assertEquals("Remote loaded", TEST_REMOTE, importedConfiguration.getRemoteUri());
+			assertEquals("Users loaded", TEST_USER, importedConfiguration.getFunctionalAccountName());
+			assertEquals("Password laoded",	TEST_PASSWORD, importedConfiguration.getFunctionalAccountPassword());
+			assertEquals("Project laoded",	TEST_PROJECT, importedConfiguration.getProjectName());
+			assertEquals("Backend loaded", VersionControlSystem.GIT, importedConfiguration.getBackend());
+			assertEquals("Path loaded", TEST_PATH, importedConfiguration.getLocalPath());
+		}
 	}
 	
 	@Test
