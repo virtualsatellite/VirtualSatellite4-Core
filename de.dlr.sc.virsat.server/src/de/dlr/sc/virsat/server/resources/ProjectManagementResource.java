@@ -53,8 +53,9 @@ public class ProjectManagementResource {
 	@Path("/{projectName}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProject(@PathParam("projectName") String projectName) {
-		if (controller.getRepository(projectName) != null) {
-			RepositoryConfiguration configuration = controller.getRepository(projectName).getRepositoryConfiguration();
+		ServerRepository repository = controller.getRepository(projectName)
+		if (repository != null) {
+			RepositoryConfiguration configuration = repository.getRepositoryConfiguration();
 			return Response.status(Response.Status.OK).entity(configuration).build();
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
