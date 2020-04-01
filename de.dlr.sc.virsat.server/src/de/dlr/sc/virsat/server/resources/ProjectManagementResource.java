@@ -24,7 +24,6 @@ import javax.ws.rs.core.Response;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.controller.RepoManagementController;
-import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 @Path(ProjectManagementResource.PATH)
@@ -41,7 +40,7 @@ public class ProjectManagementResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProjects() {
-		List<String> projects = new ArrayList<>(RepoRegistry.getInstance().getRepositories().keySet());
+		List<String> projects = new ArrayList<>(controller.getAllProjectNames());
 		return Response.status(Response.Status.OK).entity(projects).build();
 	}
 
@@ -83,7 +82,7 @@ public class ProjectManagementResource {
 		if (!validProjectConfiguration(configuration)) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
-		if (RepoRegistry.getInstance().getRepositories().containsKey(projectName)) {
+		if (controller.getAllProjectNames().contains(projectName)) {
 			controller.updateRepository(configuration);
 		} else {
 			controller.addNewRepository(configuration);

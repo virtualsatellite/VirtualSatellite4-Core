@@ -12,10 +12,12 @@ package de.dlr.sc.virsat.server.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URISyntaxException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,6 +42,11 @@ public class RepoManagementControllerTest {
 		testRepositoryConfiguration.setRemoteUri("test.uri");
 	}
 	
+	@After
+	public void tearDown() {
+		RepoRegistry.getInstance().getRepositories().clear();
+	}
+	
 	@Test
 	public void testGetRepository() throws URISyntaxException {
 		ServerRepository serverRepository = repoManagemantController.getRepository(TEST_REPOSITORY_NAME);
@@ -56,7 +63,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testAddNewRepository() throws URISyntaxException {
+	public void testAddNewRepository() {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -64,7 +71,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testDeleteRepository() throws URISyntaxException {
+	public void testDeleteRepository() {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -77,7 +84,7 @@ public class RepoManagementControllerTest {
 	}
 	
 	@Test
-	public void testUpdateRepository() throws URISyntaxException {
+	public void testUpdateRepository() {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
 		
@@ -89,5 +96,24 @@ public class RepoManagementControllerTest {
 		repoManagemantController.updateRepository(repositoryConfigurationNew);
 		
 		assertEquals("Correctly caused an updated on the server repository", serverRepository.getRepositoryConfiguration().getRemoteUri(), repositoryConfigurationNew.getRemoteUri());
+	}
+	
+	@Test
+	public void testGetAllProjectNames() {
+		assertTrue("No projects registered initially", repoManagemantController.getAllProjectNames().isEmpty());
+
+		repoManagemantController.addNewRepository(testRepositoryConfiguration);
+
+		assertEquals("One project registered", 1, repoManagemantController.getAllProjectNames().size());
+		assertTrue("Correct project name", repoManagemantController.getAllProjectNames().contains(TEST_REPOSITORY_NAME));
+		
+		//Register second project
+		final String PROJECT_NAME_2 = "Project2";
+		testRepositoryConfiguration.setProjectName(PROJECT_NAME_2);
+		repoManagemantController.addNewRepository(testRepositoryConfiguration);
+		
+		assertEquals("Two projects registered", 2, repoManagemantController.getAllProjectNames().size());
+		assertTrue("Correct project name", repoManagemantController.getAllProjectNames().contains(TEST_REPOSITORY_NAME));
+		assertTrue("Correct project name", repoManagemantController.getAllProjectNames().contains(PROJECT_NAME_2));
 	}
 }

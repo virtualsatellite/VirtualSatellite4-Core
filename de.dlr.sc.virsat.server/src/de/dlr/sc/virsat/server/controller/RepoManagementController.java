@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.controller;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Status;
 
@@ -21,9 +22,6 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 public class RepoManagementController {
-	
-	public RepoManagementController() {
-	}
 	
 	public ServerRepository getRepository(String repoName) {
 		return RepoRegistry.getInstance().getRepository(repoName);
@@ -52,4 +50,7 @@ public class RepoManagementController {
 		repo.getRepositoryConfiguration().update(repoConfiguration);
 	}
 
+	public Set<String> getAllProjectNames() {
+		return RepoRegistry.getInstance().getRepositories().keySet();
+	}
 }
