@@ -179,7 +179,7 @@ public class MarkerImageProvider {
 		for (IMarker marker : markers) {
 			String markerText = (String) marker.getAttribute(IMarker.MESSAGE, "");
 			if (toolTipText.length() != 0 && !markerText.isEmpty()) {
-				toolTipText.append("\r\n");
+				toolTipText.append(System.lineSeparator());
 			}
 			toolTipText.append(markerText);
 		}

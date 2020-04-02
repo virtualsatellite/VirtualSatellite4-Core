@@ -113,7 +113,7 @@ public class SwtBotDebugHelper {
 	
 			for (StackTraceElement ste : threadStes) {
 				threadCodeLine = (threadStes.length == 0) ? "unknown" : ste.toString();
-				format = " -- Trace        : %1$sn";
+				format = " -- Trace        : %1$s%n";
 				stringBuilder.append(String.format(format, threadCodeLine));
 			}
 			
