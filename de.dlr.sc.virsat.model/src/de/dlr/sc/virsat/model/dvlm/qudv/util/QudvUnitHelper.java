@@ -1245,7 +1245,6 @@ public class QudvUnitHelper {
 	public SystemOfUnits importModelFromFile(String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();
 		
-		
 		try (FileInputStream fileIn = new FileInputStream(destination)) {
 			resource.load(fileIn, READ_OPTIONS);
 		} 
