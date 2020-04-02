@@ -116,4 +116,18 @@ public class RepoManagementControllerTest {
 		assertTrue("Correct project name", repoManagemantController.getAllProjectNames().contains(TEST_REPOSITORY_NAME));
 		assertTrue("Correct project name", repoManagemantController.getAllProjectNames().contains(PROJECT_NAME_2));
 	}
+
+	@Test
+	public void testAddOrUpdateRepository() throws URISyntaxException {
+		assertTrue(repoManagemantController.getAllProjectNames().isEmpty());
+		repoManagemantController.addOrUpdateRepository(testRepositoryConfiguration);
+		assertEquals("Project is added", 1, repoManagemantController.getAllProjectNames().size());
+
+		final String newPassword = "naw password";
+		testRepositoryConfiguration.setFunctionalAccountPassword(newPassword);
+		repoManagemantController.addOrUpdateRepository(testRepositoryConfiguration);
+		String updatedPassword = repoManagemantController.getRepository(TEST_REPOSITORY_NAME).getRepositoryConfiguration().getFunctionalAccountPassword();
+		assertEquals("No project added", 1, repoManagemantController.getAllProjectNames().size());
+		assertEquals("Project was updated", newPassword, updatedPassword);
+	}
 }

@@ -46,4 +46,15 @@ public class RepoManagementController {
 	public Set<String> getAllProjectNames() {
 		return RepoRegistry.getInstance().getRepositories().keySet();
 	}
+	
+	/**
+	 * If a project with the name from configuration exists, it is updated, otherwise it is created.
+	 */
+	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException {
+		if (RepoRegistry.getInstance().getRepositories().containsKey(repoConfiguration.getProjectName())) {
+			updateRepository(repoConfiguration);
+		} else {
+			addNewRepository(repoConfiguration);
+		}
+	}
 }
