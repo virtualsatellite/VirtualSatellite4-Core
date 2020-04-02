@@ -20,18 +20,16 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
-import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
 
@@ -44,14 +42,14 @@ public class ServerRepoHelperTest {
 	@Before
 	public void setUp() throws IOException, CoreException {
 		// Create temporary dir for repo config files
-		configsDir = Files.createTempDirectory("test_repo_configs");
+		configsDir = VirSatFileUtils.createAutoDeleteTempDirectory("test_repo_configs");
 		
 		// Overwrite path to repo config files
 		ServerConfiguration.setRepositoryConfigurationsDir(configsDir.toString());
 
 		RepoRegistry.getInstance().getRepositories().clear();
 		
-		svnPathRepoRemote = Files.createTempDirectory("VirtualSatelliteSvnRemote_");
+		svnPathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteSvnRemote_");
 		svnUriToRemoteRepoPath = svnPathRepoRemote.toUri();
 		String remoteRepoFilePath = svnPathRepoRemote.toString();
 		
@@ -64,19 +62,6 @@ public class ServerRepoHelperTest {
 	@After
 	public void tearDown() throws IOException {
 		RepoRegistry.getInstance().getRepositories().clear();
-		try {
-			FileUtils.forceDelete(configsDir.toFile());
-			FileUtils.forceDelete(svnPathRepoRemote.toFile());
-		} catch (Exception e) {
-			Activator.getDefault().getLog().log(
-				new Status(
-					Status.ERROR, 
-					Activator.getPluginId(),
-					"Error during test clean up", 
-					e
-				)
-			);
-		}
 	}
 
 	@Test

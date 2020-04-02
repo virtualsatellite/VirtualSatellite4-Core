@@ -9,7 +9,8 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model,
- org.eclipse.team.core
+ org.eclipse.team.core,
+ de.dlr.sc.virsat.commons
 Export-Package: de.dlr.sc.virsat.team,
  de.dlr.sc.virsat.team.git,
  de.dlr.sc.virsat.team.svn,

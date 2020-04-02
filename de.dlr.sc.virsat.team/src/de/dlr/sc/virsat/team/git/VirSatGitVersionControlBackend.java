@@ -63,6 +63,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.setProgressMonitor(gitPushMonitor)
 			.setTimeout(GIT_REMOTE_TIMEOUT)
 			.call();
+		
+		Git.wrap(gitRepository).close();
 	}
 
 	/**
@@ -118,6 +120,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 				.call();
 		}
 		
+		Git.wrap(gitRepository).close();
+		
 		project.refreshLocal(Resource.DEPTH_INFINITE, commitAndPullMonitor.split(1));
 	}
 
@@ -141,6 +145,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		project.refreshLocal(Resource.DEPTH_INFINITE, checkoutMonitor.split(1));
 		
 		connect(project, pathLocalRepository, checkoutMonitor.split(1));
+		
+		RepositoryMapping.getMapping(project).getRepository().close();
 		
 		return project;
 	}
@@ -169,6 +175,8 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		doCommit(repo, INITIAL_COMMIT_MESSAGE, checkInMonitor.split(1));
 		
 		connect(project, pathRepoLocal, checkInMonitor.split(1));
+
+		RepositoryMapping.getMapping(project).getRepository().close();
 	}
 
 	/**

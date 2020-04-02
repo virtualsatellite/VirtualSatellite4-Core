@@ -27,6 +27,7 @@ import org.eclipse.team.svn.core.resource.IRepositoryResource;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
 import de.dlr.sc.virsat.team.svn.VirSatSvnVersionControlBackend;
 import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
@@ -46,7 +47,7 @@ public class VersionControlBackendProviderTest {
 
 	@Test
 	public void testCreateBackendImplementationSvn() throws IOException, CoreException {
-		Path pathRepoRemote = Files.createTempDirectory("VirtualSatelliteSvnRemote_");
+		Path pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteSvnRemote_");
 		URI uriToRemoteRepoPath = pathRepoRemote.toUri();
 		String remoteRepoFilePath = pathRepoRemote.toString();
 		

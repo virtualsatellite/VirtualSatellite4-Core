@@ -15,6 +15,7 @@ import java.util.Vector;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -118,11 +119,15 @@ public abstract class AProjectTestCase {
 
 		// make sure all Editing Domains are well removed and disposed
 		VirSatEditingDomainRegistry.INSTANCE.clear();
+		VirSatTransactionalEditingDomain.clearResourceEventListener();
+		VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
+		
 		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
-		for (IProject project : testProjects) {
+		for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
 			if (project.exists()) {
+				project.refreshLocal(IResource.DEPTH_INFINITE, null);
 				project.delete(true, null);
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
 			}

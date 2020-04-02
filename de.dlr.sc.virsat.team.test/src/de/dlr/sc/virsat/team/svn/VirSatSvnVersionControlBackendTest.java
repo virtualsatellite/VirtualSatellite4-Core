@@ -12,8 +12,6 @@ package de.dlr.sc.virsat.team.svn;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -23,6 +21,7 @@ import org.eclipse.team.svn.core.resource.IRepositoryResource;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.Before;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.team.AVirSatVersionControlBackendTest;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.test.CreateSvnServerOperation;
@@ -35,7 +34,7 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 	public void setUp() throws CoreException {
 		
 		try {
-			pathRepoRemote = Files.createTempDirectory("VirtualSatelliteSvnRemote_");
+			pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteSvnRemote_");
 			URI uriToRemoteRepoPath = pathRepoRemote.toUri();
 			String remoteRepoFilePath = pathRepoRemote.toString();
 			
@@ -44,12 +43,12 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 			CreateSvnServerOperation createRemoteRepoOp = new CreateSvnServerOperation(remoteRepoFilePath);
 			createRemoteRepoOp.runWithExceptionChecking(new NullProgressMonitor());
 			
-			pathRepoLocal1 = Files.createTempDirectory("VirtualSatelliteSvnLocal1_");
+			pathRepoLocal1 = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteSvnLocal1_");
 			File filePathToProject = pathRepoLocal1.toFile();
 			CheckoutAsOperation checkoutAsOperation1 = new CheckoutAsOperation(filePathToProject, remoteRepo, SVNDepth.INFINITY, true, true);
 			checkoutAsOperation1.run(new NullProgressMonitor());
 			
-			pathRepoLocal2 = Files.createTempDirectory("VirtualSatelliteSvnLocal2_");
+			pathRepoLocal2 = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteSvnLocal2_");
 			filePathToProject = pathRepoLocal2.toFile();
 			CheckoutAsOperation checkoutAsOperation2 = new CheckoutAsOperation(filePathToProject, remoteRepo, SVNDepth.INFINITY, true, true);
 			checkoutAsOperation2.run(new NullProgressMonitor());

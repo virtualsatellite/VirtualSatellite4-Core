@@ -23,11 +23,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public class RepositoryConfigurationTest {
@@ -73,7 +73,7 @@ public class RepositoryConfigurationTest {
 		final String TEST_FILE_NAME = "test.properties";
 		
 		// Prepare Temporary Folder
-		File tempPath = Files.createTempDirectory("RepoConfigTest").toFile();
+		File tempPath =  VirSatFileUtils.createAutoDeleteTempDirectory("RepoConfigTest").toFile();
 		
 		OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME));
 		testConfiguration.saveProperties(outputStream);
