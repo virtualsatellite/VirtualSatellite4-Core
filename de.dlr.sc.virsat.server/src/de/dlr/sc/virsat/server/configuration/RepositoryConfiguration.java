@@ -95,15 +95,11 @@ public class RepositoryConfiguration {
 	}
 
 	public void setRemoteUri(String remoteUri) {
-		properties.setProperty(REMOTE_URL_KEY, remoteUri.toString());
+		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
 	public VersionControlSystem getBackend() {
 		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
-	}
-	
-	public void setBackend(String backend) {
-		properties.setProperty(BACKEND_KEY, backend);
 	}
 	
 	public void setBackend(VersionControlSystem backend) {
@@ -163,5 +159,13 @@ public class RepositoryConfiguration {
 		}
 		RepositoryConfiguration other = (RepositoryConfiguration) obj;
 		return Objects.equals(properties, other.properties);
-	}	
+	}
+	
+	public boolean isValid() {
+		return getProjectName() != null
+				&& !getProjectName().isEmpty()
+				&& getRemoteUri() != null
+				&& !getRemoteUri().isEmpty()
+				&& getBackend() != null;
+	}
 }

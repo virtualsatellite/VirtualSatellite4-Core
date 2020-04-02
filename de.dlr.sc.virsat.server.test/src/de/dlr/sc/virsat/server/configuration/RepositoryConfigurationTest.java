@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.server.configuration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -23,6 +25,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -37,9 +40,22 @@ public class RepositoryConfigurationTest {
 	private static final String TEST_PROJECT = "TestProject";
 	private static final String TEST_BACKEND = "GIT";
 	
+	private RepositoryConfiguration testConfiguration;
+	
+	@Before
+	public void setUp() {
+		testConfiguration = new RepositoryConfiguration(
+				TEST_PROJECT,
+				TEST_PATH,
+				TEST_REMOTE,
+				VersionControlSystem.GIT,
+				TEST_USER,
+				TEST_PASSWORD
+		);
+	}
+	
 	@Test
 	public void testLoadProperties() throws IOException, URISyntaxException {
-		
 		String testConfigFileString = RepositoryConfiguration.REMOTE_URL_KEY + ":" + TEST_REMOTE + "\n" 
 				+ RepositoryConfiguration.PROJECT_NAME_KEY + ":" + TEST_PROJECT + "\n" 
 				+ RepositoryConfiguration.BACKEND_KEY + ":" + TEST_BACKEND + "\n" 
@@ -48,34 +64,19 @@ public class RepositoryConfigurationTest {
 				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
 		InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8));
 		
-		// Check that all values are loaded
 		RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
-		assertEquals("Remote loaded", TEST_REMOTE, configuration.getRemoteUri());
-		assertEquals("Backend loaded", VersionControlSystem.GIT, configuration.getBackend());
-		assertEquals("Users loaded", TEST_USER, configuration.getFunctionalAccountName());
-		assertEquals("Password loaded",	TEST_PASSWORD, configuration.getFunctionalAccountPassword());
-		assertEquals("Project loaded",	TEST_PROJECT, configuration.getProjectName());
-		assertEquals("Path loaded", TEST_PATH, configuration.getLocalPath());
+		assertEquals("Configuration properly loaded", testConfiguration, configuration);
 	}
 	
 	@Test
 	public void testSaveProperties() throws IOException, URISyntaxException {
-		
 		final String TEST_FILE_NAME = "test.properties";
-		RepositoryConfiguration configuration = new RepositoryConfiguration(
-				TEST_PROJECT,
-				TEST_PATH,
-				TEST_REMOTE,
-				VersionControlSystem.GIT,
-				TEST_USER,
-				TEST_PASSWORD
-		);
 		
 		// Prepare Temporary Folder
 		File tempPath = Files.createTempDirectory("RepoConfigTest").toFile();
 		
 		OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME));
-		configuration.saveProperties(outputStream);
+		testConfiguration.saveProperties(outputStream);
 		
 		InputStream inputStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
 		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
@@ -87,33 +88,29 @@ public class RepositoryConfigurationTest {
 		
 		InputStream loadStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
 		RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
-		assertEquals("Remote loaded", TEST_REMOTE, importedConfiguration.getRemoteUri());
-		assertEquals("Users loaded", TEST_USER, importedConfiguration.getFunctionalAccountName());
-		assertEquals("Password laoded",	TEST_PASSWORD, importedConfiguration.getFunctionalAccountPassword());
-		assertEquals("Project laoded",	TEST_PROJECT, importedConfiguration.getProjectName());
-		assertEquals("Backend loaded", VersionControlSystem.GIT, importedConfiguration.getBackend());
-		assertEquals("Path loaded", TEST_PATH, importedConfiguration.getLocalPath());
+		assertEquals("Saving and loading produces the same configuration", testConfiguration, importedConfiguration);
 	}
 	
 	@Test
 	public void testUpdate() throws URISyntaxException {
-		RepositoryConfiguration configuration = new RepositoryConfiguration(
-				TEST_PROJECT,
-				TEST_PATH,
-				TEST_REMOTE,
-				VersionControlSystem.GIT,
-				TEST_USER,
-				TEST_PASSWORD
-		);
-		
 		RepositoryConfiguration updatedConfiguration = new RepositoryConfiguration();
-		updatedConfiguration.update(configuration);
+		assertNotEquals("Configurations different before update", testConfiguration, updatedConfiguration);
 		
-		assertEquals("Remote loaded", TEST_REMOTE, updatedConfiguration.getRemoteUri());
-		assertEquals("Users loaded", TEST_USER, updatedConfiguration.getFunctionalAccountName());
-		assertEquals("Password laoded",	TEST_PASSWORD, updatedConfiguration.getFunctionalAccountPassword());
-		assertEquals("Project laoded",	TEST_PROJECT, updatedConfiguration.getProjectName());
-		assertEquals("Backend loaded", VersionControlSystem.GIT, updatedConfiguration.getBackend());
-		assertEquals("Path loaded", TEST_PATH, updatedConfiguration.getLocalPath());
+		updatedConfiguration.update(testConfiguration);
+		assertEquals("Configurations equal after update", testConfiguration, updatedConfiguration);
+	}
+	
+	@Test
+	public void testIsValid() throws URISyntaxException {
+		assertTrue(testConfiguration.isValid());
+
+		RepositoryConfiguration invalidConfig;
+		invalidConfig = new RepositoryConfiguration(testConfiguration);
+		invalidConfig.setRemoteUri("");
+		assertFalse(invalidConfig.isValid());
+		
+		invalidConfig = new RepositoryConfiguration(testConfiguration);
+		invalidConfig.setProjectName("");
+		assertFalse(invalidConfig.isValid());
 	}
 }

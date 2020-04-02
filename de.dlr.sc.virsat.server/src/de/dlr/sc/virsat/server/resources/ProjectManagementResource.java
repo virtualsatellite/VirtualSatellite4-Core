@@ -79,7 +79,7 @@ public class ProjectManagementResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createOrUpdateProject(@PathParam("projectName") String projectName, RepositoryConfiguration configuration) {
 		configuration.setProjectName(projectName);
-		if (!validProjectConfiguration(configuration)) {
+		if (!configuration.isValid()) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		try {
@@ -92,13 +92,5 @@ public class ProjectManagementResource {
 			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		return Response.status(Response.Status.OK).build();
-	}
-
-	private boolean validProjectConfiguration(RepositoryConfiguration configuration) {
-		return configuration.getProjectName() != null
-				&& !configuration.getProjectName().isEmpty()
-				&& configuration.getRemoteUri() != null
-				&& !configuration.getRemoteUri().isEmpty()
-				&& configuration.getBackend() != null;
 	}
 }
