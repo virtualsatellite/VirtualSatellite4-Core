@@ -1199,7 +1199,6 @@ public class QudvUnitHelper {
 	private Prefix createPrefix(String name, String symbol, Double factor) {
 
 		Prefix prefix = QudvFactory.eINSTANCE.createPrefix();
-		//prefix.setId(UUID.randomUUID().toString());
 		prefix.setName(name);
 		prefix.setSymbol(symbol);
 		prefix.setFactor(factor);
@@ -1345,21 +1344,18 @@ public class QudvUnitHelper {
 	 */
 	public boolean haveSameQuantityKind(AUnit unit1, AUnit unit2) {
 		//check for Null Pointers and eliminate them by returning false directly
-		AQuantityKind unit2QK = unit2.getQuantityKind(); 
-		if (unit2QK == null) {
-			return false;
-		}
 		AQuantityKind unit1QK = unit1.getQuantityKind();
-		if (unit1QK == null) {
+		AQuantityKind unit2QK = unit2.getQuantityKind(); 
+		
+		if (unit1QK == null || unit2QK == null) {
 			return false;
 		}
 
-		boolean flag = false;
 		Map<AQuantityKind, Double> outputQKbaseMap = getBaseQuantityKinds(unit2QK);
 		Map<AQuantityKind, Double> inputQKbaseMap = getBaseQuantityKinds(unit1QK);
 	
 		//now the only thing left to do is comparing the input and output map
-		flag = haveSameQuantityKind(inputQKbaseMap, outputQKbaseMap);
+		boolean flag = haveSameQuantityKind(inputQKbaseMap, outputQKbaseMap);
 		return flag;
 	}
 	
@@ -1377,17 +1373,9 @@ public class QudvUnitHelper {
 		if (map1.size() != map2.size()) {
 			//if on map is empty we have to check for the special case of dimensionless
 			if (map1.isEmpty()) {
-				for (AQuantityKind key: map2.keySet()) {
-					if (key.getName().equals(DIMENSIONLESS_QK_NAME)) {
-						areSame = true;
-					}
-				}
+				areSame = map2.keySet().stream().anyMatch(qk -> qk.getName().equals(DIMENSIONLESS_QK_NAME));
 			} else if (map2.isEmpty()) {
-				for (AQuantityKind key: map1.keySet()) {
-					if (key.getName().equals(DIMENSIONLESS_QK_NAME)) {
-						areSame = true;
-					}
-				}
+				areSame = map1.keySet().stream().anyMatch(qk -> qk.getName().equals(DIMENSIONLESS_QK_NAME));
 			}
 			return areSame;
 		
@@ -1397,6 +1385,7 @@ public class QudvUnitHelper {
 				//maybe I need to add my precision comparison here!
 				if (!entry1.getValue().equals(map2.get(entry1.getKey()))) {
 					areSame = false;
+					break;
 				}
 			}
 			return areSame;
@@ -1456,7 +1445,7 @@ public class QudvUnitHelper {
 		}
 		
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
-		int calcSign = calcMethod.getCalcSign();
+		int calcSign = calcMethod.getSign();
 		
 		//include elements from the first map and add or subtract values of the second map if they exist
 		for (Entry<AQuantityKind, Double> entry1 : map1.entrySet()) {
@@ -1477,7 +1466,7 @@ public class QudvUnitHelper {
 		merged.entrySet().removeIf(entry -> Math.abs(entry.getValue()) < ERROR);
 		
 		//remove elements which are dimensionless, because they don't have any influence
-		merged.keySet().removeIf(qk -> qk.getName().contentEquals(DIMENSIONLESS_QK_NAME));
+		merged.keySet().removeIf(qk -> qk.getName().equals(DIMENSIONLESS_QK_NAME));
 		
 		return merged;
 	}
@@ -1589,7 +1578,7 @@ public class QudvUnitHelper {
 		 * Gets the sign for the calculation method.
 		 * @return 1 if ADD, -1 if SUBTRACT
 		 */
-		public int getCalcSign() {
+		public int getSign() {
 			switch (this) {
 				case ADD:
 					return 1;
