@@ -214,7 +214,6 @@ SPDX-License-Identifier: EPL-2.0";
 			val catEClass = EcoreFactory.eINSTANCE.createEClass;
 			ePackage.EClassifiers += catEClass;
 			catEClass.name = it.name;
-			catEClass.ESuperTypes += dvlmDObject; 
 			catEClass.abstract = it.isIsAbstract;
 			
 			// Create the attributes and references
@@ -321,6 +320,9 @@ SPDX-License-Identifier: EPL-2.0";
 			if (it.extendsCategory !== null) {
 				val referencedEClass = findTypeDefinitionInEcoreResource(it.extendsCategory);
 				catEClass.ESuperTypes += referencedEClass;
+			}
+			if (catEClass.ESuperTypes.isEmpty) {
+				catEClass.ESuperTypes += dvlmDObject
 			}
 			
 			// Create the attributes and references

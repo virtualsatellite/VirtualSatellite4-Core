@@ -247,8 +247,6 @@ public class GenerateDmfCategories {
       EList<EClassifier> _eClassifiers = ePackage.getEClassifiers();
       _eClassifiers.add(catEClass);
       catEClass.setName(it.getName());
-      EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
-      _eSuperTypes.add(this.dvlmDObject);
       catEClass.setAbstract(it.isIsAbstract());
       final Consumer<AProperty> _function_1 = (AProperty it_1) -> {
         final EStructuralFeature propEStructuralFeature = new PropertydefinitionsSwitch<EStructuralFeature>() {
@@ -357,6 +355,11 @@ public class GenerateDmfCategories {
         final EClass referencedEClass = this.findTypeDefinitionInEcoreResource(it.getExtendsCategory());
         EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
         _eSuperTypes.add(referencedEClass);
+      }
+      boolean _isEmpty = catEClass.getESuperTypes().isEmpty();
+      if (_isEmpty) {
+        EList<EClass> _eSuperTypes_1 = catEClass.getESuperTypes();
+        _eSuperTypes_1.add(this.dvlmDObject);
       }
       final Consumer<AProperty> _function_2 = (AProperty it_1) -> {
         new PropertydefinitionsSwitch<EStructuralFeature>() {
