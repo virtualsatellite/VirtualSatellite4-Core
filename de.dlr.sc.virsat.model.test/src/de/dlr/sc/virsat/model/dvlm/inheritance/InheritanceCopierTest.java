@@ -371,6 +371,7 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		CategoryAssignment copiedCaRwIfeE2 = seiEo1RwI.getCategoryAssignments().get(1);
 		seiEo1RwI.getCategoryAssignments().get(2);
 		CategoryAssignment copiedCaRwIf = seiEo1RwI.getCategoryAssignments().get(3);
+		//CHECKSTYLE:ON
 
 		// Now we use the second RPI to bend the interface end to the second one
 		// we set the RPI to override so it will not inherit the original reference from its super SEI.
@@ -383,7 +384,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertFalse("Still no update needed", ic.needsUpdateStep(seiEo1RwI));
 		
 		assertEquals("The Reference should point to copied CA", copiedCaRwIfeE2, copiedRpiRwIfIfe2.getReference());
-		//CHECKSTYLE:ON
 	}
 	
 	@Test
