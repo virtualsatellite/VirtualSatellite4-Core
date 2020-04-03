@@ -15,6 +15,7 @@ import java.util.Map;
 
 import de.dlr.sc.virsat.model.calculation.compute.extensions.UnresolvedExpressionResult;
 import de.dlr.sc.virsat.model.dvlm.calculation.AAdvancedFunction;
+import de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 
 /**
@@ -63,4 +64,6 @@ public abstract class AAdvancedFunctionOp {
 		
 		return new UnresolvedExpressionResult();
 	}
+	
+	public static final int DEPTH_INFINITE = Integer.parseInt(CalculationPackage.eINSTANCE.getSetFunction_Depth().getDefaultValueLiteral());
 }

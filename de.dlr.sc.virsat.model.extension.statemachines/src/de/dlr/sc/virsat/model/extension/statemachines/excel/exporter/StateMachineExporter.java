@@ -74,7 +74,7 @@ public class StateMachineExporter implements IExport {
 	 * Exports the state machine
 	 * @param ca object to be exported
 	 */
-	public void exportData(CategoryAssignment ca) {
+	protected void exportData(CategoryAssignment ca) {
 		exportCa = ca;
 		StructuralElementInstance exportSei = (StructuralElementInstance) exportCa.eContainer();
 		// Create the header sheet

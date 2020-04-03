@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -31,8 +32,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
  * Test Cases for The Structural Element Instance Helper
- * @author fisc_ph
- *
  */
 public class StructuralElementInstanceHelperTest {
 
@@ -121,5 +120,36 @@ public class StructuralElementInstanceHelperTest {
 		superSeis = StructuralElementInstanceHelper.getAllSuperSeis(seiB);
 		assertEquals(2, superSeis.size());
 		assertThat(superSeis, hasItems(seiC1, seiC2));
+	}
+	
+	@Test
+	public void testGetDeepSubStructuralElementInstances() {
+		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		se.setIsApplicableForAll(true);
+		
+		StructuralElementInstance seiRoot = new StructuralInstantiator().generateInstance(se, "SeiRoot");
+		StructuralElementInstance seiLevel11 = new StructuralInstantiator().generateInstance(se, "SeiLevelOne");
+		StructuralElementInstance seiLevel12 = new StructuralInstantiator().generateInstance(se, "SeiLevelOne");
+		StructuralElementInstance seiLevel21 = new StructuralInstantiator().generateInstance(se, "SeiLevel2");
+		StructuralElementInstance seiLevel22 = new StructuralInstantiator().generateInstance(se, "SeiLevel2");
+
+		seiRoot.getChildren().add(seiLevel11);
+		seiRoot.getChildren().add(seiLevel12);
+		seiLevel11.getChildren().add(seiLevel21);
+		seiLevel11.getChildren().add(seiLevel22);
+		
+		List<StructuralElementInstance> searchResult;
+		
+		searchResult = StructuralElementInstanceHelper.getDeepChildren(seiRoot, 0, 0);
+		assertThat("Root itself is not a child, thus it is not in the list", searchResult, empty());
+
+		searchResult = StructuralElementInstanceHelper.getDeepChildren(seiRoot, 1, 0);
+		assertThat("Only the ones on level one should be in the list", searchResult, hasItems(seiLevel11, seiLevel12));
+
+		searchResult = StructuralElementInstanceHelper.getDeepChildren(seiRoot, 2, 0);
+		assertThat("All children are in the list the list", searchResult, hasItems(seiLevel11, seiLevel12, seiLevel21, seiLevel22));
+
+		searchResult = StructuralElementInstanceHelper.getDeepChildren(seiRoot, StructuralElementInstanceHelper.DEPTH_INFINITE, 0);
+		assertThat("All children are in the list the list", searchResult, hasItems(seiLevel11, seiLevel12, seiLevel21, seiLevel22));
 	}
 }

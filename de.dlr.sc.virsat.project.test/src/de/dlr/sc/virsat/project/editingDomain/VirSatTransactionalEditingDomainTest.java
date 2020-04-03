@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import org.eclipse.emf.edit.command.CutToClipboardCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,14 +81,16 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
-			triggeredResources.addAll(resources);
-			triggeredEvent = event;
-			counter++;
-			firstResource = resources.iterator().next();
-			
-			List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
-			stackTraces.add(stackTrace);
-			this.notify();
+			synchronized (this) {
+				triggeredResources.addAll(resources);
+				triggeredEvent = event;
+				counter++;
+				firstResource = resources.iterator().next();
+				
+				List<StackTraceElement> stackTrace = Arrays.asList(Thread.currentThread().getStackTrace());
+				stackTraces.add(stackTrace);
+				this.notify();
+			}
 		}
 	}
 
@@ -462,4 +466,23 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 			VirSatTransactionalEditingDomain.removeResourceEventListener(eventCheck);
 		}
 	}
+	
+	@Test
+	public void testRunExclusiveWithResult() throws InterruptedException {
+		Object expectedObject = new Object();
+		
+		Object result = editingDomain.runExclusive(new RunnableWithResult.Impl<Object>() {
+			@Override
+			public void run() {
+				setResult(expectedObject);
+			}
+		});
+	
+		assertEquals("Got correct object", expectedObject, result);
+		
+		// Hashcode is just called do do something and to complete the lambda, it has no further meaning.
+		Object resultNull = editingDomain.runExclusive(() -> expectedObject.hashCode());
+		assertNull("Result is null", resultNull);
+	}
+	
 }

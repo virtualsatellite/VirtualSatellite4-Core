@@ -324,4 +324,20 @@ by German Aerospace Center (DLR e.V.)
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.dlr.sc.virsat.model.ext.core.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.ext.core.edit.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
 </feature>

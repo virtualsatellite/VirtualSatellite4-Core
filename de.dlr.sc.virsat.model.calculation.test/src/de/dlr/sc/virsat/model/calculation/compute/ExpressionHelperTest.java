@@ -704,13 +704,15 @@ public class ExpressionHelperTest extends AEquationTest {
 		Category cat = createCategory("Dimensions");
 		
 		// Now create a CategoryAssigment for our dimension category
-		CategoryAssignment ca1 = new CategoryInstantiator().generateInstance(cat, "dimension");
+		CategoryAssignment caDimension = new CategoryInstantiator().generateInstance(cat, "dimension");
+		CategoryAssignment caCount = new CategoryInstantiator().generateInstance(cat, "count");
 		
 		//Let's add this assignment to a structural element instance in the system composition tree
 		// Now add the Category assignment to a StructuralElementInstance
 		StructuralElementInstance sei1 = new StructuralInstantiator().generateInstance(se, "ReactionWheel1");
-		sei1.getCategoryAssignments().add(ca1);
-		ca1.setEquationSection(CalculationFactory.eINSTANCE.createEquationSection());
+		sei1.getCategoryAssignments().add(caDimension);
+		sei1.getCategoryAssignments().add(caCount);
+		caCount.setEquationSection(CalculationFactory.eINSTANCE.createEquationSection());
 		
 		createResources();
 		
@@ -719,7 +721,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		//---------------------------------------------------------------------------------------------------------------------------
 		List<Equation> equations1 = ExpressionUtil.getAllEquationsFrom(esResourceSet, esResource, CALC_STRING + "count = count{Dimensions};");
 		Equation equation = equations1.get(0);
-		ca1.getEquationSection().getEquations().add(equation);
+		caCount.getEquationSection().getEquations().add(equation);
 		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
 		assertEquals("Count on 1 element is correct", 1, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
 		
@@ -733,6 +735,77 @@ public class ExpressionHelperTest extends AEquationTest {
 		
 		NumberLiteralResult resultExpression2 = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
 		assertEquals("Count on element with child is correct", 2, Double.valueOf(resultExpression2.getNumberLiteral().getValue()), EPSILON);
+	}
+
+	@Test
+	public void testCountWithDefinedLevels() {
+		// Create a common root category
+		Category cat = createCategory("Dimensions");
+		
+		// The ca that will hold the equation
+		CategoryAssignment caCount = new CategoryInstantiator().generateInstance(cat, "count");
+		caCount.setEquationSection(CalculationFactory.eINSTANCE.createEquationSection());
+
+		// Now create a CategoryAssigment for our dimension category
+		CategoryAssignment ca0 = new CategoryInstantiator().generateInstance(cat, "dimension");
+		CategoryAssignment ca2 = new CategoryInstantiator().generateInstance(cat, "dimension");
+		CategoryAssignment ca3 = new CategoryInstantiator().generateInstance(cat, "dimension");
+		
+		//Let's add this assignment to a structural element instance in the system composition tree
+		// Now add the Category assignment to a StructuralElementInstance
+		StructuralElementInstance sei0 = new StructuralInstantiator().generateInstance(se, "SeiLevel0Semantic0");
+		StructuralElementInstance sei1 = new StructuralInstantiator().generateInstance(se, "SeiLevel1Semantic0");
+		StructuralElementInstance sei2 = new StructuralInstantiator().generateInstance(se, "SeiLevel2Semantic1");
+		StructuralElementInstance sei3 = new StructuralInstantiator().generateInstance(se, "SeiLevel3Semantic2");
+		sei0.getChildren().add(sei1);
+		sei1.getChildren().add(sei2);
+		sei2.getChildren().add(sei3);
+		
+		sei0.getCategoryAssignments().add(caCount);
+		sei0.getCategoryAssignments().add(ca0);
+		sei2.getCategoryAssignments().add(ca2);
+		sei3.getCategoryAssignments().add(ca3);
+		
+		createResources();
+		
+		// --------------------------------------------------------------------------------------------------------------------------
+		// Count only on the current level
+		//---------------------------------------------------------------------------------------------------------------------------
+		List<Equation> equations = ExpressionUtil.getAllEquationsFrom(esResourceSet, esResource, CALC_STRING + "count = count{Dimensions, 0};");
+		Equation equation = equations.get(0);
+		caCount.getEquationSection().getEquations().add(equation);
+		NumberLiteralResult resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
+		assertEquals("Count on semantic level zero expects 1", 1, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+
+		// --------------------------------------------------------------------------------------------------------------------------
+		// Count on semantic level 1 which should be 2
+		//---------------------------------------------------------------------------------------------------------------------------
+		equations = ExpressionUtil.getAllEquationsFrom(esResourceSet, esResource, CALC_STRING + "count = count{Dimensions, 1};");
+		equation = equations.get(0);
+		caCount.getEquationSection().getEquations().clear();
+		caCount.getEquationSection().getEquations().add(equation);
+		resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
+		assertEquals("Count on semantic level 1 is correct", 2, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+
+		// --------------------------------------------------------------------------------------------------------------------------
+		// Count on semantic level 2 which should be 3
+		//---------------------------------------------------------------------------------------------------------------------------
+		equations = ExpressionUtil.getAllEquationsFrom(esResourceSet, esResource, CALC_STRING + "count = count{Dimensions, 2};");
+		equation = equations.get(0);
+		caCount.getEquationSection().getEquations().clear();
+		caCount.getEquationSection().getEquations().add(equation);
+		resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
+		assertEquals("Count on semantic level 2 is correct", 3, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+
+		// --------------------------------------------------------------------------------------------------------------------------
+		// Count on semantic level with infinite depth which should be 3 as well
+		//---------------------------------------------------------------------------------------------------------------------------
+		equations = ExpressionUtil.getAllEquationsFrom(esResourceSet, esResource, CALC_STRING + "count = count{Dimensions};");
+		equation = equations.get(0);
+		caCount.getEquationSection().getEquations().clear();
+		caCount.getEquationSection().getEquations().add(equation);
+		resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
+		assertEquals("Count on 1 element is correct", 3, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test

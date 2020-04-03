@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.core.commands.operations.IOperationHistoryListener;
 import org.eclipse.core.commands.operations.OperationHistoryEvent;
@@ -245,19 +246,22 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				private void updateTriggerFullReload(IResource wsDvlmResource, boolean removeFromRecentlySavedResources) {
 					URI changedResourceUri = URI.createPlatformResourceURI(wsDvlmResource.getFullPath().toString(), true);
 					String fileExtension = wsDvlmResource.getFileExtension();
-					if (VirSatProjectCommons.FILENAME_EXTENSION.equals(fileExtension)) {
-						// First check if the resource which is changed is not on the list of
-						// recently resources than trigger a full reload for all resources.
-						if (!recentlyChangedResource.contains(changedResourceUri)) {
-							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
-							triggerFullReload = true;
-						} 
-						
-						// Now remove the file from the recently saved resources if requested
-						if (removeFromRecentlySavedResources) {
-							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
-							recentlyChangedResource.remove(changedResourceUri);
-						}						
+					if (fileExtension != null) {
+						if (fileExtension.startsWith(VirSatProjectCommons.FILENAME_EXTENSION)) {
+							// First check if the resource which is changed is not on the list of
+							// recently resources than trigger a full reload for all resources.
+							if (!recentlyChangedResource.contains(changedResourceUri)) {
+								Activator.getDefault().getLog().
+									log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
+								triggerFullReload = true;
+							} 
+							
+							// Now remove the file from the recently saved resources if requested
+							if (removeFromRecentlySavedResources) {
+								Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
+								recentlyChangedResource.remove(changedResourceUri);
+							}						
+						}
 					}
 				}
 			};
@@ -950,12 +954,38 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param runnable the runnable that implements the call to the execution of the command
 	 */
 	protected void executeInWorkspace(Runnable runnable) {
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Starting to execute runnable as workspace operation"));
 		try {
 			ResourcesPlugin.getWorkspace().run(action -> runnable.run(), null);
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Failed to execute runnable as workspace operation", e));
 		}
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished to execute runnable as workspace operation"));
+	}
+	
+	@Override
+	public Object runExclusive(Runnable read) throws InterruptedException {
+		// Prepare variables to remember the results of the execution of the runnable
+		AtomicReference<Object> atomicResult = new AtomicReference<>();
+		AtomicReference<InterruptedException> atomicException = new AtomicReference<>(null);
+		
+		// Now start executing the runnable within a runnable executed in the workspace
+		// This ensures workspace locking before transaction lokcing
+		executeInWorkspace(() -> {
+			try {
+				Object result = super.runExclusive(read);
+				atomicResult.set(result);
+			} catch (InterruptedException e) {
+				// In case there has been an exception store it.
+				atomicException.set(e);
+			}
+		});
+		
+		// Retrieve the exception if it exists and throw it again
+		InterruptedException exception = atomicException.get();
+		if (exception != null) {
+			throw exception;
+		}
+		
+		// Or if there is no exception hand back the result of the inner runnable
+		return atomicResult.get();
 	}
 }
