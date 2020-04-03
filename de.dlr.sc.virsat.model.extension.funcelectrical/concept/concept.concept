@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.funcelectrical displayname "Functional Electrical Architecture" description "Concept for modeling Functional Electrical Architecture (FEA)" version 2.0 {
+Concept de.dlr.sc.virsat.model.extension.funcelectrical displayname "Functional Electrical Architecture" description "Concept for modeling Functional Electrical Architecture (FEA)" version 2.1 {
 	Import de.dlr.sc.virsat.model.extension.ps.*;
 
 
