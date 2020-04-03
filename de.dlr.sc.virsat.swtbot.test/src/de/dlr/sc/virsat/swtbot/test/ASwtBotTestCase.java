@@ -224,7 +224,6 @@ public class ASwtBotTestCase {
 		            canvas = (SWTBotGefFigureCanvas) f.get(viewer);
 		        } catch (IllegalArgumentException | IllegalAccessException e) {
 		        	Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
-		            e.printStackTrace(); 
 		        }
 		    }
 		}
