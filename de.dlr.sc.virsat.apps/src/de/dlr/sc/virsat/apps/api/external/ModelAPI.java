@@ -22,14 +22,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
@@ -66,9 +70,26 @@ public class ModelAPI {
 	}
 	
 	/**
-	 * This method uses the plain java api to load the resource and resourceset from the file system
+	 * Constructor for the API that automatically loads the DVLM model
+	 * @param projectPath path of current project
+	 * @throws CoreException 
+	 */
+	public ModelAPI(String projectPath) {
+		initialize(projectPath);
+	}
+	
+	/**
+	 * This method uses the plain Java API to load the resource and resource set from the file system
 	 */
 	protected void initialize() {
+		initialize(getCurrentProjectAbsolutePath());
+	}
+
+	/**
+	 * This method uses the plain Java API to load the resource and resource set from the file system
+	 * @param projectPath path of current project
+	 */
+	protected void initialize(String projectPath) {
 		resourceSet = new ResourceSetImpl();
 		
 		// Setting up the resources factory to deal with the model extension
@@ -84,7 +105,7 @@ public class ModelAPI {
 	    });
 	    System.out.println("---------------- App output: --------------");
 	    
-	    String resourceFullPath = Paths.get(getCurrentProjectAbsolutePath(), VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FILENAME_REPOSITORY).toAbsolutePath().toString();
+	    String resourceFullPath = Paths.get(projectPath, VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FILENAME_REPOSITORY).toAbsolutePath().toString();
 	    URI modelUri = URI.createFileURI(resourceFullPath);
 	    
 	    resource = resourceSet.getResource(modelUri, true);
@@ -318,5 +339,25 @@ public class ModelAPI {
 	public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getRootSeis(Class<SEI_TYPE> beanSeiClazz) {
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
 		return bseiHelper.wrapAllBeanSeisOfType(getRepository().getRootEntities(), beanSeiClazz);
+	}
+	
+	/**
+	 * Find a BeanStructuralElementInstance from the given UUID.
+	 * @param uuid UUID of the BeanSei that is wanted
+	 * @return BeanSei with the given UUID; null if none was found
+	 * @throws CoreException 
+	 */
+	public IBeanStructuralElementInstance findBeanSeiByUuid(String uuid) throws CoreException {
+		List<StructuralElementInstance> rootSeis = getRepository().getRootEntities();
+		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
+		while (iterator.hasNext()) {
+			Object currentSei = iterator.next();
+			if (currentSei instanceof StructuralElementInstance) {
+				if (((StructuralElementInstance) currentSei).getUuid().toString().equals(uuid)) {
+					return (new BeanStructuralElementInstanceFactory()).getInstanceFor((StructuralElementInstance) currentSei);
+				}
+			}
+		}
+		return null;
 	}
 }
