@@ -105,6 +105,14 @@
 		xmi="concept/concept_v1_1.xmi">
 	</migrator>
 </extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.tests"
+		version="1.2"
+		class="de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v2"
+		xmi="concept/concept_v1_2.xmi">
+	</migrator>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="org.eclipse.emf.ecore.generated_package">

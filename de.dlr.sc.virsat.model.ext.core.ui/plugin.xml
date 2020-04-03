@@ -82,8 +82,6 @@
 	          topRanking="1000">
 	    </editorSection>
 	 </extension>	
-	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
-	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

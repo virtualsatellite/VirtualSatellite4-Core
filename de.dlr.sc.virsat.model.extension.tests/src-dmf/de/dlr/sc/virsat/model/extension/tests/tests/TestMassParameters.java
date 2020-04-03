@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  * @model
  * @generated
  */
-public interface TestMassParameters extends DObject {
+public interface TestMassParameters extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Mass</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
