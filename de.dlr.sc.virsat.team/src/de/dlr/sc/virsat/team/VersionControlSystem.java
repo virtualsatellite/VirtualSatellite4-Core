@@ -7,26 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.team.test;
+package de.dlr.sc.virsat.team;
 
-
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-/**
- * This is an example test case to make Travis CI with amven tycho succeed.
- * Without a test maven/tycho fials. Still in case test cases are written here, 
- * this class, can be reused, replaced deleted 
- * @author fisc_ph
- *
- */
-public class ExampleTest {
-
-	@Test
-	public void testIsTrue() {
-		assertTrue("This is an example test case", true);
-	}
-	
-
+public enum VersionControlSystem {
+	GIT,
+	SVN;
 }

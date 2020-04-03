@@ -1480,6 +1480,10 @@ where
 * *nameFilter* is optional and filters out all Categories that do not confirm to the nameFilter
 * *depth* is optional and limits the aggregation depth. The value -1 represents limitless aggregation and is set by default.
 
+NOTE: *depth* is defined as the amount of levels where the property or category in question was found. 
+ 
+
+
 Concepts may define new aggregation functions as necessary and may also allow other objects than properties to be used
 as aggregation inputs. By default Virtual Satellite CORE comes with a set of aggregation functions, namely:
 

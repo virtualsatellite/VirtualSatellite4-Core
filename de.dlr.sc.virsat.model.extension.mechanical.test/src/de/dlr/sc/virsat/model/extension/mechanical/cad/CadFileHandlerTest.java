@@ -34,7 +34,7 @@ import org.junit.Test;
 
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
-
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
@@ -84,7 +84,7 @@ public class CadFileHandlerTest extends AConceptProjectTestCase {
 
 		visualisation.setGeometryFile(stlUri);
 
-		Path outputPath = Files.createTempDirectory("cadTest");
+		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String jsonFilePath = outputPath.toString() + File.separator + "exported.json";
 		File expectedJson = new File(jsonFilePath);
 		Path expectedCopiedStl = Paths.get(outputPath.toString(), STL_FILE_NAME);
@@ -103,7 +103,7 @@ public class CadFileHandlerTest extends AConceptProjectTestCase {
 	@Test
 	public void testReadJsonFile() throws IOException, JsonException {
 		final String JSON_FILE_NAME = "dummy.json";
-		Path outputPath = Files.createTempDirectory("cadTest");
+		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		final String TEST_PRODUCT_NAME = "TestProduct";
 		Path jsonFilePath = Paths.get(outputPath.toString() + File.separator + JSON_FILE_NAME);
 

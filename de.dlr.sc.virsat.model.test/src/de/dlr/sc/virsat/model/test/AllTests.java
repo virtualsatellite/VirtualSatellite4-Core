@@ -37,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistryTest;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelperTest;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiatorTest;
+import de.dlr.sc.virsat.model.dvlm.tree.TreeTraverserTest;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuidTest;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMApplicableForCheckTest;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMCanInheritFromCheckTest;
@@ -59,6 +60,7 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
+				TreeTraverserTest.class,
 				EnumPropertyHelperTest.class,
 				VirSatUuidTest.class,
 				CategoryInstantiatorTest.class,

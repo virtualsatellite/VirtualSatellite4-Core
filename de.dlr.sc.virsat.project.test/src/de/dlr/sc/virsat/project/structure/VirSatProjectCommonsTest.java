@@ -27,9 +27,11 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -74,14 +76,24 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	public void testCreateProjectStructure() {
 		VirSatProjectCommons virSatProject = new VirSatProjectCommons(testProject); 
 		
-		assertFalse("Folder does not yet exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_DATA).exists());
-		assertFalse("Folder does not yet exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_UNVERSIONED).exists());
+		IFolder dataFolder = testProject.getFolder(VirSatProjectCommons.FOLDERNAME_DATA);
+		IFolder unversionedFolder = testProject.getFolder(VirSatProjectCommons.FOLDERNAME_UNVERSIONED);
+		assertFalse("Folder does not yet exist", dataFolder.exists());
+		assertFalse("Folder does not yet exist", unversionedFolder.exists());
+		
+		IFile dataFile = dataFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		IFile unversionedFile = unversionedFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		
+		assertFalse("File does not yet exist", dataFile.exists());
+		assertFalse("File does not yet exist", unversionedFile.exists());
 		
 		boolean result = virSatProject.createProjectStructure(null);
 		
 		assertTrue("Method was susccesfully executed", result);
-		assertTrue("Folder now exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_DATA).exists());
-		assertTrue("Folder now exist", testProject.getFolder(VirSatProjectCommons.FOLDERNAME_UNVERSIONED).exists());
+		assertTrue("Folder now exist", dataFolder.exists());
+		assertTrue("Folder now exist", unversionedFolder.exists());
+		assertTrue("File now exist", dataFile.exists());
+		assertTrue("File now exist", unversionedFile.exists());
 	}
 	
 	@Test
@@ -112,19 +124,28 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		String fullFolderNameSei = VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX + seiUuid;
 		String fullFolderNameSeiDocuments = fullFolderNameSei + "/" + VirSatProjectCommons.FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS;
 		
-		assertFalse("Folder does not yet exist", testProject.getFolder(fullFolderNameSei).exists());
-		assertFalse("Folder does not yet exist", testProject.getFolder(fullFolderNameSeiDocuments).exists());
-		assertFalse("File does not yet exist", testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT).exists());
+		IFolder seiFolder = testProject.getFolder(fullFolderNameSei);
+		IFolder seiDocumentsFolder = testProject.getFolder(fullFolderNameSeiDocuments);
+		IFile seiFile = testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT);
+		IFile seiFolderFile = seiFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		IFile seiDocumentsFolderFile = seiDocumentsFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY);
+		
+		assertFalse("Folder does not yet exist", seiFolder.exists());
+		assertFalse("Folder does not yet exist", seiDocumentsFolder.exists());
+		assertFalse("File does not yet exist", seiFile.exists());
+		assertFalse("File does not yet exist", seiFolderFile.exists());
+		assertFalse("File does not yet exist", seiDocumentsFolderFile.exists());
 		
 		virSatProject.createFolderStructure(sei, null);
 		
-		assertTrue("Folder does exist now", testProject.getFolder(fullFolderNameSei).exists());
-		assertTrue("Folder does exist now", testProject.getFolder(fullFolderNameSeiDocuments).exists());
+		assertTrue("Folder does exist now", seiFolder.exists());
+		assertTrue("Folder does exist now", seiDocumentsFolder.exists());
 		// The actual StructuralElement.dvlm file is not created with this method
 		// this code magic happens in 
 		// Command initAndAddIsteCommand = resourceSet.initializeStructuralElement(iste, ed);
-		assertFalse("File does exist now", testProject.getFile(fullFolderNameSei + "/" + VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT).exists());
-		
+		assertFalse("File does not exist now", seiFile.exists());
+		assertTrue("File does exist now", seiFolderFile.exists());
+		assertTrue("File does exist now", seiDocumentsFolderFile.exists());
 	}
 	
 	@Test
@@ -168,6 +189,24 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		
 		assertThat("Project1 and 3 is contained", virSatProjects, hasItems(project1VirSat, project3VirSat));
 		assertThat("Project2 is not contained", virSatProjects, not(hasItem(project2Other)));
+		
+		// Close one project and check if it is not detected anymore
+		project1VirSat.close(null);
+		List<IProject> virSatProjects2 = VirSatProjectCommons.getAllVirSatProjects(ws);
+		assertThat("Project3 is contained", virSatProjects2, hasItems(project3VirSat));
+		assertThat("Project1 and 2 is not contained", virSatProjects2, not(hasItems(project1VirSat, project2Other)));
+	}
+	
+	@Test
+	public void testIsVirSatProject() throws CoreException {
+		IProject project1VirSat =  testProject;
+		IProject project2Other = createTestProject("testProject2Other");
+		
+		VirSatProjectCommons projectCommons1 = new VirSatProjectCommons(project1VirSat);
+		projectCommons1.attachProjectNature();
+		
+		assertTrue("Project 1 has the VirSat Nature", VirSatProjectCommons.isVirSatProject(project1VirSat));
+		assertFalse("Project 2 does not have the VirSat Nature", VirSatProjectCommons.isVirSatProject(project2Other));
 	}
 	
 	@Test
@@ -340,4 +379,30 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertEquals("Got correct Resource", fileSc, VirSatProjectCommons.getWorkspaceResource(seiEdSc));
 	}
 	
+	@Test
+	public void testCreateFolderWithEmptyFile() throws CoreException {
+		VirSatProjectCommons virSatProject = new VirSatProjectCommons(testProject); 
+		
+		// Define an arbitrary folder and check that it gets well created with the .empty file
+		IFolder testFolder = testProject.getFolder("testFolder");
+		assertFalse("The fodler does not yet exist", testFolder.exists());
+		IFolder returnFolder = virSatProject.createFolderWithEmptyFile(testFolder, new NullProgressMonitor());
+		assertTrue("The folder does now exist", testFolder.exists());
+		assertTrue("The .empty file also exists", testFolder.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+		assertEquals("Method hands back correct folder", testFolder, returnFolder);
+		
+		// Now call the method on a folder which already exists, only the file should be created
+		IFolder testFolder2 = testProject.getFolder("testFolder2");
+		testFolder2.create(IResource.NONE, true, new NullProgressMonitor());
+		assertTrue("The folder already exists", testFolder2.exists());
+		virSatProject.createFolderWithEmptyFile(testFolder2, new NullProgressMonitor());
+		assertTrue("The folder does still exist", testFolder2.exists());
+		assertTrue("The .empty file also exists", testFolder2.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+		
+		// now call it a second time on the same folder which already exists with the .empty file
+		// Noting special should happen no exception should be thrown
+		virSatProject.createFolderWithEmptyFile(testFolder2, new NullProgressMonitor());
+		assertTrue("The folder does still exist", testFolder2.exists());
+		assertTrue("The .empty file still exists", testFolder2.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+	}
 }

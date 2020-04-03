@@ -91,6 +91,10 @@ after_failure:
   # SWTBot to see what happened 
   # ----------------------------------------
   - bash/deploy_sourceforge.sh -u swtbot
+  # ---------------------------------------
+  # Show the debug output of Surefire Junit
+  # ---------------------------------------
+  - cat $TRAVIS_BUILD_DIR/de.dlr.sc.virsat.test/target/surefire-reports/de.dlr.sc.virsat.test.ProjectAllTest-output.txt
   
 jobs:
   include:
