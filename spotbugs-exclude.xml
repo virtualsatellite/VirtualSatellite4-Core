@@ -67,6 +67,7 @@
 			<!-- Ignore this warning, since it is not clear if it is a false positive or not.
 			Should be rechecked in the future. -->
 			<Bug pattern="MS_PKGPROTECT" />
+			<Bug pattern="MS_CANNOT_BE_FINAL" />
 			
 			<!-- Ignore this warning, since there is a case where it makes sense to have
 			switch fallthrough. -->
