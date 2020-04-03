@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.resources;
 
+import java.io.IOException;
+import java.util.Collections;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -38,11 +41,17 @@ public class ConceptResourceLoader {
 	 */
 	public Concept loadConceptFromPlugin(String conceptXmiFilePath) {
 
-		URI conceptResourceUri = getUriFromPath(conceptXmiFilePath);
+ 		URI conceptResourceUri = getUriFromPath(conceptXmiFilePath);
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
-		
-		Resource resource = resourceSet.getResource(conceptResourceUri, true);
+		//Check if resource can be resolved from workspace, otherwise use plugin reference resource
+		Resource resource = resourceSet.createResource(conceptResourceUri);
+		try {
+			resource.load(Collections.EMPTY_MAP);
+		} catch (IOException e) {
+			URI pluginURI = URI.createPlatformPluginURI(conceptXmiFilePath, true);
+			resource = resourceSet.getResource(pluginURI, true);
+		}
 		Concept concept = (Concept) resource.getContents().get(0);
 		return concept;
 	}
