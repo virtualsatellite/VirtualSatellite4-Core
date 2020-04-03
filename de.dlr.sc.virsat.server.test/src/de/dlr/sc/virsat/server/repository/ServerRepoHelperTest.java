@@ -63,7 +63,7 @@ public class ServerRepoHelperTest {
 	public void tearDown() throws IOException {
 		RepoRegistry.getInstance().getRepositories().clear();
 	}
-	
+
 	@Test
 	public void testLoadRepositoryConfigurations() throws IOException {
 		String svnProjectName = "SvnProject1";
@@ -84,8 +84,11 @@ public class ServerRepoHelperTest {
 	@Test
 	public void testSaveConfiguration() throws FileNotFoundException, IOException, URISyntaxException {
 		String projectName = "testProject";
+
 		String uri = "test.uri";
-		RepositoryConfiguration config = new RepositoryConfiguration(projectName, "", uri, VersionControlSystem.GIT, "", "");
+		RepositoryConfiguration config = new RepositoryConfiguration();
+		config.setProjectName(projectName);
+		config.setRemoteUri(uri);
 		
 		String expectedFileName = projectName + ".properties";
 		Path configFilePath = configsDir.resolve(expectedFileName);
