@@ -1445,7 +1445,7 @@ public class QudvUnitHelper {
 		}
 		
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
-		int calcSign = calcMethod.getSign();
+		int calcSign = calcMethod.getCalcSign();
 		
 		//include elements from the first map and add or subtract values of the second map if they exist
 		for (Entry<AQuantityKind, Double> entry1 : map1.entrySet()) {
@@ -1578,14 +1578,14 @@ public class QudvUnitHelper {
 		 * Gets the sign for the calculation method.
 		 * @return 1 if ADD, -1 if SUBTRACT
 		 */
-		public int getSign() {
+		public int getCalcSign() {
 			switch (this) {
 				case ADD:
 					return 1;
 				case SUBTRACT:
 					return -1;
 				default:
-					return 0;
+					throw new RuntimeException("Unsupported qudv calculation sign: " + this);
 			}
 		}
 	}
