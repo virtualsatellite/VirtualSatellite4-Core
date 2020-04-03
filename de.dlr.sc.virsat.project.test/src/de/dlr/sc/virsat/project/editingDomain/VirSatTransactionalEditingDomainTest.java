@@ -208,8 +208,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		// to the non saved CA in the other resource.
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
-		rs = null;
-		editingDomain = null;
+		
 		rs = VirSatResourceSet.getResourceSet(testProject, false);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
@@ -227,13 +226,14 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		// Now load it a third time and make sure there is no dangling reference
 		VirSatResourceSet.clear();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
-		rs = null;
-		editingDomain = null;
+		
 		rs = VirSatResourceSet.getResourceSet(testProject, false);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		
 		repoResource2 = rs.getRepositoryResource();
-		danglingRpi = (ReferencePropertyInstance) repoResource2.getContents().get(0);
+		
+		// Trigger EMF to try to resolve the reference 
+		repoResource2.getContents().get(0);
 		
 		assertTrue("No errors anymore", repoResource2.getErrors().isEmpty());
 	}

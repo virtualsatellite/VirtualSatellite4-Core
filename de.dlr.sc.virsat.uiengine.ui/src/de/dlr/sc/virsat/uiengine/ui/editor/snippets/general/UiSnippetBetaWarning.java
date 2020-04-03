@@ -120,19 +120,21 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 	 * @return the description
 	 */
 	protected String createDescriptionLabel() {
-		String description = "Beta element(s) detected! Concept elements of ";
+		StringBuilder description = new StringBuilder();
+		description.append("Beta element(s) detected! Concept elements of ");
 
 		for (Concept concept : getRelevantBetaConcept()) {
 			if (concept.getDisplayName() != null) {
-				description += concept.getDisplayName() + " ";
+				description.append(concept.getDisplayName());
 			} else {
-				description += concept.getName() + " ";
+				description.append(concept.getName());
 			}
+			description.append(" ");
 		}
 
-		description += "should not be used in productive envrionment!";
+		description.append("should not be used in productive envrionment!");
 
-		return description;
+		return description.toString();
 	}
 
 	/**

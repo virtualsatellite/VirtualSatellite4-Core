@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @param <E> the type of Exception to be handled
  *
  */
-public class AtomicException<E extends Exception> extends AtomicReference<E> {
+public class AtomicExceptionReference<E extends Exception> extends AtomicReference<E> {
 
 	private static final long serialVersionUID = -6329653725507243226L;
 

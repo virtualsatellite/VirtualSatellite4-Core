@@ -46,7 +46,8 @@ import de.dlr.sc.virsat.model.extension.visualisation.ui.dialogs.CompareModelDia
  */
 public class CompareModelGeometryrHandler extends AbstractHandler implements IHandler {
 
-	private static VtkClientView vtkViewer = null;
+	private VtkClientView vtkViewer = null;
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);

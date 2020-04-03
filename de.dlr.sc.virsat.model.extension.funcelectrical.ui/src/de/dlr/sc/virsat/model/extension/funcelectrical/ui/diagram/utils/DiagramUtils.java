@@ -125,13 +125,7 @@ public class DiagramUtils {
 				Shape shape1 = (Shape) o1;
 				Shape shape2 = (Shape) o2;
 				double diff = shape1.getGraphicsAlgorithm().getY() - shape2.getGraphicsAlgorithm().getY();
-				if (diff <  0) {
-					return -1;
-				} else if (diff == 0) {
-					return 0;
-				} else {
-					return 1;
-				}
+				return Double.compare(diff, 0);
 			}
 	    });
 		return ieRight;

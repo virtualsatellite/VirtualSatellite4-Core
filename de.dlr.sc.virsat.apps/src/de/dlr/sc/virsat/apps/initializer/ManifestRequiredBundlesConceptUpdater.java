@@ -40,18 +40,21 @@ public class ManifestRequiredBundlesConceptUpdater {
 	 * @return the manifest file obejct which has been changed
 	 */
 	public static Manifest updateDependencies(Repository repo, Manifest manifest) {
-		// add the concepts as dependencies to the manifest file
+		// get the already existing dependencies
 		String requiredBundles = manifest.getMainAttributes().getValue(MANIFEST_REQ_BUNDLE);
 		List<String> requiredBundlesSplit = splitRequiredBundlesString(requiredBundles);
 		
+		// add the concepts as dependencies to the manifest file
+		StringBuilder newRequiredBundles = new StringBuilder();
 		for (Concept concept : repo.getActiveConcepts()) {
 			String conceptName = concept.getFullQualifiedName();
 			if (!requiredBundlesSplit.contains(conceptName)) {
-				requiredBundles += "," + conceptName;
+				newRequiredBundles.append(",");
+				newRequiredBundles.append(conceptName);
 			}
 		}
 		
-		manifest.getMainAttributes().putValue(MANIFEST_REQ_BUNDLE, requiredBundles);
+		manifest.getMainAttributes().putValue(MANIFEST_REQ_BUNDLE, requiredBundles + newRequiredBundles.toString());
 		
 		return manifest;
 	}

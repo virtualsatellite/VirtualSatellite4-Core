@@ -37,7 +37,7 @@ public class ImportCommandTest extends AConceptProjectTestCase {
 	/**
 	 * Mock ExcelImporter
 	 */
-	public class MockExcelImporter extends ExcelImporter {
+	public static class MockExcelImporter extends ExcelImporter {
 		EObject object;
 		Repository repository;
 		XSSFWorkbook wb;

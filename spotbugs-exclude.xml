@@ -2,13 +2,76 @@
 <FindBugsFilter
 	xmlns="https://github.com/spotbugs/filter/3.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+	xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.0.0/spotbugs/etc/findbugsfilter.xsd">
+
+	<!-- Ignore activators -->
 	<Match>
-		<Rank value="16"/>
+		<Or>
+			<Class name="~.*Activator" />
+			<Class name="~.*LibPlugin" />
+		</Or>
 	</Match>
-	
+
+	<!-- Ignore generated java classes -->
 	<Match>
-		<Bug code="MALICIOUS_CODE,SECURITY,EXPERIMENTAL,NOISE,I18N"/>
+		<Or>
+			<Source name="~.*src-gen.*.java" />
+			<Source name="~.*xtend-gen.*.java" />
+			<Source name="~.*src-dmf.*.java" />
+		</Or>
 	</Match>
-	
+	<Match>
+		<Or>
+			<!-- Ignore this warning since the variable might be accessed in a downstream 
+				project -->
+			<Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+
+			<!-- Ignore this warning since we allow equality between objects that 
+				are not consistent with their type hierarchy. An example for this is a bean 
+				category assignment and a category assignment -->
+			<Bug pattern="EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS" />
+
+			<!-- Ignore these warnings since it is not clear whether it is an actual 
+				issue or of spotbugs is giving us false positives. Should be rechecked in 
+				the future -->
+			<Bug pattern="SE_BAD_FIELD" />
+			<Bug pattern="SE_BAD_FIELD_STORE" />
+
+			<!-- Temporarily ignore this warning since addressing it in some cases 
+				seems to involve some more refactoring. Should be rechecked in the future -->
+			<Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+
+			<!-- Ignore this warning since we are using instanceof in test cases to 
+				assert the correct type of some objects. It should be rechecked in the future 
+				if it is useful to allow this rule for any Non-Test class. -->
+			<Bug pattern="BC_VACUOUS_INSTANCEOF" />
+
+			<!-- Ignore this warning since it is not clear if it is an actual issúe 
+				or a false positive of spotbugs. Should be rechecked in the future -->
+			<Bug pattern="EQ_DOESNT_OVERRIDE_EQUALS" />
+
+			<!-- Ignore this warning since it seems to be giving false positives. 
+				The spotbugs documentation also states that this warning might be bugged 
+				in some cases. -->
+			<Bug pattern="SF_SWITCH_NO_DEFAULT" />
+
+			<!-- Ignore this warning since it is not clear from the documentation 
+				what the issue is. Should be rechecked in the future. -->
+			<Bug pattern="UC_USELESS_OBJECT" />
+			
+			<!--  Ignore this warning since there are a few static assignments in the code
+			where it is not clear if they are good or bad practice or necessary.
+			Should be rechecked in the future. -->
+			<Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" />
+			
+			<!-- Ignore this warning, since it is not clear if it is a false positive or not.
+			Should be rechecked in the future. -->
+			<Bug pattern="MS_PKGPROTECT" />
+			<Bug pattern="MS_CANNOT_BE_FINAL" />
+			
+			<!-- Ignore this warning, since there is a case where it makes sense to have
+			switch fallthrough. -->
+			<Bug pattern="SF_SWITCH_FALLTHROUGH" />
+		</Or>
+	</Match>
 </FindBugsFilter>

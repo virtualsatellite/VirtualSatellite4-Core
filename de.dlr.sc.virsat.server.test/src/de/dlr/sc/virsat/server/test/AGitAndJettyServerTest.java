@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
 public abstract class AGitAndJettyServerTest {
 
-	protected static File pathToTempUpstreamRepository;
+	protected File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 	

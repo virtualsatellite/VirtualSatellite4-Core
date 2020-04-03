@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.ext.core.validator;
 
+import static org.junit.Assert.assertTrue;
+
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
@@ -21,13 +23,6 @@ package de.dlr.sc.virsat.model.ext.core.validator;
 
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
@@ -37,13 +32,6 @@ import org.junit.Before;
  * 
  */
 public class CoreValidatorTest extends ACoreValidatorTest {
-
-	StructuralElementInstance testSei;
-
-	@Before
-	public void setup() {
-		testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-	}
 	
 	@Test
 	public void testValidate() {

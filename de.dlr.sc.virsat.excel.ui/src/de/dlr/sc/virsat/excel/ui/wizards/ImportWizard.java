@@ -110,11 +110,11 @@ public class ImportWizard extends Wizard implements INewWizard {
 				DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO", "Successfully imported excel file " + file.getAbsolutePath()));
 				return true;
 			}
-			String errorMessage = "";
+			StringBuilder errorMessage = new StringBuilder();
 			for (int i = 0; i < faultList.size(); i++) {
-				errorMessage = errorMessage + faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n";	     		
+				errorMessage.append(faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n");	     		
 			}
-			page.setErrorMessage(errorMessage);
+			page.setErrorMessage(errorMessage.toString());
 		} catch (Exception e) {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to perform an import operation! ", e);
 			DVLMEditPlugin.getPlugin().getLog().log(status);

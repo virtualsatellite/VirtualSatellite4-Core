@@ -65,7 +65,7 @@ public class Fault {
 
 	@Override
 	public boolean equals(Object object) {
-		if (object instanceof Fault && object != null) {
+		if (object instanceof Fault) {
 			Fault other = (Fault) object;
 			return faultType == other.faultType && lineNumber == other.lineNumber && sheetNumber == other.sheetNumber;
 		}

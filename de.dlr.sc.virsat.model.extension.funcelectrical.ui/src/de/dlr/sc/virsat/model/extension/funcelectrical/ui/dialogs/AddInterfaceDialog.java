@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.extension.funcelectrical.ui.dialogs;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -25,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -84,12 +82,9 @@ public class AddInterfaceDialog extends ElementTreeSelectionDialog {
 	protected int fHeight = 18;
 	//CHECKSTYLE:ON
 
-	protected boolean fDoubleClickSelects;
-
 	@Override
 	public void setDoubleClickSelects(boolean doubleClickSelects) {
 		super.setDoubleClickSelects(doubleClickSelects);
-		fDoubleClickSelects = doubleClickSelects;
 	}
 	
 	@Override
@@ -105,8 +100,7 @@ public class AddInterfaceDialog extends ElementTreeSelectionDialog {
 		// Create the  tree viewer 
 	
 		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout = new GridLayout(1, true);
+		GridLayout layout = new GridLayout(1, true);
 		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
 		layout.verticalSpacing = 0;
 		layout.marginHeight = 0;
@@ -132,13 +126,10 @@ public class AddInterfaceDialog extends ElementTreeSelectionDialog {
 	@Override
 	protected void computeResult() {
 	}
-		
-	protected IStatus status =  new Status(IStatus.OK, PlatformUI.PLUGIN_ID, IStatus.OK, "", null); 
 	
 	@Override
 	protected void updateStatus(IStatus status) {
 		super.updateStatus(status);
-		this.status = status;
 	}
 	
 	@Override
