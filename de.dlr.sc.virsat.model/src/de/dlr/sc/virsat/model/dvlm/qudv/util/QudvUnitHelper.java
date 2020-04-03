@@ -1456,53 +1456,28 @@ public class QudvUnitHelper {
 		}
 		
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
-
+		int calcSign = calcMethod.getCalcSign();
+		
 		//include elements from the first map and add or subtract values of the second map if they exist
 		for (Entry<AQuantityKind, Double> entry1 : map1.entrySet()) {
 			AQuantityKind qk = entry1.getKey(); 
 			Double x = entry1.getValue();
-			Double y = map2.get(qk);
-			if (y == null) {
-				merged.put(qk, x);
-			} else {
-	
-				if (calcMethod == QudvCalcMethod.SUBTRACT) {
-					merged.put(qk, x - y);
-				} else { // calcMethod == QudvCalcMethod.ADD)
-					merged.put(qk, x + y);
-				}
-			}
+			Double y = map2.getOrDefault(qk, 0d);
+			merged.put(qk, x + calcSign * y);
 		}
 
 		//include elements from the second map
 		for (Entry<AQuantityKind, Double> entry2 : map2.entrySet()) {
 			AQuantityKind qk = entry2.getKey();
 			Double x = entry2.getValue();
-			if (merged.get(qk) == null) {
-				if (calcMethod == QudvCalcMethod.SUBTRACT) {
-					merged.put(qk, -x);
-				} else {
-					merged.put(qk, x);
-				}
-			}
+			merged.putIfAbsent(qk, calcSign * x);
 		}
 		
 		//remove elements which are zero in their Double value: gekuerzt!
-		for (Iterator<Map.Entry<AQuantityKind, Double>> iter = merged.entrySet().iterator(); iter.hasNext();) {
-			Map.Entry<AQuantityKind, Double> entry = iter.next();
-			if (Math.abs(entry.getValue()) < ERROR) {
-				iter.remove();
-			}
-		}
+		merged.entrySet().removeIf(entry -> Math.abs(entry.getValue()) < ERROR);
 		
 		//remove elements which are dimensionless, because they don't have any influence
-		for (Iterator<Map.Entry<AQuantityKind, Double>> iter = merged.entrySet().iterator(); iter.hasNext();) {
-			Map.Entry<AQuantityKind, Double> entry = iter.next();
-			if (entry.getKey().getName().equals(DIMENSIONLESS_QK_NAME)) {
-				iter.remove();
-				//break; // if we only want to remove the first match.
-			}
-		}
+		merged.keySet().removeIf(qk -> qk.getName().contentEquals(DIMENSIONLESS_QK_NAME));
 		
 		return merged;
 	}
@@ -1608,6 +1583,21 @@ public class QudvUnitHelper {
 	 *
 	 */
 	public enum QudvCalcMethod {
-		ADD, SUBTRACT
+		ADD, SUBTRACT;
+		
+		/**
+		 * Gets the sign for the calculation method.
+		 * @return 1 if ADD, -1 if SUBTRACT
+		 */
+		public int getCalcSign() {
+			switch (this) {
+				case ADD:
+					return 1;
+				case SUBTRACT:
+					return -1;
+				default:
+					return 0;
+			}
+		}
 	}
 }
