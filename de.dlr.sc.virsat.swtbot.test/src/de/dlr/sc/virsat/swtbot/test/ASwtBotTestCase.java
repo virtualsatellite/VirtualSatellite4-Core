@@ -64,6 +64,8 @@ public class ASwtBotTestCase {
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	private static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	
+	private static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
+	
 	public static final int SWTBOT_GENERAL_WAIT_TIME = 250;
 	
 	protected SWTWorkbenchBot bot;
@@ -180,11 +182,12 @@ public class ASwtBotTestCase {
 		SWTBotGefFigureCanvas canvas = null;		
 
 		for (Field f : viewer.getClass().getDeclaredFields()) {
-		    if ("canvas".equals(f.getName())) {
+		    if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
 		        f.setAccessible(true);
 		        try {
 		            canvas = (SWTBotGefFigureCanvas) f.get(viewer);
 		        } catch (IllegalArgumentException | IllegalAccessException e) {
+		        	Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
 		            e.printStackTrace(); 
 		        }
 		    }
