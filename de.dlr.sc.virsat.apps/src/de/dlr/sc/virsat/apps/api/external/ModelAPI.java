@@ -58,7 +58,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 public class ModelAPI {
 
 	protected static ResourceSet resourceSet;
-	private static Resource resource;
+	protected static Resource resource;
 	private static final String JAVA_SYSTEM_PROPERTY_WORKING_DIR = "user.dir";
 	
 	/**

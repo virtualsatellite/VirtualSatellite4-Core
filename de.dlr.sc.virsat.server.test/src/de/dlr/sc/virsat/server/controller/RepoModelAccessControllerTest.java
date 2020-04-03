@@ -9,23 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
+import java.util.List;
 
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
+import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -33,19 +27,14 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
-import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
-import de.dlr.sc.virsat.server.repository.RepoRegistry;
-import de.dlr.sc.virsat.server.repository.ServerRepository;
-import de.dlr.sc.virsat.team.Activator;
-import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public class RepoModelAccessControllerTest extends AProjectTestCase {
 	
 
 	private RepoModelAccessController repoModelAccessController;
+	
+	private StructuralElement se;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -54,10 +43,11 @@ public class RepoModelAccessControllerTest extends AProjectTestCase {
 		
 		super.addEditingDomainAndRepository();
 		
-		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setName("TestRootComponent");
 		se.setIsRootStructuralElement(true);
 		
+		// TODO: extend ATestConceptTestCase?
 		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
 		concept.getStructuralElements().add(se);
 		
@@ -79,12 +69,17 @@ public class RepoModelAccessControllerTest extends AProjectTestCase {
 		Command addSeiToRepo = AddCommand.create(editingDomain, repository, DVLMPackage.eINSTANCE.getRepository_RootEntities(), sei1);
 		editingDomain.getCommandStack().execute(addSeiToRepo);
 		
+		// Save all changes
+		rs.saveAllResources(new NullProgressMonitor());
+
 		// Create the controller with the modelapi instance
-		repoModelAccessController = new RepoModelAccessController(TEST_PROJECT_NAME);
+		repoModelAccessController = new RepoModelAccessController(editingDomain);
 	}
 	
 	@Test
 	public void testGetRootSeis() {
-		repoModelAccessController.getRootSeis();
+		// TODO: Needs a valid concept to map the bean with the function of the modelApi
+		List<IBeanStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
+		seis.get(0);
 	}
 }

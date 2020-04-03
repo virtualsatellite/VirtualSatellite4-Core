@@ -16,16 +16,32 @@ import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.apps.api.external.ModelAPI;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.server.repository.RepoRegistry;
+import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 public class RepoModelAccessController {
 	
 	private ModelAPI modelApi;
+	private VirSatTransactionalEditingDomain editingDomain;
 	
-	public RepoModelAccessController(String repoName) { 
-		IProject project = RepoRegistry.getInstance().getRepository(repoName).getProject();
-		String path = project.getRawLocation().toFile().getAbsolutePath();
-		modelApi = new ModelAPI(path);
+	public RepoModelAccessController(VirSatTransactionalEditingDomain editingDomain) { 
+		this.editingDomain = editingDomain;
+		
+		// maybe instantiate the api with the ed and let it handle user management
+//		modelApi = new ModelAPI(project.getLocation().toString()) 
+		modelApi = new ModelAPI() {
+			@Override
+			protected void initialize() {
+				ModelAPI.resourceSet = editingDomain.getResourceSet();
+				ModelAPI.resource = editingDomain.getResourceSet().getResources().get(0);
+			}
+			
+			@Override
+			public Repository getRepository() {
+				return editingDomain.getResourceSet().getRepository();
+			}
+		};
+
 	}
 
 	public List<IBeanStructuralElementInstance> getRootSeis() {

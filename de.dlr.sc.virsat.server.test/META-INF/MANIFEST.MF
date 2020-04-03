@@ -13,5 +13,6 @@ Require-Bundle: de.dlr.sc.virsat.team,
  org.eclipse.team.svn.core
 Export-Package: de.dlr.sc.virsat.server.test
 Automatic-Module-Name: de.dlr.sc.virsat.server.test
-Import-Package: de.dlr.sc.virsat.project.test,
+Import-Package: de.dlr.sc.virsat.model.extension.tests.test,
+ de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.team.test
