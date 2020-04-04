@@ -215,17 +215,19 @@ public class ASwtBotTestCase {
 	 */
 	protected void dragTreeItemToDiagramEditor(SWTBotTreeItem item, SWTBotGefEditor diagramEditor) {
 		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
-		SWTBotGefFigureCanvas canvas = null;		
-
+		SWTBotGefFigureCanvas canvas = null;
+		
 		for (Field f : viewer.getClass().getDeclaredFields()) {
-		    if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
-		        f.setAccessible(true);
-		        try {
-		            canvas = (SWTBotGefFigureCanvas) f.get(viewer);
-		        } catch (IllegalArgumentException | IllegalAccessException e) {
-		        	Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
-		        }
-		    }
+			if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
+				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
+				// otherwise inaccessible fields.
+				f.setAccessible(true);
+				try {
+					canvas = (SWTBotGefFigureCanvas) f.get(viewer);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
+				}
+			}
 		}
 		item.dragAndDrop(canvas);
 		waitForEditingDomainAndUiThread();
