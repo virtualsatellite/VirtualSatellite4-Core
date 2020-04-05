@@ -7,15 +7,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.ext.core description "Concept for core language elements" displayname "Core" hasDMF
-{
-	/**
-	 * Implicit super category of all categories
-	 * 
-	 * Can be used for generic references that should allow all categories
-	 */
-	Category GenericCategory description "Implicit super category of all categories" {
-		IsAbstract;
-	}	
-}
+package de.dlr.sc.virsat.model.ext.core.ui.snippet;
 
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+
+
+/**
+ * Auto Generated Class inheriting from Generator Gap Class
+ * 
+ * This class is generated once, do your changes here
+ * 
+ * 
+ * 
+ */
+public class UiSnippetSectionGenericCategory extends AUiSnippetSectionGenericCategory implements IUiSnippet {
+}

@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.concept.generator.dmf;
 
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.generator.dmf.GenerateDmfCategories;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
+import de.dlr.sc.virsat.model.concept.test.MockupConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
@@ -57,6 +59,8 @@ public class GenerateDmfCategoriesTest {
   private static final String TEST_CONCEPT_NAME = "testConcept";
   
   private static final String TEST_FQN_NAME = (("de.dlr.sc.virsat.model.extension" + ".") + GenerateDmfCategoriesTest.TEST_CONCEPT_NAME);
+  
+  private static final String TEST_CONCEPT_XMI_PATH = (GenerateDmfCategoriesTest.TEST_FQN_NAME + "/concept/concept.xmi");
   
   private static final String TEST_CATEGORY_NAME = "testCategory";
   
@@ -300,6 +304,9 @@ public class GenerateDmfCategoriesTest {
       _builder.append("}");
       _builder.newLine();
       final Concept concept = this._parseHelper.parse(_builder);
+      final MockupConceptResourceLoader testLoader = new MockupConceptResourceLoader();
+      testLoader.addTestConceptInstance(GenerateDmfCategoriesTest.TEST_CONCEPT_XMI_PATH, concept);
+      ConceptResourceLoader.injectInstance(testLoader);
       this.dmfCategoriesGenerator.initResources(concept);
       final EPackage ePackage = this.dmfCategoriesGenerator.createEPackageFromConcept(concept);
       AProperty _get = concept.getCategories().get(1).getProperties().get(0);
@@ -360,6 +367,9 @@ public class GenerateDmfCategoriesTest {
       _builder.append("}");
       _builder.newLine();
       final Concept concept = this._parseHelper.parse(_builder);
+      final MockupConceptResourceLoader testLoader = new MockupConceptResourceLoader();
+      testLoader.addTestConceptInstance(GenerateDmfCategoriesTest.TEST_CONCEPT_XMI_PATH, concept);
+      ConceptResourceLoader.injectInstance(testLoader);
       this.dmfCategoriesGenerator.initResources(concept);
       final EPackage ePackage = this.dmfCategoriesGenerator.createEPackageFromConcept(concept);
       EcoreUtil.resolve(concept.getCategories().get(1).getExtendsCategory(), concept.eResource().getResourceSet());

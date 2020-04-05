@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Core Model Core Language Plugin Edit Test
+Bundle-Name: VirSat Model Concept Core Edit Support Test
 Bundle-SymbolicName: de.dlr.sc.virsat.model.ext.core.edit.test
 Bundle-Version: 4.11.0.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.ext.core.edit;bundle-version="0.0.1"
