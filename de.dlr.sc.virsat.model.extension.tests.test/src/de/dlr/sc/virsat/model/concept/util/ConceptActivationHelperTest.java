@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.concept.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,11 +46,13 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 	@Test(expected = IllegalArgumentException.class)
 	public void testConstructor() {
 		//Should result in exception as concept is not active. Test expects exception
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CORE_CONCEPT_NAME));
 		new ConceptActivationHelper(loadConceptFromPlugin(TEST_CONCEPT_NAME));
 	}
 	
 	@Test
 	public void testActivateConcepts() {
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CORE_CONCEPT_NAME));
 		Concept testConcept = loadConceptFromPlugin(TEST_CONCEPT_NAME);
 		Concept maturityConcept = loadConceptFromPlugin(MATURITY_CONCEPT_NAME);
 		List<Concept> concepts = new ArrayList<Concept>();
@@ -62,17 +63,19 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 
 		activationHelper.activateConcepts(concepts, editingDomain, new NullProgressMonitor());
 
-		assertTrue("Concept has been added", repository.getActiveConcepts().size() == 2);
+		final int EXPECTED_NUMBER_CONCEPTS = 3; // Core, maturity and tests
+		assertEquals("Concept has been added", EXPECTED_NUMBER_CONCEPTS, repository.getActiveConcepts().size());
 		//Order is also important here
-		assertEquals("Maturity concept added", repository.getActiveConcepts().get(0).getName(), MATURITY_CONCEPT_NAME);
-		assertEquals("Test concept added", repository.getActiveConcepts().get(1).getName(), TEST_CONCEPT_NAME);
+		assertEquals("Maturity concept added", repository.getActiveConcepts().get(1).getName(), MATURITY_CONCEPT_NAME);
+		assertEquals("Test concept added", repository.getActiveConcepts().get(2).getName(), TEST_CONCEPT_NAME);
 	}
 
 	@Test
 	public void testActivateConceptsAndMigrate() {
 		ConceptActivationHelper activationHelper = new ConceptActivationHelper(repository);
 		ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
-		Concept maturityConcept = loadConceptFromPlugin(MATURITY_CONCEPT_NAME);
+		//Use explicit version numbers here because new concepts have core concept as dependency anyway
+		Concept maturityConcept = ConceptXmiLoader.loadConceptFromPlugin(MATURITY_CONCEPT_NAME + "/concept/concept_v1_1.xmi");
 		Concept testConceptOld = ConceptXmiLoader.loadConceptFromPlugin(TEST_CONCEPT_NAME + "/concept/concept_v1_0.xmi");
 		activationHelper.activateConcepts(Collections.singletonList(maturityConcept), editingDomain, new NullProgressMonitor());
 		activationHelper.activateConcepts(Collections.singletonList(testConceptOld), editingDomain, new NullProgressMonitor());
@@ -102,6 +105,7 @@ public class ConceptActivationHelperTest extends AConceptProjectTestCase {
 
 		ConceptActivationHelper activationHelper = new ConceptActivationHelper(repository);
 		ActiveConceptHelper conceptHelper = new ActiveConceptHelper(repository);
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CORE_CONCEPT_NAME));
 		Concept activeMaturityConcept = executeAsCommand(() -> loadConceptAndInstallToRepository(MATURITY_CONCEPT_NAME));
 		Concept activeTestConcept = executeAsCommand(() -> loadConceptAndInstallToRepository(TEST_CONCEPT_NAME));
 
