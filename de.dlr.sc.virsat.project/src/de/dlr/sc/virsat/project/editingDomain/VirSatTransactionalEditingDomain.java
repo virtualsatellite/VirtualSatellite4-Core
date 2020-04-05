@@ -274,7 +274,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 */
 	public void saveAll() {
-		saveAll(false);
+		saveAll(false, false);
 	}
 	
 	/**
@@ -348,7 +348,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param supressRemoveDanglingReferences set to true to make the virsat editing domain not remove dangling references during the save.
 	 * This is needed for the builders which should not incur any additional changes during the save or they will trigger themselves.
 	 */
-	public void saveAll(boolean supressRemoveDanglingReferences) {
+	public void saveAll(boolean supressRemoveDanglingReferences, boolean dvlmResourcesOnly) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 		
 		// First lock the workspace then lock the transaction
@@ -357,9 +357,12 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				this.writeExclusive(() -> {
 					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
 					for (Resource resource : resources) {
-						saveResource(resource, supressRemoveDanglingReferences);
-						virSatResourceSet.updateDiagnostic(resource);
-						virSatResourceSet.notifyDiagnosticListeners(resource);
+						boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
+						if (!dvlmResourcesOnly || (dvlmResourcesOnly && fileIsDVLMResource)) {
+							saveResource(resource, supressRemoveDanglingReferences);
+							virSatResourceSet.updateDiagnostic(resource);
+							virSatResourceSet.notifyDiagnosticListeners(resource);
+						}
 					}
 					
 					maintainDirtyResources();
