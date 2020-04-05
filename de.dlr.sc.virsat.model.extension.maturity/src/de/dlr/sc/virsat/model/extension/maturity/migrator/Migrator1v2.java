@@ -29,7 +29,6 @@ public class Migrator1v2 extends AMigrator1v2 implements IMigrator {
 
 	@Override
 	public void migrate(Concept concept, IMigrator previousMigrator) {
-		//TODO: Implement custom concept migration for version 1.2
 		super.migrate(concept, previousMigrator);
 	}
 }

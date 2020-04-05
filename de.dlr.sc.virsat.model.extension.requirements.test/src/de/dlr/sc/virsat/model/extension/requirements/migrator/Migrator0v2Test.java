@@ -40,11 +40,9 @@ public class Migrator0v2Test extends AMigrator0v2Test {
 		Repository repository = DVLMFactory.eINSTANCE.createRepository();
 		repository.getActiveConcepts().add(conceptMigrateFromRepository);
 		
-		//TODO: Setup test instances
 		
 		testMigrator0v2.migrate(conceptMigrateFrom, conceptMigrateFromRepository, conceptMigrateTo);
 		
-		//TODO: Check for correct migration
 	}
 	
 }
