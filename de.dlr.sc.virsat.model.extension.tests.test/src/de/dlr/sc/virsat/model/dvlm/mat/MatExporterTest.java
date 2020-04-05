@@ -51,6 +51,7 @@ public class MatExporterTest extends ATestConceptTestCase {
 		exporter = new MatExporter();
 		super.setUp();
 		addResourceSetAndRepository();
+		loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 		loadTestConcept();
 		tsei = new TestStructuralElement(testConcept);
 		sei = tsei.getStructuralElementInstance();
