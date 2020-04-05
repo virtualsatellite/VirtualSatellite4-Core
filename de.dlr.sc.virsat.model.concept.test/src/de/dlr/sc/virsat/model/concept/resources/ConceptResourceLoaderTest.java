@@ -26,7 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  */
 public class ConceptResourceLoaderTest {
 	
-	class TestResourceLoader extends ConceptResourceLoader {
+	static class TestResourceLoader extends ConceptResourceLoader {
 		@Override
 		protected URI getUriFromPath(String path) {
 			return URI.createPlatformPluginURI(path, true);
