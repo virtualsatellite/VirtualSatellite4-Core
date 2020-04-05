@@ -7,6 +7,7 @@ Bundle-Activator: de.dlr.sc.virsat.concept.unittest.util.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
+ de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
  org.junit
