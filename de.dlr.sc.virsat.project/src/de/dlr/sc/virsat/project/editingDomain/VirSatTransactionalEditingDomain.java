@@ -347,6 +347,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 * @param supressRemoveDanglingReferences set to true to make the virsat editing domain not remove dangling references during the save.
 	 * This is needed for the builders which should not incur any additional changes during the save or they will trigger themselves.
+	 * @param dvlmResourcesOnly if true only saves DVLM resources; if you want to save ALL resources make sure external changes are loaded as well
 	 */
 	public void saveAll(boolean supressRemoveDanglingReferences, boolean dvlmResourcesOnly) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
