@@ -238,10 +238,8 @@ public abstract class AMigrator implements IMigrator {
 	 * @return A set of new concept names
 	 */
 	public Set<String> getNewDependencies(Concept conceptCurrent, Concept conceptNext) {
-		Set<String> newDependencies = new HashSet<String>();
-		
 		//new dependencies are dependencies of newer concept minus old dependencies
-		newDependencies = ActiveConceptHelper.getConceptDependencies(conceptNext);
+		Set<String> newDependencies = ActiveConceptHelper.getConceptDependencies(conceptNext);
 		newDependencies.removeAll(ActiveConceptHelper.getConceptDependencies(conceptCurrent));
 		
 		return newDependencies;

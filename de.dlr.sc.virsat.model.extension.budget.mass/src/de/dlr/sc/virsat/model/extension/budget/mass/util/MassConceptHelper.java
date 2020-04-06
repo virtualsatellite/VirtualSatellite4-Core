@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.model.extension.budget.mass.util;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.budget.mass.model.AMassParameters;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipment;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummary;
 
@@ -26,7 +25,6 @@ public class MassConceptHelper {
 	public BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
 	public MassSummary massSummary;
 	public MassEquipment massEquipment;
-	public AMassParameters massParameters;	
 	//CHECKSTYLE:ON
 	
 	/**

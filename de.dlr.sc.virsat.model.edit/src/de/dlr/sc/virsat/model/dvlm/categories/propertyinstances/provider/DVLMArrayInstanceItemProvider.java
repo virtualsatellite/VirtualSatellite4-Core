@@ -38,19 +38,19 @@ public class DVLMArrayInstanceItemProvider extends ArrayInstanceItemProvider {
 		
 		if (object instanceof ArrayInstance) {
 			ArrayInstance arrayInstance = (ArrayInstance) object;
-			String arrayString = "";
+			StringBuilder arrayString = new StringBuilder();
 			
 			for (int i = 0; i < arrayInstance.getArrayInstances().size(); ++i) {
 				APropertyInstance pi = arrayInstance.getArrayInstances().get(i);
 				IItemLabelProvider itemLabelProvider = (IItemLabelProvider) adapterFactory.adapt(pi, IItemLabelProvider.class);
-				arrayString += itemLabelProvider.getText(pi);
+				arrayString.append(itemLabelProvider.getText(pi));
 				
 				if (i != arrayInstance.getArrayInstances().size() - 1) {
-					arrayString += ", ";
+					arrayString.append(", ");
 				}
 			}
 			
-			return arrayInstance.getType().getName() + ": {" + arrayString + "}";
+			return arrayInstance.getType().getName() + ": {" + arrayString.toString() + "}";
 		}
 		
 		return super.getText(object);

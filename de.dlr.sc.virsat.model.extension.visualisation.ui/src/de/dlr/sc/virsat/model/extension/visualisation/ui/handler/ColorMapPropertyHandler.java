@@ -47,7 +47,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 public class ColorMapPropertyHandler extends AbstractHandler implements IHandler {
 
 	private static final String COLOR_MAP_FILE_EXT_SPLIT = "_";
-	private static VtkClientView vtkViewer = null;
+	private VtkClientView vtkViewer = null;
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -63,7 +63,7 @@ public class ColorMapPropertyHandler extends AbstractHandler implements IHandler
 				
 				if (dialog.open() == Window.OK) {
 					String propertyFQN = dialog.getComparisonProjectPropertyFQN(); 
-					if (vsBaseProject != null && propertyFQN != null) {
+					if (propertyFQN != null) {
 						new ProgressMonitorDialog(shell).run(true, false, (pm) -> {
 							try {
 								Repository vsBaseRepo = VirSatResourceSet.getResourceSet(vsBaseProject.getWrappedProject()).getRepository();

@@ -103,26 +103,26 @@ public class SwtBotDebugHelper {
 			String format;
 			// Now print the infos depending on if there is a lock or not
 			if (threadLockInfo == null) {
-				format = "Thread <%1$-" + THREAD_NAME_COLUMN_WIDTH + "s> State <%2$-13s> @ %3$s\n";
+				format = "Thread <%1$-" + THREAD_NAME_COLUMN_WIDTH + "s> State <%2$-13s> @ %3$s%n";
 				stringBuilder.append(String.format(format, threadName, threadState, threadCodeLine));
 			} else {
 				String lockOwnerName = threadInfo.getLockOwnerName();
-				format = "Thread <%1$-" + THREAD_NAME_COLUMN_WIDTH + "s> State <%2$-13s> @ Lock <%3$s> Lock Owner<%4$s>: \n";
+				format = "Thread <%1$-" + THREAD_NAME_COLUMN_WIDTH + "s> State <%2$-13s> @ Lock <%3$s> Lock Owner<%4$s>: %n";
 				stringBuilder.append(String.format(format, threadName, threadState, threadLockClassName, lockOwnerName));
 			}
 	
 			for (StackTraceElement ste : threadStes) {
 				threadCodeLine = (threadStes.length == 0) ? "unknown" : ste.toString();
-				format = " -- Trace        : %1$s\n";
+				format = " -- Trace        : %1$s%n";
 				stringBuilder.append(String.format(format, threadCodeLine));
 			}
 			
 			MonitorInfo[] mis = threadInfo.getLockedMonitors();
 			LockInfo[] lis = threadInfo.getLockedSynchronizers();
 			if (mis.length > 0 || lis.length > 0) {
-				stringBuilder.append(" -- ---- Owned Synchronizers and Monitors ----\n");
+				stringBuilder.append(" -- ---- Owned Synchronizers and Monitors ----%n");
 				for (MonitorInfo mi : mis) {
-					format = " -- Owned Monitor      : %1$-20s @ %2$s\n";
+					format = " -- Owned Monitor      : %1$-20s @ %2$s%n";
 					String monitorName = mi.getClassName();
 					StackTraceElement miSte = mi.getLockedStackFrame();
 					String monitorCodeLine = (miSte == null) ? "unknown" : miSte.toString();
@@ -130,7 +130,7 @@ public class SwtBotDebugHelper {
 				}
 			
 				for (LockInfo li : lis) {
-					format = " -- Owned Synchronizer : %1$-20s\n";
+					format = " -- Owned Synchronizer : %1$-20s%n";
 					String lockName = li.getClassName();
 					stringBuilder.append(String.format(format, lockName));
 				}

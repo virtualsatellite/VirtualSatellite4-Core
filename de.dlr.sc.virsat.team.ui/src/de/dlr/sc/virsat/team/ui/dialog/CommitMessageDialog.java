@@ -65,8 +65,8 @@ public class CommitMessageDialog extends Dialog {
 	 * Sets the the available templates
 	 * @param templates the available templates
 	 */
-	public void setTemplates(String[] templates) {
-		this.templates = templates;
+	public void setTemplates(String... templates) {
+		this.templates = templates.clone();
 	}
 	
 	@Override

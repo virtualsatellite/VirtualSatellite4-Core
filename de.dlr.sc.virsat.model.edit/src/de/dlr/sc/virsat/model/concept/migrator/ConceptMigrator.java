@@ -76,7 +76,7 @@ public class ConceptMigrator {
 	 * @author muel_s8
 	 *
 	 */
-	private class ConfigurationMigratorDescriptor implements IMigratorDescriptor {
+	private static class ConfigurationMigratorDescriptor implements IMigratorDescriptor {
 		
 		private IConfigurationElement configurationElement;
 		

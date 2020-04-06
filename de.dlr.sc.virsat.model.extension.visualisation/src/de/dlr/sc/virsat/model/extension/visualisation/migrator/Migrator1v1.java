@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.visualisation.migrator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.Match;
@@ -51,11 +52,9 @@ public class Migrator1v1 extends AMigrator1v1 implements IMigrator {
 	public void migrate(Concept conceptPrevious, Concept conceptCurrent, Concept conceptNext) {
 		super.migrate(conceptCurrent, conceptCurrent, conceptNext);
 		
-		for (CategoryAssignment ca : mapCaToStringValue.keySet()) {
-			String value = mapCaToStringValue.get(ca);
-			
-			Visualisation visualisation = new Visualisation(ca);
-			visualisation.setShape(value);
+		for (Entry<CategoryAssignment, String> entry : mapCaToStringValue.entrySet()) {
+			Visualisation visualisation = new Visualisation(entry.getKey());
+			visualisation.setShape(entry.getValue());
 		}
 	}
 	

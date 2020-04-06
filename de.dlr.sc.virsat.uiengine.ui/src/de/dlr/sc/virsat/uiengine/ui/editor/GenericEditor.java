@@ -143,7 +143,6 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	// Members considering the Outline View
 	protected ComposedAdapterFactory contentOutlineAdapterFactory;
 	protected IContentOutlinePage contentOutlinePage;
-	protected IStatusLineManager contentOutlineStatusLineManager;
 	protected TreeViewer contentOutlineViewer;
 
 	protected List<PropertySheetPage> propertySheetPages = new ArrayList<PropertySheetPage>();
@@ -813,7 +812,6 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 				@Override
 				public void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager, IStatusLineManager statusLineManager) {
 					super.makeContributions(menuManager, toolBarManager, statusLineManager);
-					contentOutlineStatusLineManager = statusLineManager;
 				}
 
 				@Override

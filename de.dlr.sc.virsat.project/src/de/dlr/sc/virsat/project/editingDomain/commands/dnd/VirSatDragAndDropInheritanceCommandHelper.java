@@ -74,7 +74,6 @@ public class VirSatDragAndDropInheritanceCommandHelper {
 							return replaceCommand;
 						}
 					}
-				
 				// if there is no SEI found that can be replaced continue with adding the dependency
 				case ADD_INHERITANCE:
 					// None found, then add it

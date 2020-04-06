@@ -62,10 +62,11 @@ public class RepositoryConfigurationTest {
 				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_NAME_KEY + ":" + TEST_USER + "\n" 
 				+ RepositoryConfiguration.LOCAL_PATH_KEY + ":" + TEST_PATH + "\n" 
 				+ RepositoryConfiguration.FUNCTIONAL_ACCOUNT_PASSWORD_KEY + ":" + TEST_PASSWORD;
-		InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8));
 		
-		RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
-		assertEquals("Configuration properly loaded", testConfiguration, configuration);
+		try (InputStream inputStream = new ByteArrayInputStream(testConfigFileString.getBytes(StandardCharsets.UTF_8))) {
+			RepositoryConfiguration configuration = new RepositoryConfiguration(inputStream);
+			assertEquals("Configuration properly loaded", testConfiguration, configuration);
+		}
 	}
 	
 	@Test
@@ -75,20 +76,23 @@ public class RepositoryConfigurationTest {
 		// Prepare Temporary Folder
 		File tempPath =  VirSatFileUtils.createAutoDeleteTempDirectory("RepoConfigTest").toFile();
 		
-		OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME));
-		testConfiguration.saveProperties(outputStream);
+		try (OutputStream outputStream = new FileOutputStream(new File(tempPath, TEST_FILE_NAME))) {
+			testConfiguration.saveProperties(outputStream);
+		}
 		
-		InputStream inputStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
-		String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_PASSWORD));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
-		assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
+		try (InputStream inputStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME))) {
+			String stringFromInputStream = IOUtils.toString(inputStream, "UTF-8");
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_REMOTE));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_USER));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_PASSWORD));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_PROJECT));
+			assertTrue("Contains value", stringFromInputStream.contains(TEST_BACKEND));
+		}
 		
-		InputStream loadStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME));
-		RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
-		assertEquals("Saving and loading produces the same configuration", testConfiguration, importedConfiguration);
+		try (InputStream loadStream = new FileInputStream(new File(tempPath, TEST_FILE_NAME))) {
+			RepositoryConfiguration importedConfiguration = new RepositoryConfiguration(loadStream);
+			assertEquals("Saving and loading produces the same configuration", testConfiguration, importedConfiguration);
+		}
 	}
 	
 	@Test
