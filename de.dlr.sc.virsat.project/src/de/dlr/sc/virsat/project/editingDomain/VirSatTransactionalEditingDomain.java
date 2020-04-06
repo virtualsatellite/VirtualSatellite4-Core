@@ -274,7 +274,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 */
 	public void saveAll() {
-		saveAll(false, false);
+		saveAll(false, true);
 	}
 	
 	/**
