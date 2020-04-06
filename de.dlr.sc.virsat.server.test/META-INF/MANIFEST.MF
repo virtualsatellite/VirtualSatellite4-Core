@@ -16,6 +16,7 @@ Require-Bundle: de.dlr.sc.virsat.team,
  de.dlr.sc.virsat.concept.unittest.util;bundle-version="4.11.0"
 Export-Package: de.dlr.sc.virsat.server.test
 Automatic-Module-Name: de.dlr.sc.virsat.server.test
-Import-Package: de.dlr.sc.virsat.model.extension.tests.test,
+Import-Package: de.dlr.sc.virsat.model.concept.types,
+ de.dlr.sc.virsat.model.extension.tests.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.team.test

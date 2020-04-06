@@ -33,11 +33,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
@@ -355,6 +358,26 @@ public class ModelAPI {
 			if (currentSei instanceof StructuralElementInstance) {
 				if (((StructuralElementInstance) currentSei).getUuid().toString().equals(uuid)) {
 					return (new BeanStructuralElementInstanceFactory()).getInstanceFor((StructuralElementInstance) currentSei);
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Find a BeanCategoryAssignment from the given UUID.
+	 * @param uuid UUID of the BeanCA that is wanted
+	 * @return BeanCA with the given UUID; null if none was found
+	 * @throws CoreException 
+	 */
+	public IBeanCategoryAssignment findBeanCaByUuid(String uuid) throws CoreException {
+		List<StructuralElementInstance> rootSeis = getRepository().getRootEntities();
+		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
+		while (iterator.hasNext()) {
+			Object currentCA = iterator.next();
+			if (currentCA instanceof CategoryAssignment) {
+				if (((CategoryAssignment) currentCA).getUuid().toString().equals(uuid)) {
+					return (new BeanCategoryAssignmentFactory()).getInstanceFor((CategoryAssignment) currentCA);
 				}
 			}
 		}
