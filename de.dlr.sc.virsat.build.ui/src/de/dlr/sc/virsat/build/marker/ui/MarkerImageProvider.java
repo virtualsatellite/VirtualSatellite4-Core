@@ -175,16 +175,15 @@ public class MarkerImageProvider {
 	 * @return tooltip text
 	 */
 	protected String getToolTipForMarkers(Set<IMarker> markers) {
-		String toolTipText = "";
-
+		StringBuilder toolTipText = new StringBuilder();
 		for (IMarker marker : markers) {
 			String markerText = (String) marker.getAttribute(IMarker.MESSAGE, "");
-			if (!toolTipText.isEmpty() && !markerText.isEmpty()) {
-				toolTipText = toolTipText + "\r\n";
+			if (toolTipText.length() != 0 && !markerText.isEmpty()) {
+				toolTipText.append(System.lineSeparator());
 			}
-			toolTipText = toolTipText + markerText;
+			toolTipText.append(markerText);
 		}
 
-		return toolTipText;
+		return toolTipText.toString();
 	}
 }

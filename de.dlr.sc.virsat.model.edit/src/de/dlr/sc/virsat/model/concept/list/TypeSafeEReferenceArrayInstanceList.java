@@ -23,8 +23,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 
 public class TypeSafeEReferenceArrayInstanceList<ETYPE extends EObject> extends AArrayInstanceList<BeanPropertyEReference<ETYPE>> {
 
-	protected Class<ETYPE> eClass;
-
 	public TypeSafeEReferenceArrayInstanceList() {
 		super();
 	}

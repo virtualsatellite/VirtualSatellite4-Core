@@ -61,6 +61,7 @@ public class ProductStructureHelperTest extends AConceptProjectTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addEditingDomainAndRepository();
+		activateCoreConcept();
 		conceptPs = executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_PS));
 			
 		// get Structural elements

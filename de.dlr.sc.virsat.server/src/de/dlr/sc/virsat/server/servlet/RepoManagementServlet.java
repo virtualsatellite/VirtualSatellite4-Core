@@ -26,7 +26,7 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 		return new ServletContainer(resourceConfig);
 	}
 
-	private class RepoManagementRestApplication extends ResourceConfig {
+	private static class RepoManagementRestApplication extends ResourceConfig {
 		private RepoManagementRestApplication() {
 			register(ProjectManagementResource.class);
 		}

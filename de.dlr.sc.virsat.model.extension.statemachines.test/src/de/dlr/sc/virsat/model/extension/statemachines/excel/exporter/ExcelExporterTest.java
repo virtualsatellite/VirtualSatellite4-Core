@@ -35,7 +35,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.excel.AExcelStatIO;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Test Case for Exporting to Excel
@@ -44,11 +43,10 @@ public class ExcelExporterTest {
 
 	private static final String CONCEPT_ID_STATE_MACHINES = "de.dlr.sc.virsat.model.extension.statemachines";
 
-	VirSatTransactionalEditingDomain domain;
-	ABeanStructuralElementInstance aBeanSei;
-	StateMachine stateMaschine;
+	private ABeanStructuralElementInstance aBeanSei;
+	private StateMachine stateMaschine;
 
-	Concept conceptStateMachines;
+	private Concept conceptStateMachines;
 
 	@Before
 	public void setUp() throws CoreException {

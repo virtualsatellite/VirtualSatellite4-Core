@@ -286,7 +286,7 @@ public abstract class AUiSnippetEStructuralFeatureTable extends AUiEStructuralFe
 					
 					if (problemImage != null) { 
 						cell.setImage(problemImage);
-					} else if (eObject instanceof EObject) {
+					} else if (eObject != null) {
 						IItemLabelProvider labelProvider = (IItemLabelProvider) adapterFactory.adapt(eObject, IItemLabelProvider.class);
 						Image image = ExtendedImageRegistry.INSTANCE.getImage(labelProvider.getImage(eObject));
 						cell.setImage(image);

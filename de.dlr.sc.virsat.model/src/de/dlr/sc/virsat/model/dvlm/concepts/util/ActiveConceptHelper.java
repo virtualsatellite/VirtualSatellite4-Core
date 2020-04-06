@@ -428,7 +428,7 @@ public class ActiveConceptHelper {
 		}
 		
 		// Otherwise start looping over all potential types
-		if ((eObject != null) && (fqnTypeClazz != null) && (!fqnTypeClazz.isEmpty())) {
+		if ((fqnTypeClazz != null) && (!fqnTypeClazz.isEmpty())) {
 
 			for (EClass eObjectSuperType : eObjectClass.getEAllSuperTypes()) {
 				String fqnObjectSuperType = VirSatEcoreUtil.getFullQualifiedClassName(eObjectSuperType); 
