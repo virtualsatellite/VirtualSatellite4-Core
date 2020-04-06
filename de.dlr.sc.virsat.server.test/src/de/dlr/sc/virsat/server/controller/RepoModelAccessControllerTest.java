@@ -9,77 +9,55 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.controller;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
-import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
+import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 
-public class RepoModelAccessControllerTest extends AProjectTestCase {
+public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
-
 	private RepoModelAccessController repoModelAccessController;
-	
-	private StructuralElement se;
 	
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		
+		addEditingDomainAndRepository();
+
+		// Load the test concepts
+		executeAsCommand(() -> loadTestConcept());
 		
-		super.addEditingDomainAndRepository();
-		
-		se = StructuralFactory.eINSTANCE.createStructuralElement();
-		se.setName("TestRootComponent");
-		se.setIsRootStructuralElement(true);
-		
-		// TODO: extend ATestConceptTestCase?
-		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
-		concept.getStructuralElements().add(se);
-		
-		// Now add the repository but the repo is already within the transactional editing domain
-		// thus it needs to be added using the COmmand Framework and execute it in the editingdomain
-		
-		Command addConceptToRepo = AddCommand.create(editingDomain, repository, DVLMPackage.eINSTANCE.getRepository_ActiveConcepts(), concept);
-		editingDomain.getCommandStack().execute(addConceptToRepo);
-		
-		// Create a new StructuralElementInstance
-		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		rs.getStructuralElementInstanceResource(sei1);
-		
+		// Create a new TestStructuralElement with a StructuralElementInstance
+		TestStructuralElement tsei = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei1 = tsei.getStructuralElementInstance();
 		sei1.setName("TestSEI");
-		sei1.setType(se);
 		
-		// Now add the new SEI to the Rpeository
-		
-		Command addSeiToRepo = AddCommand.create(editingDomain, repository, DVLMPackage.eINSTANCE.getRepository_RootEntities(), sei1);
-		editingDomain.getCommandStack().execute(addSeiToRepo);
+		// Now add the new SEI to the Repository
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei1);
+		editingDomain.getCommandStack().execute(createAddSei);
 		
 		// Save all changes
 		rs.saveAllResources(new NullProgressMonitor());
 
-		// Create the controller with the modelapi instance
+		// Create the controller with the ModelAPI instance
 		repoModelAccessController = new RepoModelAccessController(editingDomain);
 	}
 	
 	@Test
 	public void testGetRootSeis() {
-		// TODO: Needs a valid concept to map the bean with the function of the modelApi
 		List<IBeanStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
+		assertEquals("One root sei found", 1, seis.size());
 		seis.get(0);
 	}
 }

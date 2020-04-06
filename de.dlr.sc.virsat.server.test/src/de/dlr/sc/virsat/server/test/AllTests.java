@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfigurationTest;
 import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
+import de.dlr.sc.virsat.server.controller.RepoModelAccessControllerTest;
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccessTest;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
@@ -37,7 +38,8 @@ import junit.framework.JUnit4TestAdapter;
 	WorkspaceUserContextTest.class,
 	ServerConfigurationTest.class,
 	ServerRepoHelperTest.class,
-	RepositoryConfigurationTest.class
+	RepositoryConfigurationTest.class,
+	RepoModelAccessControllerTest.class
 })
 
 public class AllTests {
