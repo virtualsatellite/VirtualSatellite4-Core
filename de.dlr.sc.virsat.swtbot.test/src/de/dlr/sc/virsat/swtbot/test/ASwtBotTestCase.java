@@ -105,12 +105,7 @@ public class ASwtBotTestCase {
 		conceptPs = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptTest =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId() + "/concept/concept.xmi");
 		
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Clsoe welcome screen if it exists"));
-		for (SWTBotView view : bot.views()) {
-			if (view.getTitle().equals("Welcome")) {
-				bot.viewByTitle("Welcome").close();
-			}
-		}
+		closeWelcomeScreen();
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Open perspective"));
 		openCorePerspective();
@@ -286,6 +281,18 @@ public class ASwtBotTestCase {
 	protected void closeDialog(String buttonName) {
 		bot.button(buttonName).click();
 		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Closes the initial Welcome Screen
+	 */
+	protected void closeWelcomeScreen() {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Close welcome screen if it exists"));
+		for (SWTBotView view : bot.views()) {
+			if (view.getTitle().equals("Welcome")) {
+				bot.viewByTitle("Welcome").close();
+			}
+		}
 	}
 	
 	/**
