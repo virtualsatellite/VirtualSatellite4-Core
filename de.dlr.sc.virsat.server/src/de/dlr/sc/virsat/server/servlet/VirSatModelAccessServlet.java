@@ -9,12 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.servlet;
 
+import java.util.Map.Entry;
+
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.repository.RepoRegistry;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.WorkspaceAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
@@ -34,6 +39,19 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		private ModelAccessRestApplication() {
 			register(AccessTestResource.class);
 			register(WorkspaceAccessResource.class);
+//			register(ModelAccessResource.class);
+			
+			// Iterate over the ServerRepositories and programmatically create a ModelAccessResource
+			// for each that has the name of the project as path
+			for (Entry<String, ServerRepository> repo : RepoRegistry.getInstance().getRepositories().entrySet()) {
+				String repoName = repo.getKey();
+				ModelAccessResource mar = new ModelAccessResource(repoName, repo.getValue());
+				register(mar);
+//				Resource.Builder resourceBuilder = Resource.builder(ModelAccessResource.class);
+//				resourceBuilder.path(ModelAccessResource.PATH + "/" + repoName);
+//				Resource resource = resourceBuilder.build();
+//				register(resource);
+			}
 		}
 	}
 }

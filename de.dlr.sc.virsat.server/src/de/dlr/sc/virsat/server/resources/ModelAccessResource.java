@@ -12,19 +12,31 @@ package de.dlr.sc.virsat.server.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import de.dlr.sc.virsat.server.dataaccess.Model;
+import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 
-@Path("/mar")
+@Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
 	
+	public static final String PATH = "/repository";
+	
+	private RepoModelAccessController controller;
+	
+	public ModelAccessResource(String repoName, ServerRepository serverRepository) {
+		// TODO: catch not checked out repo (no ed or no virsat project)
+		controller = new RepoModelAccessController(serverRepository.getEd());
+	}
+	
+//	public ModelAccessResource() {
+////		controller = new RepoModelAccessController();
+//	}
+	
 	@GET
-	@Path("/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Model hello(@PathParam("uuid") String uuid) {
-		return new Model(uuid);
+	public String hello() {
+		return "test";
 	}
 }
