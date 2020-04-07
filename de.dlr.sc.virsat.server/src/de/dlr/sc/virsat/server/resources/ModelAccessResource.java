@@ -12,10 +12,12 @@ package de.dlr.sc.virsat.server.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
+import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 @Path(ModelAccessResource.PATH)
@@ -25,18 +27,39 @@ public class ModelAccessResource {
 	
 	private RepoModelAccessController controller;
 	
-	public ModelAccessResource(String repoName, ServerRepository serverRepository) {
-		// TODO: catch not checked out repo (no ed or no virsat project)
-		controller = new RepoModelAccessController(serverRepository.getEd());
-	}
-	
-//	public ModelAccessResource() {
-////		controller = new RepoModelAccessController();
+//	public ModelAccessResource(String repoName, ServerRepository serverRepository) {
+//		// TODO: catch not checked out repo (no ed or no virsat project)
+//		controller = new RepoModelAccessController(serverRepository.getEd());
 //	}
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String hello() {
-		return "test";
+	public ModelAccessResource() { }
+	
+	@Path("{repoName}")
+	public ConcreteRepoAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
+		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
+		if (repo != null) {
+			return new ConcreteRepoAccessResource(repoName, repo);
+		}
+		
+		return null;
+	}
+	
+	
+	
+	public class ConcreteRepoAccessResource {
+		private RepoModelAccessController controller;
+		private String name;
+		
+		public ConcreteRepoAccessResource(String repoName, ServerRepository serverRepository) {
+			// TODO: catch not checked out repo (no ed or no virsat project)
+			name = repoName;
+			controller = new RepoModelAccessController(serverRepository.getEd());
+		}
+		
+		@GET
+		@Produces(MediaType.APPLICATION_JSON)
+		public String hello() {
+			return name;
+		}
 	}
 }
