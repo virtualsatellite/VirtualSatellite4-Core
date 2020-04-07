@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
+import de.dlr.sc.virsat.model.concept.generator.ConceptPreprocessor;
 import de.dlr.sc.virsat.model.concept.generator.IConceptGeneratorEnablement;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
@@ -33,12 +34,10 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementT
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateDeprecatedValidator;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
-import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGenerator2;
@@ -73,12 +72,6 @@ public class ConceptLanguageGenerator implements IGenerator2 {
       final IExtensionRegistry extensionPointRegistry = Platform.getExtensionRegistry();
       final IConfigurationElement[] configElements = extensionPointRegistry.getConfigurationElementsFor(this.ID_EXTENSION_POINT_GENERATOR);
       boolean generateCode = true;
-      EObject _get = resource.getContents().get(0);
-      Concept dataModel = ((Concept) _get);
-      String _replace = dataModel.getName().replace(".", "/");
-      String _plus = ("../src/" + _replace);
-      String _plus_1 = (_plus + "/validator/StructuralElementInstanceValidator.java");
-      final boolean hasDeprecatedValidator = fsa.isFile(_plus_1);
       for (final IConfigurationElement configElement : configElements) {
         {
           Object _createExecutableExtension = configElement.createExecutableExtension(this.ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS);
@@ -87,8 +80,13 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         }
       }
       if (generateCode) {
+        final ConceptPreprocessor conceptPreprocessor = new ConceptPreprocessor(fsa);
+        final Concept dataModel = conceptPreprocessor.process(resource);
+        String _replace = dataModel.getName().replace(".", "/");
+        String _plus = ("../src/" + _replace);
+        String _plus_1 = (_plus + "/validator/StructuralElementInstanceValidator.java");
+        final boolean hasDeprecatedValidator = fsa.isFile(_plus_1);
         new GenerateDmfCategories().serializeModel(dataModel, fsa);
-        new GenerateConceptXmi().serializeModel(dataModel, fsa);
         new GenerateConceptImages().serializeModel(dataModel, fsa);
         new GenerateCategoryBeans().serializeModel(dataModel, fsa);
         new GenerateStructuralElementBeans().serializeModel(dataModel, fsa);

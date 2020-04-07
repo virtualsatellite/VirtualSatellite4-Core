@@ -115,6 +115,7 @@ public abstract class AEquationBuilderTest extends AEquationTest {
 
 	@After
 	public void tearDown() throws Exception {
+		super.tearDown();
 		esResourceSet.getResources().clear();
 		resSet.getResources().clear();
 		project.delete(true, null);

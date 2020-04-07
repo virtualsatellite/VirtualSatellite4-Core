@@ -53,7 +53,7 @@ public class GenericEditorRegistry {
 	 * @author fisc_ph
 	 *
 	 */
-	private class RegisteredUiSection  {
+	private static class RegisteredUiSection  {
 		/**
 		 * Constructor which should be called with a ConfigurationElement from the Section Extension Point
 		 * @param regElement 
@@ -109,7 +109,7 @@ public class GenericEditorRegistry {
 	 * @author fisc_ph
 	 *
 	 */
-	private class RegisteredUiSnippet {
+	private static class RegisteredUiSnippet {
 		
 		private String id;
 		private String referencedSectionId;

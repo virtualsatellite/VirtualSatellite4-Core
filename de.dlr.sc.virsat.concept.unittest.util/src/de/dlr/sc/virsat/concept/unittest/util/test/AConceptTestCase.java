@@ -49,7 +49,6 @@ public abstract class AConceptTestCase {
 	
 	@Rule
 	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
-
 	
 	/**
 	 * Method to load the test concept

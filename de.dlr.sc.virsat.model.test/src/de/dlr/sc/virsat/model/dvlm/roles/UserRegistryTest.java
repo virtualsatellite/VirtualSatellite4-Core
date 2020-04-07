@@ -26,8 +26,8 @@ import org.junit.Test;
  */
 public class UserRegistryTest {
 
-	private final int userValidity = 255;
-	private final String userName = "Hans";
+	private static final int USER_VALIDITY = 255;
+	private static final String USER_NAME = "Hans";
 	
 	private UserRegistry ur = null;
 	
@@ -39,9 +39,8 @@ public class UserRegistryTest {
 	
 	@After
 	public void tearDown() throws Exception {
-		ur = null;
+		ur.setSuperUser(false);
 	}
-	
 	
 	@Test
 	public void testGetInstance() {
@@ -60,15 +59,15 @@ public class UserRegistryTest {
 	
 	@Test
 	public void testSetUser() {	
-		ur.setUser(userName, userValidity);
+		ur.setUser(USER_NAME, USER_VALIDITY);
 	
-		assertEquals(userName, ur.getUserName());
-		assertEquals(userValidity, ur.getUserValidity());					
+		assertEquals(USER_NAME, ur.getUserName());
+		assertEquals(USER_VALIDITY, ur.getUserValidity());					
 	}
 	
 	@Test
 	public void testIsSuperUser() {
-		ur.setUser(userName, userValidity);
+		ur.setUser(USER_NAME, USER_VALIDITY);
 	
 		//default case is that the user is no super user
 		assertFalse(ur.isSuperUser());

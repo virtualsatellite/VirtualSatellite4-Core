@@ -355,11 +355,10 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertEquals("Received the correct Value at Config Level, value is set to override", TEST_INT_VAL_2, copiedVpi3.getValue());
 	}
 	
-	@SuppressWarnings("unused")
 	@Test
 	public void testInheritOverrideReferencePropertyInstance() {
 		CategoryAssignment caRwIfeE1 = attachInterfaceEnd(seiEcRwI, "IfeRw1");
-		CategoryAssignment caRwIfeE2 = attachInterfaceEnd(seiEcRwI, "IfeRw2");
+		attachInterfaceEnd(seiEcRwI, "IfeRw2");
 		CategoryAssignment caRwIfeS = attachInterfaceEnd(seiEcRwI, "IfeRw2");
 		attachInterface(seiEcRwI, "If", caRwIfeS, caRwIfeE1, caIftMil);
 
@@ -368,10 +367,11 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		
 		//CHECKSTYLE:OFF
 		assertEquals("Now we should have exactly two CA in the RWI", 4, seiEo1RwI.getCategoryAssignments().size());
-		CategoryAssignment copiedCaRwIfeE1 = seiEo1RwI.getCategoryAssignments().get(0);
+		seiEo1RwI.getCategoryAssignments().get(0);
 		CategoryAssignment copiedCaRwIfeE2 = seiEo1RwI.getCategoryAssignments().get(1);
-		CategoryAssignment copiedCaRwIfeS = seiEo1RwI.getCategoryAssignments().get(2);
+		seiEo1RwI.getCategoryAssignments().get(2);
 		CategoryAssignment copiedCaRwIf = seiEo1RwI.getCategoryAssignments().get(3);
+		//CHECKSTYLE:ON
 
 		// Now we use the second RPI to bend the interface end to the second one
 		// we set the RPI to override so it will not inherit the original reference from its super SEI.
@@ -384,36 +384,32 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertFalse("Still no update needed", ic.needsUpdateStep(seiEo1RwI));
 		
 		assertEquals("The Reference should point to copied CA", copiedCaRwIfeE2, copiedRpiRwIfIfe2.getReference());
-		//CHECKSTYLE:ON
 	}
 	
-	@SuppressWarnings("unused")
 	@Test
 	public void testInheritOverrideReferencePropertyInstanceFromDifferentSei() {
 		CategoryAssignment caRwIfe1 = attachInterfaceEnd(seiEcRwI, "IfeRw1");
-		CategoryAssignment caRwIfe2 = attachInterfaceEnd(seiEcRwI, "IfeRw2");
+		attachInterfaceEnd(seiEcRwI, "IfeRw2");
 		CategoryAssignment caObcIfe2 = attachInterfaceEnd(seiEcObc, "IfeObcRwI");
 		attachInterface(seiEcObc, "If", caRwIfe1, caObcIfe2, caIftMil);
 
 		InheritanceCopier ic = new InheritanceCopier();
-		Set<CategoryAssignment> copiedEcRwICas = updateAssertSei(ic, seiEo1RwI);
+		updateAssertSei(ic, seiEo1RwI);
 		updateAssertSei(ic, seiEo1Obc);
 		
 		assertEquals("Now we should have two IFE in the RWI", 2, seiEo1RwI.getCategoryAssignments().size());
 		assertEquals("Now we should have an IFE and IF on in the OBC", 2, seiEo1Obc.getCategoryAssignments().size());
-		CategoryAssignment copiedEoRwIFe1 = seiEo1RwI.getCategoryAssignments().get(0);
 		CategoryAssignment copiedEoRwIFe2 = seiEo1RwI.getCategoryAssignments().get(1);
 
 		CategoryAssignment copiedEoObcIF = seiEo1Obc.getCategoryAssignments().get(1);
 
 		ReferencePropertyInstance copiedEoObcIfIfe1 = (ReferencePropertyInstance) copiedEoObcIF.getPropertyInstances().get(0);
-		ReferencePropertyInstance copiedEoObcIfIfe2 = (ReferencePropertyInstance) copiedEoObcIF.getPropertyInstances().get(1);
 		copiedEoObcIfIfe1.setOverride(true);
 		
 		copiedEoObcIfIfe1.setReference(copiedEoRwIFe2);
 		
 		assertFalse("Override set to true, no change needed", ic.needsUpdateStep(seiEo1RwI));
-		copiedEcRwICas = ic.updateStep(seiEo1RwI);
+		ic.updateStep(seiEo1RwI);
 		assertFalse("Still no update needed", ic.needsUpdateStep(seiEo1RwI));
 		
 		assertFalse("Override set to true, no change needed", ic.needsUpdateStep(seiEo1Obc));
@@ -764,8 +760,7 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		final String TEST_VAL_3 = "3456";
 		
 		CategoryAssignment caEdIfeRw = attachInterfaceEnd(seiEdRw, "RwIfe");
-		@SuppressWarnings("unused")
-		ValuePropertyInstance caVpiEdIfeRwSn = setInterfaceEndSn(caEdIfeRw, TEST_VAL_1);
+		setInterfaceEndSn(caEdIfeRw, TEST_VAL_1);
 		setInterfaceEndSn(caEdIfeRw, TEST_VAL_1);
 		
 		InheritanceCopier ic = new InheritanceCopier();
@@ -1043,14 +1038,13 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	}
 	
 	
-	@SuppressWarnings("unused")
 	@Test
 	public void testUpdateWithAssignedDisciplines() {
 		final String TEST_VAL_1 = "1234";
 		final int USER_VALIDTITY_LIFETIME_255_DAYS = 255;
 		
 		CategoryAssignment caEdRwIfe = attachInterfaceEnd(seiEdRw, "RwIfe");
-		ValuePropertyInstance vpiCaEdRwIfeSn = setInterfaceEndSn(caEdRwIfe, TEST_VAL_1);
+		setInterfaceEndSn(caEdRwIfe, TEST_VAL_1);
 		
 		InheritanceCopier ic = new InheritanceCopier();
 		
@@ -1344,7 +1338,7 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	
 		Equation eq = eqSection.getEquations().get(0);
 		
-		IEquationResult eqResult = (TypeInstanceResult) eq.getResult();
+		IEquationResult eqResult = eq.getResult();
 		assertTrue("Referenced result of equation of copied CA has correct type", eqResult instanceof TypeInstanceResult);
 		
 		TypeInstanceResult tir = (TypeInstanceResult) eqResult;

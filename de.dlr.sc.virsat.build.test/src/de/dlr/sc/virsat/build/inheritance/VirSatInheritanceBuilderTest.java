@@ -45,7 +45,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 	 * Inheritance Copier Stub
 	 *
 	 */
-	private class TestInheritanceCopier implements IInheritanceCopier {
+	private static class TestInheritanceCopier implements IInheritanceCopier {
 
 		boolean buildRepoGotCalled = false;
 		boolean buildSeiGotCalled = false;

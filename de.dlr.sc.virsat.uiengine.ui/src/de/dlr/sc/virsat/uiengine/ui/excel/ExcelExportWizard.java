@@ -80,14 +80,12 @@ public class ExcelExportWizard extends Wizard implements INewWizard {
 
 		// Do the actual exporting
 
-		FileOutputStream out;
 		File file = new File(path);
 		
-		try {
-			out = new FileOutputStream(file);
+		try (FileOutputStream out = new FileOutputStream(file)) {
 			ExcelExporter ee = new ExcelExporter();
 			ee.export(columnViewer, path, type);
-			out.close();
+			
 			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO",
 					"Successfully exported to excel file to " + file.getAbsolutePath()));
 		} catch (Exception e) {
@@ -96,6 +94,7 @@ public class ExcelExportWizard extends Wizard implements INewWizard {
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 			return false;
 		} 
+		
 		return true;
 	}
 	

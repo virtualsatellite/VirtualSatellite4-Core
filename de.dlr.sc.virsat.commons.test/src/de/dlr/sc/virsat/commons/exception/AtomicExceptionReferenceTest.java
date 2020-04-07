@@ -12,18 +12,18 @@ package de.dlr.sc.virsat.commons.exception;
 
 import org.junit.Test;
 
-public class AtomicExceptionTest {
+public class AtomicExceptionReferenceTest {
 
 	@Test
 	public void testThrowIfSet() throws Exception {
-		AtomicException<Exception> ae = new AtomicException<>();
+		AtomicExceptionReference<Exception> ae = new AtomicExceptionReference<>();
 		ae.throwIfSet();
 		// Test case is successful if it reaches this point
 	}
 	
 	@Test(expected = Exception.class)
 	public void testThrowIfSetWithException() throws Exception {
-		AtomicException<Exception> ae = new AtomicException<>();
+		AtomicExceptionReference<Exception> ae = new AtomicExceptionReference<>();
 		ae.set(new Exception());
 		ae.throwIfSet();
 	}

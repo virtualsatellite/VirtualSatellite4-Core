@@ -7,24 +7,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.external.lib.commons.commandLine;
+package de.dlr.sc.virsat.model.ext.core.ui.snippet;
+
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+
 
 /**
- * Abstract interface
- * @author fisc_ph
- *
+ * Auto Generated Class inheriting from Generator Gap Class
+ * 
+ * This class is generated once, do your changes here
+ * 
+ * 
+ * 
  */
-public interface ICommandLineHandler {
-
-	/**
-	 * method to run
-	 */
-	void run();
-
-	/**
-	 * The attribute
-	 * @param attribute attribute
-	 */
-	void setAttribute(String attribute);
-
+public class UiSnippetSectionGenericCategory extends AUiSnippetSectionGenericCategory implements IUiSnippet {
 }

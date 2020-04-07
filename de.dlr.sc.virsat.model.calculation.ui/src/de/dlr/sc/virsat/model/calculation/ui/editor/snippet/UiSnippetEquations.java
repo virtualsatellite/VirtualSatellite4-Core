@@ -292,7 +292,7 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 		if (model instanceof IEquationSectionContainer) {
 			IEquationSectionContainer container = (IEquationSectionContainer) model;
 			
-			if (container != null && container.getEquationSection() != null) {
+			if (container.getEquationSection() != null) {
 				// If our model has indeed equations, update them now but only consider here
 				// the local equations, equations that may set the values variables mentioned
 				// in the local equations should be updated by the builder

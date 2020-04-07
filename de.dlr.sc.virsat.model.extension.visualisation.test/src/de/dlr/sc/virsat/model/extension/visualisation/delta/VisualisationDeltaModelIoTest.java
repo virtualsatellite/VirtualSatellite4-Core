@@ -85,10 +85,6 @@ public class VisualisationDeltaModelIoTest {
 		CloneShapeDelta csd = new CloneShapeDelta(shape);
 		vdm.cloneShapeDeltas.add(csd);
 		
-		Shape shape2 = new Shape();
-		shape2.shape = VisualisationShape.BOX;
-		shape2.id = new VirSatUuid().toString();
-		
 		GhostShapeDelta gsd = new GhostShapeDelta("1234", shape);
 		vdm.ghostShapeDeltas.add(gsd);
 		

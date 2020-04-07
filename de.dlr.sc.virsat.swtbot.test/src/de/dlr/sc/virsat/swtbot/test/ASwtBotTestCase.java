@@ -625,7 +625,7 @@ public class ASwtBotTestCase {
 	 * This is useful when e.g. saving editors and making sure, everything in the files
 	 * and UI is updated.
 	 */
-	class WorkspaceBuilderInterlockedExecution {
+	static class WorkspaceBuilderInterlockedExecution {
 		
 		/**
 		 * The runnable in this method is interlocked with the execution of the workspace builders.

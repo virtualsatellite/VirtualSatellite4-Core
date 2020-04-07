@@ -608,7 +608,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	 * A resource set which allows null contents
 	 *
 	 */
-	class NullableResource extends ResourceImpl {
+	static class NullableResource extends ResourceImpl {
 		@SuppressWarnings("serial")
 		@Override
 		public EList<EObject> getContents() {
@@ -650,7 +650,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	/**
 	 * Test resource set that tracks updateDiagnostic call for testing resourceNullContentAdapter.
 	 */
-	class TestVirSatResourceSet extends VirSatResourceSet {
+	static class TestVirSatResourceSet extends VirSatResourceSet {
 	
 		protected TestVirSatResourceSet(IProject project) {
 			super(project);

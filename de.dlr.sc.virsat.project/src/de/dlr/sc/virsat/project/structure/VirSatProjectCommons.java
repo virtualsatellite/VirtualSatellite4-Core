@@ -449,7 +449,7 @@ public class VirSatProjectCommons {
 		// Create a .empty file, this is needed for e.g. git, otherwise folders are not persisted
 		IFile emptyFile = folder.getFile(FILENAME_EMPTY);
 		if (!emptyFile.exists()) {
-			emptyFile.create(new ByteArrayInputStream(new String("").getBytes()), true, pm);
+			emptyFile.create(new ByteArrayInputStream("".getBytes()), true, pm);
 			Activator.getDefault().getLog().log(
 				new Status(
 					Status.INFO,

@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.concept.generator.dmf;
 
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
@@ -142,7 +143,9 @@ public class GenerateDmfCategories {
         ecoreImporter.setModelLocation(this.platformPluginUriStringForEcoreModel);
         EList<Resource> _resources = this.ecoreModelResourceSet.getResources();
         for (final Resource resource : _resources) {
-          {
+          int _size = resource.getContents().size();
+          boolean _greaterThan = (_size > 0);
+          if (_greaterThan) {
             EObject _get = resource.getContents().get(0);
             final EPackage resourceEPackage = ((EPackage) _get);
             List<EPackage> _ePackages = ecoreImporter.getEPackages();
@@ -171,8 +174,8 @@ public class GenerateDmfCategories {
         };
         genModels.forEach(_function_1);
         ecoreImporter.prepareGenModelAndEPackages(monitor);
-        GenPackage _get = ecoreImporter.getGenModel().getGenPackages().get(0);
-        _get.setBasePackage(dataModel.getName());
+        GenPackage _get_1 = ecoreImporter.getGenModel().getGenPackages().get(0);
+        _get_1.setBasePackage(dataModel.getName());
         GenModel _genModel = ecoreImporter.getGenModel();
         String _modelDirectory = ecoreImporter.getGenModel().getModelDirectory();
         String _plus_2 = (_modelDirectory + "-dmf");
@@ -244,8 +247,6 @@ public class GenerateDmfCategories {
       EList<EClassifier> _eClassifiers = ePackage.getEClassifiers();
       _eClassifiers.add(catEClass);
       catEClass.setName(it.getName());
-      EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
-      _eSuperTypes.add(this.dvlmDObject);
       catEClass.setAbstract(it.isIsAbstract());
       final Consumer<AProperty> _function_1 = (AProperty it_1) -> {
         final EStructuralFeature propEStructuralFeature = new PropertydefinitionsSwitch<EStructuralFeature>() {
@@ -355,6 +356,11 @@ public class GenerateDmfCategories {
         EList<EClass> _eSuperTypes = catEClass.getESuperTypes();
         _eSuperTypes.add(referencedEClass);
       }
+      boolean _isEmpty = catEClass.getESuperTypes().isEmpty();
+      if (_isEmpty) {
+        EList<EClass> _eSuperTypes_1 = catEClass.getESuperTypes();
+        _eSuperTypes_1.add(this.dvlmDObject);
+      }
       final Consumer<AProperty> _function_2 = (AProperty it_1) -> {
         new PropertydefinitionsSwitch<EStructuralFeature>() {
           @Override
@@ -438,10 +444,15 @@ public class GenerateDmfCategories {
    * file. This is needed to create correct references in one Ecore based category model to another one
    */
   private EClass findTypeDefinitionInEcoreResource(final ATypeDefinition ap) {
-    final URI rpUri = ap.eResource().getURI();
-    final String ecorePath = rpUri.toString().replace(".concept", ".ecore");
-    final URI ecoreUri = URI.createURI(ecorePath);
-    final Resource ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
+    EObject _get = ap.eResource().getContents().get(0);
+    Concept concept = ((Concept) _get);
+    URI ecoreUri = ConceptResourceLoader.getInstance().getConceptDMFResourceUri(concept.getName());
+    if ((ecoreUri == null)) {
+      final URI rpUri = ap.eResource().getURI();
+      final String ecorePath = rpUri.toString().replace(".concept", ".ecore").replace(".xmi", ".ecore");
+      ecoreUri = URI.createURI(ecorePath);
+    }
+    Resource ecoreResource = this.ecoreModelResourceSet.getResource(ecoreUri, true);
     final Function1<Object, Boolean> _function = (Object it) -> {
       if ((it instanceof EClass)) {
         final EClass eClass = ((EClass) it);

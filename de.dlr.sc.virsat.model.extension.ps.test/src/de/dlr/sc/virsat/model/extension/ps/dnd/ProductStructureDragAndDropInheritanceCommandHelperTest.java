@@ -48,6 +48,7 @@ public class ProductStructureDragAndDropInheritanceCommandHelperTest extends ACo
 	public void setUp() throws CoreException {
 		super.setUp();
 		addEditingDomainAndRepository();
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_CORE));
 		conceptPs = executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_PS));
 		
 		ct = new ConfigurationTree(conceptPs);

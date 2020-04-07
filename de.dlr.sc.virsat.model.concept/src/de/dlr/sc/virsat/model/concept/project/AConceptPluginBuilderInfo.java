@@ -47,7 +47,7 @@ public abstract class AConceptPluginBuilderInfo implements IProjectBuilderInfo {
 	 * @author fisc_ph
 	 *
 	 */
-	protected class FileDescriptor implements IFileDescription {
+	protected static class FileDescriptor implements IFileDescription {
 
 		/**
 		 * Constructor to set the file its content and path
