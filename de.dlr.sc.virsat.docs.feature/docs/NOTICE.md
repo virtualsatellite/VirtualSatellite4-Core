@@ -56,6 +56,9 @@ ZeroMQ 4.1.4 and Jzmq 3.1.0
 
  * License: GNU Lesser General Public Licence (LGPL), 3
 
+## DLR logo and images 
+
+(c) Copyright by DLR (German Aerospace Center) Institute for Software Technology 2020. The DLR logo, CEF logo and DLR images are under copyright of DLR (German Aerospace Center), <https://www.dlr.de/>. The DLR logo, CEF Logo and images cannot be altered or used without DLR&apos;s permission. DLR logo and images are provided for the use under the following conditions <https://www.dlr.de/EN/Service/Imprint/imprint_node.html>.  
 
 ## Cryptography
 

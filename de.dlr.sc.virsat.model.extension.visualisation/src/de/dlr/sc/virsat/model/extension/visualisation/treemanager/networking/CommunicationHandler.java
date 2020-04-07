@@ -116,8 +116,7 @@ public abstract class CommunicationHandler extends Thread {
 	 */
 	protected byte[] serializeProtobufMessage(Builder protobufBuilder) {
 		MessageLite message = protobufBuilder.build();
-		byte[] serializedMessage = new byte[message.getSerializedSize()];
-		serializedMessage = message.toByteArray();
+		byte[] serializedMessage = message.toByteArray();
 		return serializedMessage;
 	}
 	

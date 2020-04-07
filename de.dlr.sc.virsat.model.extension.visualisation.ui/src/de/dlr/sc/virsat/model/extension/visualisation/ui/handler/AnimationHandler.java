@@ -42,7 +42,7 @@ public class AnimationHandler extends AbstractHandler implements IHandler {
 
 	private List<VirSatProjectResource> listProjectSelected = null;
 	private List<VisualisationDeltaModel> listDeltaModel = null;
-    private static VtkClientView vtkViewer = null;
+    private VtkClientView vtkViewer = null;
 	
 	private static final int START_INDEX = 1; 
 	

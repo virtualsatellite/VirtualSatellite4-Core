@@ -44,13 +44,12 @@ public class StructuralElementInstanceHelper {
 	 * 
 	 * @return the structural element instance as the root
 	 */
-	public  ICategoryAssignmentContainer getRoot() {
-
-		StructuralElementInstance eContainer = sei.getParent();
-		while ((eContainer != null) && (eContainer.getParent() != null) && (eContainer.getParent() instanceof StructuralElementInstance)) {
-			eContainer = eContainer.getParent();
+	public ICategoryAssignmentContainer getRoot() {
+		StructuralElementInstance root = sei;
+		while (root.getParent() != null) {
+			root = root.getParent();
 		}	
-		return (ICategoryAssignmentContainer) ((eContainer ==  null) ? sei : eContainer);
+		return root;
 	}
 	
 	/**

@@ -107,7 +107,7 @@ public class NativeLibLoader {
 		sBuilder.append("---------------------------------------------\n");
 		libraryLoadResult.forEach((libName, status) -> {
 			String shortLibName = libName.replaceFirst(absolutePluginPath, " ");
-			sBuilder.append((String.format("%-60s", shortLibName) +  String.format("%10s\n", status)).replace(' ', '.'));
+			sBuilder.append((String.format("%-60s", shortLibName) +  String.format("%10s%n", status)).replace(' ', '.'));
 		});
 		sBuilder.append("---------------------------------------------\n");
 		sBuilder.append("End of Report\n");

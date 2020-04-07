@@ -52,6 +52,7 @@ public class ModelAPITest extends ATestConceptTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addResourceSetAndRepository();
+		loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 		loadTestConcept();
 
 		// Load the concept to create the test object
@@ -74,8 +75,8 @@ public class ModelAPITest extends ATestConceptTestCase {
 		rs.realoadAll();
 		repository = rs.getRepository();
 		virSatUnitManagement = rs.getUnitManagement();
-		maturityConcept = repository.getActiveConcepts().get(0);
-		testConcept = repository.getActiveConcepts().get(1);
+		maturityConcept = repository.getActiveConcepts().get(1);
+		testConcept = repository.getActiveConcepts().get(2);
 	}
 
 	@Test

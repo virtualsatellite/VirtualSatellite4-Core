@@ -209,7 +209,7 @@ public class IntroPart implements IIntroPart {
 	 * @author scha_vo
 	 *
 	 */
-	class MyMouseListener implements MouseListener {
+	static class MyMouseListener implements MouseListener {
 		
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {

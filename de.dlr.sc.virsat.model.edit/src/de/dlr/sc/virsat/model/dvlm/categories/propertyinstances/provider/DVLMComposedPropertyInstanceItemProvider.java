@@ -38,23 +38,24 @@ public class DVLMComposedPropertyInstanceItemProvider extends ComposedPropertyIn
 			ComposedPropertyInstance cpi = (ComposedPropertyInstance) object;
 			CategoryAssignment ca = cpi.getTypeInstance();
 			
-			String res = ca.getName();
+			StringBuilder res = new StringBuilder();
+			res.append(ca.getName());
 			
 			if (!ca.getPropertyInstances().isEmpty()) {
-				res += ": ";
+				res.append(": ");
 			}
 			
 			for (int i = 0; i < ca.getPropertyInstances().size(); ++i) {
 				APropertyInstance pi = ca.getPropertyInstances().get(i);
 				IItemLabelProvider propertyLabelProvider = (IItemLabelProvider) adapterFactory.adapt(pi, IItemLabelProvider.class);
-				res += propertyLabelProvider.getText(pi);
-				
+				res.append(propertyLabelProvider.getText(pi));
+
 				if (i != ca.getPropertyInstances().size() - 1) {
-					res += ", ";
+					res.append(", ");
 				}
 			}
 			
-			return res;
+			return res.toString();
 		}
 		
 		return super.getText(object);

@@ -29,7 +29,7 @@ public class SwtThreadWatcher extends TestWatcher {
 		
 		StringBuilder failedTestMessage = new StringBuilder();
 		failedTestMessage.append("----------------------------------------------------\n");
-		failedTestMessage.append(String.format("Starting: %s.%s\n", testClass, testMethod));
+		failedTestMessage.append(String.format("Starting: %s.%s%n", testClass, testMethod));
 		failedTestMessage.append("----------------------------------------------------\n");
 		failedTestMessage.append("\n");
 		failedTestMessage.append(SwtBotDebugHelper.printListOfThreads());
@@ -44,7 +44,7 @@ public class SwtThreadWatcher extends TestWatcher {
 		
 		StringBuilder failedTestMessage = new StringBuilder();
 		failedTestMessage.append("----------------------------------------------------\n");
-		failedTestMessage.append(String.format("Finished: %s.%s\n", testClass, testMethod));
+		failedTestMessage.append(String.format("Finished: %s.%s%n", testClass, testMethod));
 		failedTestMessage.append("----------------------------------------------------\n");
 		failedTestMessage.append("\n");
 		failedTestMessage.append(SwtBotDebugHelper.printListOfThreads());
@@ -62,10 +62,10 @@ public class SwtThreadWatcher extends TestWatcher {
 		failedTestMessage.append("           Thread Table for failed test\n");
 		failedTestMessage.append("----------------------------------------------------\n");
 		failedTestMessage.append("\n");
-		failedTestMessage.append(String.format("Failed Test Case: %s.%s\n", testClass, testMethod));
-		failedTestMessage.append(String.format("Reported Reason : %s\n", e.getMessage()));
+		failedTestMessage.append(String.format("Failed Test Case: %s.%s%n", testClass, testMethod));
+		failedTestMessage.append(String.format("Reported Reason : %s%n", e.getMessage()));
 		for (StackTraceElement ste : e.getStackTrace()) {
-			failedTestMessage.append(String.format(" -- Exception Trace: %s\n", ste.toString()));
+			failedTestMessage.append(String.format(" -- Exception Trace: %s%n", ste.toString()));
 		}
 		failedTestMessage.append("\n");
 		failedTestMessage.append(SwtBotDebugHelper.printListOfThreads());

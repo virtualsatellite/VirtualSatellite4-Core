@@ -140,7 +140,7 @@ public class VirSatGitAccess {
 		return absolutePath;
 	}
 	
-	protected class PathException extends IOException {
+	protected static class PathException extends IOException {
 
 		private static final long serialVersionUID = -450544137199653642L;
 

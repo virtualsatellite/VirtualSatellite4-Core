@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -30,6 +31,8 @@ public class RepositoryConfiguration {
 	public static final String REMOTE_URL_KEY = "repository.remoteURI";
 	public static final String FUNCTIONAL_ACCOUNT_NAME_KEY = "repository.credentials.username";
 	public static final String FUNCTIONAL_ACCOUNT_PASSWORD_KEY = "repository.credentials.password";
+	
+	public RepositoryConfiguration() { }
 	
 	/**
 	 * Sets up a property file describing a project repository relation
@@ -68,12 +71,7 @@ public class RepositoryConfiguration {
 	 * @param repositoryBackend the repositoryConfiguration to be used to update the current one
 	 */
 	public void update(RepositoryConfiguration repositoryBackend) {
-		setProjectName(repositoryBackend.getProjectName());
-		setLocalPath(repositoryBackend.getLocalPath());
-		setRemoteUri(repositoryBackend.getRemoteUri());
-		setBackend(repositoryBackend.getBackend());
-		setFunctionalAccountName(repositoryBackend.getFunctionalAccountName());
-		setFunctionalAccountPassword(repositoryBackend.getFunctionalAccountPassword());
+		this.properties.putAll(repositoryBackend.properties);
 	}
 	
 	/**
@@ -97,7 +95,7 @@ public class RepositoryConfiguration {
 	}
 
 	public void setRemoteUri(String remoteUri) {
-		properties.setProperty(REMOTE_URL_KEY, remoteUri.toString());
+		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
 	public VersionControlSystem getBackend() {
@@ -138,5 +136,36 @@ public class RepositoryConfiguration {
 
 	public void setLocalPath(String localPath) {
 		properties.setProperty(LOCAL_PATH_KEY, localPath);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RepositoryConfiguration other = (RepositoryConfiguration) obj;
+		return Objects.equals(properties, other.properties);
+	}
+	
+	public boolean isValid() {
+		return getProjectName() != null
+				&& !getProjectName().isEmpty()
+				&& getRemoteUri() != null
+				&& !getRemoteUri().isEmpty()
+				&& getBackend() != null;
 	}
 }

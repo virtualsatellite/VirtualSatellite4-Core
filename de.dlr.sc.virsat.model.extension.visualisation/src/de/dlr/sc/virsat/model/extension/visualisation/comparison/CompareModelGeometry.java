@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.visualisation.comparison;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -83,8 +84,9 @@ public class CompareModelGeometry extends ACompareModelAlgorithm {
 
 		subMonitor.subTask("Find differences from base to compare model");
 		// Now compare and update the DeltaModel
-		for (String key : mapOfBaseVisCA.keySet()) {
-			Visualisation baseVisualisation = new Visualisation(mapOfBaseVisCA.get(key));
+		for (Entry<String, CategoryAssignment> entry : mapOfBaseVisCA.entrySet()) {
+			String key = entry.getKey();
+			Visualisation baseVisualisation = new Visualisation(entry.getValue());
 			if (mapOfCompareVisCA.containsKey(key)) {
 				Visualisation compareVisualisation = new Visualisation(mapOfCompareVisCA.get(key));
 				
@@ -103,10 +105,11 @@ public class CompareModelGeometry extends ACompareModelAlgorithm {
 				vdm.colorDeltas.put(colorDelta.shapeId, colorDelta);
 			}
 		}
-		for (String key : mapOfCompareVisCA.keySet()) {
+		for (Entry<String, CategoryAssignment> entry : mapOfCompareVisCA.entrySet()) {
+			String key = entry.getKey();
 			if (!mapOfBaseVisCA.containsKey(key)) {
 				// removed geo
-				Visualisation compareVis = new Visualisation(mapOfCompareVisCA.get(key));
+				Visualisation compareVis = new Visualisation(entry.getValue());
 				String shapeGeometryString = compareVis.getShape();
 				VisualisationShape shapeGeometry = VisualisationShape.valueOf(shapeGeometryString); 
 				Shape shape = new Shape(key, compareVis.getGeometryFile(), 
