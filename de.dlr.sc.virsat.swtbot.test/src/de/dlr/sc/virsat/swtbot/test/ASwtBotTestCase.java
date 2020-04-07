@@ -290,7 +290,7 @@ public class ASwtBotTestCase {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Close welcome screen if it exists"));
 		for (SWTBotView view : bot.views()) {
 			if (view.getTitle().equals("Welcome")) {
-				bot.viewByTitle("Welcome").close();
+				view.close();
 			}
 		}
 	}
@@ -320,6 +320,8 @@ public class ASwtBotTestCase {
 	 * @throws  
 	 */
 	protected void addAllConcepts(String projectName) {
+		waitForEditingDomainAndUiThread();
+		bot.viewById("de.dlr.sc.virsat.project.ui.navigator.view").setFocus();
 		waitForEditingDomainAndUiThread();
 		SWTBotTreeItem projectItem = bot.tree().expandNode(projectName);
 		waitForEditingDomainAndUiThread();
