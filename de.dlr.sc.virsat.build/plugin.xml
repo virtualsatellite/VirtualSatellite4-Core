@@ -21,7 +21,7 @@
        </builder>
     </extension>
     <extension
-          point="de.dlr.sc.virsat.build.DvlmValidator">
+          point="de.dlr.sc.virsat.model.DvlmValidator">
        <dvlmValidator>
           <repoValidator
                 class="de.dlr.sc.virsat.build.validator.core.DvlmRepositoryUniqeNameValidator"
@@ -30,7 +30,7 @@
        </dvlmValidator>
     </extension>
     <extension
-          point="de.dlr.sc.virsat.build.DvlmValidator">
+          point="de.dlr.sc.virsat.model.DvlmValidator">
        <dvlmValidator>
           <seiValidator
                 class="de.dlr.sc.virsat.build.validator.core.DvlmSEIsUniqeNameValidator"
@@ -39,7 +39,7 @@
        </dvlmValidator>
     </extension>
     <extension
-          point="de.dlr.sc.virsat.build.DvlmValidator">
+          point="de.dlr.sc.virsat.model.DvlmValidator">
        <dvlmValidator>
           <seiValidator
                 class="de.dlr.sc.virsat.build.validator.core.DvlmNamingConventionValidator"
@@ -48,7 +48,7 @@
        </dvlmValidator>
     </extension>
     <extension
-          point="de.dlr.sc.virsat.build.DvlmValidator">
+          point="de.dlr.sc.virsat.model.DvlmValidator">
        <dvlmValidator>
           <seiValidator
                 class="de.dlr.sc.virsat.build.validator.core.DvlmResolvedStructuralElementInstanceValidator"
@@ -57,7 +57,7 @@
        </dvlmValidator>
     </extension>
     <extension
-          point="de.dlr.sc.virsat.build.DvlmValidator">
+          point="de.dlr.sc.virsat.model.DvlmValidator">
        <dvlmValidator>
           <repoValidator
                 class="de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidator"
@@ -66,7 +66,7 @@
        </dvlmValidator>
     </extension>
      <extension
-           point="de.dlr.sc.virsat.build.DvlmValidator">
+           point="de.dlr.sc.virsat.model.DvlmValidator">
         <dvlmValidator>
            <repoValidator
                  class="de.dlr.sc.virsat.build.validator.core.DvlmRepositoryDefaultQuantityKindValidator"
@@ -75,7 +75,7 @@
         </dvlmValidator>
      </extension>
      <extension
-           point="de.dlr.sc.virsat.build.DvlmValidator">
+           point="de.dlr.sc.virsat.model.DvlmValidator">
         <dvlmValidator>
            <seiValidator
                  class="de.dlr.sc.virsat.build.validator.core.DvlmMissingResourcePropertyValidator"
