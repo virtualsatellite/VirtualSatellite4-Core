@@ -10,14 +10,18 @@
 package de.dlr.sc.virsat.server.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.apps.api.external.ModelAPI;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
@@ -50,12 +54,17 @@ public class RepoModelAccessController {
 
 	}
 
-	public List<IBeanStructuralElementInstance> getRootSeis() {
-		return modelApi.getRootSeis(IBeanStructuralElementInstance.class);
+	public List<FlattenedStructuralElementInstance> getRootSeis() {
+		List<IBeanStructuralElementInstance> beans = modelApi.getRootSeis(IBeanStructuralElementInstance.class);
+		List<FlattenedStructuralElementInstance> flattenedSeis = new ArrayList<FlattenedStructuralElementInstance>();
+		for (IBeanStructuralElementInstance bean : beans) {
+			flattenedSeis.add(bean.flatten());
+		}
+		return flattenedSeis;
 	}
 	
-	public IBeanStructuralElementInstance getSei(String uuid) throws CoreException {
-		return modelApi.findBeanSeiByUuid(uuid);
+	public FlattenedStructuralElementInstance getSei(String uuid) throws CoreException {
+		return modelApi.findBeanSeiByUuid(uuid).flatten();
 	}
 	
 	/**
@@ -64,13 +73,17 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 * @throws IOException
 	 */
-	public void putSei(IBeanStructuralElementInstance newSei) throws CoreException, IOException {
+	public void putSei(FlattenedStructuralElementInstance flatSei) throws CoreException, IOException {
 		// Update the sei with the same uuid or create it
-		IBeanStructuralElementInstance beanSei = modelApi.findBeanSeiByUuid(newSei.getUuid());
+		StructuralElementInstance sei = flatSei.unflatten();
+		IBeanStructuralElementInstance beanSei = modelApi.findBeanSeiByUuid(sei.getUuid().toString());
 		if (beanSei != null) {
 			modelApi.deleteSeiAndStorage(beanSei);
+		} else {
+			beanSei = createBeanInstance(sei);
 		}
-		modelApi.addRootSei(newSei);
+		beanSei.setStructuralElementInstance(sei);
+		modelApi.addRootSei(beanSei);
 		modelApi.performInheritance();
 	}
 	
@@ -82,18 +95,15 @@ public class RepoModelAccessController {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public String postSei(IBeanStructuralElementInstance beanSei) throws CoreException, InstantiationException, IllegalAccessException {
+	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException, InstantiationException, IllegalAccessException {
 		// TODO: fails if the sei is already in the repo, so create a new sei and copy the values / clone it ?
+		StructuralElementInstance sei = flatSei.unflatten();
 		
-		// Create new sei instance		
-		IBeanStructuralElementInstance newBeanSei = beanSei.getClass().newInstance();
-		
-		// Copy the sei and change its uuid
+		// Change the uuid of the sei and create a new bean for it
 		VirSatUuid uuid = new VirSatUuid();
-		newBeanSei.setStructuralElementInstance(beanSei.getStructuralElementInstance());
-		newBeanSei.getStructuralElementInstance().setUuid(uuid);
+		IBeanStructuralElementInstance beanSei = createBeanInstance(sei);
 		
-		// Add the sei to the model
+		// Add the bean to the model
 		modelApi.addRootSei(beanSei);
 		modelApi.performInheritance();
 		
@@ -109,5 +119,9 @@ public class RepoModelAccessController {
 	
 	public IBeanCategoryAssignment getCa(String uuid) throws CoreException {
 		return modelApi.findBeanCaByUuid(uuid);
+	}
+
+	private IBeanStructuralElementInstance createBeanInstance(StructuralElementInstance currentSei) throws CoreException {
+		return (new BeanStructuralElementInstanceFactory()).getInstanceFor((StructuralElementInstance) currentSei);
 	}
 }

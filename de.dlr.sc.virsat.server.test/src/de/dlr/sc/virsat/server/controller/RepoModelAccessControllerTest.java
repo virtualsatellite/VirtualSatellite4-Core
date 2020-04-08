@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.server.controller;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -24,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
@@ -75,15 +78,19 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		TestStructuralElement testSei2 = createRootSei("RootSei2");
 		rs.saveAllResources(new NullProgressMonitor());
 		
+		FlattenedStructuralElementInstance flatTestSei1 = testSei1.flatten();
+		FlattenedStructuralElementInstance flatTestSei2 = testSei2.flatten();
+		
 		// Get the root seis
-		List<IBeanStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
+		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
 		assertEquals("Two root seis found", 2, seis.size());
-		assertThat("Correct elements", seis, hasItems(testSei1, testSei2));
+		assertThat("Correct sei found", flatTestSei1, is(samePropertyValuesAs(seis.get(0))));
+		assertThat("Correct sei found", flatTestSei2, is(samePropertyValuesAs(seis.get(1))));
 		
 		// Get one sei by uuid
 		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
-		IBeanStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
-		assertEquals("Right sei found", testSei1, seiByUuid);
+		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
+		assertThat("Right sei found", flatTestSei1, is(samePropertyValuesAs(seiByUuid)));
 		
 		// Delete one sei
 		// TODO: remove command and handle transactions in the controller/modelapi
@@ -95,14 +102,14 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 			}
 		});
 		seis = repoModelAccessController.getRootSeis();
-		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());
+		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());	
 		
 		// Post sei
 		String oldUuid = testSei1.getStructuralElementInstance().getUuid().toString();
 		// TODO: remove command and handle transactions in the controller/modelapi
 		String newUuid = executeAsCommand(() -> {
 			try {
-				return repoModelAccessController.postSei(testSei1);
+				return repoModelAccessController.postSei(flatTestSei1);
 			} catch (CoreException | InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -117,12 +124,12 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		executeAsCommand(() -> {
 			try {
 				testSei1.setName(newName);
-				repoModelAccessController.putSei(testSei1);
+				repoModelAccessController.putSei(flatTestSei1);
 			} catch (CoreException | IOException e) {
 				e.printStackTrace();
 			}
 		});
-		assertEquals("Name changed but same uuid", newName, repoModelAccessController.getSei(newUuid).getName());
+		assertEquals("Name changed but same uuid", newName, repoModelAccessController.getSei(newUuid).unflatten().getName());
 	}
 	
 	@Test

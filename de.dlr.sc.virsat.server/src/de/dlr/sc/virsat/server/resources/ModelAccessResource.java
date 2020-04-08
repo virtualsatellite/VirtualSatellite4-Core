@@ -18,7 +18,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
@@ -68,7 +68,7 @@ public class ModelAccessResource {
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
-		public List<IBeanStructuralElementInstance> getRootSeis() {
+		public List<FlattenedStructuralElementInstance> getRootSeis() {
 			return controller.getRootSeis();
 		}
 		
