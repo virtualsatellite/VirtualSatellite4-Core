@@ -10,12 +10,15 @@
 package de.dlr.sc.virsat.server.resources;
 
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
@@ -35,22 +38,22 @@ public class ModelAccessResource {
 	public ModelAccessResource() { }
 	
 	@Path("{repoName}")
-	public ConcreteRepoAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
+	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
-			return new ConcreteRepoAccessResource(repoName, repo);
+			return new RepoModelAccessResource(repoName, repo);
 		}
 		
 		return null;
 	}
 	
+	public static final String ROOT_SEIS = "rootSeis";
 	
-	
-	public class ConcreteRepoAccessResource {
+	public class RepoModelAccessResource {
 		private RepoModelAccessController controller;
 		private String name;
 		
-		public ConcreteRepoAccessResource(String repoName, ServerRepository serverRepository) {
+		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {
 			// TODO: catch not checked out repo (no ed or no virsat project)
 			name = repoName;
 			controller = new RepoModelAccessController(serverRepository.getEd());
@@ -61,5 +64,13 @@ public class ModelAccessResource {
 		public String hello() {
 			return name;
 		}
+		
+		@GET
+		@Path(ROOT_SEIS)
+		@Produces(MediaType.APPLICATION_JSON)
+		public List<IBeanStructuralElementInstance> getRootSeis() {
+			return controller.getRootSeis();
+		}
+		
 	}
 }

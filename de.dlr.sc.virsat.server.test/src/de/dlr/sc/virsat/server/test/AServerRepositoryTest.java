@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.server.test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 import org.eclipse.core.runtime.Status;
@@ -21,7 +20,6 @@ import org.junit.BeforeClass;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
-import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.team.Activator;
@@ -29,8 +27,8 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public class AServerRepositoryTest extends AGitAndJettyServerTest {
 
-	private static ServerRepository testServerRepository;
-	private static String projectName;
+	protected static ServerRepository testServerRepository;
+	protected static String projectName;
 	
 	@BeforeClass
 	public static void addServerRepository() throws Exception {

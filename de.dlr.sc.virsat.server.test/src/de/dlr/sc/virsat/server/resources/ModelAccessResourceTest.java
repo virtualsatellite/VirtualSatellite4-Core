@@ -11,16 +11,30 @@ package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
-public class ModelAccessResourceTest extends AServerRepositoryTest{
+public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
-	public void test()
-	{
-		assertTrue(true);
+	public void testGetRootSeisEmptyInitally() {
+		List<IBeanStructuralElementInstance> rootSeis = getRootSeisRequest();
+		assertTrue(rootSeis.isEmpty());
+	}
+	
+	private List<IBeanStructuralElementInstance> getRootSeisRequest() {
+		return webTarget
+				.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.accept(MediaType.APPLICATION_JSON)
+				.get(new GenericType<List<IBeanStructuralElementInstance>>() { });
 	}
 	
 }
