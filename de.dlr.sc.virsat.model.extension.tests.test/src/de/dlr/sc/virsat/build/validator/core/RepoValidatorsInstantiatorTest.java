@@ -19,9 +19,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.build.validator.RepoValidatorsInstantiator;
 import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
 import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.RepoValidatorsInstantiator;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.validator.TestsValidator;
 

@@ -60,3 +60,4 @@ Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.ecore,
  de.dlr.sc.virsat.model.ecore.xmi.impl
 Automatic-Module-Name: de.dlr.sc.virsat.model
+Bundle-Activator: de.dlr.sc.virsat.model.dvlm.Activator

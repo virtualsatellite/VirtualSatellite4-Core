@@ -9,7 +9,6 @@
        		<run class="de.dlr.sc.virsat.build.validator.VirSatValidatorBuilder"/>
        </builder>
     </extension>
-    <extension-point id="DvlmValidator" name="DVLM Validator" schema="schema/de.dlr.sc.virsat.build.validator.exsd"/>
     <extension
           id="de.dlr.sc.virsat.build.inheritance"
           name="VirSat Project Inheritance Builder"

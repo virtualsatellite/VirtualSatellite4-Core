@@ -27,6 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
 import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.RepoValidatorsInstantiator;
 import de.dlr.sc.virsat.project.Activator;
 
 /**
