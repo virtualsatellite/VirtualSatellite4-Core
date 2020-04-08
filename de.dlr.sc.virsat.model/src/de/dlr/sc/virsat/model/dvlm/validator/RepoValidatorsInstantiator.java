@@ -31,7 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
  */
 public class RepoValidatorsInstantiator {
 
-	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.build.DvlmValidator";
+	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.model.DvlmValidator";
 	public static final String CONCEPT_BUNDLE_PREFIX = "de.dlr.sc.virsat.model.extension";
 
 	private Repository repository;
