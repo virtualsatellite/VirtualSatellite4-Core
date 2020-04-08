@@ -10,7 +10,7 @@
 package de.dlr.sc.virsat.model.ext.core.validator;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 
 // *****************************************************************

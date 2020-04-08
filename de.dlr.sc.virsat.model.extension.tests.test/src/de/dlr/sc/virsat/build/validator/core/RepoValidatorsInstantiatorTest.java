@@ -10,8 +10,8 @@
 package de.dlr.sc.virsat.build.validator.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.validator.RepoValidatorsInstantiator;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.validator.TestsValidator;
 
