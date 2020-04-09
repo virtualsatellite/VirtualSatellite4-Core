@@ -28,15 +28,13 @@ public class ModelAccessResource {
 	
 	public static final String PATH = "/repository";
 	
-	private RepoModelAccessController controller;
-	
-//	public ModelAccessResource(String repoName, ServerRepository serverRepository) {
-//		// TODO: catch not checked out repo (no ed or no virsat project)
-//		controller = new RepoModelAccessController(serverRepository.getEd());
-//	}
-	
 	public ModelAccessResource() { }
 	
+	/**
+	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
+	 * @param repoName of the repository to be accessed by the request
+	 * @return RepoModelAccessResource or null if the repo is not found
+	 */
 	@Path("{repoName}")
 	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);

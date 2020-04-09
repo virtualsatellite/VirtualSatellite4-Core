@@ -16,42 +16,53 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
-import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
 public class FlattenedStructuralElementInstance {
 
-	public VirSatUuid uuid;
-	public String name;
-	public String description;
-	public String fullQualifiedName;
-	public VirSatUuid parent;
-	public List<VirSatUuid> superSeis;
-	public List<VirSatUuid> childSeis;
-	public List<VirSatUuid> categoryAssignments;
+	private VirSatUuid uuid;
+	private String name;
+	private String description;
+	// TODO: just use the fullQualifiedName instead of the whole se?
+//	public String fullQualifiedName;
+	private StructuralElement se;
+	private VirSatUuid parent;
+	private List<VirSatUuid> superSeis;
+	private List<VirSatUuid> childSeis;
+	private List<VirSatUuid> categoryAssignments;
 	
 	public FlattenedStructuralElementInstance() { }
 	
+	/**
+	 * Constructor to flatten an existing sei
+	 * @param sei the sei to flatten
+	 */
 	public FlattenedStructuralElementInstance(StructuralElementInstance sei) {
-		uuid = sei.getUuid();
-		name = sei.getName();
-		description = sei.getDescription();
-		fullQualifiedName = sei.getType().getFullQualifiedName();
-		parent = sei.getParent() != null ? sei.getParent().getUuid() : null;
-		superSeis = collectParentUuids(sei);
-		childSeis = collectChildUuids(sei);
+		setUuid(sei.getUuid());
+		setName(sei.getName());
+		setDescription(sei.getDescription());
+//		fullQualifiedName = sei.getType().getFullQualifiedName();
+		setSe(sei.getType());
+		setParent(sei.getParent() != null ? sei.getParent().getUuid() : null);
+		setSuperSeis(collectParentUuids(sei));
+		setChildSeis(collectChildUuids(sei));
 		collectCategoryAssignmentUuids(sei);
 	}
 	
+	/**
+	 * Unflatten the properties of this instance into a sei
+	 * @return StructuralElementInstance
+	 */
 	public StructuralElementInstance unflatten() {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setUuid(uuid);
-		sei.setName(name);
-		sei.setDescription(description);
-//		sei.setType(fullQualifiedName);
-//		sei.setParent(parent);
-		// TODO: set lists
+		sei.setUuid(getUuid());
+		sei.setName(getName());
+		sei.setDescription(getDescription());
+		// TODO: ideally only use the fullQualifiedName here
+		// How to obtain a se instance from the fullQualifiedName?
+		sei.setType(getSe());
+		// TODO: set lists and parents
+		// How to convert from
 		return sei;
 	}
 	
@@ -77,6 +88,70 @@ public class FlattenedStructuralElementInstance {
 			uuids.add(ca.getUuid());
 		}
 		return uuids;
+	}
+
+	public VirSatUuid getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(VirSatUuid uuid) {
+		this.uuid = uuid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public StructuralElement getSe() {
+		return se;
+	}
+
+	public void setSe(StructuralElement se) {
+		this.se = se;
+	}
+
+	public VirSatUuid getParent() {
+		return parent;
+	}
+
+	public void setParent(VirSatUuid parent) {
+		this.parent = parent;
+	}
+
+	public List<VirSatUuid> getSuperSeis() {
+		return superSeis;
+	}
+
+	public void setSuperSeis(List<VirSatUuid> superSeis) {
+		this.superSeis = superSeis;
+	}
+
+	public List<VirSatUuid> getChildSeis() {
+		return childSeis;
+	}
+
+	public void setChildSeis(List<VirSatUuid> childSeis) {
+		this.childSeis = childSeis;
+	}
+
+	public List<VirSatUuid> getCategoryAssignments() {
+		return categoryAssignments;
+	}
+
+	public void setCategoryAssignments(List<VirSatUuid> categoryAssignments) {
+		this.categoryAssignments = categoryAssignments;
 	}
 	
 }

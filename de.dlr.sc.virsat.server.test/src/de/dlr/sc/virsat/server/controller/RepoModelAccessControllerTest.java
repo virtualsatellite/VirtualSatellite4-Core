@@ -9,12 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.controller;
 
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
@@ -99,6 +98,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 				repoModelAccessController.deleteSei(uuid);
 			} catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
 		});
 		seis = repoModelAccessController.getRootSeis();
@@ -110,8 +110,9 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		String newUuid = executeAsCommand(() -> {
 			try {
 				return repoModelAccessController.postSei(flatTestSei1);
-			} catch (CoreException | InstantiationException | IllegalAccessException e) {
+			} catch (CoreException | InstantiationException | IllegalAccessException | IOException e) {
 				e.printStackTrace();
+				fail();
 			}
 			return null;
 		});
@@ -127,9 +128,12 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 				repoModelAccessController.putSei(flatTestSei1);
 			} catch (CoreException | IOException e) {
 				e.printStackTrace();
+				fail();
 			}
 		});
 		assertEquals("Name changed but same uuid", newName, repoModelAccessController.getSei(newUuid).unflatten().getName());
+		
+		// Put (new) sei
 	}
 	
 	@Test

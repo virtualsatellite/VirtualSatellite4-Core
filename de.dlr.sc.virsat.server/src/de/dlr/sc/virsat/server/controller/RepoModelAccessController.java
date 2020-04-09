@@ -47,13 +47,28 @@ public class RepoModelAccessController {
 			}
 			
 			@Override
+			/**
+			 * Problem with reading in the Repository.dvlm if left standard
+			 */
 			public Repository getRepository() {
 				return editingDomain.getResourceSet().getRepository();
+			}
+			
+			@Override
+			/**
+			 * For our projects it is not always JAVA_SYSTEM_PROPERTY_WORKING_DIR
+			 */
+			public String getCurrentProjectAbsolutePath() {
+				return editingDomain.getResourceSet().getProject().getLocation().toString();
 			}
 		};
 
 	}
 
+	/**
+	 * Get the roots seis and flatten them
+	 * @return List<FlattenedStructuralElementInstance> flattened seis
+	 */
 	public List<FlattenedStructuralElementInstance> getRootSeis() {
 		List<IBeanStructuralElementInstance> beans = modelApi.getRootSeis(IBeanStructuralElementInstance.class);
 		List<FlattenedStructuralElementInstance> flattenedSeis = new ArrayList<FlattenedStructuralElementInstance>();
@@ -85,6 +100,8 @@ public class RepoModelAccessController {
 		beanSei.setStructuralElementInstance(sei);
 		modelApi.addRootSei(beanSei);
 		modelApi.performInheritance();
+		
+		modelApi.saveAll();
 	}
 	
 	/**
@@ -94,8 +111,9 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
+	 * @throws IOException 
 	 */
-	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException, InstantiationException, IllegalAccessException {
+	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException, InstantiationException, IllegalAccessException, IOException {
 		// TODO: fails if the sei is already in the repo, so create a new sei and copy the values / clone it ?
 		StructuralElementInstance sei = flatSei.unflatten();
 		
@@ -106,6 +124,8 @@ public class RepoModelAccessController {
 		// Add the bean to the model
 		modelApi.addRootSei(beanSei);
 		modelApi.performInheritance();
+		
+		modelApi.saveAll();
 		
 		return uuid.toString();
 	}
@@ -120,8 +140,10 @@ public class RepoModelAccessController {
 	public IBeanCategoryAssignment getCa(String uuid) throws CoreException {
 		return modelApi.findBeanCaByUuid(uuid);
 	}
-
-	private IBeanStructuralElementInstance createBeanInstance(StructuralElementInstance currentSei) throws CoreException {
-		return (new BeanStructuralElementInstanceFactory()).getInstanceFor((StructuralElementInstance) currentSei);
+	
+	private IBeanStructuralElementInstance createBeanInstance(StructuralElementInstance  sei) throws CoreException {
+		// TODO: what is the right way to create a bean?
+		IBeanStructuralElementInstance bean = (new BeanStructuralElementInstanceFactory()).getInstanceFor(sei);
+		return bean;
 	}
 }
