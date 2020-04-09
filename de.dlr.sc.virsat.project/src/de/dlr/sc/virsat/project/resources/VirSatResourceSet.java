@@ -689,6 +689,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 		return resource;
 	}
+	
+	/**
+	 * Convenience method to get an EMF resource from an eclipse IResource
+	 * 
+	 * @param file The file as IResource
+	 * @param loadOnDemand weather the resource should be created if not yet in the resource set
+	 * @return the resource or null if not existing
+	 */
+	public Resource getResource(IResource file, boolean loadOnDemand) {
+		if (file instanceof IFile && file.exists()) {
+			URI fileUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+			return this.getResource(fileUri, loadOnDemand);
+		}
+		return null;
+	}
 
 	/**
 	 * This method checks if there is some kind of resource loaded or not,

@@ -241,13 +241,14 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				
 				/**
 				 * Updates the flag for triggering a full reload if there has been an external change
-				 * @param wsDvlmResource the resource that has been modified
+				 * @param wsResource the resource that has been modified
 				 */
-				private void updateTriggerFullReload(IResource wsDvlmResource, boolean removeFromRecentlySavedResources) {
-					URI changedResourceUri = URI.createPlatformResourceURI(wsDvlmResource.getFullPath().toString(), true);
-					String fileExtension = wsDvlmResource.getFileExtension();
+				private void updateTriggerFullReload(IResource wsResource, boolean removeFromRecentlySavedResources) {
+					URI changedResourceUri = URI.createPlatformResourceURI(wsResource.getFullPath().toString(), true);
+					String fileExtension = wsResource.getFileExtension();
 					if (fileExtension != null) {
-						if (fileExtension.startsWith(VirSatProjectCommons.FILENAME_EXTENSION)) {
+						boolean isInResourceSet = getResourceSet().getResource(wsResource, false) != null;
+						if (isInResourceSet) {
 							// First check if the resource which is changed is not on the list of
 							// recently resources than trigger a full reload for all resources.
 							if (!recentlyChangedResource.contains(changedResourceUri)) {
@@ -274,7 +275,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 */
 	public void saveAll() {
-		saveAll(false, true);
+		saveAll(false, false);
 	}
 	
 	/**
