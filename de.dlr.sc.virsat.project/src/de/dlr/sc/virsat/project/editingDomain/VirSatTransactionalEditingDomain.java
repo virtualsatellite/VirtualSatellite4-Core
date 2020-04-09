@@ -245,24 +245,21 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				 */
 				private void updateTriggerFullReload(IResource wsResource, boolean removeFromRecentlySavedResources) {
 					URI changedResourceUri = URI.createPlatformResourceURI(wsResource.getFullPath().toString(), true);
-					String fileExtension = wsResource.getFileExtension();
-					if (fileExtension != null) {
-						boolean isInResourceSet = getResourceSet().getResource(wsResource, false) != null;
-						if (isInResourceSet) {
-							// First check if the resource which is changed is not on the list of
-							// recently resources than trigger a full reload for all resources.
-							if (!recentlyChangedResource.contains(changedResourceUri)) {
-								Activator.getDefault().getLog().
-									log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
-								triggerFullReload = true;
-							} 
-							
-							// Now remove the file from the recently saved resources if requested
-							if (removeFromRecentlySavedResources) {
-								Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
-								recentlyChangedResource.remove(changedResourceUri);
-							}						
-						}
+					boolean isInResourceSet = getResourceSet().getResource(wsResource, false) != null;
+					if (isInResourceSet) {
+						// First check if the resource which is changed is not on the list of
+						// recently resources than trigger a full reload for all resources.
+						if (!recentlyChangedResource.contains(changedResourceUri)) {
+							Activator.getDefault().getLog().
+								log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
+							triggerFullReload = true;
+						} 
+						
+						// Now remove the file from the recently saved resources if requested
+						if (removeFromRecentlySavedResources) {
+							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
+							recentlyChangedResource.remove(changedResourceUri);
+						}						
 					}
 				}
 			};

@@ -83,14 +83,11 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 					if (delta.getResource() == virSatProject && !virSatProject.isOpen()) {
 						closedOrDeletedProject = true;
 					}
+					IResource resource = delta.getResource();
 					
 					// In case it is a change on a file within our resource set, then remember it
 					VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(virSatProject);
-					if (ed == null) {
-						return true; // Project was closed so editing domain is gone already
-					}
-					IResource resource = delta.getResource();
-					boolean isInResourceSet = ed.getResourceSet().getResource(resource, false) != null;
+					boolean isInResourceSet = ed != null && ed.getResourceSet().getResource(resource, false) != null;
 					
 					if (isInResourceSet) {
 						int kind = delta.getKind();
