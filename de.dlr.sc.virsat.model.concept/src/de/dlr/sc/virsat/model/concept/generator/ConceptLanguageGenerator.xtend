@@ -73,12 +73,6 @@ class ConceptLanguageGenerator implements IGenerator2 {
 		// If not specified in any other way we want to generate code
 		var boolean generateCode = true;
 		
-		// Get the Data Model and retrieve the Name of it
-		var dataModel = resource.contents.get(0) as Concept;
-
-		//Check if there is a deprecated validator
-		val hasDeprecatedValidator = fsa.isFile('../src/' + dataModel.name.replace(".","/") +'/validator/StructuralElementInstanceValidator.java');	
-		
 		// See if one of the config elements from our extension point tells us to not generate code
 		// usually this can be told from one of the toggle buttons in our UI
 		for (configElement : configElements){
@@ -88,8 +82,14 @@ class ConceptLanguageGenerator implements IGenerator2 {
 
 		// Only generate the code if it is actually desired to do so
 		if (generateCode) {
+			// Get the Data Model and retrieve the Name of it
+			val conceptPreprocessor = new ConceptPreprocessor(fsa)
+			val dataModel = conceptPreprocessor.process(resource)
+			
+			//Check if there is a deprecated validator
+			val hasDeprecatedValidator = fsa.isFile('../src/' + dataModel.name.replace(".","/") +'/validator/StructuralElementInstanceValidator.java');	
+			
 			new GenerateDmfCategories().serializeModel(dataModel, fsa);
-			new GenerateConceptXmi().serializeModel(dataModel, fsa);
 			new GenerateConceptImages().serializeModel(dataModel, fsa);
 			new GenerateCategoryBeans().serializeModel(dataModel, fsa);
 			new GenerateStructuralElementBeans().serializeModel(dataModel, fsa);

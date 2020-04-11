@@ -14,6 +14,8 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
 
+import java.lang.reflect.Field;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -24,6 +26,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
@@ -57,10 +63,11 @@ import de.dlr.sc.virsat.swtbot.util.SwtThreadWatcher;
  * Base class for performing SWTBot tests.
  */
 public class ASwtBotTestCase {
-	
+  
 	protected static final String ENV_VARIABLE_SWTBOT_SCREENSHOT = "SWTBOT_SCREENSHOT";
 	protected static final String ENV_VARIABLE_SWTBOT_SCREENSHOT_TRUE = "true";
 	protected static final String SWTBOT_TEST_PROJECTNAME = "SWTBotTestProject";
+	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
 	
@@ -98,12 +105,7 @@ public class ASwtBotTestCase {
 		conceptPs = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptTest =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId() + "/concept/concept.xmi");
 		
-		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Clsoe welcome screen if it exists"));
-		for (SWTBotView view : bot.views()) {
-			if (view.getTitle().equals("Welcome")) {
-				bot.viewByTitle("Welcome").close();
-			}
-		}
+		closeWelcomeScreen();
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Open perspective"));
 		openCorePerspective();
@@ -199,6 +201,68 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * We can only drop tree items to canvas elements. SWTBotGefViewer's canvas element is not 
+	 * capable of beeing accessed directly from external classes though. Further more SWTBotGefViewer's 
+	 * canvas member gets populated during runtime only. Hence we use reflections to get a hold on it here.
+	 * 
+	 * @param item Tree item that is beeing dragged
+	 * @param diagramEditor Graphiti diagram editor which the tree item is beeing dragged onto
+	 */
+	protected void dragTreeItemToDiagramEditor(SWTBotTreeItem item, SWTBotGefEditor diagramEditor) {
+		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
+		SWTBotGefFigureCanvas canvas = null;
+		
+		for (Field f : viewer.getClass().getDeclaredFields()) {
+			if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
+				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
+				// otherwise inaccessible fields.
+				f.setAccessible(true);
+				try {
+					canvas = (SWTBotGefFigureCanvas) f.get(viewer);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
+				}
+			}
+		}
+		item.dragAndDrop(canvas);
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * @param diagramEditor Diagram editor on which to perform delete operation
+	 * @param editPartName Name of EditPart to be deleted
+	 */
+	protected void deleteEditPartInDiagramEditor(SWTBotGefEditor diagramEditor, String editPartName) {
+		diagramEditor.getEditPart(editPartName).select();		
+		diagramEditor.clickContextMenu("Delete");
+		waitForEditingDomainAndUiThread();
+		bot.button("Yes").click();
+	}
+	
+	/**
+	 * @param item Tree item
+	 * @return true if tree item is present in tree view, false otherwise
+	 */
+	protected boolean isTreeItemPresentInTreeView(SWTBotTreeItem item) {
+		try {
+			item.select();
+			return true;
+		} catch (WidgetNotFoundException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * @param diagramEditor Diagram Editor for which to check if Edit Part is present
+	 * @param editPartName Name of Edit Part
+	 * @return true if Edit Part is present in specified Diagram Editor, else false
+	 */
+	protected boolean isEditPartPresentInDiagramEditor(SWTBotGefEditor diagramEditor, String editPartName) {
+		return !(diagramEditor.getEditPart(editPartName) == null);
+	}
+
+	
+	/**
 	 * Waits for the editor of the passed item to open.
 	 * The editor is identified using the name of the item,
 	 * so it can't distinguish between editors of items with the same name!
@@ -217,6 +281,18 @@ public class ASwtBotTestCase {
 	protected void closeDialog(String buttonName) {
 		bot.button(buttonName).click();
 		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Closes the initial Welcome Screen
+	 */
+	protected void closeWelcomeScreen() {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Close welcome screen if it exists"));
+		for (SWTBotView view : bot.views()) {
+			if (view.getTitle().equals("Welcome")) {
+				view.close();
+			}
+		}
 	}
 	
 	/**
@@ -244,6 +320,8 @@ public class ASwtBotTestCase {
 	 * @throws  
 	 */
 	protected void addAllConcepts(String projectName) {
+		waitForEditingDomainAndUiThread();
+		bot.viewById("de.dlr.sc.virsat.project.ui.navigator.view").setFocus();
 		waitForEditingDomainAndUiThread();
 		SWTBotTreeItem projectItem = bot.tree().expandNode(projectName);
 		waitForEditingDomainAndUiThread();
