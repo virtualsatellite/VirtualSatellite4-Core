@@ -52,7 +52,6 @@ public class ModelAPITest extends ATestConceptTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addResourceSetAndRepository();
-		loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 		loadTestConcept();
 
 		// Load the concept to create the test object
