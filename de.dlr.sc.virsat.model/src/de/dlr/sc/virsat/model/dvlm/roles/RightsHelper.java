@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Simple Helper method to determine the access rights on an EObject
@@ -62,9 +63,12 @@ public class RightsHelper {
 	}
 	
 	/**
-	 * this method told if the object has write permissions
-	 * @param eObject the object it worked on
-	 * @return true if the object has write permissions, else false
+	 * This method is use to check if there is possible write access to the given object.
+	 * Write access is given in case the user from the given context matches to the one in
+	 * the assigned discipline or if super user rights are set.
+	 * @param eObject the object to check if there is write access
+	 * @param userContext The User Context to be used when checking if the object is writable
+	 * @return true if the object allows writing, else false. Returns false in case userContext is null
 	 */
 	public static synchronized boolean hasWritePermission(EObject eObject, IUserContext userContext) {
 		if (userContext != null) {
@@ -89,6 +93,18 @@ public class RightsHelper {
 			
 			return hasWritePermission || userContext.isSuperUser();
 		}
+		// False in case there is no suer context
 		return false;
+	}
+
+	/**
+	 * This method is intended for checking write access in single user mode.
+	 * This mode is usually used in Virtual Satellite Desktop application, e.g. in
+	 * the User Interface. The method will use the System User Registry as User Context
+	 * @param eObject The eObject to be tested for write access
+	 * @return true in case the user has access or is a super user.
+	 */
+	public static boolean hasSystemUserWritePermission(EObject eObject) {
+		return hasWritePermission(eObject, UserRegistry.getInstance());
 	}
 }
