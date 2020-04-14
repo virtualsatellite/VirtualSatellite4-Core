@@ -39,8 +39,7 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 	 * @param commandParameter
 	 *            the parameter of the role management check command
 	 */
-	//public RoleManagementCheckCommand(Command command, CommandParameter commandParameter, IUserContext userContext) {
-	public RoleManagementCheckCommand(Command command, CommandParameter commandParameter) {
+	public RoleManagementCheckCommand(Command command, CommandParameter commandParameter, IUserContext userContext) {
 		super();
 		this.wrappedCommand = command;
 		this.commandParameter = commandParameter;

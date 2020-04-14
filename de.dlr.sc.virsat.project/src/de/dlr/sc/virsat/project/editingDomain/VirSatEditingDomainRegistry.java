@@ -87,11 +87,13 @@ public class VirSatEditingDomainRegistry {
 	 * @return the Editing Domain which is already registered or null in case it does not exist
 	 */
 	public VirSatTransactionalEditingDomain getEd(EObject eObject) {
-		Resource resource = eObject.eResource();
-		if (resource != null) {
-			ResourceSet resourceSet = resource.getResourceSet();
-			if (resourceSet != null) {
-				return getEd(resourceSet);
+		if (eObject != null) {
+			Resource resource = eObject.eResource();
+			if (resource != null) {
+				ResourceSet resourceSet = resource.getResourceSet();
+				if (resourceSet != null) {
+					return getEd(resourceSet);
+				}
 			}
 		}
 		return null;

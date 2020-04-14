@@ -71,13 +71,13 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 	
 	@Test
 	public void testPrepare() {
-		AssignDisciplineCommand cmd = new AssignDisciplineCommand(rs, sei, discipline);
+		AssignDisciplineCommand cmd = new AssignDisciplineCommand(editingDomain, sei, discipline);
 		assertTrue("Command can be prepared", cmd.prepare());
 	}
 
 	@Test
 	public void testCanUndo() {
-		AssignDisciplineCommand cmd = new AssignDisciplineCommand(rs, sei, discipline);
+		AssignDisciplineCommand cmd = new AssignDisciplineCommand(editingDomain, sei, discipline);
 		assertFalse("Command cannot be undone", cmd.canUndo());
 	}
 
@@ -85,7 +85,7 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 	public void testExecute() {
 		Resource seiResource = sei.eResource();
 		
-		AssignDisciplineCommand cmd = new AssignDisciplineCommand(rs, sei, discipline);
+		AssignDisciplineCommand cmd = new AssignDisciplineCommand(editingDomain, sei, discipline);
 		assertTrue("Command can be executed", cmd.canExecute());
 		
 		UserRegistry.getInstance().setSuperUser(true);
@@ -94,7 +94,7 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		assertFalse("Since we always save the resource in the AssignDisciplineCommand, it should not be dirty", editingDomain.isDirty(seiResource));
 		UserRegistry.getInstance().setSuperUser(false);
 		
-		cmd = new AssignDisciplineCommand(rs, sei, null);
+		cmd = new AssignDisciplineCommand(editingDomain, sei, null);
 		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("Assigned Discipline has not changed since we dont have any rights", discipline, sei.getAssignedDiscipline());
 	}

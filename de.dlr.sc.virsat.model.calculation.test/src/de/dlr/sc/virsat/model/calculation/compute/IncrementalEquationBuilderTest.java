@@ -37,6 +37,7 @@ import org.xml.sax.SAXParseException;
 import de.dlr.sc.virsat.model.calculation.marker.VirSatEquationMarkerHelper;
 import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -61,6 +62,11 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 			@Override
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
+			}
+			
+			@Override
+			public IUserContext getUserContext() {
+				return UserRegistry.getInstance(); 
 			}
 		};
 		
@@ -100,6 +106,11 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
 			}
+			
+			@Override
+			public IUserContext getUserContext() {
+				return UserRegistry.getInstance();
+			}
 		};
 		
 		assertNull("Value is initially null", result.getResultText());
@@ -118,6 +129,11 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 			@Override
 			protected VirSatResourceSet getResourceSet() {
 				return resSet;
+			}
+			
+			@Override
+			public IUserContext getUserContext() {
+				return UserRegistry.getInstance();
 			}
 		};
 		
@@ -166,6 +182,11 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 				}
 				assertTrue("Resource set has an error", resSet.hasError());
 				return resSet;
+			}
+			
+			@Override
+			public IUserContext getUserContext() {
+				return UserRegistry.getInstance();
 			}
 		};
 

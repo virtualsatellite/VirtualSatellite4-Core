@@ -27,8 +27,10 @@ import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagementCheckCommand;
 
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
@@ -450,7 +452,16 @@ public class StructuralElementInstanceItemProvider
  	*/
 	@Override
 	public Command createCommand(Object object, EditingDomain domain, Class<? extends Command> commandClass, CommandParameter commandParameter) {
-				
+		
+		// Set the UserContext either from the SystemUserRegistry or
+		// from the Domain if it exists
+		IUserContext userContext = UserRegistry.getInstance();
+		if (domain instanceof IUserContext) {
+			userContext = (IUserContext) domain;
+		}
+		
+		
+		
 		// For the Repository and StructuralElementInstances we prefer the command for the aplicablefor paradigm
 		// If the requested command is not valid for the current obejcts an unexecutable command will be handed back instead
 		DVLMCommandParameterApplicableForCheck commandParameterCheck = new DVLMCommandParameterApplicableForCheck(commandParameter);
@@ -465,7 +476,7 @@ public class StructuralElementInstanceItemProvider
 			|| (commandClass == CreateChildCommand.class)) {
 			
 			if (!commandParameterCheck.isValidCommandParameter(commandParameter)) {
-				return UnexecutableCommand.INSTANCE;
+				return new RoleManagementCheckCommand(UnexecutableCommand.INSTANCE, commandParameter, userContext);
 			}
 		}
 	    		
@@ -481,7 +492,7 @@ public class StructuralElementInstanceItemProvider
 			return originalCommand;
 		} else {
 			// And wrap it into our command checking for the proper access rights
-			return new RoleManagementCheckCommand(originalCommand, commandParameter);	
+			return new RoleManagementCheckCommand(originalCommand, commandParameter, userContext);	
 		}
 	}
 

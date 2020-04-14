@@ -475,15 +475,15 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		Resource resource2 = rs.getStructuralElementInstanceResource(sei2);
 		Resource resource3 = rs.getStructuralElementInstanceResource(sei3);
 		
-		assertTrue("I have right permission for resource with mine SEI", rs.hasWritePermission(resource1));
-		assertFalse("I don't have right permission for resource with not mine SEI", rs.hasWritePermission(resource2));
-		assertFalse("I don't have right permission for resource with SEI without discipline", rs.hasWritePermission(resource3));
+		assertTrue("I have right permission for resource with mine SEI", rs.hasWritePermission(resource1, UserRegistry.getInstance()));
+		assertFalse("I don't have right permission for resource with not mine SEI", rs.hasWritePermission(resource2, UserRegistry.getInstance()));
+		assertFalse("I don't have right permission for resource with SEI without discipline", rs.hasWritePermission(resource3, UserRegistry.getInstance()));
 
 		setSuperUser();
 		
-		assertTrue("SuperUser has right permission for resource with mine SEI", rs.hasWritePermission(resource1));
-		assertTrue("SuperUser has right permission for resource with not mine SEI", rs.hasWritePermission(resource2));
-		assertTrue("SuperUser has right permission for resource with SEI without discipline", rs.hasWritePermission(resource3));
+		assertTrue("SuperUser has right permission for resource with mine SEI", rs.hasWritePermission(resource1, UserRegistry.getInstance()));
+		assertTrue("SuperUser has right permission for resource with not mine SEI", rs.hasWritePermission(resource2, UserRegistry.getInstance()));
+		assertTrue("SuperUser has right permission for resource with SEI without discipline", rs.hasWritePermission(resource3, UserRegistry.getInstance()));
 	}
 	
 	@Test
@@ -518,7 +518,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		sei2.getChildren().add(sei2_1);
 		sei2_1.getChildren().add(sei2_1_1);
 		
-		resSet.saveAllResources(new NullProgressMonitor());
+		resSet.saveAllResources(new NullProgressMonitor(), UserRegistry.getInstance());
 		
 		resSei1.unload();
 		resSei2.unload();

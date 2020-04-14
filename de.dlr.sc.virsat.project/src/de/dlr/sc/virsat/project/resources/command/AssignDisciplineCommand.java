@@ -11,10 +11,16 @@ package de.dlr.sc.virsat.project.resources.command;
 
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
+import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
@@ -25,20 +31,20 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  */
 public class AssignDisciplineCommand extends AbstractCommand {
 
-	private ResourceSet rs;
 	private EObject disciplineContainer;
 	private Discipline discipline;
+	private EditingDomain ed;
 	
 	/**
 	 * Constructor to create the command for setting the discipline of an eObject in the DVLM model
-	 * @param rs The ResourceSet to be used should be a VirSatResourceSet
+	 * @param virSatEd The VirSat Editing Domain for directly saving the assigned discipline
 	 * @param disciplineContainer The eObject implementing the interface IAssignedDiscipline
 	 * @param discipline The discipline to be set by the command
 	 */
-	public AssignDisciplineCommand(ResourceSet rs, EObject disciplineContainer, Discipline discipline) {
-		this.rs = rs;
+	public AssignDisciplineCommand(EditingDomain virSatEd, EObject disciplineContainer, Discipline discipline) {
 		this.disciplineContainer = disciplineContainer;
 		this.discipline = discipline;
+		this.ed = virSatEd;
 	}
 	
 	@Override
@@ -53,9 +59,22 @@ public class AssignDisciplineCommand extends AbstractCommand {
 	
 	@Override
 	public void execute() {
-		if ((rs instanceof VirSatResourceSet) && (disciplineContainer instanceof IAssignedDiscipline)) {
-			VirSatResourceSet virSatRs = (VirSatResourceSet) rs;
-			virSatRs.assignDiscipline((IAssignedDiscipline) disciplineContainer, discipline);
+		IUserContext userContext = UserRegistry.getInstance();
+		if (this.ed instanceof IUserContext) {
+			userContext = (IUserContext) ed;
+		}
+		
+		if (disciplineContainer instanceof IAssignedDiscipline) {
+			boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer, userContext);
+			
+			if (hasWritePermission) {
+				((IAssignedDiscipline) disciplineContainer).setAssignedDiscipline(discipline);
+				Resource resource = disciplineContainer.eResource();
+				
+				if (ed instanceof VirSatTransactionalEditingDomain) {
+					((VirSatTransactionalEditingDomain) ed).saveResourceIgnorePermissions(resource);
+				}
+			}
 		}
 	}
 

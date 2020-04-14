@@ -678,7 +678,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				// system
 				// Otherwise we only have the file structures created by the
 				// VirSatProjectCommons
-				saveResource(resource);
+				saveResource(resource, null, true);
 			}
 		}
 
@@ -933,11 +933,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	/**
 	 * Use this method to save a resource in this resource set
 	 * 
-	 * @param resource
-	 *            the resource to be saved
+	 * @param resource the resource to be saved
+	 * @param userContext The user context to determine write permissions
 	 */
-	public void saveResource(Resource resource) {
-		saveResource(resource, false);
+	public void saveResource(Resource resource, IUserContext userContext) {
+		saveResource(resource, userContext, false);
 	}
 
 	/**
@@ -969,7 +969,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            set this flag to allow for saving the resource. E.g. when
 	 *            changing the assigned discipline
 	 */
-	public void saveResource(Resource resource, boolean overrideWritePermissions) {
+	public void saveResource(Resource resource,  IUserContext userContext, boolean overrideWritePermissions) {
 		Activator.getDefault().getLog()
 				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Started saving Resource ("
 						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
@@ -984,7 +984,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 		try {
 			// Only save the resource if we actually have the right to do this.
-			if (overrideWritePermissions || hasWritePermission(resource)) {
+			if (overrideWritePermissions || hasWritePermission(resource, userContext)) {
 				resource.save(saveOptions);
 			}
 		} catch (IOException e) {
@@ -997,41 +997,18 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	/**
-	 * Use this method to assign a new discipline to a resource / eObject. The
-	 * method will force a save on the resource to persist the newly assigned
-	 * discipline
-	 * 
-	 * @param disciplineContainer
-	 *            the eObject containing the assigned discipline to be changed
-	 * @param discipline
-	 *            the new discipline to be set
-	 */
-	public void assignDiscipline(IAssignedDiscipline disciplineContainer, Discipline discipline) {
-		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(discipline);
-		boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer, ed);
-
-		if (hasWritePermission) {
-			disciplineContainer.setAssignedDiscipline(discipline);
-			Resource resource = disciplineContainer.eResource();
-			ed.saveResourceIgnorePermissions(resource);
-		}
-	}
-
-	/**
 	 * Use this method to find out if you have write access to the given EMF
 	 * resource
 	 * 
-	 * @param resource
-	 *            The resource which should be checked for write accesss
-	 * @return true in case write acces is given otherwise false
+	 * @param resource The resource which should be checked for write access
+	 * @return true in case write access is given otherwise false
 	 */
-	public boolean hasWritePermission(Resource resource) {
+	public boolean hasWritePermission(Resource resource, IUserContext userContext) {
 		boolean hasWritePermission = true;
 		if (!resource.getContents().isEmpty()) {
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof IAssignedDiscipline) {
-				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
-				hasWritePermission = RightsHelper.hasWritePermission(eObject, ed);
+				hasWritePermission = RightsHelper.hasWritePermission(eObject, userContext);
 			}
 		}
 		return hasWritePermission;
@@ -1044,12 +1021,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the progress monitor to track the progress of the save
 	 *            operation
 	 */
-	public void saveAllResources(IProgressMonitor pm) {
+	public void saveAllResources(IProgressMonitor pm, IUserContext userContect) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving all resources for Project (" + project.getName() + ")"));
 		for (Resource resource : this.getResources()) {
 			if (!resource.getContents().isEmpty()) {
-				saveResource(resource);
+				saveResource(resource, userContect);
 			}
 		}
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),

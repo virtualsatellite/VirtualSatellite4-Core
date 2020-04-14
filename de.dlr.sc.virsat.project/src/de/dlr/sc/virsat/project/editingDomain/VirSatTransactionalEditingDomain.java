@@ -458,7 +458,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			}
 			
 			// Remove dangling references only if this the user has write access to this resource
-			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource); 
+			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource, this); 
 			
 			// for dangling references call the Utils to remove them before actually saving them
 			if (writeRemovedDanglingReferences) {
@@ -488,7 +488,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			// tracking the states of the currently open resources. In particular, if store the resource
 			// in recentlySavedResource BUT the resource has not changed then, the WokrspaceSynchronizer will NOT trigger
 			// and the resource will stay listed in recentlySavedResource indefinitely.
-			if (virSatResourceSet.hasWritePermission(resource) && virSatResourceSet.isChanged(resource)) {
+			if (virSatResourceSet.hasWritePermission(resource, this) && virSatResourceSet.isChanged(resource)) {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Has write permission and found changes thus saving (" + resource.getURI().toPlatformString(true) + ")"));
 				internallySaveResource(resource, false);
 				fireNotifyResourceEvent(Collections.singleton(resource), VirSatTransactionalEditingDomain.EVENT_CHANGED);
@@ -530,7 +530,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				}
 				
 				// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
-				virSatResourceSet.saveResource(resource, overrideWritePermissions);
+				virSatResourceSet.saveResource(resource, this, overrideWritePermissions);
 			});
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(

@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.common.command.Command;
 
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -50,6 +51,10 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		this.virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(getVirSatProject());
 	}
 
+	public IUserContext getUserContext() {
+		return virSatTed;
+	}
+	
 	/**
 	 * Implement this method for the actual incremental build.
 	 * @param delta The delta that should be build
