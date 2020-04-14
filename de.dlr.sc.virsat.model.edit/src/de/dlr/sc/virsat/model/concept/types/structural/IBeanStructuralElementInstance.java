@@ -243,15 +243,4 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	 * @return true if this SEI is of SE that can be on root level
 	 */
 	boolean canBeRoot();
-	
-	/**
-	 * Returns a FlattenedStructuralElementInstance that contains the sei information without hierarchy
-	 * @return FlattenedStructuralElementInstance
-	 */
-	FlattenedStructuralElementInstance flatten();
-	
-	/**
-	 * Loads the information from the FlattenedStructuralElementInstance into the sei
-	 */
-	void loadSeiFromFlattened(FlattenedStructuralElementInstance flattened);
 }

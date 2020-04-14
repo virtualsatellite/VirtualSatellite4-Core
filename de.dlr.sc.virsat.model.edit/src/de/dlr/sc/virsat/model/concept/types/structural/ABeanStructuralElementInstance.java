@@ -266,14 +266,4 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		}
 		return false;
 	}
-	
-	@Override
-	public FlattenedStructuralElementInstance flatten() {
-		return new FlattenedStructuralElementInstance(getStructuralElementInstance());
-	}
-	
-	@Override
-	public void loadSeiFromFlattened(FlattenedStructuralElementInstance flattened) {
-		setStructuralElementInstance(flattened.unflatten());
-	}
 }

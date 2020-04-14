@@ -12,23 +12,27 @@ package de.dlr.sc.virsat.server.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.command.DeleteCommand;
 
-import de.dlr.sc.virsat.apps.api.external.ModelAPI;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 
 public class RepoModelAccessController {
-	
-	private ModelAPI modelApi;
+
 	private VirSatTransactionalEditingDomain editingDomain;
+	private VirSatResourceSet resourceSet;
 	
 	/**
 	 * Create a new instance of the modelApi and connect it to the editingDomain
@@ -36,33 +40,7 @@ public class RepoModelAccessController {
 	 */
 	public RepoModelAccessController(VirSatTransactionalEditingDomain editingDomain) { 
 		this.editingDomain = editingDomain;
-		
-		// TODO: Maybe instantiate the api with the ed and let it handle user management
-//		modelApi = new ModelAPI(project.getLocation().toString()) 
-		modelApi = new ModelAPI() {
-			@Override
-			protected void initialize() {
-				ModelAPI.resourceSet = editingDomain.getResourceSet();
-				ModelAPI.resource = editingDomain.getResourceSet().getResources().get(0);
-			}
-			
-			@Override
-			/**
-			 * Problem with reading in the Repository.dvlm if left standard
-			 */
-			public Repository getRepository() {
-				return editingDomain.getResourceSet().getRepository();
-			}
-			
-			@Override
-			/**
-			 * For our projects it is not always JAVA_SYSTEM_PROPERTY_WORKING_DIR
-			 */
-			public String getCurrentProjectAbsolutePath() {
-				return editingDomain.getResourceSet().getProject().getLocation().toString();
-			}
-		};
-
+		resourceSet = editingDomain.getResourceSet();
 	}
 
 	/**
@@ -70,16 +48,32 @@ public class RepoModelAccessController {
 	 * @return List<FlattenedStructuralElementInstance> flattened seis
 	 */
 	public List<FlattenedStructuralElementInstance> getRootSeis() {
-		List<IBeanStructuralElementInstance> beans = modelApi.getRootSeis(IBeanStructuralElementInstance.class);
+		EList<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
 		List<FlattenedStructuralElementInstance> flattenedSeis = new ArrayList<FlattenedStructuralElementInstance>();
-		for (IBeanStructuralElementInstance bean : beans) {
-			flattenedSeis.add(bean.flatten());
+		
+		for (StructuralElementInstance sei : rootSeis) {
+			flattenedSeis.add(new FlattenedStructuralElementInstance(sei));
 		}
+		
 		return flattenedSeis;
 	}
 	
+	/**
+	 * Get sei by uuid
+	 * @param uuid of the sei
+	 * @return FlattenedStructuralElementInstance or null
+	 * @throws CoreException
+	 */
 	public FlattenedStructuralElementInstance getSei(String uuid) throws CoreException {
-		return modelApi.findBeanSeiByUuid(uuid).flatten();
+		Set<StructuralElementInstance> seis = resourceSet.getAllSeisInProject();
+		
+		for (StructuralElementInstance sei : seis) {
+			if (sei.getUuid().toString().equals(uuid)) {
+				return new FlattenedStructuralElementInstance(sei);
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -90,23 +84,24 @@ public class RepoModelAccessController {
 	 */
 	public void putSei(FlattenedStructuralElementInstance flatSei) throws CoreException, IOException {
 		// Update the sei with the same uuid or create it
-		StructuralElementInstance sei = flatSei.unflatten();
-		IBeanStructuralElementInstance beanSei = modelApi.findBeanSeiByUuid(sei.getUuid().toString());
-		if (beanSei != null) {
-			modelApi.deleteSeiAndStorage(beanSei);
-		} else {
-			beanSei = createBeanInstance(sei);
-		}
-		beanSei.setStructuralElementInstance(sei);
-		modelApi.addRootSei(beanSei);
-		modelApi.performInheritance();
+		StructuralElementInstance newSei = flatSei.unflatten();
+		StructuralElementInstance oldSei = findSei(flatSei.getUuid().toString());
 		
-		modelApi.saveAll();
+		if (oldSei != null) {
+			// TODO: Is there a better way to do this than deleting and recreating? e.g. SetCommand?
+			Command deleteCommand = DeleteCommand.create(editingDomain, oldSei);
+			editingDomain.getCommandStack().execute(deleteCommand);
+		}
+		
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, resourceSet.getRepository(), newSei);
+		editingDomain.getCommandStack().execute(createAddSei);
+		
+		// TODO: resolve changed inheritance
 	}
 	
 	/**
 	 * Creates a copy of the sei with a new uuid in the model
-	 * @param beanSei the sei to copy the parameters from
+	 * @param flatSei the sei to copy the parameters from
 	 * @return String containing the new uuid
 	 * @throws CoreException
 	 * @throws InstantiationException
@@ -114,36 +109,68 @@ public class RepoModelAccessController {
 	 * @throws IOException 
 	 */
 	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException, InstantiationException, IllegalAccessException, IOException {
-		// TODO: fails if the sei is already in the repo, so create a new sei and copy the values / clone it ?
 		StructuralElementInstance sei = flatSei.unflatten();
 		
-		// Change the uuid of the sei and create a new bean for it
+		// Change the uuid of the sei
 		VirSatUuid uuid = new VirSatUuid();
-		IBeanStructuralElementInstance beanSei = createBeanInstance(sei);
+		sei.setUuid(uuid);
 		
-		// Add the bean to the model
-		modelApi.addRootSei(beanSei);
-		modelApi.performInheritance();
-		
-		modelApi.saveAll();
-		
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, resourceSet.getRepository(), sei);
+		editingDomain.getCommandStack().execute(createAddSei);
 		return uuid.toString();
+		
+		// TODO: resolve inheritance
 	}
 	
 	public void deleteSei(String uuid) throws CoreException, IOException {
-		IBeanStructuralElementInstance beanSei = modelApi.findBeanSeiByUuid(uuid);
-		if (beanSei != null) {
-			modelApi.deleteSeiAndStorage(beanSei);
+		StructuralElementInstance sei = findSei(uuid);
+		if (sei != null) {
+			Command deleteCommand = DeleteCommand.create(editingDomain, sei);
+			editingDomain.getCommandStack().execute(deleteCommand);
 		}
 	}
 	
-	public IBeanCategoryAssignment getCa(String uuid) throws CoreException {
-		return modelApi.findBeanCaByUuid(uuid);
+	public CategoryAssignment getCa(String uuid) throws CoreException {
+		return findCa(uuid);
 	}
 	
-	private IBeanStructuralElementInstance createBeanInstance(StructuralElementInstance  sei) throws CoreException {
-		// TODO: what is the right way to create a bean?
-		IBeanStructuralElementInstance bean = (new BeanStructuralElementInstanceFactory()).getInstanceFor(sei);
-		return bean;
+	/**
+	 * Finds a sei instance by it's uuid
+	 * @param uuid the seis uuid
+	 * @return the StructuralElementInstance
+	 * @throws CoreException
+	 */
+	private StructuralElementInstance findSei(String uuid) throws CoreException {
+		List<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
+		while (iterator.hasNext()) {
+			Object currentSei = iterator.next();
+			if (currentSei instanceof StructuralElementInstance) {
+				if (((StructuralElementInstance) currentSei).getUuid().toString().equals(uuid)) {
+					return (StructuralElementInstance) currentSei;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a ca instance by it's uuid
+	 * @param uuid the cas uuid
+	 * @return the CategoryAssignment
+	 * @throws CoreException
+	 */
+	private CategoryAssignment findCa(String uuid) throws CoreException {
+		List<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
+		while (iterator.hasNext()) {
+			Object currentSei = iterator.next();
+			if (currentSei instanceof CategoryAssignment) {
+				if (((CategoryAssignment) currentSei).getUuid().toString().equals(uuid)) {
+					return (CategoryAssignment) currentSei;
+				}
+			}
+		}
+		return null;
 	}
 }
