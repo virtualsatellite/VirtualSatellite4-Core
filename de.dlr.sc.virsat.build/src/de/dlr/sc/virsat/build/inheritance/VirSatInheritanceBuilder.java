@@ -182,6 +182,6 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 	 * @return A new instance of the Inheritance Copier
 	 */
 	protected IInheritanceCopier createInheritanceCopier() {
-		return new InheritanceCopier();
+		return new InheritanceCopier(virSatTed);
 	}
 }

@@ -49,6 +49,8 @@ import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
 import org.eclipse.emf.workspace.IWorkspaceCommandStack;
 import org.eclipse.emf.workspace.ResourceUndoContext;
 
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.dvlm.util.command.DVLMCopierCommand;
 import de.dlr.sc.virsat.project.Activator;
@@ -62,11 +64,9 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.structure.VirSatProjectResourceChangeListener;
 
 /**
- * The Transactional Editing DOmain with attached WorkspaceSynchronizer
- * @author fisc_ph
- *
+ * The Transactional Editing Domain with attached WorkspaceSynchronizer
  */
-public class VirSatTransactionalEditingDomain extends TransactionalEditingDomainImpl {
+public class VirSatTransactionalEditingDomain extends TransactionalEditingDomainImpl implements IUserContext {
 
 	private boolean isDisposed;
 	
@@ -987,5 +987,15 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		
 		// Or if there is no exception hand back the result of the inner runnable
 		return atomicResult.get();
+	}
+
+	@Override
+	public boolean isSuperUser() {
+		return UserRegistry.getInstance().isSuperUser();
+	}
+
+	@Override
+	public String getUserName() {
+		return UserRegistry.getInstance().getUserName();
 	}
 }

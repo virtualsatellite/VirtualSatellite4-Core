@@ -62,6 +62,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -825,7 +826,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		Discipline systemDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		systemDiscipline.setName("System");
 
-		UserRegistry userRegistry = UserRegistry.getInstance();
+		IUserContext userRegistry = UserRegistry.getInstance();
 		String currentUserName = userRegistry.getUserName();
 		systemDiscipline.setUser(currentUserName);
 
@@ -1006,12 +1007,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the new discipline to be set
 	 */
 	public void assignDiscipline(IAssignedDiscipline disciplineContainer, Discipline discipline) {
-		boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer);
+		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(discipline);
+		boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer, ed);
 
 		if (hasWritePermission) {
 			disciplineContainer.setAssignedDiscipline(discipline);
 			Resource resource = disciplineContainer.eResource();
-			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(discipline);
 			ed.saveResourceIgnorePermissions(resource);
 		}
 	}
@@ -1029,7 +1030,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		if (!resource.getContents().isEmpty()) {
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof IAssignedDiscipline) {
-				hasWritePermission = RightsHelper.hasWritePermission(eObject);
+				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
+				hasWritePermission = RightsHelper.hasWritePermission(eObject, ed);
 			}
 		}
 		return hasWritePermission;

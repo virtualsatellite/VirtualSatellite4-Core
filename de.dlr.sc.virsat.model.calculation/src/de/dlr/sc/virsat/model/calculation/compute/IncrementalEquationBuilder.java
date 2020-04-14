@@ -290,7 +290,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		subMonitor.beginTask("Evaluating equations...", MAX_TASKS);
 		
 		// Evaluate the tree in the correct order
-		equationProblems = dependencyHelper.evaluate(tree);
+		equationProblems = dependencyHelper.evaluate(tree, virSatTed);
 		
 		subMonitor.worked(1);
 	}
