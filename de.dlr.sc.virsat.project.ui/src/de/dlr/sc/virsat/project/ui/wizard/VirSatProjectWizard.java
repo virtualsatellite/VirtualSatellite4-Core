@@ -10,22 +10,19 @@
 package de.dlr.sc.virsat.project.ui.wizard;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 import de.dlr.sc.virsat.project.Activator;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
@@ -33,60 +30,47 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  */
 public class VirSatProjectWizard extends BasicNewProjectResourceWizard implements INewWizard {
 
+	@Override
+	public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
+		super.init(workbench, currentSelection);
+		this.setNeedsProgressMonitor(true);
+	}
+	
 	public static final String ID_NEW_VIRSAT_PROJECT_WIZARD = "de.dlr.sc.virsat.project.ui.newProjectWizard";
 
 	@Override
 	public boolean performFinish() {
-		boolean performSuperFinish = super.performFinish();
-		IProject newProject = getNewProject();
-		return performSuperFinish && performFinishVirSat(newProject);
-	}
-
-	/**
-	 * Finalize VirtualSatellite Project initialization
-	 * 
-	 * @param newProject The newly created project
-	 * @return true in case the operation was correctly handed over to the workspace
-	 */
-	private boolean performFinishVirSat(IProject newProject) {
-		// Set up the Workspace Modification Unit to create the VirSat DataModel folder
-		// layout and to initialize the Data Model files with correct content
-		VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(newProject);
-		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(newProject);
-
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Started VirSat Project Initialization"));
-				// also attach Xtext nature
-				final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature";
-
-				// Create the file structure and the files and add the Xtext Nature
-				VirSatProjectCommons projectCommons = new VirSatProjectCommons(newProject);
-				projectCommons.createProjectStructure(new NullProgressMonitor());
-				projectCommons.attachProjectNature(XTEXT_NATURE_ID);
-
-				// Create the actual resources and ResourceSet
-				Command initializeProjectCommand = resSet.initializeModelsAndResourceSet(progressMonitor, ed);
-
-				// Trigger the command stack to save all files after they have been created
-				ed.getVirSatCommandStack().triggerSaveAll();
-				ed.getVirSatCommandStack().execute(initializeProjectCommand);
-
-				newProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Finished VirSat Project Initialization"));
-			}
-		};
-
-		// Try to fire the operation that has been created
+		AtomicReference<Boolean> result = new AtomicReference<>(true);
+		
 		try {
-			operation.run(new NullProgressMonitor());
+			// Run it in the dialog with a progressbar. run it in the thread of the dialog. Don't provide cancel (false, false)
+			getContainer().run(false, false, (progressMonitor) -> {
+				try {
+					// Progressbar needs to be initialized before it can be used in the sub monitor
+					progressMonitor.beginTask("Creating Virtual satellit project", 2);
+					SubMonitor monitor = SubMonitor.convert(progressMonitor, 2);
+					
+					// First try to create the project with the standard eclipse wizzard
+					// if it fails return and stop continuing
+					monitor.split(1).setTaskName("Creating Eclipse project");
+					if (!super.performFinish()) {
+						result.set(false);
+						return;
+					} 
+					
+					// Now get the newly created project and do the virtual satellite specific work with it.
+					IProject newProject = VirSatProjectWizard.this.getNewProject(); 
+					ResourcesPlugin.getWorkspace().run(VirSatProjectCommons.createNewProjectRunnable(newProject), monitor.split(1));
+				} catch (CoreException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatProjectWizard: Failure at Project creation", e));
+					result.set(false);
+				}
+			});
 		} catch (InvocationTargetException | InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to initialize Project!", e));
-			return false;
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatProjectWizard: Failure at Project creation", e));
+			result.set(false);
 		}
-
-		return true;
+		
+		return result.get();
 	}
 }

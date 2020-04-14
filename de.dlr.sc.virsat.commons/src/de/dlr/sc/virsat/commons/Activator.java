@@ -9,34 +9,36 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.commons;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+
 
 /**
  * the activator is the entry point for this plugin
- * @author scha_vo
- *
  */
-public class Activator implements BundleActivator {
+public class Activator extends Plugin {
 
-	private static BundleContext context;
-
-	/**
-	 * getter method to retrieve the context
-	 * @return {@link BundleContext} the context of the bundle in the OSGi Framework bundle context  
-	 */
-	static BundleContext getContext() {
-		return context;
+	private static String pluginId;
+	private static Activator plugin;
+	
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		plugin = this;
+		Activator.pluginId = getDefault().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+		super.stop(context);
 	}
 
-	@Override
-	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
+	public static Activator getDefault() {
+		return plugin;
 	}
 
+	public static String getPluginId() {
+		return pluginId;
+	}
 }

@@ -22,11 +22,14 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 				de.dlr.sc.virsat.commons.test.AllTests.class,
-//				de.dlr.sc.virsat.server.test.AllTests.class, // Disabled for 4.11.0 release
-//				de.dlr.sc.virsat.team.test.AllTests.class, // There are no tests yet
+				de.dlr.sc.virsat.server.test.AllTests.class,
+				de.dlr.sc.virsat.team.test.AllTests.class,
 				de.dlr.sc.virsat.model.test.AllTests.class,
 				de.dlr.sc.virsat.model.edit.test.AllTests.class,
 				de.dlr.sc.virsat.model.concept.test.AllTests.class,
+				de.dlr.sc.virsat.model.ext.core.test.AllTests.class,
+				de.dlr.sc.virsat.model.ext.core.test.AllTestsGen.class,
+				de.dlr.sc.virsat.model.ext.core.edit.test.AllTests.class,
 				de.dlr.sc.virsat.model.calculation.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.tests.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.tests.test.AllTestsGen.class,
@@ -34,6 +37,8 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.project.test.AllTests.class,
 				de.dlr.sc.virsat.build.test.AllTests.class,
 				de.dlr.sc.virsat.apps.test.AllTests.class,
+				de.dlr.sc.virsat.model.ext.core.test.AllTests.class,
+				de.dlr.sc.virsat.model.ext.core.edit.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.ps.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.ps.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.maturity.test.AllTests.class,

@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTests
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator
+import de.dlr.sc.virsat.model.concept.generator.validator.GenerateDeprecatedValidator
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import org.eclipse.core.runtime.Platform
@@ -51,11 +52,10 @@ class ConceptLanguageGenerator implements IGenerator2 {
 	
 	val ID_EXTENSION_POINT_GENERATOR = "de.dlr.sc.virsat.model.concept.generator"
 	val ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS = "class"
-	
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
 	}
-	
+
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 
 	}
@@ -79,14 +79,17 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			val IConceptGeneratorEnablement generatorEnablement = configElement.createExecutableExtension(ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS) as IConceptGeneratorEnablement;
 			generateCode = generateCode && generatorEnablement.generatorEnabled;			
 		}
-	
+
 		// Only generate the code if it is actually desired to do so
 		if (generateCode) {
 			// Get the Data Model and retrieve the Name of it
-			val dataModel = resource.contents.get(0) as Concept;
-	
+			val conceptPreprocessor = new ConceptPreprocessor(fsa)
+			val dataModel = conceptPreprocessor.process(resource)
+			
+			//Check if there is a deprecated validator
+			val hasDeprecatedValidator = fsa.isFile('../src/' + dataModel.name.replace(".","/") +'/validator/StructuralElementInstanceValidator.java');	
+			
 			new GenerateDmfCategories().serializeModel(dataModel, fsa);
-			new GenerateConceptXmi().serializeModel(dataModel, fsa);
 			new GenerateConceptImages().serializeModel(dataModel, fsa);
 			new GenerateCategoryBeans().serializeModel(dataModel, fsa);
 			new GenerateStructuralElementBeans().serializeModel(dataModel, fsa);
@@ -103,13 +106,19 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			new GenerateMigrator().serializeModel(dataModel, fsa);
 			new GenerateConceptEnabledTester().serializeModel(dataModel, fsa);
 			
-			// Generate Code for Test fargment
+			// Generate Code for Test fragment
 			new GenerateCategoryTests().serializeModel(dataModel, fsa);
 			new GenerateStructuralElementTests().serializeModel(dataModel, fsa);
 			new GenerateMigratorTests().serializeModel(dataModel, fsa);
 			new GenerateValidatorTests().serializeModel(dataModel, fsa);
 			new GenerateAllTests().serializeModel(dataModel, fsa);
+		
+			// Generate validator and mark it as deprecated
+			if (hasDeprecatedValidator == true) {
+				new GenerateDeprecatedValidator().serializeModel(dataModel, fsa);
+				new GeneratePluginXml().serializeModelDeprecatedValidator(dataModel, new PluginXmlReader(), fsa);
+				
+			}
 		}
 	}
-	
 }

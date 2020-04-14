@@ -55,7 +55,7 @@ public class ExcelExporter {
 	private static final int FIVE = 5;
 	private static final int ADDZEROIFLESS = 10;
 	private static final int FONTSIZE = 12;
-	final String defaultTemplatePath = "/resources/TableViewTemplate.xlsx";
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/TableViewTemplate.xlsx";
 	/**
 	 * Default constructor
 	 */
@@ -71,17 +71,11 @@ public class ExcelExporter {
 	 *
 	 */
 	public void export(ColumnViewer columnViewer, String path, String type) throws CoreException {
-
-		FileOutputStream out;
 		File file = new File(path);
-		try {
-			out = new FileOutputStream(file);
-
-
+		try (FileOutputStream out = new FileOutputStream(file)) {
 			XSSFWorkbook wb = createWorkbookFromTable(columnViewer, type);
 			wb.write(out);
-
-			out.close();
+			
 			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO",
 					"Successfully exported to excel file to " + file.getAbsolutePath()));
 		} catch (Exception e) {
@@ -101,7 +95,7 @@ public class ExcelExporter {
 	private XSSFWorkbook createWorkbookFromTable(ColumnViewer columnViewer, String type) throws IOException {
 
 		// create a workbook
-		InputStream is = getResourceContentAsString(defaultTemplatePath);
+		InputStream is = getResourceContentAsString(DEFAULT_TEMPLATE_PATH);
 		XSSFWorkbook wb = new XSSFWorkbook(is);
 
 		// rename the worksheet

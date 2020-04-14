@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
+import de.dlr.sc.virsat.model.concept.generator.ConceptPreprocessor;
 import de.dlr.sc.virsat.model.concept.generator.IConceptGeneratorEnablement;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
@@ -31,13 +32,12 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateCategoryTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateStructuralElementTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests;
+import de.dlr.sc.virsat.model.concept.generator.validator.GenerateDeprecatedValidator;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
-import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGenerator2;
@@ -80,10 +80,13 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         }
       }
       if (generateCode) {
-        EObject _get = resource.getContents().get(0);
-        final Concept dataModel = ((Concept) _get);
+        final ConceptPreprocessor conceptPreprocessor = new ConceptPreprocessor(fsa);
+        final Concept dataModel = conceptPreprocessor.process(resource);
+        String _replace = dataModel.getName().replace(".", "/");
+        String _plus = ("../src/" + _replace);
+        String _plus_1 = (_plus + "/validator/StructuralElementInstanceValidator.java");
+        final boolean hasDeprecatedValidator = fsa.isFile(_plus_1);
         new GenerateDmfCategories().serializeModel(dataModel, fsa);
-        new GenerateConceptXmi().serializeModel(dataModel, fsa);
         new GenerateConceptImages().serializeModel(dataModel, fsa);
         new GenerateCategoryBeans().serializeModel(dataModel, fsa);
         new GenerateStructuralElementBeans().serializeModel(dataModel, fsa);
@@ -108,6 +111,12 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         new GenerateMigratorTests().serializeModel(dataModel, fsa);
         new GenerateValidatorTests().serializeModel(dataModel, fsa);
         new GenerateAllTests().serializeModel(dataModel, fsa);
+        if ((hasDeprecatedValidator == true)) {
+          new GenerateDeprecatedValidator().serializeModel(dataModel, fsa);
+          GeneratePluginXml _generatePluginXml_1 = new GeneratePluginXml();
+          PluginXmlReader _pluginXmlReader_2 = new PluginXmlReader();
+          _generatePluginXml_1.serializeModelDeprecatedValidator(dataModel, _pluginXmlReader_2, fsa);
+        }
       }
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

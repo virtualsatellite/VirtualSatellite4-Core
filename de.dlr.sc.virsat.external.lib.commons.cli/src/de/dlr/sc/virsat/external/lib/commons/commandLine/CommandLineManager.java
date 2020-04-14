@@ -125,7 +125,7 @@ public class CommandLineManager {
 	 * @author fisc_ph
 	 *
 	 */
-	class VirSatParser extends PosixParser {
+	static class VirSatParser extends PosixParser {
 		@SuppressWarnings(value = {"rawtypes", "unchecked" })
 		@Override
 		protected void processOption(String arg, ListIterator iter) throws ParseException {

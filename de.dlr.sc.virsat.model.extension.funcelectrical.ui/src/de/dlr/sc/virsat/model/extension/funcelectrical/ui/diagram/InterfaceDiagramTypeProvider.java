@@ -41,6 +41,6 @@ public class InterfaceDiagramTypeProvider extends AbstractDiagramTypeProvider {
             toolBehaviorProviders =
                 new IToolBehaviorProvider[] { new InterfaceDiagramToolBehaviorProvider(this) };
         }
-        return toolBehaviorProviders;
+        return toolBehaviorProviders.clone();
     }
 }

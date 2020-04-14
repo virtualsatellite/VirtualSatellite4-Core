@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.build.validator.RepoValidatorsInstantiator;
 import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
 import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
-import de.dlr.sc.virsat.model.extension.tests.validator.StructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.extension.tests.validator.TestsValidator;
 
 /**
  * Tests for RepoValidatorsInstantiator
@@ -34,6 +34,7 @@ public class RepoValidatorsInstantiatorTest extends ATestConceptTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addResourceSetAndRepository();
+		loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 	}
 
 	@Test
@@ -44,7 +45,7 @@ public class RepoValidatorsInstantiatorTest extends ATestConceptTestCase {
 
 		assertFalse("There are core SEI validators", seiValidators.isEmpty());
 		assertTrue("Concept-specific validator not included",
-				seiValidators.stream().noneMatch(v -> v instanceof StructuralElementInstanceValidator));
+				seiValidators.stream().noneMatch(v -> v instanceof TestsValidator));
 		assertTrue("There is a core repo validator",
 				repoValidators.stream().anyMatch(v -> v instanceof DvlmLatestConceptValidator));
 	}
@@ -57,7 +58,7 @@ public class RepoValidatorsInstantiatorTest extends ATestConceptTestCase {
 		List<IStructuralElementInstanceValidator> seiValidators = validatorsInstantiator.getSeiValidators();
 
 		assertTrue("Concept-specific validator included",
-				seiValidators.stream().anyMatch(v -> v instanceof StructuralElementInstanceValidator));
+				seiValidators.stream().anyMatch(v -> v instanceof TestsValidator));
 		assertEquals("There are two concept-specific validator", 2,
 				seiValidators.stream().filter(
 						v -> v.getClass().getName().startsWith(RepoValidatorsInstantiator.CONCEPT_BUNDLE_PREFIX))

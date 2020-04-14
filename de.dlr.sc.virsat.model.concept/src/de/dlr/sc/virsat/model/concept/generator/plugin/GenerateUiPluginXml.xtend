@@ -107,7 +107,7 @@ class GenerateUiPluginXml {
 				</menuContribution>
 			</extension>
 			«declareEditorSection(concept)»
-			«IF !concept.categories.empty»
+			«IF !concept.nonAbstractCategories.empty»
 			<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
 				«FOR category : concept.nonAbstractCategories»
 					«declareUiSnippetTables(concept, category)»

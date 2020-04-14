@@ -17,15 +17,14 @@ import org.junit.Test;
  * @author muel_s8
  *
  */
-
 public class NewProjectWizardTest extends ASwtBotTestCase {
 	
 	@Test
 	public void testCreateNewProject() {
 		SWTBotTree tree = bot.tree();
 		
-		tree.expandNode(PROJECTNAME, "Repository");
-		tree.expandNode(PROJECTNAME, "Role Management");
-		tree.expandNode(PROJECTNAME, "Unit Management");
+		tree.expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
+		tree.expandNode(SWTBOT_TEST_PROJECTNAME, "Role Management");
+		tree.expandNode(SWTBOT_TEST_PROJECTNAME, "Unit Management");
 	}
 }

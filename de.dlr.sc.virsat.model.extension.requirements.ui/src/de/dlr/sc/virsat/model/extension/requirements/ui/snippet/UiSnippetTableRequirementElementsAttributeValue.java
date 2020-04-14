@@ -17,16 +17,13 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.build.marker.ui.EsfMarkerImageProvider;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValueEditingSupport;
-import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 /**
@@ -42,10 +39,6 @@ public class UiSnippetTableRequirementElementsAttributeValue extends AUiSnippetT
 
 	private static final String VALUE_PROPERTY_NAME = "value";
 	private static final int VALUE_COLUMN_SIZE = 700;
-	
-	protected PropertyInstanceValueSwitch valueSwitch = PreferencedPropertyInstanceValueSwitchFactory.createInstance();
-	protected EsfMarkerImageProvider emip = new EsfMarkerImageProvider();
-	
 
 	/**
 	 * Constructor for this editor snippet

@@ -40,7 +40,7 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 	 * test Validator to be injected in the validation builder
 	 * will remember how it got called 
 	 */
-	private class TestSeiValidator implements IStructuralElementInstanceValidator {
+	private static class TestSeiValidator implements IStructuralElementInstanceValidator {
 
 		private List<StructuralElementInstance> seis = new ArrayList<>();
 		private boolean gotCalled = false;

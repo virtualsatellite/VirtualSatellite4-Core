@@ -47,10 +47,10 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  * Class for exporting excel
  */
 public class FuncElecExporter implements IExport {
-	private final String defaultTemplatePath = "/resources/ExcelExportTemplate.xlsx";
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportTemplate.xlsx";
 	private ExcelExportHelper helper;
 
-	public static final String[] EXPORTABLE_SEIS = {
+	private static final String[] EXPORTABLE_SEIS = {
 			ElementDefinition.class.getSimpleName(),
 			ElementConfiguration.class.getSimpleName(),
 			InterfaceTypeCollection.class.getSimpleName(),
@@ -70,7 +70,7 @@ public class FuncElecExporter implements IExport {
 				InputStream iStream = null;
 				try {
 					if (useDefaultTemplate) {
-						iStream = Activator.getResourceContentAsString(defaultTemplatePath);
+						iStream = Activator.getResourceContentAsString(DEFAULT_TEMPLATE_PATH);
 					} else {
 						iStream = Activator.getResourceContentAsString(templatePath);
 					}
@@ -92,7 +92,7 @@ public class FuncElecExporter implements IExport {
 	 * @param sei StructuralElementInstance to be exported
 	 * @param iStream the output
 	 */
-	public void export(StructuralElementInstance sei, InputStream iStream) {
+	protected void export(StructuralElementInstance sei, InputStream iStream) {
 		helper = new ExcelExportHelper();
 		helper.setWb(iStream);
 		helper.setHeaders(sei);
@@ -112,7 +112,7 @@ public class FuncElecExporter implements IExport {
 	 * @author  Bell_er
 	 * 
 	 */
-	public void exportData(StructuralElementInstance exportSei) {
+	private void exportData(StructuralElementInstance exportSei) {
 		String exportSeiTypeName = exportSei.getType().getName();
 		if (exportSeiTypeName.equals(InterfaceTypeCollection.class.getSimpleName())) {
 			// when exporting interface Type collection those sheets are not needed
@@ -243,7 +243,7 @@ public class FuncElecExporter implements IExport {
 	 * gets the workbook from helper
 	 * @return the workbook
 	 */
-	public XSSFWorkbook getWb() {
+	protected XSSFWorkbook getWb() {
 		return helper.getWb();
 	}
 }

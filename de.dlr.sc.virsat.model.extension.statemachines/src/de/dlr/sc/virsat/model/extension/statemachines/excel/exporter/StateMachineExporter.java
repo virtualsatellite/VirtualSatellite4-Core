@@ -20,8 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
 import de.dlr.sc.virsat.excel.exporter.IExport;
@@ -38,6 +37,8 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
  * Class for exporting excel
  */
 public class StateMachineExporter implements IExport {
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
+	
 	ExcelExportHelper helper = new ExcelExportHelper();
 	private CategoryAssignment exportCa;
 
@@ -45,27 +46,26 @@ public class StateMachineExporter implements IExport {
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
 		if (eObject instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) eObject;
-			final String defaultTemplatePath = "/resources/StateMachineExportTemplate.xlsx";
 			// find the export template
 			try {
 				InputStream iStream = null;
 				if (useDefaultTemplate) {
-					iStream = Activator.getResourceContentAsString(defaultTemplatePath);
+					iStream = Activator.getResourceContentAsString(DEFAULT_TEMPLATE_PATH);
 				} else {
 					iStream = new FileInputStream(templatePath);
 				}
 				helper.setWb(new XSSFWorkbook(iStream));
 				exportData(ca);
+				// find the export destination
 				String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".xlsx";
 				// and write the results
 				File file = new File(newPath);
-				// find the export destination
-				FileOutputStream out = new FileOutputStream(file);
-				helper.getWb().write(out);
+				try (FileOutputStream out = new FileOutputStream(file)) {
+					helper.getWb().write(out);
+				}
 			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
-				Activator.getDefault().getLog().log(status);
-				ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
+				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 			}
 		}
 	}
@@ -74,7 +74,7 @@ public class StateMachineExporter implements IExport {
 	 * Exports the state machine
 	 * @param ca object to be exported
 	 */
-	public void exportData(CategoryAssignment ca) {
+	protected void exportData(CategoryAssignment ca) {
 		exportCa = ca;
 		StructuralElementInstance exportSei = (StructuralElementInstance) exportCa.eContainer();
 		// Create the header sheet

@@ -79,12 +79,13 @@ public  class Requirement extends ARequirement {
 	 * @return the name derived from the attributes
 	 */
 	protected String getNameFromAttributes() {
-		String newReqName = REQUIREMENT_NAME_PREFIX;
+		StringBuilder newReqName = new StringBuilder();
+		newReqName.append(REQUIREMENT_NAME_PREFIX);
 		for (AttributeValue child : getElements()) {
 			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
-				newReqName += child.getValue();
+				newReqName.append(child.getValue());
 			}
 		}
-		return newReqName;
+		return newReqName.toString();
 	}
 }

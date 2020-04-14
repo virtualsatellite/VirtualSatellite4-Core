@@ -14,6 +14,7 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,9 +38,22 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 	@Before
 	public void before() throws Exception {
 		super.before();
-		repositoryNavigatorItem = bot.tree().expandNode(PROJECTNAME, "Repository");
+		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
 		elementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
+	}
+	
+	@Override
+	public void tearDown() throws CoreException {
+		// In case of cut and paste actions on a SEI, the editing domain is not triggered for a save
+		// operation. Since the SEI has been well stored to a parent before, it does not to be stored 
+		// after a cut and paste. If the state would get lost (i.e. Not Saving), the SEI would be back
+		// nested to it's previous parent. This is a different story for copy and paste, here new SEIs
+		// are created which have never been nested before. Here the Create SEI Command will trigger 
+		// save accordingly.
+		// To avoid the save dialog popping up, we save all editors before shutting down the workbench
+		buildCounter.executeInterlocked(() -> bot.menu("File").menu("Save All").click());
+		super.tearDown();
 	}
 	
 	@Test
@@ -85,8 +99,9 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 		elementConfiguration = configurationTree.getNode("EC: ElementConfiguration");
 		
 		// Now do the drag and drop move operation
-		elementConfiguration.dragAndDrop(configurationTree2);
-		waitForEditingDomainAndUiThread();
+		buildCounter.executeInterlocked(() -> {
+			elementConfiguration.dragAndDrop(configurationTree2);
+		});
 		
 		StructuralElementInstance seiCt1 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree")).findFirst().get();
 		StructuralElementInstance seiCt2 = getRepository(project).getRootEntities().stream().filter(sei -> sei.getName().equals("ConfigurationTree_2")).findFirst().get();

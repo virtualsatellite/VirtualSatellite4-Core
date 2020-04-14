@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 
 /**
@@ -21,22 +20,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  *
  */
 public abstract class ABeanProperty<V_TYPE> extends ABeanObject<ValuePropertyInstance> implements IBeanProperty<ValuePropertyInstance, V_TYPE> {
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof ABeanProperty) {
-			ABeanProperty<?> rhsBeanProperty = (ABeanProperty<?>) obj;
-			return ti.equals(rhsBeanProperty.getTypeInstance());
-		} else if (obj instanceof CategoryAssignment) {
-			return ti.equals(obj);
-		}
-		return false;
-	}
-	
-	@Override
-	public int hashCode() {
-		return ti.hashCode();
-	}
 	
 	@Override
 	public boolean isSet() {
@@ -47,4 +30,5 @@ public abstract class ABeanProperty<V_TYPE> extends ABeanObject<ValuePropertyIns
 	public void unset() {
 		ti.setValue(null);
 	}
+
 }

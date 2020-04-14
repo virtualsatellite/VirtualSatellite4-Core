@@ -27,7 +27,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
@@ -93,8 +92,6 @@ public class ConstraintTablePage extends WizardPage {
 
 		content = new Composite(parent, SWT.FILL);
 		FillLayout flContent = new FillLayout();
-		GridLayout glContent = new GridLayout();
-		glContent.numColumns = 1;
 		content.setLayout(flContent);
 		content.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 
@@ -222,12 +219,13 @@ public class ConstraintTablePage extends WizardPage {
 	 * @return string
 	 */
 	private String getDisplay(List<State> states) {
-		String string = "";
+		StringBuilder stringBuilder = new StringBuilder();
 
 		for (State s : states) {
-			string = string + s.getName() + ", ";
+			stringBuilder.append(s.getName());
+			stringBuilder.append(", ");
 		}
-		return string;
+		return stringBuilder.toString();
 	}
 	
 	

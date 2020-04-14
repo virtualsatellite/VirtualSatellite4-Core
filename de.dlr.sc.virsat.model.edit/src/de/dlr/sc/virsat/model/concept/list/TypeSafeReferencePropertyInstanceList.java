@@ -227,11 +227,13 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 		if (o != null && !(o instanceof IBeanObject<?>)) {
 			return INDEX_DOES_NOT_EXIST;
 		}
+
 		ATypeInstance ti = null;
-		if (o instanceof IBeanObject<?>) {
+		if (o != null) {
 			IBeanObject<?> categoryBean = (IBeanObject<?>) o;
 			ti = categoryBean.getTypeInstance();
 		}
+		
 		for (int i = 0; i < ai.getArrayInstances().size(); i++) {
 			APropertyInstance pi = ai.getArrayInstances().get(i);
 			ReferencePropertyInstance cpi = (ReferencePropertyInstance) pi;
@@ -248,11 +250,13 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 		if (o != null && !(o instanceof IBeanObject<?>)) {
 			return INDEX_DOES_NOT_EXIST;
 		}
+		
 		ATypeInstance ti = null;
-		if (o instanceof IBeanObject<?>) {
+		if (o != null) {
 			IBeanObject<?> categoryBean = (IBeanObject<?>) o;
 			ti = categoryBean.getTypeInstance();
 		}
+		
 		for (int i = ai.getArrayInstances().size() - 1; i >= 0; i--) {
 			APropertyInstance pi = ai.getArrayInstances().get(i);
 			ReferencePropertyInstance cpi = (ReferencePropertyInstance) pi;

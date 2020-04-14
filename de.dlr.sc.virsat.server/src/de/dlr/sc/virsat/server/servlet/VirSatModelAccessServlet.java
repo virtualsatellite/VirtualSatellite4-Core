@@ -33,7 +33,7 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		return new ServletContainer(resourceConfig);
 	}
 
-	private class ModelAccessRestApplication extends ResourceConfig {
+	private static class ModelAccessRestApplication extends ResourceConfig {
 		/**
 		 * Registers all relevant Classes: Resources, Filter and Bindings
 		 */

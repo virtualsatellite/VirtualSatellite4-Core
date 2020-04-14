@@ -31,7 +31,8 @@ class GenerateValidatorTestsTest {
 	@Inject extension ParseHelper<Concept>
 
 	Concept concept
-	val TEST_CONCEPT_NAME = "testConcept"
+	val TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept"
+	val TEST_CONCEPT_SHORT_NAME = "TestConcept"
 	
 	// Don't get the Test but the Tests here. The Test is the test case for the GenerateValidator.
 	// Whereas here we want to have the Generator for the GenerateValidatorTests.
@@ -47,31 +48,28 @@ class GenerateValidatorTestsTest {
 	@Test
 	def void testCreateConcreteClassFileName() {
 		concept = '''
-		Concept «TEST_CONCEPT_NAME» {
-			
-		}
+			Concept «TEST_CONCEPT_NAME» {}
 		'''.parse
 
 		val concreteClassfileName = generateValidatorTests.createConcreteClassFileName(concept, concept)
 		val abstractClassfileName = generateValidatorTests.createAbstractClassFileName(concept, concept)
-		val expectedConcreteClassFileName = "../../testConcept.test/src/testConcept/validator/StructuralElementInstanceValidatorTest.java"
-		val expectedAbstractClassFileName = "../../testConcept.test/src-gen/testConcept/validator/AStructuralElementInstanceValidatorTest.java"
+		val expectedConcreteClassFileName = "../../" + TEST_CONCEPT_NAME + ".test/src/" + TEST_CONCEPT_NAME.replace(".","/") + "/validator/" + TEST_CONCEPT_SHORT_NAME + "ValidatorTest.java"
+		val expectedAbstractClassFileName = "../../" + TEST_CONCEPT_NAME + ".test/src-gen/" + TEST_CONCEPT_NAME.replace(".","/") + "/validator/A" + TEST_CONCEPT_SHORT_NAME + "ValidatorTest.java"
 
 		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedConcreteClassFileName, concreteClassfileName)
-		Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
+		Assert.assertEquals("Abstract file name for the generated create add command is correct", expectedAbstractClassFileName, abstractClassfileName)
 	}
 	
 	@Test
 	def void testCreateClass() {
 		concept = '''
-			Concept «TEST_CONCEPT_NAME» {
-			}
+			Concept «TEST_CONCEPT_NAME» {}
 		'''.parse
 		
 		val concreteClassContents = generateValidatorTests.createConcreteClass(concept, concept)
 		val abstractClassContents = generateValidatorTests.createAbstractClass(concept, concept)
 		
-		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/StructuralElementInstanceValidatorTest.java")
-		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/AStructuralElementInstanceValidatorTest.java")
+		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/TestConceptValidatorTest.java")
+		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ATestConceptValidatorTest.java")
 	}
 }

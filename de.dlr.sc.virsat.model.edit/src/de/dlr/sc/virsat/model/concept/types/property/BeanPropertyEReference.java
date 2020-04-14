@@ -24,6 +24,20 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
  */
 public class BeanPropertyEReference<Type extends EObject> extends ABeanObject<EReferencePropertyInstance> implements IBeanProperty<EReferencePropertyInstance, Type> {
 
+	/**
+	 * Standard Constructor
+	 */
+	public BeanPropertyEReference() {
+	}
+	
+	/**
+	 * Constructor to directly set the type instance
+	 * @param erpi the type instance to be used
+	 */
+	public BeanPropertyEReference(EReferencePropertyInstance erpi) {
+		super(erpi);
+	}
+	
 	public Command setValue(EditingDomain ed, EObject value) {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.EREFERENCE_PROPERTY_INSTANCE__REFERENCE, value);
 	}

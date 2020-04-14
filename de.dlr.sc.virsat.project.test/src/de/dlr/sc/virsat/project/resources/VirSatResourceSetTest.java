@@ -29,12 +29,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.xmi.DanglingHREFException;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -72,12 +74,13 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	private StructuralElementInstance sei1;
 	private StructuralElementInstance sei2;
 	private StructuralElementInstance sei3;
+	private StructuralElement se;
 	
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
 		
-		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsRootStructuralElement(true);
 
 		sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
@@ -540,10 +543,114 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
 	}
 	
+	@Test
+	public void testAnalyzeResourceProblems() {
+		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
+		
+		// Contain the SE in a resource otherwise it will be identified as a dangling reference
+		Resource resourceSe = new ResourceImpl();
+		resourceSe.setURI(URI.createURI("uri://virsat.test/test"));
+		
+		Diagnostic noDiagnostic = resSet.analyzeResourceProblems(resourceSe);
+		assertEquals("No resource problem", Diagnostic.OK, noDiagnostic.getSeverity());
+
+		resourceSe.getErrors().add(new DanglingHREFException("Dangling Error", "here", 1, 1));
+		
+		Diagnostic errorDiagnostic = resSet.analyzeResourceProblems(resourceSe);
+		assertEquals("Now got errors", Diagnostic.ERROR, errorDiagnostic.getSeverity());
+		assertEquals("Got correct message", "DanglingHREFException: Dangling Error (here, 1, 1)", errorDiagnostic.getChildren().get(1).getMessage());
+
+		resourceSe.getErrors().clear();
+		resourceSe.getWarnings().add(new DanglingHREFException("Dangling Warning", "here", 1, 1));
+
+		Diagnostic warningDiagnostic = resSet.analyzeResourceProblems(resourceSe);
+		
+		// the XMI DanglingHREF Diagnostic is seen as a  throwable and thus reports as an Error instead of a warning 
+		assertEquals("Now got warning", Diagnostic.ERROR, warningDiagnostic.getSeverity());
+		assertEquals("Got correct message", "DanglingHREFException: Dangling Warning (here, 1, 1)", warningDiagnostic.getChildren().get(1).getMessage());
+	}
+		
+	@Test
+	public void testAnalyzeModelProblems() {
+		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
+		
+		// Contain the SE in a resource otherwise it will be identified as a dangling reference
+		Resource resourceSe = new ResourceImpl();
+		resourceSe.getContents().add(se);
+		
+		Resource resourceA = new ResourceImpl();
+		resSet.getResources().add(resourceA);
+		Resource resourceB = new ResourceImpl();
+		resSet.getResources().add(resourceB);
+
+		
+		se.getCanInheritFrom().add(se);
+
+		resourceA.getContents().add(sei1);
+		resourceB.getContents().add(sei2);
+		
+		sei2.getSuperSeis().add(sei1);
+		
+		assertEquals("Objects are well contained", resourceA, sei1.eResource());
+		assertEquals("Objects are well contained", resourceB, sei2.eResource());
+		
+		Diagnostic diagnosticResult = resSet.analyzeModelProblems(resourceB);
+		assertEquals("No issues with the reosurce and the model", Diagnostic.OK, diagnosticResult.getSeverity());
+		
+		// Now remove sei1 from the resource which would make it a dangling reference
+		resourceA.getContents().remove(sei1);
+
+		diagnosticResult = resSet.analyzeModelProblems(resourceB);
+		assertEquals("The dangling reference should be detected", Diagnostic.WARNING, diagnosticResult.getSeverity());
+	}
+	
+	/**
+	 * A resource set which allows null contents
+	 *
+	 */
+	static class NullableResource extends ResourceImpl {
+		@SuppressWarnings("serial")
+		@Override
+		public EList<EObject> getContents() {
+			if (contents == null) {
+				contents = new ResourceImpl.ContentsEList<EObject>() {
+					@Override
+					protected boolean canContainNull() {
+						return true;
+					};
+
+					@Override
+					public NotificationChain inverseAdd(EObject object, NotificationChain notifications) {
+						return notifications;
+					}
+				};
+			}
+			return contents;
+		}
+	}
+	
+	@Test
+	public void testAnalyzeResourceNullProblems() {
+		// Now create a resource which allows nulls to be set
+		// Usually an EMF resource set does not allow to have null contents. Still there were stack traces
+		// showing that somehow null content made its way into the resource set. 
+		VirSatResourceSet resSet = new VirSatResourceSet(testProject);
+		Resource nullableResource = new NullableResource();
+		nullableResource.setURI(URI.createURI("uri://virsat.test/test"));
+
+		Diagnostic diagnosticNoNull = resSet.analyzeResourceNullProblems(nullableResource);
+		assertEquals("Got an ok diagnostic", Diagnostic.OK, diagnosticNoNull.getSeverity());
+		
+		nullableResource.getContents().add(null);
+
+		Diagnostic diagnosticNull = resSet.analyzeResourceNullProblems(nullableResource);
+		assertEquals("Got an ok diagnostic", Diagnostic.ERROR, diagnosticNull.getSeverity());
+	}
+
 	/**
 	 * Test resource set that tracks updateDiagnostic call for testing resourceNullContentAdapter.
 	 */
-	class TestVirSatResourceSet extends VirSatResourceSet {
+	static class TestVirSatResourceSet extends VirSatResourceSet {
 	
 		protected TestVirSatResourceSet(IProject project) {
 			super(project);
@@ -582,27 +689,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertFalse("Diagnostic update is not yet triggered", resSet.triggeredDiagnosticUpdate);
 
 		// Now create a resource which allows nulls to be set
-		Resource nullableResource = new ResourceImpl() {
-			@SuppressWarnings("serial")
-			@Override
-			public EList<EObject> getContents() {
-				if (contents == null) {
-					contents = new ResourceImpl.ContentsEList<EObject>() {
-						@Override
-						protected boolean canContainNull() {
-							return true;
-						};
-
-						@Override
-						public NotificationChain inverseAdd(EObject object, NotificationChain notifications) {
-							return notifications;
-						}
-					};
-				}
-				return contents;
-			}
-		};
-		
+		Resource nullableResource = new NullableResource();		
 		assertNull("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource));
 
 		// Now add the null object and see that the diagnostics are running as expected
@@ -614,4 +701,5 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("There are no critical diagnostics yet", resSet.getResourceToDiagnosticsMap().get(nullableResource)
 				.getChildren().get(0).getMessage().contains("Found NULL object in resource content"));
 	}
+	
 }
