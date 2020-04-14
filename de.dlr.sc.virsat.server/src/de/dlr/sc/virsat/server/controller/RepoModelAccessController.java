@@ -23,6 +23,7 @@ import org.eclipse.emf.edit.command.DeleteCommand;
 
 import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -133,6 +134,10 @@ public class RepoModelAccessController {
 	public CategoryAssignment getCa(String uuid) throws CoreException {
 		return findCa(uuid);
 	}
+
+	public APropertyInstance getProperty(String uuid) throws CoreException {
+		return findProperty(uuid);
+	}
 	
 	/**
 	 * Finds a sei instance by it's uuid
@@ -168,6 +173,27 @@ public class RepoModelAccessController {
 			if (currentSei instanceof CategoryAssignment) {
 				if (((CategoryAssignment) currentSei).getUuid().toString().equals(uuid)) {
 					return (CategoryAssignment) currentSei;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a property instance by it's uuid
+	 * @param uuid the properties uuid
+	 * @return the APropertyInstance
+	 * @throws CoreException
+	 */
+	public APropertyInstance findProperty(String uuid) {
+		List<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
+		while (iterator.hasNext()) {
+			Object currentEntity = iterator.next();
+			if (currentEntity instanceof APropertyInstance) {
+				if (((APropertyInstance) currentEntity).getUuid().toString().equals(uuid)) {
+					APropertyInstance propertyInstance = (APropertyInstance) currentEntity;
+					return propertyInstance;
 				}
 			}
 		}

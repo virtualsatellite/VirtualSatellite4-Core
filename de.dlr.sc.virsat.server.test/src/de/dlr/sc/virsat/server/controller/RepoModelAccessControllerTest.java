@@ -28,6 +28,8 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
@@ -135,5 +137,27 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		String uuid = testCa.getUuid();
 		CategoryAssignment caByUuid = repoModelAccessController.getCa(uuid);
 		assertEquals("Right ca found", testCa, caByUuid);
+	}
+	
+	@Test
+	public void testProperties() throws CoreException {
+		// Create a new TestStructuralElement with a StructuralElementInstance
+		TestStructuralElement tsei = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei = tsei.getStructuralElementInstance();
+		sei.setName("RootSei");
+		
+		// Now add the new SEI to the Repository
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
+		editingDomain.getCommandStack().execute(createAddSei);
+		
+		// Create CA and add it to SEI
+		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
+		executeAsCommand(() -> tsei.add(testCa));
+
+		// Add test properties
+		testCa.setTestBool(editingDomain, true);
+		
+		APropertyInstance boolByUuid = repoModelAccessController.getProperty(testCa.getTestBoolBean().getUuid());
+		assertEquals("Right bool found", boolByUuid, testCa.getTestBoolBean().getTypeInstance());
 	}
 }

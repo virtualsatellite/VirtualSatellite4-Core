@@ -18,6 +18,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
+// TODO: move this class
 public class FlattenedStructuralElementInstance {
 
 	private VirSatUuid uuid;
