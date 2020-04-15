@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.auth.userhandler;
 
-import de.dlr.sc.virsat.server.auth.ServerConfiguration;
+import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
 public class ServerUserHandlerFactory {
 
@@ -19,7 +19,7 @@ public class ServerUserHandlerFactory {
 	public IServerUserHandler getServerUserHandler() {
 		IServerUserHandler handler = null;
 		
-		String handlerName = ServerConfiguration.getInstance().getServerUserHandler();
+		String handlerName = ServerConfiguration.getUserHandlerClass();
 		try {
 			handler = (IServerUserHandler) Class.forName(handlerName).newInstance();
 		} catch (InstantiationException e) {

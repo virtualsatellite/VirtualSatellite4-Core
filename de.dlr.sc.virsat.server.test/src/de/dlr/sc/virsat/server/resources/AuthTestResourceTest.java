@@ -267,8 +267,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 			path("/repository").
 			request().
 			header(HttpHeaders.AUTHORIZATION, encoded).
-			get(Response.class)
-			.toString();
+			get(Response.class);
 		
 	}
 }

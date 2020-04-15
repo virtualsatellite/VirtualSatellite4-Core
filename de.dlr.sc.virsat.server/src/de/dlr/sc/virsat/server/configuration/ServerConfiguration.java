@@ -23,6 +23,7 @@ public class ServerConfiguration {
 	
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
 	public static final String PROJECT_REPOSITORIES_DIR_KEY = "project.repositories.dir";
+	public static final String USER_HANDLER_CLASS_KEY = "user.handler.class";
 	
 	private static Properties properties = new Properties();
 	
@@ -62,5 +63,13 @@ public class ServerConfiguration {
 
 	public static void setProjectRepositoriesDir(String projectRepositoriesDir) {
 		properties.setProperty(PROJECT_REPOSITORIES_DIR_KEY, projectRepositoriesDir);
+	}
+	
+	public static String getUserHandlerClass() {
+		return properties.getProperty(USER_HANDLER_CLASS_KEY);
+	}
+
+	public static void setUserHandlerClass(String userHandlerClass) {
+		properties.setProperty(USER_HANDLER_CLASS_KEY, userHandlerClass);
 	}
 }

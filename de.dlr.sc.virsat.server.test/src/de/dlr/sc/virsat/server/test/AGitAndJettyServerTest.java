@@ -28,9 +28,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import de.dlr.sc.virsat.server.auth.ServerConfiguration;
 import de.dlr.sc.virsat.server.auth.filter.AuthFilter;
 import de.dlr.sc.virsat.server.auth.userhandler.TestServerUserHandler;
+import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
@@ -52,7 +52,7 @@ public abstract class AGitAndJettyServerTest {
 		server = new VirSatJettyServer();
 		server.start();
 		
-		ServerConfiguration.getInstance().setServerUserHandler(TestServerUserHandler.class.getName());
+		ServerConfiguration.setUserHandlerClass(TestServerUserHandler.class.getName());
 		
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
