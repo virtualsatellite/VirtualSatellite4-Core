@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
@@ -77,6 +78,8 @@ public class ASwtBotTestCase {
 	protected Concept conceptTest; 
 	protected int screenCaptureNumber = 1;
 	protected WorkspaceBuilderInterlockedExecution buildCounter;
+	protected enum DiagramType { interfaces, stateMachines }
+
 
 	@Rule
 	public DisableOnDebug testGlobalTimeoutRule = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
@@ -250,6 +253,30 @@ public class ASwtBotTestCase {
 		} catch (WidgetNotFoundException e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * @param treeItem treeItem under whose document folder to create a new Diagram
+	 * @param type specifies the Diagram type
+	 */
+	protected void createNewDiagramForTreeItem(SWTBotTreeItem treeItem, DiagramType type) {
+		treeItem.getNode("documents").contextMenu("New").contextMenu("Other...").click();
+		waitForEditingDomainAndUiThread();
+		bot.tree().expandNode("VirSat").getNode("VirSat Diagram").select();
+		bot.button("Next >").click();
+		waitForEditingDomainAndUiThread();
+		bot.comboBox().setSelection(type.toString());
+		bot.button("Finish").click();		
+	}
+	
+	/**
+	 * @param editorTitle title of opened diagram editor
+	 * @return diagram editor
+	 */
+	protected SWTBotGefEditor getOpenedDiagramEditorbyTitle(String editorTitle) {
+		SWTGefBot gefBot = new SWTGefBot();
+		SWTBotGefEditor editor = gefBot.gefEditor(editorTitle);
+		return editor;
 	}
 	
 	/**
