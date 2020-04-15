@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.junit.Test;
 
 
@@ -97,5 +98,39 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		cmd = new AssignDisciplineCommand(editingDomain, sei, null);
 		editingDomain.getCommandStack().execute(cmd);
 		assertEquals("Assigned Discipline has not changed since we dont have any rights", discipline, sei.getAssignedDiscipline());
+	}
+	
+	@Test
+	public void testCanExecute() {
+		UserRegistry.getInstance().setSuperUser(false);
+		AssignDisciplineCommand cmd = new AssignDisciplineCommand(editingDomain, sei, discipline);
+		assertFalse("There is no user assigned yet, only the super use can execute the command", cmd.canExecute());
+		
+		UserRegistry.getInstance().setSuperUser(true);
+		assertTrue("The super user can always set the discipline", cmd.canExecute());
+		editingDomain.getCommandStack().execute(cmd);
+		
+		Discipline someOtherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+		AssignDisciplineCommand cmdSetOtherDiscipline = new AssignDisciplineCommand(editingDomain, sei, someOtherDiscipline);
+		
+		// now see if the command can be executed as some random user
+		editingDomain.getCommandStack().execute(
+			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_User(), "RandomUser")
+		);
+		
+		UserRegistry.getInstance().setSuperUser(false);
+		assertFalse("The command cannot be executed", cmdSetOtherDiscipline.canExecute());
+		
+		// now set the user to be the user from the registry
+		String registeredUser = UserRegistry.getInstance().getUserName();
+		editingDomain.getCommandStack().execute(
+			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_User(), registeredUser)
+		);
+		assertTrue("With the correct user, the command can be executed", cmdSetOtherDiscipline.canExecute());
+		
+		// Now create the command without an editing domain which should use the standard user registration
+		AssignDisciplineCommand cmdSetOtherNoEd = new AssignDisciplineCommand(null, sei, someOtherDiscipline);
+		assertTrue("With the correct user, the command can be executed", cmdSetOtherNoEd.canExecute());
+		
 	}
 }

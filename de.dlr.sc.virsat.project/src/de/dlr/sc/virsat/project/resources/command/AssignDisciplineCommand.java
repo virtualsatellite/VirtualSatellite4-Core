@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.project.resources.command;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
@@ -21,19 +20,17 @@ import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * Command to assign a discipline to an DVLM EObject and directly
  * saving it by its resourceSet
- * @author fisc_ph
- *
  */
 public class AssignDisciplineCommand extends AbstractCommand {
 
 	private EObject disciplineContainer;
 	private Discipline discipline;
 	private EditingDomain ed;
+	private IUserContext userContext;
 	
 	/**
 	 * Constructor to create the command for setting the discipline of an eObject in the DVLM model
@@ -45,6 +42,10 @@ public class AssignDisciplineCommand extends AbstractCommand {
 		this.disciplineContainer = disciplineContainer;
 		this.discipline = discipline;
 		this.ed = virSatEd;
+		this.userContext = UserRegistry.getInstance();
+		if (this.ed instanceof IUserContext) {
+			userContext = (IUserContext) ed;
+		}
 	}
 	
 	@Override
@@ -58,22 +59,18 @@ public class AssignDisciplineCommand extends AbstractCommand {
 	}
 	
 	@Override
+	public boolean canExecute() {
+		return RightsHelper.hasWritePermission(disciplineContainer, userContext) && super.canExecute();
+	}
+	
+	@Override
 	public void execute() {
-		IUserContext userContext = UserRegistry.getInstance();
-		if (this.ed instanceof IUserContext) {
-			userContext = (IUserContext) ed;
-		}
-		
 		if (disciplineContainer instanceof IAssignedDiscipline) {
-			boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer, userContext);
-			
-			if (hasWritePermission) {
-				((IAssignedDiscipline) disciplineContainer).setAssignedDiscipline(discipline);
-				Resource resource = disciplineContainer.eResource();
+			((IAssignedDiscipline) disciplineContainer).setAssignedDiscipline(discipline);
+			Resource resource = disciplineContainer.eResource();
 				
-				if (ed instanceof VirSatTransactionalEditingDomain) {
-					((VirSatTransactionalEditingDomain) ed).saveResourceIgnorePermissions(resource);
-				}
+			if (ed instanceof VirSatTransactionalEditingDomain) {
+				((VirSatTransactionalEditingDomain) ed).saveResourceIgnorePermissions(resource);
 			}
 		}
 	}
