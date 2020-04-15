@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Simple Helper method to determine the access rights on an EObject

@@ -12,7 +12,10 @@ package de.dlr.sc.virsat.project.editingDomain;
 import java.util.Map;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -22,6 +25,8 @@ import org.eclipse.emf.workspace.EMFCommandOperation;
 import org.eclipse.emf.workspace.impl.EMFOperationTransaction;
 import org.eclipse.emf.workspace.impl.WorkspaceCommandStackImpl;
 
+import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.util.command.VirSatRecordingCommand;
 import de.dlr.sc.virsat.project.Activator;
 
@@ -29,13 +34,11 @@ import de.dlr.sc.virsat.project.Activator;
  * VirSat Command Stack which delegates to a WorkspaceCommandStack
  * but offers the possibility to execute commands without undo. It 
  * also provides special treatment of recording commands which may call
- * extra logic such as removing the file of a SEI
- *
+ * extra logic such as removing the file of a SEI.
  */
 public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 
 	private VirSatTransactionalEditingDomain editingDomain;
-	
 	private boolean triggerSave;
 	
 	/**
@@ -51,11 +54,10 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * of executing the command as a wrapped workspace operation as well as saving the files in the
 	 * right point of time.
 	 * @param runnable the runnable that implements the call to the execution of the command
+	 * @param userContextOverride Override for the User Context. Can be null.
 	 */
-	protected synchronized void executeInWorkspaceWithSaveCheck(Runnable runnable) {
+	protected synchronized void executeInWorkspaceWithSaveCheck(Runnable runnable, IUserContext userContextOverride) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Starting to execute command as workspace operation"));
-
-		triggerSave = false;
 		
 		// Run all execute, undo, et.c in a workspace operation. This way deadlocks can be avoided,
 		// since no two commands can run at the same time. There used to be deadlocks with the builders
@@ -63,15 +65,27 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		// obtaining a lock on the Editing domain, then obtaining a lock on the Workspace. Meanwhile the builder could start
 		// obtaining a lock on the workspace, then executing a command obtaining a lock on the ED.
 		// Now both, first have to get the Lock on the Workspace, then on the Editing domain.
+		editingDomain.executeInWorkspace(() -> {
+			triggerSave = false;
+			runnable.run();
+
+			// now check if something asked in between to issue a save operation on all resources.
+			checkTriggerSaveAll();
+		}, userContextOverride);
 		
-		editingDomain.executeInWorkspace(() -> runnable.run());
-		
-		// now check if something asked in between to issue a save operation on all resources
-		// this call cannot be placed into the Workspace Operation, WWorkspace operations scheduled by the 
-		// command execution need to be able to execute first. 
-		checkTriggerSaveAll();
-	
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Finished to execute command as workspace operation"));
+	}
+	
+	
+	/**
+	 * Method to execute a command and directly take it out of the
+	 * history, so it cannot be undone. The Transaction.OPTION_NO_UNDO 
+	 * seems to be not implemented.
+	 * @param command The command to be executed.
+	 * @param userContextOverride Override for the User Context. Can be null.
+	 */
+	public void executeNoUndo(Command command) throws RuntimeException {
+		executeNoUndo(command, null, false);
 	}
 	
 	/**
@@ -80,10 +94,13 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * seems to be not implemented.
 	 * @param command The command to be executed.
 	 */
-	public void executeNoUndo(Command command) {
+	public void executeNoUndo(Command command, IUserContext userContextOverride, boolean executeBuilder) throws RuntimeException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute Command with no undo"));
 		
-		editingDomain.executeInWorkspace(() -> {
+		AtomicExceptionReference<ExecutionException> atomicExecutionException = new AtomicExceptionReference<>();
+		AtomicExceptionReference<CoreException> atomicCoreException = new AtomicExceptionReference<>();
+		
+		executeInWorkspaceWithSaveCheck(() -> {
 			// Check if the command is execute able and prepare it (happens in canExecute)
 			if (command.canExecute()) {
 				// Wrap it into an EMF operation and execute the command ourselves without
@@ -93,10 +110,23 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 					operation.execute(null, null);
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command without undo ", e));
+					atomicExecutionException.set(e);
 				}
 			}
-		});
+			
+			// Now run the builder if requested
+			if (executeBuilder) {
+				try {
+					editingDomain.getResourceSet().getProject().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+				} catch (CoreException e) {
+					atomicCoreException.set(e);
+				}
+			}
+		}, userContextOverride);
 
+		atomicExecutionException.throwAsRuntimeExceptionIfSet();
+		atomicCoreException.throwAsRuntimeExceptionIfSet();
+		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Finished execute Command with no undo"));
 	}
 	
@@ -127,7 +157,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 				// In case it exists, we want to now check if it is reusable for us. Which means
 				// like if a recording command is executed, which also tries to remove a file from a SEI,
 				// These commands shall be executed in one atomic transaction. This is implemented for making 
-				// Graphitti Framework work for us. Important is, that a transaction can only be rentered by
+				// Graphitti Framework work for us. Important is, that a transaction can only be re-entered by
 				// the same thread. Thus commands within a recording command can be placed into the same transaction
 				// A command from a different thread can not be placed into the already open transaction.
 				boolean usableTransactionExists = activeTransaction != null && !activeTransaction.isReadOnly()
@@ -161,7 +191,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 			} catch (InterruptedException | RollbackException e) {
 				Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "Failed to execute command", e));
 			}
-		});
+		}, null);
 	}
 	
 	@Override
@@ -169,7 +199,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Undo Command"));
 		executeInWorkspaceWithSaveCheck(() -> {
 			super.undo();
-		});
+		}, null);
 	}
 	
 	@Override
@@ -177,7 +207,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Redo Command"));
 		executeInWorkspaceWithSaveCheck(() -> {
 			super.redo();
-		});
+		}, null);
 	}
 	
 	/**
