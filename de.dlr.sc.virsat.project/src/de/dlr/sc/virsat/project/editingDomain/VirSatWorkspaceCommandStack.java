@@ -12,9 +12,6 @@ package de.dlr.sc.virsat.project.editingDomain;
 import java.util.Map;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
@@ -42,27 +39,11 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	private boolean triggerSave;
 	
 	/**
-	 * This workspace is used as lock to synchronize the workspace operations and
-	 * the transactions on the editing domain. E.g. The builder starts and locks the
-	 * workspace, then it tries to place a non undoable command into the stack. in the meantime
-	 * a user operation created a new SEI, this has been placed as a command into the stack in between.
-	 * This command will try to write to the workspace which is locked. The builder will get stuck
-	 * because it tries to execute a new command on the stack but cannot acquire the transaction.
-	 * 
-	 * As a way out, this lock will be used to first synchronize all operations executing a command.
-	 * This ensures that a command is always executed after another one. Second every command will first try
-	 * to lock the workspace. Then it will try to get the transaction. Commands which are already in a locked 
-	 * workspace will reenter the lock.
-	 */
-	private IWorkspace wsProject;
-	
-	/**
 	 * Constructor to the Command Stack with the OperationsHistory
 	 * @param history The operation history to be used with this domain
 	 */
 	public VirSatWorkspaceCommandStack(IOperationHistory history) {
 		super(history);
-		wsProject = ResourcesPlugin.getWorkspace();
 	}
 	
 	/**
@@ -74,23 +55,22 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	protected synchronized void executeInWorkspaceWithSaveCheck(Runnable runnable) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Starting to execute command as workspace operation"));
 
-		try {
-			triggerSave = false;
-			// Run all execute, undo, et.c in a workspace operation. This way deadlocks can be avoided,
-			// since no two commands can run at the same time. There used to be deadlocks with the builders
-			// which were obtaining locks in the opposite order. E.g. when creating a SEI first the Command was executed
-			// obtaining a lock on the Editing domain, then obtaining a lock on the Workspace. Meanwhile the builder could start
-			// obtaining a lock on the workspace, then executing a command obtaining a lock on the ED.
-			// Now both, first have to get the Lock on the Workspace, then on the Editing domain.
-			wsProject.run(action -> runnable.run(), null);
-			
-			// now check if something asked in between to issue a save operation on all resources
-			// this call cannot be placed into the Workspace Operation, WWorkspace operations scheduled by the 
-			// command execution need to be able to execute first. 
-			checkTriggerSaveAll();
-		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command as workspace operation", e));
-		}
+		triggerSave = false;
+		
+		// Run all execute, undo, et.c in a workspace operation. This way deadlocks can be avoided,
+		// since no two commands can run at the same time. There used to be deadlocks with the builders
+		// which were obtaining locks in the opposite order. E.g. when creating a SEI first the Command was executed
+		// obtaining a lock on the Editing domain, then obtaining a lock on the Workspace. Meanwhile the builder could start
+		// obtaining a lock on the workspace, then executing a command obtaining a lock on the ED.
+		// Now both, first have to get the Lock on the Workspace, then on the Editing domain.
+		
+		editingDomain.executeInWorkspace(() -> runnable.run());
+		
+		// now check if something asked in between to issue a save operation on all resources
+		// this call cannot be placed into the Workspace Operation, WWorkspace operations scheduled by the 
+		// command execution need to be able to execute first. 
+		checkTriggerSaveAll();
+	
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Finished to execute command as workspace operation"));
 	}
 	
