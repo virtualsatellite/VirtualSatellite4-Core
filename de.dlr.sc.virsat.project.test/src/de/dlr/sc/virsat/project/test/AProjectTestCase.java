@@ -127,9 +127,13 @@ public abstract class AProjectTestCase {
 		// Make sure all projects that were created get removed again
 		for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
 			if (project.exists()) {
-				project.refreshLocal(IResource.DEPTH_INFINITE, null);
-				project.delete(true, null);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+				try {
+					project.refreshLocal(IResource.DEPTH_INFINITE, null);
+					project.delete(true, null);
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+				} catch (Exception e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "failed to delete test project " +  project.getName(), e));
+				}
 			}
 		}
 		

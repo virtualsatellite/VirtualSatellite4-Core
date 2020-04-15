@@ -51,24 +51,28 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 @SuppressWarnings("restriction")
 public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 
+	// Incremental Equation builder that overrides some specific methods
+	// to simplify test setup.
+	class TestIncrementalEquationBuilder extends IncrementalEquationBuilder {
+		@Override
+		protected IProject getVirSatProject() {
+			return project;
+		}
+		
+		@Override
+		protected VirSatResourceSet getResourceSet() {
+			return resSet;
+		}
+		
+		@Override
+		public IUserContext getUserContext() {
+			return UserRegistry.getInstance(); 
+		}
+	}
+	
 	@Test
 	public void testIncrementalBuild() {
-		IncrementalEquationBuilder builder = new IncrementalEquationBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-			
-			@Override
-			protected VirSatResourceSet getResourceSet() {
-				return resSet;
-			}
-			
-			@Override
-			public IUserContext getUserContext() {
-				return UserRegistry.getInstance(); 
-			}
-		};
+		IncrementalEquationBuilder builder = new TestIncrementalEquationBuilder();
 		
 		assertNull("Value is initially null", result.getResultText());
 		
@@ -96,22 +100,7 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 	
 	@Test
 	public void testFullBuild() {
-		IncrementalEquationBuilder builder = new IncrementalEquationBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-			
-			@Override
-			protected VirSatResourceSet getResourceSet() {
-				return resSet;
-			}
-			
-			@Override
-			public IUserContext getUserContext() {
-				return UserRegistry.getInstance();
-			}
-		};
+		IncrementalEquationBuilder builder = new TestIncrementalEquationBuilder();
 		
 		assertNull("Value is initially null", result.getResultText());
 		builder.fullBuild(null);
@@ -120,22 +109,7 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 	
 	@Test
 	public void testMarkEquationEvaluationProblems() {
-		IncrementalEquationBuilder builder = new IncrementalEquationBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-			
-			@Override
-			protected VirSatResourceSet getResourceSet() {
-				return resSet;
-			}
-			
-			@Override
-			public IUserContext getUserContext() {
-				return UserRegistry.getInstance();
-			}
-		};
+		IncrementalEquationBuilder builder = new TestIncrementalEquationBuilder();
 		
 		Discipline disc = RolesFactory.eINSTANCE.createDiscipline();
 		disc.setUser("Test");
@@ -162,12 +136,7 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 
 	@Test
 	public void testResourceWithError() {
-		IncrementalEquationBuilder builder = new IncrementalEquationBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-
+		IncrementalEquationBuilder builder = new TestIncrementalEquationBuilder() {
 			@Override
 			protected VirSatResourceSet getResourceSet() {
 				try {
@@ -182,11 +151,6 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 				}
 				assertTrue("Resource set has an error", resSet.hasError());
 				return resSet;
-			}
-			
-			@Override
-			public IUserContext getUserContext() {
-				return UserRegistry.getInstance();
 			}
 		};
 

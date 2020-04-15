@@ -23,8 +23,6 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 /**
  * This is the VirSat Editing Domain Factory. When creating or getting an Editing Domain
  * It has to be done using this class. In Virtual Satellite one Project has exactly one Editing Domain
- * @author fisc_ph
- *
  */
 public class VirSatEditingDomainRegistry {
 	
