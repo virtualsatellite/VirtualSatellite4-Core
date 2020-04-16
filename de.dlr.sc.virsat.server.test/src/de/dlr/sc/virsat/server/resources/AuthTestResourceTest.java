@@ -24,7 +24,6 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.auth.userhandler.TestServerUserHandler;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class AuthTestResourceTest extends AGitAndJettyServerTest {
@@ -170,7 +169,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		String expectedResponse2 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/admin_only, status=403, reason=Forbidden}}";
 		assertEquals("User can't access admin only ressource", expectedResponse2, serverResponse2);
 		
-		String encodedAdmin = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.ADMIN.getBytes());
+		String encodedAdmin = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(ADMIN.getBytes());
 		String serverResponse3 = target.
 				path("/rest").
 				path("/auth").
@@ -222,7 +221,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		String expectedResponse = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=403, reason=Forbidden}}");
 		assertEquals("This user can't access the repository", expectedResponse, serverResponse);
 		
-		String encodedUserWithRepo = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.USER_WITH_REPO.getBytes());
+		String encodedUserWithRepo = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(USER_WITH_REPO.getBytes());
 		String serverResponse2 = target.
 				path("/rest").
 				path("/auth").
@@ -236,7 +235,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		String expectedResponse2 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=200, reason=OK}}");
 		assertEquals("This user can access the repository", expectedResponse2, serverResponse2);
 		
-		String encodedAdmin = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.ADMIN.getBytes());
+		String encodedAdmin = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(ADMIN.getBytes());
 		String serverResponse3 = target.
 				path("/rest").
 				path("/auth").
