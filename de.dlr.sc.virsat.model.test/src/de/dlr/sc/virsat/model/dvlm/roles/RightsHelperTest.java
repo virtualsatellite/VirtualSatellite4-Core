@@ -154,6 +154,7 @@ public class RightsHelperTest {
 		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca, userContextOk));
 		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(vpi, userContextOk));
 
+		// Now create a user context with an incorrect user. make sure that there is no write access anymore
 		IUserContext userContextBad = new IUserContext() {
 			@Override
 			public boolean isSuperUser() {
@@ -165,7 +166,6 @@ public class RightsHelperTest {
 				return "AnotherUSer";
 			}
 		};
-		// Now create a user context with an incorrect user. make sure that there is no write access anymore
 		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(sei, userContextBad));
 		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(ca, userContextBad));
 		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(vpi, userContextBad));
@@ -186,5 +186,10 @@ public class RightsHelperTest {
 		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(sei, userContextSU));
 		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca, userContextSU));
 		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(vpi, userContextSU));
+		
+		// If there is no user context, there should also be now rite access
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(sei, null));
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(ca, null));
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(vpi, null));
 	}
 }

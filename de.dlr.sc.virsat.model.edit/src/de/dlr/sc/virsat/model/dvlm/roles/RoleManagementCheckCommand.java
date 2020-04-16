@@ -81,7 +81,7 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 
 	@Override
 	public boolean canUndo() {
-		return wrappedCommand.canUndo() && canBeExecutedByCurrentUser();
+		return canBeExecutedByCurrentUser() && wrappedCommand.canUndo();
 	}
 
 	/**
