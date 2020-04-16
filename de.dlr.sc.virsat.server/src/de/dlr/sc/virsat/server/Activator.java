@@ -78,7 +78,7 @@ public class Activator extends Plugin {
 	}
 	
 	public String getAuthFilePathResolved() throws IOException {
-		return FileLocator.resolve(FileLocator.find(Activator.getDefault().getBundle(), new Path(getAuthFilePath()))).toString();
+		return FileLocator.resolve(FileLocator.find(getBundle(), new Path(getAuthFilePath()))).toString();
 	}
 	
 	public String getAuthFilePath() {
