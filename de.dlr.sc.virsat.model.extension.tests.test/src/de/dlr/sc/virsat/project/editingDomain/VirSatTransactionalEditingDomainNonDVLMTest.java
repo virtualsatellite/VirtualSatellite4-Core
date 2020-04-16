@@ -67,43 +67,17 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 	@Test
 	public void testSaveAll() throws IOException {
 		// Do some external changes
-		TransactionalEditingDomain externalEditingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
-		ResourceSet externalResourceSet = externalEditingDomain.getResourceSet();
-		Resource externalResourceHandle = externalResourceSet.getResource(externalModelResourceVirSatDomain.getURI(), true);
-		Container newContainerHandle = (Container) externalResourceHandle.getContents().get(0);
-		ExternalTestType type = TestsFactory.eINSTANCE.createExternalTestType();
-		externalEditingDomain.getCommandStack().execute(new RecordingCommand(externalEditingDomain) {
-			
-			@Override
-			protected void doExecute() {
-				newContainerHandle.setObjects(type);
-			}
-		});
+		Container newExternalModelContainer = doExternalModelChange();
 		
-		assertNull("Change should be done in external editing domain", containerVirsatContext.getObjects());
-		externalResourceHandle.save(Collections.emptyMap());
+		// Save model from Virtual Satellite to check that its save does not overwrite the external change
 		editingDomain.saveAll();
-		assertNotNull("External change should not be overwritten", newContainerHandle.getObjects());
+		assertNotNull("External change should not be overwritten", newExternalModelContainer.getObjects());
 	}
 	
 	@Test
 	public void testReloadModel() throws IOException, CoreException {
 		// Do some external changes
-		TransactionalEditingDomain externalEditingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
-		ResourceSet externalResourceSet = externalEditingDomain.getResourceSet();
-		Resource externalResourceHandle = externalResourceSet.getResource(externalModelResourceVirSatDomain.getURI(), true);
-		Container newContainerHandle = (Container) externalResourceHandle.getContents().get(0);
-		ExternalTestType type = TestsFactory.eINSTANCE.createExternalTestType();
-		externalEditingDomain.getCommandStack().execute(new RecordingCommand(externalEditingDomain) {
-			
-			@Override
-			protected void doExecute() {
-				newContainerHandle.setObjects(type);
-			}
-		});
-		
-		assertNull("Change should be done in external editing domain", containerVirsatContext.getObjects());
-		externalResourceHandle.save(Collections.emptyMap());
+		doExternalModelChange();
 		editingDomain.saveAll();
 
 		// Check reload of changes
@@ -122,6 +96,30 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 		modelFile.delete(true, null);
 		assertNull("Resource should have been deleted from VirSat resource set", rs.getResource(modelFile, false));
 		
+	}
+	
+	/**
+	 * Do some model change in external domain
+	 * @throws IOException
+	 */
+	private Container doExternalModelChange() throws IOException {
+		
+		TransactionalEditingDomain externalEditingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
+		ResourceSet externalResourceSet = externalEditingDomain.getResourceSet();
+		Resource externalResourceHandle = externalResourceSet.getResource(externalModelResourceVirSatDomain.getURI(), true);
+		Container newContainerHandle = (Container) externalResourceHandle.getContents().get(0);
+		ExternalTestType type = TestsFactory.eINSTANCE.createExternalTestType();
+		externalEditingDomain.getCommandStack().execute(new RecordingCommand(externalEditingDomain) {
+			@Override
+			protected void doExecute() {
+				newContainerHandle.setObjects(type);
+			}
+		});
+		
+		assertNull("Change should be done in external editing domain", containerVirsatContext.getObjects());
+		externalResourceHandle.save(Collections.emptyMap());
+		
+		return newContainerHandle;
 	}
 
 }
