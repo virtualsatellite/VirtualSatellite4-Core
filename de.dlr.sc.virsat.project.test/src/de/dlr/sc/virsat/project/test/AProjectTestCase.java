@@ -153,10 +153,11 @@ public abstract class AProjectTestCase {
 	/**
 	 * Creates the editing domain and a repository for test cases.
 	 * This includes a ResourceSet with Transactional Editing Domain
+	 * @param handleExternalWorkspaceChanges weather external resource changes should be handled
 	 * 
 	 */
-	protected void addEditingDomainAndRepository() {
-		VirSatResourceSet resSetRepositoryTarget = VirSatResourceSet.getResourceSet(testProject, false);
+	protected void addEditingDomainAndRepository(boolean handleExternalWorkspaceChanges) {
+		VirSatResourceSet resSetRepositoryTarget = VirSatResourceSet.getResourceSet(testProject, handleExternalWorkspaceChanges);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		Command cmd = resSetRepositoryTarget.initializeModelsAndResourceSet(null, editingDomain);
 		editingDomain.getCommandStack().execute(cmd);
@@ -164,6 +165,15 @@ public abstract class AProjectTestCase {
 
 		repository = resSetRepositoryTarget.getRepository();
 		rs = editingDomain.getResourceSet();
+	}
+	
+	/**
+	 * Creates the editing domain and a repository for test cases.
+	 * This includes a ResourceSet with Transactional Editing Domain
+	 * 
+	 */
+	protected void addEditingDomainAndRepository() {
+		addEditingDomainAndRepository(false);
 	}
 	
 	/**

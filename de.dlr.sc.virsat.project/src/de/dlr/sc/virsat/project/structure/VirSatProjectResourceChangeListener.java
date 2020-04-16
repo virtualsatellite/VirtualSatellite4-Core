@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -31,6 +30,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import de.dlr.sc.virsat.project.Activator;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * A resource change listener that identifies which DVLM resources have been changed
@@ -83,8 +84,12 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 						closedOrDeletedProject = true;
 					}
 					IResource resource = delta.getResource();
-					// In case it is a change on a DVLM file, than remember it
-					if ((resource instanceof IFile) && VirSatProjectCommons.isDvlmFile((IFile) resource)) {
+					
+					// In case it is a change on a file within our resource set, then remember it
+					VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(virSatProject);
+					boolean isInResourceSet = ed != null && ed.getResourceSet().getResource(resource, false) != null;
+					
+					if (isInResourceSet) {
 						int kind = delta.getKind();
 						if (kind == IResourceDelta.REMOVED) {
 							removedDvlmResources.add(resource);

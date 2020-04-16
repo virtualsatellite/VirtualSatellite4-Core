@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.project.Activator;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Utility class for VirSat ResourceSets
@@ -166,8 +167,12 @@ public class VirSatResourceSetUtil {
 				EObject eContainer = setting.getEObject();
 				EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
 				
-				//Ignore external references
-				if (!eStructuralFeature.equals(PropertydefinitionsPackage.Literals.EREFERENCE_PROPERTY__REFERENCE_TYPE)) {
+				// Ignore EReference types
+				boolean isEReferenceType = eStructuralFeature.equals(PropertydefinitionsPackage.Literals.EREFERENCE_PROPERTY__REFERENCE_TYPE);
+				// Don't remove references in external resources
+				boolean isDvlmResource = resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
+				
+				if (!isEReferenceType && isDvlmResource) {
 					if (eStructuralFeature.isMany()) {
 						((EList<?>) eContainer.eGet(eStructuralFeature)).remove(proxy);
 					} else {
