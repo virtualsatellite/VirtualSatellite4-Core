@@ -103,6 +103,7 @@ public class RightsHelper {
 	 * @param eObject The eObject to be tested for write access
 	 * @return true in case the user has access or is a super user.
 	 */
+	//public static boolean hasSystemUserWritePermission(EObject eObject) {
 	public static boolean hasSystemUserWritePermission(EObject eObject) {
 		return hasWritePermission(eObject, UserRegistry.getInstance());
 	}

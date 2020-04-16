@@ -11,12 +11,14 @@ package de.dlr.sc.virsat.model.dvlm.roles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -54,7 +56,7 @@ public class RoleManagmentCheckCommandTest {
 	StructuralElementInstance sei;
 	RoleManagement rm; 
 	UnitManagement um;
-	Discipline discipline;
+	Discipline discipline1;
 	Discipline discipline2;
 	CategoryAssignment ca;
 	ValuePropertyInstance vpi;
@@ -93,20 +95,95 @@ public class RoleManagmentCheckCommandTest {
 
 		//create the roleManagement
 		rm = RolesFactory.eINSTANCE.createRoleManagement();
-		discipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.setName("System");
+		discipline1 = RolesFactory.eINSTANCE.createDiscipline();
+		discipline1.setName("System");
 		
 		discipline2 = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.setName("AOCS");
+		discipline1.setName("AOCS");
 
-		discipline.setUser("UserOne");
+		discipline1.setUser("UserOne");
 		discipline2.setUser("user2");
 		
-		rm.getDisciplines().add(discipline);
-		sei.setAssignedDiscipline(discipline);
+		rm.getDisciplines().add(discipline1);
+		sei.setAssignedDiscipline(discipline1);
 		
 		//create the fundamentals needed for the unitManagment
 		um = UnitsFactory.eINSTANCE.createUnitManagement();
+	}
+	
+	@Test
+	public void testRoleManagementCheckCommandNoUserContext() {
+		UserRegistry.getInstance().setSuperUser(false);
+		UserRegistry.getInstance().setUser("UserOne", TWO_THRITY_THREE);
+		
+		Command setCommand = new SetCommand(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName");
+		RoleManagementCheckCommand rmcCommand = new RoleManagementCheckCommand(setCommand, new CommandParameter(sei), null);
+		
+		// A null user context will make the RightsHelper fail in the command. thus it cannot be executed.
+		assertFalse("Command is not executable", rmcCommand.canExecute());
+		assertFalse("Command is also not undoable", rmcCommand.canUndo());
+	}
+	
+	/**
+	 * Helper class to have a simple way of changing a user context within a test case
+	 */
+	private static class TestUserContext implements IUserContext {
+
+		TestUserContext(String userName, boolean su) {
+			this.userName = userName;
+			this.su = su;
+		}
+		
+		String userName;
+		boolean su;
+		
+		@Override
+		public boolean isSuperUser() {
+			return su;
+		}
+
+		@Override
+		public String getUserName() {
+			return userName;
+		}
+	}
+	
+	@Test
+	public void testRoleManagementCheckCommandWithUserContext() {
+		TestUserContext userContext = new TestUserContext("UserBad", false);
+		Command setCommand = new SetCommand(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName");
+		RoleManagementCheckCommand rmcCommand = new RoleManagementCheckCommand(setCommand, new CommandParameter(sei), userContext);
+		
+		// Check who can execute the command when changing the context
+		assertFalse("UserBad cannot execute the command", rmcCommand.canExecute());
+		userContext.userName = "UserOne";
+		assertTrue("UserOne can execute the command", rmcCommand.canExecute());
+	
+		rmcCommand.execute();
+		
+		// Check who could undo the command when changing the context.
+		assertTrue("UserOne would be able to undo the command", rmcCommand.canUndo());
+		userContext.userName = "UserBad";
+		assertFalse("UserBad cannot undo the command", rmcCommand.canUndo());
+	}
+	
+	@Test
+	public void testRoleManagementCheckCommandWithSuperUserContext() {
+		TestUserContext userContext = new TestUserContext("UserBad", false);
+		Command setCommand = new SetCommand(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName");
+		RoleManagementCheckCommand rmcCommand = new RoleManagementCheckCommand(setCommand,  new CommandParameter(sei), userContext);
+		
+		// Check who can execute the command when changing the context
+		assertFalse("UserBad cannot execute the command", rmcCommand.canExecute());
+		userContext.su = true;
+		assertTrue("UserBad as SU can execute the command", rmcCommand.canExecute());
+	
+		rmcCommand.execute();
+		
+		// Check who could undo the command when changing the context.
+		assertTrue("UserBad as SU would be able to undo the command", rmcCommand.canUndo());
+		userContext.su = false;
+		assertFalse("UserBad cannot undo the command", rmcCommand.canUndo());
 	}
 	
 	@Test
@@ -116,7 +193,7 @@ public class RoleManagmentCheckCommandTest {
 		
 		// we make some changes to the systemComponent
 		// the changes should go through the EditingDomain and Commands
-		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName").execute();		
+		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName").execute();
 		
 		// if the Role Management permits the change, check true
 		assertEquals("Checking superUser changed name to newName", "newName", sei.getName());
@@ -260,7 +337,7 @@ public class RoleManagmentCheckCommandTest {
 		//set new name
 		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName").execute();
 		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline2).execute();		
-		Command setDisciplineCommand = SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline);
+		Command setDisciplineCommand = SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline1);
 
 		assertFalse("User should not have permissions to execute this command", setDisciplineCommand.canExecute());
 		setDisciplineCommand.execute();
@@ -281,7 +358,7 @@ public class RoleManagmentCheckCommandTest {
 		assertEquals("Checking discipline not allowed to change name", "newName2", sei.getName());
 		
 		//now do a command that wants to assign back discipline
-		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline).execute();
+		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline1).execute();
 		SetCommand.create(ourEditingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), "newName").execute();
 		
 		// if the Role Management permits the change, check true

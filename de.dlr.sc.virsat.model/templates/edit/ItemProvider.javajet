@@ -255,14 +255,14 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 <%}%>
 	public Object getImage(Object object)
 	{
-	<%if (isInstanceOfATypeInstance | isInstanceOfStructuralElementInstance | isInstanceOfStructuralElement | isInstanceOfCategory) {
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin");
-		genModel.getImportedName("java.net.URL");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.general.IQualifiedName");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElement");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.Category");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance");%> 
+    <%if (isInstanceOfATypeInstance | isInstanceOfStructuralElementInstance | isInstanceOfStructuralElement | isInstanceOfCategory) {
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin");
+    genModel.getImportedName("java.net.URL");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.general.IQualifiedName");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElement");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.Category");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance");%> 
 		Object rtrnObj = overlayImage(object, getResourceLocator().getImage("full/obj16/<%=genClass.getName()%>")); 
 		
 		// In case we can find a trace to an object typed by IQualifedName we might have an alternative image
@@ -289,10 +289,10 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 		}
 		return rtrnObj;
 	}
-	<%} else {%>
+    <%} else {%>
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/<%=genClass.getName()%>")); <%=genModel.getNonNLS()%>
 	}
-	<%}%>
+    <%}%>
 <%}%>
 <%if (genModel.getRuntimeVersion().getValue() >= GenRuntimeVersion.EMF26_VALUE && !genModel.isCreationIcons()) {%>
 	/**

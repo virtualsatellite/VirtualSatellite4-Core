@@ -80,7 +80,6 @@ public class ValuePiItemProvider extends ALiteralItemProvider {
 	 */
 	@Override
 	public Object getImage(Object object) {
-	
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/ValuePi")); 
 	}
 	
@@ -96,15 +95,8 @@ public class ValuePiItemProvider extends ALiteralItemProvider {
 	@Override
 	public String getText(Object object) {
 
-		
-		
-	
-	
-  	
 			ValuePi valuePi = (ValuePi)object;
 			return getString("_UI_ValuePi_type") + " " + valuePi.isIsInherited();
-  	
-	
 	}
 	
 
@@ -145,7 +137,6 @@ public class ValuePiItemProvider extends ALiteralItemProvider {
  	*/
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature,	Collection<?> collection, int index) {
-		
 		// Override functionality with the undoable ADD Command that performs undo by taking out the collection from the containing list
 		// rather than reducing the index and assuming the last objects on the list have been added by the current command
 		return new UndoableAddCommand(domain, owner, feature, collection, index);
@@ -170,15 +161,8 @@ public class ValuePiItemProvider extends ALiteralItemProvider {
 			userContext = (IUserContext) domain;
 		}
 		
-		
-	    		
 		// For all other commands get the original one
 		Command originalCommand = super.createCommand(object, domain, commandClass, commandParameter);
-				
-	    
-	    
-	    		
-	    	
 		// A RolemanagementCheckCommand should not necessarily be wrapped into another RoleManagementCheck Command
 		if (originalCommand instanceof RoleManagementCheckCommand) {
 			return originalCommand;
