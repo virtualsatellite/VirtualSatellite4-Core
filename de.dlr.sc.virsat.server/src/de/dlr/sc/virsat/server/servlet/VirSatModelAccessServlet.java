@@ -12,9 +12,9 @@ package de.dlr.sc.virsat.server.servlet;
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import de.dlr.sc.virsat.server.auth.filter.AuthFilter;
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
 import de.dlr.sc.virsat.server.resources.AuthTestResource;
@@ -43,14 +43,8 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 			register(WorkspaceAccessResource.class);
 			register(AuthTestResource.class);
 
-			/*
-			 * Registration of providers like Filter and Bindings should be possible with the @Provider annotation
-			 * but seems to not be working correctly, so we do it explicit here
-			 */
-			// Filter
-			register(AuthFilter.class);
-			
-			// Dynamic Binding for the repository filter has to be registered here
+			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
+			register(RolesAllowedDynamicFeature.class);
 			register(DynamicRepositoryFilterBinding.class);
 		}
 	}

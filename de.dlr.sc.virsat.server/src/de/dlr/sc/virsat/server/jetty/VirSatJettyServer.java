@@ -9,13 +9,24 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.jetty;
 
+import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.security.LoginService;
+import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
-
-import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 
 /**
  * This class represents a Jetty Instance to run Virtual Satellite
@@ -49,7 +60,7 @@ public class VirSatJettyServer {
 	 * @throws Exception
 	 * @throws InterruptedException
 	 */
-	public VirSatJettyServer start() throws Exception, InterruptedException {
+	public VirSatJettyServer start() throws Exception {
 		
 		server = new Server(VIRSAT_JETTY_PORT);
 
@@ -57,11 +68,42 @@ public class VirSatJettyServer {
 		servletContextHandler.setContextPath("/");
 		servletContextHandler.addServlet(VirSatModelAccessServlet.class, "/rest/*");
 		servletContextHandler.addServlet(RepoManagementServlet.class, "/rest/management/*");
-
-		server.setHandler(servletContextHandler);
-
+		
+		setupSecurity(server, servletContextHandler);
+		
 		server.start();
 		return this;
+	}
+	
+	/**
+	 * Sets up the server security
+	 * @param server the Server
+	 * @param servletContextHandler the context handler to be handled by the security handler
+	 * @throws IOException
+	 */
+	private void setupSecurity(Server server, ServletContextHandler servletContextHandler) throws IOException {
+		String realmResourceName = "resources/auth.properties";
+		URL realmProps = FileLocator.resolve(FileLocator.find(Activator.getDefault().getBundle(), new Path(realmResourceName)));
+        
+        if (realmProps == null) {
+            throw new FileNotFoundException("Unable to find " + realmResourceName);
+        }
+            
+        LoginService loginService = new HashLoginService("MyRealm",
+            realmProps.toString());
+        server.addBean(loginService);
+        
+        ConstraintSecurityHandler security = new ConstraintSecurityHandler();
+        server.setHandler(security);
+        
+        /**
+         *  For top down security constraints with roles can be created here
+         */
+
+        security.setAuthenticator(new BasicAuthenticator());
+        security.setLoginService(loginService);
+
+        security.setHandler(servletContextHandler);
 	}
 	
 	public VirSatJettyServer join() throws InterruptedException {

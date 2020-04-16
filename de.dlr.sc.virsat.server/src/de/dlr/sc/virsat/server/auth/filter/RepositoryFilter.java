@@ -10,15 +10,14 @@
 package de.dlr.sc.virsat.server.auth.filter;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
-import de.dlr.sc.virsat.server.auth.ServerQueryParams;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 
 /**
@@ -33,21 +32,20 @@ public class RepositoryFilter implements ContainerRequestFilter {
 	 */
 	@Override
 	public void filter(ContainerRequestContext context) throws IOException {
-		// Get RepositorySecurityContext set in AuthFilter
-		RepositorySecurityContext sc = (RepositorySecurityContext) context.getSecurityContext();
+
+		SecurityContext sc = context.getSecurityContext();
 
 		// Administrators have access to all repositories
 		if (!sc.isUserInRole(ServerRoles.ADMIN)) {
-			String uuid = context.getUriInfo().getQueryParameters().getFirst(ServerQueryParams.REPOSITORY_UUID);
-			
-			// No UUID query parameter provided
-			if (uuid == null) {
-				context.abortWith(Response.status(Response.Status.FORBIDDEN).entity(AuthFilter.ACCESS_DENIED).build());
-				return;
+			String path = context.getUriInfo().getPath();
+			String substring = path.substring(path.indexOf("repository/") + "repository/".length());
+			String repository = substring;
+			if (substring.indexOf("/") > 0) {
+				repository = substring.substring(substring.indexOf("/"));
 			}
 			
-			if (!sc.canAccessRepository(UUID.fromString(uuid))) {
-				context.abortWith(Response.status(Response.Status.FORBIDDEN).entity(AuthFilter.ACCESS_DENIED).build());
+			if (!sc.isUserInRole(repository)) {
+				context.abortWith(Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build());
 			}
 		}
 	}

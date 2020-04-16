@@ -14,9 +14,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 
-import de.dlr.sc.virsat.server.auth.ServerQueryParams;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 
 @Path("/auth")
@@ -62,8 +60,8 @@ public class AuthTestResource {
 	}
 	
 	@GET
-	@Path("/repository")
-	public String getRepository(@QueryParam(ServerQueryParams.REPOSITORY_UUID) String uuid) {
+	@Path("/repository/{name}")
+	public String getRepository() {
 		return REPOSITORY_DATA;
 	}
 }

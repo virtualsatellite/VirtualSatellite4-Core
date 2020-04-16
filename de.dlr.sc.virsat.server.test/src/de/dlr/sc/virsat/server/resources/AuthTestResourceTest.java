@@ -24,12 +24,12 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.auth.ServerQueryParams;
-import de.dlr.sc.virsat.server.auth.filter.AuthFilter;
 import de.dlr.sc.virsat.server.auth.userhandler.TestServerUserHandler;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class AuthTestResourceTest extends AGitAndJettyServerTest {
+	
+	private static final String BASIC_SCHEME = "Basic";
 	
 	@Test
 	public void testAuthentication() {
@@ -88,7 +88,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 			get(Response.class)
 			.toString();
 		
-		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/all_users, status=401, reason=Unauthorized}}";
+		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/all_users, status=403, reason=Forbidden}}";
 		assertEquals("Unauthorized response because of missing header", expectedResponse, serverResponse);
 	
 		String serverResponse2 = target.
@@ -113,7 +113,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		
 		assertEquals("Unauthorized response because of not encoded header", expectedResponse, serverResponse3);
 		
-		String encoded = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("unknown:password".getBytes());
+		String encoded = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("unknown:password".getBytes());
 		String serverResponse4 = target.
 				path("/rest").
 				path("/auth").
@@ -167,10 +167,10 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 				get(Response.class)
 				.toString();
 			
-		String expectedResponse2 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/admin_only, status=401, reason=Unauthorized}}";
+		String expectedResponse2 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/admin_only, status=403, reason=Forbidden}}";
 		assertEquals("User can't access admin only ressource", expectedResponse2, serverResponse2);
 		
-		String encodedAdmin = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.ADMIN.getBytes());
+		String encodedAdmin = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.ADMIN.getBytes());
 		String serverResponse3 = target.
 				path("/rest").
 				path("/auth").
@@ -192,11 +192,15 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 				get(Response.class)
 				.toString();
 			
-		String expectedResponse4 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/user_only, status=401, reason=Unauthorized}}";
+		String expectedResponse4 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/user_only, status=403, reason=Forbidden}}";
 		assertEquals("Admin can't access user only ressource", expectedResponse4, serverResponse4);
 	}
 	
+	// @Ignore
 	@Test
+	/**
+	 * Ignore repositories for now
+	 */
 	public void testRepositoryAuthorization() {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
@@ -209,44 +213,41 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 				path("/rest").
 				path("/auth").
 				path("/repository").
-				queryParam(ServerQueryParams.REPOSITORY_UUID, TestServerUserHandler.TEST_REPOSITORY_UUID).
+				path("/testRepo").
 				request().
 				header(HttpHeaders.AUTHORIZATION, encodedUserNoRepo).
 				get(Response.class)
 				.toString();
 			
-		String expectedResponse = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository?uuid="
-				+ TestServerUserHandler.TEST_REPOSITORY_UUID + ", status=403, reason=Forbidden}}");
+		String expectedResponse = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=403, reason=Forbidden}}");
 		assertEquals("This user can't access the repository", expectedResponse, serverResponse);
 		
-		String encodedUserWithRepo = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.USER_WITH_REPO.getBytes());
+		String encodedUserWithRepo = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.USER_WITH_REPO.getBytes());
 		String serverResponse2 = target.
 				path("/rest").
 				path("/auth").
 				path("/repository").
-				queryParam(ServerQueryParams.REPOSITORY_UUID, TestServerUserHandler.TEST_REPOSITORY_UUID).
+				path("/testRepo").
 				request().
 				header(HttpHeaders.AUTHORIZATION, encodedUserWithRepo).
 				get(Response.class)
 				.toString();
 			
-		String expectedResponse2 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository?uuid="
-				+ TestServerUserHandler.TEST_REPOSITORY_UUID + ", status=200, reason=OK}}");
+		String expectedResponse2 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=200, reason=OK}}");
 		assertEquals("This user can access the repository", expectedResponse2, serverResponse2);
 		
-		String encodedAdmin = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.ADMIN.getBytes());
+		String encodedAdmin = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString(TestServerUserHandler.ADMIN.getBytes());
 		String serverResponse3 = target.
 				path("/rest").
 				path("/auth").
 				path("/repository").
-				queryParam(ServerQueryParams.REPOSITORY_UUID, TestServerUserHandler.TEST_REPOSITORY_UUID).
+				path("/testRepo").
 				request().
 				header(HttpHeaders.AUTHORIZATION, encodedAdmin).
 				get(Response.class)
 				.toString();
 			
-		String expectedResponse3 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository?uuid="
-				+ TestServerUserHandler.TEST_REPOSITORY_UUID + ", status=200, reason=OK}}");
+		String expectedResponse3 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=200, reason=OK}}");
 		assertEquals("Admins can access all repositories", expectedResponse3, serverResponse3);
 	}
 	
@@ -258,9 +259,9 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
 		WebTarget target = client.target(uri);
 		
-		// The RepositoryFilter won't be called if the AuthFilter called abortWith
+		// The RepositoryFilter won't be called if the request got denied by jersey before
 		// so this won't produce an Exception in RepositoryFilter"
-		String encoded = AuthFilter.BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("unknown:password".getBytes());
+		String encoded = BASIC_SCHEME + " " + Base64.getEncoder().encodeToString("unknown:password".getBytes());
 		target.
 			path("/rest").
 			path("/auth").

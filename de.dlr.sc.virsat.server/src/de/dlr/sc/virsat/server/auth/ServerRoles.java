@@ -9,17 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.auth;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ServerRoles {
 
 	public static final String ADMIN = "ADMIN";
 	public static final String USER = "USER";
+	private static String[] allRoles = {ADMIN, USER};
 
 	private ServerRoles() { }
 	
-	public static List<String> getAllRoles() {
-		return Arrays.asList(ADMIN, USER);
+	public static String[] getAllRoles() {
+		return allRoles;
 	}
 }
