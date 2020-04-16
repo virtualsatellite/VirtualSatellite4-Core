@@ -15,6 +15,7 @@ import de.dlr.sc.virsat.model.concept.generator.ImportManager;
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -128,7 +129,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register(StructuralElementInstance.class);
     _builder.newLineIfNotEmpty();
-    importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator");
+    importManager.register(IStructuralElementInstanceValidator.class);
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("// *****************************************************************");

@@ -10,8 +10,9 @@
 package de.dlr.sc.virsat.build.validator.core;
 
 import org.eclipse.core.resources.IMarker;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 /**
  * Implementation of a validator that checks if an element cannot be resolved.

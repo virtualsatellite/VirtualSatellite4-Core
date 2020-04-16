@@ -174,7 +174,7 @@ public class GeneratePluginXml {
   
   public CharSequence declareDvlmValidatorExtension(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<extension point=\"de.dlr.sc.virsat.build.DvlmValidator\">");
+    _builder.append("<extension point=\"de.dlr.sc.virsat.model.DvlmValidator\">");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("<dvlmValidator>");
@@ -212,7 +212,7 @@ public class GeneratePluginXml {
   
   public CharSequence declareDvlmDeprecatedValidatorExtension(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<extension point=\"de.dlr.sc.virsat.build.DvlmValidator\">");
+    _builder.append("<extension point=\"de.dlr.sc.virsat.model.DvlmValidator\">");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("<dvlmValidator>");
