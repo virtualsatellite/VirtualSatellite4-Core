@@ -22,6 +22,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -232,6 +234,34 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * We can only drop tree items to canvas elements. SWTBotGefViewer's canvas element is not 
+	 * capable of beeing accessed directly from external classes though. Further more SWTBotGefViewer's 
+	 * canvas member gets populated during runtime only. Hence we use reflections to get a hold on it here.
+	 * 
+	 * @param item Tree item that is beeing dragged
+	 * @param diagramEditor Graphiti diagram editor which the tree item is beeing dragged onto
+	 */
+	protected void dragTreeItemToDiagramEditor(SWTBotTreeItem item, SWTBotGefEditor diagramEditor, int x, int y) {
+		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
+		SWTBotGefFigureCanvas canvas = null;
+		
+		for (Field f : viewer.getClass().getDeclaredFields()) {
+			if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
+				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
+				// otherwise inaccessible fields.
+				f.setAccessible(true);
+				try {
+					canvas = (SWTBotGefFigureCanvas) f.get(viewer);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
+				}
+			}
+		}
+		item.dragAndDrop(canvas, new Point(x, y));
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
 	 * @param diagramEditor Diagram editor on which to perform delete operation
 	 * @param editPartName Name of EditPart to be deleted
 	 */
@@ -240,6 +270,16 @@ public class ASwtBotTestCase {
 		diagramEditor.clickContextMenu("Delete");
 		waitForEditingDomainAndUiThread();
 		bot.button("Yes").click();
+	}
+	
+	/**
+	 * @param diagramEditor Diagram editor on which to perform remove operation
+	 * @param editPartName Name of EditPart to be removed
+	 */
+	protected void removeEditPartInDiagramEditor(SWTBotGefEditor diagramEditor, String editPartName) {
+		diagramEditor.getEditPart(editPartName).select();		
+		diagramEditor.clickContextMenu("Remove");
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
@@ -266,7 +306,8 @@ public class ASwtBotTestCase {
 		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 		bot.comboBox().setSelection(type.toString());
-		bot.button("Finish").click();		
+		bot.button("Finish").click();
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
@@ -443,6 +484,20 @@ public class ASwtBotTestCase {
 	protected void undo(SWTBotTreeItem item) {
 		item.contextMenu().menu("Undo").click();	
 		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * issues an undo key command
+	 */
+	protected void undoCommand() {
+		bot.shell().pressShortcut(SWT.CTRL, 'z');
+	}
+	
+	/**
+	 * issues a redo key command
+	 */
+	protected void redoCommand() {
+		bot.shell().pressShortcut(SWT.CTRL, 'y');
 	}
 	
 	/**
