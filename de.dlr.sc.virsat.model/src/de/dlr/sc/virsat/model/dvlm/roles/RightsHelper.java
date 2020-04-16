@@ -17,12 +17,12 @@ import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 /**
  * Simple Helper method to determine the access rights on an EObject
  */
-public class RightsHelper implements IRightsHelper {
+public class RightsHelper {
 	
 	/**
 	 * Private Constructor for Helper Class
 	 */
-	public RightsHelper() {
+	private RightsHelper() {
 	}
 
 	/**
@@ -103,12 +103,8 @@ public class RightsHelper implements IRightsHelper {
 	 * @param eObject The eObject to be tested for write access
 	 * @return true in case the user has access or is a super user.
 	 */
-	public static boolean hasWritePermission(EObject eObject) {
+	//public static boolean hasSystemUserWritePermission(EObject eObject) {
+	public static boolean hasSystemUserWritePermission(EObject eObject) {
 		return hasWritePermission(eObject, UserRegistry.getInstance());
-	}
-
-	@Override
-	public boolean hasWriteAccess(EObject eObject) {
-		return RightsHelper.hasWritePermission(eObject);
 	}
 }

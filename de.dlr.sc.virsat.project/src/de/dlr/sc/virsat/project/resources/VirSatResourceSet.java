@@ -1006,7 +1006,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the new discipline to be set
 	 */
 	public void assignDiscipline(IAssignedDiscipline disciplineContainer, Discipline discipline) {
-		boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer);
+		boolean hasWritePermission = RightsHelper.hasSystemUserWritePermission(disciplineContainer);
 
 		if (hasWritePermission) {
 			disciplineContainer.setAssignedDiscipline(discipline);
@@ -1029,7 +1029,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		if (!resource.getContents().isEmpty()) {
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof IAssignedDiscipline) {
-				hasWritePermission = RightsHelper.hasWritePermission(eObject);
+				hasWritePermission = RightsHelper.hasSystemUserWritePermission(eObject);
 			}
 		}
 		return hasWritePermission;
