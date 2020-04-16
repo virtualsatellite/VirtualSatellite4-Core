@@ -45,6 +45,8 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 
 			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
 			register(RolesAllowedDynamicFeature.class);
+			
+			// Register our RepositoryFilter via a dynamic binding
 			register(DynamicRepositoryFilterBinding.class);
 		}
 	}

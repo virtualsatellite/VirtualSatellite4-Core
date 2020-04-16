@@ -64,4 +64,10 @@ public class AuthTestResource {
 	public String getRepository() {
 		return REPOSITORY_DATA;
 	}
+	
+	@GET
+	@Path("/repository/{name}/property")
+	public String getRepositoryProperty() {
+		return REPOSITORY_DATA;
+	}
 }

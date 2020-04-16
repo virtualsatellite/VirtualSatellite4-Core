@@ -13,11 +13,10 @@ public class ServerRoles {
 
 	public static final String ADMIN = "ADMIN";
 	public static final String USER = "USER";
-	private static String[] allRoles = {ADMIN, USER};
 
 	private ServerRoles() { }
 	
 	public static String[] getAllRoles() {
-		return allRoles;
+		return new String[]{ADMIN, USER};
 	}
 }

@@ -37,17 +37,31 @@ public class RepositoryFilter implements ContainerRequestFilter {
 
 		// Administrators have access to all repositories
 		if (!sc.isUserInRole(ServerRoles.ADMIN)) {
-			String path = context.getUriInfo().getPath();
-			String substring = path.substring(path.indexOf("repository/") + "repository/".length());
-			String repository = substring;
-			if (substring.indexOf("/") > 0) {
-				repository = substring.substring(substring.indexOf("/"));
-			}
+			String repositoryName = getRepositoryName(context);
 			
-			if (!sc.isUserInRole(repository)) {
+			// Repository access is granted if the user has a role named after the repository
+			if (!sc.isUserInRole(repositoryName)) {
 				context.abortWith(Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build());
 			}
 		}
+	}
+
+	/**
+	 * Get's the repository from the contexts path
+	 * Expects a path formed like "optional/repository/repositoryName/optional"
+	 * @param context
+	 * @return repositoryName
+	 */
+	private String getRepositoryName(ContainerRequestContext context) {
+		String repository = "repository/";
+		String path = context.getUriInfo().getPath();
+		String substring = path.substring(path.indexOf(repository) + repository.length());
+		
+		String repositoryName = substring;
+		if (substring.indexOf("/") > 0) {
+			repositoryName = substring.substring(0, substring.indexOf("/"));
+		}
+		return repositoryName;
 	}
 
 }

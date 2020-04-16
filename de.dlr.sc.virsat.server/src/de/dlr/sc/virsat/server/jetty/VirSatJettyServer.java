@@ -14,11 +14,13 @@ import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 import java.io.IOException;
 
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.LoginService;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.auth.LoginServiceFactory;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
@@ -91,6 +93,11 @@ public class VirSatJettyServer {
 	private void setupSecurity(Server server, ServletContextHandler servletContextHandler) throws IOException {
 		
 		loginService = new LoginServiceFactory().getLoginService();
+		
+		if (loginService instanceof HashLoginService) {
+			((HashLoginService) loginService).setConfig(Activator.getDefault().getAuthFilePathResolved());
+		}
+		
         server.addBean(loginService);
         
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
