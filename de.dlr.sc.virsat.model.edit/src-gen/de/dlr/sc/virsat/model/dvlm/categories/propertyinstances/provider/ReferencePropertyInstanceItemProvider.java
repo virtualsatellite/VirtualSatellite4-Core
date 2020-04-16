@@ -148,8 +148,7 @@ public class ReferencePropertyInstanceItemProvider extends APropertyInstanceItem
 	 * @generated
 	 */
 	@Override
-	public Object getImage(Object object) {
-	 
+	public Object getImage(Object object) { 
 		Object rtrnObj = overlayImage(object, getResourceLocator().getImage("full/obj16/ReferencePropertyInstance")); 
 		
 		// In case we can find a trace to an object typed by IQualifedName we might have an alternative image
@@ -189,22 +188,11 @@ public class ReferencePropertyInstanceItemProvider extends APropertyInstanceItem
 	@Override
 	public String getText(Object object) {
 
-		
-		
-	
-	
-  	
-    	
-      	
 			VirSatUuid labelValue = ((ReferencePropertyInstance)object).getUuid();
-      	
 			String label = labelValue == null ? null : labelValue.toString();
-    	
 			return label == null || label.length() == 0 ?
 				getString("_UI_ReferencePropertyInstance_type") :
 				getString("_UI_ReferencePropertyInstance_type") + " " + label;
-  	
-	
 	}
 	
 
@@ -251,7 +239,6 @@ public class ReferencePropertyInstanceItemProvider extends APropertyInstanceItem
  	*/
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature,	Collection<?> collection, int index) {
-		
 		// Override functionality with the undoable ADD Command that performs undo by taking out the collection from the containing list
 		// rather than reducing the index and assuming the last objects on the list have been added by the current command
 		return new UndoableAddCommand(domain, owner, feature, collection, index);
@@ -276,13 +263,8 @@ public class ReferencePropertyInstanceItemProvider extends APropertyInstanceItem
 			userContext = (IUserContext) domain;
 		}
 		
-		
-	    		
 		// For all other commands get the original one
 		Command originalCommand = super.createCommand(object, domain, commandClass, commandParameter);
-				
-	    
-	    
 		// In case we try to set the value we also want to make sure that the override attribute gets set
 		if (commandClass == SetCommand.class && commandParameter.getEReference() == PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE) {
 			Command setOverrideCommand = SetCommand.create(domain, object, InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, true);
@@ -290,10 +272,7 @@ public class ReferencePropertyInstanceItemProvider extends APropertyInstanceItem
 			setValueAndOverrideCommand.append(setOverrideCommand);
 			setValueAndOverrideCommand.append(originalCommand);
 			return setValueAndOverrideCommand;
-	    }
-	    
-	    		
-	    	
+		}
 		// A RolemanagementCheckCommand should not necessarily be wrapped into another RoleManagementCheck Command
 		if (originalCommand instanceof RoleManagementCheckCommand) {
 			return originalCommand;

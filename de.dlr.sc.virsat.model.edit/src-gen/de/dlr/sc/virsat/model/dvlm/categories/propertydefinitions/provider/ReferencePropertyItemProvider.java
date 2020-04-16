@@ -107,7 +107,6 @@ public class ReferencePropertyItemProvider extends APropertyItemProvider {
 	 */
 	@Override
 	public Object getImage(Object object) {
-	
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/ReferenceProperty")); 
 	}
 	
@@ -124,21 +123,10 @@ public class ReferencePropertyItemProvider extends APropertyItemProvider {
 	@Override
 	public String getText(Object object) {
 
-		
-		
-	
-	
-  	
-    	
-      	
 			String label = ((ReferenceProperty)object).getName();
-      	
-    	
 			return label == null || label.length() == 0 ?
 				getString("_UI_ReferenceProperty_type") :
 				getString("_UI_ReferenceProperty_type") + " " + label;
-  	
-	
 	}
 	
 
@@ -179,7 +167,6 @@ public class ReferencePropertyItemProvider extends APropertyItemProvider {
  	*/
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature,	Collection<?> collection, int index) {
-		
 		// Override functionality with the undoable ADD Command that performs undo by taking out the collection from the containing list
 		// rather than reducing the index and assuming the last objects on the list have been added by the current command
 		return new UndoableAddCommand(domain, owner, feature, collection, index);
@@ -204,15 +191,8 @@ public class ReferencePropertyItemProvider extends APropertyItemProvider {
 			userContext = (IUserContext) domain;
 		}
 		
-		
-	    		
 		// For all other commands get the original one
 		Command originalCommand = super.createCommand(object, domain, commandClass, commandParameter);
-				
-	    
-	    
-	    		
-	    	
 		// A RolemanagementCheckCommand should not necessarily be wrapped into another RoleManagementCheck Command
 		if (originalCommand instanceof RoleManagementCheckCommand) {
 			return originalCommand;
