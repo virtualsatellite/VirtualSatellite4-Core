@@ -49,7 +49,7 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 	 * public constructor
 	 */
 	public VirSatInheritanceBuilder() {
-		super("Inheritance Builder", new VirSatInheritanceMarkerHelper(), true);
+		super("Inheritance Builder", new VirSatInheritanceMarkerHelper(), true, true);
 		this.vimHelper = (VirSatInheritanceMarkerHelper) this.vpmHelper;
 	}
 

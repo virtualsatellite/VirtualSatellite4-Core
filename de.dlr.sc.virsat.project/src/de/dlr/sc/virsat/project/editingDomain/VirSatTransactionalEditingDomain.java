@@ -243,27 +243,25 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				
 				/**
 				 * Updates the flag for triggering a full reload if there has been an external change
-				 * @param wsDvlmResource the resource that has been modified
+				 * @param wsResource the resource that has been modified
 				 */
-				private void updateTriggerFullReload(IResource wsDvlmResource, boolean removeFromRecentlySavedResources) {
-					URI changedResourceUri = URI.createPlatformResourceURI(wsDvlmResource.getFullPath().toString(), true);
-					String fileExtension = wsDvlmResource.getFileExtension();
-					if (fileExtension != null) {
-						if (fileExtension.startsWith(VirSatProjectCommons.FILENAME_EXTENSION)) {
-							// First check if the resource which is changed is not on the list of
-							// recently resources than trigger a full reload for all resources.
-							if (!recentlyChangedResource.contains(changedResourceUri)) {
-								Activator.getDefault().getLog().
-									log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
-								triggerFullReload = true;
-							} 
-							
-							// Now remove the file from the recently saved resources if requested
-							if (removeFromRecentlySavedResources) {
-								Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
-								recentlyChangedResource.remove(changedResourceUri);
-							}						
-						}
+				private void updateTriggerFullReload(IResource wsResource, boolean removeFromRecentlySavedResources) {
+					URI changedResourceUri = URI.createPlatformResourceURI(wsResource.getFullPath().toString(), true);
+					boolean isInResourceSet = getResourceSet().getResource(wsResource, false) != null;
+					if (isInResourceSet) {
+						// First check if the resource which is changed is not on the list of
+						// recently resources than trigger a full reload for all resources.
+						if (!recentlyChangedResource.contains(changedResourceUri)) {
+							Activator.getDefault().getLog().
+								log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") not in recently saved resources. Triggering for a full relaod."));
+							triggerFullReload = true;
+						} 
+						
+						// Now remove the file from the recently saved resources if requested
+						if (removeFromRecentlySavedResources) {
+							Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: (" + changedResourceUri.toPlatformString(true) + ") removed from list of rcently saved resources."));
+							recentlyChangedResource.remove(changedResourceUri);
+						}						
 					}
 				}
 			};
@@ -276,7 +274,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 */
 	public void saveAll() {
-		saveAll(false);
+		saveAll(false, false);
 	}
 	
 	/**
@@ -349,8 +347,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * this method saves all the resources in the {@link VirSatResourceSet}
 	 * @param supressRemoveDanglingReferences set to true to make the virsat editing domain not remove dangling references during the save.
 	 * This is needed for the builders which should not incur any additional changes during the save or they will trigger themselves.
+	 * @param dvlmResourcesOnly if true only saves DVLM resources; if you want to save ALL resources make sure external changes are loaded as well
 	 */
-	public void saveAll(boolean supressRemoveDanglingReferences) {
+	public void saveAll(boolean supressRemoveDanglingReferences, boolean dvlmResourcesOnly) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 		
 		// First lock the workspace then lock the transaction
@@ -359,9 +358,12 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				this.writeExclusive(() -> {
 					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
 					for (Resource resource : resources) {
-						saveResource(resource, supressRemoveDanglingReferences);
-						virSatResourceSet.updateDiagnostic(resource);
-						virSatResourceSet.notifyDiagnosticListeners(resource);
+						boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
+						if (fileIsDVLMResource || !dvlmResourcesOnly) {
+							saveResource(resource, supressRemoveDanglingReferences);
+							virSatResourceSet.updateDiagnostic(resource);
+							virSatResourceSet.notifyDiagnosticListeners(resource);
+						}
 					}
 					
 					maintainDirtyResources();

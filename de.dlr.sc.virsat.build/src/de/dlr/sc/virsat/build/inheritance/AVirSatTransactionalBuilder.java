@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
 public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 
 	protected boolean redirectIncrementalToAutoBuild;
+	protected boolean dvlmOnly;
 	
 	protected VirSatTransactionalEditingDomain virSatTed;
 	
@@ -41,10 +42,12 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	 * Constructor of the abstract transactional builder
 	 * @param vpmHelper the OProblemMarkerHelper to be used with the builder
 	 * @param redirectIncrementalToAutoBuild set to true in case the incremental build should be decided in the auto_build functionality
+	 * @param dvlmOnly Only handles DVLM resources 
 	 */
-	public AVirSatTransactionalBuilder(String builderName, VirSatProblemMarkerHelper vpmHelper, boolean redirectIncrementalToAutoBuild) {
+	public AVirSatTransactionalBuilder(String builderName, VirSatProblemMarkerHelper vpmHelper, boolean redirectIncrementalToAutoBuild, boolean dvlmOnly) {
 		super(builderName, vpmHelper);
 		this.redirectIncrementalToAutoBuild = redirectIncrementalToAutoBuild;
+		this.dvlmOnly = dvlmOnly;
 	}
 
 	public void initVirSatTransactionalEditingDomain() {
@@ -134,7 +137,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 			@Override
 			public void execute() {
 				fullBuild(monitor);
-				virSatTed.saveAll(true);
+				virSatTed.saveAll(true, dvlmOnly);
 			}
 		};
 		
@@ -176,7 +179,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 			@Override
 			public void execute() {
 				incrementalBuild(delta, monitor);
-				virSatTed.saveAll(true);
+				virSatTed.saveAll(true, dvlmOnly);
 			}
 		};
 		

@@ -63,7 +63,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 	 * Public constructor
 	 */
 	public IncrementalEquationBuilder() {
-		super("Equation Builder", new VirSatEquationMarkerHelper(), true);
+		super("Equation Builder", new VirSatEquationMarkerHelper(), true, true);
 		this.vemHelper = (VirSatEquationMarkerHelper) this.vpmHelper;
 		objectsWithOldMarkers = new ArrayList<>();
 	}

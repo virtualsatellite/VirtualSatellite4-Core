@@ -24,10 +24,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**

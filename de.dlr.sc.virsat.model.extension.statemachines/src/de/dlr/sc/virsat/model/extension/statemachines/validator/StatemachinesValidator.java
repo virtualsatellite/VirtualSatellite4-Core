@@ -17,12 +17,12 @@ import java.util.TreeSet;
 
 import org.eclipse.core.resources.IMarker;
 
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.extension.statemachines.marker.VirSatStateMachinesMarkerHelper;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;

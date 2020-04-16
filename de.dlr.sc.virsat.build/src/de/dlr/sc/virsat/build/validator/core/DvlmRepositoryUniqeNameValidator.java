@@ -15,11 +15,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
+
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
 
 /**
  * Implementation of a Validator that checks if a Name has been used multiple times in a scope

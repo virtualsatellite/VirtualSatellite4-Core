@@ -259,7 +259,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 			// 3. call the save all
 			// Synchronizing all involved methods ensures that no other command can be executed. In consequence the
 			// triggerSave variable cannot be altered unexpectedly between executing a command and saving.
-			editingDomain.saveAll(true);
+			editingDomain.saveAll(true, false);
 		}
 	}
 }

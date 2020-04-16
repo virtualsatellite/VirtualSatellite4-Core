@@ -38,6 +38,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropert
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayStaticTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementInstanceTest;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainNonDVLMTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandAcceptanceTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -48,6 +49,7 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({	DvlmLatestConceptValidatorTest.class, 
 				VirSatClipboardCommandAcceptanceTest.class,
+				VirSatTransactionalEditingDomainNonDVLMTest.class,
 				DeleteStructuralElementInstanceCommandAcceptanceTest.class,	
 				TestCategoryAllPropertyTest.class,
 				TestCategoryCompositionTest.class,

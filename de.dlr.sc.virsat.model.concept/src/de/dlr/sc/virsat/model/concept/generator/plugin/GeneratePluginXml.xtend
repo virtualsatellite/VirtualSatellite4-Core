@@ -90,7 +90,7 @@ class GeneratePluginXml {
 	'''
 
 	def declareDvlmValidatorExtension(Concept concept) '''
-	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
 		<dvlmValidator>
 			<seiValidator
 				id="«concept.name»"
@@ -101,7 +101,7 @@ class GeneratePluginXml {
 	'''
 
 	def declareDvlmDeprecatedValidatorExtension(Concept concept) '''
-	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
 		<dvlmValidator>
 			<seiValidator
 				id="«concept.name».deprecated"
