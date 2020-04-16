@@ -357,7 +357,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
 					for (Resource resource : resources) {
 						boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
-						if (!dvlmResourcesOnly || (dvlmResourcesOnly && fileIsDVLMResource)) {
+						if (fileIsDVLMResource || !dvlmResourcesOnly) {
 							saveResource(resource, supressRemoveDanglingReferences);
 							virSatResourceSet.updateDiagnostic(resource);
 							virSatResourceSet.notifyDiagnosticListeners(resource);
