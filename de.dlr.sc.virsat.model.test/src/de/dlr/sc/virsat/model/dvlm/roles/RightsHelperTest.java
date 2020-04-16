@@ -67,7 +67,7 @@ public class RightsHelperTest {
 	}
 
 	@Test
-	public void testHasWritePermission() {
+	public void testHasSystemUserWritePermission() {
 		final int TWO_HUNDRED = 200;
 		
 		UserRegistry.getInstance().setUser("TestUser", TWO_HUNDRED);

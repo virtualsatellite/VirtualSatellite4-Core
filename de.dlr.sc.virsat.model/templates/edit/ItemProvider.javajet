@@ -69,6 +69,8 @@ boolean isInstanceOfPrefix = MODEL_CLASS_PREFIX.equals(genClass.getName());
 <%genModel.addImport("org.eclipse.emf.edit.command.CommandParameter");%>
 <%genModel.addImport("org.eclipse.emf.edit.domain.EditingDomain");%>
 <%genModel.addImport("de.dlr.sc.virsat.model.dvlm.roles.RoleManagementCheckCommand");%>
+<%genModel.addImport("de.dlr.sc.virsat.model.dvlm.roles.IUserContext");%>
+<%genModel.addImport("de.dlr.sc.virsat.model.dvlm.roles.UserRegistry");%>
 
 <%String _List = genModel.getImportedName(genModel.useGenerics() ? "java.util.List<org.eclipse.emf.edit.provider.IItemPropertyDescriptor>" : "java.util.List");%>
 <%genModel.markImportLocation(stringBuffer);%>
@@ -647,6 +649,14 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
  	*/
 	@Override
 	public Command createCommand(Object object, EditingDomain domain, Class<? extends Command> commandClass, CommandParameter commandParameter) {
+		
+		// Set the UserContext either from the SystemUserRegistry or
+		// from the Domain if it exists
+		IUserContext userContext = UserRegistry.getInstance();
+		if (domain instanceof IUserContext) {
+			userContext = (IUserContext) domain;
+		}
+		
 		<%if (isInstanceOfRepository || isInstanceOfStructuralElementInstance) {
 		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.util.DVLMCommandParameterApplicableForCheck");
 		genModel.getImportedName("org.eclipse.emf.edit.command.AddCommand");
@@ -659,7 +669,8 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 		genModel.getImportedName("org.eclipse.emf.edit.command.MoveCommand");
 		genModel.getImportedName("org.eclipse.emf.edit.command.ReplaceCommand");
 		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand");
-		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");%>		
+		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");%>
+		
 		// For the Repository and StructuralElementInstances we prefer the command for the aplicablefor paradigm
 		// If the requested command is not valid for the current obejcts an unexecutable command will be handed back instead
 		DVLMCommandParameterApplicableForCheck commandParameterCheck = new DVLMCommandParameterApplicableForCheck(commandParameter);
@@ -674,7 +685,7 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			|| (commandClass == CreateChildCommand.class)) {
 			
 			if (!commandParameterCheck.isValidCommandParameter(commandParameter)) {
-				return new RoleManagementCheckCommand(UnexecutableCommand.INSTANCE, commandParameter);
+				return new RoleManagementCheckCommand(UnexecutableCommand.INSTANCE, commandParameter, userContext);
 			}
 		}<%}
 		if (isInstanceOfRepository) {
@@ -814,7 +825,7 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			return originalCommand;
 		} else {
 			// And wrap it into our command checking for the proper access rights
-			return new RoleManagementCheckCommand(originalCommand, commandParameter);	
+			return new RoleManagementCheckCommand(originalCommand, commandParameter, userContext);	
 		}
 	}
 
