@@ -58,6 +58,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 */
 	protected synchronized void executeInWorkspaceWithSaveCheck(Runnable runnable, IUserContext userContextOverride) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Starting to execute command as workspace operation"));
+
+		triggerSave = false;
 		
 		// Run all execute, undo, et.c in a workspace operation. This way deadlocks can be avoided,
 		// since no two commands can run at the same time. There used to be deadlocks with the builders
@@ -66,7 +68,6 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		// obtaining a lock on the workspace, then executing a command obtaining a lock on the ED.
 		// Now both, first have to get the Lock on the Workspace, then on the Editing domain.
 		editingDomain.executeInWorkspace(() -> {
-			triggerSave = false;
 			runnable.run();
 
 			// now check if something asked in between to issue a save operation on all resources.
