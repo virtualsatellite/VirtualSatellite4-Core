@@ -127,7 +127,7 @@ public class RoleManagmentCheckCommandTest {
 	/**
 	 * Helper class to have a simple way of changing a user context within a test case
 	 */
-	private class TestUserContext implements IUserContext {
+	private static class TestUserContext implements IUserContext {
 
 		TestUserContext(String userName, boolean su) {
 			this.userName = userName;
