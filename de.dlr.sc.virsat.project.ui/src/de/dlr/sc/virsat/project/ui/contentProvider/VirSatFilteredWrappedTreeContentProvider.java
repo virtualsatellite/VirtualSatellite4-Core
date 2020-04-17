@@ -266,4 +266,8 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 	public boolean hasChildren(Object element) {
 		return this.getChildren(element).length > 0;
 	}
+
+	public ITreeContentProvider getWrappedContentProvider() {
+		return wrappedContentProvider;
+	}
 }

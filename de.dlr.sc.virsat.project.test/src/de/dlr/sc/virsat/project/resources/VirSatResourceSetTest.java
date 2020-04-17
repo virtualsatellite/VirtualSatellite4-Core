@@ -11,11 +11,15 @@ package de.dlr.sc.virsat.project.resources;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -102,6 +106,47 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		VirSatTransactionalEditingDomain.clearResourceEventListener();
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		UserRegistry.getInstance().setSuperUser(false);
+	}
+	
+	@Test
+	public void testSafeGetResource() throws CoreException {
+		VirSatResourceSet resourceSet = VirSatResourceSet.getResourceSet(testProject, false);
+		
+		IFile testResourceFile = testProject.getFile("testFile.resource");
+		
+		// The file does not yet exist, and we don't force to create it, thus no resource should be handed back
+		Resource resourceNotCreated = resourceSet.safeGetResource(testResourceFile, false);
+		assertNull("Resource did not get created", resourceNotCreated);
+		assertThat("The ResourceSet does not have Resources", resourceSet.getResources(), empty());
+		
+		// now force to create the resource
+		Resource resourceCreated = resourceSet.safeGetResource(testResourceFile, true);
+		assertNotNull("Resource did not get created", resourceCreated);
+		assertThat("The ResourceSethas the newly created resource", resourceSet.getResources(), hasItem(resourceCreated));
+		assertThat("The ReosurceSet has only one reosurce", resourceSet.getResources(), hasSize(1));
+		
+		// ask to get the file again which should hand back the same resource as before
+		Resource resourceGet = resourceSet.safeGetResource(testResourceFile, false);
+		assertNotNull("Resource did not get created", resourceGet);
+		assertSame("Resource is the same as before", resourceCreated, resourceGet);
+		assertThat("The ResourceSethas the newly created resource", resourceSet.getResources(), hasItem(resourceGet));
+		assertThat("The ReosurceSet has only one reosurce", resourceSet.getResources(), hasSize(1));
+		
+		// ask to get the file again but try to force creation again, which should hand back the same resource as before
+		Resource resourceGetForce = resourceSet.safeGetResource(testResourceFile, false);
+		assertNotNull("Resource did not get created", resourceGetForce);
+		assertSame("Resource is the same as before", resourceCreated, resourceGetForce);
+		assertThat("The ResourceSethas the newly created resource", resourceSet.getResources(), hasItem(resourceGetForce));
+		assertThat("The ReosurceSet has only one reosurce", resourceSet.getResources(), hasSize(1));
+		
+		// Now delete the file from the workspace and retrieve it from the reosurceSet
+		testResourceFile.delete(true, null);
+		assertFalse("the file does not exist anymore", testResourceFile.exists());
+		Resource resourceGetDeleted = resourceSet.safeGetResource(testResourceFile, false);
+		assertNotNull("Resource did not get created", resourceGetDeleted);
+		assertSame("Resource is the same as before", resourceCreated, resourceGetDeleted);
+		assertThat("The ResourceSethas the newly created resource", resourceSet.getResources(), hasItem(resourceGetDeleted));
+		assertThat("The ReosurceSet has only one reosurce", resourceSet.getResources(), hasSize(1));
 	}
 	
 	@Test
