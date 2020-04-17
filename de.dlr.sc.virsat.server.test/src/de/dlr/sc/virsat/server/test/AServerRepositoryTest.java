@@ -69,14 +69,4 @@ public class AServerRepositoryTest extends AGitAndJettyServerTest {
 		RepoRegistry.getInstance().addRepository(projectName, testServerRepository);
 	}
 	
-//	@BeforeClass
-//	public static void setUpClass() throws Exception {
-//		
-//		// Adds a test ServerRepository before Server startup, so that the corresponding resource is loaded
-//		addServerRepository();
-//		
-////		super.setUpClass();	
-//	}
-//	
-	
 }

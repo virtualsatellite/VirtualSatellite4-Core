@@ -37,4 +37,5 @@ Automatic-Module-Name: de.dlr.sc.virsat.server
 Import-Package: de.dlr.sc.virsat.apps.api.external,
  de.dlr.sc.virsat.model.concept.types,
  de.dlr.sc.virsat.model.concept.types.category,
- de.dlr.sc.virsat.model.concept.types.structural
+ de.dlr.sc.virsat.model.concept.types.structural,
+ de.dlr.sc.virsat.project.ui.structure.command

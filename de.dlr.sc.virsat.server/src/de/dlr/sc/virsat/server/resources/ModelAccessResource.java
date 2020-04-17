@@ -10,16 +10,22 @@
 package de.dlr.sc.virsat.server.resources;
 
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
+import org.eclipse.core.runtime.CoreException;
+
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
@@ -45,29 +51,47 @@ public class ModelAccessResource {
 		return null;
 	}
 	
-	public static final String ROOT_SEIS = "rootSeis";
+	public static final String ROOT_SEIS = "seis";
+	public static final String SEI = "sei";
 	
 	public class RepoModelAccessResource {
 		private RepoModelAccessController controller;
-		private String name;
 		
 		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {
 			// TODO: catch not checked out repo (no ed or no virsat project)
-			name = repoName;
 			controller = new RepoModelAccessController(serverRepository.getEd());
 		}
-		
-		@GET
-		@Produces(MediaType.APPLICATION_JSON)
-		public String hello() {
-			return name;
-		}
+
 		
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
-		public List<FlattenedStructuralElementInstance> getRootSeis() {
-			return controller.getRootSeis();
+		public Response getRootSeis() {
+			return Response.status(Response.Status.OK).entity(controller.getRootSeis()).build();
+		}
+		
+		@GET
+		@Path(SEI + "/{seiUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getRootSeis(@PathParam("seiUuid") String seiUuid) {
+			try {
+				return Response.status(Response.Status.OK).entity(controller.getSei(seiUuid)).build();
+			} catch (CoreException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
+		}
+		
+		@POST
+		@Path(SEI)
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response postSei(FlattenedStructuralElementInstance flatSei) {
+			try {
+				String uuid = controller.postSei(flatSei);
+				return Response.status(Response.Status.OK).entity(uuid).build();
+			} catch (InstantiationException | IllegalAccessException | CoreException | IOException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
 		}
 		
 	}

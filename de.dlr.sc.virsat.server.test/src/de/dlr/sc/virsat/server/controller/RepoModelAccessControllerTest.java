@@ -10,11 +10,11 @@
 package de.dlr.sc.virsat.server.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,19 +22,25 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.edit.command.AddCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommand;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 
 public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
@@ -72,6 +78,32 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		editingDomain.getCommandStack().execute(createAddSei);
 		
 		return tsei;
+	}
+	
+	@Test 
+	public void testGetDisciplines() {
+		EList<Discipline> disciplines = repoModelAccessController.getDisciplines();
+		assertEquals("Initially only one system discipline found", 1, disciplines.size());
+		
+		// Add a discipline
+		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+		RoleManagement rm = rs.getRoleManagement();
+		Command addDisciplineCommand = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+		editingDomain.getCommandStack().execute(addDisciplineCommand);
+		TestStructuralElement testSei = createRootSei("RootSei1");
+		Command assignDisciplineCommand = new AssignDisciplineCommand(rs, testSei.getStructuralElementInstance(), discipline);
+		editingDomain.getCommandStack().execute(assignDisciplineCommand);
+		
+		disciplines = repoModelAccessController.getDisciplines();
+		assertEquals("Now two disciplines are found", 2, disciplines.size());
+		assertThat(disciplines, hasItems(discipline));
+	}
+	
+	@Test
+	public void testGetActiveConcepts() {
+		EList<Concept> activeConcepts = repoModelAccessController.getActiveConcepts();
+		
+		assertEquals("Two concepts found", 2, activeConcepts.size());
 	}
 	
 	@Test

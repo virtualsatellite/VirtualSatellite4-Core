@@ -21,19 +21,24 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.DeleteCommand;
 
-import de.dlr.sc.virsat.model.concept.types.structural.FlattenedStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 
 public class RepoModelAccessController {
 
 	private VirSatTransactionalEditingDomain editingDomain;
 	private VirSatResourceSet resourceSet;
+	private Repository repository;
 	
 	/**
 	 * Create a new instance of the modelApi and connect it to the editingDomain
@@ -42,14 +47,33 @@ public class RepoModelAccessController {
 	public RepoModelAccessController(VirSatTransactionalEditingDomain editingDomain) { 
 		this.editingDomain = editingDomain;
 		resourceSet = editingDomain.getResourceSet();
+		repository = resourceSet.getRepository();
 	}
-
+	
+	// Unit Management
+	// TODO: big issue to be solved later
+	
+	// User Management
+	
+	// Only provide a getter
+	public EList<Discipline> getDisciplines() {
+		return repository.getRoleManagement().getDisciplines();
+	}
+	
+	// Concept
+	public EList<Concept> getActiveConcepts() {
+		// TODO: concepts contain hierarchical lists so we probably want to flatten it
+		return repository.getActiveConcepts();
+	}
+	
+	// Seis
+	
 	/**
 	 * Get the roots seis and flatten them
 	 * @return List<FlattenedStructuralElementInstance> flattened seis
 	 */
 	public List<FlattenedStructuralElementInstance> getRootSeis() {
-		EList<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		EList<StructuralElementInstance> rootSeis = repository.getRootEntities();
 		List<FlattenedStructuralElementInstance> flattenedSeis = new ArrayList<FlattenedStructuralElementInstance>();
 		
 		for (StructuralElementInstance sei : rootSeis) {
@@ -92,9 +116,10 @@ public class RepoModelAccessController {
 			// TODO: Is there a better way to do this than deleting and recreating? e.g. SetCommand?
 			Command deleteCommand = DeleteCommand.create(editingDomain, oldSei);
 			editingDomain.getCommandStack().execute(deleteCommand);
+			
 		}
 		
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, resourceSet.getRepository(), newSei);
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, newSei);
 		editingDomain.getCommandStack().execute(createAddSei);
 		
 		// TODO: resolve changed inheritance
@@ -116,9 +141,11 @@ public class RepoModelAccessController {
 		VirSatUuid uuid = new VirSatUuid();
 		sei.setUuid(uuid);
 		
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, resourceSet.getRepository(), sei);
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
 		editingDomain.getCommandStack().execute(createAddSei);
 		return uuid.toString();
+		
+		
 		
 		// TODO: resolve inheritance
 	}
@@ -126,15 +153,21 @@ public class RepoModelAccessController {
 	public void deleteSei(String uuid) throws CoreException, IOException {
 		StructuralElementInstance sei = findSei(uuid);
 		if (sei != null) {
-			Command deleteCommand = DeleteCommand.create(editingDomain, sei);
-			editingDomain.getCommandStack().execute(deleteCommand);
+			Command removeCommand = CreateRemoveSeiWithFileStructureCommand.create(sei);
+			editingDomain.getCommandStack().execute(removeCommand);
 		}
 	}
+	
+	
+	// CAs
 	
 	public CategoryAssignment getCa(String uuid) throws CoreException {
 		return findCa(uuid);
 	}
 
+	// Properties
+	// TODO: don't query a single property, instead return them in the parent
+	
 	public APropertyInstance getProperty(String uuid) throws CoreException {
 		return findProperty(uuid);
 	}
@@ -146,7 +179,7 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 */
 	private StructuralElementInstance findSei(String uuid) throws CoreException {
-		List<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
 		while (iterator.hasNext()) {
 			Object currentSei = iterator.next();
@@ -166,7 +199,7 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 */
 	private CategoryAssignment findCa(String uuid) throws CoreException {
-		List<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
 		while (iterator.hasNext()) {
 			Object currentSei = iterator.next();
@@ -186,7 +219,7 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 */
 	public APropertyInstance findProperty(String uuid) {
-		List<StructuralElementInstance> rootSeis = resourceSet.getRepository().getRootEntities();
+		List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
 		while (iterator.hasNext()) {
 			Object currentEntity = iterator.next();
