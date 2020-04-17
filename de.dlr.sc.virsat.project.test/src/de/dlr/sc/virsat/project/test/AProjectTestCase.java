@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -121,15 +123,22 @@ public abstract class AProjectTestCase {
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		VirSatTransactionalEditingDomain.clearResourceEventListener();
 		VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
-		
 		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
-		for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-			if (project.exists()) {
-				project.refreshLocal(IResource.DEPTH_INFINITE, null);
-				project.delete(true, null);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+		boolean failed = true;
+		while (failed) {
+			try {
+				for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+					if (project.exists()) {
+						project.refreshLocal(IResource.DEPTH_INFINITE, null);
+						project.delete(true, null);
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+					}
+				}
+				failed = false;
+			} catch (Exception e) {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed deleting project: ", e));
 			}
 		}
 		
@@ -219,5 +228,42 @@ public abstract class AProjectTestCase {
 		
 		// Finally hand back the result of the executed command
 		return store.firstElement();
+	}
+	
+	/**
+	 * This is a retry wrapper for assert statements. It allows to retry a single assert statement
+	 * a given times waiting for some given time between each retry. It throws an assertion if it fails.
+	 * at the last retry
+	 * @param retries The amount of retries to be executed
+	 * @param milliSeconds The amount of milliseconds to wait before retrying
+	 * @param assertRunnable the runnable holding the actual assert Statement
+	 */
+	protected void assertRetry(int retries, int milliSeconds, Runnable assertRunnable) {
+		assertTrue("Cannot execute negative retries", retries > 0);
+		assertTrue("Cannot wait a negative amount of time", milliSeconds > 0);
+		
+		for (int count = 1; count <= retries; count++) {
+			try {
+				try {
+					assertRunnable.run();
+					// In case nothing failed just leave the method
+					break;
+				} catch (AssertionError e) {
+					// If it failed in the last retry, than throw the error
+					if (count >= retries) {
+						String message = String.format(
+							"assertRetry failed after %i rerties waiting each for %i milliseconds with the following exception:",
+							retries,
+							milliSeconds
+						);
+						throw new AssertionError(message, e);
+					}	
+				}
+				// Apparently we need to retry, lets wait a bit
+				Thread.sleep(milliSeconds);
+			} catch (InterruptedException e) {
+				throw new AssertionError("assertRetry got interrupted", e);
+			} 
+		}
 	}
 }
