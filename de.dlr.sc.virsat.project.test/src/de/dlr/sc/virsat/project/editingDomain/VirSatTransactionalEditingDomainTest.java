@@ -45,6 +45,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
@@ -485,4 +486,52 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		assertNull("Result is null", resultNull);
 	}
 	
+	@Test
+	public void testGetUserName() {
+		// Usually the current SystemUser should be handed back
+		String expectedUser = UserRegistry.getInstance().getUserName();
+		assertEquals("Got the SystemUser", expectedUser, editingDomain.getUserName());
+	
+		// In case an override user context is set, the user from the context should be returned
+		editingDomain.setUserContextOverride(new IUserContext() {
+			
+			@Override
+			public boolean isSuperUser() {
+				return false;
+			}
+			
+			@Override
+			public String getUserName() {
+				return "ContextTestUser";
+			}
+		});
+		
+		assertEquals("Got user from context", "ContextTestUser", editingDomain.getUserName());
+	}
+	
+	@Test
+	public void testIsSuperUser() {
+		// Usually the super user rights from the system user should be handed back
+		UserRegistry.getInstance().setSuperUser(false);
+		assertFalse("No super user rights from the System User", editingDomain.isSuperUser());
+	
+		UserRegistry.getInstance().setSuperUser(true);
+		assertTrue("Now super user rights are provided by the SystemUser", editingDomain.isSuperUser());
+		//
+		// In case an override user context is set, the user from the context should be returned
+		editingDomain.setUserContextOverride(new IUserContext() {
+			
+			@Override
+			public boolean isSuperUser() {
+				return false;
+			}
+			
+			@Override
+			public String getUserName() {
+				return "ContextTestUser";
+			}
+		});
+		
+		assertFalse("The ovveride user context does not have super user rights", editingDomain.isSuperUser());
+	}
 }
