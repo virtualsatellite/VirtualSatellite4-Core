@@ -130,7 +130,7 @@
       <factory
             class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImplCustom"
             predecessor="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl"
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi">
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi">
       </factory>
    </extension>
    <extension
