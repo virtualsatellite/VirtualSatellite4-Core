@@ -60,7 +60,7 @@ public abstract class AGitAndJettyServerTest {
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException, Exception {
 		server = new VirSatJettyServer();
-		server.setUpServer();
+		server.init();
 		
 		setUpTestUsers();
 		

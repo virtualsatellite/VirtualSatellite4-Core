@@ -36,7 +36,6 @@ public class Activator extends Plugin {
 	private static final String CONFIG_FILE_CLI_PARAM = "configFile";
 	// The configuration file path and its default value
 	private String propertiesFilePath = "resources/server.properties";
-	private String authFilePath = "resources/auth.properties";
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -82,9 +81,8 @@ public class Activator extends Plugin {
 	}
 	
 	public String getAuthFilePath() {
-		// also provide this via cliManager
 		// this is an empty file by default
-		return authFilePath;
+		return ServerConfiguration.getAuthPropertiesFile();
 	}
 	
 }

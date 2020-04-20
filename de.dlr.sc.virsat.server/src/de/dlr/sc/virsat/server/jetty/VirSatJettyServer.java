@@ -35,8 +35,7 @@ public class VirSatJettyServer {
 	
 	private static final int VIRSAT_JETTY_PORT = 8000; 
 	private LoginService loginService = null;
-	private Boolean isSetup = false;
-	
+
 	/**
 	 * Main entry point for Virtual Satellite Jetty Server
 	 * @param args Not used currently
@@ -57,10 +56,7 @@ public class VirSatJettyServer {
 	 * @throws InterruptedException
 	 */
 	public VirSatJettyServer start() throws Exception {	
-		if (!isSetup) {
-			setUpServer();
-		}
-		
+
 		server.start();
 		return this;
 	}
@@ -69,7 +65,7 @@ public class VirSatJettyServer {
 	 * Call this method to setup the server
 	 * @throws IOException
 	 */
-	public void setUpServer() throws IOException {
+	public void init() throws IOException {
 		server = new Server(VIRSAT_JETTY_PORT);
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
@@ -78,7 +74,6 @@ public class VirSatJettyServer {
 		servletContextHandler.addServlet(RepoManagementServlet.class, "/rest/management/*");
 		
 		setupSecurity(server, servletContextHandler);
-		isSetup = true;
 	}
 	
 	/**

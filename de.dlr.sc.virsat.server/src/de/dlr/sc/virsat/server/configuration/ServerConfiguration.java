@@ -24,6 +24,7 @@ public class ServerConfiguration {
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
 	public static final String PROJECT_REPOSITORIES_DIR_KEY = "project.repositories.dir";
 	public static final String LOGIN_SERIVE_CLASS_KEY = "login.service.class";
+	public static final String AUTH_PROPERTIES_FILE_KEY = "auth.propierties.file";
 	
 	private static Properties properties = new Properties();
 	
@@ -71,5 +72,13 @@ public class ServerConfiguration {
 
 	public static void setLoginServiceClass(String loginServiceClass) {
 		properties.setProperty(LOGIN_SERIVE_CLASS_KEY, loginServiceClass);
+	}
+	
+	public static String getAuthPropertiesFile() {
+		return properties.getProperty(AUTH_PROPERTIES_FILE_KEY);
+	}
+	
+	public static void setAuthPropertiesFile(String authPropertiesFile) {
+		properties.setProperty(AUTH_PROPERTIES_FILE_KEY, authPropertiesFile);
 	}
 }

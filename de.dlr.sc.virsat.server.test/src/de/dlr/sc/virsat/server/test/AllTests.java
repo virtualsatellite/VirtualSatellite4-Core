@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.server.auth.LoginServiceFactoryTest;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfigurationTest;
 import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
 import de.dlr.sc.virsat.server.controller.RepoManagementControllerTest;
@@ -43,7 +44,8 @@ import junit.framework.JUnit4TestAdapter;
 	ServerRepoHelperTest.class,
 	RepoManagementControllerTest.class,
 	RepositoryConfigurationTest.class,
-	ProjectManagementResourceTest.class
+	ProjectManagementResourceTest.class,
+	LoginServiceFactoryTest.class
 })
 
 public class AllTests {
