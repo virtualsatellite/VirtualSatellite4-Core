@@ -17,7 +17,7 @@ import de.dlr.sc.virsat.external.lib.commons.cli.Activator;
  * @author fisc_ph
  *
  */
-public class UserRegistry {
+public class UserRegistry implements IUserContext {
 
 	/**
 	 * The constructor
@@ -42,6 +42,7 @@ public class UserRegistry {
 	 * check is the user the super user
 	 * @return true if the user is the super user, else false
 	 */
+	@Override
 	public boolean isSuperUser() {
 		return isSuperUser;
 	}
@@ -86,6 +87,7 @@ public class UserRegistry {
 	 * this method returns the name of the user
 	 * @return the user name
 	 */
+	@Override
 	public String getUserName() {
 		return this.userName;
 	}

@@ -46,8 +46,8 @@ public class UserRegistryTest {
 	public void testGetInstance() {
 		
 		// The PlugIn is a singleton - Verify this
-		UserRegistry ur1 = UserRegistry.getInstance();
-		UserRegistry ur2 = UserRegistry.getInstance();
+		IUserContext ur1 = UserRegistry.getInstance();
+		IUserContext ur2 = UserRegistry.getInstance();
 
 		// Make sure both instances are not null
 		assertNotNull(ur1);
