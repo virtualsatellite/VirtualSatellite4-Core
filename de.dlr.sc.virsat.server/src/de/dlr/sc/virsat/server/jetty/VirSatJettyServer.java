@@ -14,13 +14,11 @@ import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 import java.io.IOException;
 
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
-import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.LoginService;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
-import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.auth.LoginServiceFactory;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
@@ -33,8 +31,7 @@ import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
  */
 public class VirSatJettyServer {
 
-	public VirSatJettyServer() {
-	}
+	public VirSatJettyServer() { }
 	
 	private static final int VIRSAT_JETTY_PORT = 8000; 
 	private LoginService loginService = null;
@@ -93,24 +90,19 @@ public class VirSatJettyServer {
 	private void setupSecurity(Server server, ServletContextHandler servletContextHandler) throws IOException {
 		
 		loginService = new LoginServiceFactory().getLoginService();
-		
-		if (loginService instanceof HashLoginService) {
-			((HashLoginService) loginService).setConfig(Activator.getDefault().getAuthFilePathResolved());
-		}
-		
-        server.addBean(loginService);
-        
-        ConstraintSecurityHandler security = new ConstraintSecurityHandler();
-        server.setHandler(security);
-        
-        /**
-         *  For top down security constraints with roles can be created here
-         */
+		server.addBean(loginService);
 
-        security.setAuthenticator(new BasicAuthenticator());
-        security.setLoginService(loginService);
+		ConstraintSecurityHandler security = new ConstraintSecurityHandler();
+		server.setHandler(security);
 
-        security.setHandler(servletContextHandler);
+		/**
+		 *  For top down security constraints with roles can be created here
+		 */
+
+		security.setAuthenticator(new BasicAuthenticator());
+		security.setLoginService(loginService);
+
+		security.setHandler(servletContextHandler);
 	}
 	
 	public VirSatJettyServer join() throws InterruptedException {

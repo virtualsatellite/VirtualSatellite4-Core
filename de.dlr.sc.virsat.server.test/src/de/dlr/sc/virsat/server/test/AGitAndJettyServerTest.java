@@ -47,9 +47,11 @@ public abstract class AGitAndJettyServerTest {
 	public static final String USER_NO_REPO = "user:password";
 	public static final String USER_WITH_REPO = "user2:password";
 	
-	protected static final String DEFAULT_AUTHORIZATION_HEADER = "Basic " + Base64.getEncoder().encodeToString(USER_NO_REPO.getBytes());
-	
 	protected static WebTarget webTarget;
+	
+	public static String getAuthHeader(String userAndPassword) {
+		return "Basic " + Base64.getEncoder().encodeToString(userAndPassword.getBytes());
+	}
 	
 	public static File makeAbsolute(File relativePath) throws IOException {
 		return new File(WORKSPACE_ROOT, relativePath.toString());

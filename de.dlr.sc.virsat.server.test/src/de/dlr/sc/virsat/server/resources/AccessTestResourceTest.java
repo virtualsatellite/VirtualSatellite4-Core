@@ -41,7 +41,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 			path("/atr").
 			path("/data").
 			request().
-			header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			accept(MediaType.APPLICATION_JSON).
 			get(Response.class)
 			.toString();
@@ -51,7 +51,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 				path("atr").
 				path("data").
 				request().
-				header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
+				header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 				accept(MediaType.APPLICATION_JSON).
 				get(String.class);
 		

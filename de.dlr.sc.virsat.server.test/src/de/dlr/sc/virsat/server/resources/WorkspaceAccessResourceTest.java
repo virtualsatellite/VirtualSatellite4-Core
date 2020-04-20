@@ -77,7 +77,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository1).
 			request().
-			header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
 		assertEquals("Cloning local repository 1 succeeded", VirSatGitAccess.STATUS_OK, result);
@@ -91,7 +91,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository2).
 			request().
-			header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
 		assertEquals("Cloning local repository 2 succeeded", VirSatGitAccess.STATUS_OK, result2);
@@ -112,7 +112,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository1).
 			queryParam(WorkspaceAccessResource.PARAM_MESSAGE, COMMIT_MESSAGE).
 			request().
-			header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
 		assertEquals("File got correctly committed", VirSatGitAccess.STATUS_OK, result3);
@@ -125,7 +125,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository2).
 			request().
-			header(HttpHeaders.AUTHORIZATION, DEFAULT_AUTHORIZATION_HEADER).
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
 		assertEquals("File got correctly updated", VirSatGitAccess.STATUS_OK, result4);

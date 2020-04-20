@@ -47,7 +47,7 @@ public class RepositoryFilter implements ContainerRequestFilter {
 	}
 
 	/**
-	 * Get's the repository from the contexts path
+	 * Gets the repository from the contexts path
 	 * Expects a path formed like "optional/repository/repositoryName/optional"
 	 * @param context
 	 * @return repositoryName
