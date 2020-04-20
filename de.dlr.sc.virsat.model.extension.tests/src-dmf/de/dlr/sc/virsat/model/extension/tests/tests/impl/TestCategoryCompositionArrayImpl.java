@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryCompositionArray;
@@ -41,7 +41,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class TestCategoryCompositionArrayImpl extends DObjectImpl implements TestCategoryCompositionArray {
+public class TestCategoryCompositionArrayImpl extends GenericCategoryImpl implements TestCategoryCompositionArray {
 	/**
 	 * The cached value of the '{@link #getTestCompositionArrayDynamic() <em>Test Composition Array Dynamic</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

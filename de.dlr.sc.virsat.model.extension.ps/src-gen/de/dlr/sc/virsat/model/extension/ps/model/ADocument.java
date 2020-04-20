@@ -24,8 +24,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -40,7 +40,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
  * Category to describe documents such as specifications
  * 
  */	
-public abstract class ADocument extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class ADocument extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.ps.Document";
 	
