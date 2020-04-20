@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" name="de.dlr.sc.virsat.model.extension.mechanical" description="Concept for mechanical engineering" version="0.2" displayName="Mechanical Engineering">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" name="de.dlr.sc.virsat.model.extension.mechanical" description="Concept for mechanical engineering" version="0.2" displayName="Mechanical Engineering">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
 </dvlm_c:Concept>
