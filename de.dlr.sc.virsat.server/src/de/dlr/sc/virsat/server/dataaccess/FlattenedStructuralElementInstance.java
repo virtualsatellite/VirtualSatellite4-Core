@@ -12,21 +12,20 @@ package de.dlr.sc.virsat.server.dataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
-// TODO: move this class
 public class FlattenedStructuralElementInstance {
 
 	private VirSatUuid uuid;
 	private String name;
 	private String description;
-	// TODO: just use the fullQualifiedName instead of the whole se?
-//	public String fullQualifiedName;
-	private StructuralElement se;
+	private String fullQualifiedName;
 	private VirSatUuid parent;
 	private List<VirSatUuid> superSeis;
 	private List<VirSatUuid> childSeis;
@@ -43,7 +42,7 @@ public class FlattenedStructuralElementInstance {
 		setName(sei.getName());
 		setDescription(sei.getDescription());
 //		fullQualifiedName = sei.getType().getFullQualifiedName();
-		setSe(sei.getType());
+		setSe(sei.getType().getFullQualifiedName());
 		setParent(sei.getParent() != null ? sei.getParent().getUuid() : null);
 		setSuperSeis(collectParentUuids(sei));
 		setChildSeis(collectChildUuids(sei));
@@ -53,17 +52,21 @@ public class FlattenedStructuralElementInstance {
 	/**
 	 * Unflatten the properties of this instance into a sei
 	 * @return StructuralElementInstance
+	 * @throws CoreException 
 	 */
-	public StructuralElementInstance unflatten() {
+	public StructuralElementInstance unflatten(Repository repository) throws CoreException {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		sei.setUuid(getUuid());
 		sei.setName(getName());
 		sei.setDescription(getDescription());
-		// TODO: ideally only use the fullQualifiedName here
-		// How to obtain a se instance from the fullQualifiedName?
-		sei.setType(getSe());
-		// TODO: set lists and parents
-		// How to convert from
+		sei.setType(RepositoryUtility.findSe(getSe(), repository));
+		if (getParent() != null) {
+			sei.setParent(RepositoryUtility.findSei(getParent().toString(), repository));
+		} else {
+			sei.setParent(null);
+		}
+		// TODO: set lists???
+
 		return sei;
 	}
 	
@@ -115,12 +118,12 @@ public class FlattenedStructuralElementInstance {
 		this.description = description;
 	}
 
-	public StructuralElement getSe() {
-		return se;
+	public String getSe() {
+		return fullQualifiedName;
 	}
 
-	public void setSe(StructuralElement se) {
-		this.se = se;
+	public void setSe(String fullQualifiedName) {
+		this.fullQualifiedName = fullQualifiedName;
 	}
 
 	public VirSatUuid getParent() {

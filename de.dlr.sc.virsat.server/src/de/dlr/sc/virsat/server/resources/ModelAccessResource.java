@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.server.resources;
 
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -53,6 +52,8 @@ public class ModelAccessResource {
 	
 	public static final String ROOT_SEIS = "seis";
 	public static final String SEI = "sei";
+	public static final String DISCIPLINES = "disciplines";
+	public static final String CONCEPTS = "concepts";
 	
 	public class RepoModelAccessResource {
 		private RepoModelAccessController controller;
@@ -94,5 +95,18 @@ public class ModelAccessResource {
 			}
 		}
 		
+		@GET
+		@Path(DISCIPLINES)
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getDisciplines() {
+			return Response.status(Response.Status.OK).entity(controller.getDisciplines()).build();
+		}
+		
+		@GET
+		@Path(CONCEPTS)
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getConcepts() {
+			return Response.status(Response.Status.OK).entity(controller.getActiveConcepts()).build();
+		}
 	}
 }
