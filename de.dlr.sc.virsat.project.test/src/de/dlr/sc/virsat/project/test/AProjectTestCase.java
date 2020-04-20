@@ -30,6 +30,7 @@ import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -223,5 +224,26 @@ public abstract class AProjectTestCase {
 		
 		// Finally hand back the result of the executed command
 		return store.firstElement();
+	}
+	
+	public static class TestUserContext implements IUserContext {
+
+		public TestUserContext(String userName, boolean su) {
+			this.userName = userName;
+			this.su = su;
+		}
+		
+		String userName;
+		boolean su;
+		
+		@Override
+		public boolean isSuperUser() {
+			return su;
+		}
+
+		@Override
+		public String getUserName() {
+			return userName;
+		}
 	}
 }

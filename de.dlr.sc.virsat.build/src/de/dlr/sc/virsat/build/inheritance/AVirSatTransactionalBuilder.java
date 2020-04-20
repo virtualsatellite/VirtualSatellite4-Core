@@ -144,7 +144,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers before Command execution", null));
 		transactionalFullBuildRemoveProblemMarkers(); 
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Executing command", null));
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+		virSatTed.getVirSatCommandStack().executeNoUndo(cmd, virSatTed, false);
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers after Command execution", null));
 		transactionalFullBuildUpdateProblemMarkers();
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Done", null));
@@ -186,7 +186,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers before Command execution", null));
 		transactionalFullBuildRemoveProblemMarkers();
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Executing command", null));
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+		virSatTed.getVirSatCommandStack().executeNoUndo(cmd, virSatTed, false);
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers after Command execution", null));
 		transactionalFullBuildUpdateProblemMarkers();
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Done", null));

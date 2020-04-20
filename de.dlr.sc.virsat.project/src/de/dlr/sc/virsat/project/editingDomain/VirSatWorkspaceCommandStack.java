@@ -13,6 +13,7 @@ import java.util.Map;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -94,6 +95,8 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * history, so it cannot be undone. The Transaction.OPTION_NO_UNDO 
 	 * seems to be not implemented.
 	 * @param command The command to be executed.
+	 * @param userContextOverride The user context to be used when executing the command
+	 * @param executeBuilder true in order to execute the builders. Will only execute if autobuilding is disabled. 
 	 */
 	public void executeNoUndo(Command command, IUserContext userContextOverride, boolean executeBuilder) throws RuntimeException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute Command with no undo"));
@@ -116,9 +119,9 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 			}
 			
 			// Now run the builder if requested
-			if (executeBuilder) {
+			if ((executeBuilder) && !ResourcesPlugin.getWorkspace().isAutoBuilding()) {
 				try {
-					editingDomain.getResourceSet().getProject().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+					editingDomain.getResourceSet().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 				} catch (CoreException e) {
 					atomicCoreException.set(e);
 				}

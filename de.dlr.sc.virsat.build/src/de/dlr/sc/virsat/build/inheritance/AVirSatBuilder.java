@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -124,5 +125,10 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Errored", e));
 		}
 		return null; 
+	}
+	
+	@Override
+	public ISchedulingRule getRule(int kind, Map<String, String> args) {
+		return getProject();
 	}
 }

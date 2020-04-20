@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -501,5 +502,16 @@ public class VirSatProjectCommons {
 		};
 		
 		return runnable;
+	}
+	
+	/**
+	 * Method to activate or deactivate the Workspace builders for the whole workspace
+	 * @param enable set to true if builders should be enabled
+	 * @throws CoreException
+	 */
+	public static void setEnableWorkspaceBuilder(boolean enable) throws CoreException {
+		IWorkspaceDescription wsDescription = ResourcesPlugin.getWorkspace().getDescription();
+		wsDescription.setAutoBuilding(enable);
+		ResourcesPlugin.getWorkspace().setDescription(wsDescription);
 	}
 }

@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
@@ -626,7 +627,8 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			}
 		}
 	};
-	private IUserContext userContextOverride;
+	
+	protected IUserContext userContextOverride;
 	
 	/**
 	 * This method filters the map of dirty states of the resources
@@ -993,6 +995,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 				
 				// Now set the user context for the execution within the ws of the editing domain
+				IUserContext previousUserContext = this.userContextOverride;
 				this.setUserContextOverride(userContextOverride);
 				
 				// Now execute the actual runnable which was planned for execution
@@ -1002,13 +1005,13 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 					atomicException.set(e);
 				} finally {
 					// Make sure the user context override is set back to null after execution
-					this.setUserContextOverride(null);
+					this.setUserContextOverride(previousUserContext);
 				}
 				
 				// and try to hand over errors
 				atomicException.throwAsRuntimeExceptionIfSet();
-			}), project, 0, null);
-		} catch (Exception e) {
+			}), null);
+		} catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
 	}
