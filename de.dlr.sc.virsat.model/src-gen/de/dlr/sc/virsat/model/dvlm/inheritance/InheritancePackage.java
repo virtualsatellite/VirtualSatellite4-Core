@@ -45,7 +45,7 @@ public interface InheritancePackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/i";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/i";
 
 	/**
 	 * The package namespace name.

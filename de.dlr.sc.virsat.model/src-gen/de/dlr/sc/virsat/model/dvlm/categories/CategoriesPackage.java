@@ -48,7 +48,7 @@ public interface CategoriesPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/cp";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/cp";
 
 	/**
 	 * The package namespace name.

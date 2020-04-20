@@ -465,7 +465,7 @@ public class StructuralElementInstanceItemProvider
 			|| (commandClass == CreateChildCommand.class)) {
 			
 			if (!commandParameterCheck.isValidCommandParameter(commandParameter)) {
-				return UnexecutableCommand.INSTANCE;
+				return new RoleManagementCheckCommand(UnexecutableCommand.INSTANCE, commandParameter);
 			}
 		}
 	    		
