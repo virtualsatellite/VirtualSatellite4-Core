@@ -20,7 +20,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8"
             class="de.dlr.sc.virsat.model.dvlm.provider.DVLMItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -34,7 +34,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/s"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/s"
             class="de.dlr.sc.virsat.model.dvlm.structural.provider.StructuralItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -48,7 +48,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/g"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/g"
             class="de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -62,7 +62,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/c"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/c"
             class="de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -76,7 +76,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/r"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/r"
             class="de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -90,7 +90,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/u"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/u"
             class="de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -104,7 +104,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/cp"
             class="de.dlr.sc.virsat.model.dvlm.categories.provider.CategoriesItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -118,7 +118,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd"
             class="de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.PropertydefinitionsItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -132,7 +132,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi"
             class="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider.PropertyinstancesItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -146,7 +146,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/qudv"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/qudv"
             class="de.dlr.sc.virsat.model.dvlm.qudv.provider.QudvItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -160,7 +160,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/calc"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/calc"
             class="de.dlr.sc.virsat.model.dvlm.calculation.provider.CalculationItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -174,7 +174,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/i"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/i"
             class="de.dlr.sc.virsat.model.dvlm.inheritance.provider.InheritanceItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
@@ -188,7 +188,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated dvlm -->
       <factory
-            uri="http://www.virsat.sc.dlr.de/dvlm/v7/dmf"
+            uri="http://www.virsat.sc.dlr.de/dvlm/v8/dmf"
             class="de.dlr.sc.virsat.model.dvlm.dmf.provider.DmfItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
