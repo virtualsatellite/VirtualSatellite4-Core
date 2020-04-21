@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -39,11 +39,11 @@ import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
 public class ModelAccessResourceTest extends AServerRepositoryTest {	
 	
-	private VirSatTransactionalEditingDomain ed;
-	private FlattenedStructuralElementInstance flatSei;
+	private static VirSatTransactionalEditingDomain ed;
+	private static FlattenedStructuralElementInstance flatSei;
 	
-	@Before
-	public void setUpModel() throws Exception {
+	@BeforeClass
+	public static void setUpModel() throws Exception {
 
 		ed = testServerRepository.getEd();
 		
@@ -80,22 +80,19 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			assertThat("Seis have the same properties", flatSei, samePropertyValuesAs(returnedSei));
 		}
 	}
-
-	// TODO: investigate test cases failing, that pass when run alone
-	// indicates a problem in test setup
 	
 	@Test
 	public void testGetDisciplines() {
 		List<FlattenedDiscipline> disciplines = getDisciplinesRequest();
-		assertEquals("One initial discipline found", disciplines.size(), 1);
-		assertEquals("It's the system discipline", disciplines.get(0).getName(), "System");
+		assertEquals("One initial discipline found", 1, disciplines.size());
+		assertEquals("It's the system discipline", "System", disciplines.get(0).getName());
 	}
 	
 	@Test
 	public void testGetConcepts() {
 		List<FlattenedConcept> concepts = getConceptsRequest();
-		assertEquals("One initial discipline found", concepts.size(), 1);
-		assertEquals("It's the testConcept", concepts.get(0).getName(), "testConcept");
+		assertEquals("One initial concept found", 1, concepts.size());
+		assertEquals("It's the testConcept", "testConcept", concepts.get(0).getName());
 	}
 	
 	private List<FlattenedStructuralElementInstance> getRootSeisRequest() {

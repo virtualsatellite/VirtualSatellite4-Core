@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.junit.Before;
 import org.junit.BeforeClass;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
@@ -25,7 +26,7 @@ import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-public class AServerRepositoryTest extends AGitAndJettyServerTest {
+public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 
 	protected static ServerRepository testServerRepository;
 	protected static String projectName;
@@ -65,7 +66,11 @@ public class AServerRepositoryTest extends AGitAndJettyServerTest {
 			 testProjectConfiguration);
 		
 		testServerRepository.checkoutRepository();
-		
+	}
+	
+	@Before
+	public void addRepoToRegistry() {
+		// AGitAndJettyServerTest clears the RepoRegistry in the @After method so we have to create the mapping every time
 		RepoRegistry.getInstance().addRepository(projectName, testServerRepository);
 	}
 	
