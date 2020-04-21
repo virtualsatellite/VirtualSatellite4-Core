@@ -41,6 +41,17 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	private SWTBotGefEditor diagramEditor;
 	
 	private Concept conceptFuncElectrical;
+	
+	private static final int DRAG1_COORDINATES_X = 0;
+	private static final int DRAG1_COORDINATES_Y = 0;
+	
+	private static final int DRAG2_COORDINATES_X = 250;
+	private static final int DRAG2_COORDINATES_Y = 100;
+	
+	private static final int CLICK1_COORDINATES_X = 150;
+	private static final int CLICK1_COORDINATES_Y = 10;
+	private static final int CLICK2_COORDINATES_X = 260;
+	private static final int CLICK2_COORDINATES_Y = 110;
 
 	@Before
 	public void before() throws Exception {
@@ -58,7 +69,9 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	@Test
 	public void addInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
+		waitForEditingDomainAndUiThread();
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
+		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		undoCommand();
 		waitForEditingDomainAndUiThread();
@@ -68,17 +81,18 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 	}
 	
-	@Test
-	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
-		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
-		waitForEditingDomainAndUiThread();
-		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		waitForEditingDomainAndUiThread();
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		
-		delete(elementConfiguration);
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-	}
+
+//	@Test
+//	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
+//		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
+//		waitForEditingDomainAndUiThread();
+//		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
+//		waitForEditingDomainAndUiThread();
+//		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+//		
+//		delete(elementConfiguration);
+//		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+//	}
 	
 	@Test
 	public void dragDropTreeinDiagram() {
@@ -92,7 +106,6 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 	}
 	
-	
 	@Test
 	public void addInterfaceEndDiagramElementUndoRedoTest() {
 		addElement(InterfaceEnd.class, conceptFuncElectrical, elementConfiguration);
@@ -105,7 +118,6 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 	}
-	
 	
 	@Test
 	public void removeInterfaceDiagramElementUndoRedoTest() {
@@ -159,24 +171,24 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		waitForEditingDomainAndUiThread();
 		
-		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, 0, 0);
+		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, DRAG1_COORDINATES_X, DRAG1_COORDINATES_Y);
 		waitForEditingDomainAndUiThread();				
 		SWTBotGefEditPart swtBotGefEditPart1 = diagramEditor.selectedEditParts().get(0);
 		
-		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, 250,100);
+		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, DRAG2_COORDINATES_X, DRAG2_COORDINATES_Y);
 		waitForEditingDomainAndUiThread();
 		SWTBotGefEditPart swtBotGefEditPart2 = diagramEditor.selectedEditParts().get(0);
 		
 		diagramEditor.activateTool("InterfaceEnd");
 		waitForEditingDomainAndUiThread();
 		
-		diagramEditor.click(150, 10);
+		diagramEditor.click(CLICK1_COORDINATES_X, CLICK1_COORDINATES_Y);
 		waitForEditingDomainAndUiThread();
 		
 		diagramEditor.activateTool("InterfaceEnd");
 		waitForEditingDomainAndUiThread();
 		
-		diagramEditor.click(260,110);
+		diagramEditor.click(CLICK2_COORDINATES_X, CLICK2_COORDINATES_Y);
 		waitForEditingDomainAndUiThread();
 		
 		diagramEditor.activateTool("Interface");

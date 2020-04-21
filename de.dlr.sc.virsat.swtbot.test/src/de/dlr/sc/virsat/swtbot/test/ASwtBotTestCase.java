@@ -22,7 +22,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -33,6 +32,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
@@ -140,7 +140,11 @@ public class ASwtBotTestCase {
 					
 					// Now reset the workbench and remove the project
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Resetting Workbench"));
-					bot.resetWorkbench();
+					
+					bot.saveAllEditors();
+					bot.closeAllEditors();
+					bot.defaultPerspective().activate();
+					
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Deleting project"));
 					ws.getRoot().getProject(SWTBOT_TEST_PROJECTNAME).delete(true, monitor);
 				}, null);
@@ -490,14 +494,18 @@ public class ASwtBotTestCase {
 	 * issues an undo key command
 	 */
 	protected void undoCommand() {
-		bot.shell().pressShortcut(SWT.CTRL, 'z');
+		SWTBotMenu editMenu = bot.shell().menu().menu("Edit").click();
+		String undoCommandLabel = editMenu.menuItems().get(0);
+		editMenu.menu(undoCommandLabel).click();		
 	}
 	
 	/**
 	 * issues a redo key command
 	 */
 	protected void redoCommand() {
-		bot.shell().pressShortcut(SWT.CTRL, 'y');
+		SWTBotMenu editMenu = bot.shell().menu().menu("Edit").click();
+		String redoCommandLabel = editMenu.menuItems().get(1);
+		editMenu.menu(redoCommandLabel).click();
 	}
 	
 	/**
