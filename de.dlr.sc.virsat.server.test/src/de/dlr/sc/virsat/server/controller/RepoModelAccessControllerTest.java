@@ -25,8 +25,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -37,6 +35,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommand;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
@@ -125,6 +124,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid1);
 		assertThat("Right sei found", flatTestSei1, is(samePropertyValuesAs(seiByUuid)));
 		
+		// TODO: investigate this test case failing if run in alltests
 		// Delete one sei
 		repoModelAccessController.deleteSei(uuid1);
 		seis = repoModelAccessController.getRootSeis();
@@ -164,31 +164,10 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		// Create CA and add it to SEI
 		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
 		executeAsCommand(() -> tsei.add(testCa));
+		FlattenedCategoryAssignment flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
 
 		String uuid = testCa.getUuid();
-		CategoryAssignment caByUuid = repoModelAccessController.getCa(uuid);
-		assertEquals("Right ca found", testCa, caByUuid);
-	}
-	
-	@Test
-	public void testProperties() throws CoreException {
-		// Create a new TestStructuralElement with a StructuralElementInstance
-		TestStructuralElement tsei = new TestStructuralElement(testConcept);
-		StructuralElementInstance sei = tsei.getStructuralElementInstance();
-		sei.setName("RootSei");
-		
-		// Now add the new SEI to the Repository
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
-		editingDomain.getCommandStack().execute(createAddSei);
-		
-		// Create CA and add it to SEI
-		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
-		executeAsCommand(() -> tsei.add(testCa));
-
-		// Add test properties
-		testCa.setTestBool(editingDomain, true);
-		
-		APropertyInstance boolByUuid = repoModelAccessController.getProperty(testCa.getTestBoolBean().getUuid());
-		assertEquals("Right bool found", boolByUuid, testCa.getTestBoolBean().getTypeInstance());
+		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(uuid);
+		assertThat("Right ca found", flatTestCa, is(samePropertyValuesAs(caByUuid)));
 	}
 }

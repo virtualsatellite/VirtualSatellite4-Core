@@ -17,11 +17,8 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.edit.command.DeleteCommand;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -30,6 +27,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
@@ -52,9 +50,12 @@ public class RepoModelAccessController {
 	}
 	
 	// Unit Management
-	// TODO: big issue to be solved later
 	
 	// User Management
+	/**
+	 * Get the disciplines and flatten them
+	 * @return List<FlattenedDiscipline> flattened disciplines
+	 */
 	public List<FlattenedDiscipline> getDisciplines() {
 		EList<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
 		List<FlattenedDiscipline> flattenedDisciplines = new ArrayList<FlattenedDiscipline>();
@@ -66,6 +67,10 @@ public class RepoModelAccessController {
 	}
 	
 	// Concept
+	/**
+	 * Get the active concepts flatten them
+	 * @return List<FlattenedConcept> flattened concepts
+	 */
 	public List<FlattenedConcept> getActiveConcepts() {
 		List<Concept> concepts = repository.getActiveConcepts();
 		List<FlattenedConcept> flattenedConcepts = new ArrayList<FlattenedConcept>();
@@ -99,15 +104,7 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 */
 	public FlattenedStructuralElementInstance getSei(String uuid) throws CoreException {
-		Set<StructuralElementInstance> seis = resourceSet.getAllSeisInProject();
-		
-		for (StructuralElementInstance sei : seis) {
-			if (sei.getUuid().toString().equals(uuid)) {
-				return new FlattenedStructuralElementInstance(sei);
-			}
-		}
-		
-		return null;
+		return new FlattenedStructuralElementInstance(RepositoryUtility.findSei(uuid, repository));
 	}
 	
 	/**
@@ -122,7 +119,7 @@ public class RepoModelAccessController {
 		StructuralElementInstance oldSei = RepositoryUtility.findSei(flatSei.getUuid().toString(), repository);
 		
 		if (oldSei != null) {
-			// TODO: Is there a better way to do this than deleting and recreating? e.g. SetCommand?
+			// TODO: Use an update command e.g. SetCommand?
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(oldSei);
 			editingDomain.getCommandStack().execute(deleteCommand);
 			
@@ -154,8 +151,6 @@ public class RepoModelAccessController {
 		editingDomain.getCommandStack().execute(createAddSei);
 		return uuid.toString();
 		
-		
-		
 		// TODO: resolve inheritance
 	}
 	
@@ -170,14 +165,7 @@ public class RepoModelAccessController {
 	
 	// CAs
 	
-	public CategoryAssignment getCa(String uuid) throws CoreException {
-		return RepositoryUtility.findCa(uuid, repository);
-	}
-
-	// Properties
-	// TODO: don't query a single property, instead return them in the parent
-	
-	public APropertyInstance getProperty(String uuid) throws CoreException {
-		return RepositoryUtility.findProperty(uuid, repository);
+	public FlattenedCategoryAssignment getCa(String uuid) throws CoreException {
+		return new FlattenedCategoryAssignment(RepositoryUtility.findCa(uuid, repository));
 	}
 }

@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.server.resources;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -27,11 +26,20 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
@@ -40,45 +48,75 @@ import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 public class ModelAccessResourceTest extends AServerRepositoryTest {	
 	
 	private static VirSatTransactionalEditingDomain ed;
-	private static FlattenedStructuralElementInstance flatSei;
+	private static FlattenedStructuralElementInstance flatRootSei;
+	private static FlattenedCategoryAssignment flatCa;
 	
 	@BeforeClass
 	public static void setUpModel() throws Exception {
 
 		ed = testServerRepository.getEd();
-		
+
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setName("TestRootComponent");
 		se.setIsRootStructuralElement(true);
-		
+
 		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
 		concept.getStructuralElements().add(se);
 		concept.setName("testConcept");
-		
+
+		Category category = CategoriesFactory.eINSTANCE.createCategory();
+		category.setName("SomeCategory");
+		category.getApplicableFor().add(se);
+
+		IntProperty ip = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
+		ip.setName("SomeProperty");
+		category.getProperties().add(ip);
+
+		concept.getCategories().add(category);
+
 		Command addConceptToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), DVLMPackage.eINSTANCE.getRepository_ActiveConcepts(), concept);
 		ed.getCommandStack().execute(addConceptToRepo);
+
+		StructuralElementInstance seiContaining = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seiContaining.setName("seiWithSei");
+		seiContaining.setType(se);
+		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), DVLMPackage.eINSTANCE.getRepository_RootEntities(), seiContaining);
+		ed.getCommandStack().execute(addSeiToRepo);
+
+		CategoryAssignment caOfContainingSei = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		caOfContainingSei.setType(category);
+		caOfContainingSei.setName("caOfSei");
 		
-		flatSei = new FlattenedStructuralElementInstance();
-		flatSei.setName("TestSei");
-		flatSei.setSe(se.getFullQualifiedName());
+		ValuePropertyInstance intPropertyInstance = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
+		intPropertyInstance.setType(ip);
+		caOfContainingSei.getPropertyInstances().add(intPropertyInstance);
+		
+		seiContaining.getCategoryAssignments().add(caOfContainingSei);
+		
+		flatCa = new FlattenedCategoryAssignment(caOfContainingSei);
+		flatRootSei = new FlattenedStructuralElementInstance(seiContaining);
 	}
 
 	@Test
-	public void testGetRootSeisEmptyInitally() {
+	public void testGetRootSeis() {
 		List<FlattenedStructuralElementInstance> rootSeis = getRootSeisRequest();
-		assertTrue("Initially empty list", rootSeis.isEmpty());
+		assertEquals("One root element found", 1, rootSeis.size());
 	}
 
+	@Test
+	public void testGetSei() {
+		FlattenedStructuralElementInstance returnedSei = getSeiRequest(flatRootSei.getUuid().toString());
+		assertThat("Correct sei returned", flatRootSei, samePropertyValuesAs(returnedSei)); 
+	}
+	
 	@Ignore
 	@Test
 	public void postAndGetSei() {
-		synchronized (this) {
-			String uuid = postSeiRequest(flatSei);
-		
-			// Doesn't work atm because post fails because the unflattened sei does not have parents and children
-			FlattenedStructuralElementInstance returnedSei = getSeiRequest(uuid);
-			assertThat("Seis have the same properties", flatSei, samePropertyValuesAs(returnedSei));
-		}
+		String uuid = postSeiRequest(flatRootSei);
+	
+		// Doesn't work atm because post fails because the unflattened sei does not have parents and children
+		FlattenedStructuralElementInstance returnedSei = getSeiRequest(uuid);
+		assertThat("Seis have the same properties", flatRootSei, samePropertyValuesAs(returnedSei));
 	}
 	
 	@Test
@@ -93,6 +131,12 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		List<FlattenedConcept> concepts = getConceptsRequest();
 		assertEquals("One initial concept found", 1, concepts.size());
 		assertEquals("It's the testConcept", "testConcept", concepts.get(0).getName());
+	}
+	
+	@Test
+	public void testGetCa() {
+		FlattenedCategoryAssignment returnedCa = getCaRequest(flatCa.getUuid().toString());
+		assertThat("Correct ca returned", flatCa, samePropertyValuesAs(returnedCa)); 
 	}
 	
 	private List<FlattenedStructuralElementInstance> getRootSeisRequest() {
@@ -111,6 +155,19 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.get(FlattenedStructuralElementInstance.class);
 	}
 	
+	private FlattenedCategoryAssignment getCaRequest(String uuid) {
+		return webTarget
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
+			.request()
+			.accept(MediaType.APPLICATION_JSON)
+			.get(FlattenedCategoryAssignment.class);
+	}
+	
+	/**
+	 * Request to post a sei
+	 * @param flatSei FlattenedStructuralElementInstance
+	 * @return String uuid of the posted sei
+	 */
 	private String postSeiRequest(FlattenedStructuralElementInstance flatSei) {
 		return webTarget
 			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.SEI)

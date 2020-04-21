@@ -10,27 +10,26 @@
 package de.dlr.sc.virsat.server.dataaccess;
 
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
 public class FlattenedDiscipline {
 
-	private VirSatUuid uuid;
+	private String uuid;
 	private String name;
 	private String user;
 	
 	public FlattenedDiscipline() { }
 
 	public FlattenedDiscipline(Discipline discipline) {
-		setUuid(discipline.getUuid());
+		setUuid(discipline.getUuid().toString());
 		setName(discipline.getName());
 		setUser(discipline.getUser());
 	}
 
-	public VirSatUuid getUuid() {
+	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(VirSatUuid uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 

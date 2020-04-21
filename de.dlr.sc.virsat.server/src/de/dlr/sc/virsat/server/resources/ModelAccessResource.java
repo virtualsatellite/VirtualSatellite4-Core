@@ -54,12 +54,12 @@ public class ModelAccessResource {
 	public static final String SEI = "sei";
 	public static final String DISCIPLINES = "disciplines";
 	public static final String CONCEPTS = "concepts";
+	public static final String CA = "ca";
 	
 	public class RepoModelAccessResource {
 		private RepoModelAccessController controller;
 		
 		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {
-			// TODO: catch not checked out repo (no ed or no virsat project)
 			controller = new RepoModelAccessController(serverRepository.getEd());
 		}
 
@@ -82,6 +82,11 @@ public class ModelAccessResource {
 			}
 		}
 		
+		/**
+		 * Resource to post a sei
+		 * @param flatSei FlattenedStructuralElementInstance
+		 * @return Response containing the uuid of the new sei
+		 */
 		@POST
 		@Path(SEI)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -107,6 +112,17 @@ public class ModelAccessResource {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getConcepts() {
 			return Response.status(Response.Status.OK).entity(controller.getActiveConcepts()).build();
+		}
+		
+		@GET
+		@Path(CA  + "/{caUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getCa(@PathParam("caUuid") String caUuid) {
+			try {
+				return Response.status(Response.Status.OK).entity(controller.getCa(caUuid)).build();
+			} catch (CoreException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
 		}
 	}
 }

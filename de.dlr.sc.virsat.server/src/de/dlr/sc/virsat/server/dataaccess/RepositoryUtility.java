@@ -30,7 +30,7 @@ public class RepositoryUtility {
 	/**
 	 * Finds a sei instance by it's uuid
 	 * @param uuid the seis uuid
-	 * @return the StructuralElementInstance
+	 * @return the StructuralElementInstance or null
 	 * @throws CoreException
 	 */
 	public static StructuralElementInstance findSei(String uuid, Repository repository) throws CoreException {
@@ -50,7 +50,7 @@ public class RepositoryUtility {
 	/**
 	 * Finds a ca instance by it's uuid
 	 * @param uuid the cas uuid
-	 * @return the CategoryAssignment
+	 * @return the CategoryAssignment or null
 	 * @throws CoreException
 	 */
 	public static CategoryAssignment findCa(String uuid, Repository repository) throws CoreException {
@@ -70,7 +70,7 @@ public class RepositoryUtility {
 	/**
 	 * Finds a property instance by it's uuid
 	 * @param uuid the properties uuid
-	 * @return the APropertyInstance
+	 * @return the APropertyInstance or null
 	 * @throws CoreException
 	 */
 	public static APropertyInstance findProperty(String uuid, Repository repository) {
@@ -92,7 +92,7 @@ public class RepositoryUtility {
 	 * Finds a se instance by it's fullQualifiedName
 	 * @param fullQualifiedName of the se
 	 * @param repository to search
-	 * @return se or null
+	 * @return the StructuralElement or null or null
 	 * @throws CoreException
 	 */
 	public static StructuralElement findSe(String fullQualifiedName, Repository repository) throws CoreException {

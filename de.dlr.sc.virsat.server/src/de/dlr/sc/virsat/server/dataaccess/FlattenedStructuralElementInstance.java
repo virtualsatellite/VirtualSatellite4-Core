@@ -22,14 +22,14 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
 public class FlattenedStructuralElementInstance {
 
-	private VirSatUuid uuid;
+	private String uuid;
 	private String name;
 	private String description;
 	private String fullQualifiedName;
-	private VirSatUuid parent;
-	private List<VirSatUuid> superSeis;
-	private List<VirSatUuid> childSeis;
-	private List<VirSatUuid> categoryAssignments;
+	private String parent;
+	private List<String> superSeis;
+	private List<String> childSeis;
+	private List<String> categoryAssignments;
 	
 	public FlattenedStructuralElementInstance() { }
 	
@@ -38,12 +38,12 @@ public class FlattenedStructuralElementInstance {
 	 * @param sei the sei to flatten
 	 */
 	public FlattenedStructuralElementInstance(StructuralElementInstance sei) {
-		setUuid(sei.getUuid());
+		setUuid(sei.getUuid().toString());
 		setName(sei.getName());
 		setDescription(sei.getDescription());
 //		fullQualifiedName = sei.getType().getFullQualifiedName();
 		setSe(sei.getType().getFullQualifiedName());
-		setParent(sei.getParent() != null ? sei.getParent().getUuid() : null);
+		setParent(sei.getParent() != null ? sei.getParent().getUuid().toString() : null);
 		setSuperSeis(collectParentUuids(sei));
 		setChildSeis(collectChildUuids(sei));
 		collectCategoryAssignmentUuids(sei);
@@ -56,7 +56,7 @@ public class FlattenedStructuralElementInstance {
 	 */
 	public StructuralElementInstance unflatten(Repository repository) throws CoreException {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setUuid(getUuid());
+		sei.setUuid(new VirSatUuid(getUuid()));
 		sei.setName(getName());
 		sei.setDescription(getDescription());
 		sei.setType(RepositoryUtility.findSe(getSe(), repository));
@@ -70,18 +70,18 @@ public class FlattenedStructuralElementInstance {
 		return sei;
 	}
 	
-	private List<VirSatUuid> collectParentUuids(StructuralElementInstance sei) {
-		List<VirSatUuid> uuids = new ArrayList<VirSatUuid>();
+	private List<String> collectParentUuids(StructuralElementInstance sei) {
+		List<String> uuids = new ArrayList<String>();
 		for (StructuralElementInstance superSei : sei.getSuperSeis()) {
-			uuids.add(superSei.getUuid());
+			uuids.add(superSei.getUuid().toString());
 		}
 		return uuids;
 	}
 
-	private List<VirSatUuid> collectChildUuids(StructuralElementInstance sei) {
-		List<VirSatUuid> uuids = new ArrayList<VirSatUuid>();
+	private List<String> collectChildUuids(StructuralElementInstance sei) {
+		List<String> uuids = new ArrayList<String>();
 		for (StructuralElementInstance childSei : sei.getChildren()) {
-			uuids.add(childSei.getUuid());
+			uuids.add(childSei.getUuid().toString());
 		}
 		return uuids;
 	}
@@ -94,11 +94,11 @@ public class FlattenedStructuralElementInstance {
 		return uuids;
 	}
 
-	public VirSatUuid getUuid() {
+	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(VirSatUuid uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 
@@ -126,35 +126,35 @@ public class FlattenedStructuralElementInstance {
 		this.fullQualifiedName = fullQualifiedName;
 	}
 
-	public VirSatUuid getParent() {
+	public String getParent() {
 		return parent;
 	}
 
-	public void setParent(VirSatUuid parent) {
+	public void setParent(String parent) {
 		this.parent = parent;
 	}
 
-	public List<VirSatUuid> getSuperSeis() {
+	public List<String> getSuperSeis() {
 		return superSeis;
 	}
 
-	public void setSuperSeis(List<VirSatUuid> superSeis) {
+	public void setSuperSeis(List<String> superSeis) {
 		this.superSeis = superSeis;
 	}
 
-	public List<VirSatUuid> getChildSeis() {
+	public List<String> getChildSeis() {
 		return childSeis;
 	}
 
-	public void setChildSeis(List<VirSatUuid> childSeis) {
+	public void setChildSeis(List<String> childSeis) {
 		this.childSeis = childSeis;
 	}
 
-	public List<VirSatUuid> getCategoryAssignments() {
+	public List<String> getCategoryAssignments() {
 		return categoryAssignments;
 	}
 
-	public void setCategoryAssignments(List<VirSatUuid> categoryAssignments) {
+	public void setCategoryAssignments(List<String> categoryAssignments) {
 		this.categoryAssignments = categoryAssignments;
 	}
 	
