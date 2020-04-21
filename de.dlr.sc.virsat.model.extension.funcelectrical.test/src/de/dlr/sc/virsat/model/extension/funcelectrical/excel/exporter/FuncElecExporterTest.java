@@ -15,12 +15,14 @@ import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.eclipse.core.runtime.CoreException;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -34,16 +36,26 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
  */
 public class FuncElecExporterTest extends ExcelTestCase {
 
+	protected LocalDateTime localDateTime;
+	
+	@Override
+	public void setUp() throws CoreException {
+		super.setUp();
+		//CHECKSTYLE:OFF
+		localDateTime = LocalDateTime.of(2020, 04, 21, 12, 24);
+		//CHECKSTYLE:ON
+	}
+	
 	@Test
 	public void canExport() {
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		assertEquals(true, feExporter.canExport(elementConf.getStructuralElementInstance()));
 	}
 
 	@Test
 	public void testExportTypes() { 		
 		StructuralElementInstance sei = ifaceTypeCollection.getStructuralElementInstance();
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		feExporter.export(ifaceTypeCollection.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
 		XSSFWorkbook wb = feExporter.getWb();
 
@@ -60,7 +72,7 @@ public class FuncElecExporterTest extends ExcelTestCase {
 		InputStream iStream = TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		StructuralElementInstance sei = elementDef.getStructuralElementInstance();
 
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		feExporter.export(sei, iStream);
 		Workbook wb = feExporter.getWb();
 
@@ -79,7 +91,7 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		StructuralElementInstance sei = elementConf.getStructuralElementInstance();
 
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		feExporter.export(sei, iStream);
 		Workbook wb = feExporter.getWb();
 
@@ -97,7 +109,7 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		StructuralElementInstance sei = ifaceTypeCollection.getStructuralElementInstance();
 
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		feExporter.export(sei, iStream);
 		Workbook wb = feExporter.getWb();
 
@@ -117,7 +129,7 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		StructuralElementInstance sei = elementDef.getStructuralElementInstance();
 
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		feExporter.export(sei, iStream);
 		Workbook wb = feExporter.getWb();
 
@@ -135,7 +147,7 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		StructuralElementInstance sei = elementConf2.getStructuralElementInstance();
 
-		FuncElecExporter feExporter = new FuncElecExporter();
+		FuncElecExporter feExporter = new FuncElecExporter(localDateTime);
 		feExporter.export(sei, iStream);
 		Workbook wb = feExporter.getWb();
 
