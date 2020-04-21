@@ -41,11 +41,11 @@ public class LoginServiceFactory {
 			String filePath = null;
 			
 			// Check if the file exists, else try to resolve it in the bundle
-			if (new File((Activator.getDefault().getAuthFilePath())).exists()) {
-				filePath = Activator.getDefault().getAuthFilePath();
+			if (new File(ServerConfiguration.getAuthPropertiesFile()).exists()) {
+				filePath = ServerConfiguration.getAuthPropertiesFile();
 			} else {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid auth.propierties.file provided, trying to resolve it in the bundle", null));
-				filePath = getResolvedFile();
+				filePath = getResolvedFile(ServerConfiguration.getAuthPropertiesFile());
 			}
 			
 			((HashLoginService) service).setConfig(filePath);
@@ -58,9 +58,9 @@ public class LoginServiceFactory {
 	 * Try to resolve the file path in the bundle
 	 * @return the file path in the bundle or null
 	 */
-	private String getResolvedFile() {
+	private String getResolvedFile(String path) {
 		try {
-			return Activator.getDefault().getAuthFilePathResolved();
+			return Activator.getDefault().resolveBundlePath(path);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Could not resolve auth.propierties.file ", e));
 		}

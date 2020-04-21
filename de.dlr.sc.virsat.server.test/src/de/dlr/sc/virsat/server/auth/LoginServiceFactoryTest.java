@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.auth;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -62,6 +63,6 @@ public class LoginServiceFactoryTest {
 		
 		assertThat("HashLoginService got returned", service, instanceOf(HashLoginService.class));
 		Resource configResource = Resource.newResource(((HashLoginService) service).getConfig());
-		assertNotNull("Config file is valid", configResource.getFile() != null);
+		assertEquals("Config file is the desired file", configResource.getFile(), customFile.toFile());
 	}
 }

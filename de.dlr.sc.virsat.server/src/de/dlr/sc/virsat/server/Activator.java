@@ -76,13 +76,8 @@ public class Activator extends Plugin {
 		return propertiesFilePath;
 	}
 	
-	public String getAuthFilePathResolved() throws IOException {
-		return FileLocator.resolve(FileLocator.find(getBundle(), new Path(getAuthFilePath()))).toString();
-	}
-	
-	public String getAuthFilePath() {
-		// this is an empty file by default
-		return ServerConfiguration.getAuthPropertiesFile();
+	public String resolveBundlePath(String path) throws IOException {
+		return FileLocator.resolve(FileLocator.find(getBundle(), new Path(path))).toString();
 	}
 	
 }
