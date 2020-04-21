@@ -42,6 +42,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedPropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
@@ -50,6 +51,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private static VirSatTransactionalEditingDomain ed;
 	private static FlattenedStructuralElementInstance flatRootSei;
 	private static FlattenedCategoryAssignment flatCa;
+	private static FlattenedPropertyInstance flatProperty;
 	
 	@BeforeClass
 	public static void setUpModel() throws Exception {
@@ -95,6 +97,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		
 		flatCa = new FlattenedCategoryAssignment(caOfContainingSei);
 		flatRootSei = new FlattenedStructuralElementInstance(seiContaining);
+		flatProperty = new FlattenedPropertyInstance(intPropertyInstance);
 	}
 
 	@Test
@@ -134,9 +137,14 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@Test
-	public void testGetCa() {
+	public void testGetCaWithProperty() {
 		FlattenedCategoryAssignment returnedCa = getCaRequest(flatCa.getUuid().toString());
-		assertThat("Correct ca returned", flatCa, samePropertyValuesAs(returnedCa)); 
+		// We can't use samePropertyValuesAs here because of the List<FlattenedPropertyInstance>
+		assertEquals("Correct ca returned", flatCa.getName(), returnedCa.getName()); 
+		
+		List<FlattenedPropertyInstance> properties = returnedCa.getProperties();
+		assertEquals("One property found", 1, properties.size());
+		assertThat("It's the right property", flatProperty, samePropertyValuesAs(properties.get(0)));
 	}
 	
 	private List<FlattenedStructuralElementInstance> getRootSeisRequest() {

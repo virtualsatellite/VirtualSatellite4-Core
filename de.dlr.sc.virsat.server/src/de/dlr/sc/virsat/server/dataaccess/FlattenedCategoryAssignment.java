@@ -21,7 +21,7 @@ public class FlattenedCategoryAssignment {
 	private String fullQualifiedInstanceName;
 	private String type;
 	private String uuid;
-	private List<String> properties;
+	private List<FlattenedPropertyInstance> properties;
 	
 	public FlattenedCategoryAssignment() { }
 	
@@ -38,20 +38,19 @@ public class FlattenedCategoryAssignment {
 		setProperties(resolveProperties(ca.getPropertyInstances()));
 	}
 
-	// TODO: return a complete property json string instead
 	/**
 	 * Resolves List<APropertyInstance> to a representative List<String>
 	 * @param properties of the ca
 	 * @return List<String>
 	 */
-	private List<String> resolveProperties(List<APropertyInstance> properties) {
-		List<String> propertieStrings = new ArrayList<String>();
+	private List<FlattenedPropertyInstance> resolveProperties(List<APropertyInstance> properties) {
+		List<FlattenedPropertyInstance> flattenedProperties = new ArrayList<FlattenedPropertyInstance>();
 		
-		for (APropertyInstance propertie : properties) {
-			propertieStrings.add(propertie.getFullQualifiedInstanceName());
+		for (APropertyInstance property : properties) {
+			flattenedProperties.add(new FlattenedPropertyInstance(property));
 		}
 		
-		return propertieStrings;
+		return flattenedProperties;
 	}
 	
 	public String getName() {
@@ -86,11 +85,11 @@ public class FlattenedCategoryAssignment {
 		this.uuid = uuid;
 	}
 
-	public List<String> getProperties() {
+	public List<FlattenedPropertyInstance> getProperties() {
 		return properties;
 	}
 
-	public void setProperties(List<String> properties) {
+	public void setProperties(List<FlattenedPropertyInstance> properties) {
 		this.properties = properties;
 	}
 	

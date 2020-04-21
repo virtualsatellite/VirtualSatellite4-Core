@@ -10,6 +10,9 @@
 package de.dlr.sc.virsat.server.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
@@ -21,10 +24,14 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.ABeanObject;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -33,11 +40,13 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommand;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedPropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 
 public class RepoModelAccessControllerTest extends ATestConceptTestCase {
@@ -151,7 +160,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
-	public void testCas() throws CoreException {
+	public void testCaAndProperties() throws CoreException {
 		// Create a new TestStructuralElement with a StructuralElementInstance
 		TestStructuralElement tsei = new TestStructuralElement(testConcept);
 		StructuralElementInstance sei = tsei.getStructuralElementInstance();
@@ -161,13 +170,49 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
 		editingDomain.getCommandStack().execute(createAddSei);
 		
-		// Create CA and add it to SEI
+		// Create ca with test properties
 		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
+		testCa.setName("TestCa");
+		
+		// Add test properties
+		final double TEST_VALUE_DOUBLE = 10.5d;
+		final int TEST_VALUE_INT = 10;
+		final String TEST_VALUE_STRING = "Hello";
+		final boolean TEST_VALUE_BOOL = true;
+		final URI TEST_VALUE_RESOURCE = URI.createPlatformResourceURI("testdata/test.data", true);
+		final String TEST_BEAN_NAME = "World";
+		final EnumTestEnum TEST_VALUE_ENUM = EnumTestEnum.HIGH;
+		
+		testCa.setTestBool(TEST_VALUE_BOOL);
+		testCa.setTestFloat(TEST_VALUE_DOUBLE);
+		testCa.setTestInt(TEST_VALUE_INT);
+		testCa.setTestString(TEST_VALUE_STRING);
+		testCa.setTestResource(TEST_VALUE_RESOURCE);
+		testCa.setTestEnum(TEST_VALUE_ENUM.getLiteral());
+		testCa.setName(TEST_BEAN_NAME);
+		
+		// Add ca to sei
 		executeAsCommand(() -> tsei.add(testCa));
+		
 		FlattenedCategoryAssignment flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
-
-		String uuid = testCa.getUuid();
-		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(uuid);
-		assertThat("Right ca found", flatTestCa, is(samePropertyValuesAs(caByUuid)));
+		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());
+		assertEquals("Right ca found", flatTestCa.getFullQualifiedInstanceName(), caByUuid.getFullQualifiedInstanceName());
+		
+		List<FlattenedPropertyInstance> flattenedProperties = flatTestCa.getProperties();
+		
+		// Check for the expected values
+		assertThat(flattenedProperties, matchItem(testCa.getTestBoolBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestFloatBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestIntBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestStringBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestResourceBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestEnumBean()));
 	}
+
+	private Matcher<Iterable<? super FlattenedPropertyInstance>> matchItem(ABeanObject<?> bean) {
+		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
+		return hasItem(hasProperty("value", equalTo(valueSwitch.getValueString(bean.getATypeInstance()))));
+	}
+	
+	// TODO: inheritance tests
 }

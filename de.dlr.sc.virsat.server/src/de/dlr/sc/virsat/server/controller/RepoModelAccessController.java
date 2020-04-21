@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.server.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
