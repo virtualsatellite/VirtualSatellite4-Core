@@ -137,7 +137,7 @@
       </markerHelper>
    </extension>
    <extension
-         point="de.dlr.sc.virsat.build.DvlmValidator">
+         point="de.dlr.sc.virsat.model.DvlmValidator">
       <dvlmValidator>
          <seiValidator
                class="de.dlr.sc.virsat.model.calculation.validator.UnitPropertyValueValidator"

@@ -9,15 +9,22 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team.git;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Iterator;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.egit.core.internal.util.ResourceUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.Before;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
@@ -50,6 +57,17 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 		super.setUp();
 		
 		backend = new VirSatGitVersionControlBackend(null);
+	}
+	
+	@Override
+	protected void checkRemoteForCommitMessage(String message) {
+		try {
+			Iterator<RevCommit> commitIterator = Git.open(pathRepoRemote.toFile()).log().call().iterator();
+			assertTrue("Remote Rpeository has a commit message", commitIterator.hasNext());
+			assertEquals("Remote commit has expected commit message", message, commitIterator.next().getShortMessage());
+		} catch (GitAPIException | IOException e) {
+			fail("Failed to check interim state of remote repository: " + e.getMessage());
+		}
 	}
 	
 	@Override

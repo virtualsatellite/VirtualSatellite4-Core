@@ -661,21 +661,15 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			resource = this.getResource(fileUri, true);
 		} else {
 			// Ok, we know that we do not have a file yet. So apparently it is a
-			// new resource.
-			// but calling all the time create will always hand back a new
-			// resource and confuse
-			// other parts of the application. To avoid this we check if there
-			// is a resource
-			// already created under the given name in case it is we ill use
-			// that one instead
-			// of creating a complete new one.
+			// new resource. But calling all the time create will always hand back a new
+			// resource and confuse other parts of the application. To avoid this
+			// we check if there is a resource already created under the given name
+			// in case it is we ill use that one instead of creating a complete new one.
 			resource = getAlreadyCreatedResource(fileUri);
 			if (resource == null && forceCreate) {
 				resource = this.createResource(fileUri);
-
 				// Do an initial safe to actually create the file on the file
-				// system
-				// Otherwise we only have the file structures created by the
+				// system Otherwise we only have the file structures created by the
 				// VirSatProjectCommons
 				saveResource(resource);
 			}
@@ -688,6 +682,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 					"Failed to create/open resource " + e.getMessage(), e));
 		}
 		return resource;
+	}
+	
+	/**
+	 * Convenience method to get an EMF resource from an eclipse IResource
+	 * 
+	 * @param file The file as IResource
+	 * @param loadOnDemand weather the resource should be created if not yet in the resource set
+	 * @return the resource or null if not existing
+	 */
+	public Resource getResource(IResource file, boolean loadOnDemand) {
+		if (file instanceof IFile && file.exists()) {
+			URI fileUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+			return this.getResource(fileUri, loadOnDemand);
+		}
+		return null;
 	}
 
 	/**

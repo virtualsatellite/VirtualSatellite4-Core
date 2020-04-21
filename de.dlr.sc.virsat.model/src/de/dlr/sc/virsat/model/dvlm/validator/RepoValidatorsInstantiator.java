@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.build.validator;
+package de.dlr.sc.virsat.model.dvlm.validator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,10 +22,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.Activator;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.project.Activator;
 
 /**
  * Class that reads DVLM validators extension point
@@ -33,7 +31,7 @@ import de.dlr.sc.virsat.project.Activator;
  */
 public class RepoValidatorsInstantiator {
 
-	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.build.DvlmValidator";
+	public static final String EXTENSION_POINT_ID_CONCEPT_VALIDATOR = "de.dlr.sc.virsat.model.DvlmValidator";
 	public static final String CONCEPT_BUNDLE_PREFIX = "de.dlr.sc.virsat.model.extension";
 
 	private Repository repository;

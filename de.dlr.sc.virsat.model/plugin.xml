@@ -6,6 +6,7 @@
 
 <plugin>
    <extension-point id="Concept" name="Model Concept Extension" schema="schema/Concept.exsd"/>
+   <extension-point id="DvlmValidator" name="DVLM Validator" schema="schema/de.dlr.sc.virsat.model.dvlm.validator.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated dvlm -->

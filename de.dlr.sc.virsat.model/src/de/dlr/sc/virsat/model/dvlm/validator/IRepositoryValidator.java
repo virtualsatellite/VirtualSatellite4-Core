@@ -7,28 +7,22 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.build.validator.external;
+package de.dlr.sc.virsat.model.dvlm.validator;
 
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 
 /**
- * <p>
- * Deprecated -> Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator}
- * 
- * </p>
- * the IStructuralElementInstanceValidator class defines the interface for our model validators
+ * the IRepositoryValidator class defines the interface for our model validators
  * The build will call all registered validators bound to this interface
- * @author scha_vo
  *
  */
-@Deprecated
-public interface IStructuralElementInstanceValidator {
+public interface IRepositoryValidator {
 
 	/**
 	 * method that gets called by the builder to start the verification and validation process
-	 * @param sei The StructuralElementInstance to be validated 
+	 * @param repo The Repository to be validated 
 	 * @return a boolean indicating successful validation when returning true
 	 */
-	boolean validate(StructuralElementInstance sei);
+	boolean validate(Repository repo);
 
 }
