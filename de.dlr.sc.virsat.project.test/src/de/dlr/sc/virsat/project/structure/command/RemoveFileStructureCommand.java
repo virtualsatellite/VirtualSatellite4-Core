@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.project.ui.structure.command;
+package de.dlr.sc.virsat.project.structure.command;
+
+import java.util.function.Function;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFolder;
@@ -16,7 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.command.AbstractCommand;
-import org.eclipse.ui.ide.undo.DeleteResourcesOperation;
+import org.eclipse.core.commands.operations.AbstractOperation;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.util.command.IVirSatRecordableCommand;
@@ -35,7 +37,7 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 
 	private VirSatProjectCommons projectCommons;
 	
-	private DeleteResourcesOperation dro;
+	private AbstractOperation deleteResourceOperation;
 	
 	private VirSatTransactionalEditingDomain editingDomain;
 	
@@ -44,25 +46,26 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	 * @param selectedProject the selected project
 	 * @param iste {@link IStructuralTreeElement}
 	 */
-	public RemoveFileStructureCommand(IProject selectedProject, StructuralElementInstance iste) {
+	public RemoveFileStructureCommand(IProject selectedProject, StructuralElementInstance iste, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		projectCommons = new VirSatProjectCommons(selectedProject);
 		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(iste);
-		dro = new DeleteResourcesOperation(new IResource[] {seiFolder}, "Deleting SEI folder", true) {
-			@Override
-			protected ISchedulingRule getExecuteSchedulingRule() {
-				return selectedProject;
-			}
-			
-			@Override
-			protected ISchedulingRule getUndoSchedulingRule() {
-				return selectedProject;
-			}
-			
-			@Override
-			protected ISchedulingRule getRedoSchedulingRule() {
-				return selectedProject;
-			}
-		};
+		this.deleteResourceOperation = deleteResourcesOperationFunction.apply(seiFolder);
+//		dro = new DeleteResourcesOperation(new IResource[] {seiFolder}, "Deleting SEI folder", true) {
+//			@Override
+//			protected ISchedulingRule getExecuteSchedulingRule() {
+//				return selectedProject;
+//			}
+//			
+//			@Override
+//			protected ISchedulingRule getUndoSchedulingRule() {
+//				return selectedProject;
+//			}
+//			
+//			@Override
+//			protected ISchedulingRule getRedoSchedulingRule() {
+//				return selectedProject;
+//			}
+//		};
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(iste);
 	}
 	
@@ -71,7 +74,7 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		try {
 			editingDomain.runExclusive(() -> {
 				try {
-					dro.execute(null, null);
+					deleteResourceOperation.execute(null, null);
 					editingDomain.getVirSatCommandStack().triggerSaveAll();
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
@@ -87,7 +90,7 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		try {
 			editingDomain.runExclusive(() -> {
 				try {
-					dro.redo(null, null);
+					deleteResourceOperation.redo(null, null);
 					editingDomain.getVirSatCommandStack().triggerSaveAll();
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
@@ -103,7 +106,7 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		try {
 			editingDomain.runExclusive(() -> {
 				try {
-					dro.undo(null,  null);
+					deleteResourceOperation.undo(null,  null);
 					editingDomain.getVirSatCommandStack().triggerSaveAll();
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
@@ -116,11 +119,11 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	
 	@Override
 	public boolean canUndo() {
-		return dro.canUndo();
+		return deleteResourceOperation.canUndo();
 	}
 	
 	@Override
 	public boolean canExecute() {
-		return dro.canExecute();
+		return deleteResourceOperation.canExecute();
 	}
 }

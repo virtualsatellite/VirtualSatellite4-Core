@@ -8,14 +8,16 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.project.ui.structure.command;
+package de.dlr.sc.virsat.project.structure.command;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
+import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -53,24 +55,27 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	/**
 	 * Creates a command to remove a given StructuralElementInstance and its file structure
 	 * @param seiToRemove StructuralElementInstance to remove
+	 * @param deleteResourceOperation the actual abstract operation to delete the resources
 	 * @return Command that removes seiToRemove and its file structure
 	 */
-	public static Command create(StructuralElementInstance seiToRemove) {
-		CompoundCommand removeSeiCommand = doCreate(seiToRemove);
+	public static Command create(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
+		CompoundCommand removeSeiCommand = doCreate(seiToRemove, deleteResourcesOperationFunction);
 		return removeSeiCommand;
 	}
 
 	/**
-	 * Creates a command to remove multiple StructuralElementInstances and their file structures
-	 * @param seisToRemove 
-	 * @return Command
+	 * Creates a command to remove multiple StructuralElementInstances and their file structures.
+	 * The command makes sure that children are not deleted twice in case they are part of the selection
+	 * @param seisToRemove A list of SEIs to be removed
+	 * @param deleteResourceOperation the actual abstract operation to delete the resources
+	 * @return Command that will delete the selection of SEIs and their children
 	 */
-	public static Command create(Collection<StructuralElementInstance> seisToRemove) {
+	public static Command create(Collection<StructuralElementInstance> seisToRemove, Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		CompoundCommand removeAllSeisCommand = new CompoundCommand();
 		ArrayList<StructuralElementInstance> seisToDelete = eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(seisToRemove);
 		for (StructuralElementInstance sei : seisToDelete) {
 			if (sei.eResource() != null) {
-				removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei));
+				removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei, deleteResourcesOperationFunction));
 			}
 		}
 	
@@ -80,9 +85,10 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	/**
 	 * Creates a command to remove a given StructuralElementInstance and its file structure
 	 * @param seiToRemove StructuralElementInstance to remove
+	 * @param deleteResourceOperation the actual abstract operation to delete the resources
 	 * @return Command that removes seiToRemove and its file structure
 	 */
-	private static CompoundCommand doCreate(StructuralElementInstance seiToRemove) {
+	private static CompoundCommand doCreate(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(seiToRemove);
 		CompoundCommand compoundCommand =  new CompoundCommand();
 
@@ -96,7 +102,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 			for (StructuralElementInstance iste : seisToRemove) {
 				Command recordedRemoveCommand = DeleteStructuralElementInstanceCommand.create(editingDomain, iste);	
 				Command removeDvlmResourcesCommand = createRemoveDvlmResourcesCommand(project, virSatResourceSet, iste);
-				Command removeFilesCommand = new RemoveFileStructureCommand(project, iste);
+				Command removeFilesCommand = new RemoveFileStructureCommand(project, iste, deleteResourcesOperationFunction);
 				
 				//compoundCommand.append(resyncSeiResourceCommand);
 				compoundCommand.append(recordedRemoveCommand);
