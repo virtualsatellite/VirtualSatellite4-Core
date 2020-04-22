@@ -22,12 +22,17 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
@@ -235,6 +240,31 @@ public class ASwtBotTestCase {
 		}
 		item.dragAndDrop(canvas);
 		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Returns the absolute rectangular bounds for a SWTBotGefEditpart element
+	 * @param SWTBotEditPart
+	 * @return Rectangle bounds for SWTBotGefEditPart
+	 */
+	protected Rectangle getBoundsForEditPart(SWTBotGefEditPart swtBotEditPart) {
+		EditPart part = null;		
+		for (Field f : swtBotEditPart.getClass().getDeclaredFields()) {
+			if ("part".equals(f.getName())) {
+				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
+				// otherwise inaccessible fields.
+				f.setAccessible(true);
+				try {
+					part = (EditPart) f.get(swtBotEditPart);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotEditPart element or do a proper cast to EditPart type", e));
+				}
+			}
+		}		
+		IFigure figure = ((GraphicalEditPart) part).getFigure();
+		Rectangle bounds = figure.getBounds().getCopy();
+		figure.translateToAbsolute(bounds);		
+		return bounds;
 	}
 	
 	/**

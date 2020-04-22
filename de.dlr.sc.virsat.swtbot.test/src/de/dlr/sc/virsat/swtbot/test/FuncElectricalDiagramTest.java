@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.swtbot.test;
 
 import java.util.List;
 
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefConnectionEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
@@ -27,7 +28,6 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollection;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
-
 import org.junit.Assert;
 
 /**
@@ -50,8 +50,8 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	private static final int DRAG2_COORDINATES_X = 250;
 	private static final int DRAG2_COORDINATES_Y = 100;
 	
-	private static final int DRAG3_COORDINATES_X = 150;
-	private static final int DRAG3_COORDINATES_Y = 80;
+	private static final int INTERFACE_END_COORDINATE_OFFSET_X = 50;
+	private static final int INTERFACE_END_COORDINATE_OFFSET_Y = 20;
 	
 	private static final int CLICK1_COORDINATES_X = 150;
 	private static final int CLICK1_COORDINATES_Y = 10;
@@ -133,10 +133,14 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, 0, 0);
 		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-
-		dragTreeItemToDiagramEditor(interfaceTypeItem, diagramEditor, DRAG3_COORDINATES_X, DRAG3_COORDINATES_Y);
-		waitForEditingDomainAndUiThread();
 		
+		
+		SWTBotGefEditPart editPart = diagramEditor.getEditPart("ElementConfiguration");
+		Rectangle boundsForEditPart = getBoundsForEditPart(editPart);
+
+		dragTreeItemToDiagramEditor(interfaceTypeItem, diagramEditor, (boundsForEditPart.width - INTERFACE_END_COORDINATE_OFFSET_X), (boundsForEditPart.height - INTERFACE_END_COORDINATE_OFFSET_Y));
+		waitForEditingDomainAndUiThread();
+				
 		String text = interfaceEndItem.expand().getNode(0).getText();
 		Assert.assertTrue(text.equals("type -> InterfaceType"));		
 	}
