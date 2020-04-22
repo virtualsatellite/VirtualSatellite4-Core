@@ -50,6 +50,9 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	private static final int DRAG2_COORDINATES_X = 250;
 	private static final int DRAG2_COORDINATES_Y = 100;
 	
+	private static final int DRAG3_COORDINATES_X = 150;
+	private static final int DRAG3_COORDINATES_Y = 80;
+	
 	private static final int CLICK1_COORDINATES_X = 150;
 	private static final int CLICK1_COORDINATES_Y = 10;
 	private static final int CLICK2_COORDINATES_X = 260;
@@ -81,8 +84,7 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		redoCommand();
 		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-	}
-	
+	}	
 
 //	@Test
 //	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
@@ -132,15 +134,11 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 
-		dragTreeItemToDiagramEditor(interfaceTypeItem, diagramEditor, 150, 80);
+		dragTreeItemToDiagramEditor(interfaceTypeItem, diagramEditor, DRAG3_COORDINATES_X, DRAG3_COORDINATES_Y);
 		waitForEditingDomainAndUiThread();
 		
 		String text = interfaceEndItem.expand().getNode(0).getText();
-		Assert.assertTrue(text.equals("type -> InterfaceType"));
-		
-		
-		
-		
+		Assert.assertTrue(text.equals("type -> InterfaceType"));		
 	}
 	
 	@Test
@@ -187,7 +185,6 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		Assert.assertFalse(isTreeItemPresentInTreeView(elementConfigurationNode));
-
 	}
 	
 	@Test
