@@ -23,6 +23,8 @@ import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollection;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 
@@ -117,6 +119,28 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		redoCommand();
 		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+	}
+	
+	@Test
+	public void dragDropAssignInterfaceTypeTest() {
+		SWTBotTreeItem interfaceTypeCollectionItem = addElement(InterfaceTypeCollection.class, conceptFuncElectrical, repositoryNavigatorItem);
+		SWTBotTreeItem interfaceTypeItem = addElement(InterfaceType.class, conceptFuncElectrical, interfaceTypeCollectionItem);
+		SWTBotTreeItem interfaceEndItem = addElement(InterfaceEnd.class, conceptFuncElectrical, elementConfiguration);
+		
+		waitForEditingDomainAndUiThread();
+		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, 0, 0);
+		waitForEditingDomainAndUiThread();
+		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+
+		dragTreeItemToDiagramEditor(interfaceTypeItem, diagramEditor, 150, 80);
+		waitForEditingDomainAndUiThread();
+		
+		String text = interfaceEndItem.expand().getNode(0).getText();
+		Assert.assertTrue(text.equals("type -> InterfaceType"));
+		
+		
+		
+		
 	}
 	
 	@Test
