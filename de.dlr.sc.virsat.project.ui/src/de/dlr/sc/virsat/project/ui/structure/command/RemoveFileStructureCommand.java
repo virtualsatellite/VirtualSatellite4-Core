@@ -9,19 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.ui.structure.command;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.command.AbstractCommand;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.ide.undo.DeleteResourcesOperation;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -35,7 +29,6 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  * This class wraps the IDE Workspace Operation of Deleting the folder of a SEI
  * By this the deletion is undoable restoring the full content including files
  * in the SEIs document folder
- * @author fisc_ph
  *
  */
 public class RemoveFileStructureCommand extends AbstractCommand implements IVirSatRecordableCommand {
@@ -57,17 +50,17 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		dro = new DeleteResourcesOperation(new IResource[] {seiFolder}, "Deleting SEI folder", true) {
 			@Override
 			protected ISchedulingRule getExecuteSchedulingRule() {
-				return null;
+				return selectedProject;
 			}
 			
 			@Override
 			protected ISchedulingRule getUndoSchedulingRule() {
-				return null;
+				return selectedProject;
 			}
 			
 			@Override
 			protected ISchedulingRule getRedoSchedulingRule() {
-				return null;
+				return selectedProject;
 			}
 		};
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(iste);
@@ -75,63 +68,48 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	
 	@Override
 	public void execute() {
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation(null) {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
+		try {
+			editingDomain.runExclusive(() -> {
 				try {
 					dro.execute(null, null);
 					editingDomain.getVirSatCommandStack().triggerSaveAll();
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
 				}
-			}
-		};
-			
-		try {
-			operation.run(new NullProgressMonitor());
-		} catch (InvocationTargetException | InterruptedException e) {
+			});
+		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
 		}
 	}
 
 	@Override
 	public void redo() {
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation(null) {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
+		try {
+			editingDomain.runExclusive(() -> {
 				try {
 					dro.redo(null, null);
 					editingDomain.getVirSatCommandStack().triggerSaveAll();
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
 				}
-			}
-		};
-			
-		try {
-			operation.run(new NullProgressMonitor());
-		} catch (InvocationTargetException | InterruptedException e) {
+			});
+		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
 		}
 	}
 	
 	@Override
 	public void undo() {
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation(null) {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
+		try {
+			editingDomain.runExclusive(() -> {
 				try {
 					dro.undo(null,  null);
 					editingDomain.getVirSatCommandStack().triggerSaveAll();
 				} catch (ExecutionException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
 				}
-			}
-		};
-			
-		try {
-			operation.run(new NullProgressMonitor());
-		} catch (InvocationTargetException | InterruptedException e) {
+			});
+		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
 		}
 	}
