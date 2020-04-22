@@ -88,7 +88,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	 * @param deleteResourceOperation the actual abstract operation to delete the resources
 	 * @return Command that removes seiToRemove and its file structure
 	 */
-	private static CompoundCommand doCreate(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
+	protected static CompoundCommand doCreate(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(seiToRemove);
 		CompoundCommand compoundCommand =  new CompoundCommand();
 
@@ -122,7 +122,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	 * @param iste the structural element instance
 	 * @return a compound command for removing the resources
 	 */
-	private static Command createRemoveDvlmResourcesCommand(IProject project, VirSatResourceSet virSatResourceSet, StructuralElementInstance iste)  {
+	protected static Command createRemoveDvlmResourcesCommand(IProject project, VirSatResourceSet virSatResourceSet, StructuralElementInstance iste)  {
 		VirSatProjectCommons projectCommons = new VirSatProjectCommons(project);
 		Set<Resource> emfResources = new HashSet<>();
 		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(iste);
@@ -156,7 +156,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	 * @param seisToDelete Collection of seis that are selected for deletion
 	 * @return list of seis without children that will be deleted anyway
 	 */
-	private static ArrayList<StructuralElementInstance> eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(Collection<StructuralElementInstance> seisToDelete) {
+	protected static ArrayList<StructuralElementInstance> eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(Collection<StructuralElementInstance> seisToDelete) {
 		Set<EObject> selectedToBeDeleted = new HashSet<>(seisToDelete);
 		ArrayList<StructuralElementInstance> seisToDeleteWithoutDuplicateChildren = new ArrayList<>();
 		for (StructuralElementInstance sei : seisToDelete) {

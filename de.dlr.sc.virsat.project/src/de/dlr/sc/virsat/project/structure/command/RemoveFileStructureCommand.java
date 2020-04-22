@@ -14,9 +14,7 @@ import java.util.function.Function;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.core.commands.operations.AbstractOperation;
 
@@ -42,30 +40,15 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	private VirSatTransactionalEditingDomain editingDomain;
 	
 	/**
-	 * the public constructor
+	 * Constructor for creating a command that removes the file structure from a given SEI in the workspace
 	 * @param selectedProject the selected project
 	 * @param iste {@link IStructuralTreeElement}
+	 * @param deleteResourcesOperationFunction the callback function that is used to create the actual delete operation in the workspace
 	 */
 	public RemoveFileStructureCommand(IProject selectedProject, StructuralElementInstance iste, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		projectCommons = new VirSatProjectCommons(selectedProject);
 		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(iste);
 		this.deleteResourceOperation = deleteResourcesOperationFunction.apply(seiFolder);
-//		dro = new DeleteResourcesOperation(new IResource[] {seiFolder}, "Deleting SEI folder", true) {
-//			@Override
-//			protected ISchedulingRule getExecuteSchedulingRule() {
-//				return selectedProject;
-//			}
-//			
-//			@Override
-//			protected ISchedulingRule getUndoSchedulingRule() {
-//				return selectedProject;
-//			}
-//			
-//			@Override
-//			protected ISchedulingRule getRedoSchedulingRule() {
-//				return selectedProject;
-//			}
-//		};
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(iste);
 	}
 	

@@ -33,7 +33,10 @@ import de.dlr.sc.virsat.project.resources.dmf.DmfResourceSaveCommandTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectBuilderTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommonsTest;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommandTest;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommandTest;
+import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNatureTest;
+import de.dlr.sc.virsat.project.structure.operation.NoUndoDeleteResourceOperationTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -59,6 +62,9 @@ import junit.framework.JUnit4TestAdapter;
 				VirSatPasteFromClipboardCommandTest.class,
 				VirSatDragAndDropInheritanceCommandHelperTest.class,
 				CreateAddSeiWithFileStructureCommandTest.class,
+				CreateRemoveSeiWithFileStructureCommandTest.class,
+				RemoveFileStructureCommandTest.class,
+				NoUndoDeleteResourceOperationTest.class,
 				AssignDisciplineCommandTest.class,
 				VirSatProblemMarkerHelperTest.class,
 				VirSatEditingDomainClipBoardTest.class,
