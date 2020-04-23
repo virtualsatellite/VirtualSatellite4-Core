@@ -24,6 +24,7 @@ import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.project.structure.operation.NoUndoDeleteResourceOperation;
 
 /**
  * This class wraps the IDE Workspace Operation of Deleting the folder of a SEI
@@ -33,10 +34,11 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  */
 public class RemoveFileStructureCommand extends AbstractCommand implements IVirSatRecordableCommand {
 
+	public static final Function<IFolder,  ? extends AbstractOperation> DELETE_RESOURCE_OPERATION_FUNCTION
+		= (iFolder) -> new NoUndoDeleteResourceOperation(iFolder, true);
+	
 	private VirSatProjectCommons projectCommons;
-	
 	private AbstractOperation deleteResourceOperation;
-	
 	private VirSatTransactionalEditingDomain editingDomain;
 	
 	/**

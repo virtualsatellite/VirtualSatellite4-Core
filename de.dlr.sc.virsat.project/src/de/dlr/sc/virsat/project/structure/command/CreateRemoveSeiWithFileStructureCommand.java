@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.dlr.sc.virsat.model.dvlm.resource.command.RemoveResourceCommand;
@@ -148,9 +147,4 @@ public class CreateRemoveSeiWithFileStructureCommand {
 		
 		return new RemoveResourceCommand(virSatResourceSet, emfResources);
 	}
-	
-	
-	
-	
-	
 }
