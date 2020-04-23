@@ -52,7 +52,7 @@ import junit.framework.JUnit4TestAdapter;
 				VirSatProjectNatureTest.class,
 				VirSatProjectBuilderTest.class,
 				VirSatResourceSetUtilTest2.class,
-				VirSatDanglingReferencesTest.class, //Disabled for the current Release
+				VirSatDanglingReferencesTest.class,
 				VirSatResourceSetUtilTest.class,
 				CreateSeiResourceAndFileCommandTest.class,
 				VirSatWorkspaceCommandStackTest.class,
