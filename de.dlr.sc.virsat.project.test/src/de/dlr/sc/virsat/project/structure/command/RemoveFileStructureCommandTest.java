@@ -189,5 +189,4 @@ public class RemoveFileStructureCommandTest extends AProjectTestCase {
 		removeCommandAccept.redo();
 		assertTrue("Callback got correctly called", gotCalled.get());
 	}
-
 }

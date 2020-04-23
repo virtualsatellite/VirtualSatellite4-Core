@@ -16,9 +16,11 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -152,4 +154,53 @@ public class StructuralElementInstanceHelperTest {
 		searchResult = StructuralElementInstanceHelper.getDeepChildren(seiRoot, StructuralElementInstanceHelper.DEPTH_INFINITE, 0);
 		assertThat("All children are in the list the list", searchResult, hasItems(seiLevel11, seiLevel12, seiLevel21, seiLevel22));
 	}
+	
+	@Test
+	public void testCleanFromIndirectSelectedChildren() {
+		// Create some SEIs of which some are children to the others
+		// Pick some of them and try to clean them for their distinct parents
+		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		
+		se.setIsApplicableForAll(true);
+		
+		StructuralElementInstance seiA1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiA2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiA3 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiA4 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+	
+		StructuralElementInstance seiB1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiB2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiB3 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiB4 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+	
+		seiA1.setType(se);
+		seiA2.setType(se);
+		seiA3.setType(se);
+		seiA4.setType(se);
+		
+		seiB1.setType(se);
+		seiB2.setType(se);
+		seiB3.setType(se);
+		seiB4.setType(se);
+		
+		seiA1.getChildren().add(seiA2);
+		seiA2.getChildren().add(seiA3);
+		seiA3.getChildren().add(seiA4);
+		
+		seiB1.getChildren().add(seiB2);
+		seiB2.getChildren().add(seiB3);
+		seiB3.getChildren().add(seiB4);
+		
+		List<StructuralElementInstance> selectedSeis = new ArrayList<>();
+		selectedSeis.add(seiA1);
+		selectedSeis.add(seiA2);
+		selectedSeis.add(seiA4);
+		selectedSeis.add(seiB2);
+		selectedSeis.add(seiB3);
+		
+		List<StructuralElementInstance> selectedParentSeis = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(selectedSeis);
+		
+		assertThat("The filtered list only contains the parents", selectedParentSeis, hasItems(seiA1, seiB2));
+		assertThat("The filtered list has exactly two entries", selectedParentSeis, hasSize(2));
+ 	}
 }

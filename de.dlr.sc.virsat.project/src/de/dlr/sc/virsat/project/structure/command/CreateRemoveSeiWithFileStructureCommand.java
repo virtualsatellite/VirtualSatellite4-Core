@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import de.dlr.sc.virsat.model.dvlm.resource.command.RemoveResourceCommand;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -72,7 +73,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	 */
 	public static Command create(Collection<StructuralElementInstance> seisToRemove, Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		CompoundCommand removeAllSeisCommand = new CompoundCommand();
-		ArrayList<StructuralElementInstance> seisToDelete = eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(seisToRemove);
+		ArrayList<StructuralElementInstance> seisToDelete = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(seisToRemove);
 		for (StructuralElementInstance sei : seisToDelete) {
 			if (sei.eResource() != null) {
 				removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei, deleteResourcesOperationFunction));
@@ -150,25 +151,6 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	
 	
 	
-	/**
-	 * Creates a new list which does not contain seis that are marked for deletion whose parents are also marked for deletion
-	 * for example, A contains B, and both are selected for deletion. In this case we need to remove B as it will be deleted anyway with A
-	 * @param seisToDelete Collection of seis that are selected for deletion
-	 * @return list of seis without children that will be deleted anyway
-	 */
-	protected static ArrayList<StructuralElementInstance> eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(Collection<StructuralElementInstance> seisToDelete) {
-		Set<EObject> selectedToBeDeleted = new HashSet<>(seisToDelete);
-		ArrayList<StructuralElementInstance> seisToDeleteWithoutDuplicateChildren = new ArrayList<>();
-		for (StructuralElementInstance sei : seisToDelete) {
-			EObject parent = sei.eContainer();
-			while (parent instanceof StructuralElementInstance && !selectedToBeDeleted.contains(parent)) {
-				parent = parent.eContainer();
-			}
-			if (!(parent instanceof StructuralElementInstance)) {
-				seisToDeleteWithoutDuplicateChildren.add(sei); //parents of eobject are not marked for deletion 
-			}
-		}
-		return seisToDeleteWithoutDuplicateChildren;
-	}
+	
 	
 }

@@ -10,10 +10,13 @@
 package de.dlr.sc.virsat.model.dvlm.structural.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -107,5 +110,26 @@ public class StructuralElementInstanceHelper {
 			superSeis.addAll(getAllSuperSeis(superSei));
 		}
 		return superSeis;
+	}
+	
+	/**
+	 * Creates a new list which does not contain SEIs that are marked for deletion whose parents are also marked for deletion
+	 * for example, A contains B, and both are selected for deletion. In this case we need to remove B as it will be deleted anyway with A
+	 * @param seisToDelete Collection of SEIs that are selected for deletion
+	 * @return list of SEIs without children that will be deleted anyway
+	 */
+	public static ArrayList<StructuralElementInstance> cleanFromIndirectSelectedChildren(Collection<StructuralElementInstance> seisToDelete) {
+		Set<EObject> selectedToBeDeleted = new HashSet<>(seisToDelete);
+		ArrayList<StructuralElementInstance> seisToDeleteWithoutDuplicateChildren = new ArrayList<>();
+		for (StructuralElementInstance sei : seisToDelete) {
+			EObject parent = sei.eContainer();
+			while (parent instanceof StructuralElementInstance && !selectedToBeDeleted.contains(parent)) {
+				parent = parent.eContainer();
+			}
+			if (!(parent instanceof StructuralElementInstance)) {
+				seisToDeleteWithoutDuplicateChildren.add(sei); //parents of eobject are not marked for deletion 
+			}
+		}
+		return seisToDeleteWithoutDuplicateChildren;
 	}
 }
