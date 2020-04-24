@@ -47,59 +47,59 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	 * @param iste {@link IStructuralTreeElement}
 	 * @param deleteResourcesOperationFunction the callback function that is used to create the actual delete operation in the workspace
 	 */
-	public RemoveFileStructureCommand(IProject selectedProject, StructuralElementInstance iste, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
+	public RemoveFileStructureCommand(IProject selectedProject, StructuralElementInstance iste, Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		projectCommons = new VirSatProjectCommons(selectedProject);
 		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(iste);
 		this.deleteResourceOperation = deleteResourcesOperationFunction.apply(seiFolder);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(iste);
 	}
 	
-	@Override
-	public void execute() {
+	/**
+	 * Wrapper method to exclusively execute a runner in the Virtual Satellite Editing Domain
+	 * @param runnable The runnable to be executed
+	 */
+	protected void executeExclusive(Runnable runnable) {
 		try {
-			editingDomain.runExclusive(() -> {
-				try {
-					deleteResourceOperation.execute(null, null);
-					editingDomain.getVirSatCommandStack().triggerSaveAll();
-				} catch (ExecutionException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
-				}
-			});
+			editingDomain.runExclusive(runnable);
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
 		}
 	}
+	
+	@Override
+	public void execute() {
+		executeExclusive(() -> {
+			try {
+				deleteResourceOperation.execute(null, null);
+				editingDomain.getVirSatCommandStack().triggerSaveAll();
+			} catch (ExecutionException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
+			}
+		});
+	}
 
 	@Override
 	public void redo() {
-		try {
-			editingDomain.runExclusive(() -> {
-				try {
-					deleteResourceOperation.redo(null, null);
-					editingDomain.getVirSatCommandStack().triggerSaveAll();
-				} catch (ExecutionException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
-				}
-			});
-		} catch (InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
-		}
+		executeExclusive(() -> {
+			try {
+				deleteResourceOperation.redo(null, null);
+				editingDomain.getVirSatCommandStack().triggerSaveAll();
+			} catch (ExecutionException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
+			}
+		});
 	}
 	
 	@Override
 	public void undo() {
-		try {
-			editingDomain.runExclusive(() -> {
-				try {
-					deleteResourceOperation.undo(null,  null);
-					editingDomain.getVirSatCommandStack().triggerSaveAll();
-				} catch (ExecutionException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
-				}
-			});
-		} catch (InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
-		}
+		executeExclusive(() -> {
+			try {
+				deleteResourceOperation.undo(null,  null);
+				editingDomain.getVirSatCommandStack().triggerSaveAll();
+			} catch (ExecutionException e) {
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
+			}
+		});
 	}
 	
 	@Override
