@@ -9,10 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.structure.command;
 
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -28,13 +30,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 public class CreateRemoveSeiWithFileStructureCommandTest extends AProjectTestCase {
-
+	
+	StructuralElement se;
+	
 	StructuralElementInstance sei1;
 	StructuralElementInstance sei2;
 	StructuralElementInstance sei3;
@@ -55,8 +60,9 @@ public class CreateRemoveSeiWithFileStructureCommandTest extends AProjectTestCas
 		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+				se = StructuralFactory.eINSTANCE.createStructuralElement();
 				se.setIsApplicableForAll(true);
+				se.setIsRootStructuralElement(true);
 				
 				// Now create a SEI for testing and embed it into the TransactionalEditingDomain 
 				sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
@@ -67,6 +73,7 @@ public class CreateRemoveSeiWithFileStructureCommandTest extends AProjectTestCas
 				sei2.setType(se);
 				sei3.setType(se);
 				
+				repository.getRootEntities().add(sei1);
 				sei1.getChildren().add(sei2);
 				sei2.getChildren().add(sei3);
 				
@@ -108,10 +115,51 @@ public class CreateRemoveSeiWithFileStructureCommandTest extends AProjectTestCas
 		assertThat("Resource 1 is still part of the ResourceSet", rs.getResources(), hasItem(resourceSei1));
 		assertThat("Resource 2 and 3 are not part anymore", rs.getResources(), not(hasItems(resourceSei2, resourceSei3)));
 	}
+	
+	@Test
+	public void testCreateWithSingleRootSelection() {
+		Command deleteSei1 = CreateRemoveSeiWithFileStructureCommand.create(sei1, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
+		editingDomain.getVirSatCommandStack().execute(deleteSei1);
+		
+		assertThat("SEI1 removed from repository", repository.getRootEntities(), not(hasItem(sei1)));
+	}
+	
+	@Test
+	public void testCreateSingleSelectionWithoutResource() {
+		// Create a 4th SEI which is not embedded into a resource, but which has a file structure
+		StructuralElementInstance sei4 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				repository.getRootEntities().remove(sei1);
+				sei4.setType(se);
+				projectCommons.createFolderStructure(sei4, null);
+				repository.getRootEntities().add(sei4);
+			}
+		});
+		
+		assertNull("There is no resource with SEI4", sei4.eResource());
+		assertThat("SEI4 is part of repository", repository.getRootEntities(), hasItem(sei4));
+		assertTrue("The folder for the SEI4 exsists", projectCommons.getStructuralElemntInstanceFolder(sei4).exists());
+		
+		Command deleteSei4 = CreateRemoveSeiWithFileStructureCommand.create(sei4, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
+		editingDomain.getVirSatCommandStack().execute(deleteSei4);
+		
+		assertNull("There is no resource with SEI4", sei4.eResource());
+		assertThat("There is no ED with SEI4 thus it could not be removed", repository.getRootEntities(), hasItem(sei4));
+		assertTrue("Since there is no ED the folders cannot be removed as well", projectCommons.getStructuralElemntInstanceFolder(sei4).exists());
+		
+		// Now save and reload all, sei4 disappeared but the folder still exists
+		editingDomain.saveAll();
+		editingDomain.reloadAll();
+		
+		Repository reloadRepo = editingDomain.getResourceSet().getRepository();
+		assertThat("There is no root entity anymore", reloadRepo.getRootEntities(), empty());
+	}
 
 	@Test
 	public void testCreateWithMultiSelection() {
-
+		// Create the multi selection
 		List<StructuralElementInstance> selection = new LinkedList<>();
 		selection.add(sei1);
 		selection.add(sei3);

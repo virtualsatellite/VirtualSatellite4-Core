@@ -29,7 +29,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-
 import de.dlr.sc.virsat.model.dvlm.resource.command.RemoveResourceCommand;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
@@ -74,9 +73,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 		CompoundCommand removeAllSeisCommand = new CompoundCommand();
 		ArrayList<StructuralElementInstance> seisToDelete = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(seisToRemove);
 		for (StructuralElementInstance sei : seisToDelete) {
-			if (sei.eResource() != null) {
-				removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei, deleteResourcesOperationFunction));
-			}
+			removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei, deleteResourcesOperationFunction));
 		}
 	
 		return removeAllSeisCommand;
@@ -110,7 +107,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 				compoundCommand.append(removeFilesCommand);
 			}
 		}
-	
+		
 		return compoundCommand;
 	}
 	
