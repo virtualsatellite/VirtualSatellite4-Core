@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.auth;
 
-import java.io.IOException;
-
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.LoginService;
@@ -26,7 +24,6 @@ public class LoginServiceFactory {
 
 	/**
 	 * @return a concrete LoginService defined in the ServerConfiguration or null
-	 * @throws IOException 
 	 */
 	public LoginService getLoginService() {
 		LoginService service = null;

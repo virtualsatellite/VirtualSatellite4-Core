@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.server.jetty;
 
 import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 
-import java.io.IOException;
-
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.LoginService;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
@@ -63,9 +61,8 @@ public class VirSatJettyServer {
 	
 	/**
 	 * Call this method to setup the server
-	 * @throws IOException
 	 */
-	public void init() throws IOException {
+	public void init() {
 		server = new Server(VIRSAT_JETTY_PORT);
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
@@ -80,9 +77,8 @@ public class VirSatJettyServer {
 	 * Sets up the server security
 	 * @param server the Server
 	 * @param servletContextHandler the context handler to be handled by the security handler
-	 * @throws IOException
 	 */
-	private void setupSecurity(Server server, ServletContextHandler servletContextHandler) throws IOException {
+	private void setupSecurity(Server server, ServletContextHandler servletContextHandler) {
 		
 		loginService = new LoginServiceFactory().getLoginService();
 		server.addBean(loginService);
