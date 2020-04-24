@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.auth;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.Status;
@@ -41,34 +40,9 @@ public class LoginServiceFactory {
 		}
 		
 		if (service instanceof HashLoginService) {
-			
-			String filePath = null;
-			
-			// Check if the file exists, else try to resolve it in the bundle
-			if (new File(ServerConfiguration.getAuthPropertiesFile()).exists()) {
-				filePath = ServerConfiguration.getAuthPropertiesFile();
-			} else {
-				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid auth.propierties.file provided, trying to resolve it in the bundle", null));
-				filePath = getResolvedFile(ServerConfiguration.getAuthPropertiesFile());
-			}
-			
-			((HashLoginService) service).setConfig(filePath);
+			((HashLoginService) service).setConfig(ServerConfiguration.getAuthPropertiesFile());
 		}
 		
 		return service;
 	}
-	
-	/**
-	 * Try to resolve the file path in the bundle
-	 * @return the file path in the bundle or null
-	 */
-	private String getResolvedFile(String path) {
-		try {
-			return Activator.getDefault().resolveBundlePath(path);
-		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Could not resolve auth.propierties.file ", e));
-		}
-		return null;
-	}
-
 }
