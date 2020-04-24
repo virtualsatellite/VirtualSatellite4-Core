@@ -17,8 +17,11 @@ import javax.ws.rs.Path;
 
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 
-@Path("/auth")
+@Path(AuthTestResource.AUTH)
 public class AuthTestResource {
+	
+	public static final String REPOSITORY = "/repository";
+	public static final String AUTH = "/auth";
 	
 	public static final String PERMITTED = "Permitted";
 	public static final String ADMIN_DATA = "Admin";
@@ -60,13 +63,13 @@ public class AuthTestResource {
 	}
 	
 	@GET
-	@Path("/repository/{name}")
+	@Path(REPOSITORY + "/{name}")
 	public String getRepository() {
 		return REPOSITORY_DATA;
 	}
 	
 	@GET
-	@Path("/repository/{name}/property")
+	@Path(REPOSITORY + "/{name}/property")
 	public String getRepositoryProperty() {
 		return REPOSITORY_DATA;
 	}

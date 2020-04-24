@@ -21,10 +21,12 @@ import de.dlr.sc.virsat.server.resources.AuthTestResource;
  */
 public class DynamicRepositoryFilterBinding implements DynamicFeature {
 
+	private static final String REPOSITORY = "Repository";
+
 	@Override
 	public void configure(ResourceInfo resourceInfo, FeatureContext context) {
 		if (AuthTestResource.class.equals(resourceInfo.getResourceClass())
-				&& resourceInfo.getResourceMethod().getName().contains("Repository")) {
+				&& resourceInfo.getResourceMethod().getName().contains(REPOSITORY)) {
 			context.register(RepositoryFilter.class);
 		}
 	}

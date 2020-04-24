@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import de.dlr.sc.virsat.server.auth.ServerRoles;
+import de.dlr.sc.virsat.server.resources.AuthTestResource;
 
 /**
  * This filter checks if a user has access to the wanted repository resource.
@@ -53,9 +54,8 @@ public class RepositoryFilter implements ContainerRequestFilter {
 	 * @return repositoryName
 	 */
 	private String getRepositoryName(ContainerRequestContext context) {
-		String repository = "repository/";
 		String path = context.getUriInfo().getPath();
-		String substring = path.substring(path.indexOf(repository) + repository.length());
+		String substring = path.substring(path.indexOf(AuthTestResource.REPOSITORY) + AuthTestResource.REPOSITORY.length() + 1);
 		
 		String repositoryName = substring;
 		if (substring.indexOf("/") > 0) {

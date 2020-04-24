@@ -22,14 +22,14 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 	@Test
 	public void testAuthentication() {
 		
-		String serverResponse = webTarget.path("/auth").path("/denied")
+		String serverResponse = webTarget.path(AuthTestResource.AUTH).path("/denied")
 				.request()
 				.get()
 				.toString();
 		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/denied, status=403, reason=Forbidden}}";
 		assertEquals("Server response is correct", expectedResponse, serverResponse);
 		
-		String serverResponse2 = webTarget.path("/auth").path("/permitted")
+		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path("/permitted")
 				.request()
 				.get()
 				.toString();
@@ -40,21 +40,21 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 	@Test
 	public void testHttpAuthorization() {
 		
-		String serverResponse = webTarget.path("/auth").path("/all_users")
+		String serverResponse = webTarget.path(AuthTestResource.AUTH).path("/all_users")
 				.request()
 				.get()
 				.toString();
 		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/all_users, status=403, reason=Forbidden}}";
 		assertEquals("Unauthorized response because of missing header", expectedResponse, serverResponse);
 	
-		String serverResponse2 = webTarget.path("/auth").path("/all_users")
+		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, "")
 				.get()
 				.toString();
 		assertEquals("Unauthorized response because of empty header", expectedResponse, serverResponse2);
 		
-		String serverResponse3 = webTarget.path("/auth").path("/all_users")
+		String serverResponse3 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, "username:password")
 				.get()
@@ -62,14 +62,14 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		assertEquals("Unauthorized response because of not encoded header", expectedResponse, serverResponse3);
 		
 		String encoded = getAuthHeader("unknown:password");
-		String serverResponse4 = webTarget.path("/auth").path("/all_users")
+		String serverResponse4 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encoded)
 				.get()
 				.toString();
 		assertEquals("Unauthorized response because of unknown user", expectedResponse, serverResponse4);
 		
-		String serverResponse5 = webTarget.path("/auth").path("/all_users")
+		String serverResponse5 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO))
 				.get()
@@ -81,7 +81,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 	@Test
 	public void testServerRoles() {
 
-		String serverResponse = webTarget.path("/auth").path("/user_only")
+		String serverResponse = webTarget.path(AuthTestResource.AUTH).path("/user_only")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO))
 				.get()
@@ -89,7 +89,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/user_only, status=200, reason=OK}}";
 		assertEquals("User can access user only ressource", expectedResponse, serverResponse);
 		
-		String serverResponse2 = webTarget.path("/auth").path("/admin_only")
+		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path("/admin_only")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO))
 				.get()
@@ -98,7 +98,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		assertEquals("User can't access admin only ressource", expectedResponse2, serverResponse2);
 		
 		String encodedAdmin = getAuthHeader(ADMIN);
-		String serverResponse3 = webTarget.path("/auth").path("/admin_only")
+		String serverResponse3 = webTarget.path(AuthTestResource.AUTH).path("/admin_only")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encodedAdmin)
 				.get()
@@ -106,7 +106,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		String expectedResponse3 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/admin_only, status=200, reason=OK}}";
 		assertEquals("Admin can access admin only ressource", expectedResponse3, serverResponse3);
 		
-		String serverResponse4 = webTarget.path("/auth").path("/user_only")
+		String serverResponse4 = webTarget.path(AuthTestResource.AUTH).path("/user_only")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encodedAdmin)
 				.get()
@@ -122,7 +122,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 	public void testRepositoryAuthorization() {
 		
 		String encodedUserNoRepo = getAuthHeader(USER_NO_REPO);
-		String serverResponse = webTarget.path("/auth").path("/repository").path("/testRepo")
+		String serverResponse = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encodedUserNoRepo)
 				.get()
@@ -131,7 +131,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		assertEquals("This user can't access the repository", expectedResponse, serverResponse);
 		
 		String encodedUserWithRepo = getAuthHeader(USER_WITH_REPO);
-		String serverResponse2 = webTarget.path("/auth").path("/repository").path("/testRepo")
+		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encodedUserWithRepo)
 				.get()
@@ -140,7 +140,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		assertEquals("This user can access the repository", expectedResponse2, serverResponse2);
 		
 		String encodedAdmin = getAuthHeader(ADMIN);
-		String serverResponse3 = webTarget.path("/auth").path("/repository").path("/testRepo")
+		String serverResponse3 = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encodedAdmin)
 				.get()
@@ -148,7 +148,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		String expectedResponse3 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=200, reason=OK}}");
 		assertEquals("Admins can access all repositories", expectedResponse3, serverResponse3);
 		
-		String serverResponse4 = webTarget.path("/auth").path("/repository").path("/testRepo").path("/property")
+		String serverResponse4 = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo").path("/property")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, encodedUserWithRepo)
 				.get()
@@ -163,7 +163,7 @@ public class AuthTestResourceTest extends AGitAndJettyServerTest {
 		// The RepositoryFilter won't be called if the request got denied by jersey before
 		// so this won't produce an Exception in RepositoryFilter"
 		String encoded = getAuthHeader("unknown:password");
-		webTarget.path("/auth").path("/repository")
+		webTarget.path(AuthTestResource.AUTH).path("/repository")
 			.request()
 			.header(HttpHeaders.AUTHORIZATION, encoded)
 			.get();

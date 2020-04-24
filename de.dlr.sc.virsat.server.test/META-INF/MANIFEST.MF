@@ -15,4 +15,4 @@ Export-Package: de.dlr.sc.virsat.server.test
 Automatic-Module-Name: de.dlr.sc.virsat.server.test
 Import-Package: de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.team.test,
- org.eclipse.jetty.security;version="9.4.18"
+ org.eclipse.jetty.security

@@ -19,6 +19,10 @@ import org.eclipse.jetty.security.LoginService;
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
+/**
+ * This class provides the current LoginService as defined in the ServerConfiguration
+ * Depending on the created Class it will perform additional setup
+ */
 public class LoginServiceFactory {
 
 	/**
@@ -28,10 +32,10 @@ public class LoginServiceFactory {
 	public LoginService getLoginService() {
 		LoginService service = null;
 		
-		String serviceName = ServerConfiguration.getLoginServiceClass();
+		String serviceClassName = ServerConfiguration.getLoginServiceClass();
 		
 		try {
-			service = (LoginService) Class.forName(serviceName).newInstance();
+			service = (LoginService) Class.forName(serviceClassName).newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Couldn't create instance for " + ServerConfiguration.getLoginServiceClass(), e));
 		}
