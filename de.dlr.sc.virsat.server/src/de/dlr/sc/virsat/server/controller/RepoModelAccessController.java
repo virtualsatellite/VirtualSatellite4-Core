@@ -21,7 +21,6 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
@@ -106,40 +105,20 @@ public class RepoModelAccessController {
 	}
 	
 	/**
-	 * Update or create a sei identified by the uuid
+	 * Update a sei identified by the uuid or throw exeption if it doesn't exit
 	 * @param newSei the sei to put
 	 * @throws CoreException
 	 * @throws IOException
 	 */
 	public void putSei(FlattenedStructuralElementInstance flatSei) throws CoreException, IOException {
-		// Update the sei with the same uuid or create it
-		StructuralElementInstance oldSei = RepositoryUtility.findSei(flatSei.getUuid().toString(), repository);
+		StructuralElementInstance oldSei = RepositoryUtility.findSei(flatSei.getUuid(), repository);
+		// TODO: use ecoreutil or resource insteadof RepositoryUtility
 		
 		if (oldSei != null) {
-			flatSei.unflatten(repository, oldSei);
+			flatSei.unflatten(editingDomain, oldSei);
 		} else {
-			flatSei.unflatten(editingDomain);
+			throw new NullPointerException("No resource to update found, use a post request if you want to create a new Resource");
 		}
-	}
-	
-	/**
-	 * Creates a copy of the sei with a new uuid in the model
-	 * @param flatSei the sei to copy the parameters from
-	 * @return String containing the new uuid
-	 * @throws CoreException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IOException 
-	 */
-	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException  {
-		
-		// Change the uuid of the sei
-		VirSatUuid uuid = new VirSatUuid();
-		flatSei.setUuid(uuid.toString());
-		
-		flatSei.unflatten(editingDomain);
-		
-		return uuid.toString();
 	}
 	
 	public void deleteSei(String uuid) throws CoreException, IOException {
@@ -149,7 +128,6 @@ public class RepoModelAccessController {
 			editingDomain.getCommandStack().execute(removeCommand);
 		}
 	}
-	
 	
 	// CAs
 	

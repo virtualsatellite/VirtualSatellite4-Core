@@ -10,9 +10,7 @@
 package de.dlr.sc.virsat.server.resources;
 
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -22,7 +20,6 @@ import javax.ws.rs.core.Response;
 import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
-import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
@@ -75,24 +72,6 @@ public class ModelAccessResource {
 		public Response getRootSeis(@PathParam("seiUuid") String seiUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(controller.getSei(seiUuid)).build();
-			} catch (CoreException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-			}
-		}
-		
-		/**
-		 * Resource to post a sei
-		 * @param flatSei FlattenedStructuralElementInstance
-		 * @return Response containing the uuid of the new sei
-		 */
-		@POST
-		@Path(SEI)
-		@Produces(MediaType.APPLICATION_JSON)
-		@Consumes(MediaType.APPLICATION_JSON)
-		public Response postSei(FlattenedStructuralElementInstance flatSei) {
-			try {
-				String uuid = controller.postSei(flatSei);
-				return Response.status(Response.Status.OK).entity(uuid).build();
 			} catch (CoreException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 			}

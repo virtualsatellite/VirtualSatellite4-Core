@@ -14,25 +14,33 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.SetCommand;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 
 public class FlattenedStructuralElementInstance {
 
+	// API read only
 	private String uuid;
+	private String structuralElementFullQualifiedName;
+	private String parent;
+	
+	// API read and write
 	private String name;
 	private String description;
-	private String fullQualifiedName;
-	private String parent;
-	private List<String> superSeis;
-	private List<String> childSeis;
-	private List<String> categoryAssignments;
+	
+	// API read all and write on existing SEIS
+	private List<String> superSeis; // rw existing
+	private List<String> childSeis; // rw existing
+	private List<String> categoryAssignments; // rw? existing
+	
+	// TODO: for all IAssignableDisciplines -> change discipline
 	
 	public FlattenedStructuralElementInstance() { }
 	
@@ -44,68 +52,64 @@ public class FlattenedStructuralElementInstance {
 		setUuid(sei.getUuid().toString());
 		setName(sei.getName());
 		setDescription(sei.getDescription());
-		setSe(sei.getType().getFullQualifiedName());
+		setSeFullQualifiedName(sei.getType().getFullQualifiedName());
 		setParent(sei.getParent() != null ? sei.getParent().getUuid().toString() : null);
 		setSuperSeis(collectParentUuids(sei));
 		setChildSeis(collectChildUuids(sei));
 		setCategoryAssignments(collectCategoryAssignmentUuids(sei));
 	}
-	
-	/**
-	 * Create a new sei and unflatten the properties of this instance into it
-	 * @param repository
-	 * @return StructuralElementInstance
-	 * @throws CoreException 
-	 */
-	public StructuralElementInstance unflatten(VirSatTransactionalEditingDomain editingDomain) throws CoreException {
-		Repository repository = editingDomain.getResourceSet().getRepository();
-		
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		unflatten(repository, sei);
-		
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
-		editingDomain.getCommandStack().execute(createAddSei);
-		
-		return sei;
-	}
-	
 
 	/**
 	 * Unflatten the properties of this instance into a existing sei
-	 * @param repository
+	 * @param editingDomain
 	 * @param sei the sei to unflatten on
 	 * @return StructuralElementInstance
 	 * @throws CoreException
 	 */
-	public StructuralElementInstance unflatten(Repository repository, StructuralElementInstance sei) throws CoreException {
-		// TODO: these have to be transactional somehow
-		sei.setUuid(new VirSatUuid(getUuid()));
-		sei.setName(getName());
-		sei.setDescription(getDescription());
-		sei.setType(RepositoryUtility.findSe(getSe(), repository));
+	public StructuralElementInstance unflatten(VirSatTransactionalEditingDomain editingDomain, StructuralElementInstance sei) throws CoreException {
+		Repository repository = editingDomain.getResourceSet().getRepository();
 		
-		if (getParent() != null) {
-			sei.setParent(RepositoryUtility.findSei(getParent().toString(), repository));
-		} else {
-			sei.setParent(null);
-		}
+		CompoundCommand compoundCommand = new CompoundCommand();
 		
-		// Set all parents
+		Command commandSetName = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), getName());
+//		alternativ. SetCommand.create(editingDomain, sei, GeneralPackage.Literals.INAME__NAME, getName());
+		compoundCommand.append(commandSetName);
+		
+//		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIDescription_Description(), getDescription());
+		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.Literals.IDESCRIPTION__DESCRIPTION, getDescription());
+		compoundCommand.append(commandSetDescription);
+		
+		// Set or remove parents
 		for (String uuid : getSuperSeis()) {
-			sei.getSuperSeis().add(RepositoryUtility.findSei(uuid, repository));
+			StructuralElementInstance superSei = RepositoryUtility.findSei(uuid, repository);
+			if (superSei != null) {
+				if (!sei.getSuperSeis().contains(superSei)) {
+					compoundCommand.append(new AddCommand(editingDomain, sei.getSuperSeis(), superSei));
+				}
+			}
+			// TODO: remove old ones?
 		}
 
 		// Set all children
 		for (String uuid : getChildSeis()) {
-			sei.getChildren().add(RepositoryUtility.findSei(uuid, repository));
+			StructuralElementInstance childSei = RepositoryUtility.findSei(uuid, repository);
+			if (childSei != null && !sei.getChildren().contains(childSei)) {
+				compoundCommand.append(new AddCommand(editingDomain, sei.getChildren(), childSei));
+			}
+			// TODO: remove old ones?
 		}
 
 		// Set all cas
 		for (String uuid : getCategoryAssignments()) {
-			sei.getCategoryAssignments().add(RepositoryUtility.findCa(uuid, repository));
+			CategoryAssignment ca = RepositoryUtility.findCa(uuid, repository);
+			if (ca != null && !sei.getCategoryAssignments().contains(ca)) {
+				compoundCommand.append(new AddCommand(editingDomain, sei.getCategoryAssignments(), ca));
+			}
+			// TODO: remove old ones?
 		}
 
+		editingDomain.getVirSatCommandStack().executeNoUndo(compoundCommand);
+		// TODO: maybe return just the command
 		return sei;
 	}
 	
@@ -157,12 +161,12 @@ public class FlattenedStructuralElementInstance {
 		this.description = description;
 	}
 
-	public String getSe() {
-		return fullQualifiedName;
+	public String getSeFullQualifiedName() {
+		return structuralElementFullQualifiedName;
 	}
 
-	public void setSe(String fullQualifiedName) {
-		this.fullQualifiedName = fullQualifiedName;
+	public void setSeFullQualifiedName(String fullQualifiedName) {
+		this.structuralElementFullQualifiedName = fullQualifiedName;
 	}
 
 	public String getParent() {

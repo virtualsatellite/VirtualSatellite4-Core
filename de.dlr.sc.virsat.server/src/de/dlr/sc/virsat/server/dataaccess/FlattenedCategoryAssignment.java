@@ -17,11 +17,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 
 public class FlattenedCategoryAssignment {
 
-	private String name;
-	private String fullQualifiedInstanceName;
-	private String type;
-	private String uuid;
-	private List<FlattenedPropertyInstance> properties;
+	private String name; //rw
+	private String fullQualifiedInstanceName; //r
+	private String type; //r
+	private String uuid; //r
+	private List<FlattenedPropertyInstance> properties; //rw //add+delete on high lvl
 	
 	public FlattenedCategoryAssignment() { }
 	

@@ -9,20 +9,34 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.dataaccess;
 
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 
 public class FlattenedPropertyInstance {
 
-	private String fullQualifiedInstanceName;
-	private String value;
+	private String fullQualifiedInstanceName; //r
+	private String value; // rw
+	// type //r
+	// maybe add. information e.g. quantityKindName
 	
 	public FlattenedPropertyInstance() { }
 	
 	public FlattenedPropertyInstance(APropertyInstance propertyInstance) {
 		setFullQualifiedInstanceName(propertyInstance.getFullQualifiedInstanceName());
+//		propertyInstance.getType()
+		
+		new PropertydefinitionsSwitch<String>() {
+			@Override
+			public String caseAQudvTypeProperty(AQudvTypeProperty object) {
+				// TODO Auto-generated method stub
+				return super.caseAQudvTypeProperty(object);
+			}
+		}.doSwitch(propertyInstance.getType());
 		
 		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
+		// always use base units?
 		setValue(valueSwitch.getValueString(propertyInstance));
 	}
 

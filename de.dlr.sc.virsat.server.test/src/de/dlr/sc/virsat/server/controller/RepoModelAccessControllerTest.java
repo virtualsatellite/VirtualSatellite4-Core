@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -96,26 +95,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		// Now add the new SEI to the Repository
 		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
-		editingDomain.getCommandStack().execute(createAddSei);
-		
-		return tsei;
-	}
-	
-	/**
-	 * Creates a sei and adds it to the repository
-	 * @param name name of the sei
-	 * @return the created TestStructuralElement
-	 */
-	private TestStructuralElement createSeiWithParent(String name, StructuralElementInstance parent) {
-		// Create a new TestStructuralElement with a StructuralElementInstance
-		TestStructuralElement tsei = new TestStructuralElement(testConcept);
-		StructuralElementInstance sei = tsei.getStructuralElementInstance();
-		sei.setName(name);
-		// TODO: use the right command here
-		executeAsCommand(() -> sei.setParent(parent));
-		
-		// Now add the new SEI to the parent
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, parent, sei);
 		editingDomain.getCommandStack().execute(createAddSei);
 		
 		return tsei;
@@ -229,72 +208,34 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
-	public void testPostSei() throws CoreException {
-		// Post sei
-		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
-		String newUuid = repoModelAccessController.postSei(flatTestSei1);
-		assertNotEquals("Uuid changed", newUuid, uuid);
-		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(newUuid);
-		assertNotNull("Sei got posted", seiByUuid);
-	}
-	
-	@Test
-	public void testPutSei() throws CoreException, IOException {
-		// Put (update) sei
-		String newName = "Updated Sei";
-		flatTestSei2.setName(newName);
+	public void testPutUpdateSei() throws CoreException, IOException {
+		final String NAME = "Updated Sei";
+		final String DESCRIPTION = "This Sei got updated";
+		
+		final String READ_ONLY = "Should not change";
+		
+		flatTestSei2.setName(NAME);
+		flatTestSei2.setDescription(DESCRIPTION);
+		// These should not do anything
+		flatTestSei2.setParent(READ_ONLY);
+		flatTestSei2.setSeFullQualifiedName(READ_ONLY);
+		
 		repoModelAccessController.putSei(flatTestSei2);
-		assertEquals("Name changed but same uuid", newName, repoModelAccessController.getSei(
-					flatTestSei2.getUuid().toString()
-				).unflatten(editingDomain).getName());
+		FlattenedStructuralElementInstance updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
-		// Put (new) sei
-		String uuid = testSei2.getStructuralElementInstance().getUuid().toString();
-		repoModelAccessController.deleteSei(uuid);
-		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());
-		repoModelAccessController.putSei(flatTestSei1);
-		assertEquals("Sei got posted", 2, repoModelAccessController.getRootSeis().size());
+		assertEquals("Name changed correctly", NAME, updatedSei.getName());
+		assertEquals("Description changed correctly", DESCRIPTION, updatedSei.getDescription());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedSei.getParent());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedSei.getSeFullQualifiedName());
 	}
 	
-	// TODO: inheritance tests
-	@Test
-	public void testGetSeiWithParent() throws CoreException {
-		TestStructuralElement parentSei = createRootSei("Parent sei");
-		TestStructuralElement childSei = createSeiWithParent("Child sei", parentSei.getStructuralElementInstance());
-		rs.saveAllResources(new NullProgressMonitor());
-		
-		FlattenedStructuralElementInstance flatParentSei = new FlattenedStructuralElementInstance(parentSei.getStructuralElementInstance());
-		FlattenedStructuralElementInstance flatChildSei = new FlattenedStructuralElementInstance(childSei.getStructuralElementInstance());
-		
-		assertThat("Parent has the right children", flatParentSei.getChildSeis(), hasItem(flatChildSei.getUuid()));
-		assertEquals("Parent has only one children", flatParentSei.getChildSeis().size(), 1);
-		
-		assertEquals("Child has the right parent", flatChildSei.getParent(), flatParentSei.getUuid());
-		// TODO: what are super seis and how do they work?
-//		assertThat("Child has the right parent", flatChildSei.getSuperSeis(), hasItem(flatParentSei.getUuid()));
-//		assertEquals("Child has only one parent", flatChildSei.getSuperSeis().size(), 1);
-		
-		// Check that the FlattenedStructuralElementInstances are parsed right by the controller
-		getSeiAndAssertSame(flatParentSei);
-		getSeiAndAssertSame(flatChildSei);
+	@Test(expected = NullPointerException.class)
+	public void testPutNewSei() throws CoreException, IOException {
+		repoModelAccessController.putSei(new FlattenedStructuralElementInstance());
 	}
 	
 	@Test
-	public void testAddSeiWithParent() throws CoreException {
-		TestStructuralElement parentSei = createRootSei("Parent sei");
-		rs.saveAllResources(new NullProgressMonitor());
-		
-		FlattenedStructuralElementInstance flatParentSei = new FlattenedStructuralElementInstance(parentSei.getStructuralElementInstance());
-		
-		FlattenedStructuralElementInstance flatChildSei = new FlattenedStructuralElementInstance();
-		flatChildSei.setParent(flatParentSei.getUuid());
-		
-		repoModelAccessController.postSei(flatChildSei);
-	}
-	
-	private void getSeiAndAssertSame(FlattenedStructuralElementInstance testSei) throws CoreException {
-		String uuid = testSei.getUuid();
-		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
-		assertThat("Right sei found", testSei, is(samePropertyValuesAs(seiByUuid)));
+	public void testUpdateSeiLists() {
+		// TODO
 	}
 }
