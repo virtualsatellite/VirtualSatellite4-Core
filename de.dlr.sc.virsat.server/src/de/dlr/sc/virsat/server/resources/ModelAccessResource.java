@@ -10,8 +10,6 @@
 package de.dlr.sc.virsat.server.resources;
 
 
-import java.io.IOException;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -95,7 +93,7 @@ public class ModelAccessResource {
 			try {
 				String uuid = controller.postSei(flatSei);
 				return Response.status(Response.Status.OK).entity(uuid).build();
-			} catch (InstantiationException | IllegalAccessException | CoreException | IOException e) {
+			} catch (CoreException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 			}
 		}

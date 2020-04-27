@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
@@ -114,20 +113,13 @@ public class RepoModelAccessController {
 	 */
 	public void putSei(FlattenedStructuralElementInstance flatSei) throws CoreException, IOException {
 		// Update the sei with the same uuid or create it
-		StructuralElementInstance newSei = flatSei.unflatten(repository);
 		StructuralElementInstance oldSei = RepositoryUtility.findSei(flatSei.getUuid().toString(), repository);
 		
 		if (oldSei != null) {
-			// TODO: Use an update command e.g. SetCommand?
-			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(oldSei);
-			editingDomain.getCommandStack().execute(deleteCommand);
-			
+			flatSei.unflatten(repository, oldSei);
+		} else {
+			flatSei.unflatten(editingDomain);
 		}
-		
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, newSei);
-		editingDomain.getCommandStack().execute(createAddSei);
-		
-		// TODO: resolve changed inheritance
 	}
 	
 	/**
@@ -139,18 +131,15 @@ public class RepoModelAccessController {
 	 * @throws IllegalAccessException
 	 * @throws IOException 
 	 */
-	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException, InstantiationException, IllegalAccessException, IOException {
-		StructuralElementInstance sei = flatSei.unflatten(repository);
+	public String postSei(FlattenedStructuralElementInstance flatSei) throws CoreException  {
 		
 		// Change the uuid of the sei
 		VirSatUuid uuid = new VirSatUuid();
-		sei.setUuid(uuid);
+		flatSei.setUuid(uuid.toString());
 		
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
-		editingDomain.getCommandStack().execute(createAddSei);
+		flatSei.unflatten(editingDomain);
+		
 		return uuid.toString();
-		
-		// TODO: resolve inheritance
 	}
 	
 	public void deleteSei(String uuid) throws CoreException, IOException {

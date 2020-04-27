@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 
 public class FlattenedStructuralElementInstance {
 
@@ -41,31 +44,67 @@ public class FlattenedStructuralElementInstance {
 		setUuid(sei.getUuid().toString());
 		setName(sei.getName());
 		setDescription(sei.getDescription());
-//		fullQualifiedName = sei.getType().getFullQualifiedName();
 		setSe(sei.getType().getFullQualifiedName());
 		setParent(sei.getParent() != null ? sei.getParent().getUuid().toString() : null);
 		setSuperSeis(collectParentUuids(sei));
 		setChildSeis(collectChildUuids(sei));
-		collectCategoryAssignmentUuids(sei);
+		setCategoryAssignments(collectCategoryAssignmentUuids(sei));
 	}
 	
 	/**
-	 * Unflatten the properties of this instance into a sei
+	 * Create a new sei and unflatten the properties of this instance into it
+	 * @param repository
 	 * @return StructuralElementInstance
 	 * @throws CoreException 
 	 */
-	public StructuralElementInstance unflatten(Repository repository) throws CoreException {
+	public StructuralElementInstance unflatten(VirSatTransactionalEditingDomain editingDomain) throws CoreException {
+		Repository repository = editingDomain.getResourceSet().getRepository();
+		
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		
+		unflatten(repository, sei);
+		
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
+		editingDomain.getCommandStack().execute(createAddSei);
+		
+		return sei;
+	}
+	
+
+	/**
+	 * Unflatten the properties of this instance into a existing sei
+	 * @param repository
+	 * @param sei the sei to unflatten on
+	 * @return StructuralElementInstance
+	 * @throws CoreException
+	 */
+	public StructuralElementInstance unflatten(Repository repository, StructuralElementInstance sei) throws CoreException {
+		// TODO: these have to be transactional somehow
 		sei.setUuid(new VirSatUuid(getUuid()));
 		sei.setName(getName());
 		sei.setDescription(getDescription());
 		sei.setType(RepositoryUtility.findSe(getSe(), repository));
+		
 		if (getParent() != null) {
 			sei.setParent(RepositoryUtility.findSei(getParent().toString(), repository));
 		} else {
 			sei.setParent(null);
 		}
-		// TODO: set lists???
+		
+		// Set all parents
+		for (String uuid : getSuperSeis()) {
+			sei.getSuperSeis().add(RepositoryUtility.findSei(uuid, repository));
+		}
+
+		// Set all children
+		for (String uuid : getChildSeis()) {
+			sei.getChildren().add(RepositoryUtility.findSei(uuid, repository));
+		}
+
+		// Set all cas
+		for (String uuid : getCategoryAssignments()) {
+			sei.getCategoryAssignments().add(RepositoryUtility.findCa(uuid, repository));
+		}
 
 		return sei;
 	}
@@ -86,10 +125,10 @@ public class FlattenedStructuralElementInstance {
 		return uuids;
 	}
 
-	private List<VirSatUuid> collectCategoryAssignmentUuids(StructuralElementInstance sei) {
-		List<VirSatUuid> uuids = new ArrayList<VirSatUuid>();
+	private List<String> collectCategoryAssignmentUuids(StructuralElementInstance sei) {
+		List<String> uuids = new ArrayList<String>();
 		for (CategoryAssignment ca : sei.getCategoryAssignments()) {
-			uuids.add(ca.getUuid());
+			uuids.add(ca.getUuid().toString());
 		}
 		return uuids;
 	}

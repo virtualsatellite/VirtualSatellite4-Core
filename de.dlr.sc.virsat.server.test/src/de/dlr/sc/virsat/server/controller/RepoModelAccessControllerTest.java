@@ -17,6 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,6 +53,10 @@ import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	private RepoModelAccessController repoModelAccessController;
+	TestStructuralElement testSei1;
+	TestStructuralElement testSei2;
+	FlattenedStructuralElementInstance flatTestSei1;
+	FlattenedStructuralElementInstance flatTestSei2;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -60,6 +65,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		addEditingDomainAndRepository();
 
 		// Load the test concepts
+		// TODO: use the right command here
 		executeAsCommand(() -> loadTestConcept());
 		
 		// Save all changes
@@ -67,6 +73,14 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 
 		// Create the controller with the ModelAPI instance
 		repoModelAccessController = new RepoModelAccessController(editingDomain);
+		
+		// Create Test Seis
+		testSei1 = createRootSei("RootSei1");
+		testSei2 = createRootSei("RootSei2");
+		rs.saveAllResources(new NullProgressMonitor());
+		
+		flatTestSei1 = new FlattenedStructuralElementInstance(testSei1.getStructuralElementInstance());
+		flatTestSei2 = new FlattenedStructuralElementInstance(testSei2.getStructuralElementInstance());
 	}
 	
 	/**
@@ -82,6 +96,26 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		// Now add the new SEI to the Repository
 		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
+		editingDomain.getCommandStack().execute(createAddSei);
+		
+		return tsei;
+	}
+	
+	/**
+	 * Creates a sei and adds it to the repository
+	 * @param name name of the sei
+	 * @return the created TestStructuralElement
+	 */
+	private TestStructuralElement createSeiWithParent(String name, StructuralElementInstance parent) {
+		// Create a new TestStructuralElement with a StructuralElementInstance
+		TestStructuralElement tsei = new TestStructuralElement(testConcept);
+		StructuralElementInstance sei = tsei.getStructuralElementInstance();
+		sei.setName(name);
+		// TODO: use the right command here
+		executeAsCommand(() -> sei.setParent(parent));
+		
+		// Now add the new SEI to the parent
+		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, parent, sei);
 		editingDomain.getCommandStack().execute(createAddSei);
 		
 		return tsei;
@@ -111,52 +145,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		List<FlattenedConcept> activeConcepts = repoModelAccessController.getActiveConcepts();
 		
 		assertEquals("Two concepts found", 2, activeConcepts.size());
-	}
-	
-	@Test
-	public void testSeis() throws CoreException, IOException, InstantiationException, IllegalAccessException {
-		TestStructuralElement testSei1 = createRootSei("RootSei1");
-		TestStructuralElement testSei2 = createRootSei("RootSei2");
-		rs.saveAllResources(new NullProgressMonitor());
-		
-		FlattenedStructuralElementInstance flatTestSei1 = new FlattenedStructuralElementInstance(testSei1.getStructuralElementInstance());
-		FlattenedStructuralElementInstance flatTestSei2 = new FlattenedStructuralElementInstance(testSei2.getStructuralElementInstance());
-		
-		// Get the root seis
-		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
-		assertEquals("Two root seis found", 2, seis.size());
-		assertThat("Correct sei found", flatTestSei1, is(samePropertyValuesAs(seis.get(0))));
-		assertThat("Correct sei found", flatTestSei2, is(samePropertyValuesAs(seis.get(1))));
-		
-		// Get one sei by uuid
-		String uuid1 = testSei1.getStructuralElementInstance().getUuid().toString();
-		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid1);
-		assertThat("Right sei found", flatTestSei1, is(samePropertyValuesAs(seiByUuid)));
-		
-		// TODO: investigate this test case failing if run in alltests
-		// Delete one sei
-		repoModelAccessController.deleteSei(uuid1);
-		seis = repoModelAccessController.getRootSeis();
-		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());	
-		
-		// Post sei
-		String newUuid1 = repoModelAccessController.postSei(flatTestSei1);
-		assertNotEquals("Uuid changed", newUuid1, uuid1);
-		assertEquals("Sei got posted", 2, repoModelAccessController.getRootSeis().size());
-		
-		// Put (update) sei
-		String newName = "Updated Sei";
-		flatTestSei2.setName(newName);
-		repoModelAccessController.putSei(flatTestSei2);
-		assertEquals("Name changed but same uuid", newName, repoModelAccessController.getSei(
-					flatTestSei2.getUuid().toString()
-				).unflatten(repository).getName());
-		
-		// Put (new) sei
-		repoModelAccessController.deleteSei(newUuid1);
-		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());
-		repoModelAccessController.putSei(flatTestSei1);
-		assertEquals("Sei got posted", 2, repoModelAccessController.getRootSeis().size());
 	}
 	
 	@Test
@@ -192,6 +180,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		testCa.setName(TEST_BEAN_NAME);
 		
 		// Add ca to sei
+		// TODO: use the right command here
 		executeAsCommand(() -> tsei.add(testCa));
 		
 		FlattenedCategoryAssignment flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
@@ -214,5 +203,98 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		return hasItem(hasProperty("value", equalTo(valueSwitch.getValueString(bean.getATypeInstance()))));
 	}
 	
+	@Test
+	public void testGetRootSeis() {
+		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
+		assertEquals("Two root seis found", 2, seis.size());
+		assertThat("Correct sei found", flatTestSei1, is(samePropertyValuesAs(seis.get(0))));
+		assertThat("Correct sei found", flatTestSei2, is(samePropertyValuesAs(seis.get(1))));
+	}
+	
+	@Test
+	public void testGetSei() throws CoreException {
+		// Get one sei by uuid
+		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
+		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
+		assertThat("Right sei found", flatTestSei1, is(samePropertyValuesAs(seiByUuid)));
+	}
+	
+	@Test
+	public void testDeleteSei() throws CoreException, IOException {
+		// TODO: this test case fails if run in alltests because of ui dependencies in CreateRemoveSeiWithFileStructureCommand
+		// Delete one sei
+		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
+		repoModelAccessController.deleteSei(uuid);
+		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());	
+	}
+	
+	@Test
+	public void testPostSei() throws CoreException {
+		// Post sei
+		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
+		String newUuid = repoModelAccessController.postSei(flatTestSei1);
+		assertNotEquals("Uuid changed", newUuid, uuid);
+		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(newUuid);
+		assertNotNull("Sei got posted", seiByUuid);
+	}
+	
+	@Test
+	public void testPutSei() throws CoreException, IOException {
+		// Put (update) sei
+		String newName = "Updated Sei";
+		flatTestSei2.setName(newName);
+		repoModelAccessController.putSei(flatTestSei2);
+		assertEquals("Name changed but same uuid", newName, repoModelAccessController.getSei(
+					flatTestSei2.getUuid().toString()
+				).unflatten(editingDomain).getName());
+		
+		// Put (new) sei
+		String uuid = testSei2.getStructuralElementInstance().getUuid().toString();
+		repoModelAccessController.deleteSei(uuid);
+		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());
+		repoModelAccessController.putSei(flatTestSei1);
+		assertEquals("Sei got posted", 2, repoModelAccessController.getRootSeis().size());
+	}
+	
 	// TODO: inheritance tests
+	@Test
+	public void testGetSeiWithParent() throws CoreException {
+		TestStructuralElement parentSei = createRootSei("Parent sei");
+		TestStructuralElement childSei = createSeiWithParent("Child sei", parentSei.getStructuralElementInstance());
+		rs.saveAllResources(new NullProgressMonitor());
+		
+		FlattenedStructuralElementInstance flatParentSei = new FlattenedStructuralElementInstance(parentSei.getStructuralElementInstance());
+		FlattenedStructuralElementInstance flatChildSei = new FlattenedStructuralElementInstance(childSei.getStructuralElementInstance());
+		
+		assertThat("Parent has the right children", flatParentSei.getChildSeis(), hasItem(flatChildSei.getUuid()));
+		assertEquals("Parent has only one children", flatParentSei.getChildSeis().size(), 1);
+		
+		assertEquals("Child has the right parent", flatChildSei.getParent(), flatParentSei.getUuid());
+		// TODO: what are super seis and how do they work?
+//		assertThat("Child has the right parent", flatChildSei.getSuperSeis(), hasItem(flatParentSei.getUuid()));
+//		assertEquals("Child has only one parent", flatChildSei.getSuperSeis().size(), 1);
+		
+		// Check that the FlattenedStructuralElementInstances are parsed right by the controller
+		getSeiAndAssertSame(flatParentSei);
+		getSeiAndAssertSame(flatChildSei);
+	}
+	
+	@Test
+	public void testAddSeiWithParent() throws CoreException {
+		TestStructuralElement parentSei = createRootSei("Parent sei");
+		rs.saveAllResources(new NullProgressMonitor());
+		
+		FlattenedStructuralElementInstance flatParentSei = new FlattenedStructuralElementInstance(parentSei.getStructuralElementInstance());
+		
+		FlattenedStructuralElementInstance flatChildSei = new FlattenedStructuralElementInstance();
+		flatChildSei.setParent(flatParentSei.getUuid());
+		
+		repoModelAccessController.postSei(flatChildSei);
+	}
+	
+	private void getSeiAndAssertSame(FlattenedStructuralElementInstance testSei) throws CoreException {
+		String uuid = testSei.getUuid();
+		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
+		assertThat("Right sei found", testSei, is(samePropertyValuesAs(seiByUuid)));
+	}
 }
