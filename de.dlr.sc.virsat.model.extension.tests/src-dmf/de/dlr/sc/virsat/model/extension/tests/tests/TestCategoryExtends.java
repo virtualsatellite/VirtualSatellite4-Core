@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Test Category Extends</b></em>'.
@@ -27,7 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  * @model
  * @generated
  */
-public interface TestCategoryExtends extends DObject, TestCategoryBase {
+public interface TestCategoryExtends extends TestCategoryBase {
 	/**
 	 * Returns the value of the '<em><b>Test Extends Property</b></em>' attribute.
 	 * <!-- begin-user-doc -->

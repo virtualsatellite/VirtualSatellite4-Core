@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
-
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBeanAbstract;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -23,7 +22,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class TestCategoryBeanAbstractImpl extends DObjectImpl implements TestCategoryBeanAbstract {
+public abstract class TestCategoryBeanAbstractImpl extends GenericCategoryImpl implements TestCategoryBeanAbstract {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

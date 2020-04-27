@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage;
-
+import de.dlr.sc.virsat.model.ext.core.core.CorePackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
@@ -83,7 +82,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_ALL_PROPERTY__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -92,7 +91,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_ALL_PROPERTY__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test String</b></em>' attribute.
@@ -101,7 +100,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__TEST_STRING = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_ALL_PROPERTY__TEST_STRING = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Test Int</b></em>' attribute.
@@ -110,7 +109,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__TEST_INT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_ALL_PROPERTY__TEST_INT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Test Float</b></em>' attribute.
@@ -119,7 +118,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__TEST_FLOAT = DmfPackage.DOBJECT_FEATURE_COUNT + 2;
+	int TEST_CATEGORY_ALL_PROPERTY__TEST_FLOAT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Test Bool</b></em>' attribute.
@@ -128,7 +127,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__TEST_BOOL = DmfPackage.DOBJECT_FEATURE_COUNT + 3;
+	int TEST_CATEGORY_ALL_PROPERTY__TEST_BOOL = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Test Resource</b></em>' attribute.
@@ -137,7 +136,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__TEST_RESOURCE = DmfPackage.DOBJECT_FEATURE_COUNT + 4;
+	int TEST_CATEGORY_ALL_PROPERTY__TEST_RESOURCE = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Test Enum</b></em>' attribute.
@@ -146,7 +145,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY__TEST_ENUM = DmfPackage.DOBJECT_FEATURE_COUNT + 5;
+	int TEST_CATEGORY_ALL_PROPERTY__TEST_ENUM = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Test Category All Property</em>' class.
@@ -155,7 +154,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 6;
+	int TEST_CATEGORY_ALL_PROPERTY_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Test Category All Property</em>' class.
@@ -164,7 +163,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_ALL_PROPERTY_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_ALL_PROPERTY_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryCompositionImpl <em>Test Category Composition</em>}' class.
@@ -183,7 +182,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_COMPOSITION__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -192,7 +191,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_COMPOSITION__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test Sub Category</b></em>' containment reference.
@@ -201,7 +200,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION__TEST_SUB_CATEGORY = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_COMPOSITION__TEST_SUB_CATEGORY = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Composition</em>' class.
@@ -210,7 +209,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_COMPOSITION_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Test Category Composition</em>' class.
@@ -219,7 +218,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_COMPOSITION_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryReferenceImpl <em>Test Category Reference</em>}' class.
@@ -238,7 +237,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_REFERENCE__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -247,7 +246,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_REFERENCE__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test Ref Category</b></em>' reference.
@@ -256,7 +255,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE__TEST_REF_CATEGORY = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_REFERENCE__TEST_REF_CATEGORY = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Reference</em>' class.
@@ -265,7 +264,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_REFERENCE_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Test Category Reference</em>' class.
@@ -274,7 +273,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_REFERENCE_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryIntrinsicArrayImpl <em>Test Category Intrinsic Array</em>}' class.
@@ -293,7 +292,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_INTRINSIC_ARRAY__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_INTRINSIC_ARRAY__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -302,7 +301,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_INTRINSIC_ARRAY__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_INTRINSIC_ARRAY__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test String Array Dynamic</b></em>' attribute list.
@@ -311,7 +310,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_INTRINSIC_ARRAY__TEST_STRING_ARRAY_DYNAMIC = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_INTRINSIC_ARRAY__TEST_STRING_ARRAY_DYNAMIC = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Test String Array Static</b></em>' attribute list.
@@ -320,7 +319,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_INTRINSIC_ARRAY__TEST_STRING_ARRAY_STATIC = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_INTRINSIC_ARRAY__TEST_STRING_ARRAY_STATIC = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Intrinsic Array</em>' class.
@@ -329,7 +328,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_INTRINSIC_ARRAY_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 2;
+	int TEST_CATEGORY_INTRINSIC_ARRAY_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Test Category Intrinsic Array</em>' class.
@@ -338,7 +337,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_INTRINSIC_ARRAY_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_INTRINSIC_ARRAY_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryCompositionArrayImpl <em>Test Category Composition Array</em>}' class.
@@ -357,7 +356,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_ARRAY__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_COMPOSITION_ARRAY__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -366,7 +365,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_ARRAY__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_COMPOSITION_ARRAY__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test Composition Array Dynamic</b></em>' containment reference list.
@@ -375,7 +374,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_ARRAY__TEST_COMPOSITION_ARRAY_DYNAMIC = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_COMPOSITION_ARRAY__TEST_COMPOSITION_ARRAY_DYNAMIC = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Test Composition Array Static</b></em>' containment reference list.
@@ -384,7 +383,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_ARRAY__TEST_COMPOSITION_ARRAY_STATIC = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_COMPOSITION_ARRAY__TEST_COMPOSITION_ARRAY_STATIC = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Composition Array</em>' class.
@@ -393,7 +392,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_ARRAY_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 2;
+	int TEST_CATEGORY_COMPOSITION_ARRAY_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Test Category Composition Array</em>' class.
@@ -402,7 +401,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_COMPOSITION_ARRAY_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_COMPOSITION_ARRAY_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryReferenceArrayImpl <em>Test Category Reference Array</em>}' class.
@@ -421,7 +420,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_ARRAY__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_REFERENCE_ARRAY__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -430,7 +429,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_ARRAY__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_REFERENCE_ARRAY__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test Category Reference Array Dynamic</b></em>' reference list.
@@ -439,7 +438,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_ARRAY__TEST_CATEGORY_REFERENCE_ARRAY_DYNAMIC = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_REFERENCE_ARRAY__TEST_CATEGORY_REFERENCE_ARRAY_DYNAMIC = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Test Category Reference Array Static</b></em>' reference list.
@@ -448,7 +447,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_ARRAY__TEST_CATEGORY_REFERENCE_ARRAY_STATIC = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_REFERENCE_ARRAY__TEST_CATEGORY_REFERENCE_ARRAY_STATIC = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Reference Array</em>' class.
@@ -457,7 +456,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_ARRAY_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 2;
+	int TEST_CATEGORY_REFERENCE_ARRAY_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Test Category Reference Array</em>' class.
@@ -466,7 +465,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_REFERENCE_ARRAY_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_REFERENCE_ARRAY_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryBeanAImpl <em>Test Category Bean A</em>}' class.
@@ -485,7 +484,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_A__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_BEAN_A__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -494,7 +493,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_A__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_BEAN_A__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Bean A</em>' class.
@@ -503,7 +502,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_A_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_BEAN_A_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Test Category Bean A</em>' class.
@@ -512,7 +511,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_A_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_BEAN_A_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryBeanBImpl <em>Test Category Bean B</em>}' class.
@@ -531,7 +530,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_B__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_BEAN_B__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -540,7 +539,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_B__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_BEAN_B__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Bean B</em>' class.
@@ -549,7 +548,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_B_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_BEAN_B_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Test Category Bean B</em>' class.
@@ -558,7 +557,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_B_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_BEAN_B_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryBeanAbstractImpl <em>Test Category Bean Abstract</em>}' class.
@@ -577,7 +576,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_ABSTRACT__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_BEAN_ABSTRACT__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -586,7 +585,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_ABSTRACT__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_BEAN_ABSTRACT__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Bean Abstract</em>' class.
@@ -595,7 +594,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_ABSTRACT_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_BEAN_ABSTRACT_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Test Category Bean Abstract</em>' class.
@@ -604,7 +603,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_ABSTRACT_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_BEAN_ABSTRACT_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryBeanConcreteImpl <em>Test Category Bean Concrete</em>}' class.
@@ -623,7 +622,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_CONCRETE__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_BEAN_CONCRETE__UUID = TEST_CATEGORY_BEAN_ABSTRACT__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -632,7 +631,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_CONCRETE__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_BEAN_CONCRETE__NAME = TEST_CATEGORY_BEAN_ABSTRACT__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Bean Concrete</em>' class.
@@ -641,7 +640,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_CONCRETE_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_BEAN_CONCRETE_FEATURE_COUNT = TEST_CATEGORY_BEAN_ABSTRACT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Test Category Bean Concrete</em>' class.
@@ -650,7 +649,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BEAN_CONCRETE_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_BEAN_CONCRETE_OPERATION_COUNT = TEST_CATEGORY_BEAN_ABSTRACT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryBaseImpl <em>Test Category Base</em>}' class.
@@ -669,7 +668,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_BASE__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -678,7 +677,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_BASE__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test Array</b></em>' containment reference list.
@@ -687,7 +686,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE__TEST_ARRAY = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_BASE__TEST_ARRAY = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Test Base Property</b></em>' attribute.
@@ -696,7 +695,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE__TEST_BASE_PROPERTY = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_BASE__TEST_BASE_PROPERTY = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Test Reference</b></em>' reference.
@@ -705,7 +704,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE__TEST_REFERENCE = DmfPackage.DOBJECT_FEATURE_COUNT + 2;
+	int TEST_CATEGORY_BASE__TEST_REFERENCE = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Base</em>' class.
@@ -714,7 +713,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 3;
+	int TEST_CATEGORY_BASE_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Test Category Base</em>' class.
@@ -723,7 +722,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_BASE_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_BASE_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCategoryExtendsImpl <em>Test Category Extends</em>}' class.
@@ -742,7 +741,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CATEGORY_EXTENDS__UUID = TEST_CATEGORY_BASE__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -751,7 +750,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CATEGORY_EXTENDS__NAME = TEST_CATEGORY_BASE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Test Array</b></em>' containment reference list.
@@ -760,7 +759,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS__TEST_ARRAY = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CATEGORY_EXTENDS__TEST_ARRAY = TEST_CATEGORY_BASE__TEST_ARRAY;
 
 	/**
 	 * The feature id for the '<em><b>Test Base Property</b></em>' attribute.
@@ -769,7 +768,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS__TEST_BASE_PROPERTY = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CATEGORY_EXTENDS__TEST_BASE_PROPERTY = TEST_CATEGORY_BASE__TEST_BASE_PROPERTY;
 
 	/**
 	 * The feature id for the '<em><b>Test Reference</b></em>' reference.
@@ -778,7 +777,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS__TEST_REFERENCE = DmfPackage.DOBJECT_FEATURE_COUNT + 2;
+	int TEST_CATEGORY_EXTENDS__TEST_REFERENCE = TEST_CATEGORY_BASE__TEST_REFERENCE;
 
 	/**
 	 * The feature id for the '<em><b>Test Extends Property</b></em>' attribute.
@@ -787,7 +786,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS__TEST_EXTENDS_PROPERTY = DmfPackage.DOBJECT_FEATURE_COUNT + 3;
+	int TEST_CATEGORY_EXTENDS__TEST_EXTENDS_PROPERTY = TEST_CATEGORY_BASE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Test Category Extends</em>' class.
@@ -796,7 +795,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 4;
+	int TEST_CATEGORY_EXTENDS_FEATURE_COUNT = TEST_CATEGORY_BASE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Test Category Extends</em>' class.
@@ -805,7 +804,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CATEGORY_EXTENDS_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CATEGORY_EXTENDS_OPERATION_COUNT = TEST_CATEGORY_BASE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestParameterImpl <em>Test Parameter</em>}' class.
@@ -824,7 +823,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_PARAMETER__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_PARAMETER__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -833,7 +832,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_PARAMETER__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_PARAMETER__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
@@ -842,7 +841,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_PARAMETER__DEFAULT_VALUE = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_PARAMETER__DEFAULT_VALUE = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Test Parameter</em>' class.
@@ -851,7 +850,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_PARAMETER_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_PARAMETER_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Test Parameter</em>' class.
@@ -860,7 +859,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_PARAMETER_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_PARAMETER_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestMassParametersImpl <em>Test Mass Parameters</em>}' class.
@@ -879,7 +878,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_MASS_PARAMETERS__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_MASS_PARAMETERS__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -888,7 +887,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_MASS_PARAMETERS__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_MASS_PARAMETERS__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Mass</b></em>' containment reference.
@@ -897,7 +896,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_MASS_PARAMETERS__MASS = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_MASS_PARAMETERS__MASS = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Test Mass Parameters</em>' class.
@@ -906,7 +905,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_MASS_PARAMETERS_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_MASS_PARAMETERS_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Test Mass Parameters</em>' class.
@@ -915,7 +914,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_MASS_PARAMETERS_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_MASS_PARAMETERS_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.TestCrossLinkedParametersWithCalculationImpl <em>Test Cross Linked Parameters With Calculation</em>}' class.
@@ -934,7 +933,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__UUID = DmfPackage.DOBJECT__UUID;
+	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -943,7 +942,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__NAME = DmfPackage.DOBJECT__NAME;
+	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Calced Trl</b></em>' attribute.
@@ -952,7 +951,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__CALCED_TRL = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__CALCED_TRL = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Test Cross Linked Parameters With Calculation</em>' class.
@@ -961,7 +960,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Test Cross Linked Parameters With Calculation</em>' class.
@@ -970,7 +969,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.impl.EReferenceTestImpl <em>EReference Test</em>}' class.
@@ -989,7 +988,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EREFERENCE_TEST__UUID = DmfPackage.DOBJECT__UUID;
+	int EREFERENCE_TEST__UUID = CorePackage.GENERIC_CATEGORY__UUID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -998,7 +997,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EREFERENCE_TEST__NAME = DmfPackage.DOBJECT__NAME;
+	int EREFERENCE_TEST__NAME = CorePackage.GENERIC_CATEGORY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>EReference Test</b></em>' reference.
@@ -1007,7 +1006,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EREFERENCE_TEST__EREFERENCE_TEST = DmfPackage.DOBJECT_FEATURE_COUNT + 0;
+	int EREFERENCE_TEST__EREFERENCE_TEST = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>EReference Test</em>' class.
@@ -1016,7 +1015,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EREFERENCE_TEST_FEATURE_COUNT = DmfPackage.DOBJECT_FEATURE_COUNT + 1;
+	int EREFERENCE_TEST_FEATURE_COUNT = CorePackage.GENERIC_CATEGORY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>EReference Test</em>' class.
@@ -1025,7 +1024,7 @@ public interface TestsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EREFERENCE_TEST_OPERATION_COUNT = DmfPackage.DOBJECT_OPERATION_COUNT + 0;
+	int EREFERENCE_TEST_OPERATION_COUNT = CorePackage.GENERIC_CATEGORY_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum <em>Enum Test Enum</em>}' enum.

@@ -14,6 +14,7 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 import de.dlr.sc.virsat.model.extension.tests.tests.*;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -154,6 +155,10 @@ public class TestsAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseDObject(DObject object) {
 				return createDObjectAdapter();
+			}
+			@Override
+			public Adapter caseGenericCategory(GenericCategory object) {
+				return createGenericCategoryAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -438,6 +443,20 @@ public class TestsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createDObjectAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.ext.core.core.GenericCategory <em>Generic Category</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.ext.core.core.GenericCategory
+	 * @generated
+	 */
+	public Adapter createGenericCategoryAdapter() {
 		return null;
 	}
 

@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
-
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 import de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -36,7 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class EReferenceTestImpl extends DObjectImpl implements EReferenceTest {
+public class EReferenceTestImpl extends GenericCategoryImpl implements EReferenceTest {
 	/**
 	 * The cached value of the '{@link #getEReferenceTest() <em>EReference Test</em>}' reference.
 	 * <!-- begin-user-doc -->

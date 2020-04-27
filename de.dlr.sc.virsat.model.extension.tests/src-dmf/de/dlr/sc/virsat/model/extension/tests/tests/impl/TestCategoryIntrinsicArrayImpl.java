@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
-
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -36,7 +35,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *
  * @generated
  */
-public class TestCategoryIntrinsicArrayImpl extends DObjectImpl implements TestCategoryIntrinsicArray {
+public class TestCategoryIntrinsicArrayImpl extends GenericCategoryImpl implements TestCategoryIntrinsicArray {
 	/**
 	 * The cached value of the '{@link #getTestStringArrayDynamic() <em>Test String Array Dynamic</em>}' attribute list.
 	 * <!-- begin-user-doc -->

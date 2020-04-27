@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Test Category Bean Concrete</b></em>'.
@@ -21,5 +19,5 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  * @model
  * @generated
  */
-public interface TestCategoryBeanConcrete extends DObject, TestCategoryBeanAbstract {
+public interface TestCategoryBeanConcrete extends TestCategoryBeanAbstract {
 } // TestCategoryBeanConcrete

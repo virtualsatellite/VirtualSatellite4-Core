@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
-
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBase;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -44,7 +43,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class TestCategoryBaseImpl extends DObjectImpl implements TestCategoryBase {
+public class TestCategoryBaseImpl extends GenericCategoryImpl implements TestCategoryBase {
 	/**
 	 * The cached value of the '{@link #getTestArray() <em>Test Array</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

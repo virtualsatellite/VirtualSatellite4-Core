@@ -10,9 +10,7 @@
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
-
-import de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage;
-
+import de.dlr.sc.virsat.model.ext.core.core.CorePackage;
 import de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
@@ -217,6 +215,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		// Initialize simple dependencies
 		DVLMPackage.eINSTANCE.eClass();
+		CorePackage.eINSTANCE.eClass();
 		de.dlr.sc.virsat.model.external.tests.TestsPackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 
@@ -735,7 +734,7 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		DmfPackage theDmfPackage = (DmfPackage)EPackage.Registry.INSTANCE.getEPackage(DmfPackage.eNS_URI);
+		CorePackage theCorePackage = (CorePackage)EPackage.Registry.INSTANCE.getEPackage(CorePackage.eNS_URI);
 		de.dlr.sc.virsat.model.external.tests.TestsPackage theTestsPackage_1 = (de.dlr.sc.virsat.model.external.tests.TestsPackage)EPackage.Registry.INSTANCE.getEPackage(de.dlr.sc.virsat.model.external.tests.TestsPackage.eNS_URI);
 
 		// Create type parameters
@@ -743,24 +742,22 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		testCategoryAllPropertyEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryCompositionEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryReferenceEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryIntrinsicArrayEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryCompositionArrayEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryReferenceArrayEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanAEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanBEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanAbstractEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanConcreteEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testCategoryAllPropertyEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryCompositionEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryReferenceEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryIntrinsicArrayEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryCompositionArrayEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryReferenceArrayEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryBeanAEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryBeanBEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryBeanAbstractEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
 		testCategoryBeanConcreteEClass.getESuperTypes().add(this.getTestCategoryBeanAbstract());
-		testCategoryBaseEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryExtendsEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testCategoryBaseEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
 		testCategoryExtendsEClass.getESuperTypes().add(this.getTestCategoryBase());
-		testParameterEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testMassParametersEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCrossLinkedParametersWithCalculationEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		eReferenceTestEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testParameterEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testMassParametersEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCrossLinkedParametersWithCalculationEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		eReferenceTestEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(testCategoryAllPropertyEClass, TestCategoryAllProperty.class, "TestCategoryAllProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

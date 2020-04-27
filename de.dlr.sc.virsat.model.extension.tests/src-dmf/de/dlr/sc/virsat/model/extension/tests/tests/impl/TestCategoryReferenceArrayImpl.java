@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
-
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
@@ -37,7 +36,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class TestCategoryReferenceArrayImpl extends DObjectImpl implements TestCategoryReferenceArray {
+public class TestCategoryReferenceArrayImpl extends GenericCategoryImpl implements TestCategoryReferenceArray {
 	/**
 	 * The cached value of the '{@link #getTestCategoryReferenceArrayDynamic() <em>Test Category Reference Array Dynamic</em>}' reference list.
 	 * <!-- begin-user-doc -->

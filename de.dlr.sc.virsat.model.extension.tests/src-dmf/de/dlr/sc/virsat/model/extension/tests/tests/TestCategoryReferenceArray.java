@@ -9,8 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
-
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -30,7 +29,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface TestCategoryReferenceArray extends DObject {
+public interface TestCategoryReferenceArray extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Test Category Reference Array Dynamic</b></em>' reference list.
 	 * The list contents are of type {@link de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty}.
