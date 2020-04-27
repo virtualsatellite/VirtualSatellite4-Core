@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.swtbot.test;
 
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefConnectionEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
@@ -44,19 +43,11 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	
 	private Concept conceptFuncElectrical;
 	
-	private static final int DRAG1_COORDINATES_X = 0;
-	private static final int DRAG1_COORDINATES_Y = 0;
+	private static final int DRAG1_COORDINATES_X = 100;
+	private static final int DRAG1_COORDINATES_Y = 100;
 	
-	private static final int DRAG2_COORDINATES_X = 250;
-	private static final int DRAG2_COORDINATES_Y = 100;
-	
-	private static final int INTERFACE_END_COORDINATE_OFFSET_X = 50;
-	private static final int INTERFACE_END_COORDINATE_OFFSET_Y = 20;
-	
-	private static final int CLICK1_COORDINATES_X = 150;
-	private static final int CLICK1_COORDINATES_Y = 10;
-	private static final int CLICK2_COORDINATES_X = 260;
-	private static final int CLICK2_COORDINATES_Y = 110;
+	private static final int DRAG2_COORDINATES_X = 100;
+	private static final int DRAG2_COORDINATES_Y = 200;
 
 	@Before
 	public void before() throws Exception {
@@ -74,40 +65,30 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	@Test
 	public void addInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
-		waitForEditingDomainAndUiThread();
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		undoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		redoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 	}	
 
-//	@Test
-//	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
-//		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
-//		waitForEditingDomainAndUiThread();
-//		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-//		waitForEditingDomainAndUiThread();
-//		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-//		
-//		delete(elementConfiguration);
-//		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-//	}
+	@Test
+	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
+		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
+		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
+		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		
+		delete(elementConfiguration);
+		updateActiveDiagram(diagramEditor);
+		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+	}
 	
 	@Test
 	public void dragDropTreeinDiagram() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
-		waitForEditingDomainAndUiThread();
 		dragTreeItemToDiagramEditor(configurationTree, diagramEditor);
-		waitForEditingDomainAndUiThread();
 		Assert.assertEquals(0, diagramEditor.selectedEditParts().size(), 0);
-		
-		undoCommand();
-		waitForEditingDomainAndUiThread();
 	}
 	
 	@Test
@@ -116,10 +97,8 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		undoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		redoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 	}
 	
@@ -129,17 +108,13 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		SWTBotTreeItem interfaceTypeItem = addElement(InterfaceType.class, conceptFuncElectrical, interfaceTypeCollectionItem);
 		SWTBotTreeItem interfaceEndItem = addElement(InterfaceEnd.class, conceptFuncElectrical, elementConfiguration);
 		
-		waitForEditingDomainAndUiThread();
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, 0, 0);
-		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		
-		
 		SWTBotGefEditPart editPart = diagramEditor.getEditPart("ElementConfiguration");
-		Rectangle boundsForEditPart = getBoundsForEditPart(editPart);
+		SWTBotGefEditPart child = editPart.children().get(0);
 
-		dragTreeItemToDiagramEditor(interfaceTypeItem, diagramEditor, (boundsForEditPart.width - INTERFACE_END_COORDINATE_OFFSET_X), (boundsForEditPart.height - INTERFACE_END_COORDINATE_OFFSET_Y));
-		waitForEditingDomainAndUiThread();
+		dragTreeItemOnToEditPart(interfaceTypeItem, diagramEditor, child);
 				
 		String text = interfaceEndItem.expand().getNode(0).getText();
 		Assert.assertTrue(text.equals("type -> InterfaceType"));		
@@ -155,10 +130,8 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));		
 		
 		undoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		redoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 	}
 	
@@ -177,7 +150,6 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		diagramEditor.setFocus();
 		
 		undoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		
 		SWTBotTreeItem elementConfigurationNode = configurationTree.getNode(elementConfigurationName);
@@ -186,7 +158,6 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		diagramEditor.setFocus();
 
 		redoCommand();
-		waitForEditingDomainAndUiThread();
 		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
 		Assert.assertFalse(isTreeItemPresentInTreeView(elementConfigurationNode));
 	}
@@ -194,41 +165,25 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	@Test
 	public void connectInterfaceEndsTest() {		
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
-		waitForEditingDomainAndUiThread();
 		
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, DRAG1_COORDINATES_X, DRAG1_COORDINATES_Y);
-		waitForEditingDomainAndUiThread();				
-		SWTBotGefEditPart swtBotGefEditPart1 = diagramEditor.selectedEditParts().get(0);
-		
+		SWTBotGefEditPart swtBotGefEditPart1 = diagramEditor.selectedEditParts().get(0);		
+
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, DRAG2_COORDINATES_X, DRAG2_COORDINATES_Y);
-		waitForEditingDomainAndUiThread();
-		SWTBotGefEditPart swtBotGefEditPart2 = diagramEditor.selectedEditParts().get(0);
+		SWTBotGefEditPart swtBotGefEditPart2 = diagramEditor.selectedEditParts().get(0);		
 		
 		diagramEditor.activateTool("InterfaceEnd");
-		waitForEditingDomainAndUiThread();
-		
-		diagramEditor.click(CLICK1_COORDINATES_X, CLICK1_COORDINATES_Y);
-		waitForEditingDomainAndUiThread();
+		diagramEditor.click(swtBotGefEditPart1);
 		
 		diagramEditor.activateTool("InterfaceEnd");
-		waitForEditingDomainAndUiThread();
-		
-		diagramEditor.click(CLICK2_COORDINATES_X, CLICK2_COORDINATES_Y);
-		waitForEditingDomainAndUiThread();
+		diagramEditor.click(swtBotGefEditPart2);
 		
 		diagramEditor.activateTool("Interface");
-		waitForEditingDomainAndUiThread();
-		swtBotGefEditPart1.children().get(0).click();
-		waitForEditingDomainAndUiThread();
-		swtBotGefEditPart2.children().get(0).click();
-		waitForEditingDomainAndUiThread();
-		
+		diagramEditor.click(swtBotGefEditPart1.children().get(0));
+		diagramEditor.click(swtBotGefEditPart2.children().get(0));
 		bot.button("OK").click();
-		waitForEditingDomainAndUiThread();
 		
 		List<SWTBotGefConnectionEditPart> sourceConnections = swtBotGefEditPart1.children().get(0).children().get(0).sourceConnections();
-		
-		waitForEditingDomainAndUiThread();
-		Assert.assertEquals(1, sourceConnections.size(), 0);		
+		Assert.assertEquals(1, sourceConnections.size(), 0);
 	}
 }

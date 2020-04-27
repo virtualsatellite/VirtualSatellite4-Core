@@ -146,6 +146,8 @@ public class ASwtBotTestCase {
 					// Now reset the workbench and remove the project
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Resetting Workbench"));
 					
+					// bot.resetWorkbench(); BUG: Resetting the workbench this way causes problems with the UI palette during tearDown					
+					// Instead
 					bot.saveAllEditors();
 					bot.closeAllEditors();
 					bot.defaultPerspective().activate();
@@ -244,7 +246,7 @@ public class ASwtBotTestCase {
 	
 	/**
 	 * Returns the absolute rectangular bounds for a SWTBotGefEditpart element
-	 * @param SWTBotEditPart
+	 * @param SWTBotEditPart edit part to get bounds for
 	 * @return Rectangle bounds for SWTBotGefEditPart
 	 */
 	protected Rectangle getBoundsForEditPart(SWTBotGefEditPart swtBotEditPart) {
@@ -296,6 +298,46 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Drags a tree item onto a specific edit part element within a specified graphiti diagram editor 
+	 * @param item Tree item that is beeing dragged
+	 * @param diagramEditor Graphiti diagram editor in which the editPart is present
+	 * @param editPart editPart which the tree item is beeing dragged onto
+	 */
+	protected void dragTreeItemOnToEditPart(SWTBotTreeItem item, SWTBotGefEditor diagramEditor, SWTBotGefEditPart editPart) {
+		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
+		SWTBotGefFigureCanvas canvas = null;
+		
+		for (Field f : viewer.getClass().getDeclaredFields()) {
+			if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
+				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
+				// otherwise inaccessible fields.
+				f.setAccessible(true);
+				try {
+					canvas = (SWTBotGefFigureCanvas) f.get(viewer);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
+				}
+			}
+		}
+		Point centerForEditPart = getCenterForEditPart(editPart);
+		item.dragAndDrop(canvas, centerForEditPart);
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Returns Point object with center coordinates of an edit part element
+	 * @param editPart edit part to get coordinates for
+	 * @return Point of center coordinates
+	 */
+	protected Point getCenterForEditPart(SWTBotGefEditPart editPart) {
+		Rectangle boundsForEditPart = getBoundsForEditPart(editPart);
+		int editPartCenterX = boundsForEditPart.x + (int) ((boundsForEditPart.width / 2) + 1);
+		int editPartCenterY = boundsForEditPart.y + (int) ((boundsForEditPart.height / 2) + 1);
+		return new Point(editPartCenterX, editPartCenterY);
+	}
+	
+	/**
+	 * Deletes edit part element in specified graphiti diagram editor
 	 * @param diagramEditor Diagram editor on which to perform delete operation
 	 * @param editPartName Name of EditPart to be deleted
 	 */
@@ -307,6 +349,7 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Removes edit part element in specified graphiti diagram editor
 	 * @param diagramEditor Diagram editor on which to perform remove operation
 	 * @param editPartName Name of EditPart to be removed
 	 */
@@ -317,6 +360,7 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Checks if specified tree item is present in tree view
 	 * @param item Tree item
 	 * @return true if tree item is present in tree view, false otherwise
 	 */
@@ -345,6 +389,7 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Returns SWTBot Graphiti diagram editor with specified editor title that has been already opened
 	 * @param editorTitle title of opened diagram editor
 	 * @return diagram editor
 	 */
@@ -355,6 +400,7 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Checks if edit part is present in a diagram editor
 	 * @param diagramEditor Diagram Editor for which to check if Edit Part is present
 	 * @param editPartName Name of Edit Part
 	 * @return true if Edit Part is present in specified Diagram Editor, else false
@@ -362,7 +408,6 @@ public class ASwtBotTestCase {
 	protected boolean isEditPartPresentInDiagramEditor(SWTBotGefEditor diagramEditor, String editPartName) {
 		return !(diagramEditor.getEditPart(editPartName) == null);
 	}
-
 	
 	/**
 	 * Waits for the editor of the passed item to open.
@@ -445,6 +490,15 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Updates the currently active Graphiti diagram editor
+	 * @param diagramEditor editor to be updated
+	 */
+	protected void updateActiveDiagram(SWTBotGefEditor diagramEditor) {
+		diagramEditor.clickContextMenu("Update");
+		waitForEditingDomainAndUiThread();
+	}	
+	
+	/**
 	 * sets the value of the given index
 	 * @param name  of the field
 	 * @param value the value to be set
@@ -521,21 +575,23 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
-	 * issues an undo key command
+	 * Undo the last command made
 	 */
 	protected void undoCommand() {
 		SWTBotMenu editMenu = bot.shell().menu().menu("Edit").click();
 		String undoCommandLabel = editMenu.menuItems().get(0);
-		editMenu.menu(undoCommandLabel).click();		
+		editMenu.menu(undoCommandLabel).click();
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
-	 * issues a redo key command
+	 * Redo the last command that was undone
 	 */
 	protected void redoCommand() {
 		SWTBotMenu editMenu = bot.shell().menu().menu("Edit").click();
 		String redoCommandLabel = editMenu.menuItems().get(1);
 		editMenu.menu(redoCommandLabel).click();
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
@@ -632,8 +688,7 @@ public class ASwtBotTestCase {
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
 		SwtBotSection composite = new SwtBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
-	}
-	
+	}	
 	
 	/**
 	 * @param table the table to make changes on
@@ -677,8 +732,7 @@ public class ASwtBotTestCase {
 	public static Repository getRepository(IProject project) {
 		VirSatResourceSet resSetRepositoryTarget = VirSatResourceSet.getResourceSet(project);
 		Repository rep = resSetRepositoryTarget.getRepository();
-		return rep;
-		
+		return rep;		
 	}
 	
 	/**
