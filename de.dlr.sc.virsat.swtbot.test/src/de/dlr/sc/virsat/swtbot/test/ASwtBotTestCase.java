@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
@@ -146,11 +145,20 @@ public class ASwtBotTestCase {
 					// Now reset the workbench and remove the project
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Resetting Workbench"));
 					
-					// bot.resetWorkbench(); BUG: Resetting the workbench this way causes problems with the UI palette during tearDown					
+					//bot.resetWorkbench();					
+					/* BUG: Resetting the workbench this way causes problems with Graphiti's UI palette during 
+					 * test case tearDown. It seems as if SWTBot's closeAllEditors method invoked kills off its 
+					 * own SWTBot Shell for not being attributed an Eclipse or Limbo Shell respectively.
+					 * 
+					 * Furthermore resetActivePerspective method was removed as it leads to thread locking 
+					 * issues on linux systems.
+					 */
+					
 					// Instead
 					bot.saveAllEditors();
 					bot.closeAllEditors();
 					bot.defaultPerspective().activate();
+					//
 					
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Deleting project"));
 					ws.getRoot().getProject(SWTBOT_TEST_PROJECTNAME).delete(true, monitor);
@@ -225,22 +233,7 @@ public class ASwtBotTestCase {
 	 * @param diagramEditor Graphiti diagram editor which the tree item is beeing dragged onto
 	 */
 	protected void dragTreeItemToDiagramEditor(SWTBotTreeItem item, SWTBotGefEditor diagramEditor) {
-		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
-		SWTBotGefFigureCanvas canvas = null;
-		
-		for (Field f : viewer.getClass().getDeclaredFields()) {
-			if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
-				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
-				// otherwise inaccessible fields.
-				f.setAccessible(true);
-				try {
-					canvas = (SWTBotGefFigureCanvas) f.get(viewer);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
-				}
-			}
-		}
-		item.dragAndDrop(canvas);
+		item.dragAndDrop(getCanvasForDiagramEditor(diagramEditor));
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -249,21 +242,8 @@ public class ASwtBotTestCase {
 	 * @param SWTBotEditPart edit part to get bounds for
 	 * @return Rectangle bounds for SWTBotGefEditPart
 	 */
-	protected Rectangle getBoundsForEditPart(SWTBotGefEditPart swtBotEditPart) {
-		EditPart part = null;		
-		for (Field f : swtBotEditPart.getClass().getDeclaredFields()) {
-			if ("part".equals(f.getName())) {
-				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
-				// otherwise inaccessible fields.
-				f.setAccessible(true);
-				try {
-					part = (EditPart) f.get(swtBotEditPart);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotEditPart element or do a proper cast to EditPart type", e));
-				}
-			}
-		}		
-		IFigure figure = ((GraphicalEditPart) part).getFigure();
+	protected Rectangle getBoundsForEditPart(SWTBotGefEditPart swtBotEditPart) {	
+		IFigure figure = ((GraphicalEditPart) swtBotEditPart.part()).getFigure();
 		Rectangle bounds = figure.getBounds().getCopy();
 		figure.translateToAbsolute(bounds);		
 		return bounds;
@@ -278,22 +258,7 @@ public class ASwtBotTestCase {
 	 * @param diagramEditor Graphiti diagram editor which the tree item is beeing dragged onto
 	 */
 	protected void dragTreeItemToDiagramEditor(SWTBotTreeItem item, SWTBotGefEditor diagramEditor, int x, int y) {
-		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
-		SWTBotGefFigureCanvas canvas = null;
-		
-		for (Field f : viewer.getClass().getDeclaredFields()) {
-			if (SWTBOT_CANVAS_FIELD_REFLECTION_NAME.equals(f.getName())) {
-				// Here we're bypassing Java's OO-Security model, which is generally not advisable. It's meant to be a workaround to access
-				// otherwise inaccessible fields.
-				f.setAccessible(true);
-				try {
-					canvas = (SWTBotGefFigureCanvas) f.get(viewer);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Can not access SWTBotGefViewer element or do a proper cast to canvas type", e));
-				}
-			}
-		}
-		item.dragAndDrop(canvas, new Point(x, y));
+		item.dragAndDrop(getCanvasForDiagramEditor(diagramEditor), new Point(x, y));
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -304,6 +269,17 @@ public class ASwtBotTestCase {
 	 * @param editPart editPart which the tree item is beeing dragged onto
 	 */
 	protected void dragTreeItemOnToEditPart(SWTBotTreeItem item, SWTBotGefEditor diagramEditor, SWTBotGefEditPart editPart) {
+		Point centerForEditPart = getCenterForEditPart(editPart);
+		item.dragAndDrop(getCanvasForDiagramEditor(diagramEditor), centerForEditPart);
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Returns the SWTBot Graphiti canvas for specified Graphiti diagram editor
+	 * @param diagramEditor Graphiti diagram editor to get canvas for
+	 * @return SWTBot Graphiti canvas
+	 */
+	protected SWTBotGefFigureCanvas getCanvasForDiagramEditor(SWTBotGefEditor diagramEditor) {
 		SWTBotGefViewer viewer = diagramEditor.getSWTBotGefViewer();
 		SWTBotGefFigureCanvas canvas = null;
 		
@@ -319,9 +295,7 @@ public class ASwtBotTestCase {
 				}
 			}
 		}
-		Point centerForEditPart = getCenterForEditPart(editPart);
-		item.dragAndDrop(canvas, centerForEditPart);
-		waitForEditingDomainAndUiThread();
+		return canvas;
 	}
 	
 	/**
@@ -330,10 +304,8 @@ public class ASwtBotTestCase {
 	 * @return Point of center coordinates
 	 */
 	protected Point getCenterForEditPart(SWTBotGefEditPart editPart) {
-		Rectangle boundsForEditPart = getBoundsForEditPart(editPart);
-		int editPartCenterX = boundsForEditPart.x + (int) ((boundsForEditPart.width / 2) + 1);
-		int editPartCenterY = boundsForEditPart.y + (int) ((boundsForEditPart.height / 2) + 1);
-		return new Point(editPartCenterX, editPartCenterY);
+		Rectangle boundsForEditPart = getBoundsForEditPart(editPart);		
+		return new Point(boundsForEditPart.getCenter().x, boundsForEditPart.getCenter().y);
 	}
 	
 	/**
