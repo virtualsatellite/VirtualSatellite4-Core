@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.1" displayName="Requirements" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.1" displayName="Requirements" beta="true">
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <categories name="RequirementsSpecification" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:ResourceProperty" name="exportFile"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="requirements" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
@@ -8,14 +9,18 @@
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="typeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementsConfiguration" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
     <properties xsi:type="dvlm_cppd:StringProperty" name="fileName"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="typeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="RequirementObject" description="Interface for specification objects" isAbstract="true"/>
+  <categories name="RequirementObject" description="Interface for specification objects" isAbstract="true">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
   <categories name="RequirementGroup" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="children" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
@@ -37,11 +42,13 @@
   <categories name="AttributeValue">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="attType" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute"/>
     <properties xsi:type="dvlm_cppd:StringProperty" name="value"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementType" description="Definition of a requirement type">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="attributes" type="de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementAttribute" description="Attribute definition for requirements">
     <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.7/@properties.0/@values.5">
@@ -54,12 +61,16 @@
       <values name="Identifier" value="6"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="enumeration" type="de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="EnumerationDefinition">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="literals" type="de.dlr.sc.virsat.model.extension.requirements.EnumerationLiteral">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="EnumerationLiteral"/>
+  <categories name="EnumerationLiteral">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
   <structuralElements name="RequirementsConfigurationCollection" description="Storage for configuration elements of requirements" isRootStructuralElement="true"/>
 </dvlm_c:Concept>

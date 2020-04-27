@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v8/calc" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.power" description="Power Budget Concept" displayName="Power Budget" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v7/calc" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v7/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.power" description="Power Budget Concept" displayName="Power Budget" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.extension.statemachines.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <categories name="APowerParameters" description="Abstract definition of a collection of power parameters" isAbstract="true">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPower" description="The average power over all states" quantityKindName="Power" unitName="Watt"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="minPower" description="The minimum power over all states" quantityKindName="Power" unitName="Watt"/>
@@ -8,6 +9,7 @@
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPowerWithMargin" description="The equipment mass plus the safety margin" quantityKindName="Power" unitName="Watt" defaultValue="0.0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPowerMargin" description="The actual amount of margin mass" quantityKindName="Power" unitName="Watt" defaultValue="0.0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="PowerEquipment" description="Definition of the equipment power" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters">
     <equationDefinitions>
@@ -91,5 +93,6 @@
     <properties xsi:type="dvlm_cppd:FloatProperty" name="power" description="The power consumption in this mode" quantityKindName="Power" unitName="Watt" defaultValue="0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPower" description="The average power consumption of the mode" quantityKindName="Power" unitName="Watt"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="dutyCycle" description="The percentage of time spent in the mode " quantityKindName="Dimensionless" unitName="Percent" defaultValue="0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
 </dvlm_c:Concept>

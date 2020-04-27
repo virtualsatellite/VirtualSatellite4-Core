@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.funcelectrical" description="Concept for modeling Functional Electrical Architecture (FEA)" version="2.0" displayName="Functional Electrical Architecture">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.funcelectrical" description="Concept for modeling Functional Electrical Architecture (FEA)" version="2.0" displayName="Functional Electrical Architecture">
   <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
-  <categories name="InterfaceType" shortName="IFT" description="InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" applicableFor="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceTypeCollection"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <categories name="InterfaceType" shortName="IFT" description="InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" applicableFor="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceTypeCollection">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
   <categories name="PowerInterfaceType" description="Describes a Power interface type with nominal voltages" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceType">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="voltages" type="de.dlr.sc.virsat.model.extension.funcelectrical.VoltageDefinition">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
   </categories>
-  <categories name="VoltageDefinition" description="Abstract voltage definition" isAbstract="true"/>
+  <categories name="VoltageDefinition" description="Abstract voltage definition" isAbstract="true">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
   <categories name="FixedVoltageDefinition" description="Fixed voltage defining a nominal value" extendsCategory="de.dlr.sc.virsat.model.extension.funcelectrical.VoltageDefinition">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="nominalValue" quantityKindName="Electric potential difference" unitName="Volt" defaultValue="0"/>
   </categories>
@@ -24,12 +29,14 @@
     <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"/>
     <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementOccurence"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceType"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="Interface" shortName="IF" description="Describes a Functional Electrical Interface connecting two InterfaceEnds">
     <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"/>
     <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementOccurence"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEndFrom" referenceType="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEndTo" referenceType="de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <structuralElements name="InterfaceTypeCollection" description="A Container to summarize all InterfaceTypes" isRootStructuralElement="true"/>
 </dvlm_c:Concept>
