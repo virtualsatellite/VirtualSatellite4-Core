@@ -82,9 +82,6 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  * This class implements the VirSat specific EMF ResourceSet. One ResourceSet is
  * associated with one project. It is not planned to have cross project
  * references. Demand loading etc. will work in one project but not outside.
- * 
- * @author fisc_ph
- *
  */
 public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
@@ -92,9 +89,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 	/**
 	 * Interface for listening to changes of the diagnostics
-	 * 
-	 * @author muel_s8
-	 *
 	 */
 	public interface IDiagnosticListener {
 		/**
@@ -1003,6 +997,29 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		Activator.getDefault().getLog()
 				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Finished saving Resource ("
 						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+	}
+
+	/**
+<<<<<<< HEAD
+=======
+	 * Use this method to assign a new discipline to a resource / eObject. The
+	 * method will force a save on the resource to persist the newly assigned
+	 * discipline
+	 * 
+	 * @param disciplineContainer
+	 *            the eObject containing the assigned discipline to be changed
+	 * @param discipline
+	 *            the new discipline to be set
+	 */
+	public void assignDiscipline(IAssignedDiscipline disciplineContainer, Discipline discipline) {
+		boolean hasWritePermission = RightsHelper.hasSystemUserWritePermission(disciplineContainer);
+
+		if (hasWritePermission) {
+			disciplineContainer.setAssignedDiscipline(discipline);
+			Resource resource = disciplineContainer.eResource();
+			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(discipline);
+			ed.saveResourceIgnorePermissions(resource);
+		}
 	}
 
 	/**

@@ -157,7 +157,6 @@ public class EquationHelper {
 				IExpressionResult result = exprHelper.evaluate(equation.getExpression(), mapExpressionToResult);
 
 				boolean hasWritePermissionResult = RightsHelper.hasWritePermission(equationResult, userContext);
-				
 				boolean isTypeInstance = equationResult instanceof TypeInstanceResult;
 				
 				// Assign the result according to the registrated setter
@@ -181,7 +180,7 @@ public class EquationHelper {
 						}
 					}
 				} 
-				
+
 				boolean hasWritePermissionEquation = RightsHelper.hasWritePermission(equation, userContext);
 				if (hasWritePermissionEquation) {
 					if (equation.isIsInherited()) {
