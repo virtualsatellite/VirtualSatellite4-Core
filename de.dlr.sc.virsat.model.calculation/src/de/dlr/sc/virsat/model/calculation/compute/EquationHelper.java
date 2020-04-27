@@ -155,7 +155,7 @@ public class EquationHelper {
 				Equation equation = (Equation) equationResult.eContainer();
 				IExpressionResult result = exprHelper.evaluate(equation.getExpression(), mapExpressionToResult);
 
-				boolean hasWritePermissionResult = RightsHelper.hasWritePermission(equationResult);
+				boolean hasWritePermissionResult = RightsHelper.hasSystemUserWritePermission(equationResult);
 				
 				boolean isTypeInstance = equationResult instanceof TypeInstanceResult;
 				
@@ -181,7 +181,7 @@ public class EquationHelper {
 					}
 				} 
 				
-				boolean hasWritePermissionEquation = RightsHelper.hasWritePermission(equation);
+				boolean hasWritePermissionEquation = RightsHelper.hasSystemUserWritePermission(equation);
 				if (hasWritePermissionEquation) {
 					if (equation.isIsInherited()) {
 						equation.setOverride(true);

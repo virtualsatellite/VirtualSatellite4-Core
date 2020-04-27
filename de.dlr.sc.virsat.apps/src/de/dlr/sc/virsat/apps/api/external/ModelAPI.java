@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -37,7 +36,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
-import de.dlr.sc.virsat.model.dvlm.roles.IRightsHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
@@ -47,10 +46,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 /**
  * This class provides simplified access to the model
  * without dealing to much with EMF etc.
- * 
- * @author fisc_ph
- *
- */
+*/
 public class ModelAPI {
 
 	protected static ResourceSet resourceSet;
@@ -73,21 +69,21 @@ public class ModelAPI {
 		
 		// Setting up the resources factory to deal with the model extension
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
-	    Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
-	    m.put(VirSatProjectCommons.FILENAME_EXTENSION, new XMIResourceFactoryImpl());
-	    
-	    DVLMPackage.eINSTANCE.eClass();
-	    
-	    System.out.println("---------------- System properties: ----------");
-	    System.getProperties().forEach((key, value) -> {
-	    	System.out.println("SysProp: " + key + ": " + value);
-	    });
-	    System.out.println("---------------- App output: --------------");
-	    
-	    String resourceFullPath = Paths.get(getCurrentProjectAbsolutePath(), VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FILENAME_REPOSITORY).toAbsolutePath().toString();
-	    URI modelUri = URI.createFileURI(resourceFullPath);
-	    
-	    resource = resourceSet.getResource(modelUri, true);
+		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
+		m.put(VirSatProjectCommons.FILENAME_EXTENSION, new XMIResourceFactoryImpl());
+
+		DVLMPackage.eINSTANCE.eClass();
+
+		System.out.println("---------------- System properties: ----------");
+		System.getProperties().forEach((key, value) -> {
+			System.out.println("SysProp: " + key + ": " + value);
+		});
+		System.out.println("---------------- App output: --------------");
+
+		String resourceFullPath = Paths.get(getCurrentProjectAbsolutePath(), VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FILENAME_REPOSITORY).toAbsolutePath().toString();
+		URI modelUri = URI.createFileURI(resourceFullPath);
+
+		resource = resourceSet.getResource(modelUri, true);
 	}
 	
 	/**
@@ -168,14 +164,14 @@ public class ModelAPI {
 			String pathFolderSei = VirSatProjectCommons.getStructuralElementInstancePath(seiToBeDeleted);
 			String pathFileSei = VirSatProjectCommons.getStructuralElementInstanceFullPath(seiToBeDeleted);
 
-			// Delete the folder of the SEI 
+			// Delete the folder of the SEI
 			deleteFolderStructures(Paths.get(getCurrentProjectAbsolutePath(), pathFolderSei));
-			
+
 			String resourceFullPath = Paths.get(getCurrentProjectAbsolutePath(), pathFileSei).toAbsolutePath().toString();
-		    URI modelUri = URI.createFileURI(resourceFullPath);
-		    
-		    Resource resource = resourceSet.getResource(modelUri, false);
-		    resourceSet.getResources().remove(resource);
+			URI modelUri = URI.createFileURI(resourceFullPath);
+
+			Resource resource = resourceSet.getResource(modelUri, false);
+			resourceSet.getResources().remove(resource);
 		}
 	}
 	
@@ -187,25 +183,25 @@ public class ModelAPI {
 	 * @throws IOException Exception in case a file or directory could not be removed
 	 */
 	private void deleteFolderStructures(Path directory) throws IOException {
-        Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path subFile, BasicFileAttributes basicFileAttributes) throws IOException {
-                Files.delete(subFile);
-                return FileVisitResult.CONTINUE;
-            }
+		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path subFile, BasicFileAttributes basicFileAttributes) throws IOException {
+				Files.delete(subFile);
+				return FileVisitResult.CONTINUE;
+			}
 
-            @Override
-            public FileVisitResult postVisitDirectory(Path subDirectory, IOException ioException) throws IOException {
-            	// recursive Call to delete the next Directory
-            	if (subDirectory != directory) {
-            		deleteFolderStructures(subDirectory);
-            	}
-                return FileVisitResult.CONTINUE;
-            }
-        });
-        
-        // Finally delete the directory.
-    	Files.delete(directory);
+			@Override
+			public FileVisitResult postVisitDirectory(Path subDirectory, IOException ioException) throws IOException {
+				// recursive Call to delete the next Directory
+				if (subDirectory != directory) {
+					deleteFolderStructures(subDirectory);
+				}
+				return FileVisitResult.CONTINUE;
+			}
+		});
+
+		// Finally delete the directory.
+		Files.delete(directory);
 	}
 	
 	/**
@@ -224,33 +220,33 @@ public class ModelAPI {
 		Files.createDirectories(Paths.get(getCurrentProjectAbsolutePath(), pathFolderSeiDocument));
 
 		String resourceFullPath = Paths.get(getCurrentProjectAbsolutePath(), pathFileSei).toAbsolutePath().toString();
-	    URI modelUri = URI.createFileURI(resourceFullPath);
-	    
-	    Resource resource = resourceSet.createResource(modelUri);
-	    
-	    StructuralElementInstance sei = beanSei.getStructuralElementInstance();
-	    
-	    List<Discipline> disciplines = getRepository().getRoleManagement().getDisciplines();
-	    String userName = System.getProperty("user.name");
-	    
-	    Discipline foundDiscipline = null;
-	    for (Discipline discipline : disciplines) {
-	    	if (discipline.getUser().equals(userName)) {
-	    		foundDiscipline = discipline;
-	    		break;
-	    	}
-	    }
-	    
-	    if (foundDiscipline == null) {
-	    	foundDiscipline = RolesFactory.eINSTANCE.createDiscipline();
-	    	foundDiscipline.setName("APP");
-	    	foundDiscipline.setUser(userName);
-	    	getRepository().getRoleManagement().getDisciplines().add(foundDiscipline);
-	    }
-	    
+		URI modelUri = URI.createFileURI(resourceFullPath);
+
+		Resource resource = resourceSet.createResource(modelUri);
+
+		StructuralElementInstance sei = beanSei.getStructuralElementInstance();
+
+		List<Discipline> disciplines = getRepository().getRoleManagement().getDisciplines();
+		String userName = System.getProperty("user.name");
+
+		Discipline foundDiscipline = null;
+		for (Discipline discipline : disciplines) {
+			if (discipline.getUser().equals(userName)) {
+				foundDiscipline = discipline;
+				break;
+			}
+		}
+
+		if (foundDiscipline == null) {
+			foundDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+			foundDiscipline.setName("APP");
+			foundDiscipline.setUser(userName);
+			getRepository().getRoleManagement().getDisciplines().add(foundDiscipline);
+		}
+
 		sei.setAssignedDiscipline(foundDiscipline);
-	    
-	    resource.getContents().add(sei);
+
+		resource.getContents().add(sei);
 	}
 	
 	/**
@@ -298,15 +294,23 @@ public class ModelAPI {
 	 * Executes the inheritance builder on the current repository
 	 */
 	public void performInheritance() {
-		InheritanceCopier ic = new InheritanceCopier(new IRightsHelper() {
+		InheritanceCopier ic = new InheritanceCopier(new IUserContext() {
 			@Override
-			public boolean hasWriteAccess(EObject eObject) {
+			public boolean isSuperUser() {
 				return true;
 			}
+			
+			@Override
+			public String getUserName() {
+				return "ModelAPI";
+			}
 		});
-	    System.out.println("---------------- Starting Inheritance Builder: ----------------------");
-		ic.updateAllInOrder(getRepository(), new NullProgressMonitor());
-	    System.out.println("---------------- Finished Inheritance Builder: ----------------------");
+		System.out.println("---------------- Starting Inheritance Builder: ----------------------");
+		ic.updateAllInOrder(
+			getRepository(),
+			new NullProgressMonitor()
+		);
+		System.out.println("---------------- Finished Inheritance Builder: ----------------------");
 	}
 	
 	/**

@@ -854,7 +854,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	@Override
 	public boolean isDirty() {
 		updateHasProblematicModelObject();
-		boolean hasWriteAccess = RightsHelper.hasWritePermission(editorModelObject);
+		boolean hasWriteAccess = RightsHelper.hasSystemUserWritePermission(editorModelObject);
 		boolean allowRemoveDanglingReferences = allowRemoveDanglingReferences();
 		boolean isDirty = (!hasProblematicModelObject) && editingDomain.isDirty(editorModelObject.eResource());
 		return hasWriteAccess && (isDirty || allowRemoveDanglingReferences);
@@ -880,7 +880,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	
 	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
-		boolean hasWriteAccess = RightsHelper.hasWritePermission(editorModelObject);
+		boolean hasWriteAccess = RightsHelper.hasSystemUserWritePermission(editorModelObject);
 		
 		if (!hasProblematicModelObject && hasWriteAccess) {
 			updateProblemIndication = false;
