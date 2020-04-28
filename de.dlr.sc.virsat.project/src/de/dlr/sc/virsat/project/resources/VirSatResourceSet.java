@@ -71,6 +71,7 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
+import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceImpl;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -717,6 +718,30 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get a list of all DVLM resources
+	 * @return the list of DVLM resources
+	 */
+	public List<Resource> getDvlmResources() {
+		List<Resource> dvlmResources = new ArrayList<Resource>();
+		for (Resource resource : getResources()) {
+			if (isDvlmResource(resource)) {
+				dvlmResources.add(resource);
+			}
+		}
+		return dvlmResources;
+	}
+
+	/**
+	 * Returns if the given resource is a DVLM resource
+	 * @param resource the resource
+	 * @return if DVLM resource
+	 */
+	public boolean isDvlmResource(Resource resource) {
+		return resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
+	}
+		
 
 	/**
 	 * Method to receive the named core object
@@ -771,7 +796,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 			
 			Repository repo = getRepository();
-			EcoreUtil.resolveAll(this);
+			resolveAllDvlmResources();
 			
 			EcoreUtil.getAllContents(this, true).forEachRemaining((object) -> {
 				if (object instanceof StructuralElementInstance) {
@@ -1151,7 +1176,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
-		if (resource != null) {
+		if (resource != null && resource instanceof DvlmXMIResourceImpl) {
 			// Run individualDiagnostics and merge them
 			
 			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
@@ -1296,5 +1321,16 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		// all other resources should be referenced by this resource as an entry point.
 		getRepositoryResource();
 		EcoreUtil.resolveAll(this);
+	}
+	
+	/**
+	 * Resolve all DVLM resources in this resource set
+	 */
+	public void resolveAllDvlmResources() {
+		for (Resource resource : getResources()) {
+			if (isDvlmResource(resource)) {
+				EcoreUtil.resolveAll(resource);
+			}
+		}
 	}
 }
