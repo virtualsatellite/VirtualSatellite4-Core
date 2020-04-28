@@ -122,10 +122,12 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 			// workspace job as we will need the editing domain to handle resource changes.
 			// This way the current job calling us can safely finish and the new job
 			// will handle the actual changes.
-			Job job = new WorkspaceSynchronizerJob(addedDvlmResources, removedDvlmResources, changedDvlmResources, counter++);
-			String changeList = printLists(addedDvlmResources, removedDvlmResources, changedDvlmResources);
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Scheduling " + job.getName() + ". \n" + changeList));
-			job.schedule();
+			if (!addedDvlmResources.isEmpty() || !removedDvlmResources.isEmpty() || !changedDvlmResources.isEmpty()) {
+				Job job = new WorkspaceSynchronizerJob(addedDvlmResources, removedDvlmResources, changedDvlmResources, counter++);
+				String changeList = printLists(addedDvlmResources, removedDvlmResources, changedDvlmResources);
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Scheduling " + job.getName() + ". \n" + changeList));
+				job.schedule();
+			}
 		}
 	}
 	
