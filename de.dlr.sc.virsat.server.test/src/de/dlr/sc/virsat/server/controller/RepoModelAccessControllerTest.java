@@ -56,10 +56,24 @@ import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	private RepoModelAccessController repoModelAccessController;
-	TestStructuralElement testSei1;
-	TestStructuralElement testSei2;
-	FlattenedStructuralElementInstance flatTestSei1;
-	FlattenedStructuralElementInstance flatTestSei2;
+	private TestStructuralElement testSei1;
+	private TestStructuralElement testSei2;
+	private TestCategoryAllProperty testCa;
+	private FlattenedStructuralElementInstance flatTestSei1;
+	private FlattenedStructuralElementInstance flatTestSei2;
+	private FlattenedCategoryAssignment flatTestCa;
+	
+	private static final double TEST_VALUE_DOUBLE = 10.5d;
+	private static final int TEST_VALUE_INT = 10;
+	private static final String TEST_VALUE_STRING = "Hello";
+	private static final boolean TEST_VALUE_BOOL = true;
+	private static final URI TEST_VALUE_RESOURCE = URI.createPlatformResourceURI("testdata/test.data", true);
+	private static final String TEST_BEAN_NAME = "World";
+	private static final EnumTestEnum TEST_VALUE_ENUM = EnumTestEnum.HIGH;
+	
+	private static final String NAME = "Updated Sei";
+	private static final String DESCRIPTION = "This Sei got updated";
+	private static final String READ_ONLY = "Should not change";
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -76,13 +90,31 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		// Create the controller with the ModelAPI instance
 		repoModelAccessController = new RepoModelAccessController(editingDomain);
 		
-		// Create Test Seis
+		// Create test seis
 		testSei1 = createRootSei("RootSei1");
 		testSei2 = createRootSei("RootSei2");
+		
+		// Create test ca
+		testCa = new TestCategoryAllProperty(testConcept);
+		testCa.setName("TestCa");
+		
+		// Add test properties
+		testCa.setTestBool(TEST_VALUE_BOOL);
+		testCa.setTestFloat(TEST_VALUE_DOUBLE);
+		testCa.setTestInt(TEST_VALUE_INT);
+		testCa.setTestString(TEST_VALUE_STRING);
+		testCa.setTestResource(TEST_VALUE_RESOURCE);
+		testCa.setTestEnum(TEST_VALUE_ENUM.getLiteral());
+		testCa.setName(TEST_BEAN_NAME);
+		
+		// Add ca to sei
+		executeAsCommand(() -> testSei1.add(testCa));
+		
 		rs.saveAllResources(new NullProgressMonitor());
 		
 		flatTestSei1 = new FlattenedStructuralElementInstance(testSei1.getStructuralElementInstance());
 		flatTestSei2 = new FlattenedStructuralElementInstance(testSei2.getStructuralElementInstance());
+		flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
 	}
 	
 	/**
@@ -130,61 +162,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
-	public void testCaAndProperties() throws CoreException {
-		// Create a new TestStructuralElement with a StructuralElementInstance
-		TestStructuralElement tsei = new TestStructuralElement(testConcept);
-		StructuralElementInstance sei = tsei.getStructuralElementInstance();
-		sei.setName("RootSei");
-		
-		// Now add the new SEI to the Repository
-		Command createAddSei = CreateAddSeiWithFileStructureCommand.create(editingDomain, repository, sei);
-		editingDomain.getCommandStack().execute(createAddSei);
-		
-		// Create ca with test properties
-		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
-		testCa.setName("TestCa");
-		
-		// Add test properties
-		final double TEST_VALUE_DOUBLE = 10.5d;
-		final int TEST_VALUE_INT = 10;
-		final String TEST_VALUE_STRING = "Hello";
-		final boolean TEST_VALUE_BOOL = true;
-		final URI TEST_VALUE_RESOURCE = URI.createPlatformResourceURI("testdata/test.data", true);
-		final String TEST_BEAN_NAME = "World";
-		final EnumTestEnum TEST_VALUE_ENUM = EnumTestEnum.HIGH;
-		
-		testCa.setTestBool(TEST_VALUE_BOOL);
-		testCa.setTestFloat(TEST_VALUE_DOUBLE);
-		testCa.setTestInt(TEST_VALUE_INT);
-		testCa.setTestString(TEST_VALUE_STRING);
-		testCa.setTestResource(TEST_VALUE_RESOURCE);
-		testCa.setTestEnum(TEST_VALUE_ENUM.getLiteral());
-		testCa.setName(TEST_BEAN_NAME);
-		
-		// Add ca to sei
-		executeAsCommand(() -> tsei.add(testCa));
-		
-		FlattenedCategoryAssignment flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
-		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());
-		assertEquals("Right ca found", flatTestCa.getFullQualifiedInstanceName(), caByUuid.getFullQualifiedInstanceName());
-		
-		List<FlattenedPropertyInstance> flattenedProperties = flatTestCa.getProperties();
-		
-		// Check for the expected values
-		assertThat(flattenedProperties, matchItem(testCa.getTestBoolBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestFloatBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestIntBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestStringBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestResourceBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestEnumBean()));
-	}
-
-	private Matcher<Iterable<? super FlattenedPropertyInstance>> matchItem(ABeanObject<?> bean) {
-		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
-		return hasItem(hasProperty("value", equalTo(valueSwitch.getValueString(bean.getATypeInstance()))));
-	}
-	
-	@Test
 	public void testGetRootSeis() {
 		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
 		assertEquals("Two root seis found", 2, seis.size());
@@ -219,10 +196,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateSei() throws CoreException, IOException {
-		final String NAME = "Updated Sei";
-		final String DESCRIPTION = "This Sei got updated";
-		final String READ_ONLY = "Should not change";
-		
 		flatTestSei2.setName(NAME);
 		flatTestSei2.setDescription(DESCRIPTION);
 		// These should not do anything
@@ -307,26 +280,64 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateSeiCategoryAssignments() throws CoreException, IOException {
-		assertTrue("Sei has no cas", flatTestSei1.getCategoryAssignments().isEmpty());
+		assertTrue("Sei has no cas", flatTestSei2.getCategoryAssignments().isEmpty());
 		
-		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
-		testCa.setName("TestCa");
-		// Add the ca to the other sei so it get's created
-		executeAsCommand(() -> testSei2.add(testCa));
-		flatTestSei1.setCategoryAssignments(Arrays.asList(testCa.getUuid()));
+		flatTestSei2.setCategoryAssignments(Arrays.asList(testCa.getUuid()));
 		
-		FlattenedStructuralElementInstance updatedSei1;
+		FlattenedStructuralElementInstance updatedSei;
 		
-		repoModelAccessController.putSei(flatTestSei1);
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		repoModelAccessController.putSei(flatTestSei2);
+		updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
-		assertEquals("Sei has ca now", updatedSei1.getCategoryAssignments().size(), 1);
+		assertEquals("Sei has ca now", updatedSei.getCategoryAssignments().size(), 1);
 		
 		flatTestSei1.setCategoryAssignments(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei1);
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		repoModelAccessController.putSei(flatTestSei2);
+		updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
-		assertTrue("Ca got deleted", updatedSei1.getSuperSeis().isEmpty());
+		assertTrue("Ca got deleted", updatedSei.getSuperSeis().isEmpty());
+	}
+	
+	@Test
+	public void testGetCaAndProperties() throws CoreException {
+		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());
+		assertEquals("Right ca found", flatTestCa.getFullQualifiedInstanceName(), caByUuid.getFullQualifiedInstanceName());
+		
+		List<FlattenedPropertyInstance> flattenedProperties = flatTestCa.getProperties();
+		
+		// Check for the expected values
+		assertThat(flattenedProperties, matchItem(testCa.getTestBoolBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestFloatBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestIntBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestStringBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestResourceBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestEnumBean()));
+	}
+	
+	private Matcher<Iterable<? super FlattenedPropertyInstance>> matchItem(ABeanObject<?> bean) {
+		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
+		return hasItem(hasProperty("value", equalTo(valueSwitch.getValueString(bean.getATypeInstance()))));
+	}
+	
+	// TODO: shorter test setup
+	@Test(expected = NullPointerException.class)
+	public void testPutNewCa() throws CoreException, IOException {
+		repoModelAccessController.putCa(new FlattenedCategoryAssignment());
+	}
+	
+	@Test
+	public void testPutUpdateCaAndProperties() throws CoreException, IOException {
+		flatTestCa.setName(NAME);
+		flatTestCa.setType(READ_ONLY);
+		flatTestCa.setFullQualifiedInstanceName(READ_ONLY);
+		
+		repoModelAccessController.putCa(flatTestCa);
+		FlattenedCategoryAssignment updatedCa = repoModelAccessController.getCa(flatTestCa.getUuid());
+		
+		assertEquals("Name changed correctly", NAME, updatedCa.getName());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedCa.getType());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedCa.getUuid());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedCa.getFullQualifiedInstanceName());
 	}
 }

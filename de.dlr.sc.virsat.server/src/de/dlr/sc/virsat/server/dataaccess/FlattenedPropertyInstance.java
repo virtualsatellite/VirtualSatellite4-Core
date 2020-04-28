@@ -9,14 +9,19 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.dataaccess;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 public class FlattenedPropertyInstance {
 
-	private String fullQualifiedInstanceName; //r
+	private String uuid; // r
+	private String fullQualifiedInstanceName; // r
 	private String value; // rw
 	// type //r
 	// maybe add. information e.g. quantityKindName
@@ -38,6 +43,7 @@ public class FlattenedPropertyInstance {
 		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
 		// always use base units?
 		setValue(valueSwitch.getValueString(propertyInstance));
+		setUuid(propertyInstance.getUuid().toString());
 	}
 
 	public String getFullQualifiedInstanceName() {
@@ -54,5 +60,19 @@ public class FlattenedPropertyInstance {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, APropertyInstance property) {
+		CompoundCommand updatePropertyCommand = new CompoundCommand();
+		
+		return updatePropertyCommand;
 	}
 }

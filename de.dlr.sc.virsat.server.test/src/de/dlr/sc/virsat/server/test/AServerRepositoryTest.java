@@ -10,12 +10,9 @@
 package de.dlr.sc.virsat.server.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -23,7 +20,6 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
-import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
@@ -35,22 +31,11 @@ public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 	public static void addServerRepository() throws Exception {
 		Path pathRepoRemote = null;
 		File localRepoHome = null;
-		try {
-			pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
-			localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
-			File fileGitRemoteRepo = pathRepoRemote.toFile();
-			Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
-		} catch (IOException | IllegalStateException | GitAPIException e) {
-			Activator.getDefault().getLog().log(
-				new Status(
-					Status.ERROR,
-					Activator.getPluginId(),
-					"Error during repository setup",
-					e
-				)
-			);
-		}
-		
+		pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
+		localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
+		File fileGitRemoteRepo = pathRepoRemote.toFile();
+		Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
+
 		// Create a repository configuration
 		projectName = "testProject";
 		String uri = pathRepoRemote.toUri().toString();

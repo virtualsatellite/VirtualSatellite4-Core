@@ -18,6 +18,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -105,8 +106,8 @@ public class RepoModelAccessController {
 	}
 	
 	/**
-	 * Update a sei identified by the uuid or throw exeption if it doesn't exit
-	 * @param newSei the sei to put
+	 * Update a sei identified by the uuid or throw exception if it doesn't exit
+	 * @param flatSei the sei to put
 	 * @throws CoreException
 	 * @throws IOException
 	 */
@@ -133,5 +134,22 @@ public class RepoModelAccessController {
 	
 	public FlattenedCategoryAssignment getCa(String uuid) throws CoreException {
 		return new FlattenedCategoryAssignment(RepositoryUtility.findCa(uuid, repository));
+	}
+	
+	/**
+	 * Update a ca identified by the uuid or throw exception if it doesn't exit
+	 * @param flatCa the ca to put
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public void putCa(FlattenedCategoryAssignment flatCa) throws CoreException, IOException {
+		CategoryAssignment oldCa = RepositoryUtility.findCa(flatCa.getUuid(), repository);
+		
+		if (oldCa != null) {
+			Command updateCaCommand = flatCa.unflatten(editingDomain, oldCa);
+			editingDomain.getVirSatCommandStack().executeNoUndo(updateCaCommand);
+		} else {
+			throw new NullPointerException("No resource to update found, use a post request if you want to create a new Resource");
+		}
 	}
 }

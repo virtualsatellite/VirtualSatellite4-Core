@@ -12,16 +12,26 @@ package de.dlr.sc.virsat.server.dataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.edit.command.SetCommand;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 public class FlattenedCategoryAssignment {
 
-	private String name; //rw
-	private String fullQualifiedInstanceName; //r
-	private String type; //r
-	private String uuid; //r
-	private List<FlattenedPropertyInstance> properties; //rw //add+delete on high lvl
+	// API read only
+	private String fullQualifiedInstanceName;
+	private String type;
+	private String uuid;
+
+	// API read and write
+	private String name;
+	private List<FlattenedPropertyInstance> properties; //add+delete on high lvl
 	
 	public FlattenedCategoryAssignment() { }
 	
@@ -30,7 +40,6 @@ public class FlattenedCategoryAssignment {
 	 * @param ca CategoryAssignment
 	 */
 	public FlattenedCategoryAssignment(CategoryAssignment ca) {
-		// TODO: which Properties (and lists) do we want do read?
 		setFullQualifiedInstanceName(ca.getFullQualifiedInstanceName());
 		setName(ca.getName());
 		setType(ca.getType().getFullQualifiedName());
@@ -51,6 +60,31 @@ public class FlattenedCategoryAssignment {
 		}
 		
 		return flattenedProperties;
+	}
+	
+	/**
+	 * Create a command to unflatten the properties of this instance into a existing ca
+	 * @param editingDomain
+	 * @param ca the ca to unflatten on
+	 * @return Command
+	 * @throws CoreException
+	 */
+	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, CategoryAssignment ca) {
+		CompoundCommand updateCaCommand = new CompoundCommand();
+		
+		Command commandSetName = SetCommand.create(editingDomain, ca, GeneralPackage.Literals.INAME__NAME, getName());
+		updateCaCommand.append(commandSetName);
+		
+		// TODO: improve
+		for (APropertyInstance property: ca.getPropertyInstances()) {
+			for (FlattenedPropertyInstance flattenedPropertyInstance : getProperties()) {
+				if (property.getUuid().toString().equals(flattenedPropertyInstance.getUuid())) {
+					updateCaCommand.append(flattenedPropertyInstance.unflatten(editingDomain, property));
+				}
+			}
+		}
+		
+		return updateCaCommand;
 	}
 	
 	public String getName() {
