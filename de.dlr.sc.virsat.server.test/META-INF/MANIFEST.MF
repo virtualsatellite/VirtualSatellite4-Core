@@ -14,4 +14,5 @@ Require-Bundle: de.dlr.sc.virsat.team,
 Export-Package: de.dlr.sc.virsat.server.test
 Automatic-Module-Name: de.dlr.sc.virsat.server.test
 Import-Package: de.dlr.sc.virsat.project.test,
- de.dlr.sc.virsat.team.test
+ de.dlr.sc.virsat.team.test,
+ org.eclipse.jetty.security
