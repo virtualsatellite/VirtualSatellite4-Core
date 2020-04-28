@@ -198,6 +198,6 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		SWTBotGefEditPart interfaceEnd1Connections = interfaceEnd1.children().get(0);
 		
 		List<SWTBotGefConnectionEditPart> interfaceEnd1SourceConnections = interfaceEnd1Connections.sourceConnections();
-		assertEquals(1, interfaceEnd1SourceConnections.size(), 0);
+		assertEquals(1, interfaceEnd1SourceConnections.size());
 	}
 }
