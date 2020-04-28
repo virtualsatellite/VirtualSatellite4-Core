@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +48,12 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  * Class for exporting excel
  */
 public class FuncElecExporter implements IExport {
+	
+	public FuncElecExporter(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
+	}
+	
+	protected LocalDateTime localDateTime;
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportTemplate.xlsx";
 	private ExcelExportHelper helper;
 
@@ -95,7 +102,7 @@ public class FuncElecExporter implements IExport {
 	protected void export(StructuralElementInstance sei, InputStream iStream) {
 		helper = new ExcelExportHelper();
 		helper.setWb(iStream);
-		helper.setHeaders(sei);
+		helper.writeHeaderSheet(sei, localDateTime);
 		exportData(sei);
 	}
 
@@ -109,8 +116,6 @@ public class FuncElecExporter implements IExport {
 	/**
 	 * Exports depending on the type of the Structural element
 	 * @param exportSei Structural element instance to be exported
-	 * @author  Bell_er
-	 * 
 	 */
 	private void exportData(StructuralElementInstance exportSei) {
 		String exportSeiTypeName = exportSei.getType().getName();
@@ -153,7 +158,7 @@ public class FuncElecExporter implements IExport {
 		XSSFSheet sheet = createSheetIfNeeded(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<Interface> seiInterfaces = bCaHelper.getAllBeanCategories(exportSei, Interface.class);	
-		helper.nullChecker(seiInterfaces.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, sheet, AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
+		helper.instantiateCells(sheet, seiInterfaces.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
 		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
 		for (Interface iface : seiInterfaces) {
 			Row row = sheet.getRow(i);
@@ -179,7 +184,7 @@ public class FuncElecExporter implements IExport {
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceType> seiInterfaceTypes = bCaHelper.getAllBeanCategories(exportSei, InterfaceType.class);
 
-		helper.nullChecker(seiInterfaceTypes.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, sheet, AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1);
+		helper.instantiateCells(sheet, seiInterfaceTypes.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1);
 		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
 		for (InterfaceType ifaceType : seiInterfaceTypes) {
 			Row row = sheet.getRow(i);
@@ -198,7 +203,7 @@ public class FuncElecExporter implements IExport {
 		// get all the interface ends
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(exportSei, InterfaceEnd.class);
-		helper.nullChecker(seiInterfaceEnds.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, sheet, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
+		helper.instantiateCells(sheet, seiInterfaceEnds.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
 
 		// for each interface end, fill out a row
 		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
