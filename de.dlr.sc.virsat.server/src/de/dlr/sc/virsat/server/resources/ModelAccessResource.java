@@ -51,7 +51,7 @@ public class ModelAccessResource {
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
 	
-	public class RepoModelAccessResource {
+	public static class RepoModelAccessResource {
 		private RepoModelAccessController controller;
 		
 		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {

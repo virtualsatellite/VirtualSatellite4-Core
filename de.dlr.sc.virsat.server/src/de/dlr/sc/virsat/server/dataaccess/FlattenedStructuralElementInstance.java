@@ -21,6 +21,7 @@ import org.eclipse.emf.edit.command.SetCommand;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
@@ -34,13 +35,12 @@ public class FlattenedStructuralElementInstance {
 	// API read and write
 	private String name;
 	private String description;
+	private String discipline;
 	
 	// API read all and write on existing SEIS
 	private List<String> superSeis;
 	private List<String> children;
 	private List<String> categoryAssignments; // Maybe only read?
-	
-	// TODO: for all IAssignableDisciplines -> change discipline
 	
 	public FlattenedStructuralElementInstance() { }
 	
@@ -50,10 +50,17 @@ public class FlattenedStructuralElementInstance {
 	 */
 	public FlattenedStructuralElementInstance(StructuralElementInstance sei) {
 		setUuid(sei.getUuid().toString());
-		setName(sei.getName());
-		setDescription(sei.getDescription());
 		setSeFullQualifiedName(sei.getType().getFullQualifiedName());
 		setParent(sei.getParent() != null ? sei.getParent().getUuid().toString() : null);
+		
+		setName(sei.getName());
+		setDescription(sei.getDescription());
+		if (sei.getAssignedDiscipline() != null)	{
+			setDiscipline(sei.getAssignedDiscipline().getUuid().toString());
+		} else {
+			setDiscipline(null);
+		}
+		
 		setSuperSeis(collectParentUuids(sei));
 		setChildren(collectChildUuids(sei));
 		setCategoryAssignments(collectCategoryAssignmentUuids(sei));
@@ -100,6 +107,10 @@ public class FlattenedStructuralElementInstance {
 		
 		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIDescription_Description(), getDescription());
 		updateSeiCommand.append(commandSetDescription);
+		
+		Discipline discipline = RepositoryUtility.findDisciplie(getDiscipline(), editingDomain.getResourceSet().getRepository());
+		Command commandSetDiscipline = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline);
+		updateSeiCommand.append(commandSetDiscipline);
 		
 		addAndRemoveParents(sei, editingDomain, updateSeiCommand);
 		addAndRemoveChildren(sei, editingDomain, updateSeiCommand);
@@ -241,5 +252,13 @@ public class FlattenedStructuralElementInstance {
 
 	public void setCategoryAssignments(List<String> categoryAssignments) {
 		this.categoryAssignments = categoryAssignments;
+	}
+
+	public String getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(String discipline) {
+		this.discipline = discipline;
 	}
 }

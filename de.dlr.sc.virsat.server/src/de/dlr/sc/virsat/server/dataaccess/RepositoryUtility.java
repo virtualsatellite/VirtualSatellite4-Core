@@ -20,12 +20,15 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 public class RepositoryUtility {
 
 	private RepositoryUtility() { }
+	
+	// TODO: use ecoreutil or VirSatEcoreUtil or resource insteadof RepositoryUtility
 
 	/**
 	 * Finds a sei instance by it's uuid
@@ -83,6 +86,22 @@ public class RepositoryUtility {
 					APropertyInstance propertyInstance = (APropertyInstance) currentEntity;
 					return propertyInstance;
 				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a discipline instance by it's uuid
+	 * @param uuid
+	 * @return the Disciplie or null
+	 * @throws CoreException
+	 */
+	public static Discipline findDisciplie(String uuid, Repository repository) {
+		EList<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
+		for (Discipline discipline : disciplines) {
+			if (discipline.getUuid().toString().equals(uuid)) {
+				return discipline;
 			}
 		}
 		return null;

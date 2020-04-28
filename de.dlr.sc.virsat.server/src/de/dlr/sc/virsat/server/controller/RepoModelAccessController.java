@@ -112,7 +112,6 @@ public class RepoModelAccessController {
 	 */
 	public void putSei(FlattenedStructuralElementInstance flatSei) throws CoreException, IOException {
 		StructuralElementInstance oldSei = RepositoryUtility.findSei(flatSei.getUuid(), repository);
-		// TODO: use ecoreutil or resource insteadof RepositoryUtility
 		
 		if (oldSei != null) {
 			Command updateSeiCommand = flatSei.unflatten(editingDomain, oldSei);

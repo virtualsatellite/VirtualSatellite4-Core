@@ -68,7 +68,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		addEditingDomainAndRepository();
 
 		// Load the test concepts
-		// TODO: use the right command here
 		executeAsCommand(() -> loadTestConcept());
 		
 		// Save all changes
@@ -213,6 +212,11 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());	
 	}
 	
+	@Test(expected = NullPointerException.class)
+	public void testPutNewSei() throws CoreException, IOException {
+		repoModelAccessController.putSei(new FlattenedStructuralElementInstance());
+	}
+	
 	@Test
 	public void testPutUpdateSei() throws CoreException, IOException {
 		final String NAME = "Updated Sei";
@@ -234,9 +238,23 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedSei.getSeFullQualifiedName());
 	}
 	
-	@Test(expected = NullPointerException.class)
-	public void testPutNewSei() throws CoreException, IOException {
-		repoModelAccessController.putSei(new FlattenedStructuralElementInstance());
+	@Test
+	public void testPutUpdateSeiDiscipline() throws CoreException, IOException {
+		assertEquals("Sei has no discipline initally", flatTestSei1.getDiscipline(), null);
+		String uuid = repository.getRoleManagement().getDisciplines().get(0).getUuid().toString();
+		flatTestSei1.setDiscipline(uuid);
+		
+		FlattenedStructuralElementInstance updatedSei1;
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		assertEquals("Discipline got posted", updatedSei1.getDiscipline(), uuid);
+		
+		flatTestSei1.setDiscipline(null);
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		assertEquals("Discipline got removed", updatedSei1.getDiscipline(), null);
 	}
 	
 	@Test
@@ -293,7 +311,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
 		testCa.setName("TestCa");
-		// TODO: Add the ca to the other sei so it get's created
+		// Add the ca to the other sei so it get's created
 		executeAsCommand(() -> testSei2.add(testCa));
 		flatTestSei1.setCategoryAssignments(Arrays.asList(testCa.getUuid()));
 		
