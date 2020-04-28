@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,44 +14,24 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolverTest;
+import de.dlr.sc.virsat.graphiti.diagram.ToolBehaviorProviderTest;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
 
-
-
-
-
-/**
- * 
- */
 @RunWith(Suite.class)
 
-@SuiteClasses({	BeanIndependenceSolverTest.class,
-				DiagramHelperTest.class
-				})
+@SuiteClasses({
+	BeanIndependenceSolverTest.class,
+	DiagramHelperTest.class,
+	ToolBehaviorProviderTest.class
+})
 
-/**
- * 
- * Test Collection
- *
- */
 public class AllTests {
 
-	/**
-	 * Constructor
-	 */
 	private AllTests() {
-		
 	}
 	
-	/**
-	 * Test Adapter
-	 * @return Executable JUnit Tests
-	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
 	}	
