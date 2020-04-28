@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         id="de.dlr.sc.virsat.project.test.builders.TestInvocationCheckBuilder"
+         name="Virtual Satellite Project Test Builders"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="de.dlr.sc.virsat.project.test.TestInvocationCheckBuilder">
+         </run></builder>
+   </extension>
+   <extension
+         id="de.dlr.sc.virsat.project.test.natures.TestNature"
+         name="Virtual Satellite Project Test Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="de.dlr.sc.virsat.project.test.TestNature">
+         </run>
+      </runtime>
+      <builder
+            id="de.dlr.sc.virsat.project.test.builders.TestInvocationCheckBuilder">
+      </builder>
+   </extension>
+
+</fragment>

@@ -11,9 +11,6 @@ package de.dlr.sc.virsat.project.editingDomain;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -27,11 +24,7 @@ import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.junit.Before;
 import org.junit.Test;
-
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
@@ -46,6 +39,8 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
+import de.dlr.sc.virsat.project.test.TestInvocationCheckBuilder;
+import de.dlr.sc.virsat.project.test.TestNature;
 
 /**
  * test Cases for Workspace Command Stack
@@ -58,6 +53,7 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		super.setUp();
 		addEditingDomainAndRepository();
 		projectCommons.attachProjectNature();
+		projectCommons.attachProjectNature(TestNature.NATURE_ID);
 	}
 	
 	@Override
@@ -243,14 +239,9 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		se.setIsApplicableForAll(true);
 		se.setIsRootStructuralElement(true);
 		
-		// Also add a Category that can be assigned and inherited by the builder
-		Category cat = CategoriesFactory.eINSTANCE.createCategory();
-		cat.setIsApplicableForAll(true);
-		
 		// Create the concept and add it to the repository
 		Concept concept = ConceptsFactory.eINSTANCE.createConcept();
 		concept.getStructuralElements().add(se);
-		concept.getCategories().add(cat);
 		
 		Command addConceptCommand = AddCommand.create(editingDomain, repository, DVLMPackage.eINSTANCE.getRepository_ActiveConcepts(), concept);
 		editingDomain.getCommandStack().execute(addConceptCommand);
@@ -262,36 +253,19 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		sei1.setName("SomeSEI");
 		rs.getStructuralElementInstanceResource(sei1);
 		
-		CategoryAssignment ca = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-		ca.setType(cat);
-		ca.setName("Thing");
-		sei1.getCategoryAssignments().add(ca);
-		
-		// The second SEI does not get the CA, it should be inherited by the builder.
-		StructuralElementInstance sei2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei2.setAssignedDiscipline(discipline);
-		sei2.setType(se);
-		sei2.getSuperSeis().add(sei1);
-		sei2.setName("SubSEI");
-		rs.getStructuralElementInstanceResource(sei2);
-		
 		Command addSei1Command = AddCommand.create(editingDomain, repository, DVLMPackage.eINSTANCE.getRepository_RootEntities(), sei1);
 		editingDomain.getCommandStack().execute(addSei1Command);
-		Command addSei2Command = AddCommand.create(editingDomain, repository, DVLMPackage.eINSTANCE.getRepository_RootEntities(), sei2);
-		editingDomain.getCommandStack().execute(addSei2Command);
 		UserRegistry.getInstance().setSuperUser(false);
 
 		// Try to set the name which should fail for both, because the user context does not match
+		int builderCountBeforeSettingNames = TestInvocationCheckBuilder.getInvocations();
 		Command setSeiName = SetCommand.create(editingDomain, sei1, GeneralPackage.eINSTANCE.getIName_Name(), "SuperSEI");
 		editingDomain.getVirSatCommandStack().executeNoUndo(setSeiName, UserRegistry.getInstance(), true);
 		
 		assertEquals("The name has not been changed", "SomeSEI", sei1.getName());
-		assertEquals("The name has not been changed", "SubSEI", sei2.getName());
-		assertThat("SEI1 has the CA attacged", sei1.getCategoryAssignments(), hasItem(ca));
-		assertThat("SEI2 has no CA yet, nothing is inherited", sei2.getCategoryAssignments(), empty());
-
-		// Try to change the name again with the correct context, and the SEI name should be changed.
-		// The builder is asked to not execute, thus, nothing should be changed on the SEI2
+		assertEquals("The builder has been triggered", builderCountBeforeSettingNames + 1, TestInvocationCheckBuilder.getInvocations());
+	
+		// Try to change the name with the correct context but don't call the builder
 		editingDomain.getVirSatCommandStack().executeNoUndo(setSeiName, new IUserContext() {
 			
 			@Override
@@ -305,13 +279,11 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 			}
 		}, false);
 		
-		assertEquals("Sei Name has been changed", "SuperSEI", sei1.getName());
-		assertEquals("The name has not been changed", "SubSEI", sei2.getName());
-		assertThat("SEI1 has the CA attacged", sei1.getCategoryAssignments(), hasItem(ca));
-		assertThat("SEI2 has no CA yet, nothing is inherited", sei2.getCategoryAssignments(), empty());
-
-		// Try to change the name again with the correct context, and the CA should be inherited.
-		Command setSeiName2 = SetCommand.create(editingDomain, sei1, GeneralPackage.eINSTANCE.getIName_Name(), "SuperSEIx");
+		assertEquals("The name has been changed", "SuperSEI", sei1.getName());
+		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames + 1, TestInvocationCheckBuilder.getInvocations());
+		
+		// now change the name again and call the builder
+		Command setSeiName2 = SetCommand.create(editingDomain, sei1, GeneralPackage.eINSTANCE.getIName_Name(), "SuperSEI2");
 		editingDomain.getVirSatCommandStack().executeNoUndo(setSeiName2, new IUserContext() {
 			
 			@Override
@@ -325,10 +297,7 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 			}
 		}, true);
 		
-		assertEquals("Sei Name has been changed", "SuperSEIx", sei1.getName());
-		
-		assertThat("SEI1 has the CA attacged", sei1.getCategoryAssignments(), hasItem(ca));
-		assertThat("SEI2 has has now a CA", sei2.getCategoryAssignments(), hasSize(1));
-		assertEquals("SEI2 CA is correctly typed", cat, sei2.getCategoryAssignments().get(0).getType());
+		assertEquals("The name has been changed", "SuperSEI2", sei1.getName());
+		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames + 2, TestInvocationCheckBuilder.getInvocations());
 	}
 }
