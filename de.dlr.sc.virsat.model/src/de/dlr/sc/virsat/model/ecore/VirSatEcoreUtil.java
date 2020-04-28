@@ -108,9 +108,24 @@ public class VirSatEcoreUtil extends EcoreUtil {
 	 * @return the list of objects found
 	 */
 	public static <T extends EObject> List<T> getAllContentsOfType(ResourceSet resourceSet, Resource skipResource, Class<T> type, boolean resolve) {
+		if (resolve) {
+			resolveAll(resourceSet);
+		}
+		return getAllContentsOfType(resourceSet.getResources(), skipResource, type, resolve);
+	}
+	
+	/**
+	 * Call this method to find all objects of a given type in a collection of resources 
+	 * @param resourceSet the resourceSet in which to search for the objects
+	 * @param skipResource a resource which should be skipped when looking for the containments of the given type. Can be set to null.
+	 * @param type the class that specifies the type to look for
+	 * @param <T> the type of object that should be looked for
+	 * @param resolve whether to resolve proxies or not
+	 * @return the list of objects found
+	 */
+	public static <T extends EObject> List<T> getAllContentsOfType(Collection<Resource> resources, Resource skipResource, Class<T> type, boolean resolve) {
 		List<T> result = new ArrayList<T>();
-		resolveAll(resourceSet);
-		resourceSet.getResources().forEach((resource) -> {
+		resources.forEach((resource) -> {
 			if (resource != skipResource) {
 				TreeIterator<?> iterator = getAllContents(resource, resolve);
 				result.addAll(getAllContentsOfType(iterator, type));
