@@ -115,7 +115,8 @@ public class RepoModelAccessController {
 		// TODO: use ecoreutil or resource insteadof RepositoryUtility
 		
 		if (oldSei != null) {
-			flatSei.unflatten(editingDomain, oldSei);
+			Command updateSeiCommand = flatSei.unflatten(editingDomain, oldSei);
+			editingDomain.getVirSatCommandStack().executeNoUndo(updateSeiCommand);
 		} else {
 			throw new NullPointerException("No resource to update found, use a post request if you want to create a new Resource");
 		}

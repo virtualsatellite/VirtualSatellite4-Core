@@ -16,9 +16,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -36,9 +36,9 @@ public class FlattenedStructuralElementInstance {
 	private String description;
 	
 	// API read all and write on existing SEIS
-	private List<String> superSeis; // rw existing
-	private List<String> childSeis; // rw existing
-	private List<String> categoryAssignments; // rw? existing
+	private List<String> superSeis;
+	private List<String> children;
+	private List<String> categoryAssignments; // Maybe only read?
 	
 	// TODO: for all IAssignableDisciplines -> change discipline
 	
@@ -55,62 +55,8 @@ public class FlattenedStructuralElementInstance {
 		setSeFullQualifiedName(sei.getType().getFullQualifiedName());
 		setParent(sei.getParent() != null ? sei.getParent().getUuid().toString() : null);
 		setSuperSeis(collectParentUuids(sei));
-		setChildSeis(collectChildUuids(sei));
+		setChildren(collectChildUuids(sei));
 		setCategoryAssignments(collectCategoryAssignmentUuids(sei));
-	}
-
-	/**
-	 * Unflatten the properties of this instance into a existing sei
-	 * @param editingDomain
-	 * @param sei the sei to unflatten on
-	 * @return StructuralElementInstance
-	 * @throws CoreException
-	 */
-	public StructuralElementInstance unflatten(VirSatTransactionalEditingDomain editingDomain, StructuralElementInstance sei) throws CoreException {
-		Repository repository = editingDomain.getResourceSet().getRepository();
-		
-		CompoundCommand compoundCommand = new CompoundCommand();
-		
-		Command commandSetName = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), getName());
-//		alternativ. SetCommand.create(editingDomain, sei, GeneralPackage.Literals.INAME__NAME, getName());
-		compoundCommand.append(commandSetName);
-		
-//		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIDescription_Description(), getDescription());
-		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.Literals.IDESCRIPTION__DESCRIPTION, getDescription());
-		compoundCommand.append(commandSetDescription);
-		
-		// Set or remove parents
-		for (String uuid : getSuperSeis()) {
-			StructuralElementInstance superSei = RepositoryUtility.findSei(uuid, repository);
-			if (superSei != null) {
-				if (!sei.getSuperSeis().contains(superSei)) {
-					compoundCommand.append(new AddCommand(editingDomain, sei.getSuperSeis(), superSei));
-				}
-			}
-			// TODO: remove old ones?
-		}
-
-		// Set all children
-		for (String uuid : getChildSeis()) {
-			StructuralElementInstance childSei = RepositoryUtility.findSei(uuid, repository);
-			if (childSei != null && !sei.getChildren().contains(childSei)) {
-				compoundCommand.append(new AddCommand(editingDomain, sei.getChildren(), childSei));
-			}
-			// TODO: remove old ones?
-		}
-
-		// Set all cas
-		for (String uuid : getCategoryAssignments()) {
-			CategoryAssignment ca = RepositoryUtility.findCa(uuid, repository);
-			if (ca != null && !sei.getCategoryAssignments().contains(ca)) {
-				compoundCommand.append(new AddCommand(editingDomain, sei.getCategoryAssignments(), ca));
-			}
-			// TODO: remove old ones?
-		}
-
-		editingDomain.getVirSatCommandStack().executeNoUndo(compoundCommand);
-		// TODO: maybe return just the command
-		return sei;
 	}
 	
 	private List<String> collectParentUuids(StructuralElementInstance sei) {
@@ -135,6 +81,102 @@ public class FlattenedStructuralElementInstance {
 			uuids.add(ca.getUuid().toString());
 		}
 		return uuids;
+	}
+
+	/**
+	 * Create a command to unflatten the properties of this instance into a existing sei
+	 * @param editingDomain
+	 * @param sei the sei to unflatten on
+	 * @return Command
+	 * @throws CoreException
+	 */
+	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, StructuralElementInstance sei) throws CoreException {
+		
+		CompoundCommand updateSeiCommand = new CompoundCommand();
+		
+		// If the packages with eINSTNACEs don't work use Literals
+		Command commandSetName = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), getName());
+		updateSeiCommand.append(commandSetName);
+		
+		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIDescription_Description(), getDescription());
+		updateSeiCommand.append(commandSetDescription);
+		
+		addAndRemoveParents(sei, editingDomain, updateSeiCommand);
+		addAndRemoveChildren(sei, editingDomain, updateSeiCommand);
+		addAndRemoveCategoryAssignments(sei, editingDomain, updateSeiCommand);
+		
+		return updateSeiCommand;
+	}
+	
+	/**
+	 * Add commands to add or remove parents from sei to updateSeiCommand
+	 * @param sei
+	 * @param editingDomain
+	 * @param updateSeiCommand
+	 * @throws CoreException
+	 */
+	private void addAndRemoveParents(StructuralElementInstance sei, VirSatTransactionalEditingDomain editingDomain, CompoundCommand updateSeiCommand) throws CoreException {
+		// Add parents
+		for (String uuid : getSuperSeis()) {
+			StructuralElementInstance superSei = RepositoryUtility.findSei(uuid, editingDomain.getResourceSet().getRepository());
+			if (superSei != null) {
+				if (!sei.getSuperSeis().contains(superSei)) {
+					updateSeiCommand.append(new AddCommand(editingDomain, sei.getSuperSeis(), superSei));
+				}
+			}
+		}
+		// Remove parents
+		for (StructuralElementInstance superSei : sei.getSuperSeis()) {
+			if (!getSuperSeis().contains(superSei.getUuid().toString())) {
+				updateSeiCommand.append(new RemoveCommand(editingDomain, sei.getSuperSeis(), superSei));
+			}
+		}
+	}
+	
+	/**
+	 * Add commands to add or remove children from sei to updateSeiCommand
+	 * @param sei
+	 * @param editingDomain
+	 * @param updateSeiCommand
+	 * @throws CoreException
+	 */
+	private void addAndRemoveChildren(StructuralElementInstance sei, VirSatTransactionalEditingDomain editingDomain, CompoundCommand updateSeiCommand) throws CoreException {
+		// Add children
+		for (String uuid : getChildren()) {
+			StructuralElementInstance childSei = RepositoryUtility.findSei(uuid, editingDomain.getResourceSet().getRepository());
+			if (childSei != null && !sei.getChildren().contains(childSei)) {
+				updateSeiCommand.append(new AddCommand(editingDomain, sei.getChildren(), childSei));
+			}
+		}
+		// Remove children
+		for (StructuralElementInstance childSei : sei.getChildren()) {
+			if (!getSuperSeis().contains(childSei.getUuid().toString())) {
+				updateSeiCommand.append(new RemoveCommand(editingDomain, sei.getChildren(), childSei));
+			}
+		}
+	}
+	
+	/**
+	 * Add commands to add or remove cas from sei to updateSeiCommand
+	 * @param sei
+	 * @param editingDomain
+	 * @param updateSeiCommand
+	 * @throws CoreException
+	 */
+	private void addAndRemoveCategoryAssignments(StructuralElementInstance sei, VirSatTransactionalEditingDomain editingDomain, CompoundCommand updateSeiCommand) throws CoreException {
+		// Add cas
+		for (String uuid : getCategoryAssignments()) {
+			CategoryAssignment ca = RepositoryUtility.findCa(uuid, editingDomain.getResourceSet().getRepository());
+			if (ca != null && !sei.getCategoryAssignments().contains(ca)) {
+				updateSeiCommand.append(new AddCommand(editingDomain, sei.getCategoryAssignments(), ca));
+			}
+		}
+		// Remove cas
+		for (CategoryAssignment ca : sei.getCategoryAssignments()) {
+			if (!getCategoryAssignments().contains(ca.getUuid().toString())) {
+				updateSeiCommand.append(new RemoveCommand(editingDomain, sei.getCategoryAssignments(), ca));
+			}
+		}
 	}
 
 	public String getUuid() {
@@ -185,12 +227,12 @@ public class FlattenedStructuralElementInstance {
 		this.superSeis = superSeis;
 	}
 
-	public List<String> getChildSeis() {
-		return childSeis;
+	public List<String> getChildren() {
+		return children;
 	}
 
-	public void setChildSeis(List<String> childSeis) {
-		this.childSeis = childSeis;
+	public void setChildren(List<String> children) {
+		this.children = children;
 	}
 
 	public List<String> getCategoryAssignments() {
@@ -200,5 +242,4 @@ public class FlattenedStructuralElementInstance {
 	public void setCategoryAssignments(List<String> categoryAssignments) {
 		this.categoryAssignments = categoryAssignments;
 	}
-	
 }

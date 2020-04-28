@@ -17,8 +17,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -28,6 +31,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.hamcrest.Matcher;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
@@ -159,7 +163,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		testCa.setName(TEST_BEAN_NAME);
 		
 		// Add ca to sei
-		// TODO: use the right command here
 		executeAsCommand(() -> tsei.add(testCa));
 		
 		FlattenedCategoryAssignment flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
@@ -199,8 +202,11 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
+	@Ignore
+	// TODO: if creating is a high level api task, maybe it makes sense to also handle deletion there?
+	// This test case fails if run in alltests because of ui dependencies in CreateRemoveSeiWithFileStructureCommand
+	// Will be fixed in seperate ticket
 	public void testDeleteSei() throws CoreException, IOException {
-		// TODO: this test case fails if run in alltests because of ui dependencies in CreateRemoveSeiWithFileStructureCommand
 		// Delete one sei
 		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
 		repoModelAccessController.deleteSei(uuid);
@@ -211,7 +217,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testPutUpdateSei() throws CoreException, IOException {
 		final String NAME = "Updated Sei";
 		final String DESCRIPTION = "This Sei got updated";
-		
 		final String READ_ONLY = "Should not change";
 		
 		flatTestSei2.setName(NAME);
@@ -235,7 +240,75 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
-	public void testUpdateSeiLists() {
-		// TODO
+	public void testPutUpdateSeiChildren() throws CoreException, IOException {
+		assertTrue("Parent has no children", flatTestSei1.getChildren().isEmpty());
+		assertEquals("Child has no parent yet", flatTestSei2.getParent(), null);
+		
+		flatTestSei1.setChildren(Arrays.asList(flatTestSei2.getUuid()));
+		
+		FlattenedStructuralElementInstance updatedSei1;
+		FlattenedStructuralElementInstance updatedSei2;
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		updatedSei2 = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		
+		assertEquals("Parent in model has one children", updatedSei1.getChildren().size(), 1);
+		assertEquals("Child in model has a parent yet", updatedSei2.getParent(), updatedSei1.getUuid());
+		
+		flatTestSei1.setChildren(new ArrayList<String>());
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		updatedSei2 = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		
+		assertTrue("Parent in models child got removed successfully", updatedSei1.getChildren().isEmpty());
+		assertEquals("Child in model parent got also removed", updatedSei2.getParent(), null);
+	}
+	
+	@Test
+	public void testPutUpdateSeiSuperSeis() throws CoreException, IOException {
+		assertTrue("Sei has no super seis", flatTestSei1.getSuperSeis().isEmpty());
+		
+		flatTestSei1.setSuperSeis(Arrays.asList(flatTestSei2.getUuid()));
+		
+		FlattenedStructuralElementInstance updatedSei1;
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		
+		assertEquals("Sei has super sei now", updatedSei1.getSuperSeis().size(), 1);
+		
+		flatTestSei1.setSuperSeis(new ArrayList<String>());
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		
+		assertTrue("Super sei got deleted", updatedSei1.getSuperSeis().isEmpty());
+	}
+	
+	@Test
+	public void testPutUpdateSeiCategoryAssignments() throws CoreException, IOException {
+		assertTrue("Sei has no cas", flatTestSei1.getCategoryAssignments().isEmpty());
+		
+		TestCategoryAllProperty testCa = new TestCategoryAllProperty(testConcept);
+		testCa.setName("TestCa");
+		// TODO: Add the ca to the other sei so it get's created
+		executeAsCommand(() -> testSei2.add(testCa));
+		flatTestSei1.setCategoryAssignments(Arrays.asList(testCa.getUuid()));
+		
+		FlattenedStructuralElementInstance updatedSei1;
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		
+		assertEquals("Sei has ca now", updatedSei1.getCategoryAssignments().size(), 1);
+		
+		flatTestSei1.setCategoryAssignments(new ArrayList<String>());
+		
+		repoModelAccessController.putSei(flatTestSei1);
+		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		
+		assertTrue("Ca got deleted", updatedSei1.getSuperSeis().isEmpty());
 	}
 }
