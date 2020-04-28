@@ -12,6 +12,11 @@ package de.dlr.sc.virsat.swtbot.test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefConnectionEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
@@ -27,7 +32,8 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollection;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
-import org.junit.Assert;
+
+
 
 /**
  * 
@@ -48,6 +54,8 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	
 	private static final int DRAG2_COORDINATES_X = 100;
 	private static final int DRAG2_COORDINATES_Y = 200;
+	
+	private static final String ELEMENT_CONFIGURATION_NAME = "ElementConfiguration";
 
 	@Before
 	public void before() throws Exception {
@@ -66,40 +74,40 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	public void addInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		undoCommand();
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		redoCommand();
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		undo();
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		redo();
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}	
 
 	@Test
 	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 		
 		delete(elementConfiguration);
 		updateActiveDiagram(diagramEditor);
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}
 	
 	@Test
 	public void dragDropTreeinDiagram() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		dragTreeItemToDiagramEditor(configurationTree, diagramEditor);
-		Assert.assertEquals(0, diagramEditor.selectedEditParts().size(), 0);
+		assertTrue(diagramEditor.selectedEditParts().isEmpty());
 	}
 	
 	@Test
 	public void addInterfaceEndDiagramElementUndoRedoTest() {
 		addElement(InterfaceEnd.class, conceptFuncElectrical, elementConfiguration);
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		undoCommand();
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		redoCommand();
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		undo();
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		redo();
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}
 	
 	@Test
@@ -109,57 +117,57 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		SWTBotTreeItem interfaceEndItem = addElement(InterfaceEnd.class, conceptFuncElectrical, elementConfiguration);
 		
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, 0, 0);
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 		
-		SWTBotGefEditPart editPart = diagramEditor.getEditPart("ElementConfiguration");
-		SWTBotGefEditPart child = editPart.children().get(0);
+		SWTBotGefEditPart interfaceConfiguration = diagramEditor.getEditPart(ELEMENT_CONFIGURATION_NAME);
+		SWTBotGefEditPart interfaceEnd = interfaceConfiguration.children().get(0);
 
-		dragTreeItemOnToEditPart(interfaceTypeItem, diagramEditor, child);
+		dragTreeItemOnToEditPart(interfaceTypeItem, diagramEditor, interfaceEnd);
 				
 		String text = interfaceEndItem.expand().getNode(0).getText();
-		Assert.assertTrue(text.equals("type -> InterfaceType"));		
+		assertTrue(text.equals("type -> InterfaceType"));		
 	}
 	
 	@Test
 	public void removeInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 		
-		removeEditPartInDiagramEditor(diagramEditor, "ElementConfiguration");
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));		
+		removeEditPartInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME);
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));		
 		
-		undoCommand();
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		redoCommand();
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		undo();
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		redo();
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}
 	
 	@Test
 	public void deleteInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor);
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 		
 		String elementConfigurationName = elementConfiguration.getText();
 		
-		deleteEditPartInDiagramEditor(diagramEditor, "ElementConfiguration");
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		Assert.assertFalse(isTreeItemPresentInTreeView(elementConfiguration));
+		deleteEditPartInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME);
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		assertFalse(isTreeItemPresentInTreeView(elementConfiguration));
 		
 		diagramEditor.setFocus();
 		
-		undoCommand();
-		Assert.assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
+		undo();
+		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 		
 		SWTBotTreeItem elementConfigurationNode = configurationTree.getNode(elementConfigurationName);
-		Assert.assertNotNull(elementConfigurationNode);
+		assertNotNull(elementConfigurationNode);
 		
 		diagramEditor.setFocus();
 
-		redoCommand();
-		Assert.assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, "ElementConfiguration"));
-		Assert.assertFalse(isTreeItemPresentInTreeView(elementConfigurationNode));
+		redo();
+		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
+		assertFalse(isTreeItemPresentInTreeView(elementConfigurationNode));
 	}
 	
 	@Test
@@ -167,23 +175,29 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
 		
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, DRAG1_COORDINATES_X, DRAG1_COORDINATES_Y);
-		SWTBotGefEditPart swtBotGefEditPart1 = diagramEditor.selectedEditParts().get(0);		
+		SWTBotGefEditPart interfaceConfiguration1 = diagramEditor.selectedEditParts().get(0);		
 
 		dragTreeItemToDiagramEditor(elementConfiguration, diagramEditor, DRAG2_COORDINATES_X, DRAG2_COORDINATES_Y);
-		SWTBotGefEditPart swtBotGefEditPart2 = diagramEditor.selectedEditParts().get(0);		
+		SWTBotGefEditPart interfaceConfiguration2 = diagramEditor.selectedEditParts().get(0);		
 		
 		diagramEditor.activateTool("InterfaceEnd");
-		diagramEditor.click(swtBotGefEditPart1);
+		diagramEditor.click(interfaceConfiguration1);
 		
 		diagramEditor.activateTool("InterfaceEnd");
-		diagramEditor.click(swtBotGefEditPart2);
+		diagramEditor.click(interfaceConfiguration2);
 		
 		diagramEditor.activateTool("Interface");
-		diagramEditor.click(swtBotGefEditPart1.children().get(0));
-		diagramEditor.click(swtBotGefEditPart2.children().get(0));
+		
+		SWTBotGefEditPart interfaceEnd1 = interfaceConfiguration1.children().get(0);
+		SWTBotGefEditPart interfaceEnd2 = interfaceConfiguration2.children().get(0);
+		
+		diagramEditor.click(interfaceEnd1);
+		diagramEditor.click(interfaceEnd2);
 		bot.button("OK").click();
 		
-		List<SWTBotGefConnectionEditPart> sourceConnections = swtBotGefEditPart1.children().get(0).children().get(0).sourceConnections();
-		Assert.assertEquals(1, sourceConnections.size(), 0);
+		SWTBotGefEditPart interfaceEnd1Connections = interfaceEnd1.children().get(0);
+		
+		List<SWTBotGefConnectionEditPart> interfaceEnd1SourceConnections = interfaceEnd1Connections.sourceConnections();
+		assertEquals(1, interfaceEnd1SourceConnections.size(), 0);
 	}
 }

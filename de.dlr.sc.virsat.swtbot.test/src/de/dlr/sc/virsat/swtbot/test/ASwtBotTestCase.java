@@ -77,6 +77,8 @@ public class ASwtBotTestCase {
 	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	protected static final int EDIT_UNDO_MENU_POSITION = 0;
+	protected static final int EDIT_REDO_MENU_POSITION = 1;
 	
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
@@ -238,18 +240,6 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
-	 * Returns the absolute rectangular bounds for a SWTBotGefEditpart element
-	 * @param SWTBotEditPart edit part to get bounds for
-	 * @return Rectangle bounds for SWTBotGefEditPart
-	 */
-	protected Rectangle getBoundsForEditPart(SWTBotGefEditPart swtBotEditPart) {	
-		IFigure figure = ((GraphicalEditPart) swtBotEditPart.part()).getFigure();
-		Rectangle bounds = figure.getBounds().getCopy();
-		figure.translateToAbsolute(bounds);		
-		return bounds;
-	}
-	
-	/**
 	 * We can only drop tree items to canvas elements. SWTBotGefViewer's canvas element is not 
 	 * capable of beeing accessed directly from external classes though. Further more SWTBotGefViewer's 
 	 * canvas member gets populated during runtime only. Hence we use reflections to get a hold on it here.
@@ -296,6 +286,18 @@ public class ASwtBotTestCase {
 			}
 		}
 		return canvas;
+	}
+	
+	/**
+	 * Returns the absolute rectangular bounds for a SWTBotGefEditpart element
+	 * @param SWTBotEditPart edit part to get bounds for
+	 * @return Rectangle bounds for SWTBotGefEditPart
+	 */
+	protected Rectangle getBoundsForEditPart(SWTBotGefEditPart swtBotEditPart) {	
+		IFigure figure = ((GraphicalEditPart) swtBotEditPart.part()).getFigure();
+		Rectangle bounds = figure.getBounds().getCopy();
+		figure.translateToAbsolute(bounds);		
+		return bounds;
 	}
 	
 	/**
@@ -549,9 +551,9 @@ public class ASwtBotTestCase {
 	/**
 	 * Undo the last command made
 	 */
-	protected void undoCommand() {
+	protected void undo() {
 		SWTBotMenu editMenu = bot.shell().menu().menu("Edit").click();
-		String undoCommandLabel = editMenu.menuItems().get(0);
+		String undoCommandLabel = editMenu.menuItems().get(EDIT_UNDO_MENU_POSITION);
 		editMenu.menu(undoCommandLabel).click();
 		waitForEditingDomainAndUiThread();
 	}
@@ -559,9 +561,9 @@ public class ASwtBotTestCase {
 	/**
 	 * Redo the last command that was undone
 	 */
-	protected void redoCommand() {
+	protected void redo() {
 		SWTBotMenu editMenu = bot.shell().menu().menu("Edit").click();
-		String redoCommandLabel = editMenu.menuItems().get(1);
+		String redoCommandLabel = editMenu.menuItems().get(EDIT_REDO_MENU_POSITION);
 		editMenu.menu(redoCommandLabel).click();
 		waitForEditingDomainAndUiThread();
 	}
