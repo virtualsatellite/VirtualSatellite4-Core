@@ -99,7 +99,8 @@ public class VirSatProjectCommons {
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX = "ise_";
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS = "documents";
 
-	public static final String FILENAME_STRUCTURAL_ELEMENT = "StructuralElement.dvlm";
+	public static final String FILENAME_STRUCTURAL_ELEMENT_SEGMENT = "StructuralElement";
+	public static final String FILENAME_STRUCTURAL_ELEMENT = FILENAME_STRUCTURAL_ELEMENT_SEGMENT + "." + FILENAME_EXTENSION;
 
 	/**
 	 * This method hands back the path and the filename as String based path of a given SEI

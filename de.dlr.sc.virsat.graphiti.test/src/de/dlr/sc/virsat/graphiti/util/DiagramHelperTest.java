@@ -94,6 +94,27 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		assertTrue(DiagramHelper.hasDiagramWritePermission(diagram));
 	}
 	
+	@Test
+	public void testGetOwningStructuralElementInstance() {		
+		
+		assertNull("There is no owning SEI attached yet", DiagramHelper.getOwningStructuralElementInstance(diagram));
+		
+		// Owning sei for which we have no rights -> no permissions
+		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		owningSei.setUuid(new VirSatUuid(UUID));
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				resSet.getAndAddStructuralElementInstanceResource(owningSei);
+			}
+		});
+		assertEquals("Resolved correct SEI via URI", owningSei, DiagramHelper.getOwningStructuralElementInstance(diagram));
+		
+		diagram.eResource().setURI(URI.createPlatformResourceURI("badURI", true));
+		
+		assertNull("There is no owning SEI found in case URIs don't match", DiagramHelper.getOwningStructuralElementInstance(diagram));
+	}
+	
 	private static final String USER_NAME = "hans";
 	private static final int VALIDITY_DAY = 365;
 	
@@ -116,11 +137,11 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		
 		StructuralElementInstance businessObject = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		
-		assertFalse(DiagramHelper.hasBothWritePermission(businessObject, diagram));
+		assertFalse("There is no write access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
 		
 		businessObject.setAssignedDiscipline(discipline);
 		
-		assertTrue(DiagramHelper.hasBothWritePermission(businessObject, diagram));
+		assertTrue("There is access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
 		
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
@@ -129,7 +150,9 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 			}
 		});
 		
-		assertFalse(DiagramHelper.hasBothWritePermission(businessObject, diagram));
+		assertFalse("There is no write access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
+		
+		assertTrue("A random object always ahs write permission", DiagramHelper.hasBothWritePermission(new Object(), diagram));
 	}
 	
 	@Test
@@ -144,6 +167,7 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		BeanCategoryAssignment beanCa = new BeanCategoryAssignment();
 		beanCa.setATypeInstance(ca);
 		assertEquals(ca, DiagramHelper.getEObject(ca));
+		assertEquals(ca, DiagramHelper.getEObject(beanCa));
 		
 		assertNull(DiagramHelper.getEObject("test"));
 	}

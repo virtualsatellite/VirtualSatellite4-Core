@@ -47,6 +47,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Utility class for getting information of Graphiti diagram objects.
@@ -85,8 +86,8 @@ public class DiagramHelper {
 			seiSegmentsList = seiSegmentsList.subList(1, seiSegmentsList.size() - 2);
 			String[] seiSegments = new String[seiSegmentsList.size()];
 			URI seiUri = URI.createHierarchicalURI(seiSegmentsList.toArray(seiSegments), resourceUri.query(), resourceUri.fragment());
-			seiUri = seiUri.appendSegment("StructuralElement");
-			seiUri = seiUri.appendFileExtension("dvlm");
+			seiUri = seiUri.appendSegment(VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT_SEGMENT);
+			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
 			
 			Path path = new Path(resourceUri.toPlatformString(false));
