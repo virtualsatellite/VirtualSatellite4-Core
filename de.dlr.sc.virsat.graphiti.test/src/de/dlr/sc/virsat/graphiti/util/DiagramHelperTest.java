@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.services.Graphiti;
 import org.junit.After;
@@ -41,10 +40,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * This class tests the DiagramHelper
- * @author muel_s8
- *
  */
-
 public class DiagramHelperTest extends AConceptProjectTestCase {
 	
 	private static final String UUID = "ea816464-cea3-4db7-ae91-31d37c60a63c";
@@ -81,12 +77,8 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		// Owning sei for which we have no rights -> no permissions
 		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		owningSei.setUuid(new VirSatUuid(UUID));
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				resSet.getAndAddStructuralElementInstanceResource(owningSei);
-			}
-		});
+		
+		executeAsCommand(() -> resSet.getAndAddStructuralElementInstanceResource(owningSei));
 		assertFalse(DiagramHelper.hasDiagramWritePermission(diagram));
 		
 		// Owning sei for which we have rights -> have permissions
@@ -102,12 +94,8 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		// Owning sei for which we have no rights -> no permissions
 		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		owningSei.setUuid(new VirSatUuid(UUID));
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				resSet.getAndAddStructuralElementInstanceResource(owningSei);
-			}
-		});
+		
+		executeAsCommand(() -> resSet.getAndAddStructuralElementInstanceResource(owningSei));
 		assertEquals("Resolved correct SEI via URI", owningSei, DiagramHelper.getOwningStructuralElementInstance(diagram));
 		
 		diagram.eResource().setURI(URI.createPlatformResourceURI("badURI", true));
@@ -128,12 +116,9 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		owningSei.setUuid(new VirSatUuid(UUID));
 		owningSei.setAssignedDiscipline(discipline);
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				resSet.getAndAddStructuralElementInstanceResource(owningSei);
-			}
-		});
+		
+		executeAsCommand(() -> resSet.getAndAddStructuralElementInstanceResource(owningSei));
+		
 		
 		StructuralElementInstance businessObject = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		
@@ -143,12 +128,7 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		
 		assertTrue("There is access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
 		
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				owningSei.setAssignedDiscipline(null);
-			}
-		});
+		executeAsCommand(() -> resSet.getAndAddStructuralElementInstanceResource(null));
 		
 		assertFalse("There is no write access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
 		
