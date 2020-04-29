@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -47,7 +48,8 @@ public class ExcelExporterTest {
 	private StateMachine stateMaschine;
 
 	private Concept conceptStateMachines;
-
+	protected LocalDateTime localDateTime;
+	
 	@Before
 	public void setUp() throws CoreException {
 		UserRegistry.getInstance().setSuperUser(true);
@@ -73,13 +75,17 @@ public class ExcelExporterTest {
 		aBeanSei.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
 		aBeanSei.setName("BATTERY");
 		aBeanSei.add(stateMaschine);
+		
+		//CHECKSTYLE:OFF
+		localDateTime = LocalDateTime.of(2020, 04, 21, 13, 27);
+		//CHECKSTYLE:ON
 	}
 
 	@Test
 	public void exportDateTest() throws IOException {		
 		InputStream iStream = Activator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
-		StateMachineExporter sme = new StateMachineExporter();
+		StateMachineExporter sme = new StateMachineExporter(localDateTime);
 		sme.helper.setWb(wb);
 		sme.exportData(stateMaschine.getTypeInstance());
 		wb = sme.helper.getWb();

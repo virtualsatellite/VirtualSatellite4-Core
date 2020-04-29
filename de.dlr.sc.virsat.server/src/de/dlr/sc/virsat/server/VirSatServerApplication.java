@@ -63,6 +63,7 @@ public class VirSatServerApplication implements IApplication {
 		System.out.println("About to start the Jetty Server instance...");
 		
 		jettyServer = new VirSatJettyServer();
+		jettyServer.init();
 		jettyServer.start().join();
 		
 		System.out.println("--------------------------------------------------");
