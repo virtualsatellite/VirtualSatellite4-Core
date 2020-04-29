@@ -119,7 +119,6 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		
 		executeAsCommand(() -> resSet.getAndAddStructuralElementInstanceResource(owningSei));
 		
-		
 		StructuralElementInstance businessObject = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		
 		assertFalse("There is no write access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
@@ -128,7 +127,7 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		
 		assertTrue("There is access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
 		
-		executeAsCommand(() -> resSet.getAndAddStructuralElementInstanceResource(null));
+		executeAsCommand(() -> owningSei.setAssignedDiscipline(null));
 		
 		assertFalse("There is no write access for the businessObject", DiagramHelper.hasBothWritePermission(businessObject, diagram));
 		
