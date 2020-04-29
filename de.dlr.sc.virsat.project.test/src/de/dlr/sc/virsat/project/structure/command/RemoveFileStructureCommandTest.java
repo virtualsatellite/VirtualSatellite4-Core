@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.RecordingCommand;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,24 +84,16 @@ public class RemoveFileStructureCommandTest extends AProjectTestCase {
 		
 		addEditingDomainAndRepository();
 
-		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				// Now create a SEI for testing and embed it into the TransactionalEditingDomain 
-				testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-				projectCommons.createFolderStructure(testSei, null);
-				testSeiFolder = projectCommons.getStructuralElemntInstanceFolder(testSei);
-				Resource resource = rs.getStructuralElementInstanceResource(testSei);
-				resource.getContents().add(testSei);
-			}
+		executeAsCommand(() -> {
+			// Now create a SEI for testing and embed it into the TransactionalEditingDomain 
+			testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+			projectCommons.createFolderStructure(testSei, null);
+			testSeiFolder = projectCommons.getStructuralElemntInstanceFolder(testSei);
+			Resource resource = rs.getStructuralElementInstanceResource(testSei);
+			resource.getContents().add(testSei);
 		});
 	}
 
-	@After
-	public void tearDown() throws CoreException {
-		super.tearDown();
-	}
-	
 	@Test
 	public void testRemoveFileStructureCommand() {
 		AtomicBoolean gotCalled = new AtomicBoolean(false);

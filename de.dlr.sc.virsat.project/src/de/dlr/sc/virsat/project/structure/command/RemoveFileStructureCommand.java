@@ -34,8 +34,8 @@ import de.dlr.sc.virsat.project.structure.operation.NoUndoDeleteResourceOperatio
  */
 public class RemoveFileStructureCommand extends AbstractCommand implements IVirSatRecordableCommand {
 
-	public static final Function<IFolder,  ? extends AbstractOperation> DELETE_RESOURCE_OPERATION_FUNCTION
-		= (iFolder) -> new NoUndoDeleteResourceOperation(iFolder, true);
+	public static final Function<IFolder,  ? extends AbstractOperation>
+		DELETE_RESOURCE_OPERATION_FUNCTION = (iFolder) -> new NoUndoDeleteResourceOperation(iFolder, true);
 	
 	private VirSatProjectCommons projectCommons;
 	private AbstractOperation deleteResourceOperation;
@@ -47,7 +47,10 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	 * @param iste {@link IStructuralTreeElement}
 	 * @param deleteResourcesOperationFunction the callback function that is used to create the actual delete operation in the workspace
 	 */
-	public RemoveFileStructureCommand(IProject selectedProject, StructuralElementInstance iste, Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {
+	public RemoveFileStructureCommand(
+			IProject selectedProject,
+			StructuralElementInstance iste,
+			Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		projectCommons = new VirSatProjectCommons(selectedProject);
 		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(iste);
 		this.deleteResourceOperation = deleteResourcesOperationFunction.apply(seiFolder);
@@ -61,6 +64,7 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	protected void executeExclusive(Runnable runnable) {
 		try {
 			editingDomain.runExclusive(runnable);
+			editingDomain.getVirSatCommandStack().triggerSaveAll();
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
 		}
@@ -71,7 +75,6 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		executeExclusive(() -> {
 			try {
 				deleteResourceOperation.execute(null, null);
-				editingDomain.getVirSatCommandStack().triggerSaveAll();
 			} catch (ExecutionException e) {
 				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Delete SEI folder structure!", e));
 			}
@@ -83,7 +86,6 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		executeExclusive(() -> {
 			try {
 				deleteResourceOperation.redo(null, null);
-				editingDomain.getVirSatCommandStack().triggerSaveAll();
 			} catch (ExecutionException e) {
 				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Redo Delete of SEI folder structure!", e));
 			}
@@ -95,7 +97,6 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 		executeExclusive(() -> {
 			try {
 				deleteResourceOperation.undo(null,  null);
-				editingDomain.getVirSatCommandStack().triggerSaveAll();
 			} catch (ExecutionException e) {
 				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to Undo Delete of SEI folder structure!", e));
 			}

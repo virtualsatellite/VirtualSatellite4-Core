@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.transaction.RecordingCommand;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -96,11 +95,6 @@ public class CreateRemoveSeiWithFileStructureCommandTest extends AProjectTestCas
 		});
 	}
 
-	@After
-	public void tearDown() throws CoreException {
-		super.tearDown();
-	}
-	
 	@Test
 	public void testCreateWithSingleSelection() {
 		Command deleteSei2 = CreateRemoveSeiWithFileStructureCommand.create(sei2, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
@@ -128,14 +122,12 @@ public class CreateRemoveSeiWithFileStructureCommandTest extends AProjectTestCas
 	public void testCreateSingleSelectionWithoutResource() {
 		// Create a 4th SEI which is not embedded into a resource, but which has a file structure
 		StructuralElementInstance sei4 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				repository.getRootEntities().remove(sei1);
-				sei4.setType(se);
-				projectCommons.createFolderStructure(sei4, null);
-				repository.getRootEntities().add(sei4);
-			}
+		
+		executeAsCommand(() -> {
+			repository.getRootEntities().remove(sei1);
+			sei4.setType(se);
+			projectCommons.createFolderStructure(sei4, null);
+			repository.getRootEntities().add(sei4);
 		});
 		
 		assertNull("There is no resource with SEI4", sei4.eResource());

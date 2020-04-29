@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,11 +44,6 @@ public class NoUndoDeleteResourceOperationTest extends AProjectTestCase {
 		
 		testFolder.create(true, true, null);
 		testSubFolder.create(true, true, null);
-	}
-
-	@After
-	public void tearDown() throws CoreException  {
-		super.tearDown();
 	}
 
 	@Test
