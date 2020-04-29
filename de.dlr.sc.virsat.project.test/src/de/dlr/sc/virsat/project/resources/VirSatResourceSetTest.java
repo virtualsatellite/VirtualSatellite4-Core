@@ -23,7 +23,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -41,6 +43,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.xmi.DanglingHREFException;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -586,6 +589,58 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		assertTrue("Resource got deserialized from persistant storage", resSei2.isLoaded());
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1.isLoaded());
 		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
+	}
+	
+	@Test
+	public void testGetDvlmResources() throws IOException, CoreException {
+		VirSatResourceSet resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
+		resSet.initializeModelsAndResourceSet();
+		
+		Repository repo = resSet.getRepository();
+		
+		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		se.setIsApplicableForAll(true);
+		
+		//CHECKSTYLE:OFF
+		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance sei2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance sei2_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance sei2_1_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		sei1.setType(se);
+		sei2.setType(se);
+		sei2_1.setType(se);
+		sei2_1_1.setType(se);
+		
+		Resource resSei1 = resSet.getAndAddStructuralElementInstanceResource(sei1);
+		Resource resSei2 = resSet.getAndAddStructuralElementInstanceResource(sei2);
+		Resource resSei2_1 = resSet.getAndAddStructuralElementInstanceResource(sei2_1);
+		Resource resSei2_1_1 = resSet.getAndAddStructuralElementInstanceResource(sei2_1_1);
+		//CHECKSTYLE:ON
+		
+		repo.getRootEntities().add(sei1);
+		repo.getRootEntities().add(sei2);
+
+		sei2.getChildren().add(sei2_1);
+		sei2_1.getChildren().add(sei2_1_1);
+		
+		resSet.saveAllResources(new NullProgressMonitor());
+		
+		resSei1.unload();
+		resSei2.unload();
+		resSei2_1.unload();
+		resSei2_1_1.unload();
+		
+		URI uri = URI.createPlatformResourceURI("/testProject_VirSatResourceSetTest/test.ecore", true);
+		Resource newResource = new XMIResourceImpl(uri);
+		newResource.save(Collections.EMPTY_MAP);
+		Resource nonDvlmResourceReload = resSet.getResource(uri, true);
+		
+		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei1));
+		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei2));
+		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei2_1));
+		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei2_1_1));
+		assertFalse("Should not contain other resources", resSet.getDvlmResources().contains(nonDvlmResourceReload));
+		
 	}
 	
 	@Test
