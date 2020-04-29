@@ -739,7 +739,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 
 		// Now add the null object and see that the diagnostics are running as expected
 		resSet.getResources().add(nullableResource);
-		nullableResource.setURI(URI.createURI("uri://TestUri.uri"));
+		nullableResource.setURI(URI.createURI("platform:/resource/testProject/resource/NullResource.dvlm"));
 		nullableResource.getContents().add(null);
 		assertTrue("Now the diagnostics is triggered", resSet.triggeredDiagnosticUpdate);
 

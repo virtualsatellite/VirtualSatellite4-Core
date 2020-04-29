@@ -71,7 +71,6 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
-import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceImpl;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -1176,7 +1175,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
-		if (resource != null && resource instanceof DvlmXMIResourceImpl) {
+		if (resource != null && isDvlmResource(resource)) {
 			// Run individualDiagnostics and merge them
 			
 			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
