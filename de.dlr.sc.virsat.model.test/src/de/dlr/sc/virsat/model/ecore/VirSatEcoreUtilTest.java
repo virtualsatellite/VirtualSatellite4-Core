@@ -200,6 +200,12 @@ public class VirSatEcoreUtilTest {
 		
 		assertEquals("Found correct amount of Elements", EXPECTED_UVPI_SINGLE, allUvpi2.size());
 		assertEquals("Found correct amount of Elements", EXPECTED_VPI_SINGLE, allVpi2.size());
+		
+		List<UnitValuePropertyInstance> allUvpi3 = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getResources(), resource1, UnitValuePropertyInstance.class, true);
+		List<ValuePropertyInstance> allVpi3 = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getResources(), resource1, ValuePropertyInstance.class, true);
+		
+		assertEquals("Found correct amount of Elements", EXPECTED_UVPI_SINGLE, allUvpi3.size());
+		assertEquals("Found correct amount of Elements", EXPECTED_VPI_SINGLE, allVpi3.size());
 	}
 
 	@Test
