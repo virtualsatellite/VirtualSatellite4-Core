@@ -25,9 +25,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Class to provide useful methods for StructuralElementInstances
- * 
- * @author bell_er
- *
  */
 public class StructuralElementInstanceHelper {
 	
@@ -121,13 +118,23 @@ public class StructuralElementInstanceHelper {
 	public static ArrayList<StructuralElementInstance> cleanFromIndirectSelectedChildren(Collection<StructuralElementInstance> seisToDelete) {
 		Set<EObject> selectedToBeDeleted = new HashSet<>(seisToDelete);
 		ArrayList<StructuralElementInstance> seisToDeleteWithoutDuplicateChildren = new ArrayList<>();
+		
+		// Loop over all SEIs and see if it is indirectly selected by one of its parents.
 		for (StructuralElementInstance sei : seisToDelete) {
+			
+			// Now find a parent to the SEI, which is not yet selected for being deleted
+			// Basically this means, check if the current selection is already indirectly selected by a parent
+			// If yes it does not need to be added to the actual list of SEIs that should be deleted
+			// since it will be deleted by the parent as well.
 			EObject parent = sei.eContainer();
 			while (parent instanceof StructuralElementInstance && !selectedToBeDeleted.contains(parent)) {
 				parent = parent.eContainer();
 			}
+			
+			// Now if the selected SEI does not have a parent which is also selected,
+			// than it has to be explicitly be deleted.
 			if (!(parent instanceof StructuralElementInstance)) {
-				seisToDeleteWithoutDuplicateChildren.add(sei); //parents of eobject are not marked for deletion 
+				seisToDeleteWithoutDuplicateChildren.add(sei); 
 			}
 		}
 		return seisToDeleteWithoutDuplicateChildren;

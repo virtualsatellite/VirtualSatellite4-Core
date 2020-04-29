@@ -198,9 +198,28 @@ public class StructuralElementInstanceHelperTest {
 		selectedSeis.add(seiB2);
 		selectedSeis.add(seiB3);
 		
-		List<StructuralElementInstance> selectedParentSeis = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(selectedSeis);
+		List<StructuralElementInstance> cleanedSeiSelection = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(selectedSeis);
 		
-		assertThat("The filtered list only contains the parents", selectedParentSeis, hasItems(seiA1, seiB2));
-		assertThat("The filtered list has exactly two entries", selectedParentSeis, hasSize(2));
+		assertThat("The filtered list only contains the parents", cleanedSeiSelection, hasItems(seiA1, seiB2));
+		assertThat("The filtered list has exactly two entries", cleanedSeiSelection, hasSize(2));
+		
+		// Now check that the order of selection is not relevant for the result
+		List<StructuralElementInstance> selectedSeis2 = new ArrayList<>();
+		selectedSeis2.add(seiA2);
+		selectedSeis2.add(seiA4);
+		
+		List<StructuralElementInstance> cleanedSeiSelection2 = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(selectedSeis2);
+		assertThat("The filtered list only contains A2", cleanedSeiSelection2, hasItem(seiA2));
+		assertThat("The filtered list does not contains A4", cleanedSeiSelection2, not(hasItem(seiA4)));
+		assertThat("The filtered list has exactly one entries", cleanedSeiSelection2, hasSize(1));
+		
+		List<StructuralElementInstance> selectedSeis2Reverse = new ArrayList<>();
+		selectedSeis2Reverse.add(seiA4);
+		selectedSeis2Reverse.add(seiA2);
+		
+		List<StructuralElementInstance> cleanedSeiSelection2Reverse = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(selectedSeis2Reverse);
+		assertThat("The filtered list only contains A2", cleanedSeiSelection2Reverse, hasItem(seiA2));
+		assertThat("The filtered list does not contains A4", cleanedSeiSelection2Reverse, not(hasItem(seiA4)));
+		assertThat("The filtered list has exactly one entries", cleanedSeiSelection2Reverse, hasSize(1));
  	}
 }
