@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.ps.migrator;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
 
 
@@ -27,8 +26,4 @@ import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
  */
 public class Migrator1v3 extends AMigrator1v3 implements IMigrator {
 
-	@Override
-	public void migrate(Concept concept, IMigrator previousMigrator) {
-		super.migrate(concept, previousMigrator);
-	}
 }
