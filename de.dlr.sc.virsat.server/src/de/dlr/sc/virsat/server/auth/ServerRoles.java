@@ -7,22 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.dvlm.roles;
+package de.dlr.sc.virsat.server.auth;
 
-import org.eclipse.emf.ecore.EObject;
+public class ServerRoles {
 
-/**
- * Interface for rights helper
- * @author fisc_ph
- *
- */
+	public static final String ADMIN = "ADMIN";
+	public static final String USER = "USER";
 
-public interface IRightsHelper {
-
-	/**
-	 * Checks if a user has right access to the passed object
-	 * @param eObject the eObject that we inquire whether or not the user has right access to
-	 * @return true iff right access is granted
-	 */
-	boolean hasWriteAccess(EObject eObject);
+	private ServerRoles() { }
+	
+	public static String[] getAllRoles() {
+		return new String[]{ADMIN, USER};
+	}
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.visualisation" description="Concept that defines visualisation properties" version="1.3" displayName="Visualization">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.visualisation" description="Concept that defines visualisation properties" version="1.3" displayName="Visualization">
   <categories name="Visualisation" isApplicableForAll="true" cardinality="1">
     <properties xsi:type="dvlm_cppd:EnumProperty" name="shape" defaultValue="//@categories.0/@properties.0/@values.0">
       <values name="NONE" value="1"/>

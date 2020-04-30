@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.excel.ExcelExporterTest;
 import de.dlr.sc.virsat.excel.ExcelImporterTest;
 import de.dlr.sc.virsat.excel.FaultTest;
 import de.dlr.sc.virsat.excel.commands.ImportCommandTest;
+import de.dlr.sc.virsat.excel.exporter.ExcelExportHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -25,6 +26,7 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
+		ExcelExportHelperTest.class,
 		ExcelExporterTest.class,
 		ExcelImporterTest.class,
 		FaultTest.class,

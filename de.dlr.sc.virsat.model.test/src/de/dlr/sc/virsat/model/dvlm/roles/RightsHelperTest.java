@@ -91,22 +91,22 @@ public class RightsHelperTest {
 		
 		sei.setAssignedDiscipline(discipline);
 		
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(sei));
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca));
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(vpi));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(sei));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
 
 		discipline.setUser("TheBadGuy");
 
-		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(sei));
+		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
 		
-		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(ca));
+		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(ca));
 		
-		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(vpi));
+		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
 		
 		sei.getCategoryAssignments().remove(ca);
 		// We should have write permission on ca itself since it has no longer a link to the sei to which
 		// we have no write permission
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
 	}
 	
 	@Test

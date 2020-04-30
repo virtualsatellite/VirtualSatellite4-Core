@@ -46,7 +46,7 @@ public class InterfaceTypeAddFeature extends AbstractAddFeature {
 		
 		if (bo instanceof InterfaceEnd) {
 			InterfaceEnd ie = (InterfaceEnd) bo;
-			return RightsHelper.hasWritePermission(ie.getTypeInstance()) && DiagramHelper.hasDiagramWritePermission(context.getTargetContainer());
+			return RightsHelper.hasSystemUserWritePermission(ie.getTypeInstance()) && DiagramHelper.hasDiagramWritePermission(context.getTargetContainer());
 		}
 		
 		return false;

@@ -9,13 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.jetty;
 
+import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
+
+import org.eclipse.jetty.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.security.LoginService;
+import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
+import de.dlr.sc.virsat.server.auth.LoginServiceFactory;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
-
-import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 
 /**
  * This class represents a Jetty Instance to run Virtual Satellite
@@ -25,11 +29,11 @@ import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
  */
 public class VirSatJettyServer {
 
-	public VirSatJettyServer() {
-	}
+	public VirSatJettyServer() { }
 	
 	private static final int VIRSAT_JETTY_PORT = 8000; 
-	
+	private LoginService loginService = null;
+
 	/**
 	 * Main entry point for Virtual Satellite Jetty Server
 	 * @param args Not used currently
@@ -49,19 +53,47 @@ public class VirSatJettyServer {
 	 * @throws Exception
 	 * @throws InterruptedException
 	 */
-	public VirSatJettyServer start() throws Exception, InterruptedException {
-		
+	public VirSatJettyServer start() throws Exception {	
+
+		server.start();
+		return this;
+	}
+	
+	/**
+	 * Call this method to setup the server
+	 */
+	public void init() {
 		server = new Server(VIRSAT_JETTY_PORT);
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
 		servletContextHandler.setContextPath("/");
 		servletContextHandler.addServlet(VirSatModelAccessServlet.class, "/rest/*");
 		servletContextHandler.addServlet(RepoManagementServlet.class, "/rest/management/*");
+		
+		setupSecurity(server, servletContextHandler);
+	}
+	
+	/**
+	 * Sets up the server security
+	 * @param server the Server
+	 * @param servletContextHandler the context handler to be handled by the security handler
+	 */
+	private void setupSecurity(Server server, ServletContextHandler servletContextHandler) {
+		
+		loginService = new LoginServiceFactory().getLoginService();
+		server.addBean(loginService);
 
-		server.setHandler(servletContextHandler);
+		ConstraintSecurityHandler security = new ConstraintSecurityHandler();
+		server.setHandler(security);
 
-		server.start();
-		return this;
+		/**
+		 *  For top down security constraints with roles can be created here
+		 */
+
+		security.setAuthenticator(new BasicAuthenticator());
+		security.setLoginService(loginService);
+
+		security.setHandler(servletContextHandler);
 	}
 	
 	public VirSatJettyServer join() throws InterruptedException {
@@ -79,5 +111,9 @@ public class VirSatJettyServer {
 		if (server != null) {
 			server.stop();
 		}
+	}
+	
+	public LoginService getLoginService() {
+		return loginService;
 	}
 }
