@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.maturity displayname "Design Maturity" description "Maturity Concept for Products and Parts" version 1.1 {
+Concept de.dlr.sc.virsat.model.extension.maturity displayname "Design Maturity" description "Maturity Concept for Products and Parts" version 1.2 {
 	
 	Category Maturity description "Category to describe the maturity of a part or product" {
 		Applicable For All;

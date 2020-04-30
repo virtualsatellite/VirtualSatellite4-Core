@@ -63,7 +63,6 @@ public class MatImporterTest extends ATestConceptTestCase {
 		importer = new MatImporter();
 		super.setUp();
 		addEditingDomainAndRepository();
-		executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_CORE));
 		executeAsCommand(() -> loadTestConcept());
 		tsei = new TestStructuralElement(testConcept);
 		sei = tsei.getStructuralElementInstance();

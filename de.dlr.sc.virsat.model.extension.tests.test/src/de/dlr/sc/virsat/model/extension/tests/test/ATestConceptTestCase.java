@@ -24,9 +24,11 @@ public abstract class ATestConceptTestCase extends AConceptProjectTestCase {
 	
 	protected Concept testConcept;
 	protected Concept maturityConcept;
+	protected Concept coreConcept;
 		
 	public void loadTestConcept() { 
 		// Load the concept to create the test object
+		coreConcept = loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 		maturityConcept = loadConceptAndInstallToRepository(MATURITY_CONCEPT_ID);
 		testConcept = loadConceptAndInstallToRepository(TEST_CONCEPT_ID);
 	}
