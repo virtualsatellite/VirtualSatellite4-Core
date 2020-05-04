@@ -131,7 +131,6 @@ public class RepoModelAccessController {
 	}
 	
 	// CAs
-	
 	public FlattenedCategoryAssignment getCa(String uuid) throws CoreException {
 		return new FlattenedCategoryAssignment(RepositoryUtility.findCa(uuid, repository));
 	}

@@ -92,9 +92,31 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		// Create the controller with the ModelAPI instance
 		repoModelAccessController = new RepoModelAccessController(editingDomain);
 		
+		flatTestSei1 = null;
+		flatTestSei2 = null;
+		flatTestCa = null;
+		testSei1 = null;
+		testSei2 = null;
+		testCa = null;
+	}
+	
+	/**
+	 * Creates two seis
+	 */
+	private void setUpSeis() {
 		// Create test seis
 		testSei1 = createRootSei("RootSei1");
 		testSei2 = createRootSei("RootSei2");
+		
+		flatTestSei1 = new FlattenedStructuralElementInstance(testSei1.getStructuralElementInstance());
+		flatTestSei2 = new FlattenedStructuralElementInstance(testSei2.getStructuralElementInstance());
+	}
+	
+	/**
+	 * Creates a ca with properties
+	 */
+	private void setUpCa() {
+		setUpSeis();
 		
 		// Create test ca
 		testCa = new TestCategoryAllProperty(testConcept);
@@ -112,10 +134,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		// Add ca to sei
 		executeAsCommand(() -> testSei1.add(testCa));
 		
-		rs.saveAllResources(new NullProgressMonitor());
-		
-		flatTestSei1 = new FlattenedStructuralElementInstance(testSei1.getStructuralElementInstance());
-		flatTestSei2 = new FlattenedStructuralElementInstance(testSei2.getStructuralElementInstance());
 		flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
 	}
 	
@@ -166,6 +184,11 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	@Test
 	public void testGetRootSeis() {
 		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
+		assertEquals("Two root seis found", 0, seis.size());
+		
+		setUpSeis();
+		
+		seis = repoModelAccessController.getRootSeis();
 		assertEquals("Two root seis found", 2, seis.size());
 		assertThat("Correct sei found", flatTestSei1, is(samePropertyValuesAs(seis.get(0))));
 		assertThat("Correct sei found", flatTestSei2, is(samePropertyValuesAs(seis.get(1))));
@@ -173,6 +196,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testGetSei() throws CoreException {
+		setUpSeis();
 		// Get one sei by uuid
 		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
 		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
@@ -192,12 +216,14 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void testPutSeiWithNewUuid() throws CoreException, IOException {
+	public void testPutNewSei() throws CoreException, IOException {
 		repoModelAccessController.putSei(new FlattenedStructuralElementInstance(), new VirSatUuid().toString());
 	}
 	
 	@Test
 	public void testPutUpdateSei() throws CoreException, IOException {
+		setUpSeis();
+		
 		flatTestSei2.setName(NAME);
 		flatTestSei2.setDescription(DESCRIPTION);
 		// These should not do anything
@@ -215,6 +241,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateSeiDiscipline() throws CoreException, IOException {
+		setUpSeis();
+		
 		assertEquals("Sei has no discipline initally", flatTestSei1.getDiscipline(), null);
 		String uuid = repository.getRoleManagement().getDisciplines().get(0).getUuid().toString();
 		flatTestSei1.setDiscipline(uuid);
@@ -234,6 +262,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateSeiChildren() throws CoreException, IOException {
+		setUpSeis();
+		
 		assertTrue("Parent has no children", flatTestSei1.getChildren().isEmpty());
 		assertEquals("Child has no parent yet", flatTestSei2.getParent(), null);
 		
@@ -261,6 +291,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateSeiSuperSeis() throws CoreException, IOException {
+		setUpSeis();
+		
 		assertTrue("Sei has no super seis", flatTestSei1.getSuperSeis().isEmpty());
 		
 		flatTestSei1.setSuperSeis(Arrays.asList(flatTestSei2.getUuid()));
@@ -282,6 +314,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateSeiCategoryAssignments() throws CoreException, IOException {
+		setUpCa();
 		assertTrue("Sei has no cas", flatTestSei2.getCategoryAssignments().isEmpty());
 		
 		flatTestSei2.setCategoryAssignments(Arrays.asList(testCa.getUuid()));
@@ -303,6 +336,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testGetCaAndProperties() throws CoreException {
+		setUpCa();
+		
 		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());
 		assertEquals("Right ca found", flatTestCa.getFullQualifiedInstanceName(), caByUuid.getFullQualifiedInstanceName());
 		
@@ -334,14 +369,16 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	public void testPutUpdateCaAndProperties() throws CoreException, IOException {
+		setUpCa();
+		
 		flatTestCa.setName(NAME);
 		flatTestCa.setType(READ_ONLY);
 		flatTestCa.setFullQualifiedInstanceName(READ_ONLY);
 		
 		// Change properties
 		List<FlattenedPropertyInstance> properties = flatTestCa.getProperties();
-		
-		// TODO:
+
+		// Find the right elements in the flattened ca
 		int boolIdx = -1;
 		int intIdx = -1;
 		int floatIdx = -1;
@@ -373,13 +410,13 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		FlattenedPropertyInstance testResource = properties.get(resourceIdx);
 		FlattenedPropertyInstance testEnum = properties.get(enumIdx);
 		
-		String newBool = Boolean.toString(false);
-		String newFloat = Double.toString(1.2);
-		String newInt = Integer.toString(666);
-		String newString = "New value";
-		String newResource = URI.createPlatformResourceURI("testdata/new_test.data", true).toString();
-		String newEnum = EnumTestEnum.INCREDIBLE.getName();
-		String newUnit = "Gram";
+		final String newBool = Boolean.toString(false);
+		final String newFloat = Double.toString(1.2);
+		final String newInt = Integer.toString(666);
+		final String newString = "New value";
+		final String newResource = URI.createPlatformResourceURI("testdata/new_test.data", true).toString();
+		final String newEnum = EnumTestEnum.INCREDIBLE.getName();
+		final String newUnit = "Gram";
 		
 		testFloat.setFullQualifiedInstanceName(READ_ONLY);
 		testFloat.setTypeFullQualifiedInstanceName(READ_ONLY);

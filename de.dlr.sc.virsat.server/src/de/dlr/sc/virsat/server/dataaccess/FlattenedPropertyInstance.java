@@ -47,6 +47,10 @@ public class FlattenedPropertyInstance {
 	
 	public FlattenedPropertyInstance() { }
 	
+	/**
+	 * Creates a FlattenedPropertyInstance from the existing propertyInstance
+	 * @param propertyInstance
+	 */
 	public FlattenedPropertyInstance(APropertyInstance propertyInstance) {
 
 		setUuid(propertyInstance.getUuid().toString());
@@ -73,6 +77,12 @@ public class FlattenedPropertyInstance {
 		
 	}
 
+	/**
+	 * Create a command to unflatten the properties of this instance into a existing property
+	 * @param editingDomain
+	 * @param property
+	 * @return Command
+	 */
 	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, APropertyInstance property) {
 		CompoundCommand updatePropertyCommand = new CompoundCommand();
 		System.out.println(property.getFullQualifiedInstanceName());
@@ -106,7 +116,7 @@ public class FlattenedPropertyInstance {
 		};
 		
 		Command setValueCommand = valueSwitch.doSwitch(property);
-		addCommandIfExecuteable(updatePropertyCommand, setValueCommand);
+		addCommandIfExecuteable(updatePropertyCommand, setValueCommand, "Can't update value to " + getValue());
 		
 		Command test = new PropertydefinitionsSwitch<Command>() {
 			@Override
@@ -117,21 +127,25 @@ public class FlattenedPropertyInstance {
 			
 		}.doSwitch(property.getType());
 		
-		addCommandIfExecuteable(updatePropertyCommand, test);
+		addCommandIfExecuteable(updatePropertyCommand, test, "Can't update unit to " + getUnitName());
 		
 		return updatePropertyCommand;
 	}
 	
-	private void addCommandIfExecuteable(CompoundCommand command, Command addCommand) {
+	/**
+	 * Appends a command to an addCommand if it is not null and executable
+	 * Will print msgNotExecutable if it is not executable
+	 * @param command
+	 * @param addCommand
+	 * @param msgNotExecutable
+	 */
+	private void addCommandIfExecuteable(CompoundCommand command, Command addCommand, String msgNotExecutable) {
 		if (addCommand != null) {
-			System.out.println("Inner command can execute: " + addCommand.canExecute());
 			if (addCommand.canExecute()) {
 				command.append(addCommand);
 			} else {
-				// TODO: print error
+				System.out.println(msgNotExecutable);
 			}
-		} else {
-			// TODO: print error
 		}
 	}
 

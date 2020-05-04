@@ -34,34 +34,34 @@ public class ModelAccessResource {
 	
 	public static final String PATH = "/repository";
 	
-	public ModelAccessResource() { }
-	
-	/**
-	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
-	 * @param repoName of the repository to be accessed by the request
-	 * @return RepoModelAccessResource or null if the repo is not found
-	 */
-	@Path("{repoName}")
-	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
-		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
-		if (repo != null) {
-			return new RepoModelAccessResource(repoName, repo);
-		}
-		
-		return null;
-	}
-	
 	public static final String ROOT_SEIS = "seis";
 	public static final String SEI = "sei";
 	public static final String DISCIPLINES = "disciplines";
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
 	
-	// TODO: rename and move into seperate class
-	public static class RepoModelAccessResource {
+	public ModelAccessResource() { }
+	
+	/**
+	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
+	 * @param repoName of the repository to be accessed by the request
+	 * @return LowLevelAccessResource or null if the repo is not found
+	 */
+	@Path("{repoName}")
+	public LowLevelModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
+		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
+		if (repo != null) {
+			return new LowLevelModelAccessResource(repoName, repo);
+		}
+		
+		return null;
+	}
+	
+	public static class LowLevelModelAccessResource {
+		// TODO: rename controller class?
 		private RepoModelAccessController controller;
 		
-		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {
+		public LowLevelModelAccessResource(String repoName, ServerRepository serverRepository) {
 			controller = new RepoModelAccessController(serverRepository.getEd());
 		}
 
@@ -84,6 +84,12 @@ public class ModelAccessResource {
 			}
 		}
 		
+		/**
+		 * Put a sei at the given path
+		 * @param seiUuid
+		 * @param flatSei
+		 * @return
+		 */
 		@PUT
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -122,6 +128,12 @@ public class ModelAccessResource {
 			}
 		}
 		
+		/**
+		 * Put a ca at the given path
+		 * @param caUuid
+		 * @param flatCa
+		 * @return
+		 */
 		@PUT
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)

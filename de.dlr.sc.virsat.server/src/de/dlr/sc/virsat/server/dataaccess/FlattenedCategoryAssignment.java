@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.server.dataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -65,21 +64,20 @@ public class FlattenedCategoryAssignment {
 	/**
 	 * Create a command to unflatten the properties of this instance into a existing ca
 	 * @param editingDomain
-	 * @param ca the ca to unflatten on
+	 * @param ca
 	 * @return Command
-	 * @throws CoreException
 	 */
 	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, CategoryAssignment ca) {
 		CompoundCommand updateCaCommand = new CompoundCommand();
 		
 		Command commandSetName = SetCommand.create(editingDomain, ca, GeneralPackage.Literals.INAME__NAME, getName());
 		updateCaCommand.append(commandSetName);
-		
-		// TODO: improve
+
 		for (APropertyInstance property: ca.getPropertyInstances()) {
 			for (FlattenedPropertyInstance flattenedPropertyInstance : getProperties()) {
 				if (property.getUuid().toString().equals(flattenedPropertyInstance.getUuid())) {
 					updateCaCommand.append(flattenedPropertyInstance.unflatten(editingDomain, property));
+					break;
 				}
 			}
 		}
