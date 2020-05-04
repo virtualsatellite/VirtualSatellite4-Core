@@ -10,7 +10,11 @@
 package de.dlr.sc.virsat.server.resources;
 
 
+import java.io.IOException;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,6 +24,8 @@ import javax.ws.rs.core.Response;
 import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
@@ -51,6 +57,7 @@ public class ModelAccessResource {
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
 	
+	// TODO: rename and move into seperate class
 	public static class RepoModelAccessResource {
 		private RepoModelAccessController controller;
 		
@@ -69,10 +76,23 @@ public class ModelAccessResource {
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getRootSeis(@PathParam("seiUuid") String seiUuid) {
+		public Response getSei(@PathParam("seiUuid") String seiUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(controller.getSei(seiUuid)).build();
 			} catch (CoreException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
+		}
+		
+		@PUT
+		@Path(SEI + "/{seiUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response putSei(@PathParam("seiUuid") String seiUuid, FlattenedStructuralElementInstance flatSei) {
+			try {
+				controller.putSei(flatSei, seiUuid);
+				return Response.status(Response.Status.OK).build();
+			} catch (CoreException | IOException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 			}
 		}
@@ -92,12 +112,25 @@ public class ModelAccessResource {
 		}
 		
 		@GET
-		@Path(CA  + "/{caUuid}")
+		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getCa(@PathParam("caUuid") String caUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(controller.getCa(caUuid)).build();
 			} catch (CoreException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
+		}
+		
+		@PUT
+		@Path(CA + "/{caUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response putSei(@PathParam("caUuid") String caUuid, FlattenedCategoryAssignment flatCa) {
+			try {
+				controller.putCa(flatCa, caUuid);
+				return Response.status(Response.Status.OK).build();
+			} catch (CoreException | IOException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 			}
 		}

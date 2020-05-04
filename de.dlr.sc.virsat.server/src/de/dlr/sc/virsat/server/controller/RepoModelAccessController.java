@@ -111,8 +111,8 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 * @throws IOException
 	 */
-	public void putSei(FlattenedStructuralElementInstance flatSei) throws CoreException, IOException {
-		StructuralElementInstance oldSei = RepositoryUtility.findSei(flatSei.getUuid(), repository);
+	public void putSei(FlattenedStructuralElementInstance flatSei, String uuid) throws CoreException, IOException {
+		StructuralElementInstance oldSei = RepositoryUtility.findSei(uuid, repository);
 		
 		if (oldSei != null) {
 			Command updateSeiCommand = flatSei.unflatten(editingDomain, oldSei);
@@ -142,8 +142,8 @@ public class RepoModelAccessController {
 	 * @throws CoreException
 	 * @throws IOException
 	 */
-	public void putCa(FlattenedCategoryAssignment flatCa) throws CoreException, IOException {
-		CategoryAssignment oldCa = RepositoryUtility.findCa(flatCa.getUuid(), repository);
+	public void putCa(FlattenedCategoryAssignment flatCa, String uuid) throws CoreException, IOException {
+		CategoryAssignment oldCa = RepositoryUtility.findCa(uuid, repository);
 		
 		if (oldCa != null) {
 			Command updateCaCommand = flatCa.unflatten(editingDomain, oldCa);

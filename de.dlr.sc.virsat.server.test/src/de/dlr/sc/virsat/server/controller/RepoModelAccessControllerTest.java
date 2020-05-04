@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
@@ -191,8 +192,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void testPutNewSei() throws CoreException, IOException {
-		repoModelAccessController.putSei(new FlattenedStructuralElementInstance());
+	public void testPutSeiWithNewUuid() throws CoreException, IOException {
+		repoModelAccessController.putSei(new FlattenedStructuralElementInstance(), new VirSatUuid().toString());
 	}
 	
 	@Test
@@ -203,7 +204,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		flatTestSei2.setParent(READ_ONLY);
 		flatTestSei2.setSeFullQualifiedName(READ_ONLY);
 		
-		repoModelAccessController.putSei(flatTestSei2);
+		repoModelAccessController.putSei(flatTestSei2, flatTestSei2.getUuid());
 		FlattenedStructuralElementInstance updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
 		assertEquals("Name changed correctly", NAME, updatedSei.getName());
@@ -220,13 +221,13 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		FlattenedStructuralElementInstance updatedSei1;
 		
-		repoModelAccessController.putSei(flatTestSei1);
+		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
 		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		assertEquals("Discipline got posted", updatedSei1.getDiscipline(), uuid);
 		
 		flatTestSei1.setDiscipline(null);
 		
-		repoModelAccessController.putSei(flatTestSei1);
+		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
 		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		assertEquals("Discipline got removed", updatedSei1.getDiscipline(), null);
 	}
@@ -241,7 +242,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		FlattenedStructuralElementInstance updatedSei1;
 		FlattenedStructuralElementInstance updatedSei2;
 		
-		repoModelAccessController.putSei(flatTestSei1);
+		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
 		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		updatedSei2 = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
@@ -250,7 +251,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		flatTestSei1.setChildren(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei1);
+		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
 		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		updatedSei2 = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
@@ -266,14 +267,14 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		FlattenedStructuralElementInstance updatedSei1;
 		
-		repoModelAccessController.putSei(flatTestSei1);
+		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
 		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		
 		assertEquals("Sei has super sei now", updatedSei1.getSuperSeis().size(), 1);
 		
 		flatTestSei1.setSuperSeis(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei1);
+		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
 		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		
 		assertTrue("Super sei got deleted", updatedSei1.getSuperSeis().isEmpty());
@@ -287,14 +288,14 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		FlattenedStructuralElementInstance updatedSei;
 		
-		repoModelAccessController.putSei(flatTestSei2);
+		repoModelAccessController.putSei(flatTestSei2, flatTestSei2.getUuid());
 		updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
 		assertEquals("Sei has ca now", updatedSei.getCategoryAssignments().size(), 1);
 		
 		flatTestSei1.setCategoryAssignments(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei2);
+		repoModelAccessController.putSei(flatTestSei2, flatTestSei2.getUuid());
 		updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
 		
 		assertTrue("Ca got deleted", updatedSei.getSuperSeis().isEmpty());
@@ -328,7 +329,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	// TODO: shorter test setup
 	@Test(expected = NullPointerException.class)
 	public void testPutNewCa() throws CoreException, IOException {
-		repoModelAccessController.putCa(new FlattenedCategoryAssignment());
+		repoModelAccessController.putCa(new FlattenedCategoryAssignment(), new VirSatUuid().toString());
 	}
 	
 	@Test
@@ -392,7 +393,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		testResource.setValue(newResource);
 		testEnum.setValue(newEnum);
 		
-		repoModelAccessController.putCa(flatTestCa);
+		repoModelAccessController.putCa(flatTestCa, flatTestCa.getUuid());
 		FlattenedCategoryAssignment updatedCa = repoModelAccessController.getCa(flatTestCa.getUuid());
 		
 		// CA

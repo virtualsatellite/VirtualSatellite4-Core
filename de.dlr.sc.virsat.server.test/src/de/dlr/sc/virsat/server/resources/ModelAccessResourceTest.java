@@ -18,11 +18,11 @@ import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
@@ -112,14 +112,10 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertThat("Correct sei returned", flatRootSei, samePropertyValuesAs(returnedSei)); 
 	}
 	
-	@Ignore
 	@Test
-	public void postAndGetSei() {
-		String uuid = postSeiRequest(flatRootSei);
-	
-		// Doesn't work atm because post fails because the unflattened sei does not have parents and children
-		FlattenedStructuralElementInstance returnedSei = getSeiRequest(uuid);
-		assertThat("Seis have the same properties", flatRootSei, samePropertyValuesAs(returnedSei));
+	public void testPutSei() {
+		Response response = putSeiRequest(flatRootSei, flatRootSei.getUuid());
+		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
 	}
 	
 	@Test
@@ -147,6 +143,12 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertThat("It's the right property", flatProperty, samePropertyValuesAs(properties.get(0)));
 	}
 	
+	@Test
+	public void testPutCa() {
+		Response response = putCaRequest(flatCa, flatCa.getUuid());
+		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
+	}
+	
 	private List<FlattenedStructuralElementInstance> getRootSeisRequest() {
 		return webTarget
 			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.ROOT_SEIS)
@@ -171,18 +173,20 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.get(FlattenedCategoryAssignment.class);
 	}
 	
-	/**
-	 * Request to post a sei
-	 * @param flatSei FlattenedStructuralElementInstance
-	 * @return String uuid of the posted sei
-	 */
-	private String postSeiRequest(FlattenedStructuralElementInstance flatSei) {
+	private Response putSeiRequest(FlattenedStructuralElementInstance flatSei, String uuid) {
 		return webTarget
-			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.SEI)
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.SEI).path(uuid)
 			.request()
 			.accept(MediaType.APPLICATION_JSON)
-			.post(Entity.entity(flatSei, MediaType.APPLICATION_JSON))
-			.readEntity(String.class);
+			.put(Entity.entity(flatSei, MediaType.APPLICATION_JSON));
+	}
+	
+	private Response putCaRequest(FlattenedCategoryAssignment flatCa, String uuid) {
+		return webTarget
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
+			.request()
+			.accept(MediaType.APPLICATION_JSON)
+			.put(Entity.entity(flatCa, MediaType.APPLICATION_JSON));
 	}
 	
 	private List<FlattenedDiscipline> getDisciplinesRequest() {
