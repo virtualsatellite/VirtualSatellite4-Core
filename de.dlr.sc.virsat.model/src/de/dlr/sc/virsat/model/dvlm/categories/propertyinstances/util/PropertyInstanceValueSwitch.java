@@ -56,6 +56,7 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 	private boolean showUnitForUnitValues = true;
 	private boolean showEnumValueDefinitionValues = true;
 	private boolean showLocationForReferenceValues = true;
+	private boolean showResourceOnlyLastSegment = true;
 	
 	/**
 	 * Gets a boolean flag that decides whether to add unit to the value or not
@@ -103,6 +104,22 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 	 */
 	public void setShowLocationForReferenceValues(boolean showLocationForReferenceValues) {
 		this.showLocationForReferenceValues = showLocationForReferenceValues;
+	}
+	
+	/**
+	 * Get a boolean flag that decides whether the last segment or whole uri is shown
+	 * @return the showLocationForReferenceValues
+	 */
+	public boolean getShowResourceOnlyLastSegment() {
+		return showResourceOnlyLastSegment;
+	}
+
+	/**
+	 * Sets a boolean flag that decides whether the last segment or whole uri is shown
+	 * @param showLocationForReferenceValues the showLocationForReferenceValues to set
+	 */
+	public void setShowResourceOnlyLastSegment(boolean showResourceOnlyLastSegment) {
+		this.showResourceOnlyLastSegment = showResourceOnlyLastSegment;
 	}
 
 	/**
@@ -199,7 +216,13 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 			@Override
 			public String caseResourcePropertyInstance(ResourcePropertyInstance object) {
 				URI uri = object.getUri();
-				return (uri == null) ? EMPTY_URI : uri.lastSegment();
+				String result;
+				if (showResourceOnlyLastSegment) {
+					result = (uri == null) ? EMPTY_URI : uri.lastSegment();
+				} else {
+					result = (uri == null) ? EMPTY_URI : uri.toString();
+				}
+				return result;
 			}
 			
 			@Override

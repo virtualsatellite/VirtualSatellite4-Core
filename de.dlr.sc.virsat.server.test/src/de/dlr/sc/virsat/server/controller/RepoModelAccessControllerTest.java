@@ -68,11 +68,12 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	private static final String TEST_VALUE_STRING = "Hello";
 	private static final boolean TEST_VALUE_BOOL = true;
 	private static final URI TEST_VALUE_RESOURCE = URI.createPlatformResourceURI("testdata/test.data", true);
-	private static final String TEST_BEAN_NAME = "World";
 	private static final EnumTestEnum TEST_VALUE_ENUM = EnumTestEnum.HIGH;
 	
-	private static final String NAME = "Updated Sei";
-	private static final String DESCRIPTION = "This Sei got updated";
+	private static final String TEST_BEAN_NAME = "World";
+	
+	private static final String NAME = "Updated";
+	private static final String DESCRIPTION = "Got updated";
 	private static final String READ_ONLY = "Should not change";
 	
 	@Before
@@ -306,17 +307,21 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		List<FlattenedPropertyInstance> flattenedProperties = flatTestCa.getProperties();
 		
+		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
+		valueSwitch.setShowUnitForUnitValues(false);
+		valueSwitch.setShowResourceOnlyLastSegment(false);
+		valueSwitch.setShowEnumValueDefinitionValues(false);
+		
 		// Check for the expected values
-		assertThat(flattenedProperties, matchItem(testCa.getTestBoolBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestFloatBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestIntBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestStringBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestResourceBean()));
-		assertThat(flattenedProperties, matchItem(testCa.getTestEnumBean()));
+		assertThat(flattenedProperties, matchItem(testCa.getTestBoolBean(), valueSwitch));
+		assertThat(flattenedProperties, matchItem(testCa.getTestFloatBean(), valueSwitch));
+		assertThat(flattenedProperties, matchItem(testCa.getTestIntBean(), valueSwitch));
+		assertThat(flattenedProperties, matchItem(testCa.getTestStringBean(), valueSwitch));
+		assertThat(flattenedProperties, matchItem(testCa.getTestResourceBean(), valueSwitch));
+		assertThat(flattenedProperties, matchItem(testCa.getTestEnumBean(), valueSwitch));
 	}
 	
-	private Matcher<Iterable<? super FlattenedPropertyInstance>> matchItem(ABeanObject<?> bean) {
-		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
+	private Matcher<Iterable<? super FlattenedPropertyInstance>> matchItem(ABeanObject<?> bean, PropertyInstanceValueSwitch valueSwitch) {
 		return hasItem(hasProperty("value", equalTo(valueSwitch.getValueString(bean.getATypeInstance()))));
 	}
 	
@@ -332,12 +337,89 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		flatTestCa.setType(READ_ONLY);
 		flatTestCa.setFullQualifiedInstanceName(READ_ONLY);
 		
+		// Change properties
+		List<FlattenedPropertyInstance> properties = flatTestCa.getProperties();
+		
+		// TODO:
+		int boolIdx = -1;
+		int intIdx = -1;
+		int floatIdx = -1;
+		int stringIdx = -1;
+		int resourceIdx = -1;
+		int enumIdx = -1;
+		
+		for (int i = 0; i < properties.size(); i++) {
+			String name = properties.get(i).getTypeFullQualifiedInstanceName();
+			if (name.contains("Float")) {
+				floatIdx = i;
+			} else if (name.contains("Bool")) {
+				boolIdx = i;
+			} else if (name.contains("Int")) {
+				intIdx = i;
+			} else if (name.contains("String")) {
+				stringIdx = i;
+			} else if (name.contains("Resource")) {
+				resourceIdx = i;
+			} else if (name.contains("Enum")) {
+				enumIdx = i;
+			}
+		}
+		
+		FlattenedPropertyInstance testBool = properties.get(boolIdx);
+		FlattenedPropertyInstance testFloat = properties.get(floatIdx);
+		FlattenedPropertyInstance testInt = properties.get(intIdx);
+		FlattenedPropertyInstance testString = properties.get(stringIdx);
+		FlattenedPropertyInstance testResource = properties.get(resourceIdx);
+		FlattenedPropertyInstance testEnum = properties.get(enumIdx);
+		
+		String newBool = Boolean.toString(false);
+		String newFloat = Double.toString(1.2);
+		String newInt = Integer.toString(666);
+		String newString = "New value";
+		String newResource = URI.createPlatformResourceURI("testdata/new_test.data", true).toString();
+		String newEnum = EnumTestEnum.INCREDIBLE.getName();
+		String newUnit = "Gram";
+		
+		testFloat.setFullQualifiedInstanceName(READ_ONLY);
+		testFloat.setTypeFullQualifiedInstanceName(READ_ONLY);
+		testFloat.setUnitName(newUnit);
+		testFloat.setQuanitityKindName(READ_ONLY);
+		
+		testBool.setValue(newBool);
+		testFloat.setValue(newFloat);
+		testInt.setValue(newInt);
+		testString.setValue(newString);
+		testResource.setValue(newResource);
+		testEnum.setValue(newEnum);
+		
 		repoModelAccessController.putCa(flatTestCa);
 		FlattenedCategoryAssignment updatedCa = repoModelAccessController.getCa(flatTestCa.getUuid());
 		
+		// CA
 		assertEquals("Name changed correctly", NAME, updatedCa.getName());
 		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedCa.getType());
-		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedCa.getUuid());
 		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedCa.getFullQualifiedInstanceName());
+		
+		// Property
+		List<FlattenedPropertyInstance> updatedProperties = updatedCa.getProperties();
+		FlattenedPropertyInstance updatedFloat = updatedProperties.get(floatIdx);
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getUuid());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getFullQualifiedInstanceName());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getTypeFullQualifiedInstanceName());
+		
+		// Property values
+		assertEquals("Boolean property value changed correctly", newBool, updatedProperties.get(boolIdx).getValue());
+		assertEquals("Float property value changed correctly", newFloat + "00", updatedFloat.getValue());
+		assertEquals("Int property value changed correctly", newInt, updatedProperties.get(intIdx).getValue());
+		assertEquals("String property value changed correctly", newString, updatedProperties.get(stringIdx).getValue());
+		assertEquals("Resource property value changed correctly", newResource, updatedProperties.get(resourceIdx).getValue());
+		assertEquals("Enum property value changed correctly", newEnum, updatedProperties.get(enumIdx).getValue());
+	
+		// QudvTypeProperty specific
+		assertEquals("Unit changed correctly", newUnit, updatedFloat.getUnitName());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getQuanitityKindName());
+		
 	}
+	
+	// TODO: resource to get and update property instances?
 }
