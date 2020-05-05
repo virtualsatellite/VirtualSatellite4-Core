@@ -57,10 +57,13 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 	
 	private static final String ELEMENT_CONFIGURATION_NAME = "ElementConfiguration";
 
+	/**
+	 *Sets up the stage for FuncElectrical SWTBot diagram tests to run, by opening a
+	 *blank interfaces diagram in the editor
+	 */
 	@Before
 	public void before() throws Exception {
 		super.before();
-		// create the necessary items for the test
 		conceptFuncElectrical = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.funcelectrical.Activator.getPluginId() + "/concept/concept.xmi");
 		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
@@ -70,6 +73,10 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		diagramEditor = getOpenedDiagramEditorbyTitle("newDiagram");
 	}
 	
+	/**
+	 *Drag and Drop element configuration tree item to diagram editor to add an interface
+	 *Try to undo/redo this action
+	 */
 	@Test
 	public void addInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
@@ -81,6 +88,10 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}	
 
+	/**
+	 * Update diagram after displayed element has been deleted from somewhere else 
+	 * than within the editor itself
+	 */
 	@Test
 	public void deleteObjectOutsideDiagramUpdateDiagramTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
@@ -92,6 +103,9 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}
 	
+	/**
+	 * Drag and Drop configuration tree to editor
+	 */
 	@Test
 	public void dragDropTreeinDiagram() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
@@ -99,6 +113,10 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertTrue(diagramEditor.selectedEditParts().isEmpty());
 	}
 	
+	/**
+	 * Adds an interface end to the diagram editor
+	 * Try to undo/redo this action
+	 */
 	@Test
 	public void addInterfaceEndDiagramElementUndoRedoTest() {
 		addElement(InterfaceEnd.class, conceptFuncElectrical, elementConfiguration);
@@ -110,6 +128,9 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertTrue(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}
 	
+	/**
+	 * Drag and Drop interface type to interface ends
+	 */
 	@Test
 	public void dragDropAssignInterfaceTypeTest() {
 		SWTBotTreeItem interfaceTypeCollectionItem = addElement(InterfaceTypeCollection.class, conceptFuncElectrical, repositoryNavigatorItem);
@@ -128,6 +149,10 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertTrue(text.equals("type -> InterfaceType"));		
 	}
 	
+	/**
+	 * Removes interface diagram element
+	 * Try to undo/redo this action
+	 */
 	@Test
 	public void removeInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
@@ -143,6 +168,10 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertFalse(isEditPartPresentInDiagramEditor(diagramEditor, ELEMENT_CONFIGURATION_NAME));
 	}
 	
+	/**
+	 * Deletes interface diagram element
+	 * Try to undo/redo this action
+	 */
 	@Test
 	public void deleteInterfaceDiagramElementUndoRedoTest() {
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
@@ -170,6 +199,9 @@ public class FuncElectricalDiagramTest extends ASwtBotTestCase {
 		assertFalse(isTreeItemPresentInTreeView(elementConfigurationNode));
 	}
 	
+	/**
+	 * Connect two interface ends
+	 */
 	@Test
 	public void connectInterfaceEndsTest() {		
 		addElement(Interface.class, conceptFuncElectrical, elementConfiguration);
