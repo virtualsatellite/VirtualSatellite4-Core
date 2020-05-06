@@ -62,6 +62,8 @@ public abstract class AProjectTestCase {
 	
 	protected List<IProject> testProjects = new ArrayList<>();
 	
+	private String previousUser;
+	
 	/**
 	 * Use this method to create a new test project and to remember it for the test case.
 	 * Remembering it means that it will be removed by the tear down method.
@@ -103,8 +105,6 @@ public abstract class AProjectTestCase {
 	protected void addProjectFileStructure() {
 		projectCommons.createProjectStructure(null);
 	}
-	
-	private String previousUser;
 	
 	/**
 	 * Method to adjust the User rights for the test cases

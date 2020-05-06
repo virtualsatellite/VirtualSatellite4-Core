@@ -263,7 +263,7 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		editingDomain.getVirSatCommandStack().executeNoUndo(setSeiName, UserRegistry.getInstance(), true);
 		
 		assertEquals("The name has not been changed", "SomeSEI", sei1.getName());
-		assertEquals("The builder has been triggered", builderCountBeforeSettingNames + 1, TestInvocationCheckBuilder.getInvocations());
+		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames, TestInvocationCheckBuilder.getInvocations());
 	
 		// Try to change the name with the correct context but don't call the builder
 		editingDomain.getVirSatCommandStack().executeNoUndo(setSeiName, new IUserContext() {
@@ -280,7 +280,7 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		}, false);
 		
 		assertEquals("The name has been changed", "SuperSEI", sei1.getName());
-		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames + 1, TestInvocationCheckBuilder.getInvocations());
+		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames, TestInvocationCheckBuilder.getInvocations());
 		
 		// now change the name again and call the builder
 		Command setSeiName2 = SetCommand.create(editingDomain, sei1, GeneralPackage.eINSTANCE.getIName_Name(), "SuperSEI2");
@@ -298,6 +298,6 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		}, true);
 		
 		assertEquals("The name has been changed", "SuperSEI2", sei1.getName());
-		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames + 2, TestInvocationCheckBuilder.getInvocations());
+		assertEquals("The builder has not been triggered", builderCountBeforeSettingNames + 1, TestInvocationCheckBuilder.getInvocations());
 	}
 }

@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.project.editingDomain;
 
 import java.util.Map;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -101,8 +102,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	public void executeNoUndo(Command command, IUserContext userContextOverride, boolean executeBuilder) throws RuntimeException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Execute Command with no undo"));
 		
-		AtomicExceptionReference<ExecutionException> atomicExecutionException = new AtomicExceptionReference<>();
-		AtomicExceptionReference<CoreException> atomicCoreException = new AtomicExceptionReference<>();
+		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		
 		executeInWorkspaceWithSaveCheck(() -> {
 			// Check if the command is execute able and prepare it (happens in canExecute)
@@ -111,25 +111,22 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 				// using the history to prevent the operation from being listed in there
 				EMFCommandOperation operation = new EMFCommandOperation(getDomain(), command);
 				try {
-					operation.execute(null, null);
-				} catch (ExecutionException e) {
+					boolean canExecute = operation.canExecute();
+					IStatus executeStatus = operation.execute(null, null);
+					
+					// Now run the builder if requested
+					if (executeBuilder && canExecute && executeStatus.equals(Status.OK_STATUS) && !ResourcesPlugin.getWorkspace().isAutoBuilding()) {
+						editingDomain.getResourceSet().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+					}
+					
+				} catch (ExecutionException | CoreException e) {
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Failed to execute command without undo ", e));
-					atomicExecutionException.set(e);
-				}
-			}
-			
-			// Now run the builder if requested
-			if ((executeBuilder) && !ResourcesPlugin.getWorkspace().isAutoBuilding()) {
-				try {
-					editingDomain.getResourceSet().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
-				} catch (CoreException e) {
-					atomicCoreException.set(e);
+					atomicException.set(e);
 				}
 			}
 		}, userContextOverride);
 
-		atomicExecutionException.throwAsRuntimeExceptionIfSet();
-		atomicCoreException.throwAsRuntimeExceptionIfSet();
+		atomicException.throwAsRuntimeExceptionIfSet();
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Finished execute Command with no undo"));
 	}
