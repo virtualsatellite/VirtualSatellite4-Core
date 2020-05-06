@@ -71,9 +71,9 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 		if (projectDelta != null) {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Detected deltas in the project: " + virSatProject.getName()));
 			
-			final List<IResource> addedDvlmResources = new ArrayList<>();
-			final List<IResource> changedDvlmResources = new ArrayList<>();
-			final List<IResource> removedDvlmResources = new ArrayList<>();
+			final List<IResource> addedResources = new ArrayList<>();
+			final List<IResource> changedResources = new ArrayList<>();
+			final List<IResource> removedResources = new ArrayList<>();
 			
 			closedOrDeletedProject = false;
 			
@@ -92,11 +92,11 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 					if (isInResourceSet) {
 						int kind = delta.getKind();
 						if (kind == IResourceDelta.REMOVED) {
-							removedDvlmResources.add(resource);
+							removedResources.add(resource);
 						} else if (kind == IResourceDelta.ADDED) {
-							addedDvlmResources.add(resource);							
+							addedResources.add(resource);							
 						} else if ((kind == IResourceDelta.CHANGED) && ((delta.getFlags() & IResourceDelta.CONTENT) != 0)) {
-							changedDvlmResources.add(resource);							
+							changedResources.add(resource);							
 						}
 					}
 					return true;
@@ -122,9 +122,9 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 			// workspace job as we will need the editing domain to handle resource changes.
 			// This way the current job calling us can safely finish and the new job
 			// will handle the actual changes.
-			if (!addedDvlmResources.isEmpty() || !removedDvlmResources.isEmpty() || !changedDvlmResources.isEmpty()) {
-				Job job = new WorkspaceSynchronizerJob(addedDvlmResources, removedDvlmResources, changedDvlmResources, counter++);
-				String changeList = printLists(addedDvlmResources, removedDvlmResources, changedDvlmResources);
+			if (!addedResources.isEmpty() || !removedResources.isEmpty() || !changedResources.isEmpty()) {
+				Job job = new WorkspaceSynchronizerJob(addedResources, removedResources, changedResources, counter++);
+				String changeList = printLists(addedResources, removedResources, changedResources);
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Scheduling " + job.getName() + ". \n" + changeList));
 				job.schedule();
 			}
