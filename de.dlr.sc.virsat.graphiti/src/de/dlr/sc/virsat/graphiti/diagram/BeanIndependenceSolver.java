@@ -30,7 +30,6 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.property.ABeanUnitProperty;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFactory;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
