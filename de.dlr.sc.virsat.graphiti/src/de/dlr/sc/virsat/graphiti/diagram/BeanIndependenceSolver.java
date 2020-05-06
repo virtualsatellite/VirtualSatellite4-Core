@@ -28,6 +28,8 @@ import de.dlr.sc.virsat.graphiti.Activator;
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.property.ABeanUnitProperty;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -129,9 +131,9 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 								DVLMEditPlugin.getPlugin().getLog().log(status);
 							}
 						} else if (object instanceof ATypeInstance) {
-							BeanPropertyFloat bean = new BeanPropertyFloat();
-							bean.setATypeInstance((ATypeInstance) object);
-							objectMap.put(key, bean);
+							BeanPropertyFactory bpf = new BeanPropertyFactory(object);
+							ABeanUnitProperty<?> beanUnitProperty = bpf.getBeanUnitProperty();
+							objectMap.put(key, beanUnitProperty);
 						}
 					}
 				}
