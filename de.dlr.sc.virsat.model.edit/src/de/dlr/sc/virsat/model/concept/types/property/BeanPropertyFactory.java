@@ -9,24 +9,21 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 
 public class BeanPropertyFactory {
-
-	private Object object;
-
-	public BeanPropertyFactory(Object object) {
-		this.object = object;
-	}
-
+	
 	/**
+	 * @param unitType 
+	 * @param object 
 	 * @return
 	 */
-	public ABeanUnitProperty<?> getBeanUnitProperty() {
-		if (object instanceof ATypeInstance) {
-			BeanPropertyFloat bean = new BeanPropertyFloat();
-			bean.setATypeInstance((ATypeInstance) object);
-			return bean;
+	public ABeanObject<?> getBeanUnitProperty(Object object, BeanPropertyUnitType unitType) {
+		if (object instanceof ATypeInstance && unitType == BeanPropertyUnitType.FLOAT) {			
+			BeanPropertyFloat beanFloat = new BeanPropertyFloat();
+			beanFloat.setATypeInstance((ATypeInstance) object);			
+			return beanFloat;
 		}		
 		return null;
 	}
