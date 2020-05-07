@@ -140,7 +140,7 @@ public class MatImporter {
 				// Calculated pis are not writeable since they are recomputed as soon as 
 				// the calculcation builder is executed. They should not be re-imported, 
 				// or otherwise the entire command becomes unexecutable.
-				if (!piHelper.isCalculated(pi)) {
+				if (!getPiHelper().isCalculated(pi)) {
 					if (!(seiAPIs.get(i) instanceof ArrayInstanceImpl)) {
 						importGivenAPI(importCommand, pi, struct.get(pi.getType().getName()));
 					} else {
@@ -441,5 +441,14 @@ public class MatImporter {
 	 */
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
+	}
+	
+	/**
+	 * Override this method to inject a different property instance helper.
+	 * This is useful, e.g., in test cases
+	 * @return the pi helper
+	 */
+	protected PropertyInstanceHelper getPiHelper() {
+		return piHelper;
 	}
 }
