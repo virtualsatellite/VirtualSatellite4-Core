@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
@@ -151,4 +152,27 @@ public class RepoModelAccessController {
 			throw new NullPointerException("No resource to update found, use a post request if you want to create a new Resource");
 		}
 	}
+	
+	public FlattenedCategoryAssignmentWithProperties getCaWithProperties(String uuid) throws CoreException {
+		return new FlattenedCategoryAssignmentWithProperties(RepositoryUtility.findCa(uuid, repository));
+	}
+	
+	/**
+	 * Update a ca identified by the uuid or throw exception if it doesn't exit
+	 * @param flatCa the ca to put
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public void putCaWithProperties(FlattenedCategoryAssignmentWithProperties flatCa, String uuid) throws CoreException, IOException {
+		CategoryAssignment oldCa = RepositoryUtility.findCa(uuid, repository);
+		
+		if (oldCa != null) {
+			Command updateCaCommand = flatCa.unflatten(editingDomain, oldCa);
+			editingDomain.getVirSatCommandStack().executeNoUndo(updateCaCommand);
+		} else {
+			throw new NullPointerException("No resource to update found, use a post request if you want to create a new Resource");
+		}
+	}
+	
+	// Property Instances
 }

@@ -49,6 +49,7 @@ import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.project.resources.command.AssignDisciplineCommand;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedPropertyInstance;
@@ -63,6 +64,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	private FlattenedStructuralElementInstance flatTestSei1;
 	private FlattenedStructuralElementInstance flatTestSei2;
 	private FlattenedCategoryAssignment flatTestCa;
+	private FlattenedCategoryAssignmentWithProperties flatTestCaWithProperties;
 	
 	private static final double TEST_VALUE_DOUBLE = 10.5d;
 	private static final int TEST_VALUE_INT = 10;
@@ -95,6 +97,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		flatTestSei1 = null;
 		flatTestSei2 = null;
 		flatTestCa = null;
+		flatTestCaWithProperties = null;
 		testSei1 = null;
 		testSei2 = null;
 		testCa = null;
@@ -135,6 +138,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		executeAsCommand(() -> testSei1.add(testCa));
 		
 		flatTestCa = new FlattenedCategoryAssignment(testCa.getTypeInstance());
+		flatTestCaWithProperties = new FlattenedCategoryAssignmentWithProperties(testCa.getTypeInstance());
 	}
 	
 	/**
@@ -184,7 +188,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	@Test
 	public void testGetRootSeis() {
 		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
-		assertEquals("Two root seis found", 0, seis.size());
+		assertEquals("Initially no seis found", 0, seis.size());
 		
 		setUpSeis();
 		
@@ -338,10 +342,10 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testGetCaAndProperties() throws CoreException {
 		setUpCa();
 		
-		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());
-		assertEquals("Right ca found", flatTestCa.getFullQualifiedInstanceName(), caByUuid.getFullQualifiedInstanceName());
+		FlattenedCategoryAssignmentWithProperties caByUuid = repoModelAccessController.getCaWithProperties(testCa.getUuid());
+		assertEquals("Right ca found", flatTestCaWithProperties.getFullQualifiedInstanceName(), caByUuid.getFullQualifiedInstanceName());
 		
-		List<FlattenedPropertyInstance> flattenedProperties = flatTestCa.getProperties();
+		List<FlattenedPropertyInstance> flattenedProperties = flatTestCaWithProperties.getProperties();
 		
 		PropertyInstanceValueSwitch valueSwitch = new PropertyInstanceValueSwitch();
 		valueSwitch.setShowUnitForUnitValues(false);
@@ -361,47 +365,56 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		return hasItem(hasProperty("value", equalTo(valueSwitch.getValueString(bean.getATypeInstance()))));
 	}
 	
-	// TODO: shorter test setup
+	@Test
+	public void testGetCa() throws CoreException {
+		setUpCa();
+		
+		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());		
+		assertThat("Right ca found", flatTestCa, is(samePropertyValuesAs(caByUuid)));
+	}
+	
 	@Test(expected = NullPointerException.class)
 	public void testPutNewCa() throws CoreException, IOException {
-		repoModelAccessController.putCa(new FlattenedCategoryAssignment(), new VirSatUuid().toString());
+		repoModelAccessController.putCaWithProperties(new FlattenedCategoryAssignmentWithProperties(), new VirSatUuid().toString());
+	}
+	
+	/**
+	 * Finds a property by the name String
+	 * @param properties
+	 * @param nameStr
+	 * @return
+	 */
+	private Integer findPropertyWithNameStr(List<FlattenedPropertyInstance> properties, String nameStr) {
+		Integer idx = null;
+		
+		for (int i = 0; i < properties.size(); i++) {
+			String name = properties.get(i).getTypeFullQualifiedInstanceName();
+			if (name.contains(nameStr)) {
+				idx = i;
+			}
+		}
+		
+		return idx;
 	}
 	
 	@Test
 	public void testPutUpdateCaAndProperties() throws CoreException, IOException {
 		setUpCa();
 		
-		flatTestCa.setName(NAME);
-		flatTestCa.setType(READ_ONLY);
-		flatTestCa.setFullQualifiedInstanceName(READ_ONLY);
+		flatTestCaWithProperties.setName(NAME);
+		flatTestCaWithProperties.setType(READ_ONLY);
+		flatTestCaWithProperties.setFullQualifiedInstanceName(READ_ONLY);
 		
 		// Change properties
-		List<FlattenedPropertyInstance> properties = flatTestCa.getProperties();
+		List<FlattenedPropertyInstance> properties = flatTestCaWithProperties.getProperties();
 
 		// Find the right elements in the flattened ca
-		int boolIdx = -1;
-		int intIdx = -1;
-		int floatIdx = -1;
-		int stringIdx = -1;
-		int resourceIdx = -1;
-		int enumIdx = -1;
-		
-		for (int i = 0; i < properties.size(); i++) {
-			String name = properties.get(i).getTypeFullQualifiedInstanceName();
-			if (name.contains("Float")) {
-				floatIdx = i;
-			} else if (name.contains("Bool")) {
-				boolIdx = i;
-			} else if (name.contains("Int")) {
-				intIdx = i;
-			} else if (name.contains("String")) {
-				stringIdx = i;
-			} else if (name.contains("Resource")) {
-				resourceIdx = i;
-			} else if (name.contains("Enum")) {
-				enumIdx = i;
-			}
-		}
+		int boolIdx = findPropertyWithNameStr(properties, "Bool");
+		int intIdx = findPropertyWithNameStr(properties, "Int");
+		int floatIdx = findPropertyWithNameStr(properties, "Float");
+		int stringIdx = findPropertyWithNameStr(properties, "String");
+		int resourceIdx = findPropertyWithNameStr(properties, "Resource");
+		int enumIdx = findPropertyWithNameStr(properties, "Enum");
 		
 		FlattenedPropertyInstance testBool = properties.get(boolIdx);
 		FlattenedPropertyInstance testFloat = properties.get(floatIdx);
@@ -430,8 +443,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		testResource.setValue(newResource);
 		testEnum.setValue(newEnum);
 		
-		repoModelAccessController.putCa(flatTestCa, flatTestCa.getUuid());
-		FlattenedCategoryAssignment updatedCa = repoModelAccessController.getCa(flatTestCa.getUuid());
+		repoModelAccessController.putCaWithProperties(flatTestCaWithProperties, flatTestCaWithProperties.getUuid());
+		FlattenedCategoryAssignmentWithProperties updatedCa = repoModelAccessController.getCaWithProperties(flatTestCaWithProperties.getUuid());
 		
 		// CA
 		assertEquals("Name changed correctly", NAME, updatedCa.getName());
@@ -457,7 +470,20 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertEquals("Unit changed correctly", newUnit, updatedFloat.getUnitName());
 		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getQuanitityKindName());
 		
+		// Also test that we can't change the property uuid list
+		
+		// Get the ca again to have the current version with the changes we did to the ca
+		flatTestCa = repoModelAccessController.getCa(flatTestCa.getUuid());
+		List<String> originalProperties = flatTestCa.getPropertyUuids();
+		flatTestCa.setPropertyUuids(null);
+		repoModelAccessController.putCa(flatTestCa, flatTestCa.getUuid());
+		
+		FlattenedCategoryAssignment updatedCaWithUuids = repoModelAccessController.getCa(flatTestCa.getUuid());
+		
+		assertEquals("Properties didn't change", originalProperties, updatedCaWithUuids.getPropertyUuids());
+	
+		assertEquals("Name changed correctly also in this updated sei", NAME, updatedCaWithUuids.getName());
 	}
 	
-	// TODO: resource to get and update property instances?
+	// TODO: resource to get and update property instances
 }

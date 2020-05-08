@@ -39,7 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedPropertyInstance;
@@ -50,7 +50,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	private static VirSatTransactionalEditingDomain ed;
 	private static FlattenedStructuralElementInstance flatRootSei;
-	private static FlattenedCategoryAssignment flatCa;
+	private static FlattenedCategoryAssignmentWithProperties flatCa;
 	private static FlattenedPropertyInstance flatProperty;
 	
 	@BeforeClass
@@ -95,7 +95,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		
 		seiContaining.getCategoryAssignments().add(caOfContainingSei);
 		
-		flatCa = new FlattenedCategoryAssignment(caOfContainingSei);
+		flatCa = new FlattenedCategoryAssignmentWithProperties(caOfContainingSei);
 		flatRootSei = new FlattenedStructuralElementInstance(seiContaining);
 		flatProperty = new FlattenedPropertyInstance(intPropertyInstance);
 	}
@@ -134,7 +134,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testGetCaWithProperty() {
-		FlattenedCategoryAssignment returnedCa = getCaRequest(flatCa.getUuid().toString());
+		FlattenedCategoryAssignmentWithProperties returnedCa = getCaRequest(flatCa.getUuid().toString());
 		// We can't use samePropertyValuesAs here because of the List<FlattenedPropertyInstance>
 		assertEquals("Correct ca returned", flatCa.getName(), returnedCa.getName()); 
 		
@@ -165,12 +165,12 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.get(FlattenedStructuralElementInstance.class);
 	}
 	
-	private FlattenedCategoryAssignment getCaRequest(String uuid) {
+	private FlattenedCategoryAssignmentWithProperties getCaRequest(String uuid) {
 		return webTarget
 			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
 			.request()
 			.accept(MediaType.APPLICATION_JSON)
-			.get(FlattenedCategoryAssignment.class);
+			.get(FlattenedCategoryAssignmentWithProperties.class);
 	}
 	
 	private Response putSeiRequest(FlattenedStructuralElementInstance flatSei, String uuid) {
@@ -181,7 +181,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.put(Entity.entity(flatSei, MediaType.APPLICATION_JSON));
 	}
 	
-	private Response putCaRequest(FlattenedCategoryAssignment flatCa, String uuid) {
+	private Response putCaRequest(FlattenedCategoryAssignmentWithProperties flatCa, String uuid) {
 		return webTarget
 			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
 			.request()

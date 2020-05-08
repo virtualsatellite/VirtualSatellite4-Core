@@ -12,38 +12,23 @@ package de.dlr.sc.virsat.server.dataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.edit.command.SetCommand;
-
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
-public class FlattenedCategoryAssignment {
+/**
+ * Representation of a model CA that contains only a list of the property instances uuids
+ * It doesn't override the unflatten function because that list is read only,
+ * this is because we don't add or delete the properties of the ca on this low level
+ */
+public class FlattenedCategoryAssignment extends AFlattenedCategoryAssignment {
 
-	// API read only
-	private String fullQualifiedInstanceName;
-	private String type;
-	private String uuid;
-
-	// API read and write
-	private String name;
-	private List<FlattenedPropertyInstance> properties; //add+delete on high lvl
+	// API read
+	private List<String> propertyUuids;
 	
-	public FlattenedCategoryAssignment() { }
-	
-	/**
-	 * Create a FlattenedCategoryAssignment from the ca
-	 * @param ca CategoryAssignment
-	 */
 	public FlattenedCategoryAssignment(CategoryAssignment ca) {
-		setFullQualifiedInstanceName(ca.getFullQualifiedInstanceName());
-		setName(ca.getName());
-		setType(ca.getType().getFullQualifiedName());
-		setUuid(ca.getUuid().toString());
-		setProperties(resolveProperties(ca.getPropertyInstances()));
+		super(ca);
+		
+		setPropertyUuids(resolveProperties(ca.getPropertyInstances()));
 	}
 
 	/**
@@ -51,78 +36,21 @@ public class FlattenedCategoryAssignment {
 	 * @param properties of the ca
 	 * @return List<String>
 	 */
-	private List<FlattenedPropertyInstance> resolveProperties(List<APropertyInstance> properties) {
-		List<FlattenedPropertyInstance> flattenedProperties = new ArrayList<FlattenedPropertyInstance>();
+	private List<String> resolveProperties(List<APropertyInstance> properties) {
+		List<String> propertyUuids = new ArrayList<String>();
 		
 		for (APropertyInstance property : properties) {
-			flattenedProperties.add(new FlattenedPropertyInstance(property));
+			propertyUuids.add(property.getUuid().toString());
 		}
 		
-		return flattenedProperties;
+		return propertyUuids;
 	}
 	
-	/**
-	 * Create a command to unflatten the properties of this instance into a existing ca
-	 * @param editingDomain
-	 * @param ca
-	 * @return Command
-	 */
-	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, CategoryAssignment ca) {
-		CompoundCommand updateCaCommand = new CompoundCommand();
-		
-		Command commandSetName = SetCommand.create(editingDomain, ca, GeneralPackage.Literals.INAME__NAME, getName());
-		updateCaCommand.append(commandSetName);
-
-		for (APropertyInstance property: ca.getPropertyInstances()) {
-			for (FlattenedPropertyInstance flattenedPropertyInstance : getProperties()) {
-				if (property.getUuid().toString().equals(flattenedPropertyInstance.getUuid())) {
-					updateCaCommand.append(flattenedPropertyInstance.unflatten(editingDomain, property));
-					break;
-				}
-			}
-		}
-		
-		return updateCaCommand;
-	}
-	
-	public String getName() {
-		return name;
+	public List<String> getPropertyUuids() {
+		return propertyUuids;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPropertyUuids(List<String> propertyUuids) {
+		this.propertyUuids = propertyUuids;
 	}
-
-	public String getFullQualifiedInstanceName() {
-		return fullQualifiedInstanceName;
-	}
-
-	public void setFullQualifiedInstanceName(String fullQualifiedInstanceName) {
-		this.fullQualifiedInstanceName = fullQualifiedInstanceName;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	public List<FlattenedPropertyInstance> getProperties() {
-		return properties;
-	}
-
-	public void setProperties(List<FlattenedPropertyInstance> properties) {
-		this.properties = properties;
-	}
-	
 }

@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
-import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
@@ -122,7 +122,7 @@ public class ModelAccessResource {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getCa(@PathParam("caUuid") String caUuid) {
 			try {
-				return Response.status(Response.Status.OK).entity(controller.getCa(caUuid)).build();
+				return Response.status(Response.Status.OK).entity(controller.getCaWithProperties(caUuid)).build();
 			} catch (CoreException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 			}
@@ -138,9 +138,9 @@ public class ModelAccessResource {
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putSei(@PathParam("caUuid") String caUuid, FlattenedCategoryAssignment flatCa) {
+		public Response putSei(@PathParam("caUuid") String caUuid, FlattenedCategoryAssignmentWithProperties flatCa) {
 			try {
-				controller.putCa(flatCa, caUuid);
+				controller.putCaWithProperties(flatCa, caUuid);
 				return Response.status(Response.Status.OK).build();
 			} catch (CoreException | IOException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
