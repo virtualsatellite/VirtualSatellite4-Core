@@ -27,7 +27,8 @@ Require-Bundle: de.dlr.sc.virsat.commons,
  org.eclipse.ui.workbench,
  org.eclipse.ui.forms;visibility:=reexport,
  org.eclipse.nebula.widgets.gallery,
- de.dlr.sc.virsat.external.lib.commons.cli
+ de.dlr.sc.virsat.external.lib.commons.cli,
+ de.dlr.sc.virsat.external.lib.matlabfile
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.uieingine.ui,
  de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties,
