@@ -24,7 +24,9 @@ import javax.ws.rs.core.Response;
 import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.server.controller.RepoModelAccessController;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedPropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
@@ -39,29 +41,30 @@ public class ModelAccessResource {
 	public static final String DISCIPLINES = "disciplines";
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
+	public static final String CA_AND_PROPERTIES = "caAndProperties";
+	public static final String PROPERTY = "property";
 	
 	public ModelAccessResource() { }
 	
 	/**
 	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
 	 * @param repoName of the repository to be accessed by the request
-	 * @return LowLevelAccessResource or null if the repo is not found
+	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
-	public LowLevelModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
+	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
-			return new LowLevelModelAccessResource(repoName, repo);
+			return new RepoModelAccessResource(repoName, repo);
 		}
 		
 		return null;
 	}
 	
-	public static class LowLevelModelAccessResource {
-		// TODO: rename controller class?
+	public static class RepoModelAccessResource {
 		private RepoModelAccessController controller;
 		
-		public LowLevelModelAccessResource(String repoName, ServerRepository serverRepository) {
+		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {
 			controller = new RepoModelAccessController(serverRepository.getEd());
 		}
 
@@ -88,7 +91,7 @@ public class ModelAccessResource {
 		 * Put a sei at the given path
 		 * @param seiUuid
 		 * @param flatSei
-		 * @return
+		 * @return Response
 		 */
 		@PUT
 		@Path(SEI + "/{seiUuid}")
@@ -122,6 +125,36 @@ public class ModelAccessResource {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getCa(@PathParam("caUuid") String caUuid) {
 			try {
+				return Response.status(Response.Status.OK).entity(controller.getCa(caUuid)).build();
+			} catch (CoreException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
+		}
+		
+		/**
+		 * Put a ca with properties at the given path
+		 * @param caUuid
+		 * @param flatCa
+		 * @return Response
+		 */
+		@PUT
+		@Path(CA + "/{caUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response putCa(@PathParam("caUuid") String caUuid, FlattenedCategoryAssignment flatCa) {
+			try {
+				controller.putCa(flatCa, caUuid);
+				return Response.status(Response.Status.OK).build();
+			} catch (CoreException | IOException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
+		}
+		
+		@GET
+		@Path(CA_AND_PROPERTIES + "/{caUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getCaWithProperties(@PathParam("caUuid") String caUuid) {
+			try {
 				return Response.status(Response.Status.OK).entity(controller.getCaWithProperties(caUuid)).build();
 			} catch (CoreException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -129,18 +162,44 @@ public class ModelAccessResource {
 		}
 		
 		/**
-		 * Put a ca at the given path
+		 * Put a ca with properties at the given path
 		 * @param caUuid
 		 * @param flatCa
-		 * @return
+		 * @return Response
 		 */
 		@PUT
-		@Path(CA + "/{caUuid}")
+		@Path(CA_AND_PROPERTIES + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putSei(@PathParam("caUuid") String caUuid, FlattenedCategoryAssignmentWithProperties flatCa) {
+		public Response putCaWithProperties(@PathParam("caUuid") String caUuid, FlattenedCategoryAssignmentWithProperties flatCa) {
 			try {
 				controller.putCaWithProperties(flatCa, caUuid);
+				return Response.status(Response.Status.OK).build();
+			} catch (CoreException | IOException e) {
+				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			}
+		}
+		
+		@GET
+		@Path(PROPERTY + "/{propertyUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
+			return Response.status(Response.Status.OK).entity(controller.getPropertyInstance(propertyUuid)).build();
+		}
+		
+		/**
+		 * Put a property at the given path
+		 * @param propertyUuid
+		 * @param flatCa
+		 * @return Response
+		 */
+		@PUT
+		@Path(PROPERTY + "/{propertyUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response putProperty(@PathParam("propertyUuid") String propertyUuid, FlattenedPropertyInstance flatProperty) {
+			try {
+				controller.putPropertyInstance(flatProperty, propertyUuid);
 				return Response.status(Response.Status.OK).build();
 			} catch (CoreException | IOException e) {
 				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();

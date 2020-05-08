@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -29,6 +30,7 @@ import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedPropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 
@@ -175,4 +177,25 @@ public class RepoModelAccessController {
 	}
 	
 	// Property Instances
+	public FlattenedPropertyInstance getPropertyInstance(String uuid) {
+		return new FlattenedPropertyInstance(RepositoryUtility.findProperty(uuid, repository));
+	}
+	
+	/**
+	 * Update a property identified by the uuid or throw exception if it doesn't exit
+	 * @param flatProperty the property to put
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public void putPropertyInstance(FlattenedPropertyInstance flatProperty, String uuid) throws CoreException, IOException {
+		APropertyInstance oldProperty = RepositoryUtility.findProperty(uuid, repository);
+		
+		// TODO: abstract class for a flattened object that has the uuid and an unflatten function? constructor?
+		if (oldProperty != null) {
+			Command updatePropertyCommand = flatProperty.unflatten(editingDomain, oldProperty);
+			editingDomain.getVirSatCommandStack().executeNoUndo(updatePropertyCommand);
+		} else {
+			throw new NullPointerException("No resource to update found, use a post request if you want to create a new Resource");
+		}
+	}
 }

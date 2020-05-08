@@ -35,6 +35,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
@@ -369,7 +370,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testGetCa() throws CoreException {
 		setUpCa();
 		
-		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());		
+		FlattenedCategoryAssignment caByUuid = repoModelAccessController.getCa(testCa.getUuid());
 		assertThat("Right ca found", flatTestCa, is(samePropertyValuesAs(caByUuid)));
 	}
 	
@@ -485,5 +486,26 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertEquals("Name changed correctly also in this updated sei", NAME, updatedCaWithUuids.getName());
 	}
 	
-	// TODO: resource to get and update property instances
+	@Test
+	public void testGetProperty() {
+		setUpCa();
+		
+		ValuePropertyInstance boolProperty = testCa.getTestBoolBean().getTypeInstance();
+		FlattenedPropertyInstance property = repoModelAccessController.getPropertyInstance(boolProperty.getUuid().toString());
+		assertThat("Right ca found", new FlattenedPropertyInstance(boolProperty), is(samePropertyValuesAs(property)));
+	}
+	
+	@Test
+	public void testPutProperty() throws CoreException, IOException {
+		setUpCa();
+		
+		ValuePropertyInstance boolProperty = testCa.getTestBoolBean().getTypeInstance();
+		FlattenedPropertyInstance flatBool = new FlattenedPropertyInstance(boolProperty);
+		flatBool.setValue(Boolean.toString(!testCa.getTestBool()));
+		
+		repoModelAccessController.putPropertyInstance(flatBool, boolProperty.getUuid().toString());
+		
+		FlattenedPropertyInstance putProperty = repoModelAccessController.getPropertyInstance(boolProperty.getUuid().toString());
+		assertEquals("Got posted correctly", boolProperty.getValue(), putProperty.getValue());
+	}
 }

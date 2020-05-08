@@ -31,6 +31,8 @@ public class FlattenedCategoryAssignment extends AFlattenedCategoryAssignment {
 		setPropertyUuids(resolveProperties(ca.getPropertyInstances()));
 	}
 
+	public FlattenedCategoryAssignment() { };
+	
 	/**
 	 * Resolves List<APropertyInstance> to a representative List<String>
 	 * @param properties of the ca

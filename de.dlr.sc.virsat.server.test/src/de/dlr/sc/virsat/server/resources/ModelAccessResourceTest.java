@@ -39,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedDiscipline;
@@ -50,7 +51,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	private static VirSatTransactionalEditingDomain ed;
 	private static FlattenedStructuralElementInstance flatRootSei;
-	private static FlattenedCategoryAssignmentWithProperties flatCa;
+	private static FlattenedCategoryAssignment flatCa;
+	private static FlattenedCategoryAssignmentWithProperties flatCaWithProperties;
 	private static FlattenedPropertyInstance flatProperty;
 	
 	@BeforeClass
@@ -95,7 +97,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		
 		seiContaining.getCategoryAssignments().add(caOfContainingSei);
 		
-		flatCa = new FlattenedCategoryAssignmentWithProperties(caOfContainingSei);
+		flatCa = new FlattenedCategoryAssignment(caOfContainingSei);
+		flatCaWithProperties = new FlattenedCategoryAssignmentWithProperties(caOfContainingSei);
 		flatRootSei = new FlattenedStructuralElementInstance(seiContaining);
 		flatProperty = new FlattenedPropertyInstance(intPropertyInstance);
 	}
@@ -133,10 +136,22 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@Test
-	public void testGetCaWithProperty() {
-		FlattenedCategoryAssignmentWithProperties returnedCa = getCaRequest(flatCa.getUuid().toString());
+	public void testGetCa() {
+		FlattenedCategoryAssignment returnedCa = getCaRequest(flatCa.getUuid().toString());
+		assertThat("Correct ca returned", flatCa, samePropertyValuesAs(returnedCa));
+	}
+	
+	@Test
+	public void testPutCa() {
+		Response response = putCaRequest(flatCa, flatCa.getUuid());
+		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
+	}
+	
+	@Test
+	public void testGetCaWithProperties() {
+		FlattenedCategoryAssignmentWithProperties returnedCa = getCaWithPropertiesRequest(flatCaWithProperties.getUuid().toString());
 		// We can't use samePropertyValuesAs here because of the List<FlattenedPropertyInstance>
-		assertEquals("Correct ca returned", flatCa.getName(), returnedCa.getName()); 
+		assertEquals("Correct ca returned", flatCaWithProperties.getName(), returnedCa.getName()); 
 		
 		List<FlattenedPropertyInstance> properties = returnedCa.getProperties();
 		assertEquals("One property found", 1, properties.size());
@@ -144,9 +159,37 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@Test
-	public void testPutCa() {
-		Response response = putCaRequest(flatCa, flatCa.getUuid());
+	public void testGetProperty() {
+		FlattenedPropertyInstance returnedProperty = getPropertyRequest(flatProperty.getUuid().toString());
+		assertThat("Correct property returned", flatProperty, samePropertyValuesAs(returnedProperty));
+	}
+	
+	@Test
+	public void testPutProperty() {
+		Response response = putPropertyRequest(flatProperty, flatProperty.getUuid());
 		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
+	}
+	
+	@Test
+	public void testPutCaWithProperties() {
+		Response response = putCaWithPropertiesRequest(flatCaWithProperties, flatCaWithProperties.getUuid());
+		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
+	}
+	
+	private List<FlattenedDiscipline> getDisciplinesRequest() {
+		return webTarget
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.DISCIPLINES)
+			.request()
+			.accept(MediaType.APPLICATION_JSON)
+			.get(new GenericType<List<FlattenedDiscipline>>() { });
+	}
+	
+	private List<FlattenedConcept> getConceptsRequest() {
+		return webTarget
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CONCEPTS)
+			.request()
+			.accept(MediaType.APPLICATION_JSON)
+			.get(new GenericType<List<FlattenedConcept>>() { });
 	}
 	
 	private List<FlattenedStructuralElementInstance> getRootSeisRequest() {
@@ -165,12 +208,28 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.get(FlattenedStructuralElementInstance.class);
 	}
 	
-	private FlattenedCategoryAssignmentWithProperties getCaRequest(String uuid) {
+	private FlattenedCategoryAssignment getCaRequest(String uuid) {
 		return webTarget
 			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
 			.request()
 			.accept(MediaType.APPLICATION_JSON)
+			.get(FlattenedCategoryAssignment.class);
+	}
+	
+	private FlattenedCategoryAssignmentWithProperties getCaWithPropertiesRequest(String uuid) {
+		return webTarget
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA_AND_PROPERTIES).path(uuid)
+			.request()
+			.accept(MediaType.APPLICATION_JSON)
 			.get(FlattenedCategoryAssignmentWithProperties.class);
+	}
+	
+	private FlattenedPropertyInstance getPropertyRequest(String uuid) {
+		return webTarget
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.PROPERTY).path(uuid)
+			.request()
+			.accept(MediaType.APPLICATION_JSON)
+			.get(FlattenedPropertyInstance.class);
 	}
 	
 	private Response putSeiRequest(FlattenedStructuralElementInstance flatSei, String uuid) {
@@ -181,7 +240,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.put(Entity.entity(flatSei, MediaType.APPLICATION_JSON));
 	}
 	
-	private Response putCaRequest(FlattenedCategoryAssignmentWithProperties flatCa, String uuid) {
+	private Response putCaRequest(FlattenedCategoryAssignment flatCa, String uuid) {
 		return webTarget
 			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
 			.request()
@@ -189,19 +248,19 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			.put(Entity.entity(flatCa, MediaType.APPLICATION_JSON));
 	}
 	
-	private List<FlattenedDiscipline> getDisciplinesRequest() {
+	private Response putCaWithPropertiesRequest(FlattenedCategoryAssignmentWithProperties flatCa, String uuid) {
 		return webTarget
-			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.DISCIPLINES)
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CA).path(uuid)
 			.request()
 			.accept(MediaType.APPLICATION_JSON)
-			.get(new GenericType<List<FlattenedDiscipline>>() { });
+			.put(Entity.entity(flatCa, MediaType.APPLICATION_JSON));
 	}
 	
-	private List<FlattenedConcept> getConceptsRequest() {
+	private Response putPropertyRequest(FlattenedPropertyInstance flatProperty, String uuid) {
 		return webTarget
-			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.CONCEPTS)
+			.path(ModelAccessResource.PATH).path(projectName).path(ModelAccessResource.PROPERTY).path(uuid)
 			.request()
 			.accept(MediaType.APPLICATION_JSON)
-			.get(new GenericType<List<FlattenedConcept>>() { });
+			.put(Entity.entity(flatProperty, MediaType.APPLICATION_JSON));
 	}
 }
