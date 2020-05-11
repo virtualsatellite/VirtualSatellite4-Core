@@ -210,9 +210,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	
 	@Test
 	@Ignore
-	// TODO: if creating is a high level api task, maybe it makes sense to also handle deletion there?
 	// This test case fails if run in alltests because of ui dependencies in CreateRemoveSeiWithFileStructureCommand
-	// Will be fixed in seperate ticket
+	// Will be fixed in a seperate ticket
 	public void testDeleteSei() throws CoreException, IOException {
 		// Delete one sei
 		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
@@ -430,12 +429,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		final String newString = "New value";
 		final String newResource = URI.createPlatformResourceURI("testdata/new_test.data", true).toString();
 		final String newEnum = EnumTestEnum.INCREDIBLE.getName();
-		final String newUnit = "Gram";
-		
-		testFloat.setFullQualifiedInstanceName(READ_ONLY);
-		testFloat.setTypeFullQualifiedInstanceName(READ_ONLY);
-		testFloat.setUnitName(newUnit);
-		testFloat.setQuanitityKindName(READ_ONLY);
 		
 		testBool.setValue(newBool);
 		testFloat.setValue(newFloat);
@@ -455,9 +448,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		// Property
 		List<FlattenedPropertyInstance> updatedProperties = updatedCa.getProperties();
 		FlattenedPropertyInstance updatedFloat = updatedProperties.get(floatIdx);
-		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getUuid());
-		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getFullQualifiedInstanceName());
-		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getTypeFullQualifiedInstanceName());
 		
 		// Property values
 		assertEquals("Boolean property value changed correctly", newBool, updatedProperties.get(boolIdx).getValue());
@@ -466,10 +456,6 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertEquals("String property value changed correctly", newString, updatedProperties.get(stringIdx).getValue());
 		assertEquals("Resource property value changed correctly", newResource, updatedProperties.get(resourceIdx).getValue());
 		assertEquals("Enum property value changed correctly", newEnum, updatedProperties.get(enumIdx).getValue());
-	
-		// QudvTypeProperty specific
-		assertEquals("Unit changed correctly", newUnit, updatedFloat.getUnitName());
-		assertNotEquals("This value can't be changed by the API", READ_ONLY, updatedFloat.getQuanitityKindName());
 		
 		// Also test that we can't change the property uuid list
 		
@@ -499,13 +485,26 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testPutProperty() throws CoreException, IOException {
 		setUpCa();
 		
-		ValuePropertyInstance boolProperty = testCa.getTestBoolBean().getTypeInstance();
-		FlattenedPropertyInstance flatBool = new FlattenedPropertyInstance(boolProperty);
-		flatBool.setValue(Boolean.toString(!testCa.getTestBool()));
+		final String newUnit = "Gram";
 		
-		repoModelAccessController.putPropertyInstance(flatBool, boolProperty.getUuid().toString());
+		ValuePropertyInstance floatProperty = testCa.getTestFloatBean().getTypeInstance();
+		FlattenedPropertyInstance flatFloat = new FlattenedPropertyInstance(floatProperty);
+		flatFloat.setValue(Boolean.toString(!testCa.getTestBool()));
+		flatFloat.setFullQualifiedInstanceName(READ_ONLY);
+		flatFloat.setTypeFullQualifiedInstanceName(READ_ONLY);
+		flatFloat.setUnitName(newUnit);
+		flatFloat.setQuanitityKindName(READ_ONLY);
 		
-		FlattenedPropertyInstance putProperty = repoModelAccessController.getPropertyInstance(boolProperty.getUuid().toString());
-		assertEquals("Got posted correctly", boolProperty.getValue(), putProperty.getValue());
+		repoModelAccessController.putPropertyInstance(flatFloat, floatProperty.getUuid().toString());
+		
+		FlattenedPropertyInstance putProperty = repoModelAccessController.getPropertyInstance(floatProperty.getUuid().toString());
+		assertEquals("Got posted correctly", floatProperty.getValue() + "00", putProperty.getValue());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, putProperty.getUuid());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, putProperty.getFullQualifiedInstanceName());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, putProperty.getTypeFullQualifiedInstanceName());
+		
+		// QudvTypeProperty specific
+		assertEquals("Unit changed correctly", newUnit, putProperty.getUnitName());
+		assertNotEquals("This value can't be changed by the API", READ_ONLY, putProperty.getQuanitityKindName());
 	}
 }

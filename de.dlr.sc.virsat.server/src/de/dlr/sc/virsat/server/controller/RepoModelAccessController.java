@@ -190,7 +190,6 @@ public class RepoModelAccessController {
 	public void putPropertyInstance(FlattenedPropertyInstance flatProperty, String uuid) throws CoreException, IOException {
 		APropertyInstance oldProperty = RepositoryUtility.findProperty(uuid, repository);
 		
-		// TODO: abstract class for a flattened object that has the uuid and an unflatten function? constructor?
 		if (oldProperty != null) {
 			Command updatePropertyCommand = flatProperty.unflatten(editingDomain, oldProperty);
 			editingDomain.getVirSatCommandStack().executeNoUndo(updatePropertyCommand);

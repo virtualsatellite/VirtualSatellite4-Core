@@ -17,6 +17,7 @@ import org.eclipse.emf.common.command.CompoundCommand;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
@@ -65,12 +66,12 @@ public class FlattenedCategoryAssignmentWithProperties extends AFlattenedCategor
 	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, CategoryAssignment ca) {
 		CompoundCommand updateCaCommand = (CompoundCommand) super.unflatten(editingDomain, ca);
 		
-		for (APropertyInstance property: ca.getPropertyInstances()) {
-			for (FlattenedPropertyInstance flattenedPropertyInstance : getProperties()) {
-				if (property.getUuid().toString().equals(flattenedPropertyInstance.getUuid())) {
-					updateCaCommand.append(flattenedPropertyInstance.unflatten(editingDomain, property));
-					break;
-				}
+		CategoryAssignmentHelper helper = new CategoryAssignmentHelper(ca);
+		
+		for (FlattenedPropertyInstance flattenedPropertyInstance : getProperties()) {
+			APropertyInstance propertyInstance = helper.tryGetPropertyInstance(flattenedPropertyInstance.getTypeFullQualifiedInstanceName());
+			if (propertyInstance != null) {
+				updateCaCommand.append(flattenedPropertyInstance.unflatten(editingDomain, propertyInstance));
 			}
 		}
 		

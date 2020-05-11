@@ -25,7 +25,6 @@ public class FlattenedConcept {
 		setName(concept.getName());
 		setVersion(concept.getVersion());
 		setDescription(concept.getDescription());
-		// TODO: which Properties (and lists) do we want do read?
 	}
 
 	public String getFullQualifiedName() {

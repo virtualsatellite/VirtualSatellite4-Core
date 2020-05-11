@@ -9,27 +9,57 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.dataaccess;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.tree.ITreeTraverserMatcher;
+import de.dlr.sc.virsat.model.dvlm.tree.TreeTraverser;
+import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 
 public class RepositoryUtility {
 
 	private RepositoryUtility() { }
-	
-	// TODO: use ecoreutil or VirSatEcoreUtil or resource insteadof RepositoryUtility
 
+	/**
+	 * Traverses a Repository and all Seis
+	 */
+	static class UuidTraverser implements ITreeTraverserMatcher<IUuid> {
+
+		@Override
+		public boolean isMatching(IUuid treeNode) {
+			return false;
+		}
+
+		@Override
+		public void processMatch(IUuid treeNode, IUuid matchingParent) {
+			// Will be handled in isMatching
+		}
+
+		@Override
+		public Collection<? extends IUuid> getChildren(IUuid treeNode) {
+			if (treeNode instanceof Repository) {
+				return ((Repository) treeNode).getRootEntities();
+			} else if (treeNode instanceof StructuralElementInstance) {
+				return ((StructuralElementInstance) treeNode).getChildren();
+			}
+			return null;
+		}
+		
+	}
+	
 	/**
 	 * Finds a sei instance by it's uuid
 	 * @param uuid the seis uuid
@@ -37,17 +67,28 @@ public class RepositoryUtility {
 	 * @throws CoreException
 	 */
 	public static StructuralElementInstance findSei(String uuid, Repository repository) throws CoreException {
-		List<StructuralElementInstance> rootSeis = repository.getRootEntities();
-		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
-		while (iterator.hasNext()) {
-			Object currentSei = iterator.next();
-			if (currentSei instanceof StructuralElementInstance) {
-				if (((StructuralElementInstance) currentSei).getUuid().toString().equals(uuid)) {
-					return (StructuralElementInstance) currentSei;
+		
+		List<StructuralElementInstance> match = new ArrayList<StructuralElementInstance>(); 
+		
+		TreeTraverser<IUuid> traverser = new TreeTraverser<IUuid>();
+		traverser.traverse(repository, new UuidTraverser() {
+			@Override
+			public boolean isMatching(IUuid treeNode) {
+				boolean isMatching = treeNode.getUuid().toString().equals(uuid);
+				
+				if (isMatching) {
+					match.add((StructuralElementInstance) treeNode);
 				}
+				
+				return isMatching;
 			}
+		});
+		
+		if (match.isEmpty()) {
+			return null;
+		} else {
+			return match.get(0);
 		}
-		return null;
 	}
 	
 	/**
@@ -57,17 +98,37 @@ public class RepositoryUtility {
 	 * @throws CoreException
 	 */
 	public static CategoryAssignment findCa(String uuid, Repository repository) throws CoreException {
-		List<StructuralElementInstance> rootSeis = repository.getRootEntities();
-		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
-		while (iterator.hasNext()) {
-			Object currentSei = iterator.next();
-			if (currentSei instanceof CategoryAssignment) {
-				if (((CategoryAssignment) currentSei).getUuid().toString().equals(uuid)) {
-					return (CategoryAssignment) currentSei;
+		List<CategoryAssignment> match = new ArrayList<CategoryAssignment>(); 
+		
+		TreeTraverser<IUuid> traverser = new TreeTraverser<IUuid>();
+		traverser.traverse(repository, new UuidTraverser() {
+			@Override
+			public boolean isMatching(IUuid treeNode) {
+				
+				boolean isMatching = false;
+				
+				if (treeNode instanceof StructuralElementInstance) {
+					StructuralElementInstance treeSei = (StructuralElementInstance) treeNode;
+					List<CategoryAssignment> currentCas = new LinkedList<>(treeSei.getCategoryAssignments());
+					
+					// Checks the uuids for each ca of a sei
+					for (CategoryAssignment ca : currentCas) {						
+						isMatching = ca.getUuid().toString().equals(uuid);
+						if (isMatching) {
+							match.add(ca);
+						}
+					}
 				}
+				
+				return isMatching;
 			}
+		});
+		
+		if (match.isEmpty()) {
+			return null;
+		} else {
+			return match.get(0);
 		}
-		return null;
 	}
 	
 	/**
@@ -77,27 +138,47 @@ public class RepositoryUtility {
 	 * @throws CoreException
 	 */
 	public static APropertyInstance findProperty(String uuid, Repository repository) {
-		List<StructuralElementInstance> rootSeis = repository.getRootEntities();
-		TreeIterator<Object> iterator = EcoreUtil.getAllContents(rootSeis, true);
-		while (iterator.hasNext()) {
-			Object currentEntity = iterator.next();
-			if (currentEntity instanceof APropertyInstance) {
-				if (((APropertyInstance) currentEntity).getUuid().toString().equals(uuid)) {
-					APropertyInstance propertyInstance = (APropertyInstance) currentEntity;
-					return propertyInstance;
+		List<APropertyInstance> match = new ArrayList<APropertyInstance>(); 
+		
+		TreeTraverser<IUuid> traverser = new TreeTraverser<IUuid>();
+		traverser.traverse(repository, new UuidTraverser() {
+			@Override
+			public boolean isMatching(IUuid treeNode) {
+				
+				boolean isMatching = false;
+				
+				if (treeNode instanceof StructuralElementInstance) {
+					StructuralElementInstance treeSei = (StructuralElementInstance) treeNode;
+					List<CategoryAssignment> currentCas = new LinkedList<>(treeSei.getCategoryAssignments());
+					Collection<APropertyInstance> propertyInstances = VirSatEcoreUtil.getAllContentsOfType(currentCas, APropertyInstance.class, true);
+					
+					// Checks the uuids for all properties of the seis cas
+					for (APropertyInstance prop : propertyInstances) {
+						isMatching = prop.getUuid().toString().equals(uuid);
+						if (isMatching) {
+							match.add(prop);
+						}
+					}
 				}
+				
+				return isMatching;
 			}
+		});
+		
+		if (match.isEmpty()) {
+			return null;
+		} else {
+			return match.get(0);
 		}
-		return null;
 	}
 	
 	/**
 	 * Finds a discipline instance by it's uuid
 	 * @param uuid
-	 * @return the Disciplie or null
+	 * @return the Discipline or null
 	 * @throws CoreException
 	 */
-	public static Discipline findDisciplie(String uuid, Repository repository) {
+	public static Discipline findDiscipline(String uuid, Repository repository) {
 		EList<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
 		for (Discipline discipline : disciplines) {
 			if (discipline.getUuid().toString().equals(uuid)) {

@@ -31,6 +31,10 @@ import de.dlr.sc.virsat.server.dataaccess.FlattenedStructuralElementInstance;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
+/**
+ * The resource to access the VirSat data model of a server repository
+ * Provides an endpoint to access a repository
+ */
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
 	
@@ -61,6 +65,17 @@ public class ModelAccessResource {
 		return null;
 	}
 	
+	/**
+	 * The resource to access the VirSat data model of a specific server repository
+	 * Provides the following endpoints:
+	 *   - Get roots seis
+	 *   - Get and update sei by uuid
+	 *   - Get disciplines
+	 *   - Get concepts
+	 *   - Get and update ca (with property uuids) by uuid
+	 *   - Get and update ca with properties by uuid
+	 *   - Get and update properties by uuid
+	 */
 	public static class RepoModelAccessResource {
 		private RepoModelAccessController controller;
 		
@@ -132,7 +147,7 @@ public class ModelAccessResource {
 		}
 		
 		/**
-		 * Put a ca with properties at the given path
+		 * Put a ca at the given path
 		 * @param caUuid
 		 * @param flatCa
 		 * @return Response

@@ -40,7 +40,7 @@ public class FlattenedStructuralElementInstance {
 	// API read all and write on existing SEIS
 	private List<String> superSeis;
 	private List<String> children;
-	private List<String> categoryAssignments; // Maybe only read?
+	private List<String> categoryAssignments;
 	
 	public FlattenedStructuralElementInstance() { }
 	
@@ -108,7 +108,7 @@ public class FlattenedStructuralElementInstance {
 		Command commandSetDescription = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIDescription_Description(), getDescription());
 		updateSeiCommand.append(commandSetDescription);
 		
-		Discipline discipline = RepositoryUtility.findDisciplie(getDiscipline(), editingDomain.getResourceSet().getRepository());
+		Discipline discipline = RepositoryUtility.findDiscipline(getDiscipline(), editingDomain.getResourceSet().getRepository());
 		Command commandSetDiscipline = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline);
 		updateSeiCommand.append(commandSetDiscipline);
 		
