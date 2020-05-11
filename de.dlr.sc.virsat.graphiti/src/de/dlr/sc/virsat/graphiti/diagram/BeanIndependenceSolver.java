@@ -26,13 +26,13 @@ import org.eclipse.graphiti.features.impl.IIndependenceSolver;
 
 import de.dlr.sc.virsat.graphiti.Activator;
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
+import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFactory;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyUnitType;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -131,7 +131,7 @@ public class BeanIndependenceSolver implements IIndependenceSolver {
 							}
 						} else if (object instanceof ATypeInstance) {
 							BeanPropertyFactory bpf = new BeanPropertyFactory();
-							ABeanObject<?> beanUnitProperty = bpf.getBeanUnitProperty(object, BeanPropertyUnitType.FLOAT);
+							IBeanObject<? extends APropertyInstance> beanUnitProperty = bpf.getInstanceFor((ATypeInstance) object);
 							objectMap.put(key, beanUnitProperty);
 						}
 					}
