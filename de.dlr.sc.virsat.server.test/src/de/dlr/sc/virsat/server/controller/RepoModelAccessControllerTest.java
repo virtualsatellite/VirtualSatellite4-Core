@@ -31,7 +31,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.hamcrest.Matcher;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
@@ -183,7 +182,8 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testGetActiveConcepts() {
 		List<FlattenedConcept> activeConcepts = repoModelAccessController.getActiveConcepts();
 		
-		assertEquals("Two concepts found", 2, activeConcepts.size());
+		final int ACTIVE_CONCEPTS = 3;
+		assertEquals("Three concepts found", ACTIVE_CONCEPTS, activeConcepts.size());
 	}
 	
 	@Test
@@ -209,10 +209,9 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
-	@Ignore
-	// This test case fails if run in alltests because of ui dependencies in CreateRemoveSeiWithFileStructureCommand
-	// Will be fixed in a seperate ticket
 	public void testDeleteSei() throws CoreException, IOException {
+		setUpSeis();
+		
 		// Delete one sei
 		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
 		repoModelAccessController.deleteSei(uuid);

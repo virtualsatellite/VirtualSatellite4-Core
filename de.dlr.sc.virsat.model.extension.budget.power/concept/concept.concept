@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.budget.power displayname "Power Budget" description "Power Budget Concept" beta {
+Concept de.dlr.sc.virsat.model.extension.budget.power displayname "Power Budget" description "Power Budget Concept" beta version 1.1 {
 	Import de.dlr.sc.virsat.model.extension.statemachines.*;
 
 	Category APowerParameters description "Abstract definition of a collection of power parameters" {

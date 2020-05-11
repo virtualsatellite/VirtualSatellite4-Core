@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 
 import de.dlr.sc.virsat.model.extension.tests.tests.TestMassParameters;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestParameter;
@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class TestMassParametersImpl extends DObjectImpl implements TestMassParameters {
+public class TestMassParametersImpl extends GenericCategoryImpl implements TestMassParameters {
 	/**
 	 * The cached value of the '{@link #getMass() <em>Mass</em>}' containment reference.
 	 * <!-- begin-user-doc -->

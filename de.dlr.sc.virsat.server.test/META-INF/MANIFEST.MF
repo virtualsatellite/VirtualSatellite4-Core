@@ -19,4 +19,5 @@ Automatic-Module-Name: de.dlr.sc.virsat.server.test
 Import-Package: de.dlr.sc.virsat.model.concept.types,
  de.dlr.sc.virsat.model.extension.tests.test,
  de.dlr.sc.virsat.project.test,
- de.dlr.sc.virsat.team.test
+ de.dlr.sc.virsat.team.test,
+ org.eclipse.jetty.security

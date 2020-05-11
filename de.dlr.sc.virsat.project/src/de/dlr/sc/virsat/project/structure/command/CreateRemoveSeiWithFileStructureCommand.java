@@ -8,14 +8,16 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.project.ui.structure.command;
+package de.dlr.sc.virsat.project.structure.command;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
+import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -26,12 +28,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-
 import de.dlr.sc.virsat.model.dvlm.resource.command.RemoveResourceCommand;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -53,25 +54,26 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	/**
 	 * Creates a command to remove a given StructuralElementInstance and its file structure
 	 * @param seiToRemove StructuralElementInstance to remove
+	 * @param deleteResourceOperation the actual abstract operation to delete the resources
 	 * @return Command that removes seiToRemove and its file structure
 	 */
-	public static Command create(StructuralElementInstance seiToRemove) {
-		CompoundCommand removeSeiCommand = doCreate(seiToRemove);
+	public static Command create(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
+		CompoundCommand removeSeiCommand = doCreate(seiToRemove, deleteResourcesOperationFunction);
 		return removeSeiCommand;
 	}
 
 	/**
-	 * Creates a command to remove multiple StructuralElementInstances and their file structures
-	 * @param seisToRemove 
-	 * @return Command
+	 * Creates a command to remove multiple StructuralElementInstances and their file structures.
+	 * The command makes sure that children are not deleted twice in case they are part of the selection
+	 * @param seisToRemove A list of SEIs to be removed
+	 * @param deleteResourceOperation the actual abstract operation to delete the resources
+	 * @return Command that will delete the selection of SEIs and their children
 	 */
-	public static Command create(Collection<StructuralElementInstance> seisToRemove) {
+	public static Command create(Collection<StructuralElementInstance> seisToRemove, Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		CompoundCommand removeAllSeisCommand = new CompoundCommand();
-		ArrayList<StructuralElementInstance> seisToDelete = eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(seisToRemove);
+		ArrayList<StructuralElementInstance> seisToDelete = StructuralElementInstanceHelper.cleanFromIndirectSelectedChildren(seisToRemove);
 		for (StructuralElementInstance sei : seisToDelete) {
-			if (sei.eResource() != null) {
-				removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei));
-			}
+			removeAllSeisCommand.append(CreateRemoveSeiWithFileStructureCommand.create(sei, deleteResourcesOperationFunction));
 		}
 	
 		return removeAllSeisCommand;
@@ -80,9 +82,10 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	/**
 	 * Creates a command to remove a given StructuralElementInstance and its file structure
 	 * @param seiToRemove StructuralElementInstance to remove
+	 * @param deleteResourceOperation the actual abstract operation to delete the resources
 	 * @return Command that removes seiToRemove and its file structure
 	 */
-	private static CompoundCommand doCreate(StructuralElementInstance seiToRemove) {
+	protected static CompoundCommand doCreate(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
 		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(seiToRemove);
 		CompoundCommand compoundCommand =  new CompoundCommand();
 
@@ -96,7 +99,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 			for (StructuralElementInstance iste : seisToRemove) {
 				Command recordedRemoveCommand = DeleteStructuralElementInstanceCommand.create(editingDomain, iste);	
 				Command removeDvlmResourcesCommand = createRemoveDvlmResourcesCommand(project, virSatResourceSet, iste);
-				Command removeFilesCommand = new RemoveFileStructureCommand(project, iste);
+				Command removeFilesCommand = new RemoveFileStructureCommand(project, iste, deleteResourcesOperationFunction);
 				
 				//compoundCommand.append(resyncSeiResourceCommand);
 				compoundCommand.append(recordedRemoveCommand);
@@ -104,7 +107,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 				compoundCommand.append(removeFilesCommand);
 			}
 		}
-	
+		
 		return compoundCommand;
 	}
 	
@@ -116,7 +119,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	 * @param iste the structural element instance
 	 * @return a compound command for removing the resources
 	 */
-	private static Command createRemoveDvlmResourcesCommand(IProject project, VirSatResourceSet virSatResourceSet, StructuralElementInstance iste)  {
+	protected static Command createRemoveDvlmResourcesCommand(IProject project, VirSatResourceSet virSatResourceSet, StructuralElementInstance iste)  {
 		VirSatProjectCommons projectCommons = new VirSatProjectCommons(project);
 		Set<Resource> emfResources = new HashSet<>();
 		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(iste);
@@ -141,28 +144,4 @@ public class CreateRemoveSeiWithFileStructureCommand {
 		
 		return new RemoveResourceCommand(virSatResourceSet, emfResources);
 	}
-	
-	
-	
-	/**
-	 * Creates a new list which does not contain seis that are marked for deletion whose parents are also marked for deletion
-	 * for example, A contains B, and both are selected for deletion. In this case we need to remove B as it will be deleted anyway with A
-	 * @param seisToDelete Collection of seis that are selected for deletion
-	 * @return list of seis without children that will be deleted anyway
-	 */
-	private static ArrayList<StructuralElementInstance> eliminateSelectedChildrenOfSelectedParentsThatWillBeDeletedAnyway(Collection<StructuralElementInstance> seisToDelete) {
-		Set<EObject> selectedToBeDeleted = new HashSet<>(seisToDelete);
-		ArrayList<StructuralElementInstance> seisToDeleteWithoutDuplicateChildren = new ArrayList<>();
-		for (StructuralElementInstance sei : seisToDelete) {
-			EObject parent = sei.eContainer();
-			while (parent instanceof StructuralElementInstance && !selectedToBeDeleted.contains(parent)) {
-				parent = parent.eContainer();
-			}
-			if (!(parent instanceof StructuralElementInstance)) {
-				seisToDeleteWithoutDuplicateChildren.add(sei); //parents of eobject are not marked for deletion 
-			}
-		}
-		return seisToDeleteWithoutDuplicateChildren;
-	}
-	
 }

@@ -121,7 +121,7 @@ public class DiagramHelper {
 	public static boolean hasDiagramWritePermission(EObject graphitiObject) {
 		StructuralElementInstance sei = getOwningStructuralElementInstance(graphitiObject);
 		if (sei != null) {
-			return RightsHelper.hasWritePermission(sei); 
+			return RightsHelper.hasSystemUserWritePermission(sei); 
 		} else {
 			return true;
 		}
@@ -158,7 +158,7 @@ public class DiagramHelper {
 			return true;
 		}
 		
-		return RightsHelper.hasWritePermission(eObject) && DiagramHelper.hasDiagramWritePermission(graphitiObject);
+		return RightsHelper.hasSystemUserWritePermission(eObject) && DiagramHelper.hasDiagramWritePermission(graphitiObject);
 	}
 	/**
 	 * Creates the diagram

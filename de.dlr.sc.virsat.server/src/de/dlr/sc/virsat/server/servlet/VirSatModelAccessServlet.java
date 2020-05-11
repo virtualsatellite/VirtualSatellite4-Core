@@ -12,10 +12,13 @@ package de.dlr.sc.virsat.server.servlet;
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.WorkspaceAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
@@ -32,10 +35,21 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 	}
 
 	private static class ModelAccessRestApplication extends ResourceConfig {
+		/**
+		 * Registers all relevant Classes: Resources, Filter and Bindings
+		 */
 		private ModelAccessRestApplication() {
+			// Resources
 			register(AccessTestResource.class);
 			register(WorkspaceAccessResource.class);
 			register(ModelAccessResource.class);
+			register(AuthTestResource.class);
+
+			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
+			register(RolesAllowedDynamicFeature.class);
+			
+			// Register our RepositoryFilter via a dynamic binding
+			register(DynamicRepositoryFilterBinding.class);
 		}
 	}
 }

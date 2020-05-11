@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 /**
  * test Case for checking the Duplicate Naming Validator

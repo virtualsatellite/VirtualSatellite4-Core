@@ -37,6 +37,8 @@ public class ServerConfigurationTest {
 		assertEquals(expectedDefaultPropertiesFilePath, Activator.getDefault().getPropertiesFilePath());
 		assertFalse("There are some configurations in the default configuration file", ServerConfiguration.getProperties().isEmpty());
 		assertFalse(ServerConfiguration.getRepositoryConfigurationsDir().isEmpty());
+		assertFalse(ServerConfiguration.getLoginServiceClass().isEmpty());
+		assertFalse(ServerConfiguration.getAuthPropertiesFile().isEmpty());
 	}
 
 	@Test

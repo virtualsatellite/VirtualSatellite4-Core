@@ -136,7 +136,7 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
-		editingDomain.saveAll(false);
+		editingDomain.saveAll(false, false);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		

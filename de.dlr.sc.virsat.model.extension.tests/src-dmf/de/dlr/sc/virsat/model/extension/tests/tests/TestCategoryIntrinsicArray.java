@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -30,7 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface TestCategoryIntrinsicArray extends DObject {
+public interface TestCategoryIntrinsicArray extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Test String Array Dynamic</b></em>' attribute list.
 	 * The list contents are of type {@link java.lang.String}.

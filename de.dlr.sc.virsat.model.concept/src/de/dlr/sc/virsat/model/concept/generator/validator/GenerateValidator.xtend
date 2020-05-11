@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.generator.IFileSystemAccess
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator
 
 class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	
@@ -97,7 +98,7 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	 */
 	override protected declareAClass(Concept concept, EObject conceptPart, ImportManager importManager) '''
 	«importManager.register(StructuralElementInstance)»
-	«importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator")»
+	«importManager.register(IStructuralElementInstanceValidator)»
 	
 	// *****************************************************************
 	// * Class Declaration

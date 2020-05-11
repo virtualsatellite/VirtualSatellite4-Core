@@ -48,6 +48,9 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 
 	protected IVirSatVersionControlBackend backend;
 	
+	public static final int ASSERT_RETRY_COUNT = 4;
+	public static final int ASSERT_RETRY_TIME = 250;
+	
 	/**
 	 * This method is used to create a project 
 	 * in a sub folder of a repository at given file system location.
@@ -112,6 +115,9 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		super.setUp();
 		
 		projectRepoLocal1 = createTestProject(PROJECT_LOCAL_NAME, pathRepoLocal1, true);
+		
+		assertTrue("Project exsists in workspace", projectRepoLocal1.exists());
+		assertTrue("Project exsists on filesystem", projectRepoLocal1.getRawLocation().toFile().exists());
 		projectCommons = new VirSatProjectCommons(projectRepoLocal1);
 	}
 
@@ -134,9 +140,13 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		rs.getStructuralElementInstanceResource(sei1);
 
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei1);
-
+		assertTrue("File exsists in workspace", seiFile.exists());
+		assertTrue("File exsists on filesystem", seiFile.getRawLocation().toFile().exists());
+		
 		// Commit repository and SEI files with VirtualSatellite Backend
 		backend.commit(projectRepoLocal1, "First Simple Commit", new NullProgressMonitor());
+		
+		checkRemoteForCommitMessage("First Simple Commit");
 		
 		// Create the project again using another file system repository
 		projectRepoLocal1.delete(true, null);
@@ -145,9 +155,15 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		// Checkout to local2 and see if SEI file has been transferred
 		backend.update(projectRepoLocal2, new NullProgressMonitor());
 
-		File seiInLocal2 = new File(pathRepoLocal2.toFile(),
-				seiFile.getFullPath().toOSString());
-		assertTrue("File also exists in local2 after pull", seiInLocal2.exists());
+		File seiInLocal2 = new File(pathRepoLocal2.toFile(), seiFile.getFullPath().toOSString());
+		assertRetry(
+			ASSERT_RETRY_COUNT,
+			ASSERT_RETRY_TIME,
+			() -> assertTrue("File also exists in local2 after pull", seiInLocal2.exists())
+		);
+	}
+	
+	protected void checkRemoteForCommitMessage(String message) {
 	}
 
 	@Test

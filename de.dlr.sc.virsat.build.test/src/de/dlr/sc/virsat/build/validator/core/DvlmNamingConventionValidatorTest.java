@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 /**
  * TestCase for the UniqName Constraint which acts on CAs and on child SEI

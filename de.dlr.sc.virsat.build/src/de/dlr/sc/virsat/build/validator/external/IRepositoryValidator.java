@@ -12,10 +12,15 @@ package de.dlr.sc.virsat.build.validator.external;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 
 /**
+ * <p>
+ * Deprecated -> Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator}
+ * 
+ * </p>
  * the IRepositoryValidator class defines the interface for our model validators
  * The build will call all registered validators bound to this interface
  *
  */
+@Deprecated
 public interface IRepositoryValidator {
 
 	/**

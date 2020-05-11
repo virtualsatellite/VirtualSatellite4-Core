@@ -1229,7 +1229,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 	@Override
 	public void updateState(boolean state) {
-		boolean uiEnabled = RightsHelper.hasWritePermission(model) & state;
+		boolean uiEnabled = RightsHelper.hasSystemUserWritePermission(model) & state;
 
 		PropertyInstanceHelper piHelper = new PropertyInstanceHelper();
 		

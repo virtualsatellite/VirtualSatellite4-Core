@@ -7,22 +7,23 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.dvlm.roles;
+package de.dlr.sc.virsat.model.extension.requirements.migrator;
 
-import org.eclipse.emf.ecore.EObject;
+import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
+
+
+// *****************************************************************
+// * Class Declaration
+// *****************************************************************
 
 /**
- * Interface for rights helper
- * @author fisc_ph
- *
- */
+ * Auto Generated Abstract Generator Gap Class
+ * 
+ * Don't Manually modify this class
+ * 
+ * Extension for Requirement Specification
+ * 
+ */	
+public abstract class AMigrator0v2 extends AMigrator {
 
-public interface IRightsHelper {
-
-	/**
-	 * Checks if a user has right access to the passed object
-	 * @param eObject the eObject that we inquire whether or not the user has right access to
-	 * @return true iff right access is granted
-	 */
-	boolean hasWriteAccess(EObject eObject);
 }

@@ -16,15 +16,13 @@ import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 
 /**
  * Simple Helper method to determine the access rights on an EObject
- * @author fisc_ph
- *
  */
-public class RightsHelper implements IRightsHelper {
+public class RightsHelper {
 	
 	/**
 	 * Private Constructor for Helper Class
 	 */
-	public RightsHelper() {
+	private RightsHelper() {
 	}
 
 	/**
@@ -64,36 +62,48 @@ public class RightsHelper implements IRightsHelper {
 	}
 	
 	/**
-	 * this method told if the object has write permissions
-	 * @param eObject the object it worked on
-	 * @return true if the object has write permissions, else false
+	 * This method is use to check if there is possible write access to the given object.
+	 * Write access is given in case the user from the given context matches to the one in
+	 * the assigned discipline or if super user rights are set.
+	 * @param eObject the object to check if there is write access
+	 * @param userContext The User Context to be used when checking if the object is writable
+	 * @return true if the object allows writing, else false. Returns false in case userContext is null
 	 */
-	public static synchronized boolean hasWritePermission(EObject eObject) {
-		if (!hasParentThatCanHaveDiscipline(eObject)) {
-			// If in the container hierarchy there exists no object with an assignable discipline
-			// We can skip any further checks to the write permission since we cannot obtain a discipline
-			// Note that this may be different than having an assignable discipline parent but no discipline assigned
-			return true;
+	public static synchronized boolean hasWritePermission(EObject eObject, IUserContext userContext) {
+		if (userContext != null) {
+			if (!hasParentThatCanHaveDiscipline(eObject)) {
+				// If in the container hierarchy there exists no object with an assignable discipline
+				// We can skip any further checks to the write permission since we cannot obtain a discipline
+				// Note that this may be different than having an assignable discipline parent but no discipline assigned
+				return true;
+			}
+			
+			boolean hasWritePermission = false;
+			String registeredUserInApplication = userContext.getUserName();
+			
+			// the owner of the command is our object we work on
+			Discipline disc = getDiscipline(eObject);
+			if (disc != null) {
+				String userAssignedToDispline = disc.getUser();
+				if (!userAssignedToDispline.isEmpty()) {
+					hasWritePermission = userAssignedToDispline.equals(registeredUserInApplication);
+				}	
+			}
+			
+			return hasWritePermission || userContext.isSuperUser();
 		}
-		
-		UserRegistry userRegistry = UserRegistry.getInstance();
-		boolean hasWritePermission = false;
-		String registeredUserInApplication = userRegistry.getUserName();
-		
-		// the owner of the command is our object we work on
-		Discipline disc = getDiscipline(eObject);
-		if (disc != null) {
-			String userAssignedToDispline = disc.getUser();
-			if (!userAssignedToDispline.isEmpty()) {
-				hasWritePermission = userAssignedToDispline.equals(registeredUserInApplication);
-			}	
-		}
-		
-		return hasWritePermission || userRegistry.isSuperUser(); 
+		// False in case there is no suer context
+		return false;
 	}
 
-	@Override
-	public boolean hasWriteAccess(EObject eObject) {
-		return hasWritePermission(eObject);
+	/**
+	 * This method is intended for checking write access in single user mode.
+	 * This mode is usually used in Virtual Satellite Desktop application, e.g. in
+	 * the User Interface. The method will use the System User Registry as User Context
+	 * @param eObject The eObject to be tested for write access
+	 * @return true in case the user has access or is a super user.
+	 */
+	public static boolean hasSystemUserWritePermission(EObject eObject) {
+		return hasWritePermission(eObject, UserRegistry.getInstance());
 	}
 }

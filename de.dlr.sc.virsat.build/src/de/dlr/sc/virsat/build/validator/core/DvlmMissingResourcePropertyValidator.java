@@ -17,10 +17,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 /**
  * Implementation of a validator that checks if a document linked to the data model 

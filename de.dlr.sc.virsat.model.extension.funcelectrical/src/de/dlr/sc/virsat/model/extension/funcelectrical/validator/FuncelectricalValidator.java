@@ -9,16 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.funcelectrical.validator;
 
-import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.general.IUuid;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
-import de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelper;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
-
 import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
@@ -26,7 +16,16 @@ import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.base.Objects;
 
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
+import de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelper;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
 
 
 // *****************************************************************

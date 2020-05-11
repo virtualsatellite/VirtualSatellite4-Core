@@ -47,7 +47,7 @@ public interface RolesPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/r";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/r";
 
 	/**
 	 * The package namespace name.

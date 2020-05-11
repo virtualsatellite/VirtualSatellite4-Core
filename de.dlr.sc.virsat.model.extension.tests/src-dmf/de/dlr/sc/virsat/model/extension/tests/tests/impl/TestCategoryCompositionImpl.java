@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryComposition;
@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class TestCategoryCompositionImpl extends DObjectImpl implements TestCategoryComposition {
+public class TestCategoryCompositionImpl extends GenericCategoryImpl implements TestCategoryComposition {
 	/**
 	 * The cached value of the '{@link #getTestSubCategory() <em>Test Sub Category</em>}' containment reference.
 	 * <!-- begin-user-doc -->

@@ -26,7 +26,7 @@ public class WritePermissionTester extends PropertyTester {
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		if (receiver instanceof EObject) {
 			EObject eObject = (EObject) receiver;
-			return RightsHelper.hasWritePermission(eObject);
+			return RightsHelper.hasSystemUserWritePermission(eObject);
 		} else {
 			return false;
 		}

@@ -25,7 +25,8 @@ import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
@@ -128,7 +129,7 @@ public class RepoModelAccessController {
 	public void deleteSei(String uuid) throws CoreException, IOException {
 		StructuralElementInstance sei = RepositoryUtility.findSei(uuid, repository);
 		if (sei != null) {
-			Command removeCommand = CreateRemoveSeiWithFileStructureCommand.create(sei);
+			Command removeCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
 			editingDomain.getCommandStack().execute(removeCommand);
 		}
 	}

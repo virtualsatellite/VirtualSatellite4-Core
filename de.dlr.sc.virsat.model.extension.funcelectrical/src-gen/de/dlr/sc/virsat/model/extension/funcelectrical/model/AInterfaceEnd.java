@@ -25,8 +25,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
  * Describes a Functional Electrical InterfaceEnd as connection point for Interfaces
  * 
  */	
-public abstract class AInterfaceEnd extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class AInterfaceEnd extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd";
 	
