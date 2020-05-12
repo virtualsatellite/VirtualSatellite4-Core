@@ -11,11 +11,11 @@ package de.dlr.sc.virsat.server.dataaccess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -27,7 +27,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.tree.ITreeTraverserMatcher;
 import de.dlr.sc.virsat.model.dvlm.tree.TreeTraverser;
-import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 
 public class RepositoryUtility {
 
@@ -92,31 +91,27 @@ public class RepositoryUtility {
 	}
 	
 	/**
-	 * Finds a ca instance by it's uuid
-	 * @param uuid the cas uuid
-	 * @return the CategoryAssignment or null
-	 * @throws CoreException
+	 * Iterates over all seis in the repository and matches the uuid on eobject level
+	 * @param uuid
+	 * @param repository
+	 * @return
 	 */
-	public static CategoryAssignment findCa(String uuid, Repository repository) throws CoreException {
-		List<CategoryAssignment> match = new ArrayList<CategoryAssignment>(); 
+	public static IUuid findObjectById(String uuid, Repository repository) {
+		List<IUuid> match = new ArrayList<IUuid>(); 
 		
 		TreeTraverser<IUuid> traverser = new TreeTraverser<IUuid>();
 		traverser.traverse(repository, new UuidTraverser() {
 			@Override
 			public boolean isMatching(IUuid treeNode) {
-				
 				boolean isMatching = false;
 				
 				if (treeNode instanceof StructuralElementInstance) {
 					StructuralElementInstance treeSei = (StructuralElementInstance) treeNode;
-					List<CategoryAssignment> currentCas = new LinkedList<>(treeSei.getCategoryAssignments());
-					
-					// Checks the uuids for each ca of a sei
-					for (CategoryAssignment ca : currentCas) {						
-						isMatching = ca.getUuid().toString().equals(uuid);
-						if (isMatching) {
-							match.add(ca);
-						}
+
+					EObject objByUuid = treeSei.eResource().getEObject(uuid);
+					isMatching = objByUuid != null;
+					if (isMatching) {
+						match.add((IUuid) objByUuid);
 					}
 				}
 				
@@ -132,44 +127,33 @@ public class RepositoryUtility {
 	}
 	
 	/**
+	 * Finds a ca instance by it's uuid
+	 * @param uuid the cas uuid
+	 * @return the CategoryAssignment or null
+	 * @throws CoreException
+	 */
+	public static CategoryAssignment findCa(String uuid, Repository repository) throws CoreException {
+		IUuid obj = findObjectById(uuid, repository);
+		if (obj instanceof CategoryAssignment) {
+			return (CategoryAssignment) obj;
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Finds a property instance by it's uuid
 	 * @param uuid the properties uuid
 	 * @return the APropertyInstance or null
 	 * @throws CoreException
 	 */
 	public static APropertyInstance findProperty(String uuid, Repository repository) {
-		List<APropertyInstance> match = new ArrayList<APropertyInstance>(); 
-		
-		TreeTraverser<IUuid> traverser = new TreeTraverser<IUuid>();
-		traverser.traverse(repository, new UuidTraverser() {
-			@Override
-			public boolean isMatching(IUuid treeNode) {
-				
-				boolean isMatching = false;
-				
-				if (treeNode instanceof StructuralElementInstance) {
-					StructuralElementInstance treeSei = (StructuralElementInstance) treeNode;
-					List<CategoryAssignment> currentCas = new LinkedList<>(treeSei.getCategoryAssignments());
-					Collection<APropertyInstance> propertyInstances = VirSatEcoreUtil.getAllContentsOfType(currentCas, APropertyInstance.class, true);
-					
-					// Checks the uuids for all properties of the seis cas
-					for (APropertyInstance prop : propertyInstances) {
-						isMatching = prop.getUuid().toString().equals(uuid);
-						if (isMatching) {
-							match.add(prop);
-						}
-					}
-				}
-				
-				return isMatching;
-			}
-		});
-		
-		if (match.isEmpty()) {
-			return null;
-		} else {
-			return match.get(0);
+		IUuid obj = findObjectById(uuid, repository);
+		if (obj instanceof APropertyInstance) {
+			return (APropertyInstance) obj;
 		}
+		
+		return null;
 	}
 	
 	/**

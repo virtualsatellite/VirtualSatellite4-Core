@@ -20,8 +20,11 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,6 +42,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignment;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedCategoryAssignmentWithProperties;
 import de.dlr.sc.virsat.server.dataaccess.FlattenedConcept;
@@ -59,6 +63,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	public static void setUpModel() throws Exception {
 
 		ed = testServerRepository.getEd();
+		VirSatResourceSet rs = ed.getResourceSet();
 
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setName("TestRootComponent");
@@ -82,7 +87,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		ed.getCommandStack().execute(addConceptToRepo);
 
 		StructuralElementInstance seiContaining = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		seiContaining.setName("seiWithSei");
+		seiContaining.setName("sei");
 		seiContaining.setType(se);
 		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), DVLMPackage.eINSTANCE.getRepository_RootEntities(), seiContaining);
 		ed.getCommandStack().execute(addSeiToRepo);
@@ -95,7 +100,19 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		intPropertyInstance.setType(ip);
 		caOfContainingSei.getPropertyInstances().add(intPropertyInstance);
 		
-		seiContaining.getCategoryAssignments().add(caOfContainingSei);
+		RecordingCommand recordingCommand = new RecordingCommand(ed) {
+
+			@Override
+			protected void doExecute() {
+				Resource resourceSei1 = rs.getStructuralElementInstanceResource(seiContaining);
+				resourceSei1.getContents().add(seiContaining);
+				seiContaining.getCategoryAssignments().add(caOfContainingSei);
+			}
+			
+		};
+		ed.getCommandStack().execute(recordingCommand);		
+		
+		rs.saveAllResources(new NullProgressMonitor());
 		
 		flatCa = new FlattenedCategoryAssignment(caOfContainingSei);
 		flatCaWithProperties = new FlattenedCategoryAssignmentWithProperties(caOfContainingSei);
