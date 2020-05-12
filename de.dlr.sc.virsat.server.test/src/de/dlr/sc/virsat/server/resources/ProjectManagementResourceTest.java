@@ -26,10 +26,10 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
-import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
+import de.dlr.sc.virsat.server.test.AJettyServerTest;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
+public class ProjectManagementResourceTest extends AJettyServerTest {
 
 	private RepositoryConfiguration testProjectConfiguration;
 

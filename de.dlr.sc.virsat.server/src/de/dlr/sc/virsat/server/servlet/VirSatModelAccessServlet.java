@@ -16,10 +16,8 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
-import de.dlr.sc.virsat.server.resources.AccessTestResource;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.AuthTestResource;
-import de.dlr.sc.virsat.server.resources.WorkspaceAccessResource;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
 /**
@@ -40,8 +38,6 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		 */
 		private ModelAccessRestApplication() {
 			// Resources
-			register(AccessTestResource.class);
-			register(WorkspaceAccessResource.class);
 			register(ModelAccessResource.class);
 			register(AuthTestResource.class);
 
