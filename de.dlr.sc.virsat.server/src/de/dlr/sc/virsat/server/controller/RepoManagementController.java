@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
+
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelper;
@@ -41,12 +43,8 @@ public class RepoManagementController {
 		ServerRepoHelper.deleteRepositoryConfiguration(repoName);
 	}
 	
-	public void updateRepository(RepositoryConfiguration repoConfiguration) throws IOException {
-		// TODO: handle updated func acc, backend
-		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoConfiguration.getProjectName());
-		repo.getRepositoryConfiguration().update(repoConfiguration);
-		
-		ServerRepoHelper.saveRepositoryConfiguration(repoConfiguration);
+	public void updateRepository(RepositoryConfiguration repoConfiguration) throws IOException, URISyntaxException, CoreException {
+		ServerRepoHelper.updateRepositoryConfiguration(repoConfiguration);
 	}
 
 	public Set<String> getAllProjectNames() {
@@ -56,8 +54,9 @@ public class RepoManagementController {
 	/**
 	 * If a project with the name from configuration exists, it is updated, otherwise it is created.
 	 * @throws IOException 
+	 * @throws CoreException 
 	 */
-	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
+	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException, CoreException {
 		if (getAllProjectNames().contains(repoConfiguration.getProjectName())) {
 			updateRepository(repoConfiguration);
 		} else {

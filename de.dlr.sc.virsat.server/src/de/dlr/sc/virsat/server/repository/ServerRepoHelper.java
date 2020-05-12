@@ -17,6 +17,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.eclipse.core.runtime.CoreException;
+
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
@@ -91,5 +94,28 @@ public class ServerRepoHelper {
 		Files.delete(configFile);
 		
 		RepoRegistry.getInstance().getRepositories().remove(repoName);
+	}
+	
+	/**
+	 * Update a repository configuration
+	 * @param repositoryConfiguration
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws CoreException
+	 */
+	public static void updateRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException, URISyntaxException, CoreException {
+		ServerRepository repo = RepoRegistry.getInstance().getRepository(repositoryConfiguration.getProjectName());
+		
+		// TODO: test updating a not existing repo
+		// check for change in one of those, if changed reinitialize backend
+		RepositoryConfiguration oldConfig = repo.getRepositoryConfiguration();
+		
+		if (!oldConfig.equals(repositoryConfiguration)) {
+			// TODO: improve
+			oldConfig.update(repositoryConfiguration);
+			repo.removeRepository();
+			repo = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), oldConfig);
+			RepoRegistry.getInstance().getRepositories().replace(repositoryConfiguration.getProjectName(), repo);
+		}
 	}
 }

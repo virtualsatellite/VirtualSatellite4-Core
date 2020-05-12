@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.eclipse.core.runtime.CoreException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,11 +44,13 @@ public class RepoManagementControllerTest {
 	
 	@Before
 	public void setUp() throws IOException {
-		// Create temporary dir for repo config files
+		// Create temporary dir for config files
 		Path configsDir = VirSatFileUtils.createAutoDeleteTempDirectory("test_repo_configs");
+		Path projectsDir = VirSatFileUtils.createAutoDeleteTempDirectory("test_project");
 		
-		// Overwrite path to repo config files
+		// Overwrite path to config files
 		ServerConfiguration.setRepositoryConfigurationsDir(configsDir.toString());
+		ServerConfiguration.setProjectRepositoriesDir(projectsDir.toString());
 		
 		repoManagemantController = new RepoManagementController();
 		testRepositoryConfiguration = new RepositoryConfiguration();
@@ -104,7 +107,7 @@ public class RepoManagementControllerTest {
 	}
 	
 	@Test
-	public void testUpdateRepository() throws URISyntaxException, IOException {
+	public void testUpdateRepository() throws URISyntaxException, IOException, CoreException {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
 		
@@ -148,12 +151,12 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testAddOrUpdateRepository() throws URISyntaxException, IOException {
+	public void testAddOrUpdateRepository() throws URISyntaxException, IOException, CoreException {
 		assertTrue(repoManagemantController.getAllProjectNames().isEmpty());
 		repoManagemantController.addOrUpdateRepository(testRepositoryConfiguration);
 		assertEquals("Project is added", 1, repoManagemantController.getAllProjectNames().size());
 
-		final String newPassword = "naw password";
+		final String newPassword = "new password";
 		testRepositoryConfiguration.setFunctionalAccountPassword(newPassword);
 		repoManagemantController.addOrUpdateRepository(testRepositoryConfiguration);
 		String updatedPassword = repoManagemantController.getRepository(TEST_REPOSITORY_NAME).getRepositoryConfiguration().getFunctionalAccountPassword();
