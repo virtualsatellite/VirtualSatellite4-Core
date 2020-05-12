@@ -111,6 +111,27 @@ public class ServerRepoHelperTest {
 		assertEquals("Saved file contains new URI", newUri, loadedConfig.getRemoteUri());
 	}
 	
+	@Test
+	public void testDeleteRepositoryConfiguration() throws IOException, URISyntaxException {
+		String projectName = "testProject";
+		RepositoryConfiguration config = new RepositoryConfiguration();
+		config.setProjectName(projectName);
+		
+		String expectedFileName = projectName + ".properties";
+		Path configFilePath = configsDir.resolve(expectedFileName);
+		
+		createTempRepoConfigFile(configsDir, projectName, VersionControlSystem.GIT);
+
+		ServerRepoHelper.initRepoRegistry();
+		ServerRepoHelper.saveRepositoryConfiguration(config);
+		assertTrue("Config file exists", Files.exists(configFilePath));
+		assertFalse("Config registered", RepoRegistry.getInstance().getRepositories().isEmpty());
+		
+		ServerRepoHelper.deleteRepositoryConfiguration(projectName);
+		assertFalse("Config file deleted", Files.exists(configFilePath));
+		assertTrue("Config registered", RepoRegistry.getInstance().getRepositories().isEmpty());
+	}
+	
 	/**
 	 * Not creating all fields since we are not testing individual RepositoryConfiguration serialization here
 	 * @throws IOException 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -57,8 +57,12 @@ public class ServerRepoHelper {
 	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws IOException, URISyntaxException {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
 		
-		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), config);
-		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
+		registerRepositoryConfiguration(config);
+	}
+	
+	public static void registerRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
+		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repositoryConfiguration);
+		RepoRegistry.getInstance().addRepository(repositoryConfiguration.getProjectName(), serverRepository);
 	}
 	
 	/**
@@ -73,5 +77,19 @@ public class ServerRepoHelper {
 		try (OutputStream propertiesStream = Files.newOutputStream(configFile)) {
 			repositoryConfiguration.saveProperties(propertiesStream);
 		}
+	}
+	
+	/**
+	 * Delete the .properties file of the project and remove it from the repo registry
+	 * @param repoName name of the project to be deleted
+	 * @throws IOException
+	 */
+	public static void deleteRepositoryConfiguration(String repoName) throws IOException {
+		String fileName = repoName + ".properties";
+		Path configFile = Paths.get(ServerConfiguration.getRepositoryConfigurationsDir(), fileName);
+		
+		Files.delete(configFile);
+		
+		RepoRegistry.getInstance().getRepositories().remove(repoName);
 	}
 }
