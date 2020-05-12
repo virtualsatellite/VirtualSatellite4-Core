@@ -17,9 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.external.lib.apache.poi,
  de.dlr.sc.virsat.concept.unittest.util,
- org.eclipse.xtext.ui.testing,
  org.eclipse.xtext.ecore,
- org.eclipse.xtext.ui.ecore,
  de.dlr.sc.virsat.model.external.tests,
  de.dlr.sc.virsat.model.extension.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
