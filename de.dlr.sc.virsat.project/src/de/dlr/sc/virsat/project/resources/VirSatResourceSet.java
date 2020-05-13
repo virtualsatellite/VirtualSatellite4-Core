@@ -1000,8 +1000,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	/**
-<<<<<<< HEAD
-=======
 	 * Use this method to assign a new discipline to a resource / eObject. The
 	 * method will force a save on the resource to persist the newly assigned
 	 * discipline
