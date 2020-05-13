@@ -18,6 +18,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import org.eclipse.core.runtime.CoreException;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTrace;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
@@ -33,6 +34,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 
 
 // *****************************************************************
@@ -63,6 +65,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public static final String PROPERTY_REQTYPE = "reqType";
 	public static final String PROPERTY_ELEMENTS = "elements";
 	public static final String PROPERTY_STATUS = "status";
+	public static final String PROPERTY_TRACE = "trace";
 	
 	// Status enumeration value names
 	public static final String STATUS_Open_NAME = "Open";
@@ -194,6 +197,23 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public BeanPropertyEnum getStatusBean() {
 		safeAccessStatus();
 		return status;
+	}
+	
+	// *****************************************************************
+	// * Attribute: trace
+	// *****************************************************************
+	private RequirementTrace trace = new RequirementTrace();
+	
+	private void safeAccessTrace() {
+		if (trace.getTypeInstance() == null) {
+			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("trace");
+			trace.setTypeInstance(propertyInstance.getTypeInstance());
+		}
+	}
+	
+	public RequirementTrace getTrace () {
+		safeAccessTrace();
+		return trace;
 	}
 	
 	
