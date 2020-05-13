@@ -103,7 +103,8 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 		}
 		final CategoryAssignment reqConfiguration = (CategoryAssignment) importPage.getSelection();
 		final String selectedFilePath = importPage.getDestination();
-		reader.setDataLine(importPage.getFristDataLineNumber());
+		reader.setDataStartLine(importPage.getFristDataLineNumber());
+		reader.setDataEndLine(importPage.getLastDataLineNumber());
 		Map<Integer, RequirementAttribute> attributeMapping = reviewTypePage.getAttributeMapping();
 
 		// Do the import

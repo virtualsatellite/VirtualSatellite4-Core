@@ -108,7 +108,7 @@ public class CsvFileReaderTest {
 		
 		Files.write(csvFilePath, csvContent);
 		
-		CsvFileReader reader = new CsvFileReader(";", 0, 1);
+		CsvFileReader reader = new CsvFileReader(";", 0, 1, 2);
 		
 		List<String> importedCsvHeader = reader.readCsvHeadline(csvFilePath.toString());
 		
@@ -130,7 +130,7 @@ public class CsvFileReaderTest {
 		
 		Files.write(csvFilePath, csvContent);
 		
-		CsvFileReader reader = new CsvFileReader(";", 0, 0);  //Asume header is also data for now
+		CsvFileReader reader = new CsvFileReader(";", 0, 0, 2);  //Asume header is also data for now
 		
 		List<List<String>> importedCsvContent = reader.readCsvData(csvFilePath.toString());
 		

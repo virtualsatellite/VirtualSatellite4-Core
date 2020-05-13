@@ -31,7 +31,8 @@ public class CsvFileReader {
 	
 	private String separator;
 	private int headerLine;
-	private int dataLine;
+	private int dataStartLine;
+	private int dataEndLine;
 
 	/**
 	 * Default constructor
@@ -39,19 +40,22 @@ public class CsvFileReader {
 	public CsvFileReader() {
 		this.separator = CSV_SPLIT_STRING + REGEX_ESCAPE_SPLIT;
 		this.headerLine = 0;
-		this.dataLine = 1;
+		this.dataStartLine = 1;
+		this.dataEndLine = 1;
 	}
 	
 	/**
 	 * Constructor with CSV parameters
 	 * @param separator the separator String
 	 * @param headerLine the number of the headline (starting from 0)
-	 * @param dataLine the number of the first data line (starting from 0)
+	 * @param dataStartLine the number of the first data line (starting from 0)
+	 * @param dataEndLine the number of the last data line (starting from 0)
 	 */
-	public CsvFileReader(String separator, int headerLine, int dataLine) {
+	public CsvFileReader(String separator, int headerLine, int dataStartLine, int dataEndLine) {
 		this.separator = separator + REGEX_ESCAPE_SPLIT;
 		this.headerLine = headerLine;
-		this.dataLine = dataLine;
+		this.dataStartLine = dataStartLine;
+		this.dataEndLine = dataEndLine;
 	}
 	
 	/**
@@ -72,7 +76,7 @@ public class CsvFileReader {
 	 * @throws IOException throws IO exception if file could not be read
 	 */
 	public List<List<String>> readCsvData(String filePath) throws IOException {
-		return readCsvFile(filePath, dataLine, null);
+		return readCsvFile(filePath, dataStartLine, dataEndLine);
 	}
 	
 	/**
@@ -180,17 +184,30 @@ public class CsvFileReader {
 	/**
 	 * @return the dataLine
 	 */
-	public int getDataLine() {
-		return dataLine;
+	public int getDataStartLine() {
+		return dataStartLine;
 	}
 
 	/**
 	 * @param dataLine the dataLine to set
 	 */
-	public void setDataLine(int dataLine) {
-		this.dataLine = dataLine;
+	public void setDataStartLine(int dataLine) {
+		this.dataStartLine = dataLine;
 	}
 
-	
+	/**
+	 * @return the dataEndLine
+	 */
+	public int getDataEndLine() {
+		return dataEndLine;
+	}
+
+	/**
+	 * @param dataEndLine the dataEndLine to set
+	 */
+	public void setDataEndLine(int dataEndLine) {
+		this.dataEndLine = dataEndLine;
+	}
+
 	
 }

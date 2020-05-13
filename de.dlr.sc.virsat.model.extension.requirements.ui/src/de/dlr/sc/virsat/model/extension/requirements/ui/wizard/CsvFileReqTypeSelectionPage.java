@@ -53,11 +53,13 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	private static final String DEFAULT_SEPARATOR = ";";
 
 	private static final String HEADER_LINE_LABEL = "CSV header line number:";
-	private static final String DATA_LINE_LABEL = "CSV data line number:";
+	private static final String DATA_LINE_START_LABEL = "CSV start data line number:";
+	private static final String DATA_LINE_END_LABEL = "CSV end data line number:";
 
 	private Text seperatorField;
 	private Text headerNumberField;
-	private Text dataNumberField;
+	private Text dataNumberStartField;
+	private Text dataNumberEndField;
 	
 	private CsvTypeReviewPage typeReviewPage;
 	private CsvImportWizard wizard;
@@ -130,15 +132,26 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		headerNumberField.setText("1");
 
 		Label labelDataNumber = new Label(propertiesComposite, SWT.NONE);
-		labelDataNumber.setText(DATA_LINE_LABEL);
+		labelDataNumber.setText(DATA_LINE_START_LABEL);
 
-		dataNumberField = new Text(propertiesComposite, SWT.SINGLE | SWT.BORDER);
+		dataNumberStartField = new Text(propertiesComposite, SWT.SINGLE | SWT.BORDER);
 		data = new GridData(GridData.GRAB_HORIZONTAL);
 		data.widthHint = WITH_TEXT;
 		data.horizontalAlignment = SWT.END;
-		dataNumberField.setLayoutData(data);
-		dataNumberField.addModifyListener(this);
-		dataNumberField.setText("2");
+		dataNumberStartField.setLayoutData(data);
+		dataNumberStartField.addModifyListener(this);
+		dataNumberStartField.setText("2");
+		
+		Label labelDataEndNumber = new Label(propertiesComposite, SWT.NONE);
+		labelDataEndNumber.setText(DATA_LINE_END_LABEL);
+
+		dataNumberEndField = new Text(propertiesComposite, SWT.SINGLE | SWT.BORDER);
+		data = new GridData(GridData.GRAB_HORIZONTAL);
+		data.widthHint = WITH_TEXT;
+		data.horizontalAlignment = SWT.END;
+		dataNumberEndField.setLayoutData(data);
+		dataNumberEndField.addModifyListener(this);
+		dataNumberEndField.setText("10");
 
 	}
 
@@ -185,7 +198,8 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 
 		if (isDestinationSelected && isCurrentPage()) {
 			if (!headerNumberField.getText().equals("") & !seperatorField.getText().equals("") 
-				& !dataNumberField.getText().equals("")) {
+				& !dataNumberStartField.getText().equals("")
+				& !dataNumberEndField.getText().equals("")) {
 
 				final String destination = getDestination();
 	
@@ -243,7 +257,15 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	 * @return the line number as integer
 	 */
 	public int getFristDataLineNumber() {
-		return Integer.parseInt(dataNumberField.getText()) - 1;
+		return Integer.parseInt(dataNumberStartField.getText()) - 1;
+	}
+	
+	/**
+	 * Get the line number of the first data
+	 * @return the line number as integer
+	 */
+	public int getLastDataLineNumber() {
+		return Integer.parseInt(dataNumberEndField.getText()) - 1;
 	}
 
 	/*
@@ -285,7 +307,8 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 
 	@Override
 	public void modifyText(ModifyEvent e) {
-		wizard.getReader().setDataLine(getFristDataLineNumber());
+		wizard.getReader().setDataStartLine(getFristDataLineNumber());
+		wizard.getReader().setDataEndLine(getLastDataLineNumber());
 		wizard.getReader().setHeaderLine(getHeaderLineNumber());
 		wizard.getReader().setSeparator(getSeparator());
 		setPageComplete(isComplete());
