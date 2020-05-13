@@ -82,7 +82,7 @@ public class CsvRequirementsImporter {
 			while (attribute.equals("")) {
 				int currentAttributeIndex = req.indexOf(attribute);
 				String repeatedValue = csvContentMatrix.get(lineNumber - 1).get(currentAttributeIndex);
-				if (attributeMapping.get(currentAttributeIndex).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+				if (attributeMapping.get(currentAttributeIndex) != null && attributeMapping.get(currentAttributeIndex).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
 					repeatedValue += REQ_EXTENSION_IDENTIFIER_PREFIX;
 				}
 				req.set(currentAttributeIndex, repeatedValue);
