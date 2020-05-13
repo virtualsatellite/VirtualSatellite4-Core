@@ -9,9 +9,13 @@
  */
 package de.dlr.sc.virsat.model.concept.scoping;
 
+import de.dlr.sc.virsat.model.ext.core.Activator;
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.impl.ImportNormalizer;
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider;
@@ -32,15 +36,11 @@ public class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalSco
    */
   @Override
   public List<ImportNormalizer> getImplicitImports(final boolean ignoreCase) {
-    throw new Error("Unresolved compilation problems:"
-      + "\nThe method or field de is undefined"
-      + "\ndlr cannot be resolved"
-      + "\nsc cannot be resolved"
-      + "\nvirsat cannot be resolved"
-      + "\nmodel cannot be resolved"
-      + "\next cannot be resolved"
-      + "\ncore cannot be resolved"
-      + "\nActivator cannot be resolved"
-      + "\npluginId cannot be resolved");
+    QualifiedName qualifiedNamespace = new IQualifiedNameConverter.DefaultImpl().toQualifiedName(
+      Activator.getPluginId());
+    ImportNormalizer coreNamespace = new ImportNormalizer(qualifiedNamespace, true, true);
+    ArrayList<ImportNormalizer> implicitImports = new ArrayList<ImportNormalizer>();
+    implicitImports.add(coreNamespace);
+    return implicitImports;
   }
 }
