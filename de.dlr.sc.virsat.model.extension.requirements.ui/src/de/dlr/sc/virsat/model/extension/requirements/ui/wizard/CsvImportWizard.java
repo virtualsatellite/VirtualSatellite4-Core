@@ -107,7 +107,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 		Map<Integer, RequirementAttribute> attributeMapping = reviewTypePage.getAttributeMapping();
 
 		// Do the import
-		Job exportJob = new Job("Performing Requirements CSV Import") {
+		Job importJob = new Job("Performing Requirements CSV Import") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS);
@@ -142,7 +142,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 				}
 			}
 		};
-		exportJob.schedule();
+		importJob.schedule();
 
 		return true;
 	}

@@ -144,7 +144,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 
 	/**
 	 * Create a tree viewer with filters to show only relevant tree elements for
-	 * CATIA import /export
+	 * CSV import /export
 	 */
 	protected void createTreeViewer() {
 		TreeViewer treeViewer = createTreeUI();
