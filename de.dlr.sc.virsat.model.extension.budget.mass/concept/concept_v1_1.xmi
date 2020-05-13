@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v7/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.mass" description="Mass Budget Concept" version="1.1" displayName="Mass Budget">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v8/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.mass" description="Mass Budget Concept" version="1.1" displayName="Mass Budget">
   <categories name="AMassParameters" description="Definition of the equipment mass" isAbstract="true">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="mass" description="The Equipment mass" quantityKindName="Mass" unitName="Kilogram" defaultValue="0.0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="massWithMargin" description="The equipment mass plus the safety margin" quantityKindName="Mass" unitName="Kilogram" defaultValue="0.0"/>

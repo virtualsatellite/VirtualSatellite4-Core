@@ -15,10 +15,13 @@ import de.dlr.sc.virsat.model.concept.generator.ImportManager;
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
@@ -29,19 +32,35 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     return (_plus + GenerateValidator.PACKAGE_FOLDER);
   }
   
-  public static String getConcreteClassName(final EObject typeDefinition) {
-    return "StructuralElementInstanceValidator";
+  /**
+   * This method gets the concept name which is usually in a form like this "de.dlr.sc.virsat.model.extension.conceptName".
+   * It splits the name after every dot and only takes the last element as the name.
+   * The first letter is capitalized, since it will be used as a class name.
+   */
+  public static String getValidatorName(final Concept concept) {
+    final String name = concept.getName();
+    final String[] arrOfName = name.split("\\.");
+    final String shortName = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(arrOfName)));
+    String _upperCase = shortName.substring(0, 1).toUpperCase();
+    String _substring = shortName.substring(1);
+    final String validatorName = (_upperCase + _substring);
+    return (validatorName + "Validator");
   }
   
-  public static String getAbstractClassName(final EObject typeDefinition) {
-    return "AStructuralElementInstanceValidator";
+  public static String getConcreteClassName(final Concept concept) {
+    return GenerateValidator.getValidatorName(concept);
+  }
+  
+  public static String getAbstractClassName(final Concept concept) {
+    String _validatorName = GenerateValidator.getValidatorName(concept);
+    return ("A" + _validatorName);
   }
   
   @Override
   public String createConcreteClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
     String _plus = (_packageFolder + "/");
-    String _concreteClassName = GenerateValidator.getConcreteClassName(eObject);
+    String _concreteClassName = GenerateValidator.getConcreteClassName(concept);
     String _plus_1 = (_plus + _concreteClassName);
     return (_plus_1 + ".java");
   }
@@ -50,7 +69,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
   public String createAbstractClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
     String _plus = (_packageFolder + "/");
-    String _abstractClassName = GenerateValidator.getAbstractClassName(eObject);
+    String _abstractClassName = GenerateValidator.getAbstractClassName(concept);
     String _plus_1 = (_plus + _abstractClassName);
     return (_plus_1 + ".java");
   }
@@ -110,7 +129,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register(StructuralElementInstance.class);
     _builder.newLineIfNotEmpty();
-    importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator");
+    importManager.register(IStructuralElementInstanceValidator.class);
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("// *****************************************************************");
@@ -124,7 +143,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     _builder.append(_generateAClassHeader);
     _builder.newLineIfNotEmpty();
     _builder.append("public abstract class ");
-    String _abstractClassName = GenerateValidator.getAbstractClassName(conceptPart);
+    String _abstractClassName = GenerateValidator.getAbstractClassName(concept);
     _builder.append(_abstractClassName);
     _builder.append(" implements IStructuralElementInstanceValidator {");
     _builder.newLineIfNotEmpty();
@@ -168,10 +187,10 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     _builder.append(_generateClassHeader);
     _builder.newLineIfNotEmpty();
     _builder.append("public class ");
-    String _concreteClassName = GenerateValidator.getConcreteClassName(conceptPart);
+    String _concreteClassName = GenerateValidator.getConcreteClassName(concept);
     _builder.append(_concreteClassName);
     _builder.append(" extends ");
-    String _abstractClassName = GenerateValidator.getAbstractClassName(conceptPart);
+    String _abstractClassName = GenerateValidator.getAbstractClassName(concept);
     _builder.append(_abstractClassName);
     _builder.append(" implements IStructuralElementInstanceValidator {");
     _builder.newLineIfNotEmpty();

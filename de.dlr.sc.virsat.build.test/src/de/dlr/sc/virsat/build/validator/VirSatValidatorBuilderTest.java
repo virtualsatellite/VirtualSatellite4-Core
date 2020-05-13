@@ -24,9 +24,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
@@ -40,7 +40,7 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 	 * test Validator to be injected in the validation builder
 	 * will remember how it got called 
 	 */
-	private class TestSeiValidator implements IStructuralElementInstanceValidator {
+	private static class TestSeiValidator implements IStructuralElementInstanceValidator {
 
 		private List<StructuralElementInstance> seis = new ArrayList<>();
 		private boolean gotCalled = false;

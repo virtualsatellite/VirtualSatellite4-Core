@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	 <propertyTester
+	    id="de.dlr.sc.virsat.model.ext.core.ui.propertyTester.conceptEnabledTester"
+	    type="org.eclipse.emf.ecore.EObject"
+	    namespace="de.dlr.sc.virsat.model.ext.core.ui.propertyTester"
+	    properties="conceptEnabled"
+	    class="de.dlr.sc.virsat.model.ext.core.propertyTester.ConceptEnabledTester">
+	  </propertyTester>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptImageContribution">
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.ext.core"
+		pathToImage="resources/icons/de.dlr.sc.virsat.model.ext.core.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.ext.core.GenericCategory"
+		pathToImage="resources/icons/GenericCategory.gif">
+	</conceptImage>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+	</extension>
+	<extension point="org.eclipse.ui.commandImages">
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+		     allPopups="false"
+		     locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=concepts">
+		     <menu
+		        id="de.dlr.sc.virsat.model.ext.core.menu" 
+		        label="Core"
+		        icon="resources/icons/de.dlr.sc.virsat.model.ext.core.gif"
+		        tooltip="Concept for core language elements">
+		        <separator
+		            name="categories"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="structuralElements"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="tools"
+		            visible="true">
+			    </separator>
+		        <separator
+		        	name="additions"
+		            visible="true">
+		    	</separator>
+		    	<visibleWhen
+					checkEnabled="true">
+					<with
+						variable="selection">
+						<iterate
+							ifEmpty="false"
+							operator="and">
+							<test 
+								property="de.dlr.sc.virsat.model.ext.core.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>		
+						</iterate>
+					</with>
+				</visibleWhen>
+			</menu>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.ext.core.menu?after=categories">
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.ext.core.menu?after=structuralElements">
+		</menuContribution>
+	</extension>
+	<extension
+	       point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
+	    <editorSection
+	          id="de.dlr.sc.virsat.model.ext.core.ui.Section"
+	          topRanking="1000">
+	    </editorSection>
+	 </extension>	
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

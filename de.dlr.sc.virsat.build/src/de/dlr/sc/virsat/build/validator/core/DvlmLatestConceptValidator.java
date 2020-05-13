@@ -10,10 +10,11 @@
 package de.dlr.sc.virsat.build.validator.core;
 
 import org.eclipse.core.resources.IMarker;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
+
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigrator;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
 
 /**
  * Checks if the installed concepts are up to date or if a newer version is available.

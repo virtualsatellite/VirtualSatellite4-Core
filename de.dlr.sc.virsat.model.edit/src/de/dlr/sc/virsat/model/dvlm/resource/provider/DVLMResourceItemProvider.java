@@ -21,7 +21,9 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProvider;
 
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagementCheckCommand;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 
 /**
  * This item provider makes sure to override the create command correctly
@@ -42,6 +44,14 @@ public class DVLMResourceItemProvider extends ResourceItemProvider {
 	
 	@Override
 	public Command createCommand(Object object, EditingDomain domain, Class<? extends Command> commandClass, CommandParameter commandParameter) {
+		
+		// Set the UserContext either from the SystemUserRegistry or
+		// from the Domain if it exists
+		IUserContext userContext = UserRegistry.getInstance();
+		if (domain instanceof IUserContext) {
+			userContext = (IUserContext) domain;
+		}
+		
 		// For all other commands get the original one
 		Command originalCommand = doCreateCommand(object, domain, commandClass, commandParameter);
 				
@@ -50,7 +60,7 @@ public class DVLMResourceItemProvider extends ResourceItemProvider {
 			return originalCommand;
 		} else {
 			// And wrap it into our command checking for the proper access rights
-			return new RoleManagementCheckCommand(originalCommand, commandParameter);	
+			return new RoleManagementCheckCommand(originalCommand, commandParameter, userContext);	
 		}
 	}
 

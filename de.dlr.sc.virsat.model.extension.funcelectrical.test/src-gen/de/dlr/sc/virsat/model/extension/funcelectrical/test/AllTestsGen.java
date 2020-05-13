@@ -20,17 +20,18 @@ import org.junit.runners.Suite.SuiteClasses;
 import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.PowerInterfaceTypeTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.migrator.Migrator2v1Test;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.FixedVoltageDefinitionTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.DataInterfaceTypeTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollectionTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEndTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.RangedVoltageDefinitionTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.validator.StructuralElementInstanceValidatorTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.FixedVoltageDefinitionTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.ThermalReferencePointTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.funcelectrical.migrator.Migrator2v0Test;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.DataInterfaceTypeTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeCollectionTest;
+import de.dlr.sc.virsat.model.extension.funcelectrical.validator.FuncelectricalValidatorTest;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceTypeTest;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEndTest;
 
 /**
  * 
@@ -49,7 +50,8 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEndTest;
 	InterfaceTypeCollectionTest.class,
 	Migrator1v0Test.class,
 	Migrator2v0Test.class,
-	StructuralElementInstanceValidatorTest.class,
+	Migrator2v1Test.class,
+	FuncelectricalValidatorTest.class,
 				})
 
 /**

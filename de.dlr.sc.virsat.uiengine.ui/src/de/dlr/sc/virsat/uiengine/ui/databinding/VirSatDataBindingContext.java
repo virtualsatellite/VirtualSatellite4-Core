@@ -40,7 +40,7 @@ public class VirSatDataBindingContext extends DataBindingContext {
 	 * @author fisc_ph
 	 *
 	 */
-	class VirSatUpdateValueStrategy extends UpdateValueStrategy {
+	static class VirSatUpdateValueStrategy extends UpdateValueStrategy {
 		@Override
 		protected IStatus doSet(IObservableValue observableValue, Object value) {
 			if (observableValue instanceof IVirSatObservableValue) {

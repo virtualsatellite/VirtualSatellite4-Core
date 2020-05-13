@@ -9,19 +9,18 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.calculation.validator;
 
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.IUnitPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
 
 import de.dlr.sc.virsat.build.marker.util.VirSatValidationMarkerHelper;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.IUnitPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 
 /**

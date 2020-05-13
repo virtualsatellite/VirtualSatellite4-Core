@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.build.validator.core;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
@@ -36,8 +37,9 @@ public abstract class AUniqueNameValidator extends ADvlmCoreValidator {
 		
 		// Now see if there is a set with more than one object
 		// if yes report these objects and set a resource marker
-		for (String name : nameToIUuids.keySet()) {
-			Set<IUuid> iUuids = nameToIUuids.get(name); 
+		for (Entry<String, Set<IUuid>> nameToIUuidsEntry : nameToIUuids.entrySet()) {
+			String name = nameToIUuidsEntry.getKey();
+			Set<IUuid> iUuids = nameToIUuidsEntry.getValue(); 
 			if (iUuids.size() > 1) {
 				allUnique = false;
 				for (IUuid iUuid : iUuids) {

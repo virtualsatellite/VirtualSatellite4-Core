@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference;
@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class TestCategoryReferenceImpl extends DObjectImpl implements TestCategoryReference {
+public class TestCategoryReferenceImpl extends GenericCategoryImpl implements TestCategoryReference {
 	/**
 	 * The cached value of the '{@link #getTestRefCategory() <em>Test Ref Category</em>}' reference.
 	 * <!-- begin-user-doc -->

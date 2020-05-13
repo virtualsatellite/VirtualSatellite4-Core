@@ -11,15 +11,16 @@
 package de.dlr.sc.virsat.build.validator.core;
 
 import org.eclipse.core.resources.IMarker;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator; 
+
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.Category; 
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty; 
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
 
 /** 
  * Validator that checks that a concept does not have a default quantity kind which is not defined in Unit Management

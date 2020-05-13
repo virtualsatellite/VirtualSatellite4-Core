@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.generator.IFileSystemAccess
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator
 
 class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	
@@ -24,20 +25,34 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 		concept.name + "." + PACKAGE_FOLDER;
 	}
 	
-	static def getConcreteClassName(EObject typeDefinition) {
-		"StructuralElementInstanceValidator";
+	/**
+	 * This method gets the concept name which is usually in a form like this "de.dlr.sc.virsat.model.extension.conceptName". 
+	 * It splits the name after every dot and only takes the last element as the name.
+	 * The first letter is capitalized, since it will be used as a class name.
+	 */
+	static def getValidatorName(Concept concept) {
+		val name = concept.name
+		val String[] arrOfName = name.split("\\.")
+		val shortName = arrOfName.last
+		
+		val validatorName = shortName.substring(0,1).toUpperCase() + shortName.substring(1) 
+		return validatorName + "Validator";
 	}
 	
-	static def getAbstractClassName(EObject typeDefinition) {
-		"AStructuralElementInstanceValidator";
+	static def getConcreteClassName(Concept concept) {
+		getValidatorName(concept);
+	}
+	
+	static def getAbstractClassName(Concept concept) {
+		"A" + getValidatorName(concept);
 	}
 	
 	override createConcreteClassFileName(Concept concept, EObject eObject) {
-		 concept.packageFolder + "/" + eObject.concreteClassName + ".java"
+		 concept.packageFolder + "/" + concept.concreteClassName + ".java"
 	}
 	
 	override createAbstractClassFileName(Concept concept, EObject eObject) {
-		 concept.packageFolder + "/" + eObject.abstractClassName + ".java"
+		 concept.packageFolder + "/" + concept.abstractClassName + ".java"
 	}
 	
 	public static val PACKAGE_FOLDER = "validator";
@@ -83,14 +98,14 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	 */
 	override protected declareAClass(Concept concept, EObject conceptPart, ImportManager importManager) '''
 	«importManager.register(StructuralElementInstance)»
-	«importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator")»
+	«importManager.register(IStructuralElementInstanceValidator)»
 	
 	// *****************************************************************
 	// * Class Declaration
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateAClassHeader(concept)»
-	public abstract class «conceptPart.abstractClassName» implements IStructuralElementInstanceValidator {
+	public abstract class «concept.abstractClassName» implements IStructuralElementInstanceValidator {
 
 		@Override
 		public boolean validate(StructuralElementInstance sei) {
@@ -111,7 +126,7 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateClassHeader(concept)»
-	public class «conceptPart.concreteClassName» extends «conceptPart.abstractClassName» implements IStructuralElementInstanceValidator {
+	public class «concept.concreteClassName» extends «concept.abstractClassName» implements IStructuralElementInstanceValidator {
 
 		@Override
 		public boolean validate(StructuralElementInstance sei) {

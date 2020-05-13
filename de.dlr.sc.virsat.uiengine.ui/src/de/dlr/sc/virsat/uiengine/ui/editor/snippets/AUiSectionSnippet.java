@@ -179,7 +179,7 @@ public abstract class AUiSectionSnippet implements IUiSnippet {
 		QualifiedName key = getSectionExpansionStateKey();
 		try {
 			if (key != null) {
-				stateStorage.setPersistentProperty(key, new Boolean(isExpanded()).toString());
+				stateStorage.setPersistentProperty(key, Boolean.valueOf(isExpanded()).toString());
 			}
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not save the expansion state"));
@@ -230,7 +230,7 @@ public abstract class AUiSectionSnippet implements IUiSnippet {
 	
 	@Override
 	public void updateState(boolean state) {
-		boolean hasWriteAccess = RightsHelper.hasWritePermission(model);
+		boolean hasWriteAccess = RightsHelper.hasSystemUserWritePermission(model);
 		for (Control control : enOrDisabledControlsAccordingToWriteAccess) {
 			control.setEnabled(hasWriteAccess);
 		}

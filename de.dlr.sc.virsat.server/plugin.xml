@@ -13,5 +13,11 @@
          </run>
       </application>
    </extension>
-
+   <extension
+         point="de.dlr.sc.virsat.external.lib.commons.cli.CommandLineArguments">
+     <clArgs
+            attribute="file"
+            command="configFile">
+     </clArgs>
+   </extension>
 </plugin>

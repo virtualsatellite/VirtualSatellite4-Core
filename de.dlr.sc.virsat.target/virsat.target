@@ -24,7 +24,11 @@
 		<unit id="org.eclipse.pde.source.feature.group" version="3.14.0.v20190605-1800"/>
 		<unit id="org.eclipse.platform.sdk" version="4.12.0.I20190605-1800"/>
 		<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.eclipse.gef.feature.group" version="2.8.0.201906121535"/>
 		<unit id="org.eclipse.swtbot.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.forms.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.generator.feature.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.ide.feature.group" version="2.8.0.201906121535"/>
 		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.18.0.v20190528-0716"/>
 		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
 		<unit id="org.eclipse.egit.feature.group" version="5.4.0.201906121030-r"/>
@@ -36,7 +40,10 @@
 		</location>              
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.polarion.eclipse.team.svn.connector.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.source.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.sources.feature.group" version="6.0.4.I20161211-1700"/>
 		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.sources.feature.group" version="6.0.4.I20161211-1700"/>
 		<repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/"/>
 		</location>              
 		</locations>

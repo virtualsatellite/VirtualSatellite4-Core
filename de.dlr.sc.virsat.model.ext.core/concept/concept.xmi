@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" name="de.dlr.sc.virsat.model.ext.core" description="Concept for core language elements" DMF="true" displayName="Core">
+  <categories name="GenericCategory" description="Implicit super category of all categories" isAbstract="true"/>
+</dvlm_c:Concept>

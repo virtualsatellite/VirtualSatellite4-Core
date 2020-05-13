@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.structure;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,17 +22,23 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.Activator;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
 
 /**
@@ -50,6 +57,10 @@ public class VirSatProjectCommons {
 	public static final String FILENAME_REPOSITORY = "Repository.dvlm";
 	public static final String FILENAME_UNIT_MANAGEMENT = "UnitManagement.dvlm";
 	public static final String FILENAME_ROLE_MANAGEMENT = "RoleManagement.dvlm";
+	public static final String FILENAME_EMPTY = ".empty";
+
+	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature";
+
 
 	private IProject project;
 	
@@ -74,14 +85,8 @@ public class VirSatProjectCommons {
 		IFolder folderUnversioned = project.getFolder(FOLDERNAME_UNVERSIONED);
 
 		try {
-			if (!folderData.exists()) {
-				folderData.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_DATA, null));				
-			}
-			if (!folderUnversioned.exists()) {
-				folderUnversioned.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_UNVERSIONED, null));
-			}
+			createFolderWithEmptyFile(folderData, pm);
+			createFolderWithEmptyFile(folderUnversioned, pm);
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not create folder or file in project!", e));
 			performFinish = false;
@@ -149,19 +154,12 @@ public class VirSatProjectCommons {
 			performFinish = false;
 		}
 
-		String folderName = FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX + sei.getUuid().toString();
 		IFolder folderSei = project.getFolder(new Path(getStructuralElementInstancePath(sei)));
 		IFolder folderSeiDocuments = project.getFolder(new Path(getStructuralElementInstanceDocumentPath(sei)));
 		
 		try {
-			if (!folderSei.exists()) {
-				folderSei.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + folderName, null));				
-			}
-			if (!folderSeiDocuments.exists()) {
-				folderSeiDocuments.create(IResource.NONE, true, pm);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectCommons: Successfully created folder " + FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS, null));
-			}
+			createFolderWithEmptyFile(folderSei, pm);
+			createFolderWithEmptyFile(folderSeiDocuments, pm);
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Could not create folder or file for new structural element!", e));
 			performFinish = false;
@@ -310,15 +308,9 @@ public class VirSatProjectCommons {
 		List<IProject> virSatProjects = new ArrayList<IProject>();
 		IProject[] foundProjects = workspace.getRoot().getProjects();
 		try {
-
 			for (IProject project : foundProjects) {
-				if (project.isOpen()) {
-					IProjectDescription description;
-					description = project.getDescription();
-					List<String> natures = Arrays.asList(description.getNatureIds());
-					if (natures.contains(VirSatProjectNature.NATURE_ID)) {
-						virSatProjects.add(project);
-					}
+				if (project.isOpen() && isVirSatProject(project)) {
+					virSatProjects.add(project);
 				}
 			}
 		} catch (CoreException e) {
@@ -328,6 +320,19 @@ public class VirSatProjectCommons {
 		return virSatProjects;
 	}
 
+	/**
+	 * Use this method to test if a workspace project has the Virtual Satellite Nature attached
+	 * @param project the project to be tested
+	 * @return true in case the Virtual Satellite project nature could be found.
+	 * @throws CoreException
+	 */
+	public static boolean isVirSatProject(IProject project) throws CoreException {
+		IProjectDescription description = project.getDescription();
+
+		List<String> natures = Arrays.asList(description.getNatureIds());
+		return natures.contains(VirSatProjectNature.NATURE_ID);
+	}
+	
 	/**
 	 * This method hands back the documents folder that we provide by convention.
 	 * @param sei The Structural Element Instance for which to get the folder
@@ -420,5 +425,81 @@ public class VirSatProjectCommons {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * This method creates a folder containing an empty file using the eclipse resource API
+	 * @param folder the folder which to create if it does not exist
+	 * @param pm a progress monitor
+	 * @return the folder which has been created
+	 * @throws CoreException exception forwarded from creating the folder or file.
+	 */
+	public IFolder createFolderWithEmptyFile(IFolder folder, IProgressMonitor pm) throws CoreException {
+		if (!folder.exists()) {
+			folder.create(IResource.NONE, true, pm);
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"VirSatProjectCommons: Successfully created folder " + folder.getName()
+				)
+			);
+		}
+		
+		// Create a .empty file, this is needed for e.g. git, otherwise folders are not persisted
+		IFile emptyFile = folder.getFile(FILENAME_EMPTY);
+		if (!emptyFile.exists()) {
+			emptyFile.create(new ByteArrayInputStream("".getBytes()), true, pm);
+			Activator.getDefault().getLog().log(
+				new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"VirSatProjectCommons: Successfully created empty file in folder " + folder.getName()
+				)
+			);
+		}
+		
+		return folder;
+	}
+	
+	public static final int PROGRESS_MONITOR_NEW_PROJECT_RUNNABLE_STEPS = 4;
+	
+	/**
+	 * This method creates a runnable to create a new Project in Virtual Satellite
+	 * @param ed the Editing DOmain to be used to create the Project
+	 * @param newProject The new Project which should be initialized
+	 * @return the runnable which initializes the whole project
+	 */
+	public static IWorkspaceRunnable createNewProjectRunnable(IProject newProject) {
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
+			@Override
+			public void run(IProgressMonitor monitor) throws CoreException {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Started VirSat Project Initialization"));
+				// Set up the Workspace Modification Unit to create the VirSat DataModel folder
+				// layout and to initialize the Data Model files with correct content
+				VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(newProject);
+				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(newProject);
+
+				SubMonitor progressMonitor = SubMonitor.convert(monitor, PROGRESS_MONITOR_NEW_PROJECT_RUNNABLE_STEPS);
+	
+				// Create the file structure and the files and add the Xtext Nature
+				VirSatProjectCommons projectCommons = new VirSatProjectCommons(newProject);
+				projectCommons.createProjectStructure(progressMonitor.split(1));
+				projectCommons.attachProjectNature(XTEXT_NATURE_ID);
+
+				// Create the actual resources and ResourceSet
+				Command initializeProjectCommand = resSet.initializeModelsAndResourceSet(progressMonitor.split(1), ed);
+			
+				// Trigger the command stack to save all files after they have been created
+				progressMonitor.split(1).setTaskName("Executing Project Initialization Command");
+				ed.getVirSatCommandStack().triggerSaveAll();
+				ed.getVirSatCommandStack().execute(initializeProjectCommand);
+
+				newProject.refreshLocal(IResource.DEPTH_INFINITE, progressMonitor.split(1));
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Finished VirSat Project Initialization"));
+			}
+		};
+		
+		return runnable;
 	}
 }

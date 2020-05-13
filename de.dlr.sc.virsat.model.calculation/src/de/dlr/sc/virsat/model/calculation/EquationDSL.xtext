@@ -9,11 +9,11 @@
  *******************************************************************************/
  grammar de.dlr.sc.virsat.model.calculation.EquationDSL with org.eclipse.xtext.common.Terminals
 
-import "http://www.virsat.sc.dlr.de/dvlm/v7/g" as General
-import "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi" as PropertyInstances
-import "http://www.virsat.sc.dlr.de/dvlm/v7/calc" as Calc
-import "http://www.virsat.sc.dlr.de/dvlm/v7/s" as Structural
-import "http://www.virsat.sc.dlr.de/dvlm/v7/cp" as Categories
+import "http://www.virsat.sc.dlr.de/dvlm/v8/g" as General
+import "http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi" as PropertyInstances
+import "http://www.virsat.sc.dlr.de/dvlm/v8/calc" as Calc
+import "http://www.virsat.sc.dlr.de/dvlm/v8/s" as Structural
+import "http://www.virsat.sc.dlr.de/dvlm/v8/cp" as Categories
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 EquationSection returns Calc::EquationSection: 

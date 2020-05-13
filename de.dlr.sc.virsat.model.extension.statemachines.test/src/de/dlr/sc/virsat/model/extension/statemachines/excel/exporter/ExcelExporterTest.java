@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -35,7 +36,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.excel.AExcelStatIO;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * Test Case for Exporting to Excel
@@ -44,12 +44,12 @@ public class ExcelExporterTest {
 
 	private static final String CONCEPT_ID_STATE_MACHINES = "de.dlr.sc.virsat.model.extension.statemachines";
 
-	VirSatTransactionalEditingDomain domain;
-	ABeanStructuralElementInstance aBeanSei;
-	StateMachine stateMaschine;
+	private ABeanStructuralElementInstance aBeanSei;
+	private StateMachine stateMaschine;
 
-	Concept conceptStateMachines;
-
+	private Concept conceptStateMachines;
+	protected LocalDateTime localDateTime;
+	
 	@Before
 	public void setUp() throws CoreException {
 		UserRegistry.getInstance().setSuperUser(true);
@@ -75,13 +75,17 @@ public class ExcelExporterTest {
 		aBeanSei.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-ace4-cb7f2b927d4b"));
 		aBeanSei.setName("BATTERY");
 		aBeanSei.add(stateMaschine);
+		
+		//CHECKSTYLE:OFF
+		localDateTime = LocalDateTime.of(2020, 04, 21, 13, 27);
+		//CHECKSTYLE:ON
 	}
 
 	@Test
-	public void test() throws IOException {		
+	public void exportDateTest() throws IOException {		
 		InputStream iStream = Activator.getResourceContentAsString("/resources/SampleTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
-		StateMachineExporter sme = new StateMachineExporter();
+		StateMachineExporter sme = new StateMachineExporter(localDateTime);
 		sme.helper.setWb(wb);
 		sme.exportData(stateMaschine.getTypeInstance());
 		wb = sme.helper.getWb();

@@ -21,11 +21,12 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
+	FuncElectricalDiagramTest.class,
 	EditorTest.class,
 	NewProjectWizardTest.class,
 	CutCopyDeleteUndoTest.class,
 	InheritanceTest.class, 
-	CalculationTest.class,
+	CalculationTest.class,   
 	ProductStructureTest.class
 	})
 

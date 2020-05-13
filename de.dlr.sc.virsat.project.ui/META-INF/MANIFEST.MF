@@ -17,7 +17,8 @@ Require-Bundle: de.dlr.sc.virsat.project,
  org.eclipse.emf.edit.ui,
  org.eclipse.ui.navigator,
  org.eclipse.ui.navigator.resources,
- org.eclipse.emf.transaction.ui;visibility:=reexport
+ org.eclipse.emf.transaction.ui;visibility:=reexport,
+ de.dlr.sc.virsat.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -35,6 +36,6 @@ Export-Package: de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.project.ui.navigator.handler,
  de.dlr.sc.virsat.project.ui.navigator.labelProvider,
  de.dlr.sc.virsat.project.ui.navigator.util,
- de.dlr.sc.virsat.project.ui.structure.command,
- de.dlr.sc.virsat.project.ui.transactional.handler
+ de.dlr.sc.virsat.project.ui.transactional.handler,
+ de.dlr.sc.virsat.project.ui.wizard
 Automatic-Module-Name: de.dlr.sc.virsat.project.ui

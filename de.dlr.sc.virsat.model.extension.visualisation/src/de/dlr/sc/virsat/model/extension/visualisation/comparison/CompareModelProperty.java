@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.visualisation.comparison;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -69,9 +70,10 @@ public class CompareModelProperty extends ACompareModelAlgorithm {
 		
 		subMonitor.subTask("Find differences from base to compare model");
 		// Now compare each property and update the DeltaModel
-		for (String keyUuids : mapOfBaseVpis.keySet()) {
+		for (Entry<String, UnitValuePropertyInstance> entry : mapOfBaseVpis.entrySet()) {
+			String keyUuids = entry.getKey();
 			if (mapOfCompareVpis.containsKey(keyUuids)) {
-				UnitValuePropertyInstance vpiBase = mapOfBaseVpis.get(keyUuids);
+				UnitValuePropertyInstance vpiBase = entry.getValue();
 				UnitValuePropertyInstance vpiCompare = mapOfCompareVpis.get(keyUuids);
 
 				double valueBase = new BeanPropertyFloat(vpiBase).getValueToBaseUnit();

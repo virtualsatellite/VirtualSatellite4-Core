@@ -24,7 +24,8 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.VisualisationTest;
 import de.dlr.sc.virsat.model.extension.visualisation.migrator.Migrator1v3Test;
 import de.dlr.sc.virsat.model.extension.visualisation.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.visualisation.migrator.Migrator1v0Test;
-import de.dlr.sc.virsat.model.extension.visualisation.validator.StructuralElementInstanceValidatorTest;
+import de.dlr.sc.virsat.model.extension.visualisation.validator.VisualisationValidatorTest;
+import de.dlr.sc.virsat.model.extension.visualisation.migrator.Migrator1v4Test;
 
 /**
  * 
@@ -37,7 +38,8 @@ import de.dlr.sc.virsat.model.extension.visualisation.validator.StructuralElemen
 	Migrator1v1Test.class,
 	Migrator1v2Test.class,
 	Migrator1v3Test.class,
-	StructuralElementInstanceValidatorTest.class,
+	Migrator1v4Test.class,
+	VisualisationValidatorTest.class,
 				})
 
 /**

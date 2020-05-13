@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.internal.services.GraphitiInternal;
@@ -32,7 +31,6 @@ import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
@@ -42,8 +40,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.command.CreateAddStructuralElement
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * test Class for independence solver
@@ -57,7 +53,6 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 	private static final String UUID = "ea816464-cea3-4db7-ae91-31d37c60a63c";
 	private static final String DOCUMENTUUID = "ea816464-aaaa-bbbb-ae91-31d37c60a63c";
 
-	private VirSatResourceSet resSet;
 	private Concept conceptEgscc;
 	
 	@Before
@@ -65,13 +60,9 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		super.setUp();
 		UserRegistry.getInstance().setSuperUser(true);
 
-		repository = DVLMFactory.eINSTANCE.createRepository();
-
-		resSet = VirSatResourceSet.getResourceSet(testProject, false);
-		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-
-		Resource resource = editingDomain.getResourceSet().getRepositoryResource();
-		editingDomain.getCommandStack().execute(AddCommand.create(editingDomain, resource, Resource.RESOURCE__CONTENTS, repository));
+		addEditingDomainAndRepository();
+		activateCoreConcept();
+		
 		//CHECKSTYLE:OFF
 		ActiveConceptConfigurationElement accePs = new ActiveConceptConfigurationElement(null) {
 			public String getXmi() { return "concept/concept.xmi"; };
@@ -114,7 +105,7 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		IFolder diagramFolder = testProject.getFolder("src/diagrams/");  
 		IFile diagramFile = diagramFolder.getFile("testDiagram" + "." + "test");  
 		URI uri = URI.createPlatformResourceURI(diagramFile.getFullPath().toString(), true);
-		DiagramHelper.createDiagram(uri, diagram, resSet);
+		DiagramHelper.createDiagram(uri, diagram, rs);
 
 		IDiagramTypeProvider dtp = GraphitiInternal.getEmfService().getDTPForDiagram(diagram);
 		GraphitiInternal.getEmfService().wireDTPToDiagram(diagram, dtp);
@@ -139,11 +130,11 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				resSet.getAndAddStructuralElementInstanceResource(sei2);
+				rs.getAndAddStructuralElementInstanceResource(sei2);
 			}
 		});
 
-		Resource resEd2 = resSet.getStructuralElementInstanceResource(ed2.getStructuralElementInstance());
+		Resource resEd2 = rs.getStructuralElementInstanceResource(ed2.getStructuralElementInstance());
 		resEd2.getContents().add(ed2.getStructuralElementInstance());
 		Object sei2Object = beanIndependenceSolver.getBusinessObjectForKey(ed2.getUuid());
 		ABeanStructuralElementInstance aBean = (ABeanStructuralElementInstance) sei2Object;
@@ -152,14 +143,14 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
 			@Override
 			protected void doExecute() {
-				resSet.getAndAddStructuralElementInstanceResource(sei);
+				rs.getAndAddStructuralElementInstanceResource(sei);
 			}
 		});
 
 		Boolean permission = DiagramHelper.hasDiagramWritePermission(sei);
 		assertEquals(true, permission);
 		
-		Resource resEd = resSet.getStructuralElementInstanceResource(ed.getStructuralElementInstance());
+		Resource resEd = rs.getStructuralElementInstanceResource(ed.getStructuralElementInstance());
 		resEd.getContents().add(ed.getStructuralElementInstance());
 		Object obj = beanIndependenceSolver.getBusinessObjectForKey(seiKey);
 		aBean = (ABeanStructuralElementInstance) obj;

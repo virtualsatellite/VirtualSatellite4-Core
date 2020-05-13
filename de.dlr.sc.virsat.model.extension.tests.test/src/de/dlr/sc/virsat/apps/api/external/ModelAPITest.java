@@ -74,8 +74,8 @@ public class ModelAPITest extends ATestConceptTestCase {
 		rs.realoadAll();
 		repository = rs.getRepository();
 		virSatUnitManagement = rs.getUnitManagement();
-		maturityConcept = repository.getActiveConcepts().get(0);
-		testConcept = repository.getActiveConcepts().get(1);
+		maturityConcept = repository.getActiveConcepts().get(1);
+		testConcept = repository.getActiveConcepts().get(2);
 	}
 
 	@Test

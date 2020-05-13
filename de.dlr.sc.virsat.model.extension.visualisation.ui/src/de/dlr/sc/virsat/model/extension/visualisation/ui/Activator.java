@@ -57,7 +57,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @author fisc_ph
 	 *
 	 */
-	public class ResourceReloadListener implements VirSatTransactionalEditingDomain.IResourceEventListener {
+	public static class ResourceReloadListener implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
 			if (event == VirSatTransactionalEditingDomain.EVENT_RELOAD) {

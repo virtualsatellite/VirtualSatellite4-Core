@@ -102,7 +102,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProvide
 import de.dlr.sc.virsat.model.dvlm.util.DVLMUnresolvedReferenceException;
 import de.dlr.sc.virsat.model.ui.editor.input.VirSatUriEditorInput;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatSaveJob;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
@@ -144,7 +143,6 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	// Members considering the Outline View
 	protected ComposedAdapterFactory contentOutlineAdapterFactory;
 	protected IContentOutlinePage contentOutlinePage;
-	protected IStatusLineManager contentOutlineStatusLineManager;
 	protected TreeViewer contentOutlineViewer;
 
 	protected List<PropertySheetPage> propertySheetPages = new ArrayList<PropertySheetPage>();
@@ -588,7 +586,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 		}
 
 		Diagnostic diagnostic = editingDomain.getResourceSet().getResourceToDiagnosticsMap().get(resource);
-		boolean hasErrors = diagnostic != null && diagnostic.getSeverity() == Diagnostic.ERROR;
+		boolean hasErrors = diagnostic != null && diagnostic.getSeverity() != Diagnostic.OK;
 		if (!hasErrors) {
 			getSite().getShell().getDisplay().asyncExec(new Runnable() { 
 				public void run() {
@@ -814,7 +812,6 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 				@Override
 				public void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager, IStatusLineManager statusLineManager) {
 					super.makeContributions(menuManager, toolBarManager, statusLineManager);
-					contentOutlineStatusLineManager = statusLineManager;
 				}
 
 				@Override
@@ -857,7 +854,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	@Override
 	public boolean isDirty() {
 		updateHasProblematicModelObject();
-		boolean hasWriteAccess = RightsHelper.hasWritePermission(editorModelObject);
+		boolean hasWriteAccess = RightsHelper.hasSystemUserWritePermission(editorModelObject);
 		boolean allowRemoveDanglingReferences = allowRemoveDanglingReferences();
 		boolean isDirty = (!hasProblematicModelObject) && editingDomain.isDirty(editorModelObject.eResource());
 		return hasWriteAccess && (isDirty || allowRemoveDanglingReferences);
@@ -883,14 +880,13 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	
 	@Override
 	public void doSave(IProgressMonitor progressMonitor) {
-		boolean hasWriteAccess = RightsHelper.hasWritePermission(editorModelObject);
+		boolean hasWriteAccess = RightsHelper.hasSystemUserWritePermission(editorModelObject);
 		
 		if (!hasProblematicModelObject && hasWriteAccess) {
 			updateProblemIndication = false;
 			
-			VirSatSaveJob saveJob = new VirSatSaveJob(editingDomain);
-			saveJob.scheduleIfNoSaveJobPending();
-		
+			editingDomain.saveAll();
+			
 			updateProblemIndication = true;
 			updateProblemIndication();
 			

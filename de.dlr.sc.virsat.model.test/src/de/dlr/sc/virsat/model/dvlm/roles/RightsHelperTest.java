@@ -28,9 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
- * test class to test the rights managment in VirSat
- * @author scha_vo
- *
+ * test class to test the rights management in VirSat
  */
 public class RightsHelperTest {
 
@@ -67,7 +65,7 @@ public class RightsHelperTest {
 	}
 
 	@Test
-	public void testHasWritePermission() {
+	public void testHasSystemUserWritePermission() {
 		final int TWO_HUNDRED = 200;
 		
 		UserRegistry.getInstance().setUser("TestUser", TWO_HUNDRED);
@@ -93,21 +91,105 @@ public class RightsHelperTest {
 		
 		sei.setAssignedDiscipline(discipline);
 		
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(sei));
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca));
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(vpi));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(sei));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
 
 		discipline.setUser("TheBadGuy");
 
-		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(sei));
+		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
 		
-		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(ca));
+		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(ca));
 		
-		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(vpi));
+		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
 		
 		sei.getCategoryAssignments().remove(ca);
 		// We should have write permission on ca itself since it has no longer a link to the sei to which
 		// we have no write permission
-		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
+	}
+	
+	@Test
+	public void testHasSystemUserWritePermissionIUserContext() {
+		final int TWO_HUNDRED = 200;
+		
+		UserRegistry.getInstance().setUser("TestUser", TWO_HUNDRED);
+		
+		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+		discipline.setUser("TestUser");
+		
+		// Now for this test the StructuralElementInstance and the CatgeoryAssignment need to have a sort of Typeing
+		// Otherwise the new lists will refuse to allow placing objects which are not "ApplicableFor"
+		Category c = CategoriesFactory.eINSTANCE.createCategory();
+		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		CategoryAssignment ca = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		sei.setType(se);
+		ca.setType(c);
+		
+		c.getApplicableFor().add(se);
+		
+		// Now continue adding properties to the ca
+		ValuePropertyInstance vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
+		sei.getCategoryAssignments().add(ca);
+		ca.getPropertyInstances().add(vpi);
+		
+		sei.setAssignedDiscipline(discipline);
+		
+		
+		// Create a UserContext with the correct User. See if it gets access to the model
+		IUserContext userContextOk = new IUserContext() {
+			@Override
+			public boolean isSuperUser() {
+				return false;
+			}
+			
+			@Override
+			public String getUserName() {
+				return UserRegistry.getInstance().getUserName();
+			}
+		};
+		
+		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(sei, userContextOk));
+		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca, userContextOk));
+		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(vpi, userContextOk));
+
+		// Now create a user context with an incorrect user. make sure that there is no write access anymore
+		IUserContext userContextBad = new IUserContext() {
+			@Override
+			public boolean isSuperUser() {
+				return false;
+			}
+			
+			@Override
+			public String getUserName() {
+				return "AnotherUSer";
+			}
+		};
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(sei, userContextBad));
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(ca, userContextBad));
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(vpi, userContextBad));
+
+		// But SuperUser should be able to write again
+		IUserContext userContextSU = new IUserContext() {
+			@Override
+			public boolean isSuperUser() {
+				return true;
+			}
+			
+			@Override
+			public String getUserName() {
+				return "AnotherUSer";
+			}
+		};
+
+		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(sei, userContextSU));
+		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(ca, userContextSU));
+		assertTrue("Yes we can write to the object", RightsHelper.hasWritePermission(vpi, userContextSU));
+		
+		// If there is no user context, there should also be now rite access
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(sei, null));
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(ca, null));
+		assertFalse("No we cannot write to the object", RightsHelper.hasWritePermission(vpi, null));
 	}
 }

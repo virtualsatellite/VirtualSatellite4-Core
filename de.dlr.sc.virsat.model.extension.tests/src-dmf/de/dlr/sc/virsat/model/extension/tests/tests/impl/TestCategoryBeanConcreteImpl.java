@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
-
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBeanConcrete;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -23,7 +21,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class TestCategoryBeanConcreteImpl extends DObjectImpl implements TestCategoryBeanConcrete {
+public class TestCategoryBeanConcreteImpl extends TestCategoryBeanAbstractImpl implements TestCategoryBeanConcrete {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

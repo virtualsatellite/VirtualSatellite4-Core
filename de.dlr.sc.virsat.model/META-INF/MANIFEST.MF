@@ -48,6 +48,7 @@ Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.dvlm.structural,
  de.dlr.sc.virsat.model.dvlm.structural.impl,
  de.dlr.sc.virsat.model.dvlm.structural.util,
+ de.dlr.sc.virsat.model.dvlm.tree,
  de.dlr.sc.virsat.model.dvlm.types,
  de.dlr.sc.virsat.model.dvlm.types.impl,
  de.dlr.sc.virsat.model.dvlm.units,
@@ -55,6 +56,8 @@ Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.dvlm.units.util,
  de.dlr.sc.virsat.model.dvlm.util,
  de.dlr.sc.virsat.model.dvlm.util.rules,
+ de.dlr.sc.virsat.model.dvlm.validator,
  de.dlr.sc.virsat.model.ecore,
  de.dlr.sc.virsat.model.ecore.xmi.impl
 Automatic-Module-Name: de.dlr.sc.virsat.model
+Bundle-Activator: de.dlr.sc.virsat.model.dvlm.Activator

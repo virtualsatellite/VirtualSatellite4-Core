@@ -23,8 +23,10 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagementCheckCommand;
 
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import java.util.Collection;
 import java.util.List;
 
@@ -153,21 +155,10 @@ public class DObjectItemProvider
 	@Override
 	public String getText(Object object) {
 
-		
-		
-	
-	
-  	
-    	
-      	
 			String label = ((DObject)object).getName();
-      	
-    	
 			return label == null || label.length() == 0 ?
 				getString("_UI_DObject_type") :
 				getString("_UI_DObject_type") + " " + label;
-  	
-	
 	}
 	
 
@@ -215,7 +206,6 @@ public class DObjectItemProvider
  	*/
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature,	Collection<?> collection, int index) {
-		
 		// Override functionality with the undoable ADD Command that performs undo by taking out the collection from the containing list
 		// rather than reducing the index and assuming the last objects on the list have been added by the current command
 		return new UndoableAddCommand(domain, owner, feature, collection, index);
@@ -233,20 +223,21 @@ public class DObjectItemProvider
 	@Override
 	public Command createCommand(Object object, EditingDomain domain, Class<? extends Command> commandClass, CommandParameter commandParameter) {
 		
-	    		
+		// Set the UserContext either from the SystemUserRegistry or
+		// from the Domain if it exists
+		IUserContext userContext = UserRegistry.getInstance();
+		if (domain instanceof IUserContext) {
+			userContext = (IUserContext) domain;
+		}
+		
 		// For all other commands get the original one
 		Command originalCommand = super.createCommand(object, domain, commandClass, commandParameter);
-				
-	    
-	    
-	    		
-	    	
 		// A RolemanagementCheckCommand should not necessarily be wrapped into another RoleManagementCheck Command
 		if (originalCommand instanceof RoleManagementCheckCommand) {
 			return originalCommand;
 		} else {
 			// And wrap it into our command checking for the proper access rights
-			return new RoleManagementCheckCommand(originalCommand, commandParameter);	
+			return new RoleManagementCheckCommand(originalCommand, commandParameter, userContext);	
 		}
 	}
 

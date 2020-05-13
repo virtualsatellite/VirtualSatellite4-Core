@@ -47,7 +47,7 @@ public interface QudvPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/qudv";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/qudv";
 
 	/**
 	 * The package namespace name.

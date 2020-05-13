@@ -1199,7 +1199,6 @@ public class QudvUnitHelper {
 	private Prefix createPrefix(String name, String symbol, Double factor) {
 
 		Prefix prefix = QudvFactory.eINSTANCE.createPrefix();
-		//prefix.setId(UUID.randomUUID().toString());
 		prefix.setName(name);
 		prefix.setSymbol(symbol);
 		prefix.setFactor(factor);
@@ -1230,9 +1229,10 @@ public class QudvUnitHelper {
 	public void exportModeltoFile(SystemOfUnits systemOfUnits, String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();
 		resource.getContents().add(systemOfUnits);
-		FileOutputStream fileOut = new FileOutputStream(destination);
-		resource.save(fileOut, WRITE_OPTIONS);
-		fileOut.close();
+		
+		try (FileOutputStream fileOut = new FileOutputStream(destination)) {
+			resource.save(fileOut, WRITE_OPTIONS);
+		} 
 	}
 	
 	/**
@@ -1243,10 +1243,13 @@ public class QudvUnitHelper {
 	 */
 	public SystemOfUnits importModelFromFile(String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();
-		FileInputStream fileIn = new FileInputStream(destination);
-		resource.load(fileIn, READ_OPTIONS);
+		
+		try (FileInputStream fileIn = new FileInputStream(destination)) {
+			resource.load(fileIn, READ_OPTIONS);
+		} 
+		
 		EObject root = resource.getContents().get(0);
-		fileIn.close();
+		
 		if (root instanceof SystemOfUnits) {
 			return (SystemOfUnits) root;
 		}
@@ -1341,23 +1344,18 @@ public class QudvUnitHelper {
 	 */
 	public boolean haveSameQuantityKind(AUnit unit1, AUnit unit2) {
 		//check for Null Pointers and eliminate them by returning false directly
-		AQuantityKind unit2QK = unit2.getQuantityKind(); 
-		if (unit2QK == null) {
-			return false;
-		}
 		AQuantityKind unit1QK = unit1.getQuantityKind();
-		if (unit1QK == null) {
+		AQuantityKind unit2QK = unit2.getQuantityKind(); 
+		
+		if (unit1QK == null || unit2QK == null) {
 			return false;
 		}
 
-		boolean flag = false;
-		Map<AQuantityKind, Double> outputQKbaseMap = new HashMap<AQuantityKind, Double>();
-		outputQKbaseMap = getBaseQuantityKinds(unit2QK); 
-		Map<AQuantityKind, Double> inputQKbaseMap = new HashMap<AQuantityKind, Double>();
-		inputQKbaseMap = getBaseQuantityKinds(unit1QK);
-		
+		Map<AQuantityKind, Double> outputQKbaseMap = getBaseQuantityKinds(unit2QK);
+		Map<AQuantityKind, Double> inputQKbaseMap = getBaseQuantityKinds(unit1QK);
+	
 		//now the only thing left to do is comparing the input and output map
-		flag = haveSameQuantityKind(inputQKbaseMap, outputQKbaseMap);
+		boolean flag = haveSameQuantityKind(inputQKbaseMap, outputQKbaseMap);
 		return flag;
 	}
 	
@@ -1375,26 +1373,19 @@ public class QudvUnitHelper {
 		if (map1.size() != map2.size()) {
 			//if on map is empty we have to check for the special case of dimensionless
 			if (map1.isEmpty()) {
-				for (AQuantityKind key: map2.keySet()) {
-					if (key.getName().equals(DIMENSIONLESS_QK_NAME)) {
-						areSame = true;
-					}
-				}
+				areSame = map2.keySet().stream().anyMatch(qk -> qk.getName().equals(DIMENSIONLESS_QK_NAME));
 			} else if (map2.isEmpty()) {
-				for (AQuantityKind key: map1.keySet()) {
-					if (key.getName().equals(DIMENSIONLESS_QK_NAME)) {
-						areSame = true;
-					}
-				}
+				areSame = map1.keySet().stream().anyMatch(qk -> qk.getName().equals(DIMENSIONLESS_QK_NAME));
 			}
 			return areSame;
 		
 		} else { 
 			areSame = true;
-			for (AQuantityKind key: map1.keySet()) {
+			for (Entry<AQuantityKind, Double> entry1: map1.entrySet()) {
 				//maybe I need to add my precision comparison here!
-				if (!map1.get(key).equals(map2.get(key))) {
+				if (!entry1.getValue().equals(map2.get(entry1.getKey()))) {
 					areSame = false;
+					break;
 				}
 			}
 			return areSame;
@@ -1418,8 +1409,7 @@ public class QudvUnitHelper {
 				AQuantityKind currentQK = qkFactor.getQuantityKind();
 				if (currentQK instanceof DerivedQuantityKind) {
 					DerivedQuantityKind currentDQK = (DerivedQuantityKind) currentQK;
-					Map<AQuantityKind, Double> subMap = new HashMap<AQuantityKind, Double>();
-					subMap = getBaseQuantityKinds(currentDQK);
+					Map<AQuantityKind, Double> subMap = getBaseQuantityKinds(currentDQK);
 					
 					//before we can merge the maps we need to apply the exponent of the current QK
 					Double calcExponent;
@@ -1455,50 +1445,28 @@ public class QudvUnitHelper {
 		}
 		
 		HashMap<AQuantityKind, Double> merged = new HashMap<AQuantityKind, Double>();
-
+		int calcSign = calcMethod.getCalcSign();
+		
 		//include elements from the first map and add or subtract values of the second map if they exist
-		for (AQuantityKind x : map1.keySet()) {
-			Double y = map2.get(x);
-			if (y == null) {
-				merged.put(x, map1.get(x));
-			} else {
-	
-				if (calcMethod == QudvCalcMethod.SUBTRACT) {
-					merged.put(x, map1.get(x) - y);
-				} else { // calcMethod == QudvCalcMethod.ADD)
-					merged.put(x, map1.get(x) + y);
-				}
-			}
+		for (Entry<AQuantityKind, Double> entry1 : map1.entrySet()) {
+			AQuantityKind qk = entry1.getKey(); 
+			Double x = entry1.getValue();
+			Double y = map2.getOrDefault(qk, 0d);
+			merged.put(qk, x + calcSign * y);
 		}
 
 		//include elements from the second map
-		for (AQuantityKind x : map2.keySet()) {
-			if (merged.get(x) == null) {
-				if (calcMethod == QudvCalcMethod.SUBTRACT) {
-					merged.put(x, -map2.get(x));
-				} else {
-					merged.put(x, map2.get(x));
-				}
-			}
+		for (Entry<AQuantityKind, Double> entry2 : map2.entrySet()) {
+			AQuantityKind qk = entry2.getKey();
+			Double x = entry2.getValue();
+			merged.putIfAbsent(qk, calcSign * x);
 		}
 		
 		//remove elements which are zero in their Double value: gekuerzt!
-		for (Iterator<Map.Entry<AQuantityKind, Double>> iter = merged.entrySet().iterator(); iter.hasNext();) {
-			Map.Entry<AQuantityKind, Double> entry = iter.next();
-			if (Math.abs(entry.getValue()) < ERROR) {
-				iter.remove();
-				//break; // if we only want to remove the first match.
-			}
-		}
+		merged.entrySet().removeIf(entry -> Math.abs(entry.getValue()) < ERROR);
 		
 		//remove elements which are dimensionless, because they don't have any influence
-		for (Iterator<Map.Entry<AQuantityKind, Double>> iter = merged.entrySet().iterator(); iter.hasNext();) {
-			Map.Entry<AQuantityKind, Double> entry = iter.next();
-			if (entry.getKey().getName().equals(DIMENSIONLESS_QK_NAME)) {
-				iter.remove();
-				//break; // if we only want to remove the first match.
-			}
-		}
+		merged.keySet().removeIf(qk -> qk.getName().equals(DIMENSIONLESS_QK_NAME));
 		
 		return merged;
 	}
@@ -1536,14 +1504,14 @@ public class QudvUnitHelper {
 	 * @return the converted string
 	 */
 	public String convertToString(Map<AQuantityKind, Double> quantityKinds) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		Iterator<Entry<AQuantityKind, Double>> iterator = quantityKinds.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<AQuantityKind, Double> m = (Map.Entry<AQuantityKind, Double>) iterator.next();
-			AQuantityKind currentUnit = m.getKey(); 
-			result += currentUnit.getSymbol() + convertFactorToUnicodeSymbol(m.getValue());
+			AQuantityKind currentUnit = m.getKey();
+			result.append(currentUnit.getSymbol() + convertFactorToUnicodeSymbol(m.getValue()));
 		}
-		return result;
+		return result.toString();
 	}
 
 	public static final String SUPERSCRIPT_MINUS = "\u207b";
@@ -1604,6 +1572,21 @@ public class QudvUnitHelper {
 	 *
 	 */
 	public enum QudvCalcMethod {
-		ADD, SUBTRACT
+		ADD, SUBTRACT;
+		
+		/**
+		 * Gets the sign for the calculation method.
+		 * @return 1 if ADD, -1 if SUBTRACT
+		 */
+		public int getCalcSign() {
+			switch (this) {
+				case ADD:
+					return 1;
+				case SUBTRACT:
+					return -1;
+				default:
+					throw new RuntimeException("Unsupported qudv calculation sign: " + this);
+			}
+		}
 	}
 }

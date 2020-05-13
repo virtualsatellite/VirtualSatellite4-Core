@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+		<concept
+			id="testConcept"
+			version="1.1"
+			xmi="concept/concept.xmi">
+		</concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="testConcept"
+				class="testConcept.validator.TestConceptValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="testConcept.deprecated"
+				class="testConcept.validator.StructuralElementInstanceValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
+		<CategoryAssignmentBean
+			id="testConcept.testCategory"
+			caBean="testConcept.model.TestCategory">
+		</CategoryAssignmentBean>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="testConcept.testStructural1"
+			seiBean="testConcept.model.TestStructural1">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="testConcept.testStructural2"
+			seiBean="testConcept.model.TestStructural2">
+		</StructuralElementInstanceBean>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+testExtractProtectedRegion
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="testConcept"
+		version="1.1"
+		class="testConcept.migrator.Migrator1v1"
+		xmi="concept/concept_v1_1.xmi">
+	</migrator>
+</extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+testExtractProtectedRegion
+	<!-- Plugin.XML Protected Region End -->
+</plugin>
+

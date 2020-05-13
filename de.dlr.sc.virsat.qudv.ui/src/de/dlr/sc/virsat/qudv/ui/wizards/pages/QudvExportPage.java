@@ -61,12 +61,6 @@ public class QudvExportPage extends WizardPage implements Listener {
     
     private List<IProject> fSelectedProjects = new ArrayList<IProject>();
 
-    protected Button overwriteExistingFilesCheckbox;
- 
-    protected Button createDirectoryStructureButton;
-
-    protected Button createSelectionOnlyButton;
-	
     //messages
     private static final String SELECT_DESTINATION_MESSAGE = "Select a directory to export to.";
 
