@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.requirements.csv;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -240,9 +241,9 @@ public class CsvRequirementsImporter {
 			if (att.getType().equals(RequirementAttribute.TYPE_Enumeration_NAME)) {
 				
 				Integer columnIndexOfAttribute = null;
-				for (Integer key : attributeMapping.keySet()) {
-					if (attributeMapping.get(key).equals(att)) {
-						columnIndexOfAttribute = key;
+				for (Entry<Integer, RequirementAttribute> entry : attributeMapping.entrySet()) {
+					if (entry.getValue().equals(att)) {
+						columnIndexOfAttribute = entry.getKey();
 					}
 				}
 				

@@ -143,13 +143,11 @@ public class CsvFileReader {
 		int maxNumberOfColumns = 0;
 		while ((line = br.readLine()) != null) {
 			int currentSize = line.length() - line.replaceAll(separator, "").length();
-			if (currentSize > maxNumberOfColumns) {
-				maxNumberOfColumns = currentSize;
-			}
+			maxNumberOfColumns = Integer.max(currentSize, maxNumberOfColumns);
 		}
 
 		// Assume a data line always has all columns
-		fr.close();
+		br.close();
 		return maxNumberOfColumns + 1; // Number of columns is one higher than number of separators
 	}
 
