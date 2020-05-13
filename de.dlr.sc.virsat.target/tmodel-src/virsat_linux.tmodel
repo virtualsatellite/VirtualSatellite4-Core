@@ -1,0 +1,4 @@
+Target virsat_linux extends virsat {
+	OperatingSystem linux
+	WindowingSystem gtk
+}

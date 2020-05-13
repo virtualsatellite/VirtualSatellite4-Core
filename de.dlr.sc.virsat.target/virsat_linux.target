@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+		<?pde version="3.8"?><target name="virsat_linux" sequenceNumber="1">
+		<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.nebula.widgets.gallery.feature.feature.group" version="1.0.0.201907151344"/>
+		<unit id="org.eclipse.nebula.widgets.tablecombo.feature.feature.group" version="1.2.0.201907151344"/>
+		<repository location="https://download.eclipse.org/nebula/releases/2.2.0/"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
+		<unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
+		<unit id="org.apache.commons.io.source" version="2.6.0.v20190123-2029"/>
+		<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="3.3.7.201905300200"/>
+		<unit id="org.eclipse.emf.edapt.runtime.feature.feature.group" version="1.4.0.201902190757"/>
+		<unit id="org.eclipse.emf.sdk.feature.group" version="2.18.0.v20190528-0845"/>
+		<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.12.0.201805140824"/>
+		<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.400.v20190515-0925"/>
+		<unit id="org.eclipse.graphiti.sdk.feature.feature.group" version="0.16.0.201906041401"/>
+		<unit id="org.eclipse.jdt.source.feature.group" version="3.18.0.v20190605-1800"/>
+		<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.9.0.v20190603-1146"/>
+		<unit id="org.eclipse.pde.source.feature.group" version="3.14.0.v20190605-1800"/>
+		<unit id="org.eclipse.platform.sdk" version="4.12.0.I20190605-1800"/>
+		<unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.eclipse.gef.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.forms.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.generator.feature.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.swtbot.ide.feature.group" version="2.8.0.201906121535"/>
+		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.18.0.v20190528-0716"/>
+		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
+		<unit id="org.eclipse.egit.feature.group" version="5.4.0.201906121030-r"/>
+		<repository location="http://download.eclipse.org/releases/2019-06"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.team.svn.feature.group" version="4.0.5.I20170425-1700"/>
+		<repository location="https://download.eclipse.org/technology/subversive/4.0/update-site/"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.polarion.eclipse.team.svn.connector.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.source.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.sources.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.feature.group" version="6.0.4.I20161211-1700"/>
+		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.sources.feature.group" version="6.0.4.I20161211-1700"/>
+		<repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/"/>
+		</location>
+		</locations>
+		<environment>
+		<os>linux</os>
+		<ws>gtk</ws>
+		<arch>x86_64</arch>
+		<nl>de_DE</nl> 
+		</environment>
+		<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+		</target>
