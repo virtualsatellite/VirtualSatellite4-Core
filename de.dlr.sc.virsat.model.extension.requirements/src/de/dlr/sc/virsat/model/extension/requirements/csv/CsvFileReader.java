@@ -41,7 +41,7 @@ public class CsvFileReader {
 		this.separator = CSV_SPLIT_STRING + REGEX_ESCAPE_SPLIT;
 		this.headerLine = 0;
 		this.dataStartLine = 1;
-		this.dataEndLine = 1;
+		this.dataEndLine = -1;
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public class CsvFileReader {
 			
 			currentLineNumber++;
 			
-			if (endLine != null && currentLineNumber > endLine) {
+			if (endLine != -1 && currentLineNumber > endLine) {
 				break;
 			}
 			

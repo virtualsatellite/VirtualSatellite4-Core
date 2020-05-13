@@ -54,7 +54,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 
 	private static final String HEADER_LINE_LABEL = "CSV header line number:";
 	private static final String DATA_LINE_START_LABEL = "CSV start data line number:";
-	private static final String DATA_LINE_END_LABEL = "CSV end data line number:";
+	private static final String DATA_LINE_END_LABEL = "CSV end data line number (Optional):";
 
 	private Text seperatorField;
 	private Text headerNumberField;
@@ -151,7 +151,6 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		data.horizontalAlignment = SWT.END;
 		dataNumberEndField.setLayoutData(data);
 		dataNumberEndField.addModifyListener(this);
-		dataNumberEndField.setText("10");
 
 	}
 
@@ -198,8 +197,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 
 		if (isDestinationSelected && isCurrentPage()) {
 			if (!headerNumberField.getText().equals("") & !seperatorField.getText().equals("") 
-				& !dataNumberStartField.getText().equals("")
-				& !dataNumberEndField.getText().equals("")) {
+				& !dataNumberStartField.getText().equals("")) {
 
 				final String destination = getDestination();
 	
@@ -265,7 +263,12 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	 * @return the line number as integer
 	 */
 	public int getLastDataLineNumber() {
-		return Integer.parseInt(dataNumberEndField.getText()) - 1;
+		String value = dataNumberEndField.getText();
+		if (value.equals("")) {
+			return -1;
+		} else {
+			return Integer.parseInt(value) - 1;
+		}
 	}
 
 	/*
