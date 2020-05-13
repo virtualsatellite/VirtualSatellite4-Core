@@ -154,7 +154,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 					if (requirementType.getAttributes().size() > i) {
 						String name = requirementType.getAttributes().get(i).getName();
-						boolean notYetSpecified = columnName.indexOf(name) != -1;
+						boolean notYetSpecified = columnName.indexOf(name) == -1;
 						
 						// Add separator if column is used for different attributes
 						if (columnName.length() != 0 && notYetSpecified) {
