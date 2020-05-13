@@ -44,7 +44,9 @@ public class VirSatMouseWheelScrollRedirectListener implements MouseWheelListene
 	 */
 	public void init() {
 		this.redirectScrolledForm = findNextParentScrolledForm(scrollable);
-		this.redirectScrollBar = redirectScrolledForm.getVerticalBar();
+		if (redirectScrolledForm != null) {
+			this.redirectScrollBar = redirectScrolledForm.getVerticalBar();
+		}
 	}
 	
 	@Override
