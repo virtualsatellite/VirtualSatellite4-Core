@@ -89,7 +89,7 @@ public class CsvFileReader {
 	 * @return the CSV content as matrix of two lists
 	 * @throws IOException throws an IO excetption
 	 */
-	public List<List<String>> readCsvFile(String filePath, Integer startLine, Integer endLine) throws IOException {
+	public List<List<String>> readCsvFile(String filePath, int startLine, int endLine) throws IOException {
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();
 
 		Path csvFilePath = Paths.get(filePath);

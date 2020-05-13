@@ -51,7 +51,7 @@ public class CsvFileReaderTest {
 		
 		CsvFileReader reader = new CsvFileReader();
 		
-		List<List<String>> importedCsvContent = reader.readCsvFile(csvFilePath.toString(), 0, null);
+		List<List<String>> importedCsvContent = reader.readCsvFile(csvFilePath.toString(), 0, -1);
 		
 		assertEquals("Number of lines not correct", 2, importedCsvContent.size());
 		
@@ -81,7 +81,7 @@ public class CsvFileReaderTest {
 		
 		CsvFileReader reader = new CsvFileReader();
 		
-		List<List<String>> importedCsvContent = reader.readCsvFile(csvFilePath.toString(), 0, null);
+		List<List<String>> importedCsvContent = reader.readCsvFile(csvFilePath.toString(), 0, -1);
 		
 		assertEquals("Number of lines not correct", 2, importedCsvContent.size());
 		
