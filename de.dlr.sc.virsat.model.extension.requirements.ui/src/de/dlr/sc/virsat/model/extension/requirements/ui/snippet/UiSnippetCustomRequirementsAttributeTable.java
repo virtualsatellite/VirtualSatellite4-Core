@@ -71,9 +71,12 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String COLUMN_TEXT_STATUS = "Status";
 	protected static final String COLUMN_ATTRIBUTE_SEPARATOR = " / ";
 
+	protected static final String COLUMN_TEXT_TRACE = "Trace";
+	
 	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = Requirement.FULL_QUALIFIED_CATEGORY_NAME + "." + Requirement.PROPERTY_REQTYPE;
 
 	private static final int STATUS_COLUMN_WIDTH = 100;
+	private static final int TRACE_COLUMN_WIDTH = 100;
 	private static final String COLUMN_PREFIX = "attColumn";
 	
 	protected final String arrayInstanceID;
@@ -82,6 +85,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected int maxNumberAttributes = 0;
 
 	protected TableViewerColumn colStatus = null;
+	protected TableViewerColumn colTracing = null;
 	protected List<TableViewerColumn> attColumns;
 	
 	protected boolean controlListenerActive = true;
@@ -123,6 +127,16 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 			// initialize list for attribute column
 			attColumns = new ArrayList<>();
+		}
+		
+		if (colTracing == null) {
+			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TRACE);
+
+			colTracing.setEditingSupport(createEditingSupport(editingDomain, categoryModel.getProperties()
+					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER)));
+
+			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
+
 		}
 
 		if (model instanceof CategoryAssignment) {
