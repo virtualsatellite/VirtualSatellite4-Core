@@ -13,11 +13,14 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +48,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
@@ -485,4 +489,62 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		assertNull("Result is null", resultNull);
 	}
 	
+	@Test
+	public void testGetUserName() {
+		// Usually the current SystemUser should be handed back
+		String expectedUser = UserRegistry.getInstance().getUserName();
+		assertEquals("Got the SystemUser", expectedUser, editingDomain.getUserName());
+	
+		// In case an override user context is set, the user from the context should be returned
+		editingDomain.setUserContextOverride(new TestUserContext("ContextTestUser", false));
+		
+		assertEquals("Got user from context", "ContextTestUser", editingDomain.getUserName());
+	}
+	
+	@Test
+	public void testIsSuperUser() {
+		// Usually the super user rights from the system user should be handed back
+		UserRegistry.getInstance().setSuperUser(false);
+		assertFalse("No super user rights from the System User", editingDomain.isSuperUser());
+	
+		UserRegistry.getInstance().setSuperUser(true);
+		assertTrue("Now super user rights are provided by the SystemUser", editingDomain.isSuperUser());
+		//
+		// In case an override user context is set, the user from the context should be returned
+		editingDomain.setUserContextOverride(new TestUserContext("ContextTestUser", false));
+		
+		assertFalse("The ovveride user context does not have super user rights", editingDomain.isSuperUser());
+	}
+	
+	@Test
+	public void testExecuteInWorkspaceIUserContext() {
+		IUserContext overrideContext1 = new TestUserContext("ContextTestUser1", false);
+		IUserContext overrideContext2 = new TestUserContext("ContextTestUser2", false);
+		
+		editingDomain.setUserContextOverride(overrideContext1);
+		editingDomain.executeInWorkspace(() -> {
+			assertEquals("Got inner user context", editingDomain.userContextOverride, overrideContext2);
+		}, overrideContext2);
+		
+		assertEquals("Outer Context got correctly restored", overrideContext1, editingDomain.userContextOverride); 
+	}
+	
+	@Test
+	public void testExecuteInWorkspaceIUserContextException() {
+		IUserContext overrideContext1 = new TestUserContext("ContextTestUser1", false);
+		
+		editingDomain.setUserContextOverride(overrideContext1);
+		
+		try {
+			editingDomain.executeInWorkspace(() -> {
+				throw new RuntimeException("TestException");
+			});
+			fail("Exception was thrown and should have been caught");
+		} catch (Exception e) {
+			assertThat("", e, instanceOf(RuntimeException.class));
+			assertThat("Got correct error message", e.getMessage(), containsString("TestException"));
+		}
+		
+		assertEquals("Outer Context got correctly restored", overrideContext1, editingDomain.userContextOverride); 
+	}
 }
