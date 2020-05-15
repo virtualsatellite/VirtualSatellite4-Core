@@ -82,7 +82,10 @@ public class ModelAccessResource {
 		public RepoModelAccessResource(String repoName, ServerRepository serverRepository) {
 			controller = new RepoModelAccessController(serverRepository.getEd());
 		}
-
+		
+		private Response createBadRequestResponse(String msg) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
+		}
 		
 		@GET
 		@Path(ROOT_SEIS)
@@ -98,7 +101,7 @@ public class ModelAccessResource {
 			try {
 				return Response.status(Response.Status.OK).entity(controller.getSei(seiUuid)).build();
 			} catch (CoreException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 		
@@ -117,7 +120,7 @@ public class ModelAccessResource {
 				controller.putSei(flatSei, seiUuid);
 				return Response.status(Response.Status.OK).build();
 			} catch (CoreException | IOException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 		
@@ -142,7 +145,7 @@ public class ModelAccessResource {
 			try {
 				return Response.status(Response.Status.OK).entity(controller.getCa(caUuid)).build();
 			} catch (CoreException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 		
@@ -161,7 +164,7 @@ public class ModelAccessResource {
 				controller.putCa(flatCa, caUuid);
 				return Response.status(Response.Status.OK).build();
 			} catch (CoreException | IOException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 		
@@ -172,7 +175,7 @@ public class ModelAccessResource {
 			try {
 				return Response.status(Response.Status.OK).entity(controller.getCaWithProperties(caUuid)).build();
 			} catch (CoreException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 		
@@ -191,7 +194,7 @@ public class ModelAccessResource {
 				controller.putCaWithProperties(flatCa, caUuid);
 				return Response.status(Response.Status.OK).build();
 			} catch (CoreException | IOException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 		
@@ -217,7 +220,7 @@ public class ModelAccessResource {
 				controller.putPropertyInstance(flatProperty, propertyUuid);
 				return Response.status(Response.Status.OK).build();
 			} catch (CoreException | IOException e) {
-				return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+				return createBadRequestResponse(e.getMessage());
 			}
 		}
 	}

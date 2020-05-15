@@ -217,11 +217,12 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 			public String caseResourcePropertyInstance(ResourcePropertyInstance object) {
 				URI uri = object.getUri();
 				String result;
-				if (showResourceOnlyLastSegment) {
-					result = (uri == null) ? EMPTY_URI : uri.lastSegment();
-				} else {
-					result = (uri == null) ? EMPTY_URI : uri.toString();
+				if (uri == null) {
+					return EMPTY_URI;
 				}
+				
+				result = showResourceOnlyLastSegment ? uri.lastSegment() : uri.toString();
+				
 				return result;
 			}
 			

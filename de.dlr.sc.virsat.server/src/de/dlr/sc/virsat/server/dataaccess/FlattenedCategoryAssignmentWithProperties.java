@@ -38,15 +38,15 @@ public class FlattenedCategoryAssignmentWithProperties extends AFlattenedCategor
 	 */
 	public FlattenedCategoryAssignmentWithProperties(CategoryAssignment ca) {
 		super(ca);
-		setProperties(resolveProperties(ca.getPropertyInstances()));
+		setProperties(flattenProperties(ca.getPropertyInstances()));
 	}
 
 	/**
-	 * Resolves List<APropertyInstance> to a representative List<FlattenedPropertyInstance>
+	 * Flattens List<APropertyInstance> to a representative List<FlattenedPropertyInstance>
 	 * @param properties of the ca
 	 * @return List<FlattenedPropertyInstance>
 	 */
-	private List<FlattenedPropertyInstance> resolveProperties(List<APropertyInstance> properties) {
+	private List<FlattenedPropertyInstance> flattenProperties(List<APropertyInstance> properties) {
 		List<FlattenedPropertyInstance> flattenedProperties = new ArrayList<FlattenedPropertyInstance>();
 		
 		for (APropertyInstance property : properties) {

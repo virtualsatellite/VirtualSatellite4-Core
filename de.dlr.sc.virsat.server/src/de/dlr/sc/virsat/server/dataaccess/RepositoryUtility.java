@@ -106,9 +106,7 @@ public class RepositoryUtility {
 				boolean isMatching = false;
 				
 				if (treeNode instanceof StructuralElementInstance) {
-					StructuralElementInstance treeSei = (StructuralElementInstance) treeNode;
-
-					EObject objByUuid = treeSei.eResource().getEObject(uuid);
+					EObject objByUuid = treeNode.eResource().getEObject(uuid);
 					isMatching = objByUuid != null;
 					if (isMatching) {
 						match.add((IUuid) objByUuid);

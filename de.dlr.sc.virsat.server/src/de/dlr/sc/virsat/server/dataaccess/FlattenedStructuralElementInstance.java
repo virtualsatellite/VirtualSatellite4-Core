@@ -15,12 +15,14 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -61,35 +63,19 @@ public class FlattenedStructuralElementInstance {
 			setDiscipline(null);
 		}
 		
-		setSuperSeis(collectParentUuids(sei));
-		setChildren(collectChildUuids(sei));
-		setCategoryAssignments(collectCategoryAssignmentUuids(sei));
+		setSuperSeis(collectUuids(sei.getSuperSeis()));
+		setChildren(collectUuids(sei.getChildren()));
+		setCategoryAssignments(collectUuids(sei.getCategoryAssignments()));
 	}
 	
-	private List<String> collectParentUuids(StructuralElementInstance sei) {
+	private List<String> collectUuids(EList<? extends IUuid> iuuids) {
 		List<String> uuids = new ArrayList<String>();
-		for (StructuralElementInstance superSei : sei.getSuperSeis()) {
-			uuids.add(superSei.getUuid().toString());
+		for (IUuid iuud: iuuids) {
+			uuids.add(iuud.getUuid().toString());
 		}
 		return uuids;
 	}
-
-	private List<String> collectChildUuids(StructuralElementInstance sei) {
-		List<String> uuids = new ArrayList<String>();
-		for (StructuralElementInstance childSei : sei.getChildren()) {
-			uuids.add(childSei.getUuid().toString());
-		}
-		return uuids;
-	}
-
-	private List<String> collectCategoryAssignmentUuids(StructuralElementInstance sei) {
-		List<String> uuids = new ArrayList<String>();
-		for (CategoryAssignment ca : sei.getCategoryAssignments()) {
-			uuids.add(ca.getUuid().toString());
-		}
-		return uuids;
-	}
-
+	
 	/**
 	 * Create a command to unflatten the properties of this instance into a existing sei
 	 * @param editingDomain
@@ -101,7 +87,6 @@ public class FlattenedStructuralElementInstance {
 		
 		CompoundCommand updateSeiCommand = new CompoundCommand();
 		
-		// If the packages with eINSTNACEs don't work use Literals
 		Command commandSetName = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIName_Name(), getName());
 		updateSeiCommand.append(commandSetName);
 		
@@ -112,57 +97,35 @@ public class FlattenedStructuralElementInstance {
 		Command commandSetDiscipline = SetCommand.create(editingDomain, sei, GeneralPackage.eINSTANCE.getIAssignedDiscipline_AssignedDiscipline(), discipline);
 		updateSeiCommand.append(commandSetDiscipline);
 		
-		addAndRemoveParents(sei, editingDomain, updateSeiCommand);
-		addAndRemoveChildren(sei, editingDomain, updateSeiCommand);
+		synchronizeLists(sei.getSuperSeis(), getSuperSeis(), editingDomain, updateSeiCommand);
+		synchronizeLists(sei.getChildren(), getChildren(), editingDomain, updateSeiCommand);
 		addAndRemoveCategoryAssignments(sei, editingDomain, updateSeiCommand);
 		
 		return updateSeiCommand;
 	}
 	
 	/**
-	 * Add commands to add or remove parents from sei to updateSeiCommand
-	 * @param sei
+	 * Add commands to add or remove elements to the internal list to synchronize it with the external list
+	 * @param externalList List containing iUuid elements
+	 * @param internalList
 	 * @param editingDomain
 	 * @param updateSeiCommand
 	 * @throws CoreException
 	 */
-	private void addAndRemoveParents(StructuralElementInstance sei, VirSatTransactionalEditingDomain editingDomain, CompoundCommand updateSeiCommand) throws CoreException {
-		// Add parents
-		for (String uuid : getSuperSeis()) {
-			StructuralElementInstance superSei = RepositoryUtility.findSei(uuid, editingDomain.getResourceSet().getRepository());
-			if (superSei != null) {
-				if (!sei.getSuperSeis().contains(superSei)) {
-					updateSeiCommand.append(new AddCommand(editingDomain, sei.getSuperSeis(), superSei));
+	private void synchronizeLists(EList<StructuralElementInstance> externalList, List<String> internalList, VirSatTransactionalEditingDomain editingDomain, CompoundCommand updateSeiCommand) throws CoreException {
+		// Add elements to the internal list
+		for (String uuid : internalList) {
+			StructuralElementInstance elementInternalList = RepositoryUtility.findSei(uuid, editingDomain.getResourceSet().getRepository());
+			if (elementInternalList != null) {
+				if (!externalList.contains(elementInternalList)) {
+					updateSeiCommand.append(new AddCommand(editingDomain, externalList, elementInternalList));
 				}
 			}
 		}
-		// Remove parents
-		for (StructuralElementInstance superSei : sei.getSuperSeis()) {
-			if (!getSuperSeis().contains(superSei.getUuid().toString())) {
-				updateSeiCommand.append(new RemoveCommand(editingDomain, sei.getSuperSeis(), superSei));
-			}
-		}
-	}
-	
-	/**
-	 * Add commands to add or remove children from sei to updateSeiCommand
-	 * @param sei
-	 * @param editingDomain
-	 * @param updateSeiCommand
-	 * @throws CoreException
-	 */
-	private void addAndRemoveChildren(StructuralElementInstance sei, VirSatTransactionalEditingDomain editingDomain, CompoundCommand updateSeiCommand) throws CoreException {
-		// Add children
-		for (String uuid : getChildren()) {
-			StructuralElementInstance childSei = RepositoryUtility.findSei(uuid, editingDomain.getResourceSet().getRepository());
-			if (childSei != null && !sei.getChildren().contains(childSei)) {
-				updateSeiCommand.append(new AddCommand(editingDomain, sei.getChildren(), childSei));
-			}
-		}
-		// Remove children
-		for (StructuralElementInstance childSei : sei.getChildren()) {
-			if (!getSuperSeis().contains(childSei.getUuid().toString())) {
-				updateSeiCommand.append(new RemoveCommand(editingDomain, sei.getChildren(), childSei));
+		// Remove elements from the internal list
+		for (StructuralElementInstance elementInExternalList : externalList) {
+			if (!internalList.contains(elementInExternalList.getUuid().toString())) {
+				updateSeiCommand.append(new RemoveCommand(editingDomain, externalList, elementInExternalList));
 			}
 		}
 	}

@@ -189,7 +189,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	@Test
 	public void testGetRootSeis() {
 		List<FlattenedStructuralElementInstance> seis = repoModelAccessController.getRootSeis();
-		assertEquals("Initially no seis found", 0, seis.size());
+		assertTrue("Initially no seis found", seis.isEmpty());
 		
 		setUpSeis();
 		
@@ -202,9 +202,9 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	@Test
 	public void testGetSei() throws CoreException {
 		setUpSeis();
+		
 		// Get one sei by uuid
-		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
-		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(uuid);
+		FlattenedStructuralElementInstance seiByUuid = repoModelAccessController.getSei(flatTestSei1.getUuid());
 		assertThat("Right sei found", flatTestSei1, is(samePropertyValuesAs(seiByUuid)));
 	}
 	
@@ -213,8 +213,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		setUpSeis();
 		
 		// Delete one sei
-		String uuid = testSei1.getStructuralElementInstance().getUuid().toString();
-		repoModelAccessController.deleteSei(uuid);
+		repoModelAccessController.deleteSei(flatTestSei1.getUuid());
 		assertEquals("Only one sei left", 1, repoModelAccessController.getRootSeis().size());	
 	}
 	
@@ -233,8 +232,10 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		flatTestSei2.setParent(READ_ONLY);
 		flatTestSei2.setSeFullQualifiedName(READ_ONLY);
 		
-		repoModelAccessController.putSei(flatTestSei2, flatTestSei2.getUuid());
-		FlattenedStructuralElementInstance updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		String uuid = flatTestSei2.getUuid();
+		
+		repoModelAccessController.putSei(flatTestSei2, uuid);
+		FlattenedStructuralElementInstance updatedSei = repoModelAccessController.getSei(uuid);
 		
 		assertEquals("Name changed correctly", NAME, updatedSei.getName());
 		assertEquals("Description changed correctly", DESCRIPTION, updatedSei.getDescription());
@@ -246,20 +247,21 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testPutUpdateSeiDiscipline() throws CoreException, IOException {
 		setUpSeis();
 		
-		assertEquals("Sei has no discipline initally", flatTestSei1.getDiscipline(), null);
-		String uuid = repository.getRoleManagement().getDisciplines().get(0).getUuid().toString();
-		flatTestSei1.setDiscipline(uuid);
+		assertEquals("Sei has no discipline initially", flatTestSei1.getDiscipline(), null);
+		String uuidOfDiscipline = repository.getRoleManagement().getDisciplines().get(0).getUuid().toString();
+		flatTestSei1.setDiscipline(uuidOfDiscipline);
 		
 		FlattenedStructuralElementInstance updatedSei1;
 		
-		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
-		assertEquals("Discipline got posted", updatedSei1.getDiscipline(), uuid);
+		String uuidOfSei = flatTestSei1.getUuid();
+		repoModelAccessController.putSei(flatTestSei1, uuidOfSei);
+		updatedSei1 = repoModelAccessController.getSei(uuidOfSei);
+		assertEquals("Discipline got posted", updatedSei1.getDiscipline(), uuidOfDiscipline);
 		
 		flatTestSei1.setDiscipline(null);
 		
-		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		repoModelAccessController.putSei(flatTestSei1, uuidOfSei);
+		updatedSei1 = repoModelAccessController.getSei(uuidOfSei);
 		assertEquals("Discipline got removed", updatedSei1.getDiscipline(), null);
 	}
 	
@@ -270,23 +272,23 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertTrue("Parent has no children", flatTestSei1.getChildren().isEmpty());
 		assertEquals("Child has no parent yet", flatTestSei2.getParent(), null);
 		
-		flatTestSei1.setChildren(Arrays.asList(flatTestSei2.getUuid()));
+		String uuidOfSei1 = flatTestSei1.getUuid();
+		String uuidOfSei2 = flatTestSei2.getUuid();
 		
-		FlattenedStructuralElementInstance updatedSei1;
-		FlattenedStructuralElementInstance updatedSei2;
-		
-		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
-		updatedSei2 = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		flatTestSei1.setChildren(Arrays.asList(uuidOfSei2));
+
+		repoModelAccessController.putSei(flatTestSei1, uuidOfSei1);
+		FlattenedStructuralElementInstance updatedSei1 = repoModelAccessController.getSei(uuidOfSei1);
+		FlattenedStructuralElementInstance updatedSei2 = repoModelAccessController.getSei(uuidOfSei2);
 		
 		assertEquals("Parent in model has one children", updatedSei1.getChildren().size(), 1);
 		assertEquals("Child in model has a parent yet", updatedSei2.getParent(), updatedSei1.getUuid());
 		
 		flatTestSei1.setChildren(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
-		updatedSei2 = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		repoModelAccessController.putSei(flatTestSei1, uuidOfSei1);
+		updatedSei1 = repoModelAccessController.getSei(uuidOfSei1);
+		updatedSei2 = repoModelAccessController.getSei(uuidOfSei2);
 		
 		assertTrue("Parent in models child got removed successfully", updatedSei1.getChildren().isEmpty());
 		assertEquals("Child in model parent got also removed", updatedSei2.getParent(), null);
@@ -296,21 +298,21 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	public void testPutUpdateSeiSuperSeis() throws CoreException, IOException {
 		setUpSeis();
 		
+		String uuidOfSei1 = flatTestSei1.getUuid();
+		
 		assertTrue("Sei has no super seis", flatTestSei1.getSuperSeis().isEmpty());
 		
 		flatTestSei1.setSuperSeis(Arrays.asList(flatTestSei2.getUuid()));
 		
-		FlattenedStructuralElementInstance updatedSei1;
-		
-		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		repoModelAccessController.putSei(flatTestSei1, uuidOfSei1);
+		FlattenedStructuralElementInstance updatedSei1 = repoModelAccessController.getSei(uuidOfSei1);
 		
 		assertEquals("Sei has super sei now", updatedSei1.getSuperSeis().size(), 1);
 		
 		flatTestSei1.setSuperSeis(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei1, flatTestSei1.getUuid());
-		updatedSei1 = repoModelAccessController.getSei(flatTestSei1.getUuid());
+		repoModelAccessController.putSei(flatTestSei1, uuidOfSei1);
+		updatedSei1 = repoModelAccessController.getSei(uuidOfSei1);
 		
 		assertTrue("Super sei got deleted", updatedSei1.getSuperSeis().isEmpty());
 	}
@@ -322,17 +324,17 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		
 		flatTestSei2.setCategoryAssignments(Arrays.asList(testCa.getUuid()));
 		
-		FlattenedStructuralElementInstance updatedSei;
+		String uuidOfSei2 = flatTestSei2.getUuid();
 		
-		repoModelAccessController.putSei(flatTestSei2, flatTestSei2.getUuid());
-		updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		repoModelAccessController.putSei(flatTestSei2, uuidOfSei2);
+		FlattenedStructuralElementInstance updatedSei = repoModelAccessController.getSei(uuidOfSei2);
 		
 		assertEquals("Sei has ca now", updatedSei.getCategoryAssignments().size(), 1);
 		
 		flatTestSei1.setCategoryAssignments(new ArrayList<String>());
 		
-		repoModelAccessController.putSei(flatTestSei2, flatTestSei2.getUuid());
-		updatedSei = repoModelAccessController.getSei(flatTestSei2.getUuid());
+		repoModelAccessController.putSei(flatTestSei2, uuidOfSei2);
+		updatedSei = repoModelAccessController.getSei(uuidOfSei2);
 		
 		assertTrue("Ca got deleted", updatedSei.getSuperSeis().isEmpty());
 	}
@@ -381,19 +383,17 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	 * Finds a property by the name String
 	 * @param properties
 	 * @param nameStr
-	 * @return
+	 * @return the index of the property or null
 	 */
 	private Integer findPropertyWithNameStr(List<FlattenedPropertyInstance> properties, String nameStr) {
-		Integer idx = null;
-		
 		for (int i = 0; i < properties.size(); i++) {
 			String name = properties.get(i).getTypeFullQualifiedInstanceName();
 			if (name.contains(nameStr)) {
-				idx = i;
+				return i;
 			}
 		}
 		
-		return idx;
+		return null;
 	}
 	
 	@Test
