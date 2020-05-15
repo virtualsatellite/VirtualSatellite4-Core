@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRe
 public class RequirementsTraceEditingDialog extends AUiSnippetCreationDialog {
 
 	protected FormToolkit toolkit;
+	protected static final String DIALOG_TITEL = "Requirement Trace Target Selection"; 
 	
 	/**
 	 * @param parent
@@ -61,5 +62,16 @@ public class RequirementsTraceEditingDialog extends AUiSnippetCreationDialog {
 
 		return composite;
 	}
+	
+	@Override
+    protected void configureShell(Shell newShell) {
+        super.configureShell(newShell);
+        newShell.setText(DIALOG_TITEL);
+    }
+	
+	@Override
+    protected boolean isResizable() {
+        return true;
+    }
 
 }

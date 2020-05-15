@@ -54,6 +54,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -132,8 +133,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		if (colTracing == null) {
 			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TRACE);
 
-			colTracing.setEditingSupport(createEditingSupport(editingDomain, categoryModel.getProperties()
-					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER)));
+			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
+					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
 
 			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
 
