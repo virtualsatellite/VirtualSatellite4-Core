@@ -20,19 +20,32 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.RequirementsTraceEditingDialog;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
@@ -46,6 +59,47 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetSectionRequirement extends AUiSnippetSectionRequirement implements IUiSnippet {
 
+	protected static final String BUTTON_EDIT_TRACE_TEXT = "Edit Forward Tracing";
+	
+	@Override
+	protected void createComposedPropertyWidgets(FormToolkit toolkit, Composite sectionBody, ComposedProperty property) {
+		Text textPropertyComposedName = toolkit.createText(sectionBody, "");
+		textPropertyComposedName.setEditable(false);
+		textPropertyComposedName.setLayoutData(createDefaultGridData());
+
+		Button buttonDrillDown = toolkit.createButton(sectionBody, BUTTON_EDIT_TRACE_TEXT, SWT.PUSH);
+		GridData gridData = createDefaultGridData();
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_2;
+		buttonDrillDown.setLayoutData(gridData);
+
+		String propertyFqn = property.getFullQualifiedName();
+
+		mapPropertyToTextComposedName.put(propertyFqn, textPropertyComposedName);
+
+		buttonDrillDown.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				widgetDefaultSelected(e);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) caHelper.getPropertyInstance(property);
+				ATypeInstance referencedTypeInstance = propertyInstance.getTypeInstance();
+				
+				
+				EditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(referencedTypeInstance);
+				if (referencedTypeInstance != null) {
+					Dialog dialog = new RequirementsTraceEditingDialog(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), toolkit, editingDomain,
+							referencedTypeInstance);
+					dialog.open();
+				}
+			}
+		});
+	}
+	
 	@Override
 	protected void executeReferenceSelectionDialog(EditingDomain editingDomain, String propertyFqn) {
 		Category viewerCategory = acHelper.getCategory(conceptId, categoryId);
