@@ -88,32 +88,11 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_TRACE_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
-				Requirement req = new Requirement(ca);
 				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
 				redirectNotification(ti, object);
-				if (req.getTrace().getTarget() == null || req.getTrace().getTarget().isEmpty()) {
-					return EMPTY_TRACE_STRING;
-				} else {
-					StringBuilder traceString = new StringBuilder();
-					traceString.append("{");
-
-					// Some heavy casting necessary because Bean GenericCategory is abstract
-					APropertyInstance targetProperty = req.getTrace().getTypeInstance().getPropertyInstances()
-							.get(REQUIREMENT_TRACE_TARGET_PROPERTY_NUMBER);
-					for (APropertyInstance targetRPI : ((ArrayInstance) targetProperty).getArrayInstances()) {
-						CategoryAssignment target = (CategoryAssignment) ((ReferencePropertyInstance) targetRPI)
-								.getReference();
-						if (target != null) {
-							traceString.append(target.getName());
-						}
-						if (((ArrayInstance) targetProperty).getArrayInstances()
-								.indexOf(targetRPI) < ((ArrayInstance) targetProperty).getArrayInstances().size() - 1) {
-							traceString.append(", ");
-						}
-					}
-					traceString.append("}");
-					return traceString.toString();
-				}
+				
+				return getTraceLabel(new Requirement(ca));
+				
 
 			} else if (columnIndex > STATUS_COLUMN) {
 				APropertyInstance propertyInstance = ca.getPropertyInstances()
@@ -217,7 +196,38 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 			editingDomain.getVirSatCommandStack().execute(att.delete(editingDomain));
 		}
+	}
+	
+	/**
+	 * Create a label for requirements traces customized to this table 
+	 * 
+	 * @param req the requirement for which a trace label is created
+	 * @return the trace label
+	 */
+	protected String getTraceLabel(Requirement req) {
+		if (req.getTrace().getTarget() == null || req.getTrace().getTarget().isEmpty()) {
+			return EMPTY_TRACE_STRING;
+		} else {
+			StringBuilder traceString = new StringBuilder();
+			traceString.append("{");
 
+			// Some heavy casting necessary because Bean GenericCategory is abstract
+			APropertyInstance targetProperty = req.getTrace().getTypeInstance().getPropertyInstances()
+					.get(REQUIREMENT_TRACE_TARGET_PROPERTY_NUMBER);
+			for (APropertyInstance targetRPI : ((ArrayInstance) targetProperty).getArrayInstances()) {
+				CategoryAssignment target = (CategoryAssignment) ((ReferencePropertyInstance) targetRPI)
+						.getReference();
+				if (target != null) {
+					traceString.append(target.getName());
+					if (((ArrayInstance) targetProperty).getArrayInstances()
+							.indexOf(targetRPI) < ((ArrayInstance) targetProperty).getArrayInstances().size() - 1) {
+						traceString.append(", ");
+					}
+				}
+			}
+			traceString.append("}");
+			return traceString.toString();
+		}
 	}
 
 }
