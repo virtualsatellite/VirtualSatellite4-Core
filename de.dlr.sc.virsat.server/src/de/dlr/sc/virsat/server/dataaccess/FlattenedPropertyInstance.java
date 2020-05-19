@@ -9,19 +9,29 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.dataaccess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
@@ -44,6 +54,9 @@ public class FlattenedPropertyInstance {
 	private String quanitityKindName;
 	// API read and write
 	private String unitName;
+	private String composedCaUuid;
+	private String reference;
+	private List<FlattenedPropertyInstance> arrayProperties;
 	
 	public FlattenedPropertyInstance() { }
 	
@@ -65,16 +78,58 @@ public class FlattenedPropertyInstance {
 		setValue(valueSwitch.getValueString(propertyInstance));
 		
 		// set type specific properties
-		new PropertydefinitionsSwitch<String>() {
+		new PropertydefinitionsSwitch<Object>() {
 			@Override
-			public String caseAQudvTypeProperty(AQudvTypeProperty object) {
+			public Object caseAQudvTypeProperty(AQudvTypeProperty object) {
 				setQuanitityKindName(object.getQuantityKindName());
 				setUnitName(object.getUnitName());
 				return null;
 			}
+
+			@Override
+			public Object caseComposedProperty(ComposedProperty object) {
+				setQuanitityKindName(object.getQuantityKindName());
+				setUnitName(object.getUnitName());
+				return null;
+			};
 			
 		}.doSwitch(propertyInstance.getType());
 		
+		new PropertyinstancesSwitch<Object>() {
+			@Override
+			public Object caseReferencePropertyInstance(ReferencePropertyInstance object) {
+				ATypeInstance reference = object.getReference();
+				if (reference != null) {
+					setReference(reference.getUuid().toString());
+				}
+				return null;
+			}
+
+			@Override
+			public Object caseEReferencePropertyInstance(EReferencePropertyInstance object) {
+				EObject reference = object.getReference();
+				if (reference != null) {
+					setReference(reference.toString());
+				}
+				return null;
+			}
+
+			@Override
+			public Object caseComposedPropertyInstance(ComposedPropertyInstance object) {
+				setComposedCaUuid(object.getTypeInstance().getUuid().toString());
+				return null;
+			}
+
+			@Override
+			public Object caseArrayInstance(ArrayInstance object) {
+				List<FlattenedPropertyInstance> arrayProperties = new ArrayList<FlattenedPropertyInstance>();
+				for (APropertyInstance arrayInstances : object.getArrayInstances()) {
+					arrayProperties.add(new FlattenedPropertyInstance(arrayInstances));
+				}
+				setArrayProperties(arrayProperties);
+				return null;
+			}
+		}.doSwitch(propertyInstance);
 	}
 
 	/**
@@ -195,5 +250,29 @@ public class FlattenedPropertyInstance {
 
 	public void setTypeFullQualifiedInstanceName(String typeFullQualifiedInstanceName) {
 		this.typeFullQualifiedInstanceName = typeFullQualifiedInstanceName;
+	}
+
+	public String getComposedCaUuid() {
+		return composedCaUuid;
+	}
+
+	public void setComposedCaUuid(String composedCaUuid) {
+		this.composedCaUuid = composedCaUuid;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String referenceUuid) {
+		this.reference = referenceUuid;
+	}
+
+	public List<FlattenedPropertyInstance> getArrayProperties() {
+		return arrayProperties;
+	}
+
+	public void setArrayProperties(List<FlattenedPropertyInstance> arrayProperties) {
+		this.arrayProperties = arrayProperties;
 	}
 }

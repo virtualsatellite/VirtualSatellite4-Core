@@ -42,7 +42,15 @@ import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArray;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryExtends;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
@@ -78,6 +86,9 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	private static final String NAME = "Updated";
 	private static final String DESCRIPTION = "Got updated";
 	private static final String READ_ONLY = "Should not change";
+	
+	private static final int ARRAY_LENGTH = 4;
+	private static final int NUMBER_OF_PROPERTIES = 4;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -472,6 +483,84 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 	}
 	
 	@Test
+	public void testGetCaComposition() throws CoreException {
+		setUpSeis();
+		TestCategoryComposition compositionCa = new TestCategoryComposition(testConcept);
+		executeAsCommand(() -> testSei1.add(compositionCa));
+		
+		FlattenedCategoryAssignmentWithProperties caByUuid = repoModelAccessController.getCaWithProperties(compositionCa.getUuid());
+		assertEquals("Composed ca found", compositionCa.getTestSubCategory().getUuid().toString(), 
+			caByUuid.getProperties().get(0).getComposedCaUuid());
+	}
+	
+	@Test
+	public void testGetCaReference() throws CoreException {
+		setUpSeis();
+		TestCategoryReference referenceCa = new TestCategoryReference(testConcept);
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		referenceCa.setTestRefCategory(tc);
+		executeAsCommand(() -> testSei1.add(referenceCa));
+		
+		FlattenedCategoryAssignmentWithProperties caByUuuid = repoModelAccessController.getCaWithProperties(referenceCa.getUuid());
+		// The Ca has two properties: category reference and the referenced property
+		assertEquals("Right reference found", referenceCa.getTestRefCategory().getUuid().toString(),
+				caByUuuid.getProperties().get(0).getReference());
+	}
+	
+	@Test
+	public void testGetCaEReference() throws CoreException {
+		setUpSeis();
+		EReferenceTest eRefCa = new EReferenceTest(testConcept);
+		executeAsCommand(() -> testSei1.add(eRefCa));
+		
+		FlattenedCategoryAssignmentWithProperties caByUuid = repoModelAccessController.getCaWithProperties(eRefCa.getUuid());
+		assertEquals("Referenced property found", 1, caByUuid.getProperties().size());
+	}
+	
+	private void assertArrayRightNumberOfElements(GenericCategory arrayCa) throws CoreException {
+		FlattenedCategoryAssignmentWithProperties caByUuid = repoModelAccessController.getCaWithProperties(arrayCa.getUuid());
+		List<FlattenedPropertyInstance> flattenedArray = caByUuid.getProperties().get(1).getArrayProperties();
+		assertEquals("Right number of array elements found", ARRAY_LENGTH, flattenedArray.size());
+	}
+	
+	@Test
+	public void testGetCaCompositonArray() throws CoreException {
+		setUpSeis();
+		TestCategoryCompositionArray arrayCa = new TestCategoryCompositionArray(testConcept);
+		executeAsCommand(() -> testSei1.add(arrayCa));
+		
+		assertArrayRightNumberOfElements(arrayCa);
+	}
+	
+	@Test
+	public void testGetCaInstrinsicArray() throws CoreException {
+		setUpSeis();
+		TestCategoryIntrinsicArray arrayCa = new TestCategoryIntrinsicArray(testConcept);
+		executeAsCommand(() -> testSei1.add(arrayCa));
+		
+		assertArrayRightNumberOfElements(arrayCa);
+	}
+	
+	@Test
+	public void testGetCaReferenceArray() throws CoreException {
+		setUpSeis();
+		TestCategoryReferenceArray arrayCa = new TestCategoryReferenceArray(testConcept);
+		executeAsCommand(() -> testSei1.add(arrayCa));
+		
+		assertArrayRightNumberOfElements(arrayCa);
+	}
+	
+	@Test
+	public void testGetCaExtends() throws CoreException {
+		setUpSeis();
+		TestCategoryExtends extendsCa = new TestCategoryExtends(testConcept);
+		executeAsCommand(() -> testSei1.add(extendsCa));
+		
+		FlattenedCategoryAssignmentWithProperties caByUuid = repoModelAccessController.getCaWithProperties(extendsCa.getUuid());
+		assertEquals("Right number of properties found", NUMBER_OF_PROPERTIES, caByUuid.getProperties().size());
+	}
+	
+	@Test
 	public void testGetProperty() {
 		setUpCa();
 		
@@ -479,7 +568,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		FlattenedPropertyInstance property = repoModelAccessController.getPropertyInstance(boolProperty.getUuid().toString());
 		assertThat("Right ca found", new FlattenedPropertyInstance(boolProperty), is(samePropertyValuesAs(property)));
 	}
-	
+		
 	@Test
 	public void testPutProperty() throws CoreException, IOException {
 		setUpCa();
