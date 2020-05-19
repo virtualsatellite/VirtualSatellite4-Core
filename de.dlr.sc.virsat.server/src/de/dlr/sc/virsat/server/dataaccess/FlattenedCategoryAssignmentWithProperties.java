@@ -71,7 +71,10 @@ public class FlattenedCategoryAssignmentWithProperties extends AFlattenedCategor
 		for (FlattenedPropertyInstance flattenedPropertyInstance : getProperties()) {
 			APropertyInstance propertyInstance = helper.tryGetPropertyInstance(flattenedPropertyInstance.getTypeFullQualifiedInstanceName());
 			if (propertyInstance != null) {
-				updateCaCommand.append(flattenedPropertyInstance.unflatten(editingDomain, propertyInstance));
+				Command updatePropertyCommand = flattenedPropertyInstance.unflatten(editingDomain, propertyInstance);
+				if (updatePropertyCommand.canExecute()) {
+					updateCaCommand.append(updatePropertyCommand);
+				}
 			}
 		}
 		

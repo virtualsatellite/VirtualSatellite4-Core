@@ -16,8 +16,10 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.SetCommand;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
@@ -49,13 +51,13 @@ public class FlattenedPropertyInstance {
 	// API read and write
 	private String value;
 	
-	// Type specific
 	// API read only
-	private String quanitityKindName;
+	private String quanitityKindName; // AQudvType / Composite
+	private String composedCaUuid; // Composite
+	private String referenceUuid; // Reference
+	private String eReferenceUri; //EReference
 	// API read and write
-	private String unitName;
-	private String composedCaUuid;
-	private String reference;
+	private String unitName; // AQudvType / Composite
 	private List<FlattenedPropertyInstance> arrayProperties;
 	
 	public FlattenedPropertyInstance() { }
@@ -100,7 +102,7 @@ public class FlattenedPropertyInstance {
 			public Object caseReferencePropertyInstance(ReferencePropertyInstance object) {
 				ATypeInstance reference = object.getReference();
 				if (reference != null) {
-					setReference(reference.getUuid().toString());
+					setReferenceUuid(reference.getUuid().toString());
 				}
 				return null;
 			}
@@ -109,7 +111,7 @@ public class FlattenedPropertyInstance {
 			public Object caseEReferencePropertyInstance(EReferencePropertyInstance object) {
 				EObject reference = object.getReference();
 				if (reference != null) {
-					setReference(reference.toString());
+					seteReferenceUri(EcoreUtil.getURI(reference).toString());
 				}
 				return null;
 			}
@@ -139,8 +141,8 @@ public class FlattenedPropertyInstance {
 	 * @return Command
 	 */
 	public Command unflatten(VirSatTransactionalEditingDomain editingDomain, APropertyInstance property) {
+		Repository repository = editingDomain.getResourceSet().getRepository();
 		CompoundCommand updatePropertyCommand = new CompoundCommand();
-		System.out.println(property.getFullQualifiedInstanceName());
 		
 		PropertyinstancesSwitch<Command> valueSwitch = new PropertyinstancesSwitch<Command>() {
 			@Override
@@ -168,21 +170,37 @@ public class FlattenedPropertyInstance {
 					PropertyinstancesPackage.Literals.ENUM_UNIT_PROPERTY_INSTANCE__VALUE, 
 					new EnumPropertyHelper().getEvdForName((EnumProperty) object.getType(), getValue()));
 			}
+			
+			@Override
+			public Command caseArrayInstance(ArrayInstance object) {
+				CompoundCommand updateArrayInstancesCommand = new CompoundCommand();
+				
+				List<FlattenedPropertyInstance> flatArrayProperties = getArrayProperties();
+				for (FlattenedPropertyInstance flatArrayProperty : flatArrayProperties) {
+					APropertyInstance arrayProperty = RepositoryUtility.findProperty(flatArrayProperty.getUuid(), repository);
+					
+					// Only update properties that already exist in the model and are part of this array property
+					if (arrayProperty != null && object.getArrayInstances().contains(arrayProperty)) {
+						updateArrayInstancesCommand.append(flatArrayProperty.unflatten(editingDomain, arrayProperty));
+					}
+				}
+				
+				return updateArrayInstancesCommand;
+			}
 		};
 		
 		Command setValueCommand = valueSwitch.doSwitch(property);
-		addCommandIfExecuteable(updatePropertyCommand, setValueCommand, "Can't update value to " + getValue());
+		addCommandIfExecuteable(updatePropertyCommand, setValueCommand, "Can't update value of " + getFullQualifiedInstanceName());
 		
-		Command test = new PropertydefinitionsSwitch<Command>() {
+		Command typeSwitch = new PropertydefinitionsSwitch<Command>() {
 			@Override
 			public Command caseAQudvTypeProperty(AQudvTypeProperty object) {
 				Command commandSetUnit = SetCommand.create(editingDomain, object, PropertydefinitionsPackage.Literals.AQUDV_TYPE_PROPERTY__UNIT_NAME, getUnitName());
 				return commandSetUnit;
 			}
-			
 		}.doSwitch(property.getType());
 		
-		addCommandIfExecuteable(updatePropertyCommand, test, "Can't update unit to " + getUnitName());
+		addCommandIfExecuteable(updatePropertyCommand, typeSwitch, "Can't update unit to " + getUnitName());
 		
 		return updatePropertyCommand;
 	}
@@ -260,12 +278,12 @@ public class FlattenedPropertyInstance {
 		this.composedCaUuid = composedCaUuid;
 	}
 
-	public String getReference() {
-		return reference;
+	public String getReferenceUuid() {
+		return referenceUuid;
 	}
 
-	public void setReference(String referenceUuid) {
-		this.reference = referenceUuid;
+	public void setReferenceUuid(String referenceUuid) {
+		this.referenceUuid = referenceUuid;
 	}
 
 	public List<FlattenedPropertyInstance> getArrayProperties() {
@@ -274,5 +292,13 @@ public class FlattenedPropertyInstance {
 
 	public void setArrayProperties(List<FlattenedPropertyInstance> arrayProperties) {
 		this.arrayProperties = arrayProperties;
+	}
+
+	public String geteReferenceUri() {
+		return eReferenceUri;
+	}
+
+	public void seteReferenceUri(String eReferenceUri) {
+		this.eReferenceUri = eReferenceUri;
 	}
 }

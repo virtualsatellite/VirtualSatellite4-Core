@@ -504,7 +504,7 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		FlattenedCategoryAssignmentWithProperties caByUuuid = repoModelAccessController.getCaWithProperties(referenceCa.getUuid());
 		// The Ca has two properties: category reference and the referenced property
 		assertEquals("Right reference found", referenceCa.getTestRefCategory().getUuid().toString(),
-				caByUuuid.getProperties().get(0).getReference());
+				caByUuuid.getProperties().get(0).getReferenceUuid());
 	}
 	
 	@Test
@@ -517,32 +517,43 @@ public class RepoModelAccessControllerTest extends ATestConceptTestCase {
 		assertEquals("Referenced property found", 1, caByUuid.getProperties().size());
 	}
 	
-	private void assertArrayRightNumberOfElements(GenericCategory arrayCa) throws CoreException {
+	private FlattenedCategoryAssignmentWithProperties assertArrayRightNumberOfElements(GenericCategory arrayCa) throws CoreException, IOException {
 		FlattenedCategoryAssignmentWithProperties caByUuid = repoModelAccessController.getCaWithProperties(arrayCa.getUuid());
 		List<FlattenedPropertyInstance> flattenedArray = caByUuid.getProperties().get(1).getArrayProperties();
 		assertEquals("Right number of array elements found", ARRAY_LENGTH, flattenedArray.size());
+		
+		return caByUuid;
 	}
 	
 	@Test
-	public void testGetCaCompositonArray() throws CoreException {
+	public void testGetCaCompositonArray() throws CoreException, IOException {
 		setUpSeis();
 		TestCategoryCompositionArray arrayCa = new TestCategoryCompositionArray(testConcept);
 		executeAsCommand(() -> testSei1.add(arrayCa));
-		
-		assertArrayRightNumberOfElements(arrayCa);
 	}
 	
 	@Test
-	public void testGetCaInstrinsicArray() throws CoreException {
+	public void testGetAndPutCaInstrinsicArray() throws CoreException, IOException {
 		setUpSeis();
 		TestCategoryIntrinsicArray arrayCa = new TestCategoryIntrinsicArray(testConcept);
 		executeAsCommand(() -> testSei1.add(arrayCa));
 		
 		assertArrayRightNumberOfElements(arrayCa);
+		
+		FlattenedCategoryAssignmentWithProperties caByUuid = assertArrayRightNumberOfElements(arrayCa);
+		
+		// Now change an array property and put the whole containing ca, this should also call an
+		// update on the changed property
+		FlattenedPropertyInstance propertyToChange = caByUuid.getProperties().get(1).getArrayProperties().get(0);
+		propertyToChange.setValue(TEST_VALUE_STRING);
+		repoModelAccessController.putCaWithProperties(caByUuid, caByUuid.getUuid());
+		
+		FlattenedPropertyInstance updatedProperty = repoModelAccessController.getPropertyInstance(propertyToChange.getUuid());
+		assertEquals("Value of array property updated correcty", TEST_VALUE_STRING, updatedProperty.getValue());
 	}
 	
 	@Test
-	public void testGetCaReferenceArray() throws CoreException {
+	public void testGetCaReferenceArray() throws CoreException, IOException {
 		setUpSeis();
 		TestCategoryReferenceArray arrayCa = new TestCategoryReferenceArray(testConcept);
 		executeAsCommand(() -> testSei1.add(arrayCa));
