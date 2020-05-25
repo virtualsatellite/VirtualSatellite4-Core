@@ -31,63 +31,64 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 
+/**
+ * This factory class produces Bean Objects, wrapping certain BeanProperties for a given object.
+ */
 public class BeanPropertyFactory {
 
+	private BeanPropertyFactorySwitch bpfs;
 
 	/**
-	 * @param object ATypeinstance object
-	 * @return beanobject
+	 * @param object Object that shall be wrapped into Bean Object
+	 * @return Bean Object wrapper for object
 	 */
 	public IBeanObject<? extends APropertyInstance> getInstanceFor(ATypeInstance object) {
 		ATypeDefinition type = object.getType();
-		BeanPropertyFactorySwitch bpfs = new BeanPropertyFactorySwitch();
 		IBeanObject<? extends APropertyInstance> bean = bpfs.doSwitch(type);
 		bean.setATypeInstance(object);
 		return bean;
 	}
 
-	static class BeanPropertyFactorySwitch extends PropertydefinitionsSwitch<IBeanObject<? extends APropertyInstance>> {
+	public BeanPropertyFactory() {
+		super();
+		bpfs = new BeanPropertyFactorySwitch();
+	}
+
+	private class BeanPropertyFactorySwitch extends PropertydefinitionsSwitch<IBeanObject<? extends APropertyInstance>> {
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseFloatProperty(FloatProperty object) {
-			IBeanObject<? extends APropertyInstance> beanObjectPropertyFloat = new BeanPropertyFloat();
-			return beanObjectPropertyFloat;
+			return new BeanPropertyFloat();
 		}
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseIntProperty(IntProperty object) {
-			IBeanObject<? extends APropertyInstance> beanObjectPropertyInt = new BeanPropertyInt();
-			return beanObjectPropertyInt;
+			return new BeanPropertyInt();
 		}
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseBooleanProperty(BooleanProperty object) {
-			IBeanObject<? extends APropertyInstance> beanPropertyBoolean = new BeanPropertyBoolean();
-			return beanPropertyBoolean;
+			return new BeanPropertyBoolean();
 		}
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseEnumProperty(EnumProperty object) {
-			IBeanObject<? extends APropertyInstance> beanPropertyEnum = new BeanPropertyEnum();
-			return beanPropertyEnum;
+			return new BeanPropertyEnum();
 		}
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseResourceProperty(ResourceProperty object) {
-			IBeanObject<? extends APropertyInstance> beanPropertyResource = new BeanPropertyResource();
-			return beanPropertyResource;
+			return new BeanPropertyResource();
 		}
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseStringProperty(StringProperty object) {
-			IBeanObject<? extends APropertyInstance> beanPropertyString = new BeanPropertyString();
-			return beanPropertyString;
+			return new BeanPropertyString();
 		}
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseEReferenceProperty(EReferenceProperty object) {
-			IBeanObject<? extends APropertyInstance> beanPropertyEReference = new BeanPropertyEReference<EObject>();
-			return beanPropertyEReference;
+			return new BeanPropertyEReference<EObject>();
 		}
 	}
 }

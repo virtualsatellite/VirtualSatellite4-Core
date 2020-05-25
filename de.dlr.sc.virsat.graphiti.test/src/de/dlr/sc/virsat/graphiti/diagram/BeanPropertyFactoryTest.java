@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.diagram;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -24,7 +25,6 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
@@ -48,8 +48,9 @@ public class BeanPropertyFactoryTest {
 
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyFloat = bpf.getInstanceFor(vpi);
+
 		assertTrue(beanPropertyFloat instanceof BeanPropertyFloat);
-		assertTrue(beanPropertyFloat.getTypeInstance() instanceof ValuePropertyInstance);
+		assertEquals(vpi, beanPropertyFloat.getTypeInstance());
 	}
 
 	@Test
@@ -61,7 +62,7 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyInt = bpf.getInstanceFor(vpi);
 		assertTrue(beanPropertyInt instanceof BeanPropertyInt);
-		assertTrue(beanPropertyInt.getTypeInstance() instanceof ValuePropertyInstance);
+		assertEquals(vpi, beanPropertyInt.getTypeInstance());
 	}
 
 	@Test
@@ -73,21 +74,20 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyBoolean = bpf.getInstanceFor(vpi);
 		assertTrue(beanPropertyBoolean instanceof BeanPropertyBoolean);
-		assertTrue(beanPropertyBoolean.getTypeInstance() instanceof ValuePropertyInstance);
+		assertEquals(vpi, beanPropertyBoolean.getTypeInstance());
 	}
 
 	@Test
 	public void testBeanPropertyEnumFromFactory() {
-		EnumValueDefinition evd1 = PropertydefinitionsFactory.eINSTANCE.createEnumValueDefinition();
-		EnumProperty enumProperty = PropertydefinitionsFactory.eINSTANCE.createEnumProperty();
-		enumProperty.getValues().add(evd1);
 		EnumUnitPropertyInstance eupi = PropertyinstancesFactory.eINSTANCE.createEnumUnitPropertyInstance();
+		EnumProperty enumProperty = PropertydefinitionsFactory.eINSTANCE.createEnumProperty();
 		eupi.setType(enumProperty);
+
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyEnum = bpf.getInstanceFor(eupi);
 
 		assertTrue(beanPropertyEnum instanceof BeanPropertyEnum);
-		assertTrue(beanPropertyEnum.getTypeInstance() instanceof EnumUnitPropertyInstance);
+		assertEquals(eupi, beanPropertyEnum.getTypeInstance());
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class BeanPropertyFactoryTest {
 		IBeanObject<? extends APropertyInstance> beanPropertyRessource = bpf.getInstanceFor(rpi);
 
 		assertTrue(beanPropertyRessource instanceof BeanPropertyResource);
-		assertTrue(beanPropertyRessource.getTypeInstance() instanceof ResourcePropertyInstance);
+		assertEquals(rpi, beanPropertyRessource.getTypeInstance());
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class BeanPropertyFactoryTest {
 		IBeanObject<? extends APropertyInstance> beanPropertyString = bpf.getInstanceFor(vpi);
 
 		assertTrue(beanPropertyString instanceof BeanPropertyString);
-		assertTrue(beanPropertyString.getTypeInstance() instanceof ValuePropertyInstance);
+		assertEquals(vpi, beanPropertyString.getTypeInstance());
 	}
 
 	@Test
@@ -126,7 +126,6 @@ public class BeanPropertyFactoryTest {
 		IBeanObject<? extends APropertyInstance> beanPropertyEreference = bpf.getInstanceFor(erpi);
 
 		assertTrue(beanPropertyEreference instanceof BeanPropertyEReference);
-		assertTrue(beanPropertyEreference.getTypeInstance() instanceof EReferencePropertyInstance);
+		assertEquals(erpi, beanPropertyEreference.getTypeInstance());
 	}
-
 }
