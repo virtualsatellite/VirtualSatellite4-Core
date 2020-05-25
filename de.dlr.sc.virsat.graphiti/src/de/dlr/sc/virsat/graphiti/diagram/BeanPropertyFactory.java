@@ -36,7 +36,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
  */
 public class BeanPropertyFactory {
 
-	private BeanPropertyFactorySwitch bpfs;
+	private BeanPropertyFactorySwitch bpfs = new BeanPropertyFactorySwitch();
 
 	/**
 	 * @param object Object that shall be wrapped into Bean Object
@@ -49,12 +49,7 @@ public class BeanPropertyFactory {
 		return bean;
 	}
 
-	public BeanPropertyFactory() {
-		super();
-		bpfs = new BeanPropertyFactorySwitch();
-	}
-
-	private class BeanPropertyFactorySwitch extends PropertydefinitionsSwitch<IBeanObject<? extends APropertyInstance>> {
+	static class BeanPropertyFactorySwitch extends PropertydefinitionsSwitch<IBeanObject<? extends APropertyInstance>> {
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseFloatProperty(FloatProperty object) {
