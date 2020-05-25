@@ -14,7 +14,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolverTest;
-import de.dlr.sc.virsat.graphiti.diagram.BeanPropertyFactoryTest;
 import de.dlr.sc.virsat.graphiti.diagram.ToolBehaviorProviderTest;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelperTest;
 import junit.framework.JUnit4TestAdapter;
@@ -29,7 +28,6 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({	BeanIndependenceSolverTest.class,
 				DiagramHelperTest.class,
-				BeanPropertyFactoryTest.class,
 				ToolBehaviorProviderTest.class
 				})
 
@@ -39,7 +37,7 @@ public class AllTests {
 	private AllTests() {
 	}
 
-	
+
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
 	}

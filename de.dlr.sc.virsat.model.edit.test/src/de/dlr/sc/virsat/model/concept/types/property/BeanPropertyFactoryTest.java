@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.graphiti.diagram;
+package de.dlr.sc.virsat.model.concept.types.property;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,13 +15,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;

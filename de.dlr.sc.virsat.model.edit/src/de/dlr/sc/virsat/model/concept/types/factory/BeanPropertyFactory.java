@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.graphiti.diagram;
+package de.dlr.sc.virsat.model.concept.types.factory;
 
 import org.eclipse.emf.ecore.EObject;
 
