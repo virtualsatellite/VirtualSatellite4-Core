@@ -25,7 +25,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.core.commands.operations.IOperationHistoryListener;
 import org.eclipse.core.commands.operations.OperationHistoryEvent;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -49,6 +51,9 @@ import org.eclipse.emf.transaction.impl.TransactionalEditingDomainImpl;
 import org.eclipse.emf.workspace.IWorkspaceCommandStack;
 import org.eclipse.emf.workspace.ResourceUndoContext;
 
+import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.dvlm.util.command.DVLMCopierCommand;
 import de.dlr.sc.virsat.project.Activator;
@@ -62,11 +67,9 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.structure.VirSatProjectResourceChangeListener;
 
 /**
- * The Transactional Editing DOmain with attached WorkspaceSynchronizer
- * @author fisc_ph
- *
+ * The Transactional Editing Domain with attached WorkspaceSynchronizer
  */
-public class VirSatTransactionalEditingDomain extends TransactionalEditingDomainImpl {
+public class VirSatTransactionalEditingDomain extends TransactionalEditingDomainImpl implements IUserContext {
 
 	private boolean isDisposed;
 	
@@ -460,7 +463,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			}
 			
 			// Remove dangling references only if this the user has write access to this resource
-			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource); 
+			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource, this); 
 			
 			// for dangling references call the Utils to remove them before actually saving them
 			if (writeRemovedDanglingReferences) {
@@ -490,7 +493,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			// tracking the states of the currently open resources. In particular, if store the resource
 			// in recentlySavedResource BUT the resource has not changed then, the WokrspaceSynchronizer will NOT trigger
 			// and the resource will stay listed in recentlySavedResource indefinitely.
-			if (virSatResourceSet.hasWritePermission(resource) && virSatResourceSet.isChanged(resource)) {
+			if (virSatResourceSet.hasWritePermission(resource, this) && virSatResourceSet.isChanged(resource)) {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Has write permission and found changes thus saving (" + resource.getURI().toPlatformString(true) + ")"));
 				internallySaveResource(resource, false);
 				fireNotifyResourceEvent(Collections.singleton(resource), VirSatTransactionalEditingDomain.EVENT_CHANGED);
@@ -532,7 +535,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 				}
 				
 				// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
-				virSatResourceSet.saveResource(resource, overrideWritePermissions);
+				virSatResourceSet.saveResource(resource, this, overrideWritePermissions);
 			});
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(
@@ -624,6 +627,8 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			}
 		}
 	};
+	
+	protected IUserContext userContextOverride;
 	
 	/**
 	 * This method filters the map of dirty states of the resources
@@ -956,10 +961,58 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param runnable the runnable that implements the call to the execution of the command
 	 */
 	protected void executeInWorkspace(Runnable runnable) {
+		// Do not execute with a special UserContext
+		executeInWorkspace(runnable, null);
+	}
+	
+	/**
+	 * Call this method from the calls for executing a command. This method maintains the order
+	 * of executing the command as a wrapped workspace operation as well as saving the files in the
+	 * right point of time. This method provides extra capabilities to set the UserContext as well.
+	 * @param runnable the runnable that implements the call to the execution of the command
+	 * @param userContextOverride the UserContext to be set in the editing domain before executing the runnable
+	 * @throws RuntimeException in case something goes wrong during the execution of the runnable
+	 */
+	protected void executeInWorkspace(Runnable runnable, IUserContext userContextOverride) throws RuntimeException {
+		IProject project = getResourceSet().getProject();
+		
+		/**
+		 * This workspace is used as lock to synchronize the workspace operations and
+		 * the transactions on the editing domain. E.g. The builder starts and locks the
+		 * workspace, then it tries to place a non undoable command into the stack. in the meantime
+		 * a user operation created a new SEI, this has been placed as a command into the stack in between.
+		 * This command will try to write to the workspace which is locked. The builder will get stuck
+		 * because it tries to execute a new command on the stack but cannot acquire the transaction.
+		 * 
+		 * As a way out, this lock will be used to first synchronize all operations executing a command.
+		 * This ensures that a command is always executed after another one. Second every command will first try
+		 * to lock the workspace. Then it will try to get the transaction. Commands which are already in a locked 
+		 * workspace will reenter the lock.
+		 */
+		IWorkspace workspace = project.getWorkspace();
 		try {
-			ResourcesPlugin.getWorkspace().run(action -> runnable.run(), null);
+			workspace.run((monitor -> {
+				AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
+				
+				// Now set the user context for the execution within the ws of the editing domain
+				IUserContext previousUserContext = this.userContextOverride;
+				this.setUserContextOverride(userContextOverride);
+				
+				// Now execute the actual runnable which was planned for execution
+				try {
+					runnable.run();
+				} catch (Exception e) {
+					atomicException.set(e);
+				} finally {
+					// Make sure the user context override is set back to null after execution
+					this.setUserContextOverride(previousUserContext);
+				}
+				
+				// and try to hand over errors
+				atomicException.throwAsRuntimeExceptionIfSet();
+			}), null);
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Failed to execute runnable as workspace operation", e));
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -967,10 +1020,10 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	public Object runExclusive(Runnable read) throws InterruptedException {
 		// Prepare variables to remember the results of the execution of the runnable
 		AtomicReference<Object> atomicResult = new AtomicReference<>();
-		AtomicReference<InterruptedException> atomicException = new AtomicReference<>(null);
+		AtomicExceptionReference<InterruptedException> atomicException = new AtomicExceptionReference<>();
 		
 		// Now start executing the runnable within a runnable executed in the workspace
-		// This ensures workspace locking before transaction lokcing
+		// This ensures workspace locking before transaction locking
 		executeInWorkspace(() -> {
 			try {
 				Object result = super.runExclusive(read);
@@ -978,16 +1031,37 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			} catch (InterruptedException e) {
 				// In case there has been an exception store it.
 				atomicException.set(e);
-			}
+			} 
 		});
-		
+	
 		// Retrieve the exception if it exists and throw it again
-		InterruptedException exception = atomicException.get();
-		if (exception != null) {
-			throw exception;
-		}
+		atomicException.throwIfSet();
 		
 		// Or if there is no exception hand back the result of the inner runnable
 		return atomicResult.get();
+	}
+
+	protected void setUserContextOverride(IUserContext userContext) {
+		if (userContext != this) {
+			this.userContextOverride = userContext;
+		}
+	}
+	
+	@Override
+	public boolean isSuperUser() {
+		if (userContextOverride != null) {
+			return userContextOverride.isSuperUser();
+		} else {
+			return UserRegistry.getInstance().isSuperUser();
+		}
+	}
+
+	@Override
+	public String getUserName() {
+		if (userContextOverride != null) {
+			return userContextOverride.getUserName();
+		} else {
+			return UserRegistry.getInstance().getUserName();
+		}
 	}
 }

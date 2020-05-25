@@ -51,6 +51,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourceProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.ArrayInstanceImpl;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyinstancesSwitch;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import us.hebi.matlab.mat.types.MatFile;
@@ -61,7 +62,8 @@ import us.hebi.matlab.mat.types.Cell;
  * Class for exporting data to .mat
  */
 public class MatImporter {
-	StructuralElementInstance sei;
+	private PropertyInstanceHelper piHelper = new PropertyInstanceHelper();
+	private StructuralElementInstance sei;
 	private EditingDomain editingDomain;
 	
 	/**
@@ -133,13 +135,19 @@ public class MatImporter {
 		
 		//import all given APropertyInstances
 		for (int i = 0; i < seiAPIs.size(); i++) {
-			if (nameMatAPIs.contains(seiAPIs.get(i).getType().getName())) {
-				if (!(seiAPIs.get(i) instanceof ArrayInstanceImpl)) {
-					importGivenAPI(importCommand, seiAPIs.get(i), struct.get(seiAPIs.get(i).getType().getName()));
-				} else {
-					importGivenAPI(importCommand, seiAPIs.get(i), struct);
+			APropertyInstance pi = seiAPIs.get(i);
+			if (nameMatAPIs.contains(pi.getType().getName())) {
+				// Calculated pis are not writeable since they are recomputed as soon as 
+				// the calculcation builder is executed. They should not be re-imported, 
+				// or otherwise the entire command becomes unexecutable.
+				if (!getPiHelper().isCalculated(pi)) {
+					if (!(seiAPIs.get(i) instanceof ArrayInstanceImpl)) {
+						importGivenAPI(importCommand, pi, struct.get(pi.getType().getName()));
+					} else {
+						importGivenAPI(importCommand, pi, struct);
+					}
 				}
-				nameMatAPIs.remove(seiAPIs.get(i).getType().getName());
+				nameMatAPIs.remove(pi.getType().getName());
 			}
 		}
 	}
@@ -433,5 +441,14 @@ public class MatImporter {
 	 */
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);
+	}
+	
+	/**
+	 * Override this method to inject a different property instance helper.
+	 * This is useful, e.g., in test cases
+	 * @return the pi helper
+	 */
+	protected PropertyInstanceHelper getPiHelper() {
+		return piHelper;
 	}
 }

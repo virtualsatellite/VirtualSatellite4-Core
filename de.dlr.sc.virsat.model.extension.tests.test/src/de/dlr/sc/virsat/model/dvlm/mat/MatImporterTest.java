@@ -25,7 +25,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
@@ -162,6 +164,37 @@ public class MatImporterTest extends ATestConceptTestCase {
 		tsei2.add(tc1);
 		editingDomain.getCommandStack().execute(importer.importSei(editingDomain, sei2, mat));
 		assertEquals("Unit set", "Kilogram", tc1.getTestFloatBean().getUnit());
+	}
+	
+	@Test
+	public void testImportCalculated() throws IOException {
+		TestCategoryAllProperty tc = new TestCategoryAllProperty(testConcept);
+		tsei.add(tc);
+		tc.setTestInt(TEST_INT);
+		tc.setTestFloat(TEST_FLOAT);
+		mat = exporter.exportSei(sei);
+		
+		final int NEW_TEST_INT = 2;
+		final float NEW_TEST_FLOAT = 3;
+		tc.setTestInt(NEW_TEST_INT);
+		tc.setTestFloat(NEW_TEST_FLOAT);
+		
+		// inject a piHelper that states that the testInt property is calculated
+		PropertyInstanceHelper piHelper = new PropertyInstanceHelper() {
+			public boolean isCalculated(ATypeInstance instance) {
+				return instance.getType().getName().equals("testInt");
+			}
+		};
+		importer = new MatImporter() {
+			protected PropertyInstanceHelper getPiHelper() {
+				return piHelper;
+			}
+		};
+		
+		editingDomain.getCommandStack().execute(importer.importSei(editingDomain, sei, mat));
+		
+		assertEquals("calculated int value has not been modified", NEW_TEST_INT, tc.getTestInt());
+		assertEquals("uncalculated float value has not been modified", TEST_FLOAT, tc.getTestInt(), 0);
 	}
 
 	@Test
