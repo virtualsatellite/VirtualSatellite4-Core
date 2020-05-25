@@ -1,55 +1,5 @@
-Target virsat_linux  {
-	OperatingSystem linux
-	WorkingSystem gtk
-	Architecture x86_64
-	Locale de_DE
-	TargetJRE JavaSE-1.8
-	 
-	RepositoryLocation Nebula url "https://download.eclipse.org/nebula/releases/2.2.0/"{
-		Unit org.eclipse.nebula.widgets.gallery.feature.feature.group version 1.0.0.201907151344;
-		Unit org.eclipse.nebula.widgets.tablecombo.feature.feature.group version 1.2.0.201907151344;
-	}
-	
-	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"{
-		Unit org.antlr.runtime version 3.2.0.v201101311130; 
-		Unit org.apache.commons.io version 2.6.0.v20190123-2029;
-		Unit org.apache.commons.io.source version 2.6.0.v20190123-2029; 
-	}
-	
-	// Purely named Eclipse. The name is important for target models having this one as 
-	// super model. Then this name can be referenced to explicitly exclude
-	// certain features from the target model
-	RepositoryLocation Eclipse url "http://download.eclipse.org/releases/2019-06"{ 
-		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.7.201905300200;
-		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version 1.4.0.201902190757;
-		Unit org.eclipse.emf.sdk.feature.group version 2.18.0.v20190528-0845;
-		Unit org.eclipse.emf.transaction.sdk.feature.group version 1.12.0.201805140824;
-		Unit org.eclipse.equinox.executable.feature.group version 3.8.400.v20190515-0925;
-		Unit org.eclipse.graphiti.sdk.feature.feature.group version 0.16.0.201906041401;
-		Unit org.eclipse.jdt.source.feature.group version 3.18.0.v20190605-1800;
-		Unit org.eclipse.ocl.all.sdk.feature.group version 5.9.0.v20190603-1146;
-		Unit org.eclipse.pde.source.feature.group version 3.14.0.v20190605-1800;  
-		Unit org.eclipse.platform.sdk version 4.12.0.I20190605-1800;
-		Unit org.eclipse.swtbot.eclipse.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.eclipse.gef.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.forms.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.generator.feature.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.ide.feature.group version 2.8.0.201906121535; 
-		Unit org.eclipse.xtext.sdk.feature.group version 2.18.0.v20190528-0716;
-		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
-		Unit org.eclipse.egit.feature.group version 5.4.0.201906121030-r; 
-	}
-	
-	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.0/update-site/" {
-		Unit org.eclipse.team.svn.feature.group version 4.0.5.I20170425-1700;
-	}
-	
-	RepositoryLocation SubversionConnector url "http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" {
-		Unit org.polarion.eclipse.team.svn.connector.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.source.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.sources.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.svnkit18.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.svnkit18.sources.feature.group version 6.0.4.I20161211-1700;
+Target virsat_linux extends virsat {
+	RepositoryLocation VirSat4CoreIntegration url "https://sourceforge.net/projects/virtualsatellite/files/VirtualSatellite4-Core/integration/4.9.0/"{	
+		Unit de.dlr.sc.virsat.apps.feature.feature.group version newest;
 	}
 }
