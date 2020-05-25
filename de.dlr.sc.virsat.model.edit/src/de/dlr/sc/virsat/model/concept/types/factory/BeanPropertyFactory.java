@@ -49,7 +49,7 @@ public class BeanPropertyFactory {
 		return bean;
 	}
 
-	static class BeanPropertyFactorySwitch extends PropertydefinitionsSwitch<IBeanObject<? extends APropertyInstance>> {
+	private static class BeanPropertyFactorySwitch extends PropertydefinitionsSwitch<IBeanObject<? extends APropertyInstance>> {
 
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseFloatProperty(FloatProperty object) {
