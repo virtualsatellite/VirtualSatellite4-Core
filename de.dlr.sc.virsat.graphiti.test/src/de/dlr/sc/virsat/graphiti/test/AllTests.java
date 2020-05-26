@@ -19,26 +19,20 @@ import de.dlr.sc.virsat.graphiti.util.DiagramHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
 
-
-
-/**
- *
- */
 @RunWith(Suite.class)
 
-@SuiteClasses({	BeanIndependenceSolverTest.class,
-				DiagramHelperTest.class,
-				ToolBehaviorProviderTest.class
-				})
-
+@SuiteClasses({
+	BeanIndependenceSolverTest.class,
+	DiagramHelperTest.class,
+	ToolBehaviorProviderTest.class
+})
 
 public class AllTests {
 
 	private AllTests() {
 	}
-
-
+	
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
-	}
+	}	
 }
