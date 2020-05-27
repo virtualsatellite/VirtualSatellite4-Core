@@ -30,7 +30,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -136,12 +135,7 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 
 	@Test
 	public void testSolveIndependenceForBeanProperty() throws CoreException, IOException {
-		editingDomain.getCommandStack().execute(command);
-		getAndAddStructuralElementInstance(sei2);
-		addStructuralElementToResource(ed2);
 		getAndAddStructuralElementInstance(sei1);
-		checkDiagramWritePermissionForStructuralElement(sei1);
-		addStructuralElementToResource(ed1);
 
 		//test property
 		Object documentObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getUuid());
@@ -151,14 +145,6 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		Object beanNoteObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getNoteBean().getUuid());
 		BeanPropertyString beanPropertyString = (BeanPropertyString) beanNoteObj;
 		assertEquals(testDocument2.getNoteBean(), beanPropertyString);
-
-		Object beanUrlObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getUrlBean().getUuid());
-		BeanPropertyString beanPropertyUrlString = (BeanPropertyString) beanUrlObj;
-		assertEquals(testDocument2.getUrlBean(), beanPropertyUrlString);
-
-		Object beanFileObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getFileBean().getUuid());
-		BeanPropertyResource beanPropertyFileResource = (BeanPropertyResource) beanFileObj;
-		assertEquals(testDocument2.getFileBean(), beanPropertyFileResource);
 	}
 
 	@Test
