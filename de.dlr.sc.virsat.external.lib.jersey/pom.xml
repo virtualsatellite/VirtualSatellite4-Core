@@ -8,84 +8,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<artifactId>de.dlr.sc.virsat.parent</artifactId>
+		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
 		<version>4.11.0-SNAPSHOT</version>
-		<relativePath>../maven/pom.xml</relativePath>
+		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
 	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.external.lib.jersey</artifactId>
 	<name>de.dlr.sc.virsat.external.lib.jersey</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<excludeScope>provided</excludeScope>
-							<excludeGroupIds>p2.eclipse-plugin,${project.groupId}</excludeGroupIds>
-							<excludeTransitive>false</excludeTransitive>
-							<outputDirectory>${project.basedir}/externalLib/maven</outputDirectory>
-							<stripVersion>true</stripVersion>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>${maven-license-version}</version>
-				<executions>
-					<execution>
-						<id>Create Thrid Party License File</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>add-third-party</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.basedir}/about_files</outputDirectory>
-							<licenseMerges>
-								<licenseMerge>Apache 2.0|Apache License 2.0|Apache License, 2.0</licenseMerge>
-								<licenseMerge>EDL 1.0|Eclipse Distribution License v. 1.0</licenseMerge>
-								<licenseMerge>EPL 2.0|Eclipse Public License 2.0|Eclipse Public
-									License v. 2.0</licenseMerge>
-								<licenseMerge>GPL2 w/ CPE|GNU General Public License, version 2
-									with the GNU Classpath Exception|The GNU General Public License
-									(GPL), Version 2, With Classpath Exception</licenseMerge>
-								<licenseMerge>MIT|MIT license</licenseMerge>
-							</licenseMerges>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Download Third Party Licenses</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>download-licenses</goal>
-						</goals>
-						<configuration>
-							<removeOrphanLicenseFiles>false</removeOrphanLicenseFiles>
-							<licensesOutputDirectory>${project.basedir}/about_files/maven</licensesOutputDirectory>
-							<organizeLicensesByDependencies>true</organizeLicensesByDependencies>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-		</plugins>
-	</build>
+	<!-- Execute with profile downloadLib which is defined in the parent pom 
+		to update all libs and licenses from maven -->
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>2.31</jersey.version>
-		<jaxrs.version>2.1.6</jaxrs.version>
-		<jaxb.version>2.3.1</jaxb.version>
 	</properties>
 
 	<dependencies>
