@@ -44,6 +44,7 @@
 				<version>${maven-license-version}</version>
 				<executions>
 					<execution>
+						<id>Create Thrid Party License File</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>add-third-party</goal>
@@ -60,12 +61,14 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>Download Third Party Licenses</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>download-licenses</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.basedir}/about_files/maven</outputDirectory>
+							<licensesOutputDirectory>${project.basedir}/about_files/maven</licensesOutputDirectory>
+							<organizeLicensesByDependencies>true</organizeLicensesByDependencies>
 						</configuration>
 					</execution>
 				</executions>
@@ -91,7 +94,7 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>${build.version}</version>
+			<version>${jaxb.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.inject</groupId>
