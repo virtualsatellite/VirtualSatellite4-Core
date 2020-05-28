@@ -205,10 +205,10 @@ POSSIBILITY OF SUCH DAMAGE.</p>
       <div class="container">
         <div class="row">
           <div class="col-sm-24">
-            
-            <h2 class='margin-top-30'><strong>Submit your talk for EclipseCon&nbsp;2020</strong></h2>
-            <p>Early bird submissions are due June 3, and the final deadline is June 15.</p>
-            <a class='btn btn-primary btn-lg' href='https://www.eclipsecon.org/2020/cfp'>Submit a proposal</a>
+            <h4 class='margin-top-10 margin-bottom-0 fw-200'>2020 IOT DEVELOPER SURVEY</h4>
+            <h2 style='margin-top:10px;'><strong>TAKE THE IOT INDUSTRY'S LEADING DEVELOPER SURVEY TODAY</strong></h2>
+            <p>May 11 - June 26, 2020</p>
+            <a class='btn btn-primary btn-lg' href='https://www.surveymonkey.com/r/Eclipsebanner'>Take the Survey</a>
           </div>
           
         </div>

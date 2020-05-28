@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.ws.rs-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/aopalliance-repackaged.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-locator.jar"/>
@@ -9,11 +10,7 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.json-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.json.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.validation-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.ws.rs-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/javassist.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.activation-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.ws.rs-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jaxb-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-client.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-servlet-core.jar"/>

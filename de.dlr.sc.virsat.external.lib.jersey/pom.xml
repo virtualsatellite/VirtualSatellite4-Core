@@ -30,7 +30,7 @@
 						</goals>
 						<configuration>
 							<excludeScope>provided</excludeScope>
-							<excludeGroupIds>p2.eclipse-plugin,${project.artifactId}</excludeGroupIds>
+							<excludeGroupIds>p2.eclipse-plugin,${project.groupId}</excludeGroupIds>
 							<excludeTransitive>false</excludeTransitive>
 							<outputDirectory>${project.basedir}/externalLib/maven</outputDirectory>
 							<stripVersion>true</stripVersion>
@@ -54,8 +54,11 @@
 							<licenseMerges>
 								<licenseMerge>Apache 2.0|Apache License 2.0|Apache License, 2.0</licenseMerge>
 								<licenseMerge>EDL 1.0|Eclipse Distribution License v. 1.0</licenseMerge>
-								<licenseMerge>EPL 2.0|Eclipse Public License 2.0|Eclipse Public License v. 2.0</licenseMerge>
-								<licenseMerge>GPL2 w/ CPE|GNU General Public License, version 2 with the GNU Classpath Exception|The GNU General Public License (GPL), Version 2, With Classpath Exception</licenseMerge>
+								<licenseMerge>EPL 2.0|Eclipse Public License 2.0|Eclipse Public
+									License v. 2.0</licenseMerge>
+								<licenseMerge>GPL2 w/ CPE|GNU General Public License, version 2
+									with the GNU Classpath Exception|The GNU General Public License
+									(GPL), Version 2, With Classpath Exception</licenseMerge>
 								<licenseMerge>MIT|MIT license</licenseMerge>
 							</licenseMerges>
 						</configuration>
@@ -67,35 +70,25 @@
 							<goal>download-licenses</goal>
 						</goals>
 						<configuration>
+							<removeOrphanLicenseFiles>false</removeOrphanLicenseFiles>
 							<licensesOutputDirectory>${project.basedir}/about_files/maven</licensesOutputDirectory>
 							<organizeLicensesByDependencies>true</organizeLicensesByDependencies>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>2.31</jersey.version>
-		<jaxrs.version>2.0.1</jaxrs.version>
+		<jaxrs.version>2.1.6</jaxrs.version>
 		<jaxb.version>2.3.1</jaxb.version>
 	</properties>
 
 	<dependencies>
-		<!-- JAX-RS -->
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-			<version>${jaxrs.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>${jaxb.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.inject</groupId>
 			<artifactId>jersey-hk2</artifactId>
