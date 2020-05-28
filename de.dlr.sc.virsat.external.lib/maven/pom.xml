@@ -55,6 +55,8 @@
 									<goal>add-third-party</goal>
 								</goals>
 								<configuration>
+									<excludedScopes>provided</excludedScopes>
+									<excludedGroups>p2.eclipse-plugin,${project.groupId}</excludedGroups>
 									<outputDirectory>${project.basedir}/about_files</outputDirectory>
 									<licenseMerges>
 										<licenseMerge>Apache 2.0|Apache License 2.0|Apache License, 2.0</licenseMerge>
