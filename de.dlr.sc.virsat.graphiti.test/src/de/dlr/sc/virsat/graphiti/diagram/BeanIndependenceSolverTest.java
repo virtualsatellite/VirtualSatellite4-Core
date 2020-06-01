@@ -107,6 +107,7 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 		sei2 = ed2.getStructuralElementInstance();
 		sei1.setUuid(new VirSatUuid(UUID));
 		ed1.add(testDocument2);
+		getAndAddStructuralElementInstance(sei1);
 
 		command = CreateAddStructuralElementInstanceCommand.create(editingDomain, repository, ed1.getStructuralElementInstance());
 	}
@@ -135,13 +136,6 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 
 	@Test
 	public void testSolveIndependenceForBeanProperty() throws CoreException, IOException {
-		getAndAddStructuralElementInstance(sei1);
-
-		//test property
-		Object documentObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getUuid());
-		ABeanCategoryAssignment aCategory = (ABeanCategoryAssignment) documentObj;
-		assertEquals(testDocument2, aCategory);
-
 		Object beanNoteObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getNoteBean().getUuid());
 		BeanPropertyString beanPropertyString = (BeanPropertyString) beanNoteObj;
 		assertEquals(testDocument2.getNoteBean(), beanPropertyString);
@@ -151,6 +145,10 @@ public class BeanIndependenceSolverTest extends AConceptProjectTestCase {
 	public void testSolveIndependenceForCa() throws CoreException, IOException {
 		String caKey = beanIndependenceSolver.getKeyForBusinessObject(testDocument);
 		assertEquals(DOCUMENTUUID, caKey);
+
+		Object documentObj = beanIndependenceSolver.getBusinessObjectForKey(testDocument2.getUuid());
+		ABeanCategoryAssignment aCategory = (ABeanCategoryAssignment) documentObj;
+		assertEquals(testDocument2, aCategory);
 	}
 
 	@Test
