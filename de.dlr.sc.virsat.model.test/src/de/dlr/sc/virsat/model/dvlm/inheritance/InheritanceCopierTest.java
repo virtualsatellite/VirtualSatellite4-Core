@@ -1264,7 +1264,7 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	
 	@Test
 	public void testCopyComposedPropertyInstance() {
-		seiEo1RwI.getSuperSeis().remove(seiEcRwI);
+		
 		// Create a category coontaining a composed property having as type a category
 		// that is not applicable for anything
 		
