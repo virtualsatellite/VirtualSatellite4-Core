@@ -1038,7 +1038,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertFalse("Update is not needed since the Configuration is not the last inherited", ic.needsUpdateInOrder(seiEo1RwI));
 	}
 	
-	
 	@Test
 	public void testUpdateWithAssignedDisciplines() {
 		final String TEST_VAL_1 = "1234";
@@ -1128,6 +1127,29 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertFalse("Update is done", ic.needsUpdateStep(seiEo2RwI));
 		
 		assertFalse("Update was done before, now all superSeis are updated, but no additional information was transferred with this", ic.needsUpdateInOrder(seiEo1RwI));
+	}
+	
+	@Test
+	public void testUpdateDeleteRootCaInDiamondInheritance() {
+		// Build a diamond shaped inheritance formation
+		CategoryAssignment rootIfe = attachInterfaceEnd(seiEdRw, "IfeRoot");
+		
+		assertTrue("Initially, there is no attached CA", seiEo1RwI.getCategoryAssignments().isEmpty());
+		
+		InheritanceCopier ic = new InheritanceCopier();
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		assertEquals("Element has correct number of CAs", 1, seiEo1RwI.getCategoryAssignments().size());
+		CategoryAssignment inheritedCa = seiEo1RwI.getCategoryAssignments().get(0);
+		Set<IInheritanceLink> rootTis = InheritanceCopier.getRootSuperTypeInstance(inheritedCa);
+		assertThat("Element has correct root CA", rootTis, hasItem(rootIfe));
+		assertEquals("Element has only one root CA", 1, rootTis.size());
+		
+		// Delete the root CA
+		EcoreUtil.delete(rootIfe);
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		assertTrue("The now invalid CA has been correctly removed", seiEo1RwI.getCategoryAssignments().isEmpty());
 	}
 	
 	/**
@@ -1236,37 +1258,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		
 		assertFalse("Not Inherited IFE doesnt have inheritance flag set", seiEo1RwI.getCategoryAssignments().get(0).isIsInherited());
 		assertTrue("Inherited IFE has inheritance flag set", seiEo1RwI.getCategoryAssignments().get(1).isIsInherited());
-	}
-	
-	@Test
-	public void testInheritDeleteRootCaInDiamondInheritance() {
-		// Build a diamond shaped inheritance formation
-		CategoryAssignment rootIfe = attachInterfaceEnd(seiEdRw, "IfeRoot");
-		
-		assertTrue("Initially, there is no attached CA", seiEo1RwI.getCategoryAssignments().isEmpty());
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		
-		// Update the seis relevant to this test case
-		ic.updateStep(seiEcRwI);
-		ic.updateStep(seiErRwA);
-		ic.updateStep(seiEo1RwI);
-		
-		assertEquals("Element has correct number of CAs", 1, seiEo1RwI.getCategoryAssignments().size());
-		CategoryAssignment inheritedCa = seiEo1RwI.getCategoryAssignments().get(0);
-		Set<IInheritanceLink> rootTis = InheritanceCopier.getRootSuperTypeInstance(inheritedCa);
-		assertThat("Element has correct root CA", rootTis, hasItem(rootIfe));
-		assertEquals("Element has only one root CA", 1, rootTis.size());
-		
-		// Delete the root CA
-		EcoreUtil.delete(rootIfe);
-		
-		// Update the seis relevant to this test case
-		ic.updateStep(seiEcRwI);
-		ic.updateStep(seiErRwA);
-		ic.updateStep(seiEo1RwI);
-		
-		assertTrue("The now invalid CA has been correctly removed", seiEo1RwI.getCategoryAssignments().isEmpty());
 	}
 	
 	@Test
