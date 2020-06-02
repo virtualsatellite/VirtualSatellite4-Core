@@ -1131,7 +1131,7 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	
 	@Test
 	public void testUpdateDeleteRootCaInDiamondInheritance() {
-		// Build a diamond shaped inheritance formation
+		// Attach a CA to the root of a diamond shaped inheritance formation
 		CategoryAssignment rootIfe = attachInterfaceEnd(seiEdRw, "IfeRoot");
 		
 		assertTrue("Initially, there is no attached CA", seiEo1RwI.getCategoryAssignments().isEmpty());
@@ -1140,6 +1140,8 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		ic.updateAllInOrder(repo, new NullProgressMonitor());
 		
 		assertEquals("Element has correct number of CAs", 1, seiEo1RwI.getCategoryAssignments().size());
+		
+		// Verify that the newly inherited CA is linked correctly
 		CategoryAssignment inheritedCa = seiEo1RwI.getCategoryAssignments().get(0);
 		Set<IInheritanceLink> rootTis = InheritanceCopier.getRootSuperTypeInstance(inheritedCa);
 		assertThat("Element has correct root CA", rootTis, hasItem(rootIfe));
