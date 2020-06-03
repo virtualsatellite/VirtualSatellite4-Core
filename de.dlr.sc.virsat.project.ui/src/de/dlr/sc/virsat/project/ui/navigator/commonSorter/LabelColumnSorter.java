@@ -16,6 +16,12 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableColumn;
 
+/**
+ * This class provides capabilties to sort table columns according to
+ * the text given by a label provider and a sorting direction (ascending, descending).
+ *
+ */
+
 public class LabelColumnSorter extends ViewerComparator {
 	
 	private TableViewer tableViewer;
@@ -62,7 +68,7 @@ public class LabelColumnSorter extends ViewerComparator {
 		tableViewer.getTable().setSortColumn(column);
 		tableViewer.getTable().setSortDirection(isAscending ? SWT.UP : SWT.DOWN);
 		
-		// The comparator requires the label provider, so if that is not set yet, we must not refresh
+		// The comparator requires the label provider, so if that is not set at this point, we must not refresh
 		if (labelProvider != null) {
 			// We only want to update the order (and not the labels) so we turn label update off
 			tableViewer.refresh(false);
