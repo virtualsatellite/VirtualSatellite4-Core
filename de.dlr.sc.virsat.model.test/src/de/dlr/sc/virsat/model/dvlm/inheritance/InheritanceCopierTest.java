@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.calculation.AExpression;
@@ -1037,7 +1038,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertFalse("Update is not needed since the Configuration is not the last inherited", ic.needsUpdateInOrder(seiEo1RwI));
 	}
 	
-	
 	@Test
 	public void testUpdateWithAssignedDisciplines() {
 		final String TEST_VAL_1 = "1234";
@@ -1127,6 +1127,31 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		assertFalse("Update is done", ic.needsUpdateStep(seiEo2RwI));
 		
 		assertFalse("Update was done before, now all superSeis are updated, but no additional information was transferred with this", ic.needsUpdateInOrder(seiEo1RwI));
+	}
+	
+	@Test
+	public void testUpdateDeleteRootCaInDiamondInheritance() {
+		// Attach a CA to the root of a diamond shaped inheritance formation
+		CategoryAssignment rootIfe = attachInterfaceEnd(seiEdRw, "IfeRoot");
+		
+		assertTrue("Initially, there is no attached CA", seiEo1RwI.getCategoryAssignments().isEmpty());
+		
+		InheritanceCopier ic = new InheritanceCopier();
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		assertEquals("Element has correct number of CAs", 1, seiEo1RwI.getCategoryAssignments().size());
+		
+		// Verify that the newly inherited CA is linked correctly
+		CategoryAssignment inheritedCa = seiEo1RwI.getCategoryAssignments().get(0);
+		Set<IInheritanceLink> rootTis = InheritanceCopier.getRootSuperTypeInstance(inheritedCa);
+		assertThat("Element has correct root CA", rootTis, hasItem(rootIfe));
+		assertEquals("Element has only one root CA", 1, rootTis.size());
+		
+		// Delete the root CA
+		EcoreUtil.delete(rootIfe);
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		assertTrue("The now invalid CA has been correctly removed", seiEo1RwI.getCategoryAssignments().isEmpty());
 	}
 	
 	/**
@@ -1235,45 +1260,6 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		
 		assertFalse("Not Inherited IFE doesnt have inheritance flag set", seiEo1RwI.getCategoryAssignments().get(0).isIsInherited());
 		assertTrue("Inherited IFE has inheritance flag set", seiEo1RwI.getCategoryAssignments().get(1).isIsInherited());
-	}
-	
-	@Test
-	public void testCleanRootTis() {
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
-		CategoryAssignment ifeSuper1 = attachInterfaceEnd(seiEcRwI, "IfeSuper1");
-		
-		ife.getSuperTis().add(ifeSuper1);
-		
-		ic.cleanRootTis(seiEo1RwI);
-		assertThat("Super TI with unique root not touched", seiEo1RwI.getCategoryAssignments(), hasItems(ife));
-		
-		CategoryAssignment ifeSuper2 = attachInterfaceEnd(seiErRwA, "IfeSuper2");
-		ife.getSuperTis().add(ifeSuper2);
-		
-		ic.cleanRootTis(seiEo1RwI);
-		assertTrue("Super TIs with multiple root TIs cleaned", seiEo1RwI.getCategoryAssignments().isEmpty());
-	}
-	
-	@Test
-	public void testCleanRootTisValid() {
-		CategoryAssignment ife = attachInterfaceEnd(seiEo1RwI, "Ife");
-		CategoryAssignment superIfe1 = attachInterfaceEnd(seiEcRwI, "IfeSuper1");
-		CategoryAssignment superIfe2 = attachInterfaceEnd(seiErRwA, "IfeSuper2");
-		CategoryAssignment superSuperIfe = attachInterfaceEnd(seiEdRw, "IfeSuperSuper");
-		
-		ife.getSuperTis().add(superIfe1);
-		ife.getSuperTis().add(superIfe2);
-		superIfe1.getSuperTis().add(superSuperIfe);
-		superIfe2.getSuperTis().add(superSuperIfe);
-		
-		assertThat("Element has correct CA", seiEo1RwI.getCategoryAssignments(), hasItems(ife));
-		
-		InheritanceCopier ic = new InheritanceCopier();
-		ic.cleanRootTis(seiEo1RwI);
-
-		assertThat("Element still has correct CA", seiEo1RwI.getCategoryAssignments(), hasItems(ife));
 	}
 	
 	@Test
