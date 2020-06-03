@@ -63,9 +63,8 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 
 		beanTestRefCategory.setValue(testCategoryAllProperty);
 
-		// TODO: remove one?
 		assertEquals("Correct reference has been set", rpi.getReference(), testCategoryAllProperty.getATypeInstance());
-		assertEquals("Correct Category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
+		assertEquals("Correct category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
 	}
 
 	@Test
@@ -75,9 +74,8 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 		Command setCommand = beanTestRefCategory.setValue(editingDomain, testCategoryAllProperty);
 		editingDomain.getCommandStack().execute(setCommand);
 
-		// TODO: remove one?
 		assertEquals("Correct reference has been set", rpi.getReference(), testCategoryAllProperty.getATypeInstance());
-		assertEquals("Correct Category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
+		assertEquals("Correct category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
 	}
 
 	@Test

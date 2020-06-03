@@ -17,18 +17,26 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
+/**
+ * Bean class to wrap the referenced beans of ReferencePropertyInstances
+ * @param <BEAN_TYPE> type of the referenced bean
+ */
 public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanObject<ReferencePropertyInstance> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
 
 
-	public BeanPropertyReference() {
-	}
+	public BeanPropertyReference() { }
 
+	/**
+	 * Constructor to directly set the type instance
+	 * @param rpi the type instance to be used
+	 */
 	public BeanPropertyReference(ReferencePropertyInstance rpi) {
 		setTypeInstance(rpi);
 	}
@@ -43,29 +51,26 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, value.getTypeInstance());
 	}
 
-	/*
-	 * return property bean
-	 * or 
-	 * return ca bean
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		
+		// Return null if no reference is set
 		if (isSet()) {
 			ATypeInstance ref = ti.getReference();
 			
+			// Return the correct ca or property instance bean
 			if (ref instanceof CategoryAssignment) {
-				BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
+				BeanCategoryAssignmentFactory beanCaFactory = new BeanCategoryAssignmentFactory();
 				try {
-					// TODO: is this type cast save? If we could get the super class here, then not
-					referencedBean = (BEAN_TYPE) beanFactory.getInstanceFor((CategoryAssignment) ref);
+					referencedBean = (BEAN_TYPE) beanCaFactory.getInstanceFor((CategoryAssignment) ref);
 				} catch (CoreException e) {
 					throw new RuntimeException(e);
 				}
 			} else if (ref instanceof APropertyInstance) {
-				// TODO: Property Factory
+				BeanPropertyFactory beanPropFactory = new BeanPropertyFactory();
+				referencedBean = (BEAN_TYPE) beanPropFactory.getInstanceFor(ref);
 			} 
 		}
 		
