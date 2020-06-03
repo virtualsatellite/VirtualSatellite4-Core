@@ -80,8 +80,8 @@ public class QudvUnitHelperTest {
 		String uuid2 = simpleUnit2.getUuid().toString();
 		
 		assertNotSame(uuid1, uuid2);
-	
 	}
+	
 	@Test
 	public void createPrefixedUnitTest() {
 		
@@ -111,7 +111,6 @@ public class QudvUnitHelperTest {
 		String uuid2 = prefixedUnit2.getUuid().toString();
 		
 		assertNotSame(uuid1, uuid2);
-	
 	}
 	
 	@Test
@@ -145,7 +144,6 @@ public class QudvUnitHelperTest {
 		String uuid2 = affineConversionUnit2.getUuid().toString();
 		
 		assertNotSame(uuid1, uuid2);
-	
 	}
 	
 	@Test
@@ -177,7 +175,6 @@ public class QudvUnitHelperTest {
 		String uuid2 = linearConversionUnit2.getUuid().toString();
 		
 		assertNotSame(uuid1, uuid2);
-	
 	}
 	
 	@Test
@@ -202,9 +199,7 @@ public class QudvUnitHelperTest {
 		String uuid2 = simpleQuantityKind2.getUuid().toString();
 		
 		assertNotSame(uuid1, uuid2);
-	
 	}
-	
 	
 	@Test
 	public void qudvImportExportTest() throws IOException {
@@ -289,10 +284,8 @@ public class QudvUnitHelperTest {
 		assertEquals("Retrieved quantitiy kinds has 1 item", retrivedQuantityKinds.size(), 1);
 	}
 
-
 	@Test
-	public void convertToTargetUnitTest() {
-	
+	public void convertFromSourceToTargetUnitTest() {
 		//we simply use the the library to set up the systemOfUnits in the background 
 		SystemOfUnits sou1 = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "This is the system of units for this study", "N/A");
 		
@@ -313,7 +306,17 @@ public class QudvUnitHelperTest {
 		final double THIRTY_SIX = 36.0;
 		convertedValue = QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(meterPerSecond, TEN, kilometerPerHour);
 		assertEquals(THIRTY_SIX, convertedValue, TEST_EPSILON);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void convertFromSourceToTargetUnitIncompatibleQuantityKindsTest() {
+		//we simply use the the library to set up the systemOfUnits in the background 
+		SystemOfUnits sou1 = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "This is the system of units for this study", "N/A");
 		
+		// grab two units with incompatible quantity kinds
+		AUnit percentUnit = QudvUnitHelper.getInstance().getUnitByName(sou1, "Percent");
+		AUnit meterPerSecond = QudvUnitHelper.getInstance().getUnitByName(sou1, "Meter Per Second");
+		QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(percentUnit, 0, meterPerSecond);
 	}
 	
 	@Test
@@ -442,7 +445,6 @@ public class QudvUnitHelperTest {
 		//if both are not set, it should return false as well
 		pound = qudvHelper.createSimpleUnit("pound", "pd", "pound of coffee", "http://pound.virsat.dlr.de", null);
 		assertFalse(qudvHelper.haveSameQuantityKind(g, pound));
-
 	}
 	
 	@Test
@@ -488,7 +490,6 @@ public class QudvUnitHelperTest {
 		map2.put(length, 2.0);
 		assertFalse(qudvHelper.haveSameQuantityKind(map1, map2));
 		assertFalse(qudvHelper.haveSameQuantityKind(map2, map1));
-		
 	}
 	
 	@Test
