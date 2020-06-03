@@ -123,8 +123,8 @@ public class UiSnippetUnitManagement extends AUiSnippetEStructuralFeatureTable i
 	}
 	
 	@Override
-	protected void setUpTableViewer(EditingDomain editingDomain, Table table) {
-		super.setUpTableViewer(editingDomain, table);
+	protected void createTableViewer(Table table) {
+		super.createTableViewer(table);
 		
 		labelColumnSorter = new LabelColumnSorter(tableViewer);
 		tableViewer.setComparator(labelColumnSorter);
