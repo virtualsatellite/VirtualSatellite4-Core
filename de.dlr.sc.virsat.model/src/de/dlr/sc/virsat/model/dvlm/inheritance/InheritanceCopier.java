@@ -190,7 +190,6 @@ public class InheritanceCopier implements IInheritanceCopier {
 			// Clean old super Tis that may no longer have valid links
 			cleanSuperTis(subSei);
 			cleanCas(subSei);
-			cleanRootTis(subSei);
 			
 			// Do the Pre-loading here. Pre-loading means that we have to load all necessary
 			// copied objects from the current tree, that might be referenced.
@@ -817,22 +816,5 @@ public class InheritanceCopier implements IInheritanceCopier {
 		for (IInheritanceLink childTi : childTypeInstances) {
 			childTi.getSuperTis().retainAll(allSuperTis);
 		}
-	}
-	
-	/**
-	 * If there is a Type Instance contained in the SEI it will be deleted 
-	 * and there will be build new once by the Inheritance Builder according to the root Tis  
-	 * @param sei The Sei to be checked
-	 */
-	public void cleanRootTis(StructuralElementInstance sei) {
-		List<CategoryAssignment> cas = new ArrayList<>(sei.getCategoryAssignments());
-		
-		for (CategoryAssignment ca : cas) {
-			Set<IInheritanceLink> rootSuperTis = getRootSuperTypeInstance(ca);
-			if (rootSuperTis.size() > 1) {
-				EcoreUtil.delete(ca);
-			}
-		}
-		
 	}
 }
