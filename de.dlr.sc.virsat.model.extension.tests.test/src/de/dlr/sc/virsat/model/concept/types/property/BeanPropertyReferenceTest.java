@@ -15,7 +15,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.command.Command;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,67 +28,95 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 
 public class BeanPropertyReferenceTest extends AConceptTestCase {
 
-	private Concept concept;
 	private TestCategoryAllProperty testCategoryAllProperty;
 	private TestCategoryReference testCategoryReference;
-	private CategoryAssignment testCategoryRefernceCa;
-	private CategoryAssignmentHelper caHelper;
-	private ReferencePropertyInstance rpi;
+	
+	private ReferencePropertyInstance rpiToCategory;
 	private BeanPropertyReference<TestCategoryAllProperty> beanTestRefCategory;
+	
+	private ReferencePropertyInstance rpiToProperty;
+	BeanPropertyReference<BeanPropertyString> beanTestRefProperty;
+	BeanPropertyString beanTestString;
 
 	@Before
 	public void setup() {
 		prepareEditingDomain();
 
-		concept = loadConceptFromPlugin();
+		Concept concept = loadConceptFromPlugin();
 	
 		testCategoryAllProperty = new TestCategoryAllProperty(concept);
 		testCategoryReference = new TestCategoryReference(concept);
 		
-		testCategoryRefernceCa = testCategoryReference.getTypeInstance();
-		caHelper = new CategoryAssignmentHelper(testCategoryRefernceCa);
-		rpi = (ReferencePropertyInstance) caHelper.getPropertyInstance(TestCategoryReference.PROPERTY_TESTREFCATEGORY);
+		CategoryAssignment testCategoryRefernceCa = testCategoryReference.getTypeInstance();
+		CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(testCategoryRefernceCa);
+		
+		// Create a bean for the rpi to a ca
+		rpiToCategory = (ReferencePropertyInstance) caHelper.getPropertyInstance(TestCategoryReference.PROPERTY_TESTREFCATEGORY);
+		beanTestRefCategory = new BeanPropertyReference<>(rpiToCategory);
+		
+		// Create a bean for the rpi to a String property
+		rpiToProperty = (ReferencePropertyInstance) caHelper.getPropertyInstance(TestCategoryReference.PROPERTY_TESTREFPROPERTY);
+		beanTestRefProperty = new BeanPropertyReference<>(rpiToProperty);
+		
+		beanTestString = testCategoryAllProperty.getTestStringBean();
 
-		beanTestRefCategory = new BeanPropertyReference<>(rpi);
 	}
 	
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
-	public void testSetValueType() {
+	public void testSetValueToCategoryAssignment() {
 		assertNull("No reference is set", testCategoryReference.getTestRefCategory());
-
+		
 		beanTestRefCategory.setValue(testCategoryAllProperty);
-
-		assertEquals("Correct reference has been set", rpi.getReference(), testCategoryAllProperty.getATypeInstance());
+		
+		assertEquals("Correct reference has been set", rpiToCategory.getReference(), testCategoryAllProperty.getATypeInstance());
 		assertEquals("Correct category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
 	}
 
 	@Test
-	public void testSetValueEditingDomainType() {
+	public void testSetValueWithEditingDomainToCategoryAssignment() {
 		assertNull("No reference is set", testCategoryReference.getTestRefCategory());
 		
 		Command setCommand = beanTestRefCategory.setValue(editingDomain, testCategoryAllProperty);
 		editingDomain.getCommandStack().execute(setCommand);
-
-		assertEquals("Correct reference has been set", rpi.getReference(), testCategoryAllProperty.getATypeInstance());
+		
+		assertEquals("Correct reference has been set", rpiToCategory.getReference(), testCategoryAllProperty.getATypeInstance());
 		assertEquals("Correct category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
+	}
+	
+	@Test
+	public void testSetValueToAPropertyInstance() {
+		assertNull("No reference is set", testCategoryReference.getTestRefPropertyBean().getATypeInstance());
+		
+		beanTestRefProperty.setValue(beanTestString);
+		
+		assertEquals("Correct reference has been set", rpiToProperty.getReference(), beanTestString.getATypeInstance());
+		assertEquals("Correct property has been set", beanTestString, testCategoryReference.getTestRefPropertyBean());
 	}
 
 	@Test
-	public void testGetValue() {
+	public void testSetValueWithEditingDomainToAPropertyInstance() {
+		assertNull("No reference is set", testCategoryReference.getTestRefPropertyBean().getATypeInstance());
+		
+		Command setCommand = beanTestRefProperty.setValue(editingDomain, beanTestString);
+		editingDomain.getCommandStack().execute(setCommand);
+		
+		assertEquals("Correct reference has been set", rpiToProperty.getReference(), beanTestString.getATypeInstance());
+		assertEquals("Correct property has been set", beanTestString, testCategoryReference.getTestRefPropertyBean());
+	}
+
+	@Test
+	public void testGetValueCategoryAssignment() {
 		assertNull("No value set initially", beanTestRefCategory.getValue());
 		
 		beanTestRefCategory.setValue(testCategoryAllProperty);
 
 		assertEquals("Correct reference to ca returned", testCategoryAllProperty, beanTestRefCategory.getValue());
-		
-		ReferencePropertyInstance rpiToProperty = (ReferencePropertyInstance) caHelper.getPropertyInstance(TestCategoryReference.PROPERTY_TESTREFPROPERTY);
-		BeanPropertyReference<BeanPropertyString> beanTestRefProperty = new BeanPropertyReference<>(rpiToProperty);
-		
-		BeanPropertyString beanTestString = testCategoryAllProperty.getTestStringBean();
+	}
+	
+	@Test
+	public void testGetValueAPropertyInstance() {
+		assertNull("No value set initially", beanTestRefProperty.getValue());
+
 		beanTestRefProperty.setValue(beanTestString);
 		
 		assertEquals("Correct reference to property returned", beanTestString, beanTestRefProperty.getValue());
@@ -107,11 +134,11 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 	@Test
 	public void testUnset() {
 		beanTestRefCategory.setValue(testCategoryAllProperty);
-		assertEquals("Correct reference has been set", testCategoryAllProperty.getATypeInstance(), rpi.getReference());
+		assertTrue("A value is set", beanTestRefCategory.isSet());
 		
 		beanTestRefCategory.unset();
 		
-		assertNull("Reference has been unset", rpi.getReference());
+		assertFalse("No value is set", beanTestRefCategory.isSet());
 	}
 
 }
