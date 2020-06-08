@@ -15,18 +15,14 @@ package testConcept.model;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import testConcept.model.TestCategoryA;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.core.runtime.CoreException;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
@@ -120,10 +116,10 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 	
 	public void setTestRefCategory(TestCategoryA value) {
 		safeAccessTestRefCategory();
-		return testRefCategory.setValue(value);
+		testRefCategory.setValue(value);
 	}
 	
-	public BeanPropertyReference getTestRefCategoryBean() {
+	public BeanPropertyReference<TestCategoryA> getTestRefCategoryBean() {
 		safeAccessTestRefCategory();
 		return testRefCategory;
 	}
@@ -138,7 +134,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	public BeanPropertyString getTestRefPropertyBean() {
+	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();
 		return testRefProperty.getValue();
 	}
@@ -150,14 +146,13 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 	
 	public void setTestRefPropertyBean(BeanPropertyString value) {
 		safeAccessTestRefProperty();
-		return testRefProperty.setValue(value);
+		testRefProperty.setValue(value);
 	}
 	
-	public BeanPropertyReference getTestRefPropertyBean() {
+	public BeanPropertyReference<BeanPropertyString> getTestRefPropertyBean() {
 		safeAccessTestRefProperty();
 		return testRefProperty;
 	}
 	
 	
 }
-

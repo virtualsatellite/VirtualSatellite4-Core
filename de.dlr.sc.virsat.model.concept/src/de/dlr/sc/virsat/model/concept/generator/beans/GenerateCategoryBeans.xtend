@@ -763,12 +763,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				if (property.referenceType instanceof Category) {
 					importManager.register(ReferencePropertyInstance);
 					importManager.register(CategoryAssignment);
-					importManager.register(BeanCategoryAssignmentFactory);
 					importManager.register(Command);
-					importManager.register(SetCommand);
 					importManager.register(EditingDomain);
-					importManager.register(PropertyinstancesPackage);
-					importManager.register(CoreException);
 					importManager.register(property.referenceType)
 					importManager.register(BeanPropertyReference);
 				
@@ -792,10 +788,10 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					
 					public void «propertyMethodSet(property)»(«property.referenceType.name» value) {
 						«propertyMethodSafeAccess(property)»;
-						return «property.name».setValue(value);
+						«property.name».setValue(value);
 					}
 					
-					public BeanPropertyReference «propertyMethodGet(property)»Bean() {
+					public BeanPropertyReference<«property.referenceType.name»> «propertyMethodGet(property)»Bean() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name»;
 					}
@@ -804,9 +800,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					importManager.register(ReferencePropertyInstance);
 					importManager.register(CategoryAssignment);
 					importManager.register(Command);
-					importManager.register(SetCommand);
 					importManager.register(EditingDomain);
-					importManager.register(PropertyinstancesPackage);
 					var referencedProperty = property.referenceType as AProperty;
 					var referencedPropertyType = getReferencePropertyType(referencedProperty);
 					importManager.register(referencedPropertyType);
@@ -819,7 +813,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«property.name».setTypeInstance(propertyInstance);
 					}
 
-					public «referencedPropertyType.simpleName» «propertyMethodGet(property)»Bean() {
+					public «referencedPropertyType.simpleName» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name».getValue();
 					}
@@ -831,10 +825,10 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					
 					public void «propertyMethodSet(property)»Bean(«referencedPropertyType.simpleName» value) {
 						«propertyMethodSafeAccess(property)»;
-						return «property.name».setValue(value);
+						«property.name».setValue(value);
 					}
 					
-					public BeanPropertyReference «propertyMethodGet(property)»Bean() {
+					public BeanPropertyReference<«referencedPropertyType.simpleName»> «propertyMethodGet(property)»Bean() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name»;
 					}
