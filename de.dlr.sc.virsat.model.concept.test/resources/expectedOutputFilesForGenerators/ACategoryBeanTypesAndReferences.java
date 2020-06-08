@@ -139,12 +139,12 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		return testRefProperty.getValue();
 	}
 	
-	public Command setTestRefPropertyBean(EditingDomain ed, BeanPropertyString value) {
+	public Command setTestRefProperty(EditingDomain ed, BeanPropertyString value) {
 		safeAccessTestRefProperty();
 		return testRefProperty.setValue(ed, value);
 	}
 	
-	public void setTestRefPropertyBean(BeanPropertyString value) {
+	public void setTestRefProperty(BeanPropertyString value) {
 		safeAccessTestRefProperty();
 		testRefProperty.setValue(value);
 	}

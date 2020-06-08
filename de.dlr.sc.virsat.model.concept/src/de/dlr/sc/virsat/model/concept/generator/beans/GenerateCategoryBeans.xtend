@@ -818,12 +818,12 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						return «property.name».getValue();
 					}
 					
-					public Command «propertyMethodSet(property)»Bean(EditingDomain ed, «referencedPropertyType.simpleName» value) {
+					public Command «propertyMethodSet(property)»(EditingDomain ed, «referencedPropertyType.simpleName» value) {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name».setValue(ed, value);
 					}
 					
-					public void «propertyMethodSet(property)»Bean(«referencedPropertyType.simpleName» value) {
+					public void «propertyMethodSet(property)»(«referencedPropertyType.simpleName» value) {
 						«propertyMethodSafeAccess(property)»;
 						«property.name».setValue(value);
 					}

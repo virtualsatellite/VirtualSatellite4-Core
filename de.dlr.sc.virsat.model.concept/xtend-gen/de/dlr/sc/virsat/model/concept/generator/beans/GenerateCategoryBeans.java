@@ -1984,7 +1984,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.append("public Command ");
           String _propertyMethodSet_2 = GenerateCategoryBeans.this.propertyMethodSet(property);
           _builder_1.append(_propertyMethodSet_2);
-          _builder_1.append("Bean(EditingDomain ed, ");
+          _builder_1.append("(EditingDomain ed, ");
           String _simpleName_2 = referencedPropertyType.getSimpleName();
           _builder_1.append(_simpleName_2);
           _builder_1.append(" value) {");
@@ -2006,7 +2006,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.append("public void ");
           String _propertyMethodSet_3 = GenerateCategoryBeans.this.propertyMethodSet(property);
           _builder_1.append(_propertyMethodSet_3);
-          _builder_1.append("Bean(");
+          _builder_1.append("(");
           String _simpleName_3 = referencedPropertyType.getSimpleName();
           _builder_1.append(_simpleName_3);
           _builder_1.append(" value) {");

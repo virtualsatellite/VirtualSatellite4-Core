@@ -70,6 +70,10 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 		
 		assertEquals("Correct reference has been set", rpiToCategory.getReference(), testCategoryAllProperty.getATypeInstance());
 		assertEquals("Correct category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
+		
+		beanTestRefCategory.setValue(null);
+		
+		assertNull("No reference is set", testCategoryReference.getTestRefCategory());
 	}
 
 	@Test
@@ -81,6 +85,11 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 		
 		assertEquals("Correct reference has been set", rpiToCategory.getReference(), testCategoryAllProperty.getATypeInstance());
 		assertEquals("Correct category assignment has been set", testCategoryAllProperty, testCategoryReference.getTestRefCategory());
+		
+		Command setNullCommand = beanTestRefCategory.setValue(editingDomain, null);
+		editingDomain.getCommandStack().execute(setNullCommand);
+		
+		assertNull("No reference is set", testCategoryReference.getTestRefCategory());
 	}
 	
 	@Test
