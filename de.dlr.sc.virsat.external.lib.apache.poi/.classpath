@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-codec.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/curvesapi.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml-schemas.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-scratchpad.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/stax-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/xmlbeans.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/poi-3.14/poi-3.14.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/poi-3.14/poi-ooxml-3.14.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/poi-3.14/poi-ooxml-schemas-3.14.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/poi-3.14/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
