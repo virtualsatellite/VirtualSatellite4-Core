@@ -59,7 +59,6 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 		beanTestRefProperty = new BeanPropertyReference<>(rpiToProperty);
 		
 		beanTestString = testCategoryAllProperty.getTestStringBean();
-
 	}
 	
 	@Test

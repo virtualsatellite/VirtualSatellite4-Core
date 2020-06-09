@@ -30,7 +30,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
  */
 public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanObject<ReferencePropertyInstance> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
 
-
 	public BeanPropertyReference() { }
 
 	/**
@@ -97,7 +96,4 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	public void unset() {
 		ti.setReference(null);
 	}
-
-	
-
 }
