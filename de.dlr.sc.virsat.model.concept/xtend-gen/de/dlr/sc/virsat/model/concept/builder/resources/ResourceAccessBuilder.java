@@ -111,40 +111,24 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   public void incrementalBuild(final IResourceDelta delta, final IProgressMonitor monitor) {
     try {
       final IResourceDeltaVisitor _function = (IResourceDelta it) -> {
-        try {
-          final IResource deltaResource = it.getResource();
-          if ((deltaResource instanceof IFile)) {
-            IResource _resource = it.getResource();
-            final IFile iFile = ((IFile) _resource);
-            final boolean iFileExists = iFile.exists();
+        final IResource deltaResource = it.getResource();
+        if ((deltaResource instanceof IFile)) {
+          IResource _resource = it.getResource();
+          final IFile iFile = ((IFile) _resource);
+          final boolean iFileExists = iFile.exists();
+          if (iFileExists) {
             final boolean iFileManifestMf = ResourceAccessBuilder.MANIFEST_MF.equalsIgnoreCase(iFile.getName());
             final boolean iFilePluginXml = ResourceAccessBuilder.PLUGIN_XML.equalsIgnoreCase(iFile.getName());
-            if (iFileExists) {
-              if (iFileManifestMf) {
-                IFile iFileManifest = this.getProject().getFile(("META-INF/" + ResourceAccessBuilder.MANIFEST_MF));
-                URI iFileManifestUri = iFileManifest.getRawLocationURI();
-                IFileStore _store = EFS.getStore(iFileManifestUri);
-                NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
-                File fileManifest = _store.toLocalFile(0, _nullProgressMonitor);
-                FileInputStream manifestFileInputStream = new FileInputStream(fileManifest);
-                this.writeAccessClass(this.buildManifestAccessClass(manifestFileInputStream), "ManifestMf.java");
-              } else {
-                if (iFilePluginXml) {
-                  IFile iFilePlugin = this.getProject().getFile("plugin.xml");
-                  URI iFilePluginXmlUri = iFilePlugin.getRawLocationURI();
-                  IFileStore _store_1 = EFS.getStore(iFilePluginXmlUri);
-                  NullProgressMonitor _nullProgressMonitor_1 = new NullProgressMonitor();
-                  File filePluginXml = _store_1.toLocalFile(0, _nullProgressMonitor_1);
-                  FileInputStream pluginFileInputStream = new FileInputStream(filePluginXml);
-                  this.writeAccessClass(this.buildPluginXmlAccessClass(pluginFileInputStream), "PluginXml.java");
-                }
+            if (iFileManifestMf) {
+              this.writeAccessClass(this.buildManifestAccessClass(), "ManifestMf.java");
+            } else {
+              if (iFilePluginXml) {
+                this.writeAccessClass(this.buildPluginXmlAccessClass(), "PluginXml.java");
               }
             }
           }
-          return true;
-        } catch (Throwable _e) {
-          throw Exceptions.sneakyThrow(_e);
         }
+        return true;
       };
       delta.accept(_function);
     } catch (Throwable _e) {
@@ -156,21 +140,27 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    * do the full build
    */
   public void fullBuild(final IProgressMonitor monitor) {
+    this.writeAccessClass(this.buildManifestAccessClass(), "ManifestMf.java");
+    this.writeAccessClass(this.buildPluginXmlAccessClass(), "PluginXml.java");
+  }
+  
+  /**
+   * This method builds the manifest access java file
+   * from the default manifest file in the project.
+   */
+  public StringInputStream buildManifestAccessClass() {
     try {
-      IFile iFileManifest = this.getProject().getFile(("META-INF/" + ResourceAccessBuilder.MANIFEST_MF));
-      URI iFileManifestUri = iFileManifest.getRawLocationURI();
-      IFileStore _store = EFS.getStore(iFileManifestUri);
-      NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
-      File fileManifest = _store.toLocalFile(0, _nullProgressMonitor);
-      FileInputStream manifestFileInputStream = new FileInputStream(fileManifest);
-      this.writeAccessClass(this.buildManifestAccessClass(manifestFileInputStream), "ManifestMf.java");
-      IFile iFilePluginXml = this.getProject().getFile("plugin.xml");
-      URI iFilePluginXmlUri = iFilePluginXml.getRawLocationURI();
-      IFileStore _store_1 = EFS.getStore(iFilePluginXmlUri);
-      NullProgressMonitor _nullProgressMonitor_1 = new NullProgressMonitor();
-      File filePluginXml = _store_1.toLocalFile(0, _nullProgressMonitor_1);
-      FileInputStream pluginFileInputStream = new FileInputStream(filePluginXml);
-      this.writeAccessClass(this.buildPluginXmlAccessClass(pluginFileInputStream), "PluginXml.java");
+      StringInputStream _xblockexpression = null;
+      {
+        IFile iFileManifest = this.getProject().getFile(("META-INF/" + ResourceAccessBuilder.MANIFEST_MF));
+        URI iFileManifestUri = iFileManifest.getRawLocationURI();
+        IFileStore _store = EFS.getStore(iFileManifestUri);
+        NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
+        File fileManifest = _store.toLocalFile(0, _nullProgressMonitor);
+        FileInputStream manifestFileInputStream = new FileInputStream(fileManifest);
+        _xblockexpression = this.buildManifestAccessClass(manifestFileInputStream);
+      }
+      return _xblockexpression;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -178,10 +168,11 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * This method builds the manifest access java file
+   * from a given input stream.
    */
-  public StringInputStream buildManifestAccessClass(final InputStream manifestFileInputStream) {
+  public StringInputStream buildManifestAccessClass(final InputStream manifestInputStream) {
     try {
-      Manifest manifest = new Manifest(manifestFileInputStream);
+      Manifest manifest = new Manifest(manifestInputStream);
       final CharSequence classSource = this.createManifestAccessClass(this.getTheProject().getName(), manifest.getMainAttributes());
       String _string = classSource.toString();
       final StringInputStream classSourceStream = new StringInputStream(_string);
@@ -268,12 +259,31 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * This method is called to build the plugin.xml access class
+   * from the default plugin.xml in the project.
    */
-  public StringInputStream buildPluginXmlAccessClass(final InputStream pluginFileInputStream) {
+  public StringInputStream buildPluginXmlAccessClass() {
+    try {
+      IFile iFilePlugin = this.getProject().getFile("plugin.xml");
+      URI iFilePluginXmlUri = iFilePlugin.getRawLocationURI();
+      IFileStore _store = EFS.getStore(iFilePluginXmlUri);
+      NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
+      File filePluginXml = _store.toLocalFile(0, _nullProgressMonitor);
+      FileInputStream pluginFileInputStream = new FileInputStream(filePluginXml);
+      return this.buildPluginXmlAccessClass(pluginFileInputStream);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  /**
+   * This method is called to build the plugin.xml access class
+   * from a given input stream.
+   */
+  public StringInputStream buildPluginXmlAccessClass(final InputStream pluginInputStream) {
     try {
       final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
       final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-      Document doc = dBuilder.parse(pluginFileInputStream);
+      Document doc = dBuilder.parse(pluginInputStream);
       Element _documentElement = doc.getDocumentElement();
       final Node n1 = ((Node) _documentElement);
       final CharSequence classSource = this.createPluginXmlAccessClass(this.getTheProject().getName(), n1);
