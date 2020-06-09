@@ -45,11 +45,11 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	public static final String MANIFEST_MF = "MANIFEST.MF";
 	public static final String PLUGIN_XML = "plugin.xml";
+	
+	public static final String MANIFEST_MF_JAVA = "ManifestMf.java";
+	public static final String PLUGIN_XML_JAVA = "PluginXml.java";
+	
 	public static final String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
-
-	val String[] CONCATENATE_ID = #['CategoryAssignmentBean', 'extension', 'command', 'image', 'handler', 'conceptImage']
-	val String[] CONCATENATE_VERSION = #['migrator']
-	val String[] CONCATENATE_TABLE = #['uiSnippet']
 
 	override protected build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 		Activator.getDefault().getLog().log(
@@ -94,9 +94,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 					val iFilePluginXml = PLUGIN_XML.equalsIgnoreCase(iFile.name);
 				
 					if (iFileManifestMf) {
-						writeAccessClass(buildManifestAccessClass(), "ManifestMf.java");
+						writeAccessClass(buildManifestAccessClass(), MANIFEST_MF_JAVA);
 					} else if (iFilePluginXml) {
-						writeAccessClass(buildPluginXmlAccessClass(), "PluginXml.java");
+						writeAccessClass(buildPluginXmlAccessClass(), PLUGIN_XML_JAVA);
 					}
 				}
 			}
@@ -108,8 +108,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	 * do the full build
 	 */
 	def fullBuild(IProgressMonitor monitor) {
-		writeAccessClass(buildManifestAccessClass(), "ManifestMf.java");
-		writeAccessClass(buildPluginXmlAccessClass(), "PluginXml.java");
+		writeAccessClass(buildManifestAccessClass(), MANIFEST_MF_JAVA);
+		writeAccessClass(buildPluginXmlAccessClass(), PLUGIN_XML_JAVA);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		
 		public class ManifestMf {
 			«FOR entryKey : attributes.keySet»
-				«IF            attributes.get(entryKey).toString().contains(";") »
+				«IF attributes.get(entryKey).toString().contains(";") »
 					« val String[] myArray = attributes.get(entryKey).toString().split(";") »
 					public static final String «entryKey.toString.toUpperCase.replace("-", "_")» = "«myArray.get(0)»";
 				«ELSE»
@@ -233,23 +233,24 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		 * SPDX-License-Identifier: EPL-2.0
 		 *******************************************************************************/
 		package «packageName»;
+		
 		public class PluginXml {
-			public static class commands {
+			public static class Commands {
 				«createPluginXmlAccessClass(node, "command", "org.eclipse.ui.commands")»
 			}
-			public static class conceptImages {
+			public static class ConceptImages {
 				«createPluginXmlAccessClass(node, "conceptImage", "ConceptImageContribution")»
 			}
-			public static class uiSnippets {
+			public static class UiSnippets {
 				«createPluginXmlAccessClass(node, "uiSnippet", "EditorUiSnippets")»
 			}
-			public static class handlers {
+			public static class Handlers {
 				«createPluginXmlAccessClass(node, "handler", "org.eclipse.ui.handlers")»
 			}
-			public static class conceptMigrators {
+			public static class ConceptMigrators {
 				«createPluginXmlAccessClass(node, "migrator", "ConceptMigrator")»
 			}
-			public static class concept {
+			public static class Concept {
 				«createPluginXmlAccessClass(node, "concept", "Concept")»
 			}
 			public static class ExtensionPoints {
@@ -259,38 +260,40 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		
 	'''
 
-	def Object createPluginXmlAccessClass(Node node, String s, String group) '''
-		«IF !node.getNodeName().contains("#") && getExtensionPointID(node, group)»
-			«FOR childrenNode: getChildrenNodeList(node)»
-				«IF childrenNode.getNodeType() == Node.ELEMENT_NODE && childrenNode.nodeName.equals(s)»
-					public static class «classNameChecker(childrenNode).toFirstUpper» {
-						«FOR attributeNode: getAttributeList(childrenNode)»
-							public static final String «classNameChecker(attributeNode).toUpperCase» = "«attributeNode.getNodeValue()»";
+	def Object createPluginXmlAccessClass(Node node, String extensionType, String group) '''
+		«IF !node.getNodeName().contains("#") && isExtensionPoint(node, group)»
+			«FOR childNode: getChildren(node)»
+				«IF childNode.getNodeType() == Node.ELEMENT_NODE && childNode.nodeName.equals(extensionType)»
+					public static class «getClassName(childNode)» {
+						«FOR attributeNode : getAttributes(childNode)»
+							public static final String «getAttributeName(attributeNode)» = "«attributeNode.nodeValue»";
 						«ENDFOR»
-					}	
-				«ENDIF» 	
-			«ENDFOR»	
+					}
+				«ENDIF»
+			«ENDFOR»
 		«ELSE»
-			«FOR childNode: getChildrenNodeList(node)»
-				«createPluginXmlAccessClass(childNode, s, group)»
+			«FOR childNode : getChildren(node)»
+				«createPluginXmlAccessClass(childNode, extensionType, group)»
 			«ENDFOR»
 		«ENDIF»
 	'''
 
 	def createExtensionPoints(Node node, String s, String group) '''
-		«FOR childrenNode : getChildrenNodeList(node)»
-			«IF childrenNode.getNodeType() == Node.ELEMENT_NODE && childrenNode.nodeName.equals(s)»
-				public static class «classNameChecker(childrenNode).toFirstUpper.replace("-","")» {
-					«FOR attributeNode: getAttributeList(childrenNode)»
-						public static final String «classNameChecker(attributeNode).toUpperCase» = "«attributeNode.getNodeValue()»";
+		«FOR childNode : getChildren(node)»
+			«IF childNode.getNodeType() == Node.ELEMENT_NODE && childNode.nodeName.equals(s)»
+				public static class «getClassName(childNode).replace("-","")» {
+					«FOR attributeNode : getAttributes(childNode)»
+						public static final String «getAttributeName(attributeNode)» = "«attributeNode.nodeValue»";
 					«ENDFOR»
-				}	
-			«ENDIF» 	
-		«ENDFOR»	
-		
+				}
+			«ENDIF» 
+		«ENDFOR»
 	'''
-
-	def getChildrenNodeList(Node node) {
+	
+	/**
+	 * Gets an iterateable list of child nodes from a node.
+	 */
+	def getChildren(Node node) {
 		val arraylist = new ArrayList<Node>;
 		for (i : 0 ..< node.childNodes.length) {
 			arraylist.add(node.childNodes.item(i));
@@ -298,7 +301,10 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		return arraylist;
 	}
 
-	def getAttributeList(Node node) {
+	/**
+	 * Gets an iterateable list of attributes nodes from a node
+	 */
+	def getAttributes(Node node) {
 		val eElement = node as Element;
 		val nodeMap = eElement.getAttributes();
 		val arraylist = new ArrayList<Node>;
@@ -308,62 +314,67 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		return arraylist;
 	}
 
-	def classNameChecker(Node node) {
-		if (node.nodeName.contains('extension-point')) {
-			return extensionPointID(node);
-		} else if (CONCATENATE_ID.contains(node.nodeName)) {
-			return concatenateID(node);
-		} else if (CONCATENATE_VERSION.contains(node.nodeName)) {
-			return concatenateVersion(node);
-		} else if (CONCATENATE_TABLE.contains(node.nodeName)) {
-			return concatenateTable(node);
-		} else if (node.nodeName.equals("class")) {
-			return "className"
+	/**
+	 * Tries to constructs a unique, versioned class name for a given extension.
+	 */
+	def getClassName(Node node) {
+		return getClassNameFromIdentifier(node) + getClassSuffixFromVersion(node);
+	}
+	
+	/**
+	 * Remap the name of an attribute in case that it conflicts with a java keyword
+	 */
+	def getAttributeName(Node node) {
+		if (node.nodeName.equals("class")) {
+			return "CLASSNAME"
 		} else {
-			return node.nodeName;
+			return node.nodeName.toUpperCase;
 		}
 	}
 
-	def concatenateID(Node node) {
-		var name = node.attributeList.get(0).toString();
-		name = name.replace("\"", "");
-		val delims = "[.]";
-		val tokens = name.split(delims);
-		val lastpart = tokens.last;
-		return node.nodeName + lastpart;
+	/**
+	 * Gets the name of the class for a given node.
+	 */
+	def getClassNameFromIdentifier(Node node) {		
+		val tokens = getIdentifierAttribute(node).nodeValue.split("[.]");
+		val lastIDFragement = tokens.drop(tokens.length - 2).join;
+		return lastIDFragement.toFirstUpper;
+	}
+	
+	/** 
+	 * Gets the identifier attribute for constructing class name from a node
+	 */
+	def getIdentifierAttribute(Node node) {
+		var identifierAttribute = node.attributes.getNamedItem("id");
+		if (identifierAttribute === null) {
+			identifierAttribute = node.attributes.getNamedItem("fullQualifiedID");
+		}
+		if (identifierAttribute === null) {
+			identifierAttribute = node.attributes.getNamedItem("class");
+		}
+		
+		return identifierAttribute;
 	}
 
-	def concatenateVersion(Node node) {
-		val attributes = getAttributeList(node)
-		for (n : attributes) {
-			if (n.nodeName.equals("version")) {
-				return node.nodeName + n.nodeValue.replace(".", "_");
-			}
+	/** 
+	 * Gets a version attribute from the extension, if one is defined.
+	 */
+	def getClassSuffixFromVersion(Node node) {
+		val versionAttribute = node.attributes.getNamedItem("version");
+		if (versionAttribute !== null) {
+			return versionAttribute.nodeValue.replace(".", "_");
+		} else {
+			return "";
 		}
 	}
 
-	def extensionPointID(Node node) {
-		var name = node.attributeList.get(0).toString();
-		name = name.replaceAll("[^a-zA-Z0-9]", "");
-		name = name.replaceAll("id", "");
-		return name;
-	}
-
-	def concatenateTable(Node node) {
-		var name = node.attributeList.get(0).toString();
-		name = name.replace("\"", "");
-		val delims = "[.]";
-		val tokens = name.split(delims);
-		val lastpart = tokens.last;
-		val beforeLastPart = tokens.get(tokens.length - 2);
-		return node.nodeName + beforeLastPart.toFirstUpper + lastpart.toFirstUpper;
-
-	}
-
-	def getExtensionPointID(Node node, String s) {
-		var attributes = getAttributeList(node);
+	/**
+	 * Checks if a given node defines an extension point of the passed group.
+	 */
+	def isExtensionPoint(Node node, String group) {
+		var attributes = getAttributes(node);
 		for (a : attributes) {
-			if (a.nodeValue.contains(s)) {
+			if (a.nodeValue.contains(group)) {
 				return true;
 			}
 		}

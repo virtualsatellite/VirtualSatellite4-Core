@@ -64,13 +64,11 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   public static final String PLUGIN_XML = "plugin.xml";
   
+  public static final String MANIFEST_MF_JAVA = "ManifestMf.java";
+  
+  public static final String PLUGIN_XML_JAVA = "PluginXml.java";
+  
   public static final String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
-  
-  private final String[] CONCATENATE_ID = { "CategoryAssignmentBean", "extension", "command", "image", "handler", "conceptImage" };
-  
-  private final String[] CONCATENATE_VERSION = { "migrator" };
-  
-  private final String[] CONCATENATE_TABLE = { "uiSnippet" };
   
   @Override
   protected IProject[] build(final int kind, final Map<String, String> args, final IProgressMonitor monitor) throws CoreException {
@@ -120,10 +118,10 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
             final boolean iFileManifestMf = ResourceAccessBuilder.MANIFEST_MF.equalsIgnoreCase(iFile.getName());
             final boolean iFilePluginXml = ResourceAccessBuilder.PLUGIN_XML.equalsIgnoreCase(iFile.getName());
             if (iFileManifestMf) {
-              this.writeAccessClass(this.buildManifestAccessClass(), "ManifestMf.java");
+              this.writeAccessClass(this.buildManifestAccessClass(), ResourceAccessBuilder.MANIFEST_MF_JAVA);
             } else {
               if (iFilePluginXml) {
-                this.writeAccessClass(this.buildPluginXmlAccessClass(), "PluginXml.java");
+                this.writeAccessClass(this.buildPluginXmlAccessClass(), ResourceAccessBuilder.PLUGIN_XML_JAVA);
               }
             }
           }
@@ -140,8 +138,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    * do the full build
    */
   public void fullBuild(final IProgressMonitor monitor) {
-    this.writeAccessClass(this.buildManifestAccessClass(), "ManifestMf.java");
-    this.writeAccessClass(this.buildPluginXmlAccessClass(), "PluginXml.java");
+    this.writeAccessClass(this.buildManifestAccessClass(), ResourceAccessBuilder.MANIFEST_MF_JAVA);
+    this.writeAccessClass(this.buildPluginXmlAccessClass(), ResourceAccessBuilder.PLUGIN_XML_JAVA);
   }
   
   /**
@@ -377,10 +375,11 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append(packageName);
     _builder.append(";");
     _builder.newLineIfNotEmpty();
+    _builder.newLine();
     _builder.append("public class PluginXml {");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public static class commands {");
+    _builder.append("public static class Commands {");
     _builder.newLine();
     _builder.append("\t\t");
     Object _createPluginXmlAccessClass = this.createPluginXmlAccessClass(node, "command", "org.eclipse.ui.commands");
@@ -390,7 +389,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public static class conceptImages {");
+    _builder.append("public static class ConceptImages {");
     _builder.newLine();
     _builder.append("\t\t");
     Object _createPluginXmlAccessClass_1 = this.createPluginXmlAccessClass(node, "conceptImage", "ConceptImageContribution");
@@ -400,7 +399,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public static class uiSnippets {");
+    _builder.append("public static class UiSnippets {");
     _builder.newLine();
     _builder.append("\t\t");
     Object _createPluginXmlAccessClass_2 = this.createPluginXmlAccessClass(node, "uiSnippet", "EditorUiSnippets");
@@ -410,7 +409,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public static class handlers {");
+    _builder.append("public static class Handlers {");
     _builder.newLine();
     _builder.append("\t\t");
     Object _createPluginXmlAccessClass_3 = this.createPluginXmlAccessClass(node, "handler", "org.eclipse.ui.handlers");
@@ -420,7 +419,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public static class conceptMigrators {");
+    _builder.append("public static class ConceptMigrators {");
     _builder.newLine();
     _builder.append("\t\t");
     Object _createPluginXmlAccessClass_4 = this.createPluginXmlAccessClass(node, "migrator", "ConceptMigrator");
@@ -430,7 +429,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public static class concept {");
+    _builder.append("public static class Concept {");
     _builder.newLine();
     _builder.append("\t\t");
     Object _createPluginXmlAccessClass_5 = this.createPluginXmlAccessClass(node, "concept", "Concept");
@@ -455,27 +454,27 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     return _builder;
   }
   
-  public Object createPluginXmlAccessClass(final Node node, final String s, final String group) {
+  public Object createPluginXmlAccessClass(final Node node, final String extensionType, final String group) {
     StringConcatenation _builder = new StringConcatenation();
     {
-      if (((!node.getNodeName().contains("#")) && this.getExtensionPointID(node, group))) {
+      if (((!node.getNodeName().contains("#")) && this.isExtensionPoint(node, group))) {
         {
-          ArrayList<Node> _childrenNodeList = this.getChildrenNodeList(node);
-          for(final Node childrenNode : _childrenNodeList) {
+          ArrayList<Node> _children = this.getChildren(node);
+          for(final Node childNode : _children) {
             {
-              if (((childrenNode.getNodeType() == Node.ELEMENT_NODE) && childrenNode.getNodeName().equals(s))) {
+              if (((childNode.getNodeType() == Node.ELEMENT_NODE) && childNode.getNodeName().equals(extensionType))) {
                 _builder.append("public static class ");
-                String _firstUpper = StringExtensions.toFirstUpper(this.classNameChecker(childrenNode));
-                _builder.append(_firstUpper);
+                String _className = this.getClassName(childNode);
+                _builder.append(_className);
                 _builder.append(" {");
                 _builder.newLineIfNotEmpty();
                 {
-                  ArrayList<Node> _attributeList = this.getAttributeList(childrenNode);
-                  for(final Node attributeNode : _attributeList) {
+                  ArrayList<Node> _attributes = this.getAttributes(childNode);
+                  for(final Node attributeNode : _attributes) {
                     _builder.append("\t");
                     _builder.append("public static final String ");
-                    String _upperCase = this.classNameChecker(attributeNode).toUpperCase();
-                    _builder.append(_upperCase, "\t");
+                    String _attributeName = this.getAttributeName(attributeNode);
+                    _builder.append(_attributeName, "\t");
                     _builder.append(" = \"");
                     String _nodeValue = attributeNode.getNodeValue();
                     _builder.append(_nodeValue, "\t");
@@ -483,7 +482,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
                     _builder.newLineIfNotEmpty();
                   }
                 }
-                _builder.append("}\t");
+                _builder.append("}");
                 _builder.newLine();
               }
             }
@@ -491,9 +490,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
         }
       } else {
         {
-          ArrayList<Node> _childrenNodeList_1 = this.getChildrenNodeList(node);
-          for(final Node childNode : _childrenNodeList_1) {
-            Object _createPluginXmlAccessClass = this.createPluginXmlAccessClass(childNode, s, group);
+          ArrayList<Node> _children_1 = this.getChildren(node);
+          for(final Node childNode_1 : _children_1) {
+            Object _createPluginXmlAccessClass = this.createPluginXmlAccessClass(childNode_1, extensionType, group);
             _builder.append(_createPluginXmlAccessClass);
             _builder.newLineIfNotEmpty();
           }
@@ -506,22 +505,22 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   public CharSequence createExtensionPoints(final Node node, final String s, final String group) {
     StringConcatenation _builder = new StringConcatenation();
     {
-      ArrayList<Node> _childrenNodeList = this.getChildrenNodeList(node);
-      for(final Node childrenNode : _childrenNodeList) {
+      ArrayList<Node> _children = this.getChildren(node);
+      for(final Node childNode : _children) {
         {
-          if (((childrenNode.getNodeType() == Node.ELEMENT_NODE) && childrenNode.getNodeName().equals(s))) {
+          if (((childNode.getNodeType() == Node.ELEMENT_NODE) && childNode.getNodeName().equals(s))) {
             _builder.append("public static class ");
-            String _replace = StringExtensions.toFirstUpper(this.classNameChecker(childrenNode)).replace("-", "");
+            String _replace = this.getClassName(childNode).replace("-", "");
             _builder.append(_replace);
             _builder.append(" {");
             _builder.newLineIfNotEmpty();
             {
-              ArrayList<Node> _attributeList = this.getAttributeList(childrenNode);
-              for(final Node attributeNode : _attributeList) {
+              ArrayList<Node> _attributes = this.getAttributes(childNode);
+              for(final Node attributeNode : _attributes) {
                 _builder.append("\t");
                 _builder.append("public static final String ");
-                String _upperCase = this.classNameChecker(attributeNode).toUpperCase();
-                _builder.append(_upperCase, "\t");
+                String _attributeName = this.getAttributeName(attributeNode);
+                _builder.append(_attributeName, "\t");
                 _builder.append(" = \"");
                 String _nodeValue = attributeNode.getNodeValue();
                 _builder.append(_nodeValue, "\t");
@@ -529,17 +528,19 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
                 _builder.newLineIfNotEmpty();
               }
             }
-            _builder.append("}\t");
+            _builder.append("}");
             _builder.newLine();
           }
         }
       }
     }
-    _builder.newLine();
     return _builder;
   }
   
-  public ArrayList<Node> getChildrenNodeList(final Node node) {
+  /**
+   * Gets an iterateable list of child nodes from a node.
+   */
+  public ArrayList<Node> getChildren(final Node node) {
     final ArrayList<Node> arraylist = new ArrayList<Node>();
     int _length = node.getChildNodes().getLength();
     ExclusiveRange _doubleDotLessThan = new ExclusiveRange(0, _length, true);
@@ -549,7 +550,10 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     return arraylist;
   }
   
-  public ArrayList<Node> getAttributeList(final Node node) {
+  /**
+   * Gets an iterateable list of attributes nodes from a node
+   */
+  public ArrayList<Node> getAttributes(final Node node) {
     final Element eElement = ((Element) node);
     final NamedNodeMap nodeMap = eElement.getAttributes();
     final ArrayList<Node> arraylist = new ArrayList<Node>();
@@ -561,85 +565,71 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     return arraylist;
   }
   
-  public String classNameChecker(final Node node) {
-    boolean _contains = node.getNodeName().contains("extension-point");
-    if (_contains) {
-      return this.extensionPointID(node);
+  /**
+   * Tries to constructs a unique, versioned class name for a given extension.
+   */
+  public String getClassName(final Node node) {
+    String _classNameFromIdentifier = this.getClassNameFromIdentifier(node);
+    String _classSuffixFromVersion = this.getClassSuffixFromVersion(node);
+    return (_classNameFromIdentifier + _classSuffixFromVersion);
+  }
+  
+  /**
+   * Remap the name of an attribute in case that it conflicts with a java keyword
+   */
+  public String getAttributeName(final Node node) {
+    boolean _equals = node.getNodeName().equals("class");
+    if (_equals) {
+      return "CLASSNAME";
     } else {
-      boolean _contains_1 = ((List<String>)Conversions.doWrapArray(this.CONCATENATE_ID)).contains(node.getNodeName());
-      if (_contains_1) {
-        return this.concatenateID(node);
-      } else {
-        boolean _contains_2 = ((List<String>)Conversions.doWrapArray(this.CONCATENATE_VERSION)).contains(node.getNodeName());
-        if (_contains_2) {
-          return this.concatenateVersion(node);
-        } else {
-          boolean _contains_3 = ((List<String>)Conversions.doWrapArray(this.CONCATENATE_TABLE)).contains(node.getNodeName());
-          if (_contains_3) {
-            return this.concatenateTable(node);
-          } else {
-            boolean _equals = node.getNodeName().equals("class");
-            if (_equals) {
-              return "className";
-            } else {
-              return node.getNodeName();
-            }
-          }
-        }
-      }
+      return node.getNodeName().toUpperCase();
     }
   }
   
-  public String concatenateID(final Node node) {
-    String name = this.getAttributeList(node).get(0).toString();
-    name = name.replace("\"", "");
-    final String delims = "[.]";
-    final String[] tokens = name.split(delims);
-    final String lastpart = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(tokens)));
-    String _nodeName = node.getNodeName();
-    return (_nodeName + lastpart);
-  }
-  
-  public String concatenateVersion(final Node node) {
-    final ArrayList<Node> attributes = this.getAttributeList(node);
-    for (final Node n : attributes) {
-      boolean _equals = n.getNodeName().equals("version");
-      if (_equals) {
-        String _nodeName = node.getNodeName();
-        String _replace = n.getNodeValue().replace(".", "_");
-        return (_nodeName + _replace);
-      }
-    }
-    return null;
-  }
-  
-  public String extensionPointID(final Node node) {
-    String name = this.getAttributeList(node).get(0).toString();
-    name = name.replaceAll("[^a-zA-Z0-9]", "");
-    name = name.replaceAll("id", "");
-    return name;
-  }
-  
-  public String concatenateTable(final Node node) {
-    String name = this.getAttributeList(node).get(0).toString();
-    name = name.replace("\"", "");
-    final String delims = "[.]";
-    final String[] tokens = name.split(delims);
-    final String lastpart = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(tokens)));
+  /**
+   * Gets the name of the class for a given node.
+   */
+  public String getClassNameFromIdentifier(final Node node) {
+    final String[] tokens = this.getIdentifierAttribute(node).getNodeValue().split("[.]");
     int _length = tokens.length;
     int _minus = (_length - 2);
-    final String beforeLastPart = tokens[_minus];
-    String _nodeName = node.getNodeName();
-    String _firstUpper = StringExtensions.toFirstUpper(beforeLastPart);
-    String _plus = (_nodeName + _firstUpper);
-    String _firstUpper_1 = StringExtensions.toFirstUpper(lastpart);
-    return (_plus + _firstUpper_1);
+    final String lastIDFragement = IterableExtensions.join(IterableExtensions.<String>drop(((Iterable<String>)Conversions.doWrapArray(tokens)), _minus));
+    return StringExtensions.toFirstUpper(lastIDFragement);
   }
   
-  public boolean getExtensionPointID(final Node node, final String s) {
-    ArrayList<Node> attributes = this.getAttributeList(node);
+  /**
+   * Gets the identifier attribute for constructing class name from a node
+   */
+  public Node getIdentifierAttribute(final Node node) {
+    Node identifierAttribute = node.getAttributes().getNamedItem("id");
+    if ((identifierAttribute == null)) {
+      identifierAttribute = node.getAttributes().getNamedItem("fullQualifiedID");
+    }
+    if ((identifierAttribute == null)) {
+      identifierAttribute = node.getAttributes().getNamedItem("class");
+    }
+    return identifierAttribute;
+  }
+  
+  /**
+   * Gets a version attribute from the extension, if one is defined.
+   */
+  public String getClassSuffixFromVersion(final Node node) {
+    final Node versionAttribute = node.getAttributes().getNamedItem("version");
+    if ((versionAttribute != null)) {
+      return versionAttribute.getNodeValue().replace(".", "_");
+    } else {
+      return "";
+    }
+  }
+  
+  /**
+   * Checks if a given node defines an extension point of the passed group.
+   */
+  public boolean isExtensionPoint(final Node node, final String group) {
+    ArrayList<Node> attributes = this.getAttributes(node);
     for (final Node a : attributes) {
-      boolean _contains = a.getNodeValue().contains(s);
+      boolean _contains = a.getNodeValue().contains(group);
       if (_contains) {
         return true;
       }
