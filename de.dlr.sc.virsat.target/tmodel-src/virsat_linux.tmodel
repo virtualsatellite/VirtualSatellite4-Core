@@ -1,5 +1,4 @@
 Target virsat_linux extends virsat {
-	RepositoryLocation VirSat4CoreIntegration url "https://sourceforge.net/projects/virtualsatellite/files/VirtualSatellite4-Core/integration/4.9.0/"{	
-		Unit de.dlr.sc.virsat.apps.feature.feature.group version newest;
-	}
+	OperatingSystem linux
+	WindowingSystem gtk
 }
