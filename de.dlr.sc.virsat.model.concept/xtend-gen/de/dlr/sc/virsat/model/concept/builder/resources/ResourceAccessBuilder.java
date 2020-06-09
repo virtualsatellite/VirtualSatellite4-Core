@@ -46,7 +46,9 @@ import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -442,8 +444,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.append("public static class ExtensionPoints {");
     _builder.newLine();
     _builder.append("\t\t");
-    CharSequence _createExtensionPoints = this.createExtensionPoints(node, "extension-point", "plugin");
-    _builder.append(_createExtensionPoints, "\t\t");
+    CharSequence _createPluginXmlInternalClasses = this.createPluginXmlInternalClasses(node, "extension-point");
+    _builder.append(_createPluginXmlInternalClasses, "\t\t");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.append("}");
@@ -456,85 +458,91 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   public Object createPluginXmlAccessClass(final Node node, final String extensionType, final String group) {
     StringConcatenation _builder = new StringConcatenation();
+    final Node extenionPointNode = this.getExtensionPointNode(node, group);
+    _builder.newLineIfNotEmpty();
     {
-      if (((!node.getNodeName().contains("#")) && this.isExtensionPoint(node, group))) {
-        {
-          ArrayList<Node> _children = this.getChildren(node);
-          for(final Node childNode : _children) {
-            {
-              if (((childNode.getNodeType() == Node.ELEMENT_NODE) && childNode.getNodeName().equals(extensionType))) {
-                _builder.append("public static class ");
-                String _className = this.getClassName(childNode);
-                _builder.append(_className);
-                _builder.append(" {");
-                _builder.newLineIfNotEmpty();
-                {
-                  ArrayList<Node> _attributes = this.getAttributes(childNode);
-                  for(final Node attributeNode : _attributes) {
-                    _builder.append("\t");
-                    _builder.append("public static final String ");
-                    String _attributeName = this.getAttributeName(attributeNode);
-                    _builder.append(_attributeName, "\t");
-                    _builder.append(" = \"");
-                    String _nodeValue = attributeNode.getNodeValue();
-                    _builder.append(_nodeValue, "\t");
-                    _builder.append("\";");
-                    _builder.newLineIfNotEmpty();
-                  }
-                }
-                _builder.append("}");
-                _builder.newLine();
-              }
-            }
-          }
-        }
-      } else {
-        {
-          ArrayList<Node> _children_1 = this.getChildren(node);
-          for(final Node childNode_1 : _children_1) {
-            Object _createPluginXmlAccessClass = this.createPluginXmlAccessClass(childNode_1, extensionType, group);
-            _builder.append(_createPluginXmlAccessClass);
-            _builder.newLineIfNotEmpty();
-          }
-        }
+      if ((extenionPointNode != null)) {
+        CharSequence _createPluginXmlInternalClasses = this.createPluginXmlInternalClasses(node, extensionType);
+        _builder.append(_createPluginXmlInternalClasses);
+        _builder.newLineIfNotEmpty();
       }
     }
     return _builder;
   }
   
-  public CharSequence createExtensionPoints(final Node node, final String s, final String group) {
+  public CharSequence createPluginXmlInternalClasses(final Node node, final String extensionType) {
     StringConcatenation _builder = new StringConcatenation();
     {
-      ArrayList<Node> _children = this.getChildren(node);
-      for(final Node childNode : _children) {
+      List<Node> _classDefiningChildren = this.getClassDefiningChildren(node, extensionType);
+      for(final Node childNode : _classDefiningChildren) {
+        _builder.append("public static class ");
+        String _replace = this.getClassName(childNode).replace("-", "");
+        _builder.append(_replace);
+        _builder.append(" {");
+        _builder.newLineIfNotEmpty();
         {
-          if (((childNode.getNodeType() == Node.ELEMENT_NODE) && childNode.getNodeName().equals(s))) {
-            _builder.append("public static class ");
-            String _replace = this.getClassName(childNode).replace("-", "");
-            _builder.append(_replace);
-            _builder.append(" {");
+          ArrayList<Node> _attributes = this.getAttributes(childNode);
+          for(final Node attributeNode : _attributes) {
+            _builder.append("\t");
+            _builder.append("public static final String ");
+            String _attributeName = this.getAttributeName(attributeNode);
+            _builder.append(_attributeName, "\t");
+            _builder.append(" = \"");
+            String _nodeValue = attributeNode.getNodeValue();
+            _builder.append(_nodeValue, "\t");
+            _builder.append("\";");
             _builder.newLineIfNotEmpty();
-            {
-              ArrayList<Node> _attributes = this.getAttributes(childNode);
-              for(final Node attributeNode : _attributes) {
-                _builder.append("\t");
-                _builder.append("public static final String ");
-                String _attributeName = this.getAttributeName(attributeNode);
-                _builder.append(_attributeName, "\t");
-                _builder.append(" = \"");
-                String _nodeValue = attributeNode.getNodeValue();
-                _builder.append(_nodeValue, "\t");
-                _builder.append("\";");
-                _builder.newLineIfNotEmpty();
-              }
-            }
-            _builder.append("}");
-            _builder.newLine();
           }
         }
+        _builder.append("}");
+        _builder.newLine();
       }
     }
     return _builder;
+  }
+  
+  /**
+   * Gets all children of a node, including nested nodes.
+   */
+  public Iterable<Node> getAllChildren(final Node node) {
+    final ArrayList<Node> children = this.getChildren(node);
+    final Function1<Node, Iterable<Node>> _function = (Node it) -> {
+      return this.getAllChildren(it);
+    };
+    final List<Node> deepChildren = IterableExtensions.<Node>toList(IterableExtensions.<Node, Node>flatMap(children, _function));
+    final ArrayList<Node> allChildren = new ArrayList<Node>();
+    allChildren.addAll(children);
+    allChildren.addAll(deepChildren);
+    return allChildren;
+  }
+  
+  /**
+   * Gets all child nodes that define a class in the java file.
+   * Note that it is possible for an element with the same ID to reappear due to the user
+   * declaring it twice in the plugin.xml.
+   * 
+   * The primary use case is when the user wants to "overwrite" an extension from the generated section
+   * of a plugin.xml in the protected region (for example to refine the section of an uiSnippet).
+   * In this case, Eclipse takes the last declaration, the resource builder should reflect this.
+   */
+  public List<Node> getClassDefiningChildren(final Node node, final String extensionType) {
+    final Iterable<Node> children = this.getAllChildren(node);
+    final Function1<Node, Boolean> _function = (Node childNode) -> {
+      return Boolean.valueOf(((childNode.getNodeType() == Node.ELEMENT_NODE) && childNode.getNodeName().equals(extensionType)));
+    };
+    final List<Node> elementChildren = IterableExtensions.<Node>toList(IterableExtensions.<Node>filter(children, _function));
+    final Function1<Node, String> _function_1 = (Node it) -> {
+      return this.getClassName(it);
+    };
+    final List<String> elementChildrenClassNames = ListExtensions.<Node, String>map(elementChildren, _function_1);
+    final Function1<Node, Boolean> _function_2 = (Node childNode) -> {
+      final int index = elementChildren.indexOf(childNode);
+      final String className = elementChildrenClassNames.get(index);
+      final int lastIndex = elementChildrenClassNames.lastIndexOf(className);
+      return Boolean.valueOf((index == lastIndex));
+    };
+    final List<Node> elementChildrenWithLastClassNames = IterableExtensions.<Node>toList(IterableExtensions.<Node>filter(elementChildren, _function_2));
+    return elementChildrenWithLastClassNames;
   }
   
   /**
@@ -606,6 +614,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       identifierAttribute = node.getAttributes().getNamedItem("fullQualifiedID");
     }
     if ((identifierAttribute == null)) {
+      identifierAttribute = node.getAttributes().getNamedItem("commandId");
+    }
+    if ((identifierAttribute == null)) {
       identifierAttribute = node.getAttributes().getNamedItem("class");
     }
     return identifierAttribute;
@@ -626,15 +637,21 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   /**
    * Checks if a given node defines an extension point of the passed group.
    */
-  public boolean isExtensionPoint(final Node node, final String group) {
-    ArrayList<Node> attributes = this.getAttributes(node);
-    for (final Node a : attributes) {
-      boolean _contains = a.getNodeValue().contains(group);
-      if (_contains) {
-        return true;
+  public Node getExtensionPointNode(final Node node, final String group) {
+    final ArrayList<Node> children = this.getChildren(node);
+    for (final Node child : children) {
+      short _nodeType = child.getNodeType();
+      boolean _equals = (_nodeType == Node.ELEMENT_NODE);
+      if (_equals) {
+        final Node idAttribute = child.getAttributes().getNamedItem("point");
+        final String nodeValue = idAttribute.getNodeValue();
+        boolean _contains = nodeValue.contains(group);
+        if (_contains) {
+          return child;
+        }
       }
     }
-    return false;
+    return null;
   }
   
   public IProject getTheProject() {

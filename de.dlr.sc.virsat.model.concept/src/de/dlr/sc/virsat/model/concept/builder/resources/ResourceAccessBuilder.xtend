@@ -11,7 +11,9 @@ package de.dlr.sc.virsat.model.concept.builder.resources
 
 import de.dlr.sc.virsat.model.concept.Activator
 import java.io.FileInputStream
+import java.io.InputStream
 import java.util.ArrayList
+import java.util.Arrays
 import java.util.Map
 import java.util.jar.Attributes
 import java.util.jar.Manifest
@@ -25,16 +27,10 @@ import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.runtime.Status
+import org.eclipse.jdt.core.JavaCore
 import org.eclipse.xtext.util.StringInputStream
 import org.w3c.dom.Element
 import org.w3c.dom.Node
-import java.net.URI
-import java.io.InputStream
-import org.eclipse.jdt.core.IPackageFragmentRoot
-import org.eclipse.jdt.core.IJavaProject
-import org.eclipse.jdt.core.JavaCore
-import java.util.Arrays
-import org.eclipse.jdt.core.IClasspathEntry
 
 /**
  * The Resource Access Builder reads and parses files such as the plugin.xml
@@ -203,7 +199,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 		}
 		val iFolderPackage = iFolderSrc.getFolder(project.name.replace(".", "\\"));
-		if (! iFolderPackage.exists) {
+		if (!iFolderPackage.exists) {
 			val javaProject = JavaCore.create(getProject());
 			val packageRoot = javaProject.getPackageFragmentRoot(iFolderSrc);
 			val classPath = javaProject.getRawClasspath();
@@ -254,41 +250,70 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 				«createPluginXmlAccessClass(node, "concept", "Concept")»
 			}
 			public static class ExtensionPoints {
-				«createExtensionPoints(node, "extension-point", "plugin")»
+				«createPluginXmlInternalClasses(node, "extension-point")»
 			}
 		}
 		
 	'''
 
 	def Object createPluginXmlAccessClass(Node node, String extensionType, String group) '''
-		«IF !node.getNodeName().contains("#") && isExtensionPoint(node, group)»
-			«FOR childNode: getChildren(node)»
-				«IF childNode.getNodeType() == Node.ELEMENT_NODE && childNode.nodeName.equals(extensionType)»
-					public static class «getClassName(childNode)» {
-						«FOR attributeNode : getAttributes(childNode)»
-							public static final String «getAttributeName(attributeNode)» = "«attributeNode.nodeValue»";
-						«ENDFOR»
-					}
-				«ENDIF»
-			«ENDFOR»
-		«ELSE»
-			«FOR childNode : getChildren(node)»
-				«createPluginXmlAccessClass(childNode, extensionType, group)»
-			«ENDFOR»
+		«val extenionPointNode = getExtensionPointNode(node, group)»
+		«IF extenionPointNode !== null»
+			«createPluginXmlInternalClasses(node, extensionType)»
 		«ENDIF»
 	'''
 
-	def createExtensionPoints(Node node, String s, String group) '''
-		«FOR childNode : getChildren(node)»
-			«IF childNode.getNodeType() == Node.ELEMENT_NODE && childNode.nodeName.equals(s)»
-				public static class «getClassName(childNode).replace("-","")» {
-					«FOR attributeNode : getAttributes(childNode)»
-						public static final String «getAttributeName(attributeNode)» = "«attributeNode.nodeValue»";
-					«ENDFOR»
-				}
-			«ENDIF» 
+	def createPluginXmlInternalClasses(Node node, String extensionType) '''
+		«FOR childNode : getClassDefiningChildren(node, extensionType)»
+			public static class «getClassName(childNode).replace("-","")» {
+				«FOR attributeNode : getAttributes(childNode)»
+					public static final String «getAttributeName(attributeNode)» = "«attributeNode.nodeValue»";
+				«ENDFOR»
+			}
 		«ENDFOR»
 	'''
+	
+	/**
+	 * Gets all children of a node, including nested nodes.
+	 */
+	def Iterable<Node> getAllChildren(Node node) {
+		val children = getChildren(node);
+		val deepChildren = children.flatMap[getAllChildren].toList;
+		val allChildren = new ArrayList<Node>();
+		allChildren.addAll(children);
+		allChildren.addAll(deepChildren);
+		return allChildren;
+	}
+	
+	/** 
+	 * Gets all child nodes that define a class in the java file.
+	 * Note that it is possible for an element with the same ID to reappear due to the user
+	 * declaring it twice in the plugin.xml.
+	 * 
+	 * The primary use case is when the user wants to "overwrite" an extension from the generated section
+	 * of a plugin.xml in the protected region (for example to refine the section of an uiSnippet).
+	 * In this case, Eclipse takes the last declaration, the resource builder should reflect this.
+	 */
+	def getClassDefiningChildren(Node node, String extensionType) {
+		val children = getAllChildren(node);
+		
+		// filter out the children that do not propery define an extension
+		val elementChildren = children.filter[childNode | 
+			childNode.getNodeType() == Node.ELEMENT_NODE && childNode.nodeName.equals(extensionType)
+		].toList;
+		
+		// filter out doubly defined class names and take the last node
+		val elementChildrenClassNames = elementChildren.map[className];
+		val elementChildrenWithLastClassNames = elementChildren.filter[childNode |
+			val index = elementChildren.indexOf(childNode);
+			val className = elementChildrenClassNames.get(index);
+			//Filter out all nodes except for the last occurence of the class name
+			val lastIndex = elementChildrenClassNames.lastIndexOf(className);
+			return index == lastIndex;
+		].toList;
+		
+		return elementChildrenWithLastClassNames;
+	}
 	
 	/**
 	 * Gets an iterateable list of child nodes from a node.
@@ -350,6 +375,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 			identifierAttribute = node.attributes.getNamedItem("fullQualifiedID");
 		}
 		if (identifierAttribute === null) {
+			identifierAttribute = node.attributes.getNamedItem("commandId");
+		}
+		if (identifierAttribute === null) {
 			identifierAttribute = node.attributes.getNamedItem("class");
 		}
 		
@@ -371,14 +399,19 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * Checks if a given node defines an extension point of the passed group.
 	 */
-	def isExtensionPoint(Node node, String group) {
-		var attributes = getAttributes(node);
-		for (a : attributes) {
-			if (a.nodeValue.contains(group)) {
-				return true;
+	def getExtensionPointNode(Node node, String group) {
+		val children = getChildren(node);
+	
+		for (child : children) {
+			if (child.getNodeType() == Node.ELEMENT_NODE) {
+				val idAttribute = child.attributes.getNamedItem("point");
+				val nodeValue = idAttribute.nodeValue;
+				if (nodeValue.contains(group)) {
+					return child;
+				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 	def getTheProject() {
