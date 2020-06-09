@@ -586,4 +586,66 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		assertThat("The list of Recently Saved Resources does not contain the resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	}
 	
+	@Test
+	public void testHandleAddedDvlmResources() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list of Recently Saved Resources still contains the resources", editingDomain.recentlyChangedResource, hasItem(repoRes.getURI()));
+	
+		editingDomain.recentlyChangedResource.clear();
+		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
+		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list should not have been changed by the clal to the handleAdded method", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test
+	public void testHandleChangedDvlmResources() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	
+		editingDomain.recentlyChangedResource.clear();
+		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
+		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test
+	public void testHandleRemovedDvlmResources() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+		assertThat("ResourceSet does not contain resource anymore", rs.getResources(), not(hasItem(repoRes)));
+		
+		// Resource has been actually taken from the resourceSet. Thus it is now treated as an arbitrary file and nothing should happen.
+		editingDomain.recentlyChangedResource.clear();
+		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
 }
