@@ -74,6 +74,7 @@ import de.dlr.sc.virsat.model.concept.Activator
 import org.eclipse.core.runtime.Status
 import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
 import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -739,20 +740,25 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 			override caseComposedProperty(ComposedProperty property) {
 				importManager.register(ComposedPropertyInstance);
 				importManager.register(property.type);
+				importManager.register(BeanPropertyComposed);
 				
 				return '''
-				private «property.type.name» «property.name» = new «property.type.name»();
+				private BeanPropertyComposed<«property.type.name»> «property.name» = new BeanPropertyComposed<>();
 				
 				private void «propertyMethodSafeAccess(property)» {
 					if («property.name».getTypeInstance() == null) {
 						ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("«property.name»");
-						«property.name».setTypeInstance(propertyInstance.getTypeInstance());
+						«property.name».setTypeInstance(propertyInstance);
 					}
 				}
 				
-				public «property.type.name» «propertyMethodGet(property)» () {
+				public «property.type.name» «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+					return «property.name».getValue();
+				}
+				
+				public BeanPropertyComposed<«property.type.name»> «propertyMethodGet(property)»Bean() {
+					return «property.name»
 				}
 				'''
 			}

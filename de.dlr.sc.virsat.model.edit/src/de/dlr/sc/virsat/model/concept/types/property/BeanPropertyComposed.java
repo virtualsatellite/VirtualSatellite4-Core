@@ -24,6 +24,10 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 
 	public BeanPropertyComposed() { }
 	
+	/**
+	 * Constructor to directly set the type instance
+	 * @param cpi the type instance to be used
+	 */
 	public BeanPropertyComposed(ComposedPropertyInstance cpi) {
 		setTypeInstance(cpi);
 	}
@@ -45,11 +49,11 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 		BEAN_TYPE composedBean = null;
 		
 		if (isSet()) {
-			CategoryAssignment ref = ti.getTypeInstance();
+			CategoryAssignment composedCa = ti.getTypeInstance();
 			
 			BeanCategoryAssignmentFactory beanCaFactory = new BeanCategoryAssignmentFactory();
 			try {
-				composedBean = (BEAN_TYPE) beanCaFactory.getInstanceFor((CategoryAssignment) ref);
+				composedBean = (BEAN_TYPE) beanCaFactory.getInstanceFor((CategoryAssignment) composedCa);
 			} catch (CoreException e) {
 				throw new RuntimeException(e);
 			}
