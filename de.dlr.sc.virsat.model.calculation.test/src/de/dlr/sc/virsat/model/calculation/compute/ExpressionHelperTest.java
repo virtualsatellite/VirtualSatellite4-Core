@@ -971,7 +971,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		// root
 		//	-- CA: State
 		//	-- PI: totalValue
-		//	-- Eq: Power.value = summary{Power.value}
+		//	-- Eq: totalValue = summary{Power.value}
 		//	---- CA: Power
 		//	------ PI: value
 		StructuralElementInstance seiRoot = createStructuralElementInstance("System", se);
