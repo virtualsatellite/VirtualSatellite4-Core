@@ -758,6 +758,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				}
 				
 				public BeanPropertyComposed<«property.type.name»> «propertyMethodGet(property)»Bean() {
+					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
 				}
 				'''

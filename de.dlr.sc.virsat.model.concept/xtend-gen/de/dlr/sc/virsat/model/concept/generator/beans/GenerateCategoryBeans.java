@@ -1803,6 +1803,11 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("Bean() {");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
+        String _propertyMethodSafeAccess_2 = GenerateCategoryBeans.this.propertyMethodSafeAccess(property);
+        _builder.append(_propertyMethodSafeAccess_2, "\t");
+        _builder.append(";");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
         _builder.append("return ");
         String _name_8 = property.getName();
         _builder.append(_name_8, "\t");
