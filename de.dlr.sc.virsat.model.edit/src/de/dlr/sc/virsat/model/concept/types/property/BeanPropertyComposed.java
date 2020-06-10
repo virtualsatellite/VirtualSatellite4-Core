@@ -20,6 +20,10 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 
+/**
+ * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
+ * @param <BEAN_TYPE> the reference type
+ */
 public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanObject<ComposedPropertyInstance> implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyComposed() { }
@@ -34,12 +38,12 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	
 	@Override
 	public void setValue(BEAN_TYPE value) {
-		// We can't set the composed ca on the bean level
+		// Can't set the composed ca on the bean level
 	}
 
 	@Override
 	public Command setValue(EditingDomain ed, BEAN_TYPE value) {
-		// We can't set the composed ca on the bean level
+		// Can't set the composed ca on the bean level
 		return new CompoundCommand();
 	}
 
@@ -69,7 +73,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 
 	@Override
 	public void unset() {
-		// We can't set the composed ca on the bean level
+		// Can't unset the composed ca on the bean level
 	}
 
 }

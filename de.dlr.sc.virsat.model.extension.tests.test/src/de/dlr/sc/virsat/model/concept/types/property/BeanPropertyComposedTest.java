@@ -31,6 +31,7 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 	private TestCategoryAllProperty testCategoryAllProperty;
 	private TestCategoryComposition testCategoryComposition;
 	private BeanPropertyComposed<TestCategoryAllProperty> beanPropertyComposed;
+	private ComposedPropertyInstance cpiToCategory;
 
 	@Before
 	public void setUp() throws Exception {
@@ -44,7 +45,7 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 		CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(testCategoryCompositionCa);
 
 		// Create a bean for the cpi with a ca
-		ComposedPropertyInstance cpiToCategory = (ComposedPropertyInstance) caHelper.getPropertyInstance(TestCategoryComposition.PROPERTY_TESTSUBCATEGORY);
+		cpiToCategory = (ComposedPropertyInstance) caHelper.getPropertyInstance(TestCategoryComposition.PROPERTY_TESTSUBCATEGORY);
 		beanPropertyComposed = new BeanPropertyComposed<>(cpiToCategory);
 		testCategoryAllProperty = testCategoryComposition.getTestSubCategory();
 	}
@@ -53,6 +54,7 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 	public void testSetValue() {
 		assertNotNull("Initial a composed ca is set", testCategoryComposition.getTestSubCategory());
 		
+		// This should have no effect
 		beanPropertyComposed.setValue(null);
 		
 		assertEquals("The composed ca didn't change", testCategoryAllProperty, testCategoryComposition.getTestSubCategory());
@@ -61,7 +63,7 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 	@Test
 	public void testSetValueEditingDomain() {
 		Command setCommand = beanPropertyComposed.setValue(editingDomain, null);
-		assertFalse("Can't set the value", setCommand.canExecute());
+		assertFalse("Can't execute the command", setCommand.canExecute());
 	}
 
 	@Test
@@ -72,15 +74,20 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 	@Test
 	public void testIsSet() {
 		assertTrue("A ca is set", beanPropertyComposed.isSet());
+		
+		cpiToCategory.setTypeInstance(null);
+		
+		assertFalse("No ca is set", beanPropertyComposed.isSet());
 	}
 
 	@Test
 	public void testUnset() {
-		assertTrue("", beanPropertyComposed.isSet());
+		assertTrue("A ca is set", beanPropertyComposed.isSet());
 		
+		// This should have no effect
 		beanPropertyComposed.unset();
 		
-		assertTrue("", beanPropertyComposed.isSet());
+		assertTrue("A ca is still set", beanPropertyComposed.isSet());
 	}
 
 }

@@ -1806,6 +1806,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("return ");
         String _name_8 = property.getName();
         _builder.append(_name_8, "\t");
+        _builder.append(";");
         _builder.newLineIfNotEmpty();
         _builder.append("}");
         _builder.newLine();

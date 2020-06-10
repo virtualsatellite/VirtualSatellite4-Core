@@ -99,7 +99,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 	}
 	
 	public BeanPropertyComposed<TestCategoryA> getTestSubCategoryBean() {
-		return testSubCategory
+		return testSubCategory;
 	}
 	
 	// *****************************************************************
