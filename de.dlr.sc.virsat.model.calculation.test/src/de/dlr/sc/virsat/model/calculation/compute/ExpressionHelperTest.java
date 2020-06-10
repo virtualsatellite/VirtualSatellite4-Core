@@ -970,7 +970,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		// Setup the data model:
 		// root
 		//	-- CA: State
-		//  -- PI: totalValue
+		//	-- PI: totalValue
 		//	-- Eq: Power.value = summary{Power.value}
 		//	---- CA: Power
 		//	------ PI: value
