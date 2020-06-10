@@ -322,9 +322,11 @@ public class ExpressionHelper {
 				// Get all nested TypeInstances to the current treeSei and see if one
 				// is matching to the definition of what is referenced by the SET function
 				List<CategoryAssignment> currentCas = new LinkedList<>(treeSei.getCategoryAssignments());
-				currentCas.remove(currentCa);
+			
 				Collection<ATypeInstance> typeInstances = VirSatEcoreUtil.getAllContentsOfType(currentCas, ATypeInstance.class, true);
 				typeInstances.addAll(currentCas);
+				typeInstances.remove(currentCa);
+				typeInstances.removeAll(currentCa.getPropertyInstances());
 				
 				// Loop over all identified ATypeInstances
 				for (ATypeInstance aTypeInstance : typeInstances) {
