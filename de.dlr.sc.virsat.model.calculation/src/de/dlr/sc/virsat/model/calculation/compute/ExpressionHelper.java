@@ -325,6 +325,10 @@ public class ExpressionHelper {
 			
 				Collection<ATypeInstance> typeInstances = VirSatEcoreUtil.getAllContentsOfType(currentCas, ATypeInstance.class, true);
 				typeInstances.addAll(currentCas);
+				
+				// Remove the local type instances. This prevents the creation of cyclic input for the set function
+				// i.e. it prevents that expressions such as mass = summary{mass} create a cycle by including the local
+				// mass property in the inputs of the summary set function
 				typeInstances.remove(currentCa);
 				typeInstances.removeAll(currentCa.getPropertyInstances());
 				
