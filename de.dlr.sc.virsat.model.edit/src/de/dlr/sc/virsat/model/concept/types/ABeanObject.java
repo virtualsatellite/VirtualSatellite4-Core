@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
@@ -38,6 +40,7 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		super();
 	}
 	
+	@XmlTransient
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setATypeInstance(ATypeInstance ti) {
@@ -49,6 +52,7 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		return ti;
 	}
 	
+	@XmlTransient
 	@Override
 	public void setTypeInstance(CP_TYPE ti) {
 		this.ti = ti;
