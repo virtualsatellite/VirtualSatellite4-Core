@@ -362,7 +362,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	 */
 	def getClassNameFromIdentifier(Node node) {		
 		val tokens = getIdentifierAttribute(node).nodeValue.split("[.]");
-		val lastIDFragement = tokens.drop(tokens.length - 2).join;
+		// Use the (up to) last two segments of an id for identificiation
+		// We use two segments because sometimes just the last segment is not unqiue
+		val lastIDFragement = tokens.drop(Math.max(tokens.length - 2, 0)).join;
 		return lastIDFragement.toFirstUpper;
 	}
 	

@@ -601,7 +601,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     final String[] tokens = this.getIdentifierAttribute(node).getNodeValue().split("[.]");
     int _length = tokens.length;
     int _minus = (_length - 2);
-    final String lastIDFragement = IterableExtensions.join(IterableExtensions.<String>drop(((Iterable<String>)Conversions.doWrapArray(tokens)), _minus));
+    final String lastIDFragement = IterableExtensions.join(IterableExtensions.<String>drop(((Iterable<String>)Conversions.doWrapArray(tokens)), Math.max(_minus, 0)));
     return StringExtensions.toFirstUpper(lastIDFragement);
   }
   
