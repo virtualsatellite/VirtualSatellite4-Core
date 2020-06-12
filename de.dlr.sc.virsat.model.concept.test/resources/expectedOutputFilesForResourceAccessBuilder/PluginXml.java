@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package build;
+package testProject_ResourceAccessBuilderTest;
 
 public class PluginXml {
 	public static class Commands {

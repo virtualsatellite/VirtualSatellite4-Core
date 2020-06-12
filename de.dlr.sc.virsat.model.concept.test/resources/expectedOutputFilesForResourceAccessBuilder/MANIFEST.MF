@@ -1,29 +1,31 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
-Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.tests;singleton:=true
-Bundle-Version: 4.11.0.qualifier
-Bundle-ClassPath: .
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
+Bundle-Name: VirSat Test Resource Access Builder
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.testResource;singleton:=true
+Bundle-Version: 4.5.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport,
- de.dlr.sc.virsat.model;visibility:=reexport,
- de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
+ de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.model.external.tests;visibility:=reexport,
- de.dlr.sc.virsat.model.extension.maturity
+ org.eclipse.emf.edit,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.build,
+ de.dlr.sc.virsat.apps,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ de.dlr.sc.virsat.external.lib.apache.poi,
+ de.dlr.sc.virsat.excel
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
-Export-Package: de.dlr.sc.virsat.model.extension.tests,
- de.dlr.sc.virsat.model.extension.tests.model,
- de.dlr.sc.virsat.model.extension.tests.tests,
- de.dlr.sc.virsat.model.extension.tests.tests.impl,
- de.dlr.sc.virsat.model.extension.tests.tests.util,
- de.dlr.sc.virsat.model.extension.tests.validator
-Bundle-Activator: de.dlr.sc.virsat.model.extension.tests.Activator
-Automatic-Module-Name: de.dlr.sc.virsat.model.extension.tests
+Bundle-Activator: de.dlr.sc.virsat.model.extension.testResource.Activator
+Export-Package: de.dlr.sc.virsat.model.extension.testResource,
+ de.dlr.sc.virsat.model.extension.testResource.html,
+ de.dlr.sc.virsat.model.extension.testResource.model,
+ de.dlr.sc.virsat.model.extension.testResource.model.util,
+ de.dlr.sc.virsat.model.extension.testResource.validator
+
