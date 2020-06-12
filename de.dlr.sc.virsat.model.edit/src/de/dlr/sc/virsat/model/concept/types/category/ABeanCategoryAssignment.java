@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.category;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -41,12 +43,14 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	protected CategoryAssignmentHelper helper = new CategoryAssignmentHelper(null);
 	protected Concept concept;
 	
+	@XmlTransient
 	@Override
 	public void setTypeInstance(CategoryAssignment ti) {
 		super.setTypeInstance(ti);
 		helper.setCategoryAssignment(ti);
 	}
 	
+	@XmlTransient
 	@Override
 	public void setATypeInstance(ATypeInstance ti) {
 		super.setATypeInstance(ti);
