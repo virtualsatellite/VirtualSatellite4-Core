@@ -14,17 +14,25 @@ import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEq
 
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.Unmarshaller.Listener;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.IBeanObject;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.ATestCategoryBeanATest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
@@ -44,6 +52,7 @@ public class TestCategoryBeanATest extends ATestCategoryBeanATest {
 		// Setup the properties for the Jaxb Context and the Marshaler
 		Map<String, Object> properties = new HashMap<>();
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
 		
 		JAXBContext jaxbCtx = JAXBContext.newInstance(new Class[] {TestCategoryBeanA.class}, properties);
 		Marshaller jsonMarshaller = jaxbCtx.createMarshaller();
@@ -56,6 +65,42 @@ public class TestCategoryBeanATest extends ATestCategoryBeanATest {
 		
 		String expectedJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryBeanA_Marshaling.json");
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	@Test
+	public void testJsonUnMarshalling() throws JAXBException, IOException {
+		
+		// Setup the properties for the Jaxb Context and the Marshaler
+		Map<String, Object> properties = new HashMap<>();
+		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+		
+		
+		JAXBContext jaxbCtx = JAXBContext.newInstance(new Class[] {TestCategoryBeanA.class}, properties);
+		
+		Unmarshaller unmarshaller =  jaxbCtx.createUnmarshaller();
+		
+		TestCategoryBeanA originCatgeoryBean = new TestCategoryBeanA(concept);
+		
+		
+		unmarshaller.setListener(new Listener() {
+			@Override
+			public void beforeUnmarshal(Object target, Object parent) {
+				IBeanObject<ATypeInstance> beanA =  (IBeanObject<ATypeInstance>) target;
+			
+				ATypeInstance typeInstance = originCatgeoryBean.getTypeInstance();
+				beanA.setTypeInstance(typeInstance);
+			}
+			
+		});
+		
+		String inputJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryBeanA_Marshaling.json");
+		StringReader sr = new StringReader(inputJson);
+		
+		JAXBElement createdBeanA = (JAXBElement) unmarshaller.unmarshal(sr);
+		
+		System.out.println(createdBeanA);
+		
 	}
 	
 }
