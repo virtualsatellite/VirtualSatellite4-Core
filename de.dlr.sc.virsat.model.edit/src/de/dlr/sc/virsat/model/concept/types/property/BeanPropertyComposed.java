@@ -11,7 +11,7 @@ package de.dlr.sc.virsat.model.concept.types.property;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
@@ -44,7 +44,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	@Override
 	public Command setValue(EditingDomain ed, BEAN_TYPE value) {
 		// Can't set the composed ca on the bean level
-		return new CompoundCommand();
+		return UnexecutableCommand.INSTANCE;
 	}
 
 	@SuppressWarnings("unchecked")

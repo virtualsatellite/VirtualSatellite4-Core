@@ -60,10 +60,13 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 		assertEquals("The composed ca didn't change", testCategoryAllProperty, testCategoryComposition.getTestSubCategory());
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException .class)
 	public void testSetValueEditingDomain() {
 		Command setCommand = beanPropertyComposed.setValue(editingDomain, null);
 		assertFalse("Can't execute the command", setCommand.canExecute());
+		
+		// Should always throw UnsupportedOperationException
+		setCommand.execute();
 	}
 
 	@Test
