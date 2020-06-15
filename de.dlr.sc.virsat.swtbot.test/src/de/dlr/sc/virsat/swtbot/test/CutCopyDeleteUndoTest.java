@@ -11,6 +11,9 @@ package de.dlr.sc.virsat.swtbot.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+
+import java.io.IOException;
+
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 
@@ -44,7 +47,7 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 	}
 	
 	@Override
-	public void tearDown() throws CoreException {
+	public void tearDown() throws CoreException, IOException {
 		// In case of cut and paste actions on a SEI, the editing domain is not triggered for a save
 		// operation. Since the SEI has been well stored to a parent before, it does not to be stored 
 		// after a cut and paste. If the state would get lost (i.e. Not Saving), the SEI would be back

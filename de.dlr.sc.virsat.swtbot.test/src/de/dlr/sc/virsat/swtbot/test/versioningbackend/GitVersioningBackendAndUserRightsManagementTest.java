@@ -11,6 +11,9 @@ package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
+
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 
@@ -19,47 +22,74 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotGitBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_LOCAL = "SwtBotGitBackendLocalRepo";
 	
+	protected String upstreamRepoPathName;
+	protected String localRepoPathName;
+	
+	protected Path upstreamRepoPath;
+	protected Path localRepoPath;
+	
 	@Override
 	protected void setUpVersioningBackend() throws IOException {
-		//
-		Path upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
-		Path localRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_LOCAL);
+		// Create the temporary directories necessary to set up the repositories
+		upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
+		localRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_LOCAL);
 		
-		String upstreamRepoPathName = upstreamRepoPath.toString();
-		String localRepoPathName = localRepoPath.toString();
+		upstreamRepoPathName = upstreamRepoPath.toString();
+		localRepoPathName = localRepoPath.toString();
 		
 		// First step open the perspective for git operations
-		bot.toolbarButtonWithTooltip("Open Perspective").click();
-		bot.table().select("Git");
-		bot.button("Open").click();
+		openGitPerspective();
 		
 		// Open the dialog for creating a new repository
 		// Plan is to create a fake upstream repository as bare repository
 		// on the local file system first
 		bot.viewByTitle("Git Repositories").show();
 		bot.toolbarButtonWithTooltip("Create a new Git Repository and add it to this view").click();
-
 		bot.textWithLabel("Repository &directory:").setText(upstreamRepoPathName);
 		bot.checkBox("Create as bare repository").click();
 		bot.button("Create").click();
 		
 		// Now create the local repository which is based on the bare upstream repository
 		bot.toolbarButtonWithTooltip("Clone a Git Repository and add the clone to this view").click();
-		
 		bot.textWithLabel("UR&I:").setText("file://" + upstreamRepoPathName);
-
 		bot.button("Next >").click();
 		bot.button("Next >").click();
-		
 		bot.text().setText(localRepoPathName);
-		
 		bot.button("Finish").click();
 	}
 
+	/**
+	 * This method opens the standard Eclipse Git perspective
+	 */
+	protected void openGitPerspective() {
+		bot.toolbarButtonWithTooltip("Open Perspective").click();
+		bot.table().select("Git");
+		bot.button("Open").click();
+	}
+	
 	@Override
 	protected void shareTestProjectWithVersioningBackend() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	protected void tearDownVersioningBackend() throws IOException {
+		// First step open the perspective for git operations
+		openGitPerspective();
+		
+		// Remove the local repository first
+		SWTBotTreeItem treeLocalRepo = getTreeNodeStartingWith(upstreamRepoPath.getFileName().toString());
+		treeLocalRepo.contextMenu("Delete Repository...").click();
+		bot.checkBox("Delete Git repository data and history:").click();
+		bot.button("Delete").click();
+		
+		// Than remove the bare upstream repository
+		SWTBotTreeItem treeUpstreamRepo = getTreeNodeStartingWith(localRepoPath.getFileName().toString());
+		treeUpstreamRepo.contextMenu("Delete Repository...").click();
+		bot.button("OK").click();
+		
+		System.out.println("Test");
 	}
 
 }

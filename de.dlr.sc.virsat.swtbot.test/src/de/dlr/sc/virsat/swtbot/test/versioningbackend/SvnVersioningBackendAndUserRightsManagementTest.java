@@ -14,6 +14,7 @@ import java.nio.file.Path;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 
+
 public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotSvnBackendUpstreamRepo";
@@ -52,6 +53,12 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		// Create the initial commit
 		bot.styledText().setText("Initial commit");
 		bot.button("OK").click();
+	}
+
+	@Override
+	protected void tearDownVersioningBackend() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

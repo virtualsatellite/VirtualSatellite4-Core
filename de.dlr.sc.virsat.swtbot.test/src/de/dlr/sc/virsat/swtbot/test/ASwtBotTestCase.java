@@ -14,7 +14,9 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -129,7 +131,7 @@ public class ASwtBotTestCase {
 	}
 	
 	@After
-	public void tearDown() throws CoreException {
+	public void tearDown() throws CoreException, IOException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Tear Down: " + testMethodNameRule.getMethodName()));
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Tear Down Builder States:\n" + SwtBotDebugHelper.printBuilderStates()));
 		
@@ -345,6 +347,21 @@ public class ASwtBotTestCase {
 		} catch (WidgetNotFoundException e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * Call this method to hand back a tree node starting with the given string
+	 * @param nodeName the Part of the name the node should start with
+	 * @return the node in case it was found, otherwise null.
+	 */
+	protected SWTBotTreeItem getTreeNodeStartingWith(String nodeName) {
+		for (SWTBotTreeItem treeNode : Arrays.asList(bot.tree().getAllItems())) {
+			if (treeNode.getText().startsWith(nodeName)) {
+				return treeNode;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
