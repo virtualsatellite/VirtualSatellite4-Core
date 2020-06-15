@@ -9,8 +9,31 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
+import static org.junit.Assert.fail;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import de.dlr.sc.virsat.swtbot.test.ASwtBotTestCase;
 
 public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwtBotTestCase {
 
+	@Before
+	public void before() throws Exception {
+		super.before();
+	}
+	
+	protected abstract void setUpVersioningBackend();
+	
+	protected abstract void shareTestProjectWithVersioningBackend();
+	
+	@Test
+	public void testCommitProject() {
+		fail("Not yet implemented");
+	}	
+	
+	@Test
+	public void testUpdateProject() {
+		fail("Not yet implemented");
+	}
 }

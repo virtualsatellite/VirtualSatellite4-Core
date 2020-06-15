@@ -11,4 +11,16 @@ package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 public class GitVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
 
+	@Override
+	protected void setUpVersioningBackend() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void shareTestProjectWithVersioningBackend() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
