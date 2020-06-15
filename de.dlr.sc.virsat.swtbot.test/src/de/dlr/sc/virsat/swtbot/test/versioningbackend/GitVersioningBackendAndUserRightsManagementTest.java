@@ -84,13 +84,13 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 		openGitPerspective();
 		
 		// Remove the local repository first
-		SWTBotTreeItem treeLocalRepo = getTreeNodeStartingWith(upstreamRepoPath.getFileName().toString());
+		SWTBotTreeItem treeLocalRepo = getTreeNodeStartingWith(localRepoPath.getFileName().toString());
 		treeLocalRepo.contextMenu("Delete Repository...").click();
 		bot.checkBox("Delete Git repository data and history:").click();
 		bot.button("Delete").click();
 		
 		// Than remove the bare upstream repository
-		SWTBotTreeItem treeUpstreamRepo = getTreeNodeStartingWith(localRepoPath.getFileName().toString());
+		SWTBotTreeItem treeUpstreamRepo = getTreeNodeStartingWith(upstreamRepoPath.getFileName().toString());
 		treeUpstreamRepo.contextMenu("Delete Repository...").click();
 		bot.button("OK").click();
 	}
