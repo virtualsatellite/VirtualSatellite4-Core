@@ -13,6 +13,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,8 +35,29 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		shareTestProjectWithVersioningBackend();
 	}
 	
+	@Override
+	public void tearDown() throws CoreException, IOException {
+		super.tearDown();
+		
+		// Remove repositories after the test case execution
+		tearDownVersioningBackend();
+	}
+	
+	/**
+	 * Abstract method to be implemented to setup the versioning-backend for the test cases
+	 * @throws IOException
+	 */
 	protected abstract void setUpVersioningBackend() throws IOException;
 	
+	/**
+	 * Abstract method to be implemented to clean up and tear down the versioning-backend
+	 * @throws IOException
+	 */
+	protected abstract void tearDownVersioningBackend() throws IOException;
+	
+	/**
+	 * Abstract method to be implemented to share the standard test case project with the versioning-backend
+	 */
 	protected abstract void shareTestProjectWithVersioningBackend();
 	
 	@Test

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
+import java.io.IOException;
+
 public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
 
 	@Override
@@ -19,6 +21,12 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 
 	@Override
 	protected void shareTestProjectWithVersioningBackend() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void tearDownVersioningBackend() throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
