@@ -18,8 +18,9 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotSvnBackendUpstreamRepo";
-	public String upstreamRepoPathName;
-	public Path upstreamRepoPath;
+	protected Path upstreamRepoPath;
+	protected String upstreamRepoPathName;
+	protected String upstreamRepositoryPartName;
 	
 	@Override
 	protected void setUpVersioningBackend() throws IOException {
@@ -27,9 +28,10 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
 		
 		upstreamRepoPathName = upstreamRepoPath.toString();
+		upstreamRepositoryPartName = upstreamRepoPath.getFileName().toString();
 		
 		// First step open the perspective for svn operations
-		openGitPerspective();
+		openSvnPerspective();
 		bot.viewByTitle("SVN Repositories").show();
 		
 		// Open the dialog to create a new remote repository
@@ -42,7 +44,7 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 	/**
 	 * This method opens the standard Eclipse SVN perspective
 	 */
-	protected void openGitPerspective() {
+	protected void openSvnPerspective() {
 		bot.toolbarButtonWithTooltip("Open Perspective").click();
 		bot.table().select("SVN Repository Exploring");
 		bot.button("Open").click();
@@ -62,7 +64,6 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		bot.button("Finish").click();
 		
 		// Now wait until the project is actually shared
-		String upstreamRepositoryPartName = upstreamRepoPath.getFileName().toString();
 		while (getTreeNodeContaining(upstreamRepositoryPartName) == null) {
 			waitForEditingDomainAndUiThread();
 		}
@@ -72,11 +73,11 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 	
 	@Override
 	protected void tearDownVersioningBackend() throws IOException {
-		openGitPerspective();
+		openSvnPerspective();
 		bot.viewByTitle("SVN Repositories").show();
 		
-		getTreeNodeContaining(upstreamRepoPathName).contextMenu("Discard Location").click();
-		bot.button("Disconnect").click();
+		getTreeNodeContaining(upstreamRepositoryPartName).contextMenu("Discard Location").click();
+		bot.button("Yes").click();
 	}
 
 }

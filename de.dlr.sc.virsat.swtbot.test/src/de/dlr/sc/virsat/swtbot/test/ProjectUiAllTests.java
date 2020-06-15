@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendAndUse
 //	InheritanceTest.class,
 //	CalculationTest.class,
 //	ProductStructureTest.class,
-//	GitVersioningBackendAndUserRightsManagementTest.class,
+	GitVersioningBackendAndUserRightsManagementTest.class,
 	SvnVersioningBackendAndUserRightsManagementTest.class
 	})
 
