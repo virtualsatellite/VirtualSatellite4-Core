@@ -18,18 +18,17 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotSvnBackendUpstreamRepo";
+	public String upstreamRepoPathName;
 	
 	@Override
 	protected void setUpVersioningBackend() throws IOException {
 
 		Path upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
 		
-		String upstreamRepoPathName = upstreamRepoPath.toString();
+		upstreamRepoPathName = upstreamRepoPath.toString();
 		
 		// First step open the perspective for svn operations
-		bot.toolbarButtonWithTooltip("Open Perspective").click();
-		bot.table().select("SVN Repository Exploring");
-		bot.table().getTableItem("SVN Repository Exploring").doubleClick();
+		openGitPerspective();
 		bot.viewByTitle("SVN Repositories").show();
 		
 		// Open the dialog to create a new remote repository
@@ -37,6 +36,15 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		bot.textWithLabel("Repository Path:").setText(upstreamRepoPathName);
 		bot.button("OK").click();
 		
+	}
+	
+	/**
+	 * This method opens the standard Eclipse SVN perspective
+	 */
+	protected void openGitPerspective() {
+		bot.toolbarButtonWithTooltip("Open Perspective").click();
+		bot.table().select("SVN Repository Exploring");
+		bot.button("Open").click();
 	}
 
 	@Override
@@ -48,17 +56,20 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		// Open the share project dialog and share the project
 		bot.table().select("SVN");
 		bot.button("Next >").click();
+		bot.button("Next >").click();
+		bot.button("Next >").click();
+		bot.checkBox("Launch the Commit Dialog for the shared resources").click();
 		bot.button("Finish").click();
 		
-		// Create the initial commit
-		bot.styledText().setText("Initial commit");
-		bot.button("OK").click();
 	}
-
+	
 	@Override
 	protected void tearDownVersioningBackend() throws IOException {
-		// TODO Auto-generated method stub
+		openGitPerspective();
+		bot.viewByTitle("SVN Repositories").show();
 		
+		getTreeNodeContaining(upstreamRepoPathName).contextMenu("Discard Location").click();
+		bot.button("Disconnect").click();
 	}
 
 }

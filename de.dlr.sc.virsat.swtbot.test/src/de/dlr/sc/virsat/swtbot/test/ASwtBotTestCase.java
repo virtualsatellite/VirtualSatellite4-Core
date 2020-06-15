@@ -365,6 +365,21 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Call this method to hand back a tree node containing the given string
+	 * @param nodeName the Part of the name the node should contain
+	 * @return the node in case it was found, otherwise null.
+	 */
+	protected SWTBotTreeItem getTreeNodeContaining(String nodeName) {
+		for (SWTBotTreeItem treeNode : Arrays.asList(bot.tree().getAllItems())) {
+			if (treeNode.getText().contains(nodeName)) {
+				return treeNode;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * @param treeItem treeItem under whose document folder to create a new Diagram
 	 * @param type specifies the Diagram type
 	 */
