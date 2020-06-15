@@ -33,6 +33,8 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		openCorePerspective();
 
 		// Share the test project with the backend
+		
+		
 		shareTestProjectWithVersioningBackend();
 	}
 	
@@ -42,6 +44,8 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		
 		// Remove repositories after the test case execution
 		tearDownVersioningBackend();
+		
+		System.out.println("Miau");
 	}
 	
 	/**

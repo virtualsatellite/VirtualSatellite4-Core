@@ -19,11 +19,12 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotSvnBackendUpstreamRepo";
 	public String upstreamRepoPathName;
+	public Path upstreamRepoPath;
 	
 	@Override
 	protected void setUpVersioningBackend() throws IOException {
 
-		Path upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
+		upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
 		
 		upstreamRepoPathName = upstreamRepoPath.toString();
 		
@@ -60,6 +61,11 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		bot.checkBox("Launch the Commit Dialog for the shared resources").click();
 		bot.button("Finish").click();
 		
+		// Now wait until the project is actually shared
+		String upstreamRepositoryPartName = upstreamRepoPath.getFileName().toString();
+		while (getTreeNodeContaining(upstreamRepositoryPartName) == null) {
+			waitForEditingDomainAndUiThread();
+		}
 		
 		openVirtualSatelliteNavigatorView();
 	}
