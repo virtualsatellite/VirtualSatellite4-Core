@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
-
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
@@ -69,8 +67,15 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 	
 	@Override
 	protected void shareTestProjectWithVersioningBackend() {
-		// TODO Auto-generated method stub
+		openProjectExplorerView();
+		openShareProjectDialog();
+
+		bot.table().select("Git");
+		bot.button("Next >").click();
+		bot.comboBox().setSelection(0);
+		bot.button("Finish").click();
 		
+		openVirtualSatelliteNavigatorView();
 	}
 
 	@Override
@@ -88,8 +93,6 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 		SWTBotTreeItem treeUpstreamRepo = getTreeNodeStartingWith(localRepoPath.getFileName().toString());
 		treeUpstreamRepo.contextMenu("Delete Repository...").click();
 		bot.button("OK").click();
-		
-		System.out.println("Test");
 	}
 
 }
