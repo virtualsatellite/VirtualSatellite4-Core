@@ -40,6 +40,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.StringStartsWith;
@@ -77,6 +78,7 @@ public class ASwtBotTestCase {
 	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	protected static final int MAX_TEST_CASE_TIMEOUT_MILLISECONDS = 1000 * MAX_TEST_CASE_TIMEOUT_SECONDS;
 	protected static final int EDIT_UNDO_MENU_POSITION = 0;
 	protected static final int EDIT_REDO_MENU_POSITION = 1;
 	
@@ -394,7 +396,18 @@ public class ASwtBotTestCase {
 		Matcher<IEditorReference> matcher = withPartName(StringStartsWith.startsWith(label + " -> "));
 		bot.waitUntil(Conditions.waitForEditor(matcher));
 	}
-	
+
+	/**
+	 * Waits for the view to open
+	 * @param viewName view name such as "Console"
+	 */
+	protected void waitForView(String viewName) {
+		Matcher<IViewReference> matcher = withPartName(viewName);
+		
+		// Long timeout for situations when the view appears after some long background process (e.g. running an App)
+		bot.waitUntil(Conditions.waitForView(matcher), MAX_TEST_CASE_TIMEOUT_MILLISECONDS);
+	}
+
 	/**
 	 * closes the dialog and waits
 	 * @param buttonName the name of the button which closes the dialog
