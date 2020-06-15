@@ -9,9 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static org.junit.Assert.assertEquals;
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
-
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -24,15 +22,17 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.Unmarshaller.Listener;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.IBeanObject;
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.ATestCategoryBeanATest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
@@ -75,14 +75,24 @@ public class TestCategoryBeanATest extends ATestCategoryBeanATest {
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
 		
+		TestCategoryBeanA originCatgeoryBean = new TestCategoryBeanA(concept);
+		originCatgeoryBean.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
+		
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(originCatgeoryBean.getATypeInstance());
 		
 		JAXBContext jaxbCtx = JAXBContext.newInstance(new Class[] {TestCategoryBeanA.class}, properties);
 		
-		Unmarshaller unmarshaller =  jaxbCtx.createUnmarshaller();
+		Unmarshaller unmarshaller = jaxbCtx.createUnmarshaller();
+		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
+		unmarshaller.setAdapter(typeInstanceAdapter);
 		
-		TestCategoryBeanA originCatgeoryBean = new TestCategoryBeanA(concept);
-		
-		
+		Marshaller marshaller = jaxbCtx.createMarshaller();
+		marshaller.marshal(originCatgeoryBean, System.out);
+		/*
 		unmarshaller.setListener(new Listener() {
 			@Override
 			public void beforeUnmarshal(Object target, Object parent) {
@@ -93,6 +103,7 @@ public class TestCategoryBeanATest extends ATestCategoryBeanATest {
 			}
 			
 		});
+		*/
 		
 		String inputJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryBeanA_Marshaling.json");
 		StringReader sr = new StringReader(inputJson);

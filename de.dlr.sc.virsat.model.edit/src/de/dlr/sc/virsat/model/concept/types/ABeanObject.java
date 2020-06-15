@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types;
 
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -62,7 +63,7 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}
-	
+
 	@Override
 	public String getUuid() {
 		return ti.getUuid().toString();
