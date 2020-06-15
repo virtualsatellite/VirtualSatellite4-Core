@@ -14,6 +14,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,6 +60,14 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	 * Abstract method to be implemented to share the standard test case project with the versioning-backend
 	 */
 	protected abstract void shareTestProjectWithVersioningBackend();
+	
+	/**
+	 * Method to open the share project dialog
+	 */
+	protected void openShareProjectDialog() {
+		SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject").select();
+		projectNode.contextMenu("Team").menu("Share Project...").click();
+	}
 	
 	@Test
 	public void testCommitProject() {

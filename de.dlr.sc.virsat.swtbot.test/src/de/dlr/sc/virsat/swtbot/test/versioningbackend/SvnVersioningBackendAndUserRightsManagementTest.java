@@ -41,9 +41,8 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 
 	@Override
 	protected void shareTestProjectWithVersioningBackend() {
-		// Open the context menu of the test project
-		bot.viewByTitle("Project Explorer").show();
-		bot.tree().getTreeItem(SWTBOT_TEST_PROJECTNAME).contextMenu("Team").menu("Share Project...").click();
+		openProjectExplorerView();
+		openShareProjectDialog();
 		
 		// Open the share project dialog and share the project
 		bot.table().select("SVN");
@@ -53,6 +52,8 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		// Create the initial commit
 		bot.styledText().setText("Initial commit");
 		bot.button("OK").click();
+		
+		openVirtualSatelliteNavigatorView();
 	}
 
 	@Override

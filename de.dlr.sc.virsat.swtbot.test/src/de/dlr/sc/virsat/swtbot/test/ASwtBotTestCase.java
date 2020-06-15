@@ -499,12 +499,30 @@ public class ASwtBotTestCase {
 		waitForEditingDomainAndUiThread(); 
 	}
 	
+	/**
+	 * Call this method to show the virtual satellite core perspective
+	 */
 	protected void openCorePerspective() {
 		bot.menu("Window").menu("Perspective").menu("Open Perspective").menu("Other...").click();
 		waitForEditingDomainAndUiThread();
 		bot.table().select("VirSat - Core (default)");
 		bot.button("Open").click();
 		waitForEditingDomainAndUiThread(); 
+	}
+	
+	/**
+	 * Method to bring the VirSatNavigator view to the front
+	 */
+	protected void openVirtualSatelliteNavigatorView() {
+		bot.viewByTitle("VirSat Navigator").show();
+		
+	}
+	
+	/**
+	 * Method to bring the ProjectExplorer View to the front
+	 */
+	protected void openProjectExplorerView() {
+		bot.viewByTitle("Project Explorer").show();
 	}
 	
 	/**
