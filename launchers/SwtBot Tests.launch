@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
 <setAttribute key="additional_plugins">
-<setEntry value="de.dlr.sc.virsat.swtbot.test:4.10.0.qualifier:default:false"/>
+<setEntry value="de.dlr.sc.virsat.swtbot.test:4.11.0.qualifier:default:false"/>
 </setAttribute>
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="false"/>
