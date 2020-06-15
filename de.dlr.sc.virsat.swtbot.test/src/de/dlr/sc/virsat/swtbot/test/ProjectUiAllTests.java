@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * 
+ *
  * @author muel_s8
  *
  */
@@ -21,12 +21,13 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
+	StateMachineDiagramTest.class,
 	FuncElectricalDiagramTest.class,
 	EditorTest.class,
 	NewProjectWizardTest.class,
 	CutCopyDeleteUndoTest.class,
-	InheritanceTest.class, 
-	CalculationTest.class,   
+	InheritanceTest.class,
+	CalculationTest.class,
 	ProductStructureTest.class
 	})
 
