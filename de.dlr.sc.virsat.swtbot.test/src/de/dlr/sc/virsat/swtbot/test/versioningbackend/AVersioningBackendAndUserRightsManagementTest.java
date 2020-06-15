@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,9 +23,18 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	@Before
 	public void before() throws Exception {
 		super.before();
+		
+		// Now prepare the versioning-backends
+		setUpVersioningBackend();
+		
+		// Switch back to virtual Satellite perspective
+		openCorePerspective();
+
+		// Share the test project with the backend
+		shareTestProjectWithVersioningBackend();
 	}
 	
-	protected abstract void setUpVersioningBackend();
+	protected abstract void setUpVersioningBackend() throws IOException;
 	
 	protected abstract void shareTestProjectWithVersioningBackend();
 	
