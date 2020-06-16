@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertSameWidget;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertText;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertVisible;
+import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTooltip;
 import static org.hamcrest.Matchers.allOf;
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,11 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.forms.widgets.Section;
 import org.junit.Before;
@@ -53,12 +59,12 @@ public class ValidatorTest extends ASwtBotTestCase {
 	public void before() throws Exception {
 		super.before();
 		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
+		problemView = openView(PROBLEM_VIEW_ID);
 	}
 	
 	@Test
 	public void testValidateSeiName() {
 		// Initially there are no warnings
-		problemView = openView(PROBLEM_VIEW_ID);
 		assertFalse(problemView.bot().tree().hasItems());
 		
 		// Create seis with incorrect names and then close the editors
@@ -105,7 +111,6 @@ public class ValidatorTest extends ASwtBotTestCase {
 	@Test
 	public void testValidateCaName() {
 		// Initially there are no warnings
-		problemView = openView(PROBLEM_VIEW_ID);
 		assertFalse(problemView.bot().tree().hasItems());
 		
 		// Create seis with incorrect names and then close the editors
@@ -155,7 +160,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 		errors.getNode(EXPEDTED_ERROR).doubleClick();
 		assertText(ElementConfiguration.class.getSimpleName(), bot.textWithLabel(UiSnippetIName.NAME_FIELD));
 	}
-	
+
 	@Test
 	public void testWarningInGenericEditor() {
 		// Create sei with some warning
@@ -164,22 +169,9 @@ public class ValidatorTest extends ASwtBotTestCase {
 		renameField(UiSnippetIName.NAME_FIELD, "");
 		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
 		
-		// Check that clicking the header link collapses all sections which have no warning (i.e. all except the name section)
-		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EMPTY_NAME_WARNING);
-		buildCounter.executeInterlocked(() -> swtBotHyperlink.click());
-		
-		List<SwtBotSection> expandedSwtBotSections = getExpandedSections();
-		SwtBotSection nameSection = getSWTBotSection(UiSnippetIName.SECTION_HEADING);
-		
-		assertEquals(1, expandedSwtBotSections.size());
-		assertSameWidget(nameSection.widget, expandedSwtBotSections.get(0).widget);
-		
-		// Check that the header label has the right tooltip text
-		String tooltip = swtBotHyperlink.getToolTipText();
-		assertEquals(EMPTY_NAME_WARNING, tooltip);
-		
 		// Check that there is a warning icon with the correct tooltip in the name section
 		// Note that icons are implemented via label with image
+		SwtBotSection nameSection = getSWTBotSection(UiSnippetIName.SECTION_HEADING);
 		List<Label> iconLabels = bot.getFinder()
 				.findControls(nameSection.widget, allOf(widgetOfType(Label.class), withTooltip(EMPTY_NAME_WARNING)), true);
 		SWTBotLabel swtIcon = new SWTBotLabel(iconLabels.get(0));
@@ -188,6 +180,22 @@ public class ValidatorTest extends ASwtBotTestCase {
 		
 		assertVisible(swtIcon);
 		assertEquals(expectedIcon, actualIcon);
+		
+		// Unexpand the name section
+		nameSection.click();
+		
+		// Check that clicking the header link collapses all sections which have no warning (i.e. all except the name section)
+		// and expands those with a warning (i.e. the name section)
+		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EMPTY_NAME_WARNING);
+		swtBotHyperlink.click();
+		
+		List<SwtBotSection> expandedSwtBotSections = getExpandedSections();
+		assertEquals(1, expandedSwtBotSections.size());
+		assertSameWidget(nameSection.widget, expandedSwtBotSections.get(0).widget);
+		
+		// Check that the header label has the right tooltip text
+		String tooltip = swtBotHyperlink.getToolTipText();
+		assertEquals(EMPTY_NAME_WARNING, tooltip);
 	}
 	
 	@Test
@@ -199,19 +207,36 @@ public class ValidatorTest extends ASwtBotTestCase {
 		openEditor(dotCa);
 		renameField(UiSnippetIName.NAME_FIELD, ".");
 		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		
+		bot.closeAllEditors();
 		openEditor(ec);
 		
+		// Check that there is an error icon in the document table
+		SwtBotSection documentSection = getSWTBotSection(Document.class);
+		SWTBotTable documentTable = documentSection.getSWTBotTable();
+		SWTBotTableItem documentNameItem = documentTable.getTableItem(0).click(0);
+		
+		Image actualIcon = getImageForTableItem(documentNameItem);
+		Image expectedIcon = new MarkerImageProvider(null).getProblemImageForSeverity(IMarker.SEVERITY_ERROR);
+		assertEquals(expectedIcon, actualIcon);
+		
+		// Unexpand the document section
+		//documentSection.click();
+		
 		// Check that clicking the header link collapses all sections which have no error (i.e. all except the document section)
+		// and expands those with an error (i.e. the document section)
 		final String EXPEDTED_ERROR = DvlmNamingConventionValidator.WARNING_PREFIX 
 				+ ConfigurationTree.class.getSimpleName() + "."
 				+ ElementConfiguration.class.getSimpleName() + ".."
 				+ DvlmNamingConventionValidator.WARNING_DOTS_SUFFIX;
-		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EXPEDTED_ERROR);		
-		buildCounter.executeInterlocked(() -> swtBotHyperlink.click());
+		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EXPEDTED_ERROR);	
+		
+		// Clicking on hyperlinks that are not directly in view (which is the case here) has no effect
+		// Setting the widget into focus and then hitting enter as a workaround
+		swtBotHyperlink.setFocus();
+		swtBotHyperlink.pressShortcut(Keystrokes.CR);
 		
 		List<SwtBotSection> expandedSwtBotSections = getExpandedSections();
-		SwtBotSection documentSection = getSWTBotSection(Document.class);
-		
 		assertEquals(1, expandedSwtBotSections.size());
 		assertSameWidget(documentSection.widget, expandedSwtBotSections.get(0).widget);
 		
@@ -251,5 +276,21 @@ public class ValidatorTest extends ASwtBotTestCase {
 	private SWTBotTreeItem getErrors(int countExpectedErrors) {
 		String plural = (countExpectedErrors > 1) ? "s" : "";
 		return problemView.bot().tree().getTreeItem("Errors (" + countExpectedErrors + " item" + plural + ")");
+	}
+	
+	/**
+	 * Gets the image of a table item
+	 * @param swtBotTableItem the swtbot table item
+	 * @return the image of the table item
+	 */
+	private Image getImageForTableItem(SWTBotTableItem swtBotTableItem) {
+		List<Image> image = new ArrayList<>();
+		syncExec(new BoolResult() {
+			public Boolean run() {
+				image.add(swtBotTableItem.widget.getImage());
+				return true;
+			}
+		});
+		return image.get(0);
 	}
 }
