@@ -9,8 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.nio.file.Path;
+
+import org.eclipse.swtbot.eclipse.finder.matchers.WithTitle;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.hamcrest.core.StringContains;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 
@@ -78,6 +87,36 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		
 		getTreeNodeContaining(upstreamRepositoryPartName).contextMenu("Discard Location").click();
 		bot.button("Yes").click();
+	}
+
+	@Override
+	protected void testCommitProjectAssert() {
+		openSvnPerspective();
+		
+		// Retrieve the commit messages
+		String commitMessageUpstream = getCommitMessageFor(TEST_REPO_PATH_UPSTREAM);
+		
+		// Now get the commit message in the remote repository
+		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE, commitMessageUpstream);
+	}
+	
+	protected String getCommitMessageFor(String repoName) {
+		// Assert that commit message arrived in Local Repository
+		bot.viewByTitle("SVN Repositories").show();
+		getTreeNodeContaining(repoName).select();
+		
+		// Open the history view and get the entry from the commit
+		SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
+		historyView.show();
+		SWTBotTable historyTable =  historyView.bot().table();
+		SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
+	
+//		SWTBotTree historyTree = historyView.bot().tree();
+//		historyTree.getAllItems();
+		
+		// Retrieve the commit message
+		String commitMessage = historyTableItem0.getText(1);
+		return commitMessage;
 	}
 
 }
