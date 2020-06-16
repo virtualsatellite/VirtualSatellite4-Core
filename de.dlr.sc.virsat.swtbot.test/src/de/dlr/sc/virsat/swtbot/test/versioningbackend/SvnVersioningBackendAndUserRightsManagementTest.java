@@ -19,6 +19,7 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.StringContains;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
@@ -102,20 +103,17 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 	
 	protected String getCommitMessageFor(String repoName) {
 		// Assert that commit message arrived in Local Repository
+
 		bot.viewByTitle("SVN Repositories").show();
 		getTreeNodeContaining(repoName).select();
 		
 		// Open the history view and get the entry from the commit
 		SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
 		historyView.show();
-		SWTBotTable historyTable =  historyView.bot().table();
-		SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
-	
-//		SWTBotTree historyTree = historyView.bot().tree();
-//		historyTree.getAllItems();
+		SWTBotTree historyTable =  historyView.bot().tree();
+		SWTBotTreeItem historyTableItem0 = historyTable.getAllItems()[0];
+		String commitMessage = historyTableItem0.cell(4);
 		
-		// Retrieve the commit message
-		String commitMessage = historyTableItem0.getText(1);
 		return commitMessage;
 	}
 
