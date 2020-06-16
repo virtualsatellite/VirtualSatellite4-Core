@@ -845,6 +845,8 @@ public class ASwtBotTestCase {
 				runnable.run();
 				Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
 
+				
+				
 				// Now wait that all scheduled builders are done and update the UI
 				Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: Wait for jobs to be done after execution and counting"));
 				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);

@@ -11,10 +11,16 @@ package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.swtbot.eclipse.finder.matchers.WithTitle;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -23,6 +29,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.StringContains;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 public class GitVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
 
@@ -149,12 +156,47 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 	protected void testUpdateProjectChangeAndCommitRemote() throws Exception {
 		remoteRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_REMOTE);
 		
-		Git.cloneRepository()
+		Repository remoteGitRepository = Git.cloneRepository()
 			.setURI(upstreamRepoPath.toUri().toString())
 			.setDirectory(remoteRepoPath.toFile())
+			.call()
+			.getRepository();
+		
+		// Now where the repository is cloned change the System Entry and commit everything
+		String repoRoleManagementFileName = SWTBOT_TEST_PROJECTNAME + File.separator
+				+ VirSatProjectCommons.FOLDERNAME_DATA + File.separator
+				+ VirSatProjectCommons.FILENAME_ROLE_MANAGEMENT;
+		Path pathRepoRoleManagementFile = new File(
+				remoteRepoPath.toFile(), repoRoleManagementFileName).toPath(); 
+				
+		String content = new String(Files.readAllBytes(pathRepoRoleManagementFile), StandardCharsets.UTF_8);
+		content = content.replaceAll("System", "SubSystem");
+		Files.write(pathRepoRoleManagementFile, content.getBytes(StandardCharsets.UTF_8));
+		
+		// Start committing everything by staging the files, issue the commit and the push
+//		Git.wrap(remoteGitRepository)
+//			.add()
+//			.addFilepattern(".")
+//			.call();
+//	
+//		Status status = Git.wrap(remoteGitRepository).status().call();
+//
+//        Set<String> added = status.getAdded();
+//        for (String add : added) {
+//            System.out.println("Added: " + add);
+//        }
+		
+		Git.wrap(remoteGitRepository)
+			.commit()
+			.setAll(true)
+			.setMessage(SWTBOT_COMMIT_MESSAGE_REMOTE)
 			.call();
 		
+		Git.wrap(remoteGitRepository)
+			.push()
+			.call();
 		
-		
+		Git.wrap(remoteGitRepository)
+			.close();
 	}
 }

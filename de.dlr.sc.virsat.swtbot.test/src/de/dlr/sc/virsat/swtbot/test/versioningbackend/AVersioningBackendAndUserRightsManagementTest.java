@@ -9,11 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +72,7 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	}
 	
 	public static final String SWTBOT_COMMIT_MESSAGE = "SwtBotTest - Commit Message!";
+	public static final String SWTBOT_COMMIT_MESSAGE_REMOTE = "SwtBotTest - Commit from Remote!";
 	
 	@Test
 	public void testCommitProject() {
@@ -114,6 +117,33 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		
 		testUpdateProjectChangeAndCommitRemote();
 		
+		// Now open the VirSat Navigator and the RoleManagement Editor
+		// Run the update and check that both the navigator and the editor received the correct update
+		openCorePerspective();
+		openVirtualSatelliteNavigatorView();
+		
+		// Prepare the Navigator to display the Discipline and open the editor
+		SWTBotTreeItem roleManagementNode = bot.tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
+		roleManagementNode.expand();
+		roleManagementNode.getNode("Discipline: System");
+		roleManagementNode.doubleClick();
+		
+		// run the update in Virtual Satellite
+		buildCounter.executeInterlocked(() -> {
+			roleManagementNode.contextMenu("Update Project from Repository").click();
+		});
+		
+		// Now crawl the navigator again to see if the correct node is present
+		SWTBotTreeItem roleManagementNodeUpdate = bot.tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
+		roleManagementNodeUpdate.expand();
+		roleManagementNodeUpdate.getNode("Discipline: SubSystem");
+		
+		// open the editor and check if the discipline has been updated
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.show();
+		String editorDisciplineUpdate = rmEditor.bot().table().getTableItem(0).getText();
+	
+		assertEquals("Got correct discipline", "SubSystem", editorDisciplineUpdate);
 	}
 
 	/**
