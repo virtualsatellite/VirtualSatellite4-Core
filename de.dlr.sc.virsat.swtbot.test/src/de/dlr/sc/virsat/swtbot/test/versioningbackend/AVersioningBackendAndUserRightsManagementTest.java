@@ -71,6 +71,8 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		projectNode.contextMenu("Team").menu("Share Project...").click();
 	}
 	
+	public static final String SWTBOT_COMMIT_MESSAGE = "SwtBotTest - Commit Message!";
+	
 	@Test
 	public void testCommitProject() {
 	
@@ -83,7 +85,7 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
 			projectNode.select();
 			projectNode.contextMenu("Commit Project to Repository").click();
-			bot.text().setText("SwtBotTest - Commit Message!");
+			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
 			bot.button("OK").click();
 		});
 		

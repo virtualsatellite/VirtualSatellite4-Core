@@ -9,11 +9,19 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.eclipse.swtbot.eclipse.finder.matchers.WithTitle;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.core.StringContains;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 
@@ -102,16 +110,33 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 	
 		openGitPerspective();
 		
+		// Retrieve the commit messages
+		String commitMessageLocal = getCommitMessageFor(TEST_REPO_PATH_LOCAL);
+		String commitMessageUpstream = getCommitMessageFor(TEST_REPO_PATH_UPSTREAM);
+		
+		// Now get the commit message in the remote repository
+		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE, commitMessageLocal);
+		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE, commitMessageUpstream);
+	}
+	
+	/**
+	 * Method to retrieve the latest commit message from a Git Repository
+	 * @param repoName The name of the Repo to get the message for
+	 * @return The Commit message as string.
+	 */
+	protected String getCommitMessageFor(String repoName) {
 		// Assert that commit message arrived in Local Repository
 		bot.viewByTitle("Git Repositories").show();
-		getTreeNodeContaining(TEST_REPO_PATH_LOCAL).select();
-		bot.viewById("org.eclipse.team.ui.GenericHistoryView").show();
-		SWTBotTableItem historyTable = bot.table().getTableItem(0);
+		getTreeNodeContaining(repoName).select();
 		
-		String message = historyTable.getText();
-		String message0 = historyTable.getText(0);
-		String message1 = historyTable.getText(1);
-		
+		// Open the history view and get the entry from the commit
+		SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
+		historyView.show();
+		SWTBotTable historyTable =  historyView.bot().table();
+		SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
+	
+		// Retrieve the commit message
+		String commitMessage = historyTableItem0.getText(1);
+		return commitMessage;
 	}
-
 }
