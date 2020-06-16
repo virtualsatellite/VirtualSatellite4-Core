@@ -33,8 +33,6 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		openCorePerspective();
 
 		// Share the test project with the backend
-		
-		
 		shareTestProjectWithVersioningBackend();
 	}
 	
@@ -75,9 +73,30 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	
 	@Test
 	public void testCommitProject() {
-		fail("Not yet implemented");
+	
+		openVirtualSatelliteNavigatorView();
+		
+		// Use the context menu to commit the project and add a message
+		// into the commit dialog. The message will be used for testing 
+		// later, if the commit has arrived as exepected.
+		buildCounter.executeInterlocked(() -> {
+			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
+			projectNode.select();
+			projectNode.contextMenu("Commit Project to Repository").click();
+			bot.text().setText("SwtBotTest - Commit Message!");
+			bot.button("OK").click();
+		});
+		
+		// Call backend specific assertion of commit results;
+		testCommitProjectAssert();
 	}	
 	
+	/**
+	 * method to be implemented for backend specific assert code
+	 * of the basic Commit test.
+	 */
+	protected abstract void testCommitProjectAssert();
+
 	@Test
 	public void testUpdateProject() {
 		fail("Not yet implemented");

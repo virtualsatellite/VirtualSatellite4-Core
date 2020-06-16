@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import java.io.IOException;
 import java.nio.file.Path;
+
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
@@ -93,6 +95,23 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 		SWTBotTreeItem treeUpstreamRepo = getTreeNodeStartingWith(upstreamRepoPath.getFileName().toString());
 		treeUpstreamRepo.contextMenu("Delete Repository...").click();
 		bot.button("OK").click();
+	}
+
+	@Override
+	protected void testCommitProjectAssert() {
+	
+		openGitPerspective();
+		
+		// Assert that commit message arrived in Local Repository
+		bot.viewByTitle("Git Repositories").show();
+		getTreeNodeContaining(TEST_REPO_PATH_LOCAL).select();
+		bot.viewById("org.eclipse.team.ui.GenericHistoryView").show();
+		SWTBotTableItem historyTable = bot.table().getTableItem(0);
+		
+		String message = historyTable.getText();
+		String message0 = historyTable.getText(0);
+		String message1 = historyTable.getText(1);
+		
 	}
 
 }
