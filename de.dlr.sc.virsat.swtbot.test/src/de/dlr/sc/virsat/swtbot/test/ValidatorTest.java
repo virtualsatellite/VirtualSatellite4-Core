@@ -182,7 +182,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 		
 		// Check that clicking the header link collapses all sections which have no warning (i.e. all except the name section)
 		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EMPTY_NAME_WARNING);
-		swtBotHyperlink.click();
+		buildCounter.executeInterlocked(() -> swtBotHyperlink.click());
 		
 		List<SwtBotSection> expandedSwtBotSections = getExpandedSections();
 		assertEquals(1, expandedSwtBotSections.size());
@@ -224,7 +224,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 				+ ConfigurationTree.class.getSimpleName() + ".ec.."
 				+ DvlmNamingConventionValidator.WARNING_DOTS_SUFFIX;
 		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EXPEDTED_ERROR);
-		swtBotHyperlink.click();
+		buildCounter.executeInterlocked(() -> swtBotHyperlink.click());
 		
 		List<SwtBotSection> expandedSwtBotSections = getExpandedSections();
 		assertEquals(1, expandedSwtBotSections.size());
