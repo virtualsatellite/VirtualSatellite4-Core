@@ -42,8 +42,6 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		
 		// Remove repositories after the test case execution
 		tearDownVersioningBackend();
-		
-		System.out.println("Miau");
 	}
 	
 	/**

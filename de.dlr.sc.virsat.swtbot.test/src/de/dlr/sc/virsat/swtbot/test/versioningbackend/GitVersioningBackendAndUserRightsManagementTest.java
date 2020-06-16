@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
-import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -19,7 +18,6 @@ import org.eclipse.swtbot.eclipse.finder.matchers.WithTitle;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.core.StringContains;
 
@@ -94,13 +92,17 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 		openGitPerspective();
 		
 		// Remove the local repository first
-		SWTBotTreeItem treeLocalRepo = getTreeNodeStartingWith(localRepoPath.getFileName().toString());
+		SWTBotView botRepoView = bot.viewByTitle("Git Repositories");
+		botRepoView.show();
+		botRepoView.setFocus();
+		
+		SWTBotTreeItem treeLocalRepo = getTreeNodeContaining(TEST_REPO_PATH_LOCAL);
 		treeLocalRepo.contextMenu("Delete Repository...").click();
 		bot.checkBox("Delete Git repository data and history:").click();
 		bot.button("Delete").click();
 		
 		// Than remove the bare upstream repository
-		SWTBotTreeItem treeUpstreamRepo = getTreeNodeStartingWith(upstreamRepoPath.getFileName().toString());
+		SWTBotTreeItem treeUpstreamRepo = getTreeNodeContaining(TEST_REPO_PATH_UPSTREAM);
 		treeUpstreamRepo.contextMenu("Delete Repository...").click();
 		bot.button("OK").click();
 	}
