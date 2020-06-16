@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -56,11 +57,15 @@ public class ValidatorTest extends ASwtBotTestCase {
 	
 	@Before
 	public void before() throws Exception {
-		bot.resetWorkbench();
-		
 		super.before();
 		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		problemView = openView(PROBLEM_VIEW_ID);
+	}
+	
+	@Override
+	public void tearDown() throws CoreException {
+		super.tearDown();
+		bot.resetWorkbench();
 	}
 	
 	@Test
