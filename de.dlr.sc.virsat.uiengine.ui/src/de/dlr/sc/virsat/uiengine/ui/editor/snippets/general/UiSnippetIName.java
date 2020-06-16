@@ -40,7 +40,9 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetIName extends AUiEStructuralFeatureSectionSnippet implements IUiSnippet {
 
-	private static final String SECTION_HEADING = "Name Section";
+	public static final String SECTION_HEADING = "Name Section";
+	public static final String NAME_FIELD = "Name";
+	
 	private static final int UI_LAYOUT_NR_COLUMNS =  2;	
 	
 	private EsfMarkerImageProvider emip;
