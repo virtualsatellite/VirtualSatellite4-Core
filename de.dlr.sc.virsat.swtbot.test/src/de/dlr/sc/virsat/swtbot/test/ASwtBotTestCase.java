@@ -437,7 +437,6 @@ public class ASwtBotTestCase {
 	 */
 	protected void createProject(String projectName) {
 		bot.viewById("de.dlr.sc.virsat.project.ui.navigator.view").toolbarButton("New VirSat Project").click();
-		waitForEditingDomainAndUiThread();
 		bot.textWithLabel("Project name:").setText(projectName);
 		bot.button("Finish").click();
 		waitForEditingDomainAndUiThread();

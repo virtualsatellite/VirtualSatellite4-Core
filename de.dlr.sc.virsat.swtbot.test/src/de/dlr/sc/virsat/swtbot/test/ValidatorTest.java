@@ -195,6 +195,8 @@ public class ValidatorTest extends ASwtBotTestCase {
 		// Check that the header label has the right tooltip text
 		String tooltip = swtBotHyperlink.getToolTipText();
 		assertEquals(EMPTY_NAME_WARNING, tooltip);
+		
+		bot.resetWorkbench();
 	}
 	
 	@Test
