@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.swtbot.util;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -23,8 +24,9 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	
 	@Override
 	public AbstractSWTBot<Hyperlink> click() {
-		// Increase invisible of inherited method and 
-		// redirect to standard implementation doing a center click
-		return super.click(true);
+		// Clicking on hyperlinks that are not directly in view (which is the case here) has no effect
+		// Setting the widget into focus and then hitting enter as a workaround
+		setFocus();
+		return pressShortcut(Keystrokes.CR);
 	}
 }

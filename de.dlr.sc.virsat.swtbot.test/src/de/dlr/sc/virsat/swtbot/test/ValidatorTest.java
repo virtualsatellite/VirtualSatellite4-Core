@@ -28,7 +28,6 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -221,7 +220,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 		assertEquals(expectedIcon, actualIcon);
 		
 		// Unexpand the document section
-		//documentSection.click();
+		documentSection.click();
 		
 		// Check that clicking the header link collapses all sections which have no error (i.e. all except the document section)
 		// and expands those with an error (i.e. the document section)
@@ -229,12 +228,8 @@ public class ValidatorTest extends ASwtBotTestCase {
 				+ ConfigurationTree.class.getSimpleName() + "."
 				+ ElementConfiguration.class.getSimpleName() + ".."
 				+ DvlmNamingConventionValidator.WARNING_DOTS_SUFFIX;
-		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EXPEDTED_ERROR);	
-		
-		// Clicking on hyperlinks that are not directly in view (which is the case here) has no effect
-		// Setting the widget into focus and then hitting enter as a workaround
-		swtBotHyperlink.setFocus();
-		swtBotHyperlink.pressShortcut(Keystrokes.CR);
+		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EXPEDTED_ERROR);
+		swtBotHyperlink.click();
 		
 		List<SwtBotSection> expandedSwtBotSections = getExpandedSections();
 		assertEquals(1, expandedSwtBotSections.size());
