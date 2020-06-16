@@ -56,6 +56,8 @@ public class ValidatorTest extends ASwtBotTestCase {
 	
 	@Before
 	public void before() throws Exception {
+		bot.resetWorkbench();
+		
 		super.before();
 		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 		problemView = openView(PROBLEM_VIEW_ID);
@@ -195,8 +197,6 @@ public class ValidatorTest extends ASwtBotTestCase {
 		// Check that the header label has the right tooltip text
 		String tooltip = swtBotHyperlink.getToolTipText();
 		assertEquals(EMPTY_NAME_WARNING, tooltip);
-		
-		bot.resetWorkbench();
 	}
 	
 	@Test
