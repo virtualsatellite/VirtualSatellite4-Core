@@ -26,8 +26,10 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	public AbstractSWTBot<Hyperlink> click() {
 		// Clicking on hyperlinks that are not directly in view (which is the case here) has no effect
 		// Setting the widget into focus and then hitting enter as a workaround
+		this.click(true);
 		setFocus();
 		pressShortcut(Keystrokes.CR);
-		return pressShortcut(Keystrokes.LF);
+		pressShortcut(Keystrokes.LF);
+		return pressShortcut(Keystrokes.ESC);
 	}
 }
