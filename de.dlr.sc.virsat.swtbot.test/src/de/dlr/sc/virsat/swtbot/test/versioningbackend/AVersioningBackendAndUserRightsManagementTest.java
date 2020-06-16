@@ -78,7 +78,7 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		
 		// Use the context menu to commit the project and add a message
 		// into the commit dialog. The message will be used for testing 
-		// later, if the commit has arrived as exepected.
+		// later, if the commit has arrived as expected.
 		buildCounter.executeInterlocked(() -> {
 			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
 			projectNode.select();
@@ -98,7 +98,28 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	protected abstract void testCommitProjectAssert();
 
 	@Test
-	public void testUpdateProject() {
-		fail("Not yet implemented");
+	public void testUpdateProject() throws Exception {
+		openVirtualSatelliteNavigatorView();
+		
+		// Use the context menu to commit the project and add a message
+		// into the commit dialog. The message will be used for testing 
+		// later, if the commit has arrived as expected.
+		buildCounter.executeInterlocked(() -> {
+			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
+			projectNode.select();
+			projectNode.contextMenu("Commit Project to Repository").click();
+			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
+			bot.button("OK").click();
+		});
+		
+		testUpdateProjectChangeAndCommitRemote();
+		
 	}
+
+	/**
+	 * Implement this method to change the repository via a remote instance of it.
+	 * A good change could be to give something a new name, etc.
+	 * @throws Exception 
+	 */
+	protected abstract void testUpdateProjectChangeAndCommitRemote() throws Exception;
 }

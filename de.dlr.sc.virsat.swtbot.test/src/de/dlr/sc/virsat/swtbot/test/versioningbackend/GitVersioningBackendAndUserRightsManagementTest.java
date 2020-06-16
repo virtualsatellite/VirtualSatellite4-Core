@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.eclipse.jgit.api.Git;
 import org.eclipse.swtbot.eclipse.finder.matchers.WithTitle;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -27,12 +28,14 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotGitBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_LOCAL = "SwtBotGitBackendLocalRepo";
+	public static final String TEST_REPO_PATH_REMOTE = "SwtBotGitBackendRemoteRepo";
 	
 	protected String upstreamRepoPathName;
 	protected String localRepoPathName;
 	
 	protected Path upstreamRepoPath;
 	protected Path localRepoPath;
+	protected Path remoteRepoPath;
 	
 	@Override
 	protected void setUpVersioningBackend() throws IOException {
@@ -140,5 +143,18 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 		// Retrieve the commit message
 		String commitMessage = historyTableItem0.getText(1);
 		return commitMessage;
+	}
+
+	@Override
+	protected void testUpdateProjectChangeAndCommitRemote() throws Exception {
+		remoteRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_REMOTE);
+		
+		Git.cloneRepository()
+			.setURI(upstreamRepoPath.toUri().toString())
+			.setDirectory(remoteRepoPath.toFile())
+			.call();
+		
+		
+		
 	}
 }
