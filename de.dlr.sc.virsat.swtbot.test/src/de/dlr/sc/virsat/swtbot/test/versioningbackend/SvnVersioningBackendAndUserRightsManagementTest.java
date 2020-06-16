@@ -101,17 +101,33 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE, commitMessageUpstream);
 	}
 	
+	/**
+	 * Method to retrieve the latest commit message from a SVN Repository
+	 * @param repoName The name of the Repo to get the message for
+	 * @return The Commit message as string.
+	 */
 	protected String getCommitMessageFor(String repoName) {
 		// Assert that commit message arrived in Local Repository
 
 		bot.viewByTitle("SVN Repositories").show();
 		getTreeNodeContaining(repoName).select();
 		
-		// Open the history view and get the entry from the commit
+		// Open the history view
 		SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
 		historyView.show();
-		SWTBotTree historyTable =  historyView.bot().tree();
-		SWTBotTreeItem historyTableItem0 = historyTable.getAllItems()[0];
+		SWTBotTree historyTree = historyView.bot().tree();
+		
+		// Now wait until the commit is present in the view
+		// This is the case if we have three items present in the tree,
+		// because we expect that repository creation and project sharing
+		// each created a commit.
+		while (historyTree.visibleRowCount() < 3) {
+			historyTree.contextMenu("Refresh").click();
+			waitForEditingDomainAndUiThread();
+		}
+		
+		// Get the entry from the commit
+		SWTBotTreeItem historyTableItem0 = historyTree.getAllItems()[0];
 		String commitMessage = historyTableItem0.cell(4);
 		
 		return commitMessage;
