@@ -380,6 +380,22 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Call this method to check if a tree item contains a given node
+	 * @param treeItem the tree item
+	 * @param nodeName the name of the node
+	 * @return true in case it was found, false otherwise
+	 */
+	protected boolean isTreeItemContainingNode(SWTBotTreeItem treeItem, String nodeName) {
+		for (String node : treeItem.getNodes()) {
+			if (node.equals(nodeName)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * @param treeItem treeItem under whose document folder to create a new Diagram
 	 * @param type specifies the Diagram type
 	 */

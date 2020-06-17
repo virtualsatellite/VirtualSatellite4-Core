@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -136,7 +135,12 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		// Now crawl the navigator again to see if the correct node is present
 		SWTBotTreeItem roleManagementNodeUpdate = bot.tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
 		roleManagementNodeUpdate.expand();
-		roleManagementNodeUpdate.getNode("Discipline: SubSystem");
+		
+		String newNodeName = "Discipline: SubSystem";
+		while (!isTreeItemContainingNode(roleManagementNodeUpdate, newNodeName)) {
+			waitForEditingDomainAndUiThread();
+		}
+		roleManagementNodeUpdate.getNode(newNodeName);
 		
 		// open the editor and check if the discipline has been updated
 		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
