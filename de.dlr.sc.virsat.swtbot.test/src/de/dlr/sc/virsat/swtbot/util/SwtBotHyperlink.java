@@ -25,14 +25,6 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	public AbstractSWTBot<Hyperlink> click() {
 		setFocus();
 		click(true);
-		
-		try {
-			final int TIME = 5000;
-			Thread.sleep(TIME);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		return click(true);
+		return click(false);
 	}
 }
