@@ -25,6 +25,14 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	public AbstractSWTBot<Hyperlink> click() {
 		setFocus();
 		keyboard().typeCharacter('\r');
+		
+		try {
+			final int TIME = 5000;
+			Thread.sleep(TIME);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		return this;
 	}
 }
