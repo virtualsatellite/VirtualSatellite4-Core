@@ -9,7 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.util;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -23,15 +26,13 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	
 	@Override
 	public AbstractSWTBot<Hyperlink> click() {
-		setFocus();
-		keyboard().typeCharacter('\r');
-		
-		try {
-			final int TIME = 5000;
-			Thread.sleep(TIME);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		syncExec(new VoidResult() {
+			public void run() {
+				Event event = createEvent();
+				event.character = '\r';
+				widget.notifyListeners(SWT.KeyDown, event);
+			}
+		});
 		
 		return this;
 	}
