@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.util;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
@@ -26,6 +25,12 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	public AbstractSWTBot<Hyperlink> click() {
 		setFocus();
 		click(true);
-		return pressShortcut(SWT.NONE, '\r');
+		click(true);
+		click(true);
+		click(true);
+		click(true);
+		click(true);
+		click(true);
+		return click(true);
 	}
 }
