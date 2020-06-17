@@ -17,16 +17,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swtbot.eclipse.finder.matchers.WithTitle;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.team.svn.core.connector.SVNDepth;
+import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
+import org.eclipse.team.svn.core.operation.file.CommitOperation;
+import org.eclipse.team.svn.core.resource.IRepositoryResource;
+import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.hamcrest.core.StringContains;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.wc2.SvnCheckout;
-import org.tmatesoft.svn.core.wc2.SvnCommit;
-import org.tmatesoft.svn.core.wc2.SvnOperationFactory;
-import org.tmatesoft.svn.core.wc2.SvnTarget;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
@@ -36,9 +37,13 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotSvnBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_REMOTE = "SwtBotGitBackendRemoteRepo";
+	
 	protected Path upstreamRepoPath;
 	protected String upstreamRepoPathName;
 	protected String upstreamRepositoryPartName;
+	
+	private static final int COMMIT_MESSAGE_COL_INDEX = 4;
+	private static final int NUMBER_OF_INITIAL_COMMITS = 2;
 	
 	@Override
 	protected void setUpVersioningBackend() throws IOException {
@@ -120,7 +125,7 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		
 		// Get the entry from the commit
 		SWTBotTreeItem historyTableItem0 = historyTree.getAllItems()[0];
-		String commitMessage = historyTableItem0.cell(4);
+		String commitMessage = historyTableItem0.cell(COMMIT_MESSAGE_COL_INDEX);
 		
 		return commitMessage;
 	}
@@ -143,7 +148,7 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		// This is the case if we have three items present in the tree,
 		// because we expect that repository creation and project sharing
 		// each created a commit.
-		while (historyTree.visibleRowCount() < 3) {
+		while (historyTree.visibleRowCount() < NUMBER_OF_INITIAL_COMMITS + 1) {
 			historyTree.contextMenu("Refresh").click();
 			waitForEditingDomainAndUiThread();
 		}
@@ -159,15 +164,9 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		
 		// Checkout the upstream repository in a new SVN on file system level
 		Path remoteRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_REMOTE);
-		final SvnOperationFactory svnOperationFactory = new SvnOperationFactory();
-		try {
-			final SvnCheckout checkout = svnOperationFactory.createCheckout();
-			checkout.setSingleTarget(SvnTarget.fromFile(remoteRepoPath.toFile()));
-			checkout.setSource(SvnTarget.fromURL(SVNURL.fromFile(upstreamRepoPath.toFile())));
-			checkout.run();
-		} finally {
-			svnOperationFactory.dispose();
-		}
+		IRepositoryResource upstreamRepo = SVNUtility.asRepositoryResource(upstreamRepoPath.toUri().toString(), true);
+		CheckoutAsOperation checkoutAsOperation = new CheckoutAsOperation(remoteRepoPath.toFile(), upstreamRepo, SVNDepth.INFINITY, true, true);
+		checkoutAsOperation.run(new NullProgressMonitor());
 		
 		// Now where the repository is cloned change the System Entry
 		String repoRoleManagementFileName = SWTBOT_TEST_PROJECTNAME + File.separator
@@ -181,14 +180,9 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		Files.write(pathRepoRoleManagementFile, content.getBytes(StandardCharsets.UTF_8));
 		
 		// Now commit the changes
-		try {
-			final SvnCommit commit = svnOperationFactory.createCommit();
-			commit.setSingleTarget(SvnTarget.fromFile(pathRepoRoleManagementFile.toFile()));
-			commit.setCommitMessage("Commit message");
-			commit.run();
-		} finally {
-			svnOperationFactory.dispose();
-		}
+		File[] filesToCommit = {pathRepoRoleManagementFile.toFile()};
+		CommitOperation commitOperation = new CommitOperation(filesToCommit, SWTBOT_COMMIT_MESSAGE_REMOTE, true, false);
+		commitOperation.run(new NullProgressMonitor());
 	}
 
 }
