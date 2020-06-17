@@ -26,7 +26,7 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	
 	@Override
 	public AbstractSWTBot<Hyperlink> click() {
-		// The click funcion doesnt cause any reactions on linux systems
+		// The click function doesnt cause any reactions on linux systems
 		// so directly triggering the hyperlink by injecting an enter press on it
 		syncExec(new VoidResult() {
 			public void run() {
