@@ -42,13 +42,13 @@ import de.dlr.sc.virsat.build.validator.core.DvlmNamingConventionValidator;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
+import de.dlr.sc.virsat.project.ui.perspective.CorePerspective;
 import de.dlr.sc.virsat.swtbot.util.SwtBotHyperlink;
 import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIName;
 
 public class ValidatorTest extends ASwtBotTestCase {
 	
-	public static final String PROBLEM_VIEW_ID = "org.eclipse.ui.views.ProblemView";
 	public static final String EMPTY_NAME_WARNING = DvlmNamingConventionValidator.WARNING_PREFIX + DvlmNamingConventionValidator.WARNING_EMPTY_NAME_SUFFIX;		
 	
 	private SWTBotTreeItem repositoryNavigatorItem;
@@ -58,7 +58,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 	public void before() throws Exception {
 		super.before();
 		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
-		problemView = openView(PROBLEM_VIEW_ID);
+		problemView = openView(CorePerspective.ID_PROBLEM_VIEW);
 	}
 	
 	@Test
