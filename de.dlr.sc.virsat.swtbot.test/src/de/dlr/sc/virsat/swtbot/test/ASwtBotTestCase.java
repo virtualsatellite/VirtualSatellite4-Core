@@ -13,8 +13,10 @@ import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.wi
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.function.BooleanSupplier;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -29,6 +31,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -38,6 +41,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.forms.widgets.Section;
@@ -613,6 +617,32 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Method opens the RoleManagement Editor adds a new Discipline
+	 * and sets a name and user for it
+	 * @param discipline the discipline name to be set
+	 * @param user the suer to be set. Can be null which leaves the default user.
+	 * @return the table item which was added
+	 */
+	protected SWTBotTableItem createNewDiscipline(String discipline, String user) {
+		// Switch to the Editor and add a new Discipline
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.show();
+		rmEditor.bot().button("Add Discipline").click();
+		SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
+		
+		newDisciplineTableItem.click(0);
+		rmEditor.bot().text().setText(discipline);
+		
+		if (user != null) {
+			newDisciplineTableItem.click(1);
+			rmEditor.bot().text().setText(user);
+		}
+		
+		save();
+		return newDisciplineTableItem;
+	}
+	
+	/**
 	 * @param item the editor page
 	 * @param clazz the section of the table
 	 * @return it returns the desired SWTBotTable
@@ -804,6 +834,23 @@ public class ASwtBotTestCase {
 			} catch (InterruptedException e) {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: Thread got interupted", e));
 			}
+		}
+	}
+
+	/**
+	 * Method to check for a condition several times until it creates a failure
+	 * @param message the Message to be used to report the fail
+	 * @param i number of times to try the condition until failure
+	 * @param condition the condition to be met
+	 */
+	public static void assertForTimes(String message, int i, BooleanSupplier condition) {
+		int count = i;
+		while (count > 0 && !condition.getAsBoolean()) {
+			waitForEditingDomainAndUiThread();
+			count--;
+		}
+		if (count == 0) {
+			fail(message + " - Failed after trying for " + i + "times");
 		}
 	}
 }
