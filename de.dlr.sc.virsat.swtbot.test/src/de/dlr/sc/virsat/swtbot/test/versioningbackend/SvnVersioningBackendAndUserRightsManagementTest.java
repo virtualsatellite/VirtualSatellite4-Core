@@ -156,7 +156,7 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 	}
 
 	@Override
-	protected void testUpdateProjectChangeAndCommitRemote() throws Exception {
+	protected void testUpdateProjectChangeAndCommitRemote(String replace, String with) throws Exception {
 		
 		// Wait for the commit so we can checkout
 		openSvnPerspective();
@@ -176,7 +176,7 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 				remoteRepoPath.toFile(), repoRoleManagementFileName).toPath(); 
 				
 		String content = new String(Files.readAllBytes(pathRepoRoleManagementFile), StandardCharsets.UTF_8);
-		content = content.replaceAll("System", "SubSystem");
+		content = content.replaceAll(replace, with);
 		Files.write(pathRepoRoleManagementFile, content.getBytes(StandardCharsets.UTF_8));
 		
 		// Now commit the changes

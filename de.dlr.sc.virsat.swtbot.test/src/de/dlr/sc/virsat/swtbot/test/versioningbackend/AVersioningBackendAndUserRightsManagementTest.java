@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -103,18 +105,9 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	public void testUpdateProject() throws Exception {
 		openVirtualSatelliteNavigatorView();
 		
-		// Use the context menu to commit the project and add a message
-		// into the commit dialog. The message will be used for testing 
-		// later, if the commit has arrived as expected.
-		buildCounter.executeInterlocked(() -> {
-			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
-			projectNode.select();
-			projectNode.contextMenu("Commit Project to Repository").click();
-			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
-			bot.button("OK").click();
-		});
+		commitProject();
 		
-		testUpdateProjectChangeAndCommitRemote();
+		testUpdateProjectChangeAndCommitRemote("System", "SubSystem");
 		
 		// Now open the VirSat Navigator and the RoleManagement Editor
 		// Run the update and check that both the navigator and the editor received the correct update
@@ -137,9 +130,12 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		roleManagementNodeUpdate.expand();
 		
 		String newNodeName = "Discipline: SubSystem";
+		
+		// Wait for the ui to update
 		while (!isTreeItemContainingNode(roleManagementNodeUpdate, newNodeName)) {
 			waitForEditingDomainAndUiThread();
 		}
+		
 		roleManagementNodeUpdate.getNode(newNodeName);
 		
 		// open the editor and check if the discipline has been updated
@@ -149,11 +145,68 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	
 		assertEquals("Got correct discipline", "SubSystem", editorDisciplineUpdate);
 	}
+	
+	/**
+	 * Use the context menu to commit the project and add a message
+	 * into the commit dialog. The message will be used for testing 
+	 * later, if the commit has arrived as expected.
+	 */
+	public void commitProject() {
+		buildCounter.executeInterlocked(() -> {
+			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
+			projectNode.select();
+			projectNode.contextMenu("Commit Project to Repository").click();
+			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
+			bot.button("OK").click();
+		});
+	}
 
 	/**
 	 * Implement this method to change the repository via a remote instance of it.
 	 * A good change could be to give something a new name, etc.
 	 * @throws Exception 
 	 */
-	protected abstract void testUpdateProjectChangeAndCommitRemote() throws Exception;
+	protected abstract void testUpdateProjectChangeAndCommitRemote(String replace, String with) throws Exception;
+	
+	@Test
+	public void testUpdateProjectChangedDiscipline() throws Exception {
+		openVirtualSatelliteNavigatorView();
+		
+		commitProject();
+		
+		// Change the discipline
+		testUpdateProjectChangeAndCommitRemote(System.getProperty("user.name"), "somebody_else");
+		
+		// Now open the VirSat Navigator and the RoleManagement Editor
+		// Run the update and check that both the navigator and the editor received the correct update
+		openCorePerspective();
+		openVirtualSatelliteNavigatorView();
+		
+		// Prepare the Navigator to display the Discipline and open the editor
+		SWTBotTreeItem roleManagementNode = bot.tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
+		roleManagementNode.expand();
+		roleManagementNode.getNode("Discipline: System");
+		roleManagementNode.doubleClick();
+		
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.show();
+		
+		assertTrue("The button is enabled", rmEditor.bot().button("Add Discipline").isEnabled());
+		
+		// Run the update in Virtual Satellite
+		buildCounter.executeInterlocked(() -> {
+			roleManagementNode.contextMenu("Update Project from Repository").click();
+		});
+
+		// Open the editor and check if that the button is disabled
+		rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.show();
+		
+		// Wait for the ui to update
+		while (rmEditor.bot().button("Add Discipline").isEnabled()) {
+			waitForEditingDomainAndUiThread();
+		}
+		
+		assertFalse("The button is disabled after the update", rmEditor.bot().button("Add Discipline").isEnabled());
+	}
 }
