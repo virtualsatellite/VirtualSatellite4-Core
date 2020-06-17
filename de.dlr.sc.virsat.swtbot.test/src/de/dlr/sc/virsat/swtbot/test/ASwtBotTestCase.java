@@ -851,7 +851,7 @@ public class ASwtBotTestCase {
 		 * A simple Job that will be placed into the queue to make sure all otehr jobs
 		 * before got executed.
 		 */
-		protected class SWTBotInterlockedJob extends Job {
+		protected static class SWTBotInterlockedJob extends Job {
 
 			protected boolean isExecuted = false;
 			

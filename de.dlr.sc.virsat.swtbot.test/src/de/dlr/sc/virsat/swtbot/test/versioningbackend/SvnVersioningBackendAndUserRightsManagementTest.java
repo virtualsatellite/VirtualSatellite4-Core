@@ -51,7 +51,9 @@ public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioning
 		upstreamRepoPath = VirSatFileUtils.createAutoDeleteTempDirectory(TEST_REPO_PATH_UPSTREAM);
 		
 		upstreamRepoPathName = upstreamRepoPath.toString();
-		upstreamRepositoryPartName = upstreamRepoPath.getFileName().toString();
+		
+		Path fileName = upstreamRepoPath.getFileName();
+		upstreamRepositoryPartName = (fileName == null) ? null : fileName.toString();
 		
 		// First step open the perspective for svn operations
 		openSvnPerspective();
