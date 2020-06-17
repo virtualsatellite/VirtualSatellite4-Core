@@ -25,13 +25,13 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendAndUse
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-//	FuncElectricalDiagramTest.class,
-//	EditorTest.class,
-//	NewProjectWizardTest.class,
-//	CutCopyDeleteUndoTest.class,
-//	InheritanceTest.class,
-//	CalculationTest.class,
-//	ProductStructureTest.class,
+	FuncElectricalDiagramTest.class,
+	EditorTest.class,
+	NewProjectWizardTest.class,
+	CutCopyDeleteUndoTest.class,
+	InheritanceTest.class,
+	CalculationTest.class,
+	ProductStructureTest.class,
 	GitVersioningBackendAndUserRightsManagementTest.class,
 	SvnVersioningBackendAndUserRightsManagementTest.class
 	})

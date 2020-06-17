@@ -80,16 +80,7 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	
 		openVirtualSatelliteNavigatorView();
 		
-		// Use the context menu to commit the project and add a message
-		// into the commit dialog. The message will be used for testing 
-		// later, if the commit has arrived as expected.
-		buildCounter.executeInterlocked(() -> {
-			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
-			projectNode.select();
-			projectNode.contextMenu("Commit Project to Repository").click();
-			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
-			bot.button("OK").click();
-		});
+		commitProject();
 		
 		// Call backend specific assertion of commit results;
 		testCommitProjectAssert();
@@ -107,6 +98,8 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		
 		commitProject();
 		
+		// Call backend specific update function the role management with
+		// In this test case the name of the discipline is changed
 		testUpdateProjectChangeAndCommitRemote("System", "SubSystem");
 		
 		// Now open the VirSat Navigator and the RoleManagement Editor
@@ -120,7 +113,7 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		roleManagementNode.getNode("Discipline: System");
 		roleManagementNode.doubleClick();
 		
-		// run the update in Virtual Satellite
+		// Run the update in Virtual Satellite
 		buildCounter.executeInterlocked(() -> {
 			roleManagementNode.contextMenu("Update Project from Repository").click();
 		});
@@ -145,27 +138,15 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	
 		assertEquals("Got correct discipline", "SubSystem", editorDisciplineUpdate);
 	}
-	
-	/**
-	 * Use the context menu to commit the project and add a message
-	 * into the commit dialog. The message will be used for testing 
-	 * later, if the commit has arrived as expected.
-	 */
-	public void commitProject() {
-		buildCounter.executeInterlocked(() -> {
-			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
-			projectNode.select();
-			projectNode.contextMenu("Commit Project to Repository").click();
-			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
-			bot.button("OK").click();
-		});
-	}
 
 	/**
 	 * Implement this method to change the repository via a remote instance of it.
 	 * A good change could be to give something a new name, etc.
-	 * @throws Exception 
+	 * @param replace String to be replaced
+	 * @param with String to replace with
+	 * @throws Exception
 	 */
+	
 	protected abstract void testUpdateProjectChangeAndCommitRemote(String replace, String with) throws Exception;
 	
 	@Test
@@ -174,7 +155,8 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		
 		commitProject();
 		
-		// Change the discipline
+		// Call backend specific update function the role management with
+		// In this test case the assigned user is changed
 		testUpdateProjectChangeAndCommitRemote(System.getProperty("user.name"), "somebody_else");
 		
 		// Now open the VirSat Navigator and the RoleManagement Editor
@@ -208,5 +190,20 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		}
 		
 		assertFalse("The button is disabled after the update", rmEditor.bot().button("Add Discipline").isEnabled());
+	}
+	
+	/**
+	 * Use the context menu to commit the project and add a message
+	 * into the commit dialog. The message will be used for testing 
+	 * later, if the commit has arrived as expected.
+	 */
+	public void commitProject() {
+		buildCounter.executeInterlocked(() -> {
+			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
+			projectNode.select();
+			projectNode.contextMenu("Commit Project to Repository").click();
+			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
+			bot.button("OK").click();
+		});
 	}
 }
