@@ -303,6 +303,23 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 *    waiting for access to the resource set
 	 */
 	public Object writeExclusive(Runnable readWriteRunnable) throws InterruptedException {
+		return runExclusiveInWorkspace(readWriteRunnable, true);
+	}
+	
+	/**
+	 * This method is the counter is the actual implementation for locking
+	 * a write transaction in the editing domain
+	 * 
+	 * @param readWriteRunner a runnable provided with read and write privileges
+	 * 
+	 * @return the result of the read operation if it is a
+	 *    {@link RunnableWithResult} and the transaction did not roll back;
+	 *    <code>null</code>, otherwise
+	 *    
+	 * @throws InterruptedException if the current thread is interrupted while
+	 *    waiting for access to the resource set
+	 */
+	protected Object doWriteExclusive(Runnable readWriteRunnable) throws InterruptedException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Starting an exclusive write transaction"));
 
 		// get the active transaction and check if it is reusable for us
@@ -367,7 +384,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		// First lock the workspace then lock the transaction
 		executeInWorkspace(() -> {
 			try {
-				this.writeExclusive(() -> {
+				this.doWriteExclusive(() -> {
 					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
 					for (Resource resource : resources) {
 						boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
@@ -537,7 +554,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	private void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
 		try {
-			this.writeExclusive(() -> {
+			this.doWriteExclusive(() -> {
 				// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
 				// to decide if reload of the resource is needed or not (means handling external resource changes)
 				synchronized (recentlyChangedResource) {
@@ -1029,6 +1046,19 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	
 	@Override
 	public Object runExclusive(Runnable read) throws InterruptedException {
+		return runExclusiveInWorkspace(read, false);
+	}
+	
+	/**
+	 * Method to wrap calls to run or writeExclsuive into a workspace operation.
+	 * This ensures that the workspace is locked before the transaction and avoids
+	 * race conditions with interlocking threads.
+	 * @param read the Code to be executed in the transaction
+	 * @param writeExclusive true in case if it is a write locking transaction
+	 * @return the result of the code executed in the transaction
+	 * @throws InterruptedException
+	 */
+	public Object runExclusiveInWorkspace(Runnable read, boolean writeExclusive) throws InterruptedException {
 		// Prepare variables to remember the results of the execution of the runnable
 		AtomicReference<Object> atomicResult = new AtomicReference<>();
 		AtomicExceptionReference<InterruptedException> atomicException = new AtomicExceptionReference<>();
@@ -1037,8 +1067,13 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		// This ensures workspace locking before transaction locking
 		executeInWorkspace(() -> {
 			try {
-				Object result = super.runExclusive(read);
-				atomicResult.set(result);
+				if (writeExclusive) {
+					Object result = doWriteExclusive(read);
+					atomicResult.set(result);
+				} else {
+					Object result = super.runExclusive(read);
+					atomicResult.set(result);
+				}
 			} catch (InterruptedException e) {
 				// In case there has been an exception store it.
 				atomicException.set(e);
