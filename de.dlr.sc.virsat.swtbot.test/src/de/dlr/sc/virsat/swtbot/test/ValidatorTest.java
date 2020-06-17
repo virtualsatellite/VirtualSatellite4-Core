@@ -159,7 +159,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 		errors.getNode(EXPEDTED_ERROR).doubleClick();
 		assertText(ElementConfiguration.class.getSimpleName(), bot.textWithLabel(UiSnippetIName.NAME_FIELD));
 	}
-	
+
 	@Test
 	public void testWarningInGenericEditor() {
 		// Create sei with some warning
@@ -180,7 +180,11 @@ public class ValidatorTest extends ASwtBotTestCase {
 		assertVisible(swtIcon);
 		assertEquals(expectedIcon, actualIcon);
 		
+		// Unexpand the name section
+		nameSection.click();
+		
 		// Check that clicking the header link collapses all sections which have no warning (i.e. all except the name section)
+		// and expands those with a warning (i.e. the name section)
 		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EMPTY_NAME_WARNING);
 		swtBotHyperlink.click();
 		
@@ -206,10 +210,6 @@ public class ValidatorTest extends ASwtBotTestCase {
 		bot.closeAllEditors();
 		openEditor(ec);
 		
-		// Make the name shorter to ensure that the error hyperlink is in view so that we can click on it
-		renameField(UiSnippetIName.NAME_FIELD, "ec");
-		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
-		
 		// Check that there is an error icon in the document table
 		SwtBotSection documentSection = getSWTBotSection(Document.class);
 		SWTBotTable documentTable = documentSection.getSWTBotTable();
@@ -219,9 +219,14 @@ public class ValidatorTest extends ASwtBotTestCase {
 		Image expectedIcon = new MarkerImageProvider(null).getProblemImageForSeverity(IMarker.SEVERITY_ERROR);
 		assertEquals(expectedIcon, actualIcon);
 		
+		// Unexpand the document section
+		documentSection.click();
+		
 		// Check that clicking the header link collapses all sections which have no error (i.e. all except the document section)
+		// and expands those with an error (i.e. the document section)
 		final String EXPEDTED_ERROR = DvlmNamingConventionValidator.WARNING_PREFIX 
-				+ ConfigurationTree.class.getSimpleName() + ".ec.."
+				+ ConfigurationTree.class.getSimpleName() + "."
+				+ ElementConfiguration.class.getSimpleName() + ".."
 				+ DvlmNamingConventionValidator.WARNING_DOTS_SUFFIX;
 		SwtBotHyperlink swtBotHyperlink = getSWTBotHyperlink(EXPEDTED_ERROR);
 		swtBotHyperlink.click();
