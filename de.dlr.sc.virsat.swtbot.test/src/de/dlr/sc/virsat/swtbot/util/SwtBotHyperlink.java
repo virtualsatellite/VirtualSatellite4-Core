@@ -24,7 +24,7 @@ public class SwtBotHyperlink extends AbstractSWTBotControl<Hyperlink> {
 	@Override
 	public AbstractSWTBot<Hyperlink> click() {
 		setFocus();
-		click(true);
-		return click(false);
+		keyboard().typeCharacter('\r');
+		return this;
 	}
 }
