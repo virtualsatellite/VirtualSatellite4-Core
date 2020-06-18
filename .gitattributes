@@ -2,3 +2,4 @@
 **/src-gen/**/* linguist-generated=true
 **/xtend-gen/**/* linguist-generated=true
 **/templates-gen/**/* linguist-generated=true
+**/about_files/maven/ linguist-generated=true

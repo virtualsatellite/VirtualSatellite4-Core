@@ -118,7 +118,7 @@ public class UiSnippetIDisciplineAssignment extends AUiEStructuralFeatureSection
 	    		
 	    			CompoundCommand cmpCmd = new CompoundCommand();
 	    			
-	    			Command cmd = new AssignDisciplineCommand(editingDomain.getResourceSet(), model, discipline);
+	    			Command cmd = new AssignDisciplineCommand(editingDomain, model, discipline);
 					if (cmd.canExecute()) {
 						cmpCmd.append(cmd);
 					}
@@ -126,7 +126,7 @@ public class UiSnippetIDisciplineAssignment extends AUiEStructuralFeatureSection
 					// Only add the command to update the element which is allowed to be changed by the current user
 					EList<IAssignedDiscipline> containedIAssignedDisciplines = ((IAssignedDiscipline) model).getContainedIAssignedDisciplines();
 					for (IAssignedDiscipline contained : containedIAssignedDisciplines) {
-						Command cmdUpdateContained = new AssignDisciplineCommand(editingDomain.getResourceSet(), contained, discipline);
+						Command cmdUpdateContained = new AssignDisciplineCommand(editingDomain, contained, discipline);
 						if (cmdUpdateContained.canExecute()) {
 							cmpCmd.append(cmdUpdateContained);
 						}
@@ -151,7 +151,7 @@ public class UiSnippetIDisciplineAssignment extends AUiEStructuralFeatureSection
 				if ((selectedObject != null) && (selectedObject instanceof Discipline)) {
 					Discipline discipline = (Discipline) selectedObject;
 
-					Command cmd = new AssignDisciplineCommand(editingDomain.getResourceSet(), model, discipline);
+					Command cmd = new AssignDisciplineCommand(editingDomain, model, discipline);
 					editingDomain.getCommandStack().execute(cmd);
 				}
 			}

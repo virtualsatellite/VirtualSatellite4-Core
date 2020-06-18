@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignmentTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBooleanTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReferenceTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnumTest;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloatTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResourceTest;
@@ -67,7 +68,7 @@ import de.dlr.sc.virsat.model.dvlm.util.command.VirSatRecordingCommandTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
- * 
+ *
  */
 @RunWith(Suite.class)
 
@@ -87,13 +88,14 @@ import junit.framework.JUnit4TestAdapter;
 				BeanPropertyBooleanTest.class,
 				BeanPropertyEnumTest.class,
 				BeanPropertyEReferenceTest.class,
+				BeanPropertyFactoryTest.class,
 				BeanCategoryAssignmentTest.class,
 				TransactionalEditingDomainHelperTest.class,
 				BeanStructuralElementInstanceTest.class,
-				DVLMItemNamingTest.class, 
-				DVLMCategoriesItemProviderAdapterFactoryTest.class, 
+				DVLMItemNamingTest.class,
+				DVLMCategoriesItemProviderAdapterFactoryTest.class,
 				DVLMCategoryAssignmentItemProviderTest.class,
-				DVLMStructuralElementInstanceItemProviderTest.class, 
+				DVLMStructuralElementInstanceItemProviderTest.class,
 				DVLMStrcuturalItemProviderAdapterFactoryTest.class,
 				DVLMCategoryItemProviderTest.class,
 				DVLMStructuralElementItemProviderTest.class,
@@ -113,7 +115,7 @@ import junit.framework.JUnit4TestAdapter;
 				ConceptMigratorTest.class,
 				RemoveResourceCommandTest.class,
 				DeleteStructuralElementInstanceCommandTest.class,
-				UndoableAddCommandTest.class, 
+				UndoableAddCommandTest.class,
 				DVLMRepositoryItemProviderTest.class,
 				VirSatRecordingCommandTest.class,
 				AMigratorTest.class,
@@ -126,7 +128,7 @@ import junit.framework.JUnit4TestAdapter;
 				})
 
 /**
- * 
+ *
  * Test Collection
  *
  */
@@ -137,12 +139,12 @@ public class AllTests {
 	 */
 	private AllTests() {
 	}
-	
+
 	/**
 	 * Test Adapter
 	 * @return Executable JUnit Tests
 	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
-	}	
+	}
 }
