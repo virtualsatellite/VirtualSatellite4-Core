@@ -219,7 +219,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 		Image expectedIcon = new MarkerImageProvider(null).getProblemImageForSeverity(IMarker.SEVERITY_ERROR);
 		assertEquals(expectedIcon, actualIcon);
 		
-		// Unexpand the document section
+		// Collapse the document section
 		documentSection.click();
 		
 		// Check that clicking the header link collapses all sections which have no error (i.e. all except the document section)
