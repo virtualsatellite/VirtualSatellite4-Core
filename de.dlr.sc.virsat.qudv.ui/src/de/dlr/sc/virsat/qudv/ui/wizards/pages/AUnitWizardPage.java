@@ -40,6 +40,12 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
  */
 public abstract class AUnitWizardPage extends WizardPage {
 	
+	public static final String NAME_FIELD = "Name";
+	public static final String SYMBOL_FIELD = "Symbol";
+	public static final String DESCRIPTION_FIELD = "Description";
+	public static final String DEFINITION_URI_FIELD = "DefinitionURI";
+	public static final String QUANTITY_KIND_FIELD = "Quantity Kind";
+	
 	protected Text name;
 	protected Text symbol;
 	protected Text description;
@@ -87,7 +93,7 @@ public abstract class AUnitWizardPage extends WizardPage {
 		
 		//First line of widgets
 		Label nameLabel = new Label(container, SWT.NULL);
-		nameLabel.setText("Name");
+		nameLabel.setText(NAME_FIELD);
 		name = new Text(container, SWT.BORDER | SWT.SINGLE); 
 		name.setText("");
 		name.setLayoutData(gd);
@@ -95,21 +101,21 @@ public abstract class AUnitWizardPage extends WizardPage {
 		
 		//Second line of widgets
 		Label symbolLabel = new Label(container, SWT.NULL);
-		symbolLabel.setText("Symbol");
+		symbolLabel.setText(SYMBOL_FIELD);
 		symbol = new Text(container, SWT.BORDER | SWT.SINGLE);
 		symbol.setText("");
 		symbol.setLayoutData(gd);
 		
 		//Third line of widgets
 		Label descriptionLabel = new Label(container, SWT.NULL);
-		descriptionLabel.setText("Description");
+		descriptionLabel.setText(DESCRIPTION_FIELD);
 		description = new Text(container, SWT.BORDER | SWT.SINGLE);
 		description.setText("");
 		description.setLayoutData(gd);
 		
 		//Forth line of widgets
 		Label definitionUriLabel = new Label(container, SWT.NULL);
-		definitionUriLabel.setText("DefinitionURI");
+		definitionUriLabel.setText(DEFINITION_URI_FIELD);
 		definitionURI = new Text(container, SWT.BORDER | SWT.SINGLE);
 		definitionURI.setText("");
 		definitionURI.setLayoutData(gd);
@@ -122,7 +128,7 @@ public abstract class AUnitWizardPage extends WizardPage {
 		
     	//add a Label:
     	Label quantityKindLabel = new Label(container, SWT.NULL);
-    	quantityKindLabel.setText("Quantity Kind");
+    	quantityKindLabel.setText(QUANTITY_KIND_FIELD);
 
     	//add comboBox and comboViewer
     	Combo combo = new Combo(container, SWT.NULL);

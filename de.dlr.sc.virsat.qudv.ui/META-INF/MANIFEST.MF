@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.osgi,
  de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.project
 Export-Package: de.dlr.sc.virsat.qudv.ui.editor.snippets,
- de.dlr.sc.virsat.qudv.ui.wizards
+ de.dlr.sc.virsat.qudv.ui.wizards,
+ de.dlr.sc.virsat.qudv.ui.wizards.pages
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.qudv.ui.Activator
 Bundle-ActivationPolicy: lazy

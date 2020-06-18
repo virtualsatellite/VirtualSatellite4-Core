@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetUnitManagement;
+import de.dlr.sc.virsat.qudv.ui.wizards.pages.AQuantityKindWizardPage;
+import de.dlr.sc.virsat.qudv.ui.wizards.pages.AUnitWizardPage;
 import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetEStructuralFeatureTable;
 
@@ -57,18 +59,18 @@ public class QudvWizardTest extends ASwtBotTestCase {
 		assertNotEnabled(finishButton);
 		
 		// We can create a QK if at least the name is set
-		bot.textWithLabel("Name").setText("testQk");
+		bot.textWithLabel(AQuantityKindWizardPage.NAME_FIELD).setText("testQk");
 		assertEnabled(finishButton);
 		
 		// If we unset the name again, then the QK cannot be created anymore
-		bot.textWithLabel("Name").setText("");
+		bot.textWithLabel(AQuantityKindWizardPage.NAME_FIELD).setText("");
 		assertNotEnabled(finishButton);
 		
 		// Fill in some dummy test data and create a test QK
-		bot.textWithLabel("Name").setText("testQk");
-		bot.textWithLabel("Symbol").setText("testSymbol");
-		bot.textWithLabel("Description").setText("testDescription");
-		bot.textWithLabel("DefinitionURI").setText("testDefinition");
+		bot.textWithLabel(AQuantityKindWizardPage.NAME_FIELD).setText("testQk");
+		bot.textWithLabel(AQuantityKindWizardPage.SYMBOL_FIELD).setText("testSymbol");
+		bot.textWithLabel(AQuantityKindWizardPage.DESCRIPTION_FIELD).setText("testDescription");
+		bot.textWithLabel(AQuantityKindWizardPage.DEFINITION_URI_FIELD).setText("testDefinition");
 		bot.waitUntil(widgetIsEnabled(finishButton));
 		finishDialog();
 		
@@ -110,10 +112,10 @@ public class QudvWizardTest extends ASwtBotTestCase {
 		assertNotEnabled(finishButton);
 		
 		// Fill in some dummy test data and create a test unit
-		bot.textWithLabel("Name").setText("testUnit");
-		bot.textWithLabel("Symbol").setText("testSymbol");
-		bot.textWithLabel("Description").setText("testDescription");
-		bot.textWithLabel("DefinitionURI").setText("testDefinition");
+		bot.textWithLabel(AUnitWizardPage.NAME_FIELD).setText("testUnit");
+		bot.textWithLabel(AUnitWizardPage.SYMBOL_FIELD).setText("testSymbol");
+		bot.textWithLabel(AUnitWizardPage.DESCRIPTION_FIELD).setText("testDescription");
+		bot.textWithLabel(AUnitWizardPage.DEFINITION_URI_FIELD).setText("testDefinition");
 		bot.comboBox().setSelection("Dimensionless - U");
 		bot.waitUntil(widgetIsEnabled(finishButton));
 		finishDialog();
