@@ -191,7 +191,7 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 			public void widgetSelected(SelectionEvent e) {
 				// some code to create a unit via our QudvWizard 
 				
-				new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new QudvQuantityKindSetupWizard((UnitManagement) model)).open();
+				new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new QudvQuantityKindSetupWizard(getUnitManagement())).open();
 				// the wizard guides the user through the possible steps to add a unit
 				// at the end, on the performFinish() method it executes a cmd over the commandStack which ends the new unit in the proper way.
 			}
@@ -234,10 +234,10 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 				AQuantityKind quantityKind = getFirstSelectedQuantityKind();
 				if (quantityKind instanceof SimpleQuantityKind) {
 					SimpleQuantityKind simpleQK = (SimpleQuantityKind) quantityKind;
-					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new SimpleQuantityKindWizard((UnitManagement) model, simpleQK)).open();
+					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new SimpleQuantityKindWizard(getUnitManagement(), simpleQK)).open();
 				} else if (quantityKind instanceof DerivedQuantityKind) {
 					DerivedQuantityKind derivedQK = (DerivedQuantityKind) quantityKind;
-					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new DerivedQuantityKindWizard((UnitManagement) model, derivedQK)).open();
+					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new DerivedQuantityKindWizard(getUnitManagement(), derivedQK)).open();
 			
 				}
 			}
@@ -246,6 +246,15 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 				widgetSelected(e);
 			}
 		});
+	}
+	
+	/**
+	 * Gets the parent unit management from the model
+	 * @return the unit management
+	 */
+	private UnitManagement getUnitManagement() {
+		SystemOfUnits systemOfUnits = (SystemOfUnits) model;
+		return (UnitManagement) systemOfUnits.eContainer();
 	}
 	
 	/**

@@ -55,7 +55,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetUnitManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet {
 
-	private static final String SECTION_NAME = "Unit Management";
+	public static final String SECTION_NAME = "Unit Management";
 
 	private Button buttonAdd;
 	private Button buttonRemove;
