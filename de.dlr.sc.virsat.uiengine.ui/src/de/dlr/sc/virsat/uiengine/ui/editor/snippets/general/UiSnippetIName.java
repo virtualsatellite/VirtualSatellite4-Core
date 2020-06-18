@@ -70,11 +70,11 @@ public class UiSnippetIName extends AUiEStructuralFeatureSectionSnippet implemen
 		labelWithIcon.setLayout(new GridLayout(2, false));
 		
 		labelPropertyIcon = toolkit.createLabel(labelWithIcon, "");
-		Label label = toolkit.createLabel(labelWithIcon, "Name");
+		Label labelName = toolkit.createLabel(labelWithIcon, NAME_FIELD);
 		textName = toolkit.createText(sectionBody, "");
 		
 		setUpIcon();
-		setUpLabel(label);		
+		setUpLabel(labelName);		
 		setUpText(editingDomain);
 	    
 		checkWriteAccess(textName);
