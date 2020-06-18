@@ -20,6 +20,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
@@ -218,5 +219,23 @@ public class InheritanceTest extends ASwtBotTestCase {
 		
 		openEditor(elementOccurence);
 		assertEquals("Received override from EC2", "docFromEc2", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
+	}
+	
+	@Test
+	public void propagateNewCATest() {
+		// Create inheritance links
+		addInheritance(elementConfiguration, "PT: ProductTree", "PTD: ProductTreeDomain", "ED: ElementDefinition");
+		addInheritance(elementOccurence, "CT: ConfigurationTree", "EC: ElementConfiguration");
+
+		// Add an IFE on top level
+		addElement(InterfaceEnd.class, conceptFea, elementDefinition);
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		
+		// Check IFE propagated via inheritance hierarchy
+		expand(elementConfiguration);
+		assertTrue(elementConfiguration.getNodes().contains("IFE: InterfaceEnd"));
+
+		expand(elementOccurence);
+		assertTrue(elementOccurence.getNodes().contains("IFE: InterfaceEnd"));
 	}
 }
