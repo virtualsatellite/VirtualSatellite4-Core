@@ -180,7 +180,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 		assertVisible(swtIcon);
 		assertEquals(expectedIcon, actualIcon);
 		
-		// Unexpand the name section
+		// Collapse the name section
 		nameSection.click();
 		
 		// Check that clicking the header link collapses all sections which have no warning (i.e. all except the name section)
