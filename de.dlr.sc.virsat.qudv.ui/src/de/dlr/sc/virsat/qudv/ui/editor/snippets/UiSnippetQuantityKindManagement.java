@@ -57,7 +57,14 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet {
 	
-	private static final String SECTION_NAME = "Quantity Kind Management";
+	public static final String SECTION_NAME = "Quantity Kind Management";
+	
+	public static final String BUTTON_ADD_TEXT = "Add Quantity Kind";
+	public static final String BUTTON_REMOVE_TEXT = "Remove Quantity Kind";
+	public static final String BUTTON_EDIT_TEXT = "Edit Quantity Kind";
+	
+	public static final String COLUMN_TEXT_QK_NAME = "Quantity Kind Name";
+	public static final String COLUMN_TEXT_SYMBOL = "Symbol";
 
 	private Button buttonAdd;
 	private Button buttonRemove;
@@ -65,13 +72,6 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 
 	private ITableLabelProvider labelProvider;
 	private LabelColumnSorter labelColumnSorter;
-	
-	private static final String BUTTON_ADD_TEXT = "Add Quantity Kind";
-	private static final String BUTTON_REMOVE_TEXT = "Remove Quantity Kind";
-	private static final String BUTTON_EDIT_TEXT = "Edit Quantity Kind";
-	
-	private static final String COLUMN_TEXT_QK_NAME = "Quantity Kind Name";
-	private static final String COLUMN_TEXT_SYMBOL = "Symbol";
 	
 	/**
 	 * Constructor for this class to instantiate a UI Snippet

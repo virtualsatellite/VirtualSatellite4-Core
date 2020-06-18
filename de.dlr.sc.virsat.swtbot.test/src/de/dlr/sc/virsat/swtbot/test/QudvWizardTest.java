@@ -21,6 +21,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetQuantityKindManagement;
 import de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetUnitManagement;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.AQuantityKindWizardPage;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.AUnitWizardPage;
@@ -40,15 +42,15 @@ public class QudvWizardTest extends ASwtBotTestCase {
 	@Before
 	public void before() throws Exception {
 		super.before();
-		unitManagement = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Unit Management");
+		unitManagement = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, UnitManagement.class.getSimpleName());
 	}
 	
 	@Test
 	public void testAddAndEditSimpleQuantityKind() {
 		unitManagement.doubleClick();
-		bot.editorByTitle("Unit Management");
+		bot.editorByTitle(UnitManagement.class.getSimpleName());
 		
-		bot.button("Add Quantity Kind").click();
+		bot.button(UiSnippetQuantityKindManagement.BUTTON_ADD_TEXT).click();
 		
 		bot.comboBox().setSelection("QUDV Simple Quantity Kind Wizard");
 		nextPageDialog();
@@ -79,8 +81,8 @@ public class QudvWizardTest extends ASwtBotTestCase {
 		
 		// Change the name of the qk
 		bot.table().select("testQk");
-		bot.button("Edit Quantity Kind").click();
-		bot.textWithLabel("Name").setText("testQkEdit");
+		bot.button(UiSnippetQuantityKindManagement.BUTTON_EDIT_TEXT).click();
+		bot.textWithLabel(AQuantityKindWizardPage.NAME_FIELD).setText("testQkEdit");
 		finishDialog();
 		
 		// There is no longer a qk with the old name and only a qk with the new name
@@ -91,9 +93,9 @@ public class QudvWizardTest extends ASwtBotTestCase {
 	@Test
 	public void testAddAndEditSimpleUnit() {
 		unitManagement.doubleClick();
-		bot.editorByTitle("Unit Management");
+		bot.editorByTitle(UnitManagement.class.getSimpleName());
 		
-		bot.button("Add Unit").click();
+		bot.button(UiSnippetUnitManagement.BUTTON_ADD_TEXT).click();
 		
 		bot.comboBox().setSelection("QUDV Simple Unit Wizard");
 		nextPageDialog();
@@ -130,7 +132,7 @@ public class QudvWizardTest extends ASwtBotTestCase {
 		
 		// Change the name of the unit
 		unitTable.select("testUnit");
-		bot.button("Edit Unit").click();
+		bot.button(UiSnippetUnitManagement.BUTTON_EDIT_TEXT).click();
 		bot.textWithLabel(AUnitWizardPage.NAME_FIELD).setText("testUnitEdit");
 		finishDialog();
 		
