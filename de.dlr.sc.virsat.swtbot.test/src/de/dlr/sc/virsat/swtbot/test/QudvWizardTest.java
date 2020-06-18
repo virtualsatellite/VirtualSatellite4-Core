@@ -104,11 +104,11 @@ public class QudvWizardTest extends ASwtBotTestCase {
 		assertNotEnabled(finishButton);
 		
 		// We can create a unit if at least the name is set
-		bot.textWithLabel("Name").setText("testUnit");
+		bot.textWithLabel(AUnitWizardPage.NAME_FIELD).setText("testUnit");
 		assertEnabled(finishButton);
 		
 		// If we unset the name again, then the unit cannot be created anymore
-		bot.textWithLabel("Name").setText("");
+		bot.textWithLabel(AUnitWizardPage.NAME_FIELD).setText("");
 		assertNotEnabled(finishButton);
 		
 		// Fill in some dummy test data and create a test unit
@@ -131,7 +131,7 @@ public class QudvWizardTest extends ASwtBotTestCase {
 		// Change the name of the unit
 		unitTable.select("testUnit");
 		bot.button("Edit Unit").click();
-		bot.textWithLabel("Name").setText("testUnitEdit");
+		bot.textWithLabel(AUnitWizardPage.NAME_FIELD).setText("testUnitEdit");
 		finishDialog();
 		
 		// There is no longer a unit with the old name and only a unit with the new name
