@@ -664,7 +664,14 @@ public class ASwtBotTestCase {
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
 		SwtBotSection composite = new SwtBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
-	}	
+	}
+	
+	/**
+	 * @return value of a property with the given name in the currently open CA editor
+	 */
+	protected String getPropertyValue(String propertyName) {
+		return bot.textWithLabel(propertyName).getText();
+	}
 	
 	/**
 	 * @param table the table to make changes on
