@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.results.BoolResult;
+import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
@@ -279,13 +278,11 @@ public class ValidatorTest extends ASwtBotTestCase {
 	 * @return the image of the table item
 	 */
 	private Image getImageForTableItem(SWTBotTableItem swtBotTableItem) {
-		List<Image> image = new ArrayList<>();
-		syncExec(new BoolResult() {
-			public Boolean run() {
-				image.add(swtBotTableItem.widget.getImage());
-				return true;
+		return syncExec(new Result<Image>() {
+			@Override
+			public Image run() {
+				return swtBotTableItem.widget.getImage();
 			}
 		});
-		return image.get(0);
 	}
 }
