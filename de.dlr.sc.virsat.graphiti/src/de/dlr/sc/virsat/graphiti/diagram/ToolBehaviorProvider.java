@@ -14,8 +14,6 @@ import org.eclipse.graphiti.tb.DefaultToolBehaviorProvider;
  
 /**
  * Provides behaviors for a tool .
- * @author bell_er
- *
  */
 public class ToolBehaviorProvider extends DefaultToolBehaviorProvider {
 

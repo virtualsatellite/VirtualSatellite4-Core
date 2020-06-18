@@ -65,9 +65,9 @@ public class VirSatGitAccessTest {
 	@After
 	public void tearDown() throws Exception {
 		gitUpstream.close();
-		FileUtils.forceDelete(absolutePathToTempUpstreamRepository);
-		FileUtils.forceDelete(makeAbsolute(relativePathToTempLocalRepository1));
-		FileUtils.forceDelete(makeAbsolute(relativePathToTempLocalRepository2));
+		FileUtils.deleteQuietly(absolutePathToTempUpstreamRepository);
+		FileUtils.deleteQuietly(makeAbsolute(relativePathToTempLocalRepository1));
+		FileUtils.deleteQuietly(makeAbsolute(relativePathToTempLocalRepository2));
 	}
 
 	@Test

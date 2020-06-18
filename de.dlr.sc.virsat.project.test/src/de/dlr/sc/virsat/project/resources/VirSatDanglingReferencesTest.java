@@ -37,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
@@ -130,7 +131,7 @@ public class VirSatDanglingReferencesTest extends AProjectTestCase {
 		resSeiConfiguration.getContents().add(seiConfiguration);
 		resSeiDefinition.getContents().add(seiDefinition);
 		
-		resSet.saveAllResources(null);
+		resSet.saveAllResources(null, UserRegistry.getInstance());
 	}
 	
 	/**
@@ -146,7 +147,7 @@ public class VirSatDanglingReferencesTest extends AProjectTestCase {
 	public void testRemovedSeiFromResource() throws IOException {
 		Resource resSeiDefinition = resSet.getStructuralElementInstanceResource(seiDefinition);
 		resSeiDefinition.getContents().remove(seiDefinition);
-		resSet.saveResource(resSeiDefinition, true);
+		resSet.saveResource(resSeiDefinition, UserRegistry.getInstance(), true);
 		
 		checkThereAreErrorsInitiallyAndSaveFixesThem();
 	}
@@ -197,7 +198,7 @@ public class VirSatDanglingReferencesTest extends AProjectTestCase {
 
 		for (Resource resource : reloadedResourceSet.getResources()) {
 			VirSatResourceSetUtil.removeDanglingReferences(resource);
-			reloadedResourceSet.saveResource(resource, true);
+			reloadedResourceSet.saveResource(resource, UserRegistry.getInstance(), true);
 		}
 		
 		reloadedResourceSet = reloadAndGetNewResourceSet();

@@ -152,16 +152,24 @@ public abstract class AUiSnippetEStructuralFeatureTable extends AUiEStructuralFe
 	 * @param table The Table which should be set in the TableViewer
 	 */
 	protected void setUpTableViewer(EditingDomain editingDomain, Table table) {
-		tableViewer = new TableViewer(table);
-		tableViewer.setContentProvider(getTableContentProvider());
-		
+		createTableViewer(table);
 		createTableColumns(editingDomain);
 		
-		if (getTableLabelProvider() != null) {
-			tableViewer.setLabelProvider(getTableLabelProvider());
+		ITableLabelProvider labelProvider = getTableLabelProvider();
+		if (labelProvider != null) {
+			tableViewer.setLabelProvider(labelProvider);
 		}
-	
+		
 		setTableViewerInput(editingDomain);
+	}
+	
+	/**
+	 * Creates the actual table viewer
+	 * @param table The Table which should be set in the TableViewer
+	 */
+	protected void createTableViewer(Table table) {
+		tableViewer = new TableViewer(table);
+		tableViewer.setContentProvider(getTableContentProvider());
 	}
 	
 	/**

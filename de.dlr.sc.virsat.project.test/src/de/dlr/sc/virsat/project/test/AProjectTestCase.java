@@ -32,6 +32,7 @@ import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -60,6 +61,8 @@ public abstract class AProjectTestCase {
 	protected VirSatResourceSet rs;
 	
 	protected List<IProject> testProjects = new ArrayList<>();
+	
+	private String previousUser;
 	
 	/**
 	 * Use this method to create a new test project and to remember it for the test case.
@@ -103,8 +106,6 @@ public abstract class AProjectTestCase {
 		projectCommons.createProjectStructure(null);
 	}
 	
-	private String previousUser;
-	
 	/**
 	 * Method to adjust the User rights for the test cases
 	 * This method gets called by the constructor
@@ -123,6 +124,7 @@ public abstract class AProjectTestCase {
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		VirSatTransactionalEditingDomain.clearResourceEventListener();
 		VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
+		
 		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
@@ -264,6 +266,28 @@ public abstract class AProjectTestCase {
 			} catch (InterruptedException e) {
 				throw new AssertionError("assertRetry got interrupted", e);
 			} 
+		}
+	}
+	
+	
+	public static class TestUserContext implements IUserContext {
+
+		public TestUserContext(String userName, boolean su) {
+			this.userName = userName;
+			this.su = su;
+		}
+		
+		String userName;
+		boolean su;
+		
+		@Override
+		public boolean isSuperUser() {
+			return su;
+		}
+
+		@Override
+		public String getUserName() {
+			return userName;
 		}
 	}
 }
