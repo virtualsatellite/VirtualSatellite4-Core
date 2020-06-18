@@ -40,6 +40,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.StringStartsWith;
@@ -50,6 +51,7 @@ import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.rules.Timeout;
+
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -63,6 +65,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.swtbot.util.SwtBotDebugHelper;
+import de.dlr.sc.virsat.swtbot.util.SwtBotHyperlink;
 import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 import de.dlr.sc.virsat.swtbot.util.SwtThreadWatcher;
 
@@ -224,6 +227,18 @@ public class ASwtBotTestCase {
 		waitForEditor(item);
 		waitForEditingDomainAndUiThread();
 		return newItem;
+	}
+	
+	/**
+	 * Opens a view
+	 * @param viewId the id of the view
+	 * @return the opened view
+	 */
+	protected SWTBotView openView(String viewId) {
+		SWTBotView view = bot.viewById(viewId);
+		view.show();
+		waitForEditingDomainAndUiThread();
+		return view;
 	}
 	
 	/**
@@ -669,6 +684,13 @@ public class ASwtBotTestCase {
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
 		SwtBotSection composite = new SwtBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
+	}	
+	
+	protected SwtBotHyperlink getSWTBotHyperlink(String text) {
+		@SuppressWarnings("unchecked")
+		Matcher<Hyperlink> matcher = allOf(widgetOfType(Hyperlink.class), withMnemonic(text));
+		SwtBotHyperlink swtBotHyperlink = new SwtBotHyperlink(bot.widget(matcher, 0), matcher);
+		return swtBotHyperlink;
 	}	
 	
 	/**
