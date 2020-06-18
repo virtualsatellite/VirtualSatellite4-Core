@@ -26,9 +26,10 @@ import org.junit.runners.Suite;
 	EditorTest.class,
 	NewProjectWizardTest.class,
 	CutCopyDeleteUndoTest.class,
-	InheritanceTest.class,
-	CalculationTest.class,
-	ProductStructureTest.class
+	InheritanceTest.class, 
+	CalculationTest.class,   
+	ProductStructureTest.class,
+	ValidatorTest.class
 	})
 
 public class ProjectUiAllTests {
