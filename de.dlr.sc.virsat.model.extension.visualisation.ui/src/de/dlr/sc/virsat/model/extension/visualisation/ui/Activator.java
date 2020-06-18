@@ -82,7 +82,7 @@ public class Activator extends AbstractUIPlugin {
 			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
 			
 			serverStarted = true;
-		} catch (UnsatisfiedLinkError e) {
+		} catch (Exception e) {
 			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK libraries. Error: " + e.getMessage()));
 		}
 	}
