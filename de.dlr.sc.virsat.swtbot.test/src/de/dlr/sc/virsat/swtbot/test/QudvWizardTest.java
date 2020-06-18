@@ -21,7 +21,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetQuantityKindManagement;
 import de.dlr.sc.virsat.qudv.ui.editor.snippets.UiSnippetUnitManagement;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.AQuantityKindWizardPage;
@@ -42,13 +41,13 @@ public class QudvWizardTest extends ASwtBotTestCase {
 	@Before
 	public void before() throws Exception {
 		super.before();
-		unitManagement = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, UnitManagement.class.getSimpleName());
+		unitManagement = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Unit Management");
 	}
 	
 	@Test
 	public void testAddAndEditSimpleQuantityKind() {
 		unitManagement.doubleClick();
-		bot.editorByTitle(UnitManagement.class.getSimpleName());
+		bot.editorByTitle("Unit Management");
 		
 		bot.button(UiSnippetQuantityKindManagement.BUTTON_ADD_TEXT).click();
 		
@@ -93,7 +92,7 @@ public class QudvWizardTest extends ASwtBotTestCase {
 	@Test
 	public void testAddAndEditSimpleUnit() {
 		unitManagement.doubleClick();
-		bot.editorByTitle(UnitManagement.class.getSimpleName());
+		bot.editorByTitle("Unit Management");
 		
 		bot.button(UiSnippetUnitManagement.BUTTON_ADD_TEXT).click();
 		
