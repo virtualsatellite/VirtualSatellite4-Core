@@ -27,7 +27,8 @@ import org.junit.runners.Suite;
 	CutCopyDeleteUndoTest.class,
 	InheritanceTest.class, 
 	CalculationTest.class,   
-	ProductStructureTest.class
+	ProductStructureTest.class,
+	RoleManagementTest.class
 	})
 
 public class ProjectUiAllTests {
