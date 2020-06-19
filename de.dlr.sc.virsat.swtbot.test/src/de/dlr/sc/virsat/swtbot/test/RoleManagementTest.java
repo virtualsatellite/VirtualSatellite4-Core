@@ -9,12 +9,19 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
+
+import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
+import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
+import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 
 public class RoleManagementTest extends ASwtBotTestCase {
 	
@@ -26,15 +33,21 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// create the necessary items for the test
 	}
 	
-	@Test
-	public void testAddNewDiscipline() {
-		// Open the RoleManagement Editor
+	/**
+	 * Opens the RoleManagementEditor in the VirSat Navigator
+	 */
+	private void openRoleManagementEditor() {
 		bot.viewByTitle("VirSat Navigator").show();
 		SWTBotTreeItem navigatorRootItem = bot.tree().getTreeItem(SWTBOT_TEST_PROJECTNAME);
-		navigatorRootItem.expand();
+		expand(navigatorRootItem);
 		navigatorRootItem.getNode("Role Management").select();
-		navigatorRootItem.getNode("Role Management").expand();
+		expand(navigatorRootItem.getNode("Role Management"));
 		navigatorRootItem.getNode("Role Management").doubleClick();
+	}
+	
+	@Test
+	public void testAddNewDiscipline() {
+		openRoleManagementEditor();
 		
 		// Switch to the Editor and add a new Discipline
 		createNewDiscipline("SubSystem", null);
@@ -47,7 +60,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// Check for the warnings
 		SWTBotView problemView = bot.viewByTitle("Problems");
 		problemView.show();
-		problemView.bot().tree().getTreeItem("Warnings (2 items)").expand();
+		expand(problemView.bot().tree().getTreeItem("Warnings (2 items)"));
 		problemView.bot().tree().getTreeItem("Warnings (2 items)").getNode("There are duplicate names in namespace: 'SubSystem'.").select();
 
 		// Now change the discipline name, save again and check the warnings disappear
@@ -67,5 +80,103 @@ public class RoleManagementTest extends ASwtBotTestCase {
 			return test.length == 0;
 		});
 		//CHECKSTYLE:ON
+	}
+	
+	@Test
+	public void testAssignDisciplineToOther() {
+		openRoleManagementEditor();
+		
+		// Add a disciple for the Repository
+		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", null);
+		
+		// Open the Repository editor
+		bot.viewByTitle("VirSat Navigator").show();
+		SWTBotTreeItem navigatorRootItem = bot.tree().getTreeItem(SWTBOT_TEST_PROJECTNAME);
+		expand(navigatorRootItem);
+		navigatorRootItem.getNode("Repository").select();
+		openEditor(navigatorRootItem.getNode("Repository"));
+		
+		// Change the discipline in the Repository editor
+		bot.editorByTitle("Repository").show();
+		bot.comboBox().setSelection("Discipline: Repository");
+		bot.button("Apply Discipline").click();
+		
+		assertTrue("The user should still be able to edit the discipline", bot.button("Apply Discipline").isEnabled());
+		
+		// Now change the user of the Repository discipline
+		bot.editorByTitle("Role Management").show();
+		newDisciplineTableItem.click(1);
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.bot().text().setText("other_user");
+		rmEditor.bot().table().unselect();
+		
+		save();
+		
+		// Open the Repository editor again
+		bot.editorByTitle("Repository").show();
+		assertFalse("The discipline has become non-edible", bot.button("Apply Discipline").isEnabled());
+	}
+	
+	@Test
+	public void testApplyDisciplineRecursive() {
+		openRoleManagementEditor();
+		
+		// Create two disciplines, one that will be used for the whole PTD
+		// and one for a special ED.
+		// Both are initially owned by the current user.
+		SWTBotTableItem ptdDisciplineTableItem = createNewDiscipline("PTD", null);
+		createNewDiscipline("ED", null);
+		
+		// Create a PT and PTD
+		bot.viewByTitle("VirSat Navigator").show();		
+		SWTBotTreeItem repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
+		SWTBotTreeItem productTree = addElement(ProductTree.class, conceptPs, repositoryNavigatorItem);
+		SWTBotTreeItem productTreeDomain = addElement(ProductTreeDomain.class, conceptPs, productTree);
+		
+		save();
+		
+		// Assign discipline of PTD
+		openEditor(productTreeDomain);
+		bot.comboBox().setSelection("Discipline: PTD");
+		bot.button("Apply Discipline").click();
+		
+		assertTrue("The PTD can be edited", bot.button("Apply Discipline").isEnabled());
+		
+		// Create two eds that should inherit the discipline
+		SWTBotTreeItem elementDefinition = addElement(ElementDefinition.class, conceptPs, productTreeDomain);
+		openEditor(elementDefinition);
+		bot.text(1).setText("ED1");
+		
+		SWTBotTreeItem elementDefinition2 = addElement(ElementDefinition.class, conceptPs, productTreeDomain);
+		openEditor(elementDefinition2);
+		bot.text(1).setText("ED2");
+		
+		// Change the discipline of one ED
+		openEditor(elementDefinition);
+		bot.editorByTitle("ED: ED1 -> ProductTree.ProductTreeDomain.ED1").show();
+		bot.comboBox().setSelection("Discipline: ED");
+		bot.button("Apply Discipline").click();
+		assertTrue("The ED can be edited", bot.button("Apply Discipline").isEnabled());
+		
+		bot.editorByTitle("ED: ED2 -> ProductTree.ProductTreeDomain.ED2").show();
+		assertTrue("The ED can be edited", bot.button("Apply Discipline").isEnabled());
+		
+		// Now change the user of the Repository discipline
+		bot.editorByTitle("Role Management").show();
+		ptdDisciplineTableItem.click(1);
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.bot().text().setText("other_user");
+		rmEditor.bot().table().unselect();
+		
+		// Check that the correct editors are not 
+		bot.editorByTitle("PTD: ProductTreeDomain -> ProductTree.ProductTreeDomain").show();
+		assertFalse("The PTD is non edible now", bot.button("Apply Discipline").isEnabled());
+		
+		bot.editorByTitle("ED: ED1 -> ProductTree.ProductTreeDomain.ED1").show();
+		assertTrue("This ED can still be edited because it isn't assigned to the PTD discipline", 
+				bot.button("Apply Discipline").isEnabled());
+		
+		bot.editorByTitle("ED: ED2 -> ProductTree.ProductTreeDomain.ED2").show();
+		assertFalse("This ED is non edible now", bot.button("Apply Discipline").isEnabled());
 	}
 }
