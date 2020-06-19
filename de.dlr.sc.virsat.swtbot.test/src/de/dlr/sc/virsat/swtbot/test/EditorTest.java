@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -70,10 +71,19 @@ public class EditorTest extends ASwtBotTestCase {
 	@Test
 	public void collapseSections() {
 		openEditor(elementConfiguration);
-		SwtBotSection composite = getSWTBotSection(Document.class);
-		composite.click();
-		save();
-		assertFalse(composite.isExpanded());
+		SwtBotSection documentSection = getSWTBotSection(Document.class);
+		
+		// Initially the section is expanded
+		assertTrue(documentSection.isExpanded());
+		
+		// Collapse the section
+		documentSection.click();
+		assertFalse(documentSection.isExpanded());
+		
+		// The section is still collapsed after closing and reopening the editor
+		bot.closeAllEditors();
+		openEditor(elementConfiguration);
+		assertFalse(documentSection.isExpanded());
 	}
 	
 	@Test 
