@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
@@ -26,15 +29,21 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// create the necessary items for the test
 	}
 	
-	@Test
-	public void testAddNewDiscipline() {
-		// Open the RoleManagement Editor
+	/**
+	 * Opens the RoleManagementEditor in the VirSat Navigator
+	 */
+	private void openRoleManagementEditor() {
 		bot.viewByTitle("VirSat Navigator").show();
 		SWTBotTreeItem navigatorRootItem = bot.tree().getTreeItem(SWTBOT_TEST_PROJECTNAME);
 		navigatorRootItem.expand();
 		navigatorRootItem.getNode("Role Management").select();
 		navigatorRootItem.getNode("Role Management").expand();
 		navigatorRootItem.getNode("Role Management").doubleClick();
+	}
+	
+	@Test
+	public void testAddNewDiscipline() {
+		openRoleManagementEditor();
 		
 		// Switch to the Editor and add a new Discipline
 		createNewDiscipline("SubSystem", null);
@@ -67,5 +76,40 @@ public class RoleManagementTest extends ASwtBotTestCase {
 			return test.length == 0;
 		});
 		//CHECKSTYLE:ON
+	}
+	
+	@Test
+	public void testAssignDisciplineToOther() {
+		openRoleManagementEditor();
+		
+		// Add a disciple for the Repository
+		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", null);
+		
+		// Open the Repository editor
+		bot.viewByTitle("VirSat Navigator").show();
+		SWTBotTreeItem navigatorRootItem = bot.tree().getTreeItem(SWTBOT_TEST_PROJECTNAME);
+		navigatorRootItem.expand();
+		navigatorRootItem.getNode("Repository").select();
+		navigatorRootItem.getNode("Repository").doubleClick();
+		
+		// Change the discipline in the Repository editor
+		bot.editorByTitle("Repository").show();
+		bot.comboBox().setSelection("Discipline: Repository");
+		bot.button("Apply Discipline").click();
+		
+		assertTrue("The user should still be able to edit the discipline", bot.button("Apply Discipline").isEnabled());
+		
+		// Now change the user of the Repository discipline
+		bot.editorByTitle("Role Management").show();
+		newDisciplineTableItem.click(1);
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.bot().text().setText("other_user");
+		rmEditor.bot().table().unselect();
+		
+		save();
+		
+		// Open the Repository editor again
+		bot.editorByTitle("Repository").show();
+		assertFalse("The discipline has become non-edible", bot.button("Apply Discipline").isEnabled());
 	}
 }
