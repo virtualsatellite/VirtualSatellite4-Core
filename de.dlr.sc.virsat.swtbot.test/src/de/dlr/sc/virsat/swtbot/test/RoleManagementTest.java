@@ -68,18 +68,16 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
 		rmEditor.bot().text().setText("SubSystemB");
 		rmEditor.bot().table().unselect();
-				
+		
 		save();
 		
-		//CHECKSTYLE:OFF
-		
-		assertForTimes("Waiting for problem messages to dissapear", 5, () ->{
+		final int NUMBER_OF_TRIES = 5;
+		assertForTimes("Waiting for problem messages to dissapear", NUMBER_OF_TRIES, () -> {
 			SWTBotView problemView2 = bot.viewById("org.eclipse.ui.views.ProblemView");
 			problemView2.show();
 			SWTBotTreeItem[] test = problemView2.bot().tree().getAllItems();
 			return test.length == 0;
 		});
-		//CHECKSTYLE:ON
 	}
 	
 	@Test
@@ -94,7 +92,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		SWTBotTreeItem navigatorRootItem = bot.tree().getTreeItem(SWTBOT_TEST_PROJECTNAME);
 		expand(navigatorRootItem);
 		navigatorRootItem.getNode("Repository").select();
-		openEditor(navigatorRootItem.getNode("Repository"));
+		navigatorRootItem.getNode("Repository").doubleClick();
 		
 		// Change the discipline in the Repository editor
 		bot.editorByTitle("Repository").show();
@@ -139,10 +137,9 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		openEditor(productTreeDomain);
 		bot.comboBox().setSelection("Discipline: PTD");
 		bot.button("Apply Discipline").click();
-		
 		assertTrue("The PTD can be edited", bot.button("Apply Discipline").isEnabled());
 		
-		// Create two eds that should inherit the discipline
+		// Create two EDs that inherit the discipline and give them unique names
 		SWTBotTreeItem elementDefinition = addElement(ElementDefinition.class, conceptPs, productTreeDomain);
 		openEditor(elementDefinition);
 		bot.text(1).setText("ED1");
@@ -161,14 +158,15 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		bot.editorByTitle("ED: ED2 -> ProductTree.ProductTreeDomain.ED2").show();
 		assertTrue("The ED can be edited", bot.button("Apply Discipline").isEnabled());
 		
-		// Now change the user of the Repository discipline
+		// Now change the user of the PTD discipline
+		// So the PTD and ED2 should become non edible
 		bot.editorByTitle("Role Management").show();
 		ptdDisciplineTableItem.click(1);
 		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
 		rmEditor.bot().text().setText("other_user");
 		rmEditor.bot().table().unselect();
 		
-		// Check that the correct editors are not 
+		// Check that the correct editors are non edible
 		bot.editorByTitle("PTD: ProductTreeDomain -> ProductTree.ProductTreeDomain").show();
 		assertFalse("The PTD is non edible now", bot.button("Apply Discipline").isEnabled());
 		
