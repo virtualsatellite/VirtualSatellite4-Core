@@ -176,4 +176,5 @@ public class QudvQuantityKindSetupWizardSelectionPage extends WizardSelectionPag
     	providerViewer.setInput(providers);
     	setControl(main);
 	}
+	
 }
