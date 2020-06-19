@@ -413,11 +413,18 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
-	 * closes the dialog and waits
-	 * @param buttonName the name of the button which closes the dialog
+	 * Finishes the current dialog
 	 */
-	protected void closeDialog(String buttonName) {
-		bot.button(buttonName).click();
+	protected void finishDialog() {
+		bot.button("Finish").click();
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Goes to the next page on the current dialog
+	 */
+	protected void nextPageDialog() {
+		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 	}
 	

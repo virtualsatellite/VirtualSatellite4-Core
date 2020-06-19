@@ -29,6 +29,7 @@ import org.junit.runners.Suite;
 	InheritanceTest.class, 
 	CalculationTest.class,   
 	ProductStructureTest.class,
+	QudvWizardTest.class,
 	ValidatorTest.class
 	})
 
