@@ -263,7 +263,7 @@ public class VirSatEcoreUtil extends EcoreUtil {
 	 * are about to be deleted anyway. The method does not account for superTI links from the IInheritanceLink interface.
 	 * @param deletedObjects a collection of objects to be deleted
 	 * @param resSet the resourceSet from which the objects will be deleted
-	 * @return a Map with the objects that are referenced providing a list with all the objects actually referencing
+	 * @return a map from referenced objects to sets of referencing objects
 	 */
 	public static Map<EObject, Set<EObject>> getReferencingObjectsForDelete(Collection<? extends EObject> deletedObjects, ResourceSet resSet) {
 		// This map brings the referencing objects into relation with the ones to be deleted
