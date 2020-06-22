@@ -22,8 +22,8 @@ set -e
 COMMAND=$0
 
 # set general variables to correctly execute the build process
-export OVERTARGET_VERSION=1.1.0.r201903120902
-export OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/release/1.1.0/25/plugins
+export OVERTARGET_VERSION=1.2.1.i202006221414
+export OVERTARGET_REPO=https://sourceforge.net/projects/overtarget/files/integration/1.2.1/plugins/
 export OVERTARGET_GROUP=de.dlr.sc.overtarget
 export JUNIT_DEBUG_PROJECT_TEST_CASE=true
 export SWTBOT_SCREENSHOT=true
