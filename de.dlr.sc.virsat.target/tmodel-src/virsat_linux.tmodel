@@ -1,4 +1,4 @@
-Target virsat_linux extends virsat {
-	OperatingSystem linux 
-	WindowingSystem gtk
+Target virsat_linux extends virsat{
+	OperatingSystem win32 
+	WindowingSystem win32
 }
