@@ -1,4 +1,4 @@
 Target virsat_linux {
-	OperatingSystem win32 
-	WindowingSystem win32
+	OperatingSystem linux 
+	WindowingSystem gtk
 }

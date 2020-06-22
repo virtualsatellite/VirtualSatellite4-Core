@@ -3,8 +3,8 @@
 		<locations>
 		</locations>
 		<environment>
-		<os>win32</os>
-		<ws>win32</ws>
+		<os>linux</os>
+		<ws>gtk</ws>
 		<arch></arch>
 		<nl></nl> 
 		</environment>
