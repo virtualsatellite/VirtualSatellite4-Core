@@ -76,4 +76,8 @@ public class Activator extends Plugin {
 		return propertiesFilePath;
 	}
 	
+	public String resolveBundlePath(String path) throws IOException {
+		return FileLocator.resolve(FileLocator.find(getBundle(), new Path(path))).toString();
+	}
+	
 }

@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
 import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
@@ -100,7 +101,7 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 		
 		// Create a pending SEI and see if the detection of SEIs works as expected.
 		seiEdSc.getChildren().remove(seiEdRw);
-		resSet.saveAllResources(null);
+		resSet.saveAllResources(null, UserRegistry.getInstance());
 		testSeiValidator.gotCalled = false;
 		testSeiValidator.seis.clear();
 		

@@ -60,7 +60,7 @@ public class ConstraintTableHandler extends AbstractHandler implements IHandler 
 		TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
 		VirSatResourceSet resSet = (VirSatResourceSet) ed.getResourceSet();
 		Repository repository = resSet.getRepository();
-		boolean hasRights = RightsHelper.hasWritePermission(repository);
+		boolean hasRights = RightsHelper.hasSystemUserWritePermission(repository);
 		if (eObject instanceof StructuralElementInstance && hasRights) {
 			StructuralElementInstance sc = (StructuralElementInstance) eObject;
 			String type = sc.getType().getName();

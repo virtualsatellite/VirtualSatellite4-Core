@@ -33,7 +33,6 @@ public class DvlmLatestConceptValidatorTest extends ATestConceptTestCase {
 	public void setUp() throws CoreException {
 		super.setUp();
 		addResourceSetAndRepository();
-		loadConceptAndInstallToRepository(CONCEPT_ID_CORE);
 		loadTestConcept();
 	}
 	

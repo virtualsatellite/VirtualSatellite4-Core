@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.mechanical displayname "Mechanical Engineering" description "Concept for mechanical engineering" version 0.1 { 
+Concept de.dlr.sc.virsat.model.extension.mechanical displayname "Mechanical Engineering" description "Concept for mechanical engineering" version 0.2 { 
 	
 }
 

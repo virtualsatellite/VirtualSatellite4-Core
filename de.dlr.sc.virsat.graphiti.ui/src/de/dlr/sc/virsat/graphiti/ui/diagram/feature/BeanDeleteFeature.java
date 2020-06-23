@@ -19,7 +19,8 @@ import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.ui.navigator.handler.DeleteStructuralElementInstanceHandler;
 /**
  * Feature handling the deletion of beans
  * @author bell_er
@@ -64,10 +65,11 @@ public class BeanDeleteFeature extends DefaultDeleteFeature {
 	 */
 	protected Command createDeleteCommand(EditingDomain ed, Object bo) {
 		if (bo instanceof IBeanStructuralElementInstance) {
-			// For Structural Element Instances we cant just delete them from the model
+			// For Structural Element Instances we can't just delete them from the model
 			// we also have to remove the files so we have to create the proper command!
 			IBeanStructuralElementInstance beanSei = (IBeanStructuralElementInstance) bo;
-			return CreateRemoveSeiWithFileStructureCommand.create(beanSei.getStructuralElementInstance());
+			return CreateRemoveSeiWithFileStructureCommand
+				.create(beanSei.getStructuralElementInstance(), DeleteStructuralElementInstanceHandler.DELETE_RESOURCE_OPERATION_FUNCTION);
 		} else {
 			// This feature can only be applied to IBeanDelete so we can guarantee the type
 			IBeanDelete bean = (IBeanDelete) bo;

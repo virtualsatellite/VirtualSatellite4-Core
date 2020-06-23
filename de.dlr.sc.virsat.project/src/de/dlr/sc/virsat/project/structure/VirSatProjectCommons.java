@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -98,7 +99,8 @@ public class VirSatProjectCommons {
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX = "ise_";
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS = "documents";
 
-	public static final String FILENAME_STRUCTURAL_ELEMENT = "StructuralElement.dvlm";
+	public static final String FILENAME_STRUCTURAL_ELEMENT_SEGMENT = "StructuralElement";
+	public static final String FILENAME_STRUCTURAL_ELEMENT = FILENAME_STRUCTURAL_ELEMENT_SEGMENT + "." + FILENAME_EXTENSION;
 
 	/**
 	 * This method hands back the path and the filename as String based path of a given SEI
@@ -501,5 +503,16 @@ public class VirSatProjectCommons {
 		};
 		
 		return runnable;
+	}
+	
+	/**
+	 * Method to activate or deactivate the Workspace builders for the whole workspace
+	 * @param enable set to true if builders should be enabled
+	 * @throws CoreException
+	 */
+	public static void setEnableWorkspaceBuilder(boolean enable) throws CoreException {
+		IWorkspaceDescription wsDescription = ResourcesPlugin.getWorkspace().getDescription();
+		wsDescription.setAutoBuilding(enable);
+		ResourcesPlugin.getWorkspace().setDescription(wsDescription);
 	}
 }

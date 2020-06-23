@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- Concept de.dlr.sc.virsat.model.extension.visualisation displayname "Visualization" version 1.3 description "Concept that defines visualisation properties" {
+ Concept de.dlr.sc.virsat.model.extension.visualisation displayname "Visualization" version 1.4 description "Concept that defines visualisation properties" {
 	Category Visualisation {
 		Applicable For All;
 		Cardinality 1;

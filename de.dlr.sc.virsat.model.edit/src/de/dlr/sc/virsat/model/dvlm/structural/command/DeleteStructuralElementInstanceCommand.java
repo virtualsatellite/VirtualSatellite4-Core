@@ -103,4 +103,5 @@ public class DeleteStructuralElementInstanceCommand extends DeleteCommand {
 		}).count() == 0;
 		return containsNoPi && super.canExecute(); 
 	}
+	
 }

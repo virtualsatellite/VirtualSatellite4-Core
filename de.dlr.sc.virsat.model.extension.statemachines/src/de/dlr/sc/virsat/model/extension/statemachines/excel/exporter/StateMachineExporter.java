@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -37,9 +38,14 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
  * Class for exporting excel
  */
 public class StateMachineExporter implements IExport {
-	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
 	
-	ExcelExportHelper helper = new ExcelExportHelper();
+	public StateMachineExporter(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
+	}
+	
+	protected LocalDateTime localDateTime;
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
+	protected ExcelExportHelper helper = new ExcelExportHelper();
 	private CategoryAssignment exportCa;
 
 	@Override
@@ -78,7 +84,7 @@ public class StateMachineExporter implements IExport {
 		exportCa = ca;
 		StructuralElementInstance exportSei = (StructuralElementInstance) exportCa.eContainer();
 		// Create the header sheet
-		helper.setHeaders(exportSei);
+		helper.writeHeaderSheet(exportSei, localDateTime);
 		// create the state sheet
 		createDataSheetStates();
 		// create the transition sheet
@@ -106,7 +112,7 @@ public class StateMachineExporter implements IExport {
 		}
 		StateMachine stateMaschine = new StateMachine(exportCa);
 		IBeanList<State> states = stateMaschine.getStates();
-		helper.nullChecker(states.size() + AExcelStatIO.COMMON_ROW_START_TABLE, sheet, AExcelStatIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
+		helper.instantiateCells(sheet, states.size() + AExcelStatIO.COMMON_ROW_START_TABLE, AExcelStatIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
 		// for each interface end, fill out a row
 		int i = AExcelStatIO.COMMON_ROW_START_TABLE;
 		for (State state : states) {
@@ -128,7 +134,7 @@ public class StateMachineExporter implements IExport {
 
 		StateMachine stateMaschine = new StateMachine(exportCa);
 		IBeanList<Transition> transitions = stateMaschine.getTransitions();
-		helper.nullChecker(transitions.size() + AExcelStatIO.COMMON_ROW_START_TABLE, sheet, AExcelStatIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
+		helper.instantiateCells(sheet, transitions.size() + AExcelStatIO.COMMON_ROW_START_TABLE, AExcelStatIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
 		int i = AExcelStatIO.COMMON_ROW_START_TABLE;
 
 		for (Transition transition : transitions) {

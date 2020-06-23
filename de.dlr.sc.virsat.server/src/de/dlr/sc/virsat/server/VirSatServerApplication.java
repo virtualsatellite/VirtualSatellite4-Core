@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
@@ -32,6 +33,9 @@ public class VirSatServerApplication implements IApplication {
 		System.out.println("Using configuration file: " + Activator.getDefault().getPropertiesFilePath());
 		
 		System.out.println("Initializing repositories from configurations in " + ServerConfiguration.getRepositoryConfigurationsDir());
+		
+		VirSatProjectCommons.setEnableWorkspaceBuilder(false);
+		System.out.println("Deactivated automated execution fo Workspace Builder");
 		
 		try {
 			ServerRepoHelper.initRepoRegistry();
@@ -59,6 +63,7 @@ public class VirSatServerApplication implements IApplication {
 		System.out.println("About to start the Jetty Server instance...");
 		
 		jettyServer = new VirSatJettyServer();
+		jettyServer.init();
 		jettyServer.start().join();
 		
 		System.out.println("--------------------------------------------------");
