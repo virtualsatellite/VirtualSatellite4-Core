@@ -89,9 +89,9 @@ public abstract class ATestCategoryBase extends GenericCategory implements IBean
 	private IBeanList<TestCategoryBase> testArray = new TypeSafeComposedPropertyInstanceList<>(TestCategoryBase.class);
 	
 	private void safeAccessTestArray() {
-		if (testArray.getArrayInstance() == null) {
-			testArray.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testArray"));
-		}
+		// Temporary fix for #486 to pass the tests, should be regenerated with the new generator
+		// together with pending changes on ReferencePropertyBean
+		testArray.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testArray"));
 	}
 	
 	public IBeanList<TestCategoryBase> getTestArray() {
