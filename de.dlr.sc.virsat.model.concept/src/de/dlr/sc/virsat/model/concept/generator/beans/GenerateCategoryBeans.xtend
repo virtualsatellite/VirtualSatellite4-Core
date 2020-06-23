@@ -323,9 +323,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	protected def declareSafeAccessArrayMethod(AProperty property, ImportManager importManager) '''
 	«importManager.register(ArrayInstance)»
 	private void «propertyMethodSafeAccess(property)» {
-		if («property.name».getArrayInstance() == null) {
-			«property.name».setArrayInstance((ArrayInstance) helper.getPropertyInstance("«property.name»"));
-		}
+		«property.name».setArrayInstance((ArrayInstance) helper.getPropertyInstance("«property.name»"));
 	}
 	'''
 	protected def declareArrayAttributesSetterAndGetter(AProperty property, ImportManager importManager) {
