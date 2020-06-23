@@ -338,8 +338,6 @@ public class EquationSectionUriEditorInput extends FileEditorInput implements IP
 	 */
 	public void saveResource() {
 		if (editingDomain.isDirty(virSatResource)) {
-			// Doing the save in a workspace operation is intended, to not let
-			// the automatic builders jump on these files in between
 			editingDomain.saveAll();
 		}
 	}
