@@ -110,9 +110,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyEReference<ExternalTestType>> testEReferenceArray = new TypeSafeEReferenceArrayInstanceList<ExternalTestType>();
 	
 	private void safeAccessTestEReferenceArray() {
-		if (testEReferenceArray.getArrayInstance() == null) {
-			testEReferenceArray.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testEReferenceArray"));
-		}
+		testEReferenceArray.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testEReferenceArray"));
 	}
 	
 	public IBeanList<BeanPropertyEReference<ExternalTestType>> getTestEReferenceArray() {

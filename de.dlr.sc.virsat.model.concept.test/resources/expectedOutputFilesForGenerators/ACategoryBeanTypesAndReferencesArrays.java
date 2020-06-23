@@ -84,9 +84,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 	private IBeanList<TestCategoryA> testSubCategoryArrayDynamic = new TypeSafeComposedPropertyInstanceList<>(TestCategoryA.class);
 	
 	private void safeAccessTestSubCategoryArrayDynamic() {
-		if (testSubCategoryArrayDynamic.getArrayInstance() == null) {
-			testSubCategoryArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testSubCategoryArrayDynamic"));
-		}
+		testSubCategoryArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testSubCategoryArrayDynamic"));
 	}
 	
 	public IBeanList<TestCategoryA> getTestSubCategoryArrayDynamic() {
@@ -100,9 +98,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 	private IBeanList<TestCategoryA> testSubCategoryArrayStatic = new TypeSafeComposedPropertyInstanceList<>(TestCategoryA.class);
 	
 	private void safeAccessTestSubCategoryArrayStatic() {
-		if (testSubCategoryArrayStatic.getArrayInstance() == null) {
-			testSubCategoryArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testSubCategoryArrayStatic"));
-		}
+		testSubCategoryArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testSubCategoryArrayStatic"));
 	}
 	
 	public IBeanList<TestCategoryA> getTestSubCategoryArrayStatic() {
@@ -116,9 +112,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		private IBeanList<TestCategoryA> testRefCategoryArrayDynamic = new TypeSafeReferencePropertyInstanceList<>(TestCategoryA.class);
 	
 		private void safeAccessTestRefCategoryArrayDynamic() {
-			if (testRefCategoryArrayDynamic.getArrayInstance() == null) {
-				testRefCategoryArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefCategoryArrayDynamic"));
-			}
+			testRefCategoryArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefCategoryArrayDynamic"));
 		}
 	
 		public IBeanList<TestCategoryA> getTestRefCategoryArrayDynamic() {
@@ -132,9 +126,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		private IBeanList<TestCategoryA> testRefCategoryArrayStatic = new TypeSafeReferencePropertyInstanceList<>(TestCategoryA.class);
 	
 		private void safeAccessTestRefCategoryArrayStatic() {
-			if (testRefCategoryArrayStatic.getArrayInstance() == null) {
-				testRefCategoryArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefCategoryArrayStatic"));
-			}
+			testRefCategoryArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefCategoryArrayStatic"));
 		}
 	
 		public IBeanList<TestCategoryA> getTestRefCategoryArrayStatic() {
@@ -148,9 +140,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		private IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> testRefPropertyArrayDynamic = new TypeSafeReferencePropertyInstanceList<>(de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString.class);
 	
 		private void safeAccessTestRefPropertyArrayDynamic() {
-			if (testRefPropertyArrayDynamic.getArrayInstance() == null) {
-				testRefPropertyArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefPropertyArrayDynamic"));
-			}
+			testRefPropertyArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefPropertyArrayDynamic"));
 		}
 	
 		public IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> getTestRefPropertyArrayDynamic() {
@@ -164,9 +154,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		private IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> testRefPropertyArrayStatic = new TypeSafeReferencePropertyInstanceList<>(de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString.class);
 	
 		private void safeAccessTestRefPropertyArrayStatic() {
-			if (testRefPropertyArrayStatic.getArrayInstance() == null) {
-				testRefPropertyArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefPropertyArrayStatic"));
-			}
+			testRefPropertyArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testRefPropertyArrayStatic"));
 		}
 	
 		public IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> getTestRefPropertyArrayStatic() {

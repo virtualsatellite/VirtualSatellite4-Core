@@ -94,9 +94,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyString> tpSringArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 	
 	private void safeAccessTpSringArrayDynamic() {
-		if (tpSringArrayDynamic.getArrayInstance() == null) {
-			tpSringArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayDynamic"));
-		}
+		tpSringArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayDynamic"));
 	}
 	
 	public IBeanList<BeanPropertyString> getTpSringArrayDynamic() {
@@ -110,9 +108,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyString> tpSringArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 	
 	private void safeAccessTpSringArrayStatic() {
-		if (tpSringArrayStatic.getArrayInstance() == null) {
-			tpSringArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayStatic"));
-		}
+		tpSringArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayStatic"));
 	}
 	
 	public IBeanList<BeanPropertyString> getTpSringArrayStatic() {
@@ -126,9 +122,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyInt> tpIntArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
 	
 	private void safeAccessTpIntArrayDynamic() {
-		if (tpIntArrayDynamic.getArrayInstance() == null) {
-			tpIntArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayDynamic"));
-		}
+		tpIntArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayDynamic"));
 	}
 		
 	public IBeanList<BeanPropertyInt> getTpIntArrayDynamic() {
@@ -142,9 +136,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyInt> tpIntArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
 	
 	private void safeAccessTpIntArrayStatic() {
-		if (tpIntArrayStatic.getArrayInstance() == null) {
-			tpIntArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayStatic"));
-		}
+		tpIntArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayStatic"));
 	}
 		
 	public IBeanList<BeanPropertyInt> getTpIntArrayStatic() {
@@ -158,9 +150,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyFloat> tpFloatArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
 	
 	private void safeAccessTpFloatArrayDynamic() {
-		if (tpFloatArrayDynamic.getArrayInstance() == null) {
-			tpFloatArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayDynamic"));
-		}
+		tpFloatArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayDynamic"));
 	}
 		
 	public IBeanList<BeanPropertyFloat> getTpFloatArrayDynamic() {
@@ -174,9 +164,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyFloat> tpFloatArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
 	
 	private void safeAccessTpFloatArrayStatic() {
-		if (tpFloatArrayStatic.getArrayInstance() == null) {
-			tpFloatArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayStatic"));
-		}
+		tpFloatArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayStatic"));
 	}
 		
 	public IBeanList<BeanPropertyFloat> getTpFloatArrayStatic() {
@@ -190,9 +178,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyBoolean> tpBooleanArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
 	
 	private void safeAccessTpBooleanArrayDynamic() {
-		if (tpBooleanArrayDynamic.getArrayInstance() == null) {
-			tpBooleanArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayDynamic"));
-		}
+		tpBooleanArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayDynamic"));
 	}
 	
 	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayDynamic() {
@@ -206,9 +192,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyBoolean> tpBooleanArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
 	
 	private void safeAccessTpBooleanArrayStatic() {
-		if (tpBooleanArrayStatic.getArrayInstance() == null) {
-			tpBooleanArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayStatic"));
-		}
+		tpBooleanArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayStatic"));
 	}
 	
 	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayStatic() {
@@ -222,9 +206,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyResource> tpResourceDynamich = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
 	
 	private void safeAccessTpResourceDynamich() {
-		if (tpResourceDynamich.getArrayInstance() == null) {
-			tpResourceDynamich.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceDynamich"));
-		}
+		tpResourceDynamich.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceDynamich"));
 	}
 	
 	public IBeanList<BeanPropertyResource> getTpResourceDynamich() {
@@ -238,9 +220,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyResource> tpResourceStatic = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
 	
 	private void safeAccessTpResourceStatic() {
-		if (tpResourceStatic.getArrayInstance() == null) {
-			tpResourceStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceStatic"));
-		}
+		tpResourceStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceStatic"));
 	}
 	
 	public IBeanList<BeanPropertyResource> getTpResourceStatic() {
@@ -254,9 +234,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyEnum> tpEnumDynamich = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
 	
 	private void safeAccessTpEnumDynamich() {
-		if (tpEnumDynamich.getArrayInstance() == null) {
-			tpEnumDynamich.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumDynamich"));
-		}
+		tpEnumDynamich.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumDynamich"));
 	}
 	
 	public IBeanList<BeanPropertyEnum> getTpEnumDynamich() {
@@ -270,9 +248,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	private IBeanList<BeanPropertyEnum> tpEnumStatic = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
 	
 	private void safeAccessTpEnumStatic() {
-		if (tpEnumStatic.getArrayInstance() == null) {
-			tpEnumStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumStatic"));
-		}
+		tpEnumStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumStatic"));
 	}
 	
 	public IBeanList<BeanPropertyEnum> getTpEnumStatic() {
