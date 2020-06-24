@@ -38,10 +38,7 @@ public class SimpleUnitWizardPageOne extends AUnitWizardPage {
 
 	@Override
 	protected void updateWidgets() {
-		if (!name.getText().isEmpty()) {
-			setPageComplete(true);
-		
-		}
+		setPageComplete(!name.getText().isEmpty());
 	}
 	
 	@Override
@@ -52,7 +49,6 @@ public class SimpleUnitWizardPageOne extends AUnitWizardPage {
 		setPageComplete(false);
 		initializeValues();
 	}
-	
 
 	@Override
 	protected void initializeValues() {
@@ -68,8 +64,6 @@ public class SimpleUnitWizardPageOne extends AUnitWizardPage {
 				comboViewer.setSelection(new StructuredSelection(quantityKind));
 			}			
 			setPageComplete(true);
-		}
-		
+		}	
 	}
-	
 }

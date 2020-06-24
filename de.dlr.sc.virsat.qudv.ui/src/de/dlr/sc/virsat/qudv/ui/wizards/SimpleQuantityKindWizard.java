@@ -89,8 +89,7 @@ public class SimpleQuantityKindWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-
-		//collect data from the wizard pages
+		// collect data from the wizard pages
 		String name = one.getName();
 		String symbol = one.getSymbol();
 		String description = one.getDescription();
