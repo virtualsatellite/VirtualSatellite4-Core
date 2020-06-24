@@ -59,6 +59,8 @@ public class VirSatWorkspaceContentProvider implements ITreeContentProvider {
 				Display.getDefault().asyncExec(() -> {
 					if (!viewer.getControl().isDisposed()) {
 						// Still unsure if we really need this refresh call
+						Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), 
+								"VirSatWorkspaceContentProvider::eventListener: Triggering refresh of the navigator due to a resource change."));
 						viewer.refresh();
 					}
 				});

@@ -92,28 +92,10 @@ public class VirSatTransactionalAdapterFactoryLabelProvider extends org.eclipse.
 	}
 
 	@Override
-	protected Image getDefaultImage(final Object object) {
-		return VirSatTransactionalEditingDomainHelper.tryRunExclusive(object, new RunnableWithResult.Impl<Image>() {
-			public void run() {
-				setResult(VirSatTransactionalAdapterFactoryLabelProvider.super.getDefaultImage(object));
-			}
-		});
-	}
-
-	@Override
 	public Image getImage(final Object object) {
 		return VirSatTransactionalEditingDomainHelper.tryRunExclusive(object, new RunnableWithResult.Impl<Image>() {
 			public void run() {
 				setResult(VirSatTransactionalAdapterFactoryLabelProvider.super.getImage(object));
-			}
-		});
-	}
-
-	@Override
-	protected Image getImageFromObject(final Object object) {
-		return VirSatTransactionalEditingDomainHelper.tryRunExclusive(object, new RunnableWithResult.Impl<Image>() {
-			public void run() {
-				setResult(VirSatTransactionalAdapterFactoryLabelProvider.super.getImageFromObject(object));
 			}
 		});
 	}
