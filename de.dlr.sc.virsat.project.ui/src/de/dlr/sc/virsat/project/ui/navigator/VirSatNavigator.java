@@ -18,9 +18,15 @@ import java.util.Set;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.common.CommandException;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -46,20 +52,19 @@ import org.eclipse.ui.navigator.CommonViewer;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.ui.Activator;
-import de.dlr.sc.virsat.project.ui.comparer.VirSatComparer;
 import de.dlr.sc.virsat.project.ui.navigator.dropAssist.PaletteObjectDropAdapterAssistant;
 import de.dlr.sc.virsat.project.ui.navigator.saveablesprovider.VirSatProjectSaveablesProvider;
 
 /**
  * Own Implementation overriding the Common Navigator
- * @author fisc_ph
- *
  */
 public class VirSatNavigator extends CommonNavigator implements IResourceEventListener {
 
@@ -102,7 +107,6 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 		super.createPartControl(aParent);
 		TreeViewer treeViewer = getCommonViewer();
 		treeViewer.expandToLevel(TREE_LEVEL);
-		treeViewer.setComparer(new VirSatComparer());
 	}
 	
 	private VirSatProjectSaveablesProvider saveablesProvider;
@@ -168,6 +172,39 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 		}
 	}
 	
+	protected static final boolean ENABLE_ADVANCED_REFRESH_STACK_TRACE_DEBUGGING = false;
+	
+	/**
+	 * Method for debugging. Tells the stack trace and provides details to the given object.
+	 * Mainly used in the refresh methods to analyze what is going in there.
+	 * @param loggingObject The object for which to get more detail information.
+	 * @return String that  contains detailed debugging information
+	 */
+	protected String createImprovedLoggingMessage(Object loggingObject) {
+		StringBuilder stackTraceBuilder = new StringBuilder("No Stack Trace");
+
+		// Give some detailed information from where the method got called
+		if (ENABLE_ADVANCED_REFRESH_STACK_TRACE_DEBUGGING) {
+			for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+				stackTraceBuilder.append(ste.toString() + "\n");
+			}
+		}
+	
+		String elementClass = "ClassName: Null";
+		String nameOfIName = "IName: N/A";
+		
+		if (loggingObject != null) {
+			elementClass = "ClassName: " + loggingObject.getClass().getSimpleName();
+			nameOfIName = "IName: " + ((loggingObject instanceof IName) ? ((IName) loggingObject).getName() : "N/A");
+		}
+		
+		// Now start logging and processing
+		return  elementClass + "\n"
+			+ nameOfIName + "\n"
+			+ "StackTrace:\n"
+			+ stackTraceBuilder.toString();
+	}
+	
 	@Override
 	protected CommonViewer createCommonViewerObject(Composite aParent) {
 		// Here we override the functionality of the common viewer which is used in the background of a Navigator
@@ -178,9 +215,16 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 		// previous SEI but the expanded state on the new item got lost
 		return new CommonViewer(getViewSite().getId(), aParent,	SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL) {
 			
-			private boolean enableStackTrace = false;
-			
 			private PaletteObjectDropAdapterAssistant paletteObjectDropAdapterAssistant = new PaletteObjectDropAdapterAssistant(); 
+			
+			@Override
+			public void refresh(Object element, boolean updateLabels) {
+				
+				// Now start logging and processing
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+						"VirSatNavigator public refresh\n" + createImprovedLoggingMessage(element)));
+				super.refresh(element, updateLabels);
+			}
 			
 			@Override
 			protected void internalRefresh(Object element, boolean updateLabels) {
@@ -189,20 +233,41 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 				// Usually the navigator maps already opened elements by their providers and
 				// the actual objects. This does not work for a resource reload, since it will
 				// be different objects
-				StringBuilder stackTraceBuilder = new StringBuilder("No Stack Trace");
-
-				// Give some detailed information from where the method got called
-				if (enableStackTrace) {
-					for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-						stackTraceBuilder.append(ste.toString() + "\n");
+				
+				// Now start logging and processing
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+						"VirSatNavigator internal refresh\n" + createImprovedLoggingMessage(element)));
+			
+				Object[] expandedObjects = getExpandedElements();
+				
+				// Disable drawing so that restoring the expansion state doesnt cause intermediate draws
+				getTree().setRedraw(false);
+				super.internalRefresh(element, updateLabels);
+				
+				// Find the newly reloaded objects that correspond to the old now potentially unloaded objects
+				Object[] newExpandedObjects = new Object[expandedObjects.length];
+				for (int i = 0; i < expandedObjects.length; ++i) {
+					if (expandedObjects[i] instanceof EObject) {
+						EObject expandedObject = (EObject) expandedObjects[i];
+						URI uri = EcoreUtil.getURI(expandedObject);
+						// Gets the project name from the uri, so that we can get the editing domain
+						String projectName = uri.segment(1);
+						IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+						EditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
+						
+						EObject newExpandedObject = ed.getResourceSet().getEObject(uri, true);
+						newExpandedObjects[i] = newExpandedObject;
+					} else {
+						// If the object is not an EObject, then we do not need to worry about reloading logic
+						// and can simply take the old object 
+						newExpandedObjects[i] = expandedObjects[i];
 					}
 				}
 				
-				// Now start logging and processing
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatNavigator Starting and internal refresh\n" + stackTraceBuilder.toString()));
-				Object [] expandedObjects = getExpandedElements();
-				super.internalRefresh(element, updateLabels);
-				setExpandedElements(expandedObjects);
+				setExpandedElements(newExpandedObjects);
+				
+				// Renable the draw to draw the refreshed navigator with the correctly expanded objects
+				getTree().setRedraw(true);
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatNavigator: Finished and internal refresh"));
 			}
 			
