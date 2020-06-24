@@ -621,8 +621,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 						
 						printRecentlyChangedResources();
 						
-						// Always run all diagnostics
-						for (Resource resource : virSatResourceSet.getResources()) {
+						// Always run all diagnostics, create a copy on the list fo resources to avoid
+						// concurrent modification exceptions.
+						for (Resource resource : new ArrayList<>(virSatResourceSet.getResources())) {
 							if (virSatResourceSet.updateDiagnostic(resource)) {
 								virSatResourceSet.notifyDiagnosticListeners(resource);
 							}
