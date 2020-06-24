@@ -10,13 +10,13 @@
 package de.dlr.sc.virsat.swtbot.test.versioningbackend;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +66,7 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 	
 	/**
 	 * Method to open the share project dialog
+	 * @throws InterruptedException 
 	 */
 	protected void openShareProjectDialog() {
 		SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject").select();
@@ -105,10 +106,10 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		// Now open the VirSat Navigator and the RoleManagement Editor
 		// Run the update and check that both the navigator and the editor received the correct update
 		openCorePerspective();
-		openVirtualSatelliteNavigatorView();
+		SWTBotView navigatorView = openVirtualSatelliteNavigatorView();
 		
 		// Prepare the Navigator to display the Discipline and open the editor
-		SWTBotTreeItem roleManagementNode = bot.tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
+		SWTBotTreeItem roleManagementNode = navigatorView.bot().tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
 		roleManagementNode.expand();
 		roleManagementNode.getNode("Discipline: System");
 		roleManagementNode.doubleClick();
@@ -118,18 +119,8 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 			roleManagementNode.contextMenu("Update Project from Repository").click();
 		});
 		
-		// Now crawl the navigator again to see if the correct node is present
-		SWTBotTreeItem roleManagementNodeUpdate = bot.tree().getTreeItem("SWTBotTestProject").getNode("Role Management");
-		roleManagementNodeUpdate.expand();
-		
-		String newNodeName = "Discipline: SubSystem";
-		
-		// Wait for the ui to update
-		while (!isTreeItemContainingNode(roleManagementNodeUpdate, newNodeName)) {
-			waitForEditingDomainAndUiThread();
-		}
-		
-		roleManagementNodeUpdate.getNode(newNodeName);
+		// Assert that the node got correctly updated in the navigator
+		navigatorView.bot().tree().getTreeItem("SWTBotTestProject").getNode("Role Management").getNode("Discipline: SubSystem");
 		
 		// open the editor and check if the discipline has been updated
 		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
@@ -179,17 +170,14 @@ public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwt
 		buildCounter.executeInterlocked(() -> {
 			roleManagementNode.contextMenu("Update Project from Repository").click();
 		});
-
+		
 		// Open the editor and check if that the button is disabled
-		rmEditor = bot.editorByTitle("Role Management");
-		rmEditor.show();
+		SWTBotEditor rmEditor2 = bot.editorByTitle("Role Management");
+		rmEditor2.show();
 		
-		// Wait for the ui to update
-		while (rmEditor.bot().button("Add Discipline").isEnabled()) {
-			waitForEditingDomainAndUiThread();
-		}
-		
-		assertFalse("The button is disabled after the update", rmEditor.bot().button("Add Discipline").isEnabled());
+		assertForTimes("Check that the Add Discipline button is not enabled anymore", SWTBOT_TRY_10_TIME, 
+			() -> !rmEditor2.bot().button("Add Discipline").isEnabled()
+		);
 	}
 	
 	/**

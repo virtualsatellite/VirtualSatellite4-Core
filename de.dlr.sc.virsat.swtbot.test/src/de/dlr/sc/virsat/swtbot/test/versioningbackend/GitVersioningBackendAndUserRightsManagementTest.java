@@ -85,7 +85,7 @@ public class GitVersioningBackendAndUserRightsManagementTest extends AVersioning
 	protected void shareTestProjectWithVersioningBackend() {
 		openProjectExplorerView();
 		openShareProjectDialog();
-
+		
 		bot.table().select("Git");
 		bot.button("Next >").click();
 		bot.comboBox().setSelection(0);

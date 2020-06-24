@@ -13,10 +13,12 @@ import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.wi
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.function.BooleanSupplier;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -83,6 +85,10 @@ public class ASwtBotTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
 	protected static final int EDIT_UNDO_MENU_POSITION = 0;
 	protected static final int EDIT_REDO_MENU_POSITION = 1;
+	protected static final int SWTBOT_TRY_1_TIME = 1;
+	protected static final int SWTBOT_TRY_3_TIME = 3;
+	protected static final int SWTBOT_TRY_5_TIME = 5;
+	protected static final int SWTBOT_TRY_10_TIME = 10;
 	
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
@@ -546,9 +552,23 @@ public class ASwtBotTestCase {
 	/**
 	 * Method to bring the VirSatNavigator view to the front
 	 */
-	protected void openVirtualSatelliteNavigatorView() {
-		bot.viewByTitle("VirSat Navigator").show();
-		
+	protected SWTBotView openVirtualSatelliteNavigatorView() {
+		SWTBotView view = bot.viewByTitle("VirSat Navigator");
+		view.show();
+		return view;		
+	}
+	
+	/**
+	 * Use this method to halt SWTBot. Good for debugging on maven tycho.
+	 */
+	protected synchronized void stopHere() {
+		try {
+			Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.stopHere: wait wait wait..."));
+			wait();
+			Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.stopHere: continue..."));
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.stopHere: got interupted:" + e.getMessage(), e));
+		}
 	}
 	
 	/**
@@ -865,7 +885,7 @@ public class ASwtBotTestCase {
 					isExecuted = true;
 					this.notifyAll();
 				}
-				return null;
+				return Status.OK_STATUS;
 			}
 
 			/**
@@ -917,6 +937,27 @@ public class ASwtBotTestCase {
 			} catch (InterruptedException e) {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: Thread got interupted", e));
 			}
+		}
+	}
+	
+	/**
+	 * Method to check for a condition several times until it creates a failure
+	 * @param message the Message to be used to report the fail
+	 * @param i number of times to try the condition until failure
+	 * @param condition the condition to be met
+	 */
+	public static void assertForTimes(String message, int i, BooleanSupplier condition) {
+		int count = i;
+		while (count > 0 && !condition.getAsBoolean()) {
+			try {
+				Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
+			} catch (InterruptedException e) {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.assertForTimes: Sleep got interupted", e));
+			}
+			count--;
+		}
+		if (count == 0) {
+			fail(message + " - Failed after trying for " + i + "times");
 		}
 	}
 }
