@@ -14,6 +14,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -547,4 +549,103 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		assertEquals("Outer Context got correctly restored", overrideContext1, editingDomain.userContextOverride); 
 	}
+	
+	@Test
+	public void testUpdateTriggerFullReload() {
+	
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		// First try the method on an arbitrary file in the file system nothing should happen
+		IFile randomFile = testProject.getFile("RandomFile.file");
+		editingDomain.workspaceChangeListener.updateTriggerFullReload(randomFile, true);
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list of Recently Saved Resources still contains the resources", editingDomain.recentlyChangedResource, hasItem(repoRes.getURI()));
+		
+		// Now call the method for calculating the fullReload.
+		// In this case we check that a resource which is currently saved does not trigger the reload.
+		// Additionally the resource is not deleted from the list of recently changed resources
+		editingDomain.workspaceChangeListener.updateTriggerFullReload(repoWsRes, false);
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list of Recently Saved Resources still contains the resources", editingDomain.recentlyChangedResource, hasItem(repoRes.getURI()));
+	
+		// Now a similar test but the resource should be removed from the list of recently saved resources
+		editingDomain.workspaceChangeListener.updateTriggerFullReload(repoWsRes, true);
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list of Recently Saved Resources does not contain the resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	
+		// now we call the method again. the resource is not in the list of recently saved resources
+		// thus it has to be recognized as an external change and should trigger the full reload of the model.
+		editingDomain.workspaceChangeListener.updateTriggerFullReload(repoWsRes, true);
+		assertTrue("The full reload got triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list of Recently Saved Resources does not contain the resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test
+	public void testHandleAddedDvlmResources() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list of Recently Saved Resources still contains the resources", editingDomain.recentlyChangedResource, hasItem(repoRes.getURI()));
+	
+		editingDomain.recentlyChangedResource.clear();
+		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
+		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("The list should not have been changed by the clal to the handleAdded method", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test
+	public void testHandleChangedDvlmResources() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	
+		editingDomain.recentlyChangedResource.clear();
+		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
+		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test
+	public void testHandleRemovedDvlmResources() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		editingDomain.recentlyChangedResource.add(repoRes.getURI());
+		
+		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+		assertThat("ResourceSet does not contain resource anymore", rs.getResources(), not(hasItem(repoRes)));
+		
+		// Resource has been actually taken from the resourceSet. Thus it is now treated as an arbitrary file and nothing should happen.
+		editingDomain.recentlyChangedResource.clear();
+		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
 }
