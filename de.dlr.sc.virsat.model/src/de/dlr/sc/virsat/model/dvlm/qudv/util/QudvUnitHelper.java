@@ -774,6 +774,8 @@ public class QudvUnitHelper {
 		AffineConversionUnit year = createAffineConversionUnit("Year", "y", "yearUnit", "", time, second, 31556926.0, 0.0);
 		systemOfUnits.getUnit().add(year);
 		
+		PrefixedUnit millisecond = createPrefixedUnit("Millisecond", "ms", "millisecondUnit", "", time, milli, second);
+		systemOfUnits.getUnit().add(millisecond);
 		
 		//some temperature units
 		//°C as affine conversion unit

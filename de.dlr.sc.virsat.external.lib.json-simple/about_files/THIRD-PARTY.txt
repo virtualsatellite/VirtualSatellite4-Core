@@ -1,0 +1,3 @@
+
+Lists of 1 third-party dependencies.
+     (Apache 2.0) JSON.simple (com.github.cliftonlabs:json-simple:3.1.0 - https://cliftonlabs.github.io/json-simple/)
