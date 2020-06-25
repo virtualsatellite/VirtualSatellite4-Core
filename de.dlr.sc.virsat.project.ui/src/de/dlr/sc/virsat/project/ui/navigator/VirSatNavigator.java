@@ -18,8 +18,6 @@ import java.util.Set;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.common.CommandException;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
@@ -240,35 +238,28 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 			
 				Object[] expandedObjects = getExpandedElements();
 				
-				// Disable drawing so that restoring the expansion state doesnt cause intermediate draws
+				// Disable drawing so that restoring the expansion state doesn't cause intermediate draws
 				getTree().setRedraw(false);
 				super.internalRefresh(element, updateLabels);
 				
 				// Find the newly reloaded objects that correspond to the old now potentially unloaded objects
-				Object[] newExpandedObjects = new Object[expandedObjects.length];
 				for (int i = 0; i < expandedObjects.length; ++i) {
 					if (expandedObjects[i] instanceof EObject) {
 						EObject expandedObject = (EObject) expandedObjects[i];
-						URI uri = EcoreUtil.getURI(expandedObject);
-						// Gets the project name from the uri, so that we can get the editing domain
-						String projectName = uri.segment(1);
-						IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-						EditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
-						
-						EObject newExpandedObject = ed.getResourceSet().getEObject(uri, true);
-						newExpandedObjects[i] = newExpandedObject;
-					} else {
-						// If the object is not an EObject, then we do not need to worry about reloading logic
-						// and can simply take the old object 
-						newExpandedObjects[i] = expandedObjects[i];
+						URI expandedObjectUri = EcoreUtil.getURI(expandedObject);
+						EditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(expandedObjectUri);
+						EObject newExpandedObject = ed.getResourceSet().getEObject(expandedObjectUri, true);
+						expandedObjects[i] = newExpandedObject;
 					}
 				}
 				
-				setExpandedElements(newExpandedObjects);
+				setExpandedElements(expandedObjects);
 				
-				// Renable the draw to draw the refreshed navigator with the correctly expanded objects
+				// Re-enable the draw to draw the refreshed navigator with the correctly expanded objects
 				getTree().setRedraw(true);
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatNavigator: Finished and internal refresh"));
+				getTree().redraw();
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+						"VirSatNavigator: Finished and internal refresh"));
 			}
 			
 			@Override
