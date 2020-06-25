@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.util.StringInputStream;
+import org.eclipse.xtext.xbase.lib.ArrayExtensions;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
@@ -556,15 +557,15 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     if (_contains) {
       return this.extensionPointID(node);
     } else {
-      boolean _contains_1 = ((List<String>)Conversions.doWrapArray(this.CONCATENATE_ID)).contains(node.getNodeName());
+      boolean _contains_1 = ArrayExtensions.contains(this.CONCATENATE_ID, node.getNodeName());
       if (_contains_1) {
         return this.concatenateID(node);
       } else {
-        boolean _contains_2 = ((List<String>)Conversions.doWrapArray(this.CONCATENATE_VERSION)).contains(node.getNodeName());
+        boolean _contains_2 = ArrayExtensions.contains(this.CONCATENATE_VERSION, node.getNodeName());
         if (_contains_2) {
           return this.concatenateVersion(node);
         } else {
-          boolean _contains_3 = ((List<String>)Conversions.doWrapArray(this.CONCATENATE_TABLE)).contains(node.getNodeName());
+          boolean _contains_3 = ArrayExtensions.contains(this.CONCATENATE_TABLE, node.getNodeName());
           if (_contains_3) {
             return this.concatenateTable(node);
           } else {
