@@ -26,6 +26,7 @@ import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 
 
 // *****************************************************************
@@ -80,16 +81,21 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 	// *****************************************************************
 	// * Attribute: testSubCategory
 	// *****************************************************************
-	private TestCategoryA testSubCategory = new TestCategoryA();
+	private BeanPropertyComposed<TestCategoryA> testSubCategory = new BeanPropertyComposed<>();
 	
 	private void safeAccessTestSubCategory() {
 		if (testSubCategory.getTypeInstance() == null) {
 			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("testSubCategory");
-			testSubCategory.setTypeInstance(propertyInstance.getTypeInstance());
+			testSubCategory.setTypeInstance(propertyInstance);
 		}
 	}
 	
-	public TestCategoryA getTestSubCategory () {
+	public TestCategoryA getTestSubCategory() {
+		safeAccessTestSubCategory();
+		return testSubCategory.getValue();
+	}
+	
+	public BeanPropertyComposed<TestCategoryA> getTestSubCategoryBean() {
 		safeAccessTestSubCategory();
 		return testSubCategory;
 	}
