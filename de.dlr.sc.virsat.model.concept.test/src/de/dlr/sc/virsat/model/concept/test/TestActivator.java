@@ -45,9 +45,7 @@ public class TestActivator {
 	 * @throws IOException throws
 	 */
 	public static String getResourceContentAsString(String resourcePath) throws IOException {
-		URL url;
-
-		url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
+		URL url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
 		InputStream inputStream = url.openConnection().getInputStream();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
