@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendAndUse
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
+	StateMachineDiagramTest.class,
 	FuncElectricalDiagramTest.class,
 	EditorTest.class,
 	NewProjectWizardTest.class,
@@ -33,7 +34,9 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendAndUse
 	CalculationTest.class,
 	ProductStructureTest.class,
 	GitVersioningBackendAndUserRightsManagementTest.class,
-	SvnVersioningBackendAndUserRightsManagementTest.class
+	SvnVersioningBackendAndUserRightsManagementTest.class,
+	QudvWizardTest.class,
+	ValidatorTest.class
 	})
 
 public class ProjectUiAllTests {

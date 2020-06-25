@@ -85,6 +85,6 @@ Export-Package: de.dlr.sc.virsat.external.lib.commons.math;uses:="org.osgi.frame
  org.apache.commons.math3.stat.regression,
  org.apache.commons.math3.transform,
  org.apache.commons.math3.util
-Bundle-ClassPath: externalLib/commons-math3-3.6/commons-math3-3.6.jar,
- .
+Bundle-ClassPath: .,
+ externalLib/maven/commons-math3.jar
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.commons.math

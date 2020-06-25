@@ -44,6 +44,5 @@ public class QudvQuantityKindSetupWizard extends Wizard {
 	public void addPages() {
 		wizardSelectionPage = new QudvQuantityKindSetupWizardSelectionPage("Select a wizard", um);
 		addPage(wizardSelectionPage);
-
 	}
 }

@@ -303,6 +303,23 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 *    waiting for access to the resource set
 	 */
 	public Object writeExclusive(Runnable readWriteRunnable) throws InterruptedException {
+		return runExclusiveInWorkspace(readWriteRunnable, true);
+	}
+	
+	/**
+	 * This method is the counter is the actual implementation for locking
+	 * a write transaction in the editing domain
+	 * 
+	 * @param readWriteRunner a runnable provided with read and write privileges
+	 * 
+	 * @return the result of the read operation if it is a
+	 *    {@link RunnableWithResult} and the transaction did not roll back;
+	 *    <code>null</code>, otherwise
+	 *    
+	 * @throws InterruptedException if the current thread is interrupted while
+	 *    waiting for access to the resource set
+	 */
+	protected Object doWriteExclusive(Runnable readWriteRunnable) throws InterruptedException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Starting an exclusive write transaction"));
 
 		// get the active transaction and check if it is reusable for us
@@ -365,30 +382,28 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 		
 		// First lock the workspace then lock the transaction
-		executeInWorkspace(() -> {
-			try {
-				this.writeExclusive(() -> {
-					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
-					for (Resource resource : resources) {
-						boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
-						if (fileIsDVLMResource || !dvlmResourcesOnly) {
-							saveResource(resource, supressRemoveDanglingReferences);
-							virSatResourceSet.updateDiagnostic(resource);
-							virSatResourceSet.notifyDiagnosticListeners(resource);
-						}
+		try {
+			this.writeExclusive(() -> {
+				List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
+				for (Resource resource : resources) {
+					boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
+					if (fileIsDVLMResource || !dvlmResourcesOnly) {
+						saveResource(resource, supressRemoveDanglingReferences);
+						virSatResourceSet.updateDiagnostic(resource);
+						virSatResourceSet.notifyDiagnosticListeners(resource);
 					}
-					
-					maintainDirtyResources();
-				});
-			} catch (InterruptedException e) {
-				Activator.getDefault().getLog().log(new Status(
-					Status.WARNING,
-					Activator.getPluginId(),
-					"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
-				);
-			}
-		});
-
+				}
+				
+				maintainDirtyResources();
+			});
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(
+				Status.WARNING,
+				Activator.getPluginId(),
+				"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
+			);
+		}
+		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished try saving all resources"));
 	}
 	
@@ -525,7 +540,11 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void saveResourceIgnorePermissions(Resource resource) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Saving resource ignoring write permissions (" + resource.getURI().toPlatformString(true) + ")"));
-		executeInWorkspace(() -> internallySaveResource(resource, true));
+		try {
+			writeExclusive(() -> internallySaveResource(resource, true));
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Save resource without permission got interrupted)"));
+		}
 	}
 	
 	/**
@@ -536,26 +555,15 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param overrideWritePermissions the flag to give permission to ignore rights management
 	 */
 	private void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
-		try {
-			this.writeExclusive(() -> {
-				// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
-				// to decide if reload of the resource is needed or not (means handling external resource changes)
-				synchronized (recentlyChangedResource) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
-					recentlyChangedResource.add(resource.getURI());
-				}
-				
-				// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
-				virSatResourceSet.saveResource(resource, this, overrideWritePermissions);
-			});
-		} catch (InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(
-				Status.ERROR,
-				Activator.getPluginId(),
-				"VirSatTransactionalEditingDomain: Saving resource (" + resource.getURI().toPlatformString(true) + ") failed in a write transaction: " + e.getMessage(),
-				e
-			));
+		// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
+		// to decide if reload of the resource is needed or not (means handling external resource changes)
+		synchronized (recentlyChangedResource) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
+			recentlyChangedResource.add(resource.getURI());
 		}
+		
+		// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
+		virSatResourceSet.saveResource(resource, this, overrideWritePermissions);
 	}
 	
 	/**
@@ -1030,6 +1038,19 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	
 	@Override
 	public Object runExclusive(Runnable read) throws InterruptedException {
+		return runExclusiveInWorkspace(read, false);
+	}
+	
+	/**
+	 * Method to wrap calls to run or writeExclsuive into a workspace operation.
+	 * This ensures that the workspace is locked before the transaction and avoids
+	 * race conditions with interlocking threads.
+	 * @param read the Code to be executed in the transaction
+	 * @param writeExclusive true in case if it is a write locking transaction
+	 * @return the result of the code executed in the transaction
+	 * @throws InterruptedException
+	 */
+	protected Object runExclusiveInWorkspace(Runnable read, boolean writeExclusive) throws InterruptedException {
 		// Prepare variables to remember the results of the execution of the runnable
 		AtomicReference<Object> atomicResult = new AtomicReference<>();
 		AtomicExceptionReference<InterruptedException> atomicException = new AtomicExceptionReference<>();
@@ -1038,8 +1059,13 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		// This ensures workspace locking before transaction locking
 		executeInWorkspace(() -> {
 			try {
-				Object result = super.runExclusive(read);
-				atomicResult.set(result);
+				if (writeExclusive) {
+					Object result = doWriteExclusive(read);
+					atomicResult.set(result);
+				} else {
+					Object result = super.runExclusive(read);
+					atomicResult.set(result);
+				}
 			} catch (InterruptedException e) {
 				// In case there has been an exception store it.
 				atomicException.set(e);

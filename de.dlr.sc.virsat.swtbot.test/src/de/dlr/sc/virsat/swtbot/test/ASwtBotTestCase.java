@@ -46,6 +46,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.StringStartsWith;
@@ -56,6 +57,7 @@ import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.rules.Timeout;
+
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -69,6 +71,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.swtbot.util.SwtBotDebugHelper;
+import de.dlr.sc.virsat.swtbot.util.SwtBotHyperlink;
 import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 import de.dlr.sc.virsat.swtbot.util.SwtThreadWatcher;
 
@@ -93,7 +96,8 @@ public class ASwtBotTestCase {
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
 	protected Concept conceptPs;
-	protected Concept conceptTest; 
+	protected Concept conceptTest;
+	protected Concept conceptFea;
 	protected int screenCaptureNumber = 1;
 	protected WorkspaceBuilderInterlockedExecution buildCounter;
 	protected enum DiagramType { interfaces, stateMachines }
@@ -125,6 +129,7 @@ public class ASwtBotTestCase {
 
 		conceptPs = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptTest =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId() + "/concept/concept.xmi");
+		conceptFea =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.funcelectrical.Activator.getPluginId() + "/concept/concept.xmi");
 		
 		closeWelcomeScreen();
 		
@@ -234,6 +239,18 @@ public class ASwtBotTestCase {
 		waitForEditor(item);
 		waitForEditingDomainAndUiThread();
 		return newItem;
+	}
+	
+	/**
+	 * Opens a view
+	 * @param viewId the id of the view
+	 * @return the opened view
+	 */
+	protected SWTBotView openView(String viewId) {
+		SWTBotView view = bot.viewById(viewId);
+		view.show();
+		waitForEditingDomainAndUiThread();
+		return view;
 	}
 	
 	/**
@@ -452,11 +469,18 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
-	 * closes the dialog and waits
-	 * @param buttonName the name of the button which closes the dialog
+	 * Finishes the current dialog
 	 */
-	protected void closeDialog(String buttonName) {
-		bot.button(buttonName).click();
+	protected void finishDialog() {
+		bot.button("Finish").click();
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Goes to the next page on the current dialog
+	 */
+	protected void nextPageDialog() {
+		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -750,6 +774,20 @@ public class ASwtBotTestCase {
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
 		SwtBotSection composite = new SwtBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
+	}
+	
+	/**
+	 * @return value of a property with the given name in the currently open CA editor
+	 */
+	protected String getPropertyValue(String propertyName) {
+		return bot.textWithLabel(propertyName).getText();
+	}
+	
+	protected SwtBotHyperlink getSWTBotHyperlink(String text) {
+		@SuppressWarnings("unchecked")
+		Matcher<Hyperlink> matcher = allOf(widgetOfType(Hyperlink.class), withMnemonic(text));
+		SwtBotHyperlink swtBotHyperlink = new SwtBotHyperlink(bot.widget(matcher, 0), matcher);
+		return swtBotHyperlink;
 	}	
 	
 	/**

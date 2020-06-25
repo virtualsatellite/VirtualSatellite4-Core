@@ -20,6 +20,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
@@ -218,5 +220,64 @@ public class InheritanceTest extends ASwtBotTestCase {
 		
 		openEditor(elementOccurence);
 		assertEquals("Received override from EC2", "docFromEc2", bot.tableWithId("tableDocument").cell(0, Document.PROPERTY_DOCUMENTNAME));
+	}
+	
+	@Test
+	public void propagateNewCATest() {
+		// Create inheritance links
+		addInheritance(elementConfiguration, "PT: ProductTree", "PTD: ProductTreeDomain", "ED: ElementDefinition");
+		addInheritance(elementOccurence, "CT: ConfigurationTree", "EC: ElementConfiguration");
+
+		// Add an IFE on top level
+		addElement(InterfaceEnd.class, conceptFea, elementDefinition);
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		
+		// Check IFE propagated via inheritance hierarchy
+		expand(elementConfiguration);
+		assertTrue(elementConfiguration.getNodes().contains("IFE: InterfaceEnd"));
+
+		expand(elementOccurence);
+		assertTrue(elementOccurence.getNodes().contains("IFE: InterfaceEnd"));
+	}
+	
+	@Test
+	public void clearReferenceOnDeletionTest() {
+		// Create inheritance links
+		addInheritance(elementConfiguration, "PT: ProductTree", "PTD: ProductTreeDomain", "ED: ElementDefinition");
+		addInheritance(elementOccurence, "CT: ConfigurationTree", "EC: ElementConfiguration");
+
+		// Add an IFE into ElementDefinition
+		SWTBotTreeItem ife = addElement(InterfaceEnd.class, conceptFea, elementDefinition);
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+
+		// Add an IF into ElementConfiguration
+		SWTBotTreeItem interf = addElement(Interface.class, conceptFea, elementConfiguration);
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+
+		// Set a reference from IF to IFE in ElementConfiguration
+		openEditor(interf);
+		bot.button("Select Reference").click();
+		bot.tree().getTreeItem("CT: ConfigurationTree").select();
+		bot.table().select("IFE: InterfaceEnd - ConfigurationTree.ElementConfiguration.InterfaceEnd");
+		bot.button("OK").click();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		
+		assertEquals("InterfaceEnd - ElementConfiguration.InterfaceEnd", getPropertyValue(Interface.PROPERTY_INTERFACEENDFROM));
+		
+		// Check that inherited interface also has a properly set reference
+		expand(elementOccurence);
+		SWTBotTreeItem inheritedInterf = elementOccurence.getNode("IF: Interface");
+		openEditor(inheritedInterf);
+		assertEquals("InterfaceEnd - ElementOccurence.InterfaceEnd", getPropertyValue(Interface.PROPERTY_INTERFACEENDFROM));
+		
+		// Delete top-level IFE
+		ife.contextMenu().menu("Delete").click();
+		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+
+		// Check that references to the IFEs are gone
+		openEditor(interf);
+		assertTrue(getPropertyValue(Interface.PROPERTY_INTERFACEENDFROM).isEmpty());
+		openEditor(inheritedInterf);
+		assertTrue(getPropertyValue(Interface.PROPERTY_INTERFACEENDFROM).isEmpty());
 	}
 }

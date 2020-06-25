@@ -9,12 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -28,7 +25,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -121,16 +117,9 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 				ListSelectionDialog dialog = ActiveConceptSelectionDialogFactory.createActiveConceptSelectionDialog(composite.getShell(), (Repository) model, "Select a Concept to be added");
 				if (dialog.open() == Dialog.OK) {
 					Object[] selectedObjects = dialog.getResult();
-					WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-						@Override
-						protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-							activationHelper.activateConcepts(selectedObjects, editingDomain, progressMonitor);
-						}
-					};
-					
 					try {
-						operation.run(new NullProgressMonitor());
-					} catch (InvocationTargetException | InterruptedException exception) {
+						activationHelper.activateConcepts(selectedObjects, editingDomain, new NullProgressMonitor());
+					} catch (Exception exception) {
 						Status status = new Status(Status.ERROR, DVLMEditorPlugin.ID, "Failure while enabling concept! ", exception);
 						DVLMEditPlugin.getPlugin().getLog().log(status);
 						ErrorDialog.openError(Display.getDefault().getActiveShell(), "Failed to add Concept", "Failed to add Concept", status);
@@ -161,7 +150,13 @@ public class UiSnippetActiveConcepts extends AUiSnippetEStructuralFeatureTable i
 				
 				if (toUpgrade.size() > 0) {
 					// Upgrade all of them in one go
-					MigrateConceptToLatestHandler.migrateToLatest(toUpgrade, (TransactionalEditingDomain) editingDomain);
+					try {
+						MigrateConceptToLatestHandler.migrateToLatest(toUpgrade, (TransactionalEditingDomain) editingDomain);
+					} catch (Exception exception) {
+						Status status = new Status(Status.ERROR, DVLMEditorPlugin.ID, "Failure while migrating concept! ", exception);
+						DVLMEditPlugin.getPlugin().getLog().log(status);
+						ErrorDialog.openError(Display.getDefault().getActiveShell(), "Failed to migrate Concept", "Failed to add Concept", status);
+					}
 				}
 			}
 			
