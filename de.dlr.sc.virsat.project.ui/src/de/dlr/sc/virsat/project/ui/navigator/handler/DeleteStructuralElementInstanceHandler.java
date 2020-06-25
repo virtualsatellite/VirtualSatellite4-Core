@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.project.ui.navigator.handler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.eclipse.core.commands.IHandler;
@@ -47,7 +48,7 @@ public class DeleteStructuralElementInstanceHandler extends AEditingDomainComman
 		List<StructuralElementInstance> seisToBeDeleted = selectionHelper.getAllSelectedEObjectsOfType(StructuralElementInstance.class);
 		
 		// If there are references we need to ask if they should be deleted
-		Map<EObject, List<EObject>> deleteObjectsWithExternalReferences = VirSatEcoreUtil.getReferencingObjectsForDelete(seisToBeDeleted, virSatResourceSet);
+		Map<EObject, Set<EObject>> deleteObjectsWithExternalReferences = VirSatEcoreUtil.getReferencingObjectsForDelete(seisToBeDeleted, virSatResourceSet);
 		if (!deleteObjectsWithExternalReferences.isEmpty()) {
 			boolean confirmsDelete = ReferencedDeleteDialog.openQuestion(Display.getCurrent().getActiveShell(), deleteObjectsWithExternalReferences);
 			if (!confirmsDelete) {
