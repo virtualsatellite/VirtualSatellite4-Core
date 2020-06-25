@@ -18,9 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
