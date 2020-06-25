@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.project.ui.navigator;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -211,18 +212,9 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 		// This is due to the way the internal refresh handles that issue. It adds a new treeItem to the end of the tree
 		// and re-associates the second tree item to the new SEI for example. The new TreeItem is than re-associates to the old
 		// previous SEI but the expanded state on the new item got lost
-		return new CommonViewer(getViewSite().getId(), aParent,	SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL) {
+		return new CommonViewer(getViewSite().getId(), aParent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL) {
 			
 			private PaletteObjectDropAdapterAssistant paletteObjectDropAdapterAssistant = new PaletteObjectDropAdapterAssistant(); 
-			
-			@Override
-			public void refresh(Object element, boolean updateLabels) {
-				
-				// Now start logging and processing
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
-						"VirSatNavigator public refresh\n" + createImprovedLoggingMessage(element)));
-				super.refresh(element, updateLabels);
-			}
 			
 			@Override
 			protected void internalRefresh(Object element, boolean updateLabels) {
@@ -236,30 +228,59 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 						"VirSatNavigator internal refresh\n" + createImprovedLoggingMessage(element)));
 			
-				Object[] expandedObjects = getExpandedElements();
+				try {
+					// Get the currently expanded objects
+					Object[] expandedObjects = getExpandedElements();
+					
+					// Disable drawing so that restoring the expansion state doesn't cause intermediate draws
+					getTree().setRedraw(false);
+					super.internalRefresh(element, updateLabels);
+					
+					// In case a reload happened the expanded objects maybe stale and need to be
+					// updated to the ones that got reloaded by the Virtual Satellite ResourceSets
+					expandedObjects = rebindStaleExpandedObjects(expandedObjects);
+					setExpandedElements(expandedObjects);
+				} catch (Exception e) {
+					Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+							"VirSatNavigator: Unexpected Exception when refreshing the Navigator Tree", e));
+				} finally {
+					// Re-enable the draw to draw the refreshed navigator with the correctly expanded objects
+					getTree().setRedraw(true);
+				}
 				
-				// Disable drawing so that restoring the expansion state doesn't cause intermediate draws
-				getTree().setRedraw(false);
-				super.internalRefresh(element, updateLabels);
-				
-				// Find the newly reloaded objects that correspond to the old now potentially unloaded objects
-				for (int i = 0; i < expandedObjects.length; ++i) {
-					if (expandedObjects[i] instanceof EObject) {
-						EObject expandedObject = (EObject) expandedObjects[i];
-						URI expandedObjectUri = EcoreUtil.getURI(expandedObject);
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+						"VirSatNavigator: Finished and internal refresh"));
+			}
+			
+			/**
+			 * Find the newly reloaded objects that correspond to the old now potentially unloaded objects
+			 * @param expandedObjects the object that were expanded before the refresh
+			 * @return the new objects corresponding to the old expanded objects
+			 */
+			private Object[] rebindStaleExpandedObjects(Object[] expandedObjects) {
+				List<Object> newExpandedObjects = new ArrayList<>();
+				for (Object expandedObject : expandedObjects) {
+					if (expandedObject instanceof EObject) {
+						EObject expandedEObject = (EObject) expandedObject;
+						URI expandedObjectUri = EcoreUtil.getURI(expandedEObject);
 						EditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(expandedObjectUri);
-						EObject newExpandedObject = ed.getResourceSet().getEObject(expandedObjectUri, true);
-						expandedObjects[i] = newExpandedObject;
+						
+						// Only if we have an editing domain (possible to not have one if the project got deleted)
+						if (ed != null) {
+							EObject newExpandedEObject = ed.getResourceSet().getEObject(expandedObjectUri, true);
+							// Only if there actually is a new object (possible to not have one if there was a deletion)
+							if (newExpandedEObject != null) {
+								newExpandedObjects.add(newExpandedEObject);
+							}
+						} 
+					} else {
+						// If the object is not an EObject, then we do not need to worry about reloading logic
+						// and can simply take the old object 
+						newExpandedObjects.add(expandedObject);
 					}
 				}
 				
-				setExpandedElements(expandedObjects);
-				
-				// Re-enable the draw to draw the refreshed navigator with the correctly expanded objects
-				getTree().setRedraw(true);
-				getTree().redraw();
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
-						"VirSatNavigator: Finished and internal refresh"));
+				return newExpandedObjects.toArray(new Object[0]);
 			}
 			
 			@Override
