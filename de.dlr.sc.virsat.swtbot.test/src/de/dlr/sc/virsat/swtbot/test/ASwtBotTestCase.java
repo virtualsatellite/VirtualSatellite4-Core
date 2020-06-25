@@ -23,6 +23,7 @@ import java.util.function.BooleanSupplier;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -74,6 +75,7 @@ import de.dlr.sc.virsat.swtbot.util.SwtBotDebugHelper;
 import de.dlr.sc.virsat.swtbot.util.SwtBotHyperlink;
 import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 import de.dlr.sc.virsat.swtbot.util.SwtThreadWatcher;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Base class for performing SWTBot tests.
@@ -585,6 +587,7 @@ public class ASwtBotTestCase {
 	/**
 	 * Use this method to halt SWTBot. Good for debugging on maven tycho.
 	 */
+	@SuppressFBWarnings(value = "WA_NOT_IN_LOOP")
 	protected synchronized void stopHere() {
 		try {
 			Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.stopHere: wait wait wait..."));
@@ -909,21 +912,12 @@ public class ASwtBotTestCase {
 		 * A simple Job that will be placed into the queue to make sure all otehr jobs
 		 * before got executed.
 		 */
-		protected static class SWTBotInterlockedJob extends Job {
+		protected static class SWTBotInterlockedJob extends WorkspaceJob {
 
 			protected boolean isExecuted = false;
 			
 			SWTBotInterlockedJob() {
-				super("SWTBot Interlocking Job");
-			}
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				synchronized (this) {
-					isExecuted = true;
-					this.notifyAll();
-				}
-				return Status.OK_STATUS;
+				super("SWTBot Interlocking WorkspaceJob");
 			}
 
 			/**
@@ -939,6 +933,15 @@ public class ASwtBotTestCase {
 						}
 					}
 				}
+			}
+
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+				synchronized (this) {
+					isExecuted = true;
+					this.notifyAll();
+				}
+				return Status.OK_STATUS;
 			}
 		}
 		
