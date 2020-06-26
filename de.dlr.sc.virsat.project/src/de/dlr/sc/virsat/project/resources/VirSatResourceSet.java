@@ -481,7 +481,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	private VirSatProjectCommons projectCommons;
-	private Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+	protected Map<Object, Object> saveOptions = new HashMap<Object, Object>();
 
 	/**
 	 * Constructor for the ResourceSet with a given project. A ResourceSet is

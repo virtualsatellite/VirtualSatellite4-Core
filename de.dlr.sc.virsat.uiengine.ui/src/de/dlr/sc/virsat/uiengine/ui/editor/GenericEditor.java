@@ -202,36 +202,49 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 			if (isDisposed || handleClosedResourceTriggered || editingDomain.isDisposed()) {
 				return;
 			}
-				
-			switch (event) {
-				case VirSatTransactionalEditingDomain.EVENT_CHANGED:
-					if (GenericEditor.this.editorModelObject.eResource() == null
-							|| GenericEditor.this.resource.getResourceSet() == null) {
-						// If the resource that this editor was responsible for has been removed from the resource set
-						// we automatically close the editor. On the other hand, if the resource still exists but the model object
-						// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
-						
-						DVLMEditorPlugin.getPlugin().getLog().log(new Status(
-							Status.INFO,
-							DVLMEditorPlugin.getPlugin().getSymbolicName(),
-							"GenericEditor: Received a Change Event with emty resource for (" + GenericEditor.this.getTitle() + ")"
-						));
-						handleClosedEditorResource();
-						return;
+			
+			// Now execute the decision making for closing or updating the editor object within
+			// a locked workspace execution
+			try {
+				editingDomain.runExclusive(() -> {
+					switch (event) {
+						case VirSatTransactionalEditingDomain.EVENT_CHANGED:
+							if (GenericEditor.this.editorModelObject.eResource() == null
+									|| GenericEditor.this.resource.getResourceSet() == null) {
+								// If the resource that this editor was responsible for has been removed from the resource set
+								// we automatically close the editor. On the other hand, if the resource still exists but the model object
+								// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
+								
+								DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+									"GenericEditor: Handling a Change Event with empty resource for (" + GenericEditor.this.getTitle() + ")"));
+								
+								handleClosedEditorResource();
+								return;
+							}
+							
+							firePropertyChange(IEditorPart.PROP_DIRTY);
+							break;
+						case VirSatTransactionalEditingDomain.EVENT_RELOAD:
+							DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+									"GenericEditor: Handling a Reload Event for (" + GenericEditor.this.getTitle() + ")"));
+								
+							handleChangedResources(affectedResources);
+							break;
+						case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
+							DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+									"GenericEditor:  Handling a Unload Event for (" + GenericEditor.this.getTitle() + ")"));
+							
+							handleClosedResources(affectedResources);
+							break;
+						default:
 					}
 					
-					firePropertyChange(IEditorPart.PROP_DIRTY);
-					break;
-				case VirSatTransactionalEditingDomain.EVENT_RELOAD:
-					handleChangedResources(affectedResources);
-					break;
-				case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
-					handleClosedResources(affectedResources);
-					break;
-				default:
+					updateEditorUiSnippetsState();
+				});
+			} catch (InterruptedException e) {
+				DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+						"GenericEditor: Thread got interrupted while processing resource event for (" + GenericEditor.this.getTitle() + ")"));
 			}
-			
-			updateEditorUiSnippetsState();
 		});
 	};
 	
