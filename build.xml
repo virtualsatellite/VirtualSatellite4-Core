@@ -47,7 +47,7 @@ SPDX-License-Identifier: EPL-2.0
 					<exclude name="de.dlr.sc.virsat.javadoc.api"/>
 					<exclude name="de.dlr.sc.virsat.*feature"/>
 					<exclude name="de.dlr.sc.virsat.*ide"/>
-					<exclude name="de.dlr.sc.virsat.*test*"/>
+					<exclude name="de.dlr.sc.virsat.*test"/>
 					<exclude name="de.dlr.sc.virsat.external.*"/>
 					<exclude name="de.dlr.sc.virsat.*product"/>
 					<exclude name="de.dlr.sc.virsat.*p2updatesite"/>
