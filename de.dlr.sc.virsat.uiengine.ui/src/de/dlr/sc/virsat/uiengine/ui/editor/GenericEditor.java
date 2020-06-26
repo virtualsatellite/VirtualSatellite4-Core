@@ -239,7 +239,11 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 						default:
 					}
 					
-					updateEditorUiSnippetsState();
+					// There may still updates which are scheduled in Display Threads that will end up here.
+					// But the editor is maybe already closed, or about to close. Stop updating in these cases.
+					if (!handleClosedResourceTriggered) {
+						updateEditorUiSnippetsState();
+					}
 				});
 			} catch (InterruptedException e) {
 				DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
@@ -290,27 +294,33 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	}
 	
 	/**
-	 * This method is used to handle the events from the reosurceSet event listener.
+	 * This method is used to handle the events for closed resources from the reosurceSet event listener.
 	 * It checks if the resource that should be closed, maybe because it got unloaded, is 
-	 * the one from the editor, which should make the editor close, or if it is another one, which is maybe 
+	 * the one from this editor, which should make the editor close, or if it is another one, which is maybe 
 	 * referenced and therefore references should be updated.
 	 * @param closedResources The resource that got closed or unloaded
 	 */
 	protected void handleClosedResources(Set<Resource> closedResources) {
-		// in case the resource got already close,d we should not do anything anymore
+		// in case the resource got already closed we should not do anything anymore
 		// The editor already received the signal to shut down, no other UI action should be triggered on the
 		// already closing editor
 		if (!handleClosedResourceTriggered) {
-			// Now check if the resource is the one of the editor,
-			// if yes make it close including the editor. In case it is not, just tell
-			// the editor that some other has been closed, and this editor with referenced to it maybe needs to react.
-			for (Resource closedResource : closedResources) {
-				if (closedResource == GenericEditor.this.resource) {
-					handleClosedEditorResource();
-					return;
-				} else {
-					handleClosedReferencedResource();
-				}
+			
+			// Check if the current editor resource is in the list of resources that got closed
+			// if this is the case, close this editor. Since the EditingDomain and ResourceSet may have 
+			// reloaded and unloaded other resources meanwhile, we should check if the own resource is still
+			// loaded. We can easily identify that by checking if it is contained in a resource set.
+			// We can rely on this simple check here, since the code here is executed in a workspace lock. The lock
+			// happens inside the display thread that got executed by the resource change listener. 
+			boolean isOwnResourceClosed = closedResources.contains(this.resource);
+			boolean isOwnResourceUncontained = this.resource.getResourceSet() == null;
+			
+			if (isOwnResourceClosed || isOwnResourceUncontained) {
+				handleClosedEditorResource();
+			} else {
+				// if the resource of this editor is not in the list of removed ones, we may have
+				// a reference to it that needs to be updated
+				handleClosedReferencedResource();
 			}
 		}
 	}

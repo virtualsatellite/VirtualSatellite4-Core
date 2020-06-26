@@ -126,7 +126,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IResource iResource = delta.getResource();
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Obtained equations from Resource (" + iResource + ")"));
-				    	
+ 
 					int resourceDeltaKind = delta.getKind();
 					boolean isRemoved = resourceDeltaKind == IResourceDelta.REMOVED;
 					if ((iResource instanceof IFile) && (!isRemoved)) {
@@ -305,7 +305,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 			return;
 		}
 		
-		for (EvaluationProblem equationProblem : equationProblems) {			
+		for (EvaluationProblem equationProblem : equationProblems) {
 			vemHelper.createEvaluationProblemMarker(equationProblem);
 		}
 	}

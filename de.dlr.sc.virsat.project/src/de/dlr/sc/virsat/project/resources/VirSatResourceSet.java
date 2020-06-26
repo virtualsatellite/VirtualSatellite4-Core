@@ -687,7 +687,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * @return the resource or null if not existing
 	 */
 	public Resource getResource(IResource file, boolean loadOnDemand) {
-		if (file instanceof IFile && file.exists()) {
+		if (file instanceof IFile) {
 			URI fileUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 			return this.getResource(fileUri, loadOnDemand);
 		}
