@@ -11,12 +11,12 @@ package de.dlr.sc.virsat.model.dvlm.concepts.registry;
 
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
@@ -33,9 +33,7 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -43,10 +41,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
+import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 
 /**
  * This test case will handle the copying of concepts into the repository.
@@ -79,11 +77,8 @@ public class ActiveConceptConfigurationElementTest {
 	public void tearDown() throws Exception {
 		UserRegistry.getInstance().setSuperUser(false);
 	}
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 	
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void testCreateAddActiveConceptCommand() {
 		ResourceSet resSetConceptSource = new ResourceSetImpl();
 		Resource resourceAConcept = resSetConceptSource.createResource(URI.createURI("conceptTest/conceptASource.xmi"));
@@ -152,7 +147,6 @@ public class ActiveConceptConfigurationElementTest {
 		
 		
 		// Adding Concept B before A will fail
-		expectedException.expect(RuntimeException.class);
 		Command failCommand = ActiveConceptConfigurationElement.createCopyConceptToRepository(ourEditingDomain, conceptSourceB, repository);
 		failCommand.execute();
 	}
@@ -177,7 +171,6 @@ public class ActiveConceptConfigurationElementTest {
 		resourceRepository.getContents().add(repository);
 		
 		// Concept A should be added without any trouble
-		expectedException = ExpectedException.none();
 		Concept activeConcept = ActiveConceptConfigurationElement.createCopyConceptToRepository(conceptSourceA, repository);
 		
 		assertNotSame("Should not be the same object, should be copied", activeConcept, conceptSourceA);

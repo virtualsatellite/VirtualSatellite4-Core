@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.dvlm.dmf;
+package de.dlr.sc.virsat.project.resources.dmf;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,6 +46,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.dvlm.dmf.DObjectContainer;
+import de.dlr.sc.virsat.model.dvlm.dmf.UnresolveableDObject;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
@@ -62,8 +65,6 @@ import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.resources.dmf.DmfResource;
-import de.dlr.sc.virsat.project.resources.dmf.DmfResourceFactory;
 
 /**
  * This class tests the methods of DmfResource
