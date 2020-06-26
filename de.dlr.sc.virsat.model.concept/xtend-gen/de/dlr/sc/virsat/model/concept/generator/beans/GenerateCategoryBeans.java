@@ -17,8 +17,10 @@ import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelpe
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
@@ -626,6 +628,37 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     return _builder;
   }
   
+  protected CharSequence declareSafeAccessArrayMethodBean(final AProperty property, final ImportManager importManager) {
+    StringConcatenation _builder = new StringConcatenation();
+    importManager.register(ArrayInstance.class);
+    _builder.newLineIfNotEmpty();
+    _builder.append("private void ");
+    String _propertyMethodSafeAccessBean = this.propertyMethodSafeAccessBean(property);
+    _builder.append(_propertyMethodSafeAccessBean);
+    _builder.append(" {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("if (");
+    String _name = property.getName();
+    _builder.append(_name, "\t");
+    _builder.append("Bean.getArrayInstance() == null) {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    String _name_1 = property.getName();
+    _builder.append(_name_1, "\t\t");
+    _builder.append("Bean.setArrayInstance((ArrayInstance) helper.getPropertyInstance(\"");
+    String _name_2 = property.getName();
+    _builder.append(_name_2, "\t\t");
+    _builder.append("\"));");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
   protected CharSequence declareArrayAttributesSetterAndGetter(final AProperty property, final ImportManager importManager) {
     return new PropertydefinitionsSwitch<CharSequence>() {
       @Override
@@ -857,6 +890,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(property.getType());
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeComposedPropertyInstanceList.class);
+        importManager.register(BeanPropertyComposed.class);
+        importManager.register(TypeSafeComposedPropertyBeanList.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<");
         String _name = property.getType().getName();
@@ -895,15 +930,52 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLineIfNotEmpty();
         _builder.append("}");
         _builder.newLine();
+        _builder.newLine();
+        _builder.append("private IBeanList<BeanPropertyComposed<");
+        String _name_5 = property.getType().getName();
+        _builder.append(_name_5);
+        _builder.append(">> ");
+        String _name_6 = property.getName();
+        _builder.append(_name_6);
+        _builder.append("Bean = new TypeSafeComposedPropertyBeanList<>();");
+        _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        CharSequence _declareSafeAccessArrayMethodBean = GenerateCategoryBeans.this.declareSafeAccessArrayMethodBean(property, importManager);
+        _builder.append(_declareSafeAccessArrayMethodBean);
+        _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        _builder.append("public IBeanList<BeanPropertyComposed<");
+        String _name_7 = property.getType().getName();
+        _builder.append(_name_7);
+        _builder.append(">> ");
+        String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
+        _builder.append(_propertyMethodGetBean);
+        _builder.append("() {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        String _propertyMethodSafeAccessBean = GenerateCategoryBeans.this.propertyMethodSafeAccessBean(property);
+        _builder.append(_propertyMethodSafeAccessBean, "\t");
+        _builder.append(";");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.append("return ");
+        String _name_8 = property.getName();
+        _builder.append(_name_8, "\t");
+        _builder.append("Bean;");
+        _builder.newLineIfNotEmpty();
+        _builder.append("}");
+        _builder.newLine();
         return _builder;
       }
       
       @Override
       public CharSequence caseReferenceProperty(final ReferenceProperty property) {
+        importManager.register(IBeanList.class);
+        importManager.register(BeanPropertyReference.class);
+        importManager.register(TypeSafeReferencePropertyBeanList.class);
         ATypeDefinition _referenceType = property.getReferenceType();
         if ((_referenceType instanceof Category)) {
           importManager.register(property.getReferenceType());
-          importManager.register(IBeanList.class);
           importManager.register(TypeSafeReferencePropertyInstanceList.class);
           StringConcatenation _builder = new StringConcatenation();
           _builder.append("\t");
@@ -947,24 +1019,65 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.append("\t");
           _builder.append("}");
           _builder.newLine();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("private IBeanList<BeanPropertyReference<");
+          String _name_5 = property.getReferenceType().getName();
+          _builder.append(_name_5, "\t");
+          _builder.append(">> ");
+          String _name_6 = property.getName();
+          _builder.append(_name_6, "\t");
+          _builder.append("Bean = new TypeSafeReferencePropertyBeanList<>();");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          CharSequence _declareSafeAccessArrayMethodBean = GenerateCategoryBeans.this.declareSafeAccessArrayMethodBean(property, importManager);
+          _builder.append(_declareSafeAccessArrayMethodBean, "\t");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("public IBeanList<BeanPropertyReference<");
+          String _name_7 = property.getReferenceType().getName();
+          _builder.append(_name_7, "\t");
+          _builder.append(">> ");
+          String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
+          _builder.append(_propertyMethodGetBean, "\t");
+          _builder.append("() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t");
+          String _propertyMethodSafeAccessBean = GenerateCategoryBeans.this.propertyMethodSafeAccessBean(property);
+          _builder.append(_propertyMethodSafeAccessBean, "\t\t");
+          _builder.append(";");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t");
+          _builder.append("return ");
+          String _name_8 = property.getName();
+          _builder.append(_name_8, "\t\t");
+          _builder.append("Bean;");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
           return _builder;
         } else {
           ATypeDefinition _referenceType_1 = property.getReferenceType();
           AProperty referencedProperty = ((AProperty) _referenceType_1);
           Class<?> referencedPropertyType = GenerateCategoryBeans.getReferencePropertyType(referencedProperty);
           importManager.register(TypeSafeReferencePropertyInstanceList.class);
-          importManager.register(IBeanList.class);
           StringConcatenation _builder_1 = new StringConcatenation();
           _builder_1.append("\t");
           _builder_1.append("private IBeanList<");
-          String _name_5 = referencedPropertyType.getName();
-          _builder_1.append(_name_5, "\t");
+          String _name_9 = referencedPropertyType.getName();
+          _builder_1.append(_name_9, "\t");
           _builder_1.append("> ");
-          String _name_6 = property.getName();
-          _builder_1.append(_name_6, "\t");
+          String _name_10 = property.getName();
+          _builder_1.append(_name_10, "\t");
           _builder_1.append(" = new TypeSafeReferencePropertyInstanceList<>(");
-          String _name_7 = referencedPropertyType.getName();
-          _builder_1.append(_name_7, "\t");
+          String _name_11 = referencedPropertyType.getName();
+          _builder_1.append(_name_11, "\t");
           _builder_1.append(".class);");
           _builder_1.newLineIfNotEmpty();
           _builder_1.newLine();
@@ -975,8 +1088,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.newLine();
           _builder_1.append("\t");
           _builder_1.append("public IBeanList<");
-          String _name_8 = referencedPropertyType.getName();
-          _builder_1.append(_name_8, "\t");
+          String _name_12 = referencedPropertyType.getName();
+          _builder_1.append(_name_12, "\t");
           _builder_1.append("> ");
           String _propertyMethodGet_1 = GenerateCategoryBeans.this.propertyMethodGet(property);
           _builder_1.append(_propertyMethodGet_1, "\t");
@@ -989,9 +1102,51 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.newLineIfNotEmpty();
           _builder_1.append("\t\t");
           _builder_1.append("return ");
-          String _name_9 = property.getName();
-          _builder_1.append(_name_9, "\t\t");
+          String _name_13 = property.getName();
+          _builder_1.append(_name_13, "\t\t");
           _builder_1.append(";");
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("\t");
+          _builder_1.append("}");
+          _builder_1.newLine();
+          _builder_1.append("\t");
+          _builder_1.newLine();
+          _builder_1.append("\t");
+          _builder_1.append("private IBeanList<BeanPropertyReference<");
+          String _name_14 = referencedPropertyType.getName();
+          _builder_1.append(_name_14, "\t");
+          _builder_1.append(">> ");
+          String _name_15 = property.getName();
+          _builder_1.append(_name_15, "\t");
+          _builder_1.append("Bean = new TypeSafeReferencePropertyBeanList<>();");
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("\t");
+          _builder_1.newLine();
+          _builder_1.append("\t");
+          CharSequence _declareSafeAccessArrayMethodBean_1 = GenerateCategoryBeans.this.declareSafeAccessArrayMethodBean(property, importManager);
+          _builder_1.append(_declareSafeAccessArrayMethodBean_1, "\t");
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("\t");
+          _builder_1.newLine();
+          _builder_1.append("\t");
+          _builder_1.append("public IBeanList<BeanPropertyReference<");
+          String _name_16 = referencedPropertyType.getName();
+          _builder_1.append(_name_16, "\t");
+          _builder_1.append(">> ");
+          String _propertyMethodGetBean_1 = GenerateCategoryBeans.this.propertyMethodGetBean(property);
+          _builder_1.append(_propertyMethodGetBean_1, "\t");
+          _builder_1.append("() {");
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("\t\t");
+          String _propertyMethodSafeAccessBean_1 = GenerateCategoryBeans.this.propertyMethodSafeAccessBean(property);
+          _builder_1.append(_propertyMethodSafeAccessBean_1, "\t\t");
+          _builder_1.append(";");
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("\t\t");
+          _builder_1.append("return ");
+          String _name_17 = property.getName();
+          _builder_1.append(_name_17, "\t\t");
+          _builder_1.append("Bean;");
           _builder_1.newLineIfNotEmpty();
           _builder_1.append("\t");
           _builder_1.append("}");
@@ -2182,6 +2337,12 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     return ("get" + _firstUpper);
   }
   
+  protected String propertyMethodGetBean(final AProperty property) {
+    String _firstUpper = StringExtensions.toFirstUpper(property.getName());
+    String _plus = ("get" + _firstUpper);
+    return (_plus + "Bean");
+  }
+  
   protected String propertyMethodSet(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     return ("set" + _firstUpper);
@@ -2201,6 +2362,12 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     String _plus = ("safeAccess" + _firstUpper);
     return (_plus + "()");
+  }
+  
+  protected String propertyMethodSafeAccessBean(final AProperty property) {
+    String _firstUpper = StringExtensions.toFirstUpper(property.getName());
+    String _plus = ("safeAccess" + _firstUpper);
+    return (_plus + "Bean()");
   }
   
   /**

@@ -33,8 +33,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 public class TypeSafeComposedPropertyBeanListTest {
 
 	private ComposedProperty testProperty;
-	private CategoryAssignment testCA;
-	private CategoryAssignmentHelper helper;
 	private BeanPropertyComposed<IBeanCategoryAssignment> bean;
 	private ComposedPropertyInstance cpi;
 	private TypeSafeComposedPropertyBeanList<IBeanCategoryAssignment> beanList;
@@ -51,13 +49,13 @@ public class TypeSafeComposedPropertyBeanListTest {
 		testConcept.getCategories().add(testCategory);
 		testCategory.getProperties().add(testProperty);
 		
-		testCA = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		CategoryAssignment testCA = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 		ArrayInstance propertyInstance = PropertyinstancesFactory.eINSTANCE.createArrayInstance();
 		propertyInstance.setType(testProperty);
 		testCA.getPropertyInstances().add(propertyInstance);
-		helper = new CategoryAssignmentHelper(testCA);
+		CategoryAssignmentHelper helper = new CategoryAssignmentHelper(testCA);
 
-		// Create test bean value
+		// Create test composed property instance and bean
 		cpi = PropertyinstancesFactory.eINSTANCE.createComposedPropertyInstance();
 		cpi.setType(testProperty);
 		bean = new BeanPropertyComposed<IBeanCategoryAssignment>(cpi);

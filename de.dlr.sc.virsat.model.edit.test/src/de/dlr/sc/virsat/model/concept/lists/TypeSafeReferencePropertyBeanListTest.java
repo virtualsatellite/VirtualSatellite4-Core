@@ -33,8 +33,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 public class TypeSafeReferencePropertyBeanListTest {
 
 	private ComposedProperty testProperty;
-	private CategoryAssignment testCA;
-	private CategoryAssignmentHelper helper;
 	private BeanPropertyReference<IBeanCategoryAssignment> bean;
 	private ReferencePropertyInstance rpi;
 	private TypeSafeReferencePropertyBeanList<IBeanCategoryAssignment> beanList;
@@ -51,13 +49,13 @@ public class TypeSafeReferencePropertyBeanListTest {
 		testConcept.getCategories().add(testCategory);
 		testCategory.getProperties().add(testProperty);
 		
-		testCA = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		CategoryAssignment testCA = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 		ArrayInstance propertyInstance = PropertyinstancesFactory.eINSTANCE.createArrayInstance();
 		propertyInstance.setType(testProperty);
 		testCA.getPropertyInstances().add(propertyInstance);
-		helper = new CategoryAssignmentHelper(testCA);
+		CategoryAssignmentHelper helper = new CategoryAssignmentHelper(testCA);
 
-		// Create test bean value
+		// Create test reference property instance and bean
 		rpi = PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
 		rpi.setType(testProperty);
 		bean = new BeanPropertyReference<IBeanCategoryAssignment>(rpi);

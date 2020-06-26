@@ -76,6 +76,8 @@ import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
 import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -329,6 +331,16 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 		}
 	}
 	'''
+	
+	protected def declareSafeAccessArrayMethodBean(AProperty property, ImportManager importManager) '''
+	«importManager.register(ArrayInstance)»
+	private void «propertyMethodSafeAccessBean(property)» {
+		if («property.name»Bean.getArrayInstance() == null) {
+			«property.name»Bean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("«property.name»"));
+		}
+	}
+	'''
+	
 	protected def declareArrayAttributesSetterAndGetter(AProperty property, ImportManager importManager) {
 		return new PropertydefinitionsSwitch<CharSequence>() {
 			override caseFloatProperty(FloatProperty property) {
@@ -437,6 +449,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(property.type)
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeComposedPropertyInstanceList)
+				importManager.register(BeanPropertyComposed)
+				importManager.register(TypeSafeComposedPropertyBeanList)
 				return '''
 				private IBeanList<«property.type.name»> «property.name» = new TypeSafeComposedPropertyInstanceList<>(«property.type.name».class);
 				
@@ -446,14 +460,26 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
 				}
+				
+				private IBeanList<BeanPropertyComposed<«property.type.name»>> «property.name»Bean = new TypeSafeComposedPropertyBeanList<>();
+				
+				«declareSafeAccessArrayMethodBean(property, importManager)»
+				
+				public IBeanList<BeanPropertyComposed<«property.type.name»>> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
+				}
 				'''
 			}
 			
 			override caseReferenceProperty(ReferenceProperty property) {
+				importManager.register(IBeanList);
+				importManager.register(BeanPropertyReference)
+				importManager.register(TypeSafeReferencePropertyBeanList)
 				if (property.referenceType instanceof Category) {
 					importManager.register(property.referenceType)
-					importManager.register(IBeanList);
 					importManager.register(TypeSafeReferencePropertyInstanceList)
+					
 					return '''
 					private IBeanList<«property.referenceType.name»> «property.name» = new TypeSafeReferencePropertyInstanceList<>(«property.referenceType.name».class);
 				
@@ -463,12 +489,20 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name»;
 					}
+					
+					private IBeanList<BeanPropertyReference<«property.referenceType.name»>> «property.name»Bean = new TypeSafeReferencePropertyBeanList<>();
+					
+					«declareSafeAccessArrayMethodBean(property, importManager)»
+					
+					public IBeanList<BeanPropertyReference<«property.referenceType.name»>> «propertyMethodGetBean(property)»() {
+						«propertyMethodSafeAccessBean(property)»;
+						return «property.name»Bean;
+					}
 					'''	
 				} else {
 					var referencedProperty = property.referenceType as AProperty;
 					var referencedPropertyType = getReferencePropertyType(referencedProperty);
 					importManager.register(TypeSafeReferencePropertyInstanceList)
-					importManager.register(IBeanList);
 					return '''
 					private IBeanList<«referencedPropertyType.name»> «property.name» = new TypeSafeReferencePropertyInstanceList<>(«referencedPropertyType.name».class);
 				
@@ -477,6 +511,15 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					public IBeanList<«referencedPropertyType.name»> «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name»;
+					}
+					
+					private IBeanList<BeanPropertyReference<«referencedPropertyType.name»>> «property.name»Bean = new TypeSafeReferencePropertyBeanList<>();
+					
+					«declareSafeAccessArrayMethodBean(property, importManager)»
+					
+					public IBeanList<BeanPropertyReference<«referencedPropertyType.name»>> «propertyMethodGetBean(property)»() {
+						«propertyMethodSafeAccessBean(property)»;
+						return «property.name»Bean;
 					}
 					'''	
 				}	
@@ -890,6 +933,10 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 		return "get" + property.name.toFirstUpper;
 	}
 	
+	protected def propertyMethodGetBean(AProperty property) {
+		return "get" + property.name.toFirstUpper + "Bean";
+	}
+	
 	protected def propertyMethodSet(AProperty property) {
 		return "set" + property.name.toFirstUpper;
 	}
@@ -906,6 +953,9 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 		return "safeAccess" + property.name.toFirstUpper +"()";
 	}
 	
+	protected def propertyMethodSafeAccessBean(AProperty property) {
+		return "safeAccess" + property.name.toFirstUpper +"Bean()";
+	}
 	
 	/**
 	 * This method hands back the class type
