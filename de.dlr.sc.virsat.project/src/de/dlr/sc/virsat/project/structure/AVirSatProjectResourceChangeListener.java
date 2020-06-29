@@ -39,7 +39,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
  * @author fisc_ph
  *
  */
-public abstract class VirSatProjectResourceChangeListener implements IResourceChangeListener {
+public abstract class AVirSatProjectResourceChangeListener implements IResourceChangeListener {
 
 	private IProject virSatProject;
 	private boolean closedOrDeletedProject;
@@ -50,7 +50,7 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 	 * @param ed The editingDomain that will be used for executing the handlers
 	 * @param virSatProject The virsatproject resource this listener should listen to
 	 */
-	public VirSatProjectResourceChangeListener(IProject virSatProject) {
+	public AVirSatProjectResourceChangeListener(IProject virSatProject) {
 		this.virSatProject = virSatProject;
 		this.counter = 0;
 	}
@@ -118,14 +118,17 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 				return;
 			}
 			
-			// If there already is an ongoing transaction, we make a new
-			// workspace job as we will need the editing domain to handle resource changes.
+			// run a workspace job as we will need the editing domain to handle resource changes.
 			// This way the current job calling us can safely finish and the new job
-			// will handle the actual changes.
-			Job job = new WorkspaceSynchronizerJob(addedDvlmResources, removedDvlmResources, changedDvlmResources, counter++);
-			String changeList = printLists(addedDvlmResources, removedDvlmResources, changedDvlmResources);
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Scheduling " + job.getName() + ". \n" + changeList));
-			job.schedule();
+			// will handle the actual changes. But only issue notification in case a change on the model is detected
+			if (!addedDvlmResources.isEmpty() || !removedDvlmResources.isEmpty() || !changedDvlmResources.isEmpty()) {
+				Job job = new WorkspaceSynchronizerJob(addedDvlmResources, removedDvlmResources, changedDvlmResources, counter++);
+				String changeList = printLists(addedDvlmResources, removedDvlmResources, changedDvlmResources);
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: Scheduling " + job.getName() + ". \n" + changeList));
+				job.schedule();
+			} else {
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectResourceChangeListener: No relevant change, nothing to be scheduled"));
+			}
 		}
 	}
 	
@@ -133,7 +136,7 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 	 * Print a list of resources which have been detected for changes.
 	 * @param addedDvlmResources The list of added resources
 	 * @param removedDvlmResources list of removed resources
-	 * @param changedDvlmResources list of chanegd resources
+	 * @param changedDvlmResources list of changed resources
 	 * @return a pretty printed string for debugging giving reasonable information about resource changes and status.
 	 */
 	private String printLists(List<IResource> addedDvlmResources, List<IResource> removedDvlmResources, List<IResource> changedDvlmResources) {
@@ -245,5 +248,5 @@ public abstract class VirSatProjectResourceChangeListener implements IResourceCh
 	 * Method to handle all changed DVLM resources
 	 * @param changedDvlmResources a list of DVLM workspace resources
 	 */
-	public abstract void handleChangedDvlmResources(List<IResource> changedDvlmResources);        
+	public abstract void handleChangedDvlmResources(List<IResource> changedDvlmResources);
 }

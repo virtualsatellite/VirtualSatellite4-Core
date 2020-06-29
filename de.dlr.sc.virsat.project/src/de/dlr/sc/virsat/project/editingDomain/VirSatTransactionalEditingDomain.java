@@ -64,7 +64,7 @@ import de.dlr.sc.virsat.project.editingDomain.commands.VirSatPasteFromClipboardC
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSetUtil;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
-import de.dlr.sc.virsat.project.structure.VirSatProjectResourceChangeListener;
+import de.dlr.sc.virsat.project.structure.AVirSatProjectResourceChangeListener;
 
 /**
  * The Transactional Editing Domain with attached WorkspaceSynchronizer
@@ -162,7 +162,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * if the workspace change is due to a file which has been saved actively from virtual satellite
 	 * or if it is due to a change of the file from some VirSat domain external editor. 
 	 */
-	protected class VirSatEditingDomainResourceChangeListsner extends VirSatProjectResourceChangeListener {
+	protected class VirSatEditingDomainResourceChangeListsner extends AVirSatProjectResourceChangeListener {
 		
 		public VirSatEditingDomainResourceChangeListsner(IProject virSatProject) {
 			super(virSatProject);
@@ -268,7 +268,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * This method implements the resource change listener to detect external vs. internal and expected changes of resources
 	 * @return a WorkspaceListener, method should always hand back the same instance
 	 */
-	private VirSatProjectResourceChangeListener initWorkSpaceChangeListener() {
+	private AVirSatProjectResourceChangeListener initWorkSpaceChangeListener() {
 		if (workspaceChangeListener == null) {
 			workspaceChangeListener = new VirSatEditingDomainResourceChangeListsner(getResourceSet().getProject());
 		}

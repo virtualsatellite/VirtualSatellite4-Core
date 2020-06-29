@@ -973,16 +973,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            changing the assigned discipline
 	 */
 	public void saveResource(Resource resource,  IUserContext userContext, boolean overrideWritePermissions) {
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Started saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Started saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 
 		if (!resource.isLoaded()) {
-			Activator.getDefault().getLog()
-					.log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING,
-							"VirSatResourceSet: Attempted to save unloaded resource ("
-									+ resource.getURI().toPlatformString(true) + ")",
-							null));
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+					"VirSatResourceSet: Attempted to save unloaded resource (" + resource.getURI().toPlatformString(true) + ")"));
 		}
 
 		try {
@@ -994,9 +990,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR,
 					"Failed to save Resource " + e.getMessage(), e));
 		}
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Finished saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Finished saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 	}
 
 	/**
