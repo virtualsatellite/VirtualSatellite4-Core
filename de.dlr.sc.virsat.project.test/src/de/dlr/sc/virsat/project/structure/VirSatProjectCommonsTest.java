@@ -39,10 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -62,9 +59,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  * 
  */
 public class VirSatProjectCommonsTest extends AProjectTestCase {
-
-	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
 	
 	@Override
 	protected void addProjectFileStructure() {

@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -261,12 +263,12 @@ public class VirSatEcoreUtil extends EcoreUtil {
 	 * are about to be deleted anyway. The method does not account for superTI links from the IInheritanceLink interface.
 	 * @param deletedObjects a collection of objects to be deleted
 	 * @param resSet the resourceSet from which the objects will be deleted
-	 * @return a Map with the objects that are referenced providing a list with all the objects actually referencing
+	 * @return a map from referenced objects to sets of referencing objects
 	 */
-	public static Map<EObject, List<EObject>> getReferencingObjectsForDelete(Collection<? extends EObject> deletedObjects, ResourceSet resSet) {
+	public static Map<EObject, Set<EObject>> getReferencingObjectsForDelete(Collection<? extends EObject> deletedObjects, ResourceSet resSet) {
 		// This map brings the referencing objects into relation with the ones to be deleted
 		// All objects which are referenced by another one from outside the containment will be found in this map.
-		Map<EObject, List<EObject>> mapDeletedObjectReferencedBy = new HashMap<>();
+		Map<EObject, Set<EObject>> mapDeletedObjectReferencedBy = new HashMap<>();
 		
 		// Find all contained objects that may get deleted with this call
 		Collection<EObject> containedDeletedObjects = getAllContentsOfType(deletedObjects, EObject.class, true);
@@ -299,7 +301,7 @@ public class VirSatEcoreUtil extends EcoreUtil {
 				if ((!isInheritanceLink) && (!isReferenceConatined) && (referencingObject instanceof IInstance)) {
 					// Create the List of referencing objects for the to be deleted object in case it does not yet exist
 					if (!mapDeletedObjectReferencedBy.containsKey(deletedObject)) {
-						mapDeletedObjectReferencedBy.put(deletedObject, new ArrayList<EObject>());
+						mapDeletedObjectReferencedBy.put(deletedObject, new HashSet<>());
 					}
 					
 					// and now remember the referencing object in the list.
