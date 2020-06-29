@@ -179,14 +179,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		public void handlePostCondition() {
 			if (triggerFullReload) {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Execute Full Reload"));
-				try {
-					// We need the editing domain to do the reload
-					runExclusive(() -> {
-						VirSatTransactionalEditingDomain.this.reloadAll();
-					});
-				} catch (InterruptedException e) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Failed to perform Full Reload"));
-				}
+				VirSatTransactionalEditingDomain.this.reloadAll();
 			}
 		}
 		
