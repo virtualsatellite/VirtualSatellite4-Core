@@ -332,7 +332,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	}
 	'''
 	
-	protected def declareSafeAccessArrayMethodBean(AProperty property, ImportManager importManager) '''
+	protected def declareSafeAccessArrayBeanMethod(AProperty property, ImportManager importManager) '''
 	«importManager.register(ArrayInstance)»
 	private void «propertyMethodSafeAccessBean(property)» {
 		if («property.name»Bean.getArrayInstance() == null) {
@@ -463,7 +463,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				
 				private IBeanList<BeanPropertyComposed<«property.type.name»>> «property.name»Bean = new TypeSafeComposedPropertyBeanList<>();
 				
-				«declareSafeAccessArrayMethodBean(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
 				public IBeanList<BeanPropertyComposed<«property.type.name»>> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
@@ -492,7 +492,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					
 					private IBeanList<BeanPropertyReference<«property.referenceType.name»>> «property.name»Bean = new TypeSafeReferencePropertyBeanList<>();
 					
-					«declareSafeAccessArrayMethodBean(property, importManager)»
+					«declareSafeAccessArrayBeanMethod(property, importManager)»
 					
 					public IBeanList<BeanPropertyReference<«property.referenceType.name»>> «propertyMethodGetBean(property)»() {
 						«propertyMethodSafeAccessBean(property)»;
@@ -515,7 +515,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					
 					private IBeanList<BeanPropertyReference<«referencedPropertyType.name»>> «property.name»Bean = new TypeSafeReferencePropertyBeanList<>();
 					
-					«declareSafeAccessArrayMethodBean(property, importManager)»
+					«declareSafeAccessArrayBeanMethod(property, importManager)»
 					
 					public IBeanList<BeanPropertyReference<«referencedPropertyType.name»>> «propertyMethodGetBean(property)»() {
 						«propertyMethodSafeAccessBean(property)»;

@@ -48,8 +48,12 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		this.beanClazz = beanClazz;
 	}
 	
-	
-
+	/**
+	 * The bean class, that is by default the Class<BEAN_TYPE>
+	 * We use Class<?> as a workaround to handle special beans that themself are generic
+	 * E.g. for a BeanPropertyComposed the BEAN_TYPE would be BeanPropertyComposed<IBeanCategoryAssignment>,
+	 * but the beanClazz would only be BeanPropertyComposed
+	 */
 	protected Class<?> beanClazz;
 	
 	/**
@@ -200,8 +204,6 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		super.add(index, element);
 		ai.getArrayInstances().add(index, element.getTypeInstance());
 	}
-	
-	
 
 	@Override
 	public BEAN_TYPE remove(int index) {
@@ -211,7 +213,6 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return oldBean;
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object o) {

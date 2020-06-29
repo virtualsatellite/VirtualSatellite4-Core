@@ -27,8 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
 public class TypeSafeReferencePropertyBeanListTest {
 
@@ -40,19 +39,16 @@ public class TypeSafeReferencePropertyBeanListTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Concept testConcept = ConceptsFactory.eINSTANCE.createConcept();
+		// Create test category
 		Category testCategory = CategoriesFactory.eINSTANCE.createCategory();
 		testProperty = PropertydefinitionsFactory.eINSTANCE.createComposedProperty();
 		testProperty.setName(PROPERTY_NAME);
 		testProperty.setArrayModifier(PropertydefinitionsFactory.eINSTANCE.createDynamicArrayModifier());
-		
-		testConcept.getCategories().add(testCategory);
 		testCategory.getProperties().add(testProperty);
 		
-		CategoryAssignment testCA = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-		ArrayInstance propertyInstance = PropertyinstancesFactory.eINSTANCE.createArrayInstance();
-		propertyInstance.setType(testProperty);
-		testCA.getPropertyInstances().add(propertyInstance);
+		// Create test ca
+		CategoryInstantiator categoryInstantiator = new CategoryInstantiator();
+		CategoryAssignment testCA = categoryInstantiator.generateInstance(testCategory, "testCA");
 		CategoryAssignmentHelper helper = new CategoryAssignmentHelper(testCA);
 
 		// Create test reference property instance and bean

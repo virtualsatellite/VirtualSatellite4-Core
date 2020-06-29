@@ -628,7 +628,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     return _builder;
   }
   
-  protected CharSequence declareSafeAccessArrayMethodBean(final AProperty property, final ImportManager importManager) {
+  protected CharSequence declareSafeAccessArrayBeanMethod(final AProperty property, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register(ArrayInstance.class);
     _builder.newLineIfNotEmpty();
@@ -940,8 +940,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("Bean = new TypeSafeComposedPropertyBeanList<>();");
         _builder.newLineIfNotEmpty();
         _builder.newLine();
-        CharSequence _declareSafeAccessArrayMethodBean = GenerateCategoryBeans.this.declareSafeAccessArrayMethodBean(property, importManager);
-        _builder.append(_declareSafeAccessArrayMethodBean);
+        CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
+        _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyComposed<");
@@ -1033,8 +1033,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.append("\t");
           _builder.newLine();
           _builder.append("\t");
-          CharSequence _declareSafeAccessArrayMethodBean = GenerateCategoryBeans.this.declareSafeAccessArrayMethodBean(property, importManager);
-          _builder.append(_declareSafeAccessArrayMethodBean, "\t");
+          CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
+          _builder.append(_declareSafeAccessArrayBeanMethod, "\t");
           _builder.newLineIfNotEmpty();
           _builder.append("\t");
           _builder.newLine();
@@ -1123,8 +1123,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.append("\t");
           _builder_1.newLine();
           _builder_1.append("\t");
-          CharSequence _declareSafeAccessArrayMethodBean_1 = GenerateCategoryBeans.this.declareSafeAccessArrayMethodBean(property, importManager);
-          _builder_1.append(_declareSafeAccessArrayMethodBean_1, "\t");
+          CharSequence _declareSafeAccessArrayBeanMethod_1 = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
+          _builder_1.append(_declareSafeAccessArrayBeanMethod_1, "\t");
           _builder_1.newLineIfNotEmpty();
           _builder_1.append("\t");
           _builder_1.newLine();
