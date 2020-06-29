@@ -597,12 +597,12 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain.recentlyChangedResource.add(repoRes.getURI());
 		
 		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("A full reload is not triggered because the resource was manually marked as recently changed", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("The list of Recently Saved Resources still contains the resources", editingDomain.recentlyChangedResource, hasItem(repoRes.getURI()));
 	
 		editingDomain.recentlyChangedResource.clear();
 		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
-		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertTrue("Now the resource was NOT marked as recently changed so we expect an external change and should trigger a reload", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("The list should not have been changed by the clal to the handleAdded method", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	}
 	
@@ -617,12 +617,12 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain.recentlyChangedResource.add(repoRes.getURI());
 		
 		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("A full reload is not triggered because the resource was manually marked as recently changed", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	
 		editingDomain.recentlyChangedResource.clear();
 		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
-		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertTrue("Now the resource was NOT marked as recently changed so we expect an external change and should trigger a reload", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	}
 	
@@ -637,14 +637,14 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain.recentlyChangedResource.add(repoRes.getURI());
 		
 		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("A full reload is not triggered because the resource was manually marked as recently changed", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 		assertThat("ResourceSet does not contain resource anymore", rs.getResources(), not(hasItem(repoRes)));
 		
 		// Resource has been actually taken from the resourceSet. Thus it is now treated as an arbitrary file and nothing should happen.
 		editingDomain.recentlyChangedResource.clear();
 		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("Resource is not in the resource set anymore so we don't need to reload", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	}
 	
