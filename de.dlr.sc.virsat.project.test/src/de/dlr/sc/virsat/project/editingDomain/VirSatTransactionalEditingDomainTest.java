@@ -631,6 +631,20 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 	}
 	
 	@Test
+	public void testHandleChangedExternalResource() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		
+		rs.removeResource(repoRes);
+		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("Change was done on external resource that is not in resource set", editingDomain.workspaceChangeListener.triggerFullReload);
+	}
+	
+	@Test
 	public void testHandleRemovedDvlmResources() {
 		editingDomain.recentlyChangedResource.clear();
 		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
