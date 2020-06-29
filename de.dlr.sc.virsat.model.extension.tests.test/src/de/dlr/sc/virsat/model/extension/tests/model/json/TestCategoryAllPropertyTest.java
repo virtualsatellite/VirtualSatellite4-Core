@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -9,23 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static org.junit.Assert.assertEquals;
-
-import org.eclipse.emf.common.command.Command;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
-import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 
-/**
- * 
- * @author fisc_ph
- *
- */
 public class TestCategoryAllPropertyTest extends AConceptTestCase {
 
 	

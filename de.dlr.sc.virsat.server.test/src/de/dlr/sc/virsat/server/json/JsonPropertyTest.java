@@ -22,9 +22,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
-import org.eclipse.persistence.jaxb.MarshallerProperties;
-import org.eclipse.persistence.oxm.json.JsonGeneratorResult;
-import org.eclipse.persistence.oxm.json.JsonObjectBuilderResult;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 /**
  * Class to test the marshaling of Property Beans from and to Json
  */
+// TODO: remove this class?, there should be a seperate ticket for server stuff
 public class JsonPropertyTest {
 
 	@Before
