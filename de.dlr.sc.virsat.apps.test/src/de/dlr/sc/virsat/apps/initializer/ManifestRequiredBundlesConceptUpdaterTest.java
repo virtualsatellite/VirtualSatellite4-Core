@@ -10,8 +10,8 @@
 package de.dlr.sc.virsat.apps.initializer;
 
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import java.util.List;
 import java.util.jar.Manifest;
 

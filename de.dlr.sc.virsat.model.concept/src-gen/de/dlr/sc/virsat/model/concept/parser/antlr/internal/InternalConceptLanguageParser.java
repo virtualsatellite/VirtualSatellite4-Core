@@ -500,7 +500,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    										if (current==null) {
             	    											current = createModelElement(grammarAccess.getConceptRule());
             	    										}
-            	    										setWithLastConsumed(current, "beta", true, "beta");
+            	    										setWithLastConsumed(current, "beta", lv_beta_8_0 != null, "beta");
             	    									
 
             	    }
@@ -635,7 +635,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    										if (current==null) {
             	    											current = createModelElement(grammarAccess.getConceptRule());
             	    										}
-            	    										setWithLastConsumed(current, "DMF", true, "hasDMF");
+            	    										setWithLastConsumed(current, "DMF", lv_DMF_11_0 != null, "hasDMF");
             	    									
 
             	    }
@@ -1480,7 +1480,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											if (current==null) {
             	    												current = createModelElement(grammarAccess.getStructuralElementRule());
             	    											}
-            	    											setWithLastConsumed(current, "isRootStructuralElement", true, "IsRootStructuralElement");
+            	    											setWithLastConsumed(current, "isRootStructuralElement", lv_isRootStructuralElement_10_0 != null, "IsRootStructuralElement");
             	    										
 
             	    }
@@ -1680,7 +1680,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            												if (current==null) {
             	            													current = createModelElement(grammarAccess.getStructuralElementRule());
             	            												}
-            	            												setWithLastConsumed(current, "isCanInheritFromAll", true, "All");
+            	            												setWithLastConsumed(current, "isCanInheritFromAll", lv_isCanInheritFromAll_19_0 != null, "All");
             	            											
 
             	            }
@@ -1886,7 +1886,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            												if (current==null) {
             	            													current = createModelElement(grammarAccess.getStructuralElementRule());
             	            												}
-            	            												setWithLastConsumed(current, "isApplicableForAll", true, "All");
+            	            												setWithLastConsumed(current, "isApplicableForAll", lv_isApplicableForAll_28_0 != null, "All");
             	            											
 
             	            }
@@ -2408,7 +2408,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                             							if (current==null) {
                             								current = createModelElement(grammarAccess.getGeneralRelationRule());
                             							}
-                            							setWithLastConsumed(current, "isApplicableForAll", true, "All");
+                            							setWithLastConsumed(current, "isApplicableForAll", lv_isApplicableForAll_17_0 != null, "All");
                             						
 
                             }
@@ -3053,7 +3053,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											if (current==null) {
             	    												current = createModelElement(grammarAccess.getCategoryRule());
             	    											}
-            	    											setWithLastConsumed(current, "isAbstract", true, "IsAbstract");
+            	    											setWithLastConsumed(current, "isAbstract", lv_isAbstract_12_0 != null, "IsAbstract");
             	    										
 
             	    }
@@ -3253,7 +3253,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            												if (current==null) {
             	            													current = createModelElement(grammarAccess.getCategoryRule());
             	            												}
-            	            												setWithLastConsumed(current, "isApplicableForAll", true, "All");
+            	            												setWithLastConsumed(current, "isApplicableForAll", lv_isApplicableForAll_21_0 != null, "All");
             	            											
 
             	            }

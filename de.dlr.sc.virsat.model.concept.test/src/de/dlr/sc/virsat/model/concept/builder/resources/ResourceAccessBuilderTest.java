@@ -31,18 +31,29 @@ import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
  */
 public class ResourceAccessBuilderTest extends AConceptProjectTestCase {
 	private static final String FRAGMENT_ID = "de.dlr.sc.virsat.model.concept.test";
-	private static final String PARAMETER_MANIFEST_FILE_PATH = "resources/MANIFEST.MF";
-	private static final String TEST_MANIFEST_FILE_PATH = "resources/ManifestMF.java";
-	private static final String PARAMETER_PLUGIN_XML_FILE_PATH = "resources/plugin.xml";
-	private static final String TEST_PLUGIN_XML_FILE_PATH = "resources/PluginXml.java";
-
+	private static final String PATH_TO_TEST_FILES = "/resources/expectedOutputFilesForResourceAccessBuilder/";
+	
+	private static final String PARAMETER_MANIFEST_FILE_PATH = "MANIFEST.MF";
+	private static final String TEST_MANIFEST_FILE_PATH = "ManifestMF.java";
+	
+	private static final String PARAMETER_PLUGIN_XML_FILE_PATH = "plugin.xml";
+	private static final String PARAMETER_PLUGIN_UI_XML_FILE_PATH = "pluginUi.xml";
+	private static final String TEST_PLUGIN_XML_FILE_PATH = "PluginXml.java";
+	private static final String TEST_PLUGIN_UI_XML_FILE_PATH = "PluginUiXml.java";
+	
 	@Test
 	public void testManifestGeneration() throws IOException {
 		test(PARAMETER_MANIFEST_FILE_PATH, TEST_MANIFEST_FILE_PATH, true);
 	}
+	
 	@Test
 	public void testPluginGeneration() throws IOException, URISyntaxException {
 		test(PARAMETER_PLUGIN_XML_FILE_PATH, TEST_PLUGIN_XML_FILE_PATH, false);
+	}
+	
+	@Test
+	public void testPluginUiGeneration() throws IOException, URISyntaxException {
+		test(PARAMETER_PLUGIN_UI_XML_FILE_PATH, TEST_PLUGIN_UI_XML_FILE_PATH, false);
 	}
 	
 	/**
@@ -61,7 +72,7 @@ public class ResourceAccessBuilderTest extends AConceptProjectTestCase {
 		};
 		
 		// grab the plugin.xml or manifest file from resources and generate the java file from it
-		URL parameterFileUrl = new URL("platform:/plugin/" + FRAGMENT_ID + "/" + inputFileLocation);
+		URL parameterFileUrl = new URL("platform:/plugin/" + FRAGMENT_ID + PATH_TO_TEST_FILES + inputFileLocation);
 		InputStream parameterFileInputStream = parameterFileUrl.openConnection().getInputStream();
 		StringInputStream sip;
 		if (isManifest) {
@@ -71,6 +82,6 @@ public class ResourceAccessBuilderTest extends AConceptProjectTestCase {
 		}
 		
 		String createdFileContent = CharStreams.toString(new InputStreamReader(sip, Charsets.UTF_8));
-		GeneratorJunitAssert.assertEqualContent(createdFileContent, "/" + testFileLocation);
+		GeneratorJunitAssert.assertEqualContent(createdFileContent, PATH_TO_TEST_FILES + testFileLocation);
 	}
 }
