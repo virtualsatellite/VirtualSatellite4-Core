@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,16 +72,21 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 	 * A listener to check if the WorkspaceResourceChangeListener of the TransactionalEditingDomain
 	 * is issuing the correct notifications as expected.
 	 */
-	class TestResourceEventListener implements IResourceEventListener {
+	static class TestResourceEventListener implements IResourceEventListener {
 		
 		int calledResourceEventCount = 0;
+		int previousResourceEventType = 0;
 		int calledResourceEventType = 0;
 		Set<Resource> calledResourceEventResources;
+		Set<Resource> previousResourceEventResources;
 		
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
+			// Remember the current and the previous resource event.
 			calledResourceEventCount++;
+			previousResourceEventType = calledResourceEventType;
 			calledResourceEventType = event;
+			previousResourceEventResources = calledResourceEventResources;
 			calledResourceEventResources = new HashSet<>(resources);
 		}
 	};
@@ -170,6 +177,75 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		Resource repoResourceReload = editingDomain.getResourceSet().getRepositoryResource();
 		
 		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResourceReload, rmResourceReload, umResourceReload, repoResourceReload));
+	}
 	
+	@Test
+	public void testHandleExternalyRemovedResource() throws CoreException {
+	
+		// --------------------------------------------
+		// Add a new resource externally
+		// Expected result is a reload on all resources
+		
+		editingDomain.saveAll();
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
+		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
+		editingDomain.saveAll();
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		VirSatTransactionalEditingDomain.addResourceEventListener(listener);
+		
+		// Now delete the resource externally and check that a full reload is triggered
+		seiFile.delete(true, null);
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		assertEquals("Called listener correct amount of times", 2, listener.calledResourceEventCount);
+		
+		// Received two events. First the unload, than the reload
+		assertEquals("Called listener frist with correct type", VirSatTransactionalEditingDomain.EVENT_UNLOAD, listener.previousResourceEventType);
+		assertThat("List contains correct resources", listener.previousResourceEventResources, containsInAnyOrder(seiResource));
+
+		// Now verify the second event.
+		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.calledResourceEventType);
+		
+		Resource rmResource = editingDomain.getResourceSet().getRoleManagementResource();
+		Resource umResource = editingDomain.getResourceSet().getUnitManagementResource();
+		Resource repoResource = editingDomain.getResourceSet().getRepositoryResource();
+		
+		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(rmResource, umResource, repoResource));
+		assertThat("List contains correct resources", listener.calledResourceEventResources, not(hasItem(seiResource)));
+	}
+	
+	
+	@Test
+	public void testHandleInternallyRemovedResource() throws CoreException {
+	
+		// --------------------------------------------
+		// Add a new resource internally
+		// Expected result is a notification about 
+		// unloading the resource
+		
+		editingDomain.saveAll();
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
+		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
+		editingDomain.saveAll();
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		VirSatTransactionalEditingDomain.addResourceEventListener(listener);
+		
+		// Now delete the resource internally and check that a full reload is triggered
+		editingDomain.removeResource(seiResource);
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
+		
+		// Received two events. First the unload, than the reload
+		assertEquals("Called listener frist with correct type", VirSatTransactionalEditingDomain.EVENT_UNLOAD, listener.calledResourceEventType);
+		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResource));
 	}
 }
