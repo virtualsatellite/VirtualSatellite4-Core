@@ -277,7 +277,6 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 	@Test
 	public void testHandleChangedDvlmResources() throws CoreException, IOException, InterruptedException {
 		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
