@@ -9,10 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.category;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -32,7 +29,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
-import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
@@ -54,18 +50,12 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 		helper.setCategoryAssignment(ti);
 	}
 	
-	@XmlID
-	@XmlElement(name = "uuid")
-	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
 	@Override
 	public void setATypeInstance(ATypeInstance ti) {
 		super.setATypeInstance(ti);
 		helper.setCategoryAssignment(this.ti);
 	}
 	
-	@XmlID
-	@XmlElement(name = "uuid")
-	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
 	@Override
 	public ATypeInstance getATypeInstance() {
 		return this.ti;
