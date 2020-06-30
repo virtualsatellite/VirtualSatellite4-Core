@@ -9,6 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.mat;
 
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -32,10 +36,6 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Struct;
-
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class MatExporterTest extends ATestConceptTestCase {
 

@@ -26,12 +26,11 @@ import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.TerminalRule;
 import org.eclipse.xtext.common.services.TerminalsGrammarAccess;
-import org.eclipse.xtext.service.AbstractElementFinder.AbstractEnumRuleElementFinder;
-import org.eclipse.xtext.service.AbstractElementFinder.AbstractGrammarElementFinder;
+import org.eclipse.xtext.service.AbstractElementFinder;
 import org.eclipse.xtext.service.GrammarProvider;
 
 @Singleton
-public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
+public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGrammarElementFinder {
 	
 	public class EquationSectionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.EquationSection");
@@ -815,7 +814,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getEKeyword_1() { return cEKeyword_1; }
 	}
 	
-	public class OperatorPlusElements extends AbstractEnumRuleElementFinder {
+	public class OperatorPlusElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorPlus");
 		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cPLUSPlusSignKeyword_0 = (Keyword)cPLUSEnumLiteralDeclaration.eContents().get(0);
@@ -830,7 +829,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'+'
 		public Keyword getPLUSPlusSignKeyword_0() { return cPLUSPlusSignKeyword_0; }
 	}
-	public class OperatorMinusElements extends AbstractEnumRuleElementFinder {
+	public class OperatorMinusElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorMinus");
 		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cMINUSHyphenMinusKeyword_0 = (Keyword)cMINUSEnumLiteralDeclaration.eContents().get(0);
@@ -845,7 +844,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'-'
 		public Keyword getMINUSHyphenMinusKeyword_0() { return cMINUSHyphenMinusKeyword_0; }
 	}
-	public class OperatorMultiplyElements extends AbstractEnumRuleElementFinder {
+	public class OperatorMultiplyElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorMultiply");
 		private final EnumLiteralDeclaration cMULTIPLYEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cMULTIPLYAsteriskKeyword_0 = (Keyword)cMULTIPLYEnumLiteralDeclaration.eContents().get(0);
@@ -860,7 +859,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'*'
 		public Keyword getMULTIPLYAsteriskKeyword_0() { return cMULTIPLYAsteriskKeyword_0; }
 	}
-	public class OperatorDivideElements extends AbstractEnumRuleElementFinder {
+	public class OperatorDivideElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorDivide");
 		private final EnumLiteralDeclaration cDIVIDEEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cDIVIDESolidusKeyword_0 = (Keyword)cDIVIDEEnumLiteralDeclaration.eContents().get(0);
@@ -875,7 +874,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'/'
 		public Keyword getDIVIDESolidusKeyword_0() { return cDIVIDESolidusKeyword_0; }
 	}
-	public class OperatorPowerElements extends AbstractEnumRuleElementFinder {
+	public class OperatorPowerElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorPower");
 		private final EnumLiteralDeclaration cPOWEREnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cPOWERCircumflexAccentKeyword_0 = (Keyword)cPOWEREnumLiteralDeclaration.eContents().get(0);
@@ -890,7 +889,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'^'
 		public Keyword getPOWERCircumflexAccentKeyword_0() { return cPOWERCircumflexAccentKeyword_0; }
 	}
-	public class OperatorCosElements extends AbstractEnumRuleElementFinder {
+	public class OperatorCosElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorCos");
 		private final EnumLiteralDeclaration cCOSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cCOSCosKeyword_0 = (Keyword)cCOSEnumLiteralDeclaration.eContents().get(0);
@@ -905,7 +904,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'cos'
 		public Keyword getCOSCosKeyword_0() { return cCOSCosKeyword_0; }
 	}
-	public class OperatorSinElements extends AbstractEnumRuleElementFinder {
+	public class OperatorSinElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorSin");
 		private final EnumLiteralDeclaration cSINEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cSINSinKeyword_0 = (Keyword)cSINEnumLiteralDeclaration.eContents().get(0);
@@ -920,7 +919,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'sin'
 		public Keyword getSINSinKeyword_0() { return cSINSinKeyword_0; }
 	}
-	public class OperatorTanElements extends AbstractEnumRuleElementFinder {
+	public class OperatorTanElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorTan");
 		private final EnumLiteralDeclaration cTANEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cTANTanKeyword_0 = (Keyword)cTANEnumLiteralDeclaration.eContents().get(0);
@@ -935,7 +934,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'tan'
 		public Keyword getTANTanKeyword_0() { return cTANTanKeyword_0; }
 	}
-	public class OperatorAtanElements extends AbstractEnumRuleElementFinder {
+	public class OperatorAtanElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorAtan");
 		private final EnumLiteralDeclaration cATANEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cATANAtanKeyword_0 = (Keyword)cATANEnumLiteralDeclaration.eContents().get(0);
@@ -950,7 +949,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'atan'
 		public Keyword getATANAtanKeyword_0() { return cATANAtanKeyword_0; }
 	}
-	public class OperatorAcosElements extends AbstractEnumRuleElementFinder {
+	public class OperatorAcosElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorAcos");
 		private final EnumLiteralDeclaration cACOSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cACOSAcosKeyword_0 = (Keyword)cACOSEnumLiteralDeclaration.eContents().get(0);
@@ -965,7 +964,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'acos'
 		public Keyword getACOSAcosKeyword_0() { return cACOSAcosKeyword_0; }
 	}
-	public class OperatorAsinElements extends AbstractEnumRuleElementFinder {
+	public class OperatorAsinElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorAsin");
 		private final EnumLiteralDeclaration cASINEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cASINAsinKeyword_0 = (Keyword)cASINEnumLiteralDeclaration.eContents().get(0);
@@ -980,7 +979,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'asin'
 		public Keyword getASINAsinKeyword_0() { return cASINAsinKeyword_0; }
 	}
-	public class OperatorSqrtElements extends AbstractEnumRuleElementFinder {
+	public class OperatorSqrtElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorSqrt");
 		private final EnumLiteralDeclaration cSQRTEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cSQRTSqrtKeyword_0 = (Keyword)cSQRTEnumLiteralDeclaration.eContents().get(0);
@@ -995,7 +994,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'sqrt'
 		public Keyword getSQRTSqrtKeyword_0() { return cSQRTSqrtKeyword_0; }
 	}
-	public class OperatorLogElements extends AbstractEnumRuleElementFinder {
+	public class OperatorLogElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorLog");
 		private final EnumLiteralDeclaration cLOGEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLOGLogKeyword_0 = (Keyword)cLOGEnumLiteralDeclaration.eContents().get(0);
@@ -1010,7 +1009,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'log'
 		public Keyword getLOGLogKeyword_0() { return cLOGLogKeyword_0; }
 	}
-	public class OperatorLnElements extends AbstractEnumRuleElementFinder {
+	public class OperatorLnElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorLn");
 		private final EnumLiteralDeclaration cLNEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLNLnKeyword_0 = (Keyword)cLNEnumLiteralDeclaration.eContents().get(0);
@@ -1025,7 +1024,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'ln'
 		public Keyword getLNLnKeyword_0() { return cLNLnKeyword_0; }
 	}
-	public class OperatorExpElements extends AbstractEnumRuleElementFinder {
+	public class OperatorExpElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorExp");
 		private final EnumLiteralDeclaration cEXPEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cEXPExpKeyword_0 = (Keyword)cEXPEnumLiteralDeclaration.eContents().get(0);
@@ -1040,7 +1039,7 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//'exp'
 		public Keyword getEXPExpKeyword_0() { return cEXPExpKeyword_0; }
 	}
-	public class OperatorLdElements extends AbstractEnumRuleElementFinder {
+	public class OperatorLdElements extends AbstractElementFinder.AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.calculation.EquationDSL.OperatorLd");
 		private final EnumLiteralDeclaration cLDEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLDLdKeyword_0 = (Keyword)cLDEnumLiteralDeclaration.eContents().get(0);
@@ -1573,7 +1572,8 @@ public class EquationDSLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//terminal STRING:
-	//	'"' ('\\' . | !('\\' | '"'))* '"' | "'" ('\\' . | !('\\' | "'"))* "'";
+	//	'"' ('\\' . | !('\\' | '"'))* '"' |
+	//	"'" ('\\' . | !('\\' | "'"))* "'";
 	public TerminalRule getSTRINGRule() {
 		return gaTerminals.getSTRINGRule();
 	}

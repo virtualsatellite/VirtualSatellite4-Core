@@ -59,6 +59,11 @@
 									<excludedGroups>p2.eclipse-plugin,${project.groupId}</excludedGroups>
 									<outputDirectory>${project.basedir}/about_files</outputDirectory>
 									<licenseMerges>
+										<licenseMerge>Apache 2.0|Apache License 2.0|Apache License, 2.0|The Apache Software License, Version 2.0</licenseMerge>
+										<licenseMerge>EDL 1.0|Eclipse Distribution License v. 1.0</licenseMerge>
+										<licenseMerge>EPL 2.0|Eclipse Public License 2.0|Eclipse Public License v. 2.0</licenseMerge>
+										<licenseMerge>GPL2 w/ CPE|GNU General Public License, version 2 with the GNU Classpath Exception|The GNU General Public License (GPL), Version 2, With Classpath Exception</licenseMerge>
+										<licenseMerge>MIT|MIT license</licenseMerge>
 										<licenseMerge>Apache 2.0|
 										Apache License 2.0|
 										Apache License, 2.0|

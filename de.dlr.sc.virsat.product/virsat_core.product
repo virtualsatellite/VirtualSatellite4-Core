@@ -120,10 +120,13 @@ Germany
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.executable" installMode="root"/>
       <feature id="org.eclipse.draw2d" installMode="root"/>
-      <feature id="org.eclipse.egit" installMode="root"/>
-      <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
       <feature id="org.eclipse.graphiti.feature" installMode="root"/>
+      <feature id="org.eclipse.egit" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
+      <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
+      <feature id="org.eclipse.jgit.http.apache" installMode="root"/>
+      <feature id="org.eclipse.jgit.gpg.bc" installMode="root"/>
+      <feature id="org.eclipse.jgit.ssh.jsch" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
