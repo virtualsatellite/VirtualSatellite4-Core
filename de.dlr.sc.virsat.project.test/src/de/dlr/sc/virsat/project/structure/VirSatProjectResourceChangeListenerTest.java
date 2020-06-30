@@ -66,7 +66,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 	/**
 	 * The Listener under test
 	 */
-	class TestProjectChangeListener extends AVirSatProjectResourceChangeListener {
+	static class TestProjectChangeListener extends AVirSatProjectResourceChangeListener {
 		
 		int calledPrecondition = 0;
 		int calledPostcondition = 0;
@@ -308,8 +308,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		listener.calledResourceChanged = 0;
 	
 		Path randomNonRsPath = new File(randomNonRsFile.getRawLocation().toOSString()).toPath();
-		String content = new String(Files.readAllBytes(randomNonRsPath), StandardCharsets.UTF_8);
-		content = "Changed some content";
+		String content = "Changed some content";
 		Files.write(randomNonRsPath, content.getBytes(StandardCharsets.UTF_8));
 		testProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 		
