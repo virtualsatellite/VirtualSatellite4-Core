@@ -51,6 +51,8 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		super.setUp();
 		addEditingDomainAndRepository();
 		listener = new TestResourceEventListener();
+		interlockedListener = new InterlockedExecutionListener();
+		VirSatTransactionalEditingDomain.addResourceEventListener(interlockedListener);
 	}
 
 	@Override
@@ -63,9 +65,11 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 	public void tearDown() throws CoreException {
 		// Always remove the listener again
 		VirSatTransactionalEditingDomain.removeResourceEventListener(listener);
+		VirSatTransactionalEditingDomain.removeResourceEventListener(interlockedListener);
 		super.tearDown();
 	}
 	
+	InterlockedExecutionListener interlockedListener;
 	TestResourceEventListener listener;
 	
 	/**
@@ -81,32 +85,61 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		Set<Resource> previousResourceEventResources;
 		
 		@Override
-		public void resourceEvent(Set<Resource> resources, int event) {
+		public synchronized void resourceEvent(Set<Resource> resources, int event) {
 			// Remember the current and the previous resource event.
 			calledResourceEventCount++;
 			previousResourceEventType = calledResourceEventType;
 			calledResourceEventType = event;
 			previousResourceEventResources = calledResourceEventResources;
 			calledResourceEventResources = new HashSet<>(resources);
+			this.notifyAll();
 		}
+		
+		public synchronized void waitForEventCount(int expectedEvent) throws InterruptedException {
+			while (calledResourceEventCount < expectedEvent) {
+				this.wait();
+			}
+		}
+		
 	};
 	
+	/**
+	 * A listener to be able to execute code inter-locked with the notification of events.
+	 * This is needed to ensure notifications are delivered, before the execution continues.
+	 */
+	static class InterlockedExecutionListener implements IResourceEventListener {
+
+		int notificationCounter = 0;
+		
+		@Override
+		public synchronized void resourceEvent(Set<Resource> resources, int event) {
+			notificationCounter++;
+			this.notifyAll();
+		}
+		
+		public synchronized void executeInterocked(Runnable runnable, int expectedNotifications) throws InterruptedException {
+			runnable.run();
+			while (notificationCounter < expectedNotifications) {
+				this.wait();
+			}
+			notificationCounter = 0;
+		}
+	}
+	
 	@Test
-	public void testHandleExternalyAddedResource() throws CoreException {
+	public void testHandleExternalyAddedResource() throws CoreException, InterruptedException {
 	
 		// --------------------------------------------
 		// Add a new resource externally
 		// Expected result is a reload on all resources
-		
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		VirSatTransactionalEditingDomain.addResourceEventListener(listener);
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
 		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForEventCount(1);
 		assertNotNull("Got a resource for the SEI", seiResource);
 		
 		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
@@ -126,23 +159,21 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		// -------------------------------------------------------------
 		// Here we create a SEI, and we issue a name change
 		// This should only trigger a notification on the SEI's resource
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
 		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
 		executeAsCommand(() -> seiResource.getContents().add(sei));
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		VirSatTransactionalEditingDomain.addResourceEventListener(listener);
 
 		assertEquals("SEI is still the same as in the potentially relaoded reosurce", sei, seiResource.getContents().get(0));
 		
 		// Now change the name which expects as change on the resource containing the SEI
 		executeAsCommand(() -> sei.setName("NameNumberOne"));
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForEventCount(1);
 		
 		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
 		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_CHANGED, listener.calledResourceEventType);
@@ -150,7 +181,7 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		
 		// Now saving the resource which triggers a change notification again.
 		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForEventCount(2);
 		assertEquals("Called listener correct amount of times", 2, listener.calledResourceEventCount);
 		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_CHANGED, listener.calledResourceEventType);
 		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResource));
@@ -164,9 +195,9 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		content = content.replace("NameNumberOne", "NameNumberTwo");
 		Files.write(seiFilePath, content.getBytes(StandardCharsets.UTF_8));
 		testProject.refreshLocal(IResource.DEPTH_INFINITE, null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		//CHECKSTYLE:OFF
+		listener.waitForEventCount(3);
 		assertEquals("Called listener correct amount of times", 3, listener.calledResourceEventCount);
 		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.calledResourceEventType);
 		Resource seiResourceReload = editingDomain.getResourceSet().getStructuralElementInstanceResource(sei);
@@ -180,26 +211,24 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 	}
 	
 	@Test
-	public void testHandleExternalyRemovedResource() throws CoreException {
+	public void testHandleExternalyRemovedResource() throws CoreException, InterruptedException {
 	
 		// --------------------------------------------
 		// Add a new resource externally
 		// Expected result is a reload on all resources
 		
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
 		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		VirSatTransactionalEditingDomain.addResourceEventListener(listener);
 		
 		// Now delete the resource externally and check that a full reload is triggered
 		seiFile.delete(true, null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForEventCount(2);
 		
 		assertEquals("Called listener correct amount of times", 2, listener.calledResourceEventCount);
 		
@@ -220,27 +249,25 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 	
 	
 	@Test
-	public void testHandleInternallyRemovedResource() throws CoreException {
+	public void testHandleInternallyRemovedResource() throws CoreException, InterruptedException {
 	
 		// --------------------------------------------
 		// Add a new resource internally
 		// Expected result is a notification about 
 		// unloading the resource
 		
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
 		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
-		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		VirSatTransactionalEditingDomain.addResourceEventListener(listener);
 		
 		// Now delete the resource internally and check that a full reload is triggered
 		editingDomain.removeResource(seiResource);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForEventCount(1);
 		
 		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
 		
