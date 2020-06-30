@@ -91,193 +91,193 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	// *****************************************************************
 	// * Array Attribute: tpSringArrayDynamic
 	// *****************************************************************
-	private IBeanList<BeanPropertyString> tpSringArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
+	private IBeanList<BeanPropertyString> tpSringArrayDynamicBean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 	
-	private void safeAccessTpSringArrayDynamic() {
-		if (tpSringArrayDynamic.getArrayInstance() == null) {
-			tpSringArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayDynamic"));
+	private void safeAccessTpSringArrayDynamicBean() {
+		if (tpSringArrayDynamicBean.getArrayInstance() == null) {
+			tpSringArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayDynamic"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyString> getTpSringArrayDynamic() {
-		safeAccessTpSringArrayDynamic();
-		return tpSringArrayDynamic;
+	public IBeanList<BeanPropertyString> getTpSringArrayDynamicBean() {
+		safeAccessTpSringArrayDynamicBean();
+		return tpSringArrayDynamicBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpSringArrayStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyString> tpSringArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
+	private IBeanList<BeanPropertyString> tpSringArrayStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 	
-	private void safeAccessTpSringArrayStatic() {
-		if (tpSringArrayStatic.getArrayInstance() == null) {
-			tpSringArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayStatic"));
+	private void safeAccessTpSringArrayStaticBean() {
+		if (tpSringArrayStaticBean.getArrayInstance() == null) {
+			tpSringArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpSringArrayStatic"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyString> getTpSringArrayStatic() {
-		safeAccessTpSringArrayStatic();
-		return tpSringArrayStatic;
+	public IBeanList<BeanPropertyString> getTpSringArrayStaticBean() {
+		safeAccessTpSringArrayStaticBean();
+		return tpSringArrayStaticBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpIntArrayDynamic
 	// *****************************************************************
-	private IBeanList<BeanPropertyInt> tpIntArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
+	private IBeanList<BeanPropertyInt> tpIntArrayDynamicBean = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
 	
-	private void safeAccessTpIntArrayDynamic() {
-		if (tpIntArrayDynamic.getArrayInstance() == null) {
-			tpIntArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayDynamic"));
+	private void safeAccessTpIntArrayDynamicBean() {
+		if (tpIntArrayDynamicBean.getArrayInstance() == null) {
+			tpIntArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayDynamic"));
 		}
 	}
 		
-	public IBeanList<BeanPropertyInt> getTpIntArrayDynamic() {
-		safeAccessTpIntArrayDynamic();
-		return tpIntArrayDynamic;
+	public IBeanList<BeanPropertyInt> getTpIntArrayDynamicBean() {
+		safeAccessTpIntArrayDynamicBean();
+		return tpIntArrayDynamicBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpIntArrayStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyInt> tpIntArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
+	private IBeanList<BeanPropertyInt> tpIntArrayStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
 	
-	private void safeAccessTpIntArrayStatic() {
-		if (tpIntArrayStatic.getArrayInstance() == null) {
-			tpIntArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayStatic"));
+	private void safeAccessTpIntArrayStaticBean() {
+		if (tpIntArrayStaticBean.getArrayInstance() == null) {
+			tpIntArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayStatic"));
 		}
 	}
 		
-	public IBeanList<BeanPropertyInt> getTpIntArrayStatic() {
-		safeAccessTpIntArrayStatic();
-		return tpIntArrayStatic;
+	public IBeanList<BeanPropertyInt> getTpIntArrayStaticBean() {
+		safeAccessTpIntArrayStaticBean();
+		return tpIntArrayStaticBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpFloatArrayDynamic
 	// *****************************************************************
-	private IBeanList<BeanPropertyFloat> tpFloatArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
+	private IBeanList<BeanPropertyFloat> tpFloatArrayDynamicBean = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
 	
-	private void safeAccessTpFloatArrayDynamic() {
-		if (tpFloatArrayDynamic.getArrayInstance() == null) {
-			tpFloatArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayDynamic"));
+	private void safeAccessTpFloatArrayDynamicBean() {
+		if (tpFloatArrayDynamicBean.getArrayInstance() == null) {
+			tpFloatArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayDynamic"));
 		}
 	}
 		
-	public IBeanList<BeanPropertyFloat> getTpFloatArrayDynamic() {
-		safeAccessTpFloatArrayDynamic();
-		return tpFloatArrayDynamic;
+	public IBeanList<BeanPropertyFloat> getTpFloatArrayDynamicBean() {
+		safeAccessTpFloatArrayDynamicBean();
+		return tpFloatArrayDynamicBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpFloatArrayStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyFloat> tpFloatArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
+	private IBeanList<BeanPropertyFloat> tpFloatArrayStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
 	
-	private void safeAccessTpFloatArrayStatic() {
-		if (tpFloatArrayStatic.getArrayInstance() == null) {
-			tpFloatArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayStatic"));
+	private void safeAccessTpFloatArrayStaticBean() {
+		if (tpFloatArrayStaticBean.getArrayInstance() == null) {
+			tpFloatArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayStatic"));
 		}
 	}
 		
-	public IBeanList<BeanPropertyFloat> getTpFloatArrayStatic() {
-		safeAccessTpFloatArrayStatic();
-		return tpFloatArrayStatic;
+	public IBeanList<BeanPropertyFloat> getTpFloatArrayStaticBean() {
+		safeAccessTpFloatArrayStaticBean();
+		return tpFloatArrayStaticBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpBooleanArrayDynamic
 	// *****************************************************************
-	private IBeanList<BeanPropertyBoolean> tpBooleanArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
+	private IBeanList<BeanPropertyBoolean> tpBooleanArrayDynamicBean = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
 	
-	private void safeAccessTpBooleanArrayDynamic() {
-		if (tpBooleanArrayDynamic.getArrayInstance() == null) {
-			tpBooleanArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayDynamic"));
+	private void safeAccessTpBooleanArrayDynamicBean() {
+		if (tpBooleanArrayDynamicBean.getArrayInstance() == null) {
+			tpBooleanArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayDynamic"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayDynamic() {
-		safeAccessTpBooleanArrayDynamic();
-		return tpBooleanArrayDynamic;
+	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayDynamicBean() {
+		safeAccessTpBooleanArrayDynamicBean();
+		return tpBooleanArrayDynamicBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpBooleanArrayStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyBoolean> tpBooleanArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
+	private IBeanList<BeanPropertyBoolean> tpBooleanArrayStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
 	
-	private void safeAccessTpBooleanArrayStatic() {
-		if (tpBooleanArrayStatic.getArrayInstance() == null) {
-			tpBooleanArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayStatic"));
+	private void safeAccessTpBooleanArrayStaticBean() {
+		if (tpBooleanArrayStaticBean.getArrayInstance() == null) {
+			tpBooleanArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpBooleanArrayStatic"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayStatic() {
-		safeAccessTpBooleanArrayStatic();
-		return tpBooleanArrayStatic;
+	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayStaticBean() {
+		safeAccessTpBooleanArrayStaticBean();
+		return tpBooleanArrayStaticBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpResourceDynamich
 	// *****************************************************************
-	private IBeanList<BeanPropertyResource> tpResourceDynamich = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
+	private IBeanList<BeanPropertyResource> tpResourceDynamichBean = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
 	
-	private void safeAccessTpResourceDynamich() {
-		if (tpResourceDynamich.getArrayInstance() == null) {
-			tpResourceDynamich.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceDynamich"));
+	private void safeAccessTpResourceDynamichBean() {
+		if (tpResourceDynamichBean.getArrayInstance() == null) {
+			tpResourceDynamichBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceDynamich"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyResource> getTpResourceDynamich() {
-		safeAccessTpResourceDynamich();
-		return tpResourceDynamich;
+	public IBeanList<BeanPropertyResource> getTpResourceDynamichBean() {
+		safeAccessTpResourceDynamichBean();
+		return tpResourceDynamichBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpResourceStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyResource> tpResourceStatic = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
+	private IBeanList<BeanPropertyResource> tpResourceStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
 	
-	private void safeAccessTpResourceStatic() {
-		if (tpResourceStatic.getArrayInstance() == null) {
-			tpResourceStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceStatic"));
+	private void safeAccessTpResourceStaticBean() {
+		if (tpResourceStaticBean.getArrayInstance() == null) {
+			tpResourceStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpResourceStatic"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyResource> getTpResourceStatic() {
-		safeAccessTpResourceStatic();
-		return tpResourceStatic;
+	public IBeanList<BeanPropertyResource> getTpResourceStaticBean() {
+		safeAccessTpResourceStaticBean();
+		return tpResourceStaticBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpEnumDynamich
 	// *****************************************************************
-	private IBeanList<BeanPropertyEnum> tpEnumDynamich = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
+	private IBeanList<BeanPropertyEnum> tpEnumDynamichBean = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
 	
-	private void safeAccessTpEnumDynamich() {
-		if (tpEnumDynamich.getArrayInstance() == null) {
-			tpEnumDynamich.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumDynamich"));
+	private void safeAccessTpEnumDynamichBean() {
+		if (tpEnumDynamichBean.getArrayInstance() == null) {
+			tpEnumDynamichBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumDynamich"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyEnum> getTpEnumDynamich() {
-		safeAccessTpEnumDynamich();
-		return tpEnumDynamich;
+	public IBeanList<BeanPropertyEnum> getTpEnumDynamichBean() {
+		safeAccessTpEnumDynamichBean();
+		return tpEnumDynamichBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: tpEnumStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyEnum> tpEnumStatic = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
+	private IBeanList<BeanPropertyEnum> tpEnumStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
 	
-	private void safeAccessTpEnumStatic() {
-		if (tpEnumStatic.getArrayInstance() == null) {
-			tpEnumStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumStatic"));
+	private void safeAccessTpEnumStaticBean() {
+		if (tpEnumStaticBean.getArrayInstance() == null) {
+			tpEnumStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpEnumStatic"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyEnum> getTpEnumStatic() {
-		safeAccessTpEnumStatic();
-		return tpEnumStatic;
+	public IBeanList<BeanPropertyEnum> getTpEnumStaticBean() {
+		safeAccessTpEnumStaticBean();
+		return tpEnumStaticBean;
 	}
 	
 	

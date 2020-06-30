@@ -349,13 +349,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 			
 				return '''
-				private IBeanList<BeanPropertyFloat> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
+				private IBeanList<BeanPropertyFloat> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 					
-				public IBeanList<BeanPropertyFloat> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyFloat> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''
 			}
@@ -366,13 +366,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 			
 				return '''
-				private IBeanList<BeanPropertyInt> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
+				private IBeanList<BeanPropertyInt> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 					
-				public IBeanList<BeanPropertyInt> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyInt> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''
 			}
@@ -383,13 +383,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 			
 				return '''
-				private IBeanList<BeanPropertyBoolean> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
+				private IBeanList<BeanPropertyBoolean> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
-				public IBeanList<BeanPropertyBoolean> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyBoolean> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''
 			}
@@ -400,13 +400,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 			
 				return '''
-				private IBeanList<BeanPropertyString> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
+				private IBeanList<BeanPropertyString> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
-				public IBeanList<BeanPropertyString> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyString> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''
 			}
@@ -417,13 +417,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 			
 				return '''
-				private IBeanList<BeanPropertyResource> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
+				private IBeanList<BeanPropertyResource> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
-				public IBeanList<BeanPropertyResource> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyResource> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''
 			}
@@ -434,13 +434,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeArrayInstanceList);
 			
 				return '''
-				private IBeanList<BeanPropertyEnum> «property.name» = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
+				private IBeanList<BeanPropertyEnum> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
-				public IBeanList<BeanPropertyEnum> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyEnum> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''
 			}
