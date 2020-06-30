@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.7.0</tycho-version>
+		<tycho-version>1.6.0</tycho-version>
 		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<maven-license-version>1.20</maven-license-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
