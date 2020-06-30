@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.4.0</tycho-version>
+		<tycho-version>1.7.0</tycho-version>
 		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<maven-license-version>1.20</maven-license-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -134,12 +134,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>3.1.0</version>
+						<version>3.1.1</version>
 						<dependencies>
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>8.26</version>
+								<version>8.34</version>
 							</dependency>
 						</dependencies>
 						<executions>
@@ -225,7 +225,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.3</version>
+				<version>0.8.5</version>
 				<executions>
 					<execution>
 						<goals>
