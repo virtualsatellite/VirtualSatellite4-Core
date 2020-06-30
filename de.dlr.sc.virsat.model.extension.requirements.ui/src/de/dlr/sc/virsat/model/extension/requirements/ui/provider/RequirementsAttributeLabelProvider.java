@@ -12,6 +12,9 @@
  */
 package de.dlr.sc.virsat.model.extension.requirements.ui.provider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.swt.graphics.Image;
 
@@ -208,8 +211,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 		if (req.getTrace().getTarget() == null || req.getTrace().getTarget().isEmpty()) {
 			return EMPTY_TRACE_STRING;
 		} else {
-			StringBuilder traceString = new StringBuilder();
-			traceString.append("{");
+			List<String> traceStringArtifacts = new ArrayList<String>();
 
 			// Some heavy casting necessary because Bean GenericCategory is abstract
 			APropertyInstance targetProperty = req.getTrace().getTypeInstance().getPropertyInstances()
@@ -218,15 +220,10 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 				CategoryAssignment target = (CategoryAssignment) ((ReferencePropertyInstance) targetRPI)
 						.getReference();
 				if (target != null) {
-					traceString.append(target.getName());
-					if (((ArrayInstance) targetProperty).getArrayInstances()
-							.indexOf(targetRPI) < ((ArrayInstance) targetProperty).getArrayInstances().size() - 1) {
-						traceString.append(", ");
-					}
+					traceStringArtifacts.add(target.getName());
 				}
 			}
-			traceString.append("}");
-			return traceString.toString();
+			return "{" + String.join(", ", traceStringArtifacts) + "}";
 		}
 	}
 
