@@ -898,7 +898,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param resourceEventListener the listener which will be triggered by resource changes
 	 */
 	public static void addResourceEventListener(IResourceEventListener resourceEventListener) {
-		resourceEventlisteners.add(resourceEventListener);
+		if (resourceEventListener != null) {
+			resourceEventlisteners.add(resourceEventListener);
+		}
 	}
 
 	/**
@@ -906,7 +908,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param resourceEventListener the resourceEventListener to be removed
 	 */
 	public static void removeResourceEventListener(IResourceEventListener resourceEventListener) {
-		resourceEventlisteners.remove(resourceEventListener);
+		if (resourceEventListener != null) {
+			resourceEventlisteners.remove(resourceEventListener);
+		}
 	}
 	
 	/**

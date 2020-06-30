@@ -44,6 +44,10 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
+/**
+ * Test cases for the ResourceChangeListener that observes the Workspace
+ * for external changes.
+ */
 public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 
 	@Before
