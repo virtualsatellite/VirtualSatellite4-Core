@@ -79,10 +79,12 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		int calledAdded = 0;
 		int calledResourceChanged = 0;
 		
+		boolean isNotified = false;
+		boolean isExecuted = false;
+		
 		TestProjectChangeListener(IProject virSatProject) {
 			super(virSatProject);
 		}
-
 		
 		@Override
 		public void handlePreCondition() {
@@ -90,14 +92,21 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		}
 		
 		@Override
-		public void handlePostCondition() {
+		public synchronized void handlePostCondition() {
 			calledPostcondition++;
+			isExecuted = true;
+			this.notifyAll();
 		}
 	
 		@Override
-		public void resourceChanged(IResourceChangeEvent event) {
-			calledResourceChanged++;
-			super.resourceChanged(event);
+		public synchronized void resourceChanged(IResourceChangeEvent event) {
+			try {
+				calledResourceChanged++;
+				super.resourceChanged(event);
+			} finally {
+				isNotified = true;
+				this.notifyAll();
+			}
 		}
 		
 		ArrayList<IResource> calledRemovedDvlmResources;
@@ -121,19 +130,34 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 			calledAdded++;
 			calledAddedDvlmResources = new ArrayList<>(addedDvlmResources);
 		}
+		
+		/**
+		 * Method to wait for the listener to be triggered. The method waits until the change
+		 * event from the workspace has been executed and if requested also for the postCondition 
+		 * method to be executed. 
+		 * @param waitForWsJobExecution tell if the notification should also wait for the workspace job to be executed.
+		 * @throws InterruptedException
+		 */
+		public synchronized void waitForNotificationAndExecution(boolean waitForWsJobExecution) throws InterruptedException {
+			while (!isNotified || (!isExecuted && waitForWsJobExecution)) {
+				this.wait();
+			}			
+			// reset the notification state for the next call
+			isNotified = false;
+			isExecuted = false;
+		}
 	};
 	
 	@Test
-	public void testHandleClosedProject() throws CoreException {
+	public void testHandleClosedProject() throws CoreException, InterruptedException {
 		
 		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
 
 		// Close the project and create another file beforehand, No notification should arrive on a closed project
 		listener.calledResourceChanged = 0;
 		testProject.close(null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(false);
 		
 		assertNotEquals("Listener got called again", 0, listener.calledResourceChanged);
 
@@ -145,17 +169,16 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 	}
 	
 	@Test
-	public void testHandleAddedDvlmResources() throws CoreException {
+	public void testHandleAddedDvlmResources() throws CoreException, InterruptedException {
 				
 		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(StructuralFactory.eINSTANCE.createStructuralElementInstance());
 		Resource seiResource = editingDomain.getResourceSet().safeGetResource(seiFile, true);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		assertNotNull("Got a resource for the SEI", seiResource);
+		listener.waitForNotificationAndExecution(true);
 		
 		assertEquals("Called method correct amount of times", 1, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 1, listener.calledPostcondition);
@@ -169,7 +192,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		IFile randomFile = testProject.getFile("testfile.ecore");
 		Resource randomResource = editingDomain.getResourceSet().safeGetResource(randomFile, true);
 		assertNotNull("Got a resource for the random ecore", randomResource);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(true);
 		
 		assertEquals("Called method correct amount of times", 2, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 2, listener.calledPostcondition);
@@ -183,8 +206,8 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		listener.calledResourceChanged = 0;
 		IFile randomNonRsFile = testProject.getFile("random.txt");
 		randomNonRsFile.create(new ByteArrayInputStream("test".getBytes()), true, null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		assertNotEquals("Listener got called again", 0, listener.calledResourceChanged);
+		listener.waitForNotificationAndExecution(false);
 		
 		assertEquals("Called method correct amount of times", 2, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 2, listener.calledPostcondition);
@@ -194,9 +217,8 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testHandleRemovedDvlmResources() throws CoreException {
+	public void testHandleRemovedDvlmResources() throws CoreException, InterruptedException {
 		editingDomain.saveAll();
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(StructuralFactory.eINSTANCE.createStructuralElementInstance());
@@ -213,12 +235,11 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		randomNonRsFile.create(new ByteArrayInputStream("test".getBytes()), true, null);
 
 		// Now add the listener and remove one file after the other
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
 		
 		// Remove the file of the SEI, this should create a notification
 		seiFile.delete(true, null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(true);
 		
 		assertEquals("Called method correct amount of times", 1, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 1, listener.calledPostcondition);
@@ -230,7 +251,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		
 		// Now add an arbitrary file, which is also part of the resourceSet this should also notify the added resources
 		randomFile.delete(true, null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(true);
 		
 		assertEquals("Called method correct amount of times", 2, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 2, listener.calledPostcondition);
@@ -243,7 +264,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		// And now add a random file which is not in the ResourceSet. No Added file should be notified
 		listener.calledResourceChanged = 0;
 		randomNonRsFile.delete(true, null);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(false);
 		assertNotEquals("Listener got called again", 0, listener.calledResourceChanged);
 		
 		assertEquals("Called method correct amount of times", 2, listener.calledPrecondition);
@@ -254,7 +275,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testHandleChangedDvlmResources() throws CoreException, IOException {
+	public void testHandleChangedDvlmResources() throws CoreException, IOException, InterruptedException {
 		editingDomain.saveAll();
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		
@@ -279,13 +300,12 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		randomNonRsFile.create(new ByteArrayInputStream("test".getBytes()), true, null);
 
 		// Now add the listener and change one file after the other
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
 		
 		// Remove the file of the SEI, this should create a notification
 		executeAsCommand(() -> sei.setName("TestName"));
 		editingDomain.saveResourceIgnorePermissions(seiResource);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(true);
 		
 		assertEquals("Called method correct amount of times", 1, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 1, listener.calledPostcondition);
@@ -298,7 +318,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		// Now add an arbitrary file, which is also part of the resourceSet this should also notify the added resources
 		executeAsCommand(() -> pckge.setName("TestPackage"));
 		editingDomain.saveResourceIgnorePermissions(randomResource);
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		listener.waitForNotificationAndExecution(true);
 		
 		assertEquals("Called method correct amount of times", 2, listener.calledPrecondition);
 		assertEquals("Called method correct amount of times", 2, listener.calledPostcondition);
@@ -315,8 +335,8 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		String content = "Changed some content";
 		Files.write(randomNonRsPath, content.getBytes(StandardCharsets.UTF_8));
 		testProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+		listener.waitForNotificationAndExecution(false);
 		
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		assertEquals("Listener got called again", 1, listener.calledResourceChanged);
 		
 		assertEquals("Called method correct amount of times", 2, listener.calledPrecondition);
