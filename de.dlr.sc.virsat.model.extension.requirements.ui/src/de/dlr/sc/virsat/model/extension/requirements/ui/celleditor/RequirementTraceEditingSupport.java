@@ -9,9 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.celleditor;
 
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.CellEditor;
@@ -29,14 +26,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.RequirementsTraceEditingDialog;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
 
 /**
- *
+ * Implements a customized editing support for requirement trace elements
+ * 
  */
 public class RequirementTraceEditingSupport extends APropertyCellEditingSupport {
 
@@ -102,23 +99,18 @@ public class RequirementTraceEditingSupport extends APropertyCellEditingSupport 
 	
 	@Override
 	protected boolean canEdit(Object element) {
-		return true;
-	}
-	
-	@Override
-	protected Command createSetCommand(Object element, Object userInputValue) {
-		APropertyInstance propertyInstance = getPropertyInstance(element);
-		if (propertyInstance != null) {
-			Command cmd = SetCommand.create(editingDomain, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, userInputValue); 
-			return cmd;
-		}
-		return UnexecutableCommand.INSTANCE;
+		// Overwriting super implementation to prevent check if set command can be executed.
+		// Check is not necessary because this editing support is not actually doing any change on 
+		// the model but rather forwarding the editing capabilities to a snippet which is executed in
+		// a dialog and doing its own checks if the model can be edited. Thus, this editing support
+		// does not even have a set command that can be executed
+		return true;	
 	}
 	
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
-		Command cmd = createSetCommand(element, userInputValue);  
-		editingDomain.getCommandStack().execute(cmd);
+		// Overwriting super method because this method is not actually changing any value, its just 
+		// forwarding the editing capabilities and thus does not net to execute any set command
 		viewer.update(element, null);
 	}
 	
