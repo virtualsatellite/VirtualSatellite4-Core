@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.swtbot.test.ASwtBotTestCase;
 
-public abstract class AVersioningBackendAndUserRightsManagementTest extends ASwtBotTestCase {
+public abstract class AVersioningBackendTest extends ASwtBotTestCase {
 
 	@Before
 	public void before() throws Exception {

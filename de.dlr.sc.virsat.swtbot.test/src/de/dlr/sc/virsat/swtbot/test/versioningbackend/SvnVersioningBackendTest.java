@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 
-public class SvnVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
+public class SvnVersioningBackendTest extends AVersioningBackendTest {
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotSvnBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_REMOTE = "SwtBotGitBackendRemoteRepo";

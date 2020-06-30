@@ -534,14 +534,13 @@ public class VirSatProjectCommons {
 	 * @return the PlatformUri pointing to the file in the workspace
 	 */
 	protected static URI getPlatformForWorkspaceFileUri(URI workspaceFileUri) {
-		URI emfUri = workspaceFileUri;
-		if (emfUri.isFile()) {
+		if (workspaceFileUri.isFile()) {
 			String workspaceLocationUri = ResourcesPlugin.getWorkspace().getRoot().getLocationURI().toString();
-			String emfFileUri = emfUri.toString();
+			String emfFileUri = workspaceFileUri.toString();
 			String emfPlatformUri = emfFileUri.replaceFirst(workspaceLocationUri, "");
-			emfUri = URI.createPlatformResourceURI(emfPlatformUri, true);
+			workspaceFileUri = URI.createPlatformResourceURI(emfPlatformUri, true);
 		}
-		return emfUri;
+		return workspaceFileUri;
 	}
 	
 	public static String getProjectNameByUri(URI emfUri) {

@@ -29,7 +29,7 @@ import org.hamcrest.core.StringContains;
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
-public class GitVersioningBackendAndUserRightsManagementTest extends AVersioningBackendAndUserRightsManagementTest {
+public class GitVersioningBackendTest extends AVersioningBackendTest {
 
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotGitBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_LOCAL = "SwtBotGitBackendLocalRepo";

@@ -12,9 +12,9 @@ package de.dlr.sc.virsat.swtbot.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import de.dlr.sc.virsat.swtbot.test.versioningbackend.SvnVersioningBackendAndUserRightsManagementTest;
+import de.dlr.sc.virsat.swtbot.test.versioningbackend.SvnVersioningBackendTest;
 
-import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendAndUserRightsManagementTest;
+import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendTest;
 
 /**
  * 
@@ -33,8 +33,8 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendAndUse
 	InheritanceTest.class,
 	CalculationTest.class,
 	ProductStructureTest.class,
-	GitVersioningBackendAndUserRightsManagementTest.class,
-	SvnVersioningBackendAndUserRightsManagementTest.class,
+	GitVersioningBackendTest.class,
+	SvnVersioningBackendTest.class,
 	QudvWizardTest.class,
 	ValidatorTest.class
 	})
