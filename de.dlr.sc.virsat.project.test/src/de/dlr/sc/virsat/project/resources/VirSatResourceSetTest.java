@@ -592,6 +592,79 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 	}
 	
 	@Test
+	public void testLoadAllDvlmResources() throws IOException {
+		VirSatResourceSet resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
+		resSet.initializeModelsAndResourceSet();
+		
+		Repository repo = resSet.getRepository();
+		
+		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
+		se.setIsApplicableForAll(true);
+		
+		//CHECKSTYLE:OFF
+		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance sei2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance sei2_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance sei2_1_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		sei1.setType(se);
+		sei2.setType(se);
+		sei2_1.setType(se);
+		sei2_1_1.setType(se);
+		
+		Resource resSei1 = resSet.getAndAddStructuralElementInstanceResource(sei1);
+		Resource resSei2 = resSet.getAndAddStructuralElementInstanceResource(sei2);
+		Resource resSei2_1 = resSet.getAndAddStructuralElementInstanceResource(sei2_1);
+		Resource resSei2_1_1 = resSet.getAndAddStructuralElementInstanceResource(sei2_1_1);
+		
+		//CHECKSTYLE:ON
+		
+		// Create resource 
+		URI uri = URI.createPlatformResourceURI("/testProject_VirSatResourceSetTest/test.ecore", true);
+		Resource newResource = new XMIResourceImpl(uri);
+		newResource.save(Collections.EMPTY_MAP);
+		Resource nonDvlmResourceReload = resSet.getResource(uri, true);
+		
+		repo.getRootEntities().add(sei1);
+		repo.getRootEntities().add(sei2);
+
+		sei2.getChildren().add(sei2_1);
+		sei2_1.getChildren().add(sei2_1_1);
+		
+		resSet.saveAllResources(new NullProgressMonitor(), UserRegistry.getInstance());
+		
+		resSei1.unload();
+		resSei2.unload();
+		resSei2_1.unload();
+		resSei2_1_1.unload();
+		nonDvlmResourceReload.unload();
+		
+		assertFalse("Resource should be unloaded", resSei1.isLoaded());
+		assertFalse("Resource should be unloaded", resSei2.isLoaded());
+		assertFalse("Resource should be unloaded", resSei2_1.isLoaded());
+		assertFalse("Resource should be unloaded", resSei2_1_1.isLoaded());
+		assertFalse("Resource should be unloaded", nonDvlmResourceReload.isLoaded());
+		
+		resSet.loadAllDvlmResources();
+		
+		assertTrue("Resource got deserialized from persistant storage", resSei1.isLoaded());
+		assertTrue("Resource got deserialized from persistant storage", resSei2.isLoaded());
+		assertTrue("Resource got deserialized from persistant storage", resSei2_1.isLoaded());
+		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
+		assertFalse("Non DVLM resource in resource set should not be loaded", nonDvlmResourceReload.isLoaded());
+		
+		// now the final test case, unloading all data and then see if they get properly reloaded
+		resSet.getResources().forEach((res) -> res.unload());
+		
+		resSet.loadAllResources();
+		
+		assertTrue("Resource got deserialized from persistant storage", resSei1.isLoaded());
+		assertTrue("Resource got deserialized from persistant storage", resSei2.isLoaded());
+		assertTrue("Resource got deserialized from persistant storage", resSei2_1.isLoaded());
+		assertTrue("Resource got deserialized from persistant storage", resSei2_1_1.isLoaded());
+		assertFalse("Non DVLM resource in resource set should not be loaded", nonDvlmResourceReload.isLoaded());
+	}
+	
+	@Test
 	public void testGetDvlmResources() throws IOException, CoreException {
 		VirSatResourceSet resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
 		resSet.initializeModelsAndResourceSet();
