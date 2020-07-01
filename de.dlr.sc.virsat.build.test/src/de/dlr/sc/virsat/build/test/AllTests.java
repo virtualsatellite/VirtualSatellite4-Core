@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.build.inheritance.VirSatInheritanceBuilderTest;
+import de.dlr.sc.virsat.build.inheritance.VirSatTransactionalBuilderTest;
 import de.dlr.sc.virsat.build.marker.util.VirSatInheritanceMarkerHelperTest;
 import de.dlr.sc.virsat.build.marker.util.VirSatValidationMarkerHelperTest;
 import de.dlr.sc.virsat.build.validator.VirSatValidatorBuilderTest;
@@ -35,6 +36,7 @@ import junit.framework.JUnit4TestAdapter;
 	DvlmMissingResourcePropertyValidatorTest.class,
 	DvlmSEIsUniqeNameValidatorTest.class,
 	DvlmRepositoryUniqeNameValidatorTest.class,
+	VirSatTransactionalBuilderTest.class,
 	VirSatValidationMarkerHelperTest.class,
 	VirSatInheritanceMarkerHelperTest.class,
 	VirSatValidatorBuilderTest.class,
