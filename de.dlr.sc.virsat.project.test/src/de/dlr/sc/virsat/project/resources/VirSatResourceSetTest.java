@@ -623,7 +623,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		sei2.getChildren().add(sei2_1);
 		sei2_1.getChildren().add(sei2_1_1);
 		
-		resSet.saveAllResources(new NullProgressMonitor());
+		resSet.saveAllResources(new NullProgressMonitor(), UserRegistry.getInstance());
 		
 		resSei1.unload();
 		resSei2.unload();

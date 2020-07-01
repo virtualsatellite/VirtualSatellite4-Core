@@ -415,7 +415,7 @@ public class VirSatProjectCommons {
 	 * @return true in case the file has the correct file ending
 	 */
 	public static boolean isDvlmFile(Resource resource) {
-		if(resource == null || resource.getURI() == null) {
+		if (resource == null || resource.getURI() == null) {
 			return false;
 		}
 		return resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
