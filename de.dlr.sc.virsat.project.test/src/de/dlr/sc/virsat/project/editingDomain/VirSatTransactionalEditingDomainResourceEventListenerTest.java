@@ -34,7 +34,6 @@ import org.junit.Before;
 
 
 import org.junit.Test;
-
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
@@ -78,12 +77,32 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 	 */
 	static class TestResourceEventListener implements IResourceEventListener {
 		
-		int calledResourceEventCount = 0;
-		int previousResourceEventType = 0;
-		int calledResourceEventType = 0;
-		Set<Resource> calledResourceEventResources;
-		Set<Resource> previousResourceEventResources;
+		private int calledResourceEventCount = 0;
+		private int previousResourceEventType = 0;
+		private int calledResourceEventType = 0;
+		private Set<Resource> calledResourceEventResources;
+		private Set<Resource> previousResourceEventResources;
 		
+		public synchronized int getCalledResourceEventCount() {
+			return calledResourceEventCount;
+		}
+
+		public synchronized int getPreviousResourceEventType() {
+			return previousResourceEventType;
+		}
+
+		public synchronized int getCalledResourceEventType() {
+			return calledResourceEventType;
+		}
+
+		public synchronized Set<Resource> getCalledResourceEventResources() {
+			return calledResourceEventResources;
+		}
+
+		public synchronized Set<Resource> getPreviousResourceEventResources() {
+			return previousResourceEventResources;
+		}
+
 		@Override
 		public synchronized void resourceEvent(Set<Resource> resources, int event) {
 			// Remember the current and the previous resource event.
@@ -142,15 +161,15 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		listener.waitForEventCount(1);
 		assertNotNull("Got a resource for the SEI", seiResource);
 		
-		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
-		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.calledResourceEventType);
+		assertEquals("Called listener correct amount of times", 1, listener.getCalledResourceEventCount());
+		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.getCalledResourceEventType());
 		
 		seiResource = editingDomain.getResourceSet().getStructuralElementInstanceResource(sei);
 		Resource rmResource = editingDomain.getResourceSet().getRoleManagementResource();
 		Resource umResource = editingDomain.getResourceSet().getUnitManagementResource();
 		Resource repoResource = editingDomain.getResourceSet().getRepositoryResource();
 		
-		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResource, rmResource, umResource, repoResource));
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), containsInAnyOrder(seiResource, rmResource, umResource, repoResource));
 	}
 
 	@Test
@@ -175,16 +194,16 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		executeAsCommand(() -> sei.setName("NameNumberOne"));
 		listener.waitForEventCount(1);
 		
-		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
-		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_CHANGED, listener.calledResourceEventType);
-		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResource));
+		assertEquals("Called listener correct amount of times", 1, listener.getCalledResourceEventCount());
+		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_CHANGED, listener.getCalledResourceEventType());
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), containsInAnyOrder(seiResource));
 		
 		// Now saving the resource which triggers a change notification again.
 		editingDomain.saveAll();
 		listener.waitForEventCount(2);
-		assertEquals("Called listener correct amount of times", 2, listener.calledResourceEventCount);
-		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_CHANGED, listener.calledResourceEventType);
-		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResource));
+		assertEquals("Called listener correct amount of times", 2, listener.getCalledResourceEventCount());
+		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_CHANGED, listener.getCalledResourceEventType());
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), containsInAnyOrder(seiResource));
 		
 		
 		// ----------------------------------------------
@@ -202,8 +221,8 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		
 		//CHECKSTYLE:OFF
 		listener.waitForEventCount(3);
-		assertEquals("Called listener correct amount of times", 3, listener.calledResourceEventCount);
-		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.calledResourceEventType);
+		assertEquals("Called listener correct amount of times", 3, listener.getCalledResourceEventCount());
+		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.getCalledResourceEventType());
 		Resource seiResourceReload = editingDomain.getResourceSet().getStructuralElementInstanceResource(sei);
 		//CHECKSTYLE:ON
 		
@@ -211,7 +230,7 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		Resource umResourceReload = editingDomain.getResourceSet().getUnitManagementResource();
 		Resource repoResourceReload = editingDomain.getResourceSet().getRepositoryResource();
 		
-		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResourceReload, rmResourceReload, umResourceReload, repoResourceReload));
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), containsInAnyOrder(seiResourceReload, rmResourceReload, umResourceReload, repoResourceReload));
 	}
 	
 	@Test
@@ -234,23 +253,22 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		seiFile.delete(true, null);
 		listener.waitForEventCount(2);
 		
-		assertEquals("Called listener correct amount of times", 2, listener.calledResourceEventCount);
+		assertEquals("Called listener correct amount of times", 2, listener.getCalledResourceEventCount());
 		
 		// Received two events. First the unload, than the reload
-		assertEquals("Called listener frist with correct type", VirSatTransactionalEditingDomain.EVENT_UNLOAD, listener.previousResourceEventType);
-		assertThat("List contains correct resources", listener.previousResourceEventResources, containsInAnyOrder(seiResource));
+		assertEquals("Called listener frist with correct type", VirSatTransactionalEditingDomain.EVENT_UNLOAD, listener.getPreviousResourceEventType());
+		assertThat("List contains correct resources", listener.getPreviousResourceEventResources(), containsInAnyOrder(seiResource));
 
 		// Now verify the second event.
-		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.calledResourceEventType);
+		assertEquals("Called listener with correct type", VirSatTransactionalEditingDomain.EVENT_RELOAD, listener.getCalledResourceEventType());
 		
 		Resource rmResource = editingDomain.getResourceSet().getRoleManagementResource();
 		Resource umResource = editingDomain.getResourceSet().getUnitManagementResource();
 		Resource repoResource = editingDomain.getResourceSet().getRepositoryResource();
 		
-		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(rmResource, umResource, repoResource));
-		assertThat("List contains correct resources", listener.calledResourceEventResources, not(hasItem(seiResource)));
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), containsInAnyOrder(rmResource, umResource, repoResource));
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), not(hasItem(seiResource)));
 	}
-	
 	
 	@Test
 	public void testHandleInternallyRemovedResource() throws CoreException, InterruptedException {
@@ -273,10 +291,10 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		editingDomain.removeResource(seiResource);
 		listener.waitForEventCount(1);
 		
-		assertEquals("Called listener correct amount of times", 1, listener.calledResourceEventCount);
+		assertEquals("Called listener correct amount of times", 1, listener.getCalledResourceEventCount());
 		
 		// Received two events. First the unload, than the reload
-		assertEquals("Called listener frist with correct type", VirSatTransactionalEditingDomain.EVENT_UNLOAD, listener.calledResourceEventType);
-		assertThat("List contains correct resources", listener.calledResourceEventResources, containsInAnyOrder(seiResource));
+		assertEquals("Called listener frist with correct type", VirSatTransactionalEditingDomain.EVENT_UNLOAD, listener.getCalledResourceEventType());
+		assertThat("List contains correct resources", listener.getCalledResourceEventResources(), containsInAnyOrder(seiResource));
 	}
 }
