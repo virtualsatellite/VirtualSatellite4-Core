@@ -59,6 +59,8 @@ public class VirSatWorkspaceContentProvider implements ITreeContentProvider {
 				Display.getDefault().asyncExec(() -> {
 					if (!viewer.getControl().isDisposed()) {
 						// Still unsure if we really need this refresh call
+						Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), 
+								"VirSatWorkspaceContentProvider::eventListener: Triggering refresh of the navigator due to a resource change."));
 						viewer.refresh();
 					}
 				});
@@ -75,38 +77,38 @@ public class VirSatWorkspaceContentProvider implements ITreeContentProvider {
 		public void resourceChanged(IResourceChangeEvent event) {
 			// Step out if event seems to be corrupt
 			if (event == null || event.getDelta() == null) {
-		        return;
+				return;
 			}
-			
+
 			// Otherwise give it a try and see if some project got opened
-		    try {
+			try {
 				event.getDelta().accept(new IResourceDeltaVisitor() {
 					public boolean visit(IResourceDelta delta) throws CoreException {
 						// Check if the changed resource is a closed project
 						IResource resource = delta.getResource();
-		                if (resource instanceof IProject) {
-		                	// In case a project got removed or closed, tyr to take it out of
-		                	// the memory of wrapped projects to avoid memory leaks
-		                	IProject project = (IProject) resource;
-		                	
-		                	if ((delta.getFlags() & IResourceDelta.OPEN) != 0 || !project.isOpen()) {
-			                	// Update the Viewer on project state changes
-			                	Display.getDefault().asyncExec(() -> {
-		        					if (!viewer.getControl().isDisposed()) {
-		        						viewer.refresh();
-		        					}
-		        				});
+						if (resource instanceof IProject) {
+							// In case a project got removed or closed, tyr to take it out of
+							// the memory of wrapped projects to avoid memory leaks
+							IProject project = (IProject) resource;
+
+							if ((delta.getFlags() & IResourceDelta.OPEN) != 0 || !project.isOpen()) {
+								// Update the Viewer on project state changes
+								Display.getDefault().asyncExec(() -> {
+									if (!viewer.getControl().isDisposed()) {
+										viewer.refresh();
+									}
+								});
 							}
-		                	
-		                	if ((delta.getKind() == IResourceDelta.REMOVED) || !project.isOpen()) {
-		                		mapWrappedProjectResource.remove(project);
-		                	}
-	                	
-		                	// Return false, the  visitor does not need to step deeper than
-		                	// the project resource.
-	                		return false;
-		                }
-			            return true;
+
+							if ((delta.getKind() == IResourceDelta.REMOVED) || !project.isOpen()) {
+								mapWrappedProjectResource.remove(project);
+							}
+
+							// Return false, the visitor does not need to step deeper than
+							// the project resource.
+							return false;
+						}
+						return true;
 					}
 				});
 			} catch (CoreException e) {
