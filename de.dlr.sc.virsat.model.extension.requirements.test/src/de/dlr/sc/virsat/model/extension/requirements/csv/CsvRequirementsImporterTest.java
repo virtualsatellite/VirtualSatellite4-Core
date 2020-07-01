@@ -10,11 +10,13 @@
 package de.dlr.sc.virsat.model.extension.requirements.csv;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -351,6 +353,51 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		assertEquals("Attribute not contained", importedReq3.getElements().get(0).getValue(), ATT_3_NAME);
 		assertEquals("Attribute not contained", importedReq3.getElements().get(1).getValue(), ATT_3_ID);
 		assertEquals("Attribute not contained", importedReq3.getElements().get(2).getValue(), ATT_3_DESCRIPTION);
+	}
+	
+	@Test
+	public void testTypeCreationWithEnumeration() {
+
+		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+			@Override
+			protected void doExecute() {
+				targetSpec = new RequirementsSpecification(requirementsConcept);
+				reqContainerSEI.getCategoryAssignments().clear();
+				reqContainerSEI.getCategoryAssignments().add(targetSpec.getTypeInstance());
+				configuration = new RequirementsConfiguration(requirementsConcept);
+				rccSEI.getCategoryAssignments().add(configuration.getTypeInstance());
+			}
+		});
+		
+		List<List<String>> csvContentMatrix = createCSVContentMatrix(true);
+		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
+
+		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		
+		// Get basic type suggestion from importer
+		RequirementType newType = importer.prepareRequirementType(requirementsConcept, csvContentMatrix.get(0));
+		for (RequirementAttribute att : newType.getAttributes()) {
+			int index = newType.getAttributes().indexOf(att);
+			mapping.put(index, att);
+		}
+		// Customize to our wishes, change one attribute to enumeration type
+		RequirementAttribute attType = newType.getAttributes().get(0);
+		attType.setType(RequirementAttribute.TYPE_Enumeration_NAME);
+		// Get enumeration literals from the data to import
+		csvContentMatrix.remove(0); //remove header line
+		importer.customizeReqTypeFromData(newType, csvContentMatrix, mapping);
+		
+		final int EXPECTED_LITERAL_NUMBER = 3; // Three data lines, each name is added as enumeration literal
+		assertEquals(EXPECTED_LITERAL_NUMBER, attType.getEnumeration().getLiterals().size());
+		
+		List<String> literals =  attType.getEnumeration().getLiterals().stream().
+			map(literal -> literal.getName()).
+			collect(Collectors.toList());
+		
+		assertTrue("Should contain all elements from first column", literals.contains(ATT_1_NAME));
+		assertTrue("Should contain all elements from first column", literals.contains(ATT_2_NAME));
+		assertTrue("Should contain all elements from first column", literals.contains(ATT_3_NAME));
+
 	}
 	
 	@Test
