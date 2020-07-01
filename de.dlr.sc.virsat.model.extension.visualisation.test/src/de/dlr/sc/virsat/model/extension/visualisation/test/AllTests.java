@@ -22,6 +22,7 @@ import de.dlr.sc.virsat.model.extension.visualisation.delta.CloneShapeDeltaTest;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.ColorDeltaTest;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.GhostShapeDeltaTest;
 import de.dlr.sc.virsat.model.extension.visualisation.delta.VisualisationDeltaModelIoTest;
+import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.SceneGraphClientTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -39,7 +40,8 @@ import junit.framework.JUnit4TestAdapter;
     GhostShapeDeltaTest.class,
     CompareModelGeometryTest.class,
     CompareModelPropertyTest.class,
-    ModelPropertyColorMapTest.class})
+    ModelPropertyColorMapTest.class,
+    SceneGraphClientTest.class})
 
 /**
  * 

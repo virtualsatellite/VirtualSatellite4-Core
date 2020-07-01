@@ -21,9 +21,6 @@ import de.dlr.sc.virsat.project.Activator;
 /**
  * Nature for Virtual Satellite Projects. The Nature will be used for example by the
  * Navigators to only react on Virtual Satellite Projects and to discard displaying the other ones.
- * 
- * @author fisc_ph
- *
  */
 public class VirSatProjectNature implements IProjectNature {
 
@@ -38,9 +35,9 @@ public class VirSatProjectNature implements IProjectNature {
 	@Override
 	public void configure() throws CoreException {
 		// Add nature-specific information
-        // for the project, such as adding a builder
-        // to a project's build spec.
-		
+		// for the project, such as adding a builder
+		// to a project's build spec.
+
 		boolean hasValidatorBuilder = false;
 		boolean hasInheritanceBuilder = false;
 		boolean hasCalculationBuilder = false;
@@ -86,10 +83,10 @@ public class VirSatProjectNature implements IProjectNature {
 	/**
 	 * Method to add the Builder with the builderId to the Project Description 
 	 * @param desc The Project Description of current Project
-	 * @param builderId The Id of the Builder wich should be added 
-	 * @throws CoreException If the description of the Porejct cannot be set
+	 * @param builderId The Id of the Builder which should be added 
+	 * @throws CoreException If the description of the project cannot be set
 	 */
-	private void addBuilder(IProjectDescription desc, String builderId) throws CoreException {
+	protected void addBuilder(IProjectDescription desc, String builderId) throws CoreException {
 		ICommand[] commands = desc.getBuildSpec();
 		ICommand[] newCommands = new ICommand[commands.length + 1];
 		// create a new build command

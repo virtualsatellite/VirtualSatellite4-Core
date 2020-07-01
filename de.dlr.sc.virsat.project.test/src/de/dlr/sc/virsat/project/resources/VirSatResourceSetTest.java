@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.project.resources;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -20,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -520,15 +520,15 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		Resource resource2 = rs.getStructuralElementInstanceResource(sei2);
 		Resource resource3 = rs.getStructuralElementInstanceResource(sei3);
 		
-		assertTrue("I have right permission for resource with mine SEI", rs.hasWritePermission(resource1));
-		assertFalse("I don't have right permission for resource with not mine SEI", rs.hasWritePermission(resource2));
-		assertFalse("I don't have right permission for resource with SEI without discipline", rs.hasWritePermission(resource3));
+		assertTrue("I have right permission for resource with mine SEI", rs.hasWritePermission(resource1, UserRegistry.getInstance()));
+		assertFalse("I don't have right permission for resource with not mine SEI", rs.hasWritePermission(resource2, UserRegistry.getInstance()));
+		assertFalse("I don't have right permission for resource with SEI without discipline", rs.hasWritePermission(resource3, UserRegistry.getInstance()));
 
 		setSuperUser();
 		
-		assertTrue("SuperUser has right permission for resource with mine SEI", rs.hasWritePermission(resource1));
-		assertTrue("SuperUser has right permission for resource with not mine SEI", rs.hasWritePermission(resource2));
-		assertTrue("SuperUser has right permission for resource with SEI without discipline", rs.hasWritePermission(resource3));
+		assertTrue("SuperUser has right permission for resource with mine SEI", rs.hasWritePermission(resource1, UserRegistry.getInstance()));
+		assertTrue("SuperUser has right permission for resource with not mine SEI", rs.hasWritePermission(resource2, UserRegistry.getInstance()));
+		assertTrue("SuperUser has right permission for resource with SEI without discipline", rs.hasWritePermission(resource3, UserRegistry.getInstance()));
 	}
 	
 	@Test
@@ -563,7 +563,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		sei2.getChildren().add(sei2_1);
 		sei2_1.getChildren().add(sei2_1_1);
 		
-		resSet.saveAllResources(new NullProgressMonitor());
+		resSet.saveAllResources(new NullProgressMonitor(), UserRegistry.getInstance());
 		
 		resSei1.unload();
 		resSei2.unload();
