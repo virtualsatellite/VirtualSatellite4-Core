@@ -781,7 +781,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 			
 			Repository repo = getRepository();
-			resolveAllDvlmResources();
+			loadAllDvlmResources();
 			
 			EcoreUtil.getAllContents(this, true).forEachRemaining((object) -> {
 				if (object instanceof StructuralElementInstance) {
@@ -1310,9 +1310,9 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 	
 	/**
-	 * Resolve all DVLM resources in this resource set
+	 * Load and resolve all DVLM resources in this resource set
 	 */
-	public void resolveAllDvlmResources() {
+	public void loadAllDvlmResources() {
 		for (Resource resource : getResources()) {
 			if (VirSatProjectCommons.isDvlmFile(resource)) {
 				EcoreUtil.resolveAll(resource);

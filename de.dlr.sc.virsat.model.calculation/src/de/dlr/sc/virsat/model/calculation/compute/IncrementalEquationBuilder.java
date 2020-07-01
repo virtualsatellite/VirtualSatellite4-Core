@@ -195,7 +195,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		
 		try {
 			resourceSet.getRepository();
-			resourceSet.resolveAllDvlmResources();
+			resourceSet.loadAllDvlmResources();
 			
 			if (resourceSet.hasError()) {
 				reportResourceSetErrors(resourceSet);
