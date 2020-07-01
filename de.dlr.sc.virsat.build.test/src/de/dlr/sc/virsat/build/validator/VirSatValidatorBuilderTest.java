@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;
@@ -159,6 +160,18 @@ public class VirSatValidatorBuilderTest extends ABuilderTest {
 		assertFalse("Not yet called", testSeiValidator.gotCalled);
 		
 		builder.build(-1, Collections.emptyMap(), new NullProgressMonitor());
+		
+		assertTrue("No Sei got validated", testSeiValidator.seis.isEmpty());
+		assertFalse("No Validator got called", testSeiValidator.gotCalled);
+	}
+	
+	@Test
+	public void testClosedProjectBuild() throws CoreException {
+		assertEquals("tested Correct Amount of Seis", 0, testSeiValidator.seis.size());
+		assertFalse("Not yet called", testSeiValidator.gotCalled);
+		
+		project.close(new NullProgressMonitor());
+		builder.build(VirSatValidatorBuilder.FULL_BUILD, Collections.emptyMap(), new NullProgressMonitor());
 		
 		assertTrue("No Sei got validated", testSeiValidator.seis.isEmpty());
 		assertFalse("No Validator got called", testSeiValidator.gotCalled);

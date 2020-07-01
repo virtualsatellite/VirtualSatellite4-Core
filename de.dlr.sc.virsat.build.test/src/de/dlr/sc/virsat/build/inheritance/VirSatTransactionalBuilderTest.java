@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
@@ -26,12 +27,16 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 public class VirSatTransactionalBuilderTest extends ABuilderTest {
 	
+	private AVirSatTransactionalBuilder builder;
 	private boolean transactionalIncrementalBuildCalled = false;
 	private boolean transactionalFullBuildCalled = false;
 	
-	@Test
-	public void testBuild() {
-		AVirSatTransactionalBuilder builder = new AVirSatTransactionalBuilder("MockBuilder", null, false, false) {
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+		
+		builder = new AVirSatTransactionalBuilder("MockBuilder", null, false, false) {
 			@Override
 			protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) { }
 			@Override
@@ -63,7 +68,10 @@ public class VirSatTransactionalBuilderTest extends ABuilderTest {
 				return resSet;
 			}
 		};
-		
+	}
+	
+	@Test
+	public void testBuild() {		
 		assertFalse("Full Build was not called", transactionalFullBuildCalled);
 		assertFalse("Transactional Build was not called", transactionalIncrementalBuildCalled);
 		
