@@ -27,7 +27,9 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
@@ -136,7 +139,26 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 			this.notifyAll();
 		}
 		
-		public synchronized void executeInterocked(Runnable runnable, int expectedNotifications) throws InterruptedException {
+		/**
+		 *  Execute some code inter-locked with the notifications. Takes a workspace lock first
+		 *  before entering the synchronization to avoid dead-locks with the workspace synchronizer
+		 *  job which maybe fires notifications.
+		 * @param runnable the runnable holding the code to be executed.
+		 * @param expectedNotifications amount of notifications that should be detected
+		 * @throws InterruptedException
+		 * @throws CoreException
+		 */
+		public void executeInterocked(Runnable runnable, int expectedNotifications) throws InterruptedException, CoreException {
+			ResourcesPlugin.getWorkspace().run((monitor) -> {
+				try {
+					doExecuteInterlocked(runnable, expectedNotifications);
+				} catch (InterruptedException e) {
+					Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "VirSatTransactionalEditingDomainResourceEventListenerTest: Got interrupted while waiting ", e));
+				}
+			}, null);
+		}
+		
+		private synchronized void doExecuteInterlocked(Runnable runnable, int expectedNotifications) throws InterruptedException {
 			runnable.run();
 			while (notificationCounter < expectedNotifications) {
 				this.wait();
