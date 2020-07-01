@@ -190,6 +190,10 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		// ----------------------------------------------
 		// Now we are changing the name externally
 		// This should trigger a full reload of the model
+	
+		// Wait some time for executing test cases on linux and tycho. Otherwise file system changes, won't be detected
+		waitSomeTime();
+		testProject.isSynchronized(IResource.DEPTH_INFINITE);
 		Path seiFilePath = new File(seiFile.getRawLocation().toOSString()).toPath();
 		String content = Files.readAllLines(seiFilePath, StandardCharsets.UTF_8).toString();
 		content = content.replace("NameNumberOne", "NameNumberTwo");

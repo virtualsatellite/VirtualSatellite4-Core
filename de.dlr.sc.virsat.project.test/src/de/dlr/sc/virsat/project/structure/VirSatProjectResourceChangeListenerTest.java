@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
@@ -41,7 +42,6 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 /**
@@ -71,6 +71,8 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 	 * The Listener under test
 	 */
 	static class TestProjectChangeListener extends AVirSatProjectResourceChangeListener {
+		
+		protected static final int WAIT_TIME = 250;
 		
 		int calledPrecondition = 0;
 		int calledPostcondition = 0;
@@ -140,7 +142,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		 */
 		public synchronized void waitForNotificationAndExecution(boolean waitForWsJobExecution) throws InterruptedException {
 			while (!isNotified || (!isExecuted && waitForWsJobExecution)) {
-				this.wait();
+				this.wait(WAIT_TIME);
 			}			
 			// reset the notification state for the next call
 			isNotified = false;
@@ -329,10 +331,12 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		
 		// And now add a random file which is not in the ResourceSet. No Added file should be notified
 		listener.calledResourceChanged = 0;
-	
+		
+		// Wait some time for executing test cases on linux and tycho. Otherwise file system changes, won't be detected
+		waitSomeTime();
 		Path randomNonRsPath = new File(randomNonRsFile.getRawLocation().toOSString()).toPath();
 		String content = "Changed some content";
-		Files.write(randomNonRsPath, content.getBytes(StandardCharsets.UTF_8));
+		Files.write(randomNonRsPath, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.SYNC);
 		testProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 		listener.waitForNotificationAndExecution(false);
 		
