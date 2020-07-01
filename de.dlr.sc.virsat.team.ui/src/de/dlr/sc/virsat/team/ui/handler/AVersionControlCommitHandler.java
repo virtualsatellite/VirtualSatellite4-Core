@@ -12,7 +12,9 @@ package de.dlr.sc.virsat.team.ui.handler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
@@ -64,7 +66,9 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 			
 			@Override
 			protected void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception {
-				doCommit(project, commitMessageDialog.getCommitMessage(), monitor);
+				SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+				doCommit(project, commitMessageDialog.getCommitMessage(), subMonitor.split(1));
+				project.refreshLocal(IResource.DEPTH_INFINITE, subMonitor.split(1));
 			}
 		};
 		

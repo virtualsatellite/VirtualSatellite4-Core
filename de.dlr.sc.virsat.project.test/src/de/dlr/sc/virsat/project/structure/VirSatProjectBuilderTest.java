@@ -9,9 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.structure;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -19,10 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
@@ -35,9 +31,6 @@ public class VirSatProjectBuilderTest extends AProjectTestCase {
 	@Override
 	protected void addProjectFileStructure() {
 	}
-	
-	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
 	
 	@Test
 	public void testCreateProjectStructure() {

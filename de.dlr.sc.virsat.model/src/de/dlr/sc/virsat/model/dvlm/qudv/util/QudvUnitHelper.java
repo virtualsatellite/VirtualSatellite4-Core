@@ -774,6 +774,8 @@ public class QudvUnitHelper {
 		AffineConversionUnit year = createAffineConversionUnit("Year", "y", "yearUnit", "", time, second, 31556926.0, 0.0);
 		systemOfUnits.getUnit().add(year);
 		
+		PrefixedUnit millisecond = createPrefixedUnit("Millisecond", "ms", "millisecondUnit", "", time, milli, second);
+		systemOfUnits.getUnit().add(millisecond);
 		
 		//some temperature units
 		//°C as affine conversion unit
@@ -1159,12 +1161,11 @@ public class QudvUnitHelper {
 	 * @param targetUnit the target unit in which you want your unit to be converted in
 	 * @return the converted value
 	 */
-	public double convertFromSourceToTargetUnit(AUnit sourceUnit, double sourceValue, AUnit targetUnit) {
+	public double convertFromSourceToTargetUnit(AUnit sourceUnit, double sourceValue, AUnit targetUnit) throws IllegalArgumentException {
 		double convertedValue = 0.0;
 		if (!haveSameQuantityKind(sourceUnit, targetUnit)) {
-			//conversion is not possible so we return the unconverted value!
-			//pipe a message to the Logger!
-			return sourceValue;
+			throw new IllegalArgumentException("Cannot convert from " + sourceUnit.getName() + " to " + targetUnit.getName() 
+			+ " as they have different quantitiy kinds!");
 		}
 		
 		//we convert the source Unit to the basUnits and then to the given target unit

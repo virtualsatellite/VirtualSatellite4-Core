@@ -17,11 +17,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
@@ -56,18 +53,10 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		arrayStatic = tcIntrinsicArray.getTestPropertyReferenceArrayStatic();
 		referencedCategory = new TestCategoryAllProperty(concept);
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 	
 	private static final int LIST_WITH_STATIC_SIZE = 4;
 	
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
-	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddAllIntCollectionOfQextendsBeansType() {
 		BeanPropertyString property1 = createNewReferencedTypeProperty();
 		BeanPropertyString property2 = createNewReferencedTypeProperty();
@@ -80,17 +69,15 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		addBeans.add(property2);
 		addBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.addAll(addBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddBeanType() {
 		BeanPropertyString property1 = createNewReferencedTypeProperty();
 		
 		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
-			
-		exception.expect(UnsupportedOperationException.class);
+		
 		arrayStatic.add(property1);		
 	}
 	
@@ -103,23 +90,21 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		assertEquals("Command is unexecutabled", UnexecutableCommand.INSTANCE, command);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddIntBeanType() {
 		BeanPropertyString property1 = createNewReferencedTypeProperty();
 
 		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.add(1, property1);
 	}
 	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testClear() {
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.clear();
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveAll() {
 		BeanPropertyString property1 = createNewReferencedTypeProperty();
 		BeanPropertyString property3 = createNewReferencedTypeProperty();
@@ -130,21 +115,18 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		removeBeans.add(property1);
 		removeBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.removeAll(removeBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveInt() {
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.remove(1);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveObject() {
 		BeanPropertyString propertyOne = createNewReferencedTypeProperty();
 
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.remove(propertyOne);
 	}
 
@@ -156,7 +138,7 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		assertEquals("Command is unexecutabled", UnexecutableCommand.INSTANCE, command);
 	}
 	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRetainAll() {
 		BeanPropertyString property1 = createNewReferencedTypeProperty();
 		BeanPropertyString property3 = createNewReferencedTypeProperty();
@@ -165,15 +147,13 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		retainBeans.add(property1);
 		retainBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.retainAll(retainBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testSetIntBeanType() {
 		BeanPropertyString property3 = createNewReferencedTypeProperty();
 
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.set(1, property3);
 	}
 }

@@ -53,7 +53,6 @@ public class ExportHelper {
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		HTMLExporter htmlExporter = new HTMLExporter();
 		
-
 		File f1 = new File(f.getAbsolutePath() + "\\" + sc.getName() + TYPE);	
 		List<Interface> seiInterfaces = bCaHelper.getAllBeanCategories(sc, Interface.class);	
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(sc, InterfaceEnd.class);
@@ -61,7 +60,7 @@ public class ExportHelper {
 		
 		try {
 			CharSequence subPages = htmlExporter.getSubPages(sc, seiInterfaceEnds, seiInterfaces, seiInterfaceTypes, areas);
-			com.google.common.io.Files.write(subPages, f1, Charset.defaultCharset());
+			com.google.common.io.Files.asCharSink(f1, Charset.defaultCharset()).write(subPages);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.OK, "Problem with exporting subHTML pages", e));
 		}
@@ -100,7 +99,7 @@ public class ExportHelper {
 			// Export the index html page 	
 			String indexPath = path + "/" + INDEX;
 			File file = new File(indexPath);
-			com.google.common.io.Files.write(htmlExporter.someHTML(sc), file, Charset.defaultCharset());
+			com.google.common.io.Files.asCharSink(file, Charset.defaultCharset()).write(htmlExporter.someHTML(sc));
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.OK, "Problem with exporting HTML", e));
 		}

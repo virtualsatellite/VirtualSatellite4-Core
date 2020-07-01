@@ -9,9 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.util;
 
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 import java.util.Set;
@@ -24,8 +25,6 @@ import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
-
-import static org.hamcrest.CoreMatchers.hasItems;
 
 /**
  * This class handles the test cases for BeanStructuralElementInstance Helper. Since it needs a test concept to execute the code

@@ -57,7 +57,11 @@ Require-Bundle: org.eclipse.swt,
  de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.ui,
  de.dlr.sc.virsat.model.extension.statemachines,
- org.eclipse.gef
+ de.dlr.sc.virsat.model.extension.statemachines.ui,
+ org.eclipse.gef,
+ org.eclipse.jgit,
+ org.eclipse.team.svn.core,
+ de.dlr.sc.virsat.external.lib.spotbugs
 Import-Package: org.eclipse.draw2d.geometry,
  org.zeromq,
  vtk,

@@ -9,19 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.ui.diagram.editor;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.ui.editor.DefaultPersistencyBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramBehavior;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-
-import de.dlr.sc.virsat.graphiti.ui.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
@@ -47,22 +39,7 @@ public class VirSatDiagramPersistencyBehavior extends DefaultPersistencyBehavior
 		setDiagramVersion(diagram);
 		
 		VirSatTransactionalEditingDomain editingDomain = (VirSatTransactionalEditingDomain) diagramBehavior.getEditingDomain();
-		
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-				// Store it through the editing domain so it keeps track of further
-				// further changes. This is important to have exact knowledge about the
-				// resources dirty state.
-				editingDomain.saveAll();
-			}
-		};
-		
-		try {
-			operation.run(new NullProgressMonitor());
-		} catch (InvocationTargetException | InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to save resource through saveables!", e));
-		}
+		editingDomain.saveAll();
 		
 		diagramBehavior.getDiagramContainer().updateDirtyState();
 	}

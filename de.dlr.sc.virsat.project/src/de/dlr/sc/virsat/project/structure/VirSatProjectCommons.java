@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -61,6 +62,8 @@ public class VirSatProjectCommons {
 
 	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature";
 
+	public static final int URI_PROJECT_NAME_SEGMENT = 1;
+	
 
 	private IProject project;
 	
@@ -98,7 +101,8 @@ public class VirSatProjectCommons {
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX = "ise_";
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS = "documents";
 
-	public static final String FILENAME_STRUCTURAL_ELEMENT = "StructuralElement.dvlm";
+	public static final String FILENAME_STRUCTURAL_ELEMENT_SEGMENT = "StructuralElement";
+	public static final String FILENAME_STRUCTURAL_ELEMENT = FILENAME_STRUCTURAL_ELEMENT_SEGMENT + "." + FILENAME_EXTENSION;
 
 	/**
 	 * This method hands back the path and the filename as String based path of a given SEI
@@ -501,5 +505,65 @@ public class VirSatProjectCommons {
 		};
 		
 		return runnable;
+	}
+	
+	/**
+	 * Method to activate or deactivate the Workspace builders for the whole workspace
+	 * @param enable set to true if builders should be enabled
+	 * @throws CoreException
+	 */
+	public static void setEnableWorkspaceBuilder(boolean enable) throws CoreException {
+		IWorkspaceDescription wsDescription = ResourcesPlugin.getWorkspace().getDescription();
+		wsDescription.setAutoBuilding(enable);
+		ResourcesPlugin.getWorkspace().setDescription(wsDescription);
+	}
+	
+	public static String getProjectNameByUri(java.net.URI javaUri) {
+		String stringUri = javaUri.toString();
+		return getProjectNameByUri(stringUri);
+	}
+	
+	public static String getProjectNameByUri(String stringUri) {
+		return getProjectNameByUri(URI.createURI(stringUri));
+	}
+	
+	/**
+	 * This method check the URI and converts it from file to platform if needed.
+	 * The method only works for files which are placed in the current workspace
+	 * @param workspaceFileUri The FileUri pointing to a file in the current platform workspace
+	 * @return the PlatformUri pointing to the file in the workspace
+	 */
+	protected static URI getPlatformForWorkspaceFileUri(URI workspaceFileUri) {
+		if (workspaceFileUri.isFile()) {
+			String workspaceLocationUri = ResourcesPlugin.getWorkspace().getRoot().getLocationURI().toString();
+			String emfFileUri = workspaceFileUri.toString();
+			String emfPlatformUri = emfFileUri.replaceFirst(workspaceLocationUri, "");
+			workspaceFileUri = URI.createPlatformResourceURI(emfPlatformUri, true);
+		}
+		return workspaceFileUri;
+	}
+	
+	public static String getProjectNameByUri(URI emfUri) {
+		emfUri = getPlatformForWorkspaceFileUri(emfUri);
+		return emfUri.segment(URI_PROJECT_NAME_SEGMENT).toString();
+	}
+	
+	public static IProject getProjectByUri(java.net.URI javaUri) {
+		String projectName = getProjectNameByUri(javaUri);
+		return getProjectByName(projectName);
+	}
+	
+	public static IProject getProjectByUri(String stringUri) {
+		String projectName = getProjectNameByUri(stringUri);
+		return getProjectByName(projectName);
+	}
+	
+	public static IProject getProjectByUri(URI emfUri) {
+		String projectName = getProjectNameByUri(emfUri);
+		return getProjectByName(projectName);
+	}
+	
+	protected static IProject getProjectByName(String name) {
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 	}
 }

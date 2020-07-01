@@ -120,8 +120,8 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 				VtkTreeManager.getInstance().checkIdAndCreateAxes(uuid);
 				VtkTreeManager.getInstance().highlightIfSelectedObject(uuid);
 			}
-		} catch (UnsatisfiedLinkError e) {
-			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not activate Visualization sever. Most likely VTK did not get loaded correctly. Error: " + e.getMessage()));
+		} catch (UnsatisfiedLinkError | NoClassDefFoundError e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Could not activate Visualization sever. Most likely VTK and ZeroMQ did not get loaded correctly. Error: " + e.getMessage()));
 		}
 	}		
 
