@@ -16,6 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -50,7 +52,7 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 	}
 	
 	@Override
-	public void tearDown() throws CoreException {
+	public void tearDown() throws CoreException, IOException {
 		// In case of cut and paste actions on a SEI, the editing domain is not triggered for a save
 		// operation. Since the SEI has been well stored to a parent before, it does not to be stored 
 		// after a cut and paste. If the state would get lost (i.e. Not Saving), the SEI would be back

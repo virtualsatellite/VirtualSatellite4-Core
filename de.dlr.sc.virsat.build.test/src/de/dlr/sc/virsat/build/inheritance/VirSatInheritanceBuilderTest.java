@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
@@ -79,11 +80,17 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 		}
 	}
 
-	@Test
-	public void testFullBuild() {
-		TestInheritanceCopier tic = new TestInheritanceCopier();
-
-		AVirSatBuilder builder = new VirSatInheritanceBuilder() {
+	private TestInheritanceCopier tic;
+	private VirSatInheritanceBuilder builder;
+	
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+		
+		tic = new TestInheritanceCopier();
+		builder = new VirSatInheritanceBuilder() {
+			
 			@Override
 			protected IProject getVirSatProject() {
 				return project;
@@ -99,7 +106,10 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 				return tic;
 			}
 		};
-		
+	}
+	
+	@Test
+	public void testFullBuild() {
 		assertEquals("Correct Amount of Calls", 0, tic.calls);
 		assertNull("No Repo yet Called", tic.repo);
 		assertNull("No SEI yet Called", tic.sei);
@@ -119,25 +129,6 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 
 	@Test
 	public void testIncrementalBuild() {
-		TestInheritanceCopier tic = new TestInheritanceCopier();
-		
-		AVirSatBuilder builder = new VirSatInheritanceBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-			
-			@Override
-			protected VirSatResourceSet getResourceSet() {
-				return resSet;
-			}
-			
-			@Override
-			protected IInheritanceCopier createInheritanceCopier() {
-				return tic;
-			}
-		};
-		
 		assertEquals("Correct Amount of Calls", 0, tic.calls);
 		assertNull("No Repo yet Called", tic.repo);
 		assertNull("No SEI yet Called", tic.sei);
