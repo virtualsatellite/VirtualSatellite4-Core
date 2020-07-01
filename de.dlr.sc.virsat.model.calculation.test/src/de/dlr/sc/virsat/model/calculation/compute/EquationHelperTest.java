@@ -43,6 +43,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
@@ -126,7 +127,7 @@ public class EquationHelperTest extends AEquationTest {
 		);
 		
 		DependencyTree<EObject> tree = helper.createDependencyTree(equations);
-		List<EvaluationProblem> evalProblems = helper.evaluate(tree);
+		List<EvaluationProblem> evalProblems = helper.evaluate(tree, UserRegistry.getInstance());
 		
 		// Verify correct computed result
 		CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(caTotalMass);
@@ -195,7 +196,7 @@ public class EquationHelperTest extends AEquationTest {
 		
 		// Check that after removing cycles, elements not involved in the cycle have still been correctly
 		// evaluated.
-		helper.evaluate(tree);
+		helper.evaluate(tree, UserRegistry.getInstance());
 		CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(caMargin);
 		ValuePropertyInstance piValue = (ValuePropertyInstance) caHelper.getPropertyInstance("value");
 		
@@ -257,7 +258,7 @@ public class EquationHelperTest extends AEquationTest {
 		vpiMargin.setValue(String.valueOf(MARGIN));
 		
 		EquationHelper dtHelper = new EquationHelper();
-		dtHelper.evaluate(ca.getEquationSection().getEquations());
+		dtHelper.evaluate(ca.getEquationSection().getEquations(), UserRegistry.getInstance());
 		
 		assertEquals("Instantiated equation performs correctly", EXPECTED, Double.valueOf(vpiMassWithMargin.getValue()), EPSILON);
 	}

@@ -242,6 +242,4 @@ public abstract class AImportExportPage extends WizardPage {
 	public void setModel(Object model) {
 		this.model = model;
 	}
-	
-	
 }

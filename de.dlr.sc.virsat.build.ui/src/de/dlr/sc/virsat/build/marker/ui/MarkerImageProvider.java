@@ -133,7 +133,7 @@ public class MarkerImageProvider {
 	 * @param severity 
 	 * @return if severity is IMarker.SEVERITY or IMarker.SEVERITY_WARNING or IMarker.SEVERITY_INFO returns corresponding image, otherwise returns null
 	 */
-	protected Image getProblemImageForSeverity(int severity) {
+	public Image getProblemImageForSeverity(int severity) {
 		if (severity == IMarker.SEVERITY_ERROR) {
 			return imageError;
 		}

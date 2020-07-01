@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -98,7 +99,8 @@ public class VirSatProjectCommons {
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_PREFIX = "ise_";
 	public static final String FOLDERNAME_STRUCTURAL_ELEMENT_DOCUMENTS = "documents";
 
-	public static final String FILENAME_STRUCTURAL_ELEMENT = "StructuralElement.dvlm";
+	public static final String FILENAME_STRUCTURAL_ELEMENT_SEGMENT = "StructuralElement";
+	public static final String FILENAME_STRUCTURAL_ELEMENT = FILENAME_STRUCTURAL_ELEMENT_SEGMENT + "." + FILENAME_EXTENSION;
 
 	/**
 	 * This method hands back the path and the filename as String based path of a given SEI
@@ -408,6 +410,18 @@ public class VirSatProjectCommons {
 	}
 	
 	/**
+	 * tells you if the file has the extension VirSat uses to store the DVLM model
+	 * @param resource EMF Resource that should be checked
+	 * @return true in case the file has the correct file ending
+	 */
+	public static boolean isDvlmFile(Resource resource) {
+		if(resource == null || resource.getURI() == null) {
+			return false;
+		}
+		return resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
+	}
+	
+	/**
 	 * Method to get Workspace Resource for a given EObject
 	 * @param eObject The eObject for which to hand back a Workspace Resource
 	 * @return The Workspace Resource that contains the eObject as IResource
@@ -501,5 +515,16 @@ public class VirSatProjectCommons {
 		};
 		
 		return runnable;
+	}
+	
+	/**
+	 * Method to activate or deactivate the Workspace builders for the whole workspace
+	 * @param enable set to true if builders should be enabled
+	 * @throws CoreException
+	 */
+	public static void setEnableWorkspaceBuilder(boolean enable) throws CoreException {
+		IWorkspaceDescription wsDescription = ResourcesPlugin.getWorkspace().getDescription();
+		wsDescription.setAutoBuilding(enable);
+		ResourcesPlugin.getWorkspace().setDescription(wsDescription);
 	}
 }

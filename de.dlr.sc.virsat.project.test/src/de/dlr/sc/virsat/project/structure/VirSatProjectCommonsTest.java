@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -38,10 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -61,9 +59,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  * 
  */
 public class VirSatProjectCommonsTest extends AProjectTestCase {
-
-	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
 	
 	@Override
 	protected void addProjectFileStructure() {
@@ -344,7 +339,7 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	}
 	
 	@Test
-	public void testGetWorkspaceResource() throws IOException {
+	public void testGetWorkspaceResource() throws IOException, CoreException {
 		VirSatResourceSet resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
 		resSet.getResources().clear();
 		VirSatProjectCommons projectCommons = new VirSatProjectCommons(testProject); 
@@ -375,8 +370,16 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		IFile fileRepo = projectCommons.getRepositoryFile();
 		IFile fileSc = projectCommons.getStructuralElementInstanceFile(seiEdSc);
 		
+		// Test the getWorkspace method with two files that actually exist.
 		assertEquals("Got correct Resource", fileRepo, VirSatProjectCommons.getWorkspaceResource(repo));
 		assertEquals("Got correct Resource", fileSc, VirSatProjectCommons.getWorkspaceResource(seiEdSc));
+		
+		// Now remove both files from the workspace, thus the getWorkspaceResource
+		fileRepo.delete(true, null);
+		fileSc.delete(true, null);
+		
+		assertNull("There is no resource in the Workspace anymore", VirSatProjectCommons.getWorkspaceResource(repo));
+		assertNull("There is no resource in the Workspace anymore", VirSatProjectCommons.getWorkspaceResource(seiEdSc));
 	}
 	
 	@Test

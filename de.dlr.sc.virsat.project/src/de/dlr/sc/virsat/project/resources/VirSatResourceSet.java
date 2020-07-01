@@ -62,6 +62,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -81,9 +82,6 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  * This class implements the VirSat specific EMF ResourceSet. One ResourceSet is
  * associated with one project. It is not planned to have cross project
  * references. Demand loading etc. will work in one project but not outside.
- * 
- * @author fisc_ph
- *
  */
 public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
@@ -91,9 +89,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 	/**
 	 * Interface for listening to changes of the diagnostics
-	 * 
-	 * @author muel_s8
-	 *
 	 */
 	public interface IDiagnosticListener {
 		/**
@@ -671,7 +666,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				// Do an initial safe to actually create the file on the file
 				// system Otherwise we only have the file structures created by the
 				// VirSatProjectCommons
-				saveResource(resource);
+				saveResource(resource, null, true);
 			}
 		}
 
@@ -858,7 +853,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		Discipline systemDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		systemDiscipline.setName("System");
 
-		UserRegistry userRegistry = UserRegistry.getInstance();
+		IUserContext userRegistry = UserRegistry.getInstance();
 		String currentUserName = userRegistry.getUserName();
 		systemDiscipline.setUser(currentUserName);
 
@@ -965,11 +960,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	/**
 	 * Use this method to save a resource in this resource set
 	 * 
-	 * @param resource
-	 *            the resource to be saved
+	 * @param resource the resource to be saved
+	 * @param userContext The user context to determine write permissions
 	 */
-	public void saveResource(Resource resource) {
-		saveResource(resource, false);
+	public void saveResource(Resource resource, IUserContext userContext) {
+		saveResource(resource, userContext, false);
 	}
 
 	/**
@@ -1001,7 +996,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            set this flag to allow for saving the resource. E.g. when
 	 *            changing the assigned discipline
 	 */
-	public void saveResource(Resource resource, boolean overrideWritePermissions) {
+	public void saveResource(Resource resource,  IUserContext userContext, boolean overrideWritePermissions) {
 		Activator.getDefault().getLog()
 				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Started saving Resource ("
 						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
@@ -1016,7 +1011,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 		try {
 			// Only save the resource if we actually have the right to do this.
-			if (overrideWritePermissions || hasWritePermission(resource)) {
+			if (overrideWritePermissions || hasWritePermission(resource, userContext)) {
 				resource.save(saveOptions);
 			}
 		} catch (IOException e) {
@@ -1053,16 +1048,15 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * Use this method to find out if you have write access to the given EMF
 	 * resource
 	 * 
-	 * @param resource
-	 *            The resource which should be checked for write accesss
-	 * @return true in case write acces is given otherwise false
+	 * @param resource The resource which should be checked for write access
+	 * @return true in case write access is given otherwise false
 	 */
-	public boolean hasWritePermission(Resource resource) {
+	public boolean hasWritePermission(Resource resource, IUserContext userContext) {
 		boolean hasWritePermission = true;
 		if (!resource.getContents().isEmpty()) {
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof IAssignedDiscipline) {
-				hasWritePermission = RightsHelper.hasSystemUserWritePermission(eObject);
+				hasWritePermission = RightsHelper.hasWritePermission(eObject, userContext);
 			}
 		}
 		return hasWritePermission;
@@ -1075,12 +1069,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the progress monitor to track the progress of the save
 	 *            operation
 	 */
-	public void saveAllResources(IProgressMonitor pm) {
+	public void saveAllResources(IProgressMonitor pm, IUserContext userContect) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving all resources for Project (" + project.getName() + ")"));
 		for (Resource resource : this.getResources()) {
 			if (!resource.getContents().isEmpty()) {
-				saveResource(resource);
+				saveResource(resource, userContect);
 			}
 		}
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),

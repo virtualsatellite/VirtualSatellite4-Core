@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.xtext.extension_resourceServiceProvider">
+      <resourceServiceProvider
+            class="de.dlr.sc.virsat.model.concept.test.TestExecutableExtensionFactory:org.eclipse.xtext.resource.generic.GenericResourceServiceProvider"
+            uriExtension="ecore">
+      </resourceServiceProvider>
+   </extension>
+
+</fragment>

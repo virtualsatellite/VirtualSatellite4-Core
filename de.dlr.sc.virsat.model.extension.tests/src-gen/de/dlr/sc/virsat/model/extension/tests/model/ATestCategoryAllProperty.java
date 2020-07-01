@@ -28,9 +28,9 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 
 
@@ -46,7 +46,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
  * TestCategory for testing all property Types once
  * 
  */	
-public abstract class ATestCategoryAllProperty extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class ATestCategoryAllProperty extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty";
 	

@@ -9,20 +9,26 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.swtbot.test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
+import de.dlr.sc.virsat.project.ui.structure.dialog.ReferencedDeleteDialog;
 
 /**
  * This class tests the cut copy delete and paste an Sei 
@@ -52,7 +58,10 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 		// are created which have never been nested before. Here the Create SEI Command will trigger 
 		// save accordingly.
 		// To avoid the save dialog popping up, we save all editors before shutting down the workbench
-		buildCounter.executeInterlocked(() -> bot.menu("File").menu("Save All").click());
+		SWTBotMenu saveAllBtn = bot.menu("File").menu("Save All");
+		if (saveAllBtn.isEnabled()) {
+			buildCounter.executeInterlocked(saveAllBtn::click);
+		}
 		super.tearDown();
 	}
 	
@@ -176,5 +185,42 @@ public class CutCopyDeleteUndoTest extends ASwtBotTestCase {
 		
 		assertThat("Found correct amount of documents", ec1.getCategoryAssignments(), hasSize(0));
 		assertThat("Found correct amount of documents", ec2.getCategoryAssignments(), hasSize(1));
+	}
+	
+	@Test
+	public void deleteReferencedObjectsTest() {
+		rename(elementConfiguration, "ec_1");
+		SWTBotTreeItem ife = addElement(InterfaceEnd.class, conceptFea, elementConfiguration);
+
+		SWTBotTreeItem ec2 = addElement(ElementConfiguration.class, conceptPs, configurationTree);
+		rename(ec2, "ec_2");
+		SWTBotTreeItem interf = addElement(Interface.class, conceptFea, ec2);
+		
+		// Set a reference from IF to IFE
+		openEditor(interf);
+		bot.button("Select Reference").click();
+		bot.tree().getTreeItem("CT: ConfigurationTree").select();
+		bot.table().select("IFE: InterfaceEnd - ConfigurationTree.ec_1.InterfaceEnd");
+		bot.button("OK").click();
+
+		// Try to delete referenced CA and SEI and make sure there is a warning popup
+		delete(ife);
+		assertEquals(ReferencedDeleteDialog.DIALOG_TITLE, bot.activeShell().getText());
+
+		// Check popup mentions referenced and referencing objects
+		String expectedReferenced = "ConfigurationTree.ec_1.InterfaceEnd";
+		String expectedReferencing = "ConfigurationTree.ec_2.Interface.interfaceEndFrom";
+		assertTrue(bot.tree().expandNode(expectedReferenced).getNodes().contains(expectedReferencing));
+
+		bot.button("No").click();
+		delete(elementConfiguration);
+		assertEquals(ReferencedDeleteDialog.DIALOG_TITLE, bot.activeShell().getText());
+		assertTrue(bot.tree().expandNode(expectedReferenced).getNodes().contains(expectedReferencing));
+
+		// Make sure referenced element can still be deleted
+		int elementsBeforeDeletion = configurationTree.getNodes().size();
+		bot.button("Yes").click();
+		waitForEditingDomainAndUiThread();
+		assertEquals(elementsBeforeDeletion - 1, configurationTree.getNodes().size());
 	}
 }

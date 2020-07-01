@@ -21,12 +21,15 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -40,6 +43,7 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
+import de.dlr.sc.virsat.project.ui.navigator.commonSorter.LabelColumnSorter;
 import de.dlr.sc.virsat.qudv.ui.wizards.DerivedQuantityKindWizard;
 import de.dlr.sc.virsat.qudv.ui.wizards.QudvQuantityKindSetupWizard;
 import de.dlr.sc.virsat.qudv.ui.wizards.SimpleQuantityKindWizard;
@@ -53,18 +57,21 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet {
 	
-	private static final String SECTION_NAME = "Quantity Kind Management";
+	public static final String SECTION_NAME = "Quantity Kind Management";
+	
+	public static final String BUTTON_ADD_TEXT = "Add Quantity Kind";
+	public static final String BUTTON_REMOVE_TEXT = "Remove Quantity Kind";
+	public static final String BUTTON_EDIT_TEXT = "Edit Quantity Kind";
+	
+	public static final String COLUMN_TEXT_QK_NAME = "Quantity Kind Name";
+	public static final String COLUMN_TEXT_SYMBOL = "Symbol";
 
 	private Button buttonAdd;
 	private Button buttonRemove;
 	private Button buttonEdit;
-	
-	private static final String BUTTON_ADD_TEXT = "Add Quantity Kind";
-	private static final String BUTTON_REMOVE_TEXT = "Remove Quantity Kind";
-	private static final String BUTTON_EDIT_TEXT = "Edit Quantity Kind";
-	
-	private static final String COLUMN_TEXT_QK_NAME = "Quantity Kind Name";
-	private static final String COLUMN_TEXT_SYMBOL = "Symbol";
+
+	private ITableLabelProvider labelProvider;
+	private LabelColumnSorter labelColumnSorter;
 	
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
@@ -101,8 +108,6 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 	
 	@Override
 	protected ITableLabelProvider getTableLabelProvider() {
-		VirSatTransactionalAdapterFactoryLabelProvider labelProvider;
-		
 		labelProvider = new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory) {
 			@Override
 			public String getColumnText(Object object, int columnIndex) {
@@ -123,16 +128,38 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 			}
 		};
 		
-		return labelProvider;		
+		labelColumnSorter.setLabelProvider(labelProvider);
+		return labelProvider;
+	}
+	
+	@Override
+	protected void createTableViewer(Table table) {
+		super.createTableViewer(table);
+		
+		labelColumnSorter = new LabelColumnSorter(tableViewer);
+		tableViewer.setComparator(labelColumnSorter);
 	}
 	
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
 	    // Column Quantity Kind Name
-		createDefaultColumn(tableViewer, COLUMN_TEXT_QK_NAME);
+		TableViewerColumn nameColumn = createDefaultColumn(tableViewer, COLUMN_TEXT_QK_NAME);
+		labelColumnSorter.onSelectColumn(nameColumn.getColumn(), 0);
 	
 		//Column Symbol
 		createDefaultColumn(tableViewer, COLUMN_TEXT_SYMBOL);
+	}
+	
+	@Override
+	protected TableViewerColumn createDefaultColumn(TableViewer tableViewer, String columnText) {
+		TableViewerColumn column = super.createDefaultColumn(tableViewer, columnText);
+		// Columns dont have a get index method so we need to grab the information from the table
+		int columnIndex = tableViewer.getTable().getColumnCount() - 1;
+		column.getColumn().addSelectionListener(SelectionListener.widgetSelectedAdapter(
+			event -> labelColumnSorter.onSelectColumn(column.getColumn(), columnIndex)
+		));
+		
+		return column;
 	}
 	
 	@Override
@@ -164,7 +191,7 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 			public void widgetSelected(SelectionEvent e) {
 				// some code to create a unit via our QudvWizard 
 				
-				new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new QudvQuantityKindSetupWizard((UnitManagement) model)).open();
+				new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new QudvQuantityKindSetupWizard(getUnitManagement())).open();
 				// the wizard guides the user through the possible steps to add a unit
 				// at the end, on the performFinish() method it executes a cmd over the commandStack which ends the new unit in the proper way.
 			}
@@ -207,10 +234,10 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 				AQuantityKind quantityKind = getFirstSelectedQuantityKind();
 				if (quantityKind instanceof SimpleQuantityKind) {
 					SimpleQuantityKind simpleQK = (SimpleQuantityKind) quantityKind;
-					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new SimpleQuantityKindWizard((UnitManagement) model, simpleQK)).open();
+					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new SimpleQuantityKindWizard(getUnitManagement(), simpleQK)).open();
 				} else if (quantityKind instanceof DerivedQuantityKind) {
 					DerivedQuantityKind derivedQK = (DerivedQuantityKind) quantityKind;
-					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new DerivedQuantityKindWizard((UnitManagement) model, derivedQK)).open();
+					new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new DerivedQuantityKindWizard(getUnitManagement(), derivedQK)).open();
 			
 				}
 			}
@@ -219,6 +246,15 @@ public class UiSnippetQuantityKindManagement extends AUiSnippetEStructuralFeatur
 				widgetSelected(e);
 			}
 		});
+	}
+	
+	/**
+	 * Gets the parent unit management from the model
+	 * @return the unit management
+	 */
+	private UnitManagement getUnitManagement() {
+		SystemOfUnits systemOfUnits = (SystemOfUnits) model;
+		return (UnitManagement) systemOfUnits.eContainer();
 	}
 	
 	/**

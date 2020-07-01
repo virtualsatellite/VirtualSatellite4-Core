@@ -74,6 +74,8 @@ import de.dlr.sc.virsat.model.concept.Activator
 import org.eclipse.core.runtime.Status
 import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
 import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -739,18 +741,24 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 			override caseComposedProperty(ComposedProperty property) {
 				importManager.register(ComposedPropertyInstance);
 				importManager.register(property.type);
+				importManager.register(BeanPropertyComposed);
 				
 				return '''
-				private «property.type.name» «property.name» = new «property.type.name»();
+				private BeanPropertyComposed<«property.type.name»> «property.name» = new BeanPropertyComposed<>();
 				
 				private void «propertyMethodSafeAccess(property)» {
 					if («property.name».getTypeInstance() == null) {
 						ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("«property.name»");
-						«property.name».setTypeInstance(propertyInstance.getTypeInstance());
+						«property.name».setTypeInstance(propertyInstance);
 					}
 				}
 				
-				public «property.type.name» «propertyMethodGet(property)» () {
+				public «property.type.name» «propertyMethodGet(property)»() {
+					«propertyMethodSafeAccess(property)»;
+					return «property.name».getValue();
+				}
+				
+				public BeanPropertyComposed<«property.type.name»> «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
 				}
@@ -758,94 +766,78 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 			}
 			
 			override caseReferenceProperty(ReferenceProperty property) {
+				
 				if (property.referenceType instanceof Category) {
 					importManager.register(ReferencePropertyInstance);
 					importManager.register(CategoryAssignment);
-					importManager.register(BeanCategoryAssignmentFactory);
 					importManager.register(Command);
-					importManager.register(SetCommand);
 					importManager.register(EditingDomain);
-					importManager.register(PropertyinstancesPackage);
-					importManager.register(CoreException);
 					importManager.register(property.referenceType)
+					importManager.register(BeanPropertyReference);
 				
 					return '''
-					private «property.referenceType.name» «property.name»;
+					private BeanPropertyReference<«property.referenceType.name»> «property.name» = new BeanPropertyReference<>();
 					
 					private void «propertyMethodSafeAccess(property)» {
 						ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("«property.name»");
-						CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-						
-						if (ca != null) {
-							if («property.name» == null) {
-								«propertyMethodCreate(property)»(ca);
-							}
-							«property.name».setTypeInstance(ca);
-						} else {
-							«property.name» = null;
-						}
+						«property.name».setTypeInstance(propertyInstance);
 					}
 					
-					private void «propertyMethodCreate(property)»(CategoryAssignment ca) {
-						try {
-							BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-							«property.name» = («property.referenceType.name») beanFactory.getInstanceFor(ca);
-						} catch (CoreException e) {
-							
-						}
-					}
-									
 					public «property.referenceType.name» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
-						return «property.name»;
+						return «property.name».getValue();
 					}
 					
 					public Command «propertyMethodSet(property)»(EditingDomain ed, «property.referenceType.name» value) {
-						ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("«property.name»");
-						CategoryAssignment ca = value.getTypeInstance();
-						return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+						«propertyMethodSafeAccess(property)»;
+						return «property.name».setValue(ed, value);
 					}
 					
 					public void «propertyMethodSet(property)»(«property.referenceType.name» value) {
-						ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("«property.name»");
-						if (value != null) {
-							propertyInstance.setReference(value.getTypeInstance());
-						} else {
-							propertyInstance.setReference(null);
-						}
+						«propertyMethodSafeAccess(property)»;
+						«property.name».setValue(value);
+					}
+					
+					public BeanPropertyReference<«property.referenceType.name»> «propertyMethodGet(property)»Bean() {
+						«propertyMethodSafeAccess(property)»;
+						return «property.name»;
 					}
 					'''	
 				} else {
 					importManager.register(ReferencePropertyInstance);
 					importManager.register(CategoryAssignment);
 					importManager.register(Command);
-					importManager.register(SetCommand);
 					importManager.register(EditingDomain);
-					importManager.register(PropertyinstancesPackage);
 					var referencedProperty = property.referenceType as AProperty;
 					var referencedPropertyType = getReferencePropertyType(referencedProperty);
 					importManager.register(referencedPropertyType);
+					importManager.register(BeanPropertyReference);
 					return '''
-					private «referencedPropertyType.simpleName» «property.name» = new «referencedPropertyType.simpleName»();
+					private BeanPropertyReference<«referencedPropertyType.simpleName»> «property.name» = new BeanPropertyReference<>();
 
 					private void «propertyMethodSafeAccess(property)» {
 						ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("«property.name»");
-						«property.name».setATypeInstance(propertyInstance.getReference());
+						«property.name».setTypeInstance(propertyInstance);
 					}
 
-					public «referencedPropertyType.name» «propertyMethodGet(property)»Bean() {
+					public «referencedPropertyType.simpleName» «propertyMethodGet(property)»() {
+						«propertyMethodSafeAccess(property)»;
+						return «property.name».getValue();
+					}
+					
+					public Command «propertyMethodSet(property)»(EditingDomain ed, «referencedPropertyType.simpleName» value) {
+						«propertyMethodSafeAccess(property)»;
+						return «property.name».setValue(ed, value);
+					}
+					
+					public void «propertyMethodSet(property)»(«referencedPropertyType.simpleName» value) {
+						«propertyMethodSafeAccess(property)»;
+						«property.name».setValue(value);
+					}
+					
+					public BeanPropertyReference<«referencedPropertyType.simpleName»> «propertyMethodGet(property)»Bean() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name»;
-					}
-					
-					public Command «propertyMethodSet(property)»Bean(EditingDomain ed, «referencedPropertyType.simpleName» value) {
-						ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("«property.name»");
-						return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, value.getTypeInstance());
-					}
-					
-					public void «propertyMethodSet(property)»Bean(«referencedPropertyType.simpleName» value) {
-						ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("«property.name»");
-						propertyInstance.setReference(value.getTypeInstance());
 					}
 					'''
 				}	

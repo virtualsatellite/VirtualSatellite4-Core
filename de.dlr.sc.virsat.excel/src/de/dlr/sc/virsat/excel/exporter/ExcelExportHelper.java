@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * Class for common code to export excel
  */
 public class ExcelExportHelper {
+	
 	protected static final int ADDZEROIFLESS = 10;
 	protected XSSFWorkbook wb;
 
@@ -80,9 +81,8 @@ public class ExcelExportHelper {
 	/**
 	* Creates the header page for all
 	* @param exportSei Structural element instance to be exported
-	* @author Bell_er
 	*/
-	public void setHeaders(StructuralElementInstance exportSei) {
+	public void writeHeaderSheet(StructuralElementInstance exportSei, LocalDateTime localDateTime) {
 		final int datacell = 1;
 		XSSFSheet headerSheet = wb.getSheet(AExcelIo.TEMPLATE_SHEETNAME_HEADER);
 
@@ -92,7 +92,7 @@ public class ExcelExportHelper {
 
 		// First of all check if the header has enough rows,
 		// if not create them.
-		for (int i = 1; i < AExcelIo.HEADER_ROW_DATE + 1; i++) {
+		for (int i = 1; i <= AExcelIo.HEADER_ROW_DATE + 1; i++) {
 			Row row = headerSheet.getRow(i);
 			if (row == null) {
 				row = headerSheet.createRow(i);
@@ -121,26 +121,23 @@ public class ExcelExportHelper {
 		row.getCell(datacell).setCellValue(UserRegistry.getInstance().getUserName());
 
 		row = headerSheet.getRow(AExcelIo.HEADER_ROW_DATE);
-		LocalDateTime ldt = LocalDateTime.now();
-		row.getCell(datacell).setCellValue(ldt.getDayOfMonth() + "/" + ldt.getMonthValue() + "/" + ldt.getYear());
+		row.getCell(datacell).setCellValue(localDateTime.getDayOfMonth() + "/" + localDateTime.getMonthValue() + "/" + localDateTime.getYear());
 
 		row = headerSheet.getRow(AExcelIo.HEADER_ROW_TIME);
-		if (ldt.getMinute() < ADDZEROIFLESS) {
-			row.getCell(datacell).setCellValue(ldt.getHour() + ":0" + ldt.getMinute());
+		if (localDateTime.getMinute() < ADDZEROIFLESS) {
+			row.getCell(datacell).setCellValue(localDateTime.getHour() + ":0" + localDateTime.getMinute());
 		} else {
-			row.getCell(datacell).setCellValue(ldt.getHour() + ":" + ldt.getMinute());
+			row.getCell(datacell).setCellValue(localDateTime.getHour() + ":" + localDateTime.getMinute());
 		}
 	}
 
 	/**
 	* Checks the user template, if there are some rows or cells not created by the user ( or in the template) it creates them to ppulate them with data
-	*
-	* @author Bell_er
-	* @param rowCount expected rows in this sheet
 	* @param sheet the excel data sheet
+	* @param rowCount expected rows in this sheet
 	* @param cellCount expected cell number in each row
 	*/
-	public void nullChecker(int rowCount, Sheet sheet, int cellCount) {
+	public void instantiateCells(Sheet sheet, int rowCount, int cellCount) {
 
 		for (int i = 0; i < rowCount; i++) {
 			Row row = sheet.getRow(i);

@@ -10,8 +10,7 @@
 package de.dlr.sc.virsat.model.extension.tests.tests.provider;
 
 
-import de.dlr.sc.virsat.model.dvlm.dmf.provider.DObjectItemProvider;
-
+import de.dlr.sc.virsat.model.ext.core.core.provider.GenericCategoryItemProvider;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
@@ -32,7 +31,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TestCategoryReferenceArrayItemProvider extends DObjectItemProvider {
+public class TestCategoryReferenceArrayItemProvider extends GenericCategoryItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

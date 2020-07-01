@@ -32,4 +32,15 @@ public class AtomicExceptionReference<E extends Exception> extends AtomicReferen
 			throw exception;
 		}
 	}
+	
+	/**
+	 * This method throws the exception again in case it has been set but this time as RuntimeException
+	 * @throws RuntimeException the type of exception that maybe thrown
+	 */
+	public void throwAsRuntimeExceptionIfSet() throws RuntimeException {
+		E exception = get();
+		if (exception != null) {
+			throw new RuntimeException(exception);
+		}
+	}
 }
