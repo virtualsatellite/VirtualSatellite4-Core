@@ -720,20 +720,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	public List<Resource> getDvlmResources() {
 		List<Resource> dvlmResources = new ArrayList<Resource>();
 		for (Resource resource : getResources()) {
-			if (isDvlmResource(resource)) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
 				dvlmResources.add(resource);
 			}
 		}
 		return dvlmResources;
-	}
-
-	/**
-	 * Returns if the given resource is a DVLM resource
-	 * @param resource the resource
-	 * @return if DVLM resource
-	 */
-	public boolean isDvlmResource(Resource resource) {
-		return resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
 	}
 		
 
@@ -1171,7 +1162,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		boolean changes = false;
 		// Only run diagnostic on DVLM files as other resource might result in a huge chain of
 		// resource that have to be resolved (e.g. diagrams also have references to the diagram infrastructure...)
-		if (resource != null && isDvlmResource(resource)) {
+		if (resource != null && VirSatProjectCommons.isDvlmFile(resource)) {
 			// Run individualDiagnostics and merge them
 			
 			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
@@ -1323,7 +1314,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public void resolveAllDvlmResources() {
 		for (Resource resource : getResources()) {
-			if (isDvlmResource(resource)) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
 				EcoreUtil.resolveAll(resource);
 			}
 		}
