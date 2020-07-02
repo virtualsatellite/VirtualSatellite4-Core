@@ -290,8 +290,8 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		// Create another non dvlm resource in the resourceSet
 		IFile randomFile = testProject.getFile("testfile.ecore");
 		Resource randomResource = editingDomain.getResourceSet().safeGetResource(randomFile, true);
-		EPackage pckge = EcoreFactory.eINSTANCE.createEPackage();
-		executeAsCommand(() -> randomResource.getContents().add(pckge));
+		EPackage package = EcoreFactory.eINSTANCE.createEPackage();
+		executeAsCommand(() -> randomResource.getContents().add(package));
 		editingDomain.saveResourceIgnorePermissions(randomResource);
 		assertNotNull("Got a resource for the random ecore", randomResource);
 	
@@ -316,7 +316,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		assertThat("List contains correct resources", listener.calledChangedDvlmResources, hasItem(seiFile));
 		
 		// Now add an arbitrary file, which is also part of the resourceSet this should also notify the added resources
-		executeAsCommand(() -> pckge.setName("TestPackage"));
+		executeAsCommand(() -> package.setName("TestPackage"));
 		editingDomain.saveResourceIgnorePermissions(randomResource);
 		listener.waitForNotificationAndExecution(true);
 		
