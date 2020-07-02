@@ -25,6 +25,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
  */
 public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends APropertyInstance, ?>> extends AArrayInstanceList<BEAN_TYPE> implements IBeanList<BEAN_TYPE> {
 
+	protected TypeSafeArrayInstanceList() {
+		super();
+	}
+	
 	/**
 	 * constructor of the type safe array instance list class
 	 * @param beanClazz 
@@ -44,14 +48,21 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		this.beanClazz = beanClazz;
 	}
 	
-	protected Class<BEAN_TYPE> beanClazz;
+	/**
+	 * The bean class, that is by default the Class<BEAN_TYPE>
+	 * We use Class<?> as a workaround to handle special beans that themself are generic
+	 * E.g. for a BeanPropertyComposed the BEAN_TYPE would be BeanPropertyComposed<IBeanCategoryAssignment>,
+	 * but the beanClazz would only be BeanPropertyComposed
+	 */
+	protected Class<?> beanClazz;
 	
 	/**
 	 * this method returns the bean class
 	 * @return the bean class
 	 */
+	@SuppressWarnings("unchecked")
 	public Class<BEAN_TYPE> getBeanClazz() {
-		return beanClazz;
+		return (Class<BEAN_TYPE>) beanClazz;
 	}
 
 	/**
@@ -78,13 +89,14 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 	 * internal representation of CategoryAssignments
 	 * @return a List of Beans wrapping the CategoryAssignments
 	 */
+	@SuppressWarnings("unchecked")
 	private List<BEAN_TYPE> getBeanList() {
 		List<BEAN_TYPE> beanList = new ArrayList<>();
 
 		ai.getArrayInstances().forEach((pi) -> {
 			try {
 				BEAN_TYPE bean;
-				bean = beanClazz.newInstance();
+				bean = (BEAN_TYPE) beanClazz.newInstance();
 				bean.setATypeInstance(pi);
 				beanList.add(bean);
 			} catch (Exception e) {
@@ -166,11 +178,12 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return !removeCas.isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE get(int index) {
 		BEAN_TYPE bean = null;
 		try {
-			bean = beanClazz.newInstance();
+			bean = (BEAN_TYPE) beanClazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
@@ -191,8 +204,6 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		super.add(index, element);
 		ai.getArrayInstances().add(index, element.getTypeInstance());
 	}
-	
-	
 
 	@Override
 	public BEAN_TYPE remove(int index) {
@@ -202,7 +213,6 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return oldBean;
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object o) {

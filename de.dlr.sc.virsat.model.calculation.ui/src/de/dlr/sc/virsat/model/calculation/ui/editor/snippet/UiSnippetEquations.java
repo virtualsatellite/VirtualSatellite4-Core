@@ -192,7 +192,7 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 
 		checkWriteAccess(buttonAdd);
 		checkWriteAccess(buttonRemove);
-		checkWriteAccess(buttonEdit);
+		checkWriteAccess(buttonUpdate);
 		
 		return compositeButtons;
 	}
