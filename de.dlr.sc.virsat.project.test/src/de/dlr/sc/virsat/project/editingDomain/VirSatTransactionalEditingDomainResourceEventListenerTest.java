@@ -302,6 +302,7 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		
 		interlockedListener.executeInterocked(() -> editingDomain.saveAll(), 1);
 		
+		waitSomeTime();
 		// Create a new resource for a SEI in the resourceSet this should issue a notification on the added resources
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		IFile seiFile = projectCommons.getStructuralElementInstanceFile(sei);
