@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jcommon.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jfreechart-swt.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jfreechart.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swtgraphics2d.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/jfreechart-1.0.19/jcommon-1.0.23.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/jfreechart-1.0.19/jfreechart-1.0.19-experimental.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/jfreechart-1.0.19/jfreechart-1.0.19-swt.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/jfreechart-1.0.19/jfreechart-1.0.19.jar" sourcepath="externalLib/jfreechart-1.0.19/docs/source"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/jfreechart-1.0.19/swtgraphics2d.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
