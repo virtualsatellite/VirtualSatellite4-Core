@@ -708,10 +708,8 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		newResource.save(Collections.EMPTY_MAP);
 		Resource nonDvlmResourceReload = resSet.getResource(uri, true);
 		
-		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei1));
-		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei2));
-		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei2_1));
-		assertTrue("Should contain DVLM resource", resSet.getDvlmResources().contains(resSei2_1_1));
+		assertThat("Should contain DVLM resource", resSet.getDvlmResources(), hasItems(resSei1, resSei2, resSei2_1, resSei2_1_1));
+		
 		assertFalse("Should not contain other resources", resSet.getDvlmResources().contains(nonDvlmResourceReload));
 		
 	}
