@@ -316,7 +316,7 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		assertThat("List contains correct resources", listener.calledChangedDvlmResources, hasItem(seiFile));
 		
 		// Now add an arbitrary file, which is also part of the resourceSet this should also notify the added resources
-		executeAsCommand(() -> package.setName("TestPackage"));
+		executeAsCommand(() -> pckge.setName("TestPackage"));
 		editingDomain.saveResourceIgnorePermissions(randomResource);
 		listener.waitForNotificationAndExecution(true);
 		
