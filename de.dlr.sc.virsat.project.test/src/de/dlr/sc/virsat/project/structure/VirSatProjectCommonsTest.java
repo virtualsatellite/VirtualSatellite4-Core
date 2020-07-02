@@ -314,6 +314,8 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertFalse("Is No DVLM file", VirSatProjectCommons.isDvlmFile(nonDvlmResource));
 		
 		assertFalse("Resource has no URI", VirSatProjectCommons.isDvlmFile(new ResourceImpl()));
+		Resource resource = null;
+		assertFalse("NUll resource is no DVLM file", VirSatProjectCommons.isDvlmFile(resource));
 	}
 	
 	@Test
