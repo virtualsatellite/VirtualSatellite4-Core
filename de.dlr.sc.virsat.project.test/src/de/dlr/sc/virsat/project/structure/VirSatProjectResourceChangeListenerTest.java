@@ -290,8 +290,8 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		// Create another non dvlm resource in the resourceSet
 		IFile randomFile = testProject.getFile("testfile.ecore");
 		Resource randomResource = editingDomain.getResourceSet().safeGetResource(randomFile, true);
-		EPackage package = EcoreFactory.eINSTANCE.createEPackage();
-		executeAsCommand(() -> randomResource.getContents().add(package));
+		EPackage pckge = EcoreFactory.eINSTANCE.createEPackage();
+		executeAsCommand(() -> randomResource.getContents().add(pckge));
 		editingDomain.saveResourceIgnorePermissions(randomResource);
 		assertNotNull("Got a resource for the random ecore", randomResource);
 	
