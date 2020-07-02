@@ -149,6 +149,7 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 		 * @throws CoreException
 		 */
 		public void executeInterocked(Runnable runnable, int expectedNotifications) throws InterruptedException, CoreException {
+			VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 			ResourcesPlugin.getWorkspace().run((monitor) -> {
 				try {
 					doExecuteInterlocked(runnable, expectedNotifications);
@@ -156,6 +157,7 @@ public class VirSatTransactionalEditingDomainResourceEventListenerTest extends A
 					Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "VirSatTransactionalEditingDomainResourceEventListenerTest: Got interrupted while waiting ", e));
 				}
 			}, null);
+			VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		}
 		
 		private synchronized void doExecuteInterlocked(Runnable runnable, int expectedNotifications) throws InterruptedException {
