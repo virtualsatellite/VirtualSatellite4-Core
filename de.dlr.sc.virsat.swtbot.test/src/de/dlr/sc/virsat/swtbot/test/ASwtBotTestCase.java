@@ -344,8 +344,8 @@ public class ASwtBotTestCase {
 	protected void deleteEditPartInDiagramEditor(SWTBotGefEditor diagramEditor, String editPartName) {
 		diagramEditor.getEditPart(editPartName).select();		
 		diagramEditor.clickContextMenu("Delete");
-		waitForEditingDomainAndUiThread();
 		bot.button("Yes").click();
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
