@@ -29,8 +29,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -630,8 +634,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 						
 						printRecentlyChangedResources();
 						
-						// Always run all diagnostics
-						for (Resource resource : virSatResourceSet.getResources()) {
+						// Always run all diagnostics, create a copy on the list fo resources to avoid
+						// concurrent modification exceptions.
+						for (Resource resource : new ArrayList<>(virSatResourceSet.getResources())) {
 							if (virSatResourceSet.updateDiagnostic(resource)) {
 								virSatResourceSet.notifyDiagnosticListeners(resource);
 							}
@@ -750,6 +755,17 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public static void waitForFiringOfAccumulatedResourceChangeEvents() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Waiting for Events to be fired"));
+		
+		Job workspaceJob = new WorkspaceJob("TransactionalEditingDomain: Waiting for accumulated Change Events") {
+			
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+		
+	
 		while (true) {
 			synchronized (accumulatedResourceChangeEvents) {
 				try {
