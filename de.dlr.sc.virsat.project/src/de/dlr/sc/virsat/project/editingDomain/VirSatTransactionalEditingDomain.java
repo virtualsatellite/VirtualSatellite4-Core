@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -756,29 +755,48 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	public static void waitForFiringOfAccumulatedResourceChangeEvents() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Waiting for Events to be fired"));
 		
-		Job workspaceJob = new WorkspaceJob("TransactionalEditingDomain: Waiting for accumulated Change Events") {
-			
+		/**
+		 *  Define a new WorkspaceJob which can be fired here and waits for all accumulated
+		 *  notifications to be fired. The basic idea is, that we cannot be sure about the Workspace
+		 *  Job of the WorkspaceChangelsietenr, if it executes, is about to execute etc. Thus it may still
+		 *  trigger notifications. This JOb basically ensures, that all other Jobs have been run before
+		 *  and will make the calling thread of this method, e.g. a test, wait until all notifications
+		 *  and workspace jobs have been scheduled and executed.
+		 */
+		class WorkspaceAccumulatedNotificationJob extends WorkspaceJob {
+
+			WorkspaceAccumulatedNotificationJob() {
+				super("VirSatTransactionalEditingDomain: Waiting for accumulated Notifications");
+			}
+		
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-		
-	
-		while (true) {
-			synchronized (accumulatedResourceChangeEvents) {
-				try {
-					accumulatedResourceChangeEvents.wait(ResourceChangeEventThread.SLEEP_TIME);
-				} catch (InterruptedException e) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread got interrupted", e));
-					break;
+				synchronized (this) {
+					synchronized (accumulatedResourceChangeEvents) {
+						while (!accumulatedResourceChangeEvents.isEmpty()) {
+							try {
+								accumulatedResourceChangeEvents.wait(ResourceChangeEventThread.ACCUMULATION_TIME);
+							} catch (InterruptedException e) {
+								Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+									"VirSatTransactionalEditingDomian: Got interuppted while waiting for accumulation of notifications", e));
+							}
+						}
+					}
 				}
-				if (accumulatedResourceChangeEvents.isEmpty()) {
-					break;
-				}
+				return Status.OK_STATUS;
 			}
 		}
+		
+		try {
+			WorkspaceAccumulatedNotificationJob wsAccumulatedNotificationJob = new WorkspaceAccumulatedNotificationJob();
+			wsAccumulatedNotificationJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
+			wsAccumulatedNotificationJob.schedule();
+			wsAccumulatedNotificationJob.join();
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+					"VirSatTransactionalEditingDomian: Got interuppted while waiting for accumulation of notifications", e));
+		}
+		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: All events fired Queue is empty"));
 	}
 	

@@ -23,10 +23,7 @@ import java.util.function.BooleanSupplier;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.draw2d.IFigure;
@@ -909,43 +906,6 @@ public class ASwtBotTestCase {
 	protected static class WorkspaceBuilderInterlockedExecution {
 		
 		/**
-		 * A simple Job that will be placed into the queue to make sure all otehr jobs
-		 * before got executed.
-		 */
-		protected static class SWTBotInterlockedJob extends WorkspaceJob {
-
-			protected boolean isExecuted = false;
-			
-			SWTBotInterlockedJob() {
-				super("SWTBot Interlocking WorkspaceJob");
-			}
-
-			/**
-			 * This method makes the calling thread wait until the job executed
-			 */
-			public void waitForExecution() {
-				synchronized (this) {
-					while (!isExecuted) {
-						try {
-							this.wait(SWTBOT_GENERAL_WAIT_TIME);
-						} catch (InterruptedException e) {
-							Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "SWTBot Test: Thread Interrupted", e));
-						}
-					}
-				}
-			}
-
-			@Override
-			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				synchronized (this) {
-					isExecuted = true;
-					this.notifyAll();
-				}
-				return Status.OK_STATUS;
-			}
-		}
-		
-		/**
 		 * The runnable in this method is interlocked with the execution of the workspace builders.
 		 * First the method will join all scheduled workspace builders and wait for the UI to refresh.
 		 * Then it will execute the runnable and wait again to join builders and UI refresh.
@@ -962,12 +922,6 @@ public class ASwtBotTestCase {
 				Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: About to execute interlocked runnable"));
 				runnable.run();
 				Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
-
-				// Schedule a job and wait until it got executed. This increases likelihood that
-				// all other jobs have been executed before.
-				SWTBotInterlockedJob interlockedJob = new SWTBotInterlockedJob();
-				interlockedJob.schedule();
-				interlockedJob.waitForExecution();
 				
 				// Now wait that all scheduled builders are done and update the UI
 				Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: Wait for jobs to be done after execution and counting"));
