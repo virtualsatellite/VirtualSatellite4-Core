@@ -59,6 +59,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -545,14 +546,11 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		se.setIsApplicableForAll(true);
 		
 		//CHECKSTYLE:OFF
-		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance sei2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance sei2_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance sei2_1_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei1.setType(se);
-		sei2.setType(se);
-		sei2_1.setType(se);
-		sei2_1_1.setType(se);
+		StructuralInstantiator instantiator = new StructuralInstantiator();
+		StructuralElementInstance sei1 = instantiator.generateInstance(se, null);
+		StructuralElementInstance sei2 = instantiator.generateInstance(se, null);
+		StructuralElementInstance sei2_1 = instantiator.generateInstance(se, null);
+		StructuralElementInstance sei2_1_1 = instantiator.generateInstance(se, null);
 		
 		Resource resSei1 = resSet.getAndAddStructuralElementInstanceResource(sei1);
 		Resource resSei2 = resSet.getAndAddStructuralElementInstanceResource(sei2);
@@ -602,14 +600,11 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		se.setIsApplicableForAll(true);
 		
 		//CHECKSTYLE:OFF
-		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance sei2 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance sei2_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		StructuralElementInstance sei2_1_1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei1.setType(se);
-		sei2.setType(se);
-		sei2_1.setType(se);
-		sei2_1_1.setType(se);
+		StructuralInstantiator instantiator = new StructuralInstantiator();
+		StructuralElementInstance sei1 = instantiator.generateInstance(se, null);
+		StructuralElementInstance sei2 = instantiator.generateInstance(se, null);
+		StructuralElementInstance sei2_1 = instantiator.generateInstance(se, null);
+		StructuralElementInstance sei2_1_1 = instantiator.generateInstance(se, null);
 		
 		Resource resSei1 = resSet.getAndAddStructuralElementInstanceResource(sei1);
 		Resource resSei2 = resSet.getAndAddStructuralElementInstanceResource(sei2);
