@@ -538,13 +538,13 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				val referenceType = '''«IF genPackageSpecified»«property.referenceType.name»«ELSE»EObject«ENDIF»'''
 			
 				return '''
-				private IBeanList<BeanPropertyEReference<«referenceType»>> «property.name» = new TypeSafeEReferenceArrayInstanceList<«referenceType»>();
+				private IBeanList<BeanPropertyEReference<«referenceType»>> «property.name»Bean = new TypeSafeEReferenceArrayInstanceList<«referenceType»>();
 				
-				«declareSafeAccessArrayMethod(property, importManager)»
+				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
-				public IBeanList<BeanPropertyEReference<«referenceType»>> «propertyMethodGet(property)»() {
-					«propertyMethodSafeAccess(property)»;
-					return «property.name»;
+				public IBeanList<BeanPropertyEReference<«referenceType»>> «propertyMethodGetBean(property)»() {
+					«propertyMethodSafeAccessBean(property)»;
+					return «property.name»Bean;
 				}
 				'''	
 			}			
