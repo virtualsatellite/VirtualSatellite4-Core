@@ -34,9 +34,11 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
@@ -54,6 +56,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -71,9 +74,13 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String COLUMN_TEXT_STATUS = "Status";
 	protected static final String COLUMN_ATTRIBUTE_SEPARATOR = " / ";
 
+	protected static final String COLUMN_TEXT_TRACE = "Trace";
+	
 	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = Requirement.FULL_QUALIFIED_CATEGORY_NAME + "." + Requirement.PROPERTY_REQTYPE;
 
+	private static final int TABLE_HIGHT = 500;
 	private static final int STATUS_COLUMN_WIDTH = 100;
+	private static final int TRACE_COLUMN_WIDTH = 100;
 	private static final String COLUMN_PREFIX = "attColumn";
 	
 	protected final String arrayInstanceID;
@@ -82,6 +89,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected int maxNumberAttributes = 0;
 
 	protected TableViewerColumn colStatus = null;
+	protected TableViewerColumn colTracing = null;
 	protected List<TableViewerColumn> attColumns;
 	
 	protected boolean controlListenerActive = true;
@@ -123,6 +131,16 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 			// initialize list for attribute column
 			attColumns = new ArrayList<>();
+		}
+		
+		if (colTracing == null) {
+			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TRACE);
+
+			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
+					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
+
+			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
+
 		}
 
 		if (model instanceof CategoryAssignment) {
@@ -180,6 +198,13 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		restoreColumnWitdh();
 	}
 	
+	@Override
+	protected Table createDefaultTable(FormToolkit toolkit, Composite sectionBody) {
+		Table table = super.createDefaultTable(toolkit, sectionBody);
+		GridData gridDataTable = (GridData) table.getLayoutData();
+		gridDataTable.heightHint = TABLE_HIGHT;
+		return table;
+	}
 
 	/**
 	 * this method get the label provider
