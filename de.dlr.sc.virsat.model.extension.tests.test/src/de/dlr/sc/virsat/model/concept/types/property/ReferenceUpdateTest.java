@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.concept.list;
+package de.dlr.sc.virsat.model.concept.types.property;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,9 +20,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBase;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 
-public class ArrayUpdateTest extends AConceptTestCase {
+public class ReferenceUpdateTest extends AConceptTestCase {
 
 	Concept concept;
 	
@@ -32,7 +33,27 @@ public class ArrayUpdateTest extends AConceptTestCase {
 	}
 
 	@Test
-	public void testReferencedArrayUpdatesAfterChange() {
+	public void testRereferencing() {
+		final int FIRST_VALUE = 1;
+		final int SECOND_VALUE = 2;
+		
+		TestCategoryReference root = new TestCategoryReference(concept);
+
+		TestCategoryAllProperty firstReference = new TestCategoryAllProperty(concept);
+		firstReference.setTestInt(FIRST_VALUE);
+		
+		TestCategoryAllProperty secondReference = new TestCategoryAllProperty(concept);
+		secondReference.setTestInt(SECOND_VALUE);
+		
+		root.setTestRefCategory(firstReference);
+		assertEquals("First value is correctly set", FIRST_VALUE, root.getTestRefCategory().getTestInt());
+		
+		root.setTestRefCategory(secondReference);
+		assertEquals("Value is changed after rereferencing", SECOND_VALUE, root.getTestRefCategory().getTestInt());
+	}
+	
+	@Test
+	public void testRereferencingArray() {
 		TestCategoryBase root = new TestCategoryBase(concept);
 
 		TestCategoryBase empty = new TestCategoryBase(concept);

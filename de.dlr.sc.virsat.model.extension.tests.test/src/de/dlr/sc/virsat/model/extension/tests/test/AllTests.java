@@ -17,10 +17,10 @@ import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
 import de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidatorTest;
 import de.dlr.sc.virsat.build.validator.core.RepoValidatorsInstantiatorTest;
 import de.dlr.sc.virsat.model.concept.list.ArrayInstanceListIteratorTest;
-import de.dlr.sc.virsat.model.concept.list.ArrayUpdateTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReferenceTest;
+import de.dlr.sc.virsat.model.concept.types.property.ReferenceUpdateTest;
 import de.dlr.sc.virsat.model.concept.types.structural.level.HierarchyLevelCheckerTest;
 import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTraverserTest;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelperTest;
@@ -79,7 +79,7 @@ import junit.framework.JUnit4TestAdapter;
 				MatImporterTest.class,
 				MatExporterTest.class,
 				BeanPropertyReferenceTest.class,
-				ArrayUpdateTest.class
+				ReferenceUpdateTest.class
 				})
 
 /**
