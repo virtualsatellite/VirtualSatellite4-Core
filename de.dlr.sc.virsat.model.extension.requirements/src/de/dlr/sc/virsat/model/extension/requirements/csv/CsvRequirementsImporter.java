@@ -79,19 +79,7 @@ public class CsvRequirementsImporter {
 			List<String> req = csvContentMatrix.get(lineNumber);
 			Requirement newReqElement = createRequirement(importType, lineNumber);
 
-			//If the first columns of a requirement are empty then values from previous lines are used
-			String attribute = req.iterator().next();
-			while (attribute.equals("")) {
-				if (lineNumber > 0) {
-					int currentAttributeIndex = req.indexOf(attribute);
-					String repeatedValue = csvContentMatrix.get(lineNumber - 1).get(currentAttributeIndex);
-					if (attributeMapping.get(currentAttributeIndex) != null && attributeMapping.get(currentAttributeIndex).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
-						repeatedValue += REQ_EXTENSION_IDENTIFIER_PREFIX;
-					}
-					req.set(currentAttributeIndex, repeatedValue);
-					attribute = req.get(currentAttributeIndex + 1);
-				}
-			}
+			addRepeatedValuesFromPreviousLine(csvContentMatrix, attributeMapping, lineNumber, req);
 	
 			for (int currentIndex = 0; currentIndex < req.size(); currentIndex++) {
 				String attValue = req.get(currentIndex);
@@ -145,6 +133,32 @@ public class CsvRequirementsImporter {
 		return importCommand;
 	}
 
+	/**
+	 * In case the first columns of data are empty, data from the previous data line have to be repeated. This method
+	 * then fills these values into the current line
+	 * 
+	 * @param contentMatrix the matrix of requirements data
+	 * @param attributeMapping the mapping of requirements
+	 * @param lineNumber the current line number that is supposed to be filled up
+	 * @param requirement the current requirement data
+	 */
+	private void addRepeatedValuesFromPreviousLine(List<List<String>> contentMatrix,
+			Map<Integer, RequirementAttribute> attributeMapping, int lineNumber, List<String> requirement) {
+		//If the first columns of a requirement are empty then values from previous lines are used
+		String attribute = requirement.get(0);
+		while (attribute.equals("")) {
+			if (lineNumber > 0) {
+				int currentAttributeIndex = requirement.indexOf(attribute);
+				String repeatedValue = contentMatrix.get(lineNumber - 1).get(currentAttributeIndex);
+				if (attributeMapping.get(currentAttributeIndex) != null && attributeMapping.get(currentAttributeIndex).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+					repeatedValue += REQ_EXTENSION_IDENTIFIER_PREFIX;
+				}
+				requirement.set(currentAttributeIndex, repeatedValue);
+				attribute = requirement.get(currentAttributeIndex + 1);
+			}
+		}
+	}
+	
 	/**
 	 * Creates a requirement type from a list of attribute names. Does not create a
 	 * command or persist the element yet
