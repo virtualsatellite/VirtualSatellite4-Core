@@ -2,7 +2,7 @@
    "type" : "testCategoryIntrinsicArray",
    "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
    "name" : "TestCategoryIntrinsicArray",
-   "testStringArrayDynamicList" : [ {
+   "testStringArrayDynamic" : [ {
       "uuid" : "d7ed5b62-f096-4347-88ef-eae61c5f166b",
       "value" : "testString"
    } ]

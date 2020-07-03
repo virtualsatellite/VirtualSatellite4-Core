@@ -23,6 +23,12 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -31,6 +37,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runners.model.TestClass;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
@@ -59,7 +66,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		beanPropertyString.getATypeInstance().setUuid(new VirSatUuid("d7ed5b62-f096-4347-88ef-eae61c5f166b"));
 	}
 	
-	@Test
+//	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
@@ -104,61 +111,101 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
-		TestCategoryIntrinsicArray createdArray = (TestCategoryIntrinsicArray) jsonUnmarshaller.unmarshal(sr);
+		TestCategoryIntrinsicArray createdArray = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryIntrinsicArray.class).getValue();
 		assertEquals(testArray, createdArray);
 	}
 	
-	@Test
-	public void testList() throws JAXBException {
-		jaxbUtility = new JAXBUtility();
-//		jaxbUtility.initJsonProperties();
-		jaxbUtility.getProperties().put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-		jaxbUtility.getProperties().put(JAXBContextProperties.JSON_INCLUDE_ROOT, true);
-		JAXBContext context = jaxbUtility.createContext(new Class[] {List.class, String.class});
-		List<String> testList = new ArrayList<String>();
-		testList.add("a");
-		testList.add("b");
-		
-		assertEquals(testList.size(), 2);
-		
-		Marshaller jsonMarshaller = context.createMarshaller();
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(testList, sw);
-		
-		String json = sw.toString();
-		System.out.println(json);
-		
-		Unmarshaller jsonUnmarshaller = context.createUnmarshaller();
-		StringReader sr = new StringReader(json);
-
-		List<String> createdList = (List<String>) jsonUnmarshaller.unmarshal(sr);
-		assertEquals(testList, createdList);
-	}
-	
-	@Test
-	public void testListInObj() throws JAXBException {
-		jaxbUtility = new JAXBUtility();
-		jaxbUtility.getProperties().put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-		jaxbUtility.getProperties().put(JAXBContextProperties.JSON_INCLUDE_ROOT, true);
-		JAXBContext context = jaxbUtility.createContext(new Class[] {List.class, String.class});
-		List<String> testList = new ArrayList<String>();
-		testList.add("a");
-		testList.add("b");
-		
-		assertEquals(testList.size(), 2);
-		
-		Marshaller jsonMarshaller = context.createMarshaller();
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(testList, sw);
-		
-		String json = sw.toString();
-		System.out.println(json);
-		
-		Unmarshaller jsonUnmarshaller = context.createUnmarshaller();
-		StringReader sr = new StringReader(json);
-
-		List<String> createdList = (List<String>) jsonUnmarshaller.unmarshal(sr);
-		assertEquals(testList, createdList);
-	}
+//	@XmlRootElement(name = "employee")
+//	@XmlAccessorType (XmlAccessType.FIELD)
+//	public static class Employee 
+//	{
+//		private Integer id;
+//		private String firstName;
+//		private String lastName;
+//		private double income;
+//		public Integer getId() {
+//			return id;
+//		}
+//		public void setId(Integer id) {
+//			this.id = id;
+//		}
+//		public String getFirstName() {
+//			return firstName;
+//		}
+//		public void setFirstName(String firstName) {
+//			this.firstName = firstName;
+//		}
+//		public String getLastName() {
+//			return lastName;
+//		}
+//		public void setLastName(String lastName) {
+//			this.lastName = lastName;
+//		}
+//		public double getIncome() {
+//			return income;
+//		}
+//		public void setIncome(double income) {
+//			this.income = income;
+//		}
+//	}
+//	
+//	@XmlRootElement(name = "employees")
+//	@XmlAccessorType (XmlAccessType.FIELD)
+//	public static class Employees 
+//	{
+//	    @XmlElement(name = "employee")
+//	    private List<Employee> employees = null;
+//	 
+//	    public List<Employee> getEmployees() {
+//	        return employees;
+//	    }
+//	 
+//	    public void setEmployees(List<Employee> employees) {
+//	        this.employees = employees;
+//	    }
+//	}
+//	
+//	@Test
+//	public void testListInObj() throws JAXBException {
+//		jaxbUtility = new JAXBUtility();
+//		jaxbUtility.getProperties().put(JAXBContextProperties.MEDIA_TYPE, "application/json");
+//		jaxbUtility.getProperties().put(JAXBContextProperties.JSON_INCLUDE_ROOT, true);
+//		jaxbUtility.getProperties().put(JAXBContextProperties.JSON_WRAPPER_AS_ARRAY_NAME, true);
+//		JAXBContext context = jaxbUtility.createContext(new Class[] {Employees.class});
+//		
+//		Employees employees = new Employees();
+//		employees.setEmployees(new ArrayList<Employee>());
+//	    //Create two employees 
+//	    Employee emp1 = new Employee();
+//	    emp1.setId(1);
+//	    emp1.setFirstName("Lokesh");
+//	    emp1.setLastName("Gupta");
+//	    emp1.setIncome(100.0);
+//	     
+//	    Employee emp2 = new Employee();
+//	    emp2.setId(2);
+//	    emp2.setFirstName("John");
+//	    emp2.setLastName("Mclane");
+//	    emp2.setIncome(200.0);
+//	     
+//	    //Add the employees in list
+//	    employees.getEmployees().add(emp1);
+//	    employees.getEmployees().add(emp2);
+//		
+//		assertEquals(employees.getEmployees().size(), 2);
+//		
+//		Marshaller jsonMarshaller = context.createMarshaller();
+//		StringWriter sw = new StringWriter();
+//		jsonMarshaller.marshal(employees, sw);
+//		
+//		String json = sw.toString();
+//		System.out.println(json);
+//		
+//		Unmarshaller jsonUnmarshaller = context.createUnmarshaller();
+//		StringReader sr = new StringReader(json);
+//
+//		Employees createdCls = jsonUnmarshaller.unmarshal(new StreamSource(sr), Employees.class).getValue();
+//		assertEquals(employees.getEmployees().get(1).firstName, createdCls.getEmployees().get(1).firstName);
+//	}
 	
 }

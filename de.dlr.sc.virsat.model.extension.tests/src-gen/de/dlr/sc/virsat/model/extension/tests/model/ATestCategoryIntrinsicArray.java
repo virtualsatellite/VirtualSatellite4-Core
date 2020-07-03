@@ -18,6 +18,10 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
@@ -37,6 +41,7 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
+@XmlRootElement
 public abstract class ATestCategoryIntrinsicArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryIntrinsicArray";
@@ -84,9 +89,15 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayDynamic() {
 		safeAccessTestStringArrayDynamic();
 		return testStringArrayDynamic;
+	}
+	
+	@XmlElement
+	public void setTestStringArrayDynamic(IBeanList<BeanPropertyString> newList) {
+		testStringArrayDynamic = newList;
 	}
 	
 	// *****************************************************************
