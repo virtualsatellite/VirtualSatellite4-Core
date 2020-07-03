@@ -58,10 +58,13 @@ public class VirSatWorkspaceContentProvider implements ITreeContentProvider {
 			if (viewer != null) {
 				Display.getDefault().asyncExec(() -> {
 					if (!viewer.getControl().isDisposed()) {
-						// Still unsure if we really need this refresh call
-						Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), 
-								"VirSatWorkspaceContentProvider::eventListener: Triggering refresh of the navigator due to a resource change."));
-						viewer.refresh();
+						try {
+							// Still unsure if we really need this refresh call
+							viewer.refresh();
+						} catch (RuntimeException e) {
+							Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+									"Runtime Exception when trying to refresh the neavigator! Reason: " + e.getMessage()));
+						}
 					}
 				});
 			}
@@ -112,7 +115,8 @@ public class VirSatWorkspaceContentProvider implements ITreeContentProvider {
 					}
 				});
 			} catch (CoreException e) {
-				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to handle resource change in Workspace Content Provider!"));
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+						"Failed to handle resource change in Workspace Content Provider!"));
 			}
 		}
 	};

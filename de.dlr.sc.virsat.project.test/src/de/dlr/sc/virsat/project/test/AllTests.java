@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistryTest;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainResourceEventListenerTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatWorkspaceCommandStackTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandHelperTest;
@@ -33,6 +34,7 @@ import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileComman
 import de.dlr.sc.virsat.project.resources.dmf.DmfResourceSaveCommandTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectBuilderTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommonsTest;
+import de.dlr.sc.virsat.project.structure.VirSatProjectResourceChangeListenerTest;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommandTest;
@@ -67,7 +69,9 @@ import junit.framework.JUnit4TestAdapter;
 	AssignDisciplineCommandTest.class,
 	VirSatProblemMarkerHelperTest.class,
 	VirSatEditingDomainClipBoardTest.class,
-	DmfResourceSaveCommandTest.class
+	DmfResourceSaveCommandTest.class,
+	VirSatProjectResourceChangeListenerTest.class,
+	VirSatTransactionalEditingDomainResourceEventListenerTest.class
 })
 
 public class AllTests {

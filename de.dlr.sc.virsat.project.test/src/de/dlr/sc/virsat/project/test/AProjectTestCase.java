@@ -47,6 +47,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 public abstract class AProjectTestCase {
 
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
+	protected static final int MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS = 1000;
 	
 	@Rule
 	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
@@ -288,6 +289,19 @@ public abstract class AProjectTestCase {
 		@Override
 		public String getUserName() {
 			return userName;
+		}
+	}
+	
+	/**
+	 * Call this method to just simply wait some time.
+	 * This is needed e.g. on linux when changing files that just got
+	 * created. Otherwise the change may not be detected.
+	 */
+	public void waitSomeTime() {
+		try {
+			Thread.sleep(MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS);
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "AProjectTestCase: Got interrupted while waiting ", e));
 		}
 	}
 }

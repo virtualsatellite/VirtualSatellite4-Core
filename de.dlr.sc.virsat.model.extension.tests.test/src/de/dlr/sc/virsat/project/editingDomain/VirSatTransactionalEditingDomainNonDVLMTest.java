@@ -87,17 +87,6 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 		
 	}
 	
-	@Test
-	public void testRemoveResource() throws CoreException {
-		
-		assertNotNull("Resource should be in VirSat resource set", rs.getResource(modelFile, false));
-		
-		// Delete external model resource from file system
-		modelFile.delete(true, null);
-		assertNull("Resource should have been deleted from VirSat resource set", rs.getResource(modelFile, false));
-		
-	}
-	
 	/**
 	 * Do some model change in external domain
 	 * @throws IOException
