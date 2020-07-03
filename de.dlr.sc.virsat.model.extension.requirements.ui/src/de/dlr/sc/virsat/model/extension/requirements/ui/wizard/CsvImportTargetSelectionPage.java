@@ -31,16 +31,17 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.ATreeViewerPage;
  */
 public class CsvImportTargetSelectionPage extends ATreeViewerPage {
 
+	private static final String PAGE_TITLE = "Import Target Selection";
+	
 	/**
 	 * Default constructor
 	 * @param model the model
 	 */
 	protected CsvImportTargetSelectionPage(IContainer model) {
-		super("Import Target Selection");
-		setTitle("Import Target Selection");
+		super(PAGE_TITLE);
+		setTitle(PAGE_TITLE);
 		setModel(model);
-		setDescription(
-				"Please select a requirement specification element in which the requirements should be imported to.");
+		setDescription("Please select a requirement specification element in which the requirements should be imported to.");
 	}
 
 	@Override
@@ -66,6 +67,7 @@ public class CsvImportTargetSelectionPage extends ATreeViewerPage {
 		filteredCp.addStructuralElementIdFilter(AssemblyTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addStructuralElementIdFilter(ElementOccurence.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addCategoryIdFilter(RequirementsSpecification.FULL_QUALIFIED_CATEGORY_NAME);
+		filteredCp.addCategoryIdFilter(RequirementGroup.FULL_QUALIFIED_CATEGORY_NAME);
 	}
 	
 	
@@ -73,10 +75,9 @@ public class CsvImportTargetSelectionPage extends ATreeViewerPage {
 	public boolean isSelectionValid() {
 		Object selection = getSelection();
 		if (selection instanceof CategoryAssignment) {
-			return ((CategoryAssignment) selection).getType().getFullQualifiedName()
-					.equals(RequirementsSpecification.FULL_QUALIFIED_CATEGORY_NAME)
-					|| ((CategoryAssignment) selection).getType().getFullQualifiedName()
-							.equals(RequirementGroup.FULL_QUALIFIED_CATEGORY_NAME);
+			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
+			return (categoryFqn.equals(RequirementsSpecification.FULL_QUALIFIED_CATEGORY_NAME)
+					|| categoryFqn.equals(RequirementGroup.FULL_QUALIFIED_CATEGORY_NAME));
 		}
 		return false;
 	}

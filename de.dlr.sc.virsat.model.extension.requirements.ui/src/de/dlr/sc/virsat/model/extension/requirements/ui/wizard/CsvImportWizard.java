@@ -137,7 +137,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 					return Status.OK_STATUS;
 				} catch (IOException | CoreException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(),
-							"CatiaImportWizard: Failed to perform import!", e);
+							"CSVImportWizard: Failed to perform import!", e);
 					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					return Status.CANCEL_STATUS;
 				}
@@ -151,39 +151,25 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 	@Override
 	public void addPages() {
 		reviewTypePage = new CsvTypeReviewPage();
-		importPage = new CsvFileReqTypeSelectionPage(model, this, reviewTypePage);
+		importPage = new CsvFileReqTypeSelectionPage(model, reviewTypePage);
 		addPage(importPage);
 		addPage(reviewTypePage);
 		targetSelectionPage = new CsvImportTargetSelectionPage(model);
 		addPage(targetSelectionPage);
 	}
 
-	/**
-	 * @return the reader
-	 */
 	public CsvFileReader getReader() {
 		return reader;
 	}
 
-	/**
-	 * @param reader
-	 *            the reader to set
-	 */
 	public void setReader(CsvFileReader reader) {
 		this.reader = reader;
 	}
 
-	/**
-	 * @return the importer
-	 */
 	public CsvRequirementsImporter getImporter() {
 		return importer;
 	}
 
-	/**
-	 * @param importer
-	 *            the importer to set
-	 */
 	public void setImporter(CsvRequirementsImporter importer) {
 		this.importer = importer;
 	}

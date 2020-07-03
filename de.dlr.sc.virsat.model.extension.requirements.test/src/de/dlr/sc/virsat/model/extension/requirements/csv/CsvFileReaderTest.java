@@ -37,10 +37,11 @@ public class CsvFileReaderTest {
 	
 	private static final String SEPERATOR = ";";
 	
+	private static final String JSON_FILE_NAME = "dummy.csv";
+	
 	@Test
 	public void testReadCsvFile() throws IOException {
 		
-		final String JSON_FILE_NAME = "dummy.csv";
 		Path inputPath = Files.createTempDirectory("csvTest");
 		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
 		
@@ -53,23 +54,22 @@ public class CsvFileReaderTest {
 		
 		List<List<String>> importedCsvContent = reader.readCsvFile(csvFilePath.toString(), 0, -1);
 		
-		assertEquals("Number of lines not correct", 2, importedCsvContent.size());
+		assertEquals("Number of lines correct", 2, importedCsvContent.size());
 		
 		List<String> header = importedCsvContent.get(0);
-		assertEquals("Header not correct", header.get(0), HEADER_1);
-		assertEquals("Header not correct", header.get(1), HEADER_2);
-		assertEquals("Header not correct", header.get(2), HEADER_3);
+		assertEquals("Header correct", header.get(0), HEADER_1);
+		assertEquals("Header correct", header.get(1), HEADER_2);
+		assertEquals("Header correct", header.get(2), HEADER_3);
 		
 		List<String> reqLine = importedCsvContent.get(1);
-		assertEquals("Req att not correct", reqLine.get(0), REQ_ATT_1);
-		assertEquals("Req att not correct", reqLine.get(1), REQ_ATT_2);
-		assertEquals("Req att not correct", reqLine.get(2), REQ_ATT_3);
+		assertEquals("Req att correct", reqLine.get(0), REQ_ATT_1);
+		assertEquals("Req att correct", reqLine.get(1), REQ_ATT_2);
+		assertEquals("Req att correct", reqLine.get(2), REQ_ATT_3);
 	}
 	
 	@Test
 	public void testReadCsvFileWithNewLine() throws IOException {
 		
-		final String JSON_FILE_NAME = "dummy.csv";
 		Path inputPath = Files.createTempDirectory("csvTest");
 		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
 		
@@ -83,23 +83,22 @@ public class CsvFileReaderTest {
 		
 		List<List<String>> importedCsvContent = reader.readCsvFile(csvFilePath.toString(), 0, -1);
 		
-		assertEquals("Number of lines not correct", 2, importedCsvContent.size());
+		assertEquals("Number of lines correct", 2, importedCsvContent.size());
 		
 		List<String> header = importedCsvContent.get(0);
-		assertEquals("Header not correct", header.get(0), HEADER_1);
-		assertEquals("Header not correct", header.get(1), HEADER_2);
-		assertEquals("Header not correct", header.get(2), HEADER_3);
+		assertEquals("Header correct", header.get(0), HEADER_1);
+		assertEquals("Header correct", header.get(1), HEADER_2);
+		assertEquals("Header correct", header.get(2), HEADER_3);
 		
 		List<String> reqLine = importedCsvContent.get(1);
-		assertEquals("Req att not correct", reqLine.get(0), REQ_ATT_1);
-		assertEquals("Req att not correct", reqLine.get(1), REQ_ATT_2);
-		assertEquals("Req att not correct", reqLine.get(2), REQ_ATT_3);
+		assertEquals("Req att correct", reqLine.get(0), REQ_ATT_1);
+		assertEquals("Req att correct", reqLine.get(1), REQ_ATT_2);
+		assertEquals("Req att correct", reqLine.get(2), REQ_ATT_3);
 	}
 	
 	@Test
 	public void testReadCsvHeadline() throws IOException {
 		
-		final String JSON_FILE_NAME = "dummy.csv";
 		Path inputPath = Files.createTempDirectory("csvTest");
 		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
 		
@@ -112,16 +111,15 @@ public class CsvFileReaderTest {
 		
 		List<String> importedCsvHeader = reader.readCsvHeadline(csvFilePath.toString());
 		
-		assertEquals("Header not correct", importedCsvHeader.get(0), HEADER_1);
-		assertEquals("Header not correct", importedCsvHeader.get(1), HEADER_2);
-		assertEquals("Header not correct", importedCsvHeader.get(2), HEADER_3);
+		assertEquals("Header correct", importedCsvHeader.get(0), HEADER_1);
+		assertEquals("Header correct", importedCsvHeader.get(1), HEADER_2);
+		assertEquals("Header correct", importedCsvHeader.get(2), HEADER_3);
 		
 	}
 	
 	@Test
 	public void testReadCsvData() throws IOException {
 		
-		final String JSON_FILE_NAME = "dummy.csv";
 		Path inputPath = Files.createTempDirectory("csvTest");
 		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
 		
@@ -136,14 +134,14 @@ public class CsvFileReaderTest {
 		
 		List<String> header = importedCsvContent.get(0);
 		
-		assertEquals("Header not correct", header.get(0), HEADER_1);
-		assertEquals("Header not correct", header.get(1), HEADER_2);
-		assertEquals("Header not correct", header.get(2), HEADER_3);
+		assertEquals("Header correct", header.get(0), HEADER_1);
+		assertEquals("Header correct", header.get(1), HEADER_2);
+		assertEquals("Header correct", header.get(2), HEADER_3);
 
 		List<String> reqLine = importedCsvContent.get(1);
-		assertEquals("Req att not correct", reqLine.get(0), REQ_ATT_1);
-		assertEquals("Req att not correct", reqLine.get(1), REQ_ATT_2);
-		assertEquals("Req att not correct", reqLine.get(2), REQ_ATT_3);
+		assertEquals("Req att correct", reqLine.get(0), REQ_ATT_1);
+		assertEquals("Req att correct", reqLine.get(1), REQ_ATT_2);
+		assertEquals("Req att correct", reqLine.get(2), REQ_ATT_3);
 	}
 
 }

@@ -42,6 +42,8 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
  */
 public class CsvTypeReviewPage extends WizardPage implements SelectionListener, ModifyListener {
 
+	private static final String PAGE_TITLE = "Requirement Type Review";
+	
 	private static final String COLUMN_NAME_LABEL = "Column";
 	private static final String COLUMN_TYPE_LABEL = "Type";
 
@@ -74,18 +76,12 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 	 * Constructor
 	 */
 	protected CsvTypeReviewPage() {
-		super("Requirement Type Review");
-		setTitle("Requirement Type Review");
+		super(PAGE_TITLE);
+		setTitle(PAGE_TITLE);
 		setDescription("Check the selected import type for the requirements.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.
-	 * Composite)
-	 */
+
 	@Override
 	public void createControl(Composite parent) {
 
@@ -138,16 +134,12 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 		this.requirementType = requirementType;
 		this.typeNameText.setText(requirementType.getName());
 		isNewType = requirementType.getTypeInstance().eContainer() == null;
-		if (!isNewType) {
-			typeNameText.setEditable(false);
-		} else {
-			typeNameText.setEditable(true);
-		}
+		typeNameText.setEditable(isNewType);
 
 		table.clearAll();
 
-		for (String column : columnNames) {
-			Integer index = columnNames.indexOf(column);
+		for (int index = 0; index < columnNames.size(); index++) {
+			String column = columnNames.get(index);
 			TableItem item;
 			if (tableItems.size() <= index) {
 				item = new TableItem(table, SWT.NULL);
@@ -285,41 +277,21 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.
-	 * events.SelectionEvent)
-	 */
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 		if (e.getSource().equals(table) && e.detail == SWT.CHECK) {
 			TableItem item = (TableItem) e.item;
 			CCombo editor = editors.get(tableItems.indexOf(item));
-			if (item.getChecked()) {
-				editor.setEditable(true);
-			} else {
-				editor.setEditable(false);
-			}
+			editor.setEditable(item.getChecked());
 		}
 		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.
-	 * swt.events.SelectionEvent)
-	 */
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
-	 */
 	@Override
 	public void modifyText(ModifyEvent e) {
 		if (isNewType && e.getSource().equals(typeNameText)) {

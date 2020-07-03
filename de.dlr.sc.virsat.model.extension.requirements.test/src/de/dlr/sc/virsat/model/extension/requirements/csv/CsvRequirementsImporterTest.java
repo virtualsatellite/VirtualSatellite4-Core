@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+getWizard() * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -391,7 +391,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		assertEquals(EXPECTED_LITERAL_NUMBER, attType.getEnumeration().getLiterals().size());
 		
 		List<String> literals =  attType.getEnumeration().getLiterals().stream().
-			map(literal -> literal.getName()).
+			map(EnumerationLiteral::getName).
 			collect(Collectors.toList());
 		
 		assertTrue("Should contain all elements from first column", literals.contains(ATT_1_NAME));

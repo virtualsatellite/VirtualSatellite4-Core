@@ -45,6 +45,8 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
  */
 public class CsvFileReqTypeSelectionPage extends AImportExportPage implements ModifyListener {
 
+	private static final String PAGE_TITEL = "Requirements CSV Import";
+	
 	private static final String[] FILE_EXTENSIONS = { "*.csv" };
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
@@ -62,10 +64,9 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	private Text dataNumberEndField;
 	
 	private CsvTypeReviewPage typeReviewPage;
-	private CsvImportWizard wizard;
 
 	protected List<String> csvHeader;
-	protected RequirementType reqType;
+	protected RequirementType reqType = null;
 
 	/**
 	 * Standard constructor
@@ -76,14 +77,12 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	 * @param typeReviewPage
 	 * 			  the page that recieves the requirement type
 	 */
-	protected CsvFileReqTypeSelectionPage(IContainer model, CsvImportWizard containingWizard, CsvTypeReviewPage typeReviewPage) {
-		super("Requirements CSV Import");
-		setTitle("Requirements CSV Import");
+	protected CsvFileReqTypeSelectionPage(IContainer model, CsvTypeReviewPage typeReviewPage) {
+		super(PAGE_TITEL);
+		setTitle(PAGE_TITEL);
 		setModel(model);
 		this.typeReviewPage = typeReviewPage;
-		this.wizard = containingWizard;
-		setDescription(
-				"Please select a CSV file and a requirement type for the imported requirements. To create a new type, select a container configuration.");
+		setDescription("Please select a CSV file and a requirement type for the imported requirements. To create a new type, select a container configuration.");
 	}
 
 	@Override
@@ -174,10 +173,9 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	public boolean isSelectionValid() {
 		Object selection = getSelection();
 		if (selection instanceof CategoryAssignment) {
-			return ((CategoryAssignment) selection).getType().getFullQualifiedName()
-					.equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME)
-					|| ((CategoryAssignment) selection).getType().getFullQualifiedName()
-							.equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
+			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
+			return categoryFqn.equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME) 
+					|| categoryFqn.equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
 		}
 		return false;
 	}
@@ -187,50 +185,45 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		return FILE_EXTENSIONS;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage#isComplete()
-	 */
 	@Override
 	public boolean isComplete() {
 
-		if (isDestinationSelected && isCurrentPage()) {
-			if (!headerNumberField.getText().equals("") & !seperatorField.getText().equals("") 
-				& !dataNumberStartField.getText().equals("")) {
+		if (isDestinationSelected 
+				&& isCurrentPage() 
+				&& !headerNumberField.getText().equals("")
+				&& !seperatorField.getText().equals("") 
+				&& !dataNumberStartField.getText().equals("")
+				&& isSelectionValid()) {
 
-				final String destination = getDestination();
-	
-				if (isSelectionValid()) {
-					CategoryAssignment selection = (CategoryAssignment) getSelection();
-					Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
-					ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
-					Concept activeReqConcept = activeConceptHelper.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
-			
-					try {
-						wizard.getReader().setSeparator(getSeparator());
-						wizard.getReader().setHeaderLine(getHeaderLineNumber());
-						csvHeader = wizard.getReader().readCsvHeadline(destination);
-					} catch (IOException e) {
-						Status status = new Status(Status.ERROR, Activator.getPluginId(),
-								"CatiaImportWizard: Failed to perform import! Selected file not valid!", e);
-						StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
-					}
-					
-					if (selection.getType().getFullQualifiedName().equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
-						typeReviewPage.setInput(csvHeader, new RequirementType(selection));
-					}
-					if (selection.getType().getFullQualifiedName().equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME)) {
-						reqType = wizard.getImporter().prepareRequirementType(activeReqConcept, csvHeader);
-						typeReviewPage.setInput(csvHeader, reqType);
-					}
-					
-					return true;
-				}
-				
+			CategoryAssignment selection = (CategoryAssignment) getSelection();
+			Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
+			ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
+			Concept activeReqConcept = activeConceptHelper
+					.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
+			final String destination = getDestination();
+
+			try {
+				getWizard().getReader().setSeparator(getSeparator());
+				getWizard().getReader().setHeaderLine(getHeaderLineNumber());
+				csvHeader = getWizard().getReader().readCsvHeadline(destination);
+			} catch (IOException e) {
+				Status status = new Status(Status.ERROR, Activator.getPluginId(),
+						"CSVImportWizard: Failed to perform import! Selected file not valid!", e);
+				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+				return false;
 			}
-		}
 
+			if (selection.getType().getFullQualifiedName().equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
+				typeReviewPage.setInput(csvHeader, new RequirementType(selection));
+				reqType = new RequirementType(selection);
+			}
+			if (selection.getType().getFullQualifiedName()
+					.equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME)) {
+				reqType = getWizard().getImporter().prepareRequirementType(activeReqConcept, csvHeader);
+				typeReviewPage.setInput(csvHeader, reqType);
+			}
+			return true;
+		}
 		return false;
 	}
 	
@@ -271,11 +264,6 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.dlr.sc.virsat.uiengine.ui.wizard.ATreeViewerPage#getSelection()
-	 */
 	@Override
 	public Object getSelection() {
 		Object selected = super.getSelection();
@@ -285,36 +273,18 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		return selected;
 	}
 
-	/**
-	 * Get the selected requirement type 
-	 * @return the requirement type for import
-	 */
-	public RequirementType getRequirementsImportType() {
-		Object selection = getSelection();
-		if (selection instanceof CategoryAssignment) {
-			if (((CategoryAssignment) selection).getType().getFullQualifiedName()
-					.equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME)) {
-				
-				return new RequirementType((CategoryAssignment) selection);
-
-			} else if (((CategoryAssignment) selection).getType().getFullQualifiedName()
-					.equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
-
-				return reqType;
-				
-			}
-		}
-		return null;
-	}
-
-
 	@Override
 	public void modifyText(ModifyEvent e) {
-		wizard.getReader().setDataStartLine(getFristDataLineNumber());
-		wizard.getReader().setDataEndLine(getLastDataLineNumber());
-		wizard.getReader().setHeaderLine(getHeaderLineNumber());
-		wizard.getReader().setSeparator(getSeparator());
+		getWizard().getReader().setDataStartLine(getFristDataLineNumber());
+		getWizard().getReader().setDataEndLine(getLastDataLineNumber());
+		getWizard().getReader().setHeaderLine(getHeaderLineNumber());
+		getWizard().getReader().setSeparator(getSeparator());
 		setPageComplete(isComplete());
+	}
+	
+	@Override
+	public CsvImportWizard getWizard() {
+		return (CsvImportWizard) super.getWizard();
 	}
 
 }
