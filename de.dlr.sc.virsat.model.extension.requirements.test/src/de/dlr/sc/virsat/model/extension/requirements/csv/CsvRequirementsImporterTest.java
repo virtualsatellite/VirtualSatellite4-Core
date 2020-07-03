@@ -385,7 +385,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		attType.setType(RequirementAttribute.TYPE_Enumeration_NAME);
 		// Get enumeration literals from the data to import
 		csvContentMatrix.remove(0); //remove header line
-		importer.customizeReqTypeFromData(newType, csvContentMatrix, mapping);
+		importer.fillEnumAttributes(newType, csvContentMatrix, mapping);
 		
 		final int EXPECTED_LITERAL_NUMBER = 3; // Three data lines, each name is added as enumeration literal
 		assertEquals(EXPECTED_LITERAL_NUMBER, attType.getEnumeration().getLiterals().size());

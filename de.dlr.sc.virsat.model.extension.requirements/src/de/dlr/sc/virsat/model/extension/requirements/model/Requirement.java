@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
 
 // *****************************************************************
 // * Class Declaration
@@ -86,10 +87,6 @@ public  class Requirement extends ARequirement {
 				newReqName.append(child.getValue());
 			}
 		}
-		String reqIdentifierName = newReqName.toString();
-		reqIdentifierName = reqIdentifierName.replaceAll(" ", "");
-		reqIdentifierName = reqIdentifierName.replaceAll("-", "");
-		reqIdentifierName = reqIdentifierName.replaceAll("_", "");
-		return reqIdentifierName;
+		return new RequirementHelper().cleanEntityName(newReqName.toString());
 	}
 }

@@ -155,9 +155,7 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 				createDropDownEditor(item, ATTRIBUTE_TYPES);
 			} else {
 				if (index < requirementType.getAttributes().size()) {
-					item.setText(TYPE_COLUMN_INDEX,
-							requirementType.getName() + TYPE_LABEL_REQUIREMENT_ATTRIBUTE_SEPARATOR
-									+ requirementType.getAttributes().get(index).getName());
+					item.setText(TYPE_COLUMN_INDEX, getAttributeTableLabel(requirementType, requirementType.getAttributes().get(index)));
 					item.setChecked(true);
 				} else {
 					item.setChecked(false);
@@ -165,7 +163,7 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 				}
 				// If we use an exiting type then just try to map them from the attribute index
 				createDropDownEditor(item, requirementType.getAttributes().stream().map(
-						att -> requirementType.getName() + TYPE_LABEL_REQUIREMENT_ATTRIBUTE_SEPARATOR + att.getName())
+						att -> getAttributeTableLabel(requirementType, att))
 						.collect(Collectors.toList()));
 			}
 		}
@@ -205,9 +203,8 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 	 */
 	public Map<Integer, RequirementAttribute> getAttributeMapping() {
 
-		for (TableItem item : tableItems) {
-			Integer index = tableItems.indexOf(item);
-
+		for (int index = 0; index < tableItems.size(); index++) {
+			TableItem item = tableItems.get(index);
 			if (item.getChecked()) {
 				if (isNewType) {
 					String selectedType = editors.get(index).getText();
@@ -297,6 +294,10 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 		if (isNewType && e.getSource().equals(typeNameText)) {
 			requirementType.setName(typeNameText.getText());
 		} 
+	}
+	
+	protected String getAttributeTableLabel(RequirementType reqType, RequirementAttribute attribute) {
+		return reqType.getName() + TYPE_LABEL_REQUIREMENT_ATTRIBUTE_SEPARATOR + attribute.getName();
 	}
 
 }

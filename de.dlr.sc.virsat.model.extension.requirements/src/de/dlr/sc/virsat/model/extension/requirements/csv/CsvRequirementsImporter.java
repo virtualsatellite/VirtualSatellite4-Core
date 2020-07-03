@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
@@ -137,11 +138,9 @@ public class CsvRequirementsImporter {
 
 		// Create a requirement type for the import
 		CompoundCommand importCommand = new CompoundCommand();
-		customizeReqTypeFromData(nonPersistedType, csvContentMatrix, attributeMapping);
-		RequirementType reqType = createReqType(importCommand, newImportTypeContainer, nonPersistedType);
-
-		importCommand.append(
-				loadRequirements(editingDomain, csvContentMatrix, targetSpecificationList, attributeMapping, reqType));
+		fillEnumAttributes(nonPersistedType, csvContentMatrix, attributeMapping);
+		importCommand.append(newImportTypeContainer.getTypeDefinitions().add(editingDomain, nonPersistedType));
+		importCommand.append(loadRequirements(editingDomain, csvContentMatrix, targetSpecificationList, attributeMapping, nonPersistedType));
 
 		return importCommand;
 	}
@@ -230,39 +229,28 @@ public class CsvRequirementsImporter {
 	}
 	
 	/**
-	 * Update a new requirement type from a set of CSV data
+	 * Update a enumerations in a new requirement type from a set of CSV data
 	 * @param type the not yet persisted requirement type
 	 * @param csvContentMatrix the CSV data
 	 * @param attributeMapping the mapping of column index to attribute
 	 */
-	protected void customizeReqTypeFromData(RequirementType type, List<List<String>> csvContentMatrix, Map<Integer, RequirementAttribute> attributeMapping) {
-		for (RequirementAttribute att : type.getAttributes()) {
-			
+	protected void fillEnumAttributes(RequirementType type, List<List<String>> csvContentMatrix, Map<Integer, RequirementAttribute> attributeMapping) {
+		
+		for (Entry<Integer, RequirementAttribute> entry : attributeMapping.entrySet()) {
+			RequirementAttribute att = entry.getValue();
 			if (att.getType().equals(RequirementAttribute.TYPE_Enumeration_NAME)) {
-				
-				Integer columnIndexOfAttribute = null;
-				for (Entry<Integer, RequirementAttribute> entry : attributeMapping.entrySet()) {
-					if (entry.getValue().equals(att)) {
-						columnIndexOfAttribute = entry.getKey();
+				Set<String> enumerationLiteralValues = new HashSet<>();
+				int columnIndexOfAttribute = entry.getKey();
+				for (List<String> reg : csvContentMatrix) {
+					if (reg.size() > columnIndexOfAttribute) {
+						enumerationLiteralValues.add(reg.get(columnIndexOfAttribute));
 					}
 				}
-				
-				if (columnIndexOfAttribute != null) {
-					Set<String> enumerationLiteralValues = new HashSet<>();
-					for (List<String> reg : csvContentMatrix) {
-						if (reg.size() > columnIndexOfAttribute) {
-							enumerationLiteralValues.add(reg.get(columnIndexOfAttribute));
-						}
-					}
-					for (String literal : enumerationLiteralValues) {
-						if (!literal.equals("")) {
-							EnumerationLiteral literalBean = new EnumerationLiteral(reqConcept);
-							String literalName = literal.replaceAll(" ", "");
-							literalName = literalName.replaceAll("-", "");
-							literalName = literalName.replaceAll("_", "");
-							literalBean.setName(literalName);
-							att.getEnumeration().getLiterals().add(literalBean);
-						}
+				for (String literal : enumerationLiteralValues) {
+					if (!literal.equals("")) {
+						EnumerationLiteral literalBean = new EnumerationLiteral(reqConcept);
+						literalBean.setName(new RequirementHelper().cleanEntityName(literal));
+						att.getEnumeration().getLiterals().add(literalBean);
 					}
 				}
 			}

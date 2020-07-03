@@ -144,13 +144,9 @@ public abstract class AImportExportPage extends ATreeViewerPage {
 		return destinationField.getText();
 	}
 
-	/**
-	 * Checks if the page has been sufficiently filled with user data
-	 * 
-	 * @return true iff the page is complete
-	 */
+	@Override
 	public boolean isComplete() {
-		return isDestinationSelected && isSelectionValid();
+		return isDestinationSelected && super.isComplete();
 	}
 	
 }
