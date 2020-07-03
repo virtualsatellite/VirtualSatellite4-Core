@@ -12,6 +12,10 @@ package de.dlr.sc.virsat.swtbot.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import de.dlr.sc.virsat.swtbot.test.versioningbackend.SvnVersioningBackendTest;
+
+import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendTest;
+
 /**
  * 
  * @author muel_s8
@@ -25,10 +29,14 @@ import org.junit.runners.Suite;
 	EditorTest.class,
 	NewProjectWizardTest.class,
 	CutCopyDeleteUndoTest.class,
-	InheritanceTest.class, 
-	CalculationTest.class,   
+	InheritanceTest.class,
+	CalculationTest.class,
 	ProductStructureTest.class,
-	RoleManagementTest.class
+	RoleManagementTest.class,
+	GitVersioningBackendTest.class,
+	SvnVersioningBackendTest.class,
+	QudvWizardTest.class,
+	ValidatorTest.class
 	})
 
 public class ProjectUiAllTests {

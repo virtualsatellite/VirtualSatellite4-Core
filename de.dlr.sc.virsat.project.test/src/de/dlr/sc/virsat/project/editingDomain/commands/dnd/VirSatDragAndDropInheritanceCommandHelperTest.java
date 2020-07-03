@@ -9,12 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.editingDomain.commands.dnd;
 
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import java.util.Collections;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.junit.Assert.assertFalse;
+
+import java.util.Collections;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;

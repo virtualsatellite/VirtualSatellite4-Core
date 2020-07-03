@@ -126,7 +126,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IResource iResource = delta.getResource();
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Obtained equations from Resource (" + iResource + ")"));
-				    	
+ 
 					int resourceDeltaKind = delta.getKind();
 					boolean isRemoved = resourceDeltaKind == IResourceDelta.REMOVED;
 					if ((iResource instanceof IFile) && (!isRemoved)) {
@@ -195,14 +195,14 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		
 		try {
 			resourceSet.getRepository();
-			EcoreUtil.resolveAll(resourceSet);
+			resourceSet.loadAllDvlmResources();
 			
 			if (resourceSet.hasError()) {
 				reportResourceSetErrors(resourceSet);
 				return Collections.EMPTY_LIST;
 			}
 			
-			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet, null, IEquationSectionContainer.class, true);
+			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getDvlmResources(), null, IEquationSectionContainer.class, true);
 			
 			for (IEquationSectionContainer container : equationSectionContainers) {
 				EquationSection section = container.getEquationSection();
@@ -305,7 +305,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 			return;
 		}
 		
-		for (EvaluationProblem equationProblem : equationProblems) {			
+		for (EvaluationProblem equationProblem : equationProblems) {
 			vemHelper.createEvaluationProblemMarker(equationProblem);
 		}
 	}

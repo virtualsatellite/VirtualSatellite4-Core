@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementInstanceTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainNonDVLMTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandAcceptanceTest;
+import de.dlr.sc.virsat.project.resources.dmf.DmfResourceTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -48,7 +49,8 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({	DvlmLatestConceptValidatorTest.class, 
+@SuiteClasses({	DmfResourceTest.class,
+				DvlmLatestConceptValidatorTest.class, 
 				VirSatClipboardCommandAcceptanceTest.class,
 				VirSatTransactionalEditingDomainNonDVLMTest.class,
 				DeleteStructuralElementInstanceCommandAcceptanceTest.class,	

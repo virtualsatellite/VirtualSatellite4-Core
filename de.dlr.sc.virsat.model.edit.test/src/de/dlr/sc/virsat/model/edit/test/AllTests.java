@@ -14,7 +14,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.concept.calculation.QualifiedEquationObjectHelperTest;
+import de.dlr.sc.virsat.model.concept.lists.TypeSafeComposedPropertyBeanListTest;
 import de.dlr.sc.virsat.model.concept.lists.TypeSafeEReferenceArrayInstanceListTest;
+import de.dlr.sc.virsat.model.concept.lists.TypeSafeReferencePropertyBeanListTest;
 import de.dlr.sc.virsat.model.concept.migrator.AMigratorTest;
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigrationHelperTest;
 import de.dlr.sc.virsat.model.concept.migrator.ConceptMigratorTest;
@@ -124,7 +126,9 @@ import junit.framework.JUnit4TestAdapter;
 				SetArrayInstanceCommandTest.class,
 				SetValuePropertyInstanceCommandTest.class,
 				PropertyInstanceHelperTest.class,
-				TypeSafeEReferenceArrayInstanceListTest.class
+				TypeSafeEReferenceArrayInstanceListTest.class,
+				TypeSafeReferencePropertyBeanListTest.class,
+				TypeSafeComposedPropertyBeanListTest.class
 				})
 
 /**

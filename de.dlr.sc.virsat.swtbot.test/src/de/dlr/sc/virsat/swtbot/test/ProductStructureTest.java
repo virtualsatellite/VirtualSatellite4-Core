@@ -54,7 +54,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		bot.button("Rename").click();
 		bot.text().setText("BATTERY");
 		renameField("Assembly Tree Name", "New AssemblyTree");
-		closeDialog("Finish");
+		finishDialog();
 		
 		SWTBotTreeItem configurationTree = repositoryNavigatorItem.getNode("AT: New AssemblyTree");
 		expand(configurationTree);
@@ -79,7 +79,7 @@ public class ProductStructureTest extends ASwtBotTestCase {
 		bot.button("Add New Element").click();
 		bot.tree(1).getTreeItem("EC: AOCS").select();
 		bot.button("Delete Element").click();
-		closeDialog("Finish");
+		finishDialog();
 		
 		waitForEditingDomainAndUiThread();
 		

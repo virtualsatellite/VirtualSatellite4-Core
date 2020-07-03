@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+		<concept
+			id="de.dlr.sc.virsat.model.extension.tests"
+			version="1.1"
+			xmi="concept/concept.xmi">
+		</concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="de.dlr.sc.virsat.model.extension.tests"
+				class="de.dlr.sc.virsat.model.extension.tests.validator.TestsValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryComposition"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryReference"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryIntrinsicArray"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryCompositionArray"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArray">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryReferenceArray"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryBeanA"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryBeanB"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanB">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryBeanConcrete"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanConcrete">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryBase"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBase">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCategoryExtends"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCategoryExtends">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestParameter"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestParameter">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestMassParameters"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestMassParameters">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.TestCrossLinkedParametersWithCalculation">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.tests.EReferenceTest"
+			caBean="de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest">
+		</CategoryAssignmentBean>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestStructuralElement"
+			seiBean="de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement">
+		</StructuralElementInstanceBean>
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.tests.TestStructuralElementOther"
+			seiBean="de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther">
+		</StructuralElementInstanceBean>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.tests"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.tests"
+		version="1.1"
+		class="de.dlr.sc.virsat.model.extension.tests.migrator.Migrator1v1"
+		xmi="concept/concept_v1_1.xmi">
+	</migrator>
+</extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+<extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated concept -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dmf/v1.1/tests"
+            class="de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage"
+            genModel="concept/concept.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated concept -->
+      <parser
+            type="tests"
+            class="de.dlr.sc.virsat.model.extension.tests.tests.util.TestsResourceFactoryImpl"/>
+   </extension>
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

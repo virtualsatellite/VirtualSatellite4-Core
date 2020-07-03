@@ -12,7 +12,9 @@ package de.dlr.sc.virsat.team.ui.handler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 
 import de.dlr.sc.virsat.team.ui.util.VersionControlJob;
@@ -37,7 +39,9 @@ public abstract class AVersionControlUpdateHandler extends AVersionControlHandle
 			
 			@Override
 			protected void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception {
-				doUpdate(project, monitor);
+				SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+				doUpdate(project, subMonitor.split(1));
+				project.refreshLocal(IResource.DEPTH_INFINITE, subMonitor.split(1));
 			}
 		};
 		

@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.qudv.ui.wizards.pages;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,6 +27,11 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
  *
  */
 public abstract class AQuantityKindWizardPage extends WizardPage {
+	
+	public static final String NAME_FIELD = "Name";
+	public static final String SYMBOL_FIELD = "Symbol";
+	public static final String DESCRIPTION_FIELD = "Description";
+	public static final String DEFINITION_URI_FIELD = "DefinitionURI";
 	
 	protected Text name;
 	protected Text symbol;
@@ -73,42 +76,30 @@ public abstract class AQuantityKindWizardPage extends WizardPage {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		
 		//First line of widgets
-		Label label1 = new Label(container, SWT.NULL);
-		label1.setText("Name");
+		Label nameLabel = new Label(container, SWT.NULL);
+		nameLabel.setText(NAME_FIELD);
 		name = new Text(container, SWT.BORDER | SWT.SINGLE); 
 		name.setText("");
 		name.setLayoutData(gd);
-		name.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				updateWidgets();
-			}
-
-		});
-		
+		name.addModifyListener(e -> updateWidgets());
 		
 		//Second line of widgets
-		Label label2 = new Label(container, SWT.NULL);
-		label2.setText("Symbol");
+		Label symbolLabel = new Label(container, SWT.NULL);
+		symbolLabel.setText(SYMBOL_FIELD);
 		symbol = new Text(container, SWT.BORDER | SWT.SINGLE);
 		symbol.setText("");
 		symbol.setLayoutData(gd);
 		
 		//Third line of widgets
-		Label label3 = new Label(container, SWT.NULL);
-		label3.setText("Description");
+		Label descriptionLabel = new Label(container, SWT.NULL);
+		descriptionLabel.setText(DESCRIPTION_FIELD);
 		description = new Text(container, SWT.BORDER | SWT.SINGLE);
 		description.setText("");
 		description.setLayoutData(gd);
 		
 		//Forth line of widgets
-		Label label4 = new Label(container, SWT.NULL);
-		label4.setText("DefinitionURI");
+		Label definitionUriLabel = new Label(container, SWT.NULL);
+		definitionUriLabel.setText(DEFINITION_URI_FIELD);
 		definitionURI = new Text(container, SWT.BORDER | SWT.SINGLE);
 		definitionURI.setText("");
 		definitionURI.setLayoutData(gd);
@@ -118,7 +109,6 @@ public abstract class AQuantityKindWizardPage extends WizardPage {
     	gridData.horizontalSpan = 2;
     	separator = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
     	separator.setLayoutData(gridData);
-		
 	}
 	
 	/**

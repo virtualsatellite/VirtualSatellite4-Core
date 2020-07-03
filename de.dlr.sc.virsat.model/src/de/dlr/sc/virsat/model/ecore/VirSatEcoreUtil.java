@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -108,9 +110,24 @@ public class VirSatEcoreUtil extends EcoreUtil {
 	 * @return the list of objects found
 	 */
 	public static <T extends EObject> List<T> getAllContentsOfType(ResourceSet resourceSet, Resource skipResource, Class<T> type, boolean resolve) {
+		if (resolve) {
+			resolveAll(resourceSet);
+		}
+		return getAllContentsOfType(resourceSet.getResources(), skipResource, type, resolve);
+	}
+	
+	/**
+	 * Call this method to find all objects of a given type in a collection of resources 
+	 * @param resourceSet the resourceSet in which to search for the objects
+	 * @param skipResource a resource which should be skipped when looking for the containments of the given type. Can be set to null.
+	 * @param type the class that specifies the type to look for
+	 * @param <T> the type of object that should be looked for
+	 * @param resolve whether to resolve proxies or not
+	 * @return the list of objects found
+	 */
+	public static <T extends EObject> List<T> getAllContentsOfType(Collection<Resource> resources, Resource skipResource, Class<T> type, boolean resolve) {
 		List<T> result = new ArrayList<T>();
-		resolveAll(resourceSet);
-		resourceSet.getResources().forEach((resource) -> {
+		resources.forEach((resource) -> {
 			if (resource != skipResource) {
 				TreeIterator<?> iterator = getAllContents(resource, resolve);
 				result.addAll(getAllContentsOfType(iterator, type));
@@ -261,12 +278,12 @@ public class VirSatEcoreUtil extends EcoreUtil {
 	 * are about to be deleted anyway. The method does not account for superTI links from the IInheritanceLink interface.
 	 * @param deletedObjects a collection of objects to be deleted
 	 * @param resSet the resourceSet from which the objects will be deleted
-	 * @return a Map with the objects that are referenced providing a list with all the objects actually referencing
+	 * @return a map from referenced objects to sets of referencing objects
 	 */
-	public static Map<EObject, List<EObject>> getReferencingObjectsForDelete(Collection<? extends EObject> deletedObjects, ResourceSet resSet) {
+	public static Map<EObject, Set<EObject>> getReferencingObjectsForDelete(Collection<? extends EObject> deletedObjects, ResourceSet resSet) {
 		// This map brings the referencing objects into relation with the ones to be deleted
 		// All objects which are referenced by another one from outside the containment will be found in this map.
-		Map<EObject, List<EObject>> mapDeletedObjectReferencedBy = new HashMap<>();
+		Map<EObject, Set<EObject>> mapDeletedObjectReferencedBy = new HashMap<>();
 		
 		// Find all contained objects that may get deleted with this call
 		Collection<EObject> containedDeletedObjects = getAllContentsOfType(deletedObjects, EObject.class, true);
@@ -299,7 +316,7 @@ public class VirSatEcoreUtil extends EcoreUtil {
 				if ((!isInheritanceLink) && (!isReferenceConatined) && (referencingObject instanceof IInstance)) {
 					// Create the List of referencing objects for the to be deleted object in case it does not yet exist
 					if (!mapDeletedObjectReferencedBy.containsKey(deletedObject)) {
-						mapDeletedObjectReferencedBy.put(deletedObject, new ArrayList<EObject>());
+						mapDeletedObjectReferencedBy.put(deletedObject, new HashSet<>());
 					}
 					
 					// and now remember the referencing object in the list.
