@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Test;
@@ -294,7 +295,7 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testIsDvlmFile() {
+	public void testIsDvlmFileIResource() {
 		IFile correctFile = testProject.getFile(new Path("correctFVile.dvlm"));
 		IFile incorrectFile = testProject.getFile(new Path("incorrectFVile.other"));
 		
@@ -302,7 +303,21 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertFalse("Is No DVLM file", VirSatProjectCommons.isDvlmFile(incorrectFile));
 	}
 	
-
+	@Test
+	public void testIsDvlmFileEMFResource() {
+		Resource dvlmResource = new ResourceImpl();
+		dvlmResource.setURI(URI.createFileURI("correctFVile.dvlm"));
+		Resource nonDvlmResource = new ResourceImpl();
+		nonDvlmResource.setURI(URI.createFileURI("correctFVile.other"));
+		
+		assertTrue("Is DVLM file", VirSatProjectCommons.isDvlmFile(dvlmResource));
+		assertFalse("Is No DVLM file", VirSatProjectCommons.isDvlmFile(nonDvlmResource));
+		
+		assertFalse("Resource has no URI", VirSatProjectCommons.isDvlmFile(new ResourceImpl()));
+		Resource resource = null;
+		assertFalse("NUll resource is no DVLM file", VirSatProjectCommons.isDvlmFile(resource));
+	}
+	
 	@Test
 	public void testGetStructuralElementInstanceFullPath() {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();

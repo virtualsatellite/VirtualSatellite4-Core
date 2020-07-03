@@ -232,7 +232,7 @@ public class DomainRoundView extends ViewPart {
 				return Collections.EMPTY_LIST;
 			}
 			
-			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet, null, IEquationSectionContainer.class, true);
+			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getDvlmResources(), null, IEquationSectionContainer.class, true);
 			
 			for (IEquationSectionContainer container : equationSectionContainers) {
 				EquationSection section = container.getEquationSection();

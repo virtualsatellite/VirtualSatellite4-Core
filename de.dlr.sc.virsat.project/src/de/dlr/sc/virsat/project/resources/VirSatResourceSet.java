@@ -712,6 +712,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get a list of all DVLM resources
+	 * @return the list of DVLM resources
+	 */
+	public List<Resource> getDvlmResources() {
+		List<Resource> dvlmResources = new ArrayList<Resource>();
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				dvlmResources.add(resource);
+			}
+		}
+		return dvlmResources;
+	}
+		
 
 	/**
 	 * Method to receive the named core object
@@ -766,7 +781,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 			
 			Repository repo = getRepository();
-			EcoreUtil.resolveAll(this);
+			loadAllDvlmResources();
 			
 			EcoreUtil.getAllContents(this, true).forEachRemaining((object) -> {
 				if (object instanceof StructuralElementInstance) {
@@ -1145,7 +1160,9 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
-		if (resource != null) {
+		// Only run diagnostic on DVLM files as other resource might result in a huge chain of
+		// resource that have to be resolved (e.g. diagrams also have references to the diagram infrastructure...)
+		if (resource != null && VirSatProjectCommons.isDvlmFile(resource)) {
 			// Run individualDiagnostics and merge them
 			
 			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
@@ -1290,5 +1307,16 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		// all other resources should be referenced by this resource as an entry point.
 		getRepositoryResource();
 		EcoreUtil.resolveAll(this);
+	}
+	
+	/**
+	 * Load and resolve all DVLM resources in this resource set
+	 */
+	public void loadAllDvlmResources() {
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				EcoreUtil.resolveAll(resource);
+			}
+		}
 	}
 }

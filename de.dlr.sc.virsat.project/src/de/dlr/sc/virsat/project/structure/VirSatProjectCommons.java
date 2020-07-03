@@ -412,6 +412,18 @@ public class VirSatProjectCommons {
 	}
 	
 	/**
+	 * tells you if the file has the extension VirSat uses to store the DVLM model
+	 * @param resource EMF Resource that should be checked
+	 * @return true in case the file has the correct file ending
+	 */
+	public static boolean isDvlmFile(Resource resource) {
+		if (resource == null || resource.getURI() == null) {
+			return false;
+		}
+		return resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
+	}
+	
+	/**
 	 * Method to get Workspace Resource for a given EObject
 	 * @param eObject The eObject for which to hand back a Workspace Resource
 	 * @return The Workspace Resource that contains the eObject as IResource

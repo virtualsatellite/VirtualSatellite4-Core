@@ -489,7 +489,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			}
 			
 			// Remove dangling references only if this the user has write access to this resource
-			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource, this); 
+			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource, this) && VirSatProjectCommons.isDvlmFile(resource); 
 			
 			// for dangling references call the Utils to remove them before actually saving them
 			if (writeRemovedDanglingReferences) {

@@ -195,14 +195,14 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		
 		try {
 			resourceSet.getRepository();
-			EcoreUtil.resolveAll(resourceSet);
+			resourceSet.loadAllDvlmResources();
 			
 			if (resourceSet.hasError()) {
 				reportResourceSetErrors(resourceSet);
 				return Collections.EMPTY_LIST;
 			}
 			
-			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet, null, IEquationSectionContainer.class, true);
+			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getDvlmResources(), null, IEquationSectionContainer.class, true);
 			
 			for (IEquationSectionContainer container : equationSectionContainers) {
 				EquationSection section = container.getEquationSection();
