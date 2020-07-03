@@ -201,6 +201,24 @@ public class VirSatEcoreUtilTest {
 		
 		assertEquals("Found correct amount of Elements", EXPECTED_UVPI_SINGLE, allUvpi2.size());
 		assertEquals("Found correct amount of Elements", EXPECTED_VPI_SINGLE, allVpi2.size());
+		
+		List<UnitValuePropertyInstance> allUvpi3 = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getResources(), resource1, UnitValuePropertyInstance.class, true);
+		List<ValuePropertyInstance> allVpi3 = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getResources(), resource1, ValuePropertyInstance.class, true);
+		
+		assertEquals("Found correct amount of Elements", EXPECTED_UVPI_SINGLE, allUvpi3.size());
+		assertEquals("Found correct amount of Elements", EXPECTED_VPI_SINGLE, allVpi3.size());
+		
+		// Unload operation needs resources to have URI
+		resource1.setURI(URI.createFileURI("someUri.dvlm"));
+		resource2.setURI(URI.createFileURI("someUri2.dvlm"));
+		resource1.unload();
+		resource2.unload();
+		
+		List<UnitValuePropertyInstance> allUvpiUnloaded = VirSatEcoreUtil.getAllContentsOfType(resourceSet, resource1, UnitValuePropertyInstance.class, false);
+		List<ValuePropertyInstance> allVpiUnloaded = VirSatEcoreUtil.getAllContentsOfType(resourceSet, resource1, ValuePropertyInstance.class, false);
+		
+		assertTrue("Only unloaded resources do not contain any elements if resources should not be resolved", allUvpiUnloaded.isEmpty());
+		assertTrue("Only unloaded resources do not contain any elements if resources should not be resolved", allVpiUnloaded.isEmpty());
 	}
 
 	@Test
