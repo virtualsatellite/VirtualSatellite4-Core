@@ -33,6 +33,8 @@ public class CsvFileReader {
 	private int headerLine;
 	private int dataStartLine;
 	private int dataEndLine;
+	
+	protected Iterable<CSVRecord> records = null;
 
 	/**
 	 * Default constructor
@@ -58,6 +60,12 @@ public class CsvFileReader {
 		this.dataEndLine = dataEndLine;
 	}
 	
+	public void parseFile(String filePath) throws IOException {
+		Path csvFilePath = Paths.get(filePath);
+		Reader fr = new FileReader(csvFilePath.toFile());
+		records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
+	}
+	
 	/**
 	 * Read the headline of CSV file
 	 * 
@@ -65,8 +73,8 @@ public class CsvFileReader {
 	 * @return the list of columns
 	 * @throws IOException throws exception if file could not be read
 	 */
-	public List<String> readCsvHeadline(String filePath) throws IOException {
-		return readCsvFile(filePath, headerLine, headerLine).get(0);
+	public List<String> readCsvHeadline() {
+		return readCsvFile(headerLine, headerLine).get(0);
 	}
 	
 	/**
@@ -75,27 +83,23 @@ public class CsvFileReader {
 	 * @return a matrix of strings
 	 * @throws IOException throws IO exception if file could not be read
 	 */
-	public List<List<String>> readCsvData(String filePath) throws IOException {
-		return readCsvFile(filePath, dataStartLine, dataEndLine);
+	public List<List<String>> readCsvData() {
+		return readCsvFile(dataStartLine, dataEndLine);
 	}
 	
 	/**
-	 * Reads a CSV file and returns it as matrix
+	 * Reads a CSV values and returns them as matrix. File has to be parsed before.
 	 * 
-	 * @param filePath
-	 *            the file path to the CSV file
 	 * @param startLine the first line number to read
 	 * @param endLine the last line number to read
 	 * @return the CSV content as matrix of two lists
-	 * @throws IOException throws an IO exception
 	 */
-	public List<List<String>> readCsvFile(String filePath, int startLine, int endLine) throws IOException {
+	public List<List<String>> readCsvFile(int startLine, int endLine) {
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();
-
-		Path csvFilePath = Paths.get(filePath);
 		
-		Reader fr = new FileReader(csvFilePath.toFile());
-		Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
+		if (records == null) {
+			return csvContentMatrix;
+		}
 		
 		int lineNumber = 0;
 		for (CSVRecord record : records) {
@@ -113,64 +117,38 @@ public class CsvFileReader {
 		}
 		
 		return csvContentMatrix;
-
 	}
 
-	/**
-	 * @return the separator
-	 */
 	public String getSeparator() {
 		return separator;
 	}
 
-	/**
-	 * @param separator the separator to set
-	 */
 	public void setSeparator(String separator) {
 		this.separator = separator;
 	}
 
-	/**
-	 * @return the headerLine
-	 */
 	public int getHeaderLine() {
 		return headerLine;
 	}
 
-	/**
-	 * @param headerLine the headerLine to set
-	 */
 	public void setHeaderLine(int headerLine) {
 		this.headerLine = headerLine;
 	}
 
-	/**
-	 * @return the dataLine
-	 */
 	public int getDataStartLine() {
 		return dataStartLine;
 	}
 
-	/**
-	 * @param dataLine the dataLine to set
-	 */
 	public void setDataStartLine(int dataLine) {
 		this.dataStartLine = dataLine;
 	}
 
-	/**
-	 * @return the dataEndLine
-	 */
 	public int getDataEndLine() {
 		return dataEndLine;
 	}
 
-	/**
-	 * @param dataEndLine the dataEndLine to set
-	 */
 	public void setDataEndLine(int dataEndLine) {
 		this.dataEndLine = dataEndLine;
 	}
 
-	
 }

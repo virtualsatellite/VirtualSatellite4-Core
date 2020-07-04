@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.extension.requirements.csv.CsvFileReader;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
@@ -52,7 +53,6 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	protected static final int WITH_TEXT = 200;
 
 	private static final String SPARATOR_INPUT_LABEL = "Column sperator:";
-	private static final String DEFAULT_SEPARATOR = ";";
 
 	private static final String HEADER_LINE_LABEL = "CSV header line number:";
 	private static final String DATA_LINE_START_LABEL = "CSV start data line number:";
@@ -116,7 +116,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		data.horizontalAlignment = SWT.END;
 		data.widthHint = WITH_TEXT;
 		seperatorField.setLayoutData(data);
-		seperatorField.setText(DEFAULT_SEPARATOR);
+		seperatorField.setText(CsvFileReader.CSV_DEFAULT_SPLIT_STRING);
 		seperatorField.addModifyListener(this);
 
 		Label labelHeaderNumber = new Label(propertiesComposite, SWT.NONE);
@@ -150,7 +150,6 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		data.horizontalAlignment = SWT.END;
 		dataNumberEndField.setLayoutData(data);
 		dataNumberEndField.addModifyListener(this);
-
 	}
 
 	/**
@@ -200,19 +199,24 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 			ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
 			Concept activeReqConcept = activeConceptHelper
 					.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
+			
+			// Configure CSV reader
 			final String destination = getDestination();
-
+			CsvFileReader reader = getWizard().getReader();
+			reader.setSeparator(getSeparator());
+			reader.setHeaderLine(getHeaderLineNumber());
+			
+			//Do the parsing
 			try {
-				getWizard().getReader().setSeparator(getSeparator());
-				getWizard().getReader().setHeaderLine(getHeaderLineNumber());
-				csvHeader = getWizard().getReader().readCsvHeadline(destination);
+				reader.parseFile(destination);
 			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(),
-						"CSVImportWizard: Failed to perform import! Selected file not valid!", e);
+						"CSVImportWizard: Failed to perform parsing of CSV file!", e);
 				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 				return false;
 			}
-
+			
+			csvHeader = reader.readCsvHeadline();
 			if (selection.getType().getFullQualifiedName().equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
 				typeReviewPage.setInput(csvHeader, new RequirementType(selection));
 				reqType = new RequirementType(selection);

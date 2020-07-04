@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -102,7 +101,6 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 			targetedReqList = null;
 		}
 		final CategoryAssignment reqConfiguration = (CategoryAssignment) importPage.getSelection();
-		final String selectedFilePath = importPage.getDestination();
 		reader.setDataStartLine(importPage.getFristDataLineNumber());
 		reader.setDataEndLine(importPage.getLastDataLineNumber());
 		Map<Integer, RequirementAttribute> attributeMapping = reviewTypePage.getAttributeMapping();
@@ -112,35 +110,38 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS);
+				
+				// Prepare the data
+				List<List<String>> csvContentMatrix = reader.readCsvData();
+				importSubMonitor.worked(1);
+
+				// Import them
+				Command importCommand;
+				VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
+						.getEd(selectedSpec);
+				if (reqConfiguration.getType().getFullQualifiedName()
+						.equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
+					importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetedReqList,
+							attributeMapping, new RequirementType(reqConfiguration));
+				} else {
+					importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetedReqList,
+							attributeMapping, new RequirementsConfiguration(reqConfiguration),
+							reviewTypePage.getRequirementType());
+				}
+				editingDomain.getVirSatCommandStack().execute(importCommand);
+				importSubMonitor.worked(1);
+				
+				// Update workspace
 				try {
-					List<List<String>> csvContentMatrix = reader.readCsvData(selectedFilePath);
-					importSubMonitor.worked(1);
-
-					Command importCommand;
-					VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
-							.getEd(selectedSpec);
-					if (reqConfiguration.getType().getFullQualifiedName()
-							.equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
-						importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetedReqList,
-								attributeMapping, new RequirementType(reqConfiguration));
-					} else {
-						importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetedReqList,
-								attributeMapping, new RequirementsConfiguration(reqConfiguration),
-								reviewTypePage.getRequirementType());
-					}
-					editingDomain.getVirSatCommandStack().execute(importCommand);
-					importSubMonitor.worked(1);
-
 					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
-					importSubMonitor.worked(1);
-
-					return Status.OK_STATUS;
-				} catch (IOException | CoreException e) {
+				} catch (CoreException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(),
-							"CSVImportWizard: Failed to perform import!", e);
+							"CSVImportWizard: Failed to refresh the workspace!", e);
 					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					return Status.CANCEL_STATUS;
 				}
+				importSubMonitor.worked(1);
+				return Status.OK_STATUS;
 			}
 		};
 		importJob.schedule();
