@@ -45,7 +45,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactor
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
-	
+
 /**
  * This class handles the functionality for creating a CellEditingSUpport for
  * IntPropertyInstances String PropertyInstances and FloatPropertyInstances
