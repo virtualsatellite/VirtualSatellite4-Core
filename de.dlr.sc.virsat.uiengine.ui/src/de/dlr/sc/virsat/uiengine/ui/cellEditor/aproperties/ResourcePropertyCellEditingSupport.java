@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.uiengine.ui.dialog.SelectOrUploadFileDialog;
  *
  */
 public class ResourcePropertyCellEditingSupport extends APropertyCellEditingSupport {
-
+	
 	private SelectOrUploadFileDialog dialog;
 	
 	/**
