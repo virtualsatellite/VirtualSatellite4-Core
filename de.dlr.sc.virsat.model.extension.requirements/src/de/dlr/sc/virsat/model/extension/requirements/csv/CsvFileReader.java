@@ -9,14 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.csv;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * A class to read a CSV file and pars it to lists
@@ -24,10 +26,8 @@ import java.util.List;
  */
 public class CsvFileReader {
 
-	private static final String CSV_SPLIT_STRING = ";";
 	
-	//Regex to escape separators within double qoutes 
-	private static final String REGEX_ESCAPE_SPLIT = "(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
+	public static final String CSV_DEFAULT_SPLIT_STRING = ";";
 	
 	private String separator;
 	private int headerLine;
@@ -38,7 +38,7 @@ public class CsvFileReader {
 	 * Default constructor
 	 */
 	public CsvFileReader() {
-		this.separator = CSV_SPLIT_STRING + REGEX_ESCAPE_SPLIT;
+		this.separator = CSV_DEFAULT_SPLIT_STRING;
 		this.headerLine = 0;
 		this.dataStartLine = 1;
 		this.dataEndLine = -1;
@@ -52,7 +52,7 @@ public class CsvFileReader {
 	 * @param dataEndLine the number of the last data line (starting from 0)
 	 */
 	public CsvFileReader(String separator, int headerLine, int dataStartLine, int dataEndLine) {
-		this.separator = separator + REGEX_ESCAPE_SPLIT;
+		this.separator = separator;
 		this.headerLine = headerLine;
 		this.dataStartLine = dataStartLine;
 		this.dataEndLine = dataEndLine;
@@ -87,68 +87,33 @@ public class CsvFileReader {
 	 * @param startLine the first line number to read
 	 * @param endLine the last line number to read
 	 * @return the CSV content as matrix of two lists
-	 * @throws IOException throws an IO excetption
+	 * @throws IOException throws an IO exception
 	 */
 	public List<List<String>> readCsvFile(String filePath, int startLine, int endLine) throws IOException {
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();
 
 		Path csvFilePath = Paths.get(filePath);
 		
-		// Find out number of columns
-		int maxNumberOfColumns = getMaxNumberColumns(csvFilePath);
-		FileReader fr = new FileReader(csvFilePath.toFile());
-		BufferedReader br = new BufferedReader(fr);
-		String currentReqData = "";
+		Reader fr = new FileReader(csvFilePath.toFile());
+		Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
 		
-		int currentLineNumber = 0;
-		String line = "";
-		while ((line = br.readLine()) != null) {
-
-			if (currentLineNumber >= startLine) {
-				currentReqData += line;
-				int numberOfColumns = currentReqData.length() - currentReqData.replaceAll(separator, "").length();
-				if (numberOfColumns >= maxNumberOfColumns - 1) {
-					//Only write data into list if data set is complete
-					String[] requirement = currentReqData.split(separator);
-					csvContentMatrix.add(Arrays.asList(requirement));
-					currentReqData = "";
-				} 
+		int lineNumber = 0;
+		for (CSVRecord record : records) {
+			if (lineNumber >= startLine) {
+				List<String> reqData = new ArrayList<String>();
+				for (String att : record) {
+					reqData.add(att);
+				}
+				csvContentMatrix.add(reqData);
 			}
-			
-			currentLineNumber++;
-			
-			if (endLine != -1 && currentLineNumber > endLine) {
+			lineNumber++;
+			if (endLine != -1 && lineNumber > endLine) {
 				break;
 			}
-			
 		}
-		br.close();
 		
 		return csvContentMatrix;
 
-	}
-	
-	/**
-	 * Get the max number of columns within this file
-	 * @param filePath the file path
-	 * @return the number of columns
-	 * @throws IOException throws IOexception
-	 */
-	protected int getMaxNumberColumns(Path filePath) throws IOException {
-		FileReader fr = new FileReader(filePath.toFile());
-		BufferedReader br = new BufferedReader(fr);
-		String line = "";
-
-		// Find out number of columns
-		int maxNumberOfColumns = 0;
-		while ((line = br.readLine()) != null) {
-			int currentSize = line.length() - line.replaceAll(separator, "").length();
-			maxNumberOfColumns = Integer.max(currentSize, maxNumberOfColumns);
-		}
-
-		// Assume a data line always has all columns
-		br.close();
-		return maxNumberOfColumns + 1; // Number of columns is one higher than number of separators
 	}
 
 	/**
@@ -162,7 +127,7 @@ public class CsvFileReader {
 	 * @param separator the separator to set
 	 */
 	public void setSeparator(String separator) {
-		this.separator = separator + REGEX_ESCAPE_SPLIT;
+		this.separator = separator;
 	}
 
 	/**
