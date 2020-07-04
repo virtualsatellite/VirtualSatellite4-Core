@@ -66,7 +66,7 @@ import de.dlr.sc.virsat.uiengine.ui.dialog.provider.ReferenceSelectionFilteredTr
  *
  */
 public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
-	
+
 	private IStructuredContentProvider contentProviderList;
 	private ILabelProvider labelProviderList;
 
