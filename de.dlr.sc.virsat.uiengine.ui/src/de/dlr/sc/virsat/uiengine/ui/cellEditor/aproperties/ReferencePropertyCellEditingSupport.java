@@ -54,7 +54,7 @@ import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
  *
  */
 public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSupport {
-	
+
 	private ElementTreeSelectionDialog dialog;
 	
 	/**

@@ -69,7 +69,7 @@ public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
 
 	private IStructuredContentProvider contentProviderList;
 	private ILabelProvider labelProviderList;
-	
+
 	/**
 	 * Creates a reference selection dialog for selecting an super object
 	 * @param parent the shell
