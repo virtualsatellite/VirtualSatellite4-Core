@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties;
 
+import java.util.function.Function;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -89,7 +91,8 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 			@Override
 			protected Object openDialogBox(Control cellEditorWindow) {
 				Object toSelect = getValue();
-				dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
+				dialog = ReferenceSelectionDialog.createFilteredReferenceSelectionDialog(
+						Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory, getResultFilter());
 				dialog.setAllowMultiple(false);
 				dialog.setDoubleClickSelects(true);
 				setReferenceDialogInput(propertyInstance.eResource());
@@ -125,7 +128,16 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 	protected void setReferenceDialogInput(Object input) {
 		dialog.setInput(input);
 	}
-	
+
+	/**
+	 * An overridable method to filter the dialogs selectable objects
+	 * 
+	 * @return filter function
+	 */
+	protected Function<Object[], Object[]> getResultFilter() {
+		return objects -> objects;
+	}
+
 	@Override
 	protected Object getValue(Object element) {
 		APropertyInstance propertyInstance = getPropertyInstance(element);

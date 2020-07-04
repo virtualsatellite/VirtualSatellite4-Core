@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.uiengine.ui.dialog;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -106,6 +107,18 @@ public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
 	 * @return the created reference selection dialog
 	 */
 	public static ReferenceSelectionDialog createRefernceSelectionDialog(Shell parent, ATypeDefinition referencedType, AdapterFactory adapterFactory) {
+		return createFilteredReferenceSelectionDialog(parent, referencedType, adapterFactory, objects -> objects);
+	}
+
+	/**
+	 * Creates a filtered reference selection dialog for choosing a reference to a category 
+	 * @param parent the shell
+	 * @param referencedType the type that wants that we want to reference
+	 * @param adapterFactory the adapter factory
+	 * @param filter function that filters the selectable objects
+	 * @return the created filtered reference selection dialog
+	 */
+	public static ReferenceSelectionDialog createFilteredReferenceSelectionDialog(Shell parent, ATypeDefinition referencedType, AdapterFactory adapterFactory, Function<Object[], Object[]> filter) {
 		VirSatFilteredWrappedTreeContentProvider cpTree = new ReferenceSelectionFilteredTransactionalContentProvider(adapterFactory);
 		VirSatTransactionalAdapterFactoryLabelProvider lpTree = new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory);
 		
@@ -116,7 +129,12 @@ public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
 		cpTree.addCategoryIdFilter(ActiveConceptHelper.getFullQualifiedId(referencedType));
 		cpTree.setCheckExtendedTypesForFilter(true);
 		
-		VirSatFilteredListContentProvider cpList = new VirSatFilteredListContentProvider();
+		VirSatFilteredListContentProvider cpList = new VirSatFilteredListContentProvider() {
+			@Override
+			public Object[] getElements(Object inputElement) {
+				return filter.apply(super.getElements(inputElement));
+			}
+		};
 		cpList.addClassFilterToGetElement(CategoryAssignment.class);
 		cpList.addCategoryIdFilterToGetElement(ActiveConceptHelper.getFullQualifiedId(referencedType));
 		
