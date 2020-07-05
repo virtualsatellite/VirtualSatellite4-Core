@@ -148,23 +148,24 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 				item = tableItems.get(index);
 			}
 			item.setText(0, column);
-
-			if (isNewType) {
-				item.setText(TYPE_COLUMN_INDEX, requirementType.getAttributes().get(index).getType());
-				item.setChecked(true);
-				createDropDownEditor(item, ATTRIBUTE_TYPES);
-			} else {
-				if (index < requirementType.getAttributes().size()) {
+			if (index < requirementType.getAttributes().size()) {
+				if (isNewType) {
+					item.setText(TYPE_COLUMN_INDEX, requirementType.getAttributes().get(index).getType());
+					item.setChecked(true);
+					createDropDownEditor(item, ATTRIBUTE_TYPES);
+					
+				} else {
 					item.setText(TYPE_COLUMN_INDEX, getAttributeTableLabel(requirementType, requirementType.getAttributes().get(index)));
 					item.setChecked(true);
-				} else {
-					item.setChecked(false);
-					item.setText(TYPE_COLUMN_INDEX, "");
+					
+					// If we use an exiting type then just try to map them from the attribute index
+					createDropDownEditor(item, requirementType.getAttributes().stream().map(
+							att -> getAttributeTableLabel(requirementType, att))
+							.collect(Collectors.toList()));
 				}
-				// If we use an exiting type then just try to map them from the attribute index
-				createDropDownEditor(item, requirementType.getAttributes().stream().map(
-						att -> getAttributeTableLabel(requirementType, att))
-						.collect(Collectors.toList()));
+			} else {
+				item.setChecked(false);
+				item.setText(TYPE_COLUMN_INDEX, "");
 			}
 		}
 	}
