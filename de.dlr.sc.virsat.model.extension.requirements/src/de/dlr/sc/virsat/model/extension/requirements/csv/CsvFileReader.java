@@ -20,6 +20,8 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
+import de.dlr.sc.virsat.model.extension.requirements.Activator;
+
 /**
  * A class to read a CSV file and pars it to lists
  *
@@ -65,11 +67,24 @@ public class CsvFileReader {
 	 * @param filePath the path of the file as string
 	 * @throws IOException throws an exception if the file could not be loaded
 	 */
-	public void parseFile(String filePath) throws IOException {
+	public boolean parseFile(String filePath) {
+		boolean success = true;
 		Path csvFilePath = Paths.get(filePath);
-		Reader fr = new FileReader(csvFilePath.toFile());
-		records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
-		fr.close();
+		Reader fr = null;
+		try {
+			fr = new FileReader(csvFilePath.toFile());
+			records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
+		} catch (IOException e) {
+			Activator.getDefault().getLog().error("Failed to open file ti import", e);
+			success = false;
+		} 
+		try {
+			fr.close();
+		} catch (IOException e) {
+			Activator.getDefault().getLog().error("Failed to close file to import", e);
+			success = false;
+		}
+		return success;
 	}
 	
 	/**
