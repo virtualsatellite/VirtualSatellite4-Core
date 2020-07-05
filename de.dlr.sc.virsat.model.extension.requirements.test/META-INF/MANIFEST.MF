@@ -17,5 +17,3 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model.extension.ps
 Export-Package: de.dlr.sc.virsat.model.extension.requirements.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.test
-Import-Package: de.dlr.sc.virsat.model.extension.requirements.csv,
- org.apache.commons.csv

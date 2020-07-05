@@ -8,8 +8,6 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.apache.commons.csv
-Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Bundle-Activator: de.dlr.sc.virsat.external.lib.commons.csv.Activator
-Bundle-ClassPath: externalLib/maven/commons-csv.jar,
- .
+Bundle-ClassPath: externalLib/maven/commons-csv.jar
