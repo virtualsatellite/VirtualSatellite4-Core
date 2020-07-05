@@ -37,6 +37,7 @@ public class CsvFileReader {
 	private int dataEndLine;
 	
 	protected Iterable<CSVRecord> records = null;
+	protected Reader fr = null;
 
 	/**
 	 * Default constructor
@@ -68,23 +69,33 @@ public class CsvFileReader {
 	 * @throws IOException throws an exception if the file could not be loaded
 	 */
 	public boolean parseFile(String filePath) {
-		boolean success = true;
 		Path csvFilePath = Paths.get(filePath);
-		Reader fr = null;
 		try {
 			fr = new FileReader(csvFilePath.toFile());
 			records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().error("Failed to open file ti import", e);
-			success = false;
+			return false;
 		} 
+		
+		return true;
+	}
+	
+	/**
+	 * Close the file stream of the current CSV file
+	 * 
+	 * @return true if the file could be closed properly, false otherwise
+	 */
+	public boolean closeFile() {
 		try {
-			fr.close();
+			if (fr != null) {
+				fr.close();
+			}
 		} catch (IOException e) {
 			Activator.getDefault().getLog().error("Failed to close file to import", e);
-			success = false;
+			return false;
 		}
-		return success;
+		return true;
 	}
 	
 	/**

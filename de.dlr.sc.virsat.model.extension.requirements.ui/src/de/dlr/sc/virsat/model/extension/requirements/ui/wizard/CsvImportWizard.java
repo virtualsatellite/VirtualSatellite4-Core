@@ -113,6 +113,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 				
 				// Prepare the data
 				List<List<String>> csvContentMatrix = reader.readCsvData();
+				reader.closeFile();
 				importSubMonitor.worked(1);
 
 				// Import them
@@ -147,6 +148,12 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 		importJob.schedule();
 
 		return true;
+	}
+	
+	@Override
+	public boolean performCancel() {
+		reader.closeFile();
+		return super.performCancel();
 	}
 
 	@Override

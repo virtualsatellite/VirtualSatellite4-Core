@@ -54,6 +54,7 @@ public class CsvFileReaderTest {
 		
 		reader.parseFile(csvFilePath.toString());
 		List<List<String>> importedCsvContent = reader.readCsvFile(0, -1);
+		reader.closeFile();
 		
 		assertEquals("Number of lines correct", 2, importedCsvContent.size());
 		
@@ -83,6 +84,7 @@ public class CsvFileReaderTest {
 		
 		reader.parseFile(csvFilePath.toString());
 		List<String> importedCsvHeader = reader.readCsvHeadline();
+		reader.closeFile();
 		
 		assertEquals("Header correct", importedCsvHeader.get(0), HEADER_1);
 		assertEquals("Header correct", importedCsvHeader.get(1), HEADER_2);
@@ -105,6 +107,7 @@ public class CsvFileReaderTest {
 		
 		reader.parseFile(csvFilePath.toString());
 		List<List<String>> importedCsvContent = reader.readCsvData();
+		reader.closeFile();
 		
 		List<String> header = importedCsvContent.get(0);
 		
