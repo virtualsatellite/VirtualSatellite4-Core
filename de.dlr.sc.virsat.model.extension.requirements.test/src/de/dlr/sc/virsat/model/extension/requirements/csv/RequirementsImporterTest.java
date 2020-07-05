@@ -42,7 +42,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecifica
  * The test class for the requirements importer
  *
  */
-public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
+public class RequirementsImporterTest extends AConceptProjectTestCase {
 
 	private static final String NAME_HEADER_NAME = "Name";
 	private static final String NAME_HEADER_ID = "ID";
@@ -124,7 +124,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			mapping.put(index, att);
 		}
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
 				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -177,7 +177,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			mapping.put(index, att);
 		}
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpecGroup.getChildren(),
 				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -230,7 +230,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			mapping.put(index, att);
 		}
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
 				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -269,7 +269,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			mapping.put(index, att);
 		}
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
 				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -306,7 +306,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		List<List<String>> csvContentMatrix = createCSVContentMatrix(true);
 		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		RequirementType newType = importer.prepareRequirementType(requirementsConcept, csvContentMatrix.get(0));
 		for (RequirementAttribute att : newType.getAttributes()) {
 			int index = newType.getAttributes().indexOf(att);
@@ -372,7 +372,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		List<List<String>> csvContentMatrix = createCSVContentMatrix(true);
 		Map<Integer, RequirementAttribute> mapping = new HashMap<>();
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		
 		// Get basic type suggestion from importer
 		RequirementType newType = importer.prepareRequirementType(requirementsConcept, csvContentMatrix.get(0));
@@ -422,7 +422,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 			}
 		}
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
 				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);
@@ -464,7 +464,7 @@ public class CsvRequirementsImporterTest extends AConceptProjectTestCase {
 		
 		}
 
-		CsvRequirementsImporter importer = new CsvRequirementsImporter();
+		RequirementsImporter importer = new RequirementsImporter();
 		Command importCommand = importer.loadRequirements(editingDomain, csvContentMatrix, targetSpec.getRequirements(),
 				mapping, reqImportType);
 		editingDomain.getVirSatCommandStack().execute(importCommand);

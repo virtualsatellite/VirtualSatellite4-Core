@@ -38,7 +38,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  * A class that imports requirements from a CSV file
  *
  */
-public class CsvRequirementsImporter {
+public class RequirementsImporter {
 
 	protected EditingDomain editingDomain;
 	protected Concept reqConcept;
@@ -174,10 +174,12 @@ public class CsvRequirementsImporter {
 		RequirementType newReqType = new RequirementType(reqConcept);
 		newReqType.setName(REQ_TYPE_NAME);
 		for (String attName : attributeNames) {
-			RequirementAttribute attDef = new RequirementAttribute(reqConcept);
-			attDef.setName(attName.replace(" ", ""));
-			attDef.setType(RequirementAttribute.TYPE_String_NAME);
-			newReqType.getAttributes().add(attDef);
+			if (!attName.equals("")) {
+				RequirementAttribute attDef = new RequirementAttribute(reqConcept);
+				attDef.setName(attName.replace(" ", ""));
+				attDef.setType(RequirementAttribute.TYPE_String_NAME);
+				newReqType.getAttributes().add(attDef);
+			}
 		}
 		return newReqType;
 	}

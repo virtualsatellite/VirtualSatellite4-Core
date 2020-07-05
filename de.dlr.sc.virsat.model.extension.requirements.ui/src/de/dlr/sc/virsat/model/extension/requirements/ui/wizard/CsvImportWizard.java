@@ -33,7 +33,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.requirements.csv.CsvFileReader;
-import de.dlr.sc.virsat.model.extension.requirements.csv.CsvRequirementsImporter;
+import de.dlr.sc.virsat.model.extension.requirements.csv.RequirementsImporter;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
@@ -59,7 +59,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 	private IContainer model;
 
 	private CsvFileReader reader;
-	private CsvRequirementsImporter importer;
+	private RequirementsImporter importer;
 
 	/**
 	 * Default constructor
@@ -76,7 +76,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 		}
 		setDialogSettings(wizardSettings);
 		reader = new CsvFileReader();
-		importer = new CsvRequirementsImporter();
+		importer = new RequirementsImporter();
 	}
 
 	@Override
@@ -167,11 +167,11 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 		this.reader = reader;
 	}
 
-	public CsvRequirementsImporter getImporter() {
+	public RequirementsImporter getImporter() {
 		return importer;
 	}
 
-	public void setImporter(CsvRequirementsImporter importer) {
+	public void setImporter(RequirementsImporter importer) {
 		this.importer = importer;
 	}
 

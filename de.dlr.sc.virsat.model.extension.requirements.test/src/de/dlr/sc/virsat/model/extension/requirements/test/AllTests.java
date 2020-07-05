@@ -19,7 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommandTest;
 import de.dlr.sc.virsat.model.extension.requirements.csv.CsvFileReaderTest;
-import de.dlr.sc.virsat.model.extension.requirements.csv.CsvRequirementsImporterTest;
+import de.dlr.sc.virsat.model.extension.requirements.csv.RequirementsImporterTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -30,7 +30,7 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({	
 	CsvFileReaderTest.class,
-	CsvRequirementsImporterTest.class,
+	RequirementsImporterTest.class,
 	InitializeRequirementCommandTest.class
 				})
 
