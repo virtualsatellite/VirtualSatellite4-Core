@@ -60,10 +60,16 @@ public class CsvFileReader {
 		this.dataEndLine = dataEndLine;
 	}
 	
+	/**
+	 * Parse the given CSV file
+	 * @param filePath the path of the file as string
+	 * @throws IOException throws an exception if the file could not be loaded
+	 */
 	public void parseFile(String filePath) throws IOException {
 		Path csvFilePath = Paths.get(filePath);
 		Reader fr = new FileReader(csvFilePath.toFile());
 		records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
+		fr.close();
 	}
 	
 	/**

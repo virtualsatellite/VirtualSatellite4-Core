@@ -225,24 +225,6 @@ public class RequirementsImporter {
 			}
 		}
 	}
-
-	/**
-	 * create a requirement type with a given number of attributes
-	 * 
-	 * @param importCommand
-	 *            the import command which should contain this creation operation
-	 * @param container
-	 *            the container element in which the new type should be added into
-	 * @param newReqType
-	 *            a new not yet persited requirement type
-	 * @return the new requirement type
-	 */
-	protected RequirementType createReqType(CompoundCommand importCommand, RequirementsConfiguration container,
-			RequirementType newReqType) {
-
-		importCommand.append(container.getTypeDefinitions().add(editingDomain, newReqType));
-		return newReqType;
-	}
 	
 	/**
 	 * Update a enumerations in a new requirement type from a set of CSV data
