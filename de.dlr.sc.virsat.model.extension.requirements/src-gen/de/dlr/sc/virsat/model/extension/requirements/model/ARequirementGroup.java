@@ -13,7 +13,6 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;

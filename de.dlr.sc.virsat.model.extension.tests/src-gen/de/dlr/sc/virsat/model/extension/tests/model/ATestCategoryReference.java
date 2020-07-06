@@ -12,19 +12,18 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 
 // *****************************************************************

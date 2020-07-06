@@ -16,7 +16,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import java.lang.Exception;
-import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
 
 
 // *****************************************************************
