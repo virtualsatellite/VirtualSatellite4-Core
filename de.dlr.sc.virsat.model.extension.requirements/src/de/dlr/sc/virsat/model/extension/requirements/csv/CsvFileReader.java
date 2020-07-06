@@ -29,9 +29,9 @@ import de.dlr.sc.virsat.model.extension.requirements.Activator;
 public class CsvFileReader {
 
 	
-	public static final String CSV_DEFAULT_SPLIT_STRING = ";";
+	public static final char CSV_DEFAULT_SPLIT_STRING = ';';
 	
-	private String separator;
+	private char separator;
 	private int headerLine;
 	private int dataStartLine;
 	private int dataEndLine;
@@ -56,7 +56,7 @@ public class CsvFileReader {
 	 * @param dataStartLine the number of the first data line (starting from 0)
 	 * @param dataEndLine the number of the last data line (starting from 0)
 	 */
-	public CsvFileReader(String separator, int headerLine, int dataStartLine, int dataEndLine) {
+	public CsvFileReader(char separator, int headerLine, int dataStartLine, int dataEndLine) {
 		this.separator = separator;
 		this.headerLine = headerLine;
 		this.dataStartLine = dataStartLine;
@@ -72,7 +72,7 @@ public class CsvFileReader {
 		Path csvFilePath = Paths.get(filePath);
 		try {
 			fr = new FileReader(csvFilePath.toFile());
-			records = CSVFormat.EXCEL.withDelimiter(getSeparator().charAt(0)).parse(fr);
+			records = CSVFormat.EXCEL.withDelimiter(getSeparator()).parse(fr);
 		} catch (IOException e) {
 			Activator.getDefault().getLog().error("Failed to open file ti import", e);
 			return false;
@@ -152,11 +152,11 @@ public class CsvFileReader {
 		return csvContentMatrix;
 	}
 
-	public String getSeparator() {
+	public char getSeparator() {
 		return separator;
 	}
 
-	public void setSeparator(String separator) {
+	public void setSeparator(char separator) {
 		this.separator = separator;
 	}
 

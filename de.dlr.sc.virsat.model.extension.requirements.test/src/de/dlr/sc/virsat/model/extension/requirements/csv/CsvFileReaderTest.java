@@ -41,7 +41,7 @@ public class CsvFileReaderTest {
 	private static final int START_LINE = 1;
 	private static final int END_LINE = 2;
 	
-	private static final String SEPERATOR = ";";
+	private static final char SEPERATOR = ';';
 	
 	private static final String JSON_FILE_NAME = "dummy.csv";
 	

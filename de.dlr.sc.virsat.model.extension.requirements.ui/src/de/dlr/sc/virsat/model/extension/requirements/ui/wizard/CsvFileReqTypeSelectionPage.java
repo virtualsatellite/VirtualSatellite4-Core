@@ -51,7 +51,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
 
-	private static final String SPARATOR_INPUT_LABEL = "Column sperator:";
+	private static final String SPARATOR_INPUT_LABEL = "Column sperator (Single char):";
 
 	private static final String HEADER_LINE_LABEL = "CSV header line number:";
 	private static final String DATA_LINE_START_LABEL = "CSV start data line number:";
@@ -115,7 +115,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		data.horizontalAlignment = SWT.END;
 		data.widthHint = WITH_TEXT;
 		seperatorField.setLayoutData(data);
-		seperatorField.setText(CsvFileReader.CSV_DEFAULT_SPLIT_STRING);
+		seperatorField.setText(CsvFileReader.CSV_DEFAULT_SPLIT_STRING + "");
 		seperatorField.addModifyListener(this);
 
 		Label labelHeaderNumber = new Label(propertiesComposite, SWT.NONE);
@@ -189,7 +189,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		if (isDestinationSelected 
 				&& isCurrentPage() 
 				&& !headerNumberField.getText().equals("")
-				&& !seperatorField.getText().equals("") 
+				&& seperatorField.getText().length() == 1   //Only allow exactly one char
 				&& !dataNumberStartField.getText().equals("")
 				&& isSelectionValid()) {
 
@@ -232,8 +232,8 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 	 * Get the CSV separator
 	 * @return the separator string
 	 */
-	public String getSeparator() {
-		return seperatorField.getText();
+	public char getSeparator() {
+		return seperatorField.getText().charAt(0);
 	}
 	
 	/**
@@ -280,6 +280,7 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 		getWizard().getReader().setDataEndLine(getLastDataLineNumber());
 		getWizard().getReader().setHeaderLine(getHeaderLineNumber());
 		getWizard().getReader().setSeparator(getSeparator());
+
 		setPageComplete(isComplete());
 	}
 	
