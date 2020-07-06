@@ -92,25 +92,28 @@ public class CsvFileReader {
 		Path csvFilePath = Paths.get(filePath);
 
 		FileReader fr = new FileReader(csvFilePath.toFile());
-		Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(getSeparator()).parse(fr);
-	
-		
-		int lineNumber = 0;
-		for (CSVRecord record : records) {
-			if (lineNumber >= startLine) {
-				List<String> reqData = new ArrayList<String>();
-				for (String att : record) {
-					reqData.add(att);
+		try {
+			Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(getSeparator()).parse(fr);
+			int lineNumber = 0;
+			for (CSVRecord record : records) {
+				if (lineNumber >= startLine) {
+					List<String> reqData = new ArrayList<String>();
+					for (String att : record) {
+						reqData.add(att);
+					}
+					csvContentMatrix.add(reqData);
 				}
-				csvContentMatrix.add(reqData);
+				lineNumber++;
+				if (endLine != -1 && lineNumber > endLine) {
+					break;
+				}
 			}
-			lineNumber++;
-			if (endLine != -1 && lineNumber > endLine) {
-				break;
-			}
+			fr.close();
+		} catch (IOException e) {
+			fr.close();
+			// Forward exception to upper error handling but close the file reader
+			throw e;
 		}
-		fr.close();
-		
 		return csvContentMatrix;
 	}
 
