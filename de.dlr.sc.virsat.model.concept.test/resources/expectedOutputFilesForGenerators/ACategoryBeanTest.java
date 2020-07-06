@@ -17,7 +17,6 @@ package testConcept.model;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import testConcept.model.testCategory;
 import java.lang.Exception;
 
 
