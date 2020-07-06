@@ -63,7 +63,7 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		// Load the concept to create the test object
 		Concept concept = loadConceptFromPlugin();
 		tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
-		arrayDynamic = tcIntrinsicArray.getTestStringArrayDynamic();
+		arrayDynamic = tcIntrinsicArray.getTestStringArrayDynamicBean();
 		ai = arrayDynamic.getArrayInstance();
 		ci = new CategoryInstantiator(); 
 		

@@ -57,7 +57,7 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 		// Load the concept to create the test object
 		Concept concept = loadConceptFromPlugin();
 		tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
-		arrayStatic = tcIntrinsicArray.getTestStringArrayStatic();
+		arrayStatic = tcIntrinsicArray.getTestStringArrayStaticBean();
 		ai = arrayStatic.getArrayInstance();
 		ci = new CategoryInstantiator(); 
 	}

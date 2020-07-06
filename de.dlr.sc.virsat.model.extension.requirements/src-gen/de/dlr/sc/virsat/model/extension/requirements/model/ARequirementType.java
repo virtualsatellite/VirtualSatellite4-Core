@@ -12,16 +12,18 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -86,6 +88,19 @@ public abstract class ARequirementType extends GenericCategory implements IBeanC
 	public IBeanList<RequirementAttribute> getAttributes() {
 		safeAccessAttributes();
 		return attributes;
+	}
+	
+	private IBeanList<BeanPropertyComposed<RequirementAttribute>> attributesBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessAttributesBean() {
+		if (attributesBean.getArrayInstance() == null) {
+			attributesBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("attributes"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<RequirementAttribute>> getAttributesBean() {
+		safeAccessAttributesBean();
+		return attributesBean;
 	}
 	
 	

@@ -13,8 +13,10 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
@@ -85,6 +87,19 @@ public abstract class ARequirementTrace extends GenericCategory implements IBean
 		public IBeanList<GenericCategory> getTarget() {
 			safeAccessTarget();
 			return target;
+		}
+		
+		private IBeanList<BeanPropertyReference<GenericCategory>> targetBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTargetBean() {
+			if (targetBean.getArrayInstance() == null) {
+				targetBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("target"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<GenericCategory>> getTargetBean() {
+			safeAccessTargetBean();
+			return targetBean;
 		}
 	
 	
