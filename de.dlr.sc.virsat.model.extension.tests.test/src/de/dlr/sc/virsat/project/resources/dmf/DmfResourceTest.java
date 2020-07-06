@@ -211,12 +211,12 @@ public class DmfResourceTest extends AConceptTestCase {
 		final String TEST_VALUE_STRING_0 = "Hello";
 		final String TEST_VALUE_STRING_1 = "World";
 		
-		ArrayInstance aiDynamic = beanTestCategoryAssignment.getTestStringArrayDynamic().getArrayInstance();
+		ArrayInstance aiDynamic = beanTestCategoryAssignment.getTestStringArrayDynamicBean().getArrayInstance();
 		
-		beanTestCategoryAssignment.getTestStringArrayDynamic().add(createNewStringProperty(aiDynamic, TEST_VALUE_STRING_0));
-		beanTestCategoryAssignment.getTestStringArrayDynamic().add(createNewStringProperty(aiDynamic, TEST_VALUE_STRING_1));
-		beanTestCategoryAssignment.getTestStringArrayStatic().get(0).setValue(TEST_VALUE_STRING_0);
-		beanTestCategoryAssignment.getTestStringArrayStatic().get(1).setValue(TEST_VALUE_STRING_1);
+		beanTestCategoryAssignment.getTestStringArrayDynamicBean().add(createNewStringProperty(aiDynamic, TEST_VALUE_STRING_0));
+		beanTestCategoryAssignment.getTestStringArrayDynamicBean().add(createNewStringProperty(aiDynamic, TEST_VALUE_STRING_1));
+		beanTestCategoryAssignment.getTestStringArrayStaticBean().get(0).setValue(TEST_VALUE_STRING_0);
+		beanTestCategoryAssignment.getTestStringArrayStaticBean().get(1).setValue(TEST_VALUE_STRING_1);
 		
 		beanTestStructuralElement.add(beanTestCategoryAssignment);
 
@@ -952,10 +952,10 @@ public class DmfResourceTest extends AConceptTestCase {
 		assertEquals("Category Assignment has correct type", TestCategoryIntrinsicArray.class.getSimpleName(), arrayCa.getType().getName());
 
 		TestCategoryIntrinsicArray beanTestCategoryAssignmentArray = new TestCategoryIntrinsicArray(arrayCa);
-		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_0, beanTestCategoryAssignmentArray.getTestStringArrayDynamic().get(0).getValue());
-		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_1, beanTestCategoryAssignmentArray.getTestStringArrayDynamic().get(1).getValue());
-		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_0, beanTestCategoryAssignmentArray.getTestStringArrayStatic().get(0).getValue());
-		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_1, beanTestCategoryAssignmentArray.getTestStringArrayStatic().get(1).getValue());
+		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_0, beanTestCategoryAssignmentArray.getTestStringArrayDynamicBean().get(0).getValue());
+		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_1, beanTestCategoryAssignmentArray.getTestStringArrayDynamicBean().get(1).getValue());
+		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_0, beanTestCategoryAssignmentArray.getTestStringArrayStaticBean().get(0).getValue());
+		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_1, beanTestCategoryAssignmentArray.getTestStringArrayStaticBean().get(1).getValue());
 	}
 	
 	@Test

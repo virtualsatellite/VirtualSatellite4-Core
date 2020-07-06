@@ -12,17 +12,19 @@ package de.dlr.sc.virsat.model.extension.budget.power.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.extension.budget.power.model.APowerParameters;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.budget.power.model.PowerState;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.budget.power.model.APowerParameters;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 
 
 // *****************************************************************
@@ -86,6 +88,19 @@ public abstract class APowerEquipment extends APowerParameters implements IBeanC
 	public IBeanList<PowerState> getPowerValues() {
 		safeAccessPowerValues();
 		return powerValues;
+	}
+	
+	private IBeanList<BeanPropertyComposed<PowerState>> powerValuesBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessPowerValuesBean() {
+		if (powerValuesBean.getArrayInstance() == null) {
+			powerValuesBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("powerValues"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<PowerState>> getPowerValuesBean() {
+		safeAccessPowerValuesBean();
+		return powerValuesBean;
 	}
 	
 	
