@@ -93,6 +93,7 @@ public class ASwtBotTestCase {
 	protected static final int SWTBOT_TRY_3_TIME = 3;
 	protected static final int SWTBOT_TRY_5_TIME = 5;
 	protected static final int SWTBOT_TRY_10_TIME = 10;
+	protected static final int SWTBOT_RETRY_WAIT_TIME = 500;
 	
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
@@ -973,7 +974,7 @@ public class ASwtBotTestCase {
 		int count = i;
 		while (count > 0 && !condition.getAsBoolean()) {
 			try {
-				Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
+				Thread.sleep(SWTBOT_RETRY_WAIT_TIME);
 			} catch (InterruptedException e) {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.assertForTimes: Sleep got interupted", e));
 			}
