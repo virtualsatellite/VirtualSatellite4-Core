@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -101,6 +102,7 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 			targetedReqList = null;
 		}
 		final CategoryAssignment reqConfiguration = (CategoryAssignment) importPage.getSelection();
+		final String selectedFilePath = importPage.getDestination();
 		reader.setDataStartLine(importPage.getFristDataLineNumber());
 		reader.setDataEndLine(importPage.getLastDataLineNumber());
 		Map<Integer, RequirementAttribute> attributeMapping = reviewTypePage.getAttributeMapping();
@@ -112,8 +114,16 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS);
 				
 				// Prepare the data
-				List<List<String>> csvContentMatrix = reader.readCsvData();
-				reader.closeFile();
+				List<List<String>> csvContentMatrix;
+				try {
+					csvContentMatrix = reader.readCsvData(selectedFilePath);
+					importSubMonitor.worked(1);
+				} catch (IOException e) {
+					Status status = new Status(Status.ERROR, Activator.getPluginId(),
+							"CSVImportWizard: Failed to refresh the workspace!", e);
+					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+					return Status.CANCEL_STATUS;
+				}
 				importSubMonitor.worked(1);
 
 				// Import them
@@ -148,12 +158,6 @@ public class CsvImportWizard extends Wizard implements IWorkbenchWizard {
 		importJob.schedule();
 
 		return true;
-	}
-	
-	@Override
-	public boolean performCancel() {
-		reader.closeFile();
-		return super.performCancel();
 	}
 
 	@Override

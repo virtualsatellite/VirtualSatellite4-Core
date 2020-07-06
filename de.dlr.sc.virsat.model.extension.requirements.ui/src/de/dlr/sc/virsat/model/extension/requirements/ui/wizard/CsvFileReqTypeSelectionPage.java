@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
@@ -206,14 +207,15 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 			reader.setHeaderLine(getHeaderLineNumber());
 			
 			//Do the parsing
-			if (!reader.parseFile(destination)) {
+			try {
+				csvHeader = reader.readCsvHeadline(destination);
+			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(),
 						"CSVImportWizard: Failed to perform parsing of CSV file!");
-				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
+				StatusManager.getManager().handle(status, StatusManager.LOG);
 				return false;
-			} 
+			}
 			
-			csvHeader = reader.readCsvHeadline();
 			if (selection.getType().getFullQualifiedName().equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
 				typeReviewPage.setInput(csvHeader, new RequirementType(selection));
 				reqType = new RequirementType(selection);

@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.model.extension.requirements.csv;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-
-import de.dlr.sc.virsat.model.extension.requirements.Activator;
 
 /**
  * A class to read a CSV file and pars it to lists
@@ -36,9 +33,6 @@ public class CsvFileReader {
 	private int dataStartLine;
 	private int dataEndLine;
 	
-	protected Iterable<CSVRecord> records = null;
-	protected Reader fr = null;
-
 	/**
 	 * Default constructor
 	 */
@@ -63,41 +57,6 @@ public class CsvFileReader {
 		this.dataEndLine = dataEndLine;
 	}
 	
-	/**
-	 * Parse the given CSV file
-	 * @param filePath the path of the file as string
-	 * @throws IOException throws an exception if the file could not be loaded
-	 */
-	public boolean parseFile(String filePath) {
-		Path csvFilePath = Paths.get(filePath);
-		try {
-			fr = new FileReader(csvFilePath.toFile());
-			records = CSVFormat.EXCEL.withDelimiter(getSeparator()).parse(fr);
-		} catch (IOException e) {
-			Activator.getDefault().getLog().error("Failed to open file ti import", e);
-			return false;
-		} 
-		
-		return true;
-	}
-	
-	/**
-	 * Close the file stream of the current CSV file
-	 * 
-	 * @return true if the file could be closed properly, false otherwise
-	 */
-	public boolean closeFile() {
-		if (fr == null) {
-			return false;
-		} 
-		try {
-			fr.close();
-		} catch (IOException e) {
-			Activator.getDefault().getLog().error("Failed to close file to import", e);
-			return false;
-		}
-		return true;
-	}
 	
 	/**
 	 * Read the headline of CSV file
@@ -106,8 +65,8 @@ public class CsvFileReader {
 	 * @return the list of columns
 	 * @throws IOException throws exception if file could not be read
 	 */
-	public List<String> readCsvHeadline() {
-		return readCsvFile(headerLine, headerLine).get(0);
+	public List<String> readCsvHeadline(String filePath) throws IOException {
+		return readCsvFile(filePath, headerLine, headerLine).get(0);
 	}
 	
 	/**
@@ -116,8 +75,8 @@ public class CsvFileReader {
 	 * @return a matrix of strings
 	 * @throws IOException throws IO exception if file could not be read
 	 */
-	public List<List<String>> readCsvData() {
-		return readCsvFile(dataStartLine, dataEndLine);
+	public List<List<String>> readCsvData(String filePath) throws IOException {
+		return readCsvFile(filePath, dataStartLine, dataEndLine);
 	}
 	
 	/**
@@ -126,13 +85,15 @@ public class CsvFileReader {
 	 * @param startLine the first line number to read
 	 * @param endLine the last line number to read
 	 * @return the CSV content as matrix of two lists
+	 * @throws IOException 
 	 */
-	public List<List<String>> readCsvFile(int startLine, int endLine) {
+	public List<List<String>> readCsvFile(String filePath, int startLine, int endLine) throws IOException {
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();
-		
-		if (records == null) {
-			return csvContentMatrix;
-		}
+		Path csvFilePath = Paths.get(filePath);
+
+		FileReader fr = new FileReader(csvFilePath.toFile());
+		Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(getSeparator()).parse(fr);
+	
 		
 		int lineNumber = 0;
 		for (CSVRecord record : records) {
@@ -148,6 +109,7 @@ public class CsvFileReader {
 				break;
 			}
 		}
+		fr.close();
 		
 		return csvContentMatrix;
 	}
