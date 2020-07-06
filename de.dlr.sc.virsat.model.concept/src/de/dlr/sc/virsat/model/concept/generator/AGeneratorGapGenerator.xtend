@@ -23,7 +23,7 @@ abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IGenerato
 	}
 	
 	override createConcreteClass(Concept concept, TYPE conceptPart) {
-		val imCClass = new ImportManager()
+		val imCClass = new ImportManager(concept.package)
 	
 		val bodyClass = declareClass(concept, conceptPart, imCClass)
 		var fileOutputClass = '''
@@ -38,7 +38,7 @@ abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IGenerato
 	}
 	
 	override createAbstractClass(Concept concept, TYPE conceptPart) {
-		val imAClass = new ImportManager()
+		val imAClass = new ImportManager(concept.package)
 		val bodyAClass = declareAClass(concept, conceptPart, imAClass)
 		var fileOutputAClass = '''
 		«ConceptGeneratorUtil.generateFileHeader»
