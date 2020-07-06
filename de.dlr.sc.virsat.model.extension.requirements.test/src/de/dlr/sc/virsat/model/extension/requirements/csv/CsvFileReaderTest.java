@@ -11,11 +11,9 @@ package de.dlr.sc.virsat.model.extension.requirements.csv;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,13 +39,10 @@ public class CsvFileReaderTest {
 	
 	private static final char SEPERATOR = ';';
 	
-	private static final String JSON_FILE_NAME = "dummy.csv";
-	
 	@Test
 	public void testReadCsvFile() throws IOException {
 		
-		Path inputPath = Files.createTempDirectory("csvTest");
-		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
+		Path csvFilePath = Files.createTempFile(null, "csv");
 		
 		List<String> csvContent = Arrays.asList(HEADER_1 + SEPERATOR + HEADER_2 + SEPERATOR + HEADER_3,
 				REQ_ATT_1 + SEPERATOR + REQ_ATT_2 + SEPERATOR + REQ_ATT_3);
@@ -75,9 +70,8 @@ public class CsvFileReaderTest {
 	@Test
 	public void testReadCsvHeadline() throws IOException {
 		
-		Path inputPath = Files.createTempDirectory("csvTest");
-		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
-		
+		Path csvFilePath = Files.createTempFile(null, "csv");
+
 		List<String> csvContent = Arrays.asList(HEADER_1 + SEPERATOR + HEADER_2 + SEPERATOR + HEADER_3,
 				REQ_ATT_1 + SEPERATOR + REQ_ATT_2 + SEPERATOR + REQ_ATT_3);
 		
@@ -106,8 +100,7 @@ public class CsvFileReaderTest {
 	@Test
 	public void testReadCsvData() throws IOException {
 		
-		Path inputPath = Files.createTempDirectory("csvTest");
-		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
+		Path csvFilePath = Files.createTempFile(null, "csv");
 		
 		List<String> csvContent = Arrays.asList(HEADER_1 + SEPERATOR + HEADER_2 + SEPERATOR + HEADER_3,
 				REQ_ATT_1 + SEPERATOR + REQ_ATT_2 + SEPERATOR + REQ_ATT_3);
@@ -134,8 +127,7 @@ public class CsvFileReaderTest {
 	@Test
 	public void testReadCsvHeaderAndData() throws IOException {
 		
-		Path inputPath = Files.createTempDirectory("csvTest");
-		Path csvFilePath = Paths.get(inputPath.toString() + File.separator + JSON_FILE_NAME);
+		Path csvFilePath = Files.createTempFile(null, "csv");
 		
 		List<String> csvContent = Arrays.asList(HEADER_1 + SEPERATOR + HEADER_2 + SEPERATOR + HEADER_3,
 				REQ_ATT_1 + SEPERATOR + REQ_ATT_2 + SEPERATOR + REQ_ATT_3);
