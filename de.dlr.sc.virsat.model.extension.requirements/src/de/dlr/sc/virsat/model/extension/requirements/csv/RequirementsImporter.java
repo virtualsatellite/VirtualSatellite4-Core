@@ -144,17 +144,20 @@ public class RequirementsImporter {
 	 */
 	private void addRepeatedValuesFromPreviousLine(List<List<String>> contentMatrix,
 			Map<Integer, RequirementAttribute> attributeMapping, int lineNumber, List<String> requirement) {
-		//If the first columns of a requirement are empty then values from previous lines are used
-		String attribute = requirement.get(0);
-		while (attribute.equals("")) {
-			if (lineNumber > 0) {
-				int currentAttributeIndex = requirement.indexOf(attribute);
-				String repeatedValue = contentMatrix.get(lineNumber - 1).get(currentAttributeIndex);
-				if (attributeMapping.get(currentAttributeIndex) != null && attributeMapping.get(currentAttributeIndex).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
-					repeatedValue += REQ_EXTENSION_IDENTIFIER_PREFIX;
+		if (lineNumber > 0) {
+			//If the first columns of a requirement are empty then values from previous lines are used
+			for (int index = 0; index < requirement.size(); index++) {
+				if (!requirement.get(index).equals("")) {
+					break;
 				}
-				requirement.set(currentAttributeIndex, repeatedValue);
-				attribute = requirement.get(currentAttributeIndex + 1);
+				//Get value of last line
+				String repeatedValueOldLine = contentMatrix.get(lineNumber - 1).get(index);
+				//If attribute is an index then append extension to make data unique
+				if (attributeMapping.get(index) != null && attributeMapping.get(index).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+					repeatedValueOldLine += REQ_EXTENSION_IDENTIFIER_PREFIX;
+				}
+				//Set the value
+				requirement.set(index, repeatedValueOldLine);
 			}
 		}
 	}

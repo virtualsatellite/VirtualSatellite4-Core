@@ -216,10 +216,13 @@ public class CsvFileReqTypeSelectionPage extends AImportExportPage implements Mo
 				return false;
 			}
 			
+			// If existing requirement type is selected then use this one 
 			if (selection.getType().getFullQualifiedName().equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME)) {
 				typeReviewPage.setInput(csvHeader, new RequirementType(selection));
 				reqType = new RequirementType(selection);
 			}
+			
+			// If configuration container is selected then create a new type with an attribute per column
 			if (selection.getType().getFullQualifiedName()
 					.equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME)) {
 				reqType = getWizard().getImporter().prepareRequirementType(activeReqConcept, csvHeader);
