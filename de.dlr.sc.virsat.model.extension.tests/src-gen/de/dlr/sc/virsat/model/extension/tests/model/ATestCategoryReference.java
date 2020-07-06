@@ -87,13 +87,11 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefCategory");
 		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
 		
-		if (ca != null) {
-			if (testRefCategory == null) {
-				createTestRefCategory(ca);
-			}
-			testRefCategory.setTypeInstance(ca);
-		} else {
+		// Temporary manual fix before all generated code is updated
+		if (ca == null) {
 			testRefCategory = null;
+		} else if (testRefCategory == null || !testRefCategory.getTypeInstance().equals(ca)) {
+			createTestRefCategory(ca);
 		}
 	}
 	

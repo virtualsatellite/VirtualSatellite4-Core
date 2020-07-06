@@ -144,13 +144,11 @@ public abstract class ATestCategoryBase extends GenericCategory implements IBean
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testReference");
 		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
 		
-		if (ca != null) {
-			if (testReference == null) {
-				createTestReference(ca);
-			}
-			testReference.setTypeInstance(ca);
-		} else {
+		// Temporary manual fix before all generated code is updated
+		if (ca == null) {
 			testReference = null;
+		} else if (testReference == null || !testReference.getTypeInstance().equals(ca)) {
+			createTestReference(ca);
 		}
 	}
 	
