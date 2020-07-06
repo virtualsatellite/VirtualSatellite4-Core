@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.model.extension.requirements.csv;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +37,10 @@ public class CsvFileReaderTest {
 	private static final String REQ_ATT_2 = "att2";
 	private static final String REQ_ATT_3 = "att3";
 	
+	private static final int HEADER_LINE = 0;
+	private static final int START_LINE = 1;
+	private static final int END_LINE = 2;
+	
 	private static final String SEPERATOR = ";";
 	
 	private static final String JSON_FILE_NAME = "dummy.csv";
@@ -51,10 +57,11 @@ public class CsvFileReaderTest {
 		Files.write(csvFilePath, csvContent);
 		
 		CsvFileReader reader = new CsvFileReader();
+		assertEquals("Default seperator should be semicolon", SEPERATOR, reader.getSeparator());
 		
-		reader.parseFile(csvFilePath.toString());
+		assertTrue("File should exist", reader.parseFile(csvFilePath.toString()));
 		List<List<String>> importedCsvContent = reader.readCsvFile(0, -1);
-		reader.closeFile();
+		assertTrue("File should be closed properly", reader.closeFile());
 		
 		assertEquals("Number of lines correct", 2, importedCsvContent.size());
 		
@@ -80,7 +87,17 @@ public class CsvFileReaderTest {
 		
 		Files.write(csvFilePath, csvContent);
 		
-		CsvFileReader reader = new CsvFileReader(";", 0, 1, 2);
+		// Configure reader via setters
+		CsvFileReader reader = new CsvFileReader();
+		reader.setSeparator(SEPERATOR);
+		reader.setHeaderLine(HEADER_LINE);
+		reader.setDataStartLine(START_LINE);
+		reader.setDataEndLine(END_LINE);
+		
+		assertEquals("File section set correctly", HEADER_LINE, reader.getHeaderLine());
+		assertEquals("File section set correctly", START_LINE, reader.getDataStartLine());
+		assertEquals("File section set correctly", END_LINE, reader.getDataEndLine());
+		assertEquals("Seperator set correctly", SEPERATOR, reader.getSeparator());
 		
 		reader.parseFile(csvFilePath.toString());
 		List<String> importedCsvHeader = reader.readCsvHeadline();
@@ -103,7 +120,8 @@ public class CsvFileReaderTest {
 		
 		Files.write(csvFilePath, csvContent);
 		
-		CsvFileReader reader = new CsvFileReader(";", 0, 0, 2);  //Asume header is also data for now
+		
+		CsvFileReader reader = new CsvFileReader(SEPERATOR, HEADER_LINE, HEADER_LINE, END_LINE);  //Asume header is also data for now
 		
 		reader.parseFile(csvFilePath.toString());
 		List<List<String>> importedCsvContent = reader.readCsvData();
@@ -120,5 +138,19 @@ public class CsvFileReaderTest {
 		assertEquals("Req att correct", reqLine.get(1), REQ_ATT_2);
 		assertEquals("Req att correct", reqLine.get(2), REQ_ATT_3);
 	}
-
+	
+	@Test
+	public void testParseNonExistendFile() {
+		CsvFileReader reader = new CsvFileReader();
+		assertFalse("File does not exist", reader.parseFile("SomeNonExistendFile.csv"));
+		
+		assertTrue("Data of non existend file should be empty", reader.readCsvData().isEmpty());
+	}
+	
+	@Test
+	public void testCloseNonExistendFile() {
+		CsvFileReader reader = new CsvFileReader();
+		assertFalse("File not configured", reader.closeFile());
+	}
+	
 }

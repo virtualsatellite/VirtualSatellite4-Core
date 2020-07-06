@@ -87,10 +87,11 @@ public class CsvFileReader {
 	 * @return true if the file could be closed properly, false otherwise
 	 */
 	public boolean closeFile() {
+		if (fr == null) {
+			return false;
+		} 
 		try {
-			if (fr != null) {
-				fr.close();
-			}
+			fr.close();
 		} catch (IOException e) {
 			Activator.getDefault().getLog().error("Failed to close file to import", e);
 			return false;
