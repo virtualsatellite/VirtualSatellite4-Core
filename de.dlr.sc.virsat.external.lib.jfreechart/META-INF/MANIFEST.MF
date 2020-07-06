@@ -16,6 +16,7 @@ Bundle-ClassPath: .,
  externalLib/maven/jfreechart.jar,
  externalLib/maven/swtgraphics2d.jar
 Export-Package: de.dlr.sc.virsat.external.lib.jfreechart;uses:="org.osgi.framework,org.eclipse.core.runtime",
+ license,
  org.jfree,
  org.jfree.base,
  org.jfree.base.config,
