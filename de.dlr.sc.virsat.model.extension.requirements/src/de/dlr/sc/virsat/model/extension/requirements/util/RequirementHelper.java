@@ -25,5 +25,4 @@ public class RequirementHelper {
 		return rawName.replaceAll(" ", "").replaceAll("-", "").replaceAll("_", "");
 	}
 	
-
 }
