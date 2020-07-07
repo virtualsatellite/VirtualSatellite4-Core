@@ -9,11 +9,13 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.model.ext.core;visibility:=reexport
+ de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
+ de.dlr.sc.virsat.external.lib.commons.csv
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.requirements,
+ de.dlr.sc.virsat.model.extension.requirements.csv,
  de.dlr.sc.virsat.model.extension.requirements.command,
  de.dlr.sc.virsat.model.extension.requirements.model,
  de.dlr.sc.virsat.model.extension.requirements.validator

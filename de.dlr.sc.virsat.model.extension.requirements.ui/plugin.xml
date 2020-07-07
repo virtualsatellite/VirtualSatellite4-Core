@@ -744,5 +744,19 @@
       </command>
       </menuContribution>
    </extension>
+   <extension
+	  point="org.eclipse.ui.importWizards">
+	   <wizard
+	     category="de.dlr.virsat.global.category.import.virsat"
+	     class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.CsvImportWizard"
+	     id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.csvImport"
+	     icon="resources/icons/RequirementsSpecification.gif"
+	     name="Requirements CSV Import Wizard">
+	   </wizard>
+	  <category
+            id="de.dlr.virsat.global.category.import.virsat"
+            name="Virtual Satellite">
+      </category>
+	</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
