@@ -49,6 +49,7 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 		filterChildrenClasses = new HashSet<>();
 		filterChildrenCategoryIds = new HashSet<>();
 		filterChildrenStructuralElementIds = new HashSet<>();
+		filterChildrenFunctions = new HashSet<>();
 	}
 
 	/**
