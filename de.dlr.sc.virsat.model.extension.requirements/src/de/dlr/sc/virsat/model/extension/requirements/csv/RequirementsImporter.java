@@ -152,8 +152,9 @@ public class RequirementsImporter {
 				}
 				//Get value of last line
 				String repeatedValueOldLine = contentMatrix.get(lineNumber - 1).get(index);
-				//If attribute is an index then append extension to make data unique
-				if (attributeMapping.get(index) != null && attributeMapping.get(index).getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
+				//If attribute is an identifier then append extension to make data unique
+				RequirementAttribute att = attributeMapping.get(index);
+				if (att != null && att.getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
 					repeatedValueOldLine += REQ_EXTENSION_IDENTIFIER_PREFIX;
 				}
 				//Set the value
