@@ -127,6 +127,17 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 		addCategoryIdFilterToGetChildren(filterId);
 		return (this);
 	}
+
+	/**
+	 * Use this method to add an ID for a specific type id of the StructuralElement Concept
+	 * @param filterId the ID of the object that should be returned by the GetElement and GetChildren method
+	 * @return returns the current instance to easily concatenate various filters.
+	 */
+	public VirSatFilteredWrappedTreeContentProvider addStructuralElementIdFilter(String filterId) {
+		addStructuralElementIdFilterToGetElement(filterId);
+		addStructuralElementIdFilterToGetChildren(filterId);
+		return (this);
+	}
 	
 	/**
 	 * Use this method to add a custom filtering function
