@@ -35,10 +35,6 @@ uploadSwtBot() {
 		echo "Test Artifacts: Starting upload to SourceForge..."
 		ls -lh ${TRAVIS_BUILD_DIR}/swtbot/
 		rsync -e ssh -avP ${TRAVIS_BUILD_DIR}/swtbot/${TEST_ARTEFACTS_ZIP} dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/
-	
-		# Purge old files
-		# ssh dlrscmns@frs.sourceforge.net 'find /home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/* -mtime +14 -exec rm {} \;'
-		ssh dlrscmns@frs.sourceforge.net 'find /home/frs/project/virtualsatellite/VirtualSatellite4-Core/swtbot/*'
 	else
 		echo "Test Artifacts:No files in folder: ${TRAVIS_BUILD_DIR}/swtbot"
 	fi

@@ -39,8 +39,6 @@ public class AppsTest extends ASwtBotTestCase {
 			}
 		}, MAX_TEST_CASE_TIMEOUT_MILLISECONDS);
 
-		Thread.sleep(90000);
-		
 		String consoleOutput = bot.styledText().getText();
 		assertTrue(consoleOutput.contains("App output:"));
 		assertTrue("Default app should print all units to the console", consoleOutput.contains("gram"));
