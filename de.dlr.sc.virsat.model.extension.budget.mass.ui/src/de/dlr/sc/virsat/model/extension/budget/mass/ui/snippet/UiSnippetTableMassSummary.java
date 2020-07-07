@@ -34,12 +34,12 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.swt.ChartComposite;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
-import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.util.Rotation;
 
 import de.dlr.sc.virsat.commons.ui.jface.viewer.IKeyColumnValueLabelProvider;

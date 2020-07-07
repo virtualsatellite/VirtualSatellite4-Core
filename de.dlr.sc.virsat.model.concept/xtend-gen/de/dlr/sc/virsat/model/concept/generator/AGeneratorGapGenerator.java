@@ -27,7 +27,8 @@ public abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IG
   
   @Override
   public CharSequence createConcreteClass(final Concept concept, final TYPE conceptPart) {
-    final ImportManager imCClass = new ImportManager();
+    String _package = this.getPackage(concept);
+    final ImportManager imCClass = new ImportManager(_package);
     final CharSequence bodyClass = this.declareClass(concept, conceptPart, imCClass);
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _generateFileHeader = ConceptGeneratorUtil.generateFileHeader();
@@ -49,7 +50,8 @@ public abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IG
   
   @Override
   public CharSequence createAbstractClass(final Concept concept, final TYPE conceptPart) {
-    final ImportManager imAClass = new ImportManager();
+    String _package = this.getPackage(concept);
+    final ImportManager imAClass = new ImportManager(_package);
     final CharSequence bodyAClass = this.declareAClass(concept, conceptPart, imAClass);
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _generateFileHeader = ConceptGeneratorUtil.generateFileHeader();

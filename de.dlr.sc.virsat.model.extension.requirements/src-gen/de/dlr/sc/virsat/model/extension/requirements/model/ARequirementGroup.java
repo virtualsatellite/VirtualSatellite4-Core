@@ -13,13 +13,14 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 
@@ -85,6 +86,19 @@ public abstract class ARequirementGroup extends RequirementObject implements IBe
 	public IBeanList<RequirementObject> getChildren() {
 		safeAccessChildren();
 		return children;
+	}
+	
+	private IBeanList<BeanPropertyComposed<RequirementObject>> childrenBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessChildrenBean() {
+		if (childrenBean.getArrayInstance() == null) {
+			childrenBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("children"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<RequirementObject>> getChildrenBean() {
+		safeAccessChildrenBean();
+		return childrenBean;
 	}
 	
 	

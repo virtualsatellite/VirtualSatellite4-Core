@@ -29,7 +29,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
@@ -64,7 +67,7 @@ import de.dlr.sc.virsat.project.editingDomain.commands.VirSatPasteFromClipboardC
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSetUtil;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
-import de.dlr.sc.virsat.project.structure.VirSatProjectResourceChangeListener;
+import de.dlr.sc.virsat.project.structure.AVirSatProjectResourceChangeListener;
 
 /**
  * The Transactional Editing Domain with attached WorkspaceSynchronizer
@@ -162,7 +165,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * if the workspace change is due to a file which has been saved actively from virtual satellite
 	 * or if it is due to a change of the file from some VirSat domain external editor. 
 	 */
-	protected class VirSatEditingDomainResourceChangeListsner extends VirSatProjectResourceChangeListener {
+	protected class VirSatEditingDomainResourceChangeListsner extends AVirSatProjectResourceChangeListener {
 		
 		public VirSatEditingDomainResourceChangeListsner(IProject virSatProject) {
 			super(virSatProject);
@@ -179,14 +182,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		public void handlePostCondition() {
 			if (triggerFullReload) {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Execute Full Reload"));
-				try {
-					// We need the editing domain to do the reload
-					runExclusive(() -> {
-						VirSatTransactionalEditingDomain.this.reloadAll();
-					});
-				} catch (InterruptedException e) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Failed to perform Full Reload"));
-				}
+				VirSatTransactionalEditingDomain.this.reloadAll();
 			}
 		}
 		
@@ -275,7 +271,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * This method implements the resource change listener to detect external vs. internal and expected changes of resources
 	 * @return a WorkspaceListener, method should always hand back the same instance
 	 */
-	private VirSatProjectResourceChangeListener initWorkSpaceChangeListener() {
+	private AVirSatProjectResourceChangeListener initWorkSpaceChangeListener() {
 		if (workspaceChangeListener == null) {
 			workspaceChangeListener = new VirSatEditingDomainResourceChangeListsner(getResourceSet().getProject());
 		}
@@ -303,6 +299,23 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 *    waiting for access to the resource set
 	 */
 	public Object writeExclusive(Runnable readWriteRunnable) throws InterruptedException {
+		return runExclusiveInWorkspace(readWriteRunnable, true);
+	}
+	
+	/**
+	 * This method is the counter is the actual implementation for locking
+	 * a write transaction in the editing domain
+	 * 
+	 * @param readWriteRunner a runnable provided with read and write privileges
+	 * 
+	 * @return the result of the read operation if it is a
+	 *    {@link RunnableWithResult} and the transaction did not roll back;
+	 *    <code>null</code>, otherwise
+	 *    
+	 * @throws InterruptedException if the current thread is interrupted while
+	 *    waiting for access to the resource set
+	 */
+	protected Object doWriteExclusive(Runnable readWriteRunnable) throws InterruptedException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Starting an exclusive write transaction"));
 
 		// get the active transaction and check if it is reusable for us
@@ -365,30 +378,28 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Try saving all resources"));
 		
 		// First lock the workspace then lock the transaction
-		executeInWorkspace(() -> {
-			try {
-				this.writeExclusive(() -> {
-					List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
-					for (Resource resource : resources) {
-						boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
-						if (fileIsDVLMResource || !dvlmResourcesOnly) {
-							saveResource(resource, supressRemoveDanglingReferences);
-							virSatResourceSet.updateDiagnostic(resource);
-							virSatResourceSet.notifyDiagnosticListeners(resource);
-						}
+		try {
+			this.writeExclusive(() -> {
+				List<Resource> resources = new ArrayList<Resource>(virSatResourceSet.getResources());
+				for (Resource resource : resources) {
+					boolean fileIsDVLMResource = VirSatProjectCommons.FILENAME_EXTENSION.equalsIgnoreCase(resource.getURI().fileExtension());
+					if (fileIsDVLMResource || !dvlmResourcesOnly) {
+						saveResource(resource, supressRemoveDanglingReferences);
+						virSatResourceSet.updateDiagnostic(resource);
+						virSatResourceSet.notifyDiagnosticListeners(resource);
 					}
-					
-					maintainDirtyResources();
-				});
-			} catch (InterruptedException e) {
-				Activator.getDefault().getLog().log(new Status(
-					Status.WARNING,
-					Activator.getPluginId(),
-					"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
-				);
-			}
-		});
-
+				}
+				
+				maintainDirtyResources();
+			});
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(
+				Status.WARNING,
+				Activator.getPluginId(),
+				"VirSatTransactionalEditingDomain: failed samving all resources: " + e.getMessage())
+			);
+		}
+		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished try saving all resources"));
 	}
 	
@@ -399,15 +410,19 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void removeResource(Resource emfResource) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: About to unload a resource"));
-		executeInWorkspace(() -> {
-			if (emfResource != null) {
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: ActuallyUnloaded Resource URI (" + emfResource.getURI().toPlatformString(true) + ")"));
-				virSatResourceSet.removeResource(emfResource);
-				// If the resource has been removed we don't need to monitor its dirty state anymore
-				isResourceDirty.remove(emfResource);
-				fireNotifyResourceEvent(Collections.singleton(emfResource), VirSatTransactionalEditingDomain.EVENT_UNLOAD);
-			}
-		});
+		try {
+			runExclusive(() -> {
+				if (emfResource != null) {
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: ActuallyUnloaded Resource URI (" + emfResource.getURI().toPlatformString(true) + ")"));
+					virSatResourceSet.removeResource(emfResource);
+					// If the resource has been removed we don't need to monitor its dirty state anymore
+					isResourceDirty.remove(emfResource);
+					fireNotifyResourceEvent(Collections.singleton(emfResource), VirSatTransactionalEditingDomain.EVENT_UNLOAD);
+				}
+			});
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Thread got interrupted"));
+		}
 	}
 	
 	/**
@@ -416,35 +431,39 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	public void reloadAll() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Started reloading all resources"));
 
-		executeInWorkspace(() -> {
-			// Make sure that no Change Events are fired while a resource is reloaded
-			synchronized (accumulatedResourceChangeEvents) {
-				// Clear all Accumulated Resource Change Events because at the end of this method
-				// we will notify about all resources being reloaded.
-				clearAccumulatedRecourceChangeEvents();
-				
-				// take the lock on recently changed resources. So that all resources will be reloaded
-				// in one go. No one should interfere at this point.
-				synchronized (recentlyChangedResource) {
-					// In case that a resource is properly unloaded 
-					// The command stack should be flushed and the Clipboard
-					// should be brought back into a clean state
-					VirSatEditingDomainClipBoard.INSTANCE.flushClipboard(this);
-					VirSatTransactionalEditingDomain.this.getCommandStack().flush();
-	
-					// Now reload all resources and make sure that all of them are marked as unchanged.
-					virSatResourceSet.realoadAll();
-					recentlyChangedResource.clear();
+		try {
+			runExclusive(() -> {
+				// Make sure that no Change Events are fired while a resource is reloaded
+				synchronized (accumulatedResourceChangeEvents) {
+					// Clear all Accumulated Resource Change Events because at the end of this method
+					// we will notify about all resources being reloaded.
+					clearAccumulatedRecourceChangeEvents();
 					
-					// After performing a reload all there are no more dirty resources
-					isResourceDirty.clear();
-				
-					// Now start notifying everyone about the change of resources
-					List<Resource> reloadedResources = virSatResourceSet.getResources();
-					fireNotifyResourceEvent(new HashSet<>(reloadedResources), VirSatTransactionalEditingDomain.EVENT_RELOAD);
+					// take the lock on recently changed resources. So that all resources will be reloaded
+					// in one go. No one should interfere at this point.
+					synchronized (recentlyChangedResource) {
+						// In case that a resource is properly unloaded 
+						// The command stack should be flushed and the Clipboard
+						// should be brought back into a clean state
+						VirSatEditingDomainClipBoard.INSTANCE.flushClipboard(this);
+						VirSatTransactionalEditingDomain.this.getCommandStack().flush();
+
+						// Now reload all resources and make sure that all of them are marked as unchanged.
+						virSatResourceSet.realoadAll();
+						recentlyChangedResource.clear();
+						
+						// After performing a reload all there are no more dirty resources
+						isResourceDirty.clear();
+					
+						// Now start notifying everyone about the change of resources
+						List<Resource> reloadedResources = virSatResourceSet.getResources();
+						fireNotifyResourceEvent(new HashSet<>(reloadedResources), VirSatTransactionalEditingDomain.EVENT_RELOAD);
+					}
 				}
-			}
-		});
+			});
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Execution got interrupted"));
+		}
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Finished reloading all resources"));
 	}
@@ -474,7 +493,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 			}
 			
 			// Remove dangling references only if this the user has write access to this resource
-			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource, this); 
+			boolean writeRemovedDanglingReferences = !supressRemoveDanglingReferences && virSatResourceSet.hasWritePermission(resource, this) && VirSatProjectCommons.isDvlmFile(resource); 
 			
 			// for dangling references call the Utils to remove them before actually saving them
 			if (writeRemovedDanglingReferences) {
@@ -525,7 +544,11 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public void saveResourceIgnorePermissions(Resource resource) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Saving resource ignoring write permissions (" + resource.getURI().toPlatformString(true) + ")"));
-		executeInWorkspace(() -> internallySaveResource(resource, true));
+		try {
+			writeExclusive(() -> internallySaveResource(resource, true));
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Save resource without permission got interrupted)"));
+		}
 	}
 	
 	/**
@@ -536,26 +559,15 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param overrideWritePermissions the flag to give permission to ignore rights management
 	 */
 	private void internallySaveResource(Resource resource, boolean overrideWritePermissions) {
-		try {
-			this.writeExclusive(() -> {
-				// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
-				// to decide if reload of the resource is needed or not (means handling external resource changes)
-				synchronized (recentlyChangedResource) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
-					recentlyChangedResource.add(resource.getURI());
-				}
-				
-				// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
-				virSatResourceSet.saveResource(resource, this, overrideWritePermissions);
-			});
-		} catch (InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(
-				Status.ERROR,
-				Activator.getPluginId(),
-				"VirSatTransactionalEditingDomain: Saving resource (" + resource.getURI().toPlatformString(true) + ") failed in a write transaction: " + e.getMessage(),
-				e
-			));
+		// Put it to the list of recently saved resources in case it is not suppressed. This helps the workspaceSynchronizer
+		// to decide if reload of the resource is needed or not (means handling external resource changes)
+		synchronized (recentlyChangedResource) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: Adding to recently changed resource (" + resource.getURI().toPlatformString(true) + ")"));
+			recentlyChangedResource.add(resource.getURI());
 		}
+		
+		// Call the VirSatResourceSet so we are sure it uses our correct Save Settings
+		virSatResourceSet.saveResource(resource, this, overrideWritePermissions);
 	}
 	
 	/**
@@ -621,8 +633,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 						
 						printRecentlyChangedResources();
 						
-						// Always run all diagnostics
-						for (Resource resource : virSatResourceSet.getResources()) {
+						// Always run all diagnostics, create a copy on the list fo resources to avoid
+						// concurrent modification exceptions.
+						for (Resource resource : new ArrayList<>(virSatResourceSet.getResources())) {
 							if (virSatResourceSet.updateDiagnostic(resource)) {
 								virSatResourceSet.notifyDiagnosticListeners(resource);
 							}
@@ -741,19 +754,49 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 */
 	public static void waitForFiringOfAccumulatedResourceChangeEvents() {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Waiting for Events to be fired"));
-		while (true) {
-			synchronized (accumulatedResourceChangeEvents) {
-				try {
-					accumulatedResourceChangeEvents.wait(ResourceChangeEventThread.SLEEP_TIME);
-				} catch (InterruptedException e) {
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: Thread got interrupted", e));
-					break;
+		
+		/**
+		 *  Define a new WorkspaceJob which can be fired here and waits for all accumulated
+		 *  notifications to be fired. The basic idea is, that we cannot be sure about the Workspace
+		 *  Job of the WorkspaceChangelsietenr, if it executes, is about to execute etc. Thus it may still
+		 *  trigger notifications. This JOb basically ensures, that all other Jobs have been run before
+		 *  and will make the calling thread of this method, e.g. a test, wait until all notifications
+		 *  and workspace jobs have been scheduled and executed.
+		 */
+		class WorkspaceAccumulatedNotificationJob extends WorkspaceJob {
+
+			WorkspaceAccumulatedNotificationJob() {
+				super("VirSatTransactionalEditingDomain: Waiting for accumulated Notifications");
+			}
+		
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+				synchronized (this) {
+					synchronized (accumulatedResourceChangeEvents) {
+						while (!accumulatedResourceChangeEvents.isEmpty()) {
+							try {
+								accumulatedResourceChangeEvents.wait(ResourceChangeEventThread.ACCUMULATION_TIME);
+							} catch (InterruptedException e) {
+								Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+									"VirSatTransactionalEditingDomian: Got interuppted while waiting for accumulation of notifications", e));
+							}
+						}
+					}
 				}
-				if (accumulatedResourceChangeEvents.isEmpty()) {
-					break;
-				}
+				return Status.OK_STATUS;
 			}
 		}
+		
+		try {
+			WorkspaceAccumulatedNotificationJob wsAccumulatedNotificationJob = new WorkspaceAccumulatedNotificationJob();
+			wsAccumulatedNotificationJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
+			wsAccumulatedNotificationJob.schedule();
+			wsAccumulatedNotificationJob.join();
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
+					"VirSatTransactionalEditingDomian: Got interuppted while waiting for accumulation of notifications", e));
+		}
+		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ResourceChangeEventThread: All events fired Queue is empty"));
 	}
 	
@@ -889,7 +932,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param resourceEventListener the listener which will be triggered by resource changes
 	 */
 	public static void addResourceEventListener(IResourceEventListener resourceEventListener) {
-		resourceEventlisteners.add(resourceEventListener);
+		if (resourceEventListener != null) {
+			resourceEventlisteners.add(resourceEventListener);
+		}
 	}
 
 	/**
@@ -897,7 +942,9 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * @param resourceEventListener the resourceEventListener to be removed
 	 */
 	public static void removeResourceEventListener(IResourceEventListener resourceEventListener) {
-		resourceEventlisteners.remove(resourceEventListener);
+		if (resourceEventListener != null) {
+			resourceEventlisteners.remove(resourceEventListener);
+		}
 	}
 	
 	/**
@@ -1029,6 +1076,19 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	
 	@Override
 	public Object runExclusive(Runnable read) throws InterruptedException {
+		return runExclusiveInWorkspace(read, false);
+	}
+	
+	/**
+	 * Method to wrap calls to run or writeExclsuive into a workspace operation.
+	 * This ensures that the workspace is locked before the transaction and avoids
+	 * race conditions with interlocking threads.
+	 * @param read the Code to be executed in the transaction
+	 * @param writeExclusive true in case if it is a write locking transaction
+	 * @return the result of the code executed in the transaction
+	 * @throws InterruptedException
+	 */
+	protected Object runExclusiveInWorkspace(Runnable read, boolean writeExclusive) throws InterruptedException {
 		// Prepare variables to remember the results of the execution of the runnable
 		AtomicReference<Object> atomicResult = new AtomicReference<>();
 		AtomicExceptionReference<InterruptedException> atomicException = new AtomicExceptionReference<>();
@@ -1037,8 +1097,13 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		// This ensures workspace locking before transaction locking
 		executeInWorkspace(() -> {
 			try {
-				Object result = super.runExclusive(read);
-				atomicResult.set(result);
+				if (writeExclusive) {
+					Object result = doWriteExclusive(read);
+					atomicResult.set(result);
+				} else {
+					Object result = super.runExclusive(read);
+					atomicResult.set(result);
+				}
 			} catch (InterruptedException e) {
 				// In case there has been an exception store it.
 				atomicException.set(e);

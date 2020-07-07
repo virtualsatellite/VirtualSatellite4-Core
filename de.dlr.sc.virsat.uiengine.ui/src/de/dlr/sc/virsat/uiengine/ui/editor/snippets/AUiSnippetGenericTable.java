@@ -92,6 +92,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	protected static final String SECTION_HEADING_PREFIX = "Section for: ";
 	
 	protected ColumnViewer columnViewer;
+	protected FormToolkit toolkit = null;
 	protected int style;
 
 	private Button buttonRemove;
@@ -132,6 +133,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	@Override
 	public void createSwt(FormToolkit toolkit, EditingDomain editingDomain, Composite composite, EObject initModel) {
 		super.createSwt(toolkit, editingDomain, composite, initModel);
+		this.toolkit = toolkit;
 	
 		sectionBody = createSectionBody(toolkit, SECTION_HEADING_PREFIX + getTypeInformationFull(), null, 1);
 

@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -31,8 +32,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.command.AddCommand;
@@ -55,6 +58,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatCopyToClipboardCommand;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatCutToClipboardCommand;
@@ -597,12 +601,12 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain.recentlyChangedResource.add(repoRes.getURI());
 		
 		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("A full reload is not triggered because the resource was manually marked as recently changed", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("The list of Recently Saved Resources still contains the resources", editingDomain.recentlyChangedResource, hasItem(repoRes.getURI()));
 	
 		editingDomain.recentlyChangedResource.clear();
 		editingDomain.workspaceChangeListener.handleAddedDvlmResources(Collections.singletonList(repoWsRes));
-		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertTrue("Now the resource was NOT marked as recently changed so we expect an external change and should trigger a reload", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("The list should not have been changed by the clal to the handleAdded method", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	}
 	
@@ -617,13 +621,27 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain.recentlyChangedResource.add(repoRes.getURI());
 		
 		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("A full reload is not triggered because the resource was manually marked as recently changed", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 	
 		editingDomain.recentlyChangedResource.clear();
 		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
-		assertTrue("A full reload is triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertTrue("Now the resource was NOT marked as recently changed so we expect an external change and should trigger a reload", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test
+	public void testHandleChangedExternalResource() {
+		editingDomain.recentlyChangedResource.clear();
+		assertTrue("There is no resource that has been saved recently", editingDomain.recentlyChangedResource.isEmpty());
+		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		
+		Resource repoRes = rs.getRepositoryResource();
+		IFile repoWsRes = projectCommons.getRepositoryFile();
+		
+		rs.removeResource(repoRes);
+		editingDomain.workspaceChangeListener.handleChangedDvlmResources(Collections.singletonList(repoWsRes));
+		assertFalse("Change was done on external resource that is not in resource set", editingDomain.workspaceChangeListener.triggerFullReload);
 	}
 	
 	@Test
@@ -637,15 +655,39 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		editingDomain.recentlyChangedResource.add(repoRes.getURI());
 		
 		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("A full reload is not triggered because the resource was manually marked as recently changed", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
 		assertThat("ResourceSet does not contain resource anymore", rs.getResources(), not(hasItem(repoRes)));
 		
 		// Resource has been actually taken from the resourceSet. Thus it is now treated as an arbitrary file and nothing should happen.
 		editingDomain.recentlyChangedResource.clear();
 		editingDomain.workspaceChangeListener.handleRemovedDvlmResources(Collections.singletonList(repoWsRes));
-		assertFalse("A full reload is not yet triggered", editingDomain.workspaceChangeListener.triggerFullReload);
+		assertFalse("Resource is not in the resource set anymore so we don't need to reload", editingDomain.workspaceChangeListener.triggerFullReload);
 		assertThat("Resource got removed from recently saved resources", editingDomain.recentlyChangedResource, not(hasItem(repoRes.getURI())));
+	}
+	
+	@Test(expected = WrappedException.class)
+	public void testGetResource() {
+		
+		IFile rmFile = projectCommons.getRoleManagementFile();
+		
+		assertNotNull("Resource is in VirSat Rsource set and is handed back", rs.getResource(rmFile, false));
+		assertNotNull("Resource is in VirSat Rsource set and is handed back", rs.getResource(rmFile, true));
+		
+		// Remove the resource from the RS now not demandLoading it returns null
+		rs.removeResource(rs.getResource(rmFile, false));
+		assertNull("Resource should be in VirSat resource set", rs.getResource(rmFile, false));
+		
+		// Loading it on demand tries to read the file and hand back a resource
+		assertNotNull("Resource should be in VirSat resource set", rs.getResource(rmFile, true));
+		
+		// Loading other than an iFile returns a null
+		IFolder randomFolder = projectCommons.getStructuralElemntInstanceFolder(StructuralFactory.eINSTANCE.createStructuralElementInstance());
+		assertNull("Resource should be in VirSat resource set", rs.getResource(randomFolder, false));
+		
+		// In case the file does not exist, an exception is thrown
+		IFile randomFile = projectCommons.getStructuralElementInstanceFile(StructuralFactory.eINSTANCE.createStructuralElementInstance());
+		rs.getResource(randomFile, true);
 	}
 	
 }

@@ -56,6 +56,7 @@
 <setEntry value="de.dlr.sc.virsat.model.calculation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.budget.mass.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.ps.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.statemachines.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>

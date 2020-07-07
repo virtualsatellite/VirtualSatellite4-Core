@@ -24,23 +24,31 @@ SPDX-License-Identifier: EPL-2.0
 	<build>
 		<plugins>
 			<plugin>
-            	<groupId>org.eclipse.tycho</groupId>
-            	<artifactId>tycho-surefire-plugin</artifactId>
-            	<version>${tycho-version}</version>
-            	<configuration>
-					<!-- Let the tests run for 20 minutes max. If time is exceeded kill the process. Apparently something is wrong -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<!-- Let the tests run for 20 minutes max. If time is exceeded kill 
+						the process. Apparently something is wrong -->
 					<forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
 					<showEclipseLog>true</showEclipseLog>
 					<rerunFailingTestsCount>3</rerunFailingTestsCount>
 					<testFailureIgnore>false</testFailureIgnore>
-              		<useUIHarness>true</useUIHarness>
-              		<trimStackTrace>false</trimStackTrace>
-              		<useUIThread>false</useUIThread>
-		            <product>de.dlr.sc.virsat.branding.ui.VirSat_Core</product>
-              		<application>org.eclipse.ui.ide.workbench</application>
-            	</configuration>
-        	</plugin>
+					<useUIHarness>true</useUIHarness>
+					<trimStackTrace>false</trimStackTrace>
+					<useUIThread>false</useUIThread>
+					<product>de.dlr.sc.virsat.branding.ui.VirSat_Core</product>
+					<application>org.eclipse.ui.ide.workbench</application>
+					
+					<!--  Setup the osgi data and workspace directory. Otherwise the workspace will be placed
+					in the plugins target directory, thus creating a repository within a repository (git from
+					the source code). UI tests will then sometimes believe that the project is already connected
+					to a VCS but in fact isn't. -->
+					<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
+					<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
+				</configuration>
+			</plugin>
         	<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>

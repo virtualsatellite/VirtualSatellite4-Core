@@ -72,7 +72,7 @@ import de.dlr.sc.virsat.uieingine.ui.dnd.DropHelper;
  */
 public abstract class AUiSnippetEStructuralFeatureTable extends AUiEStructuralFeatureSectionSnippet {
 	
-	private static final String SECTION_HEADING = "Table Section for: ";
+	public static final String SECTION_HEADING = "Table Section for: ";
 	
 	protected TableViewer tableViewer;
 	

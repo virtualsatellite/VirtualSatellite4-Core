@@ -20,7 +20,6 @@ import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.VoltageDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 
