@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -42,6 +43,7 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -91,6 +93,7 @@ public class ASwtBotTestCase {
 	protected static final int SWTBOT_TRY_3_TIME = 3;
 	protected static final int SWTBOT_TRY_5_TIME = 5;
 	protected static final int SWTBOT_TRY_10_TIME = 10;
+	protected static final int SWTBOT_RETRY_WAIT_TIME = 500;
 	
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
@@ -725,6 +728,32 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Method opens the RoleManagement Editor adds a new Discipline
+	 * and sets a name and user for it
+	 * @param discipline the discipline name to be set
+	 * @param user the suer to be set. Can be null which leaves the default user.
+	 * @return the table item which was added
+	 */
+	protected SWTBotTableItem createNewDiscipline(String discipline, String user) {
+		// Switch to the Editor and add a new Discipline
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.show();
+		rmEditor.bot().button("Add Discipline").click();
+		SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
+		
+		newDisciplineTableItem.click(0);
+		rmEditor.bot().text().setText(discipline);
+		
+		if (user != null) {
+			newDisciplineTableItem.click(1);
+			rmEditor.bot().text().setText(user);
+		}
+		
+		save();
+		return newDisciplineTableItem;
+	}
+	
+	/**
 	 * @param item the editor page
 	 * @param clazz the section of the table
 	 * @return it returns the desired SWTBotTable
@@ -934,7 +963,7 @@ public class ASwtBotTestCase {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to check for a condition several times until it creates a failure
 	 * @param message the Message to be used to report the fail
@@ -945,7 +974,7 @@ public class ASwtBotTestCase {
 		int count = i;
 		while (count > 0 && !condition.getAsBoolean()) {
 			try {
-				Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
+				Thread.sleep(SWTBOT_RETRY_WAIT_TIME);
 			} catch (InterruptedException e) {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.assertForTimes: Sleep got interupted", e));
 			}
