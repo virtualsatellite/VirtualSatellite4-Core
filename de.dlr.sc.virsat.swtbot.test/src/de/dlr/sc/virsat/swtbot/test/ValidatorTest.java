@@ -17,7 +17,6 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widget
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTooltip;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 	@Test
 	public void testValidateSeiName() {
 		// Initially there are no warnings
-		assertFalse(problemView.bot().tree().hasItems());
+		assertForTimes("Make sure the problems view is empty", SWTBOT_TRY_5_TIME, () -> problemView.bot().tree().hasItems());
 		
 		// Create seis with incorrect names and then close the editors
 		// Create relevant problematic seis in one test case to keep overhead time in swtbot low
@@ -109,7 +108,7 @@ public class ValidatorTest extends ASwtBotTestCase {
 	@Test
 	public void testValidateCaName() {
 		// Initially there are no warnings
-		assertFalse(problemView.bot().tree().hasItems());
+		assertForTimes("Make sure the problems view is empty", SWTBOT_TRY_5_TIME, () -> problemView.bot().tree().hasItems());
 		
 		// Create seis with incorrect names and then close the editors
 		SWTBotTreeItem ct = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
