@@ -19,6 +19,8 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
+import de.dlr.sc.virsat.model.extension.requirements.Activator;
+
 /**
  * A class to read a CSV file and pars it to lists
  *
@@ -91,8 +93,7 @@ public class CsvFileReader {
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();
 		Path csvFilePath = Paths.get(filePath);
 
-		FileReader fr = new FileReader(csvFilePath.toFile());
-		try {
+		try (FileReader fr = new FileReader(csvFilePath.toFile())) {
 			Iterable<CSVRecord> records = CSVFormat.EXCEL.withDelimiter(getSeparator()).parse(fr);
 			int lineNumber = 0;
 			for (CSVRecord record : records) {
@@ -108,9 +109,8 @@ public class CsvFileReader {
 					break;
 				}
 			}
-			fr.close();
 		} catch (IOException e) {
-			fr.close();
+			Activator.getDefault().getLog().error("CSVImport could not parse the given file", e);
 			// Forward exception to upper error handling but close the file reader
 			throw e;
 		}
