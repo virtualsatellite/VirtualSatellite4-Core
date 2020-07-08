@@ -88,25 +88,21 @@ public abstract class AFilteredContentProvider {
 
 	/**
 	 * Use this method to filter objects for a list of filtering functions
-	 * Only objects that satisfy the specified filters will be returned
+	 * Only objects that satisfy at least one of the specified filters will be returned
 	 * @param objects Array of input objects
 	 * @param filterFunctions A set of filtering functions. all objects will be returned if list is empty 
 	 * @return the objects that passed the filter (that have been selected by the filter)
 	 */
 	protected Object[] filterFunctions(Object[] objects, Set<Function<Object, Boolean>> filterFunctions) {
 		Set<Object> filteredObjects = new HashSet<>();
-		// In case there are no filters specified we return all objects
 		if (filterFunctions.isEmpty()) {
 			return objects;
 		}
 		
-		// Now filter the
 		for (Object object : objects) {
 			for (Function<Object, Boolean> filter : filterFunctions) {
 				if (filter.apply(object)) {
 					filteredObjects.add(object);
-					// Object is accepted therefore go to the next
-					// evaluate the next object
 					break;
 				}
 			}
@@ -123,18 +119,14 @@ public abstract class AFilteredContentProvider {
 	 */
 	protected Object[] filterClasses(Object[] objects, Set<Class<?>> classFilters) {
 		Set<Object> filteredObjects = new HashSet<>();
-		// In case there are no filters specified we return all objects
 		if (classFilters.isEmpty()) {
 			return objects;
 		}
 		
-		// Now filter the
 		for (Object object : objects) {
 			for (Class<?> clazz : classFilters) {
 				if (clazz.isAssignableFrom(object.getClass())) {
 					filteredObjects.add(object);
-					// Object is accepted therefore go to the next
-					// evaluate the next object
 					break;
 				}
 			}
