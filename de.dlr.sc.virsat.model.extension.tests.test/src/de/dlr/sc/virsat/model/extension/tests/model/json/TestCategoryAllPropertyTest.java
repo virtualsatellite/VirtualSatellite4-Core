@@ -10,14 +10,23 @@
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,9 +39,15 @@ import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryAllPropertyTest extends AConceptTestCase {
 
+	// TODO: add to test suite
 	private TestCategoryAllProperty tcAllProperty;
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
+	
+	private static int TEST_INT = 1;
+	private static double TEST_FLOAT = 0.0;
+	private static String TEST_STRING = "this is a test";
+	private static String TEST_ENUM = "HIGH";
 	
 	@Before
 	public void setup() throws JAXBException {
@@ -51,24 +66,29 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
 		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		
+		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
 	}
 	
-	@Test
-	public void testJsonMarshalling() throws JAXBException, IOException {
-		
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
-		
+	// TODO: test with default values
+	public void initProperties() {
 		// TODO: investigate error if no int is set -> is this a possible state?
-		tcAllProperty.setTestInt(1);
+		tcAllProperty.setTestInt(TEST_INT);
+		// test all empty
+		tcAllProperty.setTestFloat(TEST_FLOAT);
 		
 		// Empty elements will not appear!
 		// This can be fixed with moxy
 		// @XmlNullPolicy(emptyNodeRepresentsNull = true, nullRepresentationForXml = XmlMarshalNullRepresentation.EMPTY_NODE)
-		tcAllProperty.setTestEnum("HIGH");
+		tcAllProperty.setTestEnum(TEST_ENUM);
 		tcAllProperty.setTestResource(URI.createPlatformPluginURI("Testresource", true));
-		tcAllProperty.setTestString("this is a test");
+		tcAllProperty.setTestString(TEST_STRING);
+	}
+	
+	@Test
+	public void testJsonMarshalling() throws JAXBException, IOException {
+		initProperties();
+		
+		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(tcAllProperty, sw);
@@ -77,5 +97,53 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 
 		String expectedJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryAllProperty_Marshaling.json");
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	@Test
+	public void testJsonUnmarshalling() throws JAXBException, IOException {
+		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
+		StringWriter sw = new StringWriter();
+		jsonMarshaller.marshal(tcAllProperty, sw);
+
+		System.out.println(sw.toString());
+		
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+		
+		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		
+		String inputJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryAllProperty_Marshaling.json");
+		StringReader sr = new StringReader(inputJson);
+		
+		// no init -> still default values
+		assertEqualsDefaultValues(tcAllProperty);
+		
+		JAXBElement<TestCategoryAllProperty> test = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryAllProperty.class);
+		TestCategoryAllProperty created = test.getValue();
+		assertEquals(tcAllProperty, created);
+		assertEquals(tcAllProperty.getATypeInstance(), created.getATypeInstance());
+		assertEquals(tcAllProperty.getTestBoolBean().getATypeInstance(), created.getTestBoolBean().getATypeInstance());
+		// values properly overwritten
+		assertEqualsTestValues(tcAllProperty);
+	}
+	
+	private void assertEqualsTestValues(TestCategoryAllProperty testCategory) {
+		assertEquals(testCategory.getTestInt(), TEST_INT);
+		assertEquals(testCategory.getTestString(), TEST_STRING);
+		assertEquals(testCategory.getTestEnum(), TEST_ENUM);
+		assertEquals(testCategory.getTestBool(), false);
+		assertEquals(testCategory.getTestFloat(), TEST_FLOAT, 0.00001);
+	}
+	
+	private void assertEqualsDefaultValues(TestCategoryAllProperty testCategory) {
+		// TODO: int default broken?
+//		assertEquals(testCategory.getTestInt(), 0);
+		assertEquals(testCategory.getTestString(), null);
+		assertEquals(testCategory.getTestEnum(), "");
+		assertEquals(testCategory.getTestBool(), false);
+		assertEquals(testCategory.getTestFloat(), 0.0, 0.00001);
 	}
 }

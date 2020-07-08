@@ -14,7 +14,7 @@
    "testFloatBean" : {
       "uuid" : "2870876e-4d6c-4128-801d-54fa109f382d",
       "unit" : "",
-      "value" : NaN
+      "value" : 0.0
    },
    "testIntBean" : {
       "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd86",
@@ -22,9 +22,7 @@
       "value" : 1
    },
    "testResourceBean" : {
-      "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0ebd",
-      "value" : {
-      }
+      "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0ebd"
    },
    "testStringBean" : {
       "uuid" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50",
