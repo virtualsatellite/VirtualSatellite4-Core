@@ -85,7 +85,7 @@ public class EditorTest extends ASwtBotTestCase {
 		
 		List<String> editorTitles = bot.editors().stream().map(SWTBotEditor::getTitle).collect(Collectors.toList());
 
-		assertEquals("There is just one editor open", 2, editorTitles.size());
+		assertEquals("There are just two editors open", 2, editorTitles.size());
 		assertThat("Repository Editor is still open", editorTitles, hasItems("Repository", "CT: ConfigurationTree -> ConfigurationTree"));
 	}
 	
