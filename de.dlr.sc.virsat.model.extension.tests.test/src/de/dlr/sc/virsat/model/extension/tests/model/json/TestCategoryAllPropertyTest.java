@@ -141,8 +141,8 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		String inputJson = TestActivator.getResourceContentAsString(resource);
 		StringReader sr = new StringReader(inputJson);
 		
-		JAXBElement<TestCategoryAllProperty> test = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryAllProperty.class);
-		TestCategoryAllProperty created = test.getValue();
+		JAXBElement<TestCategoryAllProperty> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryAllProperty.class);
+		TestCategoryAllProperty created = jaxbElement.getValue();
 		assertEquals(tcAllProperty, created);
 		assertEquals(tcAllProperty.getATypeInstance(), created.getATypeInstance());
 		assertEquals(tcAllProperty.getTestBoolBean().getATypeInstance(), created.getTestBoolBean().getATypeInstance());

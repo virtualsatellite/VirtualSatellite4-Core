@@ -49,6 +49,11 @@ public class TypeInstanceAdapter extends XmlAdapter<String, ATypeInstance> {
 			}
 		});
 		
+		ATypeInstance aTypeInstance = objectMap.get(uuid);
+		
+		if (aTypeInstance == null) {
+			throw new IllegalArgumentException("ATypeInstance with uuid " + uuid + " not found");
+		}
 		return objectMap.get(uuid);
 	}
 	

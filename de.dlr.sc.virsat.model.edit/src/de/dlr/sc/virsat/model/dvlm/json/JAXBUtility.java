@@ -16,6 +16,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
@@ -58,6 +59,8 @@ public class JAXBUtility {
 	
 	public Unmarshaller getJsonUnmarshaller(ResourceSet resourceSet) throws JAXBException {
 		Unmarshaller jsonUnmarshaller = jaxbCtx.createUnmarshaller();
+		
+		jsonUnmarshaller.setEventHandler(new DefaultValidationEventHandler());
 		
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);

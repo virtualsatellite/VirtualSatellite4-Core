@@ -5,5 +5,15 @@
    "testStringArrayDynamic" : [ {
       "uuid" : "d7ed5b62-f096-4347-88ef-eae61c5f166b",
       "value" : "testString"
+   } ],
+   "testStringArrayStatic" : [ {
+      "uuid" : "4efe0002-f081-49c0-9917-6f4a6e7dd9ce",
+      "value" : "testString"
+   }, {
+      "uuid" : "6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5"
+   }, {
+      "uuid" : "8fd96e3b-5bf3-41e1-a02a-64f8bff99107"
+   }, {
+      "uuid" : "c38d7185-fcc3-480c-bfb4-28e6fcc09d34"
    } ]
 }

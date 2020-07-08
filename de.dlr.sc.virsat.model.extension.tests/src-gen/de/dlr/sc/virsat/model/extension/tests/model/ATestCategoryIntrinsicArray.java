@@ -19,6 +19,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -42,6 +44,7 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  */	
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryIntrinsicArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryIntrinsicArray";
@@ -97,6 +100,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 	
 	@XmlElement
 	public void setTestStringArrayDynamic(IBeanList<BeanPropertyString> newList) {
+		// TODO
 		testStringArrayDynamic = newList;
 	}
 	
@@ -111,10 +115,23 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayStatic() {
 		safeAccessTestStringArrayStatic();
 		return testStringArrayStatic;
 	}
 	
-	
+	@XmlElement
+	// TODO: use an adapter here???
+	public void setTestStringArrayStatic(IBeanList<BeanPropertyString> newList) {
+		// TODO
+//		for (BeanPropertyString newBps : newList) {
+//			for (BeanPropertyString oldBps : testStringArrayStatic) {
+//				if(newBps.getUuid() == oldBps.getUuid()) {
+//					// here everything has to be copied? e.g. value and unit for floats?
+//					oldBps.setValue(newBps.getValue());
+//				}
+//			}
+//		}
+	}
 }
