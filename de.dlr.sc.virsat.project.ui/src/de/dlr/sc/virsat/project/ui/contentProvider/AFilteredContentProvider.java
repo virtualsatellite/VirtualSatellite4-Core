@@ -63,7 +63,7 @@ public abstract class AFilteredContentProvider {
 	 */
 	public AFilteredContentProvider addCategoryIdFilterToGetElement(String filterId) {
 		filterElementCategoryIds.add(filterId);
-		return (this);
+		return this;
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public abstract class AFilteredContentProvider {
 	 */
 	public AFilteredContentProvider addStructuralElementIdFilterToGetElement(String filterId) {
 		filterElementStructuralElementIds.add(filterId);
-		return (this);
+		return this;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public abstract class AFilteredContentProvider {
 	 */
 	public AFilteredContentProvider addFunctionFilterToGetElement(Function<Object, Boolean> filter) {
 		filterElementFunctions.add(filter);
-		return (this);
+		return this;
 	}
 
 	/**
