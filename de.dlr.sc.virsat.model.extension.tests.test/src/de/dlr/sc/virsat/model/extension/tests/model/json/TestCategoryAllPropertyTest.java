@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -45,14 +46,18 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
 	
-	// TODO: order
+	private static String RESOURCE_WITH_DEFAULTS = "/resources/json/TestCategoryAllProperty_Marshaling_Defaults.json";
+	private static String RESOURCE_WITH_VALUES = "/resources/json/TestCategoryAllProperty_Marshaling.json";
+	
+	private static boolean TEST_BOOL = true;
 	private static final int TEST_INT = 1;
 	private static final double TEST_FLOAT = 0.0;
 	private static final String TEST_STRING = "this is a test";
 	private static final String TEST_ENUM = "HIGH";
-	private static final double EPSILON = 0.000001;
 	private static final String TEST_RESOURCE = "resources/file[1].xls";
 	private static final String TEST_RESOURCE_STRING = "/" + TEST_RESOURCE;
+	
+	private static final double EPSILON = 0.000001;
 	
 	@Before
 	public void setup() throws JAXBException {
@@ -73,43 +78,58 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 	}
 	
-	// TODO: test with default values
+	/**
+	 * Set the new values
+	 */
 	public void initProperties() {
-		// TODO: investigate error if no int is set -> is this a possible state?
 		tcAllProperty.setTestInt(TEST_INT);
 		tcAllProperty.setTestFloat(TEST_FLOAT);
-		
-		// Empty elements will not appear!
-		// This can be fixed with moxy
-		// @XmlNullPolicy(emptyNodeRepresentsNull = true, nullRepresentationForXml = XmlMarshalNullRepresentation.EMPTY_NODE)
 		tcAllProperty.setTestEnum(TEST_ENUM);
 		tcAllProperty.setTestResource(URI.createPlatformPluginURI(TEST_RESOURCE, false));
 		tcAllProperty.setTestString(TEST_STRING);
+		tcAllProperty.setTestBool(TEST_BOOL);
+	}
+	
+	/**
+	 * Marshall the TestCategoryAllProperty and assert that it equals the resource
+	 * @param resource containing the expected JSON
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public void assertMarshalWithResource(String resource) throws JAXBException, IOException {
+		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
+		
+		StringWriter sw = new StringWriter();
+		jsonMarshaller.marshal(tcAllProperty, sw);
+
+		String expectedJson = TestActivator.getResourceContentAsString(resource);
+		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
 	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		initProperties();
 		
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(tcAllProperty, sw);
-
-		System.out.println(sw.toString());
-
-		String expectedJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryAllProperty_Marshaling.json");
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+		assertMarshalWithResource(RESOURCE_WITH_VALUES);
 	}
 	
 	@Test
-	public void testJsonUnmarshalling() throws JAXBException, IOException {
+	public void testJsonMarshallingWithDefaultValues() throws JAXBException, IOException {
+		assertMarshalWithResource(RESOURCE_WITH_DEFAULTS);
+	}
+	
+	/**
+	 * Unmarshall the resource and assert that the TestCategoryAllProperty got set correctly
+	 * @param resource containing the input JSON
+	 * @param resource
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public void assertUnmarshalWithResource(String resource) throws JAXBException, IOException {
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(tcAllProperty, sw);
 
-		System.out.println(sw.toString());
-		
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
@@ -118,36 +138,68 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
-		String inputJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryAllProperty_Marshaling.json");
+		String inputJson = TestActivator.getResourceContentAsString(resource);
 		StringReader sr = new StringReader(inputJson);
-		
-		// no init -> still default values
-		assertEqualsDefaultValues(tcAllProperty);
 		
 		JAXBElement<TestCategoryAllProperty> test = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryAllProperty.class);
 		TestCategoryAllProperty created = test.getValue();
 		assertEquals(tcAllProperty, created);
 		assertEquals(tcAllProperty.getATypeInstance(), created.getATypeInstance());
 		assertEquals(tcAllProperty.getTestBoolBean().getATypeInstance(), created.getTestBoolBean().getATypeInstance());
-		// values properly overwritten
-		assertEqualsTestValues(tcAllProperty);
 	}
 	
-	private void assertEqualsTestValues(TestCategoryAllProperty testCategory) {
-		assertEquals(testCategory.getTestInt(), TEST_INT);
-		assertEquals(testCategory.getTestString(), TEST_STRING);
-		assertEquals(testCategory.getTestResource().toPlatformString(false), TEST_RESOURCE_STRING);
-		assertEquals(testCategory.getTestEnum(), TEST_ENUM);
-		assertEquals(testCategory.getTestBool(), false);
-		assertEquals(testCategory.getTestFloat(), TEST_FLOAT, EPSILON);
+	@Test
+	public void testJsonUnmarshalling() throws JAXBException, IOException {
+		// Initial default values are set
+		assertEqualsDefaultValues();
+		
+		// Unmarshall the resource containing the new values
+		assertUnmarshalWithResource(RESOURCE_WITH_VALUES);
+		
+		// The values are correctly overwritten
+		assertEqualsTestValues();
 	}
 	
-	private void assertEqualsDefaultValues(TestCategoryAllProperty testCategory) {
-		// TODO: int default broken?
-//		assertEquals(testCategory.getTestInt(), 0);
-		assertEquals(testCategory.getTestString(), null);
-		assertEquals(testCategory.getTestEnum(), null);
-		assertEquals(testCategory.getTestBool(), false);
-		assertTrue(Double.isNaN(testCategory.getTestFloat()));
+	@Test
+	@Ignore
+	// TODO: handle default values (null) for this test
+	// Empty elements will not appear!
+	// This can be fixed with moxy
+	// @XmlNullPolicy(emptyNodeRepresentsNull = true, nullRepresentationForXml = XmlMarshalNullRepresentation.EMPTY_NODE)
+	// or maybe @XmlElement( nillable = true )
+	public void testJsonUnmarshallingWithDefaultValues() throws JAXBException, IOException {
+		// Set to the new values
+		initProperties();
+		assertEqualsTestValues();
+		
+		// Unmarshall the resource containing the default values
+		assertUnmarshalWithResource(RESOURCE_WITH_DEFAULTS);
+		
+		// The values are correctly overwritten
+		assertEqualsDefaultValues();
+	}
+
+	/**
+	 * Assert that the new values are set correctly
+	 */
+	private void assertEqualsTestValues() {
+		assertEquals(tcAllProperty.getTestInt(), TEST_INT);
+		assertEquals(tcAllProperty.getTestString(), TEST_STRING);
+		assertEquals(tcAllProperty.getTestResource().toPlatformString(false), TEST_RESOURCE_STRING);
+		assertEquals(tcAllProperty.getTestEnum(), TEST_ENUM);
+		assertEquals(tcAllProperty.getTestBool(), TEST_BOOL);
+		assertEquals(tcAllProperty.getTestFloat(), TEST_FLOAT, EPSILON);
+	}
+	
+	/**
+	 * Assert that the default values are set correctly
+	 */
+	private void assertEqualsDefaultValues() {
+		// TODO: int default is Long in the bean and can be null, but is a long in the TestCategoryAllProperty
+//		assertEquals(tcAllProperty.getTestInt(), null);
+		assertEquals(tcAllProperty.getTestString(), null);
+		assertEquals(tcAllProperty.getTestEnum(), null);
+		assertEquals(tcAllProperty.getTestBool(), false);
+		assertTrue(Double.isNaN(tcAllProperty.getTestFloat()));
 	}
 }
