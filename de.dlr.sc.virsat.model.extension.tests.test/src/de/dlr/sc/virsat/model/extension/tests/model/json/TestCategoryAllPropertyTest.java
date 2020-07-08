@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -44,10 +45,14 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
 	
-	private static int TEST_INT = 1;
-	private static double TEST_FLOAT = 0.0;
-	private static String TEST_STRING = "this is a test";
-	private static String TEST_ENUM = "HIGH";
+	// TODO: order
+	private static final int TEST_INT = 1;
+	private static final double TEST_FLOAT = 0.0;
+	private static final String TEST_STRING = "this is a test";
+	private static final String TEST_ENUM = "HIGH";
+	private static final double EPSILON = 0.000001;
+	private static final String TEST_RESOURCE = "resources/file[1].xls";
+	private static final String TEST_RESOURCE_STRING = "/" + TEST_RESOURCE;
 	
 	@Before
 	public void setup() throws JAXBException {
@@ -58,29 +63,27 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		
 		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryAllProperty.class});
 		
-		// Set uuids for the beans
+		// Set uuids to match the test resource
+		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
 		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638db"));
 		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939d"));
 		tcAllProperty.getTestFloatBean().getATypeInstance().setUuid(new VirSatUuid("2870876e-4d6c-4128-801d-54fa109f382d"));
 		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd86"));
 		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
 		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
-		
-		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
 	}
 	
 	// TODO: test with default values
 	public void initProperties() {
 		// TODO: investigate error if no int is set -> is this a possible state?
 		tcAllProperty.setTestInt(TEST_INT);
-		// test all empty
 		tcAllProperty.setTestFloat(TEST_FLOAT);
 		
 		// Empty elements will not appear!
 		// This can be fixed with moxy
 		// @XmlNullPolicy(emptyNodeRepresentsNull = true, nullRepresentationForXml = XmlMarshalNullRepresentation.EMPTY_NODE)
 		tcAllProperty.setTestEnum(TEST_ENUM);
-		tcAllProperty.setTestResource(URI.createPlatformPluginURI("Testresource", true));
+		tcAllProperty.setTestResource(URI.createPlatformPluginURI(TEST_RESOURCE, false));
 		tcAllProperty.setTestString(TEST_STRING);
 	}
 	
@@ -133,17 +136,18 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	private void assertEqualsTestValues(TestCategoryAllProperty testCategory) {
 		assertEquals(testCategory.getTestInt(), TEST_INT);
 		assertEquals(testCategory.getTestString(), TEST_STRING);
+		assertEquals(testCategory.getTestResource().toPlatformString(false), TEST_RESOURCE_STRING);
 		assertEquals(testCategory.getTestEnum(), TEST_ENUM);
 		assertEquals(testCategory.getTestBool(), false);
-		assertEquals(testCategory.getTestFloat(), TEST_FLOAT, 0.00001);
+		assertEquals(testCategory.getTestFloat(), TEST_FLOAT, EPSILON);
 	}
 	
 	private void assertEqualsDefaultValues(TestCategoryAllProperty testCategory) {
 		// TODO: int default broken?
 //		assertEquals(testCategory.getTestInt(), 0);
 		assertEquals(testCategory.getTestString(), null);
-		assertEquals(testCategory.getTestEnum(), "");
+		assertEquals(testCategory.getTestEnum(), null);
 		assertEquals(testCategory.getTestBool(), false);
-		assertEquals(testCategory.getTestFloat(), 0.0, 0.00001);
+		assertTrue(Double.isNaN(testCategory.getTestFloat()));
 	}
 }

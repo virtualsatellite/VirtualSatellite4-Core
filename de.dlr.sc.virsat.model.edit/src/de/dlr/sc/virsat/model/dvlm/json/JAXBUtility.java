@@ -58,8 +58,12 @@ public class JAXBUtility {
 	
 	public Unmarshaller getJsonUnmarshaller(ResourceSet resourceSet) throws JAXBException {
 		Unmarshaller jsonUnmarshaller = jaxbCtx.createUnmarshaller();
+		
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
+		UriAdapter uriAdapter = new UriAdapter();
+		jsonUnmarshaller.setAdapter(uriAdapter);
+		
 		return jsonUnmarshaller;
 	}
 }
