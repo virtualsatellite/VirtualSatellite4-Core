@@ -209,17 +209,41 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 				editingDomain.runExclusive(() -> {
 					switch (event) {
 						case VirSatTransactionalEditingDomain.EVENT_CHANGED:
-							if (GenericEditor.this.editorModelObject.eResource() == null
-									|| GenericEditor.this.resource.getResourceSet() == null) {
+							// If the resource that this editor was responsible for has been removed from the resource set
+							// we automatically close the editor.
+							if (GenericEditor.this.resource.getResourceSet() == null) {
 								// If the resource that this editor was responsible for has been removed from the resource set
 								// we automatically close the editor. On the other hand, if the resource still exists but the model object
 								// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
 								
 								DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
-									"GenericEditor: Handling a Change Event with empty resource for (" + GenericEditor.this.getTitle() + ")"));
+									"GenericEditor: Handling a Change Event with uncontained resource for (" + GenericEditor.this.getTitle() + ")... Closing editor..."));
 								
 								handleClosedEditorResource();
 								return;
+							} else if (GenericEditor.this.editorModelObject.eResource() == null) {
+								// On the other hand, if the resource still exists but the model object
+								// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
+								// But there might be events which are interfering with a reload, therefore the editor is not directly
+								// closed, but we will try to reload the resource first
+								
+								DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+										"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Trying a reload..."));
+								
+								handleChangedResources(affectedResources);
+				
+								// now check if the model object could be reloaded
+								// otherwise close the editor
+								if (GenericEditor.this.editorModelObject == null) {
+									DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+											"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Failed Reloading and clsoing editor"));
+									handleClosedEditorResource();
+									return;
+								} else {
+									DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+											"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Reload was succesful..."));
+									return;
+								}
 							}
 							
 							firePropertyChange(IEditorPart.PROP_DIRTY);
