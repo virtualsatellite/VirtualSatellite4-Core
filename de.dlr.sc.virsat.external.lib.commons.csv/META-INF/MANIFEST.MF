@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Apache Commons CSV
-Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.commons.csv
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.commons.csv;singleton:=true
 Bundle-Version: 4.12.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.commons.csv
 Bundle-Vendor: DLR (German Aerospace Center)
