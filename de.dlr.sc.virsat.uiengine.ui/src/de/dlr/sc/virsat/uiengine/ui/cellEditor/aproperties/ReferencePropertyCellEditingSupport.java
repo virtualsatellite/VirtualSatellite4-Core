@@ -9,6 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -42,6 +46,7 @@ import de.dlr.sc.virsat.model.dvlm.provider.DVLMDVLMItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
+import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredListContentProvider;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 
 /**
@@ -93,6 +98,7 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 				dialog.setAllowMultiple(false);
 				dialog.setDoubleClickSelects(true);
 				setReferenceDialogInput(propertyInstance.eResource());
+				setFiltersForDialog();
 				dialog.setInitialSelection(toSelect);
 				if (dialog.open() == Dialog.OK) {
 					Object selection = dialog.getFirstResult();
@@ -118,6 +124,21 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 		};
 		return editor;
 	}
+	
+	protected void setFiltersForDialog() {
+		VirSatFilteredListContentProvider cp = (VirSatFilteredListContentProvider) ((ReferenceSelectionDialog) dialog).getContentProvider();
+		getResultFilters().forEach(cp::addFunctionFilterToGetElement);
+	}
+	
+	/**
+	 * An overridable method to filter the dialogs selectable objects
+	 * 
+	 * @return filter functions
+	 */
+	protected List<Function<Object, Boolean>> getResultFilters() {
+		return new ArrayList<>();
+	}
+
 	/**
 	 * An overridable method to set dialog input
 	 * @param input the input for the dialog
