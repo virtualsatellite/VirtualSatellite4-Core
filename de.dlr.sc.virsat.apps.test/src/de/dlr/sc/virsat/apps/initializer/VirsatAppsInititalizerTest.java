@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.apps.initializer;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -56,7 +57,7 @@ public class VirsatAppsInititalizerTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testInitializeProject() throws InvocationTargetException, InterruptedException {
+	public void testInitializeProject() throws InvocationTargetException, InterruptedException, CoreException {
 		appsInitializer.initializeProject(testProject, repository, new NullProgressMonitor());
 		
 		assertTrue("bin folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_BIN).exists());
@@ -64,5 +65,7 @@ public class VirsatAppsInititalizerTest extends AProjectTestCase {
 		assertTrue("meta-inf folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_META_INF).exists());
 		assertTrue("manifest.mf now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_META_INF).getFile(VirsatAppsInitializer.FILE_NAME_MANIFEST_MF).exists());
 		assertTrue("build.properties now exists", testProject.getFile(VirsatAppsInitializer.FILE_NAME_BUILD_PROPERTIES).exists());
+
+		assertEquals("There are not files in the bin folder", 0, testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_BIN).members().length);
 	}
 }
