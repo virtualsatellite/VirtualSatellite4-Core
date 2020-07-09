@@ -193,6 +193,7 @@ public class VirsatAppsInitializer {
 					VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.ManifestBuilder");
 					VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.SchemaBuilder");
 					VirSatProjectCommons.attachBuilder(project, "org.eclipse.jdt.core.javabuilder");
+					
 				} catch (CoreException e) {
 					coreExceptionReference.set(e);
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Failed to activate VirSat Apps in workspace operation " + project.getName(), e));
