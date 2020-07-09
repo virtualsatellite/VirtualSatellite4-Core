@@ -49,6 +49,27 @@ SPDX-License-Identifier: EPL-2.0
 					<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
 				</configuration>
 			</plugin>
+        	<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<dependency-resolution>
+						<extraRequirements>
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.pde</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.e4.rcp</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>				
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	

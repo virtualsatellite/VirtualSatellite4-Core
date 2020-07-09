@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendTest;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
+	AppsTest.class,
 	StateMachineDiagramTest.class,
 	FuncElectricalDiagramTest.class,
 	EditorTest.class,

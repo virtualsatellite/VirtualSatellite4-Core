@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertText;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -69,7 +70,27 @@ public class EditorTest extends ASwtBotTestCase {
 	}
 	
 	@Test
-	public void closeEditorForRemovedSei() throws CoreException {
+	public void closeEditorForRemovedSeiByNavigator() throws CoreException {
+		openEditor(configurationTree);
+		openEditor(elementConfiguration);
+		openEditor(document);
+		
+		bot.viewByTitle("VirSat Navigator").show();
+		SWTBotTreeItem elementConfigurationTreeItem = bot.tree().getTreeItem("SWTBotTestProject").getNode("Repository").getNode("CT: ConfigurationTree").getNode("EC: ElementConfiguration").select();
+		elementConfigurationTreeItem.select();
+	
+		buildCounter.executeInterlocked(() -> {
+			elementConfigurationTreeItem.contextMenu("Delete").click();
+		});
+		
+		List<String> editorTitles = bot.editors().stream().map(SWTBotEditor::getTitle).collect(Collectors.toList());
+
+		assertEquals("There are just two editors open", 2, editorTitles.size());
+		assertThat("Repository Editor is still open", editorTitles, hasItems("Repository", "CT: ConfigurationTree -> ConfigurationTree"));
+	}
+	
+	@Test
+	public void closeEditorForRemovedSeiByWorkspaceResource() throws CoreException {
 		openEditor(configurationTree);
 		openEditor(elementConfiguration);
 		bot.saveAllEditors();
