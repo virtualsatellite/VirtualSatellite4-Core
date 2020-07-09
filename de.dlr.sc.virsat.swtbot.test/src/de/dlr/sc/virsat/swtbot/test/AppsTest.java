@@ -18,6 +18,8 @@ public class AppsTest extends ASwtBotTestCase {
 
 	@Test
 	public void runAppTest() throws InterruptedException {
+		bot.saveAllEditors();
+		
 		buildCounter.executeInterlocked(() -> bot.button("Activate / Update Apps").click());
 
 		bot.button("Add App").click();
