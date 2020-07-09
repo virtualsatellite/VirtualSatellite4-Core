@@ -100,9 +100,6 @@ public class VirsatAppsInitializer {
 		pm.beginTask("Setting up project to conform VirSat App needs", PROGRESS_WORK_TICKS);
 
 		AtomicExceptionReference<CoreException> coreExceptionReference =  new AtomicExceptionReference<>();
-		
-		
-		
 		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
 		
 		try {
@@ -167,7 +164,14 @@ public class VirsatAppsInitializer {
 						fileBuildProperties.create(stream, false, SubMonitor.convert(pm, 1));
 						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created file " + FILE_NAME_BUILD_PROPERTIES, null));
 					}
-							
+
+					/**
+					 * Now set the natures. Natures should be set before the classpath,
+					 * because otherwise setting the classpath will fail.
+					 */
+					VirSatProjectCommons.attachNature(project, "org.eclipse.pde.PluginNature");
+					VirSatProjectCommons.attachNature(project, "org.eclipse.jdt.core.javanature");
+					
 					/**
 					 * Create class path file
 					 */
@@ -179,20 +183,16 @@ public class VirsatAppsInitializer {
 					IJavaProject javaProject = JavaCore.create(project);
 					javaProject.setRawClasspath(classpathEntries.toArray(new IClasspathEntry[0]), SubMonitor.convert(pm, 1));
 					javaProject.setOutputLocation(folderBin.getFullPath(), SubMonitor.convert(pm, 1));
-				
+	
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created ClassPath File", null));
+					
 					/**
-					 * Now set the natures and builders
+					 * Finally attach the builders. Builders should be attached after the classpath
+					 * to prevent unconfigured building of java code.
 					 */
-					VirSatProjectCommons.attachNature(project, "org.eclipse.pde.PluginNature");
-					VirSatProjectCommons.attachNature(project, "org.eclipse.jdt.core.javanature");
-
 					VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.ManifestBuilder");
 					VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.SchemaBuilder");
 					VirSatProjectCommons.attachBuilder(project, "org.eclipse.jdt.core.javabuilder");
-
-					
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created ClassPath File", null));				
-					
 				} catch (CoreException e) {
 					coreExceptionReference.set(e);
 					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Failed to activate VirSat Apps in workspace operation " + project.getName(), e));
