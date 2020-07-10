@@ -18,9 +18,6 @@
 	<name>de.dlr.sc.virsat.javadoc.api</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<properties>
-		<platform.api>org.eclipse.platform.doc.isv/reference/api</platform.api>
-	</properties>
 	<profiles>
 		<profile>
 			<id>doc</id>
@@ -42,18 +39,17 @@
 									<tocFile>${project.basedir}/help/api_docs.xml</tocFile>
 									<tocOptions>
 										<mainLabel>VirSat Core API JavaDoc Compilation</mainLabel>
+										<mainFilename>index.html</mainFilename>
 									</tocOptions>
+									<scopes>provided</scopes>
 									<javadocOptions>
+										<includes>
+											<include>de.dlr.sc.*</include>
+										</includes>
 										<additionalArguments>
-											<additionalArgument>${javadoc-args}</additionalArgument>
 											<additionalArgument>
 												-link
-												http://docs.oracle.com/javase/8/docs/api/
-											</additionalArgument>
-											<additionalArgument>
-												-linkoffline
-												../../${platform.api}
-												http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/api/
+												https://docs.oracle.com/javase/8/docs/api
 											</additionalArgument>
 											<additionalArgument>-public</additionalArgument>
 										</additionalArguments>
