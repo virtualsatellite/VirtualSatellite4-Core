@@ -213,6 +213,72 @@ Additionally they can be linked with their source or javadoc libraries as well.
 [#ExternalLibraryBuildPath]
 image::chapterExternalLibraries/BuildClassPathEditor.png[Build Classpath Editor]
 
+=== Third party Maven based JAR libraries
+
+In case a third party library is available in the Maven repositories, it can also be added and downloaded from there.
+In order to add the library as maven dependency open the `pom.xml` file (e.g. the one from `de.dlr.sc.virsat.external.lib.jfreechart`).
+
+.pom.xml file of the jfreechart external maven based library
+[#ExternalLibraryManifestMfWin32]
+----
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
+		<groupId>de.dlr.sc.virsat</groupId>
+		<version>4.12.0-SNAPSHOT</version>
+		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>de.dlr.sc.virsat.external.lib.jfreechart</artifactId>
+	<name>de.dlr.sc.virsat.external.lib.jfreechart</name>
+	<packaging>eclipse-plugin</packaging>
+
+	
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
+		<dependency> // <1>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.19</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart-swt</artifactId>
+			<version>1.0</version>
+			<exclusions> // <2>
+				<exclusion>
+					<groupId>org.eclipse.swt</groupId>
+					<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+</project>
+----
+<1> Section to specify the Maven based third party dependency.
+All specified dependencies and their transitive dependencies are downloaded and stored in the `externalLib/maven` folder.
+The copy process is configured thus version tags are truncated.
+The downloaded jars have to be manually added to the classpath of the plugin.
+Exported packages have to be registered manually as well.
+
+<2> Section to specify excluded transitive dependencies.
+Dependencies mentioned here will not eb copied.
+
+
+To trigger the download of the third party jars from the Maven repositories call Maven with the `downloadLibs` profile.
+As soon as the dependencies are downlaoded, a 'THIRD-PARTY.txt' file is written to `aboutFiles` folder.
+The file is linked into the 'about.html' of the plugin. 
+License texts can be adjusted in two places. 
+The first place is in the parent POM in `de.dlr.sc.virsat.external.lib/maven`.
+Here it is possible to override and unify the license text.
+In case Maven is not providing a license or an incorrect one it can be adjusted.
+Place a `override-THIRD-PARTY.properties` in the `license` package of the plugin.
+
+
 === Platform-specific external libraries
 
 When DLLs on Windows or so-libraries on Linux are required, bundling them and using them becomes a bit more complicated.
