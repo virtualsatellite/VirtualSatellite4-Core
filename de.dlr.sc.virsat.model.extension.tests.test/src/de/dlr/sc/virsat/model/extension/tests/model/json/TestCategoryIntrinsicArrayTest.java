@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
@@ -97,6 +98,9 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
+		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), null);
+		ArrayInstance originalArrayInstance = testArray.getTestStringArrayStatic().getArrayInstance();
+		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
@@ -104,6 +108,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		JAXBElement<TestCategoryIntrinsicArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryIntrinsicArray.class);
 		TestCategoryIntrinsicArray createdArray = jaxbElement.getValue();
 		assertEquals(testArray, createdArray);
-		assertEquals(testArray.getTestStringArrayDynamic(), 1);
+		assertEquals(originalArrayInstance, createdArray.getTestStringArrayStatic().getArrayInstance());
+		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), null);
 	}
 }

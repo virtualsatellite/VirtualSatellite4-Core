@@ -16,6 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.json.StaticBeanListAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
@@ -23,6 +24,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -98,11 +100,11 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		return testStringArrayDynamic;
 	}
 	
-	@XmlElement
-	public void setTestStringArrayDynamic(IBeanList<BeanPropertyString> newList) {
-		// TODO
-		testStringArrayDynamic = newList;
-	}
+//	@XmlElement
+//	public void setTestStringArrayDynamic(IBeanList<BeanPropertyString> newList) {
+//		// TODO
+//		testStringArrayDynamic = newList;
+//	}
 	
 	// *****************************************************************
 	// * Array Attribute: testStringArrayStatic
@@ -115,16 +117,17 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
+//	@XmlJavaTypeAdapter(StaticBeanListAdapter.class)
 	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayStatic() {
 		safeAccessTestStringArrayStatic();
 		return testStringArrayStatic;
 	}
 	
-	@XmlElement
-	// TODO: use an adapter here???
-	public void setTestStringArrayStatic(IBeanList<BeanPropertyString> newList) {
-		// TODO
+//	@XmlElement
+//	// TODO: use an adapter here???
+//	public void setTestStringArrayStatic(IBeanList<BeanPropertyString> newList) {
+//		// TODO
 //		for (BeanPropertyString newBps : newList) {
 //			for (BeanPropertyString oldBps : testStringArrayStatic) {
 //				if(newBps.getUuid() == oldBps.getUuid()) {
@@ -133,5 +136,5 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 //				}
 //			}
 //		}
-	}
+//	}
 }

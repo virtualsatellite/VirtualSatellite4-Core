@@ -180,7 +180,7 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 
 	@Override
 	public BEAN_TYPE set(int index, BEAN_TYPE element) {
-		super.set(index, element);
+//		super.set(index, element);
 		BEAN_TYPE oldBean = get(index);
 		ai.getArrayInstances().set(index, element.getTypeInstance());
 		return oldBean;
