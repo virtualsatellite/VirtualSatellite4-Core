@@ -9,3 +9,4 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit
 Export-Package: de.dlr.sc.virsat.apps.test
 Automatic-Module-Name: de.dlr.sc.virsat.apps.test
+Import-Package: de.dlr.sc.virsat.project.test

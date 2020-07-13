@@ -34,6 +34,10 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.Requirement">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementTrace">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.AttributeValue"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue">
 		</CategoryAssignmentBean>

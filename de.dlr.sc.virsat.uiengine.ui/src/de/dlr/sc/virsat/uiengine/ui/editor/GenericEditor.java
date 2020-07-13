@@ -202,36 +202,77 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 			if (isDisposed || handleClosedResourceTriggered || editingDomain.isDisposed()) {
 				return;
 			}
+			
+			// Now execute the decision making for closing or updating the editor object within
+			// a locked workspace execution
+			try {
+				editingDomain.runExclusive(() -> {
+					switch (event) {
+						case VirSatTransactionalEditingDomain.EVENT_CHANGED:
+							// If the resource that this editor was responsible for has been removed from the resource set
+							// we automatically close the editor.
+							if (GenericEditor.this.resource.getResourceSet() == null) {
+								// If the resource that this editor was responsible for has been removed from the resource set
+								// we automatically close the editor. On the other hand, if the resource still exists but the model object
+								// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
+								
+								DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+									"GenericEditor: Handling a Change Event with uncontained resource for (" + GenericEditor.this.getTitle() + ")... Closing editor..."));
+								
+								handleClosedEditorResource();
+								return;
+							} else if (GenericEditor.this.editorModelObject.eResource() == null) {
+								// On the other hand, if the resource still exists but the model object
+								// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
+								// But there might be events which are interfering with a reload, therefore the editor is not directly
+								// closed, but we will try to reload the resource first
+								
+								DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+										"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Trying a reload..."));
+								
+								handleChangedResources(affectedResources);
 				
-			switch (event) {
-				case VirSatTransactionalEditingDomain.EVENT_CHANGED:
-					if (GenericEditor.this.editorModelObject.eResource() == null
-							|| GenericEditor.this.resource.getResourceSet() == null) {
-						// If the resource that this editor was responsible for has been removed from the resource set
-						// we automatically close the editor. On the other hand, if the resource still exists but the model object
-						// is no longer contained anywhere (e.g. if a category assignment has been deleted) then we can also close the editor.
-						
-						DVLMEditorPlugin.getPlugin().getLog().log(new Status(
-							Status.INFO,
-							DVLMEditorPlugin.getPlugin().getSymbolicName(),
-							"GenericEditor: Received a Change Event with emty resource for (" + GenericEditor.this.getTitle() + ")"
-						));
-						handleClosedEditorResource();
-						return;
+								// now check if the model object could be reloaded
+								// otherwise close the editor
+								if (GenericEditor.this.editorModelObject == null) {
+									DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+											"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Failed Reloading and clsoing editor"));
+									handleClosedEditorResource();
+									return;
+								} else {
+									DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+											"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Reload was succesful..."));
+									return;
+								}
+							}
+							
+							firePropertyChange(IEditorPart.PROP_DIRTY);
+							break;
+						case VirSatTransactionalEditingDomain.EVENT_RELOAD:
+							DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+									"GenericEditor: Handling a Reload Event for (" + GenericEditor.this.getTitle() + ")"));
+								
+							handleChangedResources(affectedResources);
+							break;
+						case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
+							DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+									"GenericEditor:  Handling a Unload Event for (" + GenericEditor.this.getTitle() + ")"));
+							
+							handleClosedResources(affectedResources);
+							break;
+						default:
 					}
 					
-					firePropertyChange(IEditorPart.PROP_DIRTY);
-					break;
-				case VirSatTransactionalEditingDomain.EVENT_RELOAD:
-					handleChangedResources(affectedResources);
-					break;
-				case VirSatTransactionalEditingDomain.EVENT_UNLOAD:
-					handleClosedResources(affectedResources);
-					break;
-				default:
+					// There may still updates which are scheduled in Display Threads that will end up here.
+					// But the editor is maybe already closed, or about to close. Stop updating in these cases.
+					if (!handleClosedResourceTriggered) {
+						updateEditorUiSnippetsState();
+					}
+				});
+			} catch (InterruptedException e) {
+				DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
+						"GenericEditor: Thread got interrupted while processing resource event for (" + GenericEditor.this.getTitle() + ")"));
 			}
-			
-			updateEditorUiSnippetsState();
 		});
 	};
 	
@@ -277,27 +318,33 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	}
 	
 	/**
-	 * This method is used to handle the events from the reosurceSet event listener.
+	 * This method is used to handle the events for closed resources from the reosurceSet event listener.
 	 * It checks if the resource that should be closed, maybe because it got unloaded, is 
-	 * the one from the editor, which should make the editor close, or if it is another one, which is maybe 
+	 * the one from this editor, which should make the editor close, or if it is another one, which is maybe 
 	 * referenced and therefore references should be updated.
 	 * @param closedResources The resource that got closed or unloaded
 	 */
 	protected void handleClosedResources(Set<Resource> closedResources) {
-		// in case the resource got already close,d we should not do anything anymore
+		// in case the resource got already closed we should not do anything anymore
 		// The editor already received the signal to shut down, no other UI action should be triggered on the
 		// already closing editor
 		if (!handleClosedResourceTriggered) {
-			// Now check if the resource is the one of the editor,
-			// if yes make it close including the editor. In case it is not, just tell
-			// the editor that some other has been closed, and this editor with referenced to it maybe needs to react.
-			for (Resource closedResource : closedResources) {
-				if (closedResource == GenericEditor.this.resource) {
-					handleClosedEditorResource();
-					return;
-				} else {
-					handleClosedReferencedResource();
-				}
+			
+			// Check if the current editor resource is in the list of resources that got closed
+			// if this is the case, close this editor. Since the EditingDomain and ResourceSet may have 
+			// reloaded and unloaded other resources meanwhile, we should check if the own resource is still
+			// loaded. We can easily identify that by checking if it is contained in a resource set.
+			// We can rely on this simple check here, since the code here is executed in a workspace lock. The lock
+			// happens inside the display thread that got executed by the resource change listener. 
+			boolean isOwnResourceClosed = closedResources.contains(this.resource);
+			boolean isOwnResourceUncontained = this.resource.getResourceSet() == null;
+			
+			if (isOwnResourceClosed || isOwnResourceUncontained) {
+				handleClosedEditorResource();
+			} else {
+				// if the resource of this editor is not in the list of removed ones, we may have
+				// a reference to it that needs to be updated
+				handleClosedReferencedResource();
 			}
 		}
 	}

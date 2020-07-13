@@ -15,7 +15,6 @@ package de.dlr.sc.virsat.model.extension.maturity.model;
 
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.maturity.model.Maturity;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;

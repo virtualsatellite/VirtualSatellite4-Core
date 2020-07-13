@@ -39,6 +39,7 @@
 				<module>de.dlr.sc.virsat.external.lib.apache.poi</module>
 				<module>de.dlr.sc.virsat.external.lib.spotbugs</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.cli</module>
+				<module>de.dlr.sc.virsat.external.lib.commons.csv</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>

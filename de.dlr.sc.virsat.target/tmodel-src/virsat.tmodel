@@ -19,26 +19,26 @@ Target virsat {
 	// Purely named Eclipse. The name is important for target models having this one as 
 	// super model. Then this name can be referenced to explicitly exclude
 	// certain features from the target model
-	RepositoryLocation Eclipse url "http://download.eclipse.org/releases/2019-06"{ 
-		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.7.201905300200;
-		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version 1.4.0.201902190757;
-		Unit org.eclipse.emf.sdk.feature.group version 2.18.0.v20190528-0845;
+	RepositoryLocation Eclipse url "http://download.eclipse.org/releases/2020-06"{ 
+		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.11.202005260905;
+		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version 1.4.1.202002140949;
+		Unit org.eclipse.emf.sdk.feature.group version 2.22.0.v20200519-1135;
 		Unit org.eclipse.emf.transaction.sdk.feature.group version 1.12.0.201805140824;
-		Unit org.eclipse.equinox.executable.feature.group version 3.8.400.v20190515-0925;
-		Unit org.eclipse.graphiti.sdk.feature.feature.group version 0.16.0.201906041401;
-		Unit org.eclipse.jdt.source.feature.group version 3.18.0.v20190605-1800;
-		Unit org.eclipse.ocl.all.sdk.feature.group version 5.9.0.v20190603-1146;
-		Unit org.eclipse.pde.source.feature.group version 3.14.0.v20190605-1800;  
-		Unit org.eclipse.platform.sdk version 4.12.0.I20190605-1800;
-		Unit org.eclipse.swtbot.eclipse.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.eclipse.gef.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.forms.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.generator.feature.feature.group version 2.8.0.201906121535;
-		Unit org.eclipse.swtbot.ide.feature.group version 2.8.0.201906121535; 
-		Unit org.eclipse.xtext.sdk.feature.group version 2.18.0.v20190528-0716;
+		Unit org.eclipse.equinox.executable.feature.group version 3.8.800.v20200514-1529;
+		Unit org.eclipse.graphiti.sdk.feature.feature.group version 0.17.0.202005151449;
+		Unit org.eclipse.jdt.source.feature.group version 3.18.400.v20200604-0540;
+		Unit org.eclipse.ocl.all.sdk.feature.group version 5.12.0.v20200608-1555;
+		Unit org.eclipse.pde.source.feature.group version 3.14.400.v20200604-0540;  
+		Unit org.eclipse.platform.sdk version 4.16.0.I20200604-0540;
+		Unit org.eclipse.swtbot.eclipse.feature.group version 3.0.0.202006031738;
+		Unit org.eclipse.swtbot.eclipse.gef.feature.group version 3.0.0.202006031738;
+		Unit org.eclipse.swtbot.feature.group version 3.0.0.202006031738;
+		Unit org.eclipse.swtbot.forms.feature.group version 3.0.0.202006031738;
+		Unit org.eclipse.swtbot.generator.feature.feature.group version 3.0.0.202006031738;
+		Unit org.eclipse.swtbot.ide.feature.group version 3.0.0.202006031738; 
+		Unit org.eclipse.xtext.sdk.feature.group version 2.22.0.v20200602-1533;
 		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
-		Unit org.eclipse.egit.feature.group version 5.4.0.201906121030-r; 
+		Unit org.eclipse.egit.feature.group version 5.8.0.202006091008-r; 
 	}
 	
 	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.0/update-site/" {

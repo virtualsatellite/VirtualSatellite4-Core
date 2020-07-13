@@ -57,8 +57,9 @@ public class VirSatFilteredListContentProvider extends AFilteredContentProvider 
 			Object[] elements = objects.toArray();
 			Object[] filteredClasses = filterClasses(elements, filterElementClasses);
 			Object[] filteredIds = filterIds(filteredClasses, filterElementCategoryIds, filterElementStructuralElementIds);
+			Object[] filteredFunctions = filterFunctions(filteredIds, filterElementFunctions);
 			
-			return filteredIds;
+			return filteredFunctions;
 		} else if (inputElement instanceof Resource) {
 			List<Object> objects = new ArrayList<>();
 			for (EObject content : ((Resource) inputElement).getContents()) {

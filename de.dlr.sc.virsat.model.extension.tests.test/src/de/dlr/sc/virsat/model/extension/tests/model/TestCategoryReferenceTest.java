@@ -86,8 +86,8 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	public void testReferenceProperty() {
 		BeanPropertyString bpString = new TestCategoryAllProperty(concept).getTestStringBean();
 		
-		tcReference.setTestRefPropertyBean(bpString);
-		BeanPropertyString referenceBpString = tcReference.getTestRefPropertyBean();
+		tcReference.setTestRefProperty(bpString);
+		BeanPropertyString referenceBpString = tcReference.getTestRefProperty();
 		ReferencePropertyInstance referencedTypeInstance = (ReferencePropertyInstance) tcReference.getTypeInstance().getPropertyInstances().get(1);
 		
 		assertEquals("Reference got set correctly", bpString, referenceBpString);
@@ -98,10 +98,10 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	public void testReferencePropertyEditingDomain() {
 		BeanPropertyString bpString = new TestCategoryAllProperty(concept).getTestStringBean();
 		
-		Command cmd = tcReference.setTestRefPropertyBean(editingDomain, bpString);
+		Command cmd = tcReference.setTestRefProperty(editingDomain, bpString);
 		editingDomain.getCommandStack().execute(cmd);
 		
-		BeanPropertyString referenceBpString = tcReference.getTestRefPropertyBean();
+		BeanPropertyString referenceBpString = tcReference.getTestRefProperty();
 		ReferencePropertyInstance referencedTypeInstance = (ReferencePropertyInstance) tcReference.getTypeInstance().getPropertyInstances().get(1);
 		
 		assertEquals("Reference got set correctly", bpString, referenceBpString);

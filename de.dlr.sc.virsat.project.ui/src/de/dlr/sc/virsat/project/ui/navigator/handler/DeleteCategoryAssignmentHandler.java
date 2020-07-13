@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.project.ui.navigator.handler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -61,7 +62,7 @@ public class DeleteCategoryAssignmentHandler extends AEMFCommandCommandHandler {
 		VirSatResourceSet virSatResourceSet = ed.getResourceSet();
 		virSatResourceSet.loadAllResources();
 		
-		Map<EObject, List<EObject>> deleteObjectsWithExternalReferences = VirSatEcoreUtil.getReferencingObjectsForDelete(selectionHelper.getAllSelectedEObjects(), virSatResourceSet);
+		Map<EObject, Set<EObject>> deleteObjectsWithExternalReferences = VirSatEcoreUtil.getReferencingObjectsForDelete(selectionHelper.getAllSelectedEObjects(), virSatResourceSet);
 		
 		// If there are references we need to ask if they should be deleted
 		if (!deleteObjectsWithExternalReferences.isEmpty()) {

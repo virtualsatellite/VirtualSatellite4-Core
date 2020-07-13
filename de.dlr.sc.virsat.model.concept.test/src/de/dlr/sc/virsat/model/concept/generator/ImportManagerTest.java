@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
@@ -39,6 +40,9 @@ public class ImportManagerTest {
 	private Concept concept;
 	private Category cat;
 	private AProperty prop;
+	
+
+	private static final String TEST_STRING = "de.dlr.virsat.BeanProperty";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -68,6 +72,18 @@ public class ImportManagerTest {
 				
 		assertThat("String is now contained", im.getImportedClasses(), hasItems("de.dlr.test.concept.model.TestCategory"));
 		assertThat("String is now contained", im.getImportedClasses(), hasItems("de.dlr.test.concept.model.TestCategory.TestProperty"));
+	}
+	
+	@Test
+	public void testRegisterATypeDefinitionCheckPackage() {
+		im.setPackage("de.dlr.test.concept.model");
+		assertTrue("Registration is still empty", im.getImportedClasses().isEmpty());
+		
+		im.register(cat);
+		assertTrue("Didn't get registered because in same package", im.getImportedClasses().isEmpty());
+		
+		im.register(prop);
+		assertFalse("Did get registered", im.getImportedClasses().isEmpty());
 	}
 
 	@Test
@@ -106,15 +122,34 @@ public class ImportManagerTest {
 				
 		assertThat("String is now contained", im.getImportedClasses(), hasItems(BooleanProperty.class.getName(), Category.class.getName()));
 	}
+	
+	@Test
+	public void testRegisterClassCheckPackage() {
+		im.setPackage("de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions");
+		assertTrue("Registration is still empty", im.getImportedClasses().isEmpty());
+		
+		im.register(BooleanProperty.class);
+		assertTrue("Didn't get registered because in same package", im.getImportedClasses().isEmpty());
+		
+		im.register(Category.class);
+		assertFalse("Did get registered", im.getImportedClasses().isEmpty());
+	}
 
 	@Test
-	public void testRegisterString() {
-		final String TEST_STRING = "de.dlr.virsat.BeanProperty";
-		
+	public void testRegisterString() {		
 		assertThat("String is not yet contained", im.getImportedClasses(), not(hasItems(TEST_STRING)));
 		
 		im.register(TEST_STRING);
 		
 		assertThat("String is now contained", im.getImportedClasses(), hasItems(TEST_STRING));
+	}
+	
+	@Test
+	public void testRegisterStringCheckPackage() {		
+		im.setPackage("de.dlr.virsat");
+		assertTrue("Registration is still empty", im.getImportedClasses().isEmpty());
+		
+		im.register(TEST_STRING);
+		assertTrue("Didn't get registered because in same package", im.getImportedClasses().isEmpty());
 	}
 }

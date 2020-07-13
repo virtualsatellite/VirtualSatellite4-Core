@@ -481,7 +481,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	private VirSatProjectCommons projectCommons;
-	private Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+	protected Map<Object, Object> saveOptions = new HashMap<Object, Object>();
 
 	/**
 	 * Constructor for the ResourceSet with a given project. A ResourceSet is
@@ -687,7 +687,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * @return the resource or null if not existing
 	 */
 	public Resource getResource(IResource file, boolean loadOnDemand) {
-		if (file instanceof IFile && file.exists()) {
+		if (file instanceof IFile) {
 			URI fileUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 			return this.getResource(fileUri, loadOnDemand);
 		}
@@ -712,6 +712,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get a list of all DVLM resources
+	 * @return the list of DVLM resources
+	 */
+	public List<Resource> getDvlmResources() {
+		List<Resource> dvlmResources = new ArrayList<Resource>();
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				dvlmResources.add(resource);
+			}
+		}
+		return dvlmResources;
+	}
+		
 
 	/**
 	 * Method to receive the named core object
@@ -766,7 +781,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 			
 			Repository repo = getRepository();
-			EcoreUtil.resolveAll(this);
+			loadAllDvlmResources();
 			
 			EcoreUtil.getAllContents(this, true).forEachRemaining((object) -> {
 				if (object instanceof StructuralElementInstance) {
@@ -973,16 +988,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            changing the assigned discipline
 	 */
 	public void saveResource(Resource resource,  IUserContext userContext, boolean overrideWritePermissions) {
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Started saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Started saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 
 		if (!resource.isLoaded()) {
-			Activator.getDefault().getLog()
-					.log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING,
-							"VirSatResourceSet: Attempted to save unloaded resource ("
-									+ resource.getURI().toPlatformString(true) + ")",
-							null));
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+					"VirSatResourceSet: Attempted to save unloaded resource (" + resource.getURI().toPlatformString(true) + ")"));
 		}
 
 		try {
@@ -994,9 +1005,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR,
 					"Failed to save Resource " + e.getMessage(), e));
 		}
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Finished saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Finished saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 	}
 
 	/**
@@ -1145,7 +1155,9 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
-		if (resource != null) {
+		// Only run diagnostic on DVLM files as other resource might result in a huge chain of
+		// resource that have to be resolved (e.g. diagrams also have references to the diagram infrastructure...)
+		if (resource != null && VirSatProjectCommons.isDvlmFile(resource)) {
 			// Run individualDiagnostics and merge them
 			
 			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
@@ -1290,5 +1302,16 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		// all other resources should be referenced by this resource as an entry point.
 		getRepositoryResource();
 		EcoreUtil.resolveAll(this);
+	}
+	
+	/**
+	 * Load and resolve all DVLM resources in this resource set
+	 */
+	public void loadAllDvlmResources() {
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				EcoreUtil.resolveAll(resource);
+			}
+		}
 	}
 }

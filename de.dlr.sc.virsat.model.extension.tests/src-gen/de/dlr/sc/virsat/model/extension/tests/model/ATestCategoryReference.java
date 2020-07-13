@@ -12,22 +12,18 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.core.runtime.CoreException;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 
 // *****************************************************************
@@ -81,74 +77,61 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 	// *****************************************************************
 	// * Attribute: testRefCategory
 	// *****************************************************************
-	private TestCategoryAllProperty testRefCategory;
+	private BeanPropertyReference<TestCategoryAllProperty> testRefCategory = new BeanPropertyReference<>();
 	
 	private void safeAccessTestRefCategory() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefCategory");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (testRefCategory == null) {
-				createTestRefCategory(ca);
-			}
-			testRefCategory.setTypeInstance(ca);
-		} else {
-			testRefCategory = null;
-		}
+		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
-	private void createTestRefCategory(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			testRefCategory = (TestCategoryAllProperty) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public TestCategoryAllProperty getTestRefCategory() {
 		safeAccessTestRefCategory();
-		return testRefCategory;
+		return testRefCategory.getValue();
 	}
 	
 	public Command setTestRefCategory(EditingDomain ed, TestCategoryAllProperty value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefCategory");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessTestRefCategory();
+		return testRefCategory.setValue(ed, value);
 	}
 	
 	public void setTestRefCategory(TestCategoryAllProperty value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefCategory");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessTestRefCategory();
+		testRefCategory.setValue(value);
+	}
+	
+	public BeanPropertyReference<TestCategoryAllProperty> getTestRefCategoryBean() {
+		safeAccessTestRefCategory();
+		return testRefCategory;
 	}
 	
 	// *****************************************************************
 	// * Attribute: testRefProperty
 	// *****************************************************************
-	private BeanPropertyString testRefProperty = new BeanPropertyString();
+	private BeanPropertyReference<BeanPropertyString> testRefProperty = new BeanPropertyReference<>();
 	
 	private void safeAccessTestRefProperty() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefProperty");
-		testRefProperty.setATypeInstance(propertyInstance.getReference());
+		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	public de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString getTestRefPropertyBean() {
+	public BeanPropertyString getTestRefProperty() {
+		safeAccessTestRefProperty();
+		return testRefProperty.getValue();
+	}
+	
+	public Command setTestRefProperty(EditingDomain ed, BeanPropertyString value) {
+		safeAccessTestRefProperty();
+		return testRefProperty.setValue(ed, value);
+	}
+	
+	public void setTestRefProperty(BeanPropertyString value) {
+		safeAccessTestRefProperty();
+		testRefProperty.setValue(value);
+	}
+	
+	public BeanPropertyReference<BeanPropertyString> getTestRefPropertyBean() {
 		safeAccessTestRefProperty();
 		return testRefProperty;
-	}
-	
-	public Command setTestRefPropertyBean(EditingDomain ed, BeanPropertyString value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefProperty");
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, value.getTypeInstance());
-	}
-	
-	public void setTestRefPropertyBean(BeanPropertyString value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("testRefProperty");
-		propertyInstance.setReference(value.getTypeInstance());
 	}
 	
 	

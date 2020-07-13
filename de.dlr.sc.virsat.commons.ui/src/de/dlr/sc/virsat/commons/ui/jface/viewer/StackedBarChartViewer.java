@@ -17,8 +17,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Control;
+import org.jfree.chart.swt.ChartComposite;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.experimental.chart.swt.ChartComposite;
 
 
 /**

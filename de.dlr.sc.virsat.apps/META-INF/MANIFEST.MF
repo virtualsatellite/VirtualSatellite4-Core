@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.debug.ui,
  de.dlr.sc.virsat.project;visibility:=reexport,
  de.dlr.sc.virsat.model;visibility:=reexport,
- de.dlr.sc.virsat.model.edit;visibility:=reexport
+ de.dlr.sc.virsat.model.edit;visibility:=reexport,
+ de.dlr.sc.virsat.commons
 Automatic-Module-Name: de.dlr.sc.virsat.apps
 

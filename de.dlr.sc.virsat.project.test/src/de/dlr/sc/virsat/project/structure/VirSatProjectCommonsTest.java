@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -37,12 +38,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -62,9 +61,6 @@ import de.dlr.sc.virsat.project.test.AProjectTestCase;
  * 
  */
 public class VirSatProjectCommonsTest extends AProjectTestCase {
-
-	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
 	
 	@Override
 	protected void addProjectFileStructure() {
@@ -299,7 +295,7 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 	}
 
 	@Test
-	public void testIsDvlmFile() {
+	public void testIsDvlmFileIResource() {
 		IFile correctFile = testProject.getFile(new Path("correctFVile.dvlm"));
 		IFile incorrectFile = testProject.getFile(new Path("incorrectFVile.other"));
 		
@@ -307,7 +303,21 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		assertFalse("Is No DVLM file", VirSatProjectCommons.isDvlmFile(incorrectFile));
 	}
 	
-
+	@Test
+	public void testIsDvlmFileEMFResource() {
+		Resource dvlmResource = new ResourceImpl();
+		dvlmResource.setURI(URI.createFileURI("correctFVile.dvlm"));
+		Resource nonDvlmResource = new ResourceImpl();
+		nonDvlmResource.setURI(URI.createFileURI("correctFVile.other"));
+		
+		assertTrue("Is DVLM file", VirSatProjectCommons.isDvlmFile(dvlmResource));
+		assertFalse("Is No DVLM file", VirSatProjectCommons.isDvlmFile(nonDvlmResource));
+		
+		assertFalse("Resource has no URI", VirSatProjectCommons.isDvlmFile(new ResourceImpl()));
+		Resource resource = null;
+		assertFalse("NUll resource is no DVLM file", VirSatProjectCommons.isDvlmFile(resource));
+	}
+	
 	@Test
 	public void testGetStructuralElementInstanceFullPath() {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
@@ -413,5 +423,39 @@ public class VirSatProjectCommonsTest extends AProjectTestCase {
 		virSatProject.createFolderWithEmptyFile(testFolder2, new NullProgressMonitor());
 		assertTrue("The folder does still exist", testFolder2.exists());
 		assertTrue("The .empty file still exists", testFolder2.getFile(VirSatProjectCommons.FILENAME_EMPTY).exists());
+	}
+	
+	@Test
+	public void testGetProjectNameByUri() {
+		
+		java.net.URI javaWsFileUri = testProject.getLocationURI();
+		String stringWsFileUri = javaWsFileUri.toString();
+		URI emfWsFileUri = URI.createURI(stringWsFileUri);
+		URI emfPlatformUri = URI.createPlatformResourceURI(getProjectName(), true);
+		
+		final String EXPECTED_PROJECT_NAME = getProjectName();
+		
+		assertEquals("Got correct project name from Java File URI", EXPECTED_PROJECT_NAME, VirSatProjectCommons.getProjectNameByUri(javaWsFileUri));
+		assertEquals("Got correct project name from String File URI", EXPECTED_PROJECT_NAME, VirSatProjectCommons.getProjectNameByUri(stringWsFileUri));
+		assertEquals("Got correct project name from EMF File URI", EXPECTED_PROJECT_NAME, VirSatProjectCommons.getProjectNameByUri(emfWsFileUri));
+		assertEquals("Got correct project name from EMF Platform URI", EXPECTED_PROJECT_NAME, VirSatProjectCommons.getProjectNameByUri(emfPlatformUri));
+	}
+	
+	@Test
+	public void testGetProjectByUri() {
+		java.net.URI javaWsFileUri = testProject.getLocationURI();
+		String stringWsFileUri = javaWsFileUri.toString();
+		URI emfWsFileUri = URI.createURI(stringWsFileUri);
+		
+		assertEquals("Got correct project name from Java URI", testProject, VirSatProjectCommons.getProjectByUri(javaWsFileUri));
+		assertEquals("Got correct project name from String URI", testProject, VirSatProjectCommons.getProjectByUri(stringWsFileUri));
+		assertEquals("Got correct project name from EMF URI", testProject, VirSatProjectCommons.getProjectByUri(emfWsFileUri));
+		
+		// Change the segment of the project to try to get a project that does not exist
+		URI emfPlatformUri = URI.createPlatformResourceURI(getProjectName() + "_Unknown", true);
+		IProject projectUnknown = VirSatProjectCommons.getProjectByUri(emfPlatformUri);
+		
+		assertNotNull("Got the project which is not known", projectUnknown);
+		assertFalse("The project does not yet exist", projectUnknown.exists());
 	}
 }
