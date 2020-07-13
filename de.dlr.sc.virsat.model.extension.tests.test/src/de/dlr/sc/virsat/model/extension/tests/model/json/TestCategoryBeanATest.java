@@ -16,9 +16,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -73,25 +75,12 @@ public class TestCategoryBeanATest extends ATestCategoryBeanATest {
 		resourceImpl.getContents().add(originCatgeoryBean.getATypeInstance());
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
-		
-		// Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		/*
-		unmarshaller.setListener(new Listener() {
-			@Override
-			public void beforeUnmarshal(Object target, Object parent) {
-				IBeanObject<ATypeInstance> beanA =  (IBeanObject<ATypeInstance>) target;
-			
-				ATypeInstance typeInstance = originCatgeoryBean.getTypeInstance();
-				beanA.setTypeInstance(typeInstance);
-			}
-			
-		});
-		*/
-		
+
 		String inputJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryBeanA_Marshaling.json");
 		StringReader sr = new StringReader(inputJson);
 		
-		TestCategoryBeanA createdBeanA = (TestCategoryBeanA) jsonUnmarshaller.unmarshal(sr);
+		JAXBElement<TestCategoryBeanA> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryBeanA.class);
+		TestCategoryBeanA createdBeanA = jaxbElement.getValue();
 		assertEquals(originCatgeoryBean, createdBeanA);
 	}
 	

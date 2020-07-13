@@ -12,8 +12,7 @@
    },
    "testFloatBean" : {
       "uuid" : "2870876e-4d6c-4128-801d-54fa109f382d",
-      "unit" : "",
-      "value" : NaN
+      "unit" : ""
    },
    "testIntBean" : {
       "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd86",

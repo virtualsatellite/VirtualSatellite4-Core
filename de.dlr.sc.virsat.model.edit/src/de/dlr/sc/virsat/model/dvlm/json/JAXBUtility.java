@@ -64,8 +64,6 @@ public class JAXBUtility {
 		
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
-		UriAdapter uriAdapter = new UriAdapter();
-		jsonUnmarshaller.setAdapter(uriAdapter);
 		
 		return jsonUnmarshaller;
 	}

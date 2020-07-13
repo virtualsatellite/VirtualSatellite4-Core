@@ -29,27 +29,32 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
+import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryAllPropertyTest extends AConceptTestCase {
 
-	// TODO: add to test suite
 	private TestCategoryAllProperty tcAllProperty;
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
+	private Repository repo;
 	
-	private static String RESOURCE_WITH_DEFAULTS = "/resources/json/TestCategoryAllProperty_Marshaling_Defaults.json";
-	private static String RESOURCE_WITH_VALUES = "/resources/json/TestCategoryAllProperty_Marshaling.json";
+	private static final String RESOURCE_WITH_DEFAULTS = "/resources/json/TestCategoryAllProperty_Marshaling_Defaults.json";
+	private static final String RESOURCE_WITH_VALUES = "/resources/json/TestCategoryAllProperty_Marshaling.json";
 	
-	private static boolean TEST_BOOL = true;
+	private static final boolean TEST_BOOL = true;
 	private static final int TEST_INT = 1;
 	private static final double TEST_FLOAT = 0.0;
 	private static final String TEST_STRING = "this is a test";
@@ -76,6 +81,16 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd86"));
 		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
 		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		
+		// Setup a repo for the unit management
+		repo = DVLMFactory.eINSTANCE.createRepository();
+		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
+		
+		SystemOfUnits sou = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
+		
+		unitManagement.setSystemOfUnit(sou);
+		repo.setUnitManagement(unitManagement);
+		repo.getActiveConcepts().add(concept);
 	}
 	
 	/**
@@ -126,10 +141,6 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 * @throws IOException
 	 */
 	public void assertUnmarshalWithResource(String resource) throws JAXBException, IOException {
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(tcAllProperty, sw);
-
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
@@ -161,12 +172,6 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	}
 	
 	@Test
-	@Ignore
-	// TODO: handle default values (null) for this test
-	// Empty elements will not appear!
-	// This can be fixed with moxy
-	// @XmlNullPolicy(emptyNodeRepresentsNull = true, nullRepresentationForXml = XmlMarshalNullRepresentation.EMPTY_NODE)
-	// or maybe @XmlElement( nillable = true )
 	public void testJsonUnmarshallingWithDefaultValues() throws JAXBException, IOException {
 		// Set to the new values
 		initProperties();
@@ -176,30 +181,38 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		assertUnmarshalWithResource(RESOURCE_WITH_DEFAULTS);
 		
 		// The values are correctly overwritten
-		assertEqualsDefaultValues();
+		assertEquals(false, tcAllProperty.getTestBool());
+		
+		assertEquals("Value not overrridden because null in JSON", TEST_FLOAT, tcAllProperty.getTestFloat(), EPSILON);
+		assertEquals("Value not overrridden because null in JSON", TEST_STRING, tcAllProperty.getTestString());
+		assertEquals("Value not overrridden because null in JSON", TEST_ENUM, tcAllProperty.getTestEnum());
+		assertEquals("Value not overrridden because null in JSON", TEST_RESOURCE_STRING, tcAllProperty.getTestResource().toPlatformString(false));
+		assertEquals("Value not overrridden because null in JSON", TEST_INT, tcAllProperty.getTestInt());
 	}
 
 	/**
 	 * Assert that the new values are set correctly
 	 */
 	private void assertEqualsTestValues() {
-		assertEquals(tcAllProperty.getTestInt(), TEST_INT);
-		assertEquals(tcAllProperty.getTestString(), TEST_STRING);
-		assertEquals(tcAllProperty.getTestResource().toPlatformString(false), TEST_RESOURCE_STRING);
-		assertEquals(tcAllProperty.getTestEnum(), TEST_ENUM);
-		assertEquals(tcAllProperty.getTestBool(), TEST_BOOL);
-		assertEquals(tcAllProperty.getTestFloat(), TEST_FLOAT, EPSILON);
+		assertEquals(TEST_INT, tcAllProperty.getTestInt());
+		assertEquals(TEST_STRING, tcAllProperty.getTestString());
+		assertEquals(TEST_RESOURCE_STRING, tcAllProperty.getTestResource().toPlatformString(false));
+		assertEquals(TEST_ENUM, tcAllProperty.getTestEnum());
+		assertEquals(TEST_BOOL, tcAllProperty.getTestBool());
+		assertEquals(TEST_FLOAT, tcAllProperty.getTestFloat(), EPSILON);
 	}
 	
 	/**
 	 * Assert that the default values are set correctly
 	 */
 	private void assertEqualsDefaultValues() {
-		// TODO: int default is Long in the bean and can be null, but is a long in the TestCategoryAllProperty
-//		assertEquals(tcAllProperty.getTestInt(), null);
-		assertEquals(tcAllProperty.getTestString(), null);
-		assertEquals(tcAllProperty.getTestEnum(), null);
-		assertEquals(tcAllProperty.getTestBool(), false);
+		// int default is Long in the bean and can be null, but is a long in the TestCategoryAllProperty
+		// so we don't assert it here
+//		assertEquals(null, tcAllProperty.getTestInt());
+		assertEquals(null, tcAllProperty.getTestString());
+		assertEquals(null, tcAllProperty.getTestEnum());
+		assertEquals(null, tcAllProperty.getTestResource());
+		assertEquals(false, tcAllProperty.getTestBool());
 		assertTrue(Double.isNaN(tcAllProperty.getTestFloat()));
 	}
 }

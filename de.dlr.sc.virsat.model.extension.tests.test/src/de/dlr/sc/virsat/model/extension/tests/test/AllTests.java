@@ -75,7 +75,10 @@ import junit.framework.JUnit4TestAdapter;
 				RepoValidatorsInstantiatorTest.class,
 				MatImporterTest.class,
 				MatExporterTest.class,
-				BeanPropertyReferenceTest.class
+				BeanPropertyReferenceTest.class,
+				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryAllPropertyTest.class,
+				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryBeanATest.class,
+				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryIntrinsicArrayTest.class
 				})
 
 /**
