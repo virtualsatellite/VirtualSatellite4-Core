@@ -18,6 +18,10 @@
 	<name>de.dlr.sc.virsat.javadoc.api</name>
 	<packaging>eclipse-plugin</packaging>
 
+	<properties>
+		<platform.api>org.eclipse.platform.doc.isv/reference/api</platform.api>
+	</properties>
+
 	<profiles>
 		<profile>
 			<id>doc</id>
@@ -50,6 +54,11 @@
 											<additionalArgument>
 												-link
 												https://docs.oracle.com/javase/8/docs/api
+											</additionalArgument>
+											<additionalArgument>
+												-linkoffline
+													../../../../${platform.api}
+													${project.basedir}
 											</additionalArgument>
 											<additionalArgument>-public</additionalArgument>
 										</additionalArguments>
