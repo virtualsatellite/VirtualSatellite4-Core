@@ -95,9 +95,9 @@ public class VirSatClipboardCommandAcceptanceTest  extends AConceptTestCase  {
 	public void testCopyPasteSameArrayInstance() {
 		TestCategoryIntrinsicArray tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
 		
-		ArrayInstance ai = tcIntrinsicArray.getTestStringArrayDynamic().getArrayInstance();
+		ArrayInstance ai = tcIntrinsicArray.getTestStringArrayDynamicBean().getArrayInstance();
 		BeanPropertyString prop1 = createNewStringProperty(ai);
-		tcIntrinsicArray.getTestStringArrayDynamic().add(prop1);
+		tcIntrinsicArray.getTestStringArrayDynamicBean().add(prop1);
 
 		Command command = VirSatCopyToClipboardCommand.create(editingDomain, Collections.singleton(prop1.getTypeInstance()));
 		assertTrue("The Copy Command can be executed on a PI within an Array", command.canExecute());
@@ -121,9 +121,9 @@ public class VirSatClipboardCommandAcceptanceTest  extends AConceptTestCase  {
 	public void testCopyCutPasteAcrossArrayInstances() {
 		TestCategoryIntrinsicArray tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
 
-		ValuePropertyInstance vpi = tcIntrinsicArray.getTestStringArrayStatic().get(0).getTypeInstance();
+		ValuePropertyInstance vpi = tcIntrinsicArray.getTestStringArrayStaticBean().get(0).getTypeInstance();
 		
-		ArrayInstance aiDynamic = tcIntrinsicArray.getTestStringArrayDynamic().getArrayInstance();
+		ArrayInstance aiDynamic = tcIntrinsicArray.getTestStringArrayDynamicBean().getArrayInstance();
 
 		// Copy paste from Static to dynamic should work
 		Command command = VirSatCopyToClipboardCommand.create(editingDomain, Collections.singleton(vpi));
@@ -145,9 +145,9 @@ public class VirSatClipboardCommandAcceptanceTest  extends AConceptTestCase  {
 		
 		// Now Copy And Paste from a Second dynamic array
 		TestCategoryIntrinsicArray tcIntrinsicArray2 = new TestCategoryIntrinsicArray(concept);
-		ArrayInstance ai2 = tcIntrinsicArray2.getTestStringArrayDynamic().getArrayInstance();
+		ArrayInstance ai2 = tcIntrinsicArray2.getTestStringArrayDynamicBean().getArrayInstance();
 		BeanPropertyString prop1 = createNewStringProperty(ai2);
-		tcIntrinsicArray2.getTestStringArrayDynamic().add(prop1);
+		tcIntrinsicArray2.getTestStringArrayDynamicBean().add(prop1);
 
 		command = VirSatCopyToClipboardCommand.create(editingDomain, Collections.singleton(prop1.getTypeInstance()));
 		assertTrue("The Copy Command can be executed on a PI within an Array", command.canExecute());

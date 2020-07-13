@@ -14,7 +14,6 @@ package testConcept.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import testConcept.model.testStructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import java.lang.Exception;
 

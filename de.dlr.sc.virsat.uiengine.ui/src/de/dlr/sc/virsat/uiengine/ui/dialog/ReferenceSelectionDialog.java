@@ -420,4 +420,8 @@ public class ReferenceSelectionDialog extends ElementTreeSelectionDialog {
 		treeViewer.setComparator(new VirSatNavigatorSeiSorter());
 		return treeViewer;
 	}
+	
+	public IStructuredContentProvider getContentProvider() {
+		return contentProviderList;
+	}
 }

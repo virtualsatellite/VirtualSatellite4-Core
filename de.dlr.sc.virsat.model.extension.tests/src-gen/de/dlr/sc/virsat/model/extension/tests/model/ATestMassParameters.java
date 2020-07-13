@@ -13,12 +13,12 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.TestParameter;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
@@ -73,16 +73,21 @@ public abstract class ATestMassParameters extends GenericCategory implements IBe
 	// *****************************************************************
 	// * Attribute: mass
 	// *****************************************************************
-	private TestParameter mass = new TestParameter();
+	private BeanPropertyComposed<TestParameter> mass = new BeanPropertyComposed<>();
 	
 	private void safeAccessMass() {
 		if (mass.getTypeInstance() == null) {
 			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("mass");
-			mass.setTypeInstance(propertyInstance.getTypeInstance());
+			mass.setTypeInstance(propertyInstance);
 		}
 	}
 	
-	public TestParameter getMass () {
+	public TestParameter getMass() {
+		safeAccessMass();
+		return mass.getValue();
+	}
+	
+	public BeanPropertyComposed<TestParameter> getMassBean() {
 		safeAccessMass();
 		return mass;
 	}

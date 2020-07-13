@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.build.inheritance;
 
 import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -18,8 +19,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 import de.dlr.sc.virsat.project.Activator;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
@@ -79,10 +78,9 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Try to trigger custom build"));
 			
 			IProject project = getVirSatProject();
-			VirSatTransactionalEditingDomain virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
 			IResourceDelta delta = getDelta(project);
 	
-			if (virSatTed == null || !getResourceSet().isOpen()) {
+			if (!getResourceSet().isOpen()) {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Project Closed or not Transactional Editing Domain - no build"));
 				return null;
 			}
@@ -94,25 +92,15 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done full build - full build"));
 					break;  
 				case INCREMENTAL_BUILD:
-					if (delta == null) {
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing incremental Build - full build"));
-						fullBuild(monitor);
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done incremental Build - full build"));
-					} else {
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing incremental build - incremental build"));
-						incrementalBuild(delta, monitor);
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done incremental Build - full build"));
-					}
-					break;
 				case AUTO_BUILD:
 					if (delta == null) {
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing auto build - full build"));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing auto or incremental build - full build"));
 						fullBuild(monitor);
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done auto build - full build"));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done auto or incremental build - full build"));
 					} else {
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing auto build - incremental build"));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Performing auto or incremental build - incremental build"));
 						incrementalBuild(delta, monitor);
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done auto build - incremental build"));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatBuilder: <" + builderName + "> Done auto or incremental build - incremental build"));
 					}
 					break;
 				default:

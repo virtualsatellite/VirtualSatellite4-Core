@@ -1,0 +1,6 @@
+
+Lists of 4 third-party dependencies.
+     (LGPL 3) JCommon (org.jfree:jcommon:1.0.23 - http://www.jfree.org/jcommon/)
+     (LGPL 3) JFreeChart (org.jfree:jfreechart:1.0.19 - http://www.jfree.org/jfreechart/)
+     (LGPL 3) JFreeChart-SWT (org.jfree:jfreechart-swt:1.0 - http://www.jfree.org/jfreechart)
+     (LGPL 3) SWTGraphics2D (org.jfree:swtgraphics2d:1.0 - http://www.jfree.org/jfreechart)

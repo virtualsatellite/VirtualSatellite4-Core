@@ -77,18 +77,6 @@
 									</licenseMerges>
 								</configuration>
 							</execution>
-							<!-- execution>
-								<id>Download Third Party Licenses</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>download-licenses</goal>
-								</goals>
-								<configuration>
-									<removeOrphanLicenseFiles>false</removeOrphanLicenseFiles>
-									<licensesOutputDirectory>${project.basedir}/about_files/maven</licensesOutputDirectory>
-									<organizeLicensesByDependencies>true</organizeLicensesByDependencies>
-								</configuration>
-							</execution-->
 						</executions>
 					</plugin>
 				</plugins>

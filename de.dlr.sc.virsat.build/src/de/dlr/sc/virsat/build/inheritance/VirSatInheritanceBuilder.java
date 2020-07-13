@@ -138,8 +138,7 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 			delta.accept(new IResourceDeltaVisitor() {
 				public boolean visit(IResourceDelta delta) {
 					IResource iResource = delta.getResource();
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatInheritanceBuilder: Finished incremental build on resource (" + iResource + ")"));
-
+				
 					if (iResource instanceof IFile) {
 						// We should only process DVLm resources in terms of inheritance
 						IFile iFile = (IFile) iResource;
@@ -149,6 +148,9 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 							return true;
 						}
 
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+								"VirSatInheritanceBuilder: Processing incremental build on resource (" + iResource + ")"));
+						
 						Resource resource = resourceSet.safeGetResource(iFile, false);
 						Repository repository = resourceSet.getRepository();
 						Set<StructuralElementInstance> seis = getAllSeiInResource(resource);

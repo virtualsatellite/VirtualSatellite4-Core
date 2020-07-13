@@ -16,7 +16,6 @@ package de.dlr.sc.virsat.model.extension.budget.power.model;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
-import de.dlr.sc.virsat.model.extension.budget.power.model.PowerState;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 

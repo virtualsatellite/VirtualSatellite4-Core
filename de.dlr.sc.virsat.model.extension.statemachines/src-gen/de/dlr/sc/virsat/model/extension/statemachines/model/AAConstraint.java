@@ -12,21 +12,17 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.core.runtime.CoreException;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.extension.statemachines.model.State;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 
 // *****************************************************************
@@ -80,97 +76,61 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 	// *****************************************************************
 	// * Attribute: stateConstraining
 	// *****************************************************************
-	private State stateConstraining;
+	private BeanPropertyReference<State> stateConstraining = new BeanPropertyReference<>();
 	
 	private void safeAccessStateConstraining() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateConstraining");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (stateConstraining == null) {
-				createStateConstraining(ca);
-			}
-			stateConstraining.setTypeInstance(ca);
-		} else {
-			stateConstraining = null;
-		}
+		stateConstraining.setTypeInstance(propertyInstance);
 	}
 	
-	private void createStateConstraining(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			stateConstraining = (State) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public State getStateConstraining() {
 		safeAccessStateConstraining();
-		return stateConstraining;
+		return stateConstraining.getValue();
 	}
 	
 	public Command setStateConstraining(EditingDomain ed, State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateConstraining");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessStateConstraining();
+		return stateConstraining.setValue(ed, value);
 	}
 	
 	public void setStateConstraining(State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateConstraining");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessStateConstraining();
+		stateConstraining.setValue(value);
+	}
+	
+	public BeanPropertyReference<State> getStateConstrainingBean() {
+		safeAccessStateConstraining();
+		return stateConstraining;
 	}
 	
 	// *****************************************************************
 	// * Attribute: stateInfluenced
 	// *****************************************************************
-	private State stateInfluenced;
+	private BeanPropertyReference<State> stateInfluenced = new BeanPropertyReference<>();
 	
 	private void safeAccessStateInfluenced() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateInfluenced");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (stateInfluenced == null) {
-				createStateInfluenced(ca);
-			}
-			stateInfluenced.setTypeInstance(ca);
-		} else {
-			stateInfluenced = null;
-		}
+		stateInfluenced.setTypeInstance(propertyInstance);
 	}
 	
-	private void createStateInfluenced(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			stateInfluenced = (State) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public State getStateInfluenced() {
 		safeAccessStateInfluenced();
-		return stateInfluenced;
+		return stateInfluenced.getValue();
 	}
 	
 	public Command setStateInfluenced(EditingDomain ed, State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateInfluenced");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessStateInfluenced();
+		return stateInfluenced.setValue(ed, value);
 	}
 	
 	public void setStateInfluenced(State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateInfluenced");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessStateInfluenced();
+		stateInfluenced.setValue(value);
+	}
+	
+	public BeanPropertyReference<State> getStateInfluencedBean() {
+		safeAccessStateInfluenced();
+		return stateInfluenced;
 	}
 	
 	
