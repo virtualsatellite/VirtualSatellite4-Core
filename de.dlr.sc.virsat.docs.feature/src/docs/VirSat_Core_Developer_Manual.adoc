@@ -216,10 +216,10 @@ image::chapterExternalLibraries/BuildClassPathEditor.png[Build Classpath Editor]
 === Third party Maven based JAR libraries
 
 In case a third party library is available in the Maven repositories, it can also be added and downloaded from there.
-In order to add the library as maven dependency open the `pom.xml` file (e.g. the one from `de.dlr.sc.virsat.external.lib.jfreechart`).
+In order to add the library as Maven dependency open the `pom.xml` file (e.g. the one from `de.dlr.sc.virsat.external.lib.jfreechart`).
 
-.pom.xml file of the jfreechart external maven based library
-[#ExternalLibraryManifestMfWin32]
+.pom.xml file of the jfreechart external Maven based library
+[#PomDefiningMavenBasedTPL]
 ----
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
