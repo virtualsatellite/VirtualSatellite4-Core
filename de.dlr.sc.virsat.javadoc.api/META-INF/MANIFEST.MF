@@ -8,5 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Require-Bundle: org.eclipse.help,
- org.eclipse.pde.core
+ org.eclipse.pde.core,
+ org.eclipse.platform.doc.isv
 Automatic-Module-Name: de.dlr.sc.virsat.javadoc.api
