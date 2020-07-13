@@ -266,7 +266,7 @@ The downloaded jars have to be manually added to the classpath of the plugin.
 Exported packages have to be registered manually as well.
 
 <2> Section to specify excluded transitive dependencies.
-Dependencies mentioned here will not eb copied.
+Dependencies mentioned here will not be copied.
 
 
 To trigger the download of the third party jars from the Maven repositories call Maven with the `downloadLibs` profile.
