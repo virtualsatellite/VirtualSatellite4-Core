@@ -359,7 +359,7 @@ It does not include the _externalLib_ folder or one of its libraries.
 To make Eclipse compile, the library has to be mentioned in the classpath.
 The Eclipse compilation does not care about which library is mentioned in the _MANIFEST.MF_.
 
-.classpath file  referencing the zmq jar
+.classpath file referencing the zmq jar
 [#ExternalLibraryClasspathLinux]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
@@ -379,7 +379,17 @@ This library can be different during runtime.
 Differences may lead to unexpected behavior.
 Therefore, it is recommended to have the expected versions specified in the environment variables.
 
+=== Important Eclipse Information
 
+Here you can find important information about eclipse such as repositories, links or just important notes.
+
+==== Eclipse Packaging Project Repository
+
+In particular the Virtual Satellite IDE is based on the Plugin Developer Environemnt (PDE).
+It is part of the Eclipse Packaging Project (EPP).
+The EPP repository can be found here:
+
+https://github.com/eclipse/epp.packages.git
 
 [colophone]
 == Legal - License & Copyright
