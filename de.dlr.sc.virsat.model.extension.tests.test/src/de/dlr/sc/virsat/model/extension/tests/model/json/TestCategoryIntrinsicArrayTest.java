@@ -68,6 +68,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		testArray.getTestStringArrayStatic().get(1).getATypeInstance().setUuid(new VirSatUuid("6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5"));
 		testArray.getTestStringArrayStatic().get(2).getATypeInstance().setUuid(new VirSatUuid("8fd96e3b-5bf3-41e1-a02a-64f8bff99107"));
 		testArray.getTestStringArrayStatic().get(3).getATypeInstance().setUuid(new VirSatUuid("c38d7185-fcc3-480c-bfb4-28e6fcc09d34"));
+		testArray.getTestStringArrayStatic().getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f9495b"));
 	}
 	
 	@Test
@@ -88,18 +89,20 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 	}
 	
 	@Test
-	public void testJsonUnmarshalling() throws JAXBException, IOException {		
+	public void testJsonUnmarshalling() throws JAXBException, IOException {
+		ArrayInstance originalArrayInstance = testArray.getTestStringArrayStatic().getArrayInstance();
+		
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
 		resourceSet.getResources().add(resourceImpl);
 		resourceImpl.getContents().add(testArray.getATypeInstance());
+		resourceImpl.getContents().add(originalArrayInstance);
 		resourceImpl.getContents().add(beanPropertyString.getATypeInstance());
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
 		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), null);
-		ArrayInstance originalArrayInstance = testArray.getTestStringArrayStatic().getArrayInstance();
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
 		System.out.println(inputJson);
@@ -109,6 +112,6 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		TestCategoryIntrinsicArray createdArray = jaxbElement.getValue();
 		assertEquals(testArray, createdArray);
 		assertEquals(originalArrayInstance, createdArray.getTestStringArrayStatic().getArrayInstance());
-		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), null);
+		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), "testString");
 	}
 }

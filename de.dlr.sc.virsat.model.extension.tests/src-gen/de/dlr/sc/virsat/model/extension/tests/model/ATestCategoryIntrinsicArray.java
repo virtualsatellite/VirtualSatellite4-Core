@@ -117,7 +117,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-//	@XmlJavaTypeAdapter(StaticBeanListAdapter.class)
+	@XmlJavaTypeAdapter(StaticBeanListAdapter.class)
 	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayStatic() {
 		safeAccessTestStringArrayStatic();
