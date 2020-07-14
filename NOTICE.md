@@ -1,4 +1,4 @@
-# Virtual Satellite IDE
+# Virtual Satellite
 
 This content was engendered by Deutsches Zentrum fuer Luft- und Raumfahrt e.V., German Aerospace Center, DLR and is protected under DLR copyright, © DLR 2020.
 
