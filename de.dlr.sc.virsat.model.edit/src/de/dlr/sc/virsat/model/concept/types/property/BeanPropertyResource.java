@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.core.resources.IFile;
@@ -63,6 +64,8 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 * this method set the specified value to the bean property string
 	 * @param value the specified value
 	 */
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(UriAdapter.class)
 	public void setValue(URI value) {
 		ti.setUri(value);
 	}
@@ -71,6 +74,7 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 * this method returns the bean property string value
 	 * @return the bean property string value
 	 */
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(UriAdapter.class)
 	public URI getValue() {
 		return ti.getUri();

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
@@ -47,12 +48,22 @@ public class BeanPropertyFloat extends ABeanUnitProperty<Double> {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, Double.toString(value));
 	}
 	
+	@XmlJavaTypeAdapter(DoubleAdapter.class)
+	// TODO: this adapter won't be called if the value is null... so we can't encapsulate null handling in the adapter for the unmarshalling....
+	// because of JAXB
+	@XmlElement(nillable = true)
 	@Override
 	public void setValue(Double value) {
-		ti.setValue(Double.toString(value));
+		// TODO
+		if (value == null) {
+			ti.setValue(null);
+		} else {
+			ti.setValue(Double.toString(value));
+		}
 	}
 	
 	@XmlJavaTypeAdapter(DoubleAdapter.class)
+	@XmlElement(nillable = true)
 	@Override
 	public Double getValue() {
 		try {

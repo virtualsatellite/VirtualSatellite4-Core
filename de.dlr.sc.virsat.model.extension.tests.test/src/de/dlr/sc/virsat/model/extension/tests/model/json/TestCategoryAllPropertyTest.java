@@ -183,11 +183,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		// The values are correctly overwritten
 		assertEquals(false, tcAllProperty.getTestBool());
 		
-		assertEquals("Value not overrridden because null in JSON", TEST_FLOAT, tcAllProperty.getTestFloat(), EPSILON);
-		assertEquals("Value not overrridden because null in JSON", TEST_STRING, tcAllProperty.getTestString());
-		assertEquals("Value not overrridden because null in JSON", TEST_ENUM, tcAllProperty.getTestEnum());
-		assertEquals("Value not overrridden because null in JSON", TEST_RESOURCE_STRING, tcAllProperty.getTestResource().toPlatformString(false));
-		assertEquals("Value not overrridden because null in JSON", TEST_INT, tcAllProperty.getTestInt());
+		assertEqualsDefaultValues();
 	}
 
 	/**

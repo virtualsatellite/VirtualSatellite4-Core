@@ -13,13 +13,16 @@
          "value" : "testString"
       }, {
          "type" : "beanPropertyString",
-         "uuid" : "6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5"
+         "uuid" : "6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5",
+         "value" : null
       }, {
          "type" : "beanPropertyString",
-         "uuid" : "8fd96e3b-5bf3-41e1-a02a-64f8bff99107"
+         "uuid" : "8fd96e3b-5bf3-41e1-a02a-64f8bff99107",
+         "value" : null
       }, {
          "type" : "beanPropertyString",
-         "uuid" : "c38d7185-fcc3-480c-bfb4-28e6fcc09d34"
+         "uuid" : "c38d7185-fcc3-480c-bfb4-28e6fcc09d34",
+         "value" : null
       } ],
       "uuid" : "98218bbf-a5ee-432d-b01c-da48f4f9495b"
    }

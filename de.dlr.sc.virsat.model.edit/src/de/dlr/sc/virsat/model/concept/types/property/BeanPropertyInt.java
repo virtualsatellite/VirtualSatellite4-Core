@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -38,13 +40,20 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public Command setValue(EditingDomain ed, Long value) {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, Long.toString(value));
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public void setValue(Long value) {
-		ti.setValue(Long.toString(value));
+		// TODO
+		if(value == null) {
+			ti.setValue(null);
+		} else {
+			ti.setValue(Long.toString(value));
+		}
 	}
 	
 	@Override

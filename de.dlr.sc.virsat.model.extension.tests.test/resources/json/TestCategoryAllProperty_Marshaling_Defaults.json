@@ -8,20 +8,25 @@
    },
    "testEnumBean" : {
       "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f4939d",
-      "unit" : ""
+      "unit" : "",
+      "value" : null
    },
    "testFloatBean" : {
       "uuid" : "2870876e-4d6c-4128-801d-54fa109f382d",
-      "unit" : ""
+      "unit" : "",
+      "value" : null
    },
    "testIntBean" : {
       "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd86",
-      "unit" : ""
+      "unit" : "",
+      "value" : null
    },
    "testResourceBean" : {
-      "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0ebd"
+      "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0ebd",
+      "value" : null
    },
    "testStringBean" : {
-      "uuid" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
+      "uuid" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50",
+      "value" : null
    }
 }
