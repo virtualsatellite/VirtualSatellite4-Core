@@ -25,9 +25,11 @@
 <plugin id="de.dlr.sc.virsat.external.lib"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.apache.poi"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.commons.cli"></plugin>
+<plugin id="de.dlr.sc.virsat.external.lib.commons.csv"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.commons.math"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.jfreechart"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.json-simple"></plugin>
+<plugin id="de.dlr.sc.virsat.external.lib.matlabfile"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.nebula.incubation"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.protobuf"></plugin>
 <plugin id="de.dlr.sc.virsat.external.lib.spotbugs"></plugin>
@@ -42,6 +44,8 @@
 <plugin id="de.dlr.sc.virsat.model.concept.ide"></plugin>
 <plugin id="de.dlr.sc.virsat.model.concept.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.model.edit"></plugin>
+<plugin id="de.dlr.sc.virsat.model.ext.core"></plugin>
+<plugin id="de.dlr.sc.virsat.model.ext.core.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.model.extension.budget.mass"></plugin>
 <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.model.extension.budget.power"></plugin>
@@ -64,6 +68,7 @@
 <plugin id="de.dlr.sc.virsat.project"></plugin>
 <plugin id="de.dlr.sc.virsat.project.ui"></plugin>
 <plugin id="de.dlr.sc.virsat.qudv.ui"></plugin>
+<plugin id="de.dlr.sc.virsat.server"></plugin>
 <plugin id="de.dlr.sc.virsat.target"></plugin>
 <plugin id="de.dlr.sc.virsat.team"></plugin>
 <plugin id="de.dlr.sc.virsat.team.ui"></plugin>

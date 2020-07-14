@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.11.0-SNAPSHOT</version>
+		<version>4.12.0-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -21,6 +21,7 @@
 	<properties>
 		<platform.api>org.eclipse.platform.doc.isv/reference/api</platform.api>
 	</properties>
+
 	<profiles>
 		<profile>
 			<id>doc</id>
@@ -42,18 +43,22 @@
 									<tocFile>${project.basedir}/help/api_docs.xml</tocFile>
 									<tocOptions>
 										<mainLabel>VirSat Core API JavaDoc Compilation</mainLabel>
+										<mainFilename>index.html</mainFilename>
 									</tocOptions>
+									<scopes>provided</scopes>
 									<javadocOptions>
+										<includes>
+											<include>de.dlr.sc.*</include>
+										</includes>
 										<additionalArguments>
-											<additionalArgument>${javadoc-args}</additionalArgument>
 											<additionalArgument>
 												-link
-												http://docs.oracle.com/javase/8/docs/api/
+												https://docs.oracle.com/javase/8/docs/api
 											</additionalArgument>
 											<additionalArgument>
 												-linkoffline
-												../../${platform.api}
-												http://help.eclipse.org/mars/topic/org.eclipse.platform.doc.isv/reference/api/
+													../../../../${platform.api}
+													${project.basedir}
 											</additionalArgument>
 											<additionalArgument>-public</additionalArgument>
 										</additionalArguments>
