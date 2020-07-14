@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.json.StaticBeanListAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanListAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
@@ -94,17 +94,14 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
+	// TODO: this is never parsed as BeanPropertyString (also without adapter)
+	// why???
+	@XmlJavaTypeAdapter(BeanListAdapter.class)
 	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayDynamic() {
 		safeAccessTestStringArrayDynamic();
 		return testStringArrayDynamic;
 	}
-	
-//	@XmlElement
-//	public void setTestStringArrayDynamic(IBeanList<BeanPropertyString> newList) {
-//		// TODO
-//		testStringArrayDynamic = newList;
-//	}
 	
 	// *****************************************************************
 	// * Array Attribute: testStringArrayStatic
@@ -117,24 +114,10 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-	@XmlJavaTypeAdapter(StaticBeanListAdapter.class)
-	@XmlElement
+//	@XmlJavaTypeAdapter(BeanListAdapter.class)
+//	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayStatic() {
 		safeAccessTestStringArrayStatic();
 		return testStringArrayStatic;
 	}
-	
-//	@XmlElement
-//	// TODO: use an adapter here???
-//	public void setTestStringArrayStatic(IBeanList<BeanPropertyString> newList) {
-//		// TODO
-//		for (BeanPropertyString newBps : newList) {
-//			for (BeanPropertyString oldBps : testStringArrayStatic) {
-//				if(newBps.getUuid() == oldBps.getUuid()) {
-//					// here everything has to be copied? e.g. value and unit for floats?
-//					oldBps.setValue(newBps.getValue());
-//				}
-//			}
-//		}
-//	}
 }

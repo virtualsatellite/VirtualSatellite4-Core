@@ -2,10 +2,14 @@
    "type" : "testCategoryIntrinsicArray",
    "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
    "name" : "TestCategoryIntrinsicArray",
-   "testStringArrayDynamic" : [ {
-      "uuid" : "d7ed5b62-f096-4347-88ef-eae61c5f166b",
-      "value" : "testString"
-   } ],
+   "testStringArrayDynamic" : {
+      "beanList" : [ {
+         "type" : "beanPropertyString",
+         "uuid" : "d7ed5b62-f096-4347-88ef-eae61c5f166b",
+         "value" : "testString"
+      } ],
+      "uuid" : "ee6e1025-4a77-4b32-9c62-cb459ed76ce8"
+   },
    "testStringArrayStatic" : {
       "beanList" : [ {
          "type" : "beanPropertyString",

@@ -5,14 +5,14 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class StaticBeanListPOJO<TYPE> {
+public class BeanListPOJO<TYPE> {
 
 	@XmlElement
 	private List<TYPE> beanList;
 	@XmlElement
 	private String uuid;
 	
-	public StaticBeanListPOJO() {
+	public BeanListPOJO() {
 		setBeanList(new ArrayList<TYPE>());
 	}
 
