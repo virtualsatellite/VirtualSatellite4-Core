@@ -9,17 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.json.BeanListAdapter;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -27,9 +16,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+// *****************************************************************
+// * Import Statements
+// *****************************************************************
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyStringListAdapter;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -47,6 +46,7 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
+//@XmlJavaTypeAdapter(value = BeanPropertyStringListAdapter.class, type = IBeanList.class)
 public abstract class ATestCategoryIntrinsicArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryIntrinsicArray";
@@ -94,9 +94,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-	// TODO: this is never parsed as BeanPropertyString (also without adapter)
-	// why???
-	@XmlJavaTypeAdapter(BeanListAdapter.class)
+//	@XmlJavaTypeAdapter(BeanPropertyStringListAdapter.class)
 	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayDynamic() {
 		safeAccessTestStringArrayDynamic();
@@ -114,8 +112,8 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-//	@XmlJavaTypeAdapter(BeanListAdapter.class)
-//	@XmlElement
+	@XmlJavaTypeAdapter(BeanPropertyStringListAdapter.class)
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayStatic() {
 		safeAccessTestStringArrayStatic();
 		return testStringArrayStatic;

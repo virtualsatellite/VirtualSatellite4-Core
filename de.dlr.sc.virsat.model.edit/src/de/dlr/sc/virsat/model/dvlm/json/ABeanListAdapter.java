@@ -24,28 +24,29 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayMod
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 
-public class BeanListAdapter extends XmlAdapter<BeanListPOJO<Object>, IBeanList<Object>> {
+public abstract class ABeanListAdapter<TYPE extends IBeanProperty<? extends APropertyInstance,?>> extends XmlAdapter<BeanListPOJO<TYPE>, IBeanList<TYPE>> {
 	
 	private ResourceSet resourceSet;
-	private CustomMarshallerListener marshallerListener;
-	private CustomUnmarshallerListener unmarshallerListener;
 	private Map<String, ArrayInstance> objectMap = new HashMap<String, ArrayInstance>();
+	private Class<TYPE> beanClass;
 	
-	public BeanListAdapter() { }
+	public ABeanListAdapter() { }
 	
-	public BeanListAdapter(ResourceSet resourceSet, CustomMarshallerListener marshallerListener, CustomUnmarshallerListener unmarshallerListener) {
+	public ABeanListAdapter(Class<TYPE> beanClass) {
+		this.beanClass = beanClass;
+	}
+	
+//	public ABeanListAdapter(ResourceSet resourceSet) {
+//		this.resourceSet = resourceSet;
+//	}
+	
+	public void setResourceSet(ResourceSet resourceSet) { 
 		this.resourceSet = resourceSet;
-		this.marshallerListener = marshallerListener;
-		this.unmarshallerListener = unmarshallerListener;
 	}
 
 	@Override
-	public IBeanList<Object> unmarshal(BeanListPOJO<Object> v) throws Exception {
+	public IBeanList<TYPE> unmarshal(BeanListPOJO<TYPE> v) throws Exception {
 		String uuid = v.getUuid();
-		
-		System.out.println(unmarshallerListener.parent);
-		System.out.println(unmarshallerListener.target);
-		System.out.println(unmarshallerListener.target.getClass().getName());
 		
 		// TODO redundant code from typeInstanceAdapter -> refactor: inheritence/composition?
 		EcoreUtil.getAllContents(resourceSet, true).forEachRemaining(object -> {
@@ -60,46 +61,38 @@ public class BeanListAdapter extends XmlAdapter<BeanListPOJO<Object>, IBeanList<
 		ArrayInstance arrayInstance = objectMap.get(uuid);
 		IArrayModifier arrayModifier = ((AProperty) arrayInstance.getType()).getArrayModifier();
 		// TODO: null check
+
+		IBeanList<TYPE> newBeanList = new TypeSafeArrayInstanceList<TYPE>(beanClass);
+		newBeanList.setArrayInstance(arrayInstance);
 		
-		EList<APropertyInstance> propertyInstanceList = arrayInstance.getArrayInstances();
-//		IBeanList<Object> staticBeanList = new TypeSafeArrayInstanceList<Object>(Object.class);
-		
-		List<Object> beanList = v.getBeanList();
+		List<TYPE> beanList = v.getBeanList();
 		
 		// if the arraymodifier is static we have to check the size
 		if (arrayModifier instanceof StaticArrayModifier) {
-			if (propertyInstanceList.size() == beanList.size()) {
+			if (newBeanList.size() == beanList.size()) {
 				for (int i = 0; i < beanList.size(); i++) {
-					ABeanProperty<?> bean = (ABeanProperty) beanList.get(i);
-					propertyInstanceList.set(i, bean.getTypeInstance());
+					// TODO: cannot call set here
+					TYPE oldBean = newBeanList.get(i);
+					oldBean.setATypeInstance(beanList.get(i).getATypeInstance());
 				}
 			} else {
 				throw new IllegalArgumentException("not same length");
 			}
 		} else {
-			propertyInstanceList.clear();
-			for (Object obj : beanList) {
-				ABeanProperty<?> bean = (ABeanProperty) obj;
-				propertyInstanceList.add(bean.getTypeInstance());
-			}
+			newBeanList.clear();
+			newBeanList.addAll(beanList);
 		}
 		
-		
-		// this will set the actual list to null
-		// but it will be reset with the updated array instance
-		// because of the safe access array method
-		return null;
+		return newBeanList;
 	}
 
 	@Override
-	public BeanListPOJO<Object> marshal(IBeanList<Object> v) throws Exception {
-//		System.out.println(marshallerListener.source.getClass().getName());
-		BeanListPOJO<Object> pojo = new BeanListPOJO<Object>();
-		List<Object> beanList = pojo.getBeanList();
+	public BeanListPOJO<TYPE> marshal(IBeanList<TYPE> v) throws Exception {
+		BeanListPOJO<TYPE> pojo = new BeanListPOJO<TYPE>();
+		List<TYPE> beanList = pojo.getBeanList();
 		
-		for (Object bean : v) {
-			String classname = bean.getClass().getName();
-			beanList.add(Class.forName(classname).cast(bean));
+		for (TYPE bean : v) {
+			beanList.add(bean);
 		}
 		pojo.setUuid(v.getArrayInstance().getUuid().toString());
 		

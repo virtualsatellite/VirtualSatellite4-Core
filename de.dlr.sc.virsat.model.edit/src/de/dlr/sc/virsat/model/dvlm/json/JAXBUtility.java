@@ -25,10 +25,7 @@ public class JAXBUtility {
 
 	private Map<String, Object> properties = new HashMap<>();
 	private JAXBContext jaxbCtx;
-	// TODO
-	private BeanListAdapter listAdapter;
-	private CustomMarshallerListener marshallerListener;
-	private CustomUnmarshallerListener unmarshallerListener;
+	private BeanPropertyStringListAdapter listAdapter;
 	
 	
 	public JAXBUtility() {
@@ -43,10 +40,7 @@ public class JAXBUtility {
 	
 	private void init() {
 		System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-		marshallerListener = new CustomMarshallerListener();
-		unmarshallerListener = new CustomUnmarshallerListener();
-		
-		createBeanListAdapter(null);
+		listAdapter = new BeanPropertyStringListAdapter();
 	}
 	
 	public void initJsonProperties() {
@@ -63,18 +57,13 @@ public class JAXBUtility {
 		return properties;
 	}
 	
-	public void createBeanListAdapter(ResourceSet resourceSet) {
-		listAdapter = new BeanListAdapter(resourceSet, marshallerListener, unmarshallerListener);
-	}
-	
 	public Marshaller getJsonMarshaller() throws JAXBException {
 		Marshaller jsonMarshaller = jaxbCtx.createMarshaller();
 		jsonMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		jsonMarshaller.setListener(marshallerListener);
 		
 		jsonMarshaller.setEventHandler(new DefaultValidationEventHandler());
 		
-//		jsonMarshaller.setAdapter(listAdapter);
+		jsonMarshaller.setAdapter(listAdapter);
 		
 		return jsonMarshaller;
 	}
@@ -82,14 +71,12 @@ public class JAXBUtility {
 	public Unmarshaller getJsonUnmarshaller(ResourceSet resourceSet) throws JAXBException {
 		Unmarshaller jsonUnmarshaller = jaxbCtx.createUnmarshaller();
 		
-		jsonUnmarshaller.setListener(unmarshallerListener);
-		
 		jsonUnmarshaller.setEventHandler(new DefaultValidationEventHandler());
 		
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
 		
-		createBeanListAdapter(resourceSet);
+		listAdapter.setResourceSet(resourceSet);
 		jsonUnmarshaller.setAdapter(listAdapter);
 		
 		return jsonUnmarshaller;

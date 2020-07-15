@@ -40,8 +40,6 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayTest {
-
-	// TODO: add to test suite
 	
 	private JAXBUtility jaxbUtility;
 	private BeanPropertyString beanPropertyString;
@@ -104,6 +102,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
 		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), null);
+		assertEquals(testArray.getTestStringArrayDynamic().size(), 0);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
 		System.out.println(inputJson);
@@ -114,5 +113,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		assertEquals(testArray, createdArray);
 		assertEquals(originalArrayInstance, createdArray.getTestStringArrayStatic().getArrayInstance());
 		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), "testString");
+		
+		assertEquals(testArray.getTestStringArrayDynamic().size(), 1);
 	}
 }
