@@ -68,4 +68,5 @@ public interface IBeanList<TYPE> extends List<TYPE> {
 	 */
 	void setArrayInstance(ArrayInstance ai);
 	
+	void setPointer(int index);
 }

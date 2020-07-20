@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
  * test case for the array capabilities on intrinsic properties in the beans model
- * @author fisc_ph
- *
  */
 public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 
@@ -69,7 +69,7 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		TestCategoryAllProperty property2 = createNewComposedTypeProperty();
 		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
 
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
 		List<TestCategoryAllProperty> addBeans = new ArrayList<>();
 		addBeans.add(property1);
@@ -79,20 +79,35 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		arrayStatic.addAll(addBeans);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testAddBeanType() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
+		TestCategoryAllProperty property2 = createNewComposedTypeProperty();
+		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
 		
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
-			
-		arrayStatic.add(property1);		
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		
+		assertNotEquals(property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		arrayStatic.add(property1);
+		assertEquals("Added to the correct default pointer of 0", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		
+		int lastIndex = LIST_WITH_STATIC_SIZE - 1;
+		assertNotEquals(property2.getTypeInstance(), arrayStatic.get(lastIndex).getTypeInstance());
+		arrayStatic.setPointer(lastIndex);
+		arrayStatic.add(property2);
+		assertEquals("Added to the correct pointer", property2.getTypeInstance(), arrayStatic.get(lastIndex).getTypeInstance());
+		
+		arrayStatic.setPointer(LIST_WITH_STATIC_SIZE);
+		assertThrows("A fifth element does not exist", UnsupportedOperationException.class, () -> {
+			arrayStatic.add(property3);
+		});
 	}
 	
 	@Test
 	public void testAddBeanTypeCommand() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 		
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 			
 		Command command = arrayStatic.add(editingDomain, property1);		
 		assertEquals("Created command is not executable", UnexecutableCommand.INSTANCE, command);
@@ -102,7 +117,7 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 	public void testAddIntBeanType() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
 		arrayStatic.add(1, property1);
 	}
@@ -117,7 +132,7 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
 
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
 		List<TestCategoryAllProperty> removeBeans = new ArrayList<>();
 		removeBeans.add(property1);
@@ -158,10 +173,18 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		arrayStatic.retainAll(retainBeans);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void testSetIntBeanType() {
 		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
-
+		
 		arrayStatic.set(1, property3);
+		assertEquals("Property set correctly", property3, arrayStatic.get(1));
+		
+		arrayStatic.set(1, property3);
+		assertEquals("Property reset correctly", property3, arrayStatic.get(1));
+		
+		assertThrows("A fifth element does not exist", IndexOutOfBoundsException.class, () -> {
+			arrayStatic.set(LIST_WITH_STATIC_SIZE, property3);
+		});
 	}
 }
