@@ -30,14 +30,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 
 /**
  * the abstract class for array instance lists implements the interface bean list
+ * @author leps_je
  *
  * @param <TYPE>
  */
 public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 
 	protected ArrayInstance ai;
-	protected IArrayModifier arrayModifier;
-	protected int pointer = 0;
+	protected IArrayModifier  arrayModifier;
 
 	public static final int INDEX_DOES_NOT_EXIST = -1;
 	
@@ -102,7 +102,7 @@ public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 	 * this method checks the type of the ArrayModifier, 
 	 * if the ArrayModifier is static, the array can not be changed
 	 */
-	private void checkAndThrowStaticAccessDenied() {
+	private void checkAndhrowStaticAccessDenied() {
 		if (arrayModifier instanceof StaticArrayModifier) {
 			throw new UnsupportedOperationException();
 		}
@@ -117,19 +117,9 @@ public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 
 	@Override
 	public boolean add(TYPE e) {
+		checkAndhrowStaticAccessDenied();
 		APropertyInstance pi = createAddPi(e);
-		
-		if (arrayModifier instanceof StaticArrayModifier) {
-			if (pointer >= size()) {
-				throw new UnsupportedOperationException();
-			} else {
-				set(pointer, e);
-				pointer += 1;
-				return true;
-			}
-		} else {
-			return ai.getArrayInstances().add(pi);
-		}
+		return ai.getArrayInstances().add(pi);
 	}
 	
 	@Override
@@ -148,7 +138,7 @@ public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 
 	@Override
 	public boolean remove(Object o) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		APropertyInstance pi = createRemovePi(o);
 		return ai.getArrayInstances().remove(pi);
 	}
@@ -166,41 +156,42 @@ public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 
 	@Override
 	public boolean addAll(int index, Collection<? extends TYPE> c) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		return false;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		return false;
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		return false;
 	}
 
 	@Override
 	public void clear() {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		ai.getArrayInstances().clear();
 	}
 
 	@Override
 	public TYPE set(int index, TYPE element) {
+		checkAndhrowStaticAccessDenied();
 		return null;
 	}
 
 	@Override
 	public void add(int index, TYPE element) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 	}
 	
 	@Override
 	public boolean addAll(Collection<? extends TYPE> c) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		boolean listChanged = false;
 		for (TYPE bean : c) {
 			listChanged |= add(bean);
@@ -210,12 +201,13 @@ public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 
 	@Override
 	public TYPE remove(int index) {
-		checkAndThrowStaticAccessDenied();
+		checkAndhrowStaticAccessDenied();
 		return null;
 	}
 
 	/**
 	 * a concrete inner class to iterate on array lists
+	 * @author leps_je
 	 *
 	 */
 	protected class ArrayInstanceListIterator implements ListIterator<TYPE> {
@@ -317,9 +309,5 @@ public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 	@Override
 	public ListIterator<TYPE> listIterator(int index) {
 		return new ArrayInstanceListIterator(this, index);
-	}
-	
-	public void setPointer(int i) {
-		this.pointer = i;
 	}
 }

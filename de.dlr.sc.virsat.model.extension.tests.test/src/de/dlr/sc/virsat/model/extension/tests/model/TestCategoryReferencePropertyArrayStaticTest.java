@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +26,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
  * test case for the array capabilities on intrinsic properties in the beans model
+ * @author fisc_ph
+ *
  */
 public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCase {
 
@@ -72,28 +72,13 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		arrayStatic.addAll(addBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddBeanType() {
 		BeanPropertyString property1 = createNewReferencedTypeProperty();
-		BeanPropertyString property2 = createNewReferencedTypeProperty();
-		BeanPropertyString property3 = createNewReferencedTypeProperty();
 		
-		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
-		assertNotEquals(property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
-		arrayStatic.add(property1);
-		assertEquals("Added to the correct default pointer of 0", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
-		
-		int lastIndex = LIST_WITH_STATIC_SIZE - 1;
-		assertNotEquals(property2.getTypeInstance(), arrayStatic.get(lastIndex).getTypeInstance());
-		arrayStatic.setPointer(lastIndex);
-		arrayStatic.add(property2);
-		assertEquals("Added to the correct pointer", property2.getTypeInstance(), arrayStatic.get(lastIndex).getTypeInstance());
-		
-		arrayStatic.setPointer(LIST_WITH_STATIC_SIZE);
-		assertThrows("A fifth element does not exist", UnsupportedOperationException.class, () -> {
-			arrayStatic.add(property3);
-		});
+		arrayStatic.add(property1);		
 	}
 	
 	@Test
@@ -165,18 +150,10 @@ public class TestCategoryReferencePropertyArrayStaticTest extends AConceptTestCa
 		arrayStatic.retainAll(retainBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testSetIntBeanType() {
 		BeanPropertyString property3 = createNewReferencedTypeProperty();
-		
+
 		arrayStatic.set(1, property3);
-		assertEquals("Property set correctly", property3, arrayStatic.get(1));
-		
-		arrayStatic.set(1, property3);
-		assertEquals("Property reset correctly", property3, arrayStatic.get(1));
-		
-		assertThrows("A fifth element does not exist", IndexOutOfBoundsException.class, () -> {
-			arrayStatic.set(LIST_WITH_STATIC_SIZE, property3);
-		});
 	}
 }
