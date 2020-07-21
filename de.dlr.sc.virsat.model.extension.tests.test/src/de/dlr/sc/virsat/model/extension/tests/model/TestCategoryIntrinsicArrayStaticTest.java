@@ -83,29 +83,20 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 	@Test
 	public void testAddBeanType() {
 		BeanPropertyString property1 = createNewStringProperty();
-		BeanPropertyString property2 = createNewStringProperty();
-		BeanPropertyString property3 = createNewStringProperty();
 		
 		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
-		assertNotEquals(property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
-		arrayStatic.add(property1);
-		assertEquals("Added to the correct default pointer of 0", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
-		
-		assertThrows("Can't add a duplicate", IllegalArgumentException.class, () -> {
+		assertThrows("Can't add an element with a new uuid", UnsupportedOperationException.class, () -> {
 			arrayStatic.add(property1);
 		});
 		
-		int lastIndex = LIST_WITH_STATIC_SIZE - 1;
-		assertNotEquals(property2.getTypeInstance(), arrayStatic.get(lastIndex).getTypeInstance());
-		arrayStatic.setPointer(lastIndex);
-		arrayStatic.add(property2);
-		assertEquals("Added to the correct pointer", property2.getTypeInstance(), arrayStatic.get(lastIndex).getTypeInstance());
+		property1.getTypeInstance().setUuid(arrayStatic.get(0).getTypeInstance().getUuid());
+		assertNotEquals("Elements are not the same", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		arrayStatic.add(property1);
+		assertEquals("Added the element", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
 		
-		arrayStatic.setPointer(LIST_WITH_STATIC_SIZE);
-		assertThrows("A fifth element does not exist", UnsupportedOperationException.class, () -> {
-			arrayStatic.add(property3);
-		});
+		arrayStatic.add(property1);
+		assertEquals("Adding the same element again is be idempotend for static lists", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
 	}
 
 	@Test
@@ -182,20 +173,14 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 
 	@Test
 	public void testSetIntBeanType() {
-		BeanPropertyString property3 = createNewStringProperty();
+		BeanPropertyString property1 = createNewStringProperty();
 		
-		arrayStatic.set(1, property3);
-		assertEquals("Property set correctly", property3, arrayStatic.get(1));
-		
-		arrayStatic.set(1, property3);
-		assertEquals("Property reset correctly", property3, arrayStatic.get(1));
-		
-		assertThrows("Can't set an element that is already in the list", IllegalArgumentException.class, () -> {
-			arrayStatic.set(0, property3);
+		property1.getTypeInstance().setUuid(arrayStatic.get(0).getTypeInstance().getUuid());
+		assertThrows("Can't set an element with another uuid", UnsupportedOperationException.class, () -> {
+			arrayStatic.set(1, property1);
 		});
 		
-		assertThrows("A fifth element does not exist", IndexOutOfBoundsException.class, () -> {
-			arrayStatic.set(LIST_WITH_STATIC_SIZE, property3);
-		});
+		arrayStatic.set(0, property1);
+		assertEquals("Property set correctly", property1, arrayStatic.get(0));
 	}
 }
