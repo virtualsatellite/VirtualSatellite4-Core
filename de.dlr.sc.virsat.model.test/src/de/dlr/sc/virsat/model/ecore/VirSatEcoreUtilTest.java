@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -200,6 +201,24 @@ public class VirSatEcoreUtilTest {
 		
 		assertEquals("Found correct amount of Elements", EXPECTED_UVPI_SINGLE, allUvpi2.size());
 		assertEquals("Found correct amount of Elements", EXPECTED_VPI_SINGLE, allVpi2.size());
+		
+		List<UnitValuePropertyInstance> allUvpi3 = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getResources(), resource1, UnitValuePropertyInstance.class, true);
+		List<ValuePropertyInstance> allVpi3 = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getResources(), resource1, ValuePropertyInstance.class, true);
+		
+		assertEquals("Found correct amount of Elements", EXPECTED_UVPI_SINGLE, allUvpi3.size());
+		assertEquals("Found correct amount of Elements", EXPECTED_VPI_SINGLE, allVpi3.size());
+		
+		// Unload operation needs resources to have URI
+		resource1.setURI(URI.createFileURI("someUri.dvlm"));
+		resource2.setURI(URI.createFileURI("someUri2.dvlm"));
+		resource1.unload();
+		resource2.unload();
+		
+		List<UnitValuePropertyInstance> allUvpiUnloaded = VirSatEcoreUtil.getAllContentsOfType(resourceSet, resource1, UnitValuePropertyInstance.class, false);
+		List<ValuePropertyInstance> allVpiUnloaded = VirSatEcoreUtil.getAllContentsOfType(resourceSet, resource1, ValuePropertyInstance.class, false);
+		
+		assertTrue("Only unloaded resources do not contain any elements if resources should not be resolved", allUvpiUnloaded.isEmpty());
+		assertTrue("Only unloaded resources do not contain any elements if resources should not be resolved", allVpiUnloaded.isEmpty());
 	}
 
 	@Test
@@ -389,14 +408,14 @@ public class VirSatEcoreUtilTest {
 		// Test Case 1: We remove the SEI with the reference which is not contained in the same resource
 		// No objects are referencing the objects questioned for deletion thus the map should be empty.
 		// resourceA.unload(); Intended for a future extension of the test case which will handle reload of the resources as well
-		Map<EObject, List<EObject>> resultCase1 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(seiReferencingNonContained), resSet);
+		Map<EObject, Set<EObject>> resultCase1 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(seiReferencingNonContained), resSet);
 		assertTrue("Nothing should be referenced", resultCase1.isEmpty());
 		
 		// Test Case 2: We remove the CA which is referenced by all others including the RPI of itself
 		// This delete should hand back two references to the CA which is questioned for delete. The RPI
 		// of itself should not be mentioned it will be removed as well
 		// resourceA.unload();
-		Map<EObject, List<EObject>> resultCase2 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(caReferenced), resSet);
+		Map<EObject, Set<EObject>> resultCase2 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(caReferenced), resSet);
 		
 		seiReferencingNonContained = (StructuralElementInstance) resourceA.getContents().get(0);
 		caNonContained = seiReferencingNonContained.getCategoryAssignments().get(0);
@@ -407,7 +426,7 @@ public class VirSatEcoreUtilTest {
 
 		// Test Case 3: Same as Test Case 2 but we delete the SEI instead of the CA the result is the same
 		// resourceA.unload();
-		Map<EObject, List<EObject>> resultCase3 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(seiReferenced), resSet);
+		Map<EObject, Set<EObject>> resultCase3 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(seiReferenced), resSet);
 		
 		seiReferencingNonContained = (StructuralElementInstance) resourceA.getContents().get(0);
 		caNonContained = seiReferencingNonContained.getCategoryAssignments().get(0);
@@ -418,7 +437,7 @@ public class VirSatEcoreUtilTest {
 		
 		// Test Case 4: Similar to 1 but this time we delete the reference from the contained resource
 		// resourceA.unload();
-		Map<EObject, List<EObject>> resultCase4 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(seiReferencingContained), resSet);
+		Map<EObject, Set<EObject>> resultCase4 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(seiReferencingContained), resSet);
 		
 		seiReferencingNonContained = (StructuralElementInstance) resourceA.getContents().get(0);
 		caNonContained = seiReferencingNonContained.getCategoryAssignments().get(0);
@@ -476,11 +495,11 @@ public class VirSatEcoreUtilTest {
 		assertThat("the ca in the sub is correctly linked", subSei.getCategoryAssignments().get(0).getSuperTis(), hasItem(superCa));
 		
 		// Now try to delete the CA which should not tell us, that there are references
-		Map<EObject, List<EObject>> resultCase1 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(superCa), resSet);
+		Map<EObject, Set<EObject>> resultCase1 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(superCa), resSet);
 		assertTrue("Nothing should be referenced", resultCase1.isEmpty());
 
 		// Different story with the super SEI, it should tell us that it is referenced by the sub SEI
-		Map<EObject, List<EObject>> resultCase2 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(superSei), resSet);
+		Map<EObject, Set<EObject>> resultCase2 = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(superSei), resSet);
 		assertThat("found referencing sub sei", resultCase2.get(superSei), hasItem(subSei));
 	}
 }

@@ -153,7 +153,8 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
   }
   
   public String createConcreteClass(final Concept concept, final AProperty conceptPart, final Category category) {
-    final ImportManager imCClass = new ImportManager();
+    String _package = this.getPackage(concept);
+    final ImportManager imCClass = new ImportManager(_package);
     final CharSequence bodyClass = this.declareClass(concept, conceptPart, category, imCClass);
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _generateFileHeader = ConceptGeneratorUtil.generateFileHeader();
@@ -174,7 +175,8 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
   }
   
   public String createConcreteClass(final Concept concept, final AProperty conceptPart, final Category category, final Category extendingCategory) {
-    final ImportManager imCClass = new ImportManager();
+    String _package = this.getPackage(concept);
+    final ImportManager imCClass = new ImportManager(_package);
     final CharSequence bodyClass = this.declareClass(concept, conceptPart, category, extendingCategory, imCClass);
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _generateFileHeader = ConceptGeneratorUtil.generateFileHeader();
@@ -195,7 +197,8 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
   }
   
   public String createAbstractClass(final Concept concept, final AProperty conceptPart, final Category category, final Category extendingCategory) {
-    final ImportManager imAClass = new ImportManager();
+    String _package = this.getPackage(concept);
+    final ImportManager imAClass = new ImportManager(_package);
     final CharSequence bodyAClass = this.declareAClass(concept, conceptPart, category, extendingCategory, imAClass);
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _generateFileHeader = ConceptGeneratorUtil.generateFileHeader();

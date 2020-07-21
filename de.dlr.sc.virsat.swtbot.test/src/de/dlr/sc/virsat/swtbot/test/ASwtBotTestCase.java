@@ -13,8 +13,12 @@ import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.wi
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.function.BooleanSupplier;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -29,6 +33,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
@@ -38,8 +43,11 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.StringStartsWith;
@@ -50,6 +58,7 @@ import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
 import org.junit.rules.TestWatcher;
 import org.junit.rules.Timeout;
+
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -63,8 +72,10 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.swtbot.util.SwtBotDebugHelper;
+import de.dlr.sc.virsat.swtbot.util.SwtBotHyperlink;
 import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
 import de.dlr.sc.virsat.swtbot.util.SwtThreadWatcher;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Base class for performing SWTBot tests.
@@ -77,13 +88,20 @@ public class ASwtBotTestCase {
 	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	protected static final int MAX_TEST_CASE_TIMEOUT_MILLISECONDS = 1000 * MAX_TEST_CASE_TIMEOUT_SECONDS;
 	protected static final int EDIT_UNDO_MENU_POSITION = 0;
 	protected static final int EDIT_REDO_MENU_POSITION = 1;
+	protected static final int SWTBOT_TRY_1_TIME = 1;
+	protected static final int SWTBOT_TRY_3_TIME = 3;
+	protected static final int SWTBOT_TRY_5_TIME = 5;
+	protected static final int SWTBOT_TRY_10_TIME = 10;
+	protected static final int SWTBOT_RETRY_WAIT_TIME = 500;
 	
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
 	protected Concept conceptPs;
-	protected Concept conceptTest; 
+	protected Concept conceptTest;
+	protected Concept conceptFea;
 	protected int screenCaptureNumber = 1;
 	protected WorkspaceBuilderInterlockedExecution buildCounter;
 	protected enum DiagramType { interfaces, stateMachines }
@@ -115,6 +133,7 @@ public class ASwtBotTestCase {
 
 		conceptPs = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptTest =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId() + "/concept/concept.xmi");
+		conceptFea =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.funcelectrical.Activator.getPluginId() + "/concept/concept.xmi");
 		
 		closeWelcomeScreen();
 		
@@ -129,7 +148,7 @@ public class ASwtBotTestCase {
 	}
 	
 	@After
-	public void tearDown() throws CoreException {
+	public void tearDown() throws CoreException, IOException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Tear Down: " + testMethodNameRule.getMethodName()));
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "ASwtBotTestCase: Tear Down Builder States:\n" + SwtBotDebugHelper.printBuilderStates()));
 		
@@ -227,6 +246,18 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Opens a view
+	 * @param viewId the id of the view
+	 * @return the opened view
+	 */
+	protected SWTBotView openView(String viewId) {
+		SWTBotView view = bot.viewById(viewId);
+		view.show();
+		waitForEditingDomainAndUiThread();
+		return view;
+	}
+	
+	/**
 	 * We can only drop tree items to canvas elements. SWTBotGefViewer's canvas element is not 
 	 * capable of beeing accessed directly from external classes though. Further more SWTBotGefViewer's 
 	 * canvas member gets populated during runtime only. Hence we use reflections to get a hold on it here.
@@ -318,8 +349,8 @@ public class ASwtBotTestCase {
 	protected void deleteEditPartInDiagramEditor(SWTBotGefEditor diagramEditor, String editPartName) {
 		diagramEditor.getEditPart(editPartName).select();		
 		diagramEditor.clickContextMenu("Delete");
-		waitForEditingDomainAndUiThread();
 		bot.button("Yes").click();
+		waitForEditingDomainAndUiThread();
 	}
 	
 	/**
@@ -345,6 +376,52 @@ public class ASwtBotTestCase {
 		} catch (WidgetNotFoundException e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * Call this method to hand back a tree node starting with the given string
+	 * @param nodeName the Part of the name the node should start with
+	 * @return the node in case it was found, otherwise null.
+	 */
+	protected SWTBotTreeItem getTreeNodeStartingWith(String nodeName) {
+		for (SWTBotTreeItem treeNode : Arrays.asList(bot.tree().getAllItems())) {
+			if (treeNode.getText().startsWith(nodeName)) {
+				return treeNode;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Call this method to hand back a tree node containing the given string
+	 * @param nodeName the Part of the name the node should contain
+	 * @return the node in case it was found, otherwise null.
+	 */
+	protected SWTBotTreeItem getTreeNodeContaining(String nodeName) {
+		for (SWTBotTreeItem treeNode : Arrays.asList(bot.tree().getAllItems())) {
+			if (treeNode.getText().contains(nodeName)) {
+				return treeNode;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Call this method to check if a tree item contains a given node
+	 * @param treeItem the tree item
+	 * @param nodeName the name of the node
+	 * @return true in case it was found, false otherwise
+	 */
+	protected boolean isTreeItemContainingNode(SWTBotTreeItem treeItem, String nodeName) {
+		for (String node : treeItem.getNodes()) {
+			if (node.equals(nodeName)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -396,11 +473,38 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Waits for the view to open
+	 * @param viewName view name such as "Console"
+	 */
+	protected void waitForView(String viewName) {
+		Matcher<IViewReference> matcher = withPartName(viewName);
+		
+		// Long timeout for situations when the view appears after some long background process (e.g. running an App)
+		bot.waitUntil(Conditions.waitForView(matcher), MAX_TEST_CASE_TIMEOUT_MILLISECONDS);
+	}
+
+	/**
 	 * closes the dialog and waits
 	 * @param buttonName the name of the button which closes the dialog
 	 */
 	protected void closeDialog(String buttonName) {
 		bot.button(buttonName).click();
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Finishes the current dialog
+	 */
+	protected void finishDialog() {
+		bot.button("Finish").click();
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Goes to the next page on the current dialog
+	 */
+	protected void nextPageDialog() {
+		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 	}
 	
@@ -482,12 +586,45 @@ public class ASwtBotTestCase {
 		waitForEditingDomainAndUiThread(); 
 	}
 	
+	/**
+	 * Call this method to show the virtual satellite core perspective
+	 */
 	protected void openCorePerspective() {
 		bot.menu("Window").menu("Perspective").menu("Open Perspective").menu("Other...").click();
 		waitForEditingDomainAndUiThread();
 		bot.table().select("VirSat - Core (default)");
 		bot.button("Open").click();
 		waitForEditingDomainAndUiThread(); 
+	}
+	
+	/**
+	 * Method to bring the VirSatNavigator view to the front
+	 */
+	protected SWTBotView openVirtualSatelliteNavigatorView() {
+		SWTBotView view = bot.viewByTitle("VirSat Navigator");
+		view.show();
+		return view;		
+	}
+	
+	/**
+	 * Use this method to halt SWTBot. Good for debugging on maven tycho.
+	 */
+	@SuppressFBWarnings(value = "WA_NOT_IN_LOOP")
+	protected synchronized void stopHere() {
+		try {
+			Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.stopHere: wait wait wait..."));
+			wait();
+			Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.stopHere: continue..."));
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.stopHere: got interupted:" + e.getMessage(), e));
+		}
+	}
+	
+	/**
+	 * Method to bring the ProjectExplorer View to the front
+	 */
+	protected void openProjectExplorerView() {
+		bot.viewByTitle("Project Explorer").show();
 	}
 	
 	/**
@@ -613,6 +750,32 @@ public class ASwtBotTestCase {
 	}
 	
 	/**
+	 * Method opens the RoleManagement Editor adds a new Discipline
+	 * and sets a name and user for it
+	 * @param discipline the discipline name to be set
+	 * @param user the suer to be set. Can be null which leaves the default user.
+	 * @return the table item which was added
+	 */
+	protected SWTBotTableItem createNewDiscipline(String discipline, String user) {
+		// Switch to the Editor and add a new Discipline
+		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+		rmEditor.show();
+		rmEditor.bot().button("Add Discipline").click();
+		SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
+		
+		newDisciplineTableItem.click(0);
+		rmEditor.bot().text().setText(discipline);
+		
+		if (user != null) {
+			newDisciplineTableItem.click(1);
+			rmEditor.bot().text().setText(user);
+		}
+		
+		save();
+		return newDisciplineTableItem;
+	}
+	
+	/**
 	 * @param item the editor page
 	 * @param clazz the section of the table
 	 * @return it returns the desired SWTBotTable
@@ -662,6 +825,20 @@ public class ASwtBotTestCase {
 		Matcher<Section> matcher = allOf(widgetOfType(Section.class), withMnemonic(sectionName));
 		SwtBotSection composite = new SwtBotSection(bot.widget(matcher, 0), matcher);
 		return composite;
+	}
+	
+	/**
+	 * @return value of a property with the given name in the currently open CA editor
+	 */
+	protected String getPropertyValue(String propertyName) {
+		return bot.textWithLabel(propertyName).getText();
+	}
+	
+	protected SwtBotHyperlink getSWTBotHyperlink(String text) {
+		@SuppressWarnings("unchecked")
+		Matcher<Hyperlink> matcher = allOf(widgetOfType(Hyperlink.class), withMnemonic(text));
+		SwtBotHyperlink swtBotHyperlink = new SwtBotHyperlink(bot.widget(matcher, 0), matcher);
+		return swtBotHyperlink;
 	}	
 	
 	/**
@@ -770,12 +947,14 @@ public class ASwtBotTestCase {
 		}
 	}
 	
+	
+	
 	/**
 	 * This class is used to interlock an execution of code with the Workspace Builders.
 	 * This is useful when e.g. saving editors and making sure, everything in the files
 	 * and UI is updated.
 	 */
-	static class WorkspaceBuilderInterlockedExecution {
+	protected static class WorkspaceBuilderInterlockedExecution {
 		
 		/**
 		 * The runnable in this method is interlocked with the execution of the workspace builders.
@@ -794,7 +973,7 @@ public class ASwtBotTestCase {
 				Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: About to execute interlocked runnable"));
 				runnable.run();
 				Thread.sleep(SWTBOT_GENERAL_WAIT_TIME);
-
+				
 				// Now wait that all scheduled builders are done and update the UI
 				Activator.getDefault().getLog().log(new Status(Status.OK, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: Wait for jobs to be done after execution and counting"));
 				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
@@ -804,6 +983,27 @@ public class ASwtBotTestCase {
 			} catch (InterruptedException e) {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.InterlockedBuildCounter: Thread got interupted", e));
 			}
+		}
+	}
+
+	/**
+	 * Method to check for a condition several times until it creates a failure
+	 * @param message the Message to be used to report the fail
+	 * @param i number of times to try the condition until failure
+	 * @param condition the condition to be met
+	 */
+	public static void assertForTimes(String message, int i, BooleanSupplier condition) {
+		int count = i;
+		while (count > 0 && !condition.getAsBoolean()) {
+			try {
+				Thread.sleep(SWTBOT_RETRY_WAIT_TIME);
+			} catch (InterruptedException e) {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "ASwtBotTest.assertForTimes: Sleep got interupted", e));
+			}
+			count--;
+		}
+		if (count == 0) {
+			fail(message + " - Failed after trying for " + i + "times");
 		}
 	}
 }

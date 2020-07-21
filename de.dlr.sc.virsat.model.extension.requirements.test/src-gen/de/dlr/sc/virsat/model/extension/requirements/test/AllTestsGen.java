@@ -32,6 +32,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecifica
 import de.dlr.sc.virsat.model.extension.requirements.validator.RequirementsValidatorTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationDefinitionTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTraceTest;
 
 /**
  * 
@@ -43,6 +44,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationDefinition
 	RequirementsConfigurationTest.class,
 	RequirementGroupTest.class,
 	RequirementTest.class,
+	RequirementTraceTest.class,
 	AttributeValueTest.class,
 	RequirementTypeTest.class,
 	RequirementAttributeTest.class,

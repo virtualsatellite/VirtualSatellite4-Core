@@ -40,7 +40,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		setTypeInstance(rpi);
 	}
 	
-	private ATypeInstance saveGetTypeInstance(BEAN_TYPE value) {
+	private ATypeInstance safeGetTypeInstance(BEAN_TYPE value) {
 		if (value == null) {
 			return null;
 		} else {
@@ -50,13 +50,13 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	
 	@Override
 	public void setValue(BEAN_TYPE value) {
-		ATypeInstance reference = saveGetTypeInstance(value);
+		ATypeInstance reference = safeGetTypeInstance(value);
 		ti.setReference(reference);
 	}
 	
 	@Override
 	public Command setValue(EditingDomain ed, BEAN_TYPE value) {
-		ATypeInstance reference = saveGetTypeInstance(value);
+		ATypeInstance reference = safeGetTypeInstance(value);
 		
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, reference);
 	}

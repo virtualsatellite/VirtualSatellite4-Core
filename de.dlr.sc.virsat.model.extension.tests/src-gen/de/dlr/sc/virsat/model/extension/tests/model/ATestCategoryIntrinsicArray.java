@@ -86,36 +86,36 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 	// *****************************************************************
 	// * Array Attribute: testStringArrayDynamic
 	// *****************************************************************
-	private IBeanList<BeanPropertyString> testStringArrayDynamic = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
+	private IBeanList<BeanPropertyString> testStringArrayDynamicBean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 	
-	private void safeAccessTestStringArrayDynamic() {
-		if (testStringArrayDynamic.getArrayInstance() == null) {
-			testStringArrayDynamic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testStringArrayDynamic"));
+	private void safeAccessTestStringArrayDynamicBean() {
+		if (testStringArrayDynamicBean.getArrayInstance() == null) {
+			testStringArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testStringArrayDynamic"));
 		}
 	}
 	
 //	@XmlJavaTypeAdapter(BeanPropertyStringListAdapter.class)
 	@XmlElement
-	public IBeanList<BeanPropertyString> getTestStringArrayDynamic() {
-		safeAccessTestStringArrayDynamic();
-		return testStringArrayDynamic;
+	public IBeanList<BeanPropertyString> getTestStringArrayDynamicBean() {
+		safeAccessTestStringArrayDynamicBean();
+		return testStringArrayDynamicBean;
 	}
 	
 	// *****************************************************************
 	// * Array Attribute: testStringArrayStatic
 	// *****************************************************************
-	private IBeanList<BeanPropertyString> testStringArrayStatic = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
+	private IBeanList<BeanPropertyString> testStringArrayStaticBean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 	
-	private void safeAccessTestStringArrayStatic() {
-		if (testStringArrayStatic.getArrayInstance() == null) {
-			testStringArrayStatic.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testStringArrayStatic"));
+	private void safeAccessTestStringArrayStaticBean() {
+		if (testStringArrayStaticBean.getArrayInstance() == null) {
+			testStringArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testStringArrayStatic"));
 		}
 	}
 	
 	@XmlJavaTypeAdapter(BeanPropertyStringListAdapter.class)
 	@XmlElement
-	public IBeanList<BeanPropertyString> getTestStringArrayStatic() {
-		safeAccessTestStringArrayStatic();
-		return testStringArrayStatic;
+	public IBeanList<BeanPropertyString> getTestStringArrayStaticBean() {
+		safeAccessTestStringArrayStaticBean();
+		return testStringArrayStaticBean;
 	}
 }

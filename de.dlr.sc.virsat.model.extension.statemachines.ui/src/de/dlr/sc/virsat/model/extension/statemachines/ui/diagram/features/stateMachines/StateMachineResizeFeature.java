@@ -29,7 +29,7 @@ public class StateMachineResizeFeature extends VirSatResizeShapeFeature  {
 	public StateMachineResizeFeature(IFeatureProvider fp) {
 		super(fp);
 	}
-	
+
 	@Override
 	public boolean canResizeShape(IResizeShapeContext context) {
 		boolean canResize = super.canResizeShape(context);
@@ -43,7 +43,7 @@ public class StateMachineResizeFeature extends VirSatResizeShapeFeature  {
 		int contextHeight = context.getHeight();
 		int requiredHeight =  StateMachineAddFeature.DEFAULT_HEIGHT;
 		int requiredWidth = StateMachineAddFeature.DEFAULT_WIDTH;
-		
+
 		for (Shape shape : containerShape.getChildren()) {
 			// Look for deleted states
 			if (shape instanceof ContainerShape) {
@@ -51,16 +51,17 @@ public class StateMachineResizeFeature extends VirSatResizeShapeFeature  {
 				requiredWidth = Math.max(shape.getGraphicsAlgorithm().getX(), requiredWidth);
 			}
 		}
-		
+
 		requiredHeight += StateAddFeature.RADIUS;
-		requiredWidth += StateAddFeature.RADIUS; 
-		
+		requiredWidth += StateAddFeature.RADIUS;
+
 		int direction = context.getDirection();
-		
-		if (direction != IResizeShapeContext.DIRECTION_UNSPECIFIED) {
-			if (contextWidth < requiredWidth) {
+		if (direction == IResizeShapeContext.DIRECTION_NORTH || direction == IResizeShapeContext.DIRECTION_SOUTH) {
+			if (contextHeight < requiredHeight) {
 				canResize = false;
-			}	else if (contextHeight < requiredHeight) {
+			}
+		} else if (direction == IResizeShapeContext.DIRECTION_WEST || direction == IResizeShapeContext.DIRECTION_EAST) {
+			if (contextWidth < requiredWidth) {
 				canResize = false;
 			}
 		}

@@ -93,23 +93,23 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 	
 	@Test
 	public void testSetValueToAPropertyInstance() {
-		assertNull("No reference is set", testCategoryReference.getTestRefPropertyBean().getATypeInstance());
+		assertNull("No reference is set", testCategoryReference.getTestRefProperty());
 		
 		beanTestRefProperty.setValue(beanTestString);
 		
 		assertEquals("Correct reference has been set", rpiToProperty.getReference(), beanTestString.getATypeInstance());
-		assertEquals("Correct property has been set", beanTestString, testCategoryReference.getTestRefPropertyBean());
+		assertEquals("Correct property has been set", beanTestString, testCategoryReference.getTestRefProperty());
 	}
 
 	@Test
 	public void testSetValueWithEditingDomainToAPropertyInstance() {
-		assertNull("No reference is set", testCategoryReference.getTestRefPropertyBean().getATypeInstance());
+		assertNull("No reference is set", testCategoryReference.getTestRefProperty());
 		
 		Command setCommand = beanTestRefProperty.setValue(editingDomain, beanTestString);
 		editingDomain.getCommandStack().execute(setCommand);
 		
 		assertEquals("Correct reference has been set", rpiToProperty.getReference(), beanTestString.getATypeInstance());
-		assertEquals("Correct property has been set", beanTestString, testCategoryReference.getTestRefPropertyBean());
+		assertEquals("Correct property has been set", beanTestString, testCategoryReference.getTestRefProperty());
 	}
 
 	@Test

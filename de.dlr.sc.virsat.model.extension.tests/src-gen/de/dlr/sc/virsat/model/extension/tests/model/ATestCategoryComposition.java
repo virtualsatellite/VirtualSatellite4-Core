@@ -18,8 +18,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -73,16 +73,21 @@ public abstract class ATestCategoryComposition extends GenericCategory implement
 	// *****************************************************************
 	// * Attribute: testSubCategory
 	// *****************************************************************
-	private TestCategoryAllProperty testSubCategory = new TestCategoryAllProperty();
+	private BeanPropertyComposed<TestCategoryAllProperty> testSubCategory = new BeanPropertyComposed<>();
 	
 	private void safeAccessTestSubCategory() {
 		if (testSubCategory.getTypeInstance() == null) {
 			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("testSubCategory");
-			testSubCategory.setTypeInstance(propertyInstance.getTypeInstance());
+			testSubCategory.setTypeInstance(propertyInstance);
 		}
 	}
 	
-	public TestCategoryAllProperty getTestSubCategory () {
+	public TestCategoryAllProperty getTestSubCategory() {
+		safeAccessTestSubCategory();
+		return testSubCategory.getValue();
+	}
+	
+	public BeanPropertyComposed<TestCategoryAllProperty> getTestSubCategoryBean() {
 		safeAccessTestSubCategory();
 		return testSubCategory;
 	}

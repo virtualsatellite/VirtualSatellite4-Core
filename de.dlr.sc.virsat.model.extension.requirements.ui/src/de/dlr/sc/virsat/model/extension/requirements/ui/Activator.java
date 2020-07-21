@@ -9,50 +9,52 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-/**
- * @author Tobias Franz
-	tobias.franz@dlr.de
- *
- */
-public class Activator extends Plugin {
 
+/**
+ * The activator class controls the plug-in life cycle
+ */
+public class Activator extends AbstractUIPlugin {
+	
 	// The plug-in ID
 	private static String pluginId;
-
+	
 	// The shared instance
 	private static Activator plugin;
-
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
 
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		pluginId = getBundle().getSymbolicName();
+		setPluginId(getDefault().getBundle().getSymbolicName());
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(BundleContext context) throws Exception { 
 		plugin = null;
 		super.stop(context);
 	}
 
 	/**
 	 * Returns the shared instance
-	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
 		return plugin;
 	}
 
+	/**
+	 * Returns an image descriptor for the image file at the given
+	 * plug-in relative path
+	 * @param path the path
+	 * @return the image descriptor
+	 */
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return imageDescriptorFromPlugin(pluginId, path);
+	}
 	/**
 	 * Returns the plugin id
 	 *
@@ -61,6 +63,12 @@ public class Activator extends Plugin {
 	public static String getPluginId() {
 		return pluginId;
 	}
-
+	/**
+	 * Sets the plugin id 
+	 *
+	 * @param pluginId the plugin id
+	 */
+	private static void setPluginId(String pluginId) {
+		Activator.pluginId = pluginId;
+	}
 }
-

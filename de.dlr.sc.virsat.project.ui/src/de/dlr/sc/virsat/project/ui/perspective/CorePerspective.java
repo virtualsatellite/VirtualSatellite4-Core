@@ -27,6 +27,12 @@ public class CorePerspective implements IPerspectiveFactory {
 	public static final String ID_BOTTOM_RIGHT_FOLDER = "de.dlr.sc.virsat.perspective.core.BOTTOMRIGHT";
 	public static final String ID_LEFT_MID_FOLDER = "de.dlr.sc.virsat.perspective.core.LEFT_MID";
 	
+	public static final String ID_PROPERTY_SHEET = "org.eclipse.ui.views.PropertySheet";
+	public static final String ID_PROBLEM_VIEW = "org.eclipse.ui.views.ProblemView";
+	public static final String ID_CONTENT_OUTLINE = "org.eclipse.ui.views.ContentOutline";
+	public static final String ID_UI_ENGINE_PALETTE = "de.dlr.sc.virsat.uiengine.ui.palette";
+	public static final String ID_NAVIGATOR_VIEW = "de.dlr.sc.virsat.project.ui.navigator.view";
+	public static final String ID_PROJECT_EXPLORER = "org.eclipse.ui.navigator.ProjectExplorer";
 	
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
@@ -37,21 +43,21 @@ public class CorePerspective implements IPerspectiveFactory {
 		
 		// Create a folder to bottom left and Add the problem view to the left bottom side		
 		IFolderLayout bottomrightFolder = layout.createFolder(ID_BOTTOM_RIGHT_FOLDER, IPageLayout.BOTTOM, TWOTHIRDS, editorArea);
-		bottomrightFolder.addView("org.eclipse.ui.views.PropertySheet");
-		bottomrightFolder.addView("org.eclipse.ui.views.ProblemView");
+		bottomrightFolder.addView(ID_PROPERTY_SHEET);
+		bottomrightFolder.addView(ID_PROBLEM_VIEW);
 
 		// Create a folder to the bottom right and add the outline view to it
 		IFolderLayout bottomleftFolder = layout.createFolder(ID_BOTTOM_LEFT_FOLDER, IPageLayout.LEFT, QUARTER, ID_BOTTOM_RIGHT_FOLDER);
-		bottomleftFolder.addView("org.eclipse.ui.views.ContentOutline");
+		bottomleftFolder.addView(ID_CONTENT_OUTLINE);
 
 		// Create a right folder to hold the widget gallery
 		IFolderLayout rightFolder = layout.createFolder(ID_RIGHT_FOLDER, IPageLayout.RIGHT, 1 - QUARTER, editorArea);
-		rightFolder.addView("de.dlr.sc.virsat.uiengine.ui.palette");
+		rightFolder.addView(ID_UI_ENGINE_PALETTE);
 		
 		// Create a folder to left and Add the navigator to the left side
 		IFolderLayout leftFolder = layout.createFolder(ID_LEFT_FOLDER, IPageLayout.LEFT, QUARTER, editorArea);
 		
-		leftFolder.addView("de.dlr.sc.virsat.project.ui.navigator.view");
-		leftFolder.addView("org.eclipse.ui.navigator.ProjectExplorer");
+		leftFolder.addView(ID_NAVIGATOR_VIEW);
+		leftFolder.addView(ID_PROJECT_EXPLORER);
 	}
 }

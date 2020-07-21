@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -78,6 +79,21 @@ public class VirSatEditingDomainRegistryTest extends AProjectTestCase {
 		
 		EditingDomain edBad = VirSatEditingDomainRegistry.INSTANCE.getEd(noEdProject);
 		
+		assertNull("There is no editing domain for the given project", edBad);
+	}
+	
+	@Test
+	public void testGetEdIURI() throws CoreException {
+		URI projectWsFileUri = URI.createURI(testProject.getLocationURI().toString());
+		
+		EditingDomain edOk = VirSatEditingDomainRegistry.INSTANCE.getEd(projectWsFileUri);
+		assertEquals("Got correct Editing Domain", editingDomain, edOk);
+		
+		IProject noEdProject = ResourcesPlugin.getWorkspace().getRoot().getProject("noEdProject");
+		noEdProject.create(null);
+		URI noEdProjectWsFileUri = URI.createURI(noEdProject.getLocationURI().toString());
+		
+		EditingDomain edBad = VirSatEditingDomainRegistry.INSTANCE.getEd(noEdProjectWsFileUri);
 		assertNull("There is no editing domain for the given project", edBad);
 	}
 

@@ -15,7 +15,6 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -24,6 +23,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -130,16 +130,21 @@ public abstract class ARequirementAttribute extends GenericCategory implements I
 	// *****************************************************************
 	// * Attribute: enumeration
 	// *****************************************************************
-	private EnumerationDefinition enumeration = new EnumerationDefinition();
+	private BeanPropertyComposed<EnumerationDefinition> enumeration = new BeanPropertyComposed<>();
 	
 	private void safeAccessEnumeration() {
 		if (enumeration.getTypeInstance() == null) {
 			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("enumeration");
-			enumeration.setTypeInstance(propertyInstance.getTypeInstance());
+			enumeration.setTypeInstance(propertyInstance);
 		}
 	}
 	
-	public EnumerationDefinition getEnumeration () {
+	public EnumerationDefinition getEnumeration() {
+		safeAccessEnumeration();
+		return enumeration.getValue();
+	}
+	
+	public BeanPropertyComposed<EnumerationDefinition> getEnumerationBean() {
 		safeAccessEnumeration();
 		return enumeration;
 	}

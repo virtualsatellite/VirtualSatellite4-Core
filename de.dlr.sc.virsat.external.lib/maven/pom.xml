@@ -10,13 +10,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
-	<version>4.11.0-SNAPSHOT</version>
+	<version>4.12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.11.0-SNAPSHOT</version>
+		<version>4.12.0-SNAPSHOT</version>
 		<relativePath>../../maven/pom.xml</relativePath>
 	</parent>
 
@@ -77,18 +77,6 @@
 									</licenseMerges>
 								</configuration>
 							</execution>
-							<!-- execution>
-								<id>Download Third Party Licenses</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>download-licenses</goal>
-								</goals>
-								<configuration>
-									<removeOrphanLicenseFiles>false</removeOrphanLicenseFiles>
-									<licensesOutputDirectory>${project.basedir}/about_files/maven</licensesOutputDirectory>
-									<organizeLicensesByDependencies>true</organizeLicensesByDependencies>
-								</configuration>
-							</execution-->
 						</executions>
 					</plugin>
 				</plugins>

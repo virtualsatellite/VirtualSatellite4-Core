@@ -62,12 +62,12 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		
 		testArray = new TestCategoryIntrinsicArray(concept);
 		testArray.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
-		testArray.getTestStringArrayDynamic().getArrayInstance().setUuid(new VirSatUuid("ee6e1025-4a77-4b32-9c62-cb459ed76ce8"));		
-		testArray.getTestStringArrayStatic().get(0).getATypeInstance().setUuid(new VirSatUuid("4efe0002-f081-49c0-9917-6f4a6e7dd9ce"));
-		testArray.getTestStringArrayStatic().get(1).getATypeInstance().setUuid(new VirSatUuid("6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5"));
-		testArray.getTestStringArrayStatic().get(2).getATypeInstance().setUuid(new VirSatUuid("8fd96e3b-5bf3-41e1-a02a-64f8bff99107"));
-		testArray.getTestStringArrayStatic().get(3).getATypeInstance().setUuid(new VirSatUuid("c38d7185-fcc3-480c-bfb4-28e6fcc09d34"));
-		testArray.getTestStringArrayStatic().getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f9495b"));
+		testArray.getTestStringArrayDynamicBean().getArrayInstance().setUuid(new VirSatUuid("ee6e1025-4a77-4b32-9c62-cb459ed76ce8"));		
+		testArray.getTestStringArrayStaticBean().get(0).getATypeInstance().setUuid(new VirSatUuid("4efe0002-f081-49c0-9917-6f4a6e7dd9ce"));
+		testArray.getTestStringArrayStaticBean().get(1).getATypeInstance().setUuid(new VirSatUuid("6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5"));
+		testArray.getTestStringArrayStaticBean().get(2).getATypeInstance().setUuid(new VirSatUuid("8fd96e3b-5bf3-41e1-a02a-64f8bff99107"));
+		testArray.getTestStringArrayStaticBean().get(3).getATypeInstance().setUuid(new VirSatUuid("c38d7185-fcc3-480c-bfb4-28e6fcc09d34"));
+		testArray.getTestStringArrayStaticBean().getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f9495b"));
 	}
 	
 	@Test
@@ -75,8 +75,8 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
-		testArray.getTestStringArrayStatic().get(0).setValue(TEST_STRING);
-		testArray.getTestStringArrayDynamic().add(beanPropertyString);
+		testArray.getTestStringArrayStaticBean().get(0).setValue(TEST_STRING);
+		testArray.getTestStringArrayDynamicBean().add(beanPropertyString);
 		
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testArray, sw);
@@ -89,7 +89,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 	
 	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
-		ArrayInstance originalArrayInstance = testArray.getTestStringArrayStatic().getArrayInstance();
+		ArrayInstance originalArrayInstance = testArray.getTestStringArrayStaticBean().getArrayInstance();
 		
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -101,8 +101,8 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
-		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), null);
-		assertEquals(testArray.getTestStringArrayDynamic().size(), 0);
+		assertEquals(testArray.getTestStringArrayStaticBean().get(0).getValue(), null);
+		assertEquals(testArray.getTestStringArrayDynamicBean().size(), 0);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
 		System.out.println(inputJson);
@@ -111,9 +111,9 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		JAXBElement<TestCategoryIntrinsicArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryIntrinsicArray.class);
 		TestCategoryIntrinsicArray createdArray = jaxbElement.getValue();
 		assertEquals(testArray, createdArray);
-		assertEquals(originalArrayInstance, createdArray.getTestStringArrayStatic().getArrayInstance());
-		assertEquals(testArray.getTestStringArrayStatic().get(0).getValue(), "testString");
+		assertEquals(originalArrayInstance, createdArray.getTestStringArrayStaticBean().getArrayInstance());
+		assertEquals(testArray.getTestStringArrayStaticBean().get(0).getValue(), "testString");
 		
-		assertEquals(testArray.getTestStringArrayDynamic().size(), 1);
+		assertEquals(testArray.getTestStringArrayDynamicBean().size(), 1);
 	}
 }

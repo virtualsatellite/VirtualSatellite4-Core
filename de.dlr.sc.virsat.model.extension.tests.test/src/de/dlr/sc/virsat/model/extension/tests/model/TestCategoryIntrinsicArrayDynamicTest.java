@@ -67,7 +67,7 @@ public class TestCategoryIntrinsicArrayDynamicTest extends AConceptTestCase {
 		prepareEditingDomain();
 		Concept concept = loadConceptFromPlugin();
 		tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
-		arrayDynamic = tcIntrinsicArray.getTestStringArrayDynamic();
+		arrayDynamic = tcIntrinsicArray.getTestStringArrayDynamicBean();
 		ai = arrayDynamic.getArrayInstance();
 		ci = new CategoryInstantiator(); 
 	}

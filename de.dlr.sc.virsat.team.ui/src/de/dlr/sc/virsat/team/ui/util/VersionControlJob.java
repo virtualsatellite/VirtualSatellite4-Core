@@ -48,7 +48,7 @@ public abstract class VersionControlJob extends Job {
 		for (IProject project : selectedProjects) {
 			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
 			try {
-				ed.writeExclusive(() -> {
+				ed.runExclusive(() -> {
 					ed.getCommandStack().flush();
 					try {
 						executeBackendOperation(project, subMonitor.split(1));

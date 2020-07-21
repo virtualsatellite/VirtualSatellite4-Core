@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Model Extension Requirements Concept UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.requirements.ui;singleton:=true
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.requirements,
  org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -14,7 +14,8 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.uiengine.ui,
- de.dlr.sc.virsat.build.ui
+ de.dlr.sc.virsat.build.ui,
+ de.dlr.sc.virsat.model.extension.ps
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.ui

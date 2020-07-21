@@ -874,7 +874,7 @@ public class ExpressionHelperTest extends AEquationTest {
 	}
 	
 	@Test
-	public void testNestedSetFunction() {
+	public void testNestedSeisSetFunction() {
 		// Create a common root category
 		Category cat = createCategory("Mass");
 		IntProperty value = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
@@ -934,6 +934,54 @@ public class ExpressionHelperTest extends AEquationTest {
 		
 		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(caRoot.getEquationSection().getEquations().get(0).getExpression());
 		assertEquals("Summary correct", 1, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
+	}
+	
+	@Test
+	public void testNestedCasSetFunction() {
+		// Create a contained category
+		Category catPower = createCategory("Power");
+		IntProperty value = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
+		value.setName("value");
+		value.setDefaultValue("1");
+		catPower.getProperties().add(value);
+		
+		// Create a container caetgory
+		Category catState = createCategory("State");
+		IntProperty totalValue = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
+		ComposedProperty powerProperty = PropertydefinitionsFactory.eINSTANCE.createComposedProperty();
+		powerProperty.setType(catPower);
+		totalValue.setName("totalValue");
+		catState.getProperties().add(totalValue);
+		catState.getProperties().add(powerProperty);
+		
+		// Setup a summary equation in the category
+		EquationDefinition eqDef = CalculationFactory.eINSTANCE.createEquationDefinition();
+		TypeDefinitionResult tdResult = CalculationFactory.eINSTANCE.createTypeDefinitionResult();
+		tdResult.setReference(value);
+		
+		SetFunction summary = CalculationFactory.eINSTANCE.createSetFunction();
+		summary.setOperator("summary");
+		summary.setTypeDefinition(value);
+		
+		eqDef.setResult(tdResult);
+		eqDef.setExpression(summary);
+		catState.getEquationDefinitions().add(eqDef);
+		
+		// Setup the data model:
+		// root
+		//	-- CA: State
+		//	-- PI: totalValue
+		//	-- Eq: totalValue = summary{Power.value}
+		//	---- CA: Power
+		//	------ PI: value
+		StructuralElementInstance seiRoot = createStructuralElementInstance("System", se);
+		CategoryAssignment caRoot = new CategoryInstantiator().generateInstance(catState, "power");
+		seiRoot.getCategoryAssignments().add(caRoot);
+		
+		createResources();
+		
+		NumberLiteralResult resultExpression = (NumberLiteralResult) exprHelper.evaluate(caRoot.getEquationSection().getEquations().get(0).getExpression());
+		assertEquals("Summary correct", 1, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test

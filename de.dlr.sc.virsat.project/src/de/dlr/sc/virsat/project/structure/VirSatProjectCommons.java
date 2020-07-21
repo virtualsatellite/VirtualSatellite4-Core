@@ -62,6 +62,8 @@ public class VirSatProjectCommons {
 
 	public static final String XTEXT_NATURE_ID = "org.eclipse.xtext.ui.shared.xtextNature";
 
+	public static final int URI_PROJECT_NAME_SEGMENT = 1;
+	
 
 	private IProject project;
 	
@@ -410,6 +412,18 @@ public class VirSatProjectCommons {
 	}
 	
 	/**
+	 * tells you if the file has the extension VirSat uses to store the DVLM model
+	 * @param resource EMF Resource that should be checked
+	 * @return true in case the file has the correct file ending
+	 */
+	public static boolean isDvlmFile(Resource resource) {
+		if (resource == null || resource.getURI() == null) {
+			return false;
+		}
+		return resource.getURI().fileExtension().contains(VirSatProjectCommons.FILENAME_EXTENSION);
+	}
+	
+	/**
 	 * Method to get Workspace Resource for a given EObject
 	 * @param eObject The eObject for which to hand back a Workspace Resource
 	 * @return The Workspace Resource that contains the eObject as IResource
@@ -514,5 +528,54 @@ public class VirSatProjectCommons {
 		IWorkspaceDescription wsDescription = ResourcesPlugin.getWorkspace().getDescription();
 		wsDescription.setAutoBuilding(enable);
 		ResourcesPlugin.getWorkspace().setDescription(wsDescription);
+	}
+	
+	public static String getProjectNameByUri(java.net.URI javaUri) {
+		String stringUri = javaUri.toString();
+		return getProjectNameByUri(stringUri);
+	}
+	
+	public static String getProjectNameByUri(String stringUri) {
+		return getProjectNameByUri(URI.createURI(stringUri));
+	}
+	
+	/**
+	 * This method check the URI and converts it from file to platform if needed.
+	 * The method only works for files which are placed in the current workspace
+	 * @param workspaceFileUri The FileUri pointing to a file in the current platform workspace
+	 * @return the PlatformUri pointing to the file in the workspace
+	 */
+	protected static URI getPlatformForWorkspaceFileUri(URI workspaceFileUri) {
+		if (workspaceFileUri.isFile()) {
+			String workspaceLocationUri = ResourcesPlugin.getWorkspace().getRoot().getLocationURI().toString();
+			String emfFileUri = workspaceFileUri.toString();
+			String emfPlatformUri = emfFileUri.replaceFirst(workspaceLocationUri, "");
+			workspaceFileUri = URI.createPlatformResourceURI(emfPlatformUri, true);
+		}
+		return workspaceFileUri;
+	}
+	
+	public static String getProjectNameByUri(URI emfUri) {
+		emfUri = getPlatformForWorkspaceFileUri(emfUri);
+		return emfUri.segment(URI_PROJECT_NAME_SEGMENT).toString();
+	}
+	
+	public static IProject getProjectByUri(java.net.URI javaUri) {
+		String projectName = getProjectNameByUri(javaUri);
+		return getProjectByName(projectName);
+	}
+	
+	public static IProject getProjectByUri(String stringUri) {
+		String projectName = getProjectNameByUri(stringUri);
+		return getProjectByName(projectName);
+	}
+	
+	public static IProject getProjectByUri(URI emfUri) {
+		String projectName = getProjectNameByUri(emfUri);
+		return getProjectByName(projectName);
+	}
+	
+	protected static IProject getProjectByName(String name) {
+		return ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 	}
 }
