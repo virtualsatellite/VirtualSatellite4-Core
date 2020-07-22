@@ -9,6 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -23,11 +30,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
  * @param <BEAN_TYPE> type of the referenced bean
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanObject<ReferencePropertyInstance> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyReference() { }
@@ -61,6 +71,8 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, reference);
 	}
 
+	@XmlElement
+	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
 	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE getValue() {
