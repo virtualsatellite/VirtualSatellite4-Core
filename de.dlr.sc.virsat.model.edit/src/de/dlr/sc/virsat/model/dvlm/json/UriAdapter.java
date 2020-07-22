@@ -19,12 +19,20 @@ public class UriAdapter extends XmlAdapter<String, URI> {
 	
 	@Override
 	public URI unmarshal(String v) throws Exception {
-		return URI.createPlatformPluginURI(v, false);
+		if (v == null) {
+			return null;
+		} else {
+			return URI.createPlatformPluginURI(v, false);
+		}
 	}
 
 	@Override
 	public String marshal(URI v) throws Exception {
-		return v.toPlatformString(false);
+		if (v == null) {
+			return null;
+		} else {
+			return v.toPlatformString(false);
+		}
 	}
 
 }
