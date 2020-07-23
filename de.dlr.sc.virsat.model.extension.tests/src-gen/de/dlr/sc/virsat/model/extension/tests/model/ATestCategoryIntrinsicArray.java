@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
@@ -28,7 +27,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyStringListAdapter;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -46,7 +44,6 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-//@XmlJavaTypeAdapter(value = BeanPropertyStringListAdapter.class, type = IBeanList.class)
 public abstract class ATestCategoryIntrinsicArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryIntrinsicArray";
@@ -94,8 +91,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-//	@XmlJavaTypeAdapter(BeanPropertyStringListAdapter.class)
-	@XmlElement
+	@XmlElement(nillable=true)
 	public IBeanList<BeanPropertyString> getTestStringArrayDynamicBean() {
 		safeAccessTestStringArrayDynamicBean();
 		return testStringArrayDynamicBean;
@@ -112,8 +108,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-	@XmlJavaTypeAdapter(BeanPropertyStringListAdapter.class)
-	@XmlElement
+	@XmlElement(nillable=true)
 	public IBeanList<BeanPropertyString> getTestStringArrayStaticBean() {
 		safeAccessTestStringArrayStaticBean();
 		return testStringArrayStaticBean;
