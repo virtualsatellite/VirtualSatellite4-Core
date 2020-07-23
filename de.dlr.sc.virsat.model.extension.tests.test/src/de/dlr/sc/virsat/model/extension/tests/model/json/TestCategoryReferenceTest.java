@@ -31,10 +31,16 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
+import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
@@ -47,7 +53,9 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
 	private BeanPropertyString bpString;
-	private BeanPropertyReference<TestCategoryAllProperty> refBean;
+	private BeanPropertyReference<TestCategoryAllProperty> refCatBean;
+	private TestCategoryAllProperty tcAllProperty;
+	private BeanPropertyReference<BeanPropertyString> refPropBean;
 	private static String TEST_STRING = "test";
 	
 	private static final String RESOURCE = "/resources/json/TestCategoryReference_Marshaling.json";
@@ -65,14 +73,37 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		bpString.getATypeInstance().setUuid(new VirSatUuid("c258ee29-a453-42fa-b16a-dcc7b73d5e61"));
 		tcReference.setTestRefProperty(bpString);
 		
-		refBean = tcReference.getTestRefCategoryBean();
+		refPropBean = tcReference.getTestRefPropertyBean();
+		refPropBean.getATypeInstance().setUuid(new VirSatUuid("0dee3e78-fbcd-4294-8dba-5fa3d4760249"));
+		
+		refCatBean = tcReference.getTestRefCategoryBean();
 		// TODO: will be overwritten with the next get
-		refBean.getATypeInstance().setUuid(new VirSatUuid("0dee3e79-fbcd-4294-8dba-5fa3d4760249"));
+		refCatBean.getATypeInstance().setUuid(new VirSatUuid("0dee3e79-fbcd-4294-8dba-5fa3d4760249"));
+		tcAllProperty = new TestCategoryAllProperty(concept);
+		// TODO: helper function?
+		// Highly redundant to TestCategoryAllPropertyTest
+		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
+		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638db"));
+		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939d"));
+		tcAllProperty.getTestFloatBean().getATypeInstance().setUuid(new VirSatUuid("2870876e-4d6c-4128-801d-54fa109f382d"));
+		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd86"));
+		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
+		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		// Setup a repo for the unit management
+		Repository repo = DVLMFactory.eINSTANCE.createRepository();
+		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
+		
+		SystemOfUnits sou = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
+		
+		unitManagement.setSystemOfUnit(sou);
+		repo.setUnitManagement(unitManagement);
+		repo.getActiveConcepts().add(concept);
 	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		bpString.setValue(TEST_STRING);
+		tcReference.setTestRefCategory(tcAllProperty);
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
@@ -93,7 +124,8 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		resourceSet.getResources().add(resourceImpl);
 		resourceImpl.getContents().add(tcReference.getATypeInstance());
 		resourceImpl.getContents().add(bpString.getATypeInstance());
-		resourceImpl.getContents().add(refBean.getATypeInstance());
+		resourceImpl.getContents().add(refCatBean.getATypeInstance());
+		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		

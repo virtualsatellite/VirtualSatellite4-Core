@@ -92,6 +92,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
+	@XmlElement(nillable=true)
 	public TestCategoryAllProperty getTestRefCategory() {
 		safeAccessTestRefCategory();
 		return testRefCategory.getValue();
@@ -107,6 +108,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setValue(value);
 	}
 	
+	@XmlElement(nillable=true)
 	public BeanPropertyReference<TestCategoryAllProperty> getTestRefCategoryBean() {
 		safeAccessTestRefCategory();
 		return testRefCategory;
