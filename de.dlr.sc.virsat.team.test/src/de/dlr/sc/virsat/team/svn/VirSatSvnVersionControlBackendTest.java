@@ -12,12 +12,16 @@ package de.dlr.sc.virsat.team.svn;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.team.svn.core.connector.SVNDepth;
+import org.eclipse.team.svn.core.operation.file.AddToSVNOperation;
 import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
+import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.Before;
 
@@ -60,5 +64,17 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 		super.setUp();
 
 		backend = new VirSatSvnVersionControlBackend();
+	}
+	
+	@Override
+	protected void ensureFileCanConflict(IFile file) {
+		// SVN requires files to be added or else it will not detect conflicts on the files
+		// Therefore we perform the add operation to ensure that SVN recognizes that local changes
+		// to a file can conflict with remote changes
+		
+		File workingFile = new File(FileUtility.getWorkingCopyPath(file));
+		File[] files = { workingFile };
+		AddToSVNOperation addToSVNOperation = new AddToSVNOperation(files, true);
+		addToSVNOperation.run(new NullProgressMonitor());
 	}
 }

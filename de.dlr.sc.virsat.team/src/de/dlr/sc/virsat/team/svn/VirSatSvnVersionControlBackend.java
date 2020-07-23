@@ -25,6 +25,7 @@ import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNConnector;
+import org.eclipse.team.svn.core.connector.SVNConflictResolution.Choice;
 import org.eclipse.team.svn.core.connector.SVNDepth;
 import org.eclipse.team.svn.core.connector.SVNRevision;
 import org.eclipse.team.svn.core.operation.AbstractActionOperation;
@@ -127,6 +128,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		
 		updateMonitor.split(1).subTask("Updating files");
 		UpdateProjectOperation updateProjectOperation = new UpdateProjectOperation(project);
+		
 		updateProjectOperation.run(updateMonitor);
 		
 		checkStatus(updateProjectOperation);
@@ -151,7 +153,11 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 			String[] paths = FileUtility.asPathArray(new File[] { workingCopy });
 			
 			try {
+				// First update the local copy
 				proxy.update(paths, SVNRevision.HEAD, SVNDepth.INFINITY, ISVNConnector.Options.ALLOW_UNVERSIONED_OBSTRUCTIONS, new SVNProgressMonitor(this, monitor, null));
+				
+				// Then resolve potential conflicts by taking the remote versions
+				proxy.resolve(paths[0], Choice.CHOOSE_REMOTE, SVNDepth.INFINITY, new SVNProgressMonitor(this, monitor, null));
 			} finally {
 				location.releaseSVNProxy(proxy);
 			}
