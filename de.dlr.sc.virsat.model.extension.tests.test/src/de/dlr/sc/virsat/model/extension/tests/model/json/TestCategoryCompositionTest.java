@@ -29,11 +29,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
@@ -43,43 +40,30 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
-public class TestCategoryReferenceTest extends AConceptTestCase {
+public class TestCategoryCompositionTest extends AConceptTestCase {
 
-	private TestCategoryReference tcReference;
+
 	private JAXBUtility jaxbUtility;
-	private Concept concept;
-	private BeanPropertyString bpString;
-	private BeanPropertyReference<TestCategoryAllProperty> refCatBean;
+	private TestCategoryComposition tcComposition;
 	private TestCategoryAllProperty tcAllProperty;
-	private BeanPropertyReference<BeanPropertyString> refPropBean;
-	private static String TEST_STRING = "test";
 	
-	private static final String RESOURCE = "/resources/json/TestCategoryReference_Marshaling.json";
+	private static final String RESOURCE = "/resources/json/TestCategoryComposition_Marshaling.json";
 	
 	@Before
 	public void setup() throws JAXBException {
-		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryReference.class});
+		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryComposition.class});
 		
 		// Load the concept to create the test object
-		concept = loadConceptFromPlugin();
-		tcReference = new TestCategoryReference(concept);
-		tcReference.getATypeInstance().setUuid(new VirSatUuid("0370d14d-e6a1-4660-83f1-5bb98fa840ac"));
+		Concept concept = loadConceptFromPlugin();
+		tcComposition = new TestCategoryComposition(concept);
+		tcComposition.getATypeInstance().setUuid(new VirSatUuid("028a6e1b-e7c4-4937-886b-d65452426bfd"));
 		
-		bpString = new TestCategoryAllProperty(concept).getTestStringBean();
-		bpString.getATypeInstance().setUuid(new VirSatUuid("c258ee29-a453-42fa-b16a-dcc7b73d5e61"));
-		tcReference.setTestRefProperty(bpString);
+		tcComposition.getTestSubCategoryBean().getATypeInstance().setUuid(new VirSatUuid("128a6e1b-e7c4-4937-886b-d65452426bfd"));
 		
-		refPropBean = tcReference.getTestRefPropertyBean();
-		refPropBean.getATypeInstance().setUuid(new VirSatUuid("0dee3e78-fbcd-4294-8dba-5fa3d4760249"));
-		
-		refCatBean = tcReference.getTestRefCategoryBean();
-		// TODO: will be overwritten with the next get
-		refCatBean.getATypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
-		tcAllProperty = new TestCategoryAllProperty(concept);
+		tcAllProperty = tcComposition.getTestSubCategory();
 		// TODO: helper function?
 		// Highly redundant to TestCategoryAllPropertyTest
 		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
@@ -89,6 +73,7 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd86"));
 		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
 		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		
 		// Setup a repo for the unit management
 		Repository repo = DVLMFactory.eINSTANCE.createRepository();
 		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
@@ -102,13 +87,11 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
-		bpString.setValue(TEST_STRING);
-		tcReference.setTestRefCategory(tcAllProperty);
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(tcReference, sw);
+		jsonMarshaller.marshal(tcComposition, sw);
 		
 		System.out.println(sw.toString());
 		
@@ -122,9 +105,7 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
 		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcReference.getATypeInstance());
-		resourceImpl.getContents().add(bpString.getATypeInstance());
-		resourceImpl.getContents().add(refCatBean.getATypeInstance());
+		resourceImpl.getContents().add(tcComposition.getATypeInstance());
 		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
@@ -133,9 +114,10 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
-		JAXBElement<TestCategoryReference> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
-		TestCategoryReference createdCategory = jaxbElement.getValue();
+		JAXBElement<TestCategoryComposition> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
+		TestCategoryComposition createdCategory = jaxbElement.getValue();
 		
-		assertEquals(TEST_STRING, createdCategory.getTestRefProperty().getValue());
+		assertEquals(tcAllProperty, createdCategory.getTestSubCategory());
+		//TODO: asserts
 	}
 }

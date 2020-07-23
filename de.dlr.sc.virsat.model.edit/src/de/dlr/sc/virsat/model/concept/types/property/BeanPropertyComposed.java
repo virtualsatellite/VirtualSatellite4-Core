@@ -9,6 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
@@ -19,11 +24,13 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
 
 /**
  * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
  * @param <BEAN_TYPE> the reference type
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanObject<ComposedPropertyInstance> implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyComposed() { }
@@ -47,6 +54,8 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 		return UnexecutableCommand.INSTANCE;
 	}
 
+	@XmlElement(nillable=true)
+	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
 	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE getValue() {

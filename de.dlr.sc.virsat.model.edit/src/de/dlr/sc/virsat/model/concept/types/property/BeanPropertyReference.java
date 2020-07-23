@@ -71,7 +71,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, reference);
 	}
 
-	@XmlElement
+	@XmlElement(nillable=true)
 	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
 	@SuppressWarnings("unchecked")
 	@Override

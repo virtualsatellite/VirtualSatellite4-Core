@@ -13,6 +13,12 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -35,6 +41,8 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryComposition extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryComposition";
@@ -82,11 +90,13 @@ public abstract class ATestCategoryComposition extends GenericCategory implement
 		}
 	}
 	
+	@XmlElement(nillable=true)
 	public TestCategoryAllProperty getTestSubCategory() {
 		safeAccessTestSubCategory();
 		return testSubCategory.getValue();
 	}
 	
+	@XmlElement(nillable=true)
 	public BeanPropertyComposed<TestCategoryAllProperty> getTestSubCategoryBean() {
 		safeAccessTestSubCategory();
 		return testSubCategory;
