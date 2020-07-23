@@ -53,6 +53,8 @@ public class TestActivator {
 		return fileContent.toString();
 	}
 	
+	//TODO: assert without uuid
+	
 	public static void assertEqualsNoWs(String message, String expected, String actual) {
 		String expectedNoWs = expected.replaceAll("\\s+", "");
 		String actualNoWs = actual.replaceAll("\\s+", "");

@@ -18,6 +18,12 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
@@ -38,6 +44,8 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryCompositionArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryCompositionArray";
@@ -85,6 +93,7 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
+	@XmlElement(nillable=true)
 	public IBeanList<TestCategoryAllProperty> getTestCompositionArrayDynamic() {
 		safeAccessTestCompositionArrayDynamic();
 		return testCompositionArrayDynamic;
@@ -98,6 +107,7 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
+	@XmlElement(nillable=true)
 	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayDynamicBean() {
 		safeAccessTestCompositionArrayDynamicBean();
 		return testCompositionArrayDynamicBean;
@@ -114,6 +124,7 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
+	@XmlElement(nillable=true)
 	public IBeanList<TestCategoryAllProperty> getTestCompositionArrayStatic() {
 		safeAccessTestCompositionArrayStatic();
 		return testCompositionArrayStatic;
@@ -127,6 +138,7 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
+	@XmlElement(nillable=true)
 	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayStaticBean() {
 		safeAccessTestCompositionArrayStaticBean();
 		return testCompositionArrayStaticBean;
