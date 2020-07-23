@@ -22,17 +22,22 @@ import org.eclipse.egit.core.EclipseGitProgressTransformer;
 import org.eclipse.egit.core.op.ConnectProviderOperation;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.PushResult;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 
 @SuppressWarnings("restriction")
 public class VirSatGitVersionControlBackend implements IVirSatVersionControlBackend {
 
+	private Iterable<PushResult> lastPushResults;
+	private PullResult lastPullResult;
+	
 	private CredentialsProvider credentialsProvider;
 	public static final String BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE = "Backend Local Commit Before Pull: ";
 	
@@ -58,13 +63,21 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 
 		ProgressMonitor gitPushMonitor = new EclipseGitProgressTransformer(pushAndCommitMonitor.split(1));
 		// Push the commit
-		Git.wrap(gitRepository).push()
+		lastPushResults = Git.wrap(gitRepository).push()
 			.setCredentialsProvider(credentialsProvider)
 			.setProgressMonitor(gitPushMonitor)
 			.setTimeout(GIT_REMOTE_TIMEOUT)
 			.call();
 		
 		Git.wrap(gitRepository).close();
+	}
+	
+	/**
+	 * Gets the push results returned from the latest push
+	 * @return the last push results
+	 */
+	public Iterable<PushResult> getLastPushResults() {
+		return lastPushResults;
 	}
 
 	/**
@@ -75,15 +88,15 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	 * @throws Exception 
 	 */
 	protected void doCommit(Repository gitRepository, String message, SubMonitor monitor) throws Exception {
-		SubMonitor pushAndCommitMonitor = SubMonitor.convert(monitor, "Virtual Satellite git commit", PROGRESS_INDEX_DO_COMMIT_STEPS);
+		SubMonitor commitMonitor = SubMonitor.convert(monitor, "Virtual Satellite git commit", PROGRESS_INDEX_DO_COMMIT_STEPS);
 		
-		pushAndCommitMonitor.split(1).subTask("Adding new files to index");
+		commitMonitor.split(1).subTask("Adding new files to index");
 		Git.wrap(gitRepository).add()
 			.addFilepattern(".")
 			.call();		
 		
 		if (Git.wrap(gitRepository).status().call().hasUncommittedChanges()) {
-			pushAndCommitMonitor.split(1).subTask("Commiting files");
+			commitMonitor.split(1).subTask("Commiting files");
 			Git.wrap(gitRepository).commit()
 				.setAll(true)
 				.setMessage(message)
@@ -112,7 +125,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		
 		if (!refs.isEmpty()) {
 			// Pull from origin
-			Git.wrap(gitRepository).pull()
+			lastPullResult = Git.wrap(gitRepository).pull()
 				.setCredentialsProvider(credentialsProvider)
 				.setProgressMonitor(gitMonitor)
 				.setTimeout(GIT_REMOTE_TIMEOUT)
@@ -123,6 +136,14 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		Git.wrap(gitRepository).close();
 		
 		project.refreshLocal(Resource.DEPTH_INFINITE, commitAndPullMonitor.split(1));
+	}
+	
+	/**
+	 * Gets the pull result returned from the latest pull
+	 * @return the last pull result
+	 */
+	public PullResult getLastPullResult() {
+		return lastPullResult;
 	}
 
 	@Override
