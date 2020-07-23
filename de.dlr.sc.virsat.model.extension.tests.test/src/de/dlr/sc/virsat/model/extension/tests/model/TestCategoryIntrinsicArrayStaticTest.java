@@ -96,7 +96,7 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 		assertEquals("Added the element", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
 		
 		arrayStatic.add(property1);
-		assertEquals("Adding the same element again is be idempotend for static lists", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		assertEquals("Adding the same element again is idempotent for static lists", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
 	}
 
 	@Test

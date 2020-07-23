@@ -220,13 +220,7 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 	@Override
 	public boolean add(BEAN_TYPE e) {
 		if (arrayModifier instanceof StaticArrayModifier) {
-			int index = -1;
-			for (int i = 0; i < ai.getArrayInstances().size(); i++) {
-				BEAN_TYPE bean = get(i);
-				if (e.getUuid().equals(bean.getUuid())) {
-					index = i;
-				}
-			}
+			int index = getIndexByUUID(e);
 			
 			if (index > -1) {
 				set(index, e);
@@ -237,6 +231,21 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		} else {
 			return super.add(e);
 		}
+	}
+
+	/**
+	 * Get the index of the element by it's UUID
+	 * @param e element
+	 * @return the index or -1 if not found
+	 */
+	private int getIndexByUUID(BEAN_TYPE e) {
+		for (int i = 0; i < ai.getArrayInstances().size(); i++) {
+			BEAN_TYPE bean = get(i);
+			if (e.getUuid().equals(bean.getUuid())) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
