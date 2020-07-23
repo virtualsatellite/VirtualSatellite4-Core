@@ -150,35 +150,45 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 				.setStrategy(MergeStrategy.RECURSIVE)
 				.call();
 			
-			// In case not all files could be merged they need to be fixed.
-			// Therefore lets see if files are in a conflicting state within the repository
-			Set<String> conflictingFiles = Git.wrap(gitRepository).status().call().getConflicting();
-			
-			// If there are any continue from here with resolving the conflicts.
-			if (!conflictingFiles.isEmpty()) {
-				commitAndPullMonitor.setWorkRemaining(2);
-				ProgressMonitor gitCheckoutMonitor = new EclipseGitProgressTransformer(commitAndPullMonitor.split(1));
-				
-				// Prepare a checkout command to get THEIRS on all conflicting files.
-				// This basically means that in case of concept the files in the repository
-				// are regarded as being correct. This happens on the cost of loosing local changes.
-				CheckoutCommand checkoutCommand = Git.wrap(gitRepository).checkout();
-				checkoutCommand.setProgressMonitor(gitCheckoutMonitor);
-				
-				for (String conflictingFile : conflictingFiles) {
-					checkoutCommand.addPath(conflictingFile);
-				}
-				checkoutCommand.setStage(Stage.THEIRS);
-				checkoutCommand.call();
-				
-				// Finally close the still open merge commit
-				doCommit(gitRepository, BACKEND_REPOSITORY_MERGE_COMMIT_MESSAGE, commitAndPullMonitor.split(1));
-			}
+			checkAndResolveConflicts(gitRepository, commitAndPullMonitor);
 		} 
 		 
 		Git.wrap(gitRepository).close();
 		
 		project.refreshLocal(Resource.DEPTH_INFINITE, commitAndPullMonitor.split(1));
+	}
+	
+	/**
+	 * In case not all files could be merged they need to be fixed.
+	 * Conflicting files are fixed by replacing them with the version from the remote git repository.
+	 * @param gitRepository the git repository
+	 * @param monitor the progress monitor
+	 * @throws Exception
+	 */
+	private void checkAndResolveConflicts(Repository gitRepository, SubMonitor progressMonitor) throws Exception {
+		// Therefore lets see if files are in a conflicting state within the repository
+		Set<String> conflictingFiles = Git.wrap(gitRepository).status().call().getConflicting();
+		
+		// If there are any continue from here with resolving the conflicts.
+		if (!conflictingFiles.isEmpty()) {
+			progressMonitor.setWorkRemaining(2);
+			ProgressMonitor gitCheckoutMonitor = new EclipseGitProgressTransformer(progressMonitor.split(1));
+			
+			// Prepare a checkout command to get THEIRS on all conflicting files.
+			// This basically means that in case of concept the files in the repository
+			// are regarded as being correct. This happens on the cost of loosing local changes.
+			CheckoutCommand checkoutCommand = Git.wrap(gitRepository).checkout();
+			checkoutCommand.setProgressMonitor(gitCheckoutMonitor);
+			
+			for (String conflictingFile : conflictingFiles) {
+				checkoutCommand.addPath(conflictingFile);
+			}
+			checkoutCommand.setStage(Stage.THEIRS);
+			checkoutCommand.call();
+			
+			// Finally close the still open merge commit
+			doCommit(gitRepository, BACKEND_REPOSITORY_MERGE_COMMIT_MESSAGE, progressMonitor.split(1));
+		}
 	}
 	
 	/**
