@@ -26,7 +26,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 
 	private TestCategoryReferenceArray testArray;
 	private JAXBUtility jaxbUtility;
-	private static final String RESOURCE = "/resources/json/TestCategoryCompositionArray_Marshaling.json";
+	private static final String RESOURCE = "/resources/json/TestCategoryReferenceArray_Marshaling.json";
 	private static final String TEST_STRING = "test";
 
 	@Before

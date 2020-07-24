@@ -29,7 +29,7 @@
          "value" : null
       },
       "testStringBean" : {
-         "uuid" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50",
+         "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa9",
          "value" : null
       }
    },
@@ -63,7 +63,7 @@
             "value" : null
          },
          "testStringBean" : {
-            "uuid" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50",
+            "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa9",
             "value" : null
          }
       }

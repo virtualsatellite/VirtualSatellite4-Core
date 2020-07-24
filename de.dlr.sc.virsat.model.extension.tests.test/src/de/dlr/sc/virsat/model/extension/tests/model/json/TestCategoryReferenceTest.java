@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.json.Json;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -56,7 +57,6 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	private BeanPropertyReference<TestCategoryAllProperty> refCatBean;
 	private TestCategoryAllProperty tcAllProperty;
 	private BeanPropertyReference<BeanPropertyString> refPropBean;
-	private static String TEST_STRING = "test";
 	
 	private static final String RESOURCE = "/resources/json/TestCategoryReference_Marshaling.json";
 	
@@ -64,45 +64,26 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	public void setup() throws JAXBException {
 		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryReference.class});
 		
-		// Load the concept to create the test object
 		concept = loadConceptFromPlugin();
 		tcReference = new TestCategoryReference(concept);
 		tcReference.getATypeInstance().setUuid(new VirSatUuid("0370d14d-e6a1-4660-83f1-5bb98fa840ac"));
 		
-		bpString = new TestCategoryAllProperty(concept).getTestStringBean();
-		bpString.getATypeInstance().setUuid(new VirSatUuid("c258ee29-a453-42fa-b16a-dcc7b73d5e61"));
+		bpString = JsonTestHelper.createTestStringBean(concept);
 		tcReference.setTestRefProperty(bpString);
 		
 		refPropBean = tcReference.getTestRefPropertyBean();
 		refPropBean.getATypeInstance().setUuid(new VirSatUuid("0dee3e78-fbcd-4294-8dba-5fa3d4760249"));
 		
 		refCatBean = tcReference.getTestRefCategoryBean();
-		// TODO: will be overwritten with the next get
 		refCatBean.getATypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
 		tcAllProperty = new TestCategoryAllProperty(concept);
-		// TODO: helper function?
-		// Highly redundant to TestCategoryAllPropertyTest
-		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
-		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638db"));
-		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939d"));
-		tcAllProperty.getTestFloatBean().getATypeInstance().setUuid(new VirSatUuid("2870876e-4d6c-4128-801d-54fa109f382d"));
-		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd86"));
-		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
-		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
-		// Setup a repo for the unit management
-		Repository repo = DVLMFactory.eINSTANCE.createRepository();
-		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
-		
-		SystemOfUnits sou = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
-		
-		unitManagement.setSystemOfUnit(sou);
-		repo.setUnitManagement(unitManagement);
-		repo.getActiveConcepts().add(concept);
+		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, concept);
+		JsonTestHelper.createRepositoryWithUnitManagement(concept);
 	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
-		bpString.setValue(TEST_STRING);
+		bpString.setValue(JsonTestHelper.TEST_STRING);
 		tcReference.setTestRefCategory(tcAllProperty);
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
@@ -136,6 +117,6 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		JAXBElement<TestCategoryReference> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
 		TestCategoryReference createdCategory = jaxbElement.getValue();
 		
-		assertEquals(TEST_STRING, createdCategory.getTestRefProperty().getValue());
+		assertEquals(JsonTestHelper.TEST_STRING, createdCategory.getTestRefProperty().getValue());
 	}
 }

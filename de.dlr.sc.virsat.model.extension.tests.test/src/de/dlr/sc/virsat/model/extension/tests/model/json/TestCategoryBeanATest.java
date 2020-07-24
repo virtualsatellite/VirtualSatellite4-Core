@@ -29,19 +29,21 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
-import de.dlr.sc.virsat.model.extension.tests.model.ATestCategoryBeanATest;
+import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
-public class TestCategoryBeanATest extends ATestCategoryBeanATest {
+public class TestCategoryBeanATest extends AConceptTestCase {
 
 	private JAXBUtility jaxbUtility;
+	private Concept concept;
 	
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
+		concept = loadConceptFromPlugin();
 		
 		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryBeanA.class});
 	}
