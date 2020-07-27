@@ -328,11 +328,11 @@ public class VirSatProjectResourceChangeListenerTest extends AProjectTestCase {
 		
 		assertThat("List contains correct resources", listener.calledChangedDvlmResources, hasItem(randomFile));
 		
-		// And now add a random file which is not in the ResourceSet. No Added file should be notified
-		listener.calledResourceChanged = 0;
-		
 		// Wait some time for executing test cases on linux and tycho. Otherwise file system changes, won't be detected
 		waitSomeTime();
+		
+		// And now add a random file which is not in the ResourceSet. No Added file should be notified
+		listener.calledResourceChanged = 0;
 		Path randomNonRsPath = new File(randomNonRsFile.getRawLocation().toOSString()).toPath();
 		String content = "Changed some content";
 		Files.write(randomNonRsPath, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.SYNC);
