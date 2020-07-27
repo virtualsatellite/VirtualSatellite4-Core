@@ -18,6 +18,7 @@ import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
@@ -25,6 +26,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -96,6 +98,7 @@ public abstract class ATestCategoryReferenceArray extends GenericCategory implem
 		}
 	
 		@XmlElement(nillable=true)
+		@XmlJavaTypeAdapter(ReferenceAdapter.class)
 		public IBeanList<TestCategoryAllProperty> getTestCategoryReferenceArrayDynamic() {
 			safeAccessTestCategoryReferenceArrayDynamic();
 			return testCategoryReferenceArrayDynamic;
@@ -109,7 +112,7 @@ public abstract class ATestCategoryReferenceArray extends GenericCategory implem
 			}
 		}
 		
-		@XmlElement(nillable=true)
+//		@XmlElement(nillable=true)
 		public IBeanList<BeanPropertyReference<TestCategoryAllProperty>> getTestCategoryReferenceArrayDynamicBean() {
 			safeAccessTestCategoryReferenceArrayDynamicBean();
 			return testCategoryReferenceArrayDynamicBean;
@@ -127,6 +130,7 @@ public abstract class ATestCategoryReferenceArray extends GenericCategory implem
 		}
 	
 		@XmlElement(nillable=true)
+		@XmlJavaTypeAdapter(ReferenceAdapter.class)
 		public IBeanList<TestCategoryAllProperty> getTestCategoryReferenceArrayStatic() {
 			safeAccessTestCategoryReferenceArrayStatic();
 			return testCategoryReferenceArrayStatic;
@@ -158,6 +162,7 @@ public abstract class ATestCategoryReferenceArray extends GenericCategory implem
 		}
 	
 		@XmlElement(nillable=true)
+		@XmlJavaTypeAdapter(ReferenceAdapter.class)
 		public IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> getTestPropertyReferenceArrayDynamic() {
 			safeAccessTestPropertyReferenceArrayDynamic();
 			return testPropertyReferenceArrayDynamic;
@@ -171,7 +176,7 @@ public abstract class ATestCategoryReferenceArray extends GenericCategory implem
 			}
 		}
 		
-		@XmlElement(nillable=true)
+//		@XmlElement(nillable=true)
 		public IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> getTestPropertyReferenceArrayDynamicBean() {
 			safeAccessTestPropertyReferenceArrayDynamicBean();
 			return testPropertyReferenceArrayDynamicBean;
@@ -189,6 +194,7 @@ public abstract class ATestCategoryReferenceArray extends GenericCategory implem
 		}
 	
 		@XmlElement(nillable=true)
+		@XmlJavaTypeAdapter(ReferenceAdapter.class)
 		public IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> getTestPropertyReferenceArrayStatic() {
 			safeAccessTestPropertyReferenceArrayStatic();
 			return testPropertyReferenceArrayStatic;
