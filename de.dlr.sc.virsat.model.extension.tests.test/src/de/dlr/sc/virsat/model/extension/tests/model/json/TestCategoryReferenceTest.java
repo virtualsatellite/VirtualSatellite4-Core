@@ -30,11 +30,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
@@ -59,6 +62,7 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	private BeanPropertyReference<BeanPropertyString> refPropBean;
 	
 	private static final String RESOURCE = "/resources/json/TestCategoryReference_Marshaling.json";
+	private static final String RESOURCE_CHANGED_REFERENCE = "/resources/json/TestCategoryReference_Marshaling_ChangeReference.json";
 	
 	@Before
 	public void setup() throws JAXBException {
@@ -68,7 +72,9 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcReference = new TestCategoryReference(concept);
 		tcReference.getATypeInstance().setUuid(new VirSatUuid("0370d14d-e6a1-4660-83f1-5bb98fa840ac"));
 		
-		bpString = JsonTestHelper.createTestStringBean(concept);
+		// TODO: use json helper instead
+		bpString = new TestCategoryAllProperty(concept).getTestStringBean();
+		bpString.getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		tcReference.setTestRefProperty(bpString);
 		
 		refPropBean = tcReference.getTestRefPropertyBean();
@@ -79,12 +85,13 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcAllProperty = new TestCategoryAllProperty(concept);
 		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, concept);
 		JsonTestHelper.createRepositoryWithUnitManagement(concept);
+		
+		bpString.setValue(JsonTestHelper.TEST_STRING);
+		tcReference.setTestRefCategory(tcAllProperty);
 	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
-		bpString.setValue(JsonTestHelper.TEST_STRING);
-		tcReference.setTestRefCategory(tcAllProperty);
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
@@ -99,24 +106,30 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
+		BeanPropertyString bpString2 = new TestCategoryAllProperty(concept).getTestStringBean();
+		bpString2.getATypeInstance().setUuid(new VirSatUuid("1256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
 		resourceSet.getResources().add(resourceImpl);
 		resourceImpl.getContents().add(tcReference.getATypeInstance());
 		resourceImpl.getContents().add(bpString.getATypeInstance());
+		resourceImpl.getContents().add(bpString2.getATypeInstance());
 		resourceImpl.getContents().add(refCatBean.getATypeInstance());
 		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
+		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
+		assertEquals(bpString.getUuid(), tcReference.getTestRefProperty().getUuid());
+		
 		JAXBElement<TestCategoryReference> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
 		TestCategoryReference createdCategory = jaxbElement.getValue();
 		
-		assertEquals(JsonTestHelper.TEST_STRING, createdCategory.getTestRefProperty().getValue());
+		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), createdCategory.getTestRefProperty().getUuid());
 	}
 }

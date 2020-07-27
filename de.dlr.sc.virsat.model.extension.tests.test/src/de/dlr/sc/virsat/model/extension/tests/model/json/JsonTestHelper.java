@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl;
+import de.dlr.sc.virsat.model.dvlm.categories.provider.ATypeDefinitionItemProvider;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
@@ -57,8 +58,8 @@ public class JsonTestHelper {
 	public static BeanPropertyString createTestStringBean(Concept concept) {
 		ValuePropertyInstance vpi = PropertyinstancesFactoryImpl.eINSTANCE.createValuePropertyInstance();
 		vpi.setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		// TODO: set type???
 		BeanPropertyString bpString = new BeanPropertyString(vpi);
-//		bpString.getATypeInstance().setUuid(new VirSatUuid("c258ee29-a453-42fa-b16a-dcc7b73d5e61"));
 		return bpString;
 	}
 	

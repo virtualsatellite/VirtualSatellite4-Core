@@ -17,11 +17,13 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -93,6 +95,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 	}
 	
 	@XmlElement(nillable=true)
+	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public TestCategoryAllProperty getTestRefCategory() {
 		safeAccessTestRefCategory();
 		return testRefCategory.getValue();
@@ -108,7 +111,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setValue(value);
 	}
 	
-	@XmlElement(nillable=true)
+//	@XmlElement(nillable=true)
 	public BeanPropertyReference<TestCategoryAllProperty> getTestRefCategoryBean() {
 		safeAccessTestRefCategory();
 		return testRefCategory;
@@ -125,6 +128,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 	}
 	
 	@XmlElement(nillable=true)
+	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();
 		return testRefProperty.getValue();
@@ -140,7 +144,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefProperty.setValue(value);
 	}
 	
-	@XmlElement(nillable=true)
+//	@XmlElement(nillable=true)
 	public BeanPropertyReference<BeanPropertyString> getTestRefPropertyBean() {
 		safeAccessTestRefProperty();
 		return testRefProperty;

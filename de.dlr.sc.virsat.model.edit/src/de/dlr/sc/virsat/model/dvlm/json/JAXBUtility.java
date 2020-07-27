@@ -79,6 +79,9 @@ public class JAXBUtility {
 		listAdapter.setResourceSet(resourceSet);
 		jsonUnmarshaller.setAdapter(listAdapter);
 		
+		ReferenceAdapter referenceAdapter = new ReferenceAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(referenceAdapter);
+		
 		return jsonUnmarshaller;
 	}
 }
