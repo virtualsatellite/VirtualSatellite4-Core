@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
 // * Class Declaration

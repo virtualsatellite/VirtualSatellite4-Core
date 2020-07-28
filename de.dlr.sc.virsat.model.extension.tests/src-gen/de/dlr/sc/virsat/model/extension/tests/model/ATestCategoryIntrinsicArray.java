@@ -91,7 +91,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-	@XmlElement(nillable=true)
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayDynamicBean() {
 		safeAccessTestStringArrayDynamicBean();
 		return testStringArrayDynamicBean;
@@ -108,7 +108,7 @@ public abstract class ATestCategoryIntrinsicArray extends GenericCategory implem
 		}
 	}
 	
-	@XmlElement(nillable=true)
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTestStringArrayStaticBean() {
 		safeAccessTestStringArrayStaticBean();
 		return testStringArrayStaticBean;

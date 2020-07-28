@@ -14,6 +14,8 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
@@ -37,6 +39,7 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  */	
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryBeanA extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryBeanA";

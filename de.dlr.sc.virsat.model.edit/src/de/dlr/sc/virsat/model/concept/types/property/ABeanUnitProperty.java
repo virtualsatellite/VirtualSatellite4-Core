@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -42,7 +42,6 @@ public abstract class ABeanUnitProperty<V_TYPE> extends ABeanObject<UnitValuePro
 	 * Hands back the Value together with the given Unit
 	 * @return the value in its base unit
 	 */
-	@XmlTransient
 	public String getValueWithUnit() {
 		return new PropertyInstanceValueSwitch().getValueString(ti);
 	}
@@ -58,6 +57,7 @@ public abstract class ABeanUnitProperty<V_TYPE> extends ABeanObject<UnitValuePro
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}
@@ -79,7 +79,6 @@ public abstract class ABeanUnitProperty<V_TYPE> extends ABeanObject<UnitValuePro
 	 * @param other another bean of the same type
 	 * @return a command to set value + unit to the value + unit of the other bean
 	 */
-	@XmlTransient
 	public Command setValueWithUnit(EditingDomain ed, ABeanUnitProperty<V_TYPE> other) {
 		CompoundCommand cmdSetValueAndUnit = new CompoundCommand();
 		Command cmdSetValue = setValue(ed, other.getValue());
@@ -95,7 +94,6 @@ public abstract class ABeanUnitProperty<V_TYPE> extends ABeanObject<UnitValuePro
 	 * Sets the value and unit of this bean to the value and unit of the other bean
 	 * @param other another bean of the same type
 	 */
-	@XmlTransient
 	public void setValueWithUnit(ABeanUnitProperty<V_TYPE> other) {
 		setValue(other.getValue());
 		setUnit(other.getUnit());

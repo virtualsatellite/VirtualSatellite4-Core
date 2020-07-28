@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -30,7 +28,6 @@ import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
  * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
  * @param <BEAN_TYPE> the reference type
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanObject<ComposedPropertyInstance> implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyComposed() { }
@@ -54,7 +51,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 		return UnexecutableCommand.INSTANCE;
 	}
 
-	@XmlElement(nillable=true)
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
 	@SuppressWarnings("unchecked")
 	@Override

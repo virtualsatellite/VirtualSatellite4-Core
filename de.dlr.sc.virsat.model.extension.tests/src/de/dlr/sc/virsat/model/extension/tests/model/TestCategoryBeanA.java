@@ -9,14 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
 // * Class Declaration
@@ -30,7 +27,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */	
-@XmlRootElement
 public class TestCategoryBeanA extends ATestCategoryBeanA {
 	
 	/**

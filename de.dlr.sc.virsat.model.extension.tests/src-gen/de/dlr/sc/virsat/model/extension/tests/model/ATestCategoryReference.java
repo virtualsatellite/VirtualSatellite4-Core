@@ -94,7 +94,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement(nillable=true)
+	@XmlElement
 	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public TestCategoryAllProperty getTestRefCategory() {
 		safeAccessTestRefCategory();
@@ -111,7 +111,6 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setValue(value);
 	}
 	
-//	@XmlElement(nillable=true)
 	public BeanPropertyReference<TestCategoryAllProperty> getTestRefCategoryBean() {
 		safeAccessTestRefCategory();
 		return testRefCategory;
@@ -127,7 +126,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement(nillable=true)
+	@XmlElement
 	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();
@@ -144,7 +143,6 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefProperty.setValue(value);
 	}
 	
-//	@XmlElement(nillable=true)
 	public BeanPropertyReference<BeanPropertyString> getTestRefPropertyBean() {
 		safeAccessTestRefProperty();
 		return testRefProperty;

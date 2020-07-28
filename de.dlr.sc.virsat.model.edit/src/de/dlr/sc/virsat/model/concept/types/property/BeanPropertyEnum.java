@@ -103,6 +103,7 @@ public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> impl
 	}
 
 	@Override
+	@XmlElement(nillable = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}

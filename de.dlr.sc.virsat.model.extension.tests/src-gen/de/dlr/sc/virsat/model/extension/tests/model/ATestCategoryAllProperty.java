@@ -9,34 +9,35 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.emf.common.util.URI;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -52,6 +53,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
  * 
  */	
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryAllProperty extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty";
@@ -123,13 +125,12 @@ public abstract class ATestCategoryAllProperty extends GenericCategory implement
 		this.testString.setValue(value);
 	}
 	
-	@XmlTransient
 	public String getTestString() {
 		safeAccessTestString();
 		return testString.getValue();
 	}
 	
-	@XmlElement // (name="testString")
+	@XmlElement
 	public BeanPropertyString getTestStringBean() {
 		safeAccessTestString();
 		return testString;
@@ -156,7 +157,6 @@ public abstract class ATestCategoryAllProperty extends GenericCategory implement
 		this.testInt.setValue(value);
 	}
 	
-	@XmlTransient
 	public long getTestInt() {
 		safeAccessTestInt();
 		return testInt.getValue();
@@ -194,7 +194,6 @@ public abstract class ATestCategoryAllProperty extends GenericCategory implement
 		this.testFloat.setValue(value);
 	}
 	
-	@XmlTransient
 	public double getTestFloat() {
 		safeAccessTestFloat();
 		return testFloat.getValue();
@@ -232,7 +231,6 @@ public abstract class ATestCategoryAllProperty extends GenericCategory implement
 		this.testBool.setValue(value);
 	}
 	
-	@XmlTransient
 	public boolean getTestBool() {
 		safeAccessTestBool();
 		return testBool.getValue();
@@ -265,7 +263,6 @@ public abstract class ATestCategoryAllProperty extends GenericCategory implement
 		this.testResource.setValue(value);
 	}
 	
-	@XmlTransient
 	public URI getTestResource() {
 		safeAccessTestResource();
 		return testResource.getValue();
@@ -298,7 +295,6 @@ public abstract class ATestCategoryAllProperty extends GenericCategory implement
 		this.testEnum.setValue(value);
 	}
 	
-	@XmlTransient
 	public String getTestEnum() {
 		safeAccessTestEnum();
 		return testEnum.getValue();

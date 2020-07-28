@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -24,7 +23,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  * @author fisc_ph
  *
  */
-@XmlRootElement(name = "beanPropertyString")
 public class BeanPropertyString extends ABeanProperty<String> {
 
 	/**
