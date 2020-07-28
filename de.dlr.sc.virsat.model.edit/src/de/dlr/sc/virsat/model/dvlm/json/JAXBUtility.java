@@ -25,7 +25,6 @@ public class JAXBUtility {
 
 	private Map<String, Object> properties = new HashMap<>();
 	private JAXBContext jaxbCtx;
-	private BeanPropertyStringListAdapter listAdapter;
 	
 	
 	public JAXBUtility() {
@@ -40,7 +39,6 @@ public class JAXBUtility {
 	
 	private void init() {
 		System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-		listAdapter = new BeanPropertyStringListAdapter();
 	}
 	
 	public void initJsonProperties() {
@@ -63,8 +61,6 @@ public class JAXBUtility {
 		
 		jsonMarshaller.setEventHandler(new DefaultValidationEventHandler());
 		
-		jsonMarshaller.setAdapter(listAdapter);
-		
 		return jsonMarshaller;
 	}
 	
@@ -75,9 +71,6 @@ public class JAXBUtility {
 		
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
-		
-		listAdapter.setResourceSet(resourceSet);
-		jsonUnmarshaller.setAdapter(listAdapter);
 		
 		ReferenceAdapter referenceAdapter = new ReferenceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(referenceAdapter);
