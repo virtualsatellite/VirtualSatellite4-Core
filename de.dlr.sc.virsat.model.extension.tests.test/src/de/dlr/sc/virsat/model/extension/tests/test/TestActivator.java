@@ -57,7 +57,7 @@ public class TestActivator {
 		String expectedNoUuid = expected.replaceAll("\"uuid\".*\r\n\s*", "");
 		String actualNoUuid = actual.replaceAll("\"uuid\".*\r\n\s*", "");
 		
-		Assert.assertEquals(message, expectedNoUuid, actualNoUuid);
+		assertEqualsNoWs(message, expectedNoUuid, actualNoUuid);
 	}
 	
 	public static void assertEqualsNoWs(String message, String expected, String actual) {

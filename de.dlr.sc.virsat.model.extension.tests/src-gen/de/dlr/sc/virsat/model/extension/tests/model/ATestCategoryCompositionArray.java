@@ -107,7 +107,6 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
-	@XmlElement(nillable=true)
 	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayDynamicBean() {
 		safeAccessTestCompositionArrayDynamicBean();
 		return testCompositionArrayDynamicBean;
@@ -138,7 +137,6 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
-	@XmlElement(nillable=true)
 	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayStaticBean() {
 		safeAccessTestCompositionArrayStaticBean();
 		return testCompositionArrayStaticBean;

@@ -1,265 +1,127 @@
 {
    "type" : "testCategoryCompositionArray",
-   "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
+   "uuid" : "f5d016ac-65fa-4b9d-ae94-582d4f73138a",
    "name" : "TestCategoryCompositionArray",
    "testCompositionArrayDynamic" : [ ],
-   "testCompositionArrayDynamicBean" : [ ],
    "testCompositionArrayStatic" : [ {
-      "uuid" : "4efe0002-f081-49c0-9917-6f4a6e7dd9ce",
+      "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0",
       "name" : "testCompositionArrayStatic",
       "testBoolBean" : {
-         "uuid" : "75dbaa47-ce04-4040-8044-d41f2664d9c4",
+         "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d0",
          "value" : false
       },
       "testEnumBean" : {
-         "uuid" : "19a87287-ba90-48e6-8d59-1245bb273536",
+         "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49390",
          "unit" : "",
          "value" : null
       },
       "testFloatBean" : {
-         "uuid" : "a5503cec-9aa1-496e-9acc-ca74255ded35",
+         "uuid" : "2870876e-4d6c-4128-801d-54fa109f3820",
          "unit" : "",
          "value" : null
       },
       "testIntBean" : {
-         "uuid" : "7441be63-9067-4575-a4d9-79840bad983e",
+         "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd80",
          "unit" : "",
          "value" : null
       },
       "testResourceBean" : {
-         "uuid" : "1d6889c0-8563-4f94-8430-d7af1e53c42e",
+         "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb0",
          "value" : null
       },
       "testStringBean" : {
-         "uuid" : "c8d895c0-1bea-4306-9363-bdab70f7e66b",
-         "value" : null
+         "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa0",
+         "value" : "testString"
       }
    }, {
-      "uuid" : "6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5",
+      "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f1",
       "name" : "testCompositionArrayStatic",
       "testBoolBean" : {
-         "uuid" : "319dbea7-696d-4c7d-a606-46b86a3f5a04",
+         "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d1",
          "value" : false
       },
       "testEnumBean" : {
-         "uuid" : "a7e60bc0-ca9c-4455-bcb3-22a56ac0251a",
+         "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49391",
          "unit" : "",
          "value" : null
       },
       "testFloatBean" : {
-         "uuid" : "77d1a539-6964-4079-a857-3d3c97246b91",
+         "uuid" : "2870876e-4d6c-4128-801d-54fa109f3821",
          "unit" : "",
          "value" : null
       },
       "testIntBean" : {
-         "uuid" : "892b0257-1ed5-4886-8eb0-09132f99f754",
+         "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd81",
          "unit" : "",
          "value" : null
       },
       "testResourceBean" : {
-         "uuid" : "ded327eb-3208-46e6-aced-3ad49fd2cd67",
+         "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb1",
          "value" : null
       },
       "testStringBean" : {
-         "uuid" : "f56be281-aa08-4a25-9c3b-6f94d3f68d5e",
+         "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa1",
          "value" : null
       }
    }, {
-      "uuid" : "8fd96e3b-5bf3-41e1-a02a-64f8bff99107",
+      "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
       "name" : "testCompositionArrayStatic",
       "testBoolBean" : {
-         "uuid" : "9745bee7-8ec1-4d42-9730-2b8984f0cf3a",
+         "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d2",
          "value" : false
       },
       "testEnumBean" : {
-         "uuid" : "03bc46a9-658d-4941-b547-e3aa7e2b76e2",
+         "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49392",
          "unit" : "",
          "value" : null
       },
       "testFloatBean" : {
-         "uuid" : "895192ee-7538-4946-9bcc-74d2356cccdf",
+         "uuid" : "2870876e-4d6c-4128-801d-54fa109f3822",
          "unit" : "",
          "value" : null
       },
       "testIntBean" : {
-         "uuid" : "006dec28-a031-4756-93de-6461e1a0365d",
+         "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd82",
          "unit" : "",
          "value" : null
       },
       "testResourceBean" : {
-         "uuid" : "2bebef62-f40a-438f-b4bc-f83c7596f13a",
+         "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb2",
          "value" : null
       },
       "testStringBean" : {
-         "uuid" : "9cea9148-70f4-4883-8c6a-f3367cb022ce",
+         "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa2",
          "value" : null
       }
    }, {
-      "uuid" : "c38d7185-fcc3-480c-bfb4-28e6fcc09d34",
+      "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f3",
       "name" : "testCompositionArrayStatic",
       "testBoolBean" : {
-         "uuid" : "900c9f72-3cff-49bd-9936-0bf82470e195",
+         "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d3",
          "value" : false
       },
       "testEnumBean" : {
-         "uuid" : "53ce654d-a15d-4a96-bec6-e2c3fc5c414b",
+         "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49393",
          "unit" : "",
          "value" : null
       },
       "testFloatBean" : {
-         "uuid" : "089fa591-09f0-4568-b7f2-e674f997a651",
+         "uuid" : "2870876e-4d6c-4128-801d-54fa109f3823",
          "unit" : "",
          "value" : null
       },
       "testIntBean" : {
-         "uuid" : "f8d6bbe2-aded-43fd-bd79-af8b94d26aaf",
+         "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd83",
          "unit" : "",
          "value" : null
       },
       "testResourceBean" : {
-         "uuid" : "dfa99a88-d750-41f7-b5bc-b46101e2267c",
+         "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb3",
          "value" : null
       },
       "testStringBean" : {
-         "uuid" : "e544b709-004d-405e-abc8-533a3b8585f0",
+         "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa3",
          "value" : null
-      }
-   } ],
-   "testCompositionArrayStaticBean" : [ {
-      "uuid" : "70e93038-22ce-4d44-8288-771c5179a6c5",
-      "value" : {
-         "type" : "testCategoryAllProperty",
-         "uuid" : "4efe0002-f081-49c0-9917-6f4a6e7dd9ce",
-         "name" : "testCompositionArrayStatic",
-         "testBoolBean" : {
-            "uuid" : "75dbaa47-ce04-4040-8044-d41f2664d9c4",
-            "value" : false
-         },
-         "testEnumBean" : {
-            "uuid" : "19a87287-ba90-48e6-8d59-1245bb273536",
-            "unit" : "",
-            "value" : null
-         },
-         "testFloatBean" : {
-            "uuid" : "a5503cec-9aa1-496e-9acc-ca74255ded35",
-            "unit" : "",
-            "value" : null
-         },
-         "testIntBean" : {
-            "uuid" : "7441be63-9067-4575-a4d9-79840bad983e",
-            "unit" : "",
-            "value" : null
-         },
-         "testResourceBean" : {
-            "uuid" : "1d6889c0-8563-4f94-8430-d7af1e53c42e",
-            "value" : null
-         },
-         "testStringBean" : {
-            "uuid" : "c8d895c0-1bea-4306-9363-bdab70f7e66b",
-            "value" : null
-         }
-      }
-   }, {
-      "uuid" : "9e1e7e83-7a9e-4731-9dcc-17d8aa55efe8",
-      "value" : {
-         "type" : "testCategoryAllProperty",
-         "uuid" : "6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5",
-         "name" : "testCompositionArrayStatic",
-         "testBoolBean" : {
-            "uuid" : "319dbea7-696d-4c7d-a606-46b86a3f5a04",
-            "value" : false
-         },
-         "testEnumBean" : {
-            "uuid" : "a7e60bc0-ca9c-4455-bcb3-22a56ac0251a",
-            "unit" : "",
-            "value" : null
-         },
-         "testFloatBean" : {
-            "uuid" : "77d1a539-6964-4079-a857-3d3c97246b91",
-            "unit" : "",
-            "value" : null
-         },
-         "testIntBean" : {
-            "uuid" : "892b0257-1ed5-4886-8eb0-09132f99f754",
-            "unit" : "",
-            "value" : null
-         },
-         "testResourceBean" : {
-            "uuid" : "ded327eb-3208-46e6-aced-3ad49fd2cd67",
-            "value" : null
-         },
-         "testStringBean" : {
-            "uuid" : "f56be281-aa08-4a25-9c3b-6f94d3f68d5e",
-            "value" : null
-         }
-      }
-   }, {
-      "uuid" : "10764af4-f300-4b51-9ccb-40ae258886cc",
-      "value" : {
-         "type" : "testCategoryAllProperty",
-         "uuid" : "8fd96e3b-5bf3-41e1-a02a-64f8bff99107",
-         "name" : "testCompositionArrayStatic",
-         "testBoolBean" : {
-            "uuid" : "9745bee7-8ec1-4d42-9730-2b8984f0cf3a",
-            "value" : false
-         },
-         "testEnumBean" : {
-            "uuid" : "03bc46a9-658d-4941-b547-e3aa7e2b76e2",
-            "unit" : "",
-            "value" : null
-         },
-         "testFloatBean" : {
-            "uuid" : "895192ee-7538-4946-9bcc-74d2356cccdf",
-            "unit" : "",
-            "value" : null
-         },
-         "testIntBean" : {
-            "uuid" : "006dec28-a031-4756-93de-6461e1a0365d",
-            "unit" : "",
-            "value" : null
-         },
-         "testResourceBean" : {
-            "uuid" : "2bebef62-f40a-438f-b4bc-f83c7596f13a",
-            "value" : null
-         },
-         "testStringBean" : {
-            "uuid" : "9cea9148-70f4-4883-8c6a-f3367cb022ce",
-            "value" : null
-         }
-      }
-   }, {
-      "uuid" : "a77e56a7-cb20-4880-9f7b-98599cf73c7c",
-      "value" : {
-         "type" : "testCategoryAllProperty",
-         "uuid" : "c38d7185-fcc3-480c-bfb4-28e6fcc09d34",
-         "name" : "testCompositionArrayStatic",
-         "testBoolBean" : {
-            "uuid" : "900c9f72-3cff-49bd-9936-0bf82470e195",
-            "value" : false
-         },
-         "testEnumBean" : {
-            "uuid" : "53ce654d-a15d-4a96-bec6-e2c3fc5c414b",
-            "unit" : "",
-            "value" : null
-         },
-         "testFloatBean" : {
-            "uuid" : "089fa591-09f0-4568-b7f2-e674f997a651",
-            "unit" : "",
-            "value" : null
-         },
-         "testIntBean" : {
-            "uuid" : "f8d6bbe2-aded-43fd-bd79-af8b94d26aaf",
-            "unit" : "",
-            "value" : null
-         },
-         "testResourceBean" : {
-            "uuid" : "dfa99a88-d750-41f7-b5bc-b46101e2267c",
-            "value" : null
-         },
-         "testStringBean" : {
-            "uuid" : "e544b709-004d-405e-abc8-533a3b8585f0",
-            "value" : null
-         }
       }
    } ]
 }
