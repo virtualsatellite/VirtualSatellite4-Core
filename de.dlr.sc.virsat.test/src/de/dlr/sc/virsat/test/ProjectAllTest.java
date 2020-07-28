@@ -21,12 +21,12 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-				de.dlr.sc.virsat.project.test.AllTests.class,
 				de.dlr.sc.virsat.commons.test.AllTests.class,
 				de.dlr.sc.virsat.build.test.AllTests.class,
 				de.dlr.sc.virsat.apps.test.AllTests.class,
 				de.dlr.sc.virsat.excel.test.AllTests.class,
 				de.dlr.sc.virsat.graphiti.test.AllTests.class,
+				de.dlr.sc.virsat.project.test.AllTests.class,
 				de.dlr.sc.virsat.server.test.AllTests.class,
 				de.dlr.sc.virsat.team.test.AllTests.class,
 				de.dlr.sc.virsat.model.test.AllTests.class,

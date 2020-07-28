@@ -45,7 +45,6 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	VirSatProjectResourceChangeListenerTest.class,
 	VirSatEditingDomainRegistryTest.class,
 	VirSatProjectCommonsTest.class,
 	VirSatResourceSetTest.class,
@@ -71,6 +70,7 @@ import junit.framework.JUnit4TestAdapter;
 	VirSatProblemMarkerHelperTest.class,
 	VirSatEditingDomainClipBoardTest.class,
 	DmfResourceSaveCommandTest.class,
+	VirSatProjectResourceChangeListenerTest.class,
 	VirSatTransactionalEditingDomainResourceEventListenerTest.class
 })
 
