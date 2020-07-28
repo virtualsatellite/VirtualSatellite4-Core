@@ -58,7 +58,7 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		tcComposition.getTestSubCategoryBean().getATypeInstance().setUuid(new VirSatUuid("128a6e1b-e7c4-4937-886b-d65452426bfd"));
 		
 		tcAllProperty = tcComposition.getTestSubCategory();
-		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, concept);
+		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty);
 		JsonTestHelper.createRepositoryWithUnitManagement(concept);
 	}
 	

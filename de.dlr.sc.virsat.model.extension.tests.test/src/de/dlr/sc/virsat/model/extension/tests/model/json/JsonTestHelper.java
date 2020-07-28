@@ -17,7 +17,6 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl;
-import de.dlr.sc.virsat.model.dvlm.categories.provider.ATypeDefinitionItemProvider;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
@@ -26,26 +25,45 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 
+/**
+ * Class containing static helper functions 
+ * to remove redundancy in JSON test cases
+ */
 public class JsonTestHelper {
 	
 	public static final String TEST_STRING = "testString";
 	
 	private JsonTestHelper() { }
 	
-	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty, Concept concept) {
-		setTestCategoryAllPropertyUuids(tcAllProperty, concept, 0);
+	/**
+	 * Set all UUIDs of a tcAllProperty
+	 * @param tcAllProperty to be set
+	 */
+	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty) {
+		setTestCategoryAllPropertyUuids(tcAllProperty, "0");
 	}
 	
-	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty, Concept concept, int count) {
-		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f" + count));
-		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638d" + count));
-		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939" + count));
-		tcAllProperty.getTestFloatBean().getATypeInstance().setUuid(new VirSatUuid("2870876e-4d6c-4128-801d-54fa109f382" + count));
-		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd8" + count));
-		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0eb" + count));
-		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("26edbae8-9f05-4ef5-8673-91e1af668aa" + count));
+	/**
+	 * Set all UUIDs of a tcAllProperty
+	 * The last character can be edited
+	 * @param tcAllProperty to be set
+	 * @param lastChar of the UUID
+	 */
+	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty, String lastChar) {
+		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f" + lastChar));
+		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638d" + lastChar));
+		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939" + lastChar));
+		tcAllProperty.getTestFloatBean().getATypeInstance().setUuid(new VirSatUuid("2870876e-4d6c-4128-801d-54fa109f382" + lastChar));
+		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd8" + lastChar));
+		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0eb" + lastChar));
+		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("26edbae8-9f05-4ef5-8673-91e1af668aa" + lastChar));
 	}
 	
+	/**
+	 * Create a Repository with a UnitManagement from the Concept
+	 * @param concept
+	 * @return Repository
+	 */
 	public static Repository createRepositoryWithUnitManagement(Concept concept) {
 		Repository repo = DVLMFactory.eINSTANCE.createRepository();
 		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
@@ -67,6 +85,7 @@ public class JsonTestHelper {
 		return bpString;
 	}
 	
+	// CHECKSTYLE:OFF
 	public static void setStaticIBeanListUuids(IBeanList<? extends IBeanObject<? extends ATypeInstance>> list) {
 		list.get(0).getATypeInstance().setUuid(new VirSatUuid("4efe0002-f081-49c0-9917-6f4a6e7dd9ce"));
 		list.get(1).getATypeInstance().setUuid(new VirSatUuid("6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5"));
@@ -74,4 +93,5 @@ public class JsonTestHelper {
 		list.get(3).getATypeInstance().setUuid(new VirSatUuid("c38d7185-fcc3-480c-bfb4-28e6fcc09d34"));
 		list.getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f9495b"));
 	}
+	// CHECKSTYLE:ON
 }

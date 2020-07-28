@@ -49,12 +49,9 @@ public class BeanPropertyFloat extends ABeanUnitProperty<Double> {
 	}
 	
 	@XmlJavaTypeAdapter(DoubleAdapter.class)
-	// TODO: this adapter won't be called if the value is null... so we can't encapsulate null handling in the adapter for the unmarshalling....
-	// because of JAXB
 	@XmlElement(nillable = true)
 	@Override
 	public void setValue(Double value) {
-		// TODO
 		if (value == null) {
 			ti.setValue(null);
 		} else {

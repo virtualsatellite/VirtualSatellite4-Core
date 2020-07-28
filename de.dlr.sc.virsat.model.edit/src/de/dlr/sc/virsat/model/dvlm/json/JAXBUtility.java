@@ -21,16 +21,28 @@ import javax.xml.bind.helpers.DefaultValidationEventHandler;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 
+/**
+ * Provides functionality to create a JAXBContext
+ * and corresponding marshaller and unmarshaller.
+ * The Class saves the state of the properties and the context.
+ */
 public class JAXBUtility {
 
 	private Map<String, Object> properties = new HashMap<>();
 	private JAXBContext jaxbCtx;
 	
-	
+	/**
+	 * Default constructor
+	 */
 	public JAXBUtility() {
 		init();
 	}
 	
+	/**
+	 * Create a instance with JSON properties and a context from the registerClasses
+	 * @param registerClasses classes to be recognized by the context
+	 * @throws JAXBException
+	 */
 	public JAXBUtility(@SuppressWarnings("rawtypes") Class[] registerClasses) throws JAXBException {
 		init();
 		initJsonProperties();
@@ -55,6 +67,11 @@ public class JAXBUtility {
 		return properties;
 	}
 	
+	/**
+	 * Create a new Marshaller from the context
+	 * @return Marshaller
+	 * @throws JAXBException
+	 */
 	public Marshaller getJsonMarshaller() throws JAXBException {
 		Marshaller jsonMarshaller = jaxbCtx.createMarshaller();
 		jsonMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -64,6 +81,12 @@ public class JAXBUtility {
 		return jsonMarshaller;
 	}
 	
+	/**
+	 * Create a new Unmarshaller from the context and the resourceSet
+	 * @param resourceSet containing the elements to be recognized during unmarshalling
+	 * @return Unmarshaller
+	 * @throws JAXBException
+	 */
 	public Unmarshaller getJsonUnmarshaller(ResourceSet resourceSet) throws JAXBException {
 		Unmarshaller jsonUnmarshaller = jaxbCtx.createUnmarshaller();
 		

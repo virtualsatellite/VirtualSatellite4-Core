@@ -63,7 +63,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		concept = loadConceptFromPlugin();
 		
 		tcAllProperty  = new TestCategoryAllProperty(concept);
-		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, concept);
+		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty);
 		JsonTestHelper.createRepositoryWithUnitManagement(concept);
 	}
 	

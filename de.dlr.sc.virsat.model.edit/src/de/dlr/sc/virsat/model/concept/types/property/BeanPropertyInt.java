@@ -48,8 +48,7 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	@Override
 	@XmlElement(nillable = true)
 	public void setValue(Long value) {
-		// TODO
-		if(value == null) {
+		if (value == null) {
 			ti.setValue(null);
 		} else {
 			ti.setValue(Long.toString(value));
