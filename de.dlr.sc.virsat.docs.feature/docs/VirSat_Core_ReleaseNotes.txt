@@ -1,6 +1,46 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.12.0 (31th July 2020)
+----------------------------------
+
+New Features:
+   Added new concept for requirements modeling - #216 #306 Feature
+   Implemented new reference type for non-DVLM EMF objects in the concept language - #408 #579 Feature
+   Implemented HTTP authentication for REST server - #454 Server Feature
+   Implemented project check-in/check-out on REST server level - #493 #537 #540 #542 Server Feature
+   Added import and export support for .mat files - #520 #526 #595 Feature
+   Added support to configure the REST server via a configuration file - #530 Feature
+   Implemented support to allow the REST server to execute commands in the name of a requesting user - #548 Feature
+   Improved licensing and copyright information to protect DLR images and logos - #559 Feature
+   Implemented bean API support for reference and composed properties - #606 #633 #663 Feature
+   Upgraded to Eclispe 2020-06 - #665 Feature
+
+Usability Updates:
+   Made Unit and QuantityKind tables sortable - #30 Comfort/usability
+   Improved default Excel template for Excel exports by removing out-dated warnings - #455 Comfort/usability
+   Added milliseconds to the default system of units - #667 Comfort/usability
+   Added "Bean" suffix to list properties in the beans API - #679 Comfort/usability
+
+Fixed Bugs:
+   Fixed issue where saving DMF models created out-of-date data  - #351 Bug
+   Fixed issue where Equations could not be viewed by disciplines who do not own a structural element instance - #374 Bug
+   Fixed inconsistent vendor names in plugins - #474 Bug Quality
+   Fixed deadlock issues caused by concurrent manipulations of the data model and the file system - #478 #645 #680 Bug
+   Fixed exception thrown during synchronization of graphiti diagrams - #499 Bug
+   Fixed caching issue in manipulation reference properties through the beans API - #486 Bug
+   Fixed performance issue when validating references - #509 Bug
+   Fixed issue where .git did not recognize VirSat folders due to missing .empty object - #521 Bug
+   Fixed issue in the beans API where getting the value of an unset int property gave an exception - #523 Bug
+   Fixed issue in concept IDE tools have wrong dependencies - #533 #566 Bug
+   Fixed inconsistency in transactional builders with non-DVLM resources - #562 Bug
+   Fixed performance issues when having non-DVLM resources - #589 Bug
+   Fixed issue where equations for power concept do not update - #635 Bug
+   Fixed issue where a concurrent modification exception could be thrown - #656 Bug
+   Fixed issue of deletion pop-up dialogues showing duplicate references - #660 Bug
+   Fixed issue of editors closing unexpectedly - #671 Bug
+   Fixed issue of concept generators generating unnecessary imports - #687 Bug
+
 Release 4.11.0 (28th February 2020)
 ----------------------------------
 
@@ -121,7 +161,7 @@ New Features:
 	
 Usability Updates:
 	Improved error/warning icons on visualisation editor - #598 Comfort/Usability
-	Improved ditor forms appearance in Linux build - #589 Comfort/Usability
+	Improved editor forms appearance in Linux build - #589 Comfort/Usability
 	Added concept icons to the Concept Palette - #565 Comfort/Usability
 	Improved Filtering of names in ReferenceSelectionDialogue - #560 Comfort/Usability
 	Improved naming of Concept Palette items - #559 Comfort/Usability
