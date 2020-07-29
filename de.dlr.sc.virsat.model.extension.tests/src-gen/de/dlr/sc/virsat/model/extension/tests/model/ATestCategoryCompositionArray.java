@@ -93,7 +93,6 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
-	@XmlElement
 	public IBeanList<TestCategoryAllProperty> getTestCompositionArrayDynamic() {
 		safeAccessTestCompositionArrayDynamic();
 		return testCompositionArrayDynamic;
@@ -107,6 +106,7 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayDynamicBean() {
 		safeAccessTestCompositionArrayDynamicBean();
 		return testCompositionArrayDynamicBean;
@@ -123,7 +123,6 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
-	@XmlElement
 	public IBeanList<TestCategoryAllProperty> getTestCompositionArrayStatic() {
 		safeAccessTestCompositionArrayStatic();
 		return testCompositionArrayStatic;
@@ -137,6 +136,7 @@ public abstract class ATestCategoryCompositionArray extends GenericCategory impl
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayStaticBean() {
 		safeAccessTestCompositionArrayStaticBean();
 		return testCompositionArrayStaticBean;

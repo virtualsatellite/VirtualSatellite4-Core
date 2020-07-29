@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -23,6 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
@@ -63,6 +66,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		

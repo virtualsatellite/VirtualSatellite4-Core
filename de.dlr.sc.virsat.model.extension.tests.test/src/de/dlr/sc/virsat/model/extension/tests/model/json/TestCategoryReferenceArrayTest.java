@@ -10,19 +10,28 @@
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesFactoryImpl;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
@@ -35,8 +44,11 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 
 	private TestCategoryReferenceArray testArray;
 	private JAXBUtility jaxbUtility;
+	private Concept concept;
+	private BeanPropertyString bpString;
+	private TestCategoryAllProperty tcAllProperty;
 	private static final String RESOURCE = "/resources/json/TestCategoryReferenceArray_Marshaling.json";
-	private static final String TEST_STRING = "test";
+	private static final String RESOURCE_CHANGED_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_ChangeReference.json";
 
 	@Before
 	public void setup() throws JAXBException {
@@ -44,46 +56,46 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 
 		// Load the concept to create the test object
 		prepareEditingDomain();
-		Concept concept = loadConceptFromPlugin();
+		concept = loadConceptFromPlugin();
 		testArray = new TestCategoryReferenceArray(concept);
 		
-		TestCategoryAllProperty tcAllProperty = new TestCategoryAllProperty(concept);
+		tcAllProperty = new TestCategoryAllProperty(concept);
 		
 		// Set uuids to match the test resource
-		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
-		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638db"));
-		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939d"));
-		tcAllProperty.getTestFloatBean().getATypeInstance().setUuid(new VirSatUuid("2870876e-4d6c-4128-801d-54fa109f382d"));
-		tcAllProperty.getTestIntBean().getATypeInstance().setUuid(new VirSatUuid("0f37aff6-ccc0-436f-a592-bd466f74bd86"));
-		tcAllProperty.getTestResourceBean().getATypeInstance().setUuid(new VirSatUuid("fa822159-51a5-4bf2-99cf-e565b67e0ebd"));
-		tcAllProperty.getTestStringBean().getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty);
+		
+//		bpString = JsonTestHelper.createTestStringBean(concept);
+		// TODO: use json helper instead
+		bpString = new TestCategoryAllProperty(concept).getTestStringBean();
+		bpString.getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		
 		testArray.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
-		testArray.getTestCategoryReferenceArrayDynamic().getArrayInstance().setUuid(new VirSatUuid("ee6e1025-4a77-4b32-9c62-cb459ed76ce8"));		
-		testArray.getTestCategoryReferenceArrayStaticBean().get(0).setValue(tcAllProperty);
-		testArray.getTestCategoryReferenceArrayStaticBean().get(1).setValue(tcAllProperty);
-		testArray.getTestCategoryReferenceArrayStaticBean().get(2).setValue(tcAllProperty);
-		testArray.getTestCategoryReferenceArrayStaticBean().get(3).setValue(tcAllProperty);
-		testArray.getTestCategoryReferenceArrayStatic().getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f9495b"));
-		testArray.getTestPropertyReferenceArrayDynamic().getArrayInstance().setUuid(new VirSatUuid("ee6e1025-4a77-4b32-9c62-cb459ed76ce1"));		
-		testArray.getTestPropertyReferenceArrayStaticBean().get(0).setValue(createVpiWithUuid("d7ed5b62-f096-4347-88ef-eae61c5f1665"));
-		testArray.getTestPropertyReferenceArrayStaticBean().get(1).setValue(createVpiWithUuid("d7ed5b62-f096-4347-88ef-eae61c5f1666"));
-		testArray.getTestPropertyReferenceArrayStaticBean().get(2).setValue(createVpiWithUuid("d7ed5b62-f096-4347-88ef-eae61c5f1667"));
-		testArray.getTestPropertyReferenceArrayStaticBean().get(3).setValue(createVpiWithUuid("d7ed5b62-f096-4347-88ef-eae61c5f1668"));
-		testArray.getTestPropertyReferenceArrayStatic().getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f94951"));
 		
-		testArray.getTestPropertyReferenceArrayStatic();
-		// TODO: no typeinstance for the bean initially???
-		// results in error when marshalling
-		// TODO: can't set typeinstance on bean directly???????????????????????
+		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> staticCategoryArray = testArray.getTestCategoryReferenceArrayStaticBean();
+		for (int i = 0; i < staticCategoryArray.size(); i++) {
+			BeanPropertyReference<TestCategoryAllProperty> bean = staticCategoryArray.get(i);
+			bean.getATypeInstance().setUuid(new VirSatUuid("8872b433-968c-4f48-b9a3-d734c6e239a" + Integer.toString(i)));
+			
+			bean.setValue(tcAllProperty);
+		}
+		
+		IBeanList<BeanPropertyReference<BeanPropertyString>> staticPropertyArray = testArray.getTestPropertyReferenceArrayStaticBean();
+		for (int i = 0; i < staticPropertyArray.size(); i++) {
+			BeanPropertyReference<BeanPropertyString> bean = staticPropertyArray.get(i);
+			bean.getATypeInstance().setUuid(new VirSatUuid("49177554-f1e4-4529-bf1b-3036abb1ee3" + Integer.toString(i)));
+			
+			bean.setValue(bpString);
+		}
+		
+		//TODO can't set typeinstance directly but on bean?????????
 	}
 	
-	private BeanPropertyString createVpiWithUuid(String uuid) {
-		ValuePropertyInstance vpi = PropertyinstancesFactoryImpl.eINSTANCE.createValuePropertyInstance();
-		vpi.setValue(TEST_STRING);
-		vpi.setUuid(new VirSatUuid(uuid));
-		return new BeanPropertyString(vpi);
-	}
+//	private BeanPropertyString createVpiWithUuid(String uuid) {
+//		ValuePropertyInstance vpi = PropertyinstancesFactoryImpl.eINSTANCE.createValuePropertyInstance();
+//		vpi.setValue(TEST_STRING);
+//		vpi.setUuid(new VirSatUuid(uuid));
+//		return new BeanPropertyString(vpi);
+//	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
@@ -99,5 +111,31 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
 	}
 	
-	//TODO: unmarshalling
+	@Test
+	public void testJsonUnmarshalling() throws JAXBException, IOException {
+		BeanPropertyString bpString2 = new TestCategoryAllProperty(concept).getTestStringBean();
+		bpString2.getATypeInstance().setUuid(new VirSatUuid("1256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(testArray.getATypeInstance());
+		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+		resourceImpl.getContents().add(bpString.getATypeInstance());
+		resourceImpl.getContents().add(bpString2.getATypeInstance());
+		
+		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		
+		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
+		System.out.println(inputJson);
+		StringReader sr = new StringReader(inputJson);
+		
+		assertEquals(bpString.getUuid(), testArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		
+		JAXBElement<TestCategoryReferenceArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
+		TestCategoryReferenceArray createdArray = jaxbElement.getValue();
+		
+		assertEquals(bpString2.getUuid(), createdArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+	}
 }

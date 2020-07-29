@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -30,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
@@ -42,23 +44,31 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 	
 	private TestCategoryCompositionArray testArray;
 	private JAXBUtility jaxbUtility;
+	private Concept concept;
 	private static final String RESOURCE = "/resources/json/TestCategoryCompositionArray_Marshaling.json";
+	private static final String RESOURCE_CHANGE_ELEMENT = "/resources/json/TestCategoryCompositionArray_Marshaling_ChangeElement.json";
 
 	@Before
 	public void setup() throws JAXBException {
-		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryCompositionArray.class});
+		// TODO: comment
+		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryCompositionArray.class, TestCategoryAllProperty.class});
 		
 		// Load the concept to create the test object
 		prepareEditingDomain();
-		Concept concept = loadConceptFromPlugin();
+		concept = loadConceptFromPlugin();
 		testArray = new TestCategoryCompositionArray(concept);
 		
+		// TODO func to set uuid
 		testArray.getATypeInstance().setUuid(new VirSatUuid("f5d016ac-65fa-4b9d-ae94-582d4f73138a"));
-		IBeanList<TestCategoryAllProperty> staticArray = testArray.getTestCompositionArrayStatic();
-		TestCategoryAllProperty tcAllProperty;
+		IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> staticArray = testArray.getTestCompositionArrayStaticBean();
 		for (int i = 0; i < staticArray.size(); i++) {
-			tcAllProperty = staticArray.get(i);
-			JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, Integer.toString(i));
+			String lastChar = Integer.toString(i);
+			
+			BeanPropertyComposed<TestCategoryAllProperty> bean = staticArray.get(i);
+			bean.getATypeInstance().setUuid(new VirSatUuid("45e18c9d-ef85-4ab8-ba2a-c5916697a0b" + lastChar));
+			
+			TestCategoryAllProperty tcAllProperty = bean.getValue();
+			JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, lastChar);
 		}
 		
 		JsonTestHelper.createRepositoryWithUnitManagement(concept);	
@@ -99,5 +109,37 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 		TestCategoryCompositionArray createdArray = jaxbElement.getValue();
 		
 		assertEquals(JsonTestHelper.TEST_STRING, createdArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
+	}
+	
+	@Test
+	public void testJsonUnmarshallingChangeWholeElement() throws JAXBException, IOException {
+		TestCategoryAllProperty tcAllPropertyNew = new TestCategoryAllProperty(concept);
+		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllPropertyNew, "a");
+//		ReferencePropertyInstance rpi = PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
+//		rpi.setUuid(new VirSatUuid("45e18c9d-ef85-4ab8-ba2a-c5916697a0ba"));
+//		testArray.getTestCompositionArrayStaticBean().get(0).setValue(tcAllPropertyNew);
+//		BeanPropertyReference<TestCategoryAllProperty> refBean = new BeanPropertyReference<TestCategoryAllProperty>(rpi);
+//		refBean.setValue(tcAllPropertyNew);
+		
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(testArray.getATypeInstance());
+		resourceImpl.getContents().add(tcAllPropertyNew.getATypeInstance());
+		
+		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		
+		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGE_ELEMENT);
+		System.out.println(inputJson);
+		StringReader sr = new StringReader(inputJson);
+
+		assertEquals(null, testArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
+		
+		// TODO: we cant set the composed ca on bean level atm
+		JAXBElement<TestCategoryCompositionArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
+		TestCategoryCompositionArray createdArray = jaxbElement.getValue();
+		
+		assertNotEquals(tcAllPropertyNew.getATypeInstance().getUuid(), createdArray.getTestCompositionArrayStatic().get(0).getUuid());
 	}
 }

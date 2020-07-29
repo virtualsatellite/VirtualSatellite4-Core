@@ -40,8 +40,9 @@ public class ReferenceAdapter extends XmlAdapter<String, ABeanObject> {
 	
 	@Override
 	public ABeanObject unmarshal(String uuid) throws Exception {
-		// TODO: get the same bean instad of creating a new one?
+		// TODO: get the same bean instead of creating a new one?
 		// Just copy pasted logic from bean independence solver to get something similar going...
+		// TODO: type instance from adapter 
 		EcoreUtil.getAllContents(resourceSet, true).forEachRemaining(object -> {
 			if (object instanceof ATypeInstance) {
 				ATypeInstance ref = (ATypeInstance) object;
