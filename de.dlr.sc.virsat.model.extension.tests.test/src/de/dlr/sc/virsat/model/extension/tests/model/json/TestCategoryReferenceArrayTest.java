@@ -64,10 +64,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		// Set uuids to match the test resource
 		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty);
 		
-//		bpString = JsonTestHelper.createTestStringBean(concept);
-		// TODO: use json helper instead
-		bpString = new TestCategoryAllProperty(concept).getTestStringBean();
-		bpString.getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		bpString = JsonTestHelper.createTestStringBean(concept);
 		
 		testArray.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
 		
@@ -86,16 +83,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 			
 			bean.setValue(bpString);
 		}
-		
-		//TODO can't set typeinstance directly but on bean?????????
 	}
-	
-//	private BeanPropertyString createVpiWithUuid(String uuid) {
-//		ValuePropertyInstance vpi = PropertyinstancesFactoryImpl.eINSTANCE.createValuePropertyInstance();
-//		vpi.setValue(TEST_STRING);
-//		vpi.setUuid(new VirSatUuid(uuid));
-//		return new BeanPropertyString(vpi);
-//	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {

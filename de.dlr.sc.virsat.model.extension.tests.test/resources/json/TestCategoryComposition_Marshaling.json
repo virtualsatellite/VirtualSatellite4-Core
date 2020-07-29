@@ -30,7 +30,7 @@
       },
       "testStringBean" : {
          "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa0",
-         "value" : null
+         "value" : "testString"
       }
    }
 }

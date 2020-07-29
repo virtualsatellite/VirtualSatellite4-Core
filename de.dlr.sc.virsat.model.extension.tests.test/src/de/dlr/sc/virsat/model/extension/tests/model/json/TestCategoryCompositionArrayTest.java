@@ -50,7 +50,9 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 
 	@Before
 	public void setup() throws JAXBException {
-		// TODO: comment
+		// Because a composed bean is generic we need an adapter
+		// And because of the adapter we have to manually add the composed
+		// classes to the marshaller.
 		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryCompositionArray.class, TestCategoryAllProperty.class});
 		
 		// Load the concept to create the test object
@@ -58,7 +60,6 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 		concept = loadConceptFromPlugin();
 		testArray = new TestCategoryCompositionArray(concept);
 		
-		// TODO func to set uuid
 		testArray.getATypeInstance().setUuid(new VirSatUuid("f5d016ac-65fa-4b9d-ae94-582d4f73138a"));
 		IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> staticArray = testArray.getTestCompositionArrayStaticBean();
 		for (int i = 0; i < staticArray.size(); i++) {
@@ -115,12 +116,7 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 	public void testJsonUnmarshallingChangeWholeElement() throws JAXBException, IOException {
 		TestCategoryAllProperty tcAllPropertyNew = new TestCategoryAllProperty(concept);
 		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllPropertyNew, "a");
-//		ReferencePropertyInstance rpi = PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
-//		rpi.setUuid(new VirSatUuid("45e18c9d-ef85-4ab8-ba2a-c5916697a0ba"));
-//		testArray.getTestCompositionArrayStaticBean().get(0).setValue(tcAllPropertyNew);
-//		BeanPropertyReference<TestCategoryAllProperty> refBean = new BeanPropertyReference<TestCategoryAllProperty>(rpi);
-//		refBean.setValue(tcAllPropertyNew);
-		
+
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
@@ -134,12 +130,10 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
-		assertEquals(null, testArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
-		
-		// TODO: we cant set the composed ca on bean level atm
 		JAXBElement<TestCategoryCompositionArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
 		TestCategoryCompositionArray createdArray = jaxbElement.getValue();
 		
-		assertNotEquals(tcAllPropertyNew.getATypeInstance().getUuid(), createdArray.getTestCompositionArrayStatic().get(0).getUuid());
+		// The set value function of the bean doesn't have any effect at the moment
+		assertNotEquals("No new element set", tcAllPropertyNew.getATypeInstance().getUuid(), createdArray.getTestCompositionArrayStatic().get(0).getUuid());
 	}
 }

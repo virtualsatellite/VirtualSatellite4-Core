@@ -39,7 +39,6 @@ import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryCompositionTest extends AConceptTestCase {
 
-
 	private JAXBUtility jaxbUtility;
 	private TestCategoryComposition tcComposition;
 	private TestCategoryAllProperty tcAllProperty;
@@ -64,6 +63,7 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
+		tcAllProperty.setTestString(JsonTestHelper.TEST_STRING);
 		
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
@@ -91,10 +91,11 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
+		assertEquals(null, tcAllProperty.getTestString());
+		
 		JAXBElement<TestCategoryComposition> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
 		TestCategoryComposition createdCategory = jaxbElement.getValue();
 		
-		assertEquals(tcAllProperty, createdCategory.getTestSubCategory());
-		//TODO: asserts
+		assertEquals(JsonTestHelper.TEST_STRING, createdCategory.getTestSubCategory().getTestString());
 	}
 }

@@ -60,9 +60,7 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcReference = new TestCategoryReference(concept);
 		tcReference.getATypeInstance().setUuid(new VirSatUuid("0370d14d-e6a1-4660-83f1-5bb98fa840ac"));
 		
-		// TODO: use json helper instead
-		bpString = new TestCategoryAllProperty(concept).getTestStringBean();
-		bpString.getATypeInstance().setUuid(new VirSatUuid("7256e7a2-9a1f-443c-85f8-7b766eac3f50"));
+		bpString = JsonTestHelper.createTestStringBean(concept);
 		tcReference.setTestRefProperty(bpString);
 		
 		refPropBean = tcReference.getTestRefPropertyBean();
