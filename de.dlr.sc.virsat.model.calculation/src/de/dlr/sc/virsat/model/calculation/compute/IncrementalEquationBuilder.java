@@ -136,6 +136,9 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 						boolean isDvlmModelFile = VirSatProjectCommons.isDvlmFile(iFile);
 						if (isDvlmModelFile) {
 							Resource resource = resourceSet.safeGetResource(iFile, false);
+							
+							// Were are actually processing files here so make sure the resources all get saved
+							setSaveAfterIncrementalBuild();
 
 							// In case the resource could not be loaded continue with the next delta.
 							if (resource == null) {
