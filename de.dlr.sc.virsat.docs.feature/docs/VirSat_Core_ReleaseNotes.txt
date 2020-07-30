@@ -14,7 +14,7 @@ New Features:
    Implemented support to allow the REST server to execute commands in the name of a requesting user - #548 Feature
    Improved licensing and copyright information to protect DLR images and logos - #559 Feature
    Implemented bean API support for reference and composed properties - #606 #633 #663 Feature
-   Upgraded to Eclispe 2020-06 - #665 Feature
+   Upgraded to Eclipse 2020-06 - #665 Feature
 
 Usability Updates:
    Made Unit and QuantityKind tables sortable - #30 Comfort/usability
@@ -27,7 +27,7 @@ Fixed Bugs:
    Fixed issue where Equations could not be viewed by disciplines who do not own a structural element instance - #374 Bug
    Fixed inconsistent vendor names in plugins - #474 Bug Quality
    Fixed deadlock issues caused by concurrent manipulations of the data model and the file system - #478 #645 #680 Bug
-   Fixed exception thrown during synchronization of graphiti diagrams - #499 Bug
+   Fixed exception thrown during synchronization of Graphiti diagrams - #499 Bug
    Fixed caching issue in manipulation reference properties through the beans API - #486 Bug
    Fixed performance issue when validating references - #509 Bug
    Fixed issue where .git did not recognize VirSat folders due to missing .empty object - #521 Bug
