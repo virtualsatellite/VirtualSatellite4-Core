@@ -40,6 +40,7 @@ Fixed Bugs:
    Fixed issue of deletion pop-up dialogues showing duplicate references - #660 Bug
    Fixed issue of editors closing unexpectedly - #671 Bug
    Fixed issue of concept generators generating unnecessary imports - #687 Bug
+   Fixed issue where inheritance builder did not propagate changes in resource properties - #714 Bug
 
 Release 4.11.0 (28th February 2020)
 ----------------------------------
