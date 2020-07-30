@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.feature"
       label="VirSat Core Data Model Feature"
-      version="4.11.0.qualifier"
+      version="4.12.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -82,6 +82,20 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.external.lib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.matlabfile"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.commons"
          download-size="0"
          install-size="0"
          version="0.0.0"

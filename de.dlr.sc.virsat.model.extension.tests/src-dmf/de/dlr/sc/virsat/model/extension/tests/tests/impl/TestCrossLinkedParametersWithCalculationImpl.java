@@ -9,13 +9,15 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
 
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCrossLinkedParametersWithCalculation;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -31,7 +33,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class TestCrossLinkedParametersWithCalculationImpl extends DObjectImpl implements TestCrossLinkedParametersWithCalculation {
+public class TestCrossLinkedParametersWithCalculationImpl extends GenericCategoryImpl implements TestCrossLinkedParametersWithCalculation {
 	/**
 	 * The default value of the '{@link #getCalcedTrl() <em>Calced Trl</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -41,6 +43,7 @@ public class TestCrossLinkedParametersWithCalculationImpl extends DObjectImpl im
 	 * @ordered
 	 */
 	protected static final double CALCED_TRL_EDEFAULT = 0.0;
+
 	/**
 	 * The cached value of the '{@link #getCalcedTrl() <em>Calced Trl</em>}' attribute.
 	 * <!-- begin-user-doc -->

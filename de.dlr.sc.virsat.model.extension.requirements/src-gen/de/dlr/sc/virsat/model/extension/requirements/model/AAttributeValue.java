@@ -12,23 +12,19 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
-import org.eclipse.core.runtime.CoreException;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -43,7 +39,7 @@ import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
  * 
  * 
  */	
-public abstract class AAttributeValue extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class AAttributeValue extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.AttributeValue";
 	
@@ -82,49 +78,31 @@ public abstract class AAttributeValue extends ABeanCategoryAssignment implements
 	// *****************************************************************
 	// * Attribute: attType
 	// *****************************************************************
-	private RequirementAttribute attType;
+	private BeanPropertyReference<RequirementAttribute> attType = new BeanPropertyReference<>();
 	
 	private void safeAccessAttType() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("attType");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (attType == null) {
-				createAttType(ca);
-			}
-			attType.setTypeInstance(ca);
-		} else {
-			attType = null;
-		}
+		attType.setTypeInstance(propertyInstance);
 	}
 	
-	private void createAttType(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			attType = (RequirementAttribute) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public RequirementAttribute getAttType() {
 		safeAccessAttType();
-		return attType;
+		return attType.getValue();
 	}
 	
 	public Command setAttType(EditingDomain ed, RequirementAttribute value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("attType");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessAttType();
+		return attType.setValue(ed, value);
 	}
 	
 	public void setAttType(RequirementAttribute value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("attType");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessAttType();
+		attType.setValue(value);
+	}
+	
+	public BeanPropertyReference<RequirementAttribute> getAttTypeBean() {
+		safeAccessAttType();
+		return attType;
 	}
 	
 	// *****************************************************************

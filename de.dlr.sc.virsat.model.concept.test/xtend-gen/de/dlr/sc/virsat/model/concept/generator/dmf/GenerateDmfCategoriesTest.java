@@ -11,9 +11,12 @@ package de.dlr.sc.virsat.model.concept.generator.dmf;
 
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.generator.dmf.GenerateDmfCategories;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
+import de.dlr.sc.virsat.model.concept.test.MockupConceptResourceLoader;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
@@ -21,6 +24,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayMod
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
 import javax.inject.Inject;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -50,9 +54,13 @@ public class GenerateDmfCategoriesTest {
   @Extension
   private ParseHelper<Concept> _parseHelper;
   
+  protected ExternalModelTestHelper helper = new ExternalModelTestHelper();
+  
   private static final String TEST_CONCEPT_NAME = "testConcept";
   
   private static final String TEST_FQN_NAME = (("de.dlr.sc.virsat.model.extension" + ".") + GenerateDmfCategoriesTest.TEST_CONCEPT_NAME);
+  
+  private static final String TEST_CONCEPT_XMI_PATH = (GenerateDmfCategoriesTest.TEST_FQN_NAME + "/concept/concept.xmi");
   
   private static final String TEST_CATEGORY_NAME = "testCategory";
   
@@ -65,6 +73,7 @@ public class GenerateDmfCategoriesTest {
     ConceptsPackage.eINSTANCE.eClass();
     CategoriesPackage.eINSTANCE.eClass();
     PropertydefinitionsPackage.eINSTANCE.eClass();
+    this.helper.loadExternalPackage();
   }
   
   @Test
@@ -295,6 +304,9 @@ public class GenerateDmfCategoriesTest {
       _builder.append("}");
       _builder.newLine();
       final Concept concept = this._parseHelper.parse(_builder);
+      final MockupConceptResourceLoader testLoader = new MockupConceptResourceLoader();
+      testLoader.addTestConceptInstance(GenerateDmfCategoriesTest.TEST_CONCEPT_XMI_PATH, concept);
+      ConceptResourceLoader.injectInstance(testLoader);
       this.dmfCategoriesGenerator.initResources(concept);
       final EPackage ePackage = this.dmfCategoriesGenerator.createEPackageFromConcept(concept);
       AProperty _get = concept.getCategories().get(1).getProperties().get(0);
@@ -355,6 +367,9 @@ public class GenerateDmfCategoriesTest {
       _builder.append("}");
       _builder.newLine();
       final Concept concept = this._parseHelper.parse(_builder);
+      final MockupConceptResourceLoader testLoader = new MockupConceptResourceLoader();
+      testLoader.addTestConceptInstance(GenerateDmfCategoriesTest.TEST_CONCEPT_XMI_PATH, concept);
+      ConceptResourceLoader.injectInstance(testLoader);
       this.dmfCategoriesGenerator.initResources(concept);
       final EPackage ePackage = this.dmfCategoriesGenerator.createEPackageFromConcept(concept);
       EcoreUtil.resolve(concept.getCategories().get(1).getExtendsCategory(), concept.eResource().getResourceSet());
@@ -367,6 +382,68 @@ public class GenerateDmfCategoriesTest {
       final EClass eClassExtending = ((EClass) _get_1);
       Assert.assertTrue("Base EClass is abstract", eClassExtended.isAbstract());
       Assert.assertTrue("EClass correctly extends base EClass", eClassExtending.getESuperTypes().contains(eClassExtended));
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testCreateEClassWithConceptEReference() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept testConcept hasDMF {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("EImport \"http://www.virsat.sc.dlr.de/external/tests\";");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Category TestCategory {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("EReference testEReference of Type tests.ExternalTestType;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("EReference testEReferenceArray[] of Type tests.ExternalTestType;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final Concept concept = this._parseHelper.parse(_builder, this.helper.getResourceSet());
+      this.dmfCategoriesGenerator.initResources(concept);
+      final EPackage ePackage = this.dmfCategoriesGenerator.createEPackageFromConcept(concept);
+      this.dmfCategoriesGenerator.createCategoryEClassesInEPackage(concept, ePackage);
+      EClassifier _get = ePackage.getEClassifiers().get(0);
+      final EClass eClass = ((EClass) _get);
+      final Category category = concept.getCategories().get(0);
+      final EStructuralFeature eStructuralFeature = eClass.getEStructuralFeatures().get(0);
+      AProperty _get_1 = category.getProperties().get(0);
+      final EReferenceProperty eProperty = ((EReferenceProperty) _get_1);
+      Assert.assertEquals("Structural feature has correct name", eProperty.getName(), eStructuralFeature.getName());
+      Assert.assertTrue("Structural feature is a reference", (eStructuralFeature instanceof EReference));
+      final EReference eReference = ((EReference) eStructuralFeature);
+      Assert.assertEquals("Reference has correct type", eProperty.getReferenceType(), eReference.getEType());
+      final EStructuralFeature eStructuralArrayFeature = eClass.getEStructuralFeatures().get(1);
+      AProperty _get_2 = category.getProperties().get(1);
+      final EReferenceProperty eArrayProperty = ((EReferenceProperty) _get_2);
+      Assert.assertEquals("Structural feature has correct name", eArrayProperty.getName(), eStructuralArrayFeature.getName());
+      Assert.assertTrue("Structural feature is a reference", (eStructuralFeature instanceof EReference));
+      final EReference eArrayReference = ((EReference) eStructuralFeature);
+      Assert.assertEquals("Reference has correct type", eArrayProperty.getReferenceType(), eArrayReference.getEType());
+      Assert.assertEquals("Upper bound of structural feature is set correctly", (-1), eStructuralArrayFeature.getUpperBound());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.excel.test;
 
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -18,16 +17,16 @@ import de.dlr.sc.virsat.excel.ExcelExporterTest;
 import de.dlr.sc.virsat.excel.ExcelImporterTest;
 import de.dlr.sc.virsat.excel.FaultTest;
 import de.dlr.sc.virsat.excel.commands.ImportCommandTest;
+import de.dlr.sc.virsat.excel.exporter.ExcelExportHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
- * 
  * @author muel_s8
- *
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({ 
+@SuiteClasses({
+		ExcelExportHelperTest.class,
 		ExcelExporterTest.class,
 		ExcelImporterTest.class,
 		FaultTest.class,
@@ -35,7 +34,7 @@ import junit.framework.JUnit4TestAdapter;
 	})
 
 public class AllTests {
-	
+
 	/**
 	 * Constructor for Test Suite
 	 */
@@ -48,5 +47,5 @@ public class AllTests {
 	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
-	}	
+	}
 }

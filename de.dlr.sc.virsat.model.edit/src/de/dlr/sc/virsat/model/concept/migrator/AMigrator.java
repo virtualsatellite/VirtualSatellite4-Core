@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edapt.common.IResourceSetFactory;
 import org.eclipse.emf.edapt.internal.migration.execution.ValidationLevel;
 import org.eclipse.emf.edapt.migration.MigrationException;
@@ -62,11 +63,13 @@ import org.eclipse.emf.edapt.spi.history.Release;
 import com.google.common.base.Function;
 
 import de.dlr.sc.virsat.model.concept.calculation.QualifiedEquationObjectHelper;
+import de.dlr.sc.virsat.model.concept.util.ConceptActivationHelper;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationDefinition;
 import de.dlr.sc.virsat.model.dvlm.calculation.IQualifiedEquationObject;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -84,6 +87,8 @@ public abstract class AMigrator implements IMigrator {
 
 	private IMerger.Registry mergerRegistry;
 	private IMatchEngine.Factory.Registry matchRegistry;
+	private ConceptActivationHelper activationHelper;
+	private Concept newNonActiveConcept;
 	
 	/**
 	 * Default Constructor
@@ -138,17 +143,24 @@ public abstract class AMigrator implements IMigrator {
 				return null;
 			}
 		};
+		 
+		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl() {
+			public IMatchEngine getMatchEngine() {
+				if (matchEngine == null) {
+					// Using this matcher as fall back, EMF Compare will still search for XMI IDs on EObjects
+					// for which we had no custom id function.
+					IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
+					IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, fqnIdMatcher);
+					IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
+					matchEngine = new DefaultMatchEngine(customIDMatcher, comparisonFactory);
+				}
+				
+				return matchEngine;
+			}
+		};
 		
-		// Using this matcher as fall back, EMF Compare will still search for XMI IDs on EObjects
-		// for which we had no custom id function.
-		IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
-		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, fqnIdMatcher);
-		 
-		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
-		 
-		matchRegistry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
-		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl(customIDMatcher, comparisonFactory);
 		matchEngineFactory.setRanking(RANKING_MATCHER_ID); // default engine ranking is 10, must be higher to override.
+		matchRegistry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
 		matchRegistry.add(matchEngineFactory);
 	}
 
@@ -173,6 +185,19 @@ public abstract class AMigrator implements IMigrator {
 				super.removeFromTarget(diff, rightToLeft);
 				valueMatch.setRight(right);
 			}
+			
+			@Override
+			protected void addInTarget(ReferenceChange diff, boolean rightToLeft) {
+				//Activate new types that are copied to repository via migration
+				String fragement = EcoreUtil.getURI(diff.getValue()).fragment().replace("/", "");
+				//Only activate if types are not in the concept resource itself
+				if (newNonActiveConcept.eResource() != null && newNonActiveConcept.eResource().getEObject(fragement) == null) {
+					EObject activeReferenceValue = activationHelper.getActiveType(diff.getValue());
+					diff.setValue(activeReferenceValue);
+				}
+				super.addInTarget(diff, rightToLeft);
+			}
+			
 		};
 		IMerger featureMapMerger = new FeatureMapChangeMerger();
 		IMerger resourceAttachmentMerger = new ResourceAttachmentChangeMerger();
@@ -205,6 +230,29 @@ public abstract class AMigrator implements IMigrator {
 	}
 	
 	@Override
+	public Set<String> getNewDependencies(Concept concept, IMigrator previousMigrator) {
+		
+		String conceptId = concept.getFullQualifiedName() + "/";
+		Concept conceptNext = loadConceptXmi(conceptId + getResource());
+		
+		return getNewDependencies(concept, conceptNext);
+	}
+	
+	/**
+	 * Return new dependencies of new concept versions
+	 * @param conceptCurrent the current concept as it is in the repository
+	 * @param conceptNext the next concept version
+	 * @return A set of new concept names
+	 */
+	public Set<String> getNewDependencies(Concept conceptCurrent, Concept conceptNext) {
+		//new dependencies are dependencies of newer concept minus old dependencies
+		Set<String> newDependencies = ActiveConceptHelper.getConceptDependencies(conceptNext);
+		newDependencies.removeAll(ActiveConceptHelper.getConceptDependencies(conceptCurrent));
+		
+		return newDependencies;
+	}
+	
+	@Override
 	public void migrate(Concept conceptCurrent, IMigrator previousMigrator) {
 		String conceptId = conceptCurrent.getFullQualifiedName() + "/";
 		Concept conceptPrevious = loadConceptXmi(conceptId + previousMigrator.getResource());
@@ -223,6 +271,8 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptPrevious, Concept conceptCurrent, Concept conceptNext) {
 		IComparisonScope scope = new DefaultComparisonScope(conceptNext, conceptCurrent,  conceptPrevious);
 		Comparison comparison = EMFCompare.builder().setMatchEngineFactoryRegistry(matchRegistry).build().compare(scope);
+		activationHelper = new ConceptActivationHelper(conceptCurrent);
+		newNonActiveConcept = conceptNext;
 
 		List<Diff> differences = comparison.getDifferences();
 		cmHelper = new ConceptMigrationHelper(conceptCurrent);
@@ -607,6 +657,13 @@ public abstract class AMigrator implements IMigrator {
 		
 		String nsURI = ReleaseUtils.getNamespaceURI(conceptResourceUri);
 		Migrator migrator = MigratorRegistry.getInstance().getMigrator(nsURI);
+		
+		if (migrator == null) {
+			DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, 
+					"Could not get DVLM migrator for concept resource: " + conceptResourceUri));
+			//Check that all dependent concepts and their plugins are available in platform...  
+			return new ResourceSetImpl();
+		}
 		
 		migrator.setResourceSetFactory(resSetFactory);
 		Release release = migrator.getRelease(conceptResourceUri).iterator().next();

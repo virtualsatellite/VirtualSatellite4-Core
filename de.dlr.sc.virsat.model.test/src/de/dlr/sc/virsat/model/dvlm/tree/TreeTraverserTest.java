@@ -10,6 +10,12 @@
 package de.dlr.sc.virsat.model.dvlm.tree;
 
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,16 +29,8 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
-import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 public class TreeTraverserTest {
 
-	StructuralElement se;
-	
 	StructuralElementInstance seiRoot;
 	StructuralElementInstance seiChild1;
 	StructuralElementInstance seiChild1Child;
@@ -87,7 +85,7 @@ public class TreeTraverserTest {
 	/**
 	 * Class to capture the results from the tree traversing
 	 */
-	class Result {
+	static class Result {
 
 		Result(StructuralElementInstance sei, int processedLevel, int matchedLevel) {
 			this.sei = sei;

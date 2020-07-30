@@ -12,21 +12,17 @@ package de.dlr.sc.virsat.model.extension.funcelectrical.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.core.runtime.CoreException;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 
 // *****************************************************************
@@ -41,7 +37,7 @@ import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceType;
  * Describes a Functional Electrical InterfaceEnd as connection point for Interfaces
  * 
  */	
-public abstract class AInterfaceEnd extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class AInterfaceEnd extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd";
 	
@@ -79,49 +75,31 @@ public abstract class AInterfaceEnd extends ABeanCategoryAssignment implements I
 	// *****************************************************************
 	// * Attribute: type
 	// *****************************************************************
-	private InterfaceType type;
+	private BeanPropertyReference<InterfaceType> type = new BeanPropertyReference<>();
 	
 	private void safeAccessType() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("type");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (type == null) {
-				createType(ca);
-			}
-			type.setTypeInstance(ca);
-		} else {
-			type = null;
-		}
+		type.setTypeInstance(propertyInstance);
 	}
 	
-	private void createType(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			type = (InterfaceType) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public InterfaceType getType() {
 		safeAccessType();
-		return type;
+		return type.getValue();
 	}
 	
 	public Command setType(EditingDomain ed, InterfaceType value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("type");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessType();
+		return type.setValue(ed, value);
 	}
 	
 	public void setType(InterfaceType value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("type");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessType();
+		type.setValue(value);
+	}
+	
+	public BeanPropertyReference<InterfaceType> getTypeBean() {
+		safeAccessType();
+		return type;
 	}
 	
 	

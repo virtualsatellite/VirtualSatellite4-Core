@@ -2,13 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Apache POI
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.apache.poi
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: .,
- externalLib/poi-3.14/poi-3.14.jar,
- externalLib/poi-3.14/poi-ooxml-3.14.jar,
- externalLib/poi-3.14/poi-ooxml-schemas-3.14.jar,
- externalLib/poi-3.14/xmlbeans-2.6.0.jar
 Export-Package: org.apache.poi,
  org.apache.poi.common.usermodel,
  org.apache.poi.ddf,
@@ -86,3 +81,11 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-Activator: de.dlr.virsat.external.lib.apache.poi.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.apache.poi
+Bundle-ClassPath: externalLib/maven/commons-codec.jar,
+ externalLib/maven/curvesapi.jar,
+ externalLib/maven/poi-ooxml-schemas.jar,
+ externalLib/maven/poi-ooxml.jar,
+ externalLib/maven/poi-scratchpad.jar,
+ externalLib/maven/poi.jar,
+ externalLib/maven/stax-api.jar,
+ externalLib/maven/xmlbeans.jar

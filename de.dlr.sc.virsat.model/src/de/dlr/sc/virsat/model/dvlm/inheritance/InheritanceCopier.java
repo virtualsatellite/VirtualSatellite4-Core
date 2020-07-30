@@ -34,8 +34,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
-import de.dlr.sc.virsat.model.dvlm.roles.IRightsHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMApplicableForCheck;
 
@@ -52,7 +53,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 */
 	public InheritanceCopier() {
 		inheritanceCopier = new EcoreInheritanceCopier();
-		rightsHelper = new RightsHelper();
+		userContext = UserRegistry.getInstance();
 	}
 	
 	/**
@@ -60,14 +61,14 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * the standard VirSat AccessRights behavior. This method is primarily used for
 	 * the ModelAPI to allow it to write to all SEIs when performing an update on
 	 * the inheritance.
-	 * @param rightsHelper A customized RightsHelper
+	 * @param userContext A customized UserContext to verify write Permissions
 	 */
-	public InheritanceCopier(IRightsHelper rightsHelper) {
+	public InheritanceCopier(IUserContext userContext) {
 		inheritanceCopier = new EcoreInheritanceCopier();
-		this.rightsHelper = rightsHelper;
+		this.userContext = userContext;
 	}
 	
-	private IRightsHelper rightsHelper;
+	private IUserContext userContext;
 	
 
 	/**
@@ -183,13 +184,12 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<CategoryAssignment> updateStep(StructuralElementInstance subSei) {
-		boolean hasWritePermission = rightsHelper.hasWriteAccess(subSei);
+		boolean hasWritePermission = RightsHelper.hasWritePermission(subSei, userContext);
 	
 		if (hasWritePermission) {
 			// Clean old super Tis that may no longer have valid links
 			cleanSuperTis(subSei);
 			cleanCas(subSei);
-			cleanRootTis(subSei);
 			
 			// Do the Pre-loading here. Pre-loading means that we have to load all necessary
 			// copied objects from the current tree, that might be referenced.
@@ -816,22 +816,5 @@ public class InheritanceCopier implements IInheritanceCopier {
 		for (IInheritanceLink childTi : childTypeInstances) {
 			childTi.getSuperTis().retainAll(allSuperTis);
 		}
-	}
-	
-	/**
-	 * If there is a Type Instance contained in the SEI it will be deleted 
-	 * and there will be build new once by the Inheritance Builder according to the root Tis  
-	 * @param sei The Sei to be checked
-	 */
-	public void cleanRootTis(StructuralElementInstance sei) {
-		List<CategoryAssignment> cas = new ArrayList<>(sei.getCategoryAssignments());
-		
-		for (CategoryAssignment ca : cas) {
-			Set<IInheritanceLink> rootSuperTis = getRootSuperTypeInstance(ca);
-			if (rootSuperTis.size() > 1) {
-				EcoreUtil.delete(ca);
-			}
-		}
-		
 	}
 }

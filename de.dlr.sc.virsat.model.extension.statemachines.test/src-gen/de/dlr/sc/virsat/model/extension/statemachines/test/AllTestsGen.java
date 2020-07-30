@@ -19,12 +19,13 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v2Test;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraintTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraintTest;
+import de.dlr.sc.virsat.model.extension.statemachines.validator.StatemachinesValidatorTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachineTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTest;
-import de.dlr.sc.virsat.model.extension.statemachines.validator.StructuralElementInstanceValidatorTest;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v1Test;
 
@@ -41,7 +42,8 @@ import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v1Test;
 	StateMachineTest.class,
 	Migrator1v0Test.class,
 	Migrator1v1Test.class,
-	StructuralElementInstanceValidatorTest.class,
+	Migrator1v2Test.class,
+	StatemachinesValidatorTest.class,
 				})
 
 /**

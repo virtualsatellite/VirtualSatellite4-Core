@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.Propertyd
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.IUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
@@ -79,6 +80,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -122,6 +124,13 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 	 * @generated
 	 */
 	private EClass referencePropertyInstanceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass eReferencePropertyInstanceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -196,6 +205,9 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 		PropertyinstancesPackageImpl thePropertyinstancesPackage = (PropertyinstancesPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof PropertyinstancesPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new PropertyinstancesPackageImpl());
 
 		isInited = true;
+
+		// Initialize simple dependencies
+		EcorePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		DVLMPackageImpl theDVLMPackage = (DVLMPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DVLMPackage.eNS_URI) instanceof DVLMPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DVLMPackage.eNS_URI) : DVLMPackage.eINSTANCE);
@@ -348,6 +360,24 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getEReferencePropertyInstance() {
+		return eReferencePropertyInstanceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getEReferencePropertyInstance_Reference() {
+		return (EReference)eReferencePropertyInstanceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getComposedPropertyInstance() {
 		return composedPropertyInstanceEClass;
 	}
@@ -476,6 +506,9 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 		referencePropertyInstanceEClass = createEClass(REFERENCE_PROPERTY_INSTANCE);
 		createEReference(referencePropertyInstanceEClass, REFERENCE_PROPERTY_INSTANCE__REFERENCE);
 
+		eReferencePropertyInstanceEClass = createEClass(EREFERENCE_PROPERTY_INSTANCE);
+		createEReference(eReferencePropertyInstanceEClass, EREFERENCE_PROPERTY_INSTANCE__REFERENCE);
+
 		composedPropertyInstanceEClass = createEClass(COMPOSED_PROPERTY_INSTANCE);
 		createEReference(composedPropertyInstanceEClass, COMPOSED_PROPERTY_INSTANCE__TYPE_INSTANCE);
 
@@ -519,6 +552,7 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 		QudvPackage theQudvPackage = (QudvPackage)EPackage.Registry.INSTANCE.getEPackage(QudvPackage.eNS_URI);
 		CalculationPackage theCalculationPackage = (CalculationPackage)EPackage.Registry.INSTANCE.getEPackage(CalculationPackage.eNS_URI);
 		InheritancePackage theInheritancePackage = (InheritancePackage)EPackage.Registry.INSTANCE.getEPackage(InheritancePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
 		PropertydefinitionsPackage thePropertydefinitionsPackage = (PropertydefinitionsPackage)EPackage.Registry.INSTANCE.getEPackage(PropertydefinitionsPackage.eNS_URI);
 
@@ -537,6 +571,8 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 		unitValuePropertyInstanceEClass.getESuperTypes().add(this.getIUnitPropertyInstance());
 		referencePropertyInstanceEClass.getESuperTypes().add(this.getAPropertyInstance());
 		referencePropertyInstanceEClass.getESuperTypes().add(theInheritancePackage.getIOverridableInheritanceLink());
+		eReferencePropertyInstanceEClass.getESuperTypes().add(this.getAPropertyInstance());
+		eReferencePropertyInstanceEClass.getESuperTypes().add(theInheritancePackage.getIOverridableInheritanceLink());
 		composedPropertyInstanceEClass.getESuperTypes().add(this.getAPropertyInstance());
 		arrayInstanceEClass.getESuperTypes().add(this.getAPropertyInstance());
 		resourcePropertyInstanceEClass.getESuperTypes().add(this.getAPropertyInstance());
@@ -564,6 +600,9 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 
 		initEClass(referencePropertyInstanceEClass, ReferencePropertyInstance.class, "ReferencePropertyInstance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getReferencePropertyInstance_Reference(), theCategoriesPackage.getATypeInstance(), null, "reference", null, 0, 1, ReferencePropertyInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(eReferencePropertyInstanceEClass, EReferencePropertyInstance.class, "EReferencePropertyInstance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEReferencePropertyInstance_Reference(), theEcorePackage.getEObject(), null, "reference", null, 0, 1, EReferencePropertyInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(composedPropertyInstanceEClass, ComposedPropertyInstance.class, "ComposedPropertyInstance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getComposedPropertyInstance_TypeInstance(), theCategoriesPackage.getCategoryAssignment(), null, "typeInstance", null, 0, 1, ComposedPropertyInstance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

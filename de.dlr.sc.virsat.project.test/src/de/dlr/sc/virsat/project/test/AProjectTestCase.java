@@ -9,12 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -23,12 +26,10 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
-import org.junit.rules.TestRule;
-import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -43,9 +44,10 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 public abstract class AProjectTestCase {
 
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
+	protected static final int MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS = 1000;
 	
-	@Rule
-	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
+	//@Rule
+	//public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
@@ -56,7 +58,9 @@ public abstract class AProjectTestCase {
 	protected VirSatProjectCommons projectCommons;
 	protected VirSatResourceSet rs;
 	
-	private List<IProject> testProjects = new ArrayList<>();
+	protected List<IProject> testProjects = new ArrayList<>();
+	
+	private String previousUser;
 	
 	/**
 	 * Use this method to create a new test project and to remember it for the test case.
@@ -100,8 +104,6 @@ public abstract class AProjectTestCase {
 		projectCommons.createProjectStructure(null);
 	}
 	
-	private String previousUser;
-	
 	/**
 	 * Method to adjust the User rights for the test cases
 	 * This method gets called by the constructor
@@ -118,12 +120,26 @@ public abstract class AProjectTestCase {
 
 		// make sure all Editing Domains are well removed and disposed
 		VirSatEditingDomainRegistry.INSTANCE.clear();
+		VirSatTransactionalEditingDomain.clearResourceEventListener();
+		VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
+		
 		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
-		for (IProject project : testProjects) {
-			project.delete(true, null);
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+		boolean failed = true;
+		while (failed) {
+			try {
+				for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+					if (project.exists()) {
+						project.refreshLocal(IResource.DEPTH_INFINITE, null);
+						project.delete(true, null);
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Deleted test project " +  project.getName()));
+					}
+				}
+				failed = false;
+			} catch (Exception e) {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed deleting project: ", e));
+			}
 		}
 		
 		//CHECKSTYLE:OFF
@@ -146,10 +162,11 @@ public abstract class AProjectTestCase {
 	/**
 	 * Creates the editing domain and a repository for test cases.
 	 * This includes a ResourceSet with Transactional Editing Domain
+	 * @param handleExternalWorkspaceChanges weather external resource changes should be handled
 	 * 
 	 */
-	protected void addEditingDomainAndRepository() {
-		VirSatResourceSet resSetRepositoryTarget = VirSatResourceSet.getResourceSet(testProject, false);
+	protected void addEditingDomainAndRepository(boolean handleExternalWorkspaceChanges) {
+		VirSatResourceSet resSetRepositoryTarget = VirSatResourceSet.getResourceSet(testProject, handleExternalWorkspaceChanges);
 		editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
 		Command cmd = resSetRepositoryTarget.initializeModelsAndResourceSet(null, editingDomain);
 		editingDomain.getCommandStack().execute(cmd);
@@ -157,6 +174,15 @@ public abstract class AProjectTestCase {
 
 		repository = resSetRepositoryTarget.getRepository();
 		rs = editingDomain.getResourceSet();
+	}
+	
+	/**
+	 * Creates the editing domain and a repository for test cases.
+	 * This includes a ResourceSet with Transactional Editing Domain
+	 * 
+	 */
+	protected void addEditingDomainAndRepository() {
+		addEditingDomainAndRepository(false);
 	}
 	
 	/**
@@ -202,5 +228,77 @@ public abstract class AProjectTestCase {
 		
 		// Finally hand back the result of the executed command
 		return store.firstElement();
+	}
+	
+	/**
+	 * This is a retry wrapper for assert statements. It allows to retry a single assert statement
+	 * a given times waiting for some given time between each retry. It throws an assertion if it fails.
+	 * at the last retry
+	 * @param retries The amount of retries to be executed
+	 * @param milliSeconds The amount of milliseconds to wait before retrying
+	 * @param assertRunnable the runnable holding the actual assert Statement
+	 */
+	protected void assertRetry(int retries, int milliSeconds, Runnable assertRunnable) {
+		assertTrue("Cannot execute negative retries", retries > 0);
+		assertTrue("Cannot wait a negative amount of time", milliSeconds > 0);
+		
+		for (int count = 1; count <= retries; count++) {
+			try {
+				try {
+					assertRunnable.run();
+					// In case nothing failed just leave the method
+					break;
+				} catch (AssertionError e) {
+					// If it failed in the last retry, than throw the error
+					if (count >= retries) {
+						String message = String.format(
+							"assertRetry failed after %i rerties waiting each for %i milliseconds with the following exception:",
+							retries,
+							milliSeconds
+						);
+						throw new AssertionError(message, e);
+					}	
+				}
+				// Apparently we need to retry, lets wait a bit
+				Thread.sleep(milliSeconds);
+			} catch (InterruptedException e) {
+				throw new AssertionError("assertRetry got interrupted", e);
+			} 
+		}
+	}
+	
+	
+	public static class TestUserContext implements IUserContext {
+
+		public TestUserContext(String userName, boolean su) {
+			this.userName = userName;
+			this.su = su;
+		}
+		
+		String userName;
+		boolean su;
+		
+		@Override
+		public boolean isSuperUser() {
+			return su;
+		}
+
+		@Override
+		public String getUserName() {
+			return userName;
+		}
+	}
+	
+	/**
+	 * Call this method to just simply wait some time.
+	 * This is needed e.g. on linux when changing files that just got
+	 * created. Otherwise the change may not be detected.
+	 */
+	public void waitSomeTime() {
+		try {
+			Thread.sleep(MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS);
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "AProjectTestCase: Got interrupted while waiting ", e));
+		}
 	}
 }

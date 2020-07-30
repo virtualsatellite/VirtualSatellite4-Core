@@ -26,8 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -53,11 +51,6 @@ public class QudvImportMapToProxyPage extends WizardPage {
 		setTitle("QUDV Import Page");
 	    setDescription("Imports QUDV Model to a repository");
 	}
-
-	// widgets
-    protected Combo sourceNameField;
-    
-    protected Button sourceBrowseButton;
 	
     private CheckboxTableViewer fTableViewer;
     

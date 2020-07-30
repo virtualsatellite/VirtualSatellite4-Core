@@ -9,7 +9,7 @@
  */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  * @model
  * @generated
  */
-public interface TestCrossLinkedParametersWithCalculation extends DObject {
+public interface TestCrossLinkedParametersWithCalculation extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Calced Trl</b></em>' attribute.
 	 * <!-- begin-user-doc -->

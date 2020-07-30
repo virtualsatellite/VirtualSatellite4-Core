@@ -15,10 +15,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.Set;
 
 import org.eclipse.core.internal.events.ResourceDelta;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
@@ -26,6 +28,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
@@ -45,7 +48,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 	 * Inheritance Copier Stub
 	 *
 	 */
-	private class TestInheritanceCopier implements IInheritanceCopier {
+	private static class TestInheritanceCopier implements IInheritanceCopier {
 
 		boolean buildRepoGotCalled = false;
 		boolean buildSeiGotCalled = false;
@@ -79,27 +82,45 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 		}
 	}
 
+	private TestInheritanceCopier tic;
+	private TestVirSatInheritanceBuilder builder;
+	
+	class TestVirSatInheritanceBuilder extends VirSatInheritanceBuilder {
+		@Override
+		protected IProject getVirSatProject() {
+			return project;
+		}
+		
+		@Override
+		protected VirSatResourceSet getResourceSet() {
+			return resSet;
+		}
+		
+		@Override
+		protected IInheritanceCopier createInheritanceCopier() {
+			return tic;
+		}
+		
+		protected boolean saveGotTriggered = false;
+		
+		@Override
+		protected void setSaveAfterIncrementalBuild() {
+			saveGotTriggered = true;
+			super.setSaveAfterIncrementalBuild();
+		}
+	}
+	
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+		
+		tic = new TestInheritanceCopier();
+		builder = new TestVirSatInheritanceBuilder();
+	}
+	
 	@Test
 	public void testFullBuild() {
-		TestInheritanceCopier tic = new TestInheritanceCopier();
-
-		AVirSatBuilder builder = new VirSatInheritanceBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-			
-			@Override
-			protected VirSatResourceSet getResourceSet() {
-				return resSet;
-			}
-			
-			@Override
-			protected IInheritanceCopier createInheritanceCopier() {
-				return tic;
-			}
-		};
-		
 		assertEquals("Correct Amount of Calls", 0, tic.calls);
 		assertNull("No Repo yet Called", tic.repo);
 		assertNull("No SEI yet Called", tic.sei);
@@ -118,26 +139,7 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 	}
 
 	@Test
-	public void testIncrementalBuild() {
-		TestInheritanceCopier tic = new TestInheritanceCopier();
-		
-		AVirSatBuilder builder = new VirSatInheritanceBuilder() {
-			@Override
-			protected IProject getVirSatProject() {
-				return project;
-			}
-			
-			@Override
-			protected VirSatResourceSet getResourceSet() {
-				return resSet;
-			}
-			
-			@Override
-			protected IInheritanceCopier createInheritanceCopier() {
-				return tic;
-			}
-		};
-		
+	public void testIncrementalBuildOnDvlmFile() {
 		assertEquals("Correct Amount of Calls", 0, tic.calls);
 		assertNull("No Repo yet Called", tic.repo);
 		assertNull("No SEI yet Called", tic.sei);
@@ -164,12 +166,47 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 		
 		builder.incrementalBuild(delta, null);
 		
-		//CHECKSTYLE:OFF
+		assertTrue("Trigger save got called since dvlm files have been changed", builder.saveGotTriggered);
 		assertEquals("Correct Amount of Calls", 1, tic.calls);
 		assertEquals("Repo got Called", repo.getUuid(), tic.repo.getUuid());
 		assertEquals("SEI got Called", seiEdSc.getUuid(), tic.sei.getUuid());
 		assertFalse("Not yet called", tic.buildRepoGotCalled);
 		assertTrue("Got called", tic.buildSeiGotCalled);
-		//CHECKSTYLE:On
+	}
+	
+	@Test
+	public void testIncrementalBuildNonDvlmFile() throws CoreException {
+		assertEquals("Correct Amount of Calls", 0, tic.calls);
+		assertNull("No Repo yet Called", tic.repo);
+		assertNull("No SEI yet Called", tic.sei);
+		assertFalse("Not yet called", tic.buildSeiGotCalled);
+		assertFalse("Not yet called", tic.buildRepoGotCalled);
+		
+		// CHECKSTYLE:OFF
+		IFile noDvlmFile = project.getFile("NoDVLMFile.Test");
+		noDvlmFile.create(new ByteArrayInputStream(new byte [20]), IResource.NONE, null);
+		// CHECKSTYLE:ON
+
+		IResourceDelta delta = new ResourceDelta(noDvlmFile.getFullPath(), null) {
+			@Override
+			public int getKind() {
+				return CHANGED;
+			}
+			
+			@Override
+			public IResource getResource() {
+				return noDvlmFile;
+			}
+			
+			@Override
+			public void accept(IResourceDeltaVisitor visitor, int memberFlags) throws CoreException {
+				visitor.visit(this);
+			}
+		};
+		
+		builder.incrementalBuild(delta, null);
+		
+		assertFalse("Trigger save did not get called since no dvlm files have been changed", builder.saveGotTriggered);
+		assertEquals("The TestInheritanceCopier did not get called", 0, tic.calls);
 	}
 }

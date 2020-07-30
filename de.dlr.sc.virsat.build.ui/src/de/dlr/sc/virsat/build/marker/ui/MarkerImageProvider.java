@@ -133,7 +133,7 @@ public class MarkerImageProvider {
 	 * @param severity 
 	 * @return if severity is IMarker.SEVERITY or IMarker.SEVERITY_WARNING or IMarker.SEVERITY_INFO returns corresponding image, otherwise returns null
 	 */
-	protected Image getProblemImageForSeverity(int severity) {
+	public Image getProblemImageForSeverity(int severity) {
 		if (severity == IMarker.SEVERITY_ERROR) {
 			return imageError;
 		}
@@ -175,16 +175,15 @@ public class MarkerImageProvider {
 	 * @return tooltip text
 	 */
 	protected String getToolTipForMarkers(Set<IMarker> markers) {
-		String toolTipText = "";
-
+		StringBuilder toolTipText = new StringBuilder();
 		for (IMarker marker : markers) {
 			String markerText = (String) marker.getAttribute(IMarker.MESSAGE, "");
-			if (!toolTipText.isEmpty() && !markerText.isEmpty()) {
-				toolTipText = toolTipText + "\r\n";
+			if (toolTipText.length() != 0 && !markerText.isEmpty()) {
+				toolTipText.append(System.lineSeparator());
 			}
-			toolTipText = toolTipText + markerText;
+			toolTipText.append(markerText);
 		}
 
-		return toolTipText;
+		return toolTipText.toString();
 	}
 }

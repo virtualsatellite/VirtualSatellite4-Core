@@ -11,11 +11,19 @@
             id="de.dlr.sc.virsat.team.ui.command.update"
             name="Update Project from Repository">
       </command>
+      <command
+            id="de.dlr.sc.virsat.team.ui.command.vc.update"
+            name="Version Control Update Command">
+      </command>
+      <command
+            id="de.dlr.sc.virsat.team.ui.command.vc.commit"
+            name="Version Control Commit Command">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.dlr.sc.virsat.team.ui.action.svn.SVNCommitAction"
+            class="de.dlr.sc.virsat.team.ui.handler.svn.SvnCommitHandler"
             commandId="de.dlr.sc.virsat.team.ui.command.commit">
          <enabledWhen>
             <with
@@ -32,7 +40,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="de.dlr.sc.virsat.team.ui.action.svn.SVNUpdateAction"
+            class="de.dlr.sc.virsat.team.ui.handler.svn.SvnUpdateHandler"
             commandId="de.dlr.sc.virsat.team.ui.command.update">
          <activeWhen>
             <with
@@ -49,7 +57,7 @@
          </activeWhen>
       </handler>
  	  <handler
-            class="de.dlr.sc.virsat.team.ui.action.git.GitCommitAction"
+            class="de.dlr.sc.virsat.team.ui.handler.git.GitCommitHandler"
             commandId="de.dlr.sc.virsat.team.ui.command.commit">
          <activeWhen>
             <with
@@ -65,7 +73,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="de.dlr.sc.virsat.team.ui.action.git.GitUpdateAction"
+            class="de.dlr.sc.virsat.team.ui.handler.git.GitUpdateHandler"
             commandId="de.dlr.sc.virsat.team.ui.command.update">
          <activeWhen>
             <with

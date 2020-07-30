@@ -17,29 +17,24 @@ import org.junit.Test;
 import de.dlr.sc.virsat.excel.fault.Fault;
 import de.dlr.sc.virsat.excel.fault.FaultType;
 
-
 /**
  * This class tests the Fault class.
- * @author muel_s8
- *
  */
-
 public class FaultTest {
 
 	@Test
 	public void testToString() {
-		Fault fault = new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, 1, 1);
+		Fault fault = new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, 1, 1);
 		String toString = fault.toString();
-		assertEquals("String output is correct", "Type: FROM_INTERFACE_END_NOT_FOUND, Sheet: 1, Line: 1", toString);
+		assertEquals("String output is correct", "Type: STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, Sheet: 1, Line: 1", toString);
 	}
 
 	@Test
 	public void testEquals() {
-		Fault fault1 = new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, 1, 1);
-		Fault fault2 = new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, 2, 1);
+		Fault fault1 = new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, 1, 1);
+		Fault fault2 = new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, 2, 1);
 		assertNotEquals("Comparing two faults that are not equal", fault1, fault2);
-		Fault fault3 = new Fault(FaultType.FROM_INTERFACE_END_NOT_FOUND, 1, 1);
+		Fault fault3 = new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, 1, 1);
 		assertEquals("Comparing two faults that are equal", fault1, fault3);
 	}
-	
 }

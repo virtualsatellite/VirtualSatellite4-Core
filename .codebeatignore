@@ -1,0 +1,10 @@
+**/src-gen/**
+**/xtend-gen/**
+**/src-dmf/**
+**/templates-gen/**
+**/Activator.java
+**/ui/**
+*.test/**
+**/migrator/**
+**/validator/**
+**/externalLib/**

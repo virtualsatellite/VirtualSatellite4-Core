@@ -57,7 +57,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @author fisc_ph
 	 *
 	 */
-	public class ResourceReloadListener implements VirSatTransactionalEditingDomain.IResourceEventListener {
+	public static class ResourceReloadListener implements VirSatTransactionalEditingDomain.IResourceEventListener {
 		@Override
 		public void resourceEvent(Set<Resource> resources, int event) {
 			if (event == VirSatTransactionalEditingDomain.EVENT_RELOAD) {
@@ -82,9 +82,9 @@ public class Activator extends AbstractUIPlugin {
 			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
 			
 			serverStarted = true;
-		} catch (UnsatisfiedLinkError e) {
-			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK libraries. Error: " + e.getMessage()));
-		}
+		} catch (Exception | UnsatisfiedLinkError | NoClassDefFoundError e) {
+			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK and ZeroMQ libraries. Error: " + e.getMessage()));
+		} 
 	}
 
 	@Override

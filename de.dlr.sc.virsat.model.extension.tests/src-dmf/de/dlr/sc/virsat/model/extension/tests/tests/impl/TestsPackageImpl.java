@@ -1,17 +1,19 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DmfPackage;
+import de.dlr.sc.virsat.model.ext.core.core.CorePackage;
+
+import de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBase;
@@ -36,6 +38,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
@@ -156,6 +159,13 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass eReferenceTestEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum enumTestEnumEEnum = null;
 
 	/**
@@ -207,6 +217,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		// Initialize simple dependencies
 		DVLMPackage.eINSTANCE.eClass();
+		CorePackage.eINSTANCE.eClass();
+		de.dlr.sc.virsat.model.external.tests.TestsPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theTestsPackage.createPackageContents();
@@ -588,6 +601,26 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 	 * @generated
 	 */
 	@Override
+	public EClass getEReferenceTest() {
+		return eReferenceTestEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getEReferenceTest_EReferenceTest() {
+		return (EReference)eReferenceTestEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EEnum getEnumTestEnum() {
 		return enumTestEnumEEnum;
 	}
@@ -672,6 +705,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		testCrossLinkedParametersWithCalculationEClass = createEClass(TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION);
 		createEAttribute(testCrossLinkedParametersWithCalculationEClass, TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION__CALCED_TRL);
 
+		eReferenceTestEClass = createEClass(EREFERENCE_TEST);
+		createEReference(eReferenceTestEClass, EREFERENCE_TEST__EREFERENCE_TEST);
+
 		// Create enums
 		enumTestEnumEEnum = createEEnum(ENUM_TEST_ENUM);
 	}
@@ -700,30 +736,30 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		DmfPackage theDmfPackage = (DmfPackage)EPackage.Registry.INSTANCE.getEPackage(DmfPackage.eNS_URI);
+		CorePackage theCorePackage = (CorePackage)EPackage.Registry.INSTANCE.getEPackage(CorePackage.eNS_URI);
+		de.dlr.sc.virsat.model.external.tests.TestsPackage theTestsPackage_1 = (de.dlr.sc.virsat.model.external.tests.TestsPackage)EPackage.Registry.INSTANCE.getEPackage(de.dlr.sc.virsat.model.external.tests.TestsPackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		testCategoryAllPropertyEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryCompositionEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryReferenceEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryIntrinsicArrayEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryCompositionArrayEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryReferenceArrayEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanAEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanBEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanAbstractEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryBeanConcreteEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testCategoryAllPropertyEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryCompositionEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryReferenceEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryIntrinsicArrayEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryCompositionArrayEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryReferenceArrayEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryBeanAEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryBeanBEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCategoryBeanAbstractEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
 		testCategoryBeanConcreteEClass.getESuperTypes().add(this.getTestCategoryBeanAbstract());
-		testCategoryBaseEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCategoryExtendsEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testCategoryBaseEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
 		testCategoryExtendsEClass.getESuperTypes().add(this.getTestCategoryBase());
-		testParameterEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testMassParametersEClass.getESuperTypes().add(theDmfPackage.getDObject());
-		testCrossLinkedParametersWithCalculationEClass.getESuperTypes().add(theDmfPackage.getDObject());
+		testParameterEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testMassParametersEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		testCrossLinkedParametersWithCalculationEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
+		eReferenceTestEClass.getESuperTypes().add(theCorePackage.getGenericCategory());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(testCategoryAllPropertyEClass, TestCategoryAllProperty.class, "TestCategoryAllProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -776,6 +812,9 @@ public class TestsPackageImpl extends EPackageImpl implements TestsPackage {
 
 		initEClass(testCrossLinkedParametersWithCalculationEClass, TestCrossLinkedParametersWithCalculation.class, "TestCrossLinkedParametersWithCalculation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTestCrossLinkedParametersWithCalculation_CalcedTrl(), ecorePackage.getEDouble(), "calcedTrl", null, 0, 1, TestCrossLinkedParametersWithCalculation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(eReferenceTestEClass, EReferenceTest.class, "EReferenceTest", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEReferenceTest_EReferenceTest(), theTestsPackage_1.getExternalTestType(), null, "eReferenceTest", null, 0, 1, EReferenceTest.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(enumTestEnumEEnum, EnumTestEnum.class, "EnumTestEnum");

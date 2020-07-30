@@ -86,7 +86,6 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 	 */
 	public class UiSnippetGenericTableImpl {
 		
-		AUiSnippetGenericCategoryAssignmentTable genericCategoryTable = null;
 		protected EsfMarkerImageProvider emip = new EsfMarkerImageProvider();
 		protected PropertyInstanceValueSwitch valueSwitch = PreferencedPropertyInstanceValueSwitchFactory.createInstance();
 		

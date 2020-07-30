@@ -15,14 +15,15 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -37,7 +38,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
  * 
  * 
  */	
-public abstract class ATestCategoryCompositionArray extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class ATestCategoryCompositionArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryCompositionArray";
 	
@@ -89,6 +90,19 @@ public abstract class ATestCategoryCompositionArray extends ABeanCategoryAssignm
 		return testCompositionArrayDynamic;
 	}
 	
+	private IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> testCompositionArrayDynamicBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessTestCompositionArrayDynamicBean() {
+		if (testCompositionArrayDynamicBean.getArrayInstance() == null) {
+			testCompositionArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testCompositionArrayDynamic"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayDynamicBean() {
+		safeAccessTestCompositionArrayDynamicBean();
+		return testCompositionArrayDynamicBean;
+	}
+	
 	// *****************************************************************
 	// * Array Attribute: testCompositionArrayStatic
 	// *****************************************************************
@@ -103,6 +117,19 @@ public abstract class ATestCategoryCompositionArray extends ABeanCategoryAssignm
 	public IBeanList<TestCategoryAllProperty> getTestCompositionArrayStatic() {
 		safeAccessTestCompositionArrayStatic();
 		return testCompositionArrayStatic;
+	}
+	
+	private IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> testCompositionArrayStaticBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessTestCompositionArrayStaticBean() {
+		if (testCompositionArrayStaticBean.getArrayInstance() == null) {
+			testCompositionArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testCompositionArrayStatic"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<TestCategoryAllProperty>> getTestCompositionArrayStaticBean() {
+		safeAccessTestCompositionArrayStaticBean();
+		return testCompositionArrayStaticBean;
 	}
 	
 	

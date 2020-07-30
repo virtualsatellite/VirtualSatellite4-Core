@@ -15,49 +15,48 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.core.runtime.Status;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.Activator;
-import de.dlr.sc.virsat.server.data.VirSatGitAccess;
+import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 
-	private File pathToTempLocalRepository1;
-	private File pathToTempLocalRepository2;
-
+	private String pathToTempLocalRepository1;
+	private String pathToTempLocalRepository2;
+	private static final String TEST_USER = "test_user";
+	
+	private WorkspaceUserContext wuContextRepo1;
+	private WorkspaceUserContext wuContextRepo2;
+	
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		pathToTempLocalRepository1 = File.createTempFile("VirSatLocalRepo1_", "");
-		pathToTempLocalRepository2 = File.createTempFile("VirSatLocalRepo2_", "");
-		Files.delete(pathToTempLocalRepository1.toPath());
-		Files.delete(pathToTempLocalRepository2.toPath());
-		Files.createDirectory(pathToTempLocalRepository1.toPath());
-		Files.createDirectory(pathToTempLocalRepository2.toPath());
+		pathToTempLocalRepository1 = "VirSatLocalRepo1";
+		pathToTempLocalRepository2 = "VirSatLocalRepo2";
+		wuContextRepo1 = new WorkspaceUserContext(TEST_USER, pathToTempLocalRepository1.toString());
+		wuContextRepo2 = new WorkspaceUserContext(TEST_USER, pathToTempLocalRepository1.toString());
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo1.getRepoPathFile()));
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo2.getRepoPathFile()));
+		makeAbsolute(wuContextRepo1.getRepoPathFile()).mkdirs();
+		makeAbsolute(wuContextRepo2.getRepoPathFile()).mkdirs();
 	}
-
+	
 	@After
 	public void tearDown() throws Exception {
-		try {
-			FileUtils.deleteDirectory(pathToTempLocalRepository1);
-			FileUtils.deleteDirectory(pathToTempLocalRepository2);
-		} catch (Exception e) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Failed to remove temp directory in test" + e.getMessage()));
-		}
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo1.getRepoPathFile()));
+		FileUtils.deleteQuietly(makeAbsolute(wuContextRepo2.getRepoPathFile()));
 		super.tearDown();
 	}
 
@@ -75,11 +74,13 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_CLONE).
 			queryParam(WorkspaceAccessResource.PARAM_REMOTE, pathToTempUpstreamRepository).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository1).
 			request().
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
-		assertEquals("Cloning local repository 1 succeeded", pathToTempLocalRepository1.toString(), result);
+		assertEquals("Cloning local repository 1 succeeded", VirSatGitAccess.STATUS_OK, result);
 		
 		// Clone to local repository 2
 		String result2 = target.
@@ -87,15 +88,17 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_CLONE).
 			queryParam(WorkspaceAccessResource.PARAM_REMOTE, pathToTempUpstreamRepository).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository2).
 			request().
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
-		assertEquals("Cloning local repository 2 succeeded", pathToTempLocalRepository2.toString(), result2);
+		assertEquals("Cloning local repository 2 succeeded", VirSatGitAccess.STATUS_OK, result2);
 				
 		// Add a file to repo one and commit it
 		// now add a file to the local repository
-		File newFile = new File(pathToTempLocalRepository1.getAbsolutePath().toString() + "/test.dat");
+		File newFile = makeAbsolute(new File(wuContextRepo1.getRepoPathFile(), "/test.dat"));
 		newFile.createNewFile();
 		
 		final String COMMIT_MESSAGE = "Commit a first file";
@@ -105,9 +108,11 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path("/rest").
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_COMMIT).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository1).
 			queryParam(WorkspaceAccessResource.PARAM_MESSAGE, COMMIT_MESSAGE).
 			request().
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
 		assertEquals("File got correctly committed", VirSatGitAccess.STATUS_OK, result3);
@@ -117,14 +122,16 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 			path("/rest").
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_UPDATE).
+			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
 			queryParam(WorkspaceAccessResource.PARAM_LOCAL, pathToTempLocalRepository2).
 			request().
+			header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO)).
 			get(String.class);
 		
 		assertEquals("File got correctly updated", VirSatGitAccess.STATUS_OK, result4);
 
 		// Check the file arrived in repo 2
-		File updatedFile = new File(pathToTempLocalRepository2.getAbsolutePath().toString() + "/test.dat");
+		File updatedFile = makeAbsolute(new File(wuContextRepo2.getRepoPathFile(), "/test.dat"));
 
 		assertTrue("The file has arrived in repo 2", updatedFile.exists());
 	}

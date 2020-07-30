@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tests" nsURI="http://www.virsat.sc.dlr.de/dmf/v1.1/tests" nsPrefix="dmf_tests">
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryAllProperty" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryAllProperty" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testInt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testFloat" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
@@ -15,54 +15,57 @@
     <eLiterals name="HIGH" value="25" literal="HIGH"/>
     <eLiterals name="INCREDIBLE" value="30" literal="INCREDIBLE"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryComposition" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryComposition" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EReference" name="testSubCategory" eType="#//TestCategoryAllProperty"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryReference" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryReference" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EReference" name="testRefCategory" eType="#//TestCategoryAllProperty"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryIntrinsicArray" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryIntrinsicArray" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testStringArrayDynamic"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testStringArrayStatic"
         upperBound="4" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryCompositionArray" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryCompositionArray" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EReference" name="testCompositionArrayDynamic"
         upperBound="-1" eType="#//TestCategoryAllProperty" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="testCompositionArrayStatic"
         upperBound="4" eType="#//TestCategoryAllProperty" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryReferenceArray" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryReferenceArray" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EReference" name="testCategoryReferenceArrayDynamic"
         upperBound="-1" eType="#//TestCategoryAllProperty"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="testCategoryReferenceArrayStatic"
         upperBound="4" eType="#//TestCategoryAllProperty"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanA" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanB" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanA" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanB" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory"/>
   <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanAbstract" abstract="true"
-      eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanConcrete" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject #//TestCategoryBeanAbstract"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBase" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+      eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBeanConcrete" eSuperTypes="#//TestCategoryBeanAbstract"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryBase" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EReference" name="testArray" upperBound="-1"
         eType="#//TestCategoryBase" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testBaseProperty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="testReference" eType="#//TestCategoryBase"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryExtends" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject #//TestCategoryBase">
+  <eClassifiers xsi:type="ecore:EClass" name="TestCategoryExtends" eSuperTypes="#//TestCategoryBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testExtendsProperty" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestParameter" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestParameter" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TestMassParameters" eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+  <eClassifiers xsi:type="ecore:EClass" name="TestMassParameters" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mass" eType="#//TestParameter"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TestCrossLinkedParametersWithCalculation"
-      eSuperTypes="../../de.dlr.sc.virsat.model/model/dvlm.ecore#//dmf/DObject">
+      eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="calcedTrl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EReferenceTest" eSuperTypes="../../de.dlr.sc.virsat.model.ext.core/concept/concept.ecore#//GenericCategory">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eReferenceTest" eType="ecore:EClass ../../de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore#//ExternalTestType"/>
   </eClassifiers>
 </ecore:EPackage>

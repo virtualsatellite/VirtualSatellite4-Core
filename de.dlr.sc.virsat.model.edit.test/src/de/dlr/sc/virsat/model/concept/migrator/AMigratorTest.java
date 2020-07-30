@@ -11,10 +11,12 @@ package de.dlr.sc.virsat.model.concept.migrator;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Set;
 
 import org.eclipse.emf.compare.Diff;
 import org.eclipse.emf.compare.Match;
@@ -36,6 +38,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -137,6 +140,11 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
+		
 		conceptPrevious.setName("de.dlr.test.concept.migrate.se");
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
@@ -174,6 +182,11 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
+		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
 		
@@ -210,6 +223,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -254,6 +269,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -299,6 +316,11 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
+		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
 		
@@ -333,6 +355,11 @@ public class AMigratorTest {
 	public void testMigrateChangeCategory() {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
 		conceptNext.setName("de.dlr.test.concept.migrate.se");
@@ -374,6 +401,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -455,6 +484,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -515,6 +546,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -588,6 +621,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -652,6 +687,8 @@ public class AMigratorTest {
 		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
 		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
 		
+		// Concept has to be placed into a repository to simulate it being active
+		// Migration assumes concepts to be migrated are active 
 		repository.getActiveConcepts().add(conceptCurrent);
 		
 		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
@@ -715,6 +752,29 @@ public class AMigratorTest {
 		final String RESOURCE_PATH = "TEST/concept.xmi";
 		migrator.setResource(RESOURCE_PATH);
 		assertEquals("Migrator path to concept resource has been set correctly", RESOURCE_PATH, migrator.getResource());
+	}
+	
+	@Test
+	public void testGetNewDependencies() {
+		Repository repository = DVLMFactory.eINSTANCE.createRepository();
+		Concept conceptCurrent = ConceptsFactory.eINSTANCE.createConcept();
+		Concept conceptNext = ConceptsFactory.eINSTANCE.createConcept();
+		
+		final String NEW_CONCEPT_DEPENDENCY = "de.dlr.test.concept.bla";
+		
+		conceptCurrent.setName("de.dlr.test.concept.migrate.se");
+		conceptNext.setName("de.dlr.test.concept.migrate.se");
+		
+		ConceptImport conceptImport = ConceptsFactory.eINSTANCE.createConceptImport();
+		conceptImport.setImportedNamespace(NEW_CONCEPT_DEPENDENCY + ".*");
+		conceptNext.getImports().add(conceptImport);
+		
+		repository.getActiveConcepts().add(conceptCurrent);
+		
+		TestMigrator migrator = new TestMigrator();
+		Set<String> newDendencies = migrator.getNewDependencies(conceptCurrent, conceptNext);
+		
+		assertTrue("New dependency should be returned", newDendencies.contains(NEW_CONCEPT_DEPENDENCY));
 	}
 
 }

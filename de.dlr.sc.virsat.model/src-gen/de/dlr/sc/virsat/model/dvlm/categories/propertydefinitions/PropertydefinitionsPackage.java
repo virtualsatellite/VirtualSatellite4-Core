@@ -51,7 +51,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd";
 
 	/**
 	 * The package namespace name.
@@ -325,6 +325,88 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int REFERENCE_PROPERTY_OPERATION_COUNT = APROPERTY_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.EReferencePropertyImpl <em>EReference Property</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.EReferencePropertyImpl
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getEReferenceProperty()
+	 * @generated
+	 */
+	int EREFERENCE_PROPERTY = 3;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__NAME = APROPERTY__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Full Qualified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__FULL_QUALIFIED_NAME = APROPERTY__FULL_QUALIFIED_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Short Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__SHORT_NAME = APROPERTY__SHORT_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__DESCRIPTION = APROPERTY__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Array Modifier</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
+
+	/**
+	 * The feature id for the '<em><b>Reference Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__REFERENCE_TYPE = APROPERTY_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>EReference Property</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_FEATURE_COUNT = APROPERTY_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>EReference Property</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_OPERATION_COUNT = APROPERTY_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IIntrinsicTypeProperty <em>IIntrinsic Type Property</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -332,7 +414,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getIIntrinsicTypeProperty()
 	 * @generated
 	 */
-	int IINTRINSIC_TYPE_PROPERTY = 3;
+	int IINTRINSIC_TYPE_PROPERTY = 4;
 
 	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
@@ -369,7 +451,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getAQudvTypeProperty()
 	 * @generated
 	 */
-	int AQUDV_TYPE_PROPERTY = 4;
+	int AQUDV_TYPE_PROPERTY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -460,7 +542,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getIntProperty()
 	 * @generated
 	 */
-	int INT_PROPERTY = 5;
+	int INT_PROPERTY = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -560,7 +642,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getFloatProperty()
 	 * @generated
 	 */
-	int FLOAT_PROPERTY = 6;
+	int FLOAT_PROPERTY = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -660,7 +742,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getStringProperty()
 	 * @generated
 	 */
-	int STRING_PROPERTY = 7;
+	int STRING_PROPERTY = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -742,7 +824,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getBooleanProperty()
 	 * @generated
 	 */
-	int BOOLEAN_PROPERTY = 8;
+	int BOOLEAN_PROPERTY = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -824,7 +906,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getEnumProperty()
 	 * @generated
 	 */
-	int ENUM_PROPERTY = 9;
+	int ENUM_PROPERTY = 10;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -933,7 +1015,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getEnumValueDefinition()
 	 * @generated
 	 */
-	int ENUM_VALUE_DEFINITION = 10;
+	int ENUM_VALUE_DEFINITION = 11;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -979,7 +1061,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getResourceProperty()
 	 * @generated
 	 */
-	int RESOURCE_PROPERTY = 11;
+	int RESOURCE_PROPERTY = 12;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1052,7 +1134,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getIArrayModifier()
 	 * @generated
 	 */
-	int IARRAY_MODIFIER = 13;
+	int IARRAY_MODIFIER = 14;
 
 	/**
 	 * The number of structural features of the '<em>IArray Modifier</em>' class.
@@ -1080,7 +1162,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getStaticArrayModifier()
 	 * @generated
 	 */
-	int STATIC_ARRAY_MODIFIER = 12;
+	int STATIC_ARRAY_MODIFIER = 13;
 
 	/**
 	 * The feature id for the '<em><b>Array Size</b></em>' attribute.
@@ -1117,7 +1199,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getDynamicArrayModifier()
 	 * @generated
 	 */
-	int DYNAMIC_ARRAY_MODIFIER = 14;
+	int DYNAMIC_ARRAY_MODIFIER = 15;
 
 	/**
 	 * The number of structural features of the '<em>Dynamic Array Modifier</em>' class.
@@ -1222,6 +1304,27 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getReferenceProperty_ReferenceType();
+
+	/**
+	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty <em>EReference Property</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>EReference Property</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
+	 * @generated
+	 */
+	EClass getEReferenceProperty();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty#getReferenceType <em>Reference Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Reference Type</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty#getReferenceType()
+	 * @see #getEReferenceProperty()
+	 * @generated
+	 */
+	EReference getEReferenceProperty_ReferenceType();
 
 	/**
 	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IIntrinsicTypeProperty <em>IIntrinsic Type Property</em>}'.
@@ -1512,6 +1615,24 @@ public interface PropertydefinitionsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REFERENCE_PROPERTY__REFERENCE_TYPE = eINSTANCE.getReferenceProperty_ReferenceType();
+
+		/**
+		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.EReferencePropertyImpl <em>EReference Property</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.EReferencePropertyImpl
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getEReferenceProperty()
+		 * @generated
+		 */
+		EClass EREFERENCE_PROPERTY = eINSTANCE.getEReferenceProperty();
+
+		/**
+		 * The meta object literal for the '<em><b>Reference Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EREFERENCE_PROPERTY__REFERENCE_TYPE = eINSTANCE.getEReferenceProperty_ReferenceType();
 
 		/**
 		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IIntrinsicTypeProperty <em>IIntrinsic Type Property</em>}' class.

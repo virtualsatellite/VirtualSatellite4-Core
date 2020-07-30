@@ -50,7 +50,7 @@
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="de.dlr.sc.virsat.test.ProjectAllTest"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="de.dlr.sc.virsat.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="pde.version" value="3.3"/>
@@ -63,20 +63,28 @@
 <setEntry value="de.dlr.sc.virsat.commons.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.dependencies.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.docs.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.excel.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.external.lib.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.graphiti.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.javadoc.api.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.license.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.calculation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.concept.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.ext.core.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.budget.mass.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.budget.power.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.funcelectrical.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.maturity.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.mechanical.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.ps.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.statemachines.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.tests.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.server.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.target.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.team.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.test.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.uiengine.feature:default"/>
@@ -115,6 +123,7 @@
 <setEntry value="org.eclipse.rcp:default"/>
 <setEntry value="org.eclipse.team.svn:default"/>
 <setEntry value="org.eclipse.xtext.runtime:default"/>
+<setEntry value="org.eclipse.xtext.ui:default"/>
 <setEntry value="org.eclipse.xtext.xbase.lib:default"/>
 <setEntry value="org.eclipse.xtext.xbase:default"/>
 </setAttribute>

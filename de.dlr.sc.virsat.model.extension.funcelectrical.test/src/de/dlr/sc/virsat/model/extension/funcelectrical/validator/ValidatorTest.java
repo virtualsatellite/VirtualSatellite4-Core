@@ -211,7 +211,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 
-		StructuralElementInstanceValidator seiValidator = new StructuralElementInstanceValidator();
+		FuncelectricalValidator seiValidator = new FuncelectricalValidator();
 
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
 		assertEquals("There are no markers yet", 0, fileRepo.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
@@ -244,7 +244,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 
-		StructuralElementInstanceValidator seiValidator = new StructuralElementInstanceValidator();
+		FuncelectricalValidator seiValidator = new FuncelectricalValidator();
 
 		assertTrue("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -324,7 +324,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 
-		StructuralElementInstanceValidator seiValidator = new StructuralElementInstanceValidator();
+		FuncelectricalValidator seiValidator = new FuncelectricalValidator();
 
 		assertTrue("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -380,7 +380,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 
-		StructuralElementInstanceValidator seiValidator = new StructuralElementInstanceValidator();
+		FuncelectricalValidator seiValidator = new FuncelectricalValidator();
 
 		assertTrue("validator brings no error", seiValidator.validate(ecHns.getStructuralElementInstance()));
 		assertTrue("validator brings no error", seiValidator.validate(ecObc.getStructuralElementInstance()));
@@ -433,7 +433,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		assertEquals("There are no markers yet", 0,	fileRw.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		assertEquals("There are no markers yet", 0,	fileHns.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).length);
 		
-		StructuralElementInstanceValidator seiValidator = new StructuralElementInstanceValidator();
+		FuncelectricalValidator seiValidator = new FuncelectricalValidator();
 		
 		InterfaceEnd ifeEdObc = new InterfaceEnd(conceptFea);
 		ifeEdObc.setName("IFE_OBC");

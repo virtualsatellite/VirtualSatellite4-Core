@@ -29,6 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedInput;
 import de.dlr.sc.virsat.model.dvlm.calculation.TypeInstanceResult;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.inheritance.IOverridableInheritanceLink;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 
 /**
@@ -130,7 +131,7 @@ public class EquationHelper {
 	 * @return a list of problems that have occurred during the evaluation
 	 */
 	
-	public List<EvaluationProblem> evaluate(DependencyTree<EObject> tree) {
+	public List<EvaluationProblem> evaluate(DependencyTree<EObject> tree, IUserContext userContext) {
 		List<EObject> linear = tree.getLinearOrder();
 		List<EvaluationProblem> equationProblems = new ArrayList<>();
 		Map<EObject, IExpressionResult> mapExpressionToResult = new HashMap<>();
@@ -155,8 +156,7 @@ public class EquationHelper {
 				Equation equation = (Equation) equationResult.eContainer();
 				IExpressionResult result = exprHelper.evaluate(equation.getExpression(), mapExpressionToResult);
 
-				boolean hasWritePermissionResult = RightsHelper.hasWritePermission(equationResult);
-				
+				boolean hasWritePermissionResult = RightsHelper.hasWritePermission(equationResult, userContext);
 				boolean isTypeInstance = equationResult instanceof TypeInstanceResult;
 				
 				// Assign the result according to the registrated setter
@@ -180,8 +180,8 @@ public class EquationHelper {
 						}
 					}
 				} 
-				
-				boolean hasWritePermissionEquation = RightsHelper.hasWritePermission(equation);
+
+				boolean hasWritePermissionEquation = RightsHelper.hasWritePermission(equation, userContext);
 				if (hasWritePermissionEquation) {
 					if (equation.isIsInherited()) {
 						equation.setOverride(true);
@@ -217,9 +217,9 @@ public class EquationHelper {
 	 * @param equations the equations to evaluate
 	 * @return the dependency tree created internally
 	 */
-	public DependencyTree<EObject> evaluate(List<Equation> equations) {
+	public DependencyTree<EObject> evaluate(List<Equation> equations, IUserContext userContext) {
 		DependencyTree<EObject> dt = createDependencyTree(equations);
-		evaluate(dt);
+		evaluate(dt, userContext);
 		return dt;
 	}
 }

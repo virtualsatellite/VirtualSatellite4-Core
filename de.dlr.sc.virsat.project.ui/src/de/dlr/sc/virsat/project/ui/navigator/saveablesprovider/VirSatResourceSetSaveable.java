@@ -9,17 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.ui.navigator.saveablesprovider;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.Saveable;
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -83,23 +78,7 @@ public class VirSatResourceSetSaveable extends Saveable {
 	public void doSave(IProgressMonitor monitor) throws CoreException {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSetSaveable: Starting to save resourceSet through saveable: " + resourceSet.getProject().getName()));
 
-		// Doing the save in a workspace operation is intended, to not let
-		// the automatic builders jump on these files in between
-		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-			@Override
-			protected void execute(IProgressMonitor progressMonitor) throws CoreException {
-				// Store it through the editing domain so it keeps track of further
-				// further changes. This is important to have exact knowledge about the
-				// resources dirty state.
-				ed.saveAll();
-			}
-		};
-		
-		try {
-			operation.run(new NullProgressMonitor());
-		} catch (InvocationTargetException | InterruptedException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Failed to save resourceSet through saveables!", e));
-		}
+		ed.saveAll();
 			
 		// After saving we assume the dirty state has changed. The resource should not be dirty anymore
 		// The SaveablesProvider knows how to notify the framework  about this dirty change.

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Functional Eclectrical Interfaces
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.funcelectrical;singleton:=true
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  de.dlr.sc.virsat.external.lib.apache.poi,
- de.dlr.sc.virsat.excel
+ de.dlr.sc.virsat.excel,
+ de.dlr.sc.virsat.model.ext.core;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true

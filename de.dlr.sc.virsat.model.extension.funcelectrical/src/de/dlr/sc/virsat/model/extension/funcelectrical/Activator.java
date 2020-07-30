@@ -70,8 +70,7 @@ public class Activator extends Plugin {
 	 *             throws
 	 */
 	public static InputStream getResourceContentAsString(String resourcePath) throws IOException {
-		URL url;
-		url = new URL("platform:/plugin/" + pluginId + resourcePath);
+		URL url = new URL("platform:/plugin/" + pluginId + resourcePath);
 		InputStream inputStream = url.openConnection().getInputStream();
 
 		return inputStream;

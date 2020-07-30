@@ -1,22 +1,25 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
+
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -33,7 +36,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *
  * @generated
  */
-public class TestCategoryIntrinsicArrayImpl extends DObjectImpl implements TestCategoryIntrinsicArray {
+public class TestCategoryIntrinsicArrayImpl extends GenericCategoryImpl implements TestCategoryIntrinsicArray {
 	/**
 	 * The cached value of the '{@link #getTestStringArrayDynamic() <em>Test String Array Dynamic</em>}' attribute list.
 	 * <!-- begin-user-doc -->

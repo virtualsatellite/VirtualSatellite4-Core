@@ -1,15 +1,15 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,14 +32,10 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  * @model
  * @generated
  */
-public interface TestCategoryAllProperty extends DObject {
+public interface TestCategoryAllProperty extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Test String</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test String</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test String</em>' attribute.
 	 * @see #setTestString(String)
@@ -62,10 +58,6 @@ public interface TestCategoryAllProperty extends DObject {
 	/**
 	 * Returns the value of the '<em><b>Test Int</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Int</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Int</em>' attribute.
 	 * @see #setTestInt(int)
@@ -88,10 +80,6 @@ public interface TestCategoryAllProperty extends DObject {
 	/**
 	 * Returns the value of the '<em><b>Test Float</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Float</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Float</em>' attribute.
 	 * @see #setTestFloat(double)
@@ -114,10 +102,6 @@ public interface TestCategoryAllProperty extends DObject {
 	/**
 	 * Returns the value of the '<em><b>Test Bool</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Bool</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Bool</em>' attribute.
 	 * @see #setTestBool(boolean)
@@ -140,10 +124,6 @@ public interface TestCategoryAllProperty extends DObject {
 	/**
 	 * Returns the value of the '<em><b>Test Resource</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Resource</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Resource</em>' attribute.
 	 * @see #setTestResource(String)
@@ -167,10 +147,6 @@ public interface TestCategoryAllProperty extends DObject {
 	 * Returns the value of the '<em><b>Test Enum</b></em>' attribute.
 	 * The literals are from the enumeration {@link de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum}.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Enum</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Enum</em>' attribute.
 	 * @see de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum

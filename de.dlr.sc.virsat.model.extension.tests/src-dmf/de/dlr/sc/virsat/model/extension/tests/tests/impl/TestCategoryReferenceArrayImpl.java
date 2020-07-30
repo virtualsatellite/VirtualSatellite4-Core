@@ -1,23 +1,26 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.impl;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.impl.DObjectImpl;
+import de.dlr.sc.virsat.model.ext.core.core.impl.GenericCategoryImpl;
+
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -34,7 +37,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  *
  * @generated
  */
-public class TestCategoryReferenceArrayImpl extends DObjectImpl implements TestCategoryReferenceArray {
+public class TestCategoryReferenceArrayImpl extends GenericCategoryImpl implements TestCategoryReferenceArray {
 	/**
 	 * The cached value of the '{@link #getTestCategoryReferenceArrayDynamic() <em>Test Category Reference Array Dynamic</em>}' reference list.
 	 * <!-- begin-user-doc -->

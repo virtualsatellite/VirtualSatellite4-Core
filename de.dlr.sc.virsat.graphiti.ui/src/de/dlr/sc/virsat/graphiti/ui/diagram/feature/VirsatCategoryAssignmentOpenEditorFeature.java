@@ -25,7 +25,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.general.IInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.ui.editor.input.VirSatUriEditorInput;
 import de.dlr.sc.virsat.project.ui.Activator;
@@ -93,9 +93,9 @@ public class VirsatCategoryAssignmentOpenEditorFeature extends AbstractCustomFea
         			IWorkbench workbench = PlatformUI.getWorkbench();
         			IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
         			IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
-        			if (ie.getTypeInstance() instanceof IInstance) {
-        				IInstance iInstance = (IInstance) ie.getTypeInstance();
-        				URIEditorInput editorInput = new VirSatUriEditorInput(resourceUri, iInstance);
+        			CategoryAssignment ca = ie.getTypeInstance();
+        			if (ca != null) {
+        				URIEditorInput editorInput = new VirSatUriEditorInput(resourceUri, ca);
         				workbenchPage.openEditor(editorInput, GenericEditor.EDITOR_ID);
         			} else {
         				workbenchPage.openEditor(new VirSatUriEditorInput(resourceUri), GenericEditor.EDITOR_ID);

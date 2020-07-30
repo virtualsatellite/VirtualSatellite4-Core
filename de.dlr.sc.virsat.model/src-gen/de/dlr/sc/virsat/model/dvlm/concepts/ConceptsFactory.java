@@ -47,6 +47,24 @@ public interface ConceptsFactory extends EFactory {
 	ConceptImport createConceptImport();
 
 	/**
+	 * Returns a new object of class '<em>Ecore Import</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Ecore Import</em>'.
+	 * @generated
+	 */
+	EcoreImport createEcoreImport();
+
+	/**
+	 * Returns a new object of class '<em>IE Imports</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>IE Imports</em>'.
+	 * @generated
+	 */
+	IEImports createIEImports();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

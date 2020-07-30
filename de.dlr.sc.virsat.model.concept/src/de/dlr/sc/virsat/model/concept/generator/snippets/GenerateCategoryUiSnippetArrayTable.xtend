@@ -124,7 +124,7 @@ class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<AProper
 	}
 
 	def createConcreteClass(Concept concept, AProperty conceptPart, Category category) {
-		val imCClass = new ImportManager()
+		val imCClass = new ImportManager(concept.package)
 	
 		val bodyClass = declareClass(concept, conceptPart, category, imCClass)
 		var fileOutputClass = '''
@@ -139,7 +139,7 @@ class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<AProper
 	}
 
 	def createConcreteClass(Concept concept, AProperty conceptPart, Category category, Category extendingCategory) {
-		val imCClass = new ImportManager()
+		val imCClass = new ImportManager(concept.package)
 	
 		val bodyClass = declareClass(concept, conceptPart, category, extendingCategory, imCClass)
 		var fileOutputClass = '''
@@ -154,7 +154,7 @@ class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<AProper
 	}
 	
 	def createAbstractClass(Concept concept, AProperty conceptPart, Category category, Category extendingCategory) {
-		val imAClass = new ImportManager()
+		val imAClass = new ImportManager(concept.package)
 		val bodyAClass = declareAClass(concept, conceptPart, category, extendingCategory, imAClass)
 		var fileOutputAClass = '''
 		«ConceptGeneratorUtil.generateFileHeader»

@@ -15,13 +15,13 @@ import java.util.Set;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 /**
  * Implementation of a Validator that checks if a Name matches the
@@ -34,6 +34,10 @@ public class DvlmNamingConventionValidator extends ADvlmCoreValidator implements
 
 	//includes capital and small letters, numbers and underline "_" but no spaces and especially no dots
 	public static final String CAMELCASE_PATTERN_ARBITRARY = "^[a-zA-z]+\\w*";
+	public static final String WARNING_PREFIX = "The name of \'";
+	public static final String WARNING_EMPTY_NAME_SUFFIX = "\' is not set.";
+	public static final String WARNING_DOTS_SUFFIX = "\' contains dots.";
+	public static final String WARNING_CAMEL_CASE_SUFFIX = "\' does not match the camelCase convention.";
 	
 	@Override
 	public boolean validate(StructuralElementInstance sei) {
@@ -62,14 +66,14 @@ public class DvlmNamingConventionValidator extends ADvlmCoreValidator implements
 			String fqn = iInstance.getFullQualifiedInstanceName();
 			boolean isCamelCase = name != null && name.matches(CAMELCASE_PATTERN_ARBITRARY);
 			if (name == null || name.isEmpty()) {
-				vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_WARNING, "The name of \'" + fqn + "\' is not set.", iUuid, GeneralPackage.Literals.INAME__NAME);
+				vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_WARNING, WARNING_PREFIX + fqn + WARNING_EMPTY_NAME_SUFFIX, iUuid, GeneralPackage.Literals.INAME__NAME);
 				validationSuccessful = false;
 			} else if (!isCamelCase) {
 				if (name.contains(".")) {
-					vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_ERROR, "The name of \'" + fqn + "\' contains dots.", iUuid, GeneralPackage.Literals.INAME__NAME);
+					vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_ERROR, WARNING_PREFIX + fqn + WARNING_DOTS_SUFFIX, iUuid, GeneralPackage.Literals.INAME__NAME);
 					validationSuccessful = false;
 				} else {
-					vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_WARNING, "The name of \'" + fqn + "\' does not match the camelCase convention.", iUuid, GeneralPackage.Literals.INAME__NAME);
+					vvmHelper.createEMFValidationMarker(IMarker.SEVERITY_WARNING, WARNING_PREFIX + fqn + WARNING_CAMEL_CASE_SUFFIX, iUuid, GeneralPackage.Literals.INAME__NAME);
 					validationSuccessful = false;
 				}
 			}

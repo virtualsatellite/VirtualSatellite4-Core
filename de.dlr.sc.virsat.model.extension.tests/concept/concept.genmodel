@@ -5,7 +5,7 @@
     editorDirectory="/de.dlr.sc.virsat.model.extension.tests.editor/src-dmf" modelPluginID="de.dlr.sc.virsat.model.extension.tests"
     modelName="Concept" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="/de.dlr.sc.virsat.model.extension.tests.tests/src-dmf" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.dlr.sc.virsat.model/model/dvlm.genmodel#//dvlm ../../de.dlr.sc.virsat.model.ext.core/concept/concept.genmodel#//core ../../de.dlr.sc.virsat.model.external.tests/model/ExternalModel.genmodel#//tests ../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
     operationReflection="true" importOrganizing="true">
   <foreignModel>/de.dlr.sc.virsat.model.extension.tests/concept/concept.ecore</foreignModel>
   <genPackages prefix="Tests" basePackage="de.dlr.sc.virsat.model.extension.tests"
@@ -62,6 +62,9 @@
     </genClasses>
     <genClasses ecoreClass="concept.ecore#//TestCrossLinkedParametersWithCalculation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute concept.ecore#//TestCrossLinkedParametersWithCalculation/calcedTrl"/>
+    </genClasses>
+    <genClasses ecoreClass="concept.ecore#//EReferenceTest">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference concept.ecore#//EReferenceTest/eReferenceTest"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

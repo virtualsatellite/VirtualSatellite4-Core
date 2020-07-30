@@ -65,7 +65,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
@@ -87,14 +86,13 @@ import de.dlr.sc.virsat.uiengine.ui.excel.ExcelExportWizard;
 
 /**
  * abstract class ui snippet generic table implements the ui snippet for generic tables
- * @author leps_je
- *
  */
 public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 
 	protected static final String SECTION_HEADING_PREFIX = "Section for: ";
 	
 	protected ColumnViewer columnViewer;
+	protected FormToolkit toolkit = null;
 	protected int style;
 
 	private Button buttonRemove;
@@ -135,6 +133,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	@Override
 	public void createSwt(FormToolkit toolkit, EditingDomain editingDomain, Composite composite, EObject initModel) {
 		super.createSwt(toolkit, editingDomain, composite, initModel);
+		this.toolkit = toolkit;
 	
 		sectionBody = createSectionBody(toolkit, SECTION_HEADING_PREFIX + getTypeInformationFull(), null, 1);
 
@@ -279,6 +278,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 */
 	protected ColumnViewer createColumnViewer(FormToolkit toolkit) {
 		Table table = createDefaultTable(toolkit, sectionBody);
+				
 		table.setData("org.eclipse.swtbot.widget.key", "table" + categoryId);
 		return new TableViewer(table);
 	}
@@ -715,11 +715,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 			}
 		} else if (selectedObject instanceof ComposedPropertyInstance) {
 			ComposedPropertyInstance selectedCpi = (ComposedPropertyInstance) selectedObject;
-			ATypeInstance referencedTypeInstance = selectedCpi.getTypeInstance();
-
-			if (referencedTypeInstance instanceof CategoryAssignment) {
-				selectedCa = (CategoryAssignment) referencedTypeInstance;
-			}
+			selectedCa = selectedCpi.getTypeInstance();
 		} else if (selectedObject instanceof UnitValuePropertyInstance) {
 			UnitValuePropertyInstance selectedUvpi = (UnitValuePropertyInstance) selectedObject;
 			EObject eContainer = selectedUvpi.eContainer();

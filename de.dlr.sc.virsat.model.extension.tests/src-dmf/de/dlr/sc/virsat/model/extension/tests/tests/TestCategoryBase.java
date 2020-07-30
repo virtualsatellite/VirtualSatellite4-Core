@@ -1,15 +1,15 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -31,15 +31,11 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface TestCategoryBase extends DObject {
+public interface TestCategoryBase extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Test Array</b></em>' containment reference list.
 	 * The list contents are of type {@link de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryBase}.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Array</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Array</em>' containment reference list.
 	 * @see de.dlr.sc.virsat.model.extension.tests.tests.TestsPackage#getTestCategoryBase_TestArray()
@@ -51,10 +47,6 @@ public interface TestCategoryBase extends DObject {
 	/**
 	 * Returns the value of the '<em><b>Test Base Property</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Base Property</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Base Property</em>' attribute.
 	 * @see #setTestBaseProperty(int)
@@ -77,10 +69,6 @@ public interface TestCategoryBase extends DObject {
 	/**
 	 * Returns the value of the '<em><b>Test Reference</b></em>' reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Reference</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Reference</em>' reference.
 	 * @see #setTestReference(TestCategoryBase)

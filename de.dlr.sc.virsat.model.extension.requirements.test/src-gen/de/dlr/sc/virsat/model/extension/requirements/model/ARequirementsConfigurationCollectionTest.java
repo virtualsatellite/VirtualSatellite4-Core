@@ -14,7 +14,6 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import java.lang.Exception;
 

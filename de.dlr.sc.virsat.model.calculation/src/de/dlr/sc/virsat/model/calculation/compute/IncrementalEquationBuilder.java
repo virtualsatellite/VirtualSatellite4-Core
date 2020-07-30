@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -25,7 +24,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -65,7 +63,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 	 * Public constructor
 	 */
 	public IncrementalEquationBuilder() {
-		super(new VirSatEquationMarkerHelper(), true);
+		super("Equation Builder", new VirSatEquationMarkerHelper(), true, true);
 		this.vemHelper = (VirSatEquationMarkerHelper) this.vpmHelper;
 		objectsWithOldMarkers = new ArrayList<>();
 	}
@@ -90,9 +88,11 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 
 	@Override
 	public void fullBuild(IProgressMonitor monitor) {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Starting full build"));
 		VirSatResourceSet resourceSet = getResourceSet();
 		
 		if (!resourceSet.isOpen()) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Exited full build since project is closed"));
 			return;
 		}
 		
@@ -100,10 +100,12 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		List<Equation> equations = getAllEquationsInProject(resourceSet);
 		DependencyTree<EObject> tree = dependencyHelper.createDependencyTree(equations);
 		buildEquations(tree, monitor);
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Finished full build"));
 	}
 
 	@Override
 	public void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Starting incremental build"));
 		final int MAX_TASKS = 4;
 		SubMonitor subMonitor = SubMonitor.convert(monitor, MAX_TASKS);
 		subMonitor.beginTask("Building dependency tree...", MAX_TASKS);
@@ -111,6 +113,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		VirSatResourceSet resourceSet = getResourceSet();
 		
 		if (!resourceSet.isOpen()) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Exited incremental build since project is closed"));
 			return;
 		}
 		
@@ -122,8 +125,8 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 				@Override
 				public boolean visit(IResourceDelta delta) throws CoreException {
 					IResource iResource = delta.getResource();
-					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "IncrementalEquationBuilder: Obtained equations from Resource (" + iResource + ")", null));
-				    	
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Obtained equations from Resource (" + iResource + ")"));
+ 
 					int resourceDeltaKind = delta.getKind();
 					boolean isRemoved = resourceDeltaKind == IResourceDelta.REMOVED;
 					if ((iResource instanceof IFile) && (!isRemoved)) {
@@ -133,6 +136,9 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 						boolean isDvlmModelFile = VirSatProjectCommons.isDvlmFile(iFile);
 						if (isDvlmModelFile) {
 							Resource resource = resourceSet.safeGetResource(iFile, false);
+							
+							// Were are actually processing files here so make sure the resources all get saved
+							setSaveAfterIncrementalBuild();
 
 							// In case the resource could not be loaded continue with the next delta.
 							if (resource == null) {
@@ -147,7 +153,8 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 				}
 			});
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "IncrementalEquationBuilder: Could not obtain equations", e));
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "IncrementalEquationBuilder: Could not obtain equations", e));
+			return;
 		}
 		
 		// Build the dependency tree
@@ -176,6 +183,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		subMonitor.worked(1);
 		
 		subMonitor.beginTask("Saving resources...", MAX_TASKS);
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "IncrementalEquationBuilder: Finsihed incremental build"));
 	}
 	
 	/**
@@ -190,14 +198,14 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		
 		try {
 			resourceSet.getRepository();
-			EcoreUtil.resolveAll(resourceSet);
+			resourceSet.loadAllDvlmResources();
 			
 			if (resourceSet.hasError()) {
 				reportResourceSetErrors(resourceSet);
 				return Collections.EMPTY_LIST;
 			}
 			
-			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet, null, IEquationSectionContainer.class, true);
+			List<IEquationSectionContainer> equationSectionContainers = VirSatEcoreUtil.getAllContentsOfType(resourceSet.getDvlmResources(), null, IEquationSectionContainer.class, true);
 			
 			for (IEquationSectionContainer container : equationSectionContainers) {
 				EquationSection section = container.getEquationSection();
@@ -285,7 +293,7 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 		subMonitor.beginTask("Evaluating equations...", MAX_TASKS);
 		
 		// Evaluate the tree in the correct order
-		equationProblems = dependencyHelper.evaluate(tree);
+		equationProblems = dependencyHelper.evaluate(tree, getUserContext());
 		
 		subMonitor.worked(1);
 	}
@@ -300,13 +308,8 @@ public class IncrementalEquationBuilder extends AVirSatTransactionalBuilder {
 			return;
 		}
 		
-		for (EvaluationProblem equationProblem : equationProblems) {			
+		for (EvaluationProblem equationProblem : equationProblems) {
 			vemHelper.createEvaluationProblemMarker(equationProblem);
 		}
-	}
-	
-	@Override
-	public ISchedulingRule getRule(int kind, Map<String, String> args) {
-		return null;
 	}
 }

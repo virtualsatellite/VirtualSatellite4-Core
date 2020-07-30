@@ -1,18 +1,20 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.util;
 
 import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
 
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 import de.dlr.sc.virsat.model.extension.tests.tests.*;
 
@@ -81,6 +83,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_ALL_PROPERTY: {
 				TestCategoryAllProperty testCategoryAllProperty = (TestCategoryAllProperty)theEObject;
 				T result = caseTestCategoryAllProperty(testCategoryAllProperty);
+				if (result == null) result = caseGenericCategory(testCategoryAllProperty);
 				if (result == null) result = caseDObject(testCategoryAllProperty);
 				if (result == null) result = caseIUuid(testCategoryAllProperty);
 				if (result == null) result = caseIName(testCategoryAllProperty);
@@ -90,6 +93,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_COMPOSITION: {
 				TestCategoryComposition testCategoryComposition = (TestCategoryComposition)theEObject;
 				T result = caseTestCategoryComposition(testCategoryComposition);
+				if (result == null) result = caseGenericCategory(testCategoryComposition);
 				if (result == null) result = caseDObject(testCategoryComposition);
 				if (result == null) result = caseIUuid(testCategoryComposition);
 				if (result == null) result = caseIName(testCategoryComposition);
@@ -99,6 +103,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_REFERENCE: {
 				TestCategoryReference testCategoryReference = (TestCategoryReference)theEObject;
 				T result = caseTestCategoryReference(testCategoryReference);
+				if (result == null) result = caseGenericCategory(testCategoryReference);
 				if (result == null) result = caseDObject(testCategoryReference);
 				if (result == null) result = caseIUuid(testCategoryReference);
 				if (result == null) result = caseIName(testCategoryReference);
@@ -108,6 +113,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_INTRINSIC_ARRAY: {
 				TestCategoryIntrinsicArray testCategoryIntrinsicArray = (TestCategoryIntrinsicArray)theEObject;
 				T result = caseTestCategoryIntrinsicArray(testCategoryIntrinsicArray);
+				if (result == null) result = caseGenericCategory(testCategoryIntrinsicArray);
 				if (result == null) result = caseDObject(testCategoryIntrinsicArray);
 				if (result == null) result = caseIUuid(testCategoryIntrinsicArray);
 				if (result == null) result = caseIName(testCategoryIntrinsicArray);
@@ -117,6 +123,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_COMPOSITION_ARRAY: {
 				TestCategoryCompositionArray testCategoryCompositionArray = (TestCategoryCompositionArray)theEObject;
 				T result = caseTestCategoryCompositionArray(testCategoryCompositionArray);
+				if (result == null) result = caseGenericCategory(testCategoryCompositionArray);
 				if (result == null) result = caseDObject(testCategoryCompositionArray);
 				if (result == null) result = caseIUuid(testCategoryCompositionArray);
 				if (result == null) result = caseIName(testCategoryCompositionArray);
@@ -126,6 +133,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_REFERENCE_ARRAY: {
 				TestCategoryReferenceArray testCategoryReferenceArray = (TestCategoryReferenceArray)theEObject;
 				T result = caseTestCategoryReferenceArray(testCategoryReferenceArray);
+				if (result == null) result = caseGenericCategory(testCategoryReferenceArray);
 				if (result == null) result = caseDObject(testCategoryReferenceArray);
 				if (result == null) result = caseIUuid(testCategoryReferenceArray);
 				if (result == null) result = caseIName(testCategoryReferenceArray);
@@ -135,6 +143,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_BEAN_A: {
 				TestCategoryBeanA testCategoryBeanA = (TestCategoryBeanA)theEObject;
 				T result = caseTestCategoryBeanA(testCategoryBeanA);
+				if (result == null) result = caseGenericCategory(testCategoryBeanA);
 				if (result == null) result = caseDObject(testCategoryBeanA);
 				if (result == null) result = caseIUuid(testCategoryBeanA);
 				if (result == null) result = caseIName(testCategoryBeanA);
@@ -144,6 +153,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_BEAN_B: {
 				TestCategoryBeanB testCategoryBeanB = (TestCategoryBeanB)theEObject;
 				T result = caseTestCategoryBeanB(testCategoryBeanB);
+				if (result == null) result = caseGenericCategory(testCategoryBeanB);
 				if (result == null) result = caseDObject(testCategoryBeanB);
 				if (result == null) result = caseIUuid(testCategoryBeanB);
 				if (result == null) result = caseIName(testCategoryBeanB);
@@ -153,6 +163,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_BEAN_ABSTRACT: {
 				TestCategoryBeanAbstract testCategoryBeanAbstract = (TestCategoryBeanAbstract)theEObject;
 				T result = caseTestCategoryBeanAbstract(testCategoryBeanAbstract);
+				if (result == null) result = caseGenericCategory(testCategoryBeanAbstract);
 				if (result == null) result = caseDObject(testCategoryBeanAbstract);
 				if (result == null) result = caseIUuid(testCategoryBeanAbstract);
 				if (result == null) result = caseIName(testCategoryBeanAbstract);
@@ -163,6 +174,7 @@ public class TestsSwitch<T> extends Switch<T> {
 				TestCategoryBeanConcrete testCategoryBeanConcrete = (TestCategoryBeanConcrete)theEObject;
 				T result = caseTestCategoryBeanConcrete(testCategoryBeanConcrete);
 				if (result == null) result = caseTestCategoryBeanAbstract(testCategoryBeanConcrete);
+				if (result == null) result = caseGenericCategory(testCategoryBeanConcrete);
 				if (result == null) result = caseDObject(testCategoryBeanConcrete);
 				if (result == null) result = caseIUuid(testCategoryBeanConcrete);
 				if (result == null) result = caseIName(testCategoryBeanConcrete);
@@ -172,6 +184,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CATEGORY_BASE: {
 				TestCategoryBase testCategoryBase = (TestCategoryBase)theEObject;
 				T result = caseTestCategoryBase(testCategoryBase);
+				if (result == null) result = caseGenericCategory(testCategoryBase);
 				if (result == null) result = caseDObject(testCategoryBase);
 				if (result == null) result = caseIUuid(testCategoryBase);
 				if (result == null) result = caseIName(testCategoryBase);
@@ -182,6 +195,7 @@ public class TestsSwitch<T> extends Switch<T> {
 				TestCategoryExtends testCategoryExtends = (TestCategoryExtends)theEObject;
 				T result = caseTestCategoryExtends(testCategoryExtends);
 				if (result == null) result = caseTestCategoryBase(testCategoryExtends);
+				if (result == null) result = caseGenericCategory(testCategoryExtends);
 				if (result == null) result = caseDObject(testCategoryExtends);
 				if (result == null) result = caseIUuid(testCategoryExtends);
 				if (result == null) result = caseIName(testCategoryExtends);
@@ -191,6 +205,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_PARAMETER: {
 				TestParameter testParameter = (TestParameter)theEObject;
 				T result = caseTestParameter(testParameter);
+				if (result == null) result = caseGenericCategory(testParameter);
 				if (result == null) result = caseDObject(testParameter);
 				if (result == null) result = caseIUuid(testParameter);
 				if (result == null) result = caseIName(testParameter);
@@ -200,6 +215,7 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_MASS_PARAMETERS: {
 				TestMassParameters testMassParameters = (TestMassParameters)theEObject;
 				T result = caseTestMassParameters(testMassParameters);
+				if (result == null) result = caseGenericCategory(testMassParameters);
 				if (result == null) result = caseDObject(testMassParameters);
 				if (result == null) result = caseIUuid(testMassParameters);
 				if (result == null) result = caseIName(testMassParameters);
@@ -209,9 +225,20 @@ public class TestsSwitch<T> extends Switch<T> {
 			case TestsPackage.TEST_CROSS_LINKED_PARAMETERS_WITH_CALCULATION: {
 				TestCrossLinkedParametersWithCalculation testCrossLinkedParametersWithCalculation = (TestCrossLinkedParametersWithCalculation)theEObject;
 				T result = caseTestCrossLinkedParametersWithCalculation(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = caseGenericCategory(testCrossLinkedParametersWithCalculation);
 				if (result == null) result = caseDObject(testCrossLinkedParametersWithCalculation);
 				if (result == null) result = caseIUuid(testCrossLinkedParametersWithCalculation);
 				if (result == null) result = caseIName(testCrossLinkedParametersWithCalculation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case TestsPackage.EREFERENCE_TEST: {
+				EReferenceTest eReferenceTest = (EReferenceTest)theEObject;
+				T result = caseEReferenceTest(eReferenceTest);
+				if (result == null) result = caseGenericCategory(eReferenceTest);
+				if (result == null) result = caseDObject(eReferenceTest);
+				if (result == null) result = caseIUuid(eReferenceTest);
+				if (result == null) result = caseIName(eReferenceTest);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -445,6 +472,21 @@ public class TestsSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EReference Test</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EReference Test</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEReferenceTest(EReferenceTest object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>IUuid</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -486,6 +528,21 @@ public class TestsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseDObject(DObject object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Generic Category</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Generic Category</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGenericCategory(GenericCategory object) {
 		return null;
 	}
 

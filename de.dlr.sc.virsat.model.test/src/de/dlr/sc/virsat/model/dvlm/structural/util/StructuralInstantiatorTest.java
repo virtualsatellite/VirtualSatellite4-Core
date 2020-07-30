@@ -29,7 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 public class StructuralInstantiatorTest {
 
 	private StructuralInstantiator si;
-	private final String instanceName = "TEST_INSTANCE_NAME";
+	private static final String INSTANCE_NAME = "TEST_INSTANCE_NAME";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -39,18 +39,18 @@ public class StructuralInstantiatorTest {
 	@Test
 	public void testGenerateInstanceStructuralElementString() {
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
-		StructuralElementInstance sei = si.generateInstance(se, instanceName);
+		StructuralElementInstance sei = si.generateInstance(se, INSTANCE_NAME);
 		
 		assertEquals(sei.getType(), se);
-		assertEquals(sei.getName(), instanceName);
+		assertEquals(sei.getName(), INSTANCE_NAME);
 	}
 
 	@Test
 	public void testGenerateInstanceGeneralRelationString() {
 		GeneralRelation gr = StructuralFactory.eINSTANCE.createGeneralRelation();
-		RelationInstance ri = si.generateInstance(gr, instanceName);
+		RelationInstance ri = si.generateInstance(gr, INSTANCE_NAME);
 		
 		assertEquals(ri.getType(), gr);
-		assertEquals(ri.getName(), instanceName);
+		assertEquals(ri.getName(), INSTANCE_NAME);
 	}
 }

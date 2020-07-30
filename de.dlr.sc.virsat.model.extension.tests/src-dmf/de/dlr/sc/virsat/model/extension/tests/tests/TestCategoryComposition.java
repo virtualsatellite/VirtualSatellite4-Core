@@ -1,15 +1,15 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests;
 
-import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
+import de.dlr.sc.virsat.model.ext.core.core.GenericCategory;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,14 +27,10 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
  * @model
  * @generated
  */
-public interface TestCategoryComposition extends DObject {
+public interface TestCategoryComposition extends GenericCategory {
 	/**
 	 * Returns the value of the '<em><b>Test Sub Category</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Test Sub Category</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Test Sub Category</em>' containment reference.
 	 * @see #setTestSubCategory(TestCategoryAllProperty)

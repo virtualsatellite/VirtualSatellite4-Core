@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core UI Tests with SwtBot
-Bundle-SymbolicName: de.dlr.sc.virsat.swtbot.test
-Bundle-Version: 4.11.0.qualifier
+Bundle-SymbolicName: de.dlr.sc.virsat.swtbot.test;singleton:=true
+Bundle-Version: 4.12.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.swt,
@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.swt,
  org.eclipse.swtbot.go,
  org.eclipse.swtbot.junit4_x,
  org.eclipse.swtbot.swt.finder,
+ org.eclipse.swtbot.eclipse.gef.finder,
  org.eclipse.jdt.junit.runtime,
  de.dlr.sc.virsat.apps,
  de.dlr.sc.virsat.apps.ui,
@@ -56,9 +57,18 @@ Require-Bundle: org.eclipse.swt,
  de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.ui,
  de.dlr.sc.virsat.model.extension.statemachines,
- de.dlr.sc.virsat.model.extension.statemachines.ui
-Import-Package: org.zeromq,
+ de.dlr.sc.virsat.model.extension.statemachines.ui,
+ org.eclipse.gef,
+ org.eclipse.jgit,
+ org.eclipse.team.svn.core,
+ de.dlr.sc.virsat.external.lib.spotbugs
+Import-Package: org.eclipse.draw2d.geometry,
+ org.zeromq,
  vtk,
  vtk.rendering,
  vtk.rendering.awt
 Automatic-Module-Name: de.dlr.sc.virsat.swtbot.test
+Export-Package: de.dlr.sc.virsat.swtbot.test,
+ de.dlr.sc.virsat.swtbot.util
+Bundle-Activator: de.dlr.sc.virsat.swtbot.test.Activator
+Bundle-ActivationPolicy: lazy

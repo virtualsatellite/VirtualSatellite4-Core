@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistryTest;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainResourceEventListenerTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatWorkspaceCommandStackTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandHelperTest;
@@ -32,56 +34,51 @@ import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileComman
 import de.dlr.sc.virsat.project.resources.dmf.DmfResourceSaveCommandTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectBuilderTest;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommonsTest;
+import de.dlr.sc.virsat.project.structure.VirSatProjectResourceChangeListenerTest;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommandTest;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommandTest;
+import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommandTest;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNatureTest;
+import de.dlr.sc.virsat.project.structure.operation.NoUndoDeleteResourceOperationTest;
 import junit.framework.JUnit4TestAdapter;
 
-/**
- * 
- */
 @RunWith(Suite.class)
 
 @SuiteClasses({
-				VirSatProjectCommonsTest.class,
-				VirSatResourceSetTest.class,
-				VirSatTransactionalEditingDomainTest.class,
-				VirSatProjectResourceTest.class,
-				VirSatProjectNatureTest.class,
-				VirSatProjectBuilderTest.class,
-				VirSatResourceSetUtilTest2.class,
-				VirSatDanglingReferencesTest.class, //Disabled for the current Release
-				VirSatResourceSetUtilTest.class,
-				CreateSeiResourceAndFileCommandTest.class,
-				VirSatWorkspaceCommandStackTest.class,
-				VirSatClipboardCommandHelperTest.class,
-				VirSatCopyToClipboardCommandTest.class,
-				VirSatCutToClipboardCommandTest.class,
-				VirSatPasteFromClipboardCommandTest.class,
-				VirSatDragAndDropInheritanceCommandHelperTest.class,
-				CreateAddSeiWithFileStructureCommandTest.class,
-				AssignDisciplineCommandTest.class,
-				VirSatProblemMarkerHelperTest.class,
-				VirSatEditingDomainClipBoardTest.class,
-				DmfResourceSaveCommandTest.class
-				})
+	VirSatEditingDomainRegistryTest.class,
+	VirSatProjectCommonsTest.class,
+	VirSatResourceSetTest.class,
+	VirSatTransactionalEditingDomainTest.class,
+	VirSatProjectResourceTest.class,
+	VirSatProjectNatureTest.class,
+	VirSatProjectBuilderTest.class,
+	VirSatResourceSetUtilTest2.class,
+	VirSatDanglingReferencesTest.class,
+	VirSatResourceSetUtilTest.class,
+	CreateSeiResourceAndFileCommandTest.class,
+	VirSatWorkspaceCommandStackTest.class,
+	VirSatClipboardCommandHelperTest.class,
+	VirSatCopyToClipboardCommandTest.class,
+	VirSatCutToClipboardCommandTest.class,
+	VirSatPasteFromClipboardCommandTest.class,
+	VirSatDragAndDropInheritanceCommandHelperTest.class,
+	CreateAddSeiWithFileStructureCommandTest.class,
+	CreateRemoveSeiWithFileStructureCommandTest.class,
+	RemoveFileStructureCommandTest.class,
+	NoUndoDeleteResourceOperationTest.class,
+	AssignDisciplineCommandTest.class,
+	VirSatProblemMarkerHelperTest.class,
+	VirSatEditingDomainClipBoardTest.class,
+	DmfResourceSaveCommandTest.class,
+	VirSatProjectResourceChangeListenerTest.class,
+	VirSatTransactionalEditingDomainResourceEventListenerTest.class
+})
 
-/**
- * 
- * Test Collection
- *
- */
 public class AllTests {
 
-	/**
-	 * Constructor
-	 */
 	private AllTests() {
 	}
 	
-	/**
-	 * Test Adapter
-	 * @return Executable JUnit Tests
-	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
 	}	

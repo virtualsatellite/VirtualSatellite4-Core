@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - JFreeChart
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.jfreechart;singleton:=true
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.external.lib.jfreechart.Activator
 Require-Bundle: de.dlr.sc.virsat.external.lib,
  org.eclipse.swt,
@@ -11,12 +11,12 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-ClassPath: .,
- externalLib/jfreechart-1.0.19/jcommon-1.0.23.jar,
- externalLib/jfreechart-1.0.19/jfreechart-1.0.19-experimental.jar,
- externalLib/jfreechart-1.0.19/jfreechart-1.0.19-swt.jar,
- externalLib/jfreechart-1.0.19/jfreechart-1.0.19.jar,
- externalLib/jfreechart-1.0.19/swtgraphics2d.jar
+ externalLib/maven/jcommon.jar,
+ externalLib/maven/jfreechart-swt.jar,
+ externalLib/maven/jfreechart.jar,
+ externalLib/maven/swtgraphics2d.jar
 Export-Package: de.dlr.sc.virsat.external.lib.jfreechart;uses:="org.osgi.framework,org.eclipse.core.runtime",
+ license,
  org.jfree,
  org.jfree.base,
  org.jfree.base.config,
@@ -26,7 +26,6 @@ Export-Package: de.dlr.sc.virsat.external.lib.jfreechart;uses:="org.osgi.framewo
  org.jfree.chart.annotations,
  org.jfree.chart.axis,
  org.jfree.chart.block,
- org.jfree.chart.demo,
  org.jfree.chart.editor,
  org.jfree.chart.encoders,
  org.jfree.chart.entity,
@@ -42,6 +41,7 @@ Export-Package: de.dlr.sc.virsat.external.lib.jfreechart;uses:="org.osgi.framewo
  org.jfree.chart.renderer.xy,
  org.jfree.chart.resources,
  org.jfree.chart.servlet,
+ org.jfree.chart.swt,
  org.jfree.chart.title,
  org.jfree.chart.urls,
  org.jfree.chart.util,
@@ -60,13 +60,6 @@ Export-Package: de.dlr.sc.virsat.external.lib.jfreechart;uses:="org.osgi.framewo
  org.jfree.data.xml,
  org.jfree.data.xy,
  org.jfree.date,
- org.jfree.experimental.chart.demo,
- org.jfree.experimental.chart.plot,
- org.jfree.experimental.chart.renderer.xy,
- org.jfree.experimental.chart.swt,
- org.jfree.experimental.chart.swt.demo,
- org.jfree.experimental.chart.swt.editor,
- org.jfree.experimental.swt,
  org.jfree.io,
  org.jfree.layout,
  org.jfree.resources,

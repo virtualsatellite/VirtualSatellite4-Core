@@ -46,7 +46,7 @@ public interface UnitsPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/u";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/u";
 
 	/**
 	 * The package namespace name.

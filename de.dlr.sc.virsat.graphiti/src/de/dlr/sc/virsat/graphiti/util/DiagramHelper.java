@@ -14,10 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.util.URI;
@@ -45,15 +42,15 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * Utility class for getting information of Graphiti diagram objects.
- * @author muel_s8
- *
  */
 
 public class DiagramHelper {
@@ -89,8 +86,8 @@ public class DiagramHelper {
 			seiSegmentsList = seiSegmentsList.subList(1, seiSegmentsList.size() - 2);
 			String[] seiSegments = new String[seiSegmentsList.size()];
 			URI seiUri = URI.createHierarchicalURI(seiSegmentsList.toArray(seiSegments), resourceUri.query(), resourceUri.fragment());
-			seiUri = seiUri.appendSegment("StructuralElement");
-			seiUri = seiUri.appendFileExtension("dvlm");
+			seiUri = seiUri.appendSegment(VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT_SEGMENT);
+			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
 			
 			Path path = new Path(resourceUri.toPlatformString(false));
@@ -121,7 +118,7 @@ public class DiagramHelper {
 	public static boolean hasDiagramWritePermission(EObject graphitiObject) {
 		StructuralElementInstance sei = getOwningStructuralElementInstance(graphitiObject);
 		if (sei != null) {
-			return RightsHelper.hasWritePermission(sei); 
+			return RightsHelper.hasSystemUserWritePermission(sei); 
 		} else {
 			return true;
 		}
@@ -158,7 +155,7 @@ public class DiagramHelper {
 			return true;
 		}
 		
-		return RightsHelper.hasWritePermission(eObject) && DiagramHelper.hasDiagramWritePermission(graphitiObject);
+		return RightsHelper.hasSystemUserWritePermission(eObject) && DiagramHelper.hasDiagramWritePermission(graphitiObject);
 	}
 	/**
 	 * Creates the diagram
@@ -179,33 +176,11 @@ public class DiagramHelper {
 			protected void doExecute() {
 				resource.setTrackingModification(true);
 				resource.getContents().add(diagram);
-
+				resourceSet.saveResource(resource, UserRegistry.getInstance());
 			}
 		});
-		saveInWorkspaceRunnable(resourceSet, resource);	
-		resourceSet.getResources().remove(resource);
 	}
-	/**
-	 * Saves the domain and diagram
-	 * @param resourceSet the resource set
-	 * @param diagramResource the diagram
-	 */
-	public static void saveInWorkspaceRunnable(final VirSatResourceSet resourceSet, Resource diagramResource) {
-		final IWorkspaceRunnable wsRunnable = new IWorkspaceRunnable() {
-			public void run(final IProgressMonitor monitor) throws CoreException {
-				resourceSet.saveResource(diagramResource);
-			}
-		};
-		try {
-			ResourcesPlugin.getWorkspace().run(wsRunnable, null);
-		} catch (final CoreException e) {
-			final Throwable cause = e.getStatus().getException();
-			if (cause instanceof RuntimeException) {
-				throw (RuntimeException) cause;
-			}
-			throw new RuntimeException(e);
-		}
-	}
+	
 	/**
 	 * Gets the concept from the passed editing domain
 	 * @param ed the editing domain

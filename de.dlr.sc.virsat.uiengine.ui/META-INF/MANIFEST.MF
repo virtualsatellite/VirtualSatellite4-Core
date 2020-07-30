@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Generic UI Engine and Editor UI
 Bundle-SymbolicName: de.dlr.sc.virsat.uiengine.ui;singleton:=true
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin$Implementation
 Bundle-Vendor: DLR (German Aerospace Center)
@@ -27,7 +27,8 @@ Require-Bundle: de.dlr.sc.virsat.commons,
  org.eclipse.ui.workbench,
  org.eclipse.ui.forms;visibility:=reexport,
  org.eclipse.nebula.widgets.gallery,
- de.dlr.sc.virsat.external.lib.commons.cli
+ de.dlr.sc.virsat.external.lib.commons.cli,
+ de.dlr.sc.virsat.external.lib.matlabfile
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.uieingine.ui,
  de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties,

@@ -12,7 +12,9 @@ package de.dlr.sc.virsat.model.concept.migrator;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -39,7 +41,7 @@ public class ConceptMigratorTest extends AConceptMigratorTest {
 	 *
 	 */
 	
-	private class TestMigrator implements IMigrator {
+	private static class TestMigrator implements IMigrator {
 		private String version;
 		
 		/**
@@ -63,6 +65,12 @@ public class ConceptMigratorTest extends AConceptMigratorTest {
 		public String getResource() {
 			return version;
 		}
+
+		@Override
+		public Set<String> getNewDependencies(Concept concept, IMigrator previousMigrator) {
+			return Collections.emptySet();
+		}
+		
 	}
 	
 	@Before

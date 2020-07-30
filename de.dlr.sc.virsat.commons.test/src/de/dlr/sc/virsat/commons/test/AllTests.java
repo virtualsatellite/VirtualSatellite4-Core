@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.commons.DependencyTreeTest;
+import de.dlr.sc.virsat.commons.exception.AtomicExceptionReferenceTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -23,7 +24,10 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({DependencyTreeTest.class})
+@SuiteClasses({
+	DependencyTreeTest.class,
+	AtomicExceptionReferenceTest.class
+})
 
 public class AllTests {
 

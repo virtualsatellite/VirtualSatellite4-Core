@@ -9,8 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.ui.structure.dialog;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -54,7 +54,7 @@ import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFacto
 public class ReferencedDeleteDialog extends MessageDialog {
 
 	private static final int DIALOG_REFERENCES_TABLE_HEIGHT_300 = 300;
-	private Map<EObject, List<EObject>> mapOfReferences;
+	private Map<EObject, Set<EObject>> mapOfReferences;
 
 	/**
 	 * Constructor for the Dialog. For further details refer to the JFace Message dialog
@@ -67,7 +67,7 @@ public class ReferencedDeleteDialog extends MessageDialog {
 	 * @param defaultIndex The index of the default button
 	 * @param dialogButtonLabels an array of labels to be used for the buttons
 	 */
-	protected ReferencedDeleteDialog(Shell parentShell, Map<EObject, List<EObject>> mapOfReferences, String dialogTitle, Image dialogTitleImage, String dialogMessage,	int dialogImageType, int defaultIndex, String[] dialogButtonLabels) {
+	protected ReferencedDeleteDialog(Shell parentShell, Map<EObject, Set<EObject>> mapOfReferences, String dialogTitle, Image dialogTitleImage, String dialogMessage,	int dialogImageType, int defaultIndex, String[] dialogButtonLabels) {
 		super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, defaultIndex, dialogButtonLabels);
 		this.mapOfReferences = mapOfReferences;
 	}
@@ -81,7 +81,7 @@ public class ReferencedDeleteDialog extends MessageDialog {
 	 * @param mapOfReferences the content of referencing objects to be displayed
 	 * @return true in case the user confirmed the delete action. false in all otehr cases.
 	 */
-    public static boolean openQuestion(Shell parent, Map<EObject, List<EObject>> mapOfReferences) {
+    public static boolean openQuestion(Shell parent, Map<EObject, Set<EObject>> mapOfReferences) {
         String [] dialogButtons = new String[] {
         	IDialogConstants.YES_LABEL,
 			IDialogConstants.NO_LABEL

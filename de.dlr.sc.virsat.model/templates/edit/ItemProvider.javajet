@@ -69,6 +69,8 @@ boolean isInstanceOfPrefix = MODEL_CLASS_PREFIX.equals(genClass.getName());
 <%genModel.addImport("org.eclipse.emf.edit.command.CommandParameter");%>
 <%genModel.addImport("org.eclipse.emf.edit.domain.EditingDomain");%>
 <%genModel.addImport("de.dlr.sc.virsat.model.dvlm.roles.RoleManagementCheckCommand");%>
+<%genModel.addImport("de.dlr.sc.virsat.model.dvlm.roles.IUserContext");%>
+<%genModel.addImport("de.dlr.sc.virsat.model.dvlm.roles.UserRegistry");%>
 
 <%String _List = genModel.getImportedName(genModel.useGenerics() ? "java.util.List<org.eclipse.emf.edit.provider.IItemPropertyDescriptor>" : "java.util.List");%>
 <%genModel.markImportLocation(stringBuffer);%>
@@ -253,14 +255,14 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 <%}%>
 	public Object getImage(Object object)
 	{
-	<%if (isInstanceOfATypeInstance | isInstanceOfStructuralElementInstance | isInstanceOfStructuralElement | isInstanceOfCategory) {
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin");
-		genModel.getImportedName("java.net.URL");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.general.IQualifiedName");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElement");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.Category");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance");%> 
+    <%if (isInstanceOfATypeInstance | isInstanceOfStructuralElementInstance | isInstanceOfStructuralElement | isInstanceOfCategory) {
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin");
+    genModel.getImportedName("java.net.URL");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.general.IQualifiedName");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElement");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.Category");
+    genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance");%> 
 		Object rtrnObj = overlayImage(object, getResourceLocator().getImage("full/obj16/<%=genClass.getName()%>")); 
 		
 		// In case we can find a trace to an object typed by IQualifedName we might have an alternative image
@@ -287,10 +289,10 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 		}
 		return rtrnObj;
 	}
-	<%} else {%>
+    <%} else {%>
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/<%=genClass.getName()%>")); <%=genModel.getNonNLS()%>
 	}
-	<%}%>
+    <%}%>
 <%}%>
 <%if (genModel.getRuntimeVersion().getValue() >= GenRuntimeVersion.EMF26_VALUE && !genModel.isCreationIcons()) {%>
 	/**
@@ -327,70 +329,66 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 
 <%if (isInstanceOfRepository | isInstanceOfRoleManagement | isInstanceOfUnitManagement) {%>
 	return getString("_UI_<%=genClass.getName()%>_type");<%=genModel.getNonNLS()%>
-<%} %>
-<% else {%>
-	<%if (isInstanceOfAUnit) {%> 
+<%} else {%>
+    <%if (isInstanceOfAUnit) {%>
 		String labelName =((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).getName();<%=genModel.getNonNLS()%>
 		String label =((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).<%=genClass.getLabelFeature().getGetAccessor()%>();
 		return labelName + ": " + label;<%=genModel.getNonNLS()%> 
-	<%}
-	else {%>	
-	<%if (isInstanceOfPrefix) {%> 
+    <%} else {%>
+        <%if (isInstanceOfPrefix) {%>
 		String labelName =((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).getName();<%=genModel.getNonNLS()%>
 		String label =((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).<%=genClass.getLabelFeature().getGetAccessor()%>();
 		return labelName + ": " + label;<%=genModel.getNonNLS()%> 
-	<%}
-	else {%>	
-	<%if (genModel.isStyleProviders()) {%>
+        <%} else {%>
+            <%if (genModel.isStyleProviders()) {%>
 			return ((<%=genModel.getImportedName("org.eclipse.emf.edit.provider.StyledString")%>)getStyledText(object)).getString();
-	<%} else {%>
-	<%if (genClass.isMapEntry()) {%>
+            <%} else {%>
+                <%if (genClass.isMapEntry()) {%>
 			<%=genClass.getImportedInterfaceName()%><%if (genModel.useGenerics()) {%><?, ?><%}%> <%=genClass.getSafeUncapName()%> = (<%=genClass.getImportedInterfaceName()%><%if (genModel.useGenerics()) {%><?, ?><%}%>)object;
-  	<%if (!genClass.getMapEntryKeyFeature().isPropertyMultiLine() && !genClass.getMapEntryValueFeature().isPropertyMultiLine()) {%>
+                    <%if (!genClass.getMapEntryKeyFeature().isPropertyMultiLine() && !genClass.getMapEntryValueFeature().isPropertyMultiLine()) {%>
 			return "" + <%=genClass.getSafeUncapName()%>.getKey() + " -> " + <%=genClass.getSafeUncapName()%>.getValue();<%=genModel.getNonNLS()%><%=genModel.getNonNLS(2)%>
-  	<%} else {%>
-    	<%if (genClass.getMapEntryKeyFeature().isPropertyMultiLine()) {%>
+                    <%} else {%>
+                        <%if (genClass.getMapEntryKeyFeature().isPropertyMultiLine()) {%>
 			String key = crop("" + <%=genClass.getSafeUncapName()%>.getKey());<%=genModel.getNonNLS()%>
-    	<%} else {%>
+                        <%} else {%>
 			String key = "" + <%=genClass.getSafeUncapName()%>.getKey();<%=genModel.getNonNLS()%>
-    	<%}%>
-    	<%if (genClass.getMapEntryValueFeature().isPropertyMultiLine()) {%>
+                        <%}%>
+                        <%if (genClass.getMapEntryValueFeature().isPropertyMultiLine()) {%>
 			String value = crop("" + <%=genClass.getSafeUncapName()%>.getValue());<%=genModel.getNonNLS()%>
-    	<%} else {%>
+                        <%} else {%>
 			String value = "" + <%=genClass.getSafeUncapName()%>.getValue();<%=genModel.getNonNLS()%>
-    	<%}%>
+                        <%}%>
 			return key + " -> " + value;<%=genModel.getNonNLS()%>
-  	
-  	<%}%>
-	<%} else if (genClass.getLabelFeature() != null) { GenFeature labelFeature = genClass.getLabelFeature();%>
-  	<%if (labelFeature.isPrimitiveType() && !labelFeature.getGenClass().isDynamic() && !labelFeature.isSuppressedGetVisibility()) {%>
+                    <%}%>
+                <%} else if (genClass.getLabelFeature() != null) { GenFeature labelFeature = genClass.getLabelFeature();%>
+                    <%if (labelFeature.isPrimitiveType() && !labelFeature.getGenClass().isDynamic() && !labelFeature.isSuppressedGetVisibility()) {%>
 			<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%> <%=genClass.getSafeUncapName()%> = (<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object;
 			return getString("_UI_<%=genClass.getName()%>_type") + " " + <%=genClass.getSafeUncapName()%>.<%=genClass.getLabelFeature().getGetAccessor()%>();<%=genModel.getNonNLS()%><%=genModel.getNonNLS(2)%>
-  	<%} else {%>
-    	<%if (labelFeature.isStringType() && !labelFeature.getGenClass().isDynamic() && !labelFeature.isSuppressedGetVisibility()) {%>
-      	<%if (labelFeature.isPropertyMultiLine()) {%>
+                    <%} else {%>
+                        <%if (labelFeature.isStringType() && !labelFeature.getGenClass().isDynamic() && !labelFeature.isSuppressedGetVisibility()) {%>
+                            <%if (labelFeature.isPropertyMultiLine()) {%>
 			String label = crop(((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).<%=labelFeature.getGetAccessor()%>());
-      	<%} else {%>
+                            <%} else {%>
 			String label = ((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).<%=labelFeature.getGetAccessor()%>();
-      	<%}%>
-    	<%} else {%>
-      	<%if (labelFeature.isSuppressedGetVisibility() || labelFeature.getGenClass().isDynamic()) {%>
+                            <%}%>
+                        <%} else {%>
+                            <%if (labelFeature.isSuppressedGetVisibility() || labelFeature.getGenClass().isDynamic()) {%>
 			<%=genModel.getImportedName("java.lang.Object")%> labelValue = ((<%=genModel.getImportedName("org.eclipse.emf.ecore.EObject")%>)object).eGet(<%=labelFeature.getQualifiedFeatureAccessor()%>);
-      	<%} else {%>
+                            <%} else {%>
 			<%=labelFeature.getRawImportedType()%> labelValue = ((<%=genClass.getImportedInterfaceName()%><%=genClass.getInterfaceWildTypeArguments()%>)object).<%=labelFeature.getGetAccessor()%>();
-      	<%}%>
+                            <%}%>
 			String label = labelValue == null ? null : labelValue.toString();
-    	<%}%>
+                        <%}%>
 			return label == null || label.length() == 0 ?
 				getString("_UI_<%=genClass.getName()%>_type") :<%=genModel.getNonNLS()%>
 				getString("_UI_<%=genClass.getName()%>_type") + " " + label;<%=genModel.getNonNLS()%><%=genModel.getNonNLS(2)%>
-  	<%}%>
-	<%} else {%>
+                    <%}%>
+                <%} else {%>
 			return getString("_UI_<%=genClass.getName()%>_type");<%=genModel.getNonNLS()%>
-	<%}%>
-<%}%>
-<%}%>
-<%}%>
+                <%}%>
+            <%}%>
+        <%}%>
+    <%}%>
 <%}%>
 <%@ end %><%//ItemProvider/getText.override.javajetinc%>
 	}
@@ -588,15 +586,15 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
       <%}%>
     <%}%>
 	}
-	<% 
-	// Here we override the command for removing ATypeinstances
-	// This should only happen in the cases where no super TIs are present
-	// at the object. In all otehr cases the following method should either
-	// not be generated ot refer to the create Comamnd of the super class
-	if (isInstanceOfICategoryAssignmentContainer) {
-		genModel.getImportedName("org.eclipse.emf.ecore.EObject");
-		genModel.getImportedName("org.eclipse.emf.ecore.EStructuralFeature");
-		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");	%>
+    <% 
+    // Here we override the command for removing ATypeinstances
+    // This should only happen in the cases where no super TIs are present
+    // at the object. In all otehr cases the following method should either
+    // not be generated ot refer to the create Comamnd of the super class
+    if (isInstanceOfICategoryAssignmentContainer) {
+    genModel.getImportedName("org.eclipse.emf.ecore.EObject");
+    genModel.getImportedName("org.eclipse.emf.ecore.EStructuralFeature");
+    genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");	%>
 	@Override
 	protected Command createRemoveCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Collection<?> collection) {
 		// In case that a Type Instance is inherited it will have some Super TIs being set.
@@ -613,7 +611,8 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 		
 		// In all other cases create the usual command
 		return super.createRemoveCommand(domain, owner, feature, collection);
-	}<% } %>
+	}
+    <% } %>
 	
 	/**
 	 * *********************************
@@ -626,11 +625,11 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
  	*/
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature,	Collection<?> collection, int index) {
-		<%	genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.command.UndoableAddCommand");
-			genModel.getImportedName("org.eclipse.emf.ecore.EObject");
-			genModel.getImportedName("org.eclipse.emf.ecore.EStructuralFeature");
-			genModel.getImportedName("java.util.Collection");
-			genModel.getImportedName("org.eclipse.emf.edit.domain.EditingDomain");%>
+        <%	genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.command.UndoableAddCommand");
+        genModel.getImportedName("org.eclipse.emf.ecore.EObject");
+        genModel.getImportedName("org.eclipse.emf.ecore.EStructuralFeature");
+        genModel.getImportedName("java.util.Collection");
+        genModel.getImportedName("org.eclipse.emf.edit.domain.EditingDomain");%>
 		// Override functionality with the undoable ADD Command that performs undo by taking out the collection from the containing list
 		// rather than reducing the index and assuming the last objects on the list have been added by the current command
 		return new UndoableAddCommand(domain, owner, feature, collection, index);
@@ -647,19 +646,28 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
  	*/
 	@Override
 	public Command createCommand(Object object, EditingDomain domain, Class<? extends Command> commandClass, CommandParameter commandParameter) {
-		<%if (isInstanceOfRepository || isInstanceOfStructuralElementInstance) {
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.util.DVLMCommandParameterApplicableForCheck");
-		genModel.getImportedName("org.eclipse.emf.edit.command.AddCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.CommandParameter");
-		genModel.getImportedName("org.eclipse.emf.edit.command.CopyCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.CreateChildCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.CreateCopyCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.DragAndDropCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.InitializeCopyCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.MoveCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.ReplaceCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand");
-		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");%>		
+		
+		// Set the UserContext either from the SystemUserRegistry or
+		// from the Domain if it exists
+		IUserContext userContext = UserRegistry.getInstance();
+		if (domain instanceof IUserContext) {
+			userContext = (IUserContext) domain;
+		}
+		
+        <%if (isInstanceOfRepository || isInstanceOfStructuralElementInstance) {
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.util.DVLMCommandParameterApplicableForCheck");
+        genModel.getImportedName("org.eclipse.emf.edit.command.AddCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.CommandParameter");
+        genModel.getImportedName("org.eclipse.emf.edit.command.CopyCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.CreateChildCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.CreateCopyCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.DragAndDropCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.InitializeCopyCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.MoveCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.ReplaceCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand");
+        genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");%>
+		
 		// For the Repository and StructuralElementInstances we prefer the command for the aplicablefor paradigm
 		// If the requested command is not valid for the current obejcts an unexecutable command will be handed back instead
 		DVLMCommandParameterApplicableForCheck commandParameterCheck = new DVLMCommandParameterApplicableForCheck(commandParameter);
@@ -674,19 +682,20 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			|| (commandClass == CreateChildCommand.class)) {
 			
 			if (!commandParameterCheck.isValidCommandParameter(commandParameter)) {
-				return new RoleManagementCheckCommand(UnexecutableCommand.INSTANCE, commandParameter);
+				return new RoleManagementCheckCommand(UnexecutableCommand.INSTANCE, commandParameter, userContext);
 			}
-		}<%}
-		if (isInstanceOfRepository) {
-		// In case we create some commands on the repository we want that 
-		// they will be forwarded into an unexecutable command. E.G we expect such
-		// a behaviour for removing already active concepts. Such a command should
-		// not be executable.		
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.concepts.Concept");
-		genModel.getImportedName("java.util.concurrent.atomic.AtomicBoolean");
-		genModel.getImportedName("org.eclipse.emf.edit.command.DeleteCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.RemoveCommand");
-		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");%>		
+		}
+        <%}
+        if (isInstanceOfRepository) {
+        // In case we create some commands on the repository we want that 
+        // they will be forwarded into an unexecutable command. E.G we expect such
+        // a behaviour for removing already active concepts. Such a command should
+        // not be executable.		
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.concepts.Concept");
+        genModel.getImportedName("java.util.concurrent.atomic.AtomicBoolean");
+        genModel.getImportedName("org.eclipse.emf.edit.command.DeleteCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.RemoveCommand");
+        genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");%>		
 		// We don't want to allow remove or delete operations on concepts that have been introduced into the model
 		if ((commandClass == RemoveCommand.class) || (commandClass == DeleteCommand.class)) {
 			AtomicBoolean removeConcept = new AtomicBoolean(false);
@@ -694,54 +703,55 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			if (removeConcept.get() || (commandParameter.getValue() instanceof Concept)) {
 				return UnexecutableCommand.INSTANCE;
 			}
-		} <%} else if (isInstanceOfArrayInstance) {
-		// Arrays are specific as well. Only dynamic arrays should allow to remove
-		// or delete items of them. Static arrays should never be changed
-		// once they are initialized.
-		genModel.getImportedName("org.eclipse.emf.ecore.EObject");
-		genModel.getImportedName("org.eclipse.emf.edit.command.RemoveCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.AddCommand");
-		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.command.ArrayInstance");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty");
-		genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier"); %>		
+		}
+        <%} else if (isInstanceOfArrayInstance) {
+        // Arrays are specific as well. Only dynamic arrays should allow to remove
+        // or delete items of them. Static arrays should never be changed
+        // once they are initialized.
+        genModel.getImportedName("org.eclipse.emf.ecore.EObject");
+        genModel.getImportedName("org.eclipse.emf.edit.command.RemoveCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.AddCommand");
+        genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand");
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance");
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance");
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.command.ArrayInstance");
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty");
+        genModel.getImportedName("de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier"); %>		
 		// Make sure that we do not allow removing items of static arrays.
 		// Only dynamic arrays should change in their size. Static ones are intialized
 		// once and their size is kept forever.
 		if ((commandClass == RemoveCommand.class) || (commandClass == AddCommand.class)) {
 			
 			EObject eOwner = commandParameter.getEOwner();
-	    	EObject potentialArrayInstance =  null;
-	    	
-	    	if ((eOwner instanceof ComposedPropertyInstance) || (eOwner instanceof ReferencePropertyInstance)) {
-	    		potentialArrayInstance = eOwner.eContainer();
-	    	} else {
-	    		potentialArrayInstance = eOwner;
-	    	}
-	    	
-	    	if (potentialArrayInstance instanceof ArrayInstance) {
-	    		ArrayInstance arrayInstance = (ArrayInstance) potentialArrayInstance;
-	    		
-	    		if (arrayInstance.getType() instanceof AProperty) {
-	    			AProperty property = (AProperty) arrayInstance.getType();
-	    			
-	    			if (property.getArrayModifier() instanceof StaticArrayModifier) {
-	    				return UnexecutableCommand.INSTANCE;
-	    			}
-	    		}
-	    	}	  
-	    }<%}%>
-	    		
+			EObject potentialArrayInstance =  null;
+			
+			if ((eOwner instanceof ComposedPropertyInstance) || (eOwner instanceof ReferencePropertyInstance)) {
+				potentialArrayInstance = eOwner.eContainer();
+			} else {
+				potentialArrayInstance = eOwner;
+			}
+			
+			if (potentialArrayInstance instanceof ArrayInstance) {
+				ArrayInstance arrayInstance = (ArrayInstance) potentialArrayInstance;
+				
+				if (arrayInstance.getType() instanceof AProperty) {
+					AProperty property = (AProperty) arrayInstance.getType();
+					
+					if (property.getArrayModifier() instanceof StaticArrayModifier) {
+						return UnexecutableCommand.INSTANCE;
+					}
+				}
+			}
+		}
+       <%}%>
 		// For all other commands get the original one
 		Command originalCommand = super.createCommand(object, domain, commandClass, commandParameter);
-		<%if (isInstanceOfValuePropertyInstance) {
-		// Incase we are accessing the set value method of a derived data item
-		// we want to have the override status being set, otherwise, the inehritance builder
-		// will directly change back the changes that ahve been set with the setvalue method
-		genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
+        <%if (isInstanceOfValuePropertyInstance) {
+        // Incase we are accessing the set value method of a derived data item
+        // we want to have the override status being set, otherwise, the inehritance builder
+        // will directly change back the changes that ahve been set with the setvalue method
+        genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
 		// In case we try to set the value we also want to make sure that the override attribute gets set
 		if (commandClass == SetCommand.class && commandParameter.getEAttribute() == PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE) {
 			Command setOverrideCommand = SetCommand.create(domain, object, InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, true);
@@ -749,14 +759,14 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			setValueAndOverrideCommand.append(setOverrideCommand);
 			setValueAndOverrideCommand.append(originalCommand);
 			return setValueAndOverrideCommand;
-	    }
-	    <%}%>		
-	    <%if (isInstanceOfResourcePropertyInstance) {
-		// Incase we are accessing the set value method of a derived data item
-		// we want to have the override status being set, otherwise, the inehritance builder
-		// will directly change back the changes that ahve been set with the setvalue method
-		genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
+		}
+        <%}%>
+        <%if (isInstanceOfResourcePropertyInstance) {
+        // Incase we are accessing the set value method of a derived data item
+        // we want to have the override status being set, otherwise, the inehritance builder
+        // will directly change back the changes that ahve been set with the setvalue method
+        genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
 		// In case we try to set the value we also want to make sure that the override attribute gets set
 		if (commandClass == SetCommand.class && commandParameter.getEAttribute() == PropertyinstancesPackage.Literals.RESOURCE_PROPERTY_INSTANCE__RESOURCE_URI) {
 			Command setOverrideCommand = SetCommand.create(domain, object, InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, true);
@@ -764,14 +774,14 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			setValueAndOverrideCommand.append(setOverrideCommand);
 			setValueAndOverrideCommand.append(originalCommand);
 			return setValueAndOverrideCommand;
-	    }
-	    <%}%>
-	    <%if (isInstanceOfReferencePropertyInstance) {
-		// Incase we are accessing the set value method of a derived data item
-		// we want to have the override status being set, otherwise, the inehritance builder
-		// will directly change back the changes that ahve been set with the setvalue method
-		genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
+		}
+        <%}%>
+        <%if (isInstanceOfReferencePropertyInstance) {
+        // Incase we are accessing the set value method of a derived data item
+        // we want to have the override status being set, otherwise, the inehritance builder
+        // will directly change back the changes that ahve been set with the setvalue method
+        genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
 		// In case we try to set the value we also want to make sure that the override attribute gets set
 		if (commandClass == SetCommand.class && commandParameter.getEReference() == PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE) {
 			Command setOverrideCommand = SetCommand.create(domain, object, InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, true);
@@ -779,14 +789,14 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			setValueAndOverrideCommand.append(setOverrideCommand);
 			setValueAndOverrideCommand.append(originalCommand);
 			return setValueAndOverrideCommand;
-	    }
-	    <%}%>
-	    <%if (isInstanceOfUnitValuePropertyInstance) {
-		// Incase we are accessing the set value method of a derived data item
-		// we want to have the override status being set, otherwise, the inehritance builder
-		// will directly change back the changes that have been set with the setvalue method
-		genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
-		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
+		}
+        <%}%>
+        <%if (isInstanceOfUnitValuePropertyInstance) {
+        // Incase we are accessing the set value method of a derived data item
+        // we want to have the override status being set, otherwise, the inehritance builder
+        // will directly change back the changes that have been set with the setvalue method
+        genModel.getImportedName("org.eclipse.emf.common.command.CompoundCommand");
+        genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); %>
 		// In case we try to set the value we also want to make sure that the override attribute gets set
 		if (commandClass == SetCommand.class && (commandParameter.getEReference() == PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT || commandParameter.getEAttribute() == PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE)) {
 			Command setOverrideCommand = SetCommand.create(domain, object, InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, true);
@@ -794,27 +804,27 @@ public class <%=genClass.getProviderClassName()%> <%if (genClass.getProviderImpl
 			setValueAndOverrideCommand.append(setOverrideCommand);
 			setValueAndOverrideCommand.append(originalCommand);
 			return setValueAndOverrideCommand;
-	    }
-	    <%}%>		
-	    <%if (isInstanceOfCategoryAssignment) {
-		// Incase we are accessing the set value method of a category assignment
-		// We need to check if it has been inherited and if that is the case
-		// We disallow changing the name via the set method
-		genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); 
-		genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand"); %>
+		}
+        <%}%>
+        <%if (isInstanceOfCategoryAssignment) {
+        // Incase we are accessing the set value method of a category assignment
+        // We need to check if it has been inherited and if that is the case
+        // We disallow changing the name via the set method
+        genModel.getImportedName("org.eclipse.emf.edit.command.SetCommand"); 
+        genModel.getImportedName("org.eclipse.emf.common.command.UnexecutableCommand"); %>
 		if (commandClass == SetCommand.class && commandParameter.getFeature() == GeneralPackage.Literals.INAME__NAME) {
 			CategoryAssignment ca = (CategoryAssignment) object;
 			if (ca.isIsInherited()) {
 				return UnexecutableCommand.INSTANCE;
 			}
 		}
-	    <%}%>	
+        <%}%>
 		// A RolemanagementCheckCommand should not necessarily be wrapped into another RoleManagementCheck Command
 		if (originalCommand instanceof RoleManagementCheckCommand) {
 			return originalCommand;
 		} else {
 			// And wrap it into our command checking for the proper access rights
-			return new RoleManagementCheckCommand(originalCommand, commandParameter);	
+			return new RoleManagementCheckCommand(originalCommand, commandParameter, userContext);	
 		}
 	}
 

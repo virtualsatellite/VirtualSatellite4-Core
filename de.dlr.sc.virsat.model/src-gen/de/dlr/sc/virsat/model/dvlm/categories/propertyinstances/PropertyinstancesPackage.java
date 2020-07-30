@@ -48,7 +48,7 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi";
 
 	/**
 	 * The package namespace name.
@@ -612,6 +612,115 @@ public interface PropertyinstancesPackage extends EPackage {
 	int REFERENCE_PROPERTY_INSTANCE_OPERATION_COUNT = APROPERTY_INSTANCE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.EReferencePropertyInstanceImpl <em>EReference Property Instance</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.EReferencePropertyInstanceImpl
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl#getEReferencePropertyInstance()
+	 * @generated
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__UUID = APROPERTY_INSTANCE__UUID;
+
+	/**
+	 * The feature id for the '<em><b>Comment</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__COMMENT = APROPERTY_INSTANCE__COMMENT;
+
+	/**
+	 * The feature id for the '<em><b>Super Tis</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__SUPER_TIS = APROPERTY_INSTANCE__SUPER_TIS;
+
+	/**
+	 * The feature id for the '<em><b>Is Inherited</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__IS_INHERITED = APROPERTY_INSTANCE__IS_INHERITED;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__TYPE = APROPERTY_INSTANCE__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Override</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__OVERRIDE = APROPERTY_INSTANCE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Reference</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE__REFERENCE = APROPERTY_INSTANCE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>EReference Property Instance</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE_FEATURE_COUNT = APROPERTY_INSTANCE_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Get Full Qualified Instance Name</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE___GET_FULL_QUALIFIED_INSTANCE_NAME = APROPERTY_INSTANCE___GET_FULL_QUALIFIED_INSTANCE_NAME;
+
+	/**
+	 * The operation id for the '<em>Get Category Assignment Container</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE___GET_CATEGORY_ASSIGNMENT_CONTAINER = APROPERTY_INSTANCE___GET_CATEGORY_ASSIGNMENT_CONTAINER;
+
+	/**
+	 * The number of operations of the '<em>EReference Property Instance</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY_INSTANCE_OPERATION_COUNT = APROPERTY_INSTANCE_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.ComposedPropertyInstanceImpl <em>Composed Property Instance</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -619,7 +728,7 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl#getComposedPropertyInstance()
 	 * @generated
 	 */
-	int COMPOSED_PROPERTY_INSTANCE = 5;
+	int COMPOSED_PROPERTY_INSTANCE = 6;
 
 	/**
 	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
@@ -719,7 +828,7 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl#getArrayInstance()
 	 * @generated
 	 */
-	int ARRAY_INSTANCE = 6;
+	int ARRAY_INSTANCE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
@@ -819,7 +928,7 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl#getResourcePropertyInstance()
 	 * @generated
 	 */
-	int RESOURCE_PROPERTY_INSTANCE = 7;
+	int RESOURCE_PROPERTY_INSTANCE = 8;
 
 	/**
 	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
@@ -946,7 +1055,7 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl#getEnumUnitPropertyInstance()
 	 * @generated
 	 */
-	int ENUM_UNIT_PROPERTY_INSTANCE = 8;
+	int ENUM_UNIT_PROPERTY_INSTANCE = 9;
 
 	/**
 	 * The feature id for the '<em><b>Uuid</b></em>' attribute.
@@ -1159,6 +1268,27 @@ public interface PropertyinstancesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getReferencePropertyInstance_Reference();
+
+	/**
+	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance <em>EReference Property Instance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>EReference Property Instance</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
+	 * @generated
+	 */
+	EClass getEReferencePropertyInstance();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance#getReference <em>Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Reference</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance#getReference()
+	 * @see #getEReferencePropertyInstance()
+	 * @generated
+	 */
+	EReference getEReferencePropertyInstance_Reference();
 
 	/**
 	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance <em>Composed Property Instance</em>}'.
@@ -1376,6 +1506,24 @@ public interface PropertyinstancesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference REFERENCE_PROPERTY_INSTANCE__REFERENCE = eINSTANCE.getReferencePropertyInstance_Reference();
+
+		/**
+		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.EReferencePropertyInstanceImpl <em>EReference Property Instance</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.EReferencePropertyInstanceImpl
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl#getEReferencePropertyInstance()
+		 * @generated
+		 */
+		EClass EREFERENCE_PROPERTY_INSTANCE = eINSTANCE.getEReferencePropertyInstance();
+
+		/**
+		 * The meta object literal for the '<em><b>Reference</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EREFERENCE_PROPERTY_INSTANCE__REFERENCE = eINSTANCE.getEReferencePropertyInstance_Reference();
 
 		/**
 		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.ComposedPropertyInstanceImpl <em>Composed Property Instance</em>}' class.

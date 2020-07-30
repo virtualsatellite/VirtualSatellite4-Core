@@ -13,16 +13,17 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -37,7 +38,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
  * 
  * 
  */	
-public abstract class ATestCategoryReferenceArray extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class ATestCategoryReferenceArray extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryReferenceArray";
 	
@@ -90,6 +91,19 @@ public abstract class ATestCategoryReferenceArray extends ABeanCategoryAssignmen
 			safeAccessTestCategoryReferenceArrayDynamic();
 			return testCategoryReferenceArrayDynamic;
 		}
+		
+		private IBeanList<BeanPropertyReference<TestCategoryAllProperty>> testCategoryReferenceArrayDynamicBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTestCategoryReferenceArrayDynamicBean() {
+			if (testCategoryReferenceArrayDynamicBean.getArrayInstance() == null) {
+				testCategoryReferenceArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testCategoryReferenceArrayDynamic"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<TestCategoryAllProperty>> getTestCategoryReferenceArrayDynamicBean() {
+			safeAccessTestCategoryReferenceArrayDynamicBean();
+			return testCategoryReferenceArrayDynamicBean;
+		}
 	
 	// *****************************************************************
 	// * Array Attribute: testCategoryReferenceArrayStatic
@@ -105,6 +119,19 @@ public abstract class ATestCategoryReferenceArray extends ABeanCategoryAssignmen
 		public IBeanList<TestCategoryAllProperty> getTestCategoryReferenceArrayStatic() {
 			safeAccessTestCategoryReferenceArrayStatic();
 			return testCategoryReferenceArrayStatic;
+		}
+		
+		private IBeanList<BeanPropertyReference<TestCategoryAllProperty>> testCategoryReferenceArrayStaticBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTestCategoryReferenceArrayStaticBean() {
+			if (testCategoryReferenceArrayStaticBean.getArrayInstance() == null) {
+				testCategoryReferenceArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testCategoryReferenceArrayStatic"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<TestCategoryAllProperty>> getTestCategoryReferenceArrayStaticBean() {
+			safeAccessTestCategoryReferenceArrayStaticBean();
+			return testCategoryReferenceArrayStaticBean;
 		}
 	
 	// *****************************************************************
@@ -122,6 +149,19 @@ public abstract class ATestCategoryReferenceArray extends ABeanCategoryAssignmen
 			safeAccessTestPropertyReferenceArrayDynamic();
 			return testPropertyReferenceArrayDynamic;
 		}
+		
+		private IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> testPropertyReferenceArrayDynamicBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTestPropertyReferenceArrayDynamicBean() {
+			if (testPropertyReferenceArrayDynamicBean.getArrayInstance() == null) {
+				testPropertyReferenceArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testPropertyReferenceArrayDynamic"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> getTestPropertyReferenceArrayDynamicBean() {
+			safeAccessTestPropertyReferenceArrayDynamicBean();
+			return testPropertyReferenceArrayDynamicBean;
+		}
 	
 	// *****************************************************************
 	// * Array Attribute: testPropertyReferenceArrayStatic
@@ -137,6 +177,19 @@ public abstract class ATestCategoryReferenceArray extends ABeanCategoryAssignmen
 		public IBeanList<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString> getTestPropertyReferenceArrayStatic() {
 			safeAccessTestPropertyReferenceArrayStatic();
 			return testPropertyReferenceArrayStatic;
+		}
+		
+		private IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> testPropertyReferenceArrayStaticBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTestPropertyReferenceArrayStaticBean() {
+			if (testPropertyReferenceArrayStaticBean.getArrayInstance() == null) {
+				testPropertyReferenceArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("testPropertyReferenceArrayStatic"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> getTestPropertyReferenceArrayStaticBean() {
+			safeAccessTestPropertyReferenceArrayStaticBean();
+			return testPropertyReferenceArrayStaticBean;
 		}
 	
 	

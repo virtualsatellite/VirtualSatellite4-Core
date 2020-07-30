@@ -42,7 +42,6 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -63,6 +62,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -70,6 +70,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
+import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 import de.dlr.sc.virsat.model.ecore.xmi.impl.DvlmXMIResourceFactoryImpl;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -81,9 +82,6 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  * This class implements the VirSat specific EMF ResourceSet. One ResourceSet is
  * associated with one project. It is not planned to have cross project
  * references. Demand loading etc. will work in one project but not outside.
- * 
- * @author fisc_ph
- *
  */
 public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
@@ -91,9 +89,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 	/**
 	 * Interface for listening to changes of the diagnostics
-	 * 
-	 * @author muel_s8
-	 *
 	 */
 	public interface IDiagnosticListener {
 		/**
@@ -162,20 +157,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 					// Check if the new value is a null object
 					Object newValue = notification.getNewValue();
 					if ((newValue == null) && (eventType != Notification.REMOVE)) {
-						String errorMessage = "Found NULL object in EMF Resource\n";
-						errorMessage       += "---------------------------------\n";
+						StringBuilder errorMessage = new StringBuilder();
+						errorMessage.append("Found NULL object in EMF Resource\n");
+						errorMessage.append("---------------------------------\n");
 						String uri = resource.getURI().toPlatformString(true);
-						errorMessage       += "Resource: " + uri + "\n";
-						errorMessage       += "Event Type: " + eventType + "\n"; 
-						errorMessage       += "Stacktrace:\n";
+						errorMessage.append("Resource: " + uri + "\n");
+						errorMessage.append("Event Type: " + eventType + "\n");
+						errorMessage.append("Stacktrace:\n");
 						
 						for (StackTraceElement se : Thread.currentThread().getStackTrace()) {
-							errorMessage   += se.toString() + "\n";
+							errorMessage.append(se.toString() + "\n");
 						}
 						
 						// Now throw the message on the log and create a diagnostics report
 						Activator.getDefault().getLog().log(
-							new Status(Status.ERROR, Activator.getPluginId(), errorMessage)
+							new Status(Status.ERROR, Activator.getPluginId(), errorMessage.toString())
 						);
 						
 						// Now where it is certain that there is something wrong with the content of the resource,
@@ -264,56 +260,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 	}
 
-	/**
-	 * Returns a diagnostic describing the errors and warnings listed in the
-	 * resource and the specified exception (if any).
-	 * 
-	 * @param resource the resource
-	 * @return the diagnostic describing error/warning
-	 */
-	public Diagnostic analyzeResourceProblems(Resource resource) {
-		boolean hasErrors = !resource.getErrors().isEmpty();
-		boolean hasWarnings = !resource.getWarnings().isEmpty();
-		boolean hasNullContent = false;
-
-		// Loop over the contents to detect a null
-		for (EObject object : resource.getContents()) {
-			if (object == null) {
-				hasNullContent = true;
-				hasErrors = true;
-				Activator.getDefault().getLog().log(new Status(
-					Status.ERROR,
-					Activator.getPluginId(),
-					"Found NULL object in Resource content: " + resource.getURI().toPlatformString(true)
-				));
-			}
-		}
-		
-		// Now build up the diagnostics
-		if (hasErrors || hasWarnings) {
-			BasicDiagnostic basicDiagnostic = new BasicDiagnostic(
-				hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
-				Activator.getPluginId(), 0,
-				"Problems encountered in resource: " + resource.getURI().toPlatformString(true),
-				new Object[] { resource }
-			);
-			
-			// Add the diagnostic message for the null content
-			if (hasNullContent) {
-				basicDiagnostic.merge(new BasicDiagnostic(
-					Diagnostic.ERROR,
-					Activator.getPluginId(), 0,
-					"Error! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
-					new Object[] { resource }
-				));
-			}
-			
-			basicDiagnostic.merge(EcoreUtil.computeDiagnostic(resource, true));
-			return basicDiagnostic;
-		} else {
-			return Diagnostic.OK_INSTANCE;
-		}
-	}
 
 	/**
 	 * Gets the internal map from the resources to the diagnostics
@@ -535,7 +481,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	private VirSatProjectCommons projectCommons;
-	private Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+	protected Map<Object, Object> saveOptions = new HashMap<Object, Object>();
 
 	/**
 	 * Constructor for the ResourceSet with a given project. A ResourceSet is
@@ -710,23 +656,17 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			resource = this.getResource(fileUri, true);
 		} else {
 			// Ok, we know that we do not have a file yet. So apparently it is a
-			// new resource.
-			// but calling all the time create will always hand back a new
-			// resource and confuse
-			// other parts of the application. To avoid this we check if there
-			// is a resource
-			// already created under the given name in case it is we ill use
-			// that one instead
-			// of creating a complete new one.
+			// new resource. But calling all the time create will always hand back a new
+			// resource and confuse other parts of the application. To avoid this
+			// we check if there is a resource already created under the given name
+			// in case it is we ill use that one instead of creating a complete new one.
 			resource = getAlreadyCreatedResource(fileUri);
 			if (resource == null && forceCreate) {
 				resource = this.createResource(fileUri);
-
 				// Do an initial safe to actually create the file on the file
-				// system
-				// Otherwise we only have the file structures created by the
+				// system Otherwise we only have the file structures created by the
 				// VirSatProjectCommons
-				saveResource(resource);
+				saveResource(resource, null, true);
 			}
 		}
 
@@ -737,6 +677,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 					"Failed to create/open resource " + e.getMessage(), e));
 		}
 		return resource;
+	}
+	
+	/**
+	 * Convenience method to get an EMF resource from an eclipse IResource
+	 * 
+	 * @param file The file as IResource
+	 * @param loadOnDemand weather the resource should be created if not yet in the resource set
+	 * @return the resource or null if not existing
+	 */
+	public Resource getResource(IResource file, boolean loadOnDemand) {
+		if (file instanceof IFile) {
+			URI fileUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+			return this.getResource(fileUri, loadOnDemand);
+		}
+		return null;
 	}
 
 	/**
@@ -757,6 +712,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get a list of all DVLM resources
+	 * @return the list of DVLM resources
+	 */
+	public List<Resource> getDvlmResources() {
+		List<Resource> dvlmResources = new ArrayList<Resource>();
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				dvlmResources.add(resource);
+			}
+		}
+		return dvlmResources;
+	}
+		
 
 	/**
 	 * Method to receive the named core object
@@ -811,7 +781,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 			
 			Repository repo = getRepository();
-			EcoreUtil.resolveAll(this);
+			loadAllDvlmResources();
 			
 			EcoreUtil.getAllContents(this, true).forEachRemaining((object) -> {
 				if (object instanceof StructuralElementInstance) {
@@ -874,7 +844,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		Discipline systemDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		systemDiscipline.setName("System");
 
-		UserRegistry userRegistry = UserRegistry.getInstance();
+		IUserContext userRegistry = UserRegistry.getInstance();
 		String currentUserName = userRegistry.getUserName();
 		systemDiscipline.setUser(currentUserName);
 
@@ -981,11 +951,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	/**
 	 * Use this method to save a resource in this resource set
 	 * 
-	 * @param resource
-	 *            the resource to be saved
+	 * @param resource the resource to be saved
+	 * @param userContext The user context to determine write permissions
 	 */
-	public void saveResource(Resource resource) {
-		saveResource(resource, false);
+	public void saveResource(Resource resource, IUserContext userContext) {
+		saveResource(resource, userContext, false);
 	}
 
 	/**
@@ -1017,31 +987,26 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            set this flag to allow for saving the resource. E.g. when
 	 *            changing the assigned discipline
 	 */
-	public void saveResource(Resource resource, boolean overrideWritePermissions) {
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Started saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+	public void saveResource(Resource resource,  IUserContext userContext, boolean overrideWritePermissions) {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Started saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 
 		if (!resource.isLoaded()) {
-			Activator.getDefault().getLog()
-					.log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING,
-							"VirSatResourceSet: Attempted to save unloaded resource ("
-									+ resource.getURI().toPlatformString(true) + ")",
-							null));
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+					"VirSatResourceSet: Attempted to save unloaded resource (" + resource.getURI().toPlatformString(true) + ")"));
 		}
 
 		try {
 			// Only save the resource if we actually have the right to do this.
-			if (overrideWritePermissions || hasWritePermission(resource)) {
+			if (overrideWritePermissions || hasWritePermission(resource, userContext)) {
 				resource.save(saveOptions);
 			}
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR,
 					"Failed to save Resource " + e.getMessage(), e));
 		}
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Finished saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Finished saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 	}
 
 	/**
@@ -1055,7 +1020,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the new discipline to be set
 	 */
 	public void assignDiscipline(IAssignedDiscipline disciplineContainer, Discipline discipline) {
-		boolean hasWritePermission = RightsHelper.hasWritePermission(disciplineContainer);
+		boolean hasWritePermission = RightsHelper.hasSystemUserWritePermission(disciplineContainer);
 
 		if (hasWritePermission) {
 			disciplineContainer.setAssignedDiscipline(discipline);
@@ -1069,16 +1034,15 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * Use this method to find out if you have write access to the given EMF
 	 * resource
 	 * 
-	 * @param resource
-	 *            The resource which should be checked for write accesss
-	 * @return true in case write acces is given otherwise false
+	 * @param resource The resource which should be checked for write access
+	 * @return true in case write access is given otherwise false
 	 */
-	public boolean hasWritePermission(Resource resource) {
+	public boolean hasWritePermission(Resource resource, IUserContext userContext) {
 		boolean hasWritePermission = true;
 		if (!resource.getContents().isEmpty()) {
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof IAssignedDiscipline) {
-				hasWritePermission = RightsHelper.hasWritePermission(eObject);
+				hasWritePermission = RightsHelper.hasWritePermission(eObject, userContext);
 			}
 		}
 		return hasWritePermission;
@@ -1091,12 +1055,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the progress monitor to track the progress of the save
 	 *            operation
 	 */
-	public void saveAllResources(IProgressMonitor pm) {
+	public void saveAllResources(IProgressMonitor pm, IUserContext userContect) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving all resources for Project (" + project.getName() + ")"));
 		for (Resource resource : this.getResources()) {
 			if (!resource.getContents().isEmpty()) {
-				saveResource(resource);
+				saveResource(resource, userContect);
 			}
 		}
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
@@ -1187,34 +1151,43 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * Updates the resources diagnostic entry in the resourceToDiagnosticMap
 	 * 
 	 * @param resource the resource of which to update the diagnostic
+	 * @return true in case that the resource to diagnostics map has been changed
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
-		if (resource != null) {
-			Diagnostic diagnostic = analyzeResourceProblems(resource);
-
-			for (EObject eObject : resource.getContents()) {
-				if (eObject != null) {
-					EObject resolvedEObject = EcoreUtil.resolve(eObject, this);
-					diagnostic = analyzeModelProblems(resolvedEObject, diagnostic);
-				}
-			}
+		// Only run diagnostic on DVLM files as other resource might result in a huge chain of
+		// resource that have to be resolved (e.g. diagrams also have references to the diagram infrastructure...)
+		if (resource != null && VirSatProjectCommons.isDvlmFile(resource)) {
+			// Run individualDiagnostics and merge them
 			
-			if (diagnostic.getSeverity() != Diagnostic.OK) {
-				resourceToDiagnosticMap.put(resource, diagnostic);
+			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
+			BasicDiagnostic resourceNullDiagnostic = analyzeResourceNullProblems(resource);
+			resourceDiagnostic.merge(resourceNullDiagnostic);
+			// In case there are null objects which should not be in the resource
+			// something went seriously wrong. No other analysis has to be executed
+			// If there are no null diagnostics, continue with the other checks
+			if (resourceDiagnostic.getSeverity() == Diagnostic.OK) {
+				BasicDiagnostic modelDiagnostic = analyzeModelProblems(resource);
+				resourceDiagnostic.merge(modelDiagnostic);
+			}
+
+			// Now check severity levels, and set the diagnostics map accordingly.
+			// The map will be used by the editors to display the error messages etc.
+			if (resourceDiagnostic.getSeverity() != Diagnostic.OK) {
+				resourceToDiagnosticMap.put(resource, resourceDiagnostic);
 				changes = true;
-				Activator.getDefault().getLog()
-						.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-								"VirSatResourceSet: Current Diagnostic Map adding Resource ("
-										+ resource.getURI().toPlatformString(true) + ")",
-								null));
+				Activator.getDefault().getLog().log(new Status(
+					Status.INFO,
+					Activator.getPluginId(),
+					"VirSatResourceSet: Current Diagnostic Map adding Resource (" + resource.getURI().toPlatformString(true) + ")"
+				));
 			} else {
 				if (resourceToDiagnosticMap.containsKey(resource)) {
-					Activator.getDefault().getLog()
-							.log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-									"VirSatResourceSet: Current Diagnostic Map removing Resource ("
-											+ resource.getURI().toPlatformString(true) + ")",
-									null));
+					Activator.getDefault().getLog().log(new Status(
+						Status.INFO,
+						Activator.getPluginId(),
+						"VirSatResourceSet: Current Diagnostic Map removing Resource (" + resource.getURI().toPlatformString(true) + ")"
+					));
 					resourceToDiagnosticMap.remove(resource);
 					changes = true;
 				}
@@ -1224,61 +1197,101 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	/**
-	 * This method create EMF Diagnostics on the Model Object
+	 * Returns a diagnostic describing the errors and warnings listed in the
+	 * resource and the specified exception (if any).
 	 * 
-	 * @param eObject
-	 *            The object to check for issues
-	 * @param resourceDiagnostics
-	 *            resource diagnostics which should be merged with the new
-	 *            Diagnostics
-	 * @return merged diagnostics including new ones on the actual object or the
-	 *         previous resource diagnostics
+	 * @param resource the resource
+	 * @return the diagnostic describing error/warning
 	 */
-	public Diagnostic analyzeModelProblems(EObject eObject, Diagnostic resourceDiagnostics) {
-		if (eObject.eIsProxy()) {
-			BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-					"Could not resolve Object, Object seems to be pending", new Object[] { eObject });
-			basicDiagnostic.merge(resourceDiagnostics);
-			return basicDiagnostic;
-		}
+	public BasicDiagnostic analyzeResourceProblems(Resource resource) {
+		boolean hasErrors = !resource.getErrors().isEmpty();
+		boolean hasWarnings = !resource.getWarnings().isEmpty();
+		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Resource Diagnostics:");
+		
+		// Now process the diagnostics that are part of the resource
+		if (hasErrors || hasWarnings) {
+			returnDiagnostic.merge(new BasicDiagnostic(
+				hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
+				Activator.getPluginId(), 0,
+				"Problems encountered in resource: " + resource.getURI().toPlatformString(true),
+				new Object[] { resource }
+			));
+			
+			// Compute the diagnostics from the resource and add them to the given one.
+			returnDiagnostic.merge(EcoreUtil.computeDiagnostic(resource, true));
+		} 
+		
+		return returnDiagnostic;
+	}
 
-		Map<EObject, Collection<Setting>> externalCrossReferences = EcoreUtil.ExternalCrossReferencer.find(eObject);
-		for (EObject referencedEObject : externalCrossReferences.keySet()) {
-			Resource resource = referencedEObject.eResource();
-			if (resource == null) {
-				// Only consider external cross references that are directly contained by the resource
-				// of the eObject. This is important for SEIs since here we have containment references. 
-				// If they are not ignored, external dangling references of child seis are are considered
-				// dangling references of the parent.
-				List<EObject> referencingObjectsInResource = new ArrayList<>();
-				Collection<Setting> settings = externalCrossReferences.get(referencedEObject);
-				for (Setting setting : settings) {
-					EObject referencingObject = setting.getEObject();
-					if (referencingObject.eResource() == eObject.eResource()) {
-						referencingObjectsInResource.add(referencingObject);
-					}
-				}
+	/**
+	 * Analyzes the resource on special null errors. We have seen some rare cases,
+	 * where NPEs were caused by resource content which was null. Usually this should
+	 * never happen in EMF, still this check will report in case such issues may happen again
+	 * @param resource the resource to be checked
+	 * @return The diagnostics regarding null content in a resource
+	 */
+	public BasicDiagnostic analyzeResourceNullProblems(Resource resource) {
+		List<EObject> resourceContents = resource.getContents();
+		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Resource Null Diagnostics:");
+		
+		// Loop over the contents to detect a null
+		for (EObject object : resourceContents) {
+			if (object == null) {
+				// Add a diagnostic
+				returnDiagnostic.merge(new BasicDiagnostic(
+						Diagnostic.ERROR,
+						Activator.getPluginId(), 0,
+						"Error! Found NULL object in resource content: " + resource.getURI().toPlatformString(true),
+						new Object[] { resource }
+					));
 				
-				if (!referencingObjectsInResource.isEmpty()) {
-					BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-							"Found uncontained object of potentialy dangling reference", new Object[] { eObject });
-					
-					for (EObject referencingObject : referencingObjectsInResource) {
-						basicDiagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-								"From: " + referencingObject.toString(),
-								new Object[] { referencingObject }));
-					}
-					
-					basicDiagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, Activator.getPluginId(), 0,
-							"To: " +  referencedEObject.toString(),
-							new Object[] { referencedEObject }));
-					basicDiagnostic.merge(resourceDiagnostics);
-					return basicDiagnostic;
-				}
+				// Log the result
+				Activator.getDefault().getLog().log(new Status(
+					Status.ERROR,
+					Activator.getPluginId(),
+					"Found NULL object in Resource content: " + resource.getURI().toPlatformString(true)
+				));
+				
+				// don't test the other objects anymore. One diagnostic about a null object is enough
+				break;
 			}
 		}
+		
+		return returnDiagnostic;
+	}
+	
+	/**
+	 * This method creates EMF Diagnostics on the Model Object in case of detected problems
+	 * 
+	 * @param resource The resource to be checked for model issues
+	 * @return the diagnostic on model issues
+	 */
+	public BasicDiagnostic analyzeModelProblems(Resource resource) {
+		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Model Diagnostics:");
+		
+		// Now check the state of each eObject if it can be resolved and if it is contained
+		EcoreUtil.getAllProperContents(resource, true).forEachRemaining((object) -> {
+			if (object instanceof EObject) {
+				EObject eObject = (EObject) object;
 
-		return resourceDiagnostics;
+				// Check all cross references
+				eObject.eCrossReferences().forEach((eReferencedObject) -> {
+					// Check containment of all other objects
+					if (eReferencedObject.eResource() == null) {
+						returnDiagnostic.merge(new BasicDiagnostic(
+								Diagnostic.WARNING,
+								Activator.getPluginId(),
+								0,
+								"Found a dangling reference due to an uncontained object. Press save to fix.",
+								new Object[] { eReferencedObject, eObject }
+						));
+					}
+				});
+			}
+		});
+	
+		return returnDiagnostic;
 	}
 	
 	/**
@@ -1289,5 +1302,16 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		// all other resources should be referenced by this resource as an entry point.
 		getRepositoryResource();
 		EcoreUtil.resolveAll(this);
+	}
+	
+	/**
+	 * Load and resolve all DVLM resources in this resource set
+	 */
+	public void loadAllDvlmResources() {
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				EcoreUtil.resolveAll(resource);
+			}
+		}
 	}
 }

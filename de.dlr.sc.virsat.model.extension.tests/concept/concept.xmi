@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v7/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v7/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" name="de.dlr.sc.virsat.model.extension.tests" description="A pure test concept to check that everything is working as expected" version="1.1" DMF="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v8/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.tests" description="A pure test concept to check that everything is working as expected" version="1.1" DMF="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.extension.maturity.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <ecoreImports importedNsURI="http://www.virsat.sc.dlr.de/external/tests"/>
   <categories name="TestCategoryAllProperty" description="TestCategory for testing all property Types once" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:StringProperty" name="testString"/>
     <properties xsi:type="dvlm_cppd:IntProperty" name="testInt"/>
@@ -13,13 +16,16 @@
       <values name="HIGH" value="25"/>
       <values name="INCREDIBLE" value="30"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCategoryComposition" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="testSubCategory" type="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCategoryReference" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="testRefCategory" referenceType="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="testRefProperty" referenceType="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty.testString"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCategoryIntrinsicArray" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:StringProperty" name="testStringArrayDynamic">
@@ -28,6 +34,7 @@
     <properties xsi:type="dvlm_cppd:StringProperty" name="testStringArrayStatic">
       <arrayModifier xsi:type="dvlm_cppd:StaticArrayModifier" arraySize="4"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCategoryCompositionArray" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="testCompositionArrayDynamic" type="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty">
@@ -36,6 +43,7 @@
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="testCompositionArrayStatic" type="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty">
       <arrayModifier xsi:type="dvlm_cppd:StaticArrayModifier" arraySize="4"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCategoryReferenceArray" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="testCategoryReferenceArrayDynamic" referenceType="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty">
@@ -50,10 +58,17 @@
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="testPropertyReferenceArrayStatic" referenceType="de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty.testString">
       <arrayModifier xsi:type="dvlm_cppd:StaticArrayModifier" arraySize="4"/>
     </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="TestCategoryBeanA" isApplicableForAll="true"/>
-  <categories name="TestCategoryBeanB" isApplicableForAll="true"/>
-  <categories name="TestCategoryBeanAbstract" isApplicableForAll="true" isAbstract="true"/>
+  <categories name="TestCategoryBeanA" isApplicableForAll="true">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="TestCategoryBeanB" isApplicableForAll="true">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="TestCategoryBeanAbstract" isApplicableForAll="true" isAbstract="true">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
   <categories name="TestCategoryBeanConcrete" isApplicableForAll="true" extendsCategory="de.dlr.sc.virsat.model.extension.tests.TestCategoryBeanAbstract"/>
   <categories name="TestCategoryBase" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="testArray" type="de.dlr.sc.virsat.model.extension.tests.TestCategoryBase">
@@ -61,15 +76,18 @@
     </properties>
     <properties xsi:type="dvlm_cppd:IntProperty" name="testBaseProperty"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="testReference" referenceType="de.dlr.sc.virsat.model.extension.tests.TestCategoryBase"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCategoryExtends" extendsCategory="de.dlr.sc.virsat.model.extension.tests.TestCategoryBase">
     <properties xsi:type="dvlm_cppd:IntProperty" name="testExtendsProperty"/>
   </categories>
   <categories name="TestParameter" isApplicableForAll="true">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="defaultValue" defaultValue="0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestMassParameters" isApplicableForAll="true" cardinality="1">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="mass" type="de.dlr.sc.virsat.model.extension.tests.TestParameter" quantityKindName="Mass"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TestCrossLinkedParametersWithCalculation" isApplicableForAll="true">
     <equationDefinitions>
@@ -79,6 +97,13 @@
       <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.tests.TestCrossLinkedParametersWithCalculation.calcedTrl"/>
     </equationDefinitions>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="calcedTrl" quantityKindName="Mass"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="EReferenceTest" isApplicableForAll="true">
+    <properties xsi:type="dvlm_cppd:EReferenceProperty" name="eReferenceTest">
+      <referenceType href="platform:/resource/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore#//ExternalTestType"/>
+    </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <structuralElements name="TestStructuralElement" description="StructuralElement for testing code generator" isApplicableForAll="true" isCanInheritFromAll="true" isRootStructuralElement="true"/>
   <structuralElements name="TestStructuralElementOther" description="Another StructuralElement for bean structural element instance helper" isApplicableForAll="true" isCanInheritFromAll="true"/>

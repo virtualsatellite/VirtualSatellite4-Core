@@ -13,12 +13,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
@@ -37,7 +39,7 @@ public class DvlmResolvedStructuralElementInstanceValidatorTest extends ABuilder
 
 		Resource rootSeiResource = resSet.getStructuralElementInstanceResource(seiEdSc);
 		rootSeiResource.getContents().remove(seiEdSc);
-		resSet.saveResource(rootSeiResource);
+		resSet.saveResource(rootSeiResource, UserRegistry.getInstance());
 
 		VirSatResourceSet reloadedResourceSet = VirSatResourceSet.createUnmanagedResourceSet(project);
 		Repository repoWithDanglingReference = reloadedResourceSet.getRepository();

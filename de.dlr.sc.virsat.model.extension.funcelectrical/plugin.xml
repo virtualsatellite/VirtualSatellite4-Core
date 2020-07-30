@@ -2,17 +2,17 @@
 <?eclipse version="3.4"?>
 <plugin>
 	<extension point="de.dlr.sc.virsat.model.Concept">
-	<concept
-	          id="de.dlr.sc.virsat.model.extension.funcelectrical"
-	          version="2.0"
-	          xmi="concept/concept.xmi">
-	    </concept>
+		<concept
+			id="de.dlr.sc.virsat.model.extension.funcelectrical"
+			version="2.1"
+			xmi="concept/concept.xmi">
+		</concept>
 	</extension>
-	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
 		<dvlmValidator>
 			<seiValidator
 				id="de.dlr.sc.virsat.model.extension.funcelectrical"
-				class="de.dlr.sc.virsat.model.extension.funcelectrical.validator.StructuralElementInstanceValidator">
+				class="de.dlr.sc.virsat.model.extension.funcelectrical.validator.FuncelectricalValidator">
 			</seiValidator>
 		</dvlmValidator>
 	</extension>
@@ -105,6 +105,14 @@
          markerHelper="de.dlr.sc.virsat.model.extension.funcelectrical.marker.VirSatFuncelectricalMarkerHelper"
          markerType="de.dlr.sc.virsat.problem.markers.validation.fea">
    </markerHelper>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.funcelectrical"
+		version="2.1"
+		class="de.dlr.sc.virsat.model.extension.funcelectrical.migrator.Migrator2v1"
+		xmi="concept/concept_v2_1.xmi">
+	</migrator>
 </extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->

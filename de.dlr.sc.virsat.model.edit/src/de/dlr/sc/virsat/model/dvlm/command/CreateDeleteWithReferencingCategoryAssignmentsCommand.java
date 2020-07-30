@@ -11,8 +11,8 @@ package de.dlr.sc.virsat.model.dvlm.command;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
@@ -43,12 +43,12 @@ public abstract class CreateDeleteWithReferencingCategoryAssignmentsCommand {
 	 */
 	
 	public Set<EObject> getReferencingInstances(CategoryAssignment object, ResourceSet resSet) {
-		Map<EObject, List<EObject>> mapDeletedObjectReferencedBy = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(object), resSet);
+		Map<EObject, Set<EObject>> mapDeletedObjectReferencedBy = VirSatEcoreUtil.getReferencingObjectsForDelete(Collections.singleton(object), resSet);
 		
 		// Grab all the referencing objects and figure out the object that actually needs to be deleted
 		Set<EObject> toDelete = new HashSet<>();
-		for (EObject referencedObject : mapDeletedObjectReferencedBy.keySet()) {
-			List<EObject> referencingObjects = mapDeletedObjectReferencedBy.get(referencedObject);
+		for (Entry<EObject, Set<EObject>> entry : mapDeletedObjectReferencedBy.entrySet()) {
+			Set<EObject> referencingObjects = entry.getValue();
 			for (EObject referencingObject : referencingObjects) {
 				EObject actualObjectToDelete = getActualObjectToDelete(referencingObject);
 				if (actualObjectToDelete != null) {

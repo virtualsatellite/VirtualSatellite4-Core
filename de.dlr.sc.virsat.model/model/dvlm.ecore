@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="dvlm" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7" nsPrefix="dvlm">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="dvlm" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8" nsPrefix="dvlm">
   <eClassifiers xsi:type="ecore:EClass" name="Repository" eSuperTypes="#//general/IUuid #//general/IAssignedDiscipline">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rootEntities" upperBound="-1"
         eType="#//structural/StructuralElementInstance"/>
@@ -13,7 +13,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="suppressedValidators" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eSubpackages name="structural" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/s" nsPrefix="dvlm_s">
+  <eSubpackages name="structural" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/s" nsPrefix="dvlm_s">
     <eClassifiers xsi:type="ecore:EClass" name="IApplicableFor" abstract="true" interface="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="The applicable for is used to decide to which type of structural element something can be assigned to. SO it means that e.g. A Category Assignment can be assigned to a SystemComponent. If the Category is applicable for the StructuralElement the SystemComponent is typed with."/>
@@ -54,7 +54,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="references" eType="#//structural/StructuralElementInstance"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="general" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/g" nsPrefix="dvlm_g">
+  <eSubpackages name="general" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/g" nsPrefix="dvlm_g">
     <eClassifiers xsi:type="ecore:EClass" name="IName" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
@@ -115,8 +115,8 @@
       </eOperations>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="concepts" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/c" nsPrefix="dvlm_c">
-    <eClassifiers xsi:type="ecore:EClass" name="Concept" eSuperTypes="#//general/IQualifiedName #//general/IDescription #//concepts/IActiveConcept #//concepts/IImports">
+  <eSubpackages name="concepts" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/c" nsPrefix="dvlm_c">
+    <eClassifiers xsi:type="ecore:EClass" name="Concept" eSuperTypes="#//general/IQualifiedName #//general/IDescription #//concepts/IActiveConcept #//concepts/IImports #//concepts/IEImports">
       <eOperations name="getNonAbstractCategories" upperBound="-1" eType="#//categories/Category">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="documentation" value="returns all categories from the concept which are not abstract."/>
@@ -154,8 +154,16 @@
         <details key="documentation" value="This interface is needed to detect special Types when importing a concept to a repository.&#xD;&#xA;If the importer imports a reference, they are bound to their xmi representation. So if Concept A is referencing objects in Concept B, this needs to be taken into account. But the import has to bend the references to the ConceptA in the Repository and not the original XMI."/>
       </eAnnotations>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EcoreImport">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNsURI" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedGenModel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="IEImports">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ecoreImports" upperBound="-1"
+          eType="#//concepts/EcoreImport" containment="true"/>
+    </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="roles" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/r" nsPrefix="dvlm_r">
+  <eSubpackages name="roles" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/r" nsPrefix="dvlm_r">
     <eClassifiers xsi:type="ecore:EClass" name="RoleManagement" eSuperTypes="#//general/IAssignedDiscipline #//general/IUuid">
       <eStructuralFeatures xsi:type="ecore:EReference" name="disciplines" lowerBound="1"
           upperBound="-1" eType="#//roles/Discipline" containment="true"/>
@@ -166,17 +174,17 @@
           defaultValueLiteral=""/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="units" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/u" nsPrefix="dvlm_u">
+  <eSubpackages name="units" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/u" nsPrefix="dvlm_u">
     <eClassifiers xsi:type="ecore:EClass" name="UnitManagement" eSuperTypes="#//general/IAssignedDiscipline #//general/IUuid">
       <eStructuralFeatures xsi:type="ecore:EReference" name="systemOfUnit" lowerBound="1"
           eType="#//qudv/SystemOfUnits" containment="true"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="types" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/t" nsPrefix="dvlm_t">
+  <eSubpackages name="types" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/t" nsPrefix="dvlm_t">
     <eClassifiers xsi:type="ecore:EDataType" name="Uuid" instanceClassName="de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid"/>
     <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
   </eSubpackages>
-  <eSubpackages name="categories" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/cp" nsPrefix="dvlm_cp">
+  <eSubpackages name="categories" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp" nsPrefix="dvlm_cp">
     <eClassifiers xsi:type="ecore:EClass" name="ATypeDefinition" abstract="true" eSuperTypes="#//general/IQualifiedName #//general/IDescription #//concepts/IConceptTypeDefinition">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="We use an abstract class for the types since it is considered to overide the operation for getting the types. This may allow to restrict and be more specific on the access of a specific PropertyInstance to its PropertyType."/>
@@ -235,7 +243,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="categoryAssignments"
           upperBound="-1" eType="#//categories/CategoryAssignment" containment="true"/>
     </eClassifiers>
-    <eSubpackages name="propertydefinitions" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd"
+    <eSubpackages name="propertydefinitions" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd"
         nsPrefix="dvlm_cppd">
       <eClassifiers xsi:type="ecore:EClass" name="AProperty" abstract="true" eSuperTypes="#//categories/ATypeDefinition">
         <eStructuralFeatures xsi:type="ecore:EReference" name="arrayModifier" eType="#//categories/propertydefinitions/IArrayModifier"
@@ -253,6 +261,9 @@
         </eAnnotations>
         <eStructuralFeatures xsi:type="ecore:EReference" name="referenceType" lowerBound="1"
             eType="#//categories/ATypeDefinition"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="EReferenceProperty" eSuperTypes="#//categories/propertydefinitions/AProperty">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="referenceType" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="IIntrinsicTypeProperty" abstract="true"
           interface="true">
@@ -307,7 +318,7 @@
           interface="true"/>
       <eClassifiers xsi:type="ecore:EClass" name="DynamicArrayModifier" eSuperTypes="#//categories/propertydefinitions/IArrayModifier"/>
     </eSubpackages>
-    <eSubpackages name="propertyinstances" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi"
+    <eSubpackages name="propertyinstances" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi"
         nsPrefix="dvlm_cppi">
       <eClassifiers xsi:type="ecore:EClass" name="IUnitPropertyInstance" abstract="true"
           interface="true" eSuperTypes="#//categories/ATypeInstance">
@@ -335,6 +346,9 @@
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ReferencePropertyInstance" eSuperTypes="#//categories/propertyinstances/APropertyInstance #//inheritance/IOverridableInheritanceLink">
         <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="#//categories/ATypeInstance"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="EReferencePropertyInstance" eSuperTypes="#//categories/propertyinstances/APropertyInstance #//inheritance/IOverridableInheritanceLink">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ComposedPropertyInstance" eSuperTypes="#//categories/propertyinstances/APropertyInstance">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -371,7 +385,7 @@
       </eClassifiers>
     </eSubpackages>
   </eSubpackages>
-  <eSubpackages name="qudv" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/qudv" nsPrefix="dvlm_qudv">
+  <eSubpackages name="qudv" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/qudv" nsPrefix="dvlm_qudv">
     <eClassifiers xsi:type="ecore:EClass" name="AUnit" abstract="true" eSuperTypes="#//general/IName #//general/IUuid">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbol" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -470,7 +484,7 @@
           eType="#//qudv/AQuantityKind"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="calculation" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/calc"
+  <eSubpackages name="calculation" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/calc"
       nsPrefix="dvlm_calc">
     <eClassifiers xsi:type="ecore:EClass" name="IEquationDefinitionSectionContainer"
         abstract="true" interface="true">
@@ -594,7 +608,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="IQualifiedEquationObject" abstract="true"
         interface="true"/>
   </eSubpackages>
-  <eSubpackages name="inheritance" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/i" nsPrefix="dvlm_i">
+  <eSubpackages name="inheritance" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/i" nsPrefix="dvlm_i">
     <eClassifiers xsi:type="ecore:EClass" name="ICanInheritFrom" abstract="true" interface="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="The canInheritFrom tells which SystemComponent can Inherit from which other ones. This can be used to make a ConfigurationElement inherit from a DefinitionElement but not the other way. This interface should only be used for Structural Elements."/>
@@ -629,7 +643,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="dmf" nsURI="http://www.virsat.sc.dlr.de/dvlm/v7/dmf" nsPrefix="dvlm_dmf">
+  <eSubpackages name="dmf" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/dmf" nsPrefix="dvlm_dmf">
     <eClassifiers xsi:type="ecore:EClass" name="DObject" abstract="true" eSuperTypes="#//general/IUuid #//general/IName"/>
     <eClassifiers xsi:type="ecore:EClass" name="DObjectContainer">
       <eStructuralFeatures xsi:type="ecore:EReference" name="objects" upperBound="-1"

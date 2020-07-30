@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Project Builder
 Bundle-SymbolicName: de.dlr.sc.virsat.build;singleton:=true
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.build.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.model,
@@ -17,6 +17,5 @@ Export-Package: de.dlr.sc.virsat.build.inheritance,
  de.dlr.sc.virsat.build.marker.util,
  de.dlr.sc.virsat.build.validator,
  de.dlr.sc.virsat.build.validator.core,
- de.dlr.sc.virsat.build.validator.external,
- de.dlr.sc.virsat.inheritance
+ de.dlr.sc.virsat.build.validator.external
 Automatic-Module-Name: de.dlr.sc.virsat.build

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.core.databinding.Binding;
@@ -34,9 +35,11 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.edit.ui.action.LoadResourceAction;
 import org.eclipse.jface.databinding.swt.ISWTObservable;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.typed.ViewerProperties;
@@ -84,12 +87,15 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferencePropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ResourceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
@@ -146,6 +152,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	private static final String BUTTON_SELECT_REFERENCE_TEXT = "Select Reference";
 	private static final String BUTTON_SELECT_FILE_TEXT = "Select / Upload File";
 	private static final String BUTTON_DRILL_DOWN_TEXT = "Drill-Down";
+	private static final String BUTTON_LOAD_RESOURCE_TEXT = "Load Resource";
 	private static final String BUTTON_OPEN_EDITOR_TEXT = "Open Editor";
 	private static final String BUTTON_CHECK_OVERRIDE_TEXT = "Override";
 	protected static final int STYLE_NONE = 0b00000000;
@@ -309,6 +316,8 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			createStringPropertyWidgets(toolkit, sectionBody, (StringProperty) property);
 		} else if (property instanceof ReferenceProperty) {
 			createReferencePropertyWidgets(toolkit, editingDomain, sectionBody, (ReferenceProperty) property);
+		} else if (property instanceof EReferenceProperty) {
+			createEReferencePropertyWidgets(toolkit, editingDomain, sectionBody, (EReferenceProperty) property);
 		} else if (property instanceof ComposedProperty) {
 			createComposedPropertyWidgets(toolkit, sectionBody, (ComposedProperty) property);
 		} else if (property instanceof ResourceProperty) {
@@ -605,6 +614,76 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			}
 		});
 	}
+	
+	/**
+	 * Method to create property specific widgets
+	 * 
+	 * @param toolkit
+	 *            the toolkit which should be used to create the widgets
+	 * @param editingDomain
+	 *            the editing domain which should be used when a new reference
+	 *            is selected and added to the corresponding property instance
+	 * @param sectionBody
+	 *            the section body in which the widgets should be placed
+	 * @param property
+	 *            the property on which these widgets should act
+	 */
+	protected void createEReferencePropertyWidgets(FormToolkit toolkit, EditingDomain editingDomain,	Composite sectionBody, EReferenceProperty property) {
+		String propertyFqn = property.getFullQualifiedName();
+		String fqnAti = getLabelOfReferencedAti(propertyFqn);
+
+		Text textPropertyReferenceName = toolkit.createText(sectionBody, fqnAti);
+		textPropertyReferenceName.setEditable(false);
+		textPropertyReferenceName.setLayoutData(createDefaultGridData());
+		
+		DropHelper.createDropTarget(textPropertyReferenceName, new ADropSelectionTargetListener(editingDomain) {
+			@Override
+			public Command createDropCommand(StructuredSelection selection) {
+				APropertyInstance propertyInstance = caHelper.getPropertyInstance(property);
+				if (!DVLMReferenceCheck.isValid(propertyInstance, selection.getFirstElement())) {
+					return UnexecutableCommand.INSTANCE;
+				}
+				
+				Command cmd = SetCommand.create(editingDomain, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, selection.getFirstElement());
+				return cmd;
+			}
+		});
+		
+		Button buttonSelectReference = toolkit.createButton(sectionBody, BUTTON_SELECT_REFERENCE_TEXT, SWT.PUSH);
+		buttonSelectReference.setLayoutData(createDefaultGridData());
+
+		Button buttonLoadReosurce = toolkit.createButton(sectionBody, BUTTON_LOAD_RESOURCE_TEXT, SWT.PUSH);
+		buttonLoadReosurce.setLayoutData(createDefaultGridData());
+		buttonLoadReosurce.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				widgetDefaultSelected(e);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				Shell currentShell = Display.getCurrent().getActiveShell();
+				Dialog resourceDialog = new LoadResourceAction.LoadResourceDialog(currentShell, editingDomain);
+				resourceDialog.open();
+			}
+		});
+
+		mapPropertyToTextReferenceName.put(propertyFqn, textPropertyReferenceName);
+		mapPropertyToButtonSelectReference.put(propertyFqn, buttonSelectReference);
+
+		buttonSelectReference.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				widgetDefaultSelected(e);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				executeEReferenceSelectionDialog(editingDomain, propertyFqn);
+			}
+		});
+
+	}
 
 	/**
 	 * Method to get the FullQualifiedName of the ReferencePropertyInstance
@@ -618,7 +697,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	private String getLabelOfReferencedAti(String propertyFqn) {
 		APropertyInstance api = caHelper.getPropertyInstance(propertyFqn);
 
-		if (!(api instanceof ReferencePropertyInstance)) {
+		if (!(api instanceof ReferencePropertyInstance) && !(api instanceof EReferencePropertyInstance)) {
 			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),	"AUiSnippetGenericPropertyInstances: Failed to get ReferencePropertyInstances"));
 			return "";
 		}
@@ -823,6 +902,49 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			}
 		}
 	}
+	
+	protected void executeLoadResourceDialog() {
+		
+	}
+	
+	/**
+	 * This method calls the dialog for adding a new Reference to the given
+	 * property
+	 * 
+	 * @param editingDomain
+	 *            the editing domain for which the dialog should be called and
+	 *            should execute on
+	 * @param propertyFqn
+	 *            the reference property which should be set by this dialog
+	 */
+	protected void executeEReferenceSelectionDialog(EditingDomain editingDomain, String propertyFqn) {
+		// We can do some aggressive casting here, this code should never be
+		// called in case we do
+		// not have a reference property instance.
+		EReferencePropertyInstance propertyInstance = (EReferencePropertyInstance) caHelper.getPropertyInstance(propertyFqn);
+		EReferenceProperty propertyDefinition = ((EReferenceProperty) propertyInstance.getType());
+		
+		EReferencePropertyHelper propertyHelper = new EReferencePropertyHelper();
+		EClass referencePropertyType = propertyHelper.getResolvedEClassType(propertyDefinition);
+
+		Set<String> supportedFileExtensions = new HashSet<String>();
+		supportedFileExtensions.add(propertyHelper.getEPackageOfType(propertyDefinition).getName());
+		
+		ReferenceSelectionDialog dialog = createReferenceDialogAndSetInput(propertyInstance, referencePropertyType, supportedFileExtensions);
+
+		dialog.setAllowMultiple(false);
+		dialog.setDoubleClickSelects(true);
+		if (dialog.open() == Dialog.OK) {
+			Object selection = dialog.getFirstResult();
+			if (selection instanceof EObject) {
+				EObject selectedTypeInstance = (EObject) selection;
+				Command cmd = SetCommand.create(editingDomain, propertyInstance, PropertyinstancesPackage.Literals.EREFERENCE_PROPERTY_INSTANCE__REFERENCE, selectedTypeInstance);
+				editingDomain.getCommandStack().execute(cmd);
+			}
+		}
+	}
+	
+	
 	/**
 	 * An overridable method to set dialog input
 	 * property
@@ -835,9 +957,22 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	protected ReferenceSelectionDialog createReferenceDialogAndSetInput(EObject input, ATypeDefinition referencePropertyType) {
 		ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
 		dialog.setInput(input.eResource());
-		
 		return dialog;
-		
+	}
+	
+	/**
+	 * An overridable method to set dialog input
+	 * property
+	 * 
+	 * @param input the input for the dialog
+	 * @param referencePropertyType the reference property which should be set by this dialog
+	 *            
+	 * @return the dialog with the input
+	 */
+	protected ReferenceSelectionDialog createReferenceDialogAndSetInput(EObject input, EClass referencePropertyType, Set<String> fileEndings) {
+		ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createERefernceSelectionDialog(Display.getCurrent().getActiveShell(), referencePropertyType, fileEndings, adapterFactory);
+		dialog.setInput(input.eResource());
+		return dialog;
 	}
 
 	@Override
@@ -1094,14 +1229,15 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 	@Override
 	public void updateState(boolean state) {
-		boolean uiEnabled = RightsHelper.hasWritePermission(model) & state;
+		boolean uiEnabled = RightsHelper.hasSystemUserWritePermission(model) & state;
 
 		PropertyInstanceHelper piHelper = new PropertyInstanceHelper();
 		
 		// Update all text value fields depending on rights
-		for (String propertyFqn : mapPropertyToTextValue.keySet()) {
+		for (Entry<String, Text> entry : mapPropertyToTextValue.entrySet()) {
+			String propertyFqn = entry.getKey();
+			Text textValue = entry.getValue();
 			APropertyInstance pi = caHelper.getPropertyInstance(propertyFqn);
-			Text textValue = mapPropertyToTextValue.get(propertyFqn);
 			textValue.setEditable(uiEnabled && !piHelper.isCalculated(pi));
 		}
 
@@ -1120,8 +1256,9 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 			comboViewerUnit.getCombo().setEnabled(uiEnabled);
 		}
 
-		for (String propertyFqn : mapPropertyToTextReferenceName.keySet()) {
-			Text textReferenceName = mapPropertyToTextReferenceName.get(propertyFqn);
+		for (Entry<String, Text> entry : mapPropertyToTextReferenceName.entrySet()) {
+			String propertyFqn = entry.getKey();
+			Text textReferenceName = entry.getValue();
 			if (textReferenceName != null) {
 				textReferenceName.setText(getLabelOfReferencedAti(propertyFqn));
 			}
@@ -1146,9 +1283,11 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		}
 		
 		// update icons for problems in properties
-		for (String apropFqn : mapPropertyToLabelPropertyIcon.keySet()) {
+		for (Entry<String, Label> entry : mapPropertyToLabelPropertyIcon.entrySet()) {
+			String apropFqn = entry.getKey();
+			Label label = entry.getValue();
 			APropertyInstance propertyInstance = caHelper.getPropertyInstance(apropFqn);
-			Label label = mapPropertyToLabelPropertyIcon.get(apropFqn);
+			
 			AProperty property = (AProperty) propertyInstance.getType();
 			Image problemImage = getProblemImage(property);
 			if (problemImage == null) {

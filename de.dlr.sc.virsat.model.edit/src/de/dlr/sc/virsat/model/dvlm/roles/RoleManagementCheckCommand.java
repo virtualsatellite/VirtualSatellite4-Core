@@ -25,8 +25,6 @@ import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
  * the associated rights to the object which will be altered by the original EMF
  * command and decide if this command can be executed or not.
  * 
- * @author fisc_ph
- *
  */
 public class RoleManagementCheckCommand extends AbstractCommand implements Command {
 
@@ -41,15 +39,18 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 	 * @param commandParameter
 	 *            the parameter of the role management check command
 	 */
-	public RoleManagementCheckCommand(Command command, CommandParameter commandParameter) {
+	public RoleManagementCheckCommand(Command command, CommandParameter commandParameter, IUserContext userContext) {
 		super();
 		this.wrappedCommand = command;
 		this.commandParameter = commandParameter;
+		this.userContext = userContext;
 	}
+	
+	IUserContext userContext;
 	
 	/**
 	 * hands back the command that is wrapped by this RMC
-	 * @return teh orgiginal command
+	 * @return the original command
 	 */
 	public Command getWrappedCommand() {
 		return wrappedCommand;
@@ -80,7 +81,7 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 
 	@Override
 	public boolean canUndo() {
-		return wrappedCommand.canUndo() && canBeExecutedByCurrentUser();
+		return canBeExecutedByCurrentUser() && wrappedCommand.canUndo();
 	}
 
 	/**
@@ -91,7 +92,7 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 	 */
 	private boolean canBeExecutedByCurrentUser() {
 		EObject eObject = commandParameter.getEOwner();
-		if (eObject != null && !RightsHelper.hasWritePermission(eObject)) {
+		if (eObject != null && !RightsHelper.hasWritePermission(eObject, userContext)) {
 			return false;
 		}
 
@@ -102,7 +103,7 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 			// objects we are removing
 			Collection<?> objectsToRemove = commandParameter.collection;
 			for (Object obj : objectsToRemove) {
-				if (!RightsHelper.hasWritePermission((EObject) obj)) {
+				if (!RightsHelper.hasWritePermission((EObject) obj, userContext)) {
 					return false;
 				}
 			}

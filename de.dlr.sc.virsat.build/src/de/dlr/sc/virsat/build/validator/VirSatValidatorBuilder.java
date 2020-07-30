@@ -23,10 +23,11 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 import de.dlr.sc.virsat.build.inheritance.AVirSatBuilder;
 import de.dlr.sc.virsat.build.marker.util.VirSatValidationMarkerHelper;
-import de.dlr.sc.virsat.build.validator.external.IRepositoryValidator;
-import de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
+import de.dlr.sc.virsat.model.dvlm.validator.RepoValidatorsInstantiator;
 import de.dlr.sc.virsat.project.Activator;
 
 /**
@@ -36,7 +37,7 @@ import de.dlr.sc.virsat.project.Activator;
 public class VirSatValidatorBuilder extends AVirSatBuilder {
 
 	public VirSatValidatorBuilder() {
-		super(new VirSatValidationMarkerHelper());
+		super("Validation Builder", new VirSatValidationMarkerHelper());
 		this.vvmHelper = (VirSatValidationMarkerHelper) this.vpmHelper;
 	}
 
@@ -118,6 +119,7 @@ public class VirSatValidatorBuilder extends AVirSatBuilder {
 	
 	@Override
 	public ISchedulingRule getRule(int kind, Map<String, String> args) {
+		// Validation Builder is not critical and does not need specific locking on the workspace
 		return null;
 	}
 }

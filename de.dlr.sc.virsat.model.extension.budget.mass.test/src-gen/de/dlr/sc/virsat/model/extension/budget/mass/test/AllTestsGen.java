@@ -19,10 +19,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
-import de.dlr.sc.virsat.model.extension.budget.mass.validator.StructuralElementInstanceValidatorTest;
+import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v2Test;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummaryTest;
 import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v1Test;
+import de.dlr.sc.virsat.model.extension.budget.mass.validator.MassValidatorTest;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipmentTest;
 
 /**
@@ -35,7 +36,8 @@ import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipmentTest;
 	MassSummaryTest.class,
 	Migrator1v0Test.class,
 	Migrator1v1Test.class,
-	StructuralElementInstanceValidatorTest.class,
+	Migrator1v2Test.class,
+	MassValidatorTest.class,
 				})
 
 /**

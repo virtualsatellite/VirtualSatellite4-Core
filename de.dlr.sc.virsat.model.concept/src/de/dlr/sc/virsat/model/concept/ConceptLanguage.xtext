@@ -11,17 +11,17 @@
 grammar de.dlr.sc.virsat.model.concept.ConceptLanguage with org.eclipse.xtext.common.Terminals
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://www.virsat.sc.dlr.de/dvlm/v7"  
-import "http://www.virsat.sc.dlr.de/dvlm/v7/s" as Structural
-import "http://www.virsat.sc.dlr.de/dvlm/v7/r" as Rights
-import "http://www.virsat.sc.dlr.de/dvlm/v7/u" as Units
-import "http://www.virsat.sc.dlr.de/dvlm/v7/c" as Concepts
-import "http://www.virsat.sc.dlr.de/dvlm/v7/t" as Types
-import "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppd" as PropertyDefinitions
-import "http://www.virsat.sc.dlr.de/dvlm/v7/cp" as Categories
-import "http://www.virsat.sc.dlr.de/dvlm/v7/cp/cppi" as PropertyInstances
-import "http://www.virsat.sc.dlr.de/dvlm/v7/g" as General
-import "http://www.virsat.sc.dlr.de/dvlm/v7/calc" as Calc
+import "http://www.virsat.sc.dlr.de/dvlm/v8"  
+import "http://www.virsat.sc.dlr.de/dvlm/v8/s" as Structural
+import "http://www.virsat.sc.dlr.de/dvlm/v8/r" as Rights
+import "http://www.virsat.sc.dlr.de/dvlm/v8/u" as Units
+import "http://www.virsat.sc.dlr.de/dvlm/v8/c" as Concepts
+import "http://www.virsat.sc.dlr.de/dvlm/v8/t" as Types
+import "http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" as PropertyDefinitions
+import "http://www.virsat.sc.dlr.de/dvlm/v8/cp" as Categories
+import "http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi" as PropertyInstances
+import "http://www.virsat.sc.dlr.de/dvlm/v8/g" as General
+import "http://www.virsat.sc.dlr.de/dvlm/v8/calc" as Calc
 
 Concept returns Concepts::Concept:
 	{Concepts::Concept}
@@ -34,9 +34,10 @@ Concept returns Concepts::Concept:
 		(DMF?='hasDMF')?
 	)
 	'{'
-		(imports+=ConceptImport)* 
-		(structuralElements+=StructuralElement)*
-		(relations+=ARelation)*
+		((imports+=ConceptImport)* &
+		(ecoreImports+=EcoreImport)* )
+		(structuralElements+=StructuralElement)* 
+		(relations+=ARelation)* 
 		(categories+=Category)*
 	'}';
 
@@ -97,6 +98,12 @@ ConceptImport returns Concepts::ConceptImport:
    ';'
 ;
 
+EcoreImport returns Concepts::EcoreImport:
+	{Concepts::EcoreImport}
+   'EImport' importedNsURI = STRING ('genModel' importedGenModel=STRING)?
+   ';'
+;
+
 // ***************************************************************************************
 // The Properties
 // ***************************************************************************************
@@ -109,6 +116,7 @@ AProperty returns PropertyDefinitions::AProperty:
 	BooleanProperty |
 	EnumProperty |
 	ReferenceProperty |
+	EReferenceProperty |
 	ResourceProperty
 ;
 
@@ -187,6 +195,13 @@ EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
 ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
 	'Reference' name=ID (arrayModifier=ArrayModifier)?
 	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+	('description' description=EString)?
+	';'
+	;
+	
+EReferenceProperty returns PropertyDefinitions::EReferenceProperty:
+	'EReference' name=ID (arrayModifier=ArrayModifier)?
+	'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
 	('description' description=EString)?
 	';'
 	;

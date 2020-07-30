@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+		<concept
+			id="de.dlr.sc.virsat.model.ext.core"
+			version="1.0"
+			xmi="concept/concept.xmi">
+		</concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="de.dlr.sc.virsat.model.ext.core"
+				class="de.dlr.sc.virsat.model.ext.core.validator.CoreValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.concept.core"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.ext.core.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.ext.core"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.ext.core.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.ext.core"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.ext.core.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated concept -->
+      <package
+            uri="http://www.virsat.sc.dlr.de/dmf/v1.0/core"
+            class="de.dlr.sc.virsat.model.ext.core.core.CorePackage"
+            genModel="concept/concept.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated concept -->
+      <parser
+            type="core"
+            class="de.dlr.sc.virsat.model.ext.core.core.util.CoreResourceFactoryImpl"/>
+   </extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

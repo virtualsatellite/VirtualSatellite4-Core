@@ -13,16 +13,17 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -37,7 +38,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
  * 
  * 
  */	
-public abstract class AEnumerationDefinition extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class AEnumerationDefinition extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition";
 	
@@ -86,6 +87,19 @@ public abstract class AEnumerationDefinition extends ABeanCategoryAssignment imp
 	public IBeanList<EnumerationLiteral> getLiterals() {
 		safeAccessLiterals();
 		return literals;
+	}
+	
+	private IBeanList<BeanPropertyComposed<EnumerationLiteral>> literalsBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessLiteralsBean() {
+		if (literalsBean.getArrayInstance() == null) {
+			literalsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("literals"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<EnumerationLiteral>> getLiteralsBean() {
+		safeAccessLiteralsBean();
+		return literalsBean;
 	}
 	
 	

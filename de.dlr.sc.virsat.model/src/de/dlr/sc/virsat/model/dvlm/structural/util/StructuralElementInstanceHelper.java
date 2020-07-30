@@ -10,10 +10,13 @@
 package de.dlr.sc.virsat.model.dvlm.structural.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -22,9 +25,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Class to provide useful methods for StructuralElementInstances
- * 
- * @author bell_er
- *
  */
 public class StructuralElementInstanceHelper {
 	
@@ -44,13 +44,12 @@ public class StructuralElementInstanceHelper {
 	 * 
 	 * @return the structural element instance as the root
 	 */
-	public  ICategoryAssignmentContainer getRoot() {
-
-		StructuralElementInstance eContainer = sei.getParent();
-		while ((eContainer != null) && (eContainer.getParent() != null) && (eContainer.getParent() instanceof StructuralElementInstance)) {
-			eContainer = eContainer.getParent();
+	public ICategoryAssignmentContainer getRoot() {
+		StructuralElementInstance root = sei;
+		while (root.getParent() != null) {
+			root = root.getParent();
 		}	
-		return (ICategoryAssignmentContainer) ((eContainer ==  null) ? sei : eContainer);
+		return root;
 	}
 	
 	/**
@@ -108,5 +107,36 @@ public class StructuralElementInstanceHelper {
 			superSeis.addAll(getAllSuperSeis(superSei));
 		}
 		return superSeis;
+	}
+	
+	/**
+	 * Creates a new list which does not contain SEIs that are marked for deletion whose parents are also marked for deletion
+	 * for example, A contains B, and both are selected for deletion. In this case we need to remove B as it will be deleted anyway with A
+	 * @param seisToDelete Collection of SEIs that are selected for deletion
+	 * @return list of SEIs without children that will be deleted anyway
+	 */
+	public static ArrayList<StructuralElementInstance> cleanFromIndirectSelectedChildren(Collection<StructuralElementInstance> seisToDelete) {
+		Set<EObject> selectedToBeDeleted = new HashSet<>(seisToDelete);
+		ArrayList<StructuralElementInstance> seisToDeleteWithoutDuplicateChildren = new ArrayList<>();
+		
+		// Loop over all SEIs and see if it is indirectly selected by one of its parents.
+		for (StructuralElementInstance sei : seisToDelete) {
+			
+			// Now find a parent to the SEI, which is not yet selected for being deleted
+			// Basically this means, check if the current selection is already indirectly selected by a parent
+			// If yes it does not need to be added to the actual list of SEIs that should be deleted
+			// since it will be deleted by the parent as well.
+			EObject parent = sei.eContainer();
+			while (parent instanceof StructuralElementInstance && !selectedToBeDeleted.contains(parent)) {
+				parent = parent.eContainer();
+			}
+			
+			// Now if the selected SEI does not have a parent which is also selected,
+			// than it has to be explicitly be deleted.
+			if (!(parent instanceof StructuralElementInstance)) {
+				seisToDeleteWithoutDuplicateChildren.add(sei); 
+			}
+		}
+		return seisToDeleteWithoutDuplicateChildren;
 	}
 }

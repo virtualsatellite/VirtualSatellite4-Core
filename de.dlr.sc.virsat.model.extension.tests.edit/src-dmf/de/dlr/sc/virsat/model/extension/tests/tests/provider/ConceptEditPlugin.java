@@ -1,19 +1,23 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
- *
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ */
 package de.dlr.sc.virsat.model.extension.tests.tests.provider;
 
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
+import de.dlr.sc.virsat.model.external.tests.provider.ExternalModelEditPlugin;
+
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
  * This is the central singleton for the Concept edit plugin.
@@ -48,6 +52,9 @@ public final class ConceptEditPlugin extends EMFPlugin {
 		super
 		  (new ResourceLocator [] {
 		     DVLMEditPlugin.INSTANCE,
+		     de.dlr.sc.virsat.model.ext.core.core.provider.ConceptEditPlugin.INSTANCE,
+		     ExternalModelEditPlugin.INSTANCE,
+		     EcoreEditPlugin.INSTANCE,
 		   });
 	}
 

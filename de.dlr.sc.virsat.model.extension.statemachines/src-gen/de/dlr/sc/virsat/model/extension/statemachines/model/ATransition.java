@@ -12,21 +12,17 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.core.runtime.CoreException;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.SetCommand;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.extension.statemachines.model.State;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 
 // *****************************************************************
@@ -41,7 +37,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.State;
  * Transitions among states
  * 
  */	
-public abstract class ATransition extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
+public abstract class ATransition extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.Transition";
 	
@@ -80,97 +76,61 @@ public abstract class ATransition extends ABeanCategoryAssignment implements IBe
 	// *****************************************************************
 	// * Attribute: stateFrom
 	// *****************************************************************
-	private State stateFrom;
+	private BeanPropertyReference<State> stateFrom = new BeanPropertyReference<>();
 	
 	private void safeAccessStateFrom() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateFrom");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (stateFrom == null) {
-				createStateFrom(ca);
-			}
-			stateFrom.setTypeInstance(ca);
-		} else {
-			stateFrom = null;
-		}
+		stateFrom.setTypeInstance(propertyInstance);
 	}
 	
-	private void createStateFrom(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			stateFrom = (State) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public State getStateFrom() {
 		safeAccessStateFrom();
-		return stateFrom;
+		return stateFrom.getValue();
 	}
 	
 	public Command setStateFrom(EditingDomain ed, State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateFrom");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessStateFrom();
+		return stateFrom.setValue(ed, value);
 	}
 	
 	public void setStateFrom(State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateFrom");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessStateFrom();
+		stateFrom.setValue(value);
+	}
+	
+	public BeanPropertyReference<State> getStateFromBean() {
+		safeAccessStateFrom();
+		return stateFrom;
 	}
 	
 	// *****************************************************************
 	// * Attribute: stateTo
 	// *****************************************************************
-	private State stateTo;
+	private BeanPropertyReference<State> stateTo = new BeanPropertyReference<>();
 	
 	private void safeAccessStateTo() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateTo");
-		CategoryAssignment ca = (CategoryAssignment) propertyInstance.getReference();
-		
-		if (ca != null) {
-			if (stateTo == null) {
-				createStateTo(ca);
-			}
-			stateTo.setTypeInstance(ca);
-		} else {
-			stateTo = null;
-		}
+		stateTo.setTypeInstance(propertyInstance);
 	}
 	
-	private void createStateTo(CategoryAssignment ca) {
-		try {
-			BeanCategoryAssignmentFactory beanFactory = new BeanCategoryAssignmentFactory();
-			stateTo = (State) beanFactory.getInstanceFor(ca);
-		} catch (CoreException e) {
-			
-		}
-	}
-					
 	public State getStateTo() {
 		safeAccessStateTo();
-		return stateTo;
+		return stateTo.getValue();
 	}
 	
 	public Command setStateTo(EditingDomain ed, State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateTo");
-		CategoryAssignment ca = value.getTypeInstance();
-		return SetCommand.create(ed, propertyInstance, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE, ca);
+		safeAccessStateTo();
+		return stateTo.setValue(ed, value);
 	}
 	
 	public void setStateTo(State value) {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("stateTo");
-		if (value != null) {
-			propertyInstance.setReference(value.getTypeInstance());
-		} else {
-			propertyInstance.setReference(null);
-		}
+		safeAccessStateTo();
+		stateTo.setValue(value);
+	}
+	
+	public BeanPropertyReference<State> getStateToBean() {
+		safeAccessStateTo();
+		return stateTo;
 	}
 	
 	

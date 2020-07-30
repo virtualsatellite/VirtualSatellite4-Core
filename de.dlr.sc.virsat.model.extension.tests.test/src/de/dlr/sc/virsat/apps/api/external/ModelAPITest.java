@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
@@ -55,7 +56,7 @@ public class ModelAPITest extends ATestConceptTestCase {
 		loadTestConcept();
 
 		// Load the concept to create the test object
-		rs.saveAllResources(new NullProgressMonitor());
+		rs.saveAllResources(new NullProgressMonitor(), UserRegistry.getInstance());
 		relaodResourceSet();
 		
 		modelAPI = new ModelAPI() {			
@@ -74,8 +75,8 @@ public class ModelAPITest extends ATestConceptTestCase {
 		rs.realoadAll();
 		repository = rs.getRepository();
 		virSatUnitManagement = rs.getUnitManagement();
-		maturityConcept = repository.getActiveConcepts().get(0);
-		testConcept = repository.getActiveConcepts().get(1);
+		maturityConcept = repository.getActiveConcepts().get(1);
+		testConcept = repository.getActiveConcepts().get(2);
 	}
 
 	@Test

@@ -12,11 +12,16 @@ package de.dlr.sc.virsat.build.validator.external;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
+ * <p>
+ * Deprecated -> Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator}
+ * 
+ * </p>
  * the IStructuralElementInstanceValidator class defines the interface for our model validators
  * The build will call all registered validators bound to this interface
  * @author scha_vo
  *
  */
+@Deprecated
 public interface IStructuralElementInstanceValidator {
 
 	/**

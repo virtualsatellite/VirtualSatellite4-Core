@@ -2,17 +2,17 @@
 <?eclipse version="3.4"?>
 <plugin>
 	<extension point="de.dlr.sc.virsat.model.Concept">
-	<concept
-	          id="de.dlr.sc.virsat.model.extension.mechanical"
-	          version="0.1"
-	          xmi="concept/concept.xmi">
-	    </concept>
+		<concept
+			id="de.dlr.sc.virsat.model.extension.mechanical"
+			version="0.2"
+			xmi="concept/concept.xmi">
+		</concept>
 	</extension>
-	<extension point="de.dlr.sc.virsat.build.DvlmValidator">
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
 		<dvlmValidator>
 			<seiValidator
 				id="de.dlr.sc.virsat.model.extension.mechanical"
-				class="de.dlr.sc.virsat.model.extension.mechanical.validator.StructuralElementInstanceValidator">
+				class="de.dlr.sc.virsat.model.extension.mechanical.validator.MechanicalValidator">
 			</seiValidator>
 		</dvlmValidator>
 	</extension>
@@ -23,6 +23,14 @@
 		version="0.1"
 		class="de.dlr.sc.virsat.model.extension.mechanical.migrator.Migrator0v1"
 		xmi="concept/concept_v0_1.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.mechanical"
+		version="0.2"
+		class="de.dlr.sc.virsat.model.extension.mechanical.migrator.Migrator0v2"
+		xmi="concept/concept_v0_2.xmi">
 	</migrator>
 </extension>
 	<!-- Plugin.XML Protected Region End -->

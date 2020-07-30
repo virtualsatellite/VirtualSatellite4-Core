@@ -9,14 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.generator.beans
 
+import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider
+import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
-import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider
-import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert
 import javax.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
@@ -25,12 +25,14 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)
 class GenerateCategoryBeansTest {
 
 	@Inject extension ParseHelper<Concept>
+	protected ExternalModelTestHelper helper = new ExternalModelTestHelper;
 
 	Concept concept
 	val TEST_CONCEPT_NAME = "testConcept"
@@ -42,6 +44,7 @@ class GenerateCategoryBeansTest {
 		ConceptsPackage.eINSTANCE.eClass
 		CategoriesPackage.eINSTANCE.eClass
 		PropertydefinitionsPackage.eINSTANCE.eClass
+		helper.loadExternalPackage
 	}
 	
 	@Test
@@ -213,6 +216,54 @@ class GenerateCategoryBeansTest {
     	
 		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanTypesAndReferencesArrays.java")
 		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanTypesAndReferencesArrays.java")
+    }
+    
+    @Test
+    def void testCreateForEReferenceWithoutGenmodel() {
+    	concept = '''
+			Concept testConcept{
+				
+				EImport "http://www.virsat.sc.dlr.de/external/tests";
+					
+				Category TestCategory {
+					
+					EReference testEReference of Type tests.ExternalTestType;
+					
+					EReference testEReferenceArray[] of Type tests.ExternalTestType;
+					
+				}
+				
+			}
+		'''.parse(helper.resourceSet)
+		
+		val category = concept.categories.get(0)
+		val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
+		
+		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java")
+    }
+    
+    @Test
+    def void testCreateForEReferenceWithRegisteredGenmodel() {
+    	concept = '''
+			Concept testConcept{
+				
+				EImport "http://www.virsat.sc.dlr.de/external/tests" genModel "de.dlr.sc.virsat.model.external.tests/model/ExternalModel.genmodel";
+					
+				Category TestCategory {
+					
+					EReference testEReference of Type tests.ExternalTestType;
+					
+					EReference testEReferenceArray[] of Type tests.ExternalTestType;
+					
+				}
+				
+			}
+		'''.parse(helper.resourceSet)
+		
+		val category = concept.categories.get(0)
+		val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
+		
+		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanExternalEReference.java")
     }
     
 }

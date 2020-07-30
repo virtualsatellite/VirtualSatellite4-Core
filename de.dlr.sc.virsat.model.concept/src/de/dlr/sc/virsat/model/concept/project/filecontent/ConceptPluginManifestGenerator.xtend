@@ -35,7 +35,7 @@ class ConceptPluginManifestGenerator implements IFileContentGenerator {
 	 de.dlr.sc.virsat.model,
 	 de.dlr.sc.virsat.model.edit,
 	 de.dlr.sc.virsat.project,
-	 de.dlr.sc.virsat.build
+	 de.dlr.sc.virsat.model.ext.core;visibility:=reexport
 	Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	Bundle-ActivationPolicy: lazy
 	Eclipse-ExtensibleAPI: true

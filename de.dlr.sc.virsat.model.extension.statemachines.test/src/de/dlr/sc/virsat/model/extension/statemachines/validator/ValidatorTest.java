@@ -85,7 +85,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		resCt.getContents().add(ct.getStructuralElementInstance());
 		resObc.getContents().add(ecObc.getStructuralElementInstance());
 		resRw.getContents().add(ecRw.getStructuralElementInstance());
-		resourceSet.saveAllResources(null);
+		resourceSet.saveAllResources(null, UserRegistry.getInstance());
 	}
 	
 	@After
@@ -97,7 +97,7 @@ public class ValidatorTest extends AConceptProjectTestCase {
 	@Test
 	public void testValidator() throws Exception {
 		StateMachine sm  = new StateMachine(conceptStateMachines);
-		StructuralElementInstanceValidator seiValidator = new StructuralElementInstanceValidator();
+		StatemachinesValidator seiValidator = new StatemachinesValidator();
 		
 		State s1 = new State(conceptStateMachines);
 		State s2 = new State(conceptStateMachines);

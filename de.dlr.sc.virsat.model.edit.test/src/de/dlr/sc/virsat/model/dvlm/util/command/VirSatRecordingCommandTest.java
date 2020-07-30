@@ -31,7 +31,7 @@ public class VirSatRecordingCommandTest {
 	 *
 	 */
 	
-	private class RecordableCommand extends AbstractCommand implements IVirSatRecordableCommand {
+	private static class RecordableCommand extends AbstractCommand implements IVirSatRecordableCommand {
 		@Override
 		public void execute() {
 		}
@@ -47,7 +47,7 @@ public class VirSatRecordingCommandTest {
 	 *
 	 */
 	
-	private class NonRecordableCommand extends AbstractCommand {
+	private static class NonRecordableCommand extends AbstractCommand {
 		@Override
 		public void execute() {
 		}

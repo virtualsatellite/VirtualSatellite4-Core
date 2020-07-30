@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Calculation UI
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.dlr.sc.virsat.model,

@@ -10,12 +10,12 @@
 package de.dlr.sc.virsat.project.ui.navigator.propertyTester;
 
 import org.eclipse.core.expressions.PropertyTester;
-
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.project.ui.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.ui.navigator.handler.DeleteStructuralElementInstanceHandler;
 
 /**
- * Checks if the user is allowed to remove sei and all its children
+ * Checks if the user is allowed to remove a selected SEI and all its children
  */
 
 public class RemoveStructuralElementInstanceTester extends PropertyTester {
@@ -31,6 +31,8 @@ public class RemoveStructuralElementInstanceTester extends PropertyTester {
 			return false;
 		}
 		
-		return CreateRemoveSeiWithFileStructureCommand.create(sei).canExecute();
+		return CreateRemoveSeiWithFileStructureCommand
+			.create(sei, DeleteStructuralElementInstanceHandler.DELETE_RESOURCE_OPERATION_FUNCTION)
+			.canExecute();
 	}
 }

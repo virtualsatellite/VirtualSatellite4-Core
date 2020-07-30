@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.project.ui.contentProvider;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -48,6 +49,7 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 		filterChildrenClasses = new HashSet<>();
 		filterChildrenCategoryIds = new HashSet<>();
 		filterChildrenStructuralElementIds = new HashSet<>();
+		filterChildrenFunctions = new HashSet<>();
 	}
 
 	/**
@@ -63,6 +65,7 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 	private Set<String> filterChildrenCategoryIds;
 	private Set<String> filterChildrenStructuralElementIds;
 	private Set<Class<?>> filterChildrenClasses;
+	private Set<Function<Object, Boolean>> filterChildrenFunctions;
 
 	/**
 	 * This method adds a class filter to the GetChildren Method
@@ -106,6 +109,16 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 	}
 
 	/**
+	 * Use this method to add a custom filtering function
+	 * @param filter the filter that the objects returned by the GetChildren method should satisfy
+	 * @return returns the current instance to easily concatenate various filters.
+	 */
+	public VirSatFilteredWrappedTreeContentProvider addFunctionFilterToGetChildren(Function<Object, Boolean> filter) {
+		filterChildrenFunctions.add(filter);
+		return (this);
+	}
+
+	/**
 	 * Use this method to add an ID for a specific type id of the Category and Property Concept
 	 * @param filterId the ID of the object that should be returned by the GetElement and GetChildren method
 	 * @return returns the current instance to easily concatenate various filters.
@@ -115,7 +128,7 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 		addCategoryIdFilterToGetChildren(filterId);
 		return (this);
 	}
-	
+
 	/**
 	 * Use this method to add an ID for a specific type id of the StructuralElement Concept
 	 * @param filterId the ID of the object that should be returned by the GetElement and GetChildren method
@@ -124,6 +137,17 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 	public VirSatFilteredWrappedTreeContentProvider addStructuralElementIdFilter(String filterId) {
 		addStructuralElementIdFilterToGetElement(filterId);
 		addStructuralElementIdFilterToGetChildren(filterId);
+		return (this);
+	}
+	
+	/**
+	 * Use this method to add a custom filtering function
+	 * @param filter the filter that the objects returned by the GetElement and GetChildren methods should satisfy
+	 * @return returns the current instance to easily concatenate various filters.
+	 */
+	public VirSatFilteredWrappedTreeContentProvider addFunctionFilter(Function<Object, Boolean> filter) {
+		addFunctionFilterToGetElement(filter);
+		addFunctionFilterToGetChildren(filter);
 		return (this);
 	}
 	
@@ -148,7 +172,8 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 		Object[] allObjects = wrappedContentProvider.getElements(rootObject);
 		Object[] filteredClasses = filterClasses(allObjects, filterElementClasses);
 		Object[] filteredInstances = filterIds(filteredClasses, filterElementCategoryIds, filterElementStructuralElementIds);
-		return filteredInstances;
+		Object[] filteredFunctions = filterFunctions(filteredInstances, filterElementFunctions);
+		return filteredFunctions;
 	}
 	
 	@Override
@@ -156,7 +181,8 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 		Object[] allObjects = wrappedContentProvider.getChildren(parentObject);
 		Object[] filteredClasses = filterClasses(allObjects, filterChildrenClasses);
 		Object[] filteredInstances = filterIds(filteredClasses, filterChildrenCategoryIds, filterChildrenStructuralElementIds);
-		return filteredInstances;
+		Object[] filteredFunctions = filterFunctions(filteredInstances, filterChildrenFunctions);
+		return filteredFunctions;
 	}
 
 	@Override
@@ -265,5 +291,9 @@ public class VirSatFilteredWrappedTreeContentProvider extends AFilteredContentPr
 	@Override
 	public boolean hasChildren(Object element) {
 		return this.getChildren(element).length > 0;
+	}
+
+	public ITreeContentProvider getWrappedContentProvider() {
+		return wrappedContentProvider;
 	}
 }
