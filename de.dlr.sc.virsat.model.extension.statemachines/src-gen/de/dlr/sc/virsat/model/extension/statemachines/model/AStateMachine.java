@@ -12,14 +12,17 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
@@ -27,9 +30,12 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -44,6 +50,8 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * A state machine with states and transitions
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AStateMachine extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.StateMachine";
@@ -120,6 +128,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 		return type.getEnumValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyEnum getTypeBean() {
 		safeAccessType();
 		return type;
@@ -135,6 +144,8 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 		initialState.setTypeInstance(propertyInstance);
 	}
 	
+	@XmlElement
+	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public State getInitialState() {
 		safeAccessInitialState();
 		return initialState.getValue();
@@ -179,6 +190,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<State>> getStatesBean() {
 		safeAccessStatesBean();
 		return statesBean;
@@ -208,6 +220,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<Transition>> getTransitionsBean() {
 		safeAccessTransitionsBean();
 		return transitionsBean;
@@ -237,6 +250,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<AConstraint>> getConstraintsBean() {
 		safeAccessConstraintsBean();
 		return constraintsBean;

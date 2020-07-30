@@ -12,17 +12,23 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -37,6 +43,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
  * General constraint in statemachines 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AAConstraint extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.AConstraint";
@@ -83,6 +91,8 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 		stateConstraining.setTypeInstance(propertyInstance);
 	}
 	
+	@XmlElement
+	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public State getStateConstraining() {
 		safeAccessStateConstraining();
 		return stateConstraining.getValue();
@@ -113,6 +123,8 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 		stateInfluenced.setTypeInstance(propertyInstance);
 	}
 	
+	@XmlElement
+	@XmlJavaTypeAdapter(ReferenceAdapter.class)
 	public State getStateInfluenced() {
 		safeAccessStateInfluenced();
 		return stateInfluenced.getValue();
