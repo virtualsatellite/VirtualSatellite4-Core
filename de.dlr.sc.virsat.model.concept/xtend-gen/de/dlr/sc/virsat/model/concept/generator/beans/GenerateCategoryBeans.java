@@ -62,8 +62,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import java.util.Set;
 import java.util.function.Consumer;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -204,6 +209,16 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     CharSequence _generateAClassHeader = ConceptGeneratorUtil.generateAClassHeader(category);
     _builder.append(_generateAClassHeader);
     _builder.newLineIfNotEmpty();
+    importManager.register(XmlRootElement.class);
+    _builder.newLineIfNotEmpty();
+    importManager.register(XmlAccessorType.class);
+    _builder.newLineIfNotEmpty();
+    importManager.register(XmlAccessType.class);
+    _builder.newLineIfNotEmpty();
+    _builder.append("@XmlRootElement");
+    _builder.newLine();
+    _builder.append("@XmlAccessorType(XmlAccessType.NONE)");
+    _builder.newLine();
     _builder.append("public abstract class A");
     String _firstUpper = StringExtensions.toFirstUpper(category.getName());
     _builder.append(_firstUpper);
@@ -666,6 +681,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyFloat.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<BeanPropertyFloat> ");
         String _name = property.getName();
@@ -676,7 +692,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
-        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyFloat> ");
         String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
@@ -704,6 +721,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyInt.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<BeanPropertyInt> ");
         String _name = property.getName();
@@ -714,7 +732,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
-        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyInt> ");
         String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
@@ -742,6 +761,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyBoolean.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<BeanPropertyBoolean> ");
         String _name = property.getName();
@@ -752,6 +772,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyBoolean> ");
         String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
@@ -779,6 +801,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyString.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<BeanPropertyString> ");
         String _name = property.getName();
@@ -789,6 +812,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyString> ");
         String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
@@ -816,6 +841,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyResource.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<BeanPropertyResource> ");
         String _name = property.getName();
@@ -826,6 +852,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyResource> ");
         String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
@@ -853,6 +881,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(BeanPropertyEnum.class);
         importManager.register(IBeanList.class);
         importManager.register(TypeSafeArrayInstanceList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<BeanPropertyEnum> ");
         String _name = property.getName();
@@ -863,6 +892,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         CharSequence _declareSafeAccessArrayBeanMethod = GenerateCategoryBeans.this.declareSafeAccessArrayBeanMethod(property, importManager);
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyEnum> ");
         String _propertyMethodGetBean = GenerateCategoryBeans.this.propertyMethodGetBean(property);
@@ -892,6 +923,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(TypeSafeComposedPropertyInstanceList.class);
         importManager.register(BeanPropertyComposed.class);
         importManager.register(TypeSafeComposedPropertyBeanList.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private IBeanList<");
         String _name = property.getType().getName();
@@ -944,6 +976,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append(_declareSafeAccessArrayBeanMethod);
         _builder.newLineIfNotEmpty();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public IBeanList<BeanPropertyComposed<");
         String _name_7 = property.getType().getName();
         _builder.append(_name_7);
@@ -973,6 +1007,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(IBeanList.class);
         importManager.register(BeanPropertyReference.class);
         importManager.register(TypeSafeReferencePropertyBeanList.class);
+        importManager.register(XmlElement.class);
         ATypeDefinition _referenceType = property.getReferenceType();
         if ((_referenceType instanceof Category)) {
           importManager.register(property.getReferenceType());
@@ -1037,6 +1072,9 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.append(_declareSafeAccessArrayBeanMethod, "\t");
           _builder.newLineIfNotEmpty();
           _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("@XmlElement");
           _builder.newLine();
           _builder.append("\t");
           _builder.append("public IBeanList<BeanPropertyReference<");
@@ -1127,6 +1165,9 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.append(_declareSafeAccessArrayBeanMethod_1, "\t");
           _builder_1.newLineIfNotEmpty();
           _builder_1.append("\t");
+          _builder_1.newLine();
+          _builder_1.append("\t");
+          _builder_1.append("@XmlElement");
           _builder_1.newLine();
           _builder_1.append("\t");
           _builder_1.append("public IBeanList<BeanPropertyReference<");
@@ -1259,6 +1300,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(Command.class);
         importManager.register(EditingDomain.class);
         importManager.register(UnitValuePropertyInstance.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyFloat ");
         String _name = property.getName();
@@ -1346,6 +1388,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public BeanPropertyFloat ");
         String _propertyMethodGet_1 = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet_1);
@@ -1373,6 +1417,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(Command.class);
         importManager.register(EditingDomain.class);
         importManager.register(UnitValuePropertyInstance.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyInt ");
         String _name = property.getName();
@@ -1460,6 +1505,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public BeanPropertyInt ");
         String _propertyMethodGet_1 = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet_1);
@@ -1487,6 +1534,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(Command.class);
         importManager.register(EditingDomain.class);
         importManager.register(ValuePropertyInstance.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyBoolean ");
         String _name = property.getName();
@@ -1555,6 +1603,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public BeanPropertyBoolean ");
         String _propertyMethodGet_1 = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet_1);
@@ -1582,6 +1632,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(Command.class);
         importManager.register(EditingDomain.class);
         importManager.register(ValuePropertyInstance.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyString ");
         String _name = property.getName();
@@ -1650,6 +1701,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public BeanPropertyString ");
         String _propertyMethodGet_1 = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet_1);
@@ -1678,6 +1731,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(EditingDomain.class);
         importManager.register(ResourcePropertyInstance.class);
         importManager.register(URI.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyResource ");
         String _name = property.getName();
@@ -1746,6 +1800,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public BeanPropertyResource ");
         String _propertyMethodGet_1 = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet_1);
@@ -1773,6 +1829,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(Command.class);
         importManager.register(EditingDomain.class);
         importManager.register(EnumUnitPropertyInstance.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyEnum ");
         String _name = property.getName();
@@ -1860,6 +1917,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
+        _builder.append("@XmlElement");
+        _builder.newLine();
         _builder.append("public BeanPropertyEnum ");
         String _propertyMethodGet_2 = GenerateCategoryBeans.this.propertyMethodGet(property);
         _builder.append(_propertyMethodGet_2);
@@ -1886,6 +1945,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(ComposedPropertyInstance.class);
         importManager.register(property.getType());
         importManager.register(BeanPropertyComposed.class);
+        importManager.register(XmlElement.class);
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private BeanPropertyComposed<");
         String _name = property.getType().getName();
@@ -1923,6 +1983,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         _builder.append("}");
         _builder.newLine();
+        _builder.newLine();
+        _builder.append("@XmlElement");
         _builder.newLine();
         _builder.append("public ");
         String _name_5 = property.getType().getName();
@@ -1972,14 +2034,16 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       
       @Override
       public CharSequence caseReferenceProperty(final ReferenceProperty property) {
+        importManager.register(ReferencePropertyInstance.class);
+        importManager.register(CategoryAssignment.class);
+        importManager.register(Command.class);
+        importManager.register(EditingDomain.class);
+        importManager.register(BeanPropertyReference.class);
+        importManager.register(ReferenceAdapter.class);
+        importManager.register(XmlElement.class);
         ATypeDefinition _referenceType = property.getReferenceType();
         if ((_referenceType instanceof Category)) {
-          importManager.register(ReferencePropertyInstance.class);
-          importManager.register(CategoryAssignment.class);
-          importManager.register(Command.class);
-          importManager.register(EditingDomain.class);
           importManager.register(property.getReferenceType());
-          importManager.register(BeanPropertyReference.class);
           StringConcatenation _builder = new StringConcatenation();
           _builder.append("private BeanPropertyReference<");
           String _name = property.getReferenceType().getName();
@@ -2008,6 +2072,10 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.newLineIfNotEmpty();
           _builder.append("}");
           _builder.newLine();
+          _builder.newLine();
+          _builder.append("@XmlElement");
+          _builder.newLine();
+          _builder.append("@XmlJavaTypeAdapter(ReferenceAdapter.class)");
           _builder.newLine();
           _builder.append("public ");
           String _name_4 = property.getReferenceType().getName();
@@ -2097,15 +2165,10 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.newLine();
           return _builder;
         } else {
-          importManager.register(ReferencePropertyInstance.class);
-          importManager.register(CategoryAssignment.class);
-          importManager.register(Command.class);
-          importManager.register(EditingDomain.class);
           ATypeDefinition _referenceType_1 = property.getReferenceType();
           AProperty referencedProperty = ((AProperty) _referenceType_1);
           Class<?> referencedPropertyType = GenerateCategoryBeans.getReferencePropertyType(referencedProperty);
           importManager.register(referencedPropertyType);
-          importManager.register(BeanPropertyReference.class);
           StringConcatenation _builder_1 = new StringConcatenation();
           _builder_1.append("private BeanPropertyReference<");
           String _simpleName = referencedPropertyType.getSimpleName();
@@ -2134,6 +2197,10 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.newLineIfNotEmpty();
           _builder_1.append("}");
           _builder_1.newLine();
+          _builder_1.newLine();
+          _builder_1.append("@XmlElement");
+          _builder_1.newLine();
+          _builder_1.append("@XmlJavaTypeAdapter(ReferenceAdapter.class)");
           _builder_1.newLine();
           _builder_1.append("public ");
           String _simpleName_1 = referencedPropertyType.getSimpleName();

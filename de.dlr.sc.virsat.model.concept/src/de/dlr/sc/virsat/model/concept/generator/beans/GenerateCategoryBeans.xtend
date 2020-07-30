@@ -78,6 +78,11 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlAccessType
+import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter
+import javax.xml.bind.annotation.XmlElement
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -169,6 +174,11 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateAClassHeader(category)»
+	«importManager.register(XmlRootElement)»
+	«importManager.register(XmlAccessorType)»
+	«importManager.register(XmlAccessType)»
+	@XmlRootElement
+	@XmlAccessorType(XmlAccessType.NONE)
 	public abstract class A«category.name.toFirstUpper» extends «declareExtendedClass(category)» implements IBeanCategoryAssignment {
 
 		«val fullQualifiedCategoryId = ActiveConceptHelper.getFullQualifiedId(category)»
@@ -347,12 +357,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyFloat);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
+				importManager.register(XmlElement);
 			
 				return '''
 				private IBeanList<BeanPropertyFloat> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyFloat.class);
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
-					
+				
+				@XmlElement
 				public IBeanList<BeanPropertyFloat> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -364,12 +376,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyInt);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
-			
+				importManager.register(XmlElement);
+				
 				return '''
 				private IBeanList<BeanPropertyInt> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyInt.class);
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
-					
+				
+				@XmlElement
 				public IBeanList<BeanPropertyInt> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -381,12 +395,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyBoolean);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
-			
+				importManager.register(XmlElement);
+				
 				return '''
 				private IBeanList<BeanPropertyBoolean> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyBoolean.class);
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
+				@XmlElement
 				public IBeanList<BeanPropertyBoolean> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -398,12 +414,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyString);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
-			
+				importManager.register(XmlElement);
+				
 				return '''
 				private IBeanList<BeanPropertyString> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
+				@XmlElement
 				public IBeanList<BeanPropertyString> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -415,12 +433,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyResource);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
-			
+				importManager.register(XmlElement);
+				
 				return '''
 				private IBeanList<BeanPropertyResource> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyResource.class);
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
+				@XmlElement
 				public IBeanList<BeanPropertyResource> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -432,12 +452,14 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(BeanPropertyEnum);
 				importManager.register(IBeanList);
 				importManager.register(TypeSafeArrayInstanceList);
-			
+				importManager.register(XmlElement);
+				
 				return '''
 				private IBeanList<BeanPropertyEnum> «property.name»Bean = new TypeSafeArrayInstanceList<>(BeanPropertyEnum.class);
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
+				@XmlElement
 				public IBeanList<BeanPropertyEnum> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -451,6 +473,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(TypeSafeComposedPropertyInstanceList)
 				importManager.register(BeanPropertyComposed)
 				importManager.register(TypeSafeComposedPropertyBeanList)
+				importManager.register(XmlElement);
+				
 				return '''
 				private IBeanList<«property.type.name»> «property.name» = new TypeSafeComposedPropertyInstanceList<>(«property.type.name».class);
 				
@@ -465,6 +489,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				
 				«declareSafeAccessArrayBeanMethod(property, importManager)»
 				
+				@XmlElement
 				public IBeanList<BeanPropertyComposed<«property.type.name»>> «propertyMethodGetBean(property)»() {
 					«propertyMethodSafeAccessBean(property)»;
 					return «property.name»Bean;
@@ -476,6 +501,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(IBeanList);
 				importManager.register(BeanPropertyReference)
 				importManager.register(TypeSafeReferencePropertyBeanList)
+				importManager.register(XmlElement);
+				
 				if (property.referenceType instanceof Category) {
 					importManager.register(property.referenceType)
 					importManager.register(TypeSafeReferencePropertyInstanceList)
@@ -494,6 +521,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					
 					«declareSafeAccessArrayBeanMethod(property, importManager)»
 					
+					@XmlElement
 					public IBeanList<BeanPropertyReference<«property.referenceType.name»>> «propertyMethodGetBean(property)»() {
 						«propertyMethodSafeAccessBean(property)»;
 						return «property.name»Bean;
@@ -517,6 +545,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					
 					«declareSafeAccessArrayBeanMethod(property, importManager)»
 					
+					@XmlElement
 					public IBeanList<BeanPropertyReference<«referencedPropertyType.name»>> «propertyMethodGetBean(property)»() {
 						«propertyMethodSafeAccessBean(property)»;
 						return «property.name»Bean;
@@ -573,6 +602,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(Command);
 				importManager.register(EditingDomain);
 				importManager.register(UnitValuePropertyInstance);
+				importManager.register(XmlElement);
 			
 				return '''
 				private BeanPropertyFloat «property.name» = new BeanPropertyFloat();
@@ -599,6 +629,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return «property.name».isSet();
 				}
 				
+				@XmlElement
 				public BeanPropertyFloat «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
@@ -611,6 +642,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(Command);
 				importManager.register(EditingDomain);
 				importManager.register(UnitValuePropertyInstance);
+				importManager.register(XmlElement);
+				
 				return '''
 				private BeanPropertyInt «property.name» = new BeanPropertyInt();
 
@@ -636,6 +669,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return «property.name».isSet();
 				}
 				
+				@XmlElement
 				public BeanPropertyInt «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
@@ -648,6 +682,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(Command);
 				importManager.register(EditingDomain);
 				importManager.register(ValuePropertyInstance);
+				importManager.register(XmlElement);
 				
 				return '''
 				private BeanPropertyBoolean «property.name» = new BeanPropertyBoolean();
@@ -669,6 +704,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return «property.name».getValue();
 				}
 				
+				@XmlElement
 				public BeanPropertyBoolean «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
@@ -681,6 +717,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(Command);
 				importManager.register(EditingDomain);
 				importManager.register(ValuePropertyInstance);
+				importManager.register(XmlElement);
 				
 				return '''
 				private BeanPropertyString «property.name» = new BeanPropertyString();
@@ -702,6 +739,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return «property.name».getValue();
 				}
 				
+				@XmlElement
 				public BeanPropertyString «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
@@ -715,6 +753,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(EditingDomain);
 				importManager.register(ResourcePropertyInstance);
 				importManager.register(URI);
+				importManager.register(XmlElement);
 				
 				return '''
 				private BeanPropertyResource «property.name» = new BeanPropertyResource();
@@ -736,6 +775,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return «property.name».getValue();
 				}
 				
+				@XmlElement
 				public BeanPropertyResource «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
@@ -748,6 +788,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(Command);
 				importManager.register(EditingDomain);
 				importManager.register(EnumUnitPropertyInstance);
+				importManager.register(XmlElement);
 				
 				return '''
 				private BeanPropertyEnum «property.name» = new BeanPropertyEnum();
@@ -774,6 +815,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					return «property.name».getEnumValue();
 				}
 				
+				@XmlElement
 				public BeanPropertyEnum «propertyMethodGet(property)»Bean() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name»;
@@ -785,6 +827,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(ComposedPropertyInstance);
 				importManager.register(property.type);
 				importManager.register(BeanPropertyComposed);
+				importManager.register(XmlElement);
 				
 				return '''
 				private BeanPropertyComposed<«property.type.name»> «property.name» = new BeanPropertyComposed<>();
@@ -796,6 +839,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 				}
 				
+				@XmlElement
 				public «property.type.name» «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name».getValue();
@@ -810,14 +854,17 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 			
 			override caseReferenceProperty(ReferenceProperty property) {
 				
-				if (property.referenceType instanceof Category) {
-					importManager.register(ReferencePropertyInstance);
-					importManager.register(CategoryAssignment);
-					importManager.register(Command);
-					importManager.register(EditingDomain);
-					importManager.register(property.referenceType)
-					importManager.register(BeanPropertyReference);
+				importManager.register(ReferencePropertyInstance);
+				importManager.register(CategoryAssignment);
+				importManager.register(Command);
+				importManager.register(EditingDomain);
+				importManager.register(BeanPropertyReference);
+				importManager.register(ReferenceAdapter);
+				importManager.register(XmlElement);
 				
+				if (property.referenceType instanceof Category) {
+					importManager.register(property.referenceType);
+					
 					return '''
 					private BeanPropertyReference<«property.referenceType.name»> «property.name» = new BeanPropertyReference<>();
 					
@@ -826,6 +873,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«property.name».setTypeInstance(propertyInstance);
 					}
 					
+					@XmlElement
+					@XmlJavaTypeAdapter(ReferenceAdapter.class)
 					public «property.referenceType.name» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name».getValue();
@@ -847,14 +896,10 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 					'''	
 				} else {
-					importManager.register(ReferencePropertyInstance);
-					importManager.register(CategoryAssignment);
-					importManager.register(Command);
-					importManager.register(EditingDomain);
 					var referencedProperty = property.referenceType as AProperty;
 					var referencedPropertyType = getReferencePropertyType(referencedProperty);
 					importManager.register(referencedPropertyType);
-					importManager.register(BeanPropertyReference);
+					
 					return '''
 					private BeanPropertyReference<«referencedPropertyType.simpleName»> «property.name» = new BeanPropertyReference<>();
 
@@ -863,6 +908,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«property.name».setTypeInstance(propertyInstance);
 					}
 
+					@XmlElement
+					@XmlJavaTypeAdapter(ReferenceAdapter.class)
 					public «referencedPropertyType.simpleName» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name».getValue();
