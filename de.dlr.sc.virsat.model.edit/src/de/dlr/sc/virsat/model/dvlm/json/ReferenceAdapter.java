@@ -22,6 +22,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 
 @SuppressWarnings("rawtypes")
+/**
+ * Adapter for a referenced ABeanObject from/to a UUID
+ * that uses the TypeInstanceAdapter
+ */
 public class ReferenceAdapter extends XmlAdapter<String, ABeanObject> {
 
 	private ResourceSet resourceSet;
@@ -34,6 +38,7 @@ public class ReferenceAdapter extends XmlAdapter<String, ABeanObject> {
 	
 	@Override
 	public ABeanObject unmarshal(String uuid) throws Exception {
+		// Get the type instance from the uuid
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		ATypeInstance object = typeInstanceAdapter.unmarshal(uuid);
 		

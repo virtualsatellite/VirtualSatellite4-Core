@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.eclipse.emf.common.util.URI;
 
+/**
+ * Adapter for a referenced URI from/to a string
+ */
 public class UriAdapter extends XmlAdapter<String, URI> {
 
 	public UriAdapter() { }

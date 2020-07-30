@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -70,8 +69,6 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(tcComposition, sw);
 		
-		System.out.println(sw.toString());
-		
 		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
 	}
@@ -88,14 +85,12 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
-		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
 		assertEquals(null, tcAllProperty.getTestString());
 		
-		JAXBElement<TestCategoryComposition> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
-		TestCategoryComposition createdCategory = jaxbElement.getValue();
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
 		
-		assertEquals(JsonTestHelper.TEST_STRING, createdCategory.getTestSubCategory().getTestString());
+		assertEquals("Composed element changed", JsonTestHelper.TEST_STRING, tcComposition.getTestSubCategory().getTestString());
 	}
 }

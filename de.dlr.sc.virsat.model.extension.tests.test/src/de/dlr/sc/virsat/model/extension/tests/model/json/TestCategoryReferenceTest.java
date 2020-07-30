@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -113,9 +112,8 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 
 		assertEquals(bpString.getUuid(), tcReference.getTestRefProperty().getUuid());
 		
-		JAXBElement<TestCategoryReference> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
-		TestCategoryReference createdCategory = jaxbElement.getValue();
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
 		
-		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), createdCategory.getTestRefProperty().getUuid());
+		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReference.getTestRefProperty().getUuid());
 	}
 }

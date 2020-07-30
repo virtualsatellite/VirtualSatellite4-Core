@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -106,10 +105,9 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 
 		assertEquals(null, testArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
 		
-		JAXBElement<TestCategoryCompositionArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
-		TestCategoryCompositionArray createdArray = jaxbElement.getValue();
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
 		
-		assertEquals(JsonTestHelper.TEST_STRING, createdArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
+		assertEquals(JsonTestHelper.TEST_STRING, testArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
 	}
 	
 	@Test
@@ -130,10 +128,9 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
-		JAXBElement<TestCategoryCompositionArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
-		TestCategoryCompositionArray createdArray = jaxbElement.getValue();
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
 		
 		// The set value function of the bean doesn't have any effect at the moment
-		assertNotEquals("No new element set", tcAllPropertyNew.getATypeInstance().getUuid(), createdArray.getTestCompositionArrayStatic().get(0).getUuid());
+		assertNotEquals("No new element set", tcAllPropertyNew.getATypeInstance().getUuid(), testArray.getTestCompositionArrayStatic().get(0).getUuid());
 	}
 }

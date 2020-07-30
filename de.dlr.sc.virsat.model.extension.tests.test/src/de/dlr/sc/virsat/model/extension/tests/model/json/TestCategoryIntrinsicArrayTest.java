@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -72,8 +71,6 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testArray, sw);
 		
-		System.out.println(sw.toString());
-		
 		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
 	}
@@ -96,15 +93,10 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		assertEquals(testArray.getTestStringArrayDynamicBean().size(), 0);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
-		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
-		JAXBElement<TestCategoryIntrinsicArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryIntrinsicArray.class);
-		TestCategoryIntrinsicArray createdArray = jaxbElement.getValue();
-		assertEquals(testArray, createdArray);
-		assertEquals(originalArrayInstance, createdArray.getTestStringArrayStaticBean().getArrayInstance());
-		assertEquals(testArray.getTestStringArrayStaticBean().get(0).getValue(), "testString");
-		
-		assertEquals(testArray.getTestStringArrayDynamicBean().size(), 1);
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryIntrinsicArray.class);
+		assertEquals("Element in static element changed", JsonTestHelper.TEST_STRING, testArray.getTestStringArrayStaticBean().get(0).getValue());
+		assertEquals("Successfully added an element", 1, testArray.getTestStringArrayDynamicBean().size());
 	}
 }

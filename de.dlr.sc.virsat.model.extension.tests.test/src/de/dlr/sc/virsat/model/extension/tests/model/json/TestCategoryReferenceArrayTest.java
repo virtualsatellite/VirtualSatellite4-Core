@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -93,8 +92,6 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testArray, sw);
 		
-		System.out.println(sw.toString());
-		
 		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
 	}
@@ -116,14 +113,12 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
-		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 		
 		assertEquals(bpString.getUuid(), testArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
 		
-		JAXBElement<TestCategoryReferenceArray> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
-		TestCategoryReferenceArray createdArray = jaxbElement.getValue();
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
 		
-		assertEquals(bpString2.getUuid(), createdArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), testArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
 	}
 }

@@ -19,6 +19,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 
+/**
+ * Adapter for a ATypeInstance from/to a UUID
+ */
 public class TypeInstanceAdapter extends XmlAdapter<String, ATypeInstance> {
 
 	private ResourceSet resourceSet;
@@ -39,7 +42,7 @@ public class TypeInstanceAdapter extends XmlAdapter<String, ATypeInstance> {
 
 	@Override
 	public ATypeInstance unmarshal(String uuid) throws Exception {
-		// Just copy pasted logic from bean independence solver to get something similar going...
+		// Search for the type instance with the same uuid
 		EcoreUtil.getAllContents(resourceSet, true).forEachRemaining(object -> {
 			if (object instanceof ATypeInstance) {
 				ATypeInstance ti = (ATypeInstance) object;

@@ -53,6 +53,12 @@ public class TestActivator {
 		return fileContent.toString();
 	}
 	
+	/**
+	 * Assert a message after removing new line at end of file
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
 	public static void assertEqualsNoWs(String message, String expected, String actual) {
 		String expectedNoWs = expected.replaceAll("\\s+", "");
 		String actualNoWs = actual.replaceAll("\\s+", "");
