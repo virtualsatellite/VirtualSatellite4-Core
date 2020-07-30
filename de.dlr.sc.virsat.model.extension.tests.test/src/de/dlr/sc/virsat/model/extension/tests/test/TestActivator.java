@@ -53,15 +53,7 @@ public class TestActivator {
 		return fileContent.toString();
 	}
 	
-	public static void assertEqualsNoWsAndUuids(String message, String expected, String actual) {
-		String expectedNoUuid = expected.replaceAll("\"uuid\".*\r\n\s*", "");
-		String actualNoUuid = actual.replaceAll("\"uuid\".*\r\n\s*", "");
-		
-		assertEqualsNoWs(message, expectedNoUuid, actualNoUuid);
-	}
-	
 	public static void assertEqualsNoWs(String message, String expected, String actual) {
-		// TODO:
 		String expectedNoWs = expected.replaceAll("\\s+", "");
 		String actualNoWs = actual.replaceAll("\\s+", "");
 		

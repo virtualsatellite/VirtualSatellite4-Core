@@ -69,6 +69,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -2040,6 +2041,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(EditingDomain.class);
         importManager.register(BeanPropertyReference.class);
         importManager.register(ReferenceAdapter.class);
+        importManager.register(XmlJavaTypeAdapter.class);
         importManager.register(XmlElement.class);
         ATypeDefinition _referenceType = property.getReferenceType();
         if ((_referenceType instanceof Category)) {

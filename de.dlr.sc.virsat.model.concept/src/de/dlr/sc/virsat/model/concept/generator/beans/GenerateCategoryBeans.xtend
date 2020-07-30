@@ -83,6 +83,7 @@ import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAccessType
 import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter
 import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -860,6 +861,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(EditingDomain);
 				importManager.register(BeanPropertyReference);
 				importManager.register(ReferenceAdapter);
+				importManager.register(XmlJavaTypeAdapter);
 				importManager.register(XmlElement);
 				
 				if (property.referenceType instanceof Category) {
