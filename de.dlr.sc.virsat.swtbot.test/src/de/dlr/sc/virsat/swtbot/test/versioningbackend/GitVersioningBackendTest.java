@@ -188,4 +188,20 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 		Git.wrap(remoteGitRepository)
 			.close();
 	}
+	
+	@Override
+	public void commitProject() {
+		super.commitProject();
+		
+		// Close the EGit window reporting the push result
+		bot.button("Close").click();
+	}
+	
+	@Override
+	public void updateProject() {
+		super.updateProject();
+		
+		// Close the EGit window reporting the pull result
+		bot.button("Close").click();
+	}
 }
