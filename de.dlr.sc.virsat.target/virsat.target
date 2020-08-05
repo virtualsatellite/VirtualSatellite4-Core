@@ -48,8 +48,8 @@
 		</location>
 		</locations>
 		<environment>
-		<os>win32</os>
-		<ws>win32</ws>
+		<os></os>
+		<ws></ws>
 		<arch>x86_64</arch>
 		<nl>de_DE</nl> 
 		</environment>

@@ -1,0 +1,4 @@
+Target virsat_windows extends virsat {
+	OperatingSystem win32
+	WindowingSystem win32
+}
