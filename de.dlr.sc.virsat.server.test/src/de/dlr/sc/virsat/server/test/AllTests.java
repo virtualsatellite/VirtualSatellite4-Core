@@ -22,6 +22,7 @@ import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
 import de.dlr.sc.virsat.server.resources.AccessTestResourceTest;
 import de.dlr.sc.virsat.server.resources.AuthTestResourceTest;
+import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResourceTest;
 import de.dlr.sc.virsat.server.resources.WorkspaceAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.WorkspaceUserContextTest;
@@ -45,7 +46,8 @@ import junit.framework.JUnit4TestAdapter;
 	RepoManagementControllerTest.class,
 	RepositoryConfigurationTest.class,
 	ProjectManagementResourceTest.class,
-	LoginServiceFactoryTest.class
+	LoginServiceFactoryTest.class,
+	ModelAccessResourceTest.class
 })
 
 public class AllTests {
