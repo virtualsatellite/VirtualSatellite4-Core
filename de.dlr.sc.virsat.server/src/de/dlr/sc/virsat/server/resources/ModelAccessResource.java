@@ -14,17 +14,27 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.core.runtime.CoreException;
+
+import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
-import de.dlr.sc.virsat.server.CustomJsonProvider;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.server.dataaccess.CustomJsonProvider;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
+import javassist.expr.NewArray;
 
 /**
  * The resource to access the VirSat data model of a server repository
@@ -59,8 +69,9 @@ public class ModelAccessResource {
 	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
-			provider.setResourceSet(repo.getResourceSet());
-			return new RepoModelAccessResource();
+			VirSatResourceSet resourceSet = repo.getEd().getResourceSet();
+			provider.setResourceSet(resourceSet);
+			return new RepoModelAccessResource(resourceSet.getRepository());
 		}
 
 		return null;
@@ -79,18 +90,47 @@ public class ModelAccessResource {
 	 */
 	public static class RepoModelAccessResource {
 	
+		private Repository repository;
+		
+		public RepoModelAccessResource(Repository repository) {
+			// TODO is there a better way for the lookups?
+			// atm copy pasted the repo utility from the old branch...
+			this.repository = repository;
+		}
+		
+		private Response createBadRequestResponse(String msg) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
+		}
+		
 		@GET
-		@Path(PROPERTY)
+		@Path(PROPERTY + "/{propertyUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public BeanPropertyString getString() {
-			return new BeanPropertyString(PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance());
+		public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
+			return Response.status(Response.Status.OK).entity(
+					new BeanPropertyFactory().getInstanceFor(
+							RepositoryUtility.findProperty(propertyUuid, repository)
+					)).build();
 		}
 	
-		@POST
+		@PUT
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putString(BeanPropertyString bean) {
+		public Response putProperty(BeanPropertyString bean) {
 			return Response.status(Response.Status.OK).build();
+		}
+		
+		@GET
+		@Path(CA + "/{caUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getCa(@PathParam("caUuid") String caUuid) {
+			try {
+				return Response.status(Response.Status.OK).entity(
+						new BeanCategoryAssignmentFactory().getInstanceFor(
+								RepositoryUtility.findCa(caUuid, repository)
+						)).build();
+			} catch (CoreException e) {
+				return createBadRequestResponse(e.getMessage());
+			}
 		}
 	
 	}

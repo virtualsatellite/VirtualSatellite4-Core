@@ -17,8 +17,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import de.dlr.sc.virsat.server.CustomJsonProvider;
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
+import de.dlr.sc.virsat.server.dataaccess.CustomJsonProvider;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
 import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;

@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server;
+package de.dlr.sc.virsat.server.dataaccess;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -48,5 +48,6 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 			MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
 			Unmarshaller unmarshaller) throws JAXBException {
 		unmarshaller.setAdapter(new TypeInstanceAdapter(resourceSet));
+		// set second
 	}
 }
