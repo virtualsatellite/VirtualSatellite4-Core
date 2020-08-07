@@ -115,9 +115,7 @@ public abstract class AVersioningBackendTest extends ASwtBotTestCase {
 		roleManagementNode.doubleClick();
 		
 		// Run the update in Virtual Satellite
-		buildCounter.executeInterlocked(() -> {
-			roleManagementNode.contextMenu("Update Project from Repository").click();
-		});
+		updateProject();
 		
 		// Assert that the node got correctly updated in the navigator
 		navigatorView.bot().tree().getTreeItem("SWTBotTestProject").getNode("Role Management").getNode("Discipline: SubSystem");
@@ -167,9 +165,7 @@ public abstract class AVersioningBackendTest extends ASwtBotTestCase {
 		assertTrue("The button is enabled", rmEditor.bot().button("Add Discipline").isEnabled());
 		
 		// Run the update in Virtual Satellite
-		buildCounter.executeInterlocked(() -> {
-			roleManagementNode.contextMenu("Update Project from Repository").click();
-		});
+		updateProject();
 		
 		// Open the editor and check if that the button is disabled
 		SWTBotEditor rmEditor2 = bot.editorByTitle("Role Management");
@@ -192,6 +188,17 @@ public abstract class AVersioningBackendTest extends ASwtBotTestCase {
 			projectNode.contextMenu("Commit Project to Repository").click();
 			bot.text().setText(SWTBOT_COMMIT_MESSAGE);
 			bot.button("OK").click();
+		});
+	}
+	
+	/**
+	 * Use the context menu to update the project.
+	 */
+	public void updateProject() {
+		buildCounter.executeInterlocked(() -> {
+			SWTBotTreeItem projectNode = bot.tree().getTreeItem("SWTBotTestProject");
+			projectNode.select();
+			projectNode.contextMenu("Update Project from Repository").click();
 		});
 	}
 }
