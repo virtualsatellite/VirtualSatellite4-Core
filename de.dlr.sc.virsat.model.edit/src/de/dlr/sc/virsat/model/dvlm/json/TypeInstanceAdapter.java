@@ -42,6 +42,10 @@ public class TypeInstanceAdapter extends XmlAdapter<String, ATypeInstance> {
 
 	@Override
 	public ATypeInstance unmarshal(String uuid) throws Exception {
+		if (resourceSet == null) {
+			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
+		}
+		
 		// Search for the type instance with the same uuid
 		EcoreUtil.getAllContents(resourceSet, true).forEachRemaining(object -> {
 			if (object instanceof ATypeInstance) {

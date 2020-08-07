@@ -31,6 +31,9 @@ public class JAXBUtility {
 	private Map<String, Object> properties = new HashMap<>();
 	private JAXBContext jaxbCtx;
 	
+	public static final String SYSTEM_PROP_CONTEXT_FACTORY = "javax.xml.bind.context.factory";
+	public static final String CLASSPATH_JAXB_CONTEXT_FACTORY = "org.eclipse.persistence.jaxb.JAXBContextFactory";
+	
 	/**
 	 * Default constructor
 	 */
@@ -45,15 +48,11 @@ public class JAXBUtility {
 	 */
 	public JAXBUtility(@SuppressWarnings("rawtypes") Class[] registerClasses) throws JAXBException {
 		init();
-		initJsonProperties();
 		createContext(registerClasses);
 	}
 	
 	private void init() {
-		System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-	}
-	
-	public void initJsonProperties() {
+		System.setProperty(SYSTEM_PROP_CONTEXT_FACTORY, CLASSPATH_JAXB_CONTEXT_FACTORY);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
 	}
@@ -63,16 +62,24 @@ public class JAXBUtility {
 		return jaxbCtx;
 	}
 	
+	public JAXBContext getContext() {
+		return jaxbCtx;
+	}
+	
 	public Map<String, Object> getProperties() {
 		return properties;
 	}
 	
 	/**
 	 * Create a new Marshaller from the context
-	 * @return Marshaller
+	 * @return Marshaller or null if no context is set
 	 * @throws JAXBException
 	 */
 	public Marshaller getJsonMarshaller() throws JAXBException {
+		if (jaxbCtx == null) {
+			return null;
+		}
+		
 		Marshaller jsonMarshaller = jaxbCtx.createMarshaller();
 		jsonMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		
@@ -84,10 +91,14 @@ public class JAXBUtility {
 	/**
 	 * Create a new Unmarshaller from the context and the resourceSet
 	 * @param resourceSet containing the elements to be recognized during unmarshalling
-	 * @return Unmarshaller
+	 * @return Unmarshaller or null if no context is set
 	 * @throws JAXBException
 	 */
 	public Unmarshaller getJsonUnmarshaller(ResourceSet resourceSet) throws JAXBException {
+		if (jaxbCtx == null) {
+			return null;
+		}
+		
 		Unmarshaller jsonUnmarshaller = jaxbCtx.createUnmarshaller();
 		
 		jsonUnmarshaller.setEventHandler(new DefaultValidationEventHandler());
@@ -95,7 +106,7 @@ public class JAXBUtility {
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
 		
-		ReferenceAdapter referenceAdapter = new ReferenceAdapter(resourceSet);
+		ABeanObjectAdapter referenceAdapter = new ABeanObjectAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(referenceAdapter);
 		
 		return jsonUnmarshaller;

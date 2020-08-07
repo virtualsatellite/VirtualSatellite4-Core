@@ -18,8 +18,6 @@ import org.eclipse.emf.common.util.URI;
  */
 public class UriAdapter extends XmlAdapter<String, URI> {
 
-	public UriAdapter() { }
-	
 	@Override
 	public URI unmarshal(String v) throws Exception {
 		if (v == null) {
