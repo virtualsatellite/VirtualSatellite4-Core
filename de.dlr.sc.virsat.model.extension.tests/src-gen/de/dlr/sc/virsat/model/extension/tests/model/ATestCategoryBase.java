@@ -28,9 +28,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
@@ -167,7 +167,7 @@ public abstract class ATestCategoryBase extends GenericCategory implements IBean
 	}
 	
 	@XmlElement
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public TestCategoryBase getTestReference() {
 		safeAccessTestReference();
 		return testReference.getValue();

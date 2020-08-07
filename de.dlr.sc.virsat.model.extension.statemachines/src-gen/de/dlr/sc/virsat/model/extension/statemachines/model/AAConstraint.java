@@ -24,9 +24,9 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -92,7 +92,7 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 	}
 	
 	@XmlElement
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getStateConstraining() {
 		safeAccessStateConstraining();
 		return stateConstraining.getValue();
@@ -124,7 +124,7 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 	}
 	
 	@XmlElement
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getStateInfluenced() {
 		safeAccessStateInfluenced();
 		return stateInfluenced.getValue();

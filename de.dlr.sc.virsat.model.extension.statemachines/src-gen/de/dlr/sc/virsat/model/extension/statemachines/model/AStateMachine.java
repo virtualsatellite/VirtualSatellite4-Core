@@ -29,9 +29,9 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
@@ -145,7 +145,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 	}
 	
 	@XmlElement
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getInitialState() {
 		safeAccessInitialState();
 		return initialState.getValue();
