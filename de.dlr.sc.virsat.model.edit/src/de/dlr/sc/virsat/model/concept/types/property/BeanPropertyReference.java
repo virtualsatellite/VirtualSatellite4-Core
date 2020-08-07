@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanTypeInstanceFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
@@ -63,7 +63,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		
