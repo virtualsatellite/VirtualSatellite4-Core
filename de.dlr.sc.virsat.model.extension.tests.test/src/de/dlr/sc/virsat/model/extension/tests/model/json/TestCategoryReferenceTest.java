@@ -83,8 +83,6 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(tcReference, sw);
 		
-		System.out.println(sw.toString());
-		
 		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
 	}
@@ -107,7 +105,6 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
-		System.out.println(inputJson);
 		StringReader sr = new StringReader(inputJson);
 
 		assertEquals(bpString.getUuid(), tcReference.getTestRefProperty().getUuid());

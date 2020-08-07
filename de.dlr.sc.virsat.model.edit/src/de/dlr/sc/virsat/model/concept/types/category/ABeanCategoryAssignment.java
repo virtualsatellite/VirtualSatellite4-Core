@@ -55,7 +55,6 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 		helper.setCategoryAssignment(this.ti);
 	}
 	
-	@Override
 	public ATypeInstance getATypeInstance() {
 		return this.ti;
 	}

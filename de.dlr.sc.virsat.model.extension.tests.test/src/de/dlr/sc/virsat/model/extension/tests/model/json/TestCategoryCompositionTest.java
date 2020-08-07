@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -87,7 +88,7 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
 		StringReader sr = new StringReader(inputJson);
 
-		assertEquals(null, tcAllProperty.getTestString());
+		assertNull(tcAllProperty.getTestString());
 		
 		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
 		

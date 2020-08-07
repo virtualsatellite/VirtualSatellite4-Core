@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -89,7 +90,7 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 		
-		assertEquals(testArray.getTestStringArrayStaticBean().get(0).getValue(), null);
+		assertNull(testArray.getTestStringArrayStaticBean().get(0).getValue());
 		assertEquals(testArray.getTestStringArrayDynamicBean().size(), 0);
 		
 		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);

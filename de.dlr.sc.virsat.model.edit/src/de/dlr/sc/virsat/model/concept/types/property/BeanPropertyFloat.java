@@ -48,8 +48,6 @@ public class BeanPropertyFloat extends ABeanUnitProperty<Double> {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, Double.toString(value));
 	}
 	
-	@XmlJavaTypeAdapter(DoubleAdapter.class)
-	@XmlElement(nillable = true)
 	@Override
 	public void setValue(Double value) {
 		if (value == null) {

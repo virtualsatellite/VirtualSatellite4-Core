@@ -38,7 +38,7 @@ public class JsonTestHelper {
 	 * @param tcAllProperty to be set
 	 */
 	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty) {
-		setTestCategoryAllPropertyUuids(tcAllProperty, "0");
+		setTestCategoryAllPropertyUuids(tcAllProperty, 0);
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class JsonTestHelper {
 	 * @param tcAllProperty to be set
 	 * @param lastChar of the UUID
 	 */
-	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty, String lastChar) {
+	public static void setTestCategoryAllPropertyUuids(TestCategoryAllProperty tcAllProperty, int lastChar) {
 		tcAllProperty.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f" + lastChar));
 		tcAllProperty.getTestBoolBean().getATypeInstance().setUuid(new VirSatUuid("b9bfb08f-2778-4fe9-a774-3d8b0ad638d" + lastChar));
 		tcAllProperty.getTestEnumBean().getATypeInstance().setUuid(new VirSatUuid("ed62d73c-dbba-409c-b73c-f0d3d9f4939" + lastChar));

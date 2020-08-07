@@ -49,9 +49,6 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 	}
 	
 	@SuppressWarnings("unchecked")
-	@XmlID
-	@XmlElement(name = "uuid")
-	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
 	@Override
 	public void setATypeInstance(ATypeInstance ti) {
 		this.ti = (CP_TYPE) ti;

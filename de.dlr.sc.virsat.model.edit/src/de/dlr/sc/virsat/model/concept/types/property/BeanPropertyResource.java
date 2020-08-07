@@ -64,8 +64,6 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 * this method set the specified value to the bean property string
 	 * @param value the specified value
 	 */
-	@XmlElement(nillable = true)
-	@XmlJavaTypeAdapter(UriAdapter.class)
 	public void setValue(URI value) {
 		ti.setUri(value);
 	}

@@ -40,13 +40,11 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public Command setValue(EditingDomain ed, Long value) {
 		return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, Long.toString(value));
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public void setValue(Long value) {
 		if (value == null) {
 			ti.setValue(null);
@@ -56,6 +54,7 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public Long getValue() throws NumberFormatException {
 		if (isSet()) {
 			return Long.parseLong(ti.getValue());

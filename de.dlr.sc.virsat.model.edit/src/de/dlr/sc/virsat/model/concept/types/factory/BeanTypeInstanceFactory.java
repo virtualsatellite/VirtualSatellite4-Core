@@ -20,7 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 
 /**
  * A factory class for TypeInstanceBeans which can create the correct bean
- * for a given ATypeInstnace depending on the registration of Beans
+ * for a given ATypeInstance depending on the registration of Beans
  */
 public class BeanTypeInstanceFactory {
 
