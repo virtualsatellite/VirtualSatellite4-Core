@@ -13,7 +13,6 @@ package de.dlr.sc.virsat.server.resources;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,18 +22,16 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
 
+import de.dlr.sc.virsat.model.concept.types.ABeanObject;
+import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFactoryTest;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.server.dataaccess.CustomJsonProvider;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
-import javassist.expr.NewArray;
 
 /**
  * The resource to access the VirSat data model of a server repository
@@ -115,7 +112,7 @@ public class ModelAccessResource {
 		@PUT
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putProperty(BeanPropertyString bean) {
+		public Response putProperty(ABeanObject<?> bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
@@ -131,6 +128,13 @@ public class ModelAccessResource {
 			} catch (CoreException e) {
 				return createBadRequestResponse(e.getMessage());
 			}
+		}
+		
+		@PUT
+		@Path(CA)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response putCa(ABeanCategoryAssignment bean) {
+			return Response.status(Response.Status.OK).build();
 		}
 	
 	}
