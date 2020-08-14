@@ -25,6 +25,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationEventHandler;
+import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.glassfish.jersey.moxy.json.internal.ConfigurableMoxyJsonProvider;
@@ -46,6 +48,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 	
 	private ResourceSet resourceSet;
+	private ValidationEventHandler eventHandler;
 	// TODO: register test classes only in test
 	private static final Collection<? extends Class<?>> REGISTER_CATEGORY_CLASSES = Arrays.asList(
 			TestCategoryAllProperty.class,
@@ -60,13 +63,16 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 
 	public void setResourceSet(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
+		
+		setFormattedOutput(true);
+		eventHandler = new DefaultValidationEventHandler();
 	}
 	
 	@Override
 	protected void preWriteTo(Object object, Class<?> type, Type genericType,
 			Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> httpHeaders, Marshaller marshaller) throws JAXBException {
-//		marshaller.setEventHandler(new DefaultValidationEventHandler());
+		marshaller.setEventHandler(eventHandler);
 	}
 
 	@Override
@@ -74,7 +80,7 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 			MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
 			Unmarshaller unmarshaller) throws JAXBException {
 		
-//		unmarshaller.setEventHandler(new DefaultValidationEventHandler());
+		unmarshaller.setEventHandler(eventHandler);
 		unmarshaller.setAdapter(new TypeInstanceAdapter(resourceSet));
 		unmarshaller.setAdapter(new ReferenceAdapter(resourceSet));
 	}

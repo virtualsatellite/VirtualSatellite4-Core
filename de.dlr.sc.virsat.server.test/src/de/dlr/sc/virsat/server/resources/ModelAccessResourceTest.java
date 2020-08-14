@@ -12,9 +12,12 @@ package de.dlr.sc.virsat.server.resources;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.StringWriter;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBException;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
@@ -23,12 +26,15 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
@@ -97,7 +103,18 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		
 		// Setup string test property
 		tString = tcAllProperty.getTestStringBean();
-		tString.getATypeInstance().setUuid(new VirSatUuid("bc418734-29e7-403b-9e36-22cfb0d9ae4b"));
+		
+		// TODO: remove if these can be null
+		tcReference.setTestRefProperty(tString);
+		tcReference.setTestRefCategory(tcAllProperty);
+		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> catArray = tcReferenceArray.getTestCategoryReferenceArrayStaticBean();
+		for (BeanPropertyReference<TestCategoryAllProperty> element : catArray) {
+			element.setValue(tcAllProperty);
+		}
+		IBeanList<BeanPropertyReference<BeanPropertyString>> propArray = tcReferenceArray.getTestPropertyReferenceArrayStaticBean();
+		for (BeanPropertyReference<BeanPropertyString> element : propArray) {
+			element.setValue(tString);
+		}
 		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
@@ -106,39 +123,17 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
-		
-		// TODO: Test every adapter and generics (composed)
 	}
 	
 	/*
 	 * Test GET various elements
 	 */
-	// TODO: test more properties
-	@Test
-	public void testPropertyGet() {
+	@SuppressWarnings("rawtypes")
+	private void testGet(IBeanObject testSubject, String path, Class[] classes) throws JAXBException {
+		String uuid = testSubject.getUuid();
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
-				.path(ModelAccessResource.PROPERTY)
-				.path(tString.getUuid())
-				.request()
-				.get();
-		
-		assertEquals(HttpStatus.OK_200, response.getStatus());
-
-		// TODO: assert right entity?
-		String entity = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
-				.path(ModelAccessResource.PROPERTY)
-				.path(tString.getUuid())
-				.request()
-				.get(String.class);
-		System.out.println(entity);
-	}
-	
-	private void testGetCa(String uuid) {
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
-				.path(ModelAccessResource.CA)
+				.path(path)
 				.path(uuid)
 				.request()
 				.get();
@@ -148,76 +143,103 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		// TODO: assert right entity?
 		String entity = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
-				.path(ModelAccessResource.CA)
+				.path(path)
 				.path(uuid)
 				.request()
 				.get(String.class);
-		System.out.println(entity);
-		System.out.println("---");
+		
+		// Compare with the expected
+		JAXBUtility jaxbUtility = new JAXBUtility(classes);
+		StringWriter sw = new StringWriter();
+		jaxbUtility.getJsonMarshaller().marshal(testSubject, sw);
+		String expected = sw.toString();
+		assertEquals("Marshalled object as expected", expected, entity);
 	}
 	
 	@Test
-	public void testCaAllPropertyGet() {
-		testGetCa(tcAllProperty.getUuid());
+	public void testPropertyGet() throws JAXBException {
+		testGet(tString, ModelAccessResource.PROPERTY, new Class[] {tString.getClass()});
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void testGetCa(IBeanObject testSubject) throws JAXBException {
+		testGet(testSubject, ModelAccessResource.CA, new Class[] {testSubject.getClass()});
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void testGetCa(IBeanObject testSubject, Class[] classes) throws JAXBException {
+		testGet(testSubject, ModelAccessResource.CA, classes);
+	}
+	
+	/*
+	 * The CA tests also test all properties and adapters
+	 */
+	@Test
+	public void testCaAllPropertyGet() throws JAXBException {
+		testGetCa(tcAllProperty);
 	}
 	
 	@Test
-	public void testCaBeanAGet() {
-		// TODO: nillable
-		testGetCa(tcBeanA.getUuid());
+	public void testCaBeanAGet() throws JAXBException {
+		// TODO: can be nillable?
+		testGetCa(tcBeanA);
 	}
 	
 	@Test
-	public void testCaCompositionGet() {
-		testGetCa(tcComposition.getUuid());
+	public void testCaCompositionGet() throws JAXBException {
+		testGetCa(tcComposition);
 	}
 	
 	@Test
-	public void testCaRefernecGet() {
-		testGetCa(tcReference.getUuid());
+	public void testCaRefernceGet() throws JAXBException {
+		// TODO: can be nillable?
+		testGetCa(tcReference);
 	}
 	
 	@Test
-	public void testCaIntrinsicArrayGet() {
-		testGetCa(tcIntrinsicArray.getUuid());
+	public void testCaIntrinsicArrayGet() throws JAXBException {
+		// TODO: can be nillable?
+		testGetCa(tcIntrinsicArray);
 	}
 	
 	@Test
-	public void testCaCompositionArrayGet() {
-		// TODO: generics
-		testGetCa(tcCompositionArray.getUuid());
+	public void testCaCompositionArrayGet() throws JAXBException {
+		testGetCa(tcCompositionArray, new Class[] {tcCompositionArray.getClass(), tcAllProperty.getClass()});
 	}
 	
 	@Test
-	public void testCaReferenceArrayGet() {
-		testGetCa(tcReferenceArray.getUuid());
+	public void testCaReferenceArrayGet() throws JAXBException {
+		testGetCa(tcReferenceArray);
 	}
 	
 	/*
 	 * Test PUT various elements
 	 */
 	@Test
-	public void testPropertyPut() {
+	public void testPropertyPutChangesModel() throws JAXBException {
 		
+		// Manually marshall the Class to edit the json
+		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {BeanPropertyString.class});
+		StringWriter sw = new StringWriter();
+		jaxbUtility.getJsonMarshaller().marshal(tString, sw);
+		String jsonIn = sw.toString();
+		System.out.println(jsonIn);
+		jsonIn = jsonIn.replace("null", "\"testString\"");
+		System.out.println(jsonIn);
+	
+		assertNull(tString.getValue());
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
 				.request()
-				.put(Entity.entity(tString, MediaType.APPLICATION_JSON_TYPE));
-		assertEquals(HttpStatus.OK_200, response.getStatus());
-	
-		// TODO: improve test setup
-		assertNull(tString.getValue());
-		response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
-				.path(ModelAccessResource.PROPERTY)
-				.request()
-				.put(Entity.json(
-				"{\"type\":\"beanPropertyString\",\"uuid\":\"bc418734-29e7-403b-9e36-22cfb0d9ae4b\",\"value\":\"testString\"}"));
+				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("Model changed as expected", TEST_STRING, tString.getValue());
 	}
 	
+	/*
+	 * The CA tests also test all properties and adapters
+	 */
 	private void testPutCa(IBeanCategoryAssignment ca) {
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)
@@ -226,8 +248,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.request()
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
-	
-		// TODO: improve test setup
 	}
 	
 	@Test
@@ -246,7 +266,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@Test
-	public void testCaRefernecPut() {
+	public void testCaReferncePut() {
 		testPutCa(tcReference);
 	}
 	
@@ -256,8 +276,21 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@Test
-	public void testCaCompositionArrayPut() {
-		testPutCa(tcCompositionArray);
+	public void testCaCompositionArrayPut() throws JAXBException {
+		// Manually marshall the Class because Entity.entity doesn't marshall
+		// the TestCategoryAllProperty right because of generics
+		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {TestCategoryCompositionArray.class, TestCategoryAllProperty.class});
+		StringWriter sw = new StringWriter();
+		jaxbUtility.getJsonMarshaller().marshal(tcCompositionArray, sw);
+		String jsonIn = sw.toString();
+		System.out.println(jsonIn);
+		
+		Response response = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.CA)
+				.request()
+				.put(Entity.json(jsonIn));
+		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
 	
 	@Test
