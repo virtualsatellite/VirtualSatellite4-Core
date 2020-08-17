@@ -31,7 +31,16 @@ import javax.xml.bind.helpers.DefaultValidationEventHandler;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.glassfish.jersey.moxy.json.internal.ConfigurableMoxyJsonProvider;
 
+import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
@@ -49,6 +58,7 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 	
 	private ResourceSet resourceSet;
 	private ValidationEventHandler eventHandler;
+	// TODO: register real classes
 	// TODO: register test classes only in test
 	private static final Collection<? extends Class<?>> REGISTER_CATEGORY_CLASSES = Arrays.asList(
 			TestCategoryAllProperty.class,
@@ -59,6 +69,16 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 			TestCategoryIntrinsicArray.class,
 			TestCategoryCompositionArray.class,
 			TestCategoryReferenceArray.class
+	);
+	private static final Collection<? extends Class<?>> REGISTER_PROPERTY_CLASSES = Arrays.asList(
+			BeanPropertyBoolean.class,
+			BeanPropertyString.class,
+			BeanPropertyInt.class,
+			BeanPropertyFloat.class,
+			BeanPropertyEnum.class,
+			BeanPropertyResource.class,
+			BeanPropertyComposed.class,
+			BeanPropertyReference.class
 	);
 
 	public void setResourceSet(ResourceSet resourceSet) {
@@ -80,19 +100,24 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 			MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
 			Unmarshaller unmarshaller) throws JAXBException {
 		
-		unmarshaller.setEventHandler(eventHandler);
+//		unmarshaller.setEventHandler(eventHandler);
 		unmarshaller.setAdapter(new TypeInstanceAdapter(resourceSet));
 		unmarshaller.setAdapter(new ReferenceAdapter(resourceSet));
 	}
 	
+	// TODO: test this class, test cashing here
 	@Override
 	protected JAXBContext getJAXBContext(Set<Class<?>> domainClasses, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, ?> httpHeaders) throws JAXBException {
 		
 		Iterator<Class<?>> iterator = domainClasses.iterator();
 		if (iterator.hasNext()) {
-			if (IBeanCategoryAssignment.class.isAssignableFrom(iterator.next())) {
+			Class<?> domainClass = iterator.next();
+			if (IBeanCategoryAssignment.class.isAssignableFrom(domainClass)
+					|| BeanPropertyComposed.class.isAssignableFrom(domainClass)) {
 				domainClasses.addAll(REGISTER_CATEGORY_CLASSES);
+			} else if (IBeanObject.class.isAssignableFrom(domainClass)) {
+				domainClasses.addAll(REGISTER_PROPERTY_CLASSES);
 			}
 		}
 		return super.getJAXBContext(domainClasses, annotations, mediaType, httpHeaders);

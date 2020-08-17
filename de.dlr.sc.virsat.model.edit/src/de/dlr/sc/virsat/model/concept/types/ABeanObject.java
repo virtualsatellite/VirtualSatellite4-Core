@@ -31,10 +31,10 @@ import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 // TODO: inheritance in xmlSeeAlso doesn't seem to work
-// TODO: add all properties here
-@XmlSeeAlso({
-	BeanPropertyString.class
-})
+// TODO: register here or in json provider?
+//@XmlSeeAlso({
+//	BeanPropertyString.class
+//})
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
 	protected CP_TYPE ti;

@@ -12,20 +12,25 @@ package de.dlr.sc.virsat.model.concept.types.factory;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ResourceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.PropertydefinitionsSwitch;
@@ -79,6 +84,16 @@ public class BeanPropertyFactory {
 		@Override
 		public IBeanObject<? extends APropertyInstance> caseStringProperty(StringProperty object) {
 			return new BeanPropertyString();
+		}
+
+		@Override
+		public IBeanObject<? extends APropertyInstance> caseReferenceProperty(ReferenceProperty object) {
+			return new BeanPropertyReference<IBeanObject<? extends ATypeInstance>>();
+		}
+
+		@Override
+		public IBeanObject<? extends APropertyInstance> caseComposedProperty(ComposedProperty object) {
+			return new BeanPropertyComposed<IBeanCategoryAssignment>();
 		}
 
 		@Override

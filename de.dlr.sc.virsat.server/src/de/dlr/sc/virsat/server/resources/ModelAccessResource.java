@@ -109,10 +109,12 @@ public class ModelAccessResource {
 					)).build();
 		}
 	
+		@SuppressWarnings("rawtypes")
 		@PUT
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putProperty(ABeanObject<?> bean) {
+		// TODO: ABeanProperty?!?!? / no CA?!?!
+		public Response putProperty(ABeanObject bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
