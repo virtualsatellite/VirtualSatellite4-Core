@@ -90,8 +90,6 @@ public class ModelAccessResource {
 		private Repository repository;
 		
 		public RepoModelAccessResource(Repository repository) {
-			// TODO is there a better way for the lookups?
-			// atm copy pasted the repo utility from the old branch...
 			this.repository = repository;
 		}
 		
@@ -114,6 +112,10 @@ public class ModelAccessResource {
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
 		// TODO: ABeanProperty?!?!? / no CA?!?!
+		// We write into the model when we unmarshall
+		// So we can't check instanceof in the function
+		// But we miss an interface for properties
+		// and generics (Typeinstance) dont work either
 		public Response putProperty(ABeanObject bean) {
 			return Response.status(Response.Status.OK).build();
 		}

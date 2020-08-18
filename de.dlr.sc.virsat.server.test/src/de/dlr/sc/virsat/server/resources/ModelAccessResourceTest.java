@@ -161,7 +161,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
-		// TODO: assert right entity?
 		String entity = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(path)
@@ -228,8 +227,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		testGetProperty(tComposed, new Class[] {tComposed.getClass(), tcAllProperty.getClass()});
 	}
 	
-	// TODO: reference and composed bean
-	
 	@SuppressWarnings("rawtypes")
 	private void testGetCa(IBeanObject testSubject) throws JAXBException {
 		testGet(testSubject, ModelAccessResource.CA, new Class[] {testSubject.getClass()});
@@ -247,7 +244,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testCaBeanAGet() throws JAXBException {
-		// TODO: can be nillable?
 		testGetCa(tcBeanA);
 	}
 	
