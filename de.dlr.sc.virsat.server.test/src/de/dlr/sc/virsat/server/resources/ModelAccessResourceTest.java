@@ -254,13 +254,13 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testCaRefernceGet() throws JAXBException {
-		// TODO: can be nillable?
+		// TODO: make nillable
 		testGetCa(tcReference);
 	}
 	
 	@Test
 	public void testCaIntrinsicArrayGet() throws JAXBException {
-		// TODO: can be nillable?
+		// TODO: make nillable
 		testGetCa(tcIntrinsicArray);
 	}
 	
@@ -293,6 +293,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
+				.path(ModelAccessResource.STRING)
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -300,11 +301,12 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void testPutProperty(IBeanObject prop) {
+	private void testPutProperty(IBeanObject prop, String type) {
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
+				.path(type)
 				.request()
 				.put(Entity.entity(prop, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -312,37 +314,38 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyBoolPut() throws JAXBException {
-		testPutProperty(tBool);
+		testPutProperty(tBool, ModelAccessResource.BOOLEAN);
 	}
 	
 	@Test
 	public void testPropertyEnumPut() throws JAXBException {
-		testPutProperty(tEnum);
+		testPutProperty(tEnum, ModelAccessResource.ENUM);
 	}
 	
 	@Test
 	public void testPropertyFloatPut() throws JAXBException {
-		testPutProperty(tFloat);
+		testPutProperty(tFloat, ModelAccessResource.FLOAT);
 	}
 	
 	@Test
 	public void testPropertyIntPut() throws JAXBException {
-		testPutProperty(tInt);
+		testPutProperty(tInt, ModelAccessResource.INT);
 	}
 	
 	@Test
 	public void testPropertyResourcePut() throws JAXBException {
-		testPutProperty(tResource);
+		testPutProperty(tResource, ModelAccessResource.RESOURCE);
 	}
 	
 	@Test
 	public void testPropertyReferencePut() throws JAXBException {
-		testPutProperty(tReferenceProp);
-		testPutProperty(tReferenceCa);
+		testPutProperty(tReferenceProp, ModelAccessResource.REFERENCE);
+		testPutProperty(tReferenceCa, ModelAccessResource.REFERENCE);
 	}
 	
 	@Test
 	public void testPropertyComposedPut() throws JAXBException {
+		
 		// Manually marshall the Class because Entity.entity doesn't marshall
 		// the TestCategoryAllProperty right because of generics
 		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {BeanPropertyComposed.class, TestCategoryAllProperty.class});
@@ -354,6 +357,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
+				.path(ModelAccessResource.COMPOSED)
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -416,7 +420,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	@Test
-	// TODO transactional editing domain is a problem here
 	public void testCaReferenceArrayPut() {
 		testPutCa(tcReferenceArray);
 	}

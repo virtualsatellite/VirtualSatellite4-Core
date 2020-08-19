@@ -14,10 +14,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
@@ -30,11 +28,6 @@ import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-// TODO: inheritance in xmlSeeAlso doesn't seem to work
-// TODO: register here or in json provider?
-//@XmlSeeAlso({
-//	BeanPropertyString.class
-//})
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
 	protected CP_TYPE ti;

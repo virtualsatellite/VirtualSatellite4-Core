@@ -22,12 +22,19 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.dataaccess.CustomJsonProvider;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
@@ -51,6 +58,15 @@ public class ModelAccessResource {
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
+	
+	public static final String BOOLEAN = "boolean";
+	public static final String STRING = "string";
+	public static final String INT = "int";
+	public static final String FLOAT = "float";
+	public static final String ENUM = "enum";
+	public static final String RESOURCE = "resource";
+	public static final String REFERENCE = "reference";
+	public static final String COMPOSED = "composed";
 
 	@Inject
 	public ModelAccessResource(CustomJsonProvider provider) { 
@@ -66,9 +82,9 @@ public class ModelAccessResource {
 	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
-			VirSatResourceSet resourceSet = repo.getEd().getResourceSet();
-			provider.setResourceSet(resourceSet);
-			return new RepoModelAccessResource(resourceSet.getRepository());
+			VirSatTransactionalEditingDomain ed = repo.getEd();
+			provider.setEd(ed);
+			return new RepoModelAccessResource(ed.getResourceSet().getRepository());
 		}
 
 		return null;
@@ -96,28 +112,93 @@ public class ModelAccessResource {
 		private Response createBadRequestResponse(String msg) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
 		}
-		
-		@GET
-		@Path(PROPERTY + "/{propertyUuid}")
-		@Produces(MediaType.APPLICATION_JSON)
-		public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
-			return Response.status(Response.Status.OK).entity(
-					new BeanPropertyFactory().getInstanceFor(
-							RepositoryUtility.findProperty(propertyUuid, repository)
-					)).build();
-		}
 	
-		@SuppressWarnings("rawtypes")
-		@PUT
 		@Path(PROPERTY)
-		@Consumes(MediaType.APPLICATION_JSON)
-		// TODO: ABeanProperty?!?!? / no CA?!?!
-		// We write into the model when we unmarshall
-		// So we can't check instanceof in the function
-		// But we miss an interface for properties
-		// and generics (Typeinstance) dont work either
-		public Response putProperty(ABeanObject bean) {
-			return Response.status(Response.Status.OK).build();
+		public PropertyResource accessProperty() {
+			return new PropertyResource(repository);
+		}
+		
+		/*
+		 * A function for each property bean because 
+		 * the generic definition with wildcards
+		 * of a bean property (ABeanObject<? extends APropertyInstance)
+		 * is not supported
+		 * 
+		 * If a new property should be supported 
+		 * it has to be added here
+		 */
+		public static class PropertyResource {
+			private Repository repository;
+			
+			public PropertyResource(Repository repository) {
+				this.repository = repository;
+			}
+			
+			@GET
+			@Path("/{propertyUuid}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
+				return Response.status(Response.Status.OK).entity(
+						new BeanPropertyFactory().getInstanceFor(
+								RepositoryUtility.findProperty(propertyUuid, repository)
+						)).build();
+			}
+			
+			@PUT
+			@Path(STRING)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyString bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(INT)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyInt bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(FLOAT)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyFloat bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(ENUM)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyEnum bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(RESOURCE)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyResource bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(BOOLEAN)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyBoolean bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(REFERENCE)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(@SuppressWarnings("rawtypes") BeanPropertyReference bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(COMPOSED)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(@SuppressWarnings("rawtypes") BeanPropertyComposed bean) {
+				return Response.status(Response.Status.OK).build();
+			}
 		}
 		
 		@GET
