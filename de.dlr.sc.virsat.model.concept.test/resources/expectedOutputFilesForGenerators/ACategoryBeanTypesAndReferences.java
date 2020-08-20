@@ -97,7 +97,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		}
 	}
 	
-	@XmlElement
+	@XmlElement(nillabe = true)
 	public TestCategoryA getTestSubCategory() {
 		safeAccessTestSubCategory();
 		return testSubCategory.getValue();
@@ -118,7 +118,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public TestCategoryA getTestRefCategory() {
 		safeAccessTestRefCategory();
@@ -150,7 +150,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();

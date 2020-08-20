@@ -2200,7 +2200,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.append("}");
           _builder_1.newLine();
           _builder_1.newLine();
-          _builder_1.append("@XmlElement");
+          _builder_1.append("@XmlElement(nillable = true)");
           _builder_1.newLine();
           _builder_1.append("@XmlJavaTypeAdapter(ABeanObjectAdapter.class)");
           _builder_1.newLine();
