@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -47,6 +49,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 	private BeanPropertyString bpString;
 	private TestCategoryAllProperty tcAllProperty;
 	private static final String RESOURCE = "/resources/json/TestCategoryReferenceArray_Marshaling.json";
+	private static final String RESOURCE_NULL_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_NullReference.json";
 	private static final String RESOURCE_CHANGED_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_ChangeReference.json";
 
 	@Before
@@ -84,16 +87,26 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		}
 	}
 	
-	@Test
-	public void testJsonMarshalling() throws JAXBException, IOException {
-		
+	/**
+	 * Marshalls the test object and asserts that the result equals the test resource
+	 * @param resource the test resource
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	private void assertMarshall(String resource) throws JAXBException, IOException {
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testArray, sw);
 		
-		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
+		String expectedJson = TestActivator.getResourceContentAsString(resource);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	@Test
+	public void testJsonMarshalling() throws JAXBException, IOException {
+		
+		assertMarshall(RESOURCE);
 	}
 	
 	@Test
@@ -120,5 +133,43 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), testArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+	}
+	
+	@Test
+	public void testJsonMarshallingNull() throws JAXBException, IOException {
+		
+		testArray.getTestCategoryReferenceArrayStaticBean().get(0).setValue(null);
+		testArray.getTestPropertyReferenceArrayStaticBean().get(0).setValue(null);
+		
+		assertMarshall(RESOURCE_NULL_REFERENCE);
+	}
+	
+	@Test
+	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(testArray.getATypeInstance());
+		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+		resourceImpl.getContents().add(bpString.getATypeInstance());
+		
+		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		
+		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_NULL_REFERENCE);
+		StringReader sr = new StringReader(inputJson);
+		
+		assertNotNull(testArray.getTestCategoryReferenceArrayStaticBean().get(0).getValue());
+		assertNotNull(testArray.getTestPropertyReferenceArrayStaticBean().get(0).getValue());
+		assertNotNull(testArray.getTestCategoryReferenceArrayStatic().get(0));
+		assertNotNull(testArray.getTestPropertyReferenceArrayStatic().get(0));
+		
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
+		
+		assertNull(testArray.getTestCategoryReferenceArrayStaticBean().get(0).getValue());
+		assertNull(testArray.getTestPropertyReferenceArrayStaticBean().get(0).getValue());
+		// Currently this list will return a ca without a type instance
+		assertNull(testArray.getTestCategoryReferenceArrayStatic().get(0).getTypeInstance());
+		assertNull(testArray.getTestPropertyReferenceArrayStatic().get(0).getTypeInstance());
 	}
 }

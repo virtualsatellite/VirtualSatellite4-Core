@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
 	private static final String RESOURCE = "/resources/json/TestCategoryCompositionArray_Marshaling.json";
+	private static final String RESOURCE_NULL_COMPOSITION = "/resources/json/TestCategoryCompositionArray_Marshaling_NullComposition.json";
 	private static final String RESOURCE_CHANGE_ELEMENT = "/resources/json/TestCategoryCompositionArray_Marshaling_ChangeElement.json";
 
 	@Before
@@ -73,17 +75,27 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 		JsonTestHelper.createRepositoryWithUnitManagement(concept);	
 	}
 	
-	@Test
-	public void testJsonMarshalling() throws JAXBException, IOException {
-		testArray.getTestCompositionArrayStatic().get(0).getTestStringBean().setValue(JsonTestHelper.TEST_STRING);
-		
+	/**
+	 * Marshalls the test object and asserts that the result equals the test resource
+	 * @param resource the test resource
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	private void assertMarshall(String resource) throws JAXBException, IOException {
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testArray, sw);
 		
-		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
+		String expectedJson = TestActivator.getResourceContentAsString(resource);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	@Test
+	public void testJsonMarshalling() throws JAXBException, IOException {
+		testArray.getTestCompositionArrayStatic().get(0).getTestStringBean().setValue(JsonTestHelper.TEST_STRING);
+		
+		assertMarshall(RESOURCE);
 	}
 	
 	@Test
@@ -128,5 +140,33 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 		
 		// The set value function of the bean doesn't have any effect at the moment
 		assertNotEquals("No new element set", tcAllPropertyNew.getATypeInstance().getUuid(), testArray.getTestCompositionArrayStatic().get(0).getUuid());
+	}
+	
+	@Test
+	public void testJsonMarshallingNull() throws JAXBException, IOException {
+		testArray.getTestCompositionArrayStaticBean().get(0).getTypeInstance().setTypeInstance(null);
+		
+		assertMarshall(RESOURCE_NULL_COMPOSITION);
+	}
+	
+	@Test
+	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(testArray.getATypeInstance());
+		
+		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		
+		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_NULL_COMPOSITION);
+		StringReader sr = new StringReader(inputJson);
+
+		assertNotNull(testArray.getTestCompositionArrayStatic().get(0));
+		
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryCompositionArray.class);
+		
+		// The set value function of the bean doesn't have any effect at the moment
+		assertNotNull(testArray.getTestCompositionArrayStatic().get(0));
 	}
 }

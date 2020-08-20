@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -49,6 +51,7 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	private BeanPropertyReference<BeanPropertyString> refPropBean;
 	
 	private static final String RESOURCE = "/resources/json/TestCategoryReference_Marshaling.json";
+	private static final String RESOURCE_NULL_REFERENCE = "/resources/json/TestCategoryReference_Marshaling_NullReference.json";
 	private static final String RESOURCE_CHANGED_REFERENCE = "/resources/json/TestCategoryReference_Marshaling_ChangeReference.json";
 	
 	@Before
@@ -75,16 +78,26 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcReference.setTestRefCategory(tcAllProperty);
 	}
 	
-	@Test
-	public void testJsonMarshalling() throws JAXBException, IOException {
-		
+	/**
+	 * Marshalls the test object and asserts that the result equals the test resource
+	 * @param resource the test resource
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	private void assertMarshall(String resource) throws JAXBException, IOException {
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(tcReference, sw);
 		
-		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
+		String expectedJson = TestActivator.getResourceContentAsString(resource);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	@Test
+	public void testJsonMarshalling() throws JAXBException, IOException {
+		
+		assertMarshall(RESOURCE);
 	}
 	
 	@Test
@@ -112,5 +125,37 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReference.getTestRefProperty().getUuid());
+	}
+	
+	@Test
+	public void testJsonMarshallingNull() throws JAXBException, IOException {
+		
+		tcReference.setTestRefProperty(null);
+		tcReference.setTestRefCategory(null);
+		
+		assertMarshall(RESOURCE_NULL_REFERENCE);
+	}
+	
+	@Test
+	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
+		
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().add(tcReference.getATypeInstance());
+		
+		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		
+		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_NULL_REFERENCE);
+		StringReader sr = new StringReader(inputJson);
+
+		assertNotNull(tcReference.getTestRefCategory());
+		assertNotNull(tcReference.getTestRefProperty());
+		
+		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
+		
+		assertNull("Refernce set to null", tcReference.getTestRefCategory());
+		assertNull("Refernce set to null", tcReference.getTestRefProperty());
 	}
 }

@@ -34,7 +34,11 @@ public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 	
 	@Override
 	public String marshal(ABeanObject v) throws Exception {
-		return v.getUuid();
+		if (v == null) {
+			return null;
+		} else {
+			return v.getUuid();
+		}
 	}
 	
 	@Override

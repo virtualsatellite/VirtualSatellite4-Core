@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.dvlm.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -51,13 +52,10 @@ public class ABeanObjectAdapterTest {
 
 	@Test
 	public void testMarshalABeanObject() throws Exception {
-		assertThrows("The type instance should not be null",
-			NullPointerException.class, () -> {
-				adapter.marshal(null);
-			}
-		);
+		String uuid = adapter.marshal(null);
+		assertNull("No bean returns null", uuid);
 		
-		String uuid = adapter.marshal(bean);
+		uuid = adapter.marshal(bean);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
 		vpi.setUuid(null);
