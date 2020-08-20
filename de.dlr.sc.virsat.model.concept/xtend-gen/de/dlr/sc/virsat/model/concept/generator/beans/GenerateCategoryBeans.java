@@ -1985,7 +1985,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
-        _builder.append("@XmlElement");
+        _builder.append("@XmlElement(nillable = true)");
         _builder.newLine();
         _builder.append("public ");
         String _name_5 = property.getType().getName();
@@ -2075,7 +2075,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.append("}");
           _builder.newLine();
           _builder.newLine();
-          _builder.append("@XmlElement");
+          _builder.append("@XmlElement(nillable = true)");
           _builder.newLine();
           _builder.append("@XmlJavaTypeAdapter(ABeanObjectAdapter.class)");
           _builder.newLine();

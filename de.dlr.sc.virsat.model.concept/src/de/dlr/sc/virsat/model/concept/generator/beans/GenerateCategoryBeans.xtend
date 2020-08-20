@@ -840,7 +840,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 				}
 				
-				@XmlElement
+				@XmlElement(nillable = true)
 				public «property.type.name» «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name».getValue();
@@ -875,7 +875,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«property.name».setTypeInstance(propertyInstance);
 					}
 					
-					@XmlElement
+					@XmlElement(nillable = true)
 					@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 					public «property.referenceType.name» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
