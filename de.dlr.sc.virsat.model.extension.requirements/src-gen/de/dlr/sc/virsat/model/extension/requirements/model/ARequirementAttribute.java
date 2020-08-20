@@ -146,7 +146,7 @@ public abstract class ARequirementAttribute extends GenericCategory implements I
 		}
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	public EnumerationDefinition getEnumeration() {
 		safeAccessEnumeration();
 		return enumeration.getValue();

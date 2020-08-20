@@ -91,7 +91,7 @@ public abstract class AInterface extends GenericCategory implements IBeanCategor
 		interfaceEndFrom.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public InterfaceEnd getInterfaceEndFrom() {
 		safeAccessInterfaceEndFrom();
@@ -123,7 +123,7 @@ public abstract class AInterface extends GenericCategory implements IBeanCategor
 		interfaceEndTo.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public InterfaceEnd getInterfaceEndTo() {
 		safeAccessInterfaceEndTo();

@@ -144,7 +144,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 		initialState.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getInitialState() {
 		safeAccessInitialState();

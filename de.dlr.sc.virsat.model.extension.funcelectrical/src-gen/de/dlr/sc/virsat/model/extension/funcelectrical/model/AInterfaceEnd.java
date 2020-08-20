@@ -90,7 +90,7 @@ public abstract class AInterfaceEnd extends GenericCategory implements IBeanCate
 		type.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public InterfaceType getType() {
 		safeAccessType();

@@ -93,7 +93,7 @@ public abstract class AAttributeValue extends GenericCategory implements IBeanCa
 		attType.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public RequirementAttribute getAttType() {
 		safeAccessAttType();

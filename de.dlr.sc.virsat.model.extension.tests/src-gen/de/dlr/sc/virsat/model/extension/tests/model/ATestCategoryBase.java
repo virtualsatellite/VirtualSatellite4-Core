@@ -166,7 +166,7 @@ public abstract class ATestCategoryBase extends GenericCategory implements IBean
 		testReference.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public TestCategoryBase getTestReference() {
 		safeAccessTestReference();

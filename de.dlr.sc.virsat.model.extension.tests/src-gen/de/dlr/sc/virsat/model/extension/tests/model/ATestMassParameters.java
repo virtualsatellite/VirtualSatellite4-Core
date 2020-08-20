@@ -88,7 +88,7 @@ public abstract class ATestMassParameters extends GenericCategory implements IBe
 		}
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	public TestParameter getMass() {
 		safeAccessMass();
 		return mass.getValue();

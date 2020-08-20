@@ -112,7 +112,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 		reqType.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public RequirementType getReqType() {
 		safeAccessReqType();
@@ -213,7 +213,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 		}
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	public RequirementTrace getTrace() {
 		safeAccessTrace();
 		return trace.getValue();

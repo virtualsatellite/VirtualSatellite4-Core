@@ -91,7 +91,7 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 		stateConstraining.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getStateConstraining() {
 		safeAccessStateConstraining();
@@ -123,7 +123,7 @@ public abstract class AAConstraint extends GenericCategory implements IBeanCateg
 		stateInfluenced.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getStateInfluenced() {
 		safeAccessStateInfluenced();

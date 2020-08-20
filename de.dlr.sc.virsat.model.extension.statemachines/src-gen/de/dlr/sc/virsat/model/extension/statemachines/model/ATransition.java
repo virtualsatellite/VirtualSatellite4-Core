@@ -91,7 +91,7 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 		stateFrom.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getStateFrom() {
 		safeAccessStateFrom();
@@ -123,7 +123,7 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 		stateTo.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getStateTo() {
 		safeAccessStateTo();

@@ -97,7 +97,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		}
 	}
 	
-	@XmlElement(nillabe = true)
+	@XmlElement(nillable = true)
 	public TestCategoryA getTestSubCategory() {
 		safeAccessTestSubCategory();
 		return testSubCategory.getValue();

@@ -96,7 +96,7 @@ public abstract class APowerState extends GenericCategory implements IBeanCatego
 		mode.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public State getMode() {
 		safeAccessMode();

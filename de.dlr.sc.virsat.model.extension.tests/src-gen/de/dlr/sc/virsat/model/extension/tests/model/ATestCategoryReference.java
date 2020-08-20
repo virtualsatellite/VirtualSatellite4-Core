@@ -92,7 +92,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public TestCategoryAllProperty getTestRefCategory() {
 		safeAccessTestRefCategory();
@@ -124,7 +124,7 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();
