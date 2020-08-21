@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -33,8 +33,10 @@ import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.glassfish.jersey.moxy.json.internal.ConfigurableMoxyJsonProvider;
 
+import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -53,8 +55,6 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
-	
-	private Set<Class<?>> dynamicClasses;
 
 	public CustomJsonProvider() {
 		setFormattedOutput(true);
@@ -64,11 +64,12 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 	public void setEd(VirSatTransactionalEditingDomain ed) {
 		this.ed = ed;
 		this.resourceSet = ed.getResourceSet();
-		
-		// Do we add concepts via the server? Can concepts change at runtime?
-		dynamicClasses = getClassesToRegister();
 	}
 
+	/**
+	 * Get all category assignment classes that are present in the current concepts
+	 * @return Set<Class<?>> the classes
+	 */
 	private Set<Class<?>> getClassesToRegister() {
 		Set<Class<?>> allCaClasses = new HashSet<>();
 		BeanCategoryAssignmentFactory beanCaFactory = new BeanCategoryAssignmentFactory();
@@ -79,8 +80,7 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 					IBeanCategoryAssignment bean = beanCaFactory.getInstanceFor(category);
 					allCaClasses.add(bean.getClass());
 				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			}
 		}
@@ -110,36 +110,96 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException, WebApplicationException {
 		
-		// TODO: inner class
-		List<Object> results = new ArrayList<>();
-		RecordingCommand recordingCommand = new RecordingCommand(ed) {
-			@Override
-			protected void doExecute() {
-				try {
-					Object result = CustomJsonProvider.super.readFrom(type, genericType, annotations, mediaType, httpHeaders, entityStream);
-					results.add(result);
-				} catch (WebApplicationException e) {
-					// TODO Auto-generated catch block
-					// TODO: atomicexception
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		};
+		AtomicExceptionReference<IOException> atomicIoException = new AtomicExceptionReference<>();
+		AtomicExceptionReference<WebApplicationException> atomicWebAppException = new AtomicExceptionReference<>();
 		
+		RecordingCommand recordingCommand = new ReadFromCommand(ed, atomicIoException, atomicWebAppException,
+				type, genericType, annotations, mediaType, httpHeaders, entityStream);
 		ed.getCommandStack().execute(recordingCommand);
-		return results.get(0);
+		
+		atomicIoException.throwIfSet();
+		atomicWebAppException.throwIfSet();
+		
+		return recordingCommand.getResult().iterator().next();
 	}
 	
-	// TODO: test this class, test cashing here
-	// it should cash over the domain classes so there should be no problem with the cashing
+	private class ReadFromCommand extends RecordingCommand {
+
+		
+		private Collection<Object> results = new ArrayList<>();
+		
+		private Class<Object> type;
+		private Type genericType;
+		private Annotation[] annotations;
+		private MediaType mediaType;
+		private MultivaluedMap<String, String> httpHeaders;
+		private InputStream entityStream;
+
+		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
+		private AtomicExceptionReference<IOException> atomicIoException;
+		
+		/**
+		 * Call ConfigurableMoxyJsonProvider.readFrom() over the
+		 * transactional editing domain
+		 * @param domain the ed
+		 * @param atomicWebAppException 
+		 * @param atomicIoException 
+		 * @param atomicException 
+		 * @param type Class<Object>
+		 * @param genericType Type
+		 * @param annotations Annotation[]
+		 * @param mediaType MediaType
+		 * @param httpHeaders MultivaluedMap<String, String>
+		 * @param entityStream InputStream
+		 */
+		ReadFromCommand(TransactionalEditingDomain domain,
+				AtomicExceptionReference<IOException> atomicIoException, AtomicExceptionReference<WebApplicationException> atomicWebAppException,
+				Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+				MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+			super(domain);
+			
+			this.atomicIoException = atomicIoException;
+			this.atomicWebAppException = atomicWebAppException;
+			
+			this.type = type;
+			this.genericType = genericType;
+			this.annotations = annotations;
+			this.mediaType = mediaType;
+			this.httpHeaders = httpHeaders;
+			this.entityStream = entityStream;
+		}
+
+		@Override
+		protected void doExecute() {
+			try {
+				Object result = CustomJsonProvider.super.readFrom(type, genericType, annotations, mediaType, httpHeaders, entityStream);
+				results.add(result);
+			} catch (WebApplicationException e) {
+				atomicWebAppException.set(e);
+			} catch (IOException e) {
+				atomicIoException.set(e);
+			}
+		}
+		
+		/**
+		 * Returns the result of ConfigurableMoxyJsonProvider.readFrom()
+		 */
+		@Override
+		public Collection<?> getResult() {
+			return results;
+		}
+	}
+	
 	@Override
 	protected JAXBContext getJAXBContext(Set<Class<?>> domainClasses, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, ?> httpHeaders) throws JAXBException {
 		
-		domainClasses.addAll(dynamicClasses);
+		// We assume that the registered classes in the concept can change any time
+		// so no cashing is possible and we have to get the current ones on each request
+		domainClasses.addAll(getClassesToRegister());
+		
+		// But the contexts are being cashed on domainClasses
+		// So it will reuse a context for the same domainClasses
 		return super.getJAXBContext(domainClasses, annotations, mediaType, httpHeaders);
 	}
 }

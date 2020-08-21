@@ -19,8 +19,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -37,7 +35,6 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -86,11 +83,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
 		resourceSet = ed.getResourceSet();
 
-		conceptTest = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.tests");
-
-		// TODO: convention (move in recording cmd)
-		Command addConceptToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), DVLMPackage.eINSTANCE.getRepository_ActiveConcepts(), conceptTest);
-		ed.getCommandStack().execute(addConceptToRepo);
+		conceptTest = loadConceptFromPlugin();
 		
 		// Create various test categories
 		tcAllProperty = new TestCategoryAllProperty(conceptTest);
@@ -112,8 +105,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		tSei.add(tcReferenceArray);
 
 		StructuralElementInstance sei = tSei.getStructuralElementInstance();
-		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), DVLMPackage.eINSTANCE.getRepository_RootEntities(), sei);
-		ed.getCommandStack().execute(addSeiToRepo);
 		
 		tString = tcAllProperty.getTestStringBean();
 		tBool = tcAllProperty.getTestBoolBean();
@@ -125,7 +116,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		tReferenceCa = tcReference.getTestRefCategoryBean();
 		tComposed = tcComposition.getTestSubCategoryBean();
 		
-		// TODO: remove if these can be null
 		tcReference.setTestRefProperty(tString);
 		tcReference.setTestRefCategory(tcAllProperty);
 		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> catArray = tcReferenceArray.getTestCategoryReferenceArrayStaticBean();
@@ -140,6 +130,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
+				ed.getResourceSet().getRepository().getActiveConcepts().add(conceptTest);
+				ed.getResourceSet().getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
 			}
 		};
@@ -148,6 +140,16 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	/*
 	 * Test GET various elements
+	 */
+	
+	/**
+	 * Get a testSubject at a path from the server
+	 * Then marshall it manually via the JAXBUtility using the classes
+	 * Assert that server json and manual marshalled json are equal
+	 * @param testSubject the subject to be tested
+	 * @param path the path in the ModelAccessResource
+	 * @param classes the classes required for marshalling
+	 * @throws JAXBException
 	 */
 	@SuppressWarnings("rawtypes")
 	private void testGet(IBeanObject testSubject, String path, Class[] classes) throws JAXBException {
@@ -254,13 +256,11 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testCaRefernceGet() throws JAXBException {
-		// TODO: make nillable
 		testGetCa(tcReference);
 	}
 	
 	@Test
 	public void testCaIntrinsicArrayGet() throws JAXBException {
-		// TODO: make nillable
 		testGetCa(tcIntrinsicArray);
 	}
 	
@@ -300,15 +300,20 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertEquals("Model changed as expected", TEST_STRING, tString.getValue());
 	}
 	
+	/**
+	 * PUT a property of a specified type and assert that the server returns OK
+	 * @param property bean property to PUT
+	 * @param type the type of the property
+	 */
 	@SuppressWarnings("rawtypes")
-	private void testPutProperty(IBeanObject prop, String type) {
+	private void testPutProperty(IBeanObject property, String type) {
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
 				.path(type)
 				.request()
-				.put(Entity.entity(prop, MediaType.APPLICATION_JSON_TYPE));
+				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
 	
@@ -363,8 +368,9 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
 	
-	/*
-	 * The CA tests also test all properties and adapters
+	/**
+	 * PUT a ca and assert that the server returns OK
+	 * @param ca bean category assignment to PUT
 	 */
 	private void testPutCa(IBeanCategoryAssignment ca) {
 		

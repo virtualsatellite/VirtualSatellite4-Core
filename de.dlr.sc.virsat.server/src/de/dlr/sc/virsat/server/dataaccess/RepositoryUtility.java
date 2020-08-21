@@ -96,7 +96,6 @@ public class RepositoryUtility {
 	 * @param repository
 	 * @return
 	 */
-	// TODO: check use this traverser in adapters
 	public static IUuid findObjectById(String uuid, Repository repository) {
 		List<IUuid> match = new ArrayList<IUuid>(); 
 		

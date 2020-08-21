@@ -201,6 +201,11 @@ public class ModelAccessResource {
 			}
 		}
 		
+		/**
+		 * Returns a response with the category assignment with the caUuid
+		 * @param caUuid uuid of the category assignment
+		 * @return a server response
+		 */
 		@GET
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)

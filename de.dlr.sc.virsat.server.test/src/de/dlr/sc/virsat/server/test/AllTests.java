@@ -17,6 +17,8 @@ import de.dlr.sc.virsat.server.auth.LoginServiceFactoryTest;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfigurationTest;
 import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
 import de.dlr.sc.virsat.server.controller.RepoManagementControllerTest;
+import de.dlr.sc.virsat.server.dataaccess.CustomJsonProviderTest;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtilityTest;
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccessTest;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
@@ -47,7 +49,9 @@ import junit.framework.JUnit4TestAdapter;
 	RepositoryConfigurationTest.class,
 	ProjectManagementResourceTest.class,
 	LoginServiceFactoryTest.class,
-	ModelAccessResourceTest.class
+	ModelAccessResourceTest.class,
+	CustomJsonProviderTest.class,
+	RepositoryUtilityTest.class
 })
 
 public class AllTests {
