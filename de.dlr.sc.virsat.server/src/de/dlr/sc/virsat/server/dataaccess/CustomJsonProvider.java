@@ -196,7 +196,9 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		
 		// We assume that the registered classes in the concept can change any time
 		// so no cashing is possible and we have to get the current ones on each request
-		domainClasses.addAll(getClassesToRegister());
+		if (ed != null) {
+			domainClasses.addAll(getClassesToRegister());
+		}
 		
 		// But the contexts are being cashed on domainClasses
 		// So it will reuse a context for the same domainClasses

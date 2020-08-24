@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.dataaccess;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -34,6 +35,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -66,7 +68,6 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 		provider = new CustomJsonProvider();
 		provider.setEd(editingDomain);
 		
-//		Concept testConcept = ConceptsFactory.eINSTANCE.createConcept();
 		StructuralElement testSe = StructuralFactory.eINSTANCE.createStructuralElement();
 		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		Category testCategory = CategoriesFactory.eINSTANCE.createCategory();
@@ -148,6 +149,10 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 		
 		JAXBContext context2 = provider.getJAXBContext(beanClass, annotations, mediaType, httpHeaders);
 		assertSame("Context got cashed", context, context2);
+		
+		beanClass.add(BeanPropertyInt.class);
+		JAXBContext context3 = provider.getJAXBContext(beanClass, annotations, mediaType, httpHeaders);
+		assertNotSame("New context because the classes to register changed", context, context3);
 	}
 
 }
