@@ -32,12 +32,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
-public abstract class AGitAndJettyServerTest extends AConceptTestCase {
+public abstract class AGitAndJettyServerTest extends de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase {
 
 	protected File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
