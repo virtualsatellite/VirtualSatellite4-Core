@@ -20,7 +20,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,9 +54,7 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 	private BeanPropertyString testBean;
 	private Class<?> type;
 	private Set<Class<?>> beanClass = new HashSet<>();
-	private Annotation[] annotations;
 	private MediaType mediaType;
-	private MultivaluedMap<String, ?> httpHeaders;
 	private String testString = "test";
 
 	@Before
@@ -113,10 +110,9 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 	 * @throws WebApplicationException
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unchecked")
 	private String writeToAndAssert() throws WebApplicationException, IOException {
 		OutputStream entityStream = new ByteArrayOutputStream();
-		provider.writeTo(testBean, type, type, annotations, mediaType, (MultivaluedMap<String, Object>) httpHeaders, entityStream);
+		provider.writeTo(testBean, type, type, null, mediaType, (MultivaluedMap<String, Object>) null, entityStream);
 		
 		String output = entityStream.toString();
 		assertTrue(output.contains(testString));
@@ -138,20 +134,20 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 		
 		StringBuffer buf = new StringBuffer(output);
 		InputStream entityStream = new ByteArrayInputStream(buf.toString().getBytes());
-		BeanPropertyString bean = (BeanPropertyString) provider.readFrom((Class<Object>) type, type, annotations, mediaType, null, entityStream);
+		BeanPropertyString bean = (BeanPropertyString) provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		assertEquals(testBean, bean);
 	}
 
 	@Test
 	public void testGetJAXBContext() throws JAXBException {
-		JAXBContext context = provider.getJAXBContext(beanClass, annotations, mediaType, httpHeaders);
+		JAXBContext context = provider.getJAXBContext(beanClass, null, mediaType, null);
 		assertNotNull(context);
 		
-		JAXBContext context2 = provider.getJAXBContext(beanClass, annotations, mediaType, httpHeaders);
+		JAXBContext context2 = provider.getJAXBContext(beanClass, null, mediaType, null);
 		assertSame("Context got cashed", context, context2);
 		
 		beanClass.add(BeanPropertyInt.class);
-		JAXBContext context3 = provider.getJAXBContext(beanClass, annotations, mediaType, httpHeaders);
+		JAXBContext context3 = provider.getJAXBContext(beanClass, null, mediaType, null);
 		assertNotSame("New context because the classes to register changed", context, context3);
 	}
 
