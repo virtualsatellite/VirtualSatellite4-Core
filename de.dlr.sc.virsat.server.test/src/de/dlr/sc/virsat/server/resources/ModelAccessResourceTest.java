@@ -83,7 +83,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
 		resourceSet = ed.getResourceSet();
 
-		conceptTest = loadConceptFromPlugin();
+		conceptTest = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.tests");
 		
 		// Create various test categories
 		tcAllProperty = new TestCategoryAllProperty(conceptTest);
