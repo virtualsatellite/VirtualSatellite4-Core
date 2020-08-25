@@ -27,4 +27,11 @@ public class AtomicExceptionReferenceTest {
 		ae.set(new Exception());
 		ae.throwIfSet();
 	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testThrowIfSetWithRuntimeException() {
+		AtomicExceptionReference<Exception> ae = new AtomicExceptionReference<>();
+		ae.set(new Exception());
+		ae.throwAsRuntimeExceptionIfSet();
+	}
 }

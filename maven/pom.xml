@@ -10,15 +10,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.parent</artifactId>
-	<version>4.11.0-SNAPSHOT</version>
+	<version>4.12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>1.4.0</tycho-version>
-		<tycho-extras-version>1.4.0</tycho-extras-version>
+		<tycho-version>1.7.0</tycho-version>
+		<tycho-extras-version>1.7.0</tycho-extras-version>
+		<maven-license-version>1.20</maven-license-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.11.0</build.version>
+		<build.version>4.12.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -133,7 +134,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>3.1.0</version>
+						<version>3.1.1</version>
 						<dependencies>
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
@@ -186,6 +187,12 @@
 							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
+							<!--  Setup the osgi data and workspace directory. Otherwise the workspace will be placed
+								in the plugins target directory, thus creating a repository within a repository (git from
+								the source code). UI tests will then sometimes believe that the project is already connected
+								to a VCS but in fact isn't. -->
+							<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
+							<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -218,7 +225,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.3</version>
+				<version>0.8.5</version>
 				<executions>
 					<execution>
 						<goals>
@@ -273,7 +280,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.11.0-SNAPSHOT</version>
+							<version>4.12.0-SNAPSHOT</version>
 							<classifier>virsat</classifier>
 						</artifact>
 					</target>
@@ -311,6 +318,27 @@
 										<versionRange>[1.0.0,)</versionRange>
 										<goals>
 											<goal>javadoc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.8,)
+										</versionRange>
+										<goals>
+											<goal>
+												copy-dependencies
+											</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.extension.funcelectrical.feature"
       label="VirSat Core Model Extension Functional Eclectrical Interfaces Feature"
-      version="4.11.0.qualifier"
+      version="4.12.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">

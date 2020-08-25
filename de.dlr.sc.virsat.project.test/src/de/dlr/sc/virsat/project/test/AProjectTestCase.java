@@ -32,6 +32,7 @@ import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -46,6 +47,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 public abstract class AProjectTestCase {
 
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
+	protected static final int MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS = 1000;
 	
 	@Rule
 	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
@@ -60,6 +62,8 @@ public abstract class AProjectTestCase {
 	protected VirSatResourceSet rs;
 	
 	protected List<IProject> testProjects = new ArrayList<>();
+	
+	private String previousUser;
 	
 	/**
 	 * Use this method to create a new test project and to remember it for the test case.
@@ -103,8 +107,6 @@ public abstract class AProjectTestCase {
 		projectCommons.createProjectStructure(null);
 	}
 	
-	private String previousUser;
-	
 	/**
 	 * Method to adjust the User rights for the test cases
 	 * This method gets called by the constructor
@@ -123,6 +125,7 @@ public abstract class AProjectTestCase {
 		VirSatEditingDomainRegistry.INSTANCE.clear();
 		VirSatTransactionalEditingDomain.clearResourceEventListener();
 		VirSatTransactionalEditingDomain.clearAccumulatedRecourceChangeEvents();
+		
 		editingDomain = null;
 		
 		// Make sure all projects that were created get removed again
@@ -264,6 +267,41 @@ public abstract class AProjectTestCase {
 			} catch (InterruptedException e) {
 				throw new AssertionError("assertRetry got interrupted", e);
 			} 
+		}
+	}
+	
+	
+	public static class TestUserContext implements IUserContext {
+
+		public TestUserContext(String userName, boolean su) {
+			this.userName = userName;
+			this.su = su;
+		}
+		
+		String userName;
+		boolean su;
+		
+		@Override
+		public boolean isSuperUser() {
+			return su;
+		}
+
+		@Override
+		public String getUserName() {
+			return userName;
+		}
+	}
+	
+	/**
+	 * Call this method to just simply wait some time.
+	 * This is needed e.g. on linux when changing files that just got
+	 * created. Otherwise the change may not be detected.
+	 */
+	public void waitSomeTime() {
+		try {
+			Thread.sleep(MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS);
+		} catch (InterruptedException e) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "AProjectTestCase: Got interrupted while waiting ", e));
 		}
 	}
 }

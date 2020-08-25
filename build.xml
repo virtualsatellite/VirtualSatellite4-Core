@@ -13,7 +13,7 @@ SPDX-License-Identifier: EPL-2.0
   	  Additional Build Preparations for VirSat
   	</description>
 
-	<property name="version">4.11.0</property>
+	<property name="version">4.12.0</property>
 
 	<property name="version.pattern.qualified">[\s]?[0-9]+\.[0-9]+\.[0-9]+\.qualifier</property>
 	<property name="version.pattern">[\s]?[0-9]+\.[0-9]+\.[0-9]+</property>
@@ -33,7 +33,7 @@ SPDX-License-Identifier: EPL-2.0
 	     ===================================================== -->
 	<target name="jacocoPrepareDependencies" description="Install Jacoco Dependencies">
 		<mkdir dir="${user.home}/.ant/lib"/>
-		<get dest="${user.home}/.ant/lib/jacoco.jar" src="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.3/org.jacoco.ant-0.8.3-nodeps.jar"/>
+		<get dest="${user.home}/.ant/lib/jacoco.jar" src="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.5/org.jacoco.ant-0.8.5-nodeps.jar"/>
 		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="https://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
 	</target>
 

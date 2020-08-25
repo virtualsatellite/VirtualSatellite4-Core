@@ -31,7 +31,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
 import de.dlr.sc.virsat.apps.Activator;
+import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 import java.util.jar.Manifest;
@@ -68,14 +71,14 @@ public class VirsatAppsInitializer {
 	 */	
 	public void initializeVirSatExampleApp(IProject project,  IProgressMonitor pm) {
 		IFolder folderApps = project.getFolder(FOLDER_NAME_APPS);
-        try {
+		try {
 			for (int i = 1; i < MAX_NUMBER_TRIES; i++) {
 				String appName = String.format(FILE_NAME_SCRIPT_EXAMPLE_PATTERN, i);
 				IFile fileApp = folderApps.getFile(appName + FILE_NAME_SCRIPT_EXAMPLE_EXTENSION);
-				
+
 				if (!fileApp.exists()) {
 					String content = new ContentExampleApp().getContents(appName).toString();
-			        InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+					InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
 					fileApp.create(stream, false, SubMonitor.convert(pm, 1));
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created app file " + appName, null));
 					break;
@@ -96,92 +99,110 @@ public class VirsatAppsInitializer {
 	public void initializeProject(IProject project, Repository repo, IProgressMonitor pm) {
 		pm.beginTask("Setting up project to conform VirSat App needs", PROGRESS_WORK_TICKS);
 
+		AtomicExceptionReference<CoreException> coreExceptionReference =  new AtomicExceptionReference<>();
+		VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
+		
 		try {
-			project.refreshLocal(IResource.DEPTH_INFINITE, SubMonitor.convert(pm, 1));
-			
-			/**
-			 * Create folders and files
-			 */
-			IFolder folderApps = project.getFolder(FOLDER_NAME_APPS);
-			if (!folderApps.exists()) {
-				folderApps.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_APPS, null));				
-			}
-	
-			IFolder folderBin = project.getFolder(FOLDER_NAME_BIN);
-			if (!folderBin.exists()) {
-				folderBin.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_BIN, null));				
-			}
-	
-			IFolder folderMetaInf = project.getFolder(FOLDER_NAME_META_INF);
-			if (!folderMetaInf.exists()) {
-				folderMetaInf.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_META_INF, null));				
-			}
-	
-			IFile fileManifestMf = folderMetaInf.getFile(FILE_NAME_MANIFEST_MF);
-			if (!fileManifestMf.exists()) {
-				String content = new ContentManifestMf().getContents(project.getName()).toString();
-		        InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
-				fileManifestMf.create(stream, false, SubMonitor.convert(pm, 1));
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created file " + FILE_NAME_MANIFEST_MF, null));				
-			}
-			
-			if (fileManifestMf.exists()) {
+			ed.runExclusive(() -> {
 				try {
-					// Read the manifest file
-					InputStream isManifestFileForRead = fileManifestMf.getContents();
-					Manifest manifest = new Manifest(isManifestFileForRead);
-					isManifestFileForRead.close();
-
-					ManifestRequiredBundlesConceptUpdater.updateDependencies(repo, manifest);
+					project.refreshLocal(IResource.DEPTH_INFINITE, SubMonitor.convert(pm, 1));
 					
-					// Create an output stream to store the manifest file
-					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					manifest.write(stream);
+					/**
+					 * Create folders and files
+					 */
+					IFolder folderApps = project.getFolder(FOLDER_NAME_APPS);
+					if (!folderApps.exists()) {
+						folderApps.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_APPS, null));				
+					}
+			
+					IFolder folderBin = project.getFolder(FOLDER_NAME_BIN);
+					if (!folderBin.exists()) {
+						folderBin.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_BIN, null));				
+					}
+			
+					IFolder folderMetaInf = project.getFolder(FOLDER_NAME_META_INF);
+					if (!folderMetaInf.exists()) {
+						folderMetaInf.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_META_INF, null));				
+					}
+			
+					IFile fileManifestMf = folderMetaInf.getFile(FILE_NAME_MANIFEST_MF);
+					if (!fileManifestMf.exists()) {
+						String content = new ContentManifestMf().getContents(project.getName()).toString();
+						InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+						fileManifestMf.create(stream, false, SubMonitor.convert(pm, 1));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created file " + FILE_NAME_MANIFEST_MF, null));
+					}
+					
+					if (fileManifestMf.exists()) {
+						try {
+							// Read the manifest file
+							InputStream isManifestFileForRead = fileManifestMf.getContents();
+							Manifest manifest = new Manifest(isManifestFileForRead);
+							isManifestFileForRead.close();
 
-					// Finally use the output stream to create an input stream to store the information using the IFile
-					InputStream inputStream = new ByteArrayInputStream(stream.toByteArray());
-					fileManifestMf.setContents(inputStream, IResource.FORCE, SubMonitor.convert(pm, 1));
-				} catch (IOException e) {
-					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirsatAppsInitializer: Failed to update concepts in " + FILE_NAME_BUILD_PROPERTIES, e));
-				}
-			}
+							ManifestRequiredBundlesConceptUpdater.updateDependencies(repo, manifest);
+							
+							// Create an output stream to store the manifest file
+							ByteArrayOutputStream stream = new ByteArrayOutputStream();
+							manifest.write(stream);
+
+							// Finally use the output stream to create an input stream to store the information using the IFile
+							InputStream inputStream = new ByteArrayInputStream(stream.toByteArray());
+							fileManifestMf.setContents(inputStream, IResource.FORCE, SubMonitor.convert(pm, 1));
+						} catch (IOException e) {
+							Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "VirsatAppsInitializer: Failed to update concepts in " + FILE_NAME_BUILD_PROPERTIES, e));
+						}
+					}
+			
+					IFile fileBuildProperties = project.getFile(FILE_NAME_BUILD_PROPERTIES);
+					if (!fileBuildProperties.exists()) {
+						String content = new ContentBuildProperties().getContents().toString();
+						InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+						fileBuildProperties.create(stream, false, SubMonitor.convert(pm, 1));
+						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created file " + FILE_NAME_BUILD_PROPERTIES, null));
+					}
+
+					/**
+					 * Now set the natures. Natures should be set before the classpath,
+					 * because otherwise setting the classpath will fail.
+					 */
+					VirSatProjectCommons.attachNature(project, "org.eclipse.pde.PluginNature");
+					VirSatProjectCommons.attachNature(project, "org.eclipse.jdt.core.javanature");
+					
+					/**
+					 * Create class path file
+					 */
+					Set<IClasspathEntry> classpathEntries = new HashSet<>();
+					classpathEntries.add(JavaCore.newSourceEntry(folderApps.getFullPath()));
+					classpathEntries.add(JavaCore.newContainerEntry(new Path("org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8")));
+					classpathEntries.add(JavaCore.newContainerEntry(new Path("org.eclipse.pde.core.requiredPlugins")));
+					
+					IJavaProject javaProject = JavaCore.create(project);
+					javaProject.setRawClasspath(classpathEntries.toArray(new IClasspathEntry[0]), SubMonitor.convert(pm, 1));
+					javaProject.setOutputLocation(folderBin.getFullPath(), SubMonitor.convert(pm, 1));
 	
-			IFile fileBuildProperties = project.getFile(FILE_NAME_BUILD_PROPERTIES);
-			if (!fileBuildProperties.exists()) {
-				String content = new ContentBuildProperties().getContents().toString();
-		        InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
-		        fileBuildProperties.create(stream, false, SubMonitor.convert(pm, 1));
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created file " + FILE_NAME_BUILD_PROPERTIES, null));				
-			}
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created ClassPath File", null));
+					
+					/**
+					 * Finally attach the builders. Builders should be attached after the classpath
+					 * to prevent unconfigured building of java code.
+					 */
+					VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.ManifestBuilder");
+					VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.SchemaBuilder");
+					VirSatProjectCommons.attachBuilder(project, "org.eclipse.jdt.core.javabuilder");
+					
+				} catch (CoreException e) {
+					coreExceptionReference.set(e);
+					Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Failed to activate VirSat Apps in workspace operation " + project.getName(), e));
+				}
+			});
 			
-			/**
-			 * Now set the natures and builders
-			 */
-			VirSatProjectCommons.attachNature(project, "org.eclipse.pde.PluginNature");
-			VirSatProjectCommons.attachNature(project, "org.eclipse.jdt.core.javanature");
-
-			VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.ManifestBuilder");
-			VirSatProjectCommons.attachBuilder(project, "org.eclipse.pde.SchemaBuilder");
-			VirSatProjectCommons.attachBuilder(project, "org.eclipse.jdt.core.javabuilder");
-			
-			/**
-			 * Create class path file
-			 */
-			Set<IClasspathEntry> classpathEntries = new HashSet<>();
-			classpathEntries.add(JavaCore.newSourceEntry(folderApps.getFullPath()));
-			classpathEntries.add(JavaCore.newContainerEntry(new Path("org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8")));
-			classpathEntries.add(JavaCore.newContainerEntry(new Path("org.eclipse.pde.core.requiredPlugins")));
-			
-			IJavaProject javaProject = JavaCore.create(project);
-			javaProject.setRawClasspath(classpathEntries.toArray(new IClasspathEntry[0]), SubMonitor.convert(pm, 1));
-			javaProject.setOutputLocation(folderBin.getFullPath(), SubMonitor.convert(pm, 1));
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created ClassPath File", null));				
-			
-		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Failed to activate VirSat Apps in project " + project.getName(), e));
+			coreExceptionReference.throwIfSet();
+		} catch (InterruptedException | CoreException e) {
+			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Failed to activate VirSat Apps for project " + project.getName(), e));
 		} finally {
 			pm.done();
 		}

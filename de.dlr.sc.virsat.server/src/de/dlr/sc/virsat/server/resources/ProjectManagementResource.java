@@ -20,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -42,7 +43,8 @@ public class ProjectManagementResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProjects() {
 		List<String> projects = new ArrayList<>(controller.getAllProjectNames());
-		return Response.status(Response.Status.OK).entity(projects).build();
+		GenericEntity<List<String>> entity = new GenericEntity<List<String>>(projects) { };
+		return Response.status(Response.Status.OK).entity(entity).build();
 	}
 
 	

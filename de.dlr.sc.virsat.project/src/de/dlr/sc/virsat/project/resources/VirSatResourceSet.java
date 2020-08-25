@@ -62,6 +62,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -81,9 +82,6 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  * This class implements the VirSat specific EMF ResourceSet. One ResourceSet is
  * associated with one project. It is not planned to have cross project
  * references. Demand loading etc. will work in one project but not outside.
- * 
- * @author fisc_ph
- *
  */
 public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
@@ -91,9 +89,6 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 	/**
 	 * Interface for listening to changes of the diagnostics
-	 * 
-	 * @author muel_s8
-	 *
 	 */
 	public interface IDiagnosticListener {
 		/**
@@ -486,7 +481,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	}
 
 	private VirSatProjectCommons projectCommons;
-	private Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+	protected Map<Object, Object> saveOptions = new HashMap<Object, Object>();
 
 	/**
 	 * Constructor for the ResourceSet with a given project. A ResourceSet is
@@ -671,7 +666,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 				// Do an initial safe to actually create the file on the file
 				// system Otherwise we only have the file structures created by the
 				// VirSatProjectCommons
-				saveResource(resource);
+				saveResource(resource, null, true);
 			}
 		}
 
@@ -692,7 +687,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * @return the resource or null if not existing
 	 */
 	public Resource getResource(IResource file, boolean loadOnDemand) {
-		if (file instanceof IFile && file.exists()) {
+		if (file instanceof IFile) {
 			URI fileUri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 			return this.getResource(fileUri, loadOnDemand);
 		}
@@ -717,6 +712,21 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get a list of all DVLM resources
+	 * @return the list of DVLM resources
+	 */
+	public List<Resource> getDvlmResources() {
+		List<Resource> dvlmResources = new ArrayList<Resource>();
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				dvlmResources.add(resource);
+			}
+		}
+		return dvlmResources;
+	}
+		
 
 	/**
 	 * Method to receive the named core object
@@ -771,7 +781,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			}
 			
 			Repository repo = getRepository();
-			EcoreUtil.resolveAll(this);
+			loadAllDvlmResources();
 			
 			EcoreUtil.getAllContents(this, true).forEachRemaining((object) -> {
 				if (object instanceof StructuralElementInstance) {
@@ -834,7 +844,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		Discipline systemDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		systemDiscipline.setName("System");
 
-		UserRegistry userRegistry = UserRegistry.getInstance();
+		IUserContext userRegistry = UserRegistry.getInstance();
 		String currentUserName = userRegistry.getUserName();
 		systemDiscipline.setUser(currentUserName);
 
@@ -941,11 +951,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	/**
 	 * Use this method to save a resource in this resource set
 	 * 
-	 * @param resource
-	 *            the resource to be saved
+	 * @param resource the resource to be saved
+	 * @param userContext The user context to determine write permissions
 	 */
-	public void saveResource(Resource resource) {
-		saveResource(resource, false);
+	public void saveResource(Resource resource, IUserContext userContext) {
+		saveResource(resource, userContext, false);
 	}
 
 	/**
@@ -977,31 +987,26 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            set this flag to allow for saving the resource. E.g. when
 	 *            changing the assigned discipline
 	 */
-	public void saveResource(Resource resource, boolean overrideWritePermissions) {
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Started saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+	public void saveResource(Resource resource,  IUserContext userContext, boolean overrideWritePermissions) {
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Started saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 
 		if (!resource.isLoaded()) {
-			Activator.getDefault().getLog()
-					.log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING,
-							"VirSatResourceSet: Attempted to save unloaded resource ("
-									+ resource.getURI().toPlatformString(true) + ")",
-							null));
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+					"VirSatResourceSet: Attempted to save unloaded resource (" + resource.getURI().toPlatformString(true) + ")"));
 		}
 
 		try {
 			// Only save the resource if we actually have the right to do this.
-			if (overrideWritePermissions || hasWritePermission(resource)) {
+			if (overrideWritePermissions || hasWritePermission(resource, userContext)) {
 				resource.save(saveOptions);
 			}
 		} catch (IOException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR,
 					"Failed to save Resource " + e.getMessage(), e));
 		}
-		Activator.getDefault().getLog()
-				.log(new Status(Status.INFO, Activator.getPluginId(), "VirSatResourceSet: Finished saving Resource ("
-						+ resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
+				"VirSatResourceSet: Finished saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 	}
 
 	/**
@@ -1029,16 +1034,15 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * Use this method to find out if you have write access to the given EMF
 	 * resource
 	 * 
-	 * @param resource
-	 *            The resource which should be checked for write accesss
-	 * @return true in case write acces is given otherwise false
+	 * @param resource The resource which should be checked for write access
+	 * @return true in case write access is given otherwise false
 	 */
-	public boolean hasWritePermission(Resource resource) {
+	public boolean hasWritePermission(Resource resource, IUserContext userContext) {
 		boolean hasWritePermission = true;
 		if (!resource.getContents().isEmpty()) {
 			EObject eObject = resource.getContents().get(0);
 			if (eObject instanceof IAssignedDiscipline) {
-				hasWritePermission = RightsHelper.hasSystemUserWritePermission(eObject);
+				hasWritePermission = RightsHelper.hasWritePermission(eObject, userContext);
 			}
 		}
 		return hasWritePermission;
@@ -1051,12 +1055,12 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 *            the progress monitor to track the progress of the save
 	 *            operation
 	 */
-	public void saveAllResources(IProgressMonitor pm) {
+	public void saveAllResources(IProgressMonitor pm, IUserContext userContect) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving all resources for Project (" + project.getName() + ")"));
 		for (Resource resource : this.getResources()) {
 			if (!resource.getContents().isEmpty()) {
-				saveResource(resource);
+				saveResource(resource, userContect);
 			}
 		}
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
@@ -1151,7 +1155,9 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 */
 	public boolean updateDiagnostic(Resource resource) {
 		boolean changes = false;
-		if (resource != null) {
+		// Only run diagnostic on DVLM files as other resource might result in a huge chain of
+		// resource that have to be resolved (e.g. diagrams also have references to the diagram infrastructure...)
+		if (resource != null && VirSatProjectCommons.isDvlmFile(resource)) {
 			// Run individualDiagnostics and merge them
 			
 			BasicDiagnostic resourceDiagnostic = analyzeResourceProblems(resource);
@@ -1296,5 +1302,16 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		// all other resources should be referenced by this resource as an entry point.
 		getRepositoryResource();
 		EcoreUtil.resolveAll(this);
+	}
+	
+	/**
+	 * Load and resolve all DVLM resources in this resource set
+	 */
+	public void loadAllDvlmResources() {
+		for (Resource resource : getResources()) {
+			if (VirSatProjectCommons.isDvlmFile(resource)) {
+				EcoreUtil.resolveAll(resource);
+			}
+		}
 	}
 }

@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 import de.dlr.sc.virsat.model.concept.types.property.IBeanProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 
@@ -25,6 +26,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
  */
 public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends APropertyInstance, ?>> extends AArrayInstanceList<BEAN_TYPE> implements IBeanList<BEAN_TYPE> {
 
+	protected TypeSafeArrayInstanceList() {
+		super();
+	}
+	
 	/**
 	 * constructor of the type safe array instance list class
 	 * @param beanClazz 
@@ -44,14 +49,21 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		this.beanClazz = beanClazz;
 	}
 	
-	protected Class<BEAN_TYPE> beanClazz;
+	/**
+	 * The bean class, that is by default the Class<BEAN_TYPE>
+	 * We use Class<?> as a workaround to handle special beans that themself are generic
+	 * E.g. for a BeanPropertyComposed the BEAN_TYPE would be BeanPropertyComposed<IBeanCategoryAssignment>,
+	 * but the beanClazz would only be BeanPropertyComposed
+	 */
+	protected Class<?> beanClazz;
 	
 	/**
 	 * this method returns the bean class
 	 * @return the bean class
 	 */
+	@SuppressWarnings("unchecked")
 	public Class<BEAN_TYPE> getBeanClazz() {
-		return beanClazz;
+		return (Class<BEAN_TYPE>) beanClazz;
 	}
 
 	/**
@@ -78,13 +90,14 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 	 * internal representation of CategoryAssignments
 	 * @return a List of Beans wrapping the CategoryAssignments
 	 */
+	@SuppressWarnings("unchecked")
 	private List<BEAN_TYPE> getBeanList() {
 		List<BEAN_TYPE> beanList = new ArrayList<>();
 
 		ai.getArrayInstances().forEach((pi) -> {
 			try {
 				BEAN_TYPE bean;
-				bean = beanClazz.newInstance();
+				bean = (BEAN_TYPE) beanClazz.newInstance();
 				bean.setATypeInstance(pi);
 				beanList.add(bean);
 			} catch (Exception e) {
@@ -166,11 +179,12 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return !removeCas.isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE get(int index) {
 		BEAN_TYPE bean = null;
 		try {
-			bean = beanClazz.newInstance();
+			bean = (BEAN_TYPE) beanClazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
@@ -178,12 +192,60 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return bean;
 	}
 
+	/**
+	 * Custom handling for static lists:
+	 * Checks if the current element at the index has the same UUID as the new one
+	 * If that is the case it gets set, else an UnsupportedOperationException is thrown
+	 */
 	@Override
 	public BEAN_TYPE set(int index, BEAN_TYPE element) {
-		super.set(index, element);
 		BEAN_TYPE oldBean = get(index);
+		
+		if (arrayModifier instanceof StaticArrayModifier) {
+			if (!element.getUuid().equals(oldBean.getUuid())) {
+				throw new UnsupportedOperationException();
+			}
+		}
+		
 		ai.getArrayInstances().set(index, element.getTypeInstance());
 		return oldBean;
+	}
+
+	/**
+	 * Custom handling for static lists:
+	 * Checks if an element with the same UUID exists in the list
+	 * If that is the case the set method is called,
+	 * else an UnsupportedOperationException is thrown
+	 */
+	@Override
+	public boolean add(BEAN_TYPE e) {
+		if (arrayModifier instanceof StaticArrayModifier) {
+			int index = getIndexByUUID(e);
+			
+			if (index > -1) {
+				set(index, e);
+				return true;
+			} else {
+				throw new UnsupportedOperationException();
+			}
+		} else {
+			return super.add(e);
+		}
+	}
+
+	/**
+	 * Get the index of the element by it's UUID
+	 * @param e element
+	 * @return the index or -1 if not found
+	 */
+	private int getIndexByUUID(BEAN_TYPE e) {
+		for (int i = 0; i < ai.getArrayInstances().size(); i++) {
+			BEAN_TYPE bean = get(i);
+			if (e.getUuid().equals(bean.getUuid())) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
@@ -191,8 +253,6 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		super.add(index, element);
 		ai.getArrayInstances().add(index, element.getTypeInstance());
 	}
-	
-	
 
 	@Override
 	public BEAN_TYPE remove(int index) {
@@ -202,7 +262,6 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return oldBean;
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public int indexOf(Object o) {

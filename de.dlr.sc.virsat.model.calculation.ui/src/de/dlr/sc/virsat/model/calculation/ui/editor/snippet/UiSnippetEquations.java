@@ -54,6 +54,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.markers.IMarkerHelper;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -191,7 +192,7 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 
 		checkWriteAccess(buttonAdd);
 		checkWriteAccess(buttonRemove);
-		checkWriteAccess(buttonEdit);
+		checkWriteAccess(buttonUpdate);
 		
 		return compositeButtons;
 	}
@@ -301,7 +302,7 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 					@Override
 					protected void doExecute() {
 						EquationHelper eqHelper = new EquationHelper();
-						eqHelper.evaluate(container.getEquationSection().getEquations());
+						eqHelper.evaluate(container.getEquationSection().getEquations(), UserRegistry.getInstance());
 					}
 				};
 				editingDomain.getCommandStack().execute(updateCommand);

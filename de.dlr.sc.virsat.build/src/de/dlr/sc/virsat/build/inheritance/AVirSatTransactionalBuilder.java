@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.common.command.Command;
 
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -35,6 +36,8 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	protected boolean redirectIncrementalToAutoBuild;
 	protected boolean dvlmOnly;
 	
+	protected VirSatTransactionalEditingDomain virSatTed;
+	
 	/**
 	 * Constructor of the abstract transactional builder
 	 * @param vpmHelper the OProblemMarkerHelper to be used with the builder
@@ -47,6 +50,14 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		this.dvlmOnly = dvlmOnly;
 	}
 
+	public void initVirSatTransactionalEditingDomain() {
+		this.virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(getVirSatProject());
+	}
+
+	public IUserContext getUserContext() {
+		return virSatTed;
+	}
+	
 	/**
 	 * Implement this method for the actual incremental build.
 	 * @param delta The delta that should be build
@@ -72,6 +83,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalBuilder: <" + builderName + "> Try to trigger build"));
 			
 			IProject project = getVirSatProject();
+			initVirSatTransactionalEditingDomain();
 			IResourceDelta delta = getDelta(project);
 	
 			switch (kind) {  
@@ -116,8 +128,6 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	 * @param inheritanceCopier  the copier to be actually used
 	 */
 	protected void transactionalFullBuild(IProgressMonitor monitor) {
-		VirSatTransactionalEditingDomain virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(getVirSatProject());
-		
 		if (virSatTed == null) {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> transactionalFullBuild exited because of no transactional editing domain", null));
 			return;
@@ -134,7 +144,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers before Command execution", null));
 		transactionalFullBuildRemoveProblemMarkers(); 
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Executing command", null));
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+		virSatTed.getVirSatCommandStack().executeNoUndo(cmd, virSatTed, false);
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers after Command execution", null));
 		transactionalFullBuildUpdateProblemMarkers();
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Done", null));
@@ -153,6 +163,18 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	protected void transactionalFullBuildUpdateProblemMarkers() {
 	}
 	
+	private boolean saveAfterIncrementalBuild;
+	
+	/**
+	 * Call this method during an incremental build to
+	 * make save all dvlm resource. this method should usually be called
+	 * in case a SEI has been processed. It should not be called when other
+	 * files outside the dvlm mdoel have been processed by a builder.
+	 */
+	protected void triggerSaveAfterIncrementalBuild() {
+		saveAfterIncrementalBuild = true;
+	}
+	
 	/**
 	 * Method for incremental build using an editing domain
 	 * @param delta the delta from the BUilderManager 
@@ -160,8 +182,6 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	 * @param inheritanceCopier  the copier to be actually used
 	 */
 	protected void transactionalIncrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
-		VirSatTransactionalEditingDomain virSatTed = VirSatEditingDomainRegistry.INSTANCE.getEd(getVirSatProject());
-		
 		if (virSatTed == null) {
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> transactionalIncrementalBuild exited because of no transactional editing domain", null));
 			return;
@@ -170,15 +190,20 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		Command cmd = new WrappingBuilderCommand() {
 			@Override
 			public void execute() {
+				saveAfterIncrementalBuild = false;
 				incrementalBuild(delta, monitor);
-				virSatTed.saveAll(true, dvlmOnly);
+				
+				// Only save if an implementing builder has set the flag
+				if (saveAfterIncrementalBuild) {
+					virSatTed.saveAll(true, dvlmOnly);
+				}
 			}
 		};
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers before Command execution", null));
 		transactionalFullBuildRemoveProblemMarkers();
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Executing command", null));
-		virSatTed.getVirSatCommandStack().executeNoUndo(cmd);
+		virSatTed.getVirSatCommandStack().executeNoUndo(cmd, virSatTed, false);
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Cleaning Markers after Command execution", null));
 		transactionalFullBuildUpdateProblemMarkers();
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatTransactionalBuilder: <" + builderName + "> Done", null));

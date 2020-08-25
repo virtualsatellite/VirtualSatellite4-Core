@@ -202,15 +202,21 @@ public class DmfResourceSaveCommand extends RecordingCommand {
 			}
 		};
 		
-		// Using this matcher as fall back, EMF Compare will still search for XMI IDs on EObjects
-		// for which we had no custom id function.
-		IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
-		IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, fqnIdMatcher);
-		 
-		IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
-		 
+		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl() {
+			public IMatchEngine getMatchEngine() {
+				if (matchEngine == null) {
+					// Using this matcher as fall back, EMF Compare will still search for XMI IDs on EObjects
+					// for which we had no custom id function.
+					IEObjectMatcher fallBackMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(UseIdentifiers.WHEN_AVAILABLE);
+					IEObjectMatcher customIDMatcher = new IdentifierEObjectMatcher(fallBackMatcher, fqnIdMatcher);
+					IComparisonFactory comparisonFactory = new DefaultComparisonFactory(new DefaultEqualityHelperFactory());
+					matchEngine = new DefaultMatchEngine(customIDMatcher, comparisonFactory);
+				}
+				
+				return matchEngine;
+			}
+		};
 		matchRegistry = MatchEngineFactoryRegistryImpl.createStandaloneInstance();
-		final MatchEngineFactoryImpl matchEngineFactory = new MatchEngineFactoryImpl(customIDMatcher, comparisonFactory);
 		matchEngineFactory.setRanking(RANKING_MATCHER_ID); // default engine ranking is 10, must be higher to override.
 		matchRegistry.add(matchEngineFactory);
 	}

@@ -73,14 +73,14 @@ public class DeleteStructuralElementInstanceCommandAcceptanceTest extends AConce
 	public void testDeletePropertyInstanceIntrinsicArray() {
 		TestCategoryIntrinsicArray tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
 		
-		ArrayInstance ai = tcIntrinsicArray.getTestStringArrayDynamic().getArrayInstance();
+		ArrayInstance ai = tcIntrinsicArray.getTestStringArrayDynamicBean().getArrayInstance();
 		BeanPropertyString prop1 = createNewStringProperty(ai);
-		tcIntrinsicArray.getTestStringArrayDynamic().add(prop1);
+		tcIntrinsicArray.getTestStringArrayDynamicBean().add(prop1);
 
 		Command command = DeleteStructuralElementInstanceCommand.create(editingDomain, prop1.getATypeInstance());
 		assertTrue("The Command for deleting a PI from a dynamic Intrinsic array should work", command.canExecute());
 		
-		command = DeleteStructuralElementInstanceCommand.create(editingDomain, tcIntrinsicArray.getTestStringArrayStatic().get(1).getTypeInstance());
+		command = DeleteStructuralElementInstanceCommand.create(editingDomain, tcIntrinsicArray.getTestStringArrayStaticBean().get(1).getTypeInstance());
 		assertFalse("You cannot delete from a static array", command.canExecute());
 	}
 	

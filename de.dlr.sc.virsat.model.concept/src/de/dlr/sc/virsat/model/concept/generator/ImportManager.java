@@ -9,16 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.generator;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
-
-import java.util.HashSet;
 
 /**
  * This class can be used to collect all imports and serialize
@@ -28,6 +27,7 @@ import java.util.HashSet;
  */
 public class ImportManager {
 	private Set<String> importedClasses;
+	private String currentPackage;
 	
 	/**
 	 * Method to return all classes which have been imported to this manager
@@ -45,13 +45,30 @@ public class ImportManager {
 	}
 	
 	/**
+	 * Constructor to set package
+	 * @param currentPackage package to which imports will be ignored
+	 */
+	public ImportManager(String currentPackage) {
+		importedClasses = new HashSet<>();
+		setPackage(currentPackage);
+	}
+	
+	/**
+	 * Set the currentPackage
+	 * @param currentPackage package to which imports will be ignored
+	 */
+	public void setPackage(String currentPackage) {
+		this.currentPackage = currentPackage;
+	}
+	
+	/**
 	 * use this method to register a class to be imported
 	 * @param clazz The class to be imported in the generated file
 	 * @return the SImpleName of the class
 	 */
 	public String serialize(Class<?> clazz) {
 		String fullQualifiedClassName = clazz.getName();
-		importedClasses.add(fullQualifiedClassName);
+		checkPackageAndImport(fullQualifiedClassName);
 		return clazz.getSimpleName();
 	}
 
@@ -61,7 +78,7 @@ public class ImportManager {
 	 */
 	public void register(Class<?> clazz) {
 		String fullQualifiedClassName = clazz.getName();
-		importedClasses.add(fullQualifiedClassName);
+		checkPackageAndImport(fullQualifiedClassName);
 	}
 
 	/**
@@ -96,7 +113,7 @@ public class ImportManager {
 	 */
 	public String serialize(IQualifiedName aTypeDefinition) {
 		String importedClass = getImportedClass(aTypeDefinition);
-		importedClasses.add(importedClass);
+		checkPackageAndImport(importedClass);
 		return aTypeDefinition.getName();
 	}
 	
@@ -107,7 +124,7 @@ public class ImportManager {
 	 */
 	public String serializeTest(IQualifiedName aTypeDefinition) {
 		String importedClass = getImportedClass(aTypeDefinition);
-		importedClasses.add(importedClass + "Test");
+		checkPackageAndImport(importedClass + "Test");
 		return aTypeDefinition.getName() + "Test";
 	}
 
@@ -117,7 +134,7 @@ public class ImportManager {
 	 */
 	public void register(IQualifiedName aTypeDefinition) {
 		String importedClass = getImportedClass(aTypeDefinition);
-		importedClasses.add(importedClass);
+		checkPackageAndImport(importedClass);
 	}
 	
 	/**
@@ -125,6 +142,31 @@ public class ImportManager {
 	 * @param fullQualifiedImport The class fqn as string
 	 */
 	public void register(String fullQualifiedImport) {
-		importedClasses.add(fullQualifiedImport);
+		checkPackageAndImport(fullQualifiedImport);
+	}
+	
+	/**
+	 * Method to only register classes not in the current package
+	 * @param fullQualifiedImport the class fqn as string
+	 */
+	private void checkPackageAndImport(String fullQualifiedImport) {
+		if (!isInCurrentPackage(fullQualifiedImport)) {
+			importedClasses.add(fullQualifiedImport);
+		}
+	}
+	
+	/**
+	 * Method to check if a class is in the current package
+	 * @param fullQualifiedImport the class fqn as string
+	 */
+	private boolean isInCurrentPackage(String fullQualifiedImport) {
+		boolean inPackage = false;
+		
+		if (currentPackage != null) {
+			String classPackage = fullQualifiedImport.substring(0, fullQualifiedImport.lastIndexOf("."));			
+			return classPackage.equals(currentPackage);
+		}
+		
+		return inPackage;
 	}
 }

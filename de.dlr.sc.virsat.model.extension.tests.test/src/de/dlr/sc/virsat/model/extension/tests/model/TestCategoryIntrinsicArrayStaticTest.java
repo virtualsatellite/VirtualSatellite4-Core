@@ -11,29 +11,27 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 /**
  * test case for the array capabilities on intrinsic properties in the beans model
- * @author fisc_ph
- *
  */
 public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 
@@ -59,35 +57,26 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 		// Load the concept to create the test object
 		Concept concept = loadConceptFromPlugin();
 		tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
-		arrayStatic = tcIntrinsicArray.getTestStringArrayStatic();
+		arrayStatic = tcIntrinsicArray.getTestStringArrayStaticBean();
 		ai = arrayStatic.getArrayInstance();
 		ci = new CategoryInstantiator(); 
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 	
 	private static final int LIST_WITH_STATIC_SIZE = 4;
 	
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
-	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddAllIntCollectionOfQextendsBeansType() {
 		BeanPropertyString property1 = createNewStringProperty();
 		BeanPropertyString property2 = createNewStringProperty();
 		BeanPropertyString property3 = createNewStringProperty();
 
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
 		List<BeanPropertyString> addBeans = new ArrayList<>();
 		addBeans.add(property1);
 		addBeans.add(property2);
 		addBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.addAll(addBeans);
 	}
 
@@ -95,64 +84,68 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 	public void testAddBeanType() {
 		BeanPropertyString property1 = createNewStringProperty();
 		
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
-			
-		exception.expect(UnsupportedOperationException.class);
-		arrayStatic.add(property1);		
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		
+		assertThrows("Can't add an element with a new uuid", UnsupportedOperationException.class, () -> {
+			arrayStatic.add(property1);		
+		});
+		
+		property1.getATypeInstance().setUuid(arrayStatic.get(0).getATypeInstance().getUuid());
+		assertNotEquals("Elements are not the same", property1.getATypeInstance(), arrayStatic.get(0).getATypeInstance());
+		arrayStatic.add(property1);
+		assertEquals("Added the element", property1, arrayStatic.get(0));
+		
+		arrayStatic.add(property1);
+		assertEquals("Adding the same element again is idempotent for static lists", property1, arrayStatic.get(0));
 	}
 
 	@Test
 	public void testAddBeanTypeCommand() {
 		BeanPropertyString property1 = createNewStringProperty();
 		
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 			
 		Command command = arrayStatic.add(editingDomain, property1);
 		assertEquals("Command cannot be executed", UnexecutableCommand.INSTANCE, command);
 	}
 	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddIntBeanType() {
 		BeanPropertyString property1 = createNewStringProperty();
 
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.add(1, property1);
 	}
 	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testClear() {
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.clear();
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveAll() {
 		BeanPropertyString property1 = createNewStringProperty();
 		BeanPropertyString property3 = createNewStringProperty();
 
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
 		List<BeanPropertyString> removeBeans = new ArrayList<>();
 		removeBeans.add(property1);
 		removeBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.removeAll(removeBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveInt() {
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.remove(1);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveObject() {
 		BeanPropertyString propertyOne = createNewStringProperty();
 
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.remove(propertyOne);
 	}
 	
@@ -160,13 +153,13 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 	public void testRemoveObjectCommand() {
 		BeanPropertyString property1 = createNewStringProperty();
 		
-		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
+		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 			
 		Command command = arrayStatic.remove(editingDomain, property1);
 		assertEquals("Command cannot be executed", UnexecutableCommand.INSTANCE, command);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRetainAll() {
 		BeanPropertyString property1 = createNewStringProperty();
 		BeanPropertyString property3 = createNewStringProperty();
@@ -175,15 +168,19 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 		retainBeans.add(property1);
 		retainBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.retainAll(retainBeans);
 	}
 
 	@Test
 	public void testSetIntBeanType() {
-		BeanPropertyString property3 = createNewStringProperty();
+		BeanPropertyString property1 = createNewStringProperty();
 
-		exception.expect(UnsupportedOperationException.class);
-		arrayStatic.set(1, property3);
+		property1.getATypeInstance().setUuid(arrayStatic.get(0).getATypeInstance().getUuid());
+		assertThrows("Can't set an element with another uuid", UnsupportedOperationException.class, () -> {
+			arrayStatic.set(1, property1);
+		});
+		
+		arrayStatic.set(0, property1);
+		assertEquals("Property set correctly", property1, arrayStatic.get(0));
 	}
 }

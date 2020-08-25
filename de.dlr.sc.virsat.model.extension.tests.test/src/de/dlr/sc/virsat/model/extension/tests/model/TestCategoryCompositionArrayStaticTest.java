@@ -17,11 +17,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -63,18 +60,10 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		ai = arrayStatic.getArrayInstance();
 		ci = new CategoryInstantiator(); 
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 	
 	private static final int LIST_WITH_STATIC_SIZE = 4;
 	
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
-	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddAllIntCollectionOfQextendsBeansType() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 		TestCategoryAllProperty property2 = createNewComposedTypeProperty();
@@ -87,17 +76,15 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		addBeans.add(property2);
 		addBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.addAll(addBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddBeanType() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 		
 		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 			
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.add(property1);		
 	}
 	
@@ -111,23 +98,21 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		assertEquals("Created command is not executable", UnexecutableCommand.INSTANCE, command);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testAddIntBeanType() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 
 		assertEquals("List has one items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.add(1, property1);
 	}
 	
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testClear() {
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.clear();
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveAll() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
@@ -138,21 +123,18 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		removeBeans.add(property1);
 		removeBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.removeAll(removeBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveInt() {
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.remove(1);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRemoveObject() {
 		TestCategoryAllProperty propertyOne = createNewComposedTypeProperty();
 
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.remove(propertyOne);
 	}
 
@@ -164,7 +146,7 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		assertEquals("Command is not executable", UnexecutableCommand.INSTANCE, command);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testRetainAll() {
 		TestCategoryAllProperty property1 = createNewComposedTypeProperty();
 		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
@@ -173,15 +155,13 @@ public class TestCategoryCompositionArrayStaticTest extends AConceptTestCase {
 		retainBeans.add(property1);
 		retainBeans.add(property3);
 		
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.retainAll(retainBeans);
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void testSetIntBeanType() {
 		TestCategoryAllProperty property3 = createNewComposedTypeProperty();
 
-		exception.expect(UnsupportedOperationException.class);
 		arrayStatic.set(1, property3);
 	}
 }

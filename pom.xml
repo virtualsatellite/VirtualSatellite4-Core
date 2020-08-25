@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat</artifactId>
-	<version>4.11.0-SNAPSHOT</version>
+	<version>4.12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<profiles>
 		<profile>
@@ -39,6 +39,7 @@
 				<module>de.dlr.sc.virsat.external.lib.apache.poi</module>
 				<module>de.dlr.sc.virsat.external.lib.spotbugs</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.cli</module>
+				<module>de.dlr.sc.virsat.external.lib.commons.csv</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>

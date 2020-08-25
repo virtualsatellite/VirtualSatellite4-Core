@@ -14,7 +14,6 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
@@ -24,8 +23,10 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -122,6 +123,19 @@ public abstract class ARequirementsConfiguration extends GenericCategory impleme
 	public IBeanList<RequirementType> getTypeDefinitions() {
 		safeAccessTypeDefinitions();
 		return typeDefinitions;
+	}
+	
+	private IBeanList<BeanPropertyComposed<RequirementType>> typeDefinitionsBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessTypeDefinitionsBean() {
+		if (typeDefinitionsBean.getArrayInstance() == null) {
+			typeDefinitionsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("typeDefinitions"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<RequirementType>> getTypeDefinitionsBean() {
+		safeAccessTypeDefinitionsBean();
+		return typeDefinitionsBean;
 	}
 	
 	

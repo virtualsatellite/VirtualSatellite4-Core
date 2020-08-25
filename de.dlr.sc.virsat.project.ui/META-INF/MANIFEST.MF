@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Project Resources UI
 Bundle-SymbolicName: de.dlr.sc.virsat.project.ui;singleton:=true
-Bundle-Version: 4.11.0.qualifier
+Bundle-Version: 4.12.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.project.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Localization: plugin
@@ -36,6 +36,8 @@ Export-Package: de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.project.ui.navigator.handler,
  de.dlr.sc.virsat.project.ui.navigator.labelProvider,
  de.dlr.sc.virsat.project.ui.navigator.util,
+ de.dlr.sc.virsat.project.ui.perspective,
+ de.dlr.sc.virsat.project.ui.structure.dialog,
  de.dlr.sc.virsat.project.ui.transactional.handler,
  de.dlr.sc.virsat.project.ui.wizard
 Automatic-Module-Name: de.dlr.sc.virsat.project.ui

@@ -17,14 +17,18 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+
 import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
@@ -35,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitsPackage;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
+import de.dlr.sc.virsat.project.ui.navigator.commonSorter.LabelColumnSorter;
 import de.dlr.sc.virsat.qudv.ui.wizards.ConversionBasedUnitWizard;
 import de.dlr.sc.virsat.qudv.ui.wizards.DerivedUnitWizard;
 import de.dlr.sc.virsat.qudv.ui.wizards.PrefixedUnitWizard;
@@ -50,19 +55,22 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetUnitManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet {
 
-	private static final String SECTION_NAME = "Unit Management";
+	public static final String SECTION_NAME = "Unit Management";
+	
+	public static final String BUTTON_ADD_TEXT = "Add Unit";
+	public static final String BUTTON_REMOVE_TEXT = "Remove Unit";
+	public static final String BUTTON_EDIT_TEXT = "Edit Unit";
+	
+	public static final String COLUMN_TEXT_UNIT_NAME = "Unit Name";
+	public static final String COLUMN_TEXT_SYMBOL = "Symbol";
+	public static final String COLUMN_TEXT_QK = "Quantity Kind";
 
 	private Button buttonAdd;
 	private Button buttonRemove;
 	private Button buttonEdit;
-	
-	private static final String BUTTON_ADD_TEXT = "Add Unit";
-	private static final String BUTTON_REMOVE_TEXT = "Remove Unit";
-	private static final String BUTTON_EDIT_TEXT = "Edit Unit";
-	
-	private static final String COLUMN_TEXT_UNIT_NAME = "Unit Name";
-	private static final String COLUMN_TEXT_SYMBOL = "Symbol";
-	private static final String COLUMN_TEXT_QK = "Quantity Kind";
+
+	private ITableLabelProvider labelProvider;
+	private LabelColumnSorter labelColumnSorter;
 	
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
@@ -88,8 +96,6 @@ public class UiSnippetUnitManagement extends AUiSnippetEStructuralFeatureTable i
 	
 	@Override
 	protected ITableLabelProvider getTableLabelProvider() {
-		VirSatTransactionalAdapterFactoryLabelProvider labelProvider;
-		
 		labelProvider = new VirSatTransactionalAdapterFactoryLabelProvider(adapterFactory) {
 			@Override
 			public String getColumnText(Object object, int columnIndex) {
@@ -112,20 +118,41 @@ public class UiSnippetUnitManagement extends AUiSnippetEStructuralFeatureTable i
 			}
 		};
 		
+		labelColumnSorter.setLabelProvider(labelProvider);
 		return labelProvider;		
 	}
 	
 	@Override
-	protected void createTableColumns(EditingDomain editingDomain) {
-	    // Column Unit Name
-		createDefaultColumn(tableViewer, COLUMN_TEXT_UNIT_NAME);
+	protected void createTableViewer(Table table) {
+		super.createTableViewer(table);
+		
+		labelColumnSorter = new LabelColumnSorter(tableViewer);
+		tableViewer.setComparator(labelColumnSorter);
+	}
 	
+	@Override
+	protected void createTableColumns(EditingDomain editingDomain) {
+		// Column Unit Name
+		TableViewerColumn nameColumn = createDefaultColumn(tableViewer, COLUMN_TEXT_UNIT_NAME);
+		labelColumnSorter.onSelectColumn(nameColumn.getColumn(), 0);
+		
 		// Column Symbol
 		createDefaultColumn(tableViewer, COLUMN_TEXT_SYMBOL);
-		//	colSymbol.setEditingSupport(PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, tableViewer, property));
-
+		
 		//Column QuantityKind
 		createDefaultColumn(tableViewer, COLUMN_TEXT_QK);
+	}
+	
+	@Override
+	protected TableViewerColumn createDefaultColumn(TableViewer tableViewer, String columnText) {
+		TableViewerColumn column = super.createDefaultColumn(tableViewer, columnText);
+		// Columns dont have a get index method so we need to grab the information from the table
+		int columnIndex = tableViewer.getTable().getColumnCount() - 1;
+		column.getColumn().addSelectionListener(SelectionListener.widgetSelectedAdapter(
+			event -> labelColumnSorter.onSelectColumn(column.getColumn(), columnIndex)
+		));
+		
+		return column;
 	}
 	
 	@Override
@@ -224,5 +251,4 @@ public class UiSnippetUnitManagement extends AUiSnippetEStructuralFeatureTable i
 		}
 		return null;
 	}
-
 }

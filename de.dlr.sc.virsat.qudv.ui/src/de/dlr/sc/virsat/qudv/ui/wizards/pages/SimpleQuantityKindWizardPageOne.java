@@ -35,10 +35,7 @@ public class SimpleQuantityKindWizardPageOne extends AQuantityKindWizardPage {
 
 	@Override
 	protected void updateWidgets() {
-		if (!name.getText().isEmpty()) {
-			setPageComplete(true);
-		
-		}
+		setPageComplete(!name.getText().isEmpty());
 	}
 	
 	@Override
@@ -48,7 +45,6 @@ public class SimpleQuantityKindWizardPageOne extends AQuantityKindWizardPage {
 		setControl(container);
 		setPageComplete(false);
 		initializeValues();
-
 	}
 	
 	/**
@@ -62,7 +58,5 @@ public class SimpleQuantityKindWizardPageOne extends AQuantityKindWizardPage {
 			definitionURI.setText(quantityKind.getDefinitionURI());
 			setPageComplete(true);
 		}
-		
-	}	
-
+	}
 }

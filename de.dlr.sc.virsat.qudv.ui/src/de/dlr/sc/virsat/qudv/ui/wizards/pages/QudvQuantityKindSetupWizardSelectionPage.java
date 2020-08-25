@@ -123,7 +123,7 @@ public class QudvQuantityKindSetupWizardSelectionPage extends WizardSelectionPag
 		main.setLayout(gd);
 		Label label = new Label(main, SWT.NONE);
 		label.setText("Available wizards");
-		label.setToolTipText("Chose a wizard from the list of available QUDV Wizards in the ComboBox.");
+		label.setToolTipText("Choose a wizard from the list of available QUDV Wizards in the ComboBox.");
 		Combo providerList = new Combo(main, SWT.NONE);
 		providerViewer = new ComboViewer(providerList);
 		providerViewer.setLabelProvider(new LabelProvider() {
@@ -177,7 +177,4 @@ public class QudvQuantityKindSetupWizardSelectionPage extends WizardSelectionPag
     	setControl(main);
 	}
 	
-	
-	
 }
-

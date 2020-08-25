@@ -13,18 +13,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * This is the VirSat Editing Domain Factory. When creating or getting an Editing Domain
  * It has to be done using this class. In Virtual Satellite one Project has exactly one Editing Domain
- * @author fisc_ph
- *
  */
 public class VirSatEditingDomainRegistry {
 	
@@ -87,11 +87,13 @@ public class VirSatEditingDomainRegistry {
 	 * @return the Editing Domain which is already registered or null in case it does not exist
 	 */
 	public VirSatTransactionalEditingDomain getEd(EObject eObject) {
-		Resource resource = eObject.eResource();
-		if (resource != null) {
-			ResourceSet resourceSet = resource.getResourceSet();
-			if (resourceSet != null) {
-				return getEd(resourceSet);
+		if (eObject != null) {
+			Resource resource = eObject.eResource();
+			if (resource != null) {
+				ResourceSet resourceSet = resource.getResourceSet();
+				if (resourceSet != null) {
+					return getEd(resourceSet);
+				}
 			}
 		}
 		return null;
@@ -105,6 +107,16 @@ public class VirSatEditingDomainRegistry {
 	public VirSatTransactionalEditingDomain getEd(IProject project) {
 		VirSatTransactionalEditingDomain editingDomain = mapProjectToEditingDomain.get(project);
 		return editingDomain;
+	}
+	
+	/**
+	 * Call this method to get the EditingDomain by a URI pointing into the project
+	 * @param projectUri The URI pointing to a resource in the project
+	 * @return the ED for the project or null if it does not exit.
+	 */
+	public VirSatTransactionalEditingDomain getEd(URI projectUri) {
+		IProject iProject = VirSatProjectCommons.getProjectByUri(projectUri);
+		return getEd(iProject);
 	}
 	
 	/**

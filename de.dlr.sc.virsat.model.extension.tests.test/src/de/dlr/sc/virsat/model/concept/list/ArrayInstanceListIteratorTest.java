@@ -19,16 +19,14 @@ import java.util.NoSuchElementException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 
@@ -65,7 +63,7 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		// Load the concept to create the test object
 		Concept concept = loadConceptFromPlugin();
 		tcIntrinsicArray = new TestCategoryIntrinsicArray(concept);
-		arrayDynamic = tcIntrinsicArray.getTestStringArrayDynamic();
+		arrayDynamic = tcIntrinsicArray.getTestStringArrayDynamicBean();
 		ai = arrayDynamic.getArrayInstance();
 		ci = new CategoryInstantiator(); 
 		
@@ -93,15 +91,11 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		assertFalse("Iterator has no third item", iterator.hasNext());
 	}
 
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
-	@Test
+	@Test(expected = NoSuchElementException.class)
 	public void testNext() {
 		assertEquals("Next returns correct item", property1, iterator.next());
 		assertEquals("Next returns correct item", property2, iterator.next());
 		
-		exception.expect(NoSuchElementException.class);
 		iterator.next();
 	}
 
@@ -118,14 +112,13 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		assertFalse("Iterator has no third item", iterator.hasPrevious());
 	}
 
-	@Test
+	@Test(expected = NoSuchElementException.class)
 	public void testPrevious() {
 		iterator = arrayDynamic.listIterator(2);
 		
 		assertEquals("Next returns correct item", property2, iterator.previous());
 		assertEquals("Next returns correct item", property1, iterator.previous());
 		
-		exception.expect(NoSuchElementException.class);
 		iterator.previous();
 	}
 	
@@ -158,7 +151,7 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		assertEquals("Iterator at start returns -1", -1, iterator.previousIndex());
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testRemove() {
 		BeanPropertyString property = iterator.next();
 		
@@ -166,11 +159,10 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		assertFalse("The property is not part of the list anymore", arrayDynamic.contains(property));
 		assertEquals("Index ahs not moved", 0, iterator.nextIndex());
 		
-		exception.expect(IllegalStateException.class);
 		iterator.remove();
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testSet() {
 		BeanPropertyString oldProperty = iterator.next();
 		BeanPropertyString newProperty = createNewStringProperty();
@@ -181,11 +173,10 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		assertEquals("Index ahs not moved", 0, iterator.nextIndex());
 		assertEquals("The list did not grow", 2, arrayDynamic.size());
 		
-		exception.expect(IllegalStateException.class);
 		iterator.set(newProperty);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testAdd() {
 		BeanPropertyString oldProperty = iterator.next();
 		BeanPropertyString newProperty = createNewStringProperty();
@@ -199,7 +190,6 @@ public class ArrayInstanceListIteratorTest extends AConceptTestCase {
 		assertEquals("Calling next returns the new property", newProperty, iterator.previous());
 		assertTrue("The old property is not replaced", arrayDynamic.contains(oldProperty));
 
-		exception.expect(IllegalStateException.class);
 		iterator.add(createNewStringProperty());
 		iterator.add(createNewStringProperty());
 	}

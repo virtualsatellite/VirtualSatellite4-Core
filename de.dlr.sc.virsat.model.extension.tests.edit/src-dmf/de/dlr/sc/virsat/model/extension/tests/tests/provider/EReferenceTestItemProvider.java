@@ -116,6 +116,7 @@ public class EReferenceTestItemProvider extends GenericCategoryItemProvider {
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+		super.notifyChanged(notification);
 	}
 
 	/**

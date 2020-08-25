@@ -9,10 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.dataaccess;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,9 +64,9 @@ public class VirSatGitAccessTest {
 	@After
 	public void tearDown() throws Exception {
 		gitUpstream.close();
-		FileUtils.forceDelete(absolutePathToTempUpstreamRepository);
-		FileUtils.forceDelete(makeAbsolute(relativePathToTempLocalRepository1));
-		FileUtils.forceDelete(makeAbsolute(relativePathToTempLocalRepository2));
+		FileUtils.deleteQuietly(absolutePathToTempUpstreamRepository);
+		FileUtils.deleteQuietly(makeAbsolute(relativePathToTempLocalRepository1));
+		FileUtils.deleteQuietly(makeAbsolute(relativePathToTempLocalRepository2));
 	}
 
 	@Test

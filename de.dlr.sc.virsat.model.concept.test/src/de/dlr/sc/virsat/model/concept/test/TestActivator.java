@@ -15,6 +15,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.eclipse.xtext.ecore.EcoreRuntimeModule;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 /**
  * Activator of test Fragment as central info hub, even though
  * Fragments do not have an OSGI/Equinox Activator such as a plugin
@@ -23,6 +28,8 @@ import java.net.URL;
  */
 public class TestActivator {
 
+	private static Injector injector;
+	
 	/**
 	 * Hidden construcotr of activator class
 	 */
@@ -38,9 +45,7 @@ public class TestActivator {
 	 * @throws IOException throws
 	 */
 	public static String getResourceContentAsString(String resourcePath) throws IOException {
-		URL url;
-
-		url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
+		URL url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
 		InputStream inputStream = url.openConnection().getInputStream();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
@@ -56,4 +61,16 @@ public class TestActivator {
 
 		return fileContent.toString();
 	}
+	
+	public static synchronized Injector getInjector() {
+		if (injector == null) {
+			initializeEcoreInjector();
+		}
+		return injector;
+	}
+	
+	private static void initializeEcoreInjector() {
+		injector = Guice.createInjector(new EcoreRuntimeModule());
+	}
+
 }
