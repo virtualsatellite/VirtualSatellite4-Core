@@ -97,7 +97,7 @@ public class ServerRepoHelper {
 	}
 	
 	/**
-	 * Update a repository configuration
+	 * Update a RepositoryConfiguration and the corresponding ServerRepository
 	 * @param repositoryConfiguration
 	 * @throws IOException
 	 * @throws URISyntaxException
@@ -106,12 +106,14 @@ public class ServerRepoHelper {
 	public static void updateRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException, URISyntaxException, CoreException {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repositoryConfiguration.getProjectName());
 		
-		// TODO: test updating a not existing repo
-		// check for change in one of those, if changed reinitialize backend
 		RepositoryConfiguration oldConfig = repo.getRepositoryConfiguration();
 		
+		/*
+		 * For updating:
+		 * Update the configuration, remove the current ServerRepository,
+		 * Create a new one with the new configuration and register it in the RepoRegistry
+		 */
 		if (!oldConfig.equals(repositoryConfiguration)) {
-			// TODO: improve
 			oldConfig.update(repositoryConfiguration);
 			repo.removeRepository();
 			repo = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), oldConfig);

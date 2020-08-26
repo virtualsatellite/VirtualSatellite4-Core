@@ -38,6 +38,10 @@ public class ServerRepoHelperTest {
 	private Path configsDir;
 	private Path svnPathRepoRemote;
 	private URI svnUriToRemoteRepoPath;
+	private static final String PROJECT_NAME = "testProject";
+	private static final String URI = "test.uri";
+	Path configFilePath;
+	RepositoryConfiguration config;
 	
 	@Before
 	public void setUp() throws IOException, CoreException {
@@ -57,6 +61,14 @@ public class ServerRepoHelperTest {
 		
 		CreateSvnServerOperation createRemoteRepoOp = new CreateSvnServerOperation(remoteRepoFilePath);
 		createRemoteRepoOp.runWithExceptionChecking(new NullProgressMonitor());
+		
+		config = new RepositoryConfiguration();
+		config.setProjectName(PROJECT_NAME);
+		config.setRemoteUri(URI);
+		config.setBackend(VersionControlSystem.GIT);
+		
+		String expectedFileName = PROJECT_NAME + ".properties";
+		configFilePath = configsDir.resolve(expectedFileName);
 	}
 	
 	@After
@@ -83,53 +95,51 @@ public class ServerRepoHelperTest {
 	
 	@Test
 	public void testSaveConfiguration() throws FileNotFoundException, IOException, URISyntaxException {
-		String projectName = "testProject";
-
-		String uri = "test.uri";
-		RepositoryConfiguration config = new RepositoryConfiguration();
-		config.setProjectName(projectName);
-		config.setRemoteUri(uri);
-		
-		String expectedFileName = projectName + ".properties";
-		Path configFilePath = configsDir.resolve(expectedFileName);
-		
 		assertFalse("Config file doesn't exist initially", Files.exists(configFilePath));
 
 		ServerRepoHelper.saveRepositoryConfiguration(config);
 		assertTrue("Config file created after saving", Files.exists(configFilePath));
 		
 		RepositoryConfiguration loadedConfig = new RepositoryConfiguration(Files.newInputStream(configFilePath));
-		assertEquals("Saved file contains correct name", projectName, loadedConfig.getProjectName());
-		assertEquals("Saved file contains correct URI", uri, loadedConfig.getRemoteUri());
+		assertEquals("Saved file contains correct name", PROJECT_NAME, loadedConfig.getProjectName());
+		assertEquals("Saved file contains correct URI", URI, loadedConfig.getRemoteUri());
 		
-		//Check overwriting
+		// Check overwriting
 		String newUri = "new.test.uri";
 		config.setRemoteUri(newUri);
 		ServerRepoHelper.saveRepositoryConfiguration(config);
 		loadedConfig = new RepositoryConfiguration(Files.newInputStream(configFilePath));
-		assertEquals("Saved file contains correct name", projectName, loadedConfig.getProjectName());
+		assertEquals("Saved file contains correct name", PROJECT_NAME, loadedConfig.getProjectName());
 		assertEquals("Saved file contains new URI", newUri, loadedConfig.getRemoteUri());
 	}
 	
 	@Test
 	public void testDeleteRepositoryConfiguration() throws IOException, URISyntaxException {
-		String projectName = "testProject";
-		RepositoryConfiguration config = new RepositoryConfiguration();
-		config.setProjectName(projectName);
-		
-		String expectedFileName = projectName + ".properties";
-		Path configFilePath = configsDir.resolve(expectedFileName);
-		
-		createTempRepoConfigFile(configsDir, projectName, VersionControlSystem.GIT);
+		createTempRepoConfigFile(configsDir, PROJECT_NAME, VersionControlSystem.GIT);
 
 		ServerRepoHelper.initRepoRegistry();
 		ServerRepoHelper.saveRepositoryConfiguration(config);
 		assertTrue("Config file exists", Files.exists(configFilePath));
 		assertFalse("Config registered", RepoRegistry.getInstance().getRepositories().isEmpty());
 		
-		ServerRepoHelper.deleteRepositoryConfiguration(projectName);
+		ServerRepoHelper.deleteRepositoryConfiguration(PROJECT_NAME);
 		assertFalse("Config file deleted", Files.exists(configFilePath));
-		assertTrue("Config registered", RepoRegistry.getInstance().getRepositories().isEmpty());
+		assertTrue("Config not registered", RepoRegistry.getInstance().getRepositories().isEmpty());
+	}
+	
+	@Test
+	public void testUpdateRepositoryConfiguration() throws IOException, URISyntaxException, CoreException {		
+		ServerRepoHelper.registerRepositoryConfiguration(config);
+		
+		ServerRepository repo = RepoRegistry.getInstance().getRepository(PROJECT_NAME);
+		assertEquals(VersionControlSystem.GIT, repo.getRepositoryConfiguration().getBackend());
+		
+		config.setBackend(VersionControlSystem.SVN);
+		ServerRepoHelper.updateRepositoryConfiguration(config);
+		
+		// Update should have registered a new repo instance 
+		repo = RepoRegistry.getInstance().getRepository(PROJECT_NAME);
+		assertEquals("Updated successful", VersionControlSystem.SVN, repo.getRepositoryConfiguration().getBackend());
 	}
 	
 	/**
