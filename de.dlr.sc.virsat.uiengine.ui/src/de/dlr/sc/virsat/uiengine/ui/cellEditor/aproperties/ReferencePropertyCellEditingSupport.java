@@ -24,6 +24,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DialogCellEditor;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -152,6 +153,11 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 		APropertyInstance propertyInstance = getPropertyInstance(element);
 		ATypeInstance value = ((ReferencePropertyInstance) propertyInstance).getReference();
 		return value;
+	}
+	
+	@Override
+	protected void initializeCellEditorValue(CellEditor cellEditor, ViewerCell cell) {
+		cellEditor.setValue(cell.getText());
 	}
 	
 	@Override
