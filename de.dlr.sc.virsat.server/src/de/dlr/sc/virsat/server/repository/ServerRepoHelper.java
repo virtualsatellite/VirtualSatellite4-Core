@@ -63,9 +63,11 @@ public class ServerRepoHelper {
 		registerRepositoryConfiguration(config);
 	}
 	
-	public static void registerRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws URISyntaxException {
+	public static void registerRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws URISyntaxException, IOException {
 		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repositoryConfiguration);
 		RepoRegistry.getInstance().addRepository(repositoryConfiguration.getProjectName(), serverRepository);
+		
+		saveRepositoryConfiguration(repositoryConfiguration);
 	}
 	
 	/**
@@ -104,20 +106,14 @@ public class ServerRepoHelper {
 	 * @throws CoreException
 	 */
 	public static void updateRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException, URISyntaxException, CoreException {
-		ServerRepository repo = RepoRegistry.getInstance().getRepository(repositoryConfiguration.getProjectName());
+		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(repositoryConfiguration.getProjectName());
 		
-		RepositoryConfiguration oldConfig = repo.getRepositoryConfiguration();
+		RepositoryConfiguration oldConfig = serverRepository.getRepositoryConfiguration();
 		
-		/*
-		 * For updating:
-		 * Update the configuration, remove the current ServerRepository,
-		 * Create a new one with the new configuration and register it in the RepoRegistry
-		 */
+		// Update the configuration and save it
 		if (!oldConfig.equals(repositoryConfiguration)) {
 			oldConfig.update(repositoryConfiguration);
-			repo.removeRepository();
-			repo = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), oldConfig);
-			RepoRegistry.getInstance().getRepositories().replace(repositoryConfiguration.getProjectName(), repo);
+			saveRepositoryConfiguration(oldConfig);
 		}
 	}
 }

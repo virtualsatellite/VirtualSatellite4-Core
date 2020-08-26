@@ -26,17 +26,8 @@ public class RepoManagementController {
 		return RepoRegistry.getInstance().getRepository(repoName);
 	}
 	
-	/**
-	 * Adds and registers a new project
-	 * Also saves/creates the corresponding .properties file
-	 * @param repoConfiguration project configuration
-	 * @throws URISyntaxException 
-	 * @throws IOException 
-	 */
 	public void addNewRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
 		ServerRepoHelper.registerRepositoryConfiguration(repoConfiguration);
-		
-		ServerRepoHelper.saveRepositoryConfiguration(repoConfiguration);
 	}
 	
 	public void deleteRepository(String repoName) throws IOException {
