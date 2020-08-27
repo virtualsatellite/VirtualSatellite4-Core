@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 import de.dlr.sc.virsat.model.concept.types.property.IBeanProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 
@@ -191,12 +192,60 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		return bean;
 	}
 
+	/**
+	 * Custom handling for static lists:
+	 * Checks if the current element at the index has the same UUID as the new one
+	 * If that is the case it gets set, else an UnsupportedOperationException is thrown
+	 */
 	@Override
 	public BEAN_TYPE set(int index, BEAN_TYPE element) {
-		super.set(index, element);
 		BEAN_TYPE oldBean = get(index);
+		
+		if (arrayModifier instanceof StaticArrayModifier) {
+			if (!element.getUuid().equals(oldBean.getUuid())) {
+				throw new UnsupportedOperationException();
+			}
+		}
+		
 		ai.getArrayInstances().set(index, element.getTypeInstance());
 		return oldBean;
+	}
+
+	/**
+	 * Custom handling for static lists:
+	 * Checks if an element with the same UUID exists in the list
+	 * If that is the case the set method is called,
+	 * else an UnsupportedOperationException is thrown
+	 */
+	@Override
+	public boolean add(BEAN_TYPE e) {
+		if (arrayModifier instanceof StaticArrayModifier) {
+			int index = getIndexByUUID(e);
+			
+			if (index > -1) {
+				set(index, e);
+				return true;
+			} else {
+				throw new UnsupportedOperationException();
+			}
+		} else {
+			return super.add(e);
+		}
+	}
+
+	/**
+	 * Get the index of the element by it's UUID
+	 * @param e element
+	 * @return the index or -1 if not found
+	 */
+	private int getIndexByUUID(BEAN_TYPE e) {
+		for (int i = 0; i < ai.getArrayInstances().size(); i++) {
+			BEAN_TYPE bean = get(i);
+			if (e.getUuid().equals(bean.getUuid())) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override

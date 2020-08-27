@@ -236,6 +236,8 @@ public class ServerRepository {
 		
 		if (!project.exists()) {
 			checkoutRepository();
+		} else {
+			retrieveEdAndResurceSetFromConfiguration();
 		}
 		
 		syncRepository();

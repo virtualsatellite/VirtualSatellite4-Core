@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
+
 import org.eclipse.core.internal.resources.Resource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -27,9 +29,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.junit.Before;
 import org.junit.Test;
+
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
@@ -133,7 +138,6 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 
 	@Test
 	public void testSimpleCommitAndUpdate() throws Exception {
-
 		// Create a new SEI on the file system
 		addResourceSetAndRepository(projectRepoLocal1);
 		StructuralElementInstance sei1 = StructuralFactory.eINSTANCE.createStructuralElementInstance();
@@ -164,6 +168,75 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 	}
 	
 	protected void checkRemoteForCommitMessage(String message) {
+	}
+
+	@Test
+	public void testUpdateWithConflict() throws Exception {
+		// Create a new SEI on the file system
+		addResourceSetAndRepository(projectRepoLocal1);
+		StructuralElementInstance seiUpstream = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seiUpstream.setName("UPSTREAM_NAME");
+		VirSatUuid uuidSeiUpstream = seiUpstream.getUuid();
+		org.eclipse.emf.ecore.resource.Resource seiUpstreamResource = rs.getStructuralElementInstanceResource(seiUpstream);
+		seiUpstreamResource.getContents().add(seiUpstream);
+		rs.saveAllResources(null, UserRegistry.getInstance());
+		
+		IFile seiUpstreamFile = projectCommons.getStructuralElementInstanceFile(seiUpstream);
+		assertTrue("File exsists in workspace", seiUpstreamFile.exists());
+		assertTrue("File exsists on filesystem", seiUpstreamFile.getRawLocation().toFile().exists());
+		
+		// Commit repository and SEI files with VirtualSatellite Backend
+		backend.commit(projectRepoLocal1, "First Commit", new NullProgressMonitor());
+		
+		// Create the project again using another file system repository
+		projectRepoLocal1.delete(true, null);
+		IProject projectRepoLocal2 = createTestProject(PROJECT_LOCAL_NAME, pathRepoLocal2, true);
+		projectCommons = new VirSatProjectCommons(projectRepoLocal2);
+		addResourceSetAndRepository(projectRepoLocal2);
+		
+		// Recreate the upstream sei locally but with a different name to create a conflict
+		StructuralElementInstance seiDownstream = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		seiDownstream.setName("DOWNSTREAM_NAME");
+		seiDownstream.setUuid(uuidSeiUpstream);
+		org.eclipse.emf.ecore.resource.Resource seiDownstreamResource = rs.getStructuralElementInstanceResource(seiDownstream);
+		seiDownstreamResource.getContents().add(seiDownstream);
+		rs.saveAllResources(null, UserRegistry.getInstance());
+		
+		IFile seiDownstreamFile = projectCommons.getStructuralElementInstanceFile(seiDownstream);
+		assertTrue("File exsists in workspace", seiDownstreamFile.exists());
+		assertTrue("File exsists on filesystem", seiDownstreamFile.getRawLocation().toFile().exists());
+		
+		// Perform potentially backend dependent prep on the repo to ensure that a conflict occurs
+		ensureFileCanConflict(seiDownstreamFile);
+		
+		// Also create a new second local, non-conflicting sei that should be untouched by the update operation
+		StructuralElementInstance seiNewDownstream = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		rs.getStructuralElementInstanceResource(seiNewDownstream);
+		IFile seiNewDownstreamFile = projectCommons.getStructuralElementInstanceFile(seiNewDownstream);
+		assertTrue("File exsists in workspace", seiNewDownstreamFile.exists());
+		assertTrue("File exsists on filesystem", seiNewDownstreamFile.getRawLocation().toFile().exists());
+		
+		// Update project in local2
+		backend.update(projectRepoLocal2, new NullProgressMonitor());
+
+		// Reload the downstream sei which should now have the name of the upstream sei
+		rs.reloadResource(seiDownstreamResource);
+		StructuralElementInstance seiDownstreamAfterUpdate = (StructuralElementInstance) seiDownstreamResource.getContents().get(0);
+		assertEquals("Replaced conflicting local with repo version", seiUpstream.getName(), seiDownstreamAfterUpdate.getName());
+		
+		// Check that the locally created sei still exists and was not removed during the merge
+		seiNewDownstreamFile = projectCommons.getStructuralElementInstanceFile(seiNewDownstream);
+		assertTrue("File exsists in workspace", seiNewDownstreamFile.exists());
+		assertTrue("File exsists on filesystem", seiNewDownstreamFile.getRawLocation().toFile().exists());
+	}
+	
+	/**
+	 * Method that allows backend implementations to ensure that the given file is correctly
+	 * staged so that a conflict can be recognized.
+	 * @param file the file that should have a conflict
+	 */
+	protected void ensureFileCanConflict(IFile file) {
+		// Override in concrete backend tests
 	}
 
 	@Test
