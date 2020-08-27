@@ -163,6 +163,18 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	protected void transactionalFullBuildUpdateProblemMarkers() {
 	}
 	
+	private boolean saveAfterIncrementalBuild;
+	
+	/**
+	 * Call this method during an incremental build to
+	 * make save all dvlm resource. this method should usually be called
+	 * in case a SEI has been processed. It should not be called when other
+	 * files outside the dvlm mdoel have been processed by a builder.
+	 */
+	protected void triggerSaveAfterIncrementalBuild() {
+		saveAfterIncrementalBuild = true;
+	}
+	
 	/**
 	 * Method for incremental build using an editing domain
 	 * @param delta the delta from the BUilderManager 
@@ -178,8 +190,13 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 		Command cmd = new WrappingBuilderCommand() {
 			@Override
 			public void execute() {
+				saveAfterIncrementalBuild = false;
 				incrementalBuild(delta, monitor);
-				virSatTed.saveAll(true, dvlmOnly);
+				
+				// Only save if an implementing builder has set the flag
+				if (saveAfterIncrementalBuild) {
+					virSatTed.saveAll(true, dvlmOnly);
+				}
 			}
 		};
 		

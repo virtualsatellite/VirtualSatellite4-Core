@@ -87,16 +87,16 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 		assertEquals("List has four items", LIST_WITH_STATIC_SIZE, arrayStatic.size());
 		
 		assertThrows("Can't add an element with a new uuid", UnsupportedOperationException.class, () -> {
-			arrayStatic.add(property1);
+			arrayStatic.add(property1);		
 		});
 		
-		property1.getTypeInstance().setUuid(arrayStatic.get(0).getTypeInstance().getUuid());
-		assertNotEquals("Elements are not the same", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		property1.getATypeInstance().setUuid(arrayStatic.get(0).getATypeInstance().getUuid());
+		assertNotEquals("Elements are not the same", property1.getATypeInstance(), arrayStatic.get(0).getATypeInstance());
 		arrayStatic.add(property1);
-		assertEquals("Added the element", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		assertEquals("Added the element", property1, arrayStatic.get(0));
 		
 		arrayStatic.add(property1);
-		assertEquals("Adding the same element again is idempotent for static lists", property1.getTypeInstance(), arrayStatic.get(0).getTypeInstance());
+		assertEquals("Adding the same element again is idempotent for static lists", property1, arrayStatic.get(0));
 	}
 
 	@Test
@@ -174,8 +174,8 @@ public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
 	@Test
 	public void testSetIntBeanType() {
 		BeanPropertyString property1 = createNewStringProperty();
-		
-		property1.getTypeInstance().setUuid(arrayStatic.get(0).getTypeInstance().getUuid());
+
+		property1.getATypeInstance().setUuid(arrayStatic.get(0).getATypeInstance().getUuid());
 		assertThrows("Can't set an element with another uuid", UnsupportedOperationException.class, () -> {
 			arrayStatic.set(1, property1);
 		});

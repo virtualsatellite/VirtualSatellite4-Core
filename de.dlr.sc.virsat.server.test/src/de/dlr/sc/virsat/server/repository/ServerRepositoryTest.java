@@ -202,6 +202,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 
 		IProject createdProject = testServerRepository.getProject();		
 		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+		assertNotNull("Project has an ed", testServerRepository.getEd());
+		assertNotNull("Project has a resource set", testServerRepository.getResourceSet());
+		assertNotNull("Project has a repository", testServerRepository.getResourceSet().getRepository());
 
 		ArrayList<RevCommit> commitList1 = StreamSupport
 			.stream(
@@ -219,6 +222,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		testServerRepository2.updateOrCheckoutProject();
 		
 		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+		assertNotNull("Project has an ed", testServerRepository2.getEd());
+		assertNotNull("Project has a resource set", testServerRepository2.getResourceSet());
+		assertNotNull("Project has a repository", testServerRepository2.getResourceSet().getRepository());
 
 		ArrayList<RevCommit> commitList2 = StreamSupport
 			.stream(
