@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.server.repository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -17,8 +18,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
@@ -102,10 +101,8 @@ public class ServerRepoHelper {
 	 * Update a RepositoryConfiguration and the corresponding ServerRepository
 	 * @param repositoryConfiguration
 	 * @throws IOException
-	 * @throws URISyntaxException
-	 * @throws CoreException
 	 */
-	public static void updateRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException, URISyntaxException, CoreException {
+	public static void updateRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException {
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(repositoryConfiguration.getProjectName());
 		
 		RepositoryConfiguration oldConfig = serverRepository.getRepositoryConfiguration();

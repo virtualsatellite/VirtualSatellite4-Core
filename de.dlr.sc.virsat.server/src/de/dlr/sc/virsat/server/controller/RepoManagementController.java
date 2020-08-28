@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Set;
 
-import org.eclipse.core.runtime.CoreException;
-
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelper;
@@ -34,7 +32,7 @@ public class RepoManagementController {
 		ServerRepoHelper.deleteRepositoryConfiguration(repoName);
 	}
 	
-	public void updateRepository(RepositoryConfiguration repoConfiguration) throws IOException, URISyntaxException, CoreException {
+	public void updateRepository(RepositoryConfiguration repoConfiguration) throws IOException {
 		ServerRepoHelper.updateRepositoryConfiguration(repoConfiguration);
 	}
 
@@ -45,9 +43,8 @@ public class RepoManagementController {
 	/**
 	 * If a project with the name from configuration exists, it is updated, otherwise it is created.
 	 * @throws IOException 
-	 * @throws CoreException 
 	 */
-	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException, CoreException {
+	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
 		if (getAllProjectNames().contains(repoConfiguration.getProjectName())) {
 			updateRepository(repoConfiguration);
 		} else {

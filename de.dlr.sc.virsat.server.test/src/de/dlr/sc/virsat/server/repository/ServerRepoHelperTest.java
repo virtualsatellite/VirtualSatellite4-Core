@@ -137,8 +137,6 @@ public class ServerRepoHelperTest {
 		config.setBackend(VersionControlSystem.SVN);
 		ServerRepoHelper.updateRepositoryConfiguration(config);
 		
-		// Update should have registered a new repo instance 
-		repo = RepoRegistry.getInstance().getRepository(PROJECT_NAME);
 		assertEquals("Updated successful", VersionControlSystem.SVN, repo.getRepositoryConfiguration().getBackend());
 	}
 	
