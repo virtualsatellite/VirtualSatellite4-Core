@@ -81,7 +81,7 @@ SPDX-License-Identifier: EPL-2.0
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>virsat.target</file>
+											<file>virsat_windows.target</file>
 											<type>target</type>
 											<classifier>virsat</classifier>
 										</artifact>
