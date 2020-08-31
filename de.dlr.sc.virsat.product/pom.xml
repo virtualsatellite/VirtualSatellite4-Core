@@ -51,7 +51,7 @@
 										<artifact>
 											<file>../de.dlr.sc.virsat.target/virsat_windows.target</file>
 											<type>target</type>
-											<classifier>virsat</classifier>
+											<classifier>virsat_windows</classifier>
 										</artifact>
 									</artifacts>
 								</configuration>
