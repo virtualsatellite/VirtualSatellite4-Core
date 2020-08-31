@@ -49,7 +49,7 @@
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>../de.dlr.sc.virsat.target/virsat.target</file>
+											<file>../de.dlr.sc.virsat.target/virsat_windows.target</file>
 											<type>target</type>
 											<classifier>virsat</classifier>
 										</artifact>
