@@ -721,15 +721,43 @@ public class QudvUnitHelper {
 		factorMap.put(length, 2.0);
 		factorMap.put(time, M2);
 		factorMap.put(temperature, M1);
-		systemOfQuantities.getQuantityKind().add(createAndAddDerivedQuantityKind("Specific Heat Capacity", "L² T⁻² Θ⁻¹", "specificHeatCapacityQK", "",  factorMap));
-
+		DerivedQuantityKind specificHeatCapacity = createAndAddDerivedQuantityKind("Specific Heat Capacity", "L² T⁻² Θ⁻¹", "specificHeatCapacityQK", "",  factorMap);
+		systemOfQuantities.getQuantityKind().add(specificHeatCapacity);
+		
 		//thermal conductivity
 		factorMap.clear();
 		factorMap.put(length, 1.0);
 		factorMap.put(mass, 1.0);
 		factorMap.put(time, M3);
 		factorMap.put(temperature, M1);
-		systemOfQuantities.getQuantityKind().add(createAndAddDerivedQuantityKind("Thermal Conductivity", "L¹ M¹ T⁻³ Θ⁻¹", "thermalConductivityQK", "",  factorMap));
+		DerivedQuantityKind thermalConductivity = createAndAddDerivedQuantityKind("Thermal Conductivity", "L¹ M¹ T⁻³ Θ⁻¹", "thermalConductivityQK", "",  factorMap);
+		systemOfQuantities.getQuantityKind().add(thermalConductivity);
+		
+		//thermal contact resistance
+		factorMap.clear();
+		factorMap.put(length, M2);
+		factorMap.put(mass, M1);
+		factorMap.put(time, 3.0);
+		factorMap.put(temperature, 1.0);
+		DerivedQuantityKind thermalContactResistance = createAndAddDerivedQuantityKind("Thermal Contact Resistance", "L⁻² M⁻¹ T³ Θ¹", "thermalContactResistanceQK", "",  factorMap);
+		systemOfQuantities.getQuantityKind().add(thermalConductivity);
+		
+		//thermal contact conductance
+		factorMap.clear();
+		factorMap.put(length, 2.0);
+		factorMap.put(mass, 1.0);
+		factorMap.put(time, M3);
+		factorMap.put(temperature, M1);
+		DerivedQuantityKind thermalContactConductance = createAndAddDerivedQuantityKind("Thermal Contact Conductance", "L² M¹ T⁻³ Θ⁻¹", "thermalContactConductanceQK", "",  factorMap);
+		systemOfQuantities.getQuantityKind().add(thermalConductivity);
+		
+		//thermal contact conductance per unit area
+		factorMap.clear();
+		factorMap.put(mass, 1.0);
+		factorMap.put(time, M3);
+		factorMap.put(temperature, M1);
+		DerivedQuantityKind thermalContactConductancePerUnitArea = createAndAddDerivedQuantityKind("Thermal Contact Conductance Per Unit Area", "M¹ T⁻³ Θ⁻¹", "thermalContactConductancePerUnitAreaQK", "",  factorMap);
+		systemOfQuantities.getQuantityKind().add(thermalConductivity);
 		
 		//time squared
 		factorMap.clear();
@@ -980,13 +1008,55 @@ public class QudvUnitHelper {
 		DerivedUnit megabytePerSecond = createAndAddDerivedUnit("Megabyte Per Second", "MB s⁻¹", "megabyterPerSecondUnit", "", dataRateQK, unitFactorMap);
 		systemOfUnits.getUnit().add(megabytePerSecond);
 		
-		
 		//Ampere hrs as electric charge
 		unitFactorMap.clear();
 		unitFactorMap.put(hour, 1.0);
 		unitFactorMap.put(ampere, 1.0);
 		DerivedUnit ampereHours = createAndAddDerivedUnit("Ampere hours", "Ah", "ampereHoursUnit", "", electricChargeQK, unitFactorMap);
 		systemOfUnits.getUnit().add(ampereHours);
+		
+		//specific heat capacity: meter squared per second squared per kelvin
+		unitFactorMap.clear();
+		unitFactorMap.put(meter, 2.0);
+		unitFactorMap.put(second, M2);
+		unitFactorMap.put(kelvin, M1);
+		DerivedUnit meterSquaredPerSecondSquaredPerKelvin = createAndAddDerivedUnit("Meter Squared Per Second Squared Per Kelvin", "m² s⁻² K⁻¹", "meterSquaredPerSecondSquaredPerKelvinUnit", "", specificHeatCapacity, unitFactorMap);
+		systemOfUnits.getUnit().add(meterSquaredPerSecondSquaredPerKelvin);
+		
+		//thermal conductivity: meter kilogram per second cubed per kelvin
+		unitFactorMap.clear();
+		unitFactorMap.put(meter, 1.0);
+		unitFactorMap.put(kilogram, 1.0);
+		unitFactorMap.put(second, M3);
+		unitFactorMap.put(kelvin, M1);
+		DerivedUnit meterKilogramPerSecondCubedPerKelvin = createAndAddDerivedUnit("Meter Kilogram Per Second Cubed Per Kelvin", "m kg s⁻³ K⁻¹", "meterKilogramPerSecondCubedPerKelvinUnit", "", thermalConductivity, unitFactorMap);
+		systemOfUnits.getUnit().add(meterKilogramPerSecondCubedPerKelvin);
+		
+		//thermal contact resistance: second cubed kelvin per meter squared per kilogram
+		unitFactorMap.clear();
+		unitFactorMap.put(meter, M2);
+		unitFactorMap.put(kilogram, M1);
+		unitFactorMap.put(second, 3.0);
+		unitFactorMap.put(kelvin, 1.0);
+		DerivedUnit secondCubedKelvinPerMeterSquaredPerKilogram = createAndAddDerivedUnit("Second Cubed Kelvin Per Meter Squared Per Kilogram", "s³ K m⁻² kg⁻¹", "secondCubedKelvinPerMeterSquaredPerKilogramUnit", "", thermalContactResistance, unitFactorMap);
+		systemOfUnits.getUnit().add(secondCubedKelvinPerMeterSquaredPerKilogram);
+		
+		//thermal contact resistance: meter squared kilogram per second cubed per kelvin
+		unitFactorMap.clear();
+		unitFactorMap.put(meter, 2.0);
+		unitFactorMap.put(kilogram, 1.0);
+		unitFactorMap.put(second, M3);
+		unitFactorMap.put(kelvin, M1);
+		DerivedUnit meterSquaredKilogramPerSecondCubedPerKelvin = createAndAddDerivedUnit("MeterSquaredKilogramPerSecondCubedPerKelvin", "m² kg¹ s⁻³ K⁻¹", "meterSquaredKilogramPerSecondCubedPerKelvinUnit", "", thermalContactConductance, unitFactorMap);
+		systemOfUnits.getUnit().add(meterSquaredKilogramPerSecondCubedPerKelvin);
+		
+		//thermal contact conductance per unit area: second cubed kelvin per meter squared per kilogram
+		unitFactorMap.clear();
+		unitFactorMap.put(kilogram, 1.0);
+		unitFactorMap.put(second, M3);
+		unitFactorMap.put(kelvin, M1);
+		DerivedUnit kilogramPerSecondCubedPerKelvin = createAndAddDerivedUnit("Kilogram Per Second Cubed Per Kelvin", "kg s⁻³ K⁻¹", "meterSquaredPerSecondSquaredPerKelvinUnit", "", thermalContactConductancePerUnitArea, unitFactorMap);
+		systemOfUnits.getUnit().add(kilogramPerSecondCubedPerKelvin);
 	}
 	
 	public static final String UNIT_NAME_DEGREE = "Degree";
