@@ -234,8 +234,11 @@ public class QudvUnitHelperTest {
 		assertEquals(sou1.getUuid(), importedSoU.getUuid());
 		assertEquals(sou1.getName(), importedSoU.getName());
 		
-		assertEquals(3, importedSoU.getUnit().size());
-		assertEquals(44, importedSoU.getSystemOfQuantities().get(0).getQuantityKind().size());
+		int EXPECTED_UNITS = sou1.getUnit().size();
+		int EXPECTED_QUANTITY_KINDS = sou1.getSystemOfQuantities().get(0).getQuantityKind().size();
+		
+		assertEquals(EXPECTED_UNITS, importedSoU.getUnit().size());
+		assertEquals(EXPECTED_QUANTITY_KINDS, importedSoU.getSystemOfQuantities().get(0).getQuantityKind().size());
 		
 		//without the copySystemOfUnits method the Ids of the imported Qudv model are the same
 		assertEquals(simpleUnit.getUuid(), importedSoU.getUnit().get(0).getUuid());
