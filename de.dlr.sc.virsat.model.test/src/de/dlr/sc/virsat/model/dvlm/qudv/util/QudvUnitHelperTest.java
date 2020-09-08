@@ -349,79 +349,50 @@ public class QudvUnitHelperTest {
 		sou1.getUnit().add(m);
 		sou1.getUnit().add(kg);
 		
-		//we directly copy the systemOfUnits
-		SystemOfUnits sou2 = sou1;
-		
-		//the systemOfUnits were directly copied, everything should be the same, also the IDs 
-		assertEquals(sou1.getUuid(), sou2.getUuid());
-		assertEquals(sou1.getName(), sou2.getName());
-		
-		//check that three units are there, one systemOfQuantities and eight quantityKinds are there 
-		assertEquals(3, sou1.getUnit().size());
-		assertEquals(1, sou1.getSystemOfQuantities().size());
-		assertEquals(44, sou1.getSystemOfQuantities().get(0).getQuantityKind().size());
-		assertEquals(3, sou2.getUnit().size());
-		assertEquals(1, sou2.getSystemOfQuantities().size());
-		assertEquals(44, sou2.getSystemOfQuantities().get(0).getQuantityKind().size());
-		
-		//without the copySystemOfUnits method the Ids of the three units are the same
-		assertEquals(sou1.getUnit().get(0).getUuid(), sou2.getUnit().get(0).getUuid());
-		assertEquals(sou1.getUnit().get(0).getName(), sou2.getUnit().get(0).getName());
-		assertEquals(sou1.getUnit().get(1).getUuid(), sou2.getUnit().get(1).getUuid());
-		assertEquals(sou1.getUnit().get(1).getName(), sou2.getUnit().get(1).getName());
-		assertEquals(sou1.getUnit().get(2).getUuid(), sou2.getUnit().get(2).getUuid());
-		assertEquals(sou1.getUnit().get(2).getName(), sou2.getUnit().get(2).getName());
-	
-		//same with the systemOfQuantities
-		assertEquals(sou1.getSystemOfQuantities().get(0).getUuid(), sou2.getSystemOfQuantities().get(0).getUuid());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getName(), sou2.getSystemOfQuantities().get(0).getName());
-		
-		//same with the eight quantityKinds
-		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(0).getUuid(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(0).getUuid());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(0).getName(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(0).getName());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(1).getUuid(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(1).getUuid());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(1).getName(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(1).getName());
-		
 		//now use the ecore.uitl copier to do the copy
-		SystemOfUnits sou3 = qudvHelper.copySystemOfUnits(sou1);
+		SystemOfUnits sou2 = qudvHelper.copySystemOfUnits(sou1);
 		
 		//ids should not be the same
-		assertNotSame(sou1.getUuid(), sou3.getUuid());
-		assertEquals(sou1.getName(), sou3.getName());
+		assertNotSame(sou1.getUuid(), sou2.getUuid());
+		assertEquals(sou1.getName(), sou2.getName());
 		
-		//check that three units are there, one systemOfQunatities and eight quantityKinds are there 
-		assertEquals(3, sou3.getUnit().size());
-		assertEquals(1, sou3.getSystemOfQuantities().size());
-		assertEquals(44, sou3.getSystemOfQuantities().get(0).getQuantityKind().size());
+		//check that the amounts of units, one systemOfQunatities, and quantityKinds match 
+		int EXPECTED_NUMBER_SYSTEM_OF_Quantities = 1;
+		int EXPECTER_NUMBER_UNITS = 3;
+		int EXPECTED_NUMBER_QUANTITY_KINDS = sou1.getSystemOfQuantities().get(0).getQuantityKind().size();
+		
+		assertEquals(EXPECTER_NUMBER_UNITS, sou2.getUnit().size());
+		assertEquals(EXPECTED_NUMBER_SYSTEM_OF_Quantities, sou2.getSystemOfQuantities().size());
+		assertEquals(EXPECTED_NUMBER_QUANTITY_KINDS, sou2.getSystemOfQuantities().get(0).getQuantityKind().size());
 		
 		//after using the copyUnitManagement method the Ids of the three units not the same anymore
-		assertNotSame(sou1.getUnit().get(0).getUuid(), sou3.getUnit().get(0).getUuid());
-		assertEquals(sou1.getUnit().get(0).getName(), sou3.getUnit().get(0).getName());
-		assertNotSame(sou1.getUnit().get(1).getUuid(), sou3.getUnit().get(1).getUuid());
-		assertEquals(sou1.getUnit().get(1).getName(), sou3.getUnit().get(1).getName());
-		assertNotSame(sou1.getUnit().get(2).getUuid(), sou3.getUnit().get(2).getUuid());
-		assertEquals(sou1.getUnit().get(2).getName(), sou3.getUnit().get(2).getName());
+		assertNotSame(sou1.getUnit().get(0).getUuid(), sou2.getUnit().get(0).getUuid());
+		assertEquals(sou1.getUnit().get(0).getName(), sou2.getUnit().get(0).getName());
+		assertNotSame(sou1.getUnit().get(1).getUuid(), sou2.getUnit().get(1).getUuid());
+		assertEquals(sou1.getUnit().get(1).getName(), sou2.getUnit().get(1).getName());
+		assertNotSame(sou1.getUnit().get(2).getUuid(), sou2.getUnit().get(2).getUuid());
+		assertEquals(sou1.getUnit().get(2).getName(), sou2.getUnit().get(2).getName());
 		
 		//same with the systemOfQuantities
-		assertNotSame(sou1.getSystemOfQuantities().get(0).getUuid(), sou3.getSystemOfQuantities().get(0).getUuid());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getName(), sou3.getSystemOfQuantities().get(0).getName());
+		assertNotSame(sou1.getSystemOfQuantities().get(0).getUuid(), sou2.getSystemOfQuantities().get(0).getUuid());
+		assertEquals(sou1.getSystemOfQuantities().get(0).getName(), sou2.getSystemOfQuantities().get(0).getName());
 		
 		//same with the two quantityKinds
-		assertNotSame(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(0).getUuid(), sou3.getSystemOfQuantities().get(0).getQuantityKind().get(0).getUuid());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(0).getName(), sou3.getSystemOfQuantities().get(0).getQuantityKind().get(0).getName());
-		assertNotSame(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(1).getUuid(), sou3.getSystemOfQuantities().get(0).getQuantityKind().get(1).getUuid());
-		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(1).getName(), sou3.getSystemOfQuantities().get(0).getQuantityKind().get(1).getName());
+		assertNotSame(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(0).getUuid(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(0).getUuid());
+		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(0).getName(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(0).getName());
+		assertNotSame(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(1).getUuid(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(1).getUuid());
+		assertEquals(sou1.getSystemOfQuantities().get(0).getQuantityKind().get(1).getName(), sou2.getSystemOfQuantities().get(0).getQuantityKind().get(1).getName());
 	
 		//Last but not least we check for the references
 		//in the test data we had kg referencing to g (prefixed unit)
 	
 		//retrieve the third unit, which was kg and cast it to PrefixedUnit, so we can actually do what we want to do
-		PrefixedUnit prefixedUnit = (PrefixedUnit) sou3.getUnit().get(2);
+		PrefixedUnit prefixedUnit = (PrefixedUnit) sou2.getUnit().get(2);
 		//and check that the reference is not null
 		assertNotNull(prefixedUnit.getReferenceUnit());
 		//then we check if the reference is pointing to the correct unit, by checking the id and the name
-		assertEquals(prefixedUnit.getReferenceUnit().getUuid(), sou3.getUnit().get(0).getUuid());
-		assertEquals(prefixedUnit.getReferenceUnit().getName(), sou3.getUnit().get(0).getName());
+		assertEquals(prefixedUnit.getReferenceUnit().getUuid(), sou2.getUnit().get(0).getUuid());
+		assertEquals(prefixedUnit.getReferenceUnit().getName(), sou2.getUnit().get(0).getName());
 		
 	}
 
