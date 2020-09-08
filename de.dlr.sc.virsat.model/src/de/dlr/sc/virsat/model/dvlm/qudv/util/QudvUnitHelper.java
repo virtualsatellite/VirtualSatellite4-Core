@@ -740,7 +740,7 @@ public class QudvUnitHelper {
 		factorMap.put(time, 3.0);
 		factorMap.put(temperature, 1.0);
 		DerivedQuantityKind thermalContactResistance = createAndAddDerivedQuantityKind("Thermal Contact Resistance", "L⁻² M⁻¹ T³ Θ¹", "thermalContactResistanceQK", "",  factorMap);
-		systemOfQuantities.getQuantityKind().add(thermalConductivity);
+		systemOfQuantities.getQuantityKind().add(thermalContactResistance);
 		
 		//thermal contact conductance
 		factorMap.clear();
@@ -749,7 +749,7 @@ public class QudvUnitHelper {
 		factorMap.put(time, M3);
 		factorMap.put(temperature, M1);
 		DerivedQuantityKind thermalContactConductance = createAndAddDerivedQuantityKind("Thermal Contact Conductance", "L² M¹ T⁻³ Θ⁻¹", "thermalContactConductanceQK", "",  factorMap);
-		systemOfQuantities.getQuantityKind().add(thermalConductivity);
+		systemOfQuantities.getQuantityKind().add(thermalContactConductance);
 		
 		//thermal contact conductance per unit area
 		factorMap.clear();
@@ -757,7 +757,7 @@ public class QudvUnitHelper {
 		factorMap.put(time, M3);
 		factorMap.put(temperature, M1);
 		DerivedQuantityKind thermalContactConductancePerUnitArea = createAndAddDerivedQuantityKind("Thermal Contact Conductance Per Unit Area", "M¹ T⁻³ Θ⁻¹", "thermalContactConductancePerUnitAreaQK", "",  factorMap);
-		systemOfQuantities.getQuantityKind().add(thermalConductivity);
+		systemOfQuantities.getQuantityKind().add(thermalContactConductancePerUnitArea);
 		
 		//time squared
 		factorMap.clear();
