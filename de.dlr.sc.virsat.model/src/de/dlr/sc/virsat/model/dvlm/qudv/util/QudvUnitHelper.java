@@ -1364,17 +1364,10 @@ public class QudvUnitHelper {
 
 			@Override
 			protected void copyAttribute(EAttribute attribute, EObject object, EObject copyEObject) {
-				// holy quakomolee
 				// We do not copy the attribute ID because it has been already updated
 				// IDs have to be unique !!!
 				if (attribute == GeneralPackage.Literals.IUUID__UUID) {
 					return;
-					// } else if (attribute == QudvPackage.Literals.AUNIT__ID) {
-					// return;
-					// } else if (attribute == QudvPackage.Literals.AQUANTITY_KIND__ID) {
-					// return;
-					// } else if (attribute == QudvPackage.Literals.SYSTEM_OF_QUANTITIES__ID) {
-					// return;
 				}
 				super.copyAttribute(attribute, object, copyEObject);
 			}
