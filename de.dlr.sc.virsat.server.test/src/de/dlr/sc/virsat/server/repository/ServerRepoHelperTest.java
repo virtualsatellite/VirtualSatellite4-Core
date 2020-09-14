@@ -40,8 +40,8 @@ public class ServerRepoHelperTest {
 	private URI svnUriToRemoteRepoPath;
 	private static final String PROJECT_NAME = "testProject";
 	private static final String URI = "test.uri";
-	Path configFilePath;
-	RepositoryConfiguration config;
+	private Path configFilePath;
+	private RepositoryConfiguration config;
 	
 	@Before
 	public void setUp() throws IOException, CoreException {
