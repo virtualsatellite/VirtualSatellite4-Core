@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 
@@ -57,8 +58,14 @@ public class ServerRepoHelper {
 	private static void registerRepositoryConfiguration(Path repositoryConfigurationFile) throws IOException, URISyntaxException {
 		RepositoryConfiguration config = new RepositoryConfiguration(Files.newInputStream(repositoryConfigurationFile));
 		
-		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), config);
-		RepoRegistry.getInstance().addRepository(config.getProjectName(), serverRepository);
+		registerRepositoryConfiguration(config);
+	}
+	
+	public static void registerRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws URISyntaxException, IOException {
+		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repositoryConfiguration);
+		RepoRegistry.getInstance().addRepository(repositoryConfiguration.getProjectName(), serverRepository);
+		
+		saveRepositoryConfiguration(repositoryConfiguration);
 	}
 	
 	/**
@@ -72,6 +79,37 @@ public class ServerRepoHelper {
 
 		try (OutputStream propertiesStream = Files.newOutputStream(configFile)) {
 			repositoryConfiguration.saveProperties(propertiesStream);
+		}
+	}
+	
+	/**
+	 * Delete the .properties file of the project and remove it from the repo registry
+	 * @param repoName name of the project to be deleted
+	 * @throws IOException
+	 */
+	public static void deleteRepositoryConfiguration(String repoName) throws IOException {
+		String fileName = repoName + ".properties";
+		Path configFile = Paths.get(ServerConfiguration.getRepositoryConfigurationsDir(), fileName);
+		
+		Files.delete(configFile);
+		
+		RepoRegistry.getInstance().getRepositories().remove(repoName);
+	}
+	
+	/**
+	 * Update a RepositoryConfiguration and the corresponding ServerRepository
+	 * @param repositoryConfiguration
+	 * @throws IOException
+	 */
+	public static void updateRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws IOException {
+		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(repositoryConfiguration.getProjectName());
+		
+		RepositoryConfiguration oldConfig = serverRepository.getRepositoryConfiguration();
+		
+		// Update the configuration and save it
+		if (!oldConfig.equals(repositoryConfiguration)) {
+			oldConfig.update(repositoryConfiguration);
+			saveRepositoryConfiguration(oldConfig);
 		}
 	}
 }

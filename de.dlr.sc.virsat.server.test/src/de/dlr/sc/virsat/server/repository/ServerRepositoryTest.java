@@ -86,10 +86,12 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	public void testCheckoutRepository() throws Exception {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
-		testServerRepository.checkoutRepository();
-		
 		File localRepositoryFolder = testServerRepository.getLocalRepositoryPath();
 		File localRepositoryGitFolder = new File(localRepositoryFolder, ".git/");
+		
+		assertTrue("Local Repository folder exists", localRepositoryFolder.exists());
+
+		testServerRepository.checkoutRepository();
 		
 		assertTrue("Local Repository Got Checked out", localRepositoryGitFolder.exists());
 		
@@ -235,5 +237,18 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		// CHECKSTYLE:OFF
 		assertThat("Commit List has expected size", commitList2, hasSize(2));
 		// CHECKSTYLE:ON
+	}
+	
+	@Test
+	public void testRemoveProject() throws Exception {
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		
+		File localRepositoryFolder = testServerRepository.getLocalRepositoryPath();
+		assertTrue("Local Repository folder exists", localRepositoryFolder.exists());
+
+		testServerRepository.checkoutRepository();
+		testServerRepository.removeRepository();
+
+		assertFalse("Local Repository folder got deleted", localRepositoryFolder.exists());
 	}
 }

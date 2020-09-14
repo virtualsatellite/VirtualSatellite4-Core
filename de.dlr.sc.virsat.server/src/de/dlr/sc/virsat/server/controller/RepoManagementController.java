@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -9,13 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.controller;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Set;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
-import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
+import de.dlr.sc.virsat.server.repository.ServerRepoHelper;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 public class RepoManagementController {
@@ -24,23 +24,16 @@ public class RepoManagementController {
 		return RepoRegistry.getInstance().getRepository(repoName);
 	}
 	
-	/**
-	 * Adds and registers a new project
-	 * @param repoConfiguration project configuration
-	 * @throws URISyntaxException 
-	 */
-	public void addNewRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException {
-		ServerRepository repository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repoConfiguration);
-		RepoRegistry.getInstance().addRepository(repoConfiguration.getProjectName(), repository);
+	public void addNewRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
+		ServerRepoHelper.registerRepositoryConfiguration(repoConfiguration);
 	}
 	
-	public void deleteRepository(String repoName) {
-		RepoRegistry.getInstance().getRepositories().remove(repoName);
+	public void deleteRepository(String repoName) throws IOException {
+		ServerRepoHelper.deleteRepositoryConfiguration(repoName);
 	}
 	
-	public void updateRepository(RepositoryConfiguration repoConfiguration) {
-		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoConfiguration.getProjectName());
-		repo.getRepositoryConfiguration().update(repoConfiguration);
+	public void updateRepository(RepositoryConfiguration repoConfiguration) throws IOException {
+		ServerRepoHelper.updateRepositoryConfiguration(repoConfiguration);
 	}
 
 	public Set<String> getAllProjectNames() {
@@ -49,8 +42,9 @@ public class RepoManagementController {
 	
 	/**
 	 * If a project with the name from configuration exists, it is updated, otherwise it is created.
+	 * @throws IOException 
 	 */
-	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException {
+	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
 		if (getAllProjectNames().contains(repoConfiguration.getProjectName())) {
 			updateRepository(repoConfiguration);
 		} else {
