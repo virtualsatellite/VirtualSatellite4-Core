@@ -65,7 +65,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> staticCategoryArray = tcReferenceArray.getTestCategoryReferenceArrayStaticBean();
 		for (int i = 0; i < staticCategoryArray.size(); i++) {
 			BeanPropertyReference<TestCategoryAllProperty> bean = staticCategoryArray.get(i);
-			bean.getATypeInstance().setUuid(new VirSatUuid("8872b433-968c-4f48-b9a3-d734c6e239a" + Integer.toString(i)));
+			bean.getATypeInstance().setUuid(new VirSatUuid("8872b433-968c-4f48-b9a3-d734c6e239a" + i));
 			
 			bean.setValue(tcAllProperty);
 		}
