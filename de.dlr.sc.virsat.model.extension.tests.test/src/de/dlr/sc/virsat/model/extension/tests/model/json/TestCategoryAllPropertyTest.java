@@ -11,6 +11,8 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -112,7 +114,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
-	public void assertUnmarshalWithResource(String resource) throws JAXBException, IOException {
+	public void unmarshalWithResource(String resource) throws JAXBException, IOException {
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
@@ -133,7 +135,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		assertEqualsDefaultValues();
 		
 		// Unmarshall the resource containing the new values
-		assertUnmarshalWithResource(RESOURCE_WITH_VALUES);
+		unmarshalWithResource(RESOURCE_WITH_VALUES);
 		
 		// The values are correctly overwritten
 		assertEqualsTestValues();
@@ -146,7 +148,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		assertEqualsTestValues();
 		
 		// Unmarshall the resource containing the default values
-		assertUnmarshalWithResource(RESOURCE_WITH_DEFAULTS);
+		unmarshalWithResource(RESOURCE_WITH_DEFAULTS);
 		
 		// The values are correctly overwritten
 		assertEqualsDefaultValues();
@@ -168,13 +170,11 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 * Assert that the default values are set correctly
 	 */
 	private void assertEqualsDefaultValues() {
-		// int default is Long in the bean and can be null, but is a long in the TestCategoryAllProperty
-		// so we don't assert it here
-//		assertEquals(null, tcAllProperty.getTestInt());
-		assertEquals(null, tcAllProperty.getTestString());
-		assertEquals(null, tcAllProperty.getTestEnum());
-		assertEquals(null, tcAllProperty.getTestResource());
-		assertEquals(false, tcAllProperty.getTestBool());
+		assertNull(tcAllProperty.getTestIntBean().getTypeInstance().getValue());
+		assertNull(tcAllProperty.getTestString());
+		assertNull(tcAllProperty.getTestEnum());
+		assertNull(tcAllProperty.getTestResource());
+		assertFalse(tcAllProperty.getTestBool());
 		assertTrue(Double.isNaN(tcAllProperty.getTestFloat()));
 	}
 }

@@ -38,6 +38,7 @@ import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryBeanATest extends AConceptTestCase {
 
+	private static final String UUID = "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2";
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
 	
@@ -55,7 +56,7 @@ public class TestCategoryBeanATest extends AConceptTestCase {
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		TestCategoryBeanA testCategoryBean = new TestCategoryBeanA(concept);
-		testCategoryBean.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
+		testCategoryBean.getTypeInstance().setUuid(new VirSatUuid(UUID));
 		
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testCategoryBean, sw);
@@ -68,7 +69,7 @@ public class TestCategoryBeanATest extends AConceptTestCase {
 	public void testJsonUnMarshalling() throws JAXBException, IOException {
 		
 		TestCategoryBeanA originCatgeoryBean = new TestCategoryBeanA(concept);
-		originCatgeoryBean.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
+		originCatgeoryBean.getTypeInstance().setUuid(new VirSatUuid(UUID));
 		
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
