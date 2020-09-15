@@ -12,10 +12,20 @@ package de.dlr.sc.virsat.model.extension.tests.model.json;
 import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Collection;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
@@ -117,5 +127,28 @@ public class JsonTestHelper {
 		
 		String expectedJson = TestActivator.getResourceContentAsString(resource);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	/**
+	 * Embeds the modelObjects into an ResourceSet to then create the Unmarshaller with the JAXBUtility
+	 * @param jaxbUtility the JAXBUtility with the needed classes registered
+	 * @param modelObjects the objects to be embedded into the ResourceSet
+	 * @return the Unmarshaller
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public static Unmarshaller getUnmarshaller(JAXBUtility jaxbUtility, Collection<? extends EObject> modelObjects) throws JAXBException, IOException {
+		// Quick mock setup to embed the model into a resource set
+		ResourceSet resourceSet = new ResourceSetImpl();
+		Resource resourceImpl = new ResourceImpl();
+		resourceSet.getResources().add(resourceImpl);
+		resourceImpl.getContents().addAll(modelObjects);
+		
+		return jaxbUtility.getJsonUnmarshaller(resourceSet);
+	}
+	
+	public static StreamSource getResourceAsStreamSource(String resource) throws IOException {
+		String inputJson = TestActivator.getResourceContentAsString(resource);
+		return new StreamSource(new StringReader(inputJson));
 	}
 }

@@ -15,17 +15,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +29,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 public class TestCategoryAllPropertyTest extends AConceptTestCase {
 
 	private TestCategoryAllProperty tcAllProperty;
@@ -96,18 +91,13 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 * @throws IOException
 	 */
 	public void unmarshalWithResource(String resource) throws JAXBException, IOException {
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcAllProperty.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(resource);
 		
-		String inputJson = TestActivator.getResourceContentAsString(resource);
-		StringReader sr = new StringReader(inputJson);
-		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryAllProperty.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryAllProperty.class);
 	}
 	
 	@Test

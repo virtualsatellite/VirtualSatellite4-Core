@@ -14,16 +14,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +31,6 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryReferenceTest extends AConceptTestCase {
 
@@ -86,24 +81,19 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		BeanPropertyString bpString2 = new TestCategoryAllProperty(concept).getTestStringBean();
 		bpString2.getATypeInstance().setUuid(new VirSatUuid("1256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcReference.getATypeInstance());
-		resourceImpl.getContents().add(bpString.getATypeInstance());
-		resourceImpl.getContents().add(bpString2.getATypeInstance());
-		resourceImpl.getContents().add(refCatBean.getATypeInstance());
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReference.getATypeInstance(),
+				bpString.getATypeInstance(),
+				bpString2.getATypeInstance(),
+				refCatBean.getATypeInstance(),
+				tcAllProperty.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
 		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
-		StringReader sr = new StringReader(inputJson);
-
 		assertEquals(bpString.getUuid(), tcReference.getTestRefProperty().getUuid());
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReference.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReference.getTestRefProperty().getUuid());
 	}
@@ -119,22 +109,16 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReference.getATypeInstance()
+		));
 		
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcReference.getATypeInstance());
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_NULL_REFERENCE);
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
-		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_NULL_REFERENCE);
-		StringReader sr = new StringReader(inputJson);
-
 		assertNotNull(tcReference.getTestRefCategory());
 		assertNotNull(tcReference.getTestRefProperty());
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReference.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReference.class);
 		
 		assertNull("Refernce set to null", tcReference.getTestRefCategory());
 		assertNull("Refernce set to null", tcReference.getTestRefProperty());

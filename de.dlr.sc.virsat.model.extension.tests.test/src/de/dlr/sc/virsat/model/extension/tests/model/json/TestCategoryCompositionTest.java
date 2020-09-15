@@ -14,16 +14,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +29,6 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryCompositionTest extends AConceptTestCase {
 
@@ -69,21 +64,16 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcComposition.getATypeInstance());
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcComposition.getATypeInstance(),
+				tcAllProperty.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
 		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
-		StringReader sr = new StringReader(inputJson);
-
 		assertNull(tcAllProperty.getTestString());
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryComposition.class);
 		
 		assertEquals("Composed element changed", JsonTestHelper.TEST_STRING, tcComposition.getTestSubCategory().getTestString());
 	}
@@ -97,20 +87,16 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcComposition.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcComposition.getATypeInstance(),
+				tcAllProperty.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_NULL_COMPOSITION);
 		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_NULL_COMPOSITION);
-		StringReader sr = new StringReader(inputJson);
-
 		assertNotNull(tcComposition.getTestSubCategory());
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryComposition.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryComposition.class);
 		
 		// Composed bean can't change the composed element
 		assertNotNull("No error was thrown and the model didn't change", tcComposition.getTestSubCategory());

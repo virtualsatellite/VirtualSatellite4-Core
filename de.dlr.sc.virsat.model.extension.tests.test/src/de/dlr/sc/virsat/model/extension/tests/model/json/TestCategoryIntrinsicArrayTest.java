@@ -13,16 +13,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +29,6 @@ import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.ATestCategoryIntrinsicArrayTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayTest {
 	
@@ -72,23 +67,18 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
 		ArrayInstance originalArrayInstance = tcIntrinsicArray.getTestStringArrayStaticBean().getArrayInstance();
 		
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcIntrinsicArray.getATypeInstance());
-		resourceImpl.getContents().add(originalArrayInstance);
-		resourceImpl.getContents().add(bpString.getATypeInstance());
-		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcIntrinsicArray.getATypeInstance(),
+				originalArrayInstance,
+				bpString.getATypeInstance()
+		));
 		
 		assertNull(tcIntrinsicArray.getTestStringArrayStaticBean().get(0).getValue());
 		assertEquals(tcIntrinsicArray.getTestStringArrayDynamicBean().size(), 0);
 		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE);
-		StringReader sr = new StringReader(inputJson);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
 
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryIntrinsicArray.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryIntrinsicArray.class);
 		assertEquals("Element in static element changed", JsonTestHelper.TEST_STRING, tcIntrinsicArray.getTestStringArrayStaticBean().get(0).getValue());
 		assertEquals("Successfully added an element", 1, tcIntrinsicArray.getTestStringArrayDynamicBean().size());
 	}

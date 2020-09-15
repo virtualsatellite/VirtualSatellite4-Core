@@ -14,16 +14,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +32,6 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 
@@ -94,23 +89,18 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		BeanPropertyString bpString2 = new TestCategoryAllProperty(concept).getTestStringBean();
 		bpString2.getATypeInstance().setUuid(new VirSatUuid("1256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcReferenceArray.getATypeInstance());
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
-		resourceImpl.getContents().add(bpString.getATypeInstance());
-		resourceImpl.getContents().add(bpString2.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReferenceArray.getATypeInstance(),
+				tcAllProperty.getATypeInstance(),
+				bpString.getATypeInstance(),
+				bpString2.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
-		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
-		StringReader sr = new StringReader(inputJson);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
 		
 		assertEquals(bpString.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
 	}
@@ -125,25 +115,20 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcReferenceArray.getATypeInstance());
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
-		resourceImpl.getContents().add(bpString.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReferenceArray.getATypeInstance(),
+				tcAllProperty.getATypeInstance(),
+				bpString.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
-		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_NULL_REFERENCE);
-		StringReader sr = new StringReader(inputJson);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_NULL_REFERENCE);
 		
 		assertNotNull(tcReferenceArray.getTestCategoryReferenceArrayStaticBean().get(0).getValue());
 		assertNotNull(tcReferenceArray.getTestPropertyReferenceArrayStaticBean().get(0).getValue());
 		assertNotNull(tcReferenceArray.getTestCategoryReferenceArrayStatic().get(0));
 		assertNotNull(tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0));
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
 		
 		assertNull(tcReferenceArray.getTestCategoryReferenceArrayStaticBean().get(0).getValue());
 		assertNull(tcReferenceArray.getTestPropertyReferenceArrayStaticBean().get(0).getValue());
