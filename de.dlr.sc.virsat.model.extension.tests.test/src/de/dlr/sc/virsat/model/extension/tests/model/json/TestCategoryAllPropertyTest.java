@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -17,10 +16,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
@@ -80,32 +77,16 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		tcAllProperty.setTestBool(TEST_BOOL);
 	}
 	
-	/**
-	 * Marshall the TestCategoryAllProperty and assert that it equals the resource
-	 * @param resource containing the expected JSON
-	 * @throws JAXBException
-	 * @throws IOException
-	 */
-	public void assertMarshalWithResource(String resource) throws JAXBException, IOException {
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(tcAllProperty, sw);
-
-		String expectedJson = TestActivator.getResourceContentAsString(resource);
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
-	}
-	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		initProperties();
 		
-		assertMarshalWithResource(RESOURCE_WITH_VALUES);
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE_WITH_VALUES, tcAllProperty);
 	}
 	
 	@Test
 	public void testJsonMarshallingWithDefaultValues() throws JAXBException, IOException {
-		assertMarshalWithResource(RESOURCE_WITH_DEFAULTS);
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE_WITH_DEFAULTS, tcAllProperty);
 	}
 	
 	/**

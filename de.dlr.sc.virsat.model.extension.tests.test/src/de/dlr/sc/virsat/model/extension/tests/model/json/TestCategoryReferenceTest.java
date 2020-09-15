@@ -9,17 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
@@ -78,26 +75,10 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcReference.setTestRefCategory(tcAllProperty);
 	}
 	
-	/**
-	 * Marshalls the test object and asserts that the result equals the test resource
-	 * @param resource the test resource
-	 * @throws JAXBException
-	 * @throws IOException
-	 */
-	private void assertMarshall(String resource) throws JAXBException, IOException {
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(tcReference, sw);
-		
-		String expectedJson = TestActivator.getResourceContentAsString(resource);
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
-	}
-	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		
-		assertMarshall(RESOURCE);
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE, tcReference);
 	}
 	
 	@Test
@@ -133,7 +114,7 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		tcReference.setTestRefProperty(null);
 		tcReference.setTestRefCategory(null);
 		
-		assertMarshall(RESOURCE_NULL_REFERENCE);
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE_NULL_REFERENCE, tcReference);
 	}
 	
 	@Test

@@ -9,16 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
@@ -39,7 +36,9 @@ import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 public class TestCategoryBeanATest extends AConceptTestCase {
 
 	private static final String UUID = "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2";
+	private static final String RESOURCE = "/resources/json/TestCategoryBeanA_Marshaling.json";
 	private JAXBUtility jaxbUtility;
+	private TestCategoryBeanA tcBeanA;
 	private Concept concept;
 	
 	@Before
@@ -47,35 +46,25 @@ public class TestCategoryBeanATest extends AConceptTestCase {
 		concept = loadConceptFromPlugin();
 		
 		jaxbUtility = new JAXBUtility(new Class[] {TestCategoryBeanA.class});
+		
+		tcBeanA = new TestCategoryBeanA(concept);
+		tcBeanA.getTypeInstance().setUuid(new VirSatUuid(UUID));
 	}
 
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
-		
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		TestCategoryBeanA testCategoryBean = new TestCategoryBeanA(concept);
-		testCategoryBean.getTypeInstance().setUuid(new VirSatUuid(UUID));
-		
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(testCategoryBean, sw);
-		
-		String expectedJson = TestActivator.getResourceContentAsString("/resources/json/TestCategoryBeanA_Marshaling.json");
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE, tcBeanA);
 	}
 	
 	@Test
 	public void testJsonUnMarshalling() throws JAXBException, IOException {
 		
-		TestCategoryBeanA originCatgeoryBean = new TestCategoryBeanA(concept);
-		originCatgeoryBean.getTypeInstance().setUuid(new VirSatUuid(UUID));
-		
 		// Quick mock setup to embed the model into a resource set
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resourceImpl = new ResourceImpl();
 		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(originCatgeoryBean.getATypeInstance());
+		resourceImpl.getContents().add(tcBeanA.getATypeInstance());
 		
 		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
 
@@ -84,7 +73,7 @@ public class TestCategoryBeanATest extends AConceptTestCase {
 		
 		JAXBElement<TestCategoryBeanA> jaxbElement = jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryBeanA.class);
 		TestCategoryBeanA createdBeanA = jaxbElement.getValue();
-		assertEquals(originCatgeoryBean, createdBeanA);
+		assertEquals(tcBeanA, createdBeanA);
 	}
 	
 }

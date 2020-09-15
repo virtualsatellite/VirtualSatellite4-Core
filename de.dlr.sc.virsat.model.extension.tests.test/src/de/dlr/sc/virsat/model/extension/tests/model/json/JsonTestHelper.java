@@ -9,6 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
+import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
+
+import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
@@ -16,12 +24,14 @@ import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 /**
  * Class containing static helper functions 
@@ -90,4 +100,22 @@ public class JsonTestHelper {
 		list.getArrayInstance().setUuid(new VirSatUuid("98218bbf-a5ee-432d-b01c-da48f4f9495b"));
 	}
 	// CHECKSTYLE:ON
+	
+	/**
+	 * Marshalls the test object and asserts that the result equals the test resource
+	 * @param jaxbUtility the JAXBUtility with the needed classes registered
+	 * @param resource the test resource
+	 * @param testObject the object to assert with the resource
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	public static void assertMarshall(JAXBUtility jaxbUtility, String resource, IBeanObject<?> testObject) throws JAXBException, IOException {
+		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
+		
+		StringWriter sw = new StringWriter();
+		jsonMarshaller.marshal(testObject, sw);
+		
+		String expectedJson = TestActivator.getResourceContentAsString(resource);
+		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
 }
