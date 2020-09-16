@@ -12,21 +12,25 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import javax.xml.bind.annotation.XmlElement;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 
 
@@ -42,6 +46,8 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategory extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "testConcept.testCategory";
@@ -99,6 +105,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTpSringArrayDynamicBean() {
 		safeAccessTpSringArrayDynamicBean();
 		return tpSringArrayDynamicBean;
@@ -115,6 +122,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyString> getTpSringArrayStaticBean() {
 		safeAccessTpSringArrayStaticBean();
 		return tpSringArrayStaticBean;
@@ -130,7 +138,8 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 			tpIntArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayDynamic"));
 		}
 	}
-		
+	
+	@XmlElement
 	public IBeanList<BeanPropertyInt> getTpIntArrayDynamicBean() {
 		safeAccessTpIntArrayDynamicBean();
 		return tpIntArrayDynamicBean;
@@ -146,7 +155,8 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 			tpIntArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpIntArrayStatic"));
 		}
 	}
-		
+	
+	@XmlElement
 	public IBeanList<BeanPropertyInt> getTpIntArrayStaticBean() {
 		safeAccessTpIntArrayStaticBean();
 		return tpIntArrayStaticBean;
@@ -162,7 +172,8 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 			tpFloatArrayDynamicBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayDynamic"));
 		}
 	}
-		
+	
+	@XmlElement
 	public IBeanList<BeanPropertyFloat> getTpFloatArrayDynamicBean() {
 		safeAccessTpFloatArrayDynamicBean();
 		return tpFloatArrayDynamicBean;
@@ -178,7 +189,8 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 			tpFloatArrayStaticBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("tpFloatArrayStatic"));
 		}
 	}
-		
+	
+	@XmlElement
 	public IBeanList<BeanPropertyFloat> getTpFloatArrayStaticBean() {
 		safeAccessTpFloatArrayStaticBean();
 		return tpFloatArrayStaticBean;
@@ -195,6 +207,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayDynamicBean() {
 		safeAccessTpBooleanArrayDynamicBean();
 		return tpBooleanArrayDynamicBean;
@@ -211,6 +224,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyBoolean> getTpBooleanArrayStaticBean() {
 		safeAccessTpBooleanArrayStaticBean();
 		return tpBooleanArrayStaticBean;
@@ -227,6 +241,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyResource> getTpResourceDynamichBean() {
 		safeAccessTpResourceDynamichBean();
 		return tpResourceDynamichBean;
@@ -243,6 +258,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyResource> getTpResourceStaticBean() {
 		safeAccessTpResourceStaticBean();
 		return tpResourceStaticBean;
@@ -259,6 +275,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyEnum> getTpEnumDynamichBean() {
 		safeAccessTpEnumDynamichBean();
 		return tpEnumDynamichBean;
@@ -275,6 +292,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyEnum> getTpEnumStaticBean() {
 		safeAccessTpEnumStaticBean();
 		return tpEnumStaticBean;
@@ -282,4 +300,3 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	
 	
 }
-

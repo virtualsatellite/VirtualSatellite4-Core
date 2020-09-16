@@ -1,0 +1,22 @@
+{
+   "type" : "testCategoryIntrinsicArray",
+   "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
+   "name" : "TestCategoryIntrinsicArray",
+   "testStringArrayDynamicBean" : [ {
+      "uuid" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50",
+      "value" : "testString"
+   } ],
+   "testStringArrayStaticBean" : [ {
+      "uuid" : "4efe0002-f081-49c0-9917-6f4a6e7dd9ce",
+      "value" : "testString"
+   }, {
+      "uuid" : "6ad3d35a-a0b4-48e8-9bfd-e6edf438eee5",
+      "value" : null
+   }, {
+      "uuid" : "8fd96e3b-5bf3-41e1-a02a-64f8bff99107",
+      "value" : null
+   }, {
+      "uuid" : "c38d7185-fcc3-480c-bfb4-28e6fcc09d34",
+      "value" : null
+   } ]
+}

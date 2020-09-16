@@ -12,15 +12,18 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.util.URI;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -31,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import javax.xml.bind.annotation.XmlElement;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 
 
@@ -46,6 +50,8 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategory extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "testConcept.testCategory";
@@ -112,6 +118,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		return tpSring.getValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyString getTpSringBean() {
 		safeAccessTpSring();
 		return tpSring;
@@ -148,6 +155,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		return tpInt.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyInt getTpIntBean() {
 		safeAccessTpInt();
 		return tpInt;
@@ -184,6 +192,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		return tpFloat.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getTpFloatBean() {
 		safeAccessTpFloat();
 		return tpFloat;
@@ -215,6 +224,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		return tpBoolean.getValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyBoolean getTpBooleanBean() {
 		safeAccessTpBoolean();
 		return tpBoolean;
@@ -246,6 +256,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		return tpResource.getValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyResource getTpResourceBean() {
 		safeAccessTpResource();
 		return tpResource;
@@ -282,6 +293,7 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 		return tpEnum.getEnumValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyEnum getTpEnumBean() {
 		safeAccessTpEnum();
 		return tpEnum;
@@ -289,4 +301,3 @@ public abstract class ATestCategory extends ABeanCategoryAssignment implements I
 	
 	
 }
-

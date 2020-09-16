@@ -9,8 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 
 /**
  * Core functionality for a Concept Bean and abstract implementation to the interface
@@ -18,6 +26,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  *@param <CP_TYPE>
  */
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
 	protected CP_TYPE ti;
@@ -44,6 +54,9 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = (CP_TYPE) ti;
 	}
 	
+	@XmlID
+	@XmlElement(name = "uuid")
+	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
 	@Override
 	public ATypeInstance getATypeInstance() {
 		return ti;
@@ -58,7 +71,7 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}
-	
+
 	@Override
 	public String getUuid() {
 		return ti.getUuid().toString();

@@ -12,17 +12,21 @@ package de.dlr.sc.virsat.model.extension.budget.power.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -37,6 +41,8 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * Abstract definition of a collection of power parameters
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AAPowerParameters extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.budget.power.APowerParameters";
@@ -108,6 +114,7 @@ public abstract class AAPowerParameters extends GenericCategory implements IBean
 		return avgPower.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getAvgPowerBean() {
 		safeAccessAvgPower();
 		return avgPower;
@@ -144,6 +151,7 @@ public abstract class AAPowerParameters extends GenericCategory implements IBean
 		return minPower.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getMinPowerBean() {
 		safeAccessMinPower();
 		return minPower;
@@ -180,6 +188,7 @@ public abstract class AAPowerParameters extends GenericCategory implements IBean
 		return maxPower.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getMaxPowerBean() {
 		safeAccessMaxPower();
 		return maxPower;
@@ -216,6 +225,7 @@ public abstract class AAPowerParameters extends GenericCategory implements IBean
 		return avgPowerWithMargin.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getAvgPowerWithMarginBean() {
 		safeAccessAvgPowerWithMargin();
 		return avgPowerWithMargin;
@@ -252,6 +262,7 @@ public abstract class AAPowerParameters extends GenericCategory implements IBean
 		return avgPowerMargin.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getAvgPowerMarginBean() {
 		safeAccessAvgPowerMargin();
 		return avgPowerMargin;
@@ -288,6 +299,7 @@ public abstract class AAPowerParameters extends GenericCategory implements IBean
 		return margin.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getMarginBean() {
 		safeAccessMargin();
 		return margin;

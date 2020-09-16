@@ -1,0 +1,7 @@
+{
+   "type" : "testCategoryReference",
+   "uuid" : "0370d14d-e6a1-4660-83f1-5bb98fa840ac",
+   "name" : "TestCategoryReference",
+   "testRefCategory" : null,
+   "testRefProperty" : null
+}
