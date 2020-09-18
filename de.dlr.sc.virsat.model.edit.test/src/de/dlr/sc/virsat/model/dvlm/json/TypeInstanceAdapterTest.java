@@ -19,9 +19,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
 public class TypeInstanceAdapterTest {
@@ -77,7 +77,8 @@ public class TypeInstanceAdapterTest {
 			}
 		);
 		
-		ATypeInstance unmarshalledTi = adapter.unmarshal(UUID.toString());
+		// TODO: rename this class
+		IUuid unmarshalledTi = adapter.unmarshal(UUID.toString());
 		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);
 	}
 

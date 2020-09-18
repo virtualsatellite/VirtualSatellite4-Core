@@ -49,7 +49,8 @@ public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 		
 		// Get the type instance from the uuid
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
-		ATypeInstance object = typeInstanceAdapter.unmarshal(uuid);
+		// TODO: save cast?
+		ATypeInstance object = (ATypeInstance) typeInstanceAdapter.unmarshal(uuid);
 		
 		return (ABeanObject) new BeanTypeInstanceFactory().getInstanceFor(object);
 	}
