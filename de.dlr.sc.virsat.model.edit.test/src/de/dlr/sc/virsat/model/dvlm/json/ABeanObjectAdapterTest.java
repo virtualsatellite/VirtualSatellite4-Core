@@ -68,7 +68,7 @@ public class ABeanObjectAdapterTest {
 	
 	@Test
 	public void testUnmarshalString() throws Exception {
-		TypeInstanceAdapter adapterNoRs = new TypeInstanceAdapter();
+		IUuidAdapter adapterNoRs = new IUuidAdapter();
 		assertThrows("A resource set should be set",
 			NullPointerException.class, () -> {
 				adapterNoRs.unmarshal(null);

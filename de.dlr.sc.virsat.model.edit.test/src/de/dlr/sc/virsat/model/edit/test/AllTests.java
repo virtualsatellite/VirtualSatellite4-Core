@@ -54,7 +54,7 @@ import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtilityTest;
-import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.UriAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMRepositoryItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.qudv.provider.DVLMQudvItemProviderAdapterFactoryTest;
@@ -139,7 +139,7 @@ import junit.framework.JUnit4TestAdapter;
 				AnyTypeAdapterTest.class,
 				DoubleAdapterTest.class,
 				JAXBUtilityTest.class,
-				TypeInstanceAdapterTest.class,
+				IUuidAdapterTest.class,
 				UriAdapterTest.class,
 				})
 

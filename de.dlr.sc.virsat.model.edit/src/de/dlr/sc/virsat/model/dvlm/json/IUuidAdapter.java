@@ -20,19 +20,18 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 
 /**
- * Adapter for a ATypeInstance from/to a UUID
+ * Adapter for a IUuid from/to a UUID
  */
-// TODO: rename
-public class TypeInstanceAdapter extends XmlAdapter<String, IUuid> {
+public class IUuidAdapter extends XmlAdapter<String, IUuid> {
 
 	private ResourceSet resourceSet;
 	private Map<String, IUuid> objectMap = new HashMap<String, IUuid>();
 	
-	public TypeInstanceAdapter() {
+	public IUuidAdapter() {
 		
 	}
 	
-	public TypeInstanceAdapter(ResourceSet resourceSet) {
+	public IUuidAdapter(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
 	}
 	

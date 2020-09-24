@@ -20,7 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 @SuppressWarnings("rawtypes")
 /**
  * Adapter for a referenced ABeanObject from/to a UUID
- * that uses the TypeInstanceAdapter
+ * that uses the IUuidAdapter
  */
 public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 
@@ -48,7 +48,7 @@ public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 		}
 		
 		// Get the type instance from the uuid
-		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
+		IUuidAdapter typeInstanceAdapter = new IUuidAdapter(resourceSet);
 		ATypeInstance object = (ATypeInstance) typeInstanceAdapter.unmarshal(uuid);
 		
 		return (ABeanObject) new BeanTypeInstanceFactory().getInstanceFor(object);

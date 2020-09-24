@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanCategoryAssignmentAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
-import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
@@ -101,7 +101,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@XmlID
 	@XmlElement(name = "uuid")
-	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override
 	public	void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;

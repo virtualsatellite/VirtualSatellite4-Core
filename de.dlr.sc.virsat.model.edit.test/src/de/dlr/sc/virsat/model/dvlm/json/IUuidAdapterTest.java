@@ -24,9 +24,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
-public class TypeInstanceAdapterTest {
+public class IUuidAdapterTest {
 
-	private TypeInstanceAdapter adapter;
+	private IUuidAdapter adapter;
 	private ValuePropertyInstance vpi;
 	private static final VirSatUuid UUID = new VirSatUuid();
 	
@@ -40,7 +40,7 @@ public class TypeInstanceAdapterTest {
 		vpi.setUuid(UUID);
 		resourceImpl.getContents().add(vpi);
 		
-		adapter = new TypeInstanceAdapter(resourceSet);
+		adapter = new IUuidAdapter(resourceSet);
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class TypeInstanceAdapterTest {
 
 	@Test
 	public void testUnmarshalString() throws Exception {
-		TypeInstanceAdapter adapterNoRs = new TypeInstanceAdapter();
+		IUuidAdapter adapterNoRs = new IUuidAdapter();
 		assertThrows("A resource set should be set",
 			NullPointerException.class, () -> {
 				adapterNoRs.unmarshal(null);
@@ -77,7 +77,6 @@ public class TypeInstanceAdapterTest {
 			}
 		);
 		
-		// TODO: rename this class
 		IUuid unmarshalledTi = adapter.unmarshal(UUID.toString());
 		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);
 	}

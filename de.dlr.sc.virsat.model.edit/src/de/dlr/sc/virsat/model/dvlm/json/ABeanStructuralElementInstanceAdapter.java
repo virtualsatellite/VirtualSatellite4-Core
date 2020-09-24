@@ -19,7 +19,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Adapter for a referenced ABeanStructuralElementInstance from/to a UUID
- * that uses the TypeInstanceAdapter
+ * that uses the IUuidAdapter
  */
 // TODO: test
 public class ABeanStructuralElementInstanceAdapter extends XmlAdapter<String, ABeanStructuralElementInstance> {
@@ -48,7 +48,7 @@ public class ABeanStructuralElementInstanceAdapter extends XmlAdapter<String, AB
 		}
 		
 		// Get the type instance from the uuid
-		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
+		IUuidAdapter typeInstanceAdapter = new IUuidAdapter(resourceSet);
 		StructuralElementInstance sei = (StructuralElementInstance) typeInstanceAdapter.unmarshal(uuid);
 		
 		return new BeanStructuralElementInstance(sei);
