@@ -13,6 +13,11 @@ import de.dlr.sc.virsat.excel.AExcelIo;
 
 public abstract class AExcelFuncIO extends AExcelIo {
 
+	public static final int INTERFACE_COLUMN_INTERFACE_TO = 4;
+
+	public static final int INTERFACEEND_COLUMN_INTERFACEEND_NAME = 2;
+	public static final int INTERFACEEND_COLUMN_INTERFACEEND_TYPE = 3;
+	
 	public static final int INTERFACE_COLUMN_INTERFACE_NAME = 2;
 	public static final int INTERFACE_COLUMN_INTERFACE_FROM = 3;
 	public static final int INTERFACETYPES_COLUMN_INTERFACETYPE_NAME = 2;
