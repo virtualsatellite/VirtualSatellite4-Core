@@ -94,7 +94,6 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 	 */
 	private void setInitialValues() {
 		tse.setName(NAME);
-		// TODO: make setter abstract?
 		sei.setParent(seiParent);
 		
 		tse.add(tcBA);
