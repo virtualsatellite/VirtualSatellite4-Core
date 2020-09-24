@@ -46,7 +46,7 @@ public class StateMachineExporter implements IExport {
 	private CategoryAssignment exportCa;
 	
 	public StateMachineExporter() {
-		this.localDateTime = LocalDateTime.now(); 
+		this(LocalDateTime.now());
 	}
 	
 	public StateMachineExporter(LocalDateTime localDateTime) {

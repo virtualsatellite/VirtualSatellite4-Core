@@ -63,7 +63,7 @@ public class FuncElecExporter implements IExport {
 	private ExcelExportHelper helper;
 	
 	public FuncElecExporter() {
-		this.localDateTime = LocalDateTime.now(); 
+		this(LocalDateTime.now());
 	}
 	
 	public FuncElecExporter(LocalDateTime localDateTime) {
