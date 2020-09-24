@@ -39,14 +39,19 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
  */
 public class StateMachineExporter implements IExport {
 	
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
+	
+	protected LocalDateTime localDateTime;
+	protected ExcelExportHelper helper = new ExcelExportHelper();
+	private CategoryAssignment exportCa;
+	
+	public StateMachineExporter() {
+		this(LocalDateTime.now());
+	}
+	
 	public StateMachineExporter(LocalDateTime localDateTime) {
 		this.localDateTime = localDateTime;
 	}
-	
-	protected LocalDateTime localDateTime;
-	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
-	protected ExcelExportHelper helper = new ExcelExportHelper();
-	private CategoryAssignment exportCa;
 
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
