@@ -10,14 +10,12 @@
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
@@ -41,11 +39,12 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 	
 	private static final String RESOURCE_DEFAULTS = "/resources/json/TestStructuralElementInstance_Marshaling_Defaults.json";
 	private static final String RESOURCE = "/resources/json/TestStructuralElementInstance_Marshaling.json";
-	private static final String RESOURCE_ONE = "/resources/json/TestStructuralElementInstance_Marshaling_ONE.json";
 	private static final String NAME = "name";
 	
 	private TestStructuralElement tse;
+	private TestStructuralElement tseParent;
 	private StructuralElementInstance sei;
+	private StructuralElementInstance seiParent;
 	
 	private TestStructuralElement tseChild1;
 	private TestStructuralElement tseChild2;
@@ -65,6 +64,8 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		tse = new TestStructuralElement(concept);
 		sei = tse.getStructuralElementInstance();
+		tseParent = new TestStructuralElement(concept);
+		seiParent = tseParent.getStructuralElementInstance();
 		
 		tseChild1 = new TestStructuralElement(concept);
 		tseChild2 = new TestStructuralElement(concept);
@@ -76,6 +77,7 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		tcAP = new TestCategoryAllProperty(concept);
 		
 		tse.getStructuralElementInstance().setUuid(new VirSatUuid("f2d3ef60-389f-4fec-87a6-bd928da08f2c"));
+		tseParent.getStructuralElementInstance().setUuid(new VirSatUuid("f2d3ef60-389f-4fec-87a6-bd928da08f2a"));
 		
 		tseChild1.getStructuralElementInstance().setUuid(new VirSatUuid("e8be1f69-86b1-45b2-9077-0d9b6b846cac"));
 		tseChild2.getStructuralElementInstance().setUuid(new VirSatUuid("c280a34d-c6f7-4444-8a0a-4fad738ffef3"));
@@ -92,6 +94,8 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 	 */
 	private void setInitialValues() {
 		tse.setName(NAME);
+		// TODO: make setter abstract?
+		sei.setParent(seiParent);
 		
 		tse.add(tcBA);
 		tse.add(tcAP);
@@ -116,58 +120,10 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 	}
 	
 	@Test
-	public void testJsonUnmarshallingDefaults() throws JAXBException, IOException {
-		setInitialValues();
-		
-		assertFalse("Initial cas", sei.getCategoryAssignments().isEmpty());
-		assertFalse("Initial children", sei.getChildren().isEmpty());
-		assertFalse("Initial superSeis", sei.getSuperSeis().isEmpty());
-		
-		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
-				sei
-		));
-		
-		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_DEFAULTS);
-		
-		JAXBElement<TestStructuralElement> jaxbElement = jsonUnmarshaller.unmarshal(inputSource, TestStructuralElement.class);
-		TestStructuralElement createdTse = jaxbElement.getValue();
-		
-		assertNotNull(createdTse.getStructuralElementInstance());
-		assertTrue("No cas", sei.getCategoryAssignments().isEmpty());
-		assertTrue("No children", sei.getChildren().isEmpty());
-		assertTrue("No superSeis", sei.getSuperSeis().isEmpty());
-	}
-	
-	//TODO: remove
-	@Test
-	public void testJsonUnmarshallingONE() throws JAXBException, IOException {
-		setInitialValues();
-		
-		assertFalse("Initial cas", sei.getCategoryAssignments().isEmpty());
-		assertFalse("Initial children", sei.getChildren().isEmpty());
-		assertFalse("Initial superSeis", sei.getSuperSeis().isEmpty());
-		
-		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
-				sei,
-				tseChild1.getStructuralElementInstance(),
-				tseSuperSei1.getStructuralElementInstance(),
-				tcBA.getATypeInstance()
-		));
-		
-		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_ONE);
-		
-		JAXBElement<TestStructuralElement> jaxbElement = jsonUnmarshaller.unmarshal(inputSource, TestStructuralElement.class);
-		TestStructuralElement createdTse = jaxbElement.getValue();
-		
-		assertEquals(1, sei.getCategoryAssignments().size());
-		assertEquals(1, sei.getChildren().size());
-		assertEquals(1, sei.getSuperSeis().size());
-	}
-	
-	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
 		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
 				sei,
+				seiParent,
 				tseChild1.getStructuralElementInstance(),
 				tseChild2.getStructuralElementInstance(),
 				tseSuperSei1.getStructuralElementInstance(),
@@ -176,6 +132,8 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 				tcAP.getATypeInstance()
 		));
 		
+		assertNull("Initial no name", sei.getName());
+		assertNull("Initial no parent", sei.getParent());
 		assertTrue("Initial no cas", sei.getCategoryAssignments().isEmpty());
 		assertTrue("Initial no children", sei.getChildren().isEmpty());
 		assertTrue("Initial no superSeis", sei.getSuperSeis().isEmpty());
@@ -184,18 +142,29 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		jsonUnmarshaller.unmarshal(inputSource, TestStructuralElement.class);
 
 		assertEquals("Name set correctly", NAME, sei.getName());
+		assertEquals("Parent set correctly", seiParent, sei.getParent());
 		
-		assertFalse("Cas got added correctly", sei.getCategoryAssignments().isEmpty());
+		assertEquals("Cas got added correctly", 2, sei.getCategoryAssignments().size());
 		assertTrue(sei.getCategoryAssignments().contains(tcBA.getATypeInstance()));
 		assertTrue(sei.getCategoryAssignments().contains(tcAP.getATypeInstance()));
 		
-		assertFalse("Children got added correctly", sei.getChildren().isEmpty());
+		assertEquals("Children got added correctly", 2, sei.getChildren().size());
 		assertTrue(sei.getChildren().contains(tseChild1.getStructuralElementInstance()));
 		assertTrue(sei.getChildren().contains(tseChild1.getStructuralElementInstance()));
 		
-		assertFalse("SuperSeis got added correctly", sei.getSuperSeis().isEmpty());
+		assertEquals("SuperSeis got added correctly", 2, sei.getSuperSeis().size());
 		assertTrue(sei.getSuperSeis().contains(tseSuperSei1.getStructuralElementInstance()));
 		assertTrue(sei.getSuperSeis().contains(tseSuperSei2.getStructuralElementInstance()));
+		
+		// Check that unmarshalling again is idempotent
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestStructuralElement.class);
+		
+		assertEquals("Name set correctly", NAME, sei.getName());
+		assertEquals("Parent set correctly", seiParent, sei.getParent());
+		assertEquals("Cas got added correctly", 2, sei.getCategoryAssignments().size());
+		assertEquals("Children got added correctly", 2, sei.getChildren().size());
+		assertEquals("SuperSeis got added correctly", 2, sei.getSuperSeis().size());
 	}
 	
 }

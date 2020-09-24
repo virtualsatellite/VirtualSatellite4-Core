@@ -13,8 +13,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 
+// TODO: test
 public class ABeanCategoryAssignmentAdapter extends XmlAdapter<NotAbstractBeanCategoryAssignment, ABeanCategoryAssignment> {
-
 
 	@Override
 	public ABeanCategoryAssignment unmarshal(NotAbstractBeanCategoryAssignment v) throws Exception {

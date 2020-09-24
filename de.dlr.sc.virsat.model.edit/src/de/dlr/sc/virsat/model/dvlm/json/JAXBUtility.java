@@ -106,8 +106,11 @@ public class JAXBUtility {
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
 		
-		ABeanObjectAdapter referenceAdapter = new ABeanObjectAdapter(resourceSet);
-		jsonUnmarshaller.setAdapter(referenceAdapter);
+		ABeanObjectAdapter aBeanObjectAdapter = new ABeanObjectAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanObjectAdapter);
+		
+		ABeanStructuralElementInstanceAdapter aBeanSeiAdapter = new ABeanStructuralElementInstanceAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanSeiAdapter);
 		
 		return jsonUnmarshaller;
 	}

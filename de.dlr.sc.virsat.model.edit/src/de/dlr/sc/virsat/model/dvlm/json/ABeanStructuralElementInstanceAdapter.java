@@ -13,27 +13,27 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanTypeInstanceFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
-@SuppressWarnings("rawtypes")
 /**
- * Adapter for a referenced ABeanObject from/to a UUID
+ * Adapter for a referenced ABeanStructuralElementInstance from/to a UUID
  * that uses the TypeInstanceAdapter
  */
-public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
+// TODO: test
+public class ABeanStructuralElementInstanceAdapter extends XmlAdapter<String, ABeanStructuralElementInstance> {
 
 	private ResourceSet resourceSet;
 	
-	public ABeanObjectAdapter() { };
+	public ABeanStructuralElementInstanceAdapter() { };
 	
-	public ABeanObjectAdapter(ResourceSet resourceSet) {
+	public ABeanStructuralElementInstanceAdapter(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
 	}
 	
 	@Override
-	public String marshal(ABeanObject v) throws Exception {
+	public String marshal(ABeanStructuralElementInstance v) throws Exception {
 		if (v == null) {
 			return null;
 		} else {
@@ -42,16 +42,16 @@ public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 	}
 	
 	@Override
-	public ABeanObject unmarshal(String uuid) throws Exception {
+	public ABeanStructuralElementInstance unmarshal(String uuid) throws Exception {
 		if (resourceSet == null) {
 			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
 		}
 		
 		// Get the type instance from the uuid
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
-		ATypeInstance object = (ATypeInstance) typeInstanceAdapter.unmarshal(uuid);
+		StructuralElementInstance sei = (StructuralElementInstance) typeInstanceAdapter.unmarshal(uuid);
 		
-		return (ABeanObject) new BeanTypeInstanceFactory().getInstanceFor(object);
+		return new BeanStructuralElementInstance(sei);
 	}
 
 }

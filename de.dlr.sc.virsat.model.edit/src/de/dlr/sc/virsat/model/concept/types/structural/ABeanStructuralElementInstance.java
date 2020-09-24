@@ -40,6 +40,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanCategoryAssignmentAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -55,8 +56,8 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
-// TODO
-@XmlType(propOrder = {"structuralElementInstance", "name", "categoryAssignments", "children", "superSeis"})
+// TODO: variables?
+@XmlType(propOrder = {"structuralElementInstance", "name", "parentSeiBean", "categoryAssignments", "children", "superSeis"})
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
 
 	protected StructuralElementInstance sei;
@@ -135,18 +136,17 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	// TODO @Override
 	public List<ABeanCategoryAssignment> getCategoryAssignments() {
 		BeanCategoryAssignmentHelper bcaHelper = new BeanCategoryAssignmentHelper();
-		// TODO: has to be wrapped because else the list is unmodifiable
+		// Has to be wrapped in an ArrayList because else the list is unmodifiable
 		return new ArrayList<ABeanCategoryAssignment>(bcaHelper.getAllBeanCategories(sei, ABeanCategoryAssignment.class));
 	}
 	
-	// TODO: problem: cannot unmarshall ABeanCategoryAssignment without adapter because the abstract class cannot be instantiated
+	// Adapter is needed because the abstract ca bean class cannot be instantiated
 	// TODO @Override
 	@XmlElement
 	@XmlJavaTypeAdapter(ABeanCategoryAssignmentAdapter.class)
 	public void setCategoryAssignments(List<ABeanCategoryAssignment> newCaBeans) {
 		EList<CategoryAssignment> currentCas = sei.getCategoryAssignments();
 		
-		// TODO: sync lists
 		List<CategoryAssignment> newCas = new ArrayList<CategoryAssignment>();
 		for (ABeanCategoryAssignment aBeanCa : newCaBeans) {
 			ATypeInstance ti = aBeanCa.getATypeInstance();
@@ -180,15 +180,12 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	// TODO @Override
-	// TODO: custom adapter
-//	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
 	public List<ABeanStructuralElementInstance> getChildren() {
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
 		return new ArrayList<ABeanStructuralElementInstance>(bseiHelper.getAllSubBeanSeis(sei, ABeanStructuralElementInstance.class));
 	}
 	
 	@XmlElement
-//	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
 	public void setChildren(List<ABeanStructuralElementInstance> newBeanSeis) {
 		EList<StructuralElementInstance> currentChildren = sei.getChildren();
 		
@@ -245,14 +242,12 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
     // TODO @Override
-// 	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
  	public List<ABeanStructuralElementInstance> getSuperSeis() {
  		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
  		return new ArrayList<ABeanStructuralElementInstance>(bseiHelper.getSuperBeanSeis(sei, ABeanStructuralElementInstance.class));
  	}
  	
  	@XmlElement
-// 	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
  	public void setSuperSeis(List<ABeanStructuralElementInstance> newBeanSeis) {
  		EList<StructuralElementInstance> currentSuperSeis = sei.getSuperSeis();
  		
@@ -284,6 +279,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
 	@Override
+	@XmlElement(name = "parent")
+	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
 	public BeanStructuralElementInstance getParentSeiBean() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
 		if (parentSei != null) {
@@ -291,6 +288,10 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		} else {
 			return null;
 		}
+	}
+	
+	public void setParentSeiBean(BeanStructuralElementInstance newParent) {
+		sei.setParent(newParent.getStructuralElementInstance());
 	}
 	
 	@Override
