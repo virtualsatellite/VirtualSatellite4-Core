@@ -49,14 +49,8 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  */
 public class FuncElecExporter implements IExport {
 	
-	public FuncElecExporter(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
-	}
-	
-	protected LocalDateTime localDateTime;
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportTemplate.xlsx";
-	private ExcelExportHelper helper;
-
+	
 	private static final String[] EXPORTABLE_SEIS = {
 			ElementDefinition.class.getSimpleName(),
 			ElementConfiguration.class.getSimpleName(),
@@ -64,6 +58,17 @@ public class FuncElecExporter implements IExport {
 			ElementRealization.class.getSimpleName(),
 			ElementOccurence.class.getSimpleName()
 	};
+	
+	protected LocalDateTime localDateTime;
+	private ExcelExportHelper helper;
+	
+	public FuncElecExporter() {
+		this.localDateTime = LocalDateTime.now(); 
+	}
+	
+	public FuncElecExporter(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
+	}
 
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
