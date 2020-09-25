@@ -17,6 +17,7 @@ public abstract class AExcelFuncIO extends AExcelIo {
 
 	public static final int INTERFACEEND_COLUMN_INTERFACEEND_NAME = 2;
 	public static final int INTERFACEEND_COLUMN_INTERFACEEND_TYPE = 3;
+	public static final int INTERFACEEND_COLUMN_INTERFACEEND_FQN = 4;
 	
 	public static final int INTERFACE_COLUMN_INTERFACE_NAME = 2;
 	public static final int INTERFACE_COLUMN_INTERFACE_FROM = 3;
