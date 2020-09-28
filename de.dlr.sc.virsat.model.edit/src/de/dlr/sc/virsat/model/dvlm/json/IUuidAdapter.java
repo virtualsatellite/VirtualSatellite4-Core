@@ -45,6 +45,9 @@ public class IUuidAdapter extends XmlAdapter<String, IUuid> {
 		if (resourceSet == null) {
 			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
 		}
+		if (uuid == null) {
+			throw new NullPointerException("No uuid provided");
+		}
 		
 		// Search for the type instance with the same uuid
 		EcoreUtil.getAllContents(resourceSet, true).forEachRemaining(object -> {

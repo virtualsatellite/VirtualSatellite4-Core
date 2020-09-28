@@ -12,29 +12,21 @@ package de.dlr.sc.virsat.model.dvlm.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.junit.Before;
-import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
-public class IUuidAdapterTest {
+public class IUuidAdapterTest extends AUuidAdapterTest {
 
-	private IUuidAdapter adapter;
 	private ValuePropertyInstance vpi;
-	private static final VirSatUuid UUID = new VirSatUuid();
-	
+
 	@Before
 	public void setUp() throws Exception {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
+		super.setUp();
 		
 		vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
 		vpi.setUuid(UUID);
@@ -43,42 +35,35 @@ public class IUuidAdapterTest {
 		adapter = new IUuidAdapter(resourceSet);
 	}
 
-	@Test
-	public void testMarshalATypeInstance() throws Exception {
-		assertThrows("The type instance should not be null",
+	@Override
+	public void testMarshallNull() throws Exception {
+		assertThrows("The IUuid should not be null",
 			NullPointerException.class, () -> {
 				adapter.marshal(null);
 			}
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testMarhall() throws Exception {
 		
-		String uuid = adapter.marshal(vpi);
+		String uuid = ((XmlAdapter<String, IUuid>) adapter).marshal(vpi);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
 		vpi.setUuid(null);
 		assertThrows("The type instance should have a uuid",
 			NullPointerException.class, () -> {
-				adapter.marshal(vpi);
+				((XmlAdapter<String, IUuid>) adapter).marshal(vpi);
 			}
 		);
 	}
 
-	@Test
-	public void testUnmarshalString() throws Exception {
-		IUuidAdapter adapterNoRs = new IUuidAdapter();
-		assertThrows("A resource set should be set",
-			NullPointerException.class, () -> {
-				adapterNoRs.unmarshal(null);
-			}
-		);
-		
-		assertThrows("No mapping found",
-			IllegalArgumentException.class, () -> {
-				adapter.unmarshal(null);
-			}
-		);
-		
-		IUuid unmarshalledTi = adapter.unmarshal(UUID.toString());
-		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testUnmarhall() throws Exception {
+		IUuid unmarshalledTi = ((XmlAdapter<String, IUuid>) adapter).unmarshal(UUID.toString());
+		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);		
 	}
 
 }

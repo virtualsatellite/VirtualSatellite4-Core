@@ -13,32 +13,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.junit.Before;
-import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
-//TODO: add abstract test case and fusion with abeanobjectadaptertest and iuuid test?
-public class ABeanStructuralElementInstanceAdapterTest {
+public class ABeanStructuralElementInstanceAdapterTest extends AUuidAdapterTest {
 
-	private ABeanStructuralElementInstanceAdapter adapter;
 	private StructuralElementInstance sei;
 	private BeanStructuralElementInstance bean;
-	private static final VirSatUuid UUID = new VirSatUuid();
-	
+
 	@Before
 	public void setUp() throws Exception {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
+		super.setUp();
 		
 		sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		sei.setUuid(UUID);
@@ -49,38 +40,31 @@ public class ABeanStructuralElementInstanceAdapterTest {
 		adapter = new ABeanStructuralElementInstanceAdapter(resourceSet);
 	}
 
-	@Test
-	public void testMarshal() throws Exception {
-		String uuid = adapter.marshal(null);
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testMarshallNull() throws Exception {
+		String uuid = ((XmlAdapter<String, ABeanStructuralElementInstance>) adapter).marshal(null);
 		assertNull("No bean returns null", uuid);
-		
-		uuid = adapter.marshal(bean);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testMarhall() throws Exception {
+		String uuid = ((XmlAdapter<String, ABeanStructuralElementInstance>) adapter).marshal(bean);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
 		sei.setUuid(null);
 		assertThrows("The sei should have a uuid",
 			NullPointerException.class, () -> {
-				adapter.marshal(bean);
+				((XmlAdapter<String, ABeanStructuralElementInstance>) adapter).marshal(bean);
 			}
 		);
 	}
-	
-	@Test
-	public void testUnmarshal() throws Exception {
-		ABeanStructuralElementInstanceAdapter adapterNoRs = new ABeanStructuralElementInstanceAdapter();
-		assertThrows("A resource set should be set",
-			NullPointerException.class, () -> {
-				adapterNoRs.unmarshal(null);
-			}
-		);
-		
-		assertThrows("No mapping found",
-			IllegalArgumentException.class, () -> {
-				adapter.unmarshal(null);
-			}
-		);
-		
-		ABeanStructuralElementInstance unmarshalledBean = adapter.unmarshal(UUID.toString());
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testUnmarhall() throws Exception {
+		ABeanStructuralElementInstance unmarshalledBean = ((XmlAdapter<String, ABeanStructuralElementInstance>) adapter).unmarshal(UUID.toString());
 		assertEquals("The right bean was returned", bean, (BeanStructuralElementInstance) unmarshalledBean);
 	}
 	
