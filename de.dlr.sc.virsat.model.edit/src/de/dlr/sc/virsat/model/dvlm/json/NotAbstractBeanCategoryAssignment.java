@@ -22,13 +22,11 @@ import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 public class NotAbstractBeanCategoryAssignment {
 	
 	private ABeanCategoryAssignment beanCa;
-	private String name;
 	
 	public NotAbstractBeanCategoryAssignment() { }
 	
-	public NotAbstractBeanCategoryAssignment(String name, ABeanCategoryAssignment ca) {
-		this.setName(name);
-		this.setBeanCa(ca);
+	public NotAbstractBeanCategoryAssignment(ABeanCategoryAssignment bean) {
+		this.setBeanCa(bean);
 	}
 
 	public ABeanCategoryAssignment getBeanCa() {
@@ -41,13 +39,13 @@ public class NotAbstractBeanCategoryAssignment {
 		this.beanCa = beanCa;
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	@XmlElement
-	public void setName(String name) {
-		this.name = name;
+	public String getName() {
+		if (beanCa == null) {
+			return null;
+		}
+		
+		return beanCa.getName();
 	}
 
 }

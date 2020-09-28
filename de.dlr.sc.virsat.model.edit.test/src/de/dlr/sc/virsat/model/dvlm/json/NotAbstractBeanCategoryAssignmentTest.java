@@ -15,14 +15,12 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
-public class ABeanCategoryAssignmentAdapterTest {
+public class NotAbstractBeanCategoryAssignmentTest {
 
-	private ABeanCategoryAssignmentAdapter adapter;
 	private CategoryAssignment ca;
 	private BeanCategoryAssignment bean;
 	private NotAbstractBeanCategoryAssignment wrappedBean;
@@ -30,32 +28,20 @@ public class ABeanCategoryAssignmentAdapterTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		
 		ca = CategoriesFactory.eINSTANCE.createCategoryAssignment();
 		ca.setName(NAME);
 		bean = new BeanCategoryAssignment();
 		bean.setTypeInstance(ca);
-		
-		adapter = new ABeanCategoryAssignmentAdapter();
-		wrappedBean = new NotAbstractBeanCategoryAssignment(bean);
-	}
-
-	@Test
-	public void testMarshal() throws Exception {
-		NotAbstractBeanCategoryAssignment marshalledBean = adapter.marshal(null);
-		assertNull("No bean returns null", marshalledBean);
-		
-		marshalledBean = adapter.marshal(bean);
-		assertEquals("Wrapped bean with the right name returned", NAME, marshalledBean.getName());
-		assertEquals("Wrapped bean with the right bean returned", bean, marshalledBean.getBeanCa());
 	}
 	
 	@Test
-	public void testUnmarshal() throws Exception {
-		ABeanCategoryAssignment testBean = adapter.unmarshal(null);
-		assertNull("No bean returns null", testBean);
+	public void testWrapping() {
+		wrappedBean = new NotAbstractBeanCategoryAssignment();
+		assertNull(wrappedBean.getName());
+		assertNull(wrappedBean.getBeanCa());
 		
-		ABeanCategoryAssignment unmarshalledBean = adapter.unmarshal(wrappedBean);
-		assertEquals("Right bean returned", bean, unmarshalledBean);
+		wrappedBean = new NotAbstractBeanCategoryAssignment(bean);
+		assertEquals(NAME, wrappedBean.getName());
+		assertEquals(bean, wrappedBean.getBeanCa());
 	}
 }

@@ -34,7 +34,7 @@ public class ABeanCategoryAssignmentAdapter extends XmlAdapter<NotAbstractBeanCa
 			return null;
 		}
 		
-		return new NotAbstractBeanCategoryAssignment(v.getName(), v);
+		return new NotAbstractBeanCategoryAssignment(v);
 	}
 
 }
