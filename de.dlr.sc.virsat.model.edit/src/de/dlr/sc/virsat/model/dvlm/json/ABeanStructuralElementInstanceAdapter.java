@@ -21,7 +21,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * Adapter for a referenced ABeanStructuralElementInstance from/to a UUID
  * that uses the IUuidAdapter
  */
-// TODO: test
 public class ABeanStructuralElementInstanceAdapter extends XmlAdapter<String, ABeanStructuralElementInstance> {
 
 	private ResourceSet resourceSet;

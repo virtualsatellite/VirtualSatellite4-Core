@@ -20,18 +20,18 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
-public class ABeanObjectAdapterTest {
+//TODO: add abstract test case and fusion with abeanobjectadaptertest and iuuid test?
+public class ABeanStructuralElementInstanceAdapterTest {
 
-	private ABeanObjectAdapter adapter;
-	private ValuePropertyInstance vpi;
-	private BeanPropertyString bean;
+	private ABeanStructuralElementInstanceAdapter adapter;
+	private StructuralElementInstance sei;
+	private BeanStructuralElementInstance bean;
 	private static final VirSatUuid UUID = new VirSatUuid();
 	
 	@Before
@@ -40,26 +40,25 @@ public class ABeanObjectAdapterTest {
 		Resource resourceImpl = new ResourceImpl();
 		resourceSet.getResources().add(resourceImpl);
 		
-		vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
-		vpi.setUuid(UUID);
-		vpi.setType(PropertydefinitionsFactory.eINSTANCE.createStringProperty());
-		resourceImpl.getContents().add(vpi);
+		sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		sei.setUuid(UUID);
+		resourceImpl.getContents().add(sei);
 		
-		bean = new BeanPropertyString(vpi);
+		bean = new BeanStructuralElementInstance(sei);
 		
-		adapter = new ABeanObjectAdapter(resourceSet);
+		adapter = new ABeanStructuralElementInstanceAdapter(resourceSet);
 	}
 
 	@Test
-	public void testMarshalABeanObject() throws Exception {
+	public void testMarshal() throws Exception {
 		String uuid = adapter.marshal(null);
 		assertNull("No bean returns null", uuid);
 		
 		uuid = adapter.marshal(bean);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
-		vpi.setUuid(null);
-		assertThrows("The type instance should have a uuid",
+		sei.setUuid(null);
+		assertThrows("The sei should have a uuid",
 			NullPointerException.class, () -> {
 				adapter.marshal(bean);
 			}
@@ -67,8 +66,8 @@ public class ABeanObjectAdapterTest {
 	}
 	
 	@Test
-	public void testUnmarshalString() throws Exception {
-		ABeanObjectAdapter adapterNoRs = new ABeanObjectAdapter();
+	public void testUnmarshal() throws Exception {
+		ABeanStructuralElementInstanceAdapter adapterNoRs = new ABeanStructuralElementInstanceAdapter();
 		assertThrows("A resource set should be set",
 			NullPointerException.class, () -> {
 				adapterNoRs.unmarshal(null);
@@ -81,9 +80,8 @@ public class ABeanObjectAdapterTest {
 			}
 		);
 		
-		@SuppressWarnings("rawtypes")
-		ABeanObject unmarshalledBean = adapter.unmarshal(UUID.toString());
-		assertEquals("The right bean was returned", bean, (BeanPropertyString) unmarshalledBean);
+		ABeanStructuralElementInstance unmarshalledBean = adapter.unmarshal(UUID.toString());
+		assertEquals("The right bean was returned", bean, (BeanStructuralElementInstance) unmarshalledBean);
 	}
-
+	
 }

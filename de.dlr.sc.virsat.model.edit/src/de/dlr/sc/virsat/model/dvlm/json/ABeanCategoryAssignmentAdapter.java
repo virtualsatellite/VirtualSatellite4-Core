@@ -13,16 +13,27 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 
-// TODO: test
+/**
+ * Adapter for an ABeanCategoryAssignment that wraps it into a NotAbstractBeanCategoryAssignment,
+ * so that not the whole CA bean get's un-/marshalled
+ */
 public class ABeanCategoryAssignmentAdapter extends XmlAdapter<NotAbstractBeanCategoryAssignment, ABeanCategoryAssignment> {
 
 	@Override
 	public ABeanCategoryAssignment unmarshal(NotAbstractBeanCategoryAssignment v) throws Exception {
+		if (v == null) {
+			return null;
+		}
+		
 		return v.getBeanCa();
 	}
 
 	@Override
 	public NotAbstractBeanCategoryAssignment marshal(ABeanCategoryAssignment v) throws Exception {
+		if (v == null) {
+			return null;
+		}
+		
 		return new NotAbstractBeanCategoryAssignment(v.getName(), v);
 	}
 
