@@ -80,12 +80,18 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 				tcCompositionArray.getATypeInstance()
 		));
 		
+		// TODO: test dynamic array
 		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
 		
 		assertNull(tcCompositionArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
 		
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryCompositionArray.class);
 		
+		assertEquals(JsonTestHelper.TEST_STRING, tcCompositionArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryCompositionArray.class);
 		assertEquals(JsonTestHelper.TEST_STRING, tcCompositionArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
 	}
 	

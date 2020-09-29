@@ -96,6 +96,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 				bpString2.getATypeInstance()
 		));
 		
+		// TODO: test dynamic array
 		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
 		
 		assertEquals(bpString.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
@@ -103,6 +104,11 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
+		assertEquals("Referenced bean is the same", bpString2.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
 	}
 	
 	@Test

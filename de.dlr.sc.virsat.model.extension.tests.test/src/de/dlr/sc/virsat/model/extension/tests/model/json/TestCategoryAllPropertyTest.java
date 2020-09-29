@@ -110,6 +110,10 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		
 		// The values are correctly overwritten
 		assertEqualsTestValues();
+		
+		// Unmarshall again to test idempotency
+		unmarshalWithResource(RESOURCE_WITH_VALUES);
+		assertEqualsTestValues();
 	}
 	
 	@Test
