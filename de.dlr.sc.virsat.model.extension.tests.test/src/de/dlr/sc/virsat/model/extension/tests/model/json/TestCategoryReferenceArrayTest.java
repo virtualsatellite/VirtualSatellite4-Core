@@ -26,6 +26,8 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
@@ -40,6 +42,8 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 	private Concept concept;
 	private BeanPropertyString bpString;
 	private TestCategoryAllProperty tcAllProperty;
+	private BeanPropertyReference<BeanPropertyString> refPropBean;
+	private BeanPropertyReference<TestCategoryAllProperty> refCatBean;
 	private static final String RESOURCE = "/resources/json/TestCategoryReferenceArray_Marshaling.json";
 	private static final String RESOURCE_NULL_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_NullReference.json";
 	private static final String RESOURCE_CHANGED_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_ChangeReference.json";
@@ -77,38 +81,83 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 			
 			bean.setValue(bpString);
 		}
+		
+		// For composed / reference beans the wrapping beans
+		// have to exist because else adding a new element to
+		// the dynamic list in the unmarshalling fails
+		ReferencePropertyInstance rpi = PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
+		refPropBean = new BeanPropertyReference<BeanPropertyString>(rpi);
+		rpi.setUuid(new VirSatUuid("f8932f09-71b7-40b6-bcbd-5d71c2b8d6d7"));
+		refPropBean.setValue(bpString);
+		
+		ReferencePropertyInstance rpi2 = PropertyinstancesFactory.eINSTANCE.createReferencePropertyInstance();
+		refCatBean = new BeanPropertyReference<TestCategoryAllProperty>(rpi2);
+		rpi2.setUuid(new VirSatUuid("0544cfe4-ec11-4585-8f1b-e875e26ae33c"));
+		refCatBean.setValue(tcAllProperty);
 	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
+		// Use the bean list here to force the wanted bean (to reuse the same resource as for unmarshalling)
+		tcReferenceArray.getTestCategoryReferenceArrayDynamicBean().add(refCatBean);
+		tcReferenceArray.getTestPropertyReferenceArrayDynamicBean().add(refPropBean);
+		
 		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE, tcReferenceArray);
 	}
 	
 	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
-		BeanPropertyString bpString2 = new TestCategoryAllProperty(concept).getTestStringBean();
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReferenceArray.getATypeInstance(),
+				tcAllProperty.getATypeInstance(),
+				bpString.getATypeInstance(),
+				refCatBean.getATypeInstance(),
+				refPropBean.getATypeInstance()
+		));
+		
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		
+		assertEquals("Initial no dynamic element", 0, tcReferenceArray.getTestPropertyReferenceArrayDynamic().size());
+		assertEquals("Initial no dynamic element", 0, tcReferenceArray.getTestCategoryReferenceArrayDynamic().size());
+		
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
+		
+		assertEquals("Element added successfully", 1, tcReferenceArray.getTestPropertyReferenceArrayDynamic().size());
+		assertEquals("Element added successfully", 1, tcReferenceArray.getTestCategoryReferenceArrayDynamic().size());
+
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
+		assertEquals("Same element not added again", 1, tcReferenceArray.getTestPropertyReferenceArrayDynamic().size());
+		assertEquals("Same element not added again", 1, tcReferenceArray.getTestCategoryReferenceArrayDynamic().size());
+		
+	}
+	
+	@Test
+	public void testJsonUnmarshallingChangeReference() throws JAXBException, IOException {
+		TestCategoryAllProperty tcAllProperty2 = new TestCategoryAllProperty(concept);
+		tcAllProperty2.getATypeInstance().setUuid(new VirSatUuid("134d30b0-80f5-4c96-864f-29ab4d3ae9f0"));
+		
+		BeanPropertyString bpString2 = tcAllProperty2.getTestStringBean();
 		bpString2.getATypeInstance().setUuid(new VirSatUuid("1256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		
 		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
 				tcReferenceArray.getATypeInstance(),
 				tcAllProperty.getATypeInstance(),
 				bpString.getATypeInstance(),
+				tcAllProperty2.getATypeInstance(),
 				bpString2.getATypeInstance()
 		));
 		
-		// TODO: test dynamic array
 		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
 		
 		assertEquals(bpString.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		assertEquals(tcAllProperty.getUuid(), tcReferenceArray.getTestCategoryReferenceArrayStatic().get(0).getUuid());
 		
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
-		
-		// Unmarshall again to test idempotency
-		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
-		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
-		assertEquals("Referenced bean is the same", bpString2.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		assertEquals("Referenced bean changed successfully", tcAllProperty2.getUuid(), tcReferenceArray.getTestCategoryReferenceArrayStatic().get(0).getUuid());
 	}
 	
 	@Test
