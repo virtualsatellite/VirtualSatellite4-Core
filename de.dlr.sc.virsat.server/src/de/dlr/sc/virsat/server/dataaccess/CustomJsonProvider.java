@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -102,7 +102,7 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		
 		unmarshaller.setEventHandler(eventHandler);
 		unmarshaller.setAdapter(new TypeInstanceAdapter(resourceSet));
-		unmarshaller.setAdapter(new ReferenceAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
 	}
 	
 	@Override
