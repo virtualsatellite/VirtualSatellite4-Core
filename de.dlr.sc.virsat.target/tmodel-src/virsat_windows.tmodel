@@ -1,0 +1,9 @@
+Target virsat_windows {
+	Import virsat
+
+	OperatingSystem win32
+	WindowingSystem win32
+	Architecture x86_64
+	Locale de_DE
+	TargetJRE JavaSE-1.8
+}

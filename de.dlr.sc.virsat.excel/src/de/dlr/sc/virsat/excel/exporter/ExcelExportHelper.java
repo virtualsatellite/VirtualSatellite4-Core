@@ -108,13 +108,13 @@ public class ExcelExportHelper {
 		}
 
 		// Just write the values, the property names should be in the header already
-		Row row = headerSheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENTUUID);
+		Row row = headerSheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENT_UUID);
 		row.getCell(1).setCellValue(getCreationHelper().createRichTextString(exportSei.getUuid().toString()));
 
-		row = headerSheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENTNAME);
+		row = headerSheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENT_NAME);
 		row.getCell(datacell).setCellValue(getCreationHelper().createRichTextString(exportSei.getName()));
 
-		row = headerSheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENTTYPE);
+		row = headerSheet.getRow(AExcelIo.HEADER_ROW_STRUCTURALELEMENT_TYPE);
 		row.getCell(datacell).setCellValue(getCreationHelper().createRichTextString(exportSei.getType().getName()));
 
 		row = headerSheet.getRow(AExcelIo.HEADER_ROW_USER);

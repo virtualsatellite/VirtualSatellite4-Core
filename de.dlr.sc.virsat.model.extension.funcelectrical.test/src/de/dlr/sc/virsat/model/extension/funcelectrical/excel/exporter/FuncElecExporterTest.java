@@ -62,7 +62,8 @@ public class FuncElecExporterTest extends ExcelTestCase {
 		Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACETYPES);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
-			Cell cell = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i).getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
+			Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 	}
@@ -78,8 +79,12 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i).getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
+			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
+			Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
+			assertEquals("Interface end name exported correctly", interfaceEnd.getName(), cell.toString());
+			cell = row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_FQN);
+			assertEquals("Interface end fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
 		Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
 		assertNull("Line after alle entries correctly empty", row);
@@ -97,7 +102,8 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACES);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i).getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME);
+			Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME);
 			assertEquals("Interface exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
@@ -117,7 +123,8 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
-			Cell cell = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i).getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
+			Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
@@ -135,8 +142,12 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i).getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
+			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
+			Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
+			assertEquals("Interface end name exported correctly", interfaceEnd.getName(), cell.toString());
+			cell = row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_FQN);
+			assertEquals("Interface end fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
@@ -153,8 +164,12 @@ public class FuncElecExporterTest extends ExcelTestCase {
 
 		Sheet sheet = wb.getSheet(AExcelFuncIO.TEMPLATE_SHEETNAME_INTERFACEENDS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Cell cell = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i).getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
+			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
+			Row row = sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
+			assertEquals("Interface end name exported correctly", interfaceEnd.getName(), cell.toString());
+			cell = row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_FQN);
+			assertEquals("Interface end fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelFuncIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
