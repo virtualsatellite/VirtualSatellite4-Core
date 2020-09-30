@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.funcelectrical.excel.exporter;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,14 +25,11 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.swt.widgets.Display;
-
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.excel.exporter.ExcelExportHelper;
 import de.dlr.sc.virsat.excel.exporter.IExport;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
-import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.excel.AExcelFuncIO;
@@ -49,14 +47,8 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  */
 public class FuncElecExporter implements IExport {
 	
-	public FuncElecExporter(LocalDateTime localDateTime) {
-		this.localDateTime = localDateTime;
-	}
-	
-	protected LocalDateTime localDateTime;
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportTemplate.xlsx";
-	private ExcelExportHelper helper;
-
+	
 	private static final String[] EXPORTABLE_SEIS = {
 			ElementDefinition.class.getSimpleName(),
 			ElementConfiguration.class.getSimpleName(),
@@ -64,31 +56,39 @@ public class FuncElecExporter implements IExport {
 			ElementRealization.class.getSimpleName(),
 			ElementOccurence.class.getSimpleName()
 	};
+	
+	protected LocalDateTime localDateTime;
+	private ExcelExportHelper helper;
+	
+	public FuncElecExporter() {
+		this(LocalDateTime.now());
+	}
+	
+	public FuncElecExporter(LocalDateTime localDateTime) {
+		this.localDateTime = localDateTime;
+	}
 
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
 		StructuralElementInstance parentSc = (StructuralElementInstance) eObject;
-		ArrayList <StructuralElementInstance> seis = new ArrayList<StructuralElementInstance>();
+		List<StructuralElementInstance> seis = new ArrayList<>();
 		seis.add(parentSc);
 		seis.addAll(parentSc.getDeepChildren());
 		for (StructuralElementInstance sei : seis) {
 			String selectedSEIType = sei.getType().getName();
 			if (Stream.of(EXPORTABLE_SEIS).anyMatch(exportable -> exportable.equals(selectedSEIType))) {
-				InputStream iStream = null;
 				try {
-					if (useDefaultTemplate) {
-						iStream = Activator.getResourceContentAsString(DEFAULT_TEMPLATE_PATH);
-					} else {
-						iStream = Activator.getResourceContentAsString(templatePath);
-					}
+					InputStream iStream = useDefaultTemplate 
+							?	Activator.getResourceContentAsString(DEFAULT_TEMPLATE_PATH)
+							: 	new FileInputStream(templatePath);
+								
 					export(sei, iStream);
 					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + ".xlsx");
 					FileOutputStream out = new FileOutputStream(file);
 					helper.getWb().write(out);
 				} catch (IOException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
-					DVLMEditPlugin.getPlugin().getLog().log(status);
-					ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
+					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 				}
 			}
 		}
@@ -108,10 +108,7 @@ public class FuncElecExporter implements IExport {
 
 	@Override
 	public boolean canExport(Object selection) {
-		if (selection instanceof StructuralElementInstance) {
-			return true;
-		}
-		return false;	
+		return selection instanceof StructuralElementInstance;	
 	}
 	/**
 	 * Exports depending on the type of the Structural element
@@ -203,7 +200,7 @@ public class FuncElecExporter implements IExport {
 		// get all the interface ends
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(exportSei, InterfaceEnd.class);
-		helper.instantiateCells(sheet, seiInterfaceEnds.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
+		helper.instantiateCells(sheet, seiInterfaceEnds.size() + AExcelFuncIO.COMMON_ROW_START_TABLE, AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_FQN + 1);
 
 		// for each interface end, fill out a row
 		int i = AExcelFuncIO.COMMON_ROW_START_TABLE;
@@ -213,6 +210,7 @@ public class FuncElecExporter implements IExport {
 			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(helper.getCreationHelper().createRichTextString(ifaceEnd.getName()));
 			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(""));
 			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getIfeTypeName(ifaceEnd)));
+			row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_FQN).setCellValue(helper.getCreationHelper().createRichTextString(ifaceEnd.getTypeInstance().getFullQualifiedInstanceName()));
 			i++;
 		}
 	}

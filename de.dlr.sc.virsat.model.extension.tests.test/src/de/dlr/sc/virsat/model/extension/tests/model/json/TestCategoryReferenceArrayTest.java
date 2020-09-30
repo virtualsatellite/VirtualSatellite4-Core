@@ -9,22 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,16 +32,16 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 
 public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 
-	private TestCategoryReferenceArray testArray;
+	private TestCategoryReferenceArray tcReferenceArray;
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
 	private BeanPropertyString bpString;
 	private TestCategoryAllProperty tcAllProperty;
 	private static final String RESOURCE = "/resources/json/TestCategoryReferenceArray_Marshaling.json";
+	private static final String RESOURCE_NULL_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_NullReference.json";
 	private static final String RESOURCE_CHANGED_REFERENCE = "/resources/json/TestCategoryReferenceArray_Marshaling_ChangeReference.json";
 
 	@Before
@@ -56,7 +51,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		// Load the concept to create the test object
 		prepareEditingDomain();
 		concept = loadConceptFromPlugin();
-		testArray = new TestCategoryReferenceArray(concept);
+		tcReferenceArray = new TestCategoryReferenceArray(concept);
 		
 		tcAllProperty = new TestCategoryAllProperty(concept);
 		
@@ -65,20 +60,20 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		
 		bpString = JsonTestHelper.createTestStringBean(concept);
 		
-		testArray.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
+		tcReferenceArray.getTypeInstance().setUuid(new VirSatUuid("f34d30b0-80f5-4c96-864f-29ab4d3ae9f2"));
 		
-		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> staticCategoryArray = testArray.getTestCategoryReferenceArrayStaticBean();
+		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> staticCategoryArray = tcReferenceArray.getTestCategoryReferenceArrayStaticBean();
 		for (int i = 0; i < staticCategoryArray.size(); i++) {
 			BeanPropertyReference<TestCategoryAllProperty> bean = staticCategoryArray.get(i);
-			bean.getATypeInstance().setUuid(new VirSatUuid("8872b433-968c-4f48-b9a3-d734c6e239a" + Integer.toString(i)));
+			bean.getATypeInstance().setUuid(new VirSatUuid("8872b433-968c-4f48-b9a3-d734c6e239a" + i));
 			
 			bean.setValue(tcAllProperty);
 		}
 		
-		IBeanList<BeanPropertyReference<BeanPropertyString>> staticPropertyArray = testArray.getTestPropertyReferenceArrayStaticBean();
+		IBeanList<BeanPropertyReference<BeanPropertyString>> staticPropertyArray = tcReferenceArray.getTestPropertyReferenceArrayStaticBean();
 		for (int i = 0; i < staticPropertyArray.size(); i++) {
 			BeanPropertyReference<BeanPropertyString> bean = staticPropertyArray.get(i);
-			bean.getATypeInstance().setUuid(new VirSatUuid("49177554-f1e4-4529-bf1b-3036abb1ee3" + Integer.toString(i)));
+			bean.getATypeInstance().setUuid(new VirSatUuid("49177554-f1e4-4529-bf1b-3036abb1ee3" + i));
 			
 			bean.setValue(bpString);
 		}
@@ -86,14 +81,7 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
-		
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(testArray, sw);
-		
-		String expectedJson = TestActivator.getResourceContentAsString(RESOURCE);
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE, tcReferenceArray);
 	}
 	
 	@Test
@@ -101,24 +89,51 @@ public class TestCategoryReferenceArrayTest extends AConceptTestCase {
 		BeanPropertyString bpString2 = new TestCategoryAllProperty(concept).getTestStringBean();
 		bpString2.getATypeInstance().setUuid(new VirSatUuid("1256e7a2-9a1f-443c-85f8-7b766eac3f50"));
 		
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(testArray.getATypeInstance());
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
-		resourceImpl.getContents().add(bpString.getATypeInstance());
-		resourceImpl.getContents().add(bpString2.getATypeInstance());
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReferenceArray.getATypeInstance(),
+				tcAllProperty.getATypeInstance(),
+				bpString.getATypeInstance(),
+				bpString2.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
 		
-		String inputJson = TestActivator.getResourceContentAsString(RESOURCE_CHANGED_REFERENCE);
-		StringReader sr = new StringReader(inputJson);
+		assertEquals(bpString.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
 		
-		assertEquals(bpString.getUuid(), testArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
 		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryReferenceArray.class);
+		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+	}
+	
+	@Test
+	public void testJsonMarshallingNull() throws JAXBException, IOException {
+		tcReferenceArray.getTestCategoryReferenceArrayStaticBean().get(0).setValue(null);
+		tcReferenceArray.getTestPropertyReferenceArrayStaticBean().get(0).setValue(null);
 		
-		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), testArray.getTestPropertyReferenceArrayStatic().get(0).getUuid());
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE_NULL_REFERENCE, tcReferenceArray);
+	}
+	
+	@Test
+	public void testJsonUnmarshallingNull() throws JAXBException, IOException {
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcReferenceArray.getATypeInstance(),
+				tcAllProperty.getATypeInstance(),
+				bpString.getATypeInstance()
+		));
+		
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_NULL_REFERENCE);
+		
+		assertNotNull(tcReferenceArray.getTestCategoryReferenceArrayStaticBean().get(0).getValue());
+		assertNotNull(tcReferenceArray.getTestPropertyReferenceArrayStaticBean().get(0).getValue());
+		assertNotNull(tcReferenceArray.getTestCategoryReferenceArrayStatic().get(0));
+		assertNotNull(tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0));
+		
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReferenceArray.class);
+		
+		assertNull(tcReferenceArray.getTestCategoryReferenceArrayStaticBean().get(0).getValue());
+		assertNull(tcReferenceArray.getTestPropertyReferenceArrayStaticBean().get(0).getValue());
+		// Currently this list will return a ca without a type instance
+		assertNull(tcReferenceArray.getTestCategoryReferenceArrayStatic().get(0).getTypeInstance());
+		assertNull(tcReferenceArray.getTestPropertyReferenceArrayStatic().get(0).getTypeInstance());
 	}
 }

@@ -259,14 +259,14 @@ public class ImportValidator {
 		final int sheetIndex = wb.getSheetIndex(AExcelFuncIO.TEMPLATE_SHEETNAME_HEADER);
 
 		// Control if we are importing the correct Structural element by comparing UUIDs
-		String tempUUID = Objects.toString(sheet.getRow(AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTUUID).getCell(1), "");
+		String tempUUID = Objects.toString(sheet.getRow(AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENT_UUID).getCell(1), "");
 		if (!(importSei.getUuid().toString().equals(tempUUID))) {
-			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, sheetIndex, AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTUUID));
+			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, sheetIndex, AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENT_UUID));
 		}
 		// Control if we are importing the correct Structural element by comparing NAMEs
-		String tempName = Objects.toString(sheet.getRow(AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTNAME).getCell(1), "");
+		String tempName = Objects.toString(sheet.getRow(AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENT_NAME).getCell(1), "");
 		if (!(importSei.getName().toString().equals(tempName))) {
-			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, sheetIndex, AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENTNAME));
+			faultList.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, sheetIndex, AExcelFuncIO.HEADER_ROW_STRUCTURALELEMENT_NAME));
 		}
 	}
 }

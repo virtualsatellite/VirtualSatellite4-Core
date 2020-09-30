@@ -9,24 +9,19 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +29,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
-import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 public class TestCategoryAllPropertyTest extends AConceptTestCase {
 
 	private TestCategoryAllProperty tcAllProperty;
@@ -78,32 +72,16 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		tcAllProperty.setTestBool(TEST_BOOL);
 	}
 	
-	/**
-	 * Marshall the TestCategoryAllProperty and assert that it equals the resource
-	 * @param resource containing the expected JSON
-	 * @throws JAXBException
-	 * @throws IOException
-	 */
-	public void assertMarshalWithResource(String resource) throws JAXBException, IOException {
-		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
-		
-		StringWriter sw = new StringWriter();
-		jsonMarshaller.marshal(tcAllProperty, sw);
-
-		String expectedJson = TestActivator.getResourceContentAsString(resource);
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
-	}
-	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		initProperties();
 		
-		assertMarshalWithResource(RESOURCE_WITH_VALUES);
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE_WITH_VALUES, tcAllProperty);
 	}
 	
 	@Test
 	public void testJsonMarshallingWithDefaultValues() throws JAXBException, IOException {
-		assertMarshalWithResource(RESOURCE_WITH_DEFAULTS);
+		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE_WITH_DEFAULTS, tcAllProperty);
 	}
 	
 	/**
@@ -112,19 +90,14 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
-	public void assertUnmarshalWithResource(String resource) throws JAXBException, IOException {
-		// Quick mock setup to embed the model into a resource set
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
-		resourceImpl.getContents().add(tcAllProperty.getATypeInstance());
+	public void unmarshalWithResource(String resource) throws JAXBException, IOException {
+		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
+				tcAllProperty.getATypeInstance()
+		));
 		
-		Unmarshaller jsonUnmarshaller = jaxbUtility.getJsonUnmarshaller(resourceSet);
+		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(resource);
 		
-		String inputJson = TestActivator.getResourceContentAsString(resource);
-		StringReader sr = new StringReader(inputJson);
-		
-		jsonUnmarshaller.unmarshal(new StreamSource(sr), TestCategoryAllProperty.class);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryAllProperty.class);
 	}
 	
 	@Test
@@ -133,7 +106,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		assertEqualsDefaultValues();
 		
 		// Unmarshall the resource containing the new values
-		assertUnmarshalWithResource(RESOURCE_WITH_VALUES);
+		unmarshalWithResource(RESOURCE_WITH_VALUES);
 		
 		// The values are correctly overwritten
 		assertEqualsTestValues();
@@ -146,7 +119,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		assertEqualsTestValues();
 		
 		// Unmarshall the resource containing the default values
-		assertUnmarshalWithResource(RESOURCE_WITH_DEFAULTS);
+		unmarshalWithResource(RESOURCE_WITH_DEFAULTS);
 		
 		// The values are correctly overwritten
 		assertEqualsDefaultValues();
@@ -168,13 +141,11 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 * Assert that the default values are set correctly
 	 */
 	private void assertEqualsDefaultValues() {
-		// int default is Long in the bean and can be null, but is a long in the TestCategoryAllProperty
-		// so we don't assert it here
-//		assertEquals(null, tcAllProperty.getTestInt());
-		assertEquals(null, tcAllProperty.getTestString());
-		assertEquals(null, tcAllProperty.getTestEnum());
-		assertEquals(null, tcAllProperty.getTestResource());
-		assertEquals(false, tcAllProperty.getTestBool());
+		assertNull(tcAllProperty.getTestIntBean().getTypeInstance().getValue());
+		assertNull(tcAllProperty.getTestString());
+		assertNull(tcAllProperty.getTestEnum());
+		assertNull(tcAllProperty.getTestResource());
+		assertFalse(tcAllProperty.getTestBool());
 		assertTrue(Double.isNaN(tcAllProperty.getTestFloat()));
 	}
 }

@@ -88,7 +88,7 @@ public abstract class ATestCategoryComposition extends GenericCategory implement
 		}
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	public TestCategoryAllProperty getTestSubCategory() {
 		safeAccessTestSubCategory();
 		return testSubCategory.getValue();

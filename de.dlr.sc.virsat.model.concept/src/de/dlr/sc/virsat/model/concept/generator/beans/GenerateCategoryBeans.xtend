@@ -81,9 +81,9 @@ import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList
 import javax.xml.bind.annotation.XmlRootElement
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAccessType
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter
 import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -840,7 +840,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 					}
 				}
 				
-				@XmlElement
+				@XmlElement(nillable = true)
 				public «property.type.name» «propertyMethodGet(property)»() {
 					«propertyMethodSafeAccess(property)»;
 					return «property.name».getValue();
@@ -860,7 +860,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 				importManager.register(Command);
 				importManager.register(EditingDomain);
 				importManager.register(BeanPropertyReference);
-				importManager.register(ReferenceAdapter);
+				importManager.register(ABeanObjectAdapter);
 				importManager.register(XmlJavaTypeAdapter);
 				importManager.register(XmlElement);
 				
@@ -875,8 +875,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«property.name».setTypeInstance(propertyInstance);
 					}
 					
-					@XmlElement
-					@XmlJavaTypeAdapter(ReferenceAdapter.class)
+					@XmlElement(nillable = true)
+					@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 					public «property.referenceType.name» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name».getValue();
@@ -910,8 +910,8 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 						«property.name».setTypeInstance(propertyInstance);
 					}
 
-					@XmlElement
-					@XmlJavaTypeAdapter(ReferenceAdapter.class)
+					@XmlElement(nillable = true)
+					@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 					public «referencedPropertyType.simpleName» «propertyMethodGet(property)»() {
 						«propertyMethodSafeAccess(property)»;
 						return «property.name».getValue();

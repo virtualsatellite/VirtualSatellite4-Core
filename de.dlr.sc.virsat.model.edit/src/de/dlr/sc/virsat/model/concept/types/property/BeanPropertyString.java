@@ -45,7 +45,6 @@ public class BeanPropertyString extends ABeanProperty<String> {
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public void setValue(String value) {
 		ti.setValue(value);
 	}

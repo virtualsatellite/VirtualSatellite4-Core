@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.ws.rs.client.Entity;
@@ -24,7 +25,9 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
+import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 import de.dlr.sc.virsat.team.VersionControlSystem;
@@ -34,7 +37,7 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 	private RepositoryConfiguration testProjectConfiguration;
 
 	@Before
-	public void setUpProjectConfiguration() {
+	public void setUpProjectConfiguration() throws IOException {
 		String projectName = "testProject";
 		String uri = "test.project.uri";
 		VersionControlSystem backend = VersionControlSystem.GIT;
@@ -43,6 +46,8 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 		String localPath = "";
 
 		testProjectConfiguration = new RepositoryConfiguration(projectName, localPath, uri, backend, username, password);
+		Path pathConfigurationDir = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteServerConfiguration_");
+		ServerConfiguration.setRepositoryConfigurationsDir(pathConfigurationDir.toString());
 	}
 	
 	@Test

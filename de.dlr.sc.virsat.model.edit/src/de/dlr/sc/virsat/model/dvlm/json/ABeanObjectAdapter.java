@@ -22,28 +22,36 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
  * Adapter for a referenced ABeanObject from/to a UUID
  * that uses the TypeInstanceAdapter
  */
-public class ReferenceAdapter extends XmlAdapter<String, ABeanObject> {
+public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 
 	private ResourceSet resourceSet;
 	
-	public ReferenceAdapter() { };
+	public ABeanObjectAdapter() { };
 	
-	public ReferenceAdapter(ResourceSet resourceSet) {
+	public ABeanObjectAdapter(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
 	}
 	
 	@Override
+	public String marshal(ABeanObject v) throws Exception {
+		if (v == null) {
+			return null;
+		} else {
+			return v.getUuid();
+		}
+	}
+	
+	@Override
 	public ABeanObject unmarshal(String uuid) throws Exception {
+		if (resourceSet == null) {
+			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
+		}
+		
 		// Get the type instance from the uuid
 		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
 		ATypeInstance object = typeInstanceAdapter.unmarshal(uuid);
 		
 		return (ABeanObject) new BeanTypeInstanceFactory().getInstanceFor(object);
-	}
-
-	@Override
-	public String marshal(ABeanObject v) throws Exception {
-		return v.getUuid();
 	}
 
 }

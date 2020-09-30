@@ -62,7 +62,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -1985,7 +1985,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.append("}");
         _builder.newLine();
         _builder.newLine();
-        _builder.append("@XmlElement");
+        _builder.append("@XmlElement(nillable = true)");
         _builder.newLine();
         _builder.append("public ");
         String _name_5 = property.getType().getName();
@@ -2040,7 +2040,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         importManager.register(Command.class);
         importManager.register(EditingDomain.class);
         importManager.register(BeanPropertyReference.class);
-        importManager.register(ReferenceAdapter.class);
+        importManager.register(ABeanObjectAdapter.class);
         importManager.register(XmlJavaTypeAdapter.class);
         importManager.register(XmlElement.class);
         ATypeDefinition _referenceType = property.getReferenceType();
@@ -2075,9 +2075,9 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder.append("}");
           _builder.newLine();
           _builder.newLine();
-          _builder.append("@XmlElement");
+          _builder.append("@XmlElement(nillable = true)");
           _builder.newLine();
-          _builder.append("@XmlJavaTypeAdapter(ReferenceAdapter.class)");
+          _builder.append("@XmlJavaTypeAdapter(ABeanObjectAdapter.class)");
           _builder.newLine();
           _builder.append("public ");
           String _name_4 = property.getReferenceType().getName();
@@ -2200,9 +2200,9 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           _builder_1.append("}");
           _builder_1.newLine();
           _builder_1.newLine();
-          _builder_1.append("@XmlElement");
+          _builder_1.append("@XmlElement(nillable = true)");
           _builder_1.newLine();
-          _builder_1.append("@XmlJavaTypeAdapter(ReferenceAdapter.class)");
+          _builder_1.append("@XmlJavaTypeAdapter(ABeanObjectAdapter.class)");
           _builder_1.newLine();
           _builder_1.append("public ");
           String _simpleName_1 = referencedPropertyType.getSimpleName();

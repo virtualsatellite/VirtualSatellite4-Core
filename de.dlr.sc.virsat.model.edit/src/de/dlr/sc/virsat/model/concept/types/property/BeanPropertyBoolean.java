@@ -45,7 +45,6 @@ public class BeanPropertyBoolean extends ABeanProperty<Boolean> {
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public void setValue(Boolean bool) {
 		ti.setValue(Boolean.toString(bool));
 	}

@@ -25,10 +25,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import de.dlr.sc.virsat.model.dvlm.json.ReferenceAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import javax.xml.bind.annotation.XmlElement;
@@ -97,7 +97,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		}
 	}
 	
-	@XmlElement
+	@XmlElement(nillable = true)
 	public TestCategoryA getTestSubCategory() {
 		safeAccessTestSubCategory();
 		return testSubCategory.getValue();
@@ -118,8 +118,8 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public TestCategoryA getTestRefCategory() {
 		safeAccessTestRefCategory();
 		return testRefCategory.getValue();
@@ -150,8 +150,8 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement
-	@XmlJavaTypeAdapter(ReferenceAdapter.class)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();
 		return testRefProperty.getValue();

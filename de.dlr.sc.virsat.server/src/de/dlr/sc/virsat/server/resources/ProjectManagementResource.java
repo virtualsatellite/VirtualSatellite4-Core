@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +65,18 @@ public class ProjectManagementResource {
 		}
 	}
 
+	/**
+	 * Deletes a project
+	 * @param repoName name of the project to delete
+	 */
 	@DELETE
 	@Path("/{projectName}")
 	public Response deleteProject(@PathParam("projectName") String repoName) {
-		controller.deleteRepository(repoName);
+		try {
+			controller.deleteRepository(repoName);
+		} catch (IOException e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
 		return Response.status(Response.Status.OK).build();
 	}
 
