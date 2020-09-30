@@ -18,7 +18,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
@@ -154,13 +154,13 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	 * Get method to get all CategoryAssignments of the abstract type ABeanCategoryAssignment
 	 * @return a List of the given Category assignment beans. Operations on that list will not reflect into the underlying StructuralElementInstance
 	 */
-	List<ABeanCategoryAssignment> getCategoryAssignments();
+	List<BeanCategoryAssignment> getCategoryAssignments();
 	
 	/**
 	 * Set method to set all CategoryAssignments via ABeanCategoryAssignments
 	 * @param newCaBeans a List of ABeanCategoryAssignments wrapping CategoryAssignments
 	 */
-	void setCategoryAssignments(List<ABeanCategoryAssignment> newCaBeans);
+	void setCategoryAssignments(List<BeanCategoryAssignment> newCaBeans);
 	
 	/**
 	 * Call this method to create a command to add a Bean SEI into the list of inheritances

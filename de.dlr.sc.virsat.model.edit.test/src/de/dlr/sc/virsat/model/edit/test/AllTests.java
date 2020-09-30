@@ -50,14 +50,12 @@ import de.dlr.sc.virsat.model.dvlm.command.SetArrayInstanceCommandTest;
 import de.dlr.sc.virsat.model.dvlm.command.SetValuePropertyInstanceCommandTest;
 import de.dlr.sc.virsat.model.dvlm.command.UndoableAddCommandTest;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElementTest;
-import de.dlr.sc.virsat.model.dvlm.json.ABeanCategoryAssignmentAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtilityTest;
-import de.dlr.sc.virsat.model.dvlm.json.NotAbstractBeanCategoryAssignmentTest;
 import de.dlr.sc.virsat.model.dvlm.json.UriAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMRepositoryItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.qudv.provider.DVLMQudvItemProviderAdapterFactoryTest;
@@ -144,9 +142,7 @@ import junit.framework.JUnit4TestAdapter;
 				JAXBUtilityTest.class,
 				IUuidAdapterTest.class,
 				UriAdapterTest.class,
-				ABeanCategoryAssignmentAdapterTest.class,
-				ABeanStructuralElementInstanceAdapterTest.class,
-				NotAbstractBeanCategoryAssignmentTest.class
+				ABeanStructuralElementInstanceAdapterTest.class
 				})
 
 /**

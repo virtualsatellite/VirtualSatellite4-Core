@@ -30,7 +30,7 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
@@ -39,7 +39,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
-import de.dlr.sc.virsat.model.dvlm.json.ABeanCategoryAssignmentAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -133,21 +132,25 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@Override
-	public List<ABeanCategoryAssignment> getCategoryAssignments() {
-		BeanCategoryAssignmentHelper bcaHelper = new BeanCategoryAssignmentHelper();
-		// Has to be wrapped in an ArrayList because else the list is unmodifiable
-		return new ArrayList<ABeanCategoryAssignment>(bcaHelper.getAllBeanCategories(sei, ABeanCategoryAssignment.class));
+	public List<BeanCategoryAssignment> getCategoryAssignments() {
+		ArrayList<BeanCategoryAssignment> beans = new ArrayList<BeanCategoryAssignment>();
+		
+		for (CategoryAssignment ca : sei.getCategoryAssignments()) {
+			BeanCategoryAssignment bean = new BeanCategoryAssignment();
+			bean.setTypeInstance(ca);
+			beans.add(bean);
+		}
+		
+		return beans;
 	}
 	
-	// Adapter is needed because the abstract ca bean class cannot be instantiated
 	@Override
 	@XmlElement
-	@XmlJavaTypeAdapter(ABeanCategoryAssignmentAdapter.class)
-	public void setCategoryAssignments(List<ABeanCategoryAssignment> newCaBeans) {
+	public void setCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
 		EList<CategoryAssignment> currentCas = sei.getCategoryAssignments();
 		
 		List<CategoryAssignment> newCas = new ArrayList<CategoryAssignment>();
-		for (ABeanCategoryAssignment aBeanCa : newCaBeans) {
+		for (BeanCategoryAssignment aBeanCa : newCaBeans) {
 			ATypeInstance ti = aBeanCa.getATypeInstance();
 			newCas.add((CategoryAssignment) ti);
 		}
