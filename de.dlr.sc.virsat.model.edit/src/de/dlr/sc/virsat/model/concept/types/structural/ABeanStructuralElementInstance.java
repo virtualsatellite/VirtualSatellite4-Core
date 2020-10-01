@@ -9,24 +9,38 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.structural;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
@@ -38,6 +52,10 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
  * @author fisc_ph
  *
  */
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement
+// Ensure that the sei (by uuid) gets unmarshalled first
+@XmlType(propOrder = {"structuralElementInstance", "name", "parentSeiBean", "categoryAssignments", "children", "superSeis"})
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
 
 	protected StructuralElementInstance sei;
@@ -63,6 +81,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		return sei.getName();
 	}
 	
+	@XmlElement(nillable = true)
 	@Override
 	public void setName(String seiName) {
 		sei.setName(seiName);
@@ -78,6 +97,9 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		return sei;
 	}
 	
+	@XmlID
+	@XmlElement(name = "uuid")
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override
 	public	void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;
@@ -110,6 +132,34 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@Override
+	public List<BeanCategoryAssignment> getCategoryAssignments() {
+		ArrayList<BeanCategoryAssignment> beans = new ArrayList<BeanCategoryAssignment>();
+		
+		for (CategoryAssignment ca : sei.getCategoryAssignments()) {
+			BeanCategoryAssignment bean = new BeanCategoryAssignment();
+			bean.setTypeInstance(ca);
+			beans.add(bean);
+		}
+		
+		return beans;
+	}
+	
+	@Override
+	@XmlElement
+	public void setCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
+		EList<CategoryAssignment> currentCas = sei.getCategoryAssignments();
+		
+		List<CategoryAssignment> newCas = new ArrayList<CategoryAssignment>();
+		for (BeanCategoryAssignment aBeanCa : newCaBeans) {
+			ATypeInstance ti = aBeanCa.getATypeInstance();
+			newCas.add((CategoryAssignment) ti);
+		}
+		
+		currentCas.clear();
+		currentCas.addAll(newCas);
+	}
+	
+	@Override
 	public <BEAN_TYPE extends IBeanCategoryAssignment> BEAN_TYPE getFirst(Class<BEAN_TYPE> catBeanClazz) {
 		BeanCategoryAssignmentHelper beanCaHelper = new BeanCategoryAssignmentHelper();
 		return beanCaHelper.getFirstBeanCategory(sei, catBeanClazz);
@@ -129,6 +179,27 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	public <SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getChildren(Class<SEI_TYPE> beanSeiClazz) {
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
 		return bseiHelper.getAllSubBeanSeis(sei, beanSeiClazz);
+	}
+	
+	@Override
+	public List<ABeanStructuralElementInstance> getChildren() {
+		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
+		return new ArrayList<ABeanStructuralElementInstance>(bseiHelper.getAllSubBeanSeis(sei, ABeanStructuralElementInstance.class));
+	}
+	
+	@Override
+	@XmlElement
+	public void setChildren(List<ABeanStructuralElementInstance> newBeanSeis) {
+		EList<StructuralElementInstance> currentChildren = sei.getChildren();
+		
+		List<StructuralElementInstance> newChildren = new ArrayList<StructuralElementInstance>();
+		for (ABeanStructuralElementInstance beanSei : newBeanSeis) {
+			StructuralElementInstance sei = beanSei.getStructuralElementInstance();
+			newChildren.add(sei);
+		}
+		
+		currentChildren.clear();
+		currentChildren.addAll(newChildren);
 	}
 	
 	@Override
@@ -173,6 +244,27 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		return bseiHelper.getSuperBeanSeis(sei, beanSeiClazz);
 	}
 
+    @Override
+ 	public List<ABeanStructuralElementInstance> getSuperSeis() {
+ 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
+ 		return new ArrayList<ABeanStructuralElementInstance>(bseiHelper.getSuperBeanSeis(sei, ABeanStructuralElementInstance.class));
+ 	}
+ 	
+    @Override
+ 	@XmlElement
+ 	public void setSuperSeis(List<ABeanStructuralElementInstance> newBeanSeis) {
+ 		EList<StructuralElementInstance> currentSuperSeis = sei.getSuperSeis();
+ 		
+ 		List<StructuralElementInstance> newSuperSeis = new ArrayList<StructuralElementInstance>();
+ 		for (ABeanStructuralElementInstance beanSei : newBeanSeis) {
+ 			StructuralElementInstance sei = beanSei.getStructuralElementInstance();
+ 			newSuperSeis.add(sei);
+ 		}
+ 		
+ 		currentSuperSeis.clear();
+ 		currentSuperSeis.addAll(newSuperSeis);
+ 	}
+
 	@Override
     public <SEI_TYPE extends IBeanStructuralElementInstance> Set<SEI_TYPE> getAllSuperSeis(Class<SEI_TYPE> beanSeiClazz) {
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
@@ -191,6 +283,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
 	@Override
+	@XmlElement(name = "parent")
+	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
 	public BeanStructuralElementInstance getParentSeiBean() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
 		if (parentSei != null) {
@@ -198,6 +292,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	public void setParentSeiBean(BeanStructuralElementInstance newParent) {
+		sei.setParent(newParent.getStructuralElementInstance());
 	}
 	
 	@Override

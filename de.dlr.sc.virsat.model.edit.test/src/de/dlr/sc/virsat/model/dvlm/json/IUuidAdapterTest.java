@@ -10,65 +10,60 @@
 package de.dlr.sc.virsat.model.dvlm.json;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.junit.Before;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 
-public class ABeanObjectAdapterTest extends AUuidAdapterTest {
+public class IUuidAdapterTest extends AUuidAdapterTest {
 
 	private ValuePropertyInstance vpi;
-	private BeanPropertyString bean;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		
 		vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
 		vpi.setUuid(UUID);
-		vpi.setType(PropertydefinitionsFactory.eINSTANCE.createStringProperty());
 		resourceImpl.getContents().add(vpi);
 		
-		bean = new BeanPropertyString(vpi);
-		
-		adapter = new ABeanObjectAdapter(resourceSet);		
-	}
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void testMarshallNull() throws Exception {
-		String uuid = ((XmlAdapter<String, ABeanObject>) adapter).marshal(null);
-		assertNull("No bean returns null", uuid);
+		adapter = new IUuidAdapter(resourceSet);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void testMarshallNull() throws Exception {
+		assertThrows("The IUuid should not be null",
+			NullPointerException.class, () -> {
+				adapter.marshal(null);
+			}
+		);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void testMarhall() throws Exception {
-		String uuid = ((XmlAdapter<String, ABeanObject>) adapter).marshal(bean);
+		
+		String uuid = ((XmlAdapter<String, IUuid>) adapter).marshal(vpi);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
 		vpi.setUuid(null);
 		assertThrows("The type instance should have a uuid",
 			NullPointerException.class, () -> {
-				((XmlAdapter<String, ABeanObject>) adapter).marshal(bean);
+				((XmlAdapter<String, IUuid>) adapter).marshal(vpi);
 			}
 		);
-		
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void testUnmarhall() throws Exception {
-		@SuppressWarnings("rawtypes")
-		ABeanObject unmarshalledBean = ((XmlAdapter<String, ABeanObject>) adapter).unmarshal(UUID.toString());
-		assertEquals("The right bean was returned", bean, (BeanPropertyString) unmarshalledBean);
+		IUuid unmarshalledTi = ((XmlAdapter<String, IUuid>) adapter).unmarshal(UUID.toString());
+		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);		
 	}
 
 }
