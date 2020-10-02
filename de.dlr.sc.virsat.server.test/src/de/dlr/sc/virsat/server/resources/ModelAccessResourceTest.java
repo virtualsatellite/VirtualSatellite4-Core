@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 
@@ -26,6 +27,7 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
+import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
@@ -35,6 +37,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -141,6 +144,27 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	/*
 	 * Test GET various elements
 	 */
+	@Test
+	public void testRootSeisGet() {
+		Response response = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.get();
+		
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		// This would return a List<ABeanStructuralElementInstance>
+		// but because of problems with unmarshalling the list of abstract objects,
+		// we just use a String here
+		String entity = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.get(String.class);
+		
+		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
+	}
 	
 	/**
 	 * Get a testSubject at a path from the server
@@ -152,7 +176,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 * @throws JAXBException
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testGet(IBeanObject testSubject, String path, Class[] classes) throws JAXBException {
+	private void testGet(IBeanUuid testSubject, String path, Class[] classes) throws JAXBException {
 		String uuid = testSubject.getUuid();
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
@@ -176,6 +200,15 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jaxbUtility.getJsonMarshaller().marshal(testSubject, sw);
 		String expected = sw.toString();
 		assertEquals("Marshalled object as expected", expected, entity);
+	}
+	
+	private void testGetSei(IBeanUuid testSubject) throws JAXBException {
+		testGet(testSubject, ModelAccessResource.SEI, new Class[] {testSubject.getClass()});
+	}
+	
+	@Test
+	public void testSeiGet() throws JAXBException {
+		testGetSei(tSei);
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -277,6 +310,26 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	/*
 	 * Test PUT various elements
 	 */
+	
+	/**
+	 * PUT a sei and assert that the server returns OK
+	 * @param sei bean to PUT
+	 */
+	private void testPutSei(IBeanStructuralElementInstance sei) {
+		
+		Response response = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.SEI)
+				.request()
+				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+	}
+	
+	@Test
+	public void testSeiPut() throws JAXBException {
+		testPutSei(tSei);
+	}
+	
 	@Test
 	public void testPropertyStringPutChangesModel() throws JAXBException {
 		
