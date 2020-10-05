@@ -52,7 +52,6 @@ import de.dlr.sc.virsat.swtbot.util.SwtBotSection;
  *
  */
 public class EditorTest extends ASwtBotTestCase {
-	private static final int THREE = 3;
 	
 	SWTBotTreeItem repositoryNavigatorItem;
 	SWTBotTreeItem configurationTree;
@@ -146,9 +145,11 @@ public class EditorTest extends ASwtBotTestCase {
 	
 	@Test
 	public void addAndremoveCategoriesFromSEIEditor() {
+		final int EXPECTED_EC_CHILDREN = 3;
+		
 		openEditor(elementConfiguration);
 		bot.button("Add Document").click();
-		assertEquals(THREE, elementConfiguration.getItems().length);
+		assertEquals(EXPECTED_EC_CHILDREN, elementConfiguration.getItems().length);
 		
 		save();
 		bot.tableWithLabel(getSectionName(Document.class)).click(0, 0);
@@ -175,37 +176,61 @@ public class EditorTest extends ASwtBotTestCase {
 	}
 	
 	@Test 
-	public void editStringProperty() {
-		// Edit from editor
-		openEditor(document);
-		renameField(Document.PROPERTY_DOCUMENTNAME, "NewName");
-		assertText("NewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
-		//change string from table
-		SWTBotTable documentTable = getSWTBotTable(elementConfiguration, Document.class);
-		// change the value from the table
-		setTableValue(documentTable, 0, 1, "NewName", "NewNewName");
-		// test the new values		
-		openEditor(document);
-		assertText("NewNewName", bot.textWithLabel(Document.PROPERTY_DOCUMENTNAME));
-	}
-	
-	@Test 
-	public void editStringPropertyandFloatProperty() {
+	public void editPrimitiveProperties() {
+		final String NEW_NAME = "NewName";
+		final String NEW_NAME_2 = "NewNewName";
+		final String NEW_FLOAT = "6.976";
+		final String NEW_FLOAT_2 = "8.569";
+		final String NEW_INT = "35";
+		final String NEW_INT_2 = "42";
+		final String NEW_BOOL = "true";
+		final String NEW_BOOL_2 = "false";
+//		final String NEW_RESOURCE = "TODO";
+//		final String NEW_RESOURCE = "TODO";
+		final String NEW_ENUM = "MEDIUM=20";
+		final String NEW_ENUM_2 = "HIGH=25";
+		
+		final int COLUMN_STRING = 1;
+		final int COLUMN_INT = 2;
+		final int COLUMN_FLOAT = 3;
+		final int COLUMN_BOOL = 4;
+		final int COLUMN_RESOURCE = 5;
+		final int COLUMN_ENUM = 6;
+		
 		allProperty = addElement(TestCategoryAllProperty.class, conceptTest, elementConfiguration);
 		// Edit from editor
 		openEditor(allProperty);
-		renameField(TestCategoryAllProperty.PROPERTY_TESTSTRING, "NewName");
-		renameField(TestCategoryAllProperty.PROPERTY_TESTFLOAT, "6.976");
-		assertText("NewName", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
-		assertText("6.976", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));
+		
+		renameField(TestCategoryAllProperty.PROPERTY_TESTSTRING, NEW_NAME);
+		renameField(TestCategoryAllProperty.PROPERTY_TESTFLOAT, NEW_FLOAT);
+		renameField(TestCategoryAllProperty.PROPERTY_TESTINT, NEW_INT);
+		bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTBOOL).setSelection(NEW_BOOL);
+		bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTENUM).setSelection(NEW_ENUM);
+		
+		assertText(NEW_NAME, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
+		assertText(NEW_FLOAT, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));
+		assertText(NEW_INT, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTINT));
+		assertText(NEW_BOOL, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTBOOL));
+		assertText(NEW_ENUM, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTENUM));
+		
 		SWTBotTable allPropertyTable = getSWTBotTable(elementConfiguration, TestCategoryAllProperty.class);
+		
 		// change the values from the table
-		setTableValue(allPropertyTable, 0, 1, "NewName", "NewNewName");
-		setTableValue(allPropertyTable, 0, THREE, "6.976", "8.569");
+		setTableValue(allPropertyTable, 0, COLUMN_STRING, NEW_NAME, NEW_NAME_2);
+		setTableValue(allPropertyTable, 0, COLUMN_FLOAT, NEW_FLOAT, NEW_FLOAT_2);
+		setTableValue(allPropertyTable, 0, COLUMN_INT, NEW_INT, NEW_INT_2);
+		allPropertyTable.doubleClick(0, COLUMN_BOOL);
+		bot.ccomboBox().setSelection(NEW_BOOL_2);
+//		allPropertyTable.doubleClick(0, COLUMN_ENUM);
+//		bot.ccomboBox().setSelection(NEW_ENUM_2);
 		
 		// test the new values
 		openEditor(allProperty);
-		assertText("NewNewName", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
-		assertText("8.569", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));	
+		
+		assertText(NEW_NAME_2, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
+		assertText(NEW_FLOAT_2, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));
+		assertText(NEW_INT_2, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTINT));
+		assertText(NEW_BOOL_2, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTBOOL));
+//		assertText(NEW_ENUM_2, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTENUM));
 	}
 }
