@@ -43,6 +43,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
@@ -58,11 +59,12 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 	private Set<Class<?>> beanClass = new HashSet<>();
 	private MediaType mediaType;
 	private String testString = "test";
-
-	// TODO: test changes for sei
+	
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
+		
+		UserRegistry.getInstance().setSuperUser(true);
 		
 		provider = new CustomJsonProvider();
 		provider.setServerRepository(testServerRepository);
@@ -98,6 +100,13 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 		git.commit().setAll(true).setMessage("Initial commit").call();
 		git.push().call();
 	}
+	
+	@Override
+	public void tearDown() throws Exception {
+		super.tearDown();
+		
+		UserRegistry.getInstance().setSuperUser(false);
+	}
 
 	/**
 	 * Call writeTo and assert that the the output String is as expected
@@ -121,6 +130,14 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 		writeToAndAssert();
 	}
 	
+	/**
+	 * Open the remote repository and count the commits
+	 * @return number of commits in remote
+	 * @throws IOException
+	 * @throws NoHeadException
+	 * @throws GitAPIException
+	 * @throws InterruptedException
+	 */
 	private int countCommits() throws IOException, NoHeadException, GitAPIException, InterruptedException {
 		Git git = Git.open(pathRepoRemote.toFile());
 		Iterator<RevCommit> iterator = git.log().call().iterator();
@@ -142,7 +159,7 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 		
 		String output = writeToAndAssert();
 		
-		// No changes
+		// No changes don't create a commit
 		StringBuffer buf = new StringBuffer(output);
 		InputStream entityStream = new ByteArrayInputStream(buf.toString().getBytes());
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
@@ -150,8 +167,7 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 		assertEquals(testString, testBean.getName());
 		assertEquals("No new commit", initialCommits, countCommits());
 		
-		// changes
-		// TODO: the name is not present on the fs, why???
+		// Changes result in a commit
 		String newValue = "new";
 		output = output.replace(testString, newValue);
 		buf = new StringBuffer(output);

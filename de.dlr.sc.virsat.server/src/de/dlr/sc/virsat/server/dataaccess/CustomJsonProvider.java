@@ -155,13 +155,18 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 		
 		AtomicExceptionReference<IOException> atomicIoException = new AtomicExceptionReference<>();
 		AtomicExceptionReference<WebApplicationException> atomicWebAppException = new AtomicExceptionReference<>();
+		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		
-		RecordingCommand recordingCommand = new ReadFromCommand(ed, atomicIoException, atomicWebAppException,
+		RecordingCommand recordingCommand = new ReadFromCommand(ed, 
+				atomicIoException, atomicWebAppException, atomicException,
 				type, genericType, annotations, mediaType, httpHeaders, entityStream);
 		ed.getCommandStack().execute(recordingCommand);
 		
 		atomicIoException.throwIfSet();
 		atomicWebAppException.throwIfSet();
+		// Has to be thrown as RuntimeException because
+		// we can't change the method signature in the parent class
+		atomicException.throwAsRuntimeExceptionIfSet();
 		
 		return recordingCommand.getResult().iterator().next();
 	}
@@ -180,6 +185,7 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 
 		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
 		private AtomicExceptionReference<IOException> atomicIoException;
+		private AtomicExceptionReference<Exception> atomicException;
 		
 		/**
 		 * Call ConfigurableMoxyJsonProvider.readFrom() over the
@@ -196,13 +202,16 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 		 * @param entityStream InputStream
 		 */
 		ReadFromCommand(TransactionalEditingDomain domain,
-				AtomicExceptionReference<IOException> atomicIoException, AtomicExceptionReference<WebApplicationException> atomicWebAppException,
+				AtomicExceptionReference<IOException> atomicIoException, 
+				AtomicExceptionReference<WebApplicationException> atomicWebAppException,
+				AtomicExceptionReference<Exception> atomicException,
 				Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 				MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
 			super(domain);
 			
 			this.atomicIoException = atomicIoException;
 			this.atomicWebAppException = atomicWebAppException;
+			this.atomicException = atomicException;
 			
 			this.type = type;
 			this.genericType = genericType;
@@ -224,9 +233,7 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 			} catch (IOException e) {
 				atomicIoException.set(e);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
-				new RuntimeException(e);
+				atomicException.set(e);
 			}
 		}
 		
