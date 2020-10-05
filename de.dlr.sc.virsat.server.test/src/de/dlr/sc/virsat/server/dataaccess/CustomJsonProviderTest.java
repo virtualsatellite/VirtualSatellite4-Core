@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.ws.rs.WebApplicationException;
@@ -29,79 +30,73 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.test.AProjectTestCase;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
+import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
-public class CustomJsonProviderTest extends AProjectTestCase {
+public class CustomJsonProviderTest extends AServerRepositoryTest {
 
 	private CustomJsonProvider provider;
-	private BeanPropertyString testBean;
+	private BeanStructuralElementInstance testBean;
 	private Class<?> type;
 	private Set<Class<?>> beanClass = new HashSet<>();
 	private MediaType mediaType;
 	private String testString = "test";
 
+	// TODO: test changes for sei
 	@Before
-	public void setUp() throws CoreException {
+	public void setUp() throws Exception {
 		super.setUp();
-		addEditingDomainAndRepository();
 		
 		provider = new CustomJsonProvider();
-		provider.setEd(editingDomain);
+		provider.setServerRepository(testServerRepository);
+		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
 		
 		StructuralElement testSe = StructuralFactory.eINSTANCE.createStructuralElement();
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		Category testCategory = CategoriesFactory.eINSTANCE.createCategory();
-		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-		StringProperty testProperty = PropertydefinitionsFactory.eINSTANCE.createStringProperty();
-		ValuePropertyInstance testPropertyInstance = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
-		
-		testPropertyInstance.setType(testProperty);
-		
-		testCategory.setIsApplicableForAll(true);
-		testCategory.getProperties().add(testProperty);
-		
-		testCa.setType(testCategory);
-		testCa.getPropertyInstances().add(testPropertyInstance);
-		
 		testSe.setIsRootStructuralElement(true);
-		
-		testSei.setType(testSe);
-		testSei.getCategoryAssignments().add(testCa);
-		testSei.getCategoryAssignments();
-		
-		RecordingCommand recordingCommand = new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(testSei);
-			}
-		};
-		
-		editingDomain.getVirSatCommandStack().execute(recordingCommand);
-		
-		testBean = new BeanPropertyString(testPropertyInstance);
-		editingDomain.getVirSatCommandStack().execute(testBean.setValue(editingDomain, testString));
+		testSe.setName("testSe");
 
-		type = BeanPropertyString.class;
+		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		testSei.setType(testSe);
+		testSei.setName(testString);
+		
+		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), 
+				DVLMPackage.eINSTANCE.getRepository_RootEntities(), testSei);
+		ed.getCommandStack().execute(addSeiToRepo);
+		
+		Command createSei = new CreateSeiResourceAndFileCommand(ed.getResourceSet(), testSei);
+		ed.getCommandStack().execute(createSei);
+
+		ed.getResourceSet().saveAllResources(new NullProgressMonitor(), ed);
+
+		testBean = new BeanStructuralElementInstance(testSei);
+
+		type = BeanStructuralElementInstance.class;
 		beanClass.add(type);
 		
 		mediaType = MediaType.APPLICATION_JSON_TYPE;
+		
+		// Initial commit to have a valid HEAD
+		Git git = Git.open(testServerRepository.getLocalRepositoryPath());
+		git.add().addFilepattern(".").call();
+		git.commit().setAll(true).setMessage("Initial commit").call();
+		git.push().call();
 	}
 
 	/**
@@ -126,16 +121,45 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 		writeToAndAssert();
 	}
 	
+	private int countCommits() throws IOException, NoHeadException, GitAPIException, InterruptedException {
+		Git git = Git.open(pathRepoRemote.toFile());
+		Iterator<RevCommit> iterator = git.log().call().iterator();
+		int commits = 0;
+		while (iterator.hasNext()) {
+			System.out.println(iterator.next().getFullMessage());
+			commits++;
+		}
+		git.close();
+		return commits;
+	}
+	
 	// Test the unmarshalling
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testReadFrom() throws WebApplicationException, IOException {
+	public void testReadFrom() throws Exception {
+		
+		int initialCommits = countCommits();
+		
 		String output = writeToAndAssert();
 		
+		// No changes
 		StringBuffer buf = new StringBuffer(output);
 		InputStream entityStream = new ByteArrayInputStream(buf.toString().getBytes());
-		BeanPropertyString bean = (BeanPropertyString) provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
-		assertEquals(testBean, bean);
+		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
+		
+		assertEquals(testString, testBean.getName());
+		assertEquals("No new commit", initialCommits, countCommits());
+		
+		// changes
+		// TODO: the name is not present on the fs, why???
+		String newValue = "new";
+		output = output.replace(testString, newValue);
+		buf = new StringBuffer(output);
+		entityStream = new ByteArrayInputStream(buf.toString().getBytes());
+		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
+		
+		assertEquals(newValue, testBean.getName());
+		assertEquals("One new commit", initialCommits + 1, countCommits());
 	}
 
 	@Test

@@ -35,6 +35,7 @@ import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
@@ -52,6 +53,7 @@ import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
@@ -59,9 +61,11 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 public class CustomJsonProvider extends MOXyJsonProvider {
 	
 	private ValidationEventHandler eventHandler;
-
+	
+	private ServerRepository repo;
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
+	
 	private static final Set<Class<?>> LIST_CLASSES = new HashSet<Class<?>>(
 			Arrays.asList(
 				IUuidAdapter.class,
@@ -73,9 +77,10 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 		eventHandler = new DefaultValidationEventHandler();
 	}
 	
-	public void setEd(VirSatTransactionalEditingDomain ed) {
-		this.ed = ed;
-		this.resourceSet = ed.getResourceSet();
+	public void setServerRepository(ServerRepository repo) {
+		this.repo = repo;
+		this.ed = repo.getEd();
+		this.resourceSet = repo.getResourceSet();
 	}
 
 	/**
@@ -211,11 +216,17 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 		protected void doExecute() {
 			try {
 				Object result = CustomJsonProvider.super.readFrom(type, genericType, annotations, mediaType, httpHeaders, entityStream);
+				resourceSet.saveAllResources(new NullProgressMonitor(), ed);
+				repo.syncRepository();
 				results.add(result);
 			} catch (WebApplicationException e) {
 				atomicWebAppException.set(e);
 			} catch (IOException e) {
 				atomicIoException.set(e);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+				new RuntimeException(e);
 			}
 		}
 		

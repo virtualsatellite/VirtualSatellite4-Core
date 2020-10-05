@@ -10,9 +10,12 @@
 package de.dlr.sc.virsat.server.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jgit.api.Git;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -26,11 +29,11 @@ public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 
 	protected static ServerRepository testServerRepository;
 	protected static String projectName;
+	protected static Path pathRepoRemote = null;
+	protected static File localRepoHome = null;
 
 	@BeforeClass
 	public static void addServerRepository() throws Exception {
-		Path pathRepoRemote = null;
-		File localRepoHome = null;
 		pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
 		localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
 		File fileGitRemoteRepo = pathRepoRemote.toFile();
@@ -57,6 +60,11 @@ public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 	public void addRepoToRegistry() {
 		// AGitAndJettyServerTest clears the RepoRegistry in the @After method so we have to create the mapping every time
 		RepoRegistry.getInstance().addRepository(projectName, testServerRepository);
+	}
+	
+	@AfterClass
+	public static void cleanUpServerRepository() throws CoreException, IOException {
+		testServerRepository.removeRepository();
 	}
 
 }

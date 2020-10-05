@@ -91,7 +91,7 @@ public class ModelAccessResource {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			VirSatTransactionalEditingDomain ed = repo.getEd();
-			provider.setEd(ed);
+			provider.setServerRepository(repo);
 			return new RepoModelAccessResource(ed.getResourceSet().getRepository());
 		}
 
