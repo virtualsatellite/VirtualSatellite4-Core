@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
@@ -60,8 +59,12 @@ public class TestCategoryBeanATest extends AConceptTestCase {
 		
 		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
 		
-		JAXBElement<TestCategoryBeanA> jaxbElement = jsonUnmarshaller.unmarshal(inputSource, TestCategoryBeanA.class);
-		TestCategoryBeanA createdBeanA = jaxbElement.getValue();
+		TestCategoryBeanA createdBeanA = jsonUnmarshaller.unmarshal(inputSource, TestCategoryBeanA.class).getValue();
+		assertEquals(tcBeanA, createdBeanA);
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		createdBeanA = jsonUnmarshaller.unmarshal(inputSource, TestCategoryBeanA.class).getValue();
 		assertEquals(tcBeanA, createdBeanA);
 	}
 	
