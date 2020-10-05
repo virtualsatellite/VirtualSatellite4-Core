@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendTest;
 	FuncElectricalDiagramTest.class,
 	EditorTest.class,
 	NewProjectWizardTest.class,
+	ExporterImporterWizardTest.class,
 	CutCopyDeleteUndoTest.class,
 	InheritanceTest.class,
 	CalculationTest.class,

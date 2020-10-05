@@ -140,7 +140,8 @@ public class FuncElecImporter implements IImport {
 					seiInterfaceEnds.get(check).setName(tempInterfaceEndName);
 					// if type exists change the type, if not return a fault
 					int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).toString(), ifaceTypes);
-					seiInterfaceEnds.get(check).setType(ifaceTypes.get(interfaceTypeIndex));
+					InterfaceType interfaceType = (interfaceTypeIndex >= 0) ? ifaceTypes.get(interfaceTypeIndex) : null;
+					seiInterfaceEnds.get(check).setType(interfaceType);
 				}
 			}
 		}
