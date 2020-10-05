@@ -235,10 +235,9 @@ public class EditorTest extends ASwtBotTestCase {
 		openEditor(elementConfiguration);
 		SWTBotTable documentTable = getSWTBotTable(elementConfiguration, Document.class);
 		
-		SwtBotSection section = getSWTBotSection(Document.class);
-		section.setFocus();
+		SwtBotSection documentSection = getSWTBotSection(Document.class);
 
-		SWTBotButton button = new SWTBotButton((Button) bot.widget(withText("Drill-Down"), section.widget));
+		SWTBotButton button = new SWTBotButton((Button) bot.widget(withText("Drill-Down"), documentSection.widget));
 		assertFalse(button.isEnabled());
 		
 		documentTable.click(0, 0);
