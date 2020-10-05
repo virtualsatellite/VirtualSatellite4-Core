@@ -144,9 +144,11 @@ public class ImportValidator {
 			}
 			// control if the interface Type Exists
 			String type = Objects.toString(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE), "");
-			int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(type, ifaceTypes);
-			if (interfaceTypeIndex < 0) {
-				faultList.add(new Fault(FuncFaultType.INTERFACE_TYPE_DOES_NOT_EXIST, sheetIndex, i));
+			if (!type.equals("")) {
+				int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(type, ifaceTypes);
+				if (interfaceTypeIndex < 0) {
+					faultList.add(new Fault(FuncFaultType.INTERFACE_TYPE_DOES_NOT_EXIST, sheetIndex, i));
+				}
 			}
 		}
 	}
