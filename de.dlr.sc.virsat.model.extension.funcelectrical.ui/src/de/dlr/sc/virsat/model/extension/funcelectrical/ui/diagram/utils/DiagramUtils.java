@@ -95,6 +95,19 @@ public class DiagramUtils {
  			i++;
  		}
 	}
+	
+	private static final Comparator<Shape> HEIGHT_COMPARATOR = (Shape o1, Shape o2) -> {
+		Shape shape1 = (Shape) o1;
+		Shape shape2 = (Shape) o2;
+		double diff = shape1.getGraphicsAlgorithm().getY() - shape2.getGraphicsAlgorithm().getY();
+		return Double.compare(diff, 0);
+	};
+	
+	private static boolean isRightInterfaceEnd(ContainerShape interfaceEndShape) {
+		Text text = (Text) interfaceEndShape.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
+		return text.getHorizontalAlignment() == Orientation.ALIGNMENT_RIGHT;
+	}
+	
 	/**
 	 * The function to return the left right anchors of an element
 	 * @return right anchors
@@ -105,30 +118,23 @@ public class DiagramUtils {
 	 * @author bell_er
 	 *
 	 */
-	public static ArrayList<Shape> getLeftRightInterfaceEndShapes(ContainerShape containerShape, IFeatureProvider featureProvider, ArrayList<Shape> ieLeft, ArrayList<Shape> ieRight) {
+	public static void getLeftRightInterfaceEndShapes(ContainerShape containerShape, IFeatureProvider featureProvider, ArrayList<Shape> ieLeft, ArrayList<Shape> ieRight) {
 		for (Shape shape : containerShape.getChildren()) {			
 			if (shape instanceof ContainerShape) {
 				ContainerShape childShape = (ContainerShape) shape;
 				Object bo = featureProvider.getBusinessObjectForPictogramElement(shape);
-				Text text = (Text) childShape.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
-				text.getHorizontalAlignment();
-				if (text.getHorizontalAlignment() == Orientation.ALIGNMENT_LEFT && bo instanceof InterfaceEnd) {
-					ieRight.add(shape);
-				} else {
-					ieLeft.add(shape);
-				}				
+				if (bo instanceof InterfaceEnd) {
+					if (isRightInterfaceEnd(childShape)) {
+						ieRight.add(shape);
+					} else {
+						ieLeft.add(shape);
+					}
+				}			
 			}			
 		}
-		Collections.sort(ieRight, new Comparator<Shape>() {
-			@Override
-			public int compare(Shape o1, Shape o2) {
-				Shape shape1 = (Shape) o1;
-				Shape shape2 = (Shape) o2;
-				double diff = shape1.getGraphicsAlgorithm().getY() - shape2.getGraphicsAlgorithm().getY();
-				return Double.compare(diff, 0);
-			}
-	    });
-		return ieRight;
+		
+		Collections.sort(ieRight, HEIGHT_COMPARATOR);
+		Collections.sort(ieLeft, HEIGHT_COMPARATOR);
 	}
 	/**
 	 * The function to calculate the minimum width to fit interfaceEnds
