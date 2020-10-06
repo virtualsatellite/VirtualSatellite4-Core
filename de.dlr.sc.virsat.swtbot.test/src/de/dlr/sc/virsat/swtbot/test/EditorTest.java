@@ -30,16 +30,19 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.maturity.model.Maturity;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -177,6 +180,9 @@ public class EditorTest extends ASwtBotTestCase {
 	
 	@Test 
 	public void editPrimitiveProperties() {
+		// A resource can't be tested via the SWTBot,
+		// because it doesn't support the native file selection dialog
+		
 		final String NEW_NAME = "NewName";
 		final String NEW_NAME_2 = "NewNewName";
 		final String NEW_FLOAT = "6.976";
@@ -185,17 +191,11 @@ public class EditorTest extends ASwtBotTestCase {
 		final String NEW_INT_2 = "42";
 		final String NEW_BOOL = "true";
 		final String NEW_BOOL_2 = "false";
-//		final String NEW_RESOURCE = "TODO";
-//		final String NEW_RESOURCE = "TODO";
-		final String NEW_ENUM = "MEDIUM=20";
-		final String NEW_ENUM_2 = "HIGH=25";
 		
 		final int COLUMN_STRING = 1;
 		final int COLUMN_INT = 2;
 		final int COLUMN_FLOAT = 3;
 		final int COLUMN_BOOL = 4;
-		final int COLUMN_RESOURCE = 5;
-		final int COLUMN_ENUM = 6;
 		
 		allProperty = addElement(TestCategoryAllProperty.class, conceptTest, elementConfiguration);
 		// Edit from editor
@@ -205,32 +205,81 @@ public class EditorTest extends ASwtBotTestCase {
 		renameField(TestCategoryAllProperty.PROPERTY_TESTFLOAT, NEW_FLOAT);
 		renameField(TestCategoryAllProperty.PROPERTY_TESTINT, NEW_INT);
 		bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTBOOL).setSelection(NEW_BOOL);
-		bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTENUM).setSelection(NEW_ENUM);
 		
 		assertText(NEW_NAME, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
 		assertText(NEW_FLOAT, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));
 		assertText(NEW_INT, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTINT));
 		assertText(NEW_BOOL, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTBOOL));
-		assertText(NEW_ENUM, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTENUM));
 		
 		SWTBotTable allPropertyTable = getSWTBotTable(elementConfiguration, TestCategoryAllProperty.class);
 		
-		// change the values from the table
+		// Change the values from the table
 		setTableValue(allPropertyTable, 0, COLUMN_STRING, NEW_NAME, NEW_NAME_2);
 		setTableValue(allPropertyTable, 0, COLUMN_FLOAT, NEW_FLOAT, NEW_FLOAT_2);
 		setTableValue(allPropertyTable, 0, COLUMN_INT, NEW_INT, NEW_INT_2);
 		allPropertyTable.doubleClick(0, COLUMN_BOOL);
 		bot.ccomboBox().setSelection(NEW_BOOL_2);
-//		allPropertyTable.doubleClick(0, COLUMN_ENUM);
-//		bot.ccomboBox().setSelection(NEW_ENUM_2);
 		
-		// test the new values
+		// Test the new values
 		openEditor(allProperty);
 		
 		assertText(NEW_NAME_2, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
 		assertText(NEW_FLOAT_2, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));
 		assertText(NEW_INT_2, bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTINT));
 		assertText(NEW_BOOL_2, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTBOOL));
-//		assertText(NEW_ENUM_2, bot.comboBoxWithLabel(TestCategoryAllProperty.PROPERTY_TESTENUM));
+	}
+	
+	@Test 
+	public void editEnumProperties() {
+		final String NEW_LEVEL = "READY_TO_BE_USED=1";
+		final String NEW_LEVEL_2 = "HAS_TO_BE_MODIFIED=2";
+		final String NEW_TRL = "TRL_5=5";
+		final String NEW_TRL_2 = "TRL_4=4";
+		
+		SWTBotTreeItem maturity = addElement(Maturity.class, conceptMaturity, elementConfiguration);
+		
+		// Edit from editor
+		openEditor(maturity);
+		
+		bot.comboBoxWithLabel(Maturity.PROPERTY_LEVEL).setSelection(NEW_LEVEL);
+		bot.comboBoxWithLabel(Maturity.PROPERTY_TRL).setSelection(NEW_TRL);
+		
+		assertText(NEW_LEVEL, bot.comboBoxWithLabel(Maturity.PROPERTY_LEVEL));
+		assertText(NEW_TRL, bot.comboBoxWithLabel(Maturity.PROPERTY_TRL));
+		
+		SWTBotTable maturityTable = getSWTBotTable(elementConfiguration, Maturity.class);
+		
+		// Change the values from the table
+		maturityTable.doubleClick(0, 1);
+		bot.ccomboBox().setSelection(NEW_LEVEL_2);
+		
+		maturityTable.doubleClick(0, 2);
+		bot.ccomboBox().setSelection(NEW_TRL_2);
+		
+		// Test the new values
+		openEditor(maturity);
+		
+		assertText(NEW_LEVEL_2, bot.comboBoxWithLabel(Maturity.PROPERTY_LEVEL));
+		assertText(NEW_TRL_2, bot.comboBoxWithLabel(Maturity.PROPERTY_TRL));
+	}
+	
+	@Test 
+	public void editReference() {
+		allProperty = addElement(TestCategoryAllProperty.class, conceptTest, elementConfiguration);
+		
+		SWTBotTreeItem reference = addElement(TestCategoryReference.class, conceptTest, elementConfiguration);
+		openEditor(reference);
+		
+		SWTBotTable referenceTable = getSWTBotTable(elementConfiguration, TestCategoryReference.class);
+		referenceTable.doubleClick(0, 1);
+		
+		bot.button("...").click();
+		
+		SWTBotShell shell = bot.shell("Select Reference to Object");
+		shell.bot().tree().getTreeItem("CT: ConfigurationTree").click();
+		shell.bot().table().getTableItem("TCAP: TestCategoryAllProperty - ConfigurationTree.ElementConfiguration.TestCategoryAllProperty").doubleClick();
+
+		openEditor(reference);
+		assertText("TestCategoryAllProperty - ElementConfiguration.TestCategoryAllProperty", bot.textWithLabel(TestCategoryReference.PROPERTY_TESTREFCATEGORY));
 	}
 }

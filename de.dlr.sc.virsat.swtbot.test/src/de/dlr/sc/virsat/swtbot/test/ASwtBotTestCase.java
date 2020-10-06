@@ -102,6 +102,7 @@ public class ASwtBotTestCase {
 	protected Concept conceptPs;
 	protected Concept conceptTest;
 	protected Concept conceptFea;
+	protected Concept conceptMaturity;
 	protected int screenCaptureNumber = 1;
 	protected WorkspaceBuilderInterlockedExecution buildCounter;
 	protected enum DiagramType { interfaces, stateMachines }
@@ -134,6 +135,7 @@ public class ASwtBotTestCase {
 		conceptPs = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptTest =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptFea =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.funcelectrical.Activator.getPluginId() + "/concept/concept.xmi");
+		conceptMaturity = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.maturity.Activator.getPluginId() + "/concept/concept.xmi");
 		
 		closeWelcomeScreen();
 		
