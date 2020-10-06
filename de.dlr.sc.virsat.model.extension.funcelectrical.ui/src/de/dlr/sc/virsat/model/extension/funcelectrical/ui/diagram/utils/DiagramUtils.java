@@ -49,7 +49,6 @@ public class DiagramUtils {
 	 * @return desired height
 	 * @param containerShape the element
 	 * @param featureProvider the feature provider
-	 * @author bell_er
 	 *
 	 */
 	public static int getRequiredHeight(ContainerShape containerShape, IFeatureProvider featureProvider) {
@@ -71,30 +70,53 @@ public class DiagramUtils {
 		return maxHeight;
 		
 	}
+	
 	/**
 	 * The function to reposition interface ends
 	 * @param containerShape the element
 	 * @param featureProvider the feature provider
-	 * @author bell_er
 	 *
 	 */
-	public static void repositionShapes(ContainerShape containerShape, IFeatureProvider featureProvider) {
-		ArrayList<Shape> ieLeft = new ArrayList<Shape>();
-		ArrayList<Shape> ieRight = new ArrayList<Shape>();
+	public static void repositionInterfaceEndShapes(ContainerShape containerShape, IFeatureProvider featureProvider) {
+		List<Shape> ieLeft = new ArrayList<>();
+		List<Shape> ieRight = new ArrayList<>();
 		getLeftRightInterfaceEndShapes(containerShape, featureProvider, ieLeft, ieRight);
+		repositionInterfaceEndShapes(ieLeft);
+		repositionInterfaceEndShapes(ieRight);
+	}
+	
+	/**
+	 * The function to reposition interface ends
+	 * @param containerShape the element
+	 * @param featureProvider the feature provider
+	 *
+	 */
+	public static void repositionInterfaceEndShapes(List<Shape> shapes) {
 		int i = 2;
- 		for (Shape shape : ieLeft) {
+ 		for (Shape shape : shapes) {
  			int height = (ElementAddFeature.PADDING_Y + InterfaceEndAddFeature.INTERFACE_END_HEIGHT) * i;
  			shape.getGraphicsAlgorithm().setY(height);
  			i++;
         }
- 		i = 2;
- 		for (Shape shape : ieRight) {
- 			int height = (ElementAddFeature.PADDING_Y + InterfaceEndAddFeature.INTERFACE_END_HEIGHT) * i;
- 			shape.getGraphicsAlgorithm().setY(height);
- 			i++;
- 		}
 	}
+	
+	private static final Comparator<Shape> Y_POSITION_COMPARATOR = (Shape o1, Shape o2) -> {
+		Shape shape1 = (Shape) o1;
+		Shape shape2 = (Shape) o2;
+		double diff = shape1.getGraphicsAlgorithm().getY() - shape2.getGraphicsAlgorithm().getY();
+		return Double.compare(diff, 0);
+	};
+	
+	/**
+	 * Checks if a given interface end is positioned on the right side of an element or not
+	 * @param interfaceEndShape the diagram shape of the interface end
+	 * @return true iff the the interface end is positione on the right side. False implies that it is on the left side.
+	 */
+	private static boolean isRightInterfaceEnd(ContainerShape interfaceEndShape) {
+		Text text = (Text) interfaceEndShape.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
+		return text.getHorizontalAlignment() == Orientation.ALIGNMENT_RIGHT;
+	}
+	
 	/**
 	 * The function to return the left right anchors of an element
 	 * @return right anchors
@@ -102,40 +124,32 @@ public class DiagramUtils {
 	 * @param featureProvider the feature provider
 	 * @param ieLeft interface ends on the left
 	 * @param ieRight interface ends on the right
-	 * @author bell_er
 	 *
 	 */
-	public static ArrayList<Shape> getLeftRightInterfaceEndShapes(ContainerShape containerShape, IFeatureProvider featureProvider, ArrayList<Shape> ieLeft, ArrayList<Shape> ieRight) {
+	public static void getLeftRightInterfaceEndShapes(ContainerShape containerShape, IFeatureProvider featureProvider, List<Shape> ieLeft, List<Shape> ieRight) {
 		for (Shape shape : containerShape.getChildren()) {			
 			if (shape instanceof ContainerShape) {
 				ContainerShape childShape = (ContainerShape) shape;
 				Object bo = featureProvider.getBusinessObjectForPictogramElement(shape);
-				Text text = (Text) childShape.getGraphicsAlgorithm().getGraphicsAlgorithmChildren().get(0);
-				text.getHorizontalAlignment();
-				if (text.getHorizontalAlignment() == Orientation.ALIGNMENT_LEFT && bo instanceof InterfaceEnd) {
-					ieRight.add(shape);
-				} else {
-					ieLeft.add(shape);
-				}				
+				if (bo instanceof InterfaceEnd) {
+					if (isRightInterfaceEnd(childShape)) {
+						ieRight.add(shape);
+					} else {
+						ieLeft.add(shape);
+					}
+				}			
 			}			
 		}
-		Collections.sort(ieRight, new Comparator<Shape>() {
-			@Override
-			public int compare(Shape o1, Shape o2) {
-				Shape shape1 = (Shape) o1;
-				Shape shape2 = (Shape) o2;
-				double diff = shape1.getGraphicsAlgorithm().getY() - shape2.getGraphicsAlgorithm().getY();
-				return Double.compare(diff, 0);
-			}
-	    });
-		return ieRight;
+		
+		Collections.sort(ieRight, Y_POSITION_COMPARATOR);
+		Collections.sort(ieLeft, Y_POSITION_COMPARATOR);
 	}
+	
 	/**
 	 * The function to calculate the minimum width to fit interfaceEnds
 	 * @return width the needed width
 	 * @param addedElement sei to be represented
 	 * @param font font of the texts
-	 * @author bell_er
 	 *
 	 */
 	public static int neededWidth(ABeanStructuralElementInstance addedElement, Font font) {
