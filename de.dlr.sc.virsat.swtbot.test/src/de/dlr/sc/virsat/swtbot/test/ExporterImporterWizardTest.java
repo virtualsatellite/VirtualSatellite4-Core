@@ -102,11 +102,12 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		
 		// Assert that we correctly exported a file
 		File htmlExportIndexFile = exportFolderPath.resolve("index.htm").toFile();
-		File htmlExportCTFile = exportFolderPath.resolve("resources/ConfigurationTree.htm").toFile();
-		File htmlExportECFile = exportFolderPath.resolve("resources/ElementConfiguration.htm").toFile();
-		assertTrue("A file has been successfully created.", htmlExportIndexFile.exists());
-		assertTrue("A file has been successfully created.", htmlExportCTFile.exists());
-		assertTrue("A file has been successfully created.", htmlExportECFile.exists());
+		Path resourcesFolderPath = exportFolderPath.resolve("resources");
+		File htmlExportCTFile = resourcesFolderPath.resolve("ConfigurationTree.htm").toFile();
+		File htmlExportECFile = resourcesFolderPath.resolve("ElementConfiguration.htm").toFile();
+		assertTrue("Index file has been successfully created.", htmlExportIndexFile.exists());
+		assertTrue("ConfigurationTree file has been successfully created.", htmlExportCTFile.exists());
+		assertTrue("ElementConfiguration file has been successfully created.", htmlExportECFile.exists());
 	}
 	
 	/**
