@@ -804,7 +804,15 @@ public class ASwtBotTestCase {
 	 * @return it returns the desired section name
 	 */
 	protected String getSectionName(Class<?> clazz) {
-		return "Section for: " + clazz.getSimpleName();
+		return getSectionName(clazz.getSimpleName());
+	}
+	
+	/**
+	 * @param sectionContent
+	 * @return section name for arbitrary content string
+	 */
+	protected String getSectionName(String sectionContent) {
+		return "Section for: " + sectionContent;
 	}
 	
 	/**
