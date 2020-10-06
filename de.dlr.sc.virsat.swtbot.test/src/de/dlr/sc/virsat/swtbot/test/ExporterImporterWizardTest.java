@@ -42,16 +42,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		SWTBotTreeItem interfaceEnd = addElement(InterfaceEnd.class, conceptFea, ec);
 		openEditor(interfaceEnd);
 		
-		// Open the export menu
-		bot.menu("File").menu("Export...").click();
-		waitForEditingDomainAndUiThread();
-		
-		// Go to the Virtual Satellite category and select the exporter
-		SWTBotTreeItem virSatExporters = bot.tree().getTreeItem("Virtual Satellite");
-		virSatExporters.expand();
-		virSatExporters.getNode("Excel Export Wizard").select();
-		bot.button("Next >").click();
-		waitForEditingDomainAndUiThread();
+		openVirSatExporter("Excel Export Wizard");
 		
 		// Configure the export
 		SWTBotTreeItem wizardEC = bot.tree()
@@ -74,15 +65,9 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		
 		// Open the import menu, workaround to shells sometimes not being valid anymore after closing a wizard
 		// See https://wiki.eclipse.org/SWTBot/Troubleshooting#WidgetNotFoundException_when_stepping_through_SWTBot_test_in_Eclipse_debugger for details
-		bot.shell().activate().bot().menu("File").menu("Import...").click();
-		waitForEditingDomainAndUiThread();
+		bot.shell().activate();
 		
-		// Go to the Virtual Satellite category and select the importer
-		SWTBotTreeItem virSatImporters = bot.tree().getTreeItem("Virtual Satellite");
-		virSatImporters.expand();
-		virSatImporters.getNode("Excel Import Wizard").select();
-		bot.button("Next >").click();
-		waitForEditingDomainAndUiThread();
+		openVirSatImporter("Excel Import Wizard");
 		
 		// Configure the import
 		wizardEC = bot.tree()
@@ -95,6 +80,66 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		
 		// Check that the imported name has been applied
 		assertText(InterfaceEnd.class.getSimpleName(), bot.textWithLabel("Name"));
+	}
+
+	@Test
+	public void testHTMLExportFEA() {
+		SWTBotTreeItem repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
+		SWTBotTreeItem ct = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
+		SWTBotTreeItem ec = addElement(ElementConfiguration.class, conceptPs, ct);
+		SWTBotTreeItem interfaceEnd = addElement(InterfaceEnd.class, conceptFea, ec);
+		openEditor(interfaceEnd);
+		
+		openVirSatExporter("Functional Electrical Architecture to HTML Export Wizard");
+		
+		// Configure the export
+		SWTBotTreeItem wizardEC = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree");
+		wizardEC.select();
+		bot.comboBox().setText(exportFolderPath.toString());
+		
+		// Perform the export
+		bot.button("Finish").click();
+		
+		// Assert that we correctly exported a file
+		File htmlExportIndexFile = exportFolderPath.resolve("index.htm").toFile();
+		File htmlExportCTFile = exportFolderPath.resolve("resources/ConfigurationTree.htm").toFile();
+		File htmlExportECFile = exportFolderPath.resolve("resources/ElementConfiguration.htm").toFile();
+		assertTrue("A file has been successfully created.", htmlExportIndexFile.exists());
+		assertTrue("A file has been successfully created.", htmlExportCTFile.exists());
+		assertTrue("A file has been successfully created.", htmlExportECFile.exists());
+	}
+	
+	/**
+	 * Helper function to open the given virsat exporter
+	 * @param exporterName the name of the exporter
+	 */
+	private void openVirSatExporter(String exporterName) {
+		// Open the export menu
+		bot.menu("File").menu("Export...").click();
+		waitForEditingDomainAndUiThread();
+		
+		// Go to the Virtual Satellite category and select the exporter
+		SWTBotTreeItem virSatExporters = bot.tree().getTreeItem("Virtual Satellite");
+		virSatExporters.expand();
+		virSatExporters.getNode(exporterName).select();
+		bot.button("Next >").click();
+		waitForEditingDomainAndUiThread();
+	}
+	
+	/**
+	 * Helper function to open the given virsat importer
+	 * @param importerName the name of the importer
+	 */
+	private void openVirSatImporter(String importerName) {
+		bot.menu("File").menu("Import...").click();
+		waitForEditingDomainAndUiThread();
+		
+		// Go to the Virtual Satellite category and select the importer
+		SWTBotTreeItem virSatImporters = bot.tree().getTreeItem("Virtual Satellite");
+		virSatImporters.expand();
+		virSatImporters.getNode(importerName).select();
+		bot.button("Next >").click();
+		waitForEditingDomainAndUiThread();
 	}
 	
 }
