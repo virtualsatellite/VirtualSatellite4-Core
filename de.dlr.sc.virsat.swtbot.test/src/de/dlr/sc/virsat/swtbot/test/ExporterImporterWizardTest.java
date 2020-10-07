@@ -50,14 +50,12 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 	public void testExcelExportImportFEA() {
 		SWTBotTreeItem interfaceEnd = addElement(InterfaceEnd.class, conceptFea, ec);
 		openEditor(interfaceEnd);
-		
 		openVirSatExporter("Excel Export Wizard");
 		
 		// Configure the export
 		bot.tree().expandNode(EC_PATH).select();
 		bot.checkBox("Use default template").click();
 		bot.comboBox().setText(exportFolderPath.toString());
-		
 		finishWizard();
 		
 		// Cause a change
@@ -66,7 +64,8 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		assertText("changedName", bot.textWithLabel("Name"));
 		
 		// Assert that we correctly exported a file
-		File excelExportFile = exportFolderPath.resolve("ConfigurationTree.ElementConfiguration.xlsx").toFile();
+		final String EXPECTED_EXCEL_FILE_NAME = "ConfigurationTree.ElementConfiguration.xlsx";
+		File excelExportFile = exportFolderPath.resolve(EXPECTED_EXCEL_FILE_NAME).toFile();
 		assertTrue("A file has been successfully created.", excelExportFile.exists());
 
 		openVirSatImporter("Excel Import Wizard");
@@ -74,7 +73,6 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		// Configure the import
 		bot.tree().expandNode(EC_PATH).select();
 		bot.comboBox().setText(excelExportFile.getPath());
-		
 		finishWizard();
 		
 		// Check that the imported name has been applied
@@ -85,13 +83,11 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 	public void testHTMLExportFEA() {
 		SWTBotTreeItem interfaceEnd = addElement(InterfaceEnd.class, conceptFea, ec);
 		openEditor(interfaceEnd);
-		
 		openVirSatExporter("Functional Electrical Architecture to HTML Export Wizard");
 		
 		// Configure the export
 		bot.tree().expandNode(CT_PATH).select();
 		bot.comboBox().setText(exportFolderPath.toString());
-		
 		finishWizard();
 		
 		// Assert that we correctly exported the HTML files
@@ -121,7 +117,6 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		bot.tree().expandNode(EC_PATH).select();
 		Path matExportFilePath = exportFolderPath.resolve("export.mat");
 		bot.comboBox().setText(matExportFilePath.toString());
-		
 		finishWizard();
 		
 		// Assert that we correctly exported a file
@@ -135,7 +130,6 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		// Configure the import
 		bot.tree().expandNode(EC_PATH).select();
 		bot.comboBox().setText(matExportFilePath.toString());
-		
 		finishWizard();
 		
 		// Check that the imported name has been applied
@@ -147,14 +141,8 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 	 * @param exporterName the name of the exporter
 	 */
 	private void openVirSatExporter(String exporterName) {
-		// Open the export menu
 		bot.menu("File").menu("Export...").click();
-		waitForEditingDomainAndUiThread();
-		
-		// Go to the Virtual Satellite category and select the exporter
-		bot.tree().expandNode("Virtual Satellite", exporterName).select();
-		bot.button("Next >").click();
-		waitForEditingDomainAndUiThread();
+		openVirSatWizard(exporterName);
 	}
 	
 	/**
@@ -163,10 +151,15 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 	 */
 	private void openVirSatImporter(String importerName) {
 		bot.menu("File").menu("Import...").click();
-		waitForEditingDomainAndUiThread();
-		
-		// Go to the Virtual Satellite category and select the importer
-		bot.tree().expandNode("Virtual Satellite", importerName).select();
+		openVirSatWizard(importerName);
+	}
+	
+	/**
+	 * Go to the Virtual Satellite category and select the wizard
+	 * @param wizardName the wizard to select
+	 */
+	private void openVirSatWizard(String wizardName) {
+		bot.tree().expandNode("Virtual Satellite", wizardName).select();
 		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 	}
