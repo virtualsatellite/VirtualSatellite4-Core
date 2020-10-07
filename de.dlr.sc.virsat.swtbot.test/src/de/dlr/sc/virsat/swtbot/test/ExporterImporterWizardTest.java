@@ -29,6 +29,9 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 public class ExporterImporterWizardTest extends ASwtBotTestCase {
 	
 	private static final String TEST_EXPORT_FOLDER = "SWTBOT_TEST_EXPORT_FILES";
+	private static final String[] CT_PATH = { SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree" };
+	private static final String[] EC_PATH = { SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree", "EC: ElementConfiguration" };
+	
 	private Path exportFolderPath;
 	private SWTBotTreeItem ct;
 	private SWTBotTreeItem ec;
@@ -51,9 +54,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		openVirSatExporter("Excel Export Wizard");
 		
 		// Configure the export
-		SWTBotTreeItem wizardEC = bot.tree()
-				.expandNode(SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree", "EC: ElementConfiguration");
-		wizardEC.select();
+		bot.tree().expandNode(EC_PATH).select();
 		bot.checkBox("Use default template").click();
 		bot.comboBox().setText(exportFolderPath.toString());
 		
@@ -71,9 +72,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		openVirSatImporter("Excel Import Wizard");
 		
 		// Configure the import
-		wizardEC = bot.tree()
-				.expandNode(SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree", "EC: ElementConfiguration");
-		wizardEC.select();
+		bot.tree().expandNode(EC_PATH).select();
 		bot.comboBox().setText(excelExportFile.getPath());
 		
 		finishWizard();
@@ -90,8 +89,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		openVirSatExporter("Functional Electrical Architecture to HTML Export Wizard");
 		
 		// Configure the export
-		SWTBotTreeItem wizardEC = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree");
-		wizardEC.select();
+		bot.tree().expandNode(CT_PATH).select();
 		bot.comboBox().setText(exportFolderPath.toString());
 		
 		finishWizard();
@@ -111,14 +109,16 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		Concept conceptMass = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.budget.mass.Activator.getPluginId() + "/concept/concept.xmi");	
 		SWTBotTreeItem massEquipment = addElement(MassEquipment.class, conceptMass, ec);
 		openEditor(massEquipment);
-		renameField(MassEquipment.PROPERTY_MASS, "45.0");
+		
+		final String OLD_VALUE = "45.0";
+		final String NEW_VALUE = "30.0";
+		
+		renameField(MassEquipment.PROPERTY_MASS, OLD_VALUE);
 		
 		openVirSatExporter("Mat Export Wizard");
 		
 		// Configure the export
-		SWTBotTreeItem wizardEC = bot.tree()
-				.expandNode(SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree", "EC: ElementConfiguration");
-		wizardEC.select();
+		bot.tree().expandNode(EC_PATH).select();
 		Path matExportFilePath = exportFolderPath.resolve("export.mat");
 		bot.comboBox().setText(matExportFilePath.toString());
 		
@@ -128,20 +128,18 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		assertTrue("A file has been successfully created.", matExportFilePath.toFile().exists());
 		
 		// Cause a change
-		renameField(MassEquipment.PROPERTY_MASS, "30.0");
+		renameField(MassEquipment.PROPERTY_MASS, NEW_VALUE);
 
 		openVirSatImporter("Mat Import Wizard");
 		
 		// Configure the import
-		wizardEC = bot.tree()
-				.expandNode(SWTBOT_TEST_PROJECTNAME, "Repository", "CT: ConfigurationTree", "EC: ElementConfiguration");
-		wizardEC.select();
+		bot.tree().expandNode(EC_PATH).select();
 		bot.comboBox().setText(matExportFilePath.toString());
 		
 		finishWizard();
 		
 		// Check that the imported name has been applied
-		assertText("45.0", bot.textWithLabel(MassEquipment.PROPERTY_MASS));
+		assertText(OLD_VALUE, bot.textWithLabel(MassEquipment.PROPERTY_MASS));
 	}
 	
 	/**
@@ -154,9 +152,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 		
 		// Go to the Virtual Satellite category and select the exporter
-		SWTBotTreeItem virSatExporters = bot.tree().getTreeItem("Virtual Satellite");
-		virSatExporters.expand();
-		virSatExporters.getNode(exporterName).select();
+		bot.tree().expandNode("Virtual Satellite", exporterName).select();
 		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 	}
@@ -170,9 +166,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		waitForEditingDomainAndUiThread();
 		
 		// Go to the Virtual Satellite category and select the importer
-		SWTBotTreeItem virSatImporters = bot.tree().getTreeItem("Virtual Satellite");
-		virSatImporters.expand();
-		virSatImporters.getNode(importerName).select();
+		bot.tree().expandNode("Virtual Satellite", importerName).select();
 		bot.button("Next >").click();
 		waitForEditingDomainAndUiThread();
 	}
@@ -187,5 +181,4 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		// See https://wiki.eclipse.org/SWTBot/Troubleshooting#WidgetNotFoundException_when_stepping_through_SWTBot_test_in_Eclipse_debugger for details
 		bot.shell().activate();
 	}
-	
 }
