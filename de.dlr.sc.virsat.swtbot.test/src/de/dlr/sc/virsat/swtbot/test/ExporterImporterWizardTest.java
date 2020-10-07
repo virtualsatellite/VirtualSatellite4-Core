@@ -100,7 +100,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		// Perform the export
 		bot.button("Finish").click();
 		
-		// Assert that we correctly exported a file
+		// Assert that we correctly exported the HTML files
 		File htmlExportIndexFile = exportFolderPath.resolve("index.htm").toFile();
 		Path resourcesFolderPath = exportFolderPath.resolve("resources");
 		File htmlExportCTFile = resourcesFolderPath.resolve("ConfigurationTree.htm").toFile();
