@@ -66,8 +66,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		// Workaround to shells sometimes not being valid anymore after closing a wizard
 		// See https://wiki.eclipse.org/SWTBot/Troubleshooting#WidgetNotFoundException_when_stepping_through_SWTBot_test_in_Eclipse_debugger for details
 		bot.shell().activate();
-		
-		// Open the import menu
+
 		openVirSatImporter("Excel Import Wizard");
 		
 		// Configure the import
