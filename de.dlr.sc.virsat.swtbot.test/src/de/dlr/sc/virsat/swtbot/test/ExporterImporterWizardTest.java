@@ -63,10 +63,11 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		File excelExportFile = exportFolderPath.resolve("ConfigurationTree.ElementConfiguration.xlsx").toFile();
 		assertTrue("A file has been successfully created.", excelExportFile.exists());
 		
-		// Open the import menu, workaround to shells sometimes not being valid anymore after closing a wizard
+		// Workaround to shells sometimes not being valid anymore after closing a wizard
 		// See https://wiki.eclipse.org/SWTBot/Troubleshooting#WidgetNotFoundException_when_stepping_through_SWTBot_test_in_Eclipse_debugger for details
 		bot.shell().activate();
 		
+		// Open the import menu
 		openVirSatImporter("Excel Import Wizard");
 		
 		// Configure the import
