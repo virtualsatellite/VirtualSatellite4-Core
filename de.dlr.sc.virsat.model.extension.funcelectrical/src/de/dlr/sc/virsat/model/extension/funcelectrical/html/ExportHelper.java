@@ -87,7 +87,7 @@ public class ExportHelper {
 			
 			// Copy necessary files into the folder
 			copyFile(path + PROJECTLOGO, PROJECTLOGO);
-			copyFile(path + PROJECTLOGO, PROJECTLOGO);
+			copyFile(path + PRINTERLOGO, PRINTERLOGO);
 			
 			// Export Block Diagrams
 			ImageProvider ip = new ImageProvider();
