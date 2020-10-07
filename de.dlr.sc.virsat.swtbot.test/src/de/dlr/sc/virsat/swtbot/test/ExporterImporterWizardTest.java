@@ -108,6 +108,11 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		assertTrue("Index file has been successfully created.", htmlExportIndexFile.exists());
 		assertTrue("ConfigurationTree file has been successfully created.", htmlExportCTFile.exists());
 		assertTrue("ElementConfiguration file has been successfully created.", htmlExportECFile.exists());
+		
+		// Workaround to shells sometimes not being valid anymore after closing a wizard
+		// See https://wiki.eclipse.org/SWTBot/Troubleshooting#WidgetNotFoundException_when_stepping_through_SWTBot_test_in_Eclipse_debugger for details
+		bot.shell().activate();
+
 	}
 	
 	/**
