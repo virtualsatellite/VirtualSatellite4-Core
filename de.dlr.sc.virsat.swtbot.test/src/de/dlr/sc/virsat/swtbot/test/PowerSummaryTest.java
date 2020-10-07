@@ -80,11 +80,11 @@ public class PowerSummaryTest extends ASwtBotTestCase {
 		
 		renameField(PowerState.PROPERTY_POWER, DATA_HANDLING_POWER + "");
 		renameField(PowerState.PROPERTY_DUTYCYCLE, DATA_HANDLING_DUTYCYCLE + "");
-		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		save();
 		
 		powerSummary = addElement(PowerSummary.class, conceptPower, configurationTree);
 		openEditor(powerSummary);
-		buildCounter.executeInterlocked(() -> bot.saveAllEditors());
+		save();
 	}
 	
 	@Test
