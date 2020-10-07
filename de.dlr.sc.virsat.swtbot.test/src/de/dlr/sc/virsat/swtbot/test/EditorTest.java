@@ -212,7 +212,7 @@ public class EditorTest extends ASwtBotTestCase {
 	}
 	
 	@Test 
-	public void editDynamicArray() {
+	public void editDynamicStringArray() {
 		final String ELEMENT_1 = "a";
 		final String ELEMENT_2 = "b";
 		final String ELEMENT_3 = "c";
@@ -247,5 +247,25 @@ public class EditorTest extends ASwtBotTestCase {
 		openEditor(elementConfiguration);
 		assertEquals(NUMBER_OF_ELEMENTS - 1, dynamicArrayTable.rowCount());
 		assertEquals(ELEMENT_1 + ',' + ELEMENT_3, parentTable.cell(0, 1));
+	}
+
+	@Test 
+	public void editStaticStringArray() {
+		String[] testValues = {"a", "b", "c", "d"};
+		
+		SWTBotTreeItem arrays = addElement(TestCategoryIntrinsicArray.class, conceptTest, elementConfiguration);
+		openEditor(arrays);
+
+		SWTBotTable staticArrayTable = getSWTBotTable(arrays, getSectionName(TestCategoryIntrinsicArray.PROPERTY_TESTSTRINGARRAYSTATIC));
+		
+		for (int i = 0; i < testValues.length; i++) {
+			setTableValue(staticArrayTable, i, 1, "", testValues[i]);
+			bot.text(testValues[i]).pressShortcut(SWT.CR, SWT.LF);
+		}
+
+		SWTBotTable parentTable = getSWTBotTable(elementConfiguration, TestCategoryIntrinsicArray.class);
+		
+		String expectedTableValue = String.join(",", testValues);
+		assertEquals(expectedTableValue, parentTable.cell(0, 2));
 	}
 }
