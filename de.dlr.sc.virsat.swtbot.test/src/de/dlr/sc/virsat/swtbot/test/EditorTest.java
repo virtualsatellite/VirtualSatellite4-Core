@@ -40,6 +40,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.model.TestMassParameters;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -207,5 +208,23 @@ public class EditorTest extends ASwtBotTestCase {
 		openEditor(allProperty);
 		assertText("NewNewName", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTSTRING));
 		assertText("8.569", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));	
+	}
+	
+	@Test
+	public void addAndRemoveCategoryWithCardinalityOne() {
+		SWTBotTable massParamsTable = getSWTBotTable(elementConfiguration, TestMassParameters.class);
+		
+		assertEquals(0, massParamsTable.rowCount());
+		bot.checkBox("Test Mass Parameters").click();
+		assertEquals(1, massParamsTable.rowCount());
+		
+		assertEquals("EC: ElementConfiguration -> ConfigurationTree.ElementConfiguration", bot.activeEditor().getTitle());
+		massParamsTable.select("TestMassParameters");
+		massParamsTable.contextMenu().menu("Drill-DownTestMassParameters").click();
+		assertEquals("TMP: TestMassParameters -> ConfigurationTree.ElementConfiguration.TestMassParameters", bot.activeEditor().getTitle());
+		
+		openEditor(elementConfiguration);
+		bot.checkBox("Test Mass Parameters").click();
+		assertEquals(0, massParamsTable.rowCount());
 	}
 }
