@@ -71,6 +71,6 @@ public class InterfaceEndMoveFeature extends VirSatMoveShapeFeature {
 			
     	}
     	 // reposition all the anchors 
-    	DiagramUtils.repositionShapes(containerShape, getFeatureProvider());
+    	DiagramUtils.repositionInterfaceEndShapes(containerShape, getFeatureProvider());
 	}
 }

@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.swtbot.test;
 
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.assertText;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
@@ -29,7 +30,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -281,5 +284,38 @@ public class EditorTest extends ASwtBotTestCase {
 
 		openEditor(reference);
 		assertText("TestCategoryAllProperty - ElementConfiguration.TestCategoryAllProperty", bot.textWithLabel(TestCategoryReference.PROPERTY_TESTREFCATEGORY));
+	}
+	
+	@Test
+	public void drillDownCaToReferencedCa() throws InterruptedException {
+		allProperty = addElement(TestCategoryAllProperty.class, conceptTest, elementConfiguration);
+		SWTBotTreeItem reference = addElement(TestCategoryReference.class, conceptTest, elementConfiguration);
+
+		openEditor(reference);
+		bot.button("Select Reference").click();
+		SWTBotShell shell = bot.shell("Select Reference to Object");
+		shell.bot().tree().getTreeItem("CT: ConfigurationTree").click();
+		shell.bot().table().getTableItem("TCAP: TestCategoryAllProperty - ConfigurationTree.ElementConfiguration.TestCategoryAllProperty").doubleClick();
+		
+		assertEquals("TCR: TestCategoryReference -> ConfigurationTree.ElementConfiguration.TestCategoryReference", bot.activeEditor().getTitle());
+		bot.button("Drill-Down").click();
+		assertEquals("TCAP: TestCategoryAllProperty -> ConfigurationTree.ElementConfiguration.TestCategoryAllProperty", bot.activeEditor().getTitle());
+	}
+	
+	@Test
+	public void drillDownCaTableToCa() throws InterruptedException {
+		openEditor(elementConfiguration);
+		SWTBotTable documentTable = getSWTBotTable(elementConfiguration, Document.class);
+		
+		SwtBotSection documentSection = getSWTBotSection(Document.class);
+
+		SWTBotButton button = new SWTBotButton((Button) bot.widget(withText("Drill-Down"), documentSection.widget));
+		assertFalse(button.isEnabled());
+		
+		documentTable.click(0, 0);
+		
+		assertTrue(button.isEnabled());
+		button.click();
+		assertEquals("D: Document -> ConfigurationTree.ElementConfiguration.Document", bot.activeEditor().getTitle());
 	}
 }

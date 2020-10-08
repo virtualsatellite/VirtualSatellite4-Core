@@ -36,10 +36,9 @@ public class ExportHelper {
 
 	public static final String TYPE = ".htm";
 	public static final String INDEX = "index" + TYPE;
-	public static final String TARGETFOLDER = "\\resources";
-	public static final String RESOURCEFOLDER = "/resources";
-	public static final String PRINTERLOGO = "PrinterLogo.png";
-	public static final String PROJECTLOGO = "ProjectLogo.png";
+	public static final String RESOURCEFOLDER = File.separatorChar + "resources";
+	public static final String PRINTERLOGO = RESOURCEFOLDER + File.separatorChar + "PrinterLogo.png";
+	public static final String PROJECTLOGO = RESOURCEFOLDER + File.separatorChar + "ProjectLogo.png";
 	
 	/**
 	 * Method to export interface end and interface tables for all the selected structural element instances
@@ -53,7 +52,7 @@ public class ExportHelper {
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		HTMLExporter htmlExporter = new HTMLExporter();
 		
-		File f1 = new File(f.getAbsolutePath() + "\\" + sc.getName() + TYPE);	
+		File f1 = new File(f.getAbsolutePath() + File.separatorChar + sc.getName() + TYPE);	
 		List<Interface> seiInterfaces = bCaHelper.getAllBeanCategories(sc, Interface.class);	
 		List<InterfaceEnd> seiInterfaceEnds = bCaHelper.getAllBeanCategories(sc, InterfaceEnd.class);
 		List<InterfaceType> seiInterfaceTypes = bCaHelper.getAllBeanCategories(sc, InterfaceType.class);
@@ -79,19 +78,20 @@ public class ExportHelper {
 		HTMLExporter htmlExporter = new HTMLExporter();
 		try {
 			// Create resources folder
-			File resources = new File(path + TARGETFOLDER);		
+			String resourceFolderPath = path + RESOURCEFOLDER;
+			File resources = new File(resourceFolderPath);		
 			if (resources.exists()) {
 				resources.delete();
 			}
 			resources.mkdir();	
 			
 			// Copy necessary files into the folder
-			copyFile(path + TARGETFOLDER + "\\" + PROJECTLOGO, RESOURCEFOLDER + "/" + PROJECTLOGO);
-			copyFile(path + TARGETFOLDER + "\\" + PRINTERLOGO, RESOURCEFOLDER + "/" + PRINTERLOGO);
+			copyFile(path + PROJECTLOGO, PROJECTLOGO);
+			copyFile(path + PRINTERLOGO, PRINTERLOGO);
 			
 			// Export Block Diagrams
 			ImageProvider ip = new ImageProvider();
-			ip.exportImage(path + TARGETFOLDER, sc);
+			ip.exportImage(resourceFolderPath, sc);
 			
 			// Export html pages for leaf elements
 			exportSubHtmlPages(sc, resources, ip.getSeiLinks());	

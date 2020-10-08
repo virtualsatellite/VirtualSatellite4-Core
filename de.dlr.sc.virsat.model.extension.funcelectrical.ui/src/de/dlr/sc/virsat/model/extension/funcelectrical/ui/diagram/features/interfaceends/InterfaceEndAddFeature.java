@@ -191,7 +191,7 @@ public class InterfaceEndAddFeature extends VirSatAddShapeFeature {
     	} // reposition all the anchors 
     	
     	 // reposition all the anchors 
-    	DiagramUtils.repositionShapes(targetContainer, getFeatureProvider());
+    	DiagramUtils.repositionInterfaceEndShapes(targetContainer, getFeatureProvider());
         
 		return boxAnchor;
 	}
