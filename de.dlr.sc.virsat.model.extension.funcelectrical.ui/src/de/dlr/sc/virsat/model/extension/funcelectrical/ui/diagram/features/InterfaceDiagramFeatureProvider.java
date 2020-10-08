@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.funcelectrical.ui.diagram.features;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
@@ -249,6 +250,7 @@ public class InterfaceDiagramFeatureProvider extends VirSatDiagramFeatureProvide
 			customFeatures.add(new VirsatCategoryAssignmentOpenEditorFeature(this));
 		}
 		
+		Collections.addAll(customFeatures, super.getCustomFeatures(context));
 		return customFeatures.toArray(new ICustomFeature[0]);
 	} 
 	
