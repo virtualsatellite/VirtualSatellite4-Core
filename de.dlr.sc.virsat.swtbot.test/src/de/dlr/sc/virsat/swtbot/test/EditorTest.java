@@ -30,6 +30,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -45,7 +46,10 @@ import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.Document;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArray;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -317,5 +321,119 @@ public class EditorTest extends ASwtBotTestCase {
 		assertTrue(button.isEnabled());
 		button.click();
 		assertEquals("D: Document -> ConfigurationTree.ElementConfiguration.Document", bot.activeEditor().getTitle());
+	}
+
+	@Test 
+	public void editDynamicStringArray() {
+		final String ELEMENT_1 = "a";
+		final String ELEMENT_2 = "b";
+		final String ELEMENT_3 = "c";
+		final int NUMBER_OF_ELEMENTS = 3;
+		
+		SWTBotTreeItem arrays = addElement(TestCategoryIntrinsicArray.class, conceptTest, elementConfiguration);
+		openEditor(arrays);
+
+		SWTBotTable dynamicArrayTable = getSWTBotTable(arrays, getSectionName(TestCategoryIntrinsicArray.PROPERTY_TESTSTRINGARRAYDYNAMIC));
+
+		bot.button("Add testStringArrayDynamic").click();
+		setTableValue(dynamicArrayTable, 0, 1, "", ELEMENT_1);
+		bot.text(ELEMENT_1).pressShortcut(SWT.CR, SWT.LF);
+
+		bot.button("Add testStringArrayDynamic").click();
+		setTableValue(dynamicArrayTable, 1, 1, "", ELEMENT_2);
+		bot.text(ELEMENT_2).pressShortcut(SWT.CR, SWT.LF);
+		
+		bot.button("Add testStringArrayDynamic").click();
+		setTableValue(dynamicArrayTable, 2, 1, "", ELEMENT_3);
+		bot.text(ELEMENT_3).pressShortcut(SWT.CR, SWT.LF);
+
+		SWTBotTable parentTable = getSWTBotTable(elementConfiguration, TestCategoryIntrinsicArray.class);
+		
+		assertEquals(NUMBER_OF_ELEMENTS, dynamicArrayTable.rowCount());
+		assertEquals(ELEMENT_1 + ',' + ELEMENT_2 + ',' + ELEMENT_3, parentTable.cell(0, 1));
+
+		openEditor(arrays);
+		dynamicArrayTable.click(1, 0);
+		bot.button("Remove testStringArrayDynamic").click();
+
+		openEditor(elementConfiguration);
+		assertEquals(NUMBER_OF_ELEMENTS - 1, dynamicArrayTable.rowCount());
+		assertEquals(ELEMENT_1 + ',' + ELEMENT_3, parentTable.cell(0, 1));
+	}
+
+	@Test 
+	public void editDynamicReferenceArray() {
+		allProperty = addElement(TestCategoryAllProperty.class, conceptTest, elementConfiguration);
+		
+		SWTBotTreeItem arrays = addElement(TestCategoryReferenceArray.class, conceptTest, elementConfiguration);
+		openEditor(arrays);
+
+		SWTBotTable dynamicArrayTable = getSWTBotTable(arrays, getSectionName(TestCategoryReferenceArray.PROPERTY_TESTCATEGORYREFERENCEARRAYDYNAMIC));
+
+		bot.button("Add testCategoryReferenceArrayDynamic").click();
+		dynamicArrayTable.doubleClick(0, 1);
+		bot.button("...").click();
+		
+		SWTBotShell shell = bot.shell("Select Reference to Object");
+		shell.bot().tree().getTreeItem("CT: ConfigurationTree").click();
+		shell.bot().table().getTableItem("TCAP: TestCategoryAllProperty - ConfigurationTree.ElementConfiguration.TestCategoryAllProperty").doubleClick();
+
+		SWTBotTable parentTable = getSWTBotTable(elementConfiguration, TestCategoryReferenceArray.class);
+		
+		assertEquals(1, dynamicArrayTable.rowCount());
+		assertEquals("TestCategoryAllProperty", parentTable.cell(0, 1));
+
+		openEditor(arrays);
+		dynamicArrayTable.click(0, 1);
+		bot.button("Remove testCategoryReferenceArrayDynamic").click();
+
+		openEditor(elementConfiguration);
+		assertEquals(0, dynamicArrayTable.rowCount());
+		assertEquals("", parentTable.cell(0, 1));
+	}
+	
+	@Test 
+	public void editDynamicCompositionArray() {
+		SWTBotTreeItem arrays = addElement(TestCategoryCompositionArray.class, conceptTest, elementConfiguration);
+		openEditor(arrays);
+
+		SWTBotTable dynamicArrayTable = getSWTBotTable(arrays, getSectionName(
+				TestCategoryCompositionArray.PROPERTY_TESTCOMPOSITIONARRAYDYNAMIC
+				+ " - TestCategoryAllProperty"));
+
+		bot.button("Add TestCategoryAllProperty").click();
+
+		SWTBotTable parentTable = getSWTBotTable(elementConfiguration, TestCategoryCompositionArray.class);
+		
+		assertEquals(1, dynamicArrayTable.rowCount());
+		assertEquals("testCompositionArrayDynamic", parentTable.cell(0, 1));
+
+		openEditor(arrays);
+		dynamicArrayTable.click(0, 0);
+		bot.button("Remove TestCategoryAllProperty").click();
+
+		openEditor(elementConfiguration);
+		assertEquals(0, dynamicArrayTable.rowCount());
+		assertEquals("", parentTable.cell(0, 1));
+	}
+
+	@Test 
+	public void editStaticStringArray() {
+		String[] testValues = {"a", "b", "c", "d"};
+		
+		SWTBotTreeItem arrays = addElement(TestCategoryIntrinsicArray.class, conceptTest, elementConfiguration);
+		openEditor(arrays);
+
+		SWTBotTable staticArrayTable = getSWTBotTable(arrays, getSectionName(TestCategoryIntrinsicArray.PROPERTY_TESTSTRINGARRAYSTATIC));
+		
+		for (int i = 0; i < testValues.length; i++) {
+			setTableValue(staticArrayTable, i, 1, "", testValues[i]);
+			bot.text(testValues[i]).pressShortcut(SWT.CR, SWT.LF);
+		}
+
+		SWTBotTable parentTable = getSWTBotTable(elementConfiguration, TestCategoryIntrinsicArray.class);
+		
+		String expectedTableValue = String.join(",", testValues);
+		assertEquals(expectedTableValue, parentTable.cell(0, 2));
 	}
 }
