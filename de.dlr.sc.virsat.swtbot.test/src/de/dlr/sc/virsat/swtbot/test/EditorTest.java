@@ -215,7 +215,7 @@ public class EditorTest extends ASwtBotTestCase {
 		assertText("8.569", bot.textWithLabel(TestCategoryAllProperty.PROPERTY_TESTFLOAT));	
 	}
 	
-	@Test 
+	@Test
 	public void drillDownCaToReferencedCa() throws InterruptedException {
 		allProperty = addElement(TestCategoryAllProperty.class, conceptTest, elementConfiguration);
 		SWTBotTreeItem reference = addElement(TestCategoryReference.class, conceptTest, elementConfiguration);
