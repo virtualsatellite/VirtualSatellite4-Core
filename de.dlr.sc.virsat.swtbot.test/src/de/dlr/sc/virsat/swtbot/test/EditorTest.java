@@ -50,6 +50,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArray
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
+import de.dlr.sc.virsat.model.extension.tests.model.TestMassParameters;
 import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -435,5 +436,23 @@ public class EditorTest extends ASwtBotTestCase {
 		
 		String expectedTableValue = String.join(",", testValues);
 		assertEquals(expectedTableValue, parentTable.cell(0, 2));
+	}
+  
+	@Test
+	public void addAndRemoveCategoryWithCardinalityOne() {
+		SWTBotTable massParamsTable = getSWTBotTable(elementConfiguration, TestMassParameters.class);
+		
+		assertEquals(0, massParamsTable.rowCount());
+		bot.checkBox("Test Mass Parameters").click();
+		assertEquals(1, massParamsTable.rowCount());
+		
+		assertEquals("EC: ElementConfiguration -> ConfigurationTree.ElementConfiguration", bot.activeEditor().getTitle());
+		massParamsTable.select("TestMassParameters");
+		massParamsTable.contextMenu().menu("Drill-DownTestMassParameters").click();
+		assertEquals("TMP: TestMassParameters -> ConfigurationTree.ElementConfiguration.TestMassParameters", bot.activeEditor().getTitle());
+		
+		openEditor(elementConfiguration);
+		bot.checkBox("Test Mass Parameters").click();
+		assertEquals(0, massParamsTable.rowCount());
 	}
 }
