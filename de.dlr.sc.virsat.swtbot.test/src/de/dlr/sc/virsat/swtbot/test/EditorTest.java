@@ -454,5 +454,5 @@ public class EditorTest extends ASwtBotTestCase {
 		openEditor(elementConfiguration);
 		bot.checkBox("Test Mass Parameters").click();
 		assertEquals(0, massParamsTable.rowCount());
-  }
+	}
 }
