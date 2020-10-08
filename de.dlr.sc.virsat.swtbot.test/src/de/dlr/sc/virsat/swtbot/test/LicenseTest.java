@@ -12,12 +12,22 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.junit.Before;
 import org.junit.Test;
 
-public class LicenseTest extends ASwtBotTestCase {
+public class LicenseTest {
 
+	protected SWTWorkbenchBot bot;
+
+	
+	@Before
+	public void before() throws Exception {
+		bot = new SWTWorkbenchBot();
+	}
+	
 	@Test
 	public void licenseTest() {
 		final String VIRSAT_PACKAGE_PREFIX = "de.dlr.sc.virsat";
@@ -47,7 +57,7 @@ public class LicenseTest extends ASwtBotTestCase {
 		bot.cTabItem("Plug-ins").activate();
 		
 		// Wait until plugin table is populated
-		bot.waitWhile(Conditions.tableHasRows(bot.table(), 0), MAX_TEST_CASE_TIMEOUT_MILLISECONDS, SWTBOT_RETRY_WAIT_TIME);
+		bot.waitWhile(Conditions.tableHasRows(bot.table(), 0), ASwtBotTestCase.MAX_TEST_CASE_TIMEOUT_MILLISECONDS, ASwtBotTestCase.SWTBOT_RETRY_WAIT_TIME);
 		
 		assertTrue("There is at least one VirSat plugin", bot.table().containsText(EXPECTED_PROVIDER));
 		
@@ -61,6 +71,9 @@ public class LicenseTest extends ASwtBotTestCase {
 				assertTrue("Licensing information is set for plugin " + pluginId, bot.button("Legal Info").isEnabled());
 			}
 		}
+		
+		bot.button("Close").click();
+		bot.button("Close").click();
 	}
 	
 }
