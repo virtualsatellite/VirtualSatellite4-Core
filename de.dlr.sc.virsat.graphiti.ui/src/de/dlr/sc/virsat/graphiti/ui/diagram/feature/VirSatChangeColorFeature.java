@@ -15,6 +15,10 @@ import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
+import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Color;
+import org.eclipse.graphiti.mm.pictograms.Connection;
+import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
@@ -65,22 +69,53 @@ public class VirSatChangeColorFeature extends AbstractCustomFeature {
 		s.setLocation(context.getX(), context.getY());
 		ColorDialog colorDialog = new ColorDialog(s);
 		RGB rgbColor = colorDialog.open();
-		if (colorDialog != null && rgbColor != null) {
-			IColorConstant color =
+		if (rgbColor != null) {
+			IColorConstant colorConstant =
 					new ColorConstant(rgbColor.red, rgbColor.green, rgbColor.blue);
+			Color color = manageColor(colorConstant);
 			PictogramElement[] pes = context.getPictogramElements();
 			if (pes != null && pes.length == 1) {
 				for (PictogramElement pe : pes) {
-					GraphicsAlgorithm ga = pe.getGraphicsAlgorithm();
-					ga.setBackground(manageColor(color));
-					for (GraphicsAlgorithm childGa : ga.getGraphicsAlgorithmChildren()) {
-						if (childGa instanceof RoundedRectangle || childGa instanceof Rectangle) {
-							childGa.setBackground(manageColor(color));
-						}
+					if (pe instanceof Connection) {
+						changeConnectionColor((Connection) pe, color);
+					} else {
+						changeGenericPictogramElementColor(pe, color);
 					}
 				}
 			}
 		}	
+	}
+	
+	/**
+	 * Changes the color of a generic pictorgram element
+	 * @param pe the pictogram element
+	 * @param color the target color
+	 */
+	private void changeGenericPictogramElementColor(PictogramElement pe, Color color) {
+		GraphicsAlgorithm ga = pe.getGraphicsAlgorithm();
+		ga.setBackground(color);
+		for (GraphicsAlgorithm childGa : ga.getGraphicsAlgorithmChildren()) {
+			if (childGa instanceof RoundedRectangle || childGa instanceof Rectangle) {
+				childGa.setBackground(color);
+			}
+		}
+	}
+	
+	/**
+	 * Changes the color of a connection
+	 * @param connection the connection
+	 * @param color the target color
+	 */
+	private void changeConnectionColor(Connection connection, Color color) {
+		GraphicsAlgorithm ga = connection.getGraphicsAlgorithm();
+		// Connections & connection decorators use the foreground color to determine their color
+		ga.setForeground(color);
+		for (ConnectionDecorator connectionDecorator : connection.getConnectionDecorators()) {
+			GraphicsAlgorithm connectionDecoratorGa = connectionDecorator.getGraphicsAlgorithm();
+			if (!(connectionDecoratorGa instanceof Text)) {
+				connectionDecoratorGa.setForeground(color);
+			}
+		}
 	}
 }
 
