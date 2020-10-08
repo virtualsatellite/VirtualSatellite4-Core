@@ -172,7 +172,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		bot.comboBox().setText(cadExportFilePath.toString());
 		finishWizard();
 		
-		// Check that the imported name has been applied
+		// Check that the imported value has been applied
 		assertText(OLD_VALUE, bot.textWithLabel(Visualisation.PROPERTY_POSITIONX));
 	}
 	
