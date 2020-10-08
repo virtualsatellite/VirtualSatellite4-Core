@@ -72,6 +72,7 @@ public class LicenseTest {
 			}
 		}
 		
+		// Close installation details and about window
 		bot.button("Close").click();
 		bot.button("Close").click();
 	}
