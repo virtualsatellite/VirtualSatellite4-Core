@@ -41,6 +41,9 @@ public class LicenseTest {
 
 		bot.cTabItem("Features").activate();
 
+		// Wait until feature table is populated
+		bot.waitWhile(Conditions.tableHasRows(bot.table(), 0), ASwtBotTestCase.MAX_TEST_CASE_TIMEOUT_MILLISECONDS, ASwtBotTestCase.SWTBOT_RETRY_WAIT_TIME);
+		
 		assertTrue("There is at least one VirSat feature", bot.table().containsText(EXPECTED_PROVIDER));
 		
 		int rowCount = bot.table().rowCount();
