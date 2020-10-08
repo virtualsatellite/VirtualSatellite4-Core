@@ -106,13 +106,17 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	<SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getChildren(Class<SEI_TYPE> beanSeiClazz);
 	
 	/**
-	 * This method hands back all child Bean wrapped StructuralElementInstances of the abstract type ABeanStructuralElementInstance
+	 * This method hands back all child Bean wrapped StructuralElementInstances of the abstract type ABeanStructuralElementInstance.
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
 	 * @return all children which could be found in the current Bean SEI
 	 */
 	List<ABeanStructuralElementInstance> getChildren();
 	
 	/**
-	 * Set method to set all children via ABeanStructuralElementInstance
+	 * Set method to set all children via ABeanStructuralElementInstance.
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
 	 * @param newBeanSeis a List of ABeanStructuralElementInstance wrapping StructuralElementInstances
 	 */
 	void setChildren(List<ABeanStructuralElementInstance> newBeanSeis);
@@ -151,14 +155,16 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	<BEAN_TYPE extends IBeanCategoryAssignment> BEAN_TYPE getFirst(Class<BEAN_TYPE> catBeanClazz);
 	
 	/**
-	 * Get method to get all CategoryAssignments of the abstract type ABeanCategoryAssignment
+	 * Get method to get all CategoryAssignments of the generic type BeanCategoryAssignment
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
 	 * @return a List of the given Category assignment beans. Operations on that list will not reflect into the underlying StructuralElementInstance
 	 */
 	List<BeanCategoryAssignment> getCategoryAssignments();
 	
 	/**
-	 * Set method to set all CategoryAssignments via ABeanCategoryAssignments
-	 * @param newCaBeans a List of ABeanCategoryAssignments wrapping CategoryAssignments
+	 * Set method to set all CategoryAssignments via BeanCategoryAssignments.
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
+	 * @param newCaBeans a List of BeanCategoryAssignments wrapping CategoryAssignments
 	 */
 	void setCategoryAssignments(List<BeanCategoryAssignment> newCaBeans);
 	
@@ -202,12 +208,16 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	/**
 	 * This method hands back all super Bean wrapped StructuralElementInstances of the abstract type ABeanStructuralElementInstance
 	 * the current one is inheriting from 
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
 	 * @return all super Bean Seis
 	 */
 	List<ABeanStructuralElementInstance> getSuperSeis();
 
 	/**
 	 * Set method to set all super seis via ABeanStructuralElementInstance
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
 	 * @param newBeanSeis a List of ABeanStructuralElementInstance wrapping StructuralElementInstances
 	 */
 	void setSuperSeis(List<ABeanStructuralElementInstance> newBeanSeis);
@@ -229,15 +239,17 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	
 	/**
 	 * Call this method to get the parent SEI bean of this bean
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
 	 * @return parent SEI bean or null if it could not be found
 	 */
-	BeanStructuralElementInstance getParentSeiBean();
+	BeanStructuralElementInstance getParent();
 	
 	/**
-	 * Call this method to set the parent SEI bean of this bean
+	 * Call this method to set the parent SEI bean of this bean.
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
 	 * @param newParent the new parent SEI bean
 	 */
-	void setParentSeiBean(BeanStructuralElementInstance newParent);
+	void setParent(BeanStructuralElementInstance newParent);
 	
 	/**
 	 * Removes all CA beans in the given List from this SEI bean
