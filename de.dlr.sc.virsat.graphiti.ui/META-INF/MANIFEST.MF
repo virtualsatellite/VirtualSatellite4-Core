@@ -13,6 +13,7 @@ Require-Bundle: de.dlr.sc.virsat.graphiti,
  org.eclipse.ui.views.properties.tabbed;visibility:=reexport,
  org.eclipse.graphiti.ui;visibility:=reexport,
  org.eclipse.graphiti.mm,
+ org.eclipse.graphiti.pattern,
  org.eclipse.emf.workspace
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
