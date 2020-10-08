@@ -28,6 +28,8 @@ public abstract class AUuidAdapterTest {
 	protected static final VirSatUuid UUID = new VirSatUuid();
 	protected Resource resourceImpl;
 	protected ResourceSet resourceSet;
+	protected XmlAdapter<?, ?> adapterNoRs;
+	protected XmlAdapter<?, ?> adapterNoEmptyRs;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -44,17 +46,9 @@ public abstract class AUuidAdapterTest {
 
 	@Test
 	public void testUnmarshallNull() {
-		IUuidAdapter adapterNoRs = new IUuidAdapter();
 		assertThrows("A resource set should be set",
 			NullPointerException.class, () -> {
 				adapterNoRs.unmarshal(null);
-			}
-		);
-		
-		IUuidAdapter adapterNoEmptyRs = new IUuidAdapter(new ResourceSetImpl());
-		assertThrows("No mapping found",
-			IllegalArgumentException.class, () -> {
-				adapterNoEmptyRs.unmarshal(UUID.toString());
 			}
 		);
 		
@@ -64,6 +58,9 @@ public abstract class AUuidAdapterTest {
 			}
 		);
 	}
+
+	@Test
+	public abstract void testUnmarshallEmptyRs();
 
 	@Test
 	public abstract void testUnmarhall() throws Exception;

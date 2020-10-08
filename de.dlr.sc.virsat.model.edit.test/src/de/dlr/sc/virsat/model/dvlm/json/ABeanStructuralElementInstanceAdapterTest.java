@@ -15,6 +15,7 @@ import static org.junit.Assert.assertThrows;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
@@ -68,4 +69,20 @@ public class ABeanStructuralElementInstanceAdapterTest extends AUuidAdapterTest 
 		assertEquals("The right bean was returned", bean, (BeanStructuralElementInstance) unmarshalledBean);
 	}
 	
+	@Override
+	public void testUnmarshallNull() {
+		adapterNoRs = new ABeanStructuralElementInstanceAdapter();
+		super.testUnmarshallNull();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testUnmarshallEmptyRs() {
+		adapterNoEmptyRs = new ABeanStructuralElementInstanceAdapter(new ResourceSetImpl());
+		assertThrows("No mapping found",
+			IllegalArgumentException.class, () -> {
+				((XmlAdapter<String, ABeanStructuralElementInstance>) adapterNoEmptyRs).unmarshal(UUID.toString());
+			}
+		);
+	}
 }
