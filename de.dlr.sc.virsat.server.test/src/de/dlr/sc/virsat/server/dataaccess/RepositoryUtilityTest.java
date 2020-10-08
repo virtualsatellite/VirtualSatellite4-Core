@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.server.dataaccess;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
@@ -82,37 +83,55 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 
 	@Test
 	public void testFindSei() throws CoreException {
-		StructuralElementInstance sei = RepositoryUtility.findSei(testSei.getUuid().toString(), repository);
+		StructuralElementInstance sei = RepositoryUtility.findSei("", repository);
+		assertNull(sei);
+		
+		sei = RepositoryUtility.findSei(testSei.getUuid().toString(), repository);
 		assertEquals(testSei, sei);
 	}
 
 	@Test
 	public void testFindCa() throws CoreException {
-		CategoryAssignment ca = RepositoryUtility.findCa(testCa.getUuid().toString(), repository);
+		CategoryAssignment ca = RepositoryUtility.findCa("", repository);
+		assertNull(ca);
+		
+		ca = RepositoryUtility.findCa(testCa.getUuid().toString(), repository);
 		assertEquals(testCa, ca);
 	}
 
 	@Test
 	public void testFindProperty() {
-		APropertyInstance property = RepositoryUtility.findProperty(testPropertyInstance.getUuid().toString(), repository);
+		APropertyInstance property = RepositoryUtility.findProperty("", repository);
+		assertNull(property);
+		
+		property = RepositoryUtility.findProperty(testPropertyInstance.getUuid().toString(), repository);
 		assertEquals(testPropertyInstance, property);
 	}
 
 	@Test
 	public void testFindDiscipline() {
-		Discipline discipline = RepositoryUtility.findDiscipline(testDiscipline.getUuid().toString(), repository);
+		Discipline discipline = RepositoryUtility.findDiscipline("", repository);
+		assertNull(discipline);
+		
+		discipline = RepositoryUtility.findDiscipline(testDiscipline.getUuid().toString(), repository);
 		assertEquals(testDiscipline, discipline);
 	}
 
 	@Test
 	public void testFindSe() {
-		StructuralElement se = RepositoryUtility.findSe(testSe.getFullQualifiedName(), repository);
+		StructuralElement se = RepositoryUtility.findSe("", repository);
+		assertNull(se);
+		
+		se = RepositoryUtility.findSe(testSe.getFullQualifiedName(), repository);
 		assertEquals(testSe, se);
 	}
 	
 	@Test
 	public void testFindObjectById() {
-		APropertyInstance property = (APropertyInstance) RepositoryUtility.findObjectById(testPropertyInstance.getUuid().toString(), repository);
+		APropertyInstance property = (APropertyInstance) RepositoryUtility.findObjectById("", repository);
+		assertNull(property);
+		
+		property = (APropertyInstance) RepositoryUtility.findObjectById(testPropertyInstance.getUuid().toString(), repository);
 		assertEquals(testPropertyInstance, property);
 	}
 

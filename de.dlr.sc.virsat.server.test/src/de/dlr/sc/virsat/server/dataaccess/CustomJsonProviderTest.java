@@ -30,7 +30,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,14 +85,7 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 		testSei.getCategoryAssignments().add(testCa);
 		testSei.getCategoryAssignments();
 		
-		RecordingCommand recordingCommand = new RecordingCommand(editingDomain) {
-			@Override
-			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(testSei);
-			}
-		};
-		
-		editingDomain.getVirSatCommandStack().execute(recordingCommand);
+		executeAsCommand(() -> rs.getAndAddStructuralElementInstanceResource(testSei));
 		
 		testBean = new BeanPropertyString(testPropertyInstance);
 		editingDomain.getVirSatCommandStack().execute(testBean.setValue(editingDomain, testString));

@@ -29,10 +29,8 @@ public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 
 	@BeforeClass
 	public static void addServerRepository() throws Exception {
-		Path pathRepoRemote = null;
-		File localRepoHome = null;
-		pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
-		localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
+		Path pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
+		File localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
 		File fileGitRemoteRepo = pathRepoRemote.toFile();
 		Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
 

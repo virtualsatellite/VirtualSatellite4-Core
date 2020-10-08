@@ -24,6 +24,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class AccessTestResourceTest extends AGitAndJettyServerTest {
@@ -59,6 +60,6 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 		String expectedJson = "{\"UUID\":\"data\"}";
 		
 		assertEquals("Server response is correct", expectedResponse, serverResponse);
-		assertEquals("Server json paylaod is correct", expectedJson, serverJson.replaceAll("\\s+", ""));
+		TestActivator.assertEqualsNoWs("Server json paylaod is correct", expectedJson, serverJson);
 	}
 }
