@@ -77,9 +77,9 @@ public class VirSatChangeColorFeature extends AbstractCustomFeature {
 			if (pes != null && pes.length == 1) {
 				for (PictogramElement pe : pes) {
 					if (pe instanceof Connection) {
-						changeColorConnection((Connection) pe, color);
+						changeConnectionColor((Connection) pe, color);
 					} else {
-						changeColorGenericPictorgramElement(pe, color);
+						changeGenericPictogramElementColor(pe, color);
 					}
 				}
 			}
@@ -91,7 +91,7 @@ public class VirSatChangeColorFeature extends AbstractCustomFeature {
 	 * @param pe the pictogram element
 	 * @param color the target color
 	 */
-	private void changeColorGenericPictorgramElement(PictogramElement pe, Color color) {
+	private void changeGenericPictogramElementColor(PictogramElement pe, Color color) {
 		GraphicsAlgorithm ga = pe.getGraphicsAlgorithm();
 		ga.setBackground(color);
 		for (GraphicsAlgorithm childGa : ga.getGraphicsAlgorithmChildren()) {
@@ -106,7 +106,7 @@ public class VirSatChangeColorFeature extends AbstractCustomFeature {
 	 * @param connection the connection
 	 * @param color the target color
 	 */
-	private void changeColorConnection(Connection connection, Color color) {
+	private void changeConnectionColor(Connection connection, Color color) {
 		GraphicsAlgorithm ga = connection.getGraphicsAlgorithm();
 		// Connections & connection decorators use the foreground color to determine their color
 		ga.setForeground(color);
