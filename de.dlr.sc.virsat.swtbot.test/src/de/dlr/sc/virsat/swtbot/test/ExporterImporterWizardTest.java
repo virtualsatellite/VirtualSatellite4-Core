@@ -133,7 +133,7 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		bot.comboBox().setText(matExportFilePath.toString());
 		finishWizard();
 		
-		// Check that the imported name has been applied
+		// Check that the imported value has been applied
 		assertText(OLD_VALUE, bot.textWithLabel(MassEquipment.PROPERTY_MASS));
 	}
 	
