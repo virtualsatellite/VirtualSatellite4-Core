@@ -95,8 +95,7 @@ Third party licenses are named in the plug-ins where used in the respective _abo
 
 ## Responsible in the sense of § 55 2nd paragraph of Rundfunkstaatsvertrag (German Interstate Treaty on Broadcasting)
 
-Rolf Hempel, Linder Höhe, 51147 Cologne, Germany 
-
+Rolf Hempel, Linder Höhe, 51147 Cologne, Germany\
 Philipp M. Fischer, Lilienthalplatz, 38108 Braunschweig, Germany
 
 
@@ -115,7 +114,7 @@ Germany
 ## Liability
 DLR cannot be held liable either for mistakes in editorial or technical aspects, nor for omissions, nor for the correctness of the content. In particular, DLR does not guarantee completeness or correctness of information contained in external websites which can be accessed via links from DLR's websites. Despite accurate research on the content of such linked external websites, DLR cannot be held liable for their content. Only the content providers of such external sites are liable for their content. Should you notice any mistake in technical or editorial aspects of the DLR site, please do not hesitate to inform us.
 
-Technical Maintenance
+Technical Maintenance\
 email: dlr-infomaster@dlr.de
 
 ## DLR images and video – terms and conditions of use
