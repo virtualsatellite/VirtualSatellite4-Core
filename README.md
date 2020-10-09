@@ -126,7 +126,7 @@ Philipp M. Fischer, Lilienthalplatz, 38108 Braunschweig, Germany
 
 
 
-The GitHub portal is maintained by
+The GitHub/virtualsatellite portal is maintained by
 
 Deutsches Zentrum fuer Luft- und Raumfahrt e. V. (DLR) | German Aerospace Center (DLR)\
 Institute for Software Technology\
@@ -135,7 +135,8 @@ Linder Höhe\
 Germany
 
 ## Publisher
-???
+
+Philipp M. Fischer, Lilienthalplatz, 38108 Braunschweig, Germany
 
 ## Liability
 DLR cannot be held liable either for mistakes in editorial or technical aspects, nor for omissions, nor for the correctness of the content. In particular, DLR does not guarantee completeness or correctness of information contained in external websites which can be accessed via links from DLR's websites. Despite accurate research on the content of such linked external websites, DLR cannot be held liable for their content. Only the content providers of such external sites are liable for their content. Should you notice any mistake in technical or editorial aspects of the DLR site, please do not hesitate to inform us.
