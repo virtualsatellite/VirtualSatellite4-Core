@@ -97,7 +97,7 @@ Third party licenses are named in the plug-ins where used in the respective _abo
 
 Rolf Hempel, Linder Höhe, 51147 Cologne, Germany 
 
-Philipp M. Fischer, 38108 Braunschweig, Germany
+Philipp M. Fischer, Lilienthalplatz, 38108 Braunschweig, Germany
 
 
 
