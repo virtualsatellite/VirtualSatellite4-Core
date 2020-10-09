@@ -106,7 +106,7 @@ The GitHub portal is maintained by
 Deutsches Zentrum fuer Luft- und Raumfahrt e. V. (DLR) | German Aerospace Center (DLR)\
 Institute for Software Technology\
 Linder Höhe\
-51147 Koeln\ 
+51147 Koeln\
 Germany
 
 ## Publisher
@@ -138,18 +138,13 @@ The Creative Commons licence does not extend to the DLR logo, its constituent el
 
 Should you have any questions, please contact:
 
-DLR German Aerospace Center
-
-Public Affairs and Communications Department, Communications Section
-
-Linder Höhe
-
+DLR German Aerospace Center\
+Public Affairs and Communications Department, Communications Section\
+Linder Höhe\
 51147 Cologne
 
-Tel: +49 2203 601-2116
-
-Fax: +49 2203 601-3249
-
+Tel: +49 2203 601-2116\
+Fax: +49 2203 601-3249\
 E-mail: bildredaktion@dlr.de
 
 
