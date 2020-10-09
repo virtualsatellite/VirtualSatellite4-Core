@@ -42,7 +42,7 @@ public class LicenseTest extends ASwtBotTestCase {
 			if (pluginId.startsWith(VIRSAT_PACKAGE_PREFIX)) {
 				bot.table().select(i);
 				assertEquals("Correct provider for plugin " + pluginId, EXPECTED_PROVIDER, row.getText(1));
-				assertTrue("Licensing information is set for plugin " + pluginId, bot.button("Legal Info").isEnabled());
+				assertTrue("Licensing information is set (about.html is present and added to build.properties) for plugin " + pluginId, bot.button("Legal Info").isEnabled());
 			}
 		}
 		
