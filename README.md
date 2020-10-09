@@ -93,6 +93,32 @@ If you did not receive this Content directly from German Aerospace Center (DLR),
 
 Third party licenses are named in the plug-ins where used in the respective _aboutfiles_ folders. At runtime third party licenses can be viewed in the usual Eclipse About dialog. Also check out the [Notice](NOTICE.md) file.
 
+## Imprint according to § 5 TMG (German Act for Telemedia Services) and § 55 Rundfunkstaatsvertrag (German Interstate Treaty on Broadcasting) Deutsches Zentrum fuer Luft- und Raumfahrt e. V.
+
+German Aerospace Center (DLR)
+Linder Höhe
+51147 Köln (Cologne)
+Germany
+
+Tel: +49 2203 601-0
+Fax: +49 2203 67310
+email: contact-dlr [at] dlr.de
+https://www.dlr.de/en
+
+DLR's Executive Board, consisting of Prof. Dr. Anke Kaysser-Pyzalla (Chair of the DLR Executive Board), Klaus Hamacher (Vice Chairman of the Executive Board), Prof. Rolf Henke, Prof. Dr. rer. nat. Hansjörg Dittus, Prof. Dr.-Ing. Karsten Lemmer and Dr.-Ing. Walther Pelzer is empowered to act as DLR's representative.
+
+Seat of the Executive Board
+The Executive Board's seat is located at DLR, Executive Board, Linder Höhe, D-51147 Cologne.
+
+The Executive Board can also authorise DLR employees to act on behalf of DLR. The head of DLR's legal department, Linder Hoehe, 51147 Cologne, can provide information about the extent of this authorisation.
+
+Court of registration/registration number
+District court of Bonn, VR 2780.
+
+Value added tax identification number
+DE 121965658
+
+
 ## Responsible in the sense of § 55 2nd paragraph of Rundfunkstaatsvertrag (German Interstate Treaty on Broadcasting)
 
 Rolf Hempel, Linder Höhe, 51147 Cologne, Germany\
@@ -115,7 +141,7 @@ Germany
 DLR cannot be held liable either for mistakes in editorial or technical aspects, nor for omissions, nor for the correctness of the content. In particular, DLR does not guarantee completeness or correctness of information contained in external websites which can be accessed via links from DLR's websites. Despite accurate research on the content of such linked external websites, DLR cannot be held liable for their content. Only the content providers of such external sites are liable for their content. Should you notice any mistake in technical or editorial aspects of the DLR site, please do not hesitate to inform us.
 
 Technical Maintenance\
-email: dlr-infomaster@dlr.de
+email: dlr-infomaster [at] dlr.de
 
 ## DLR images and video – terms and conditions of use
 The rights to all images and videos used on this website are owned by the German Aerospace Center (Deutsches Zentrum für Luft- und Raumfahrt e.V.; DLR), unless otherwise stated.
@@ -144,6 +170,6 @@ Linder Höhe\
 
 Tel: +49 2203 601-2116\
 Fax: +49 2203 601-3249\
-E-mail: bildredaktion@dlr.de
+E-mail: bildredaktion [at] dlr.de
 
 
