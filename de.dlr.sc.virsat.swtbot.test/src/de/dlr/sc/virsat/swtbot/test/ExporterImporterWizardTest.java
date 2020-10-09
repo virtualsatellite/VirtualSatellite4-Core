@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipment;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
+import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 public class ExporterImporterWizardTest extends ASwtBotTestCase {
 	
@@ -132,8 +133,47 @@ public class ExporterImporterWizardTest extends ASwtBotTestCase {
 		bot.comboBox().setText(matExportFilePath.toString());
 		finishWizard();
 		
-		// Check that the imported name has been applied
+		// Check that the imported value has been applied
 		assertText(OLD_VALUE, bot.textWithLabel(MassEquipment.PROPERTY_MASS));
+	}
+	
+	@Test
+	public void testCadExportImport() {
+		Concept conceptVisualisation = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.visualisation.Activator.getPluginId() + "/concept/concept.xmi");	
+		SWTBotTreeItem visualisation = addElement(Visualisation.class, conceptVisualisation, ec);
+		openEditor(visualisation);
+		
+		// In order for a object to be exported, it must have a shape
+		bot.comboBoxWithLabel(Visualisation.PROPERTY_SHAPE).setSelection(Visualisation.SHAPE_BOX_NAME);
+		
+		final String OLD_VALUE = "45.0";
+		final String NEW_VALUE = "30.0";
+		
+		renameField(Visualisation.PROPERTY_POSITIONX, OLD_VALUE);
+		
+		openVirSatExporter("Cad Export Wizard");
+		
+		// Configure the export
+		bot.tree().expandNode(CT_PATH).select();
+		Path cadExportFilePath = exportFolderPath.resolve("export.json");
+		bot.comboBox().setText(cadExportFilePath.toString());
+		finishWizard();
+		
+		// Assert that we correctly exported a file
+		assertTrue("A file has been successfully created.", cadExportFilePath.toFile().exists());
+		
+		// Cause a change
+		renameField(Visualisation.PROPERTY_POSITIONX, NEW_VALUE);
+
+		openVirSatImporter("Cad Import Wizard");
+		
+		// Configure the import
+		bot.tree().expandNode(CT_PATH).select();
+		bot.comboBox().setText(cadExportFilePath.toString());
+		finishWizard();
+		
+		// Check that the imported value has been applied
+		assertText(OLD_VALUE, bot.textWithLabel(Visualisation.PROPERTY_POSITIONX));
 	}
 	
 	/**
