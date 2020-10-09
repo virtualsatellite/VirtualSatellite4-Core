@@ -94,17 +94,23 @@ If you did not receive this Content directly from German Aerospace Center (DLR),
 Third party licenses are named in the plug-ins where used in the respective _aboutfiles_ folders. At runtime third party licenses can be viewed in the usual Eclipse About dialog. Also check out the [Notice](NOTICE.md) file.
 
 ## Responsible in the sense of § 55 2nd paragraph of Rundfunkstaatsvertrag (German Interstate Treaty on Broadcasting)
+
 Rolf Hempel, Linder Höhe, 51147 Cologne, Germany 
-Optional: Philipp M. Fischer
+
+Philipp M. Fischer, 38108 Braunschweig, Germany
 
 
 
 The GitHub portal is maintained by
 
 Deutsches Zentrum fuer Luft- und Raumfahrt e. V. (DLR) | German Aerospace Center (DLR)
+
 Institute for Software Technology
+
 Linder Höhe
+
 51147 Koeln
+
 Germany
 
 ## Publisher
@@ -137,11 +143,16 @@ The Creative Commons licence does not extend to the DLR logo, its constituent el
 Should you have any questions, please contact:
 
 DLR German Aerospace Center
+
 Public Affairs and Communications Department, Communications Section
+
 Linder Höhe
+
 51147 Cologne
 
 Tel: +49 2203 601-2116
+
+
 Fax: +49 2203 601-3249
 E-mail: bildredaktion@dlr.de
 
