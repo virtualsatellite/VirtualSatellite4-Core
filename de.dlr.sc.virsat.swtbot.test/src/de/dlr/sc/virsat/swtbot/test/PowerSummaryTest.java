@@ -40,17 +40,15 @@ public class PowerSummaryTest extends ASwtBotTestCase {
 
 	private SWTBotTreeItem powerEquipment1;
 	private SWTBotTreeItem powerEquipment2;
-	private SWTBotTreeItem powerSummary;
 
 	private Concept conceptPower;
-
 	
 	@Before
 	public void before() throws Exception {
 		super.before();
 		//create necessary items for the test
 		conceptPower = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.budget.power.Activator.getPluginId() + "/concept/concept.xmi");
-		
+
 		repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
 
 		configurationTree = addElement(ConfigurationTree.class, conceptPs, repositoryNavigatorItem);
@@ -64,9 +62,8 @@ public class PowerSummaryTest extends ASwtBotTestCase {
 		bot.button("Add PowerState").click();
 		bot.table().select("powerValues");
 		bot.button("Drill-Down").click();
-		
-		renameField(PowerState.PROPERTY_POWER, AOCS_POWER + "");
-		renameField(PowerState.PROPERTY_DUTYCYCLE, AOCS_DUTYCYCLE + "");
+		renameField(PowerState.PROPERTY_POWER, String.valueOf(AOCS_POWER));
+		renameField(PowerState.PROPERTY_DUTYCYCLE, String.valueOf(AOCS_DUTYCYCLE));
 
 		elementConfiguration2 = addElement(ElementConfiguration.class, conceptPs, configurationTree);
 		rename(elementConfiguration2, "DataHandling");
@@ -77,26 +74,27 @@ public class PowerSummaryTest extends ASwtBotTestCase {
 		bot.button("Add PowerState").click();
 		bot.table().select("powerValues");
 		bot.button("Drill-Down").click();
-		
-		renameField(PowerState.PROPERTY_POWER, DATA_HANDLING_POWER + "");
-		renameField(PowerState.PROPERTY_DUTYCYCLE, DATA_HANDLING_DUTYCYCLE + "");
-		save();
-		
-		powerSummary = addElement(PowerSummary.class, conceptPower, configurationTree);
-		openEditor(powerSummary);
+
+		renameField(PowerState.PROPERTY_POWER, String.valueOf(DATA_HANDLING_POWER));
+		renameField(PowerState.PROPERTY_DUTYCYCLE, String.valueOf(DATA_HANDLING_DUTYCYCLE));
+
+		addElement(PowerSummary.class, conceptPower, configurationTree);
 		save();
 	}
-	
+
 	@Test
 	public void calculationsForPowerSummaryTest() {
 		openEditor(configurationTree);
 		SWTBotTable allPropertyTable = getSWTBotTable(configurationTree, "Section for: PowerSummary");
-		String minPower = allPropertyTable.getTableItem(0).getText(2);
-		final String expectedMinPower = AOCS_POWER + DATA_HANDLING_POWER + "00 [W]";
-		assertEquals(expectedMinPower, minPower);
-		
-		String averagePower = allPropertyTable.getTableItem(0).getText(1);
+
+		final int AVERAGE_POWER_INDEX = 1; //averagePower is located in second column of power summary table
+		String averagePower = allPropertyTable.getTableItem(0).getText(AVERAGE_POWER_INDEX);
 		final String expectedAveragePower = AOCS_POWER * (AOCS_DUTYCYCLE / 100) + DATA_HANDLING_POWER * (DATA_HANDLING_DUTYCYCLE / 100) + "00 [W]";
 		assertEquals(expectedAveragePower, averagePower);
+
+		final int MIN_POWER_INDEX = 2; // minPower is located in third column of power summary table
+		String minPower = allPropertyTable.getTableItem(0).getText(MIN_POWER_INDEX);
+		final String expectedMinPower = AOCS_POWER + DATA_HANDLING_POWER + "00 [W]";
+		assertEquals(expectedMinPower, minPower);
 	}
 }
