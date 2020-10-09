@@ -103,14 +103,10 @@ Philipp M. Fischer, Lilienthalplatz, 38108 Braunschweig, Germany
 
 The GitHub portal is maintained by
 
-Deutsches Zentrum fuer Luft- und Raumfahrt e. V. (DLR) | German Aerospace Center (DLR)
-
-Institute for Software Technology
-
-Linder Höhe
-
-51147 Koeln
-
+Deutsches Zentrum fuer Luft- und Raumfahrt e. V. (DLR) | German Aerospace Center (DLR)  
+Institute for Software Technology  
+Linder Höhe  
+51147 Koeln  
 Germany
 
 ## Publisher
@@ -152,8 +148,8 @@ Linder Höhe
 
 Tel: +49 2203 601-2116
 
-
 Fax: +49 2203 601-3249
+
 E-mail: bildredaktion@dlr.de
 
 
