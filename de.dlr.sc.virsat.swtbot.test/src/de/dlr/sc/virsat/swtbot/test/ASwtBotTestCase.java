@@ -44,6 +44,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
@@ -797,6 +798,18 @@ public class ASwtBotTestCase {
 		SwtBotSection composite = getSWTBotSection(tableName);
 		SWTBotTable table = composite.getSWTBotTable();
 		return table;
+	}
+	
+	/**
+	 * @param item the editor page
+	 * @param treeName the name of the tree
+	 * @return it returns the desired SWTBotTree
+	 */
+	protected SWTBotTree getSWTBotTree(SWTBotTreeItem item, String tableName) {
+		openEditor(item);
+		SwtBotSection composite = getSWTBotSection(tableName);
+		SWTBotTree tree = composite.getSWTBotTree();
+		return tree;
 	}
 	
 	/**

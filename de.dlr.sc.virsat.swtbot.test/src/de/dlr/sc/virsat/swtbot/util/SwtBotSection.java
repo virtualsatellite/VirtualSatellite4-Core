@@ -16,10 +16,12 @@ import java.util.List;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.SelfDescribing;
 
@@ -97,5 +99,30 @@ public class SwtBotSection extends AbstractSWTBotControl<Section> {
 		});
 		return new SWTBotTable(table.get(0));
 	}
-
+	
+	/**
+	 * We have Section->Composite->Tree
+	 * First the method finds the composite under the section, then it finds the tree under the composite.
+	 * The general UI of the project requires that each section contains only one tree,
+	 * so we can simply return tree.get(0).
+	 * @return first tree
+	 */
+	public SWTBotTree getSWTBotTree() {
+		List<Tree> tree = new ArrayList<>();
+		syncExec(new BoolResult() {
+			public Boolean run() {
+				for (Control c : widget.getChildren()) {
+					if (c instanceof Composite) {
+						for (Control cc : ((Composite) c).getChildren()) {
+							if (cc instanceof Tree) {
+								tree.add((Tree) cc); 
+							}
+						}
+					}
+				}
+				return true;
+			}
+		});
+		return new SWTBotTree(tree.get(0));
+	}
 }
