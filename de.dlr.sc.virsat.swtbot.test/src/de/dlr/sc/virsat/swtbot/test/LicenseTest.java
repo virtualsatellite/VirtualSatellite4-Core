@@ -12,32 +12,41 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.junit.Before;
 import org.junit.Test;
 
-public class LicenseTest {
-
-	protected SWTWorkbenchBot bot;
-
-	
-	@Before
-	public void before() throws Exception {
-		bot = new SWTWorkbenchBot();
-	}
+public class LicenseTest extends ASwtBotTestCase {
 	
 	@Test
 	public void licenseTest() {
 		final String VIRSAT_PACKAGE_PREFIX = "de.dlr.sc.virsat";
 		final String EXPECTED_PROVIDER = "DLR (German Aerospace Center)";
 		
+		final int COLUMN_FEATURE_ID = 3;
 		final int COLUMN_PLUGIN_ID = 4;
 		
 		bot.menu("Help").menu("About VirSat 4 - Core").click();
 		bot.button("Installation Details").click();
 
+		bot.cTabItem("Features").activate();
+
+		// Wait until feature table is populated
+		bot.waitWhile(Conditions.tableHasRows(bot.table(), 0), ASwtBotTestCase.MAX_TEST_CASE_TIMEOUT_MILLISECONDS, ASwtBotTestCase.SWTBOT_RETRY_WAIT_TIME);
+		
+		assertTrue("There is at least one VirSat feature", bot.table().containsText(EXPECTED_PROVIDER));
+		
+		int rowCount = bot.table().rowCount();
+		for (int i = 0; i < rowCount; i++) {
+			SWTBotTableItem row = bot.table().getTableItem(i);
+			String featureId = row.getText(COLUMN_FEATURE_ID);
+			if (featureId.startsWith(VIRSAT_PACKAGE_PREFIX)) {
+				bot.table().select(i);
+				assertEquals("Correct provider is set for feature " + featureId, EXPECTED_PROVIDER, row.getText(0));
+				assertTrue("Licensing information set for feature " + featureId, bot.button("License").isEnabled());
+			}
+		}
+		
 		bot.cTabItem("Plug-ins").activate();
 		
 		// Wait until plugin table is populated
@@ -45,7 +54,7 @@ public class LicenseTest {
 		
 		assertTrue("There is at least one VirSat plugin", bot.table().containsText(EXPECTED_PROVIDER));
 		
-		int rowCount = bot.table().rowCount();
+		rowCount = bot.table().rowCount();
 		for (int i = 0; i < rowCount; i++) {
 			SWTBotTableItem row = bot.table().getTableItem(i);
 			String pluginId = row.getText(COLUMN_PLUGIN_ID);
