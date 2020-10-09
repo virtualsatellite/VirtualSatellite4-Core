@@ -95,27 +95,27 @@ Third party licenses are named in the plug-ins where used in the respective _abo
 
 ## Imprint according to § 5 TMG (German Act for Telemedia Services) and § 55 Rundfunkstaatsvertrag (German Interstate Treaty on Broadcasting) Deutsches Zentrum fuer Luft- und Raumfahrt e. V.
 
-German Aerospace Center (DLR)
-Linder Höhe
-51147 Köln (Cologne)
+German Aerospace Center (DLR)\
+Linder Höhe\
+51147 Köln (Cologne)\
 Germany
 
-Tel: +49 2203 601-0
-Fax: +49 2203 67310
-email: contact-dlr [at] dlr.de
-https://www.dlr.de/en
+Tel: +49 2203 601-0\
+Fax: +49 2203 67310\
+email: contact-dlr [at] dlr.de\
+https://www.dlr.de/en\
 
 DLR's Executive Board, consisting of Prof. Dr. Anke Kaysser-Pyzalla (Chair of the DLR Executive Board), Klaus Hamacher (Vice Chairman of the Executive Board), Prof. Rolf Henke, Prof. Dr. rer. nat. Hansjörg Dittus, Prof. Dr.-Ing. Karsten Lemmer and Dr.-Ing. Walther Pelzer is empowered to act as DLR's representative.
 
-Seat of the Executive Board
+Seat of the Executive Board\
 The Executive Board's seat is located at DLR, Executive Board, Linder Höhe, D-51147 Cologne.
 
 The Executive Board can also authorise DLR employees to act on behalf of DLR. The head of DLR's legal department, Linder Hoehe, 51147 Cologne, can provide information about the extent of this authorisation.
 
-Court of registration/registration number
+Court of registration/registration number\
 District court of Bonn, VR 2780.
 
-Value added tax identification number
+Value added tax identification number\
 DE 121965658
 
 
