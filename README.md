@@ -99,7 +99,7 @@ Optional: Philipp M. Fischer
 
 
 
-The enter site name portal is maintained by
+The GitHub portal is maintained by
 
 Deutsches Zentrum fuer Luft- und Raumfahrt e. V. (DLR) | German Aerospace Center (DLR)
 Institute for Software Technology
