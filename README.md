@@ -103,7 +103,7 @@ Germany
 Tel: +49 2203 601-0\
 Fax: +49 2203 67310\
 email: contact-dlr [at] dlr.de\
-https://www.dlr.de/en\
+https://www.dlr.de/en
 
 DLR's Executive Board, consisting of Prof. Dr. Anke Kaysser-Pyzalla (Chair of the DLR Executive Board), Klaus Hamacher (Vice Chairman of the Executive Board), Prof. Rolf Henke, Prof. Dr. rer. nat. Hansjörg Dittus, Prof. Dr.-Ing. Karsten Lemmer and Dr.-Ing. Walther Pelzer is empowered to act as DLR's representative.
 
