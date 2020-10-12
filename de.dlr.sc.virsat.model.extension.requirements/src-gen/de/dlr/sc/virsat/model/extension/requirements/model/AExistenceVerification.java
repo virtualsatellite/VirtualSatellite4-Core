@@ -13,14 +13,14 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
@@ -38,9 +38,9 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
-public abstract class AEnumerationDefinition extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class AExistenceVerification extends ModelVerification implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.ExistenceVerification";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -51,7 +51,7 @@ public abstract class AEnumerationDefinition extends GenericCategory implements 
 	}
 	
 	// property name constants
-	public static final String PROPERTY_LITERALS = "literals";
+	public static final String PROPERTY_TARGET = "target";
 	
 	
 	
@@ -59,48 +59,48 @@ public abstract class AEnumerationDefinition extends GenericCategory implements 
 	// * Class Constructors
 	// *****************************************************************
 	
-	public AEnumerationDefinition() {
+	public AExistenceVerification() {
 	}
 	
-	public AEnumerationDefinition(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "EnumerationDefinition");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "EnumerationDefinition");
+	public AExistenceVerification(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "ExistenceVerification");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "ExistenceVerification");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public AEnumerationDefinition(CategoryAssignment categoryAssignement) {
+	public AExistenceVerification(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	
 	
 	// *****************************************************************
-	// * Array Attribute: literals
+	// * Array Attribute: target
 	// *****************************************************************
-	private IBeanList<EnumerationLiteral> literals = new TypeSafeComposedPropertyInstanceList<>(EnumerationLiteral.class);
+		private IBeanList<GenericCategory> target = new TypeSafeReferencePropertyInstanceList<>(GenericCategory.class);
 	
-	private void safeAccessLiterals() {
-		if (literals.getArrayInstance() == null) {
-			literals.setArrayInstance((ArrayInstance) helper.getPropertyInstance("literals"));
+		private void safeAccessTarget() {
+			if (target.getArrayInstance() == null) {
+				target.setArrayInstance((ArrayInstance) helper.getPropertyInstance("target"));
+			}
 		}
-	}
 	
-	public IBeanList<EnumerationLiteral> getLiterals() {
-		safeAccessLiterals();
-		return literals;
-	}
-	
-	private IBeanList<BeanPropertyComposed<EnumerationLiteral>> literalsBean = new TypeSafeComposedPropertyBeanList<>();
-	
-	private void safeAccessLiteralsBean() {
-		if (literalsBean.getArrayInstance() == null) {
-			literalsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("literals"));
+		public IBeanList<GenericCategory> getTarget() {
+			safeAccessTarget();
+			return target;
 		}
-	}
-	
-	public IBeanList<BeanPropertyComposed<EnumerationLiteral>> getLiteralsBean() {
-		safeAccessLiteralsBean();
-		return literalsBean;
-	}
+		
+		private IBeanList<BeanPropertyReference<GenericCategory>> targetBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTargetBean() {
+			if (targetBean.getArrayInstance() == null) {
+				targetBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("target"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<GenericCategory>> getTargetBean() {
+			safeAccessTargetBean();
+			return targetBean;
+		}
 	
 	
 }

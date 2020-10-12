@@ -38,9 +38,9 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
-public abstract class AEnumerationDefinition extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class AVerificationConfiguration extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.VerificationConfiguration";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -51,7 +51,7 @@ public abstract class AEnumerationDefinition extends GenericCategory implements 
 	}
 	
 	// property name constants
-	public static final String PROPERTY_LITERALS = "literals";
+	public static final String PROPERTY_VERIFICATIONTYPES = "verificationTypes";
 	
 	
 	
@@ -59,47 +59,47 @@ public abstract class AEnumerationDefinition extends GenericCategory implements 
 	// * Class Constructors
 	// *****************************************************************
 	
-	public AEnumerationDefinition() {
+	public AVerificationConfiguration() {
 	}
 	
-	public AEnumerationDefinition(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "EnumerationDefinition");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "EnumerationDefinition");
+	public AVerificationConfiguration(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "VerificationConfiguration");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "VerificationConfiguration");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public AEnumerationDefinition(CategoryAssignment categoryAssignement) {
+	public AVerificationConfiguration(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	
 	
 	// *****************************************************************
-	// * Array Attribute: literals
+	// * Array Attribute: verificationTypes
 	// *****************************************************************
-	private IBeanList<EnumerationLiteral> literals = new TypeSafeComposedPropertyInstanceList<>(EnumerationLiteral.class);
+	private IBeanList<VerificationType> verificationTypes = new TypeSafeComposedPropertyInstanceList<>(VerificationType.class);
 	
-	private void safeAccessLiterals() {
-		if (literals.getArrayInstance() == null) {
-			literals.setArrayInstance((ArrayInstance) helper.getPropertyInstance("literals"));
+	private void safeAccessVerificationTypes() {
+		if (verificationTypes.getArrayInstance() == null) {
+			verificationTypes.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verificationTypes"));
 		}
 	}
 	
-	public IBeanList<EnumerationLiteral> getLiterals() {
-		safeAccessLiterals();
-		return literals;
+	public IBeanList<VerificationType> getVerificationTypes() {
+		safeAccessVerificationTypes();
+		return verificationTypes;
 	}
 	
-	private IBeanList<BeanPropertyComposed<EnumerationLiteral>> literalsBean = new TypeSafeComposedPropertyBeanList<>();
+	private IBeanList<BeanPropertyComposed<VerificationType>> verificationTypesBean = new TypeSafeComposedPropertyBeanList<>();
 	
-	private void safeAccessLiteralsBean() {
-		if (literalsBean.getArrayInstance() == null) {
-			literalsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("literals"));
+	private void safeAccessVerificationTypesBean() {
+		if (verificationTypesBean.getArrayInstance() == null) {
+			verificationTypesBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verificationTypes"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyComposed<EnumerationLiteral>> getLiteralsBean() {
-		safeAccessLiteralsBean();
-		return literalsBean;
+	public IBeanList<BeanPropertyComposed<VerificationType>> getVerificationTypesBean() {
+		safeAccessVerificationTypesBean();
+		return verificationTypesBean;
 	}
 	
 	

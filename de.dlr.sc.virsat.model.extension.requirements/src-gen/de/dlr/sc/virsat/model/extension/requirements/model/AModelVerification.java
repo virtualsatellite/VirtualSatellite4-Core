@@ -18,7 +18,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -33,9 +32,9 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
-public abstract class AEnumerationLiteral extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class AModelVerification extends IVerification implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.EnumerationLiteral";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.ModelVerification";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -53,16 +52,16 @@ public abstract class AEnumerationLiteral extends GenericCategory implements IBe
 	// * Class Constructors
 	// *****************************************************************
 	
-	public AEnumerationLiteral() {
+	public AModelVerification() {
 	}
 	
-	public AEnumerationLiteral(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "EnumerationLiteral");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "EnumerationLiteral");
+	public AModelVerification(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "ModelVerification");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "ModelVerification");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public AEnumerationLiteral(CategoryAssignment categoryAssignement) {
+	public AModelVerification(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	

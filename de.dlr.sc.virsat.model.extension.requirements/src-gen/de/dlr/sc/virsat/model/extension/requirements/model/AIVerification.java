@@ -33,9 +33,9 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * 
  */	
-public abstract class AEnumerationLiteral extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class AIVerification extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.EnumerationLiteral";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.IVerification";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -53,16 +53,16 @@ public abstract class AEnumerationLiteral extends GenericCategory implements IBe
 	// * Class Constructors
 	// *****************************************************************
 	
-	public AEnumerationLiteral() {
+	public AIVerification() {
 	}
 	
-	public AEnumerationLiteral(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "EnumerationLiteral");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "EnumerationLiteral");
+	public AIVerification(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "IVerification");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "IVerification");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public AEnumerationLiteral(CategoryAssignment categoryAssignement) {
+	public AIVerification(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	

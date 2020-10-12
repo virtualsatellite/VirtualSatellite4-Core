@@ -14,16 +14,20 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
@@ -36,12 +40,12 @@ import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
  * 
  * Don't Manually modify this class
  * 
- * Attribute definition for requirements
+ * 
  * 
  */	
-public abstract class ARequirementAttribute extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class ARequirementLink extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.RequirementLink";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -53,40 +57,31 @@ public abstract class ARequirementAttribute extends GenericCategory implements I
 	
 	// property name constants
 	public static final String PROPERTY_TYPE = "type";
-	public static final String PROPERTY_ENUMERATION = "enumeration";
+	public static final String PROPERTY_SUBJECT = "subject";
+	public static final String PROPERTY_TARGETS = "targets";
 	
 	// Type enumeration value names
-	public static final String TYPE_Boolean_NAME = "Boolean";
-	public static final String TYPE_Date_NAME = "Date";
-	public static final String TYPE_Enumeration_NAME = "Enumeration";
-	public static final String TYPE_Integer_NAME = "Integer";
-	public static final String TYPE_Real_NAME = "Real";
-	public static final String TYPE_String_NAME = "String";
-	public static final String TYPE_Identifier_NAME = "Identifier";
+	public static final String TYPE_DependsOn_NAME = "DependsOn";
+	public static final String TYPE_Parent_NAME = "Parent";
 	// Type enumeration values
-	public static final String TYPE_Boolean_VALUE = "0";
-	public static final String TYPE_Date_VALUE = "1";
-	public static final String TYPE_Enumeration_VALUE = "2";
-	public static final String TYPE_Integer_VALUE = "3";
-	public static final String TYPE_Real_VALUE = "4";
-	public static final String TYPE_String_VALUE = "5";
-	public static final String TYPE_Identifier_VALUE = "6";
+	public static final String TYPE_DependsOn_VALUE = "1";
+	public static final String TYPE_Parent_VALUE = "2";
 	
 	
 	// *****************************************************************
 	// * Class Constructors
 	// *****************************************************************
 	
-	public ARequirementAttribute() {
+	public ARequirementLink() {
 	}
 	
-	public ARequirementAttribute(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "RequirementAttribute");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "RequirementAttribute");
+	public ARequirementLink(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "RequirementLink");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "RequirementLink");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public ARequirementAttribute(CategoryAssignment categoryAssignement) {
+	public ARequirementLink(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	
@@ -128,26 +123,63 @@ public abstract class ARequirementAttribute extends GenericCategory implements I
 	}
 	
 	// *****************************************************************
-	// * Attribute: enumeration
+	// * Attribute: subject
 	// *****************************************************************
-	private BeanPropertyComposed<EnumerationDefinition> enumeration = new BeanPropertyComposed<>();
+	private BeanPropertyReference<Requirement> subject = new BeanPropertyReference<>();
 	
-	private void safeAccessEnumeration() {
-		if (enumeration.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("enumeration");
-			enumeration.setTypeInstance(propertyInstance);
+	private void safeAccessSubject() {
+		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("subject");
+		subject.setTypeInstance(propertyInstance);
+	}
+	
+	public Requirement getSubject() {
+		safeAccessSubject();
+		return subject.getValue();
+	}
+	
+	public Command setSubject(EditingDomain ed, Requirement value) {
+		safeAccessSubject();
+		return subject.setValue(ed, value);
+	}
+	
+	public void setSubject(Requirement value) {
+		safeAccessSubject();
+		subject.setValue(value);
+	}
+	
+	public BeanPropertyReference<Requirement> getSubjectBean() {
+		safeAccessSubject();
+		return subject;
+	}
+	
+	// *****************************************************************
+	// * Array Attribute: targets
+	// *****************************************************************
+		private IBeanList<Requirement> targets = new TypeSafeReferencePropertyInstanceList<>(Requirement.class);
+	
+		private void safeAccessTargets() {
+			if (targets.getArrayInstance() == null) {
+				targets.setArrayInstance((ArrayInstance) helper.getPropertyInstance("targets"));
+			}
 		}
-	}
 	
-	public EnumerationDefinition getEnumeration() {
-		safeAccessEnumeration();
-		return enumeration.getValue();
-	}
-	
-	public BeanPropertyComposed<EnumerationDefinition> getEnumerationBean() {
-		safeAccessEnumeration();
-		return enumeration;
-	}
+		public IBeanList<Requirement> getTargets() {
+			safeAccessTargets();
+			return targets;
+		}
+		
+		private IBeanList<BeanPropertyReference<Requirement>> targetsBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessTargetsBean() {
+			if (targetsBean.getArrayInstance() == null) {
+				targetsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("targets"));
+			}
+		}
+		
+		public IBeanList<BeanPropertyReference<Requirement>> getTargetsBean() {
+			safeAccessTargetsBean();
+			return targetsBean;
+		}
 	
 	
 }
