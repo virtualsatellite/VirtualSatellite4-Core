@@ -80,6 +80,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	private static final int TABLE_HIGHT = 500;
 	private static final int STATUS_COLUMN_WIDTH = 100;
 	private static final int TRACE_COLUMN_WIDTH = 100;
+	private static final int FIXED_COLUMNS_NUMBER = 2; // status + verification column
 	private static final String COLUMN_PREFIX = "attColumn";
 	
 	protected final String arrayInstanceID;
@@ -166,7 +167,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 			// Add necessary table columns
 			for (int i = 0; i < maxNumberAttributes; i++) {
-				int tableIndexColumn = i + 2; // status + verification column
+				int tableIndexColumn = i + FIXED_COLUMNS_NUMBER; 
 				StringBuilder columnName = new StringBuilder();
 				for (RequirementType requirementType : requirementTypes) {
 

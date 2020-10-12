@@ -38,8 +38,8 @@ public class DefaultVerificationTypeReferenceCellEditingSupport extends Referenc
 
 	@Override
 	protected Command createSetCommand(Object element, Object userInputValue) {
+		// Checking the element
 		CategoryAssignment caDefaultVerification = null;
-		CategoryAssignment caType = null;
 		if (element instanceof CategoryAssignment) {
 			caDefaultVerification = (CategoryAssignment) element;
 		} else if (element instanceof ComposedPropertyInstance) {
@@ -47,13 +47,12 @@ public class DefaultVerificationTypeReferenceCellEditingSupport extends Referenc
 		} else {
 			return super.createSetCommand(element, userInputValue);
 		}
-		if (userInputValue instanceof CategoryAssignment) {
-			caType = (CategoryAssignment) userInputValue;
-		}
-		if (caDefaultVerification.getType().getFullQualifiedName().equals(DefaultVerification.FULL_QUALIFIED_CATEGORY_NAME)
-				&& caType != null
-				&& caType.getType().getFullQualifiedName().equals(VerificationType.FULL_QUALIFIED_CATEGORY_NAME)) {
-			return new DefaultVerification(caDefaultVerification).setVerificationType(editingDomain, new VerificationType(caType));
+		
+		// Checking the user input
+		if (userInputValue instanceof CategoryAssignment  
+				&& ((CategoryAssignment) userInputValue).getType().getFullQualifiedName().equals(VerificationType.FULL_QUALIFIED_CATEGORY_NAME)
+				&& caDefaultVerification.getType().getFullQualifiedName().equals(DefaultVerification.FULL_QUALIFIED_CATEGORY_NAME)) {
+			return new DefaultVerification(caDefaultVerification).setVerificationType(editingDomain, new VerificationType((CategoryAssignment) userInputValue));
 		} else {
 			return super.createSetCommand(element, userInputValue);
 		}
