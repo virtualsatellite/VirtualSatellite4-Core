@@ -88,7 +88,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected int maxNumberAttributes = 0;
 
 	protected TableViewerColumn colStatus = null;
-	protected TableViewerColumn colTracing = null;
+	protected TableViewerColumn colValidation = null;
 	protected List<TableViewerColumn> attColumns;
 	
 	protected boolean controlListenerActive = true;
@@ -127,18 +127,18 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 					.get(RequirementsAttributeLabelProvider.REQUIREMENT_STATUS_PROPERTY_NUMBER)));
 
 			colStatus.getColumn().setWidth(STATUS_COLUMN_WIDTH);
-
+			colStatus.getColumn().addControlListener(this);
 			// initialize list for attribute column
 			attColumns = new ArrayList<>();
+			attColumns.add(colStatus);
 		}
 		
-		if (colTracing == null) {
-			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
+		if (colValidation == null) {
+			colValidation = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
 
-//			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
-//					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
-
-			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
+			colValidation.getColumn().setWidth(TRACE_COLUMN_WIDTH);
+			colValidation.getColumn().addControlListener(this);
+			attColumns.add(colValidation);
 
 		}
 
@@ -166,6 +166,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 			// Add necessary table columns
 			for (int i = 0; i < maxNumberAttributes; i++) {
+				int tableIndexColumn = i + 2; // status + verification column
 				StringBuilder columnName = new StringBuilder();
 				for (RequirementType requirementType : requirementTypes) {
 
@@ -184,8 +185,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 					}
 				}
 
-				if (attColumns.size() > i) {
-					attColumns.get(i).getColumn().setText(columnName.toString());
+				if (attColumns.size() > tableIndexColumn) {
+					attColumns.get(tableIndexColumn).getColumn().setText(columnName.toString());
 				} else {
 					TableViewerColumn newColumn = (TableViewerColumn) createDefaultColumn(columnName.toString());
 					newColumn.getColumn().addControlListener(this);
