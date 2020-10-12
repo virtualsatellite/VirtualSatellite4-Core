@@ -44,6 +44,8 @@ public class DefaultVerificationTypeReferenceCellEditingSupport extends Referenc
 			caDefaultVerification = (CategoryAssignment) element;
 		} else if (element instanceof ComposedPropertyInstance) {
 			caDefaultVerification = ((ComposedPropertyInstance) element).getTypeInstance();
+		} else {
+			return super.createSetCommand(element, userInputValue);
 		}
 		if (userInputValue instanceof CategoryAssignment) {
 			caType = (CategoryAssignment) userInputValue;
