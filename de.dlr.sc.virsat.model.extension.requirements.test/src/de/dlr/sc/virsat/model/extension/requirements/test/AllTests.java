@@ -20,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommandTest;
 import de.dlr.sc.virsat.model.extension.requirements.csv.CsvFileReaderTest;
 import de.dlr.sc.virsat.model.extension.requirements.csv.RequirementsImporterTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerificationEditingDomainTest;
 import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -33,7 +34,8 @@ import junit.framework.JUnit4TestAdapter;
 	CsvFileReaderTest.class,
 	RequirementsImporterTest.class,
 	InitializeRequirementCommandTest.class,
-	RequirementHelperTest.class
+	RequirementHelperTest.class,
+	DefaultVerificationEditingDomainTest.class,
 				})
 
 /**

@@ -11,7 +11,13 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
+import org.junit.Before;
 import org.junit.Test;
+
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
 // * Import Statements
@@ -31,19 +37,27 @@ import org.junit.Test;
  * 
  * 
  */
-public class DefaultVerificationTest extends ADefaultVerificationTest {
+public class DefaultVerificationEditingDomainTest extends AConceptProjectTestCase {
 	
 	public static final String TYPE_NAME = "DType";
+	private Concept concept = null;
 	
+	@Before
+	public void setUp() throws CoreException {
+		super.setUp();
+		super.addEditingDomainAndRepository();
+		String conceptXmiPluginPath = "de.dlr.sc.virsat.model.extension.requirements/concept/concept.xmi";
+		concept = de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
+	}
+
 	@Test
-	public void testSetVerificationType() {
+	public void testSetVerificationTypeWithEditingDomain() {
 		VerificationType type = new VerificationType(concept);
 		type.setName(TYPE_NAME);
 		DefaultVerification verification = new DefaultVerification(concept);
-		
-		verification.setVerificationType(type);
+		Command resultCommand = verification.setVerificationType(editingDomain, type);
+		editingDomain.getCommandStack().execute(resultCommand);
 		
 		assertEquals("Type name should be added to verification isntance", TYPE_NAME, verification.getName());
 	}
-
 }
