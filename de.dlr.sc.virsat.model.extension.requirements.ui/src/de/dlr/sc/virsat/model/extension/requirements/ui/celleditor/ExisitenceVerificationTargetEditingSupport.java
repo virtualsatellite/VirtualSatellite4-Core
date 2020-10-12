@@ -21,13 +21,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
-import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.RequirementsTraceEditingDialog;
+import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.ExistenceVerificationTargetEditingDialog;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
 
@@ -35,7 +34,7 @@ import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingS
  * Implements a customized editing support for requirement trace elements
  * 
  */
-public class RequirementTraceEditingSupport extends APropertyCellEditingSupport {
+public class ExisitenceVerificationTargetEditingSupport extends APropertyCellEditingSupport {
 
 	protected FormToolkit toolkit;
 	
@@ -45,7 +44,7 @@ public class RequirementTraceEditingSupport extends APropertyCellEditingSupport 
 	 * @param viewer the table viewer
 	 * @param property an aproperty
 	 */
-	public RequirementTraceEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property, FormToolkit toolkit) {
+	public ExisitenceVerificationTargetEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property, FormToolkit toolkit) {
 		super(editingDomain, viewer, property);
 		this.toolkit = toolkit;
 	}
@@ -54,15 +53,15 @@ public class RequirementTraceEditingSupport extends APropertyCellEditingSupport 
 	protected CellEditor getCellEditor(Object element) {
 		
 		if (element instanceof ComposedPropertyInstance) {
-			Requirement req = new Requirement(((ComposedPropertyInstance) element).getTypeInstance());
-			final CategoryAssignment referencedTypeInstance = req.getTrace().getTypeInstance();
+			ExistenceVerification verification = new ExistenceVerification(((ComposedPropertyInstance) element).getTypeInstance());
+			final CategoryAssignment referencedTypeInstance = verification.getTypeInstance();
 			editor = new DialogCellEditor((Composite) viewer.getControl()) {
 				
 				@Override
 				protected Object openDialogBox(Control cellEditorWindow) {
 					EditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(referencedTypeInstance);
 					if (referencedTypeInstance != null) {
-						Dialog dialog = new RequirementsTraceEditingDialog(
+						Dialog dialog = new ExistenceVerificationTargetEditingDialog(
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), toolkit, editingDomain,
 								referencedTypeInstance);
 						if (dialog.open() == Dialog.OK) {
@@ -93,8 +92,7 @@ public class RequirementTraceEditingSupport extends APropertyCellEditingSupport 
 	@Override
 	protected Object getValue(Object element) {
 		APropertyInstance propertyInstance = getPropertyInstance(element);
-		ATypeInstance value = ((ComposedPropertyInstance) propertyInstance).getTypeInstance();
-		return value;
+		return propertyInstance;
 	}
 	
 	@Override

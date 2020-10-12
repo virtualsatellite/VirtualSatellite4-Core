@@ -56,7 +56,6 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
-import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -74,7 +73,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String COLUMN_TEXT_STATUS = "Status";
 	protected static final String COLUMN_ATTRIBUTE_SEPARATOR = " / ";
 
-	protected static final String COLUMN_TEXT_TRACE = "Trace";
+	protected static final String COLUMN_TEXT_VERIFICATION = "Verification";
 	
 	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = Requirement.FULL_QUALIFIED_CATEGORY_NAME + "." + Requirement.PROPERTY_REQTYPE;
 
@@ -134,10 +133,10 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		}
 		
 		if (colTracing == null) {
-			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TRACE);
+			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
 
-			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
-					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
+//			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
+//					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
 
 			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
 
