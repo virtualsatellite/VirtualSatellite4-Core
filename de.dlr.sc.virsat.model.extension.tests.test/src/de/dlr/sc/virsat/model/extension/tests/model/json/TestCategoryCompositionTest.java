@@ -76,6 +76,11 @@ public class TestCategoryCompositionTest extends AConceptTestCase {
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryComposition.class);
 		
 		assertEquals("Composed element changed", JsonTestHelper.TEST_STRING, tcComposition.getTestSubCategory().getTestString());
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryComposition.class);
+		assertEquals("Composed element is still the same", JsonTestHelper.TEST_STRING, tcComposition.getTestSubCategory().getTestString());
 	}
 	
 	@Test
