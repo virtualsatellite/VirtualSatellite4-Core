@@ -24,21 +24,21 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 
 /**
- * Handler for Renaming elements from the navigator tree
+ * Handler for changing the value of an element from the navigator tree
  *
  */
 public class ChangeValueHandler extends AEMFCommandCommandHandler {
 
-	public static final String SET_NAME_DIALOG_TITLE = "Change Value";
-	public static final String SET_NAME_DIALOG_MSG = "New value:";
+	public static final String SET_VALUE_DIALOG_TITLE = "Change Value";
+	public static final String SET_VALUE_DIALOG_MSG = "New value:";
 	
-	private String newValue;
+	protected String newValue;
 	
 	@Override
 	public void execute() {
 		ValuePropertyInstance vpi = (ValuePropertyInstance) firstSelectedEObject;
 		String currentValue = vpi.getValue();
-		newValue = showChangeNameDialog(currentValue);
+		newValue = showChangeValueDialog(currentValue);
 		if (newValue != null && !newValue.equals(currentValue)) {
 			super.execute();
 		}
@@ -67,7 +67,7 @@ public class ChangeValueHandler extends AEMFCommandCommandHandler {
 	 * @param initialValue Initial value that is printed in the field.
 	 * @return New string that user has given
 	 */
-	public static String showStringInputDialog(String dialogTitle, String dialogMessage, String initialValue) {
+	public String showStringInputDialog(String dialogTitle, String dialogMessage, String initialValue) {
 		InputDialog inputDialog = new InputDialog(getShell(), dialogTitle, dialogMessage, initialValue, null);
 		int retDialog = inputDialog.open();
 		if (retDialog == Window.OK) {
@@ -82,15 +82,15 @@ public class ChangeValueHandler extends AEMFCommandCommandHandler {
 	 * @param initialValue Initial value to print in the field, e.g. current name
 	 * @return Given name.
 	 */
-	public static String showChangeNameDialog(String initialValue) {
-		return showStringInputDialog(SET_NAME_DIALOG_TITLE, SET_NAME_DIALOG_MSG, initialValue);
+	public String showChangeValueDialog(String initialValue) {
+		return showStringInputDialog(SET_VALUE_DIALOG_TITLE, SET_VALUE_DIALOG_MSG, initialValue);
 	}
 	
 	/**
 	 * Get the shell of the current workbench
 	 * @return the shell
 	 */
-	public static Shell getShell() {
+	public Shell getShell() {
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
 		return workbenchWindow.getShell();
