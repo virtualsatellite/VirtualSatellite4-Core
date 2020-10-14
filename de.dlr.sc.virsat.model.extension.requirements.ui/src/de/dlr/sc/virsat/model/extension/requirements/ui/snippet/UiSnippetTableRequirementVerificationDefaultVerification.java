@@ -11,6 +11,10 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
@@ -29,6 +33,10 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetTableRequirementVerificationDefaultVerification extends AUiSnippetTableRequirementVerificationDefaultVerification implements IUiSnippet {
 	
+	private static final int TABLE_HIGHT = 80;
+	private static final String SECTION_HEADING = "Basic Verification Method";
+	private static final String SECTION_DESCRIPTION = "Select a verification method from the verification configuration.";
+	
 	@Override
 	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
 		
@@ -37,6 +45,20 @@ public class UiSnippetTableRequirementVerificationDefaultVerification extends AU
 		}
 		
 		return PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property);
+	}
+	
+	@Override
+	protected Table createDefaultTable(FormToolkit toolkit, Composite sectionBody) {
+		Table table = super.createDefaultTable(toolkit, sectionBody);
+		GridData gridDataTable = (GridData) table.getLayoutData();
+		gridDataTable.heightHint = TABLE_HIGHT;
+		return table;
+	}
+	
+	@Override
+	public Composite createSectionBody(FormToolkit toolkit, String sectionHeading, String sectionDescription,
+			int numberColumns) {
+		return super.createSectionBody(toolkit, SECTION_HEADING, SECTION_DESCRIPTION, numberColumns);
 	}
 	
 }
