@@ -342,6 +342,12 @@
      	<activeWhen>
 	        <with
 	              variable="selection">
+	        	<with
+                	variable="activePartId">
+                	<equals
+	                    value="de.dlr.sc.virsat.project.ui.navigator.view">
+	              	</equals>
+	        	</with>
 	        	<count value="1"/>
              	<iterate 
              		ifEmpty="false"
@@ -359,6 +365,12 @@
      	<activeWhen>
 	        <with
 	              variable="selection">
+	        	<with
+                	variable="activePartId">
+                	<equals
+	                    value="de.dlr.sc.virsat.project.ui.navigator.view">
+	              	</equals>
+	        	</with>
 	        	<count value="1"/>
              	<iterate 
              		ifEmpty="false"
