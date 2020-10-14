@@ -341,12 +341,30 @@
       		class="de.dlr.sc.virsat.project.ui.navigator.handler.RenameHandler">
      	<activeWhen>
 	        <with
-	              variable="activePartId">
-	           <or>
-	              <equals
-	                    value="de.dlr.sc.virsat.project.ui.navigator.view">
-	              </equals>
-	           </or>
+	              variable="selection">
+	           <and>
+             	<iterate ifEmpty="false">
+	             	<instanceof
+	                    value="de.dlr.sc.virsat.model.dvlm.general.IName">
+	             	</instanceof>
+             	</iterate>
+	           </and>
+	        </with>
+     	</activeWhen>
+     </handler>
+      <handler 
+      		commandId="org.eclipse.ui.edit.rename"
+      		class="de.dlr.sc.virsat.project.ui.navigator.handler.ChangeValueHandler">
+     	<activeWhen>
+	        <with
+	              variable="selection">
+	           <and>
+             	<iterate ifEmpty="false">
+	             	<instanceof
+	                    value="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance">
+	             	</instanceof>
+             	</iterate>
+	           </and>
 	        </with>
      	</activeWhen>
      </handler>
