@@ -15,13 +15,18 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValueEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -39,6 +44,10 @@ public class UiSnippetTableRequirementElementsAttributeValue extends AUiSnippetT
 
 	private static final String VALUE_PROPERTY_NAME = "value";
 	private static final int VALUE_COLUMN_SIZE = 700;
+	private static final int TABLE_HIGHT = 400;
+	private static final int COLUMN_HIGHT = 30;
+	private static final String SECTION_HEADING = "Requirement Attributes";
+	private static final String SECTION_DESCRIPTION = "Specify the different requirment attributes as defined in its type.";
 
 	/**
 	 * Constructor for this editor snippet
@@ -93,7 +102,21 @@ public class UiSnippetTableRequirementElementsAttributeValue extends AUiSnippetT
 			}
 		});
 	}
-
+	
+	@Override
+	protected Table createDefaultTable(FormToolkit toolkit, Composite sectionBody) {
+		int numberAtts = new Requirement(((CategoryAssignment) model)).getElements().size();
+		Table table = super.createDefaultTable(toolkit, sectionBody);
+		GridData gridDataTable = (GridData) table.getLayoutData();
+		gridDataTable.heightHint = Math.min(COLUMN_HIGHT * numberAtts, TABLE_HIGHT);
+		return table;
+	}
+	
+	@Override
+	public Composite createSectionBody(FormToolkit toolkit, String sectionHeading, String sectionDescription,
+			int numberColumns) {
+		return super.createSectionBody(toolkit, SECTION_HEADING, SECTION_DESCRIPTION, numberColumns);
+	}
 	
 	@Override
 	protected List<APropertyInstance> getTableObjects() {
