@@ -11,8 +11,6 @@
 package de.dlr.sc.virsat.project.ui.navigator.handler;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.UnexecutableCommand;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -25,7 +23,6 @@ import org.eclipse.ui.PlatformUI;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
-import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 
 /**
  * Handler for Renaming elements from the navigator tree
@@ -33,33 +30,25 @@ import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
  */
 public class RenameHandler extends AEMFCommandCommandHandler {
 
-	public static final String SET_NAME_DIALOG_TITLE = "Change Name";
-	public static final String SET_NAME_DIALOG_MSG = "Change the Name of this object to:";
+	public static final String SET_NAME_DIALOG_TITLE = "Rename Element";
+	public static final String SET_NAME_DIALOG_MSG = "New name:";
 	
+	private String newName;
 	
 	@Override
 	public void execute() {
-		// Get the info of where to execute this handler
-		ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		ISelection selection = selectionService.getSelection();
-
-		VirSatSelectionHelper selectionHelper = new VirSatSelectionHelper(selection);
-		EObject selectedObject = selectionHelper.getFirstEObject();
-		
-		if (selectedObject instanceof IName) {
-			IName namedObject = (IName) selectedObject;
-			String currentName = namedObject.getName();
-			String newName = showChangeNameDialog(currentName); //$NON-NLS-1$
-			if (newName != null && !newName.equals(currentName)) {
-				Command cmd = SetCommand.create(ed, namedObject, GeneralPackage.Literals.INAME__NAME, newName);
-				ed.getCommandStack().execute(cmd);
-			}
+		IName namedObject = (IName) firstSelectedEObject;
+		String currentName = namedObject.getName();
+		newName = showChangeNameDialog(currentName);
+		if (newName != null && !newName.equals(currentName)) {
+			super.execute();
 		}
 	}
 
 	@Override
 	protected Command createCommand() {
-		return UnexecutableCommand.INSTANCE;
+		Command cmd = SetCommand.create(ed, firstSelectedEObject, GeneralPackage.Literals.INAME__NAME, newName);
+		return cmd;
 	}
 
 	@Override
@@ -68,11 +57,13 @@ public class RenameHandler extends AEMFCommandCommandHandler {
 		ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		ISelection selection = selectionService.getSelection();
 
-		VirSatSelectionHelper selectionHelper = new VirSatSelectionHelper(selection);
+		initializeFieldsFromSelection(selection);
 
 		// Selection is graph
-		if (selectionHelper.getFirstEObject() instanceof IName) {
-			return true;
+		if (firstSelectedEObject instanceof IName) {
+			// Use some dummy name to check for executability of command
+			newName = "";
+			return createCommand().canExecute();
 		}
 		return false;
 	}
@@ -85,14 +76,13 @@ public class RenameHandler extends AEMFCommandCommandHandler {
 	 * @return New string that user has given
 	 */
 	public static String showStringInputDialog(String dialogTitle, String dialogMessage, String initialValue) {
-		String ret = null;
-		Shell shell = getShell();
-		InputDialog inputDialog = new InputDialog(shell, dialogTitle, dialogMessage, initialValue, null);
+		InputDialog inputDialog = new InputDialog(getShell(), dialogTitle, dialogMessage, initialValue, null);
 		int retDialog = inputDialog.open();
 		if (retDialog == Window.OK) {
-			ret = inputDialog.getValue();
+			return inputDialog.getValue();
 		}
-		return ret;
+		
+		return null;
 	}
 	
 	/**
