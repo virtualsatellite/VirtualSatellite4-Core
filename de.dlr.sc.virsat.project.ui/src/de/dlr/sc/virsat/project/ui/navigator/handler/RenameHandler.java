@@ -27,6 +27,12 @@ public class RenameHandler extends ChangeValueHandler {
 	public static final String SET_NAME_DIALOG_MSG = "New name:";
 
 	@Override
+	protected String getCurrentValue() {
+		IName namedObject = (IName) firstSelectedEObject;
+		return namedObject.getName();
+	}
+	
+	@Override
 	protected Command createCommand() {
 		if (firstSelectedEObject instanceof IName) {
 			return SetCommand.create(ed, firstSelectedEObject, GeneralPackage.Literals.INAME__NAME, newValue);

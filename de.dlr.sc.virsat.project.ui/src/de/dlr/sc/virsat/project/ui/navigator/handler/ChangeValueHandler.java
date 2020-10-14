@@ -15,10 +15,8 @@ import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
@@ -34,10 +32,14 @@ public class ChangeValueHandler extends AEMFCommandCommandHandler {
 	
 	protected String newValue;
 	
+	protected String getCurrentValue() {
+		ValuePropertyInstance vpi = (ValuePropertyInstance) firstSelectedEObject;
+		return vpi.getValue();
+	}
+	
 	@Override
 	public void execute() {
-		ValuePropertyInstance vpi = (ValuePropertyInstance) firstSelectedEObject;
-		String currentValue = vpi.getValue();
+		String currentValue = getCurrentValue();
 		newValue = showChangeValueDialog(currentValue);
 		if (newValue != null && !newValue.equals(currentValue)) {
 			super.execute();
@@ -68,7 +70,8 @@ public class ChangeValueHandler extends AEMFCommandCommandHandler {
 	 * @return New string that user has given
 	 */
 	public String showStringInputDialog(String dialogTitle, String dialogMessage, String initialValue) {
-		InputDialog inputDialog = new InputDialog(getShell(), dialogTitle, dialogMessage, initialValue, null);
+		Shell shell = Display.getCurrent().getActiveShell();
+		InputDialog inputDialog = new InputDialog(shell, dialogTitle, dialogMessage, initialValue, null);
 		int retDialog = inputDialog.open();
 		if (retDialog == Window.OK) {
 			return inputDialog.getValue();
@@ -84,15 +87,5 @@ public class ChangeValueHandler extends AEMFCommandCommandHandler {
 	 */
 	public String showChangeValueDialog(String initialValue) {
 		return showStringInputDialog(SET_VALUE_DIALOG_TITLE, SET_VALUE_DIALOG_MSG, initialValue);
-	}
-	
-	/**
-	 * Get the shell of the current workbench
-	 * @return the shell
-	 */
-	public Shell getShell() {
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		IWorkbenchWindow workbenchWindow = workbench.getActiveWorkbenchWindow();
-		return workbenchWindow.getShell();
 	}
 }
