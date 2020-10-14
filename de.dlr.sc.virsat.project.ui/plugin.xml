@@ -342,13 +342,14 @@
      	<activeWhen>
 	        <with
 	              variable="selection">
-	           <and>
-             	<iterate ifEmpty="false">
+	        	<count value="1"/>
+             	<iterate 
+             		ifEmpty="false"
+             		operator="and">
 	             	<instanceof
 	                    value="de.dlr.sc.virsat.model.dvlm.general.IName">
 	             	</instanceof>
              	</iterate>
-	           </and>
 	        </with>
      	</activeWhen>
      </handler>
@@ -358,13 +359,14 @@
      	<activeWhen>
 	        <with
 	              variable="selection">
-	           <and>
-             	<iterate ifEmpty="false">
+	        	<count value="1"/>
+             	<iterate 
+             		ifEmpty="false"
+             		operator="and">
 	             	<instanceof
 	                    value="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance">
 	             	</instanceof>
              	</iterate>
-	           </and>
 	        </with>
      	</activeWhen>
      </handler>
