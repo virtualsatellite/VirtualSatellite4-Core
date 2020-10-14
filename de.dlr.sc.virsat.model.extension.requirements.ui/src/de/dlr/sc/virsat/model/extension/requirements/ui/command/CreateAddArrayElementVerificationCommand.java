@@ -9,6 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.command;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -19,4 +29,12 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.command;
  * 
  */
 public class CreateAddArrayElementVerificationCommand extends ACreateAddArrayElementVerificationCommand {
+	
+	@Override
+	public Command create(EditingDomain editingDomain, ArrayInstance arrayInstance, Category type) {
+		ATypeInstance ati = new CategoryInstantiator().generateInstance(arrayInstance, type);
+		((ComposedPropertyInstance) ati).getTypeInstance().setName(type.getName());
+		return AddCommand.create(editingDomain, arrayInstance, PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES, ati);
+	}
+	
 }
