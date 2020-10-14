@@ -317,6 +317,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 				// Also in case return is pressed a cell editor should be opened.
 				boolean isReturnPressed = (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.CR);
 				
+				// Also in case F2 is pressed a cell editor should be opened.
 				boolean isF2Pressed = (event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.F2);
 				
 				// Now bring together all behavior with the standard behavior of traversing and programmatic calls to cell editors
