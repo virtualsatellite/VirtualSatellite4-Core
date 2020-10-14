@@ -11,12 +11,11 @@
 package de.dlr.sc.virsat.project.ui.navigator.handler;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -47,25 +46,18 @@ public class RenameHandler extends AEMFCommandCommandHandler {
 
 	@Override
 	protected Command createCommand() {
-		Command cmd = SetCommand.create(ed, firstSelectedEObject, GeneralPackage.Literals.INAME__NAME, newName);
-		return cmd;
+		if (firstSelectedEObject instanceof IName) {
+			return SetCommand.create(ed, firstSelectedEObject, GeneralPackage.Literals.INAME__NAME, newName);
+		}
+		
+		return UnexecutableCommand.INSTANCE;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// Get the info of where to execute this handler
-		ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		ISelection selection = selectionService.getSelection();
-
-		initializeFieldsFromSelection(selection);
-
-		// Selection is graph
-		if (firstSelectedEObject instanceof IName) {
-			// Use some dummy name to check for executability of command
-			newName = "";
-			return createCommand().canExecute();
-		}
-		return false;
+		// Use some dummy name to check for executability of command
+		newName = "";
+		return super.isEnabled();
 	}
 	
 	/**
