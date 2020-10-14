@@ -202,10 +202,10 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	}
 	
 	/**
-	 * Create a label for requirements traces customized to this table 
+	 * Create a label for requirements verification methods customized to this table 
 	 * 
-	 * @param req the requirement for which a trace label is created
-	 * @return the trace label
+	 * @param req the requirement for which a verification method label is created
+	 * @return the label
 	 */
 	protected String getVerificationLabel(Requirement req) {
 		if (req.getVerification().isEmpty()) {

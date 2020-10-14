@@ -31,7 +31,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
 
 /**
- * Implements a customized editing support for requirement trace elements
+ * Implements a customized editing support for selecting the target of an existence editing support
  * 
  */
 public class ExisitenceVerificationTargetEditingSupport extends APropertyCellEditingSupport {
@@ -107,8 +107,8 @@ public class ExisitenceVerificationTargetEditingSupport extends APropertyCellEdi
 	
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
-		// Overwriting super method because this method is not actually changing any value, its just 
-		// forwarding the editing capabilities and thus does not net to execute any set command
+		// Overwriting super method because this method is not actually changing any value, it's just 
+		// forwarding the editing capabilities and thus does not need to execute any set command
 		viewer.update(element, null);
 	}
 	
