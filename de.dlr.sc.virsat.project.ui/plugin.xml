@@ -492,7 +492,44 @@
          <command
                commandId="org.eclipse.ui.edit.rename"
                style="push"
+               label="Rename"
                tooltip="Rename">
+               <visibleWhen
+                     checkEnabled="true">
+                     <with
+                     	variable="selection">
+		             	<iterate 
+		             		ifEmpty="false"
+		             		operator="and">
+			             	<instanceof
+			                    value="de.dlr.sc.virsat.model.dvlm.general.IName">
+			             	</instanceof>
+		             	</iterate>
+	       			 </with>
+              </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.edit">
+         <command
+               commandId="org.eclipse.ui.edit.rename"
+               style="push"
+               label="Change Value"
+               tooltip="Change Value">
+               <visibleWhen
+                     checkEnabled="true">
+                     <with
+                     	variable="selection">
+		             	<iterate 
+		             		ifEmpty="false"
+		             		operator="and">
+			             	<instanceof
+			                    value="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance">
+			             	</instanceof>
+		             	</iterate>
+	       			 </with>
+              </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
