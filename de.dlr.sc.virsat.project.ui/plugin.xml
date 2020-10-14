@@ -336,6 +336,20 @@
             </with>
          </activeWhen>
       </handler>
+      <handler 
+      		commandId="org.eclipse.ui.edit.rename"
+      		class="de.dlr.sc.virsat.project.ui.navigator.handler.RenameHandler">
+     	<activeWhen>
+	        <with
+	              variable="activePartId">
+	           <or>
+	              <equals
+	                    value="de.dlr.sc.virsat.project.ui.navigator.view">
+	              </equals>
+	           </or>
+	        </with>
+     	</activeWhen>
+     </handler>
       <handler
             class="de.dlr.sc.virsat.project.ui.wizard.handler.OpenNewProjectWizardHandler"
             commandId="de.dlr.sc.virsat.project.ui.command.newVirSatProject">
@@ -452,6 +466,15 @@
                commandId="org.eclipse.ui.edit.redo"
                style="push"
                tooltip="Redo">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.edit">
+         <command
+               commandId="org.eclipse.ui.edit.rename"
+               style="push"
+               tooltip="Rename">
          </command>
       </menuContribution>
       <menuContribution
