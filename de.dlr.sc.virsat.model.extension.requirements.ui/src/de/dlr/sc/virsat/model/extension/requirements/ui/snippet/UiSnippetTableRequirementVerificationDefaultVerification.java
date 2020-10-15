@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -26,12 +25,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -59,8 +58,6 @@ public class UiSnippetTableRequirementVerificationDefaultVerification extends AU
 	private static final String SECTION_DESCRIPTION = "Select a verification method from the verification configuration.";
 	private static final String DIALOG_DESCRIPTION = "Select a Verification Method";
 	public static final String BUTTON_ADD_TEXT = "Add Verification Type";
-	
-	protected static final String FQN_PROPERTY_VERIFICATION_TYPE = DefaultVerification.FULL_QUALIFIED_CATEGORY_NAME + "." + DefaultVerification.PROPERTY_VERIFICATIONTYPE;
 	
 	@Override
 	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
@@ -97,31 +94,14 @@ public class UiSnippetTableRequirementVerificationDefaultVerification extends AU
 		if ((style & STYLE_ADD_BUTTON) != 0) {
 			Button buttonAdd = toolkit.createButton(compositeButtons, BUTTON_ADD_TEXT, SWT.PUSH);
 			buttonAdd.addSelectionListener(new SelectionListener() {
+				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-
-					Concept activeConcept = acHelper.getConcept(conceptId);
-					Command addCommand = createAddCommand(editingDomain, activeConcept);
-					editingDomain.getCommandStack().execute(addCommand);
-					Collection<?> affectedObjects = addCommand.getAffectedObjects();
-					ComposedPropertyInstance arrayInstance = (ComposedPropertyInstance) affectedObjects.iterator()
-							.next();
-
-					CategoryAssignment newVerification = arrayInstance.getTypeInstance();
-					DefaultVerification verificationBean = new DefaultVerification(newVerification);
-					CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(newVerification);
-
-					ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) caHelper
-							.getPropertyInstance(FQN_PROPERTY_VERIFICATION_TYPE);
-					ATypeDefinition referencePropertyType = ((ReferenceProperty) propertyInstance.getType())
-							.getReferenceType();
-
-					createAddVerificationDialog(editingDomain, affectedObjects, arrayInstance, verificationBean,
+					ATypeDefinition referencePropertyType = acHelper.getCategory(conceptId, VerificationType.FULL_QUALIFIED_CATEGORY_NAME);
+					createAddVerificationDialog(editingDomain,
 							referencePropertyType);
 				}
-
 				
-
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 					widgetSelected(e);
@@ -138,47 +118,56 @@ public class UiSnippetTableRequirementVerificationDefaultVerification extends AU
 	 * @param newVerification the new verification method
 	 * @param referencePropertyType the property type of the verification method
 	 */
-	protected void createAddVerificationDialog(EditingDomain editingDomain, Collection<?> affectedObjects,
-			ComposedPropertyInstance arrayInstance, DefaultVerification newVerification,
+	protected void createAddVerificationDialog(EditingDomain editingDomain,
 			ATypeDefinition referencePropertyType) {
+		
+		// Configure dialog
 		ReferenceSelectionDialog dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(
 				Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
 		dialog.setInput(model.eResource());
-
-		// select first config collection
-		for (StructuralElementInstance sei : CategoryAssignmentHelper.getRepository(arrayInstance)
-				.getRootEntities()) {
-			if (sei.getType().getFullQualifiedName()
-					.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
-				dialog.setInitialSelection(sei);
-				break;
-			}
-		}
-
+		StructuralElementInstance firstConfiguration = getFirstRootSeiInRepo(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME, 
+				CategoryAssignmentHelper.getRepository((CategoryAssignment) model));
+		dialog.setInitialSelection(firstConfiguration);
 		dialog.setAllowMultiple(false);
 		dialog.setDoubleClickSelects(true);
 		dialog.setTitle(DIALOG_DESCRIPTION);
 
 		if (dialog.open() == Dialog.OK) {
+			// Add a new verification method as first step
+			Concept activeConcept = acHelper.getConcept(conceptId);
+			Command addCommand = createAddCommand(editingDomain, activeConcept);
+			editingDomain.getCommandStack().execute(addCommand);
+			Collection<?> affectedObjects = addCommand.getAffectedObjects();
+			ComposedPropertyInstance arrayInstance = (ComposedPropertyInstance) affectedObjects.iterator().next();
+			CategoryAssignment newVerification = arrayInstance.getTypeInstance();
+			
+			// If a proper type was selected, then also set this type as verification type
+			// If non was selected, then leave the type area empty for later
 			Object selection = dialog.getFirstResult();
 			if (selection instanceof CategoryAssignment) {
-				initializeVerificationMethod(editingDomain, newVerification, new VerificationType((CategoryAssignment) selection));
-			} else if (selection instanceof StructuralElementInstance) {
-				List<CategoryAssignment> reqTypesOfSelection = CategoryAssignmentHelper
-						.getNestedCategoryAssignments((StructuralElementInstance) selection,
-								VerificationType.FULL_QUALIFIED_CATEGORY_NAME);
-				if (!reqTypesOfSelection.isEmpty()) {
-					initializeVerificationMethod(editingDomain, newVerification, new VerificationType(reqTypesOfSelection.get(0)));
-				}
+				initializeVerificationMethod(editingDomain, new DefaultVerification(newVerification), new VerificationType((CategoryAssignment) selection));
+			} 
+		} 
+	}
+	
+	/**
+	 * Return the first SEI of a specific type from our project repository root entities
+	 * 
+	 * @param fqn The full qualified name of the SEI to be returned
+	 * @param repo the repository to be searched in
+	 * @return the SEI
+	 */
+	protected StructuralElementInstance getFirstRootSeiInRepo(String fqn, Repository repo) {
+		for (StructuralElementInstance sei : repo.getRootEntities()) {
+			if (sei.getType().getFullQualifiedName().equals(fqn)) {
+				return sei;
 			}
-		} else {
-			// Clean up
-			Command cmd = createDeleteCommand(editingDomain, affectedObjects);
-			editingDomain.getCommandStack().execute(cmd);
 		}
+		return null;
 	}
 	
 	protected void initializeVerificationMethod(EditingDomain editingDomain, DefaultVerification verification, VerificationType type) {
 		editingDomain.getCommandStack().execute(verification.setVerificationType(editingDomain, type));
 	}
+	
 }
