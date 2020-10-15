@@ -13,7 +13,7 @@ SPDX-License-Identifier: EPL-2.0
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.0-SNAPSHOT</version>
+		<version>4.12.1-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -30,7 +30,7 @@ SPDX-License-Identifier: EPL-2.0
 				<configuration>
 					<!-- Let the tests run for 20 minutes max. If time is exceeded kill 
 						the process. Apparently something is wrong -->
-					<forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
+					<forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
 					<showEclipseLog>true</showEclipseLog>
 					<rerunFailingTestsCount>3</rerunFailingTestsCount>

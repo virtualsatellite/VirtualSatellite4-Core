@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.validator;
 
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
 
 
@@ -27,8 +26,4 @@ import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator
  */
 public class RequirementsValidator extends ARequirementsValidator implements IStructuralElementInstanceValidator {
 
-	@Override
-	public boolean validate(StructuralElementInstance sei) {
-		return super.validate(sei);
-	}
 }

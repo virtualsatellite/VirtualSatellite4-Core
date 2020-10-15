@@ -304,6 +304,7 @@ public class VirSatNavigator extends CommonNavigator implements IResourceEventLi
 						IStatus status = paletteObjectDropAdapterAssistant.validateDrop(target, DND.DROP_MOVE);
 						if (status.equals(Status.OK_STATUS)) {
 							paletteObjectDropAdapterAssistant.handleDrop(event, target);
+							expandToLevel(target, 1);
 						} else {
 							listener.drop(event);
 						}

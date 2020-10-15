@@ -1,0 +1,39 @@
+{
+   "type" : "testCategoryReferenceArray",
+   "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
+   "name" : "TestCategoryReferenceArray",
+   "testCategoryReferenceArrayDynamicBean" : [ {
+      "uuid" : "0544cfe4-ec11-4585-8f1b-e875e26ae33c",
+      "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
+   } ],
+   "testCategoryReferenceArrayStaticBean" : [ {
+      "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a0",
+      "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
+   }, {
+      "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a1",
+      "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
+   }, {
+      "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a2",
+      "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
+   }, {
+      "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a3",
+      "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
+   } ],
+   "testPropertyReferenceArrayDynamicBean" : [ {
+      "uuid" : "f8932f09-71b7-40b6-bcbd-5d71c2b8d6d7",
+      "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
+   } ],
+   "testPropertyReferenceArrayStaticBean" : [ {
+      "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee30",
+      "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
+   }, {
+      "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee31",
+      "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
+   }, {
+      "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee32",
+      "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
+   }, {
+      "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee33",
+      "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
+   } ]
+}

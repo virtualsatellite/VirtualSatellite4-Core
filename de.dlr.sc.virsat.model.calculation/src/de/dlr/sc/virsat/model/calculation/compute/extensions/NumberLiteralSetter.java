@@ -22,7 +22,9 @@ import de.dlr.sc.virsat.model.calculation.compute.problem.IncompatibleQuantityKi
 import de.dlr.sc.virsat.model.calculation.compute.problem.UnknownExpressionProblem;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
@@ -58,7 +60,7 @@ public class NumberLiteralSetter implements IResultSetter {
 		
 		// Now check if this is not just a ValuePropertyInstance but also
 		// a UnitValuePropertyInstance with an assigned unit. If so we need
-		// to convert the value
+		// to convert the value from the base unit to the unit of the instance
 		
 		if (instance instanceof UnitValuePropertyInstance) {
 			AUnit targetUnit = ((UnitValuePropertyInstance) instance).getUnit();
@@ -79,7 +81,17 @@ public class NumberLiteralSetter implements IResultSetter {
 			}
 		}
 		
-		instance.setValue(result.toString());
+		ATypeDefinition type = instance.getType();
+		if (type instanceof IntProperty) {
+			// Check if the target instance is a integer property and if so, cut off the fractionals
+			NumberLiteralHelper nlh = new NumberLiteralHelper(result.getNumberLiteral());
+			int integerValue = (int) nlh.getValue();
+			instance.setValue(String.valueOf(integerValue));
+		} else {
+			// Otherwise we can directly set the value
+			instance.setValue(result.toString());
+		}
+		
 		return setProblems;
 	}
 

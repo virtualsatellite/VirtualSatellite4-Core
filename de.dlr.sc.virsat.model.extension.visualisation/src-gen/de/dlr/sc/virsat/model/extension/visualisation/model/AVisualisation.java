@@ -12,13 +12,16 @@ package de.dlr.sc.virsat.model.extension.visualisation.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.util.URI;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -28,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 
 
@@ -43,6 +47,8 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AVisualisation extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.visualisation.Visualisation";
@@ -136,6 +142,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return shape.getEnumValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyEnum getShapeBean() {
 		safeAccessShape();
 		return shape;
@@ -167,6 +174,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return geometryFile.getValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyResource getGeometryFileBean() {
 		safeAccessGeometryFile();
 		return geometryFile;
@@ -203,6 +211,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return radius.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getRadiusBean() {
 		safeAccessRadius();
 		return radius;
@@ -239,6 +248,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return sizeX.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getSizeXBean() {
 		safeAccessSizeX();
 		return sizeX;
@@ -275,6 +285,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return sizeY.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getSizeYBean() {
 		safeAccessSizeY();
 		return sizeY;
@@ -311,6 +322,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return sizeZ.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getSizeZBean() {
 		safeAccessSizeZ();
 		return sizeZ;
@@ -347,6 +359,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return color.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyInt getColorBean() {
 		safeAccessColor();
 		return color;
@@ -383,6 +396,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return transparency.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getTransparencyBean() {
 		safeAccessTransparency();
 		return transparency;
@@ -419,6 +433,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return positionX.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getPositionXBean() {
 		safeAccessPositionX();
 		return positionX;
@@ -455,6 +470,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return positionY.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getPositionYBean() {
 		safeAccessPositionY();
 		return positionY;
@@ -491,6 +507,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return positionZ.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getPositionZBean() {
 		safeAccessPositionZ();
 		return positionZ;
@@ -527,6 +544,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return rotationX.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getRotationXBean() {
 		safeAccessRotationX();
 		return rotationX;
@@ -563,6 +581,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return rotationY.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getRotationYBean() {
 		safeAccessRotationY();
 		return rotationY;
@@ -599,6 +618,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 		return rotationZ.isSet();
 	}
 	
+	@XmlElement
 	public BeanPropertyFloat getRotationZBean() {
 		safeAccessRotationZ();
 		return rotationZ;

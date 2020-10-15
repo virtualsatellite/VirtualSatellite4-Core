@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.TypeDefinitionResult;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
@@ -72,7 +73,7 @@ public class EquationHelperTest extends AEquationTest {
 		cat.setIsApplicableForAll(true);
 		contents.add(cat);
 		
-		IntProperty value = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
+		FloatProperty value = PropertydefinitionsFactory.eINSTANCE.createFloatProperty();
 		value.setName("value");
 		cat.getProperties().add(value);
 		

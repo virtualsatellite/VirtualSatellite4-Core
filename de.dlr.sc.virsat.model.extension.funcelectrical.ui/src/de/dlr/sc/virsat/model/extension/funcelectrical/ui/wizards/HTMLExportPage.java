@@ -19,6 +19,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -180,13 +182,27 @@ public class HTMLExportPage extends WizardPage {
         final int widthHint = 250;
         data.widthHint = widthHint;
         destinationField.setLayoutData(data);
+		destinationField.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String selectedDirectoryName = destinationField.getText();
+				if (selectedDirectoryName.equals("")) {
+					destination = false;
+				} else {
+					destination = true;
+					getDialogSettings().put(DESTINATION_FILE_KEY, selectedDirectoryName);
+				}
+				
+				setPageComplete(isComplete());
+			}
+		});
         
       
         String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
         if (defaultDestination != null) {
         	destinationField.setText(defaultDestination);
-        	destination = true;
         }
+        
         // destination browse button
         final Button destinationBrowseButton = new Button(composite, SWT.PUSH);
         destinationBrowseButton.setText(BUTTON_TEXT);
@@ -201,9 +217,6 @@ public class HTMLExportPage extends WizardPage {
 		        if (selectedDirectoryName != null) {
 		            setErrorMessage(null);
 		            destinationField.setText(selectedDirectoryName);
-		            destination = true;
-		            wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
-		            setPageComplete(isComplete());
 		        }
 			}
         });
@@ -232,13 +245,6 @@ public class HTMLExportPage extends WizardPage {
 	 * @return true iff the page is complete
 	 */
 	public boolean isComplete() {
-		
-		if (selection == null || !destination) {
-			return false;
-		}
-		
-		return true;
-	
-		
+		return selection != null && destination;
 	}
 }

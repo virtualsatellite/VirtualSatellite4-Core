@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.category;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -150,6 +152,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public String getName() {
 		return ti.getName();
 	}

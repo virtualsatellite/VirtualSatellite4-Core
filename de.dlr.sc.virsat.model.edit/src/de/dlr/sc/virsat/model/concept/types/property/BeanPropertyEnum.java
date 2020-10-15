@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -52,6 +54,7 @@ public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> impl
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public void setValue(String value) {
 		EnumProperty ep = (EnumProperty) getTypeInstance().getType();
 		EnumValueDefinition evd = new EnumPropertyHelper().getEvdForName(ep, value);
@@ -59,6 +62,7 @@ public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> impl
 	}
 
 	@Override
+	@XmlElement(nillable = true)
 	public String getValue() {
 		if (isSet()) {
 			return getTypeInstance().getValue().getName();
@@ -99,6 +103,7 @@ public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> impl
 	}
 
 	@Override
+	@XmlElement(nillable = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}

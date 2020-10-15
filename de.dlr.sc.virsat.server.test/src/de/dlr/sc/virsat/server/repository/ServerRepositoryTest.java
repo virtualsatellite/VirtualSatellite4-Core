@@ -86,10 +86,12 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	public void testCheckoutRepository() throws Exception {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		
-		testServerRepository.checkoutRepository();
-		
 		File localRepositoryFolder = testServerRepository.getLocalRepositoryPath();
 		File localRepositoryGitFolder = new File(localRepositoryFolder, ".git/");
+		
+		assertTrue("Local Repository folder exists", localRepositoryFolder.exists());
+
+		testServerRepository.checkoutRepository();
 		
 		assertTrue("Local Repository Got Checked out", localRepositoryGitFolder.exists());
 		
@@ -202,6 +204,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 
 		IProject createdProject = testServerRepository.getProject();		
 		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+		assertNotNull("Project has an ed", testServerRepository.getEd());
+		assertNotNull("Project has a resource set", testServerRepository.getResourceSet());
+		assertNotNull("Project has a repository", testServerRepository.getResourceSet().getRepository());
 
 		ArrayList<RevCommit> commitList1 = StreamSupport
 			.stream(
@@ -219,6 +224,9 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		testServerRepository2.updateOrCheckoutProject();
 		
 		assertTrue("Project is a virsat project now", VirSatProjectCommons.getAllVirSatProjects(ResourcesPlugin.getWorkspace()).contains(createdProject));
+		assertNotNull("Project has an ed", testServerRepository2.getEd());
+		assertNotNull("Project has a resource set", testServerRepository2.getResourceSet());
+		assertNotNull("Project has a repository", testServerRepository2.getResourceSet().getRepository());
 
 		ArrayList<RevCommit> commitList2 = StreamSupport
 			.stream(
@@ -229,5 +237,18 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		// CHECKSTYLE:OFF
 		assertThat("Commit List has expected size", commitList2, hasSize(2));
 		// CHECKSTYLE:ON
+	}
+	
+	@Test
+	public void testRemoveProject() throws Exception {
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		
+		File localRepositoryFolder = testServerRepository.getLocalRepositoryPath();
+		assertTrue("Local Repository folder exists", localRepositoryFolder.exists());
+
+		testServerRepository.checkoutRepository();
+		testServerRepository.removeRepository();
+
+		assertFalse("Local Repository folder got deleted", localRepositoryFolder.exists());
 	}
 }

@@ -18,7 +18,7 @@ SPDX-License-Identifier: EPL-2.0
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.0-SNAPSHOT</version>
+		<version>4.12.1-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 
@@ -81,9 +81,9 @@ SPDX-License-Identifier: EPL-2.0
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>virsat.target</file>
+											<file>virsat_windows.target</file>
 											<type>target</type>
-											<classifier>virsat</classifier>
+											<classifier>virsat_windows</classifier>
 										</artifact>
 									</artifacts>
 								</configuration>

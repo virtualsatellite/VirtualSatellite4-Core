@@ -104,9 +104,9 @@ public class VirSatInheritanceBuilderTest extends ABuilderTest {
 		protected boolean saveGotTriggered = false;
 		
 		@Override
-		protected void setSaveAfterIncrementalBuild() {
+		protected void triggerSaveAfterIncrementalBuild() {
 			saveGotTriggered = true;
-			super.setSaveAfterIncrementalBuild();
+			super.triggerSaveAfterIncrementalBuild();
 		}
 	}
 	

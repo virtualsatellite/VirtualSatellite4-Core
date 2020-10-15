@@ -12,17 +12,21 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -37,6 +41,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryA extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "testConcept.TestCategoryA";
@@ -112,6 +118,7 @@ public abstract class ATestCategoryA extends ABeanCategoryAssignment implements 
 		return enumProperty.getEnumValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyEnum getEnumPropertyBean() {
 		safeAccessEnumProperty();
 		return enumProperty;
@@ -148,6 +155,7 @@ public abstract class ATestCategoryA extends ABeanCategoryAssignment implements 
 		return emptyEnumProperty.getEnumValue();
 	}
 	
+	@XmlElement
 	public BeanPropertyEnum getEmptyEnumPropertyBean() {
 		safeAccessEmptyEnumProperty();
 		return emptyEnumProperty;
@@ -155,4 +163,3 @@ public abstract class ATestCategoryA extends ABeanCategoryAssignment implements 
 	
 	
 }
-

@@ -66,6 +66,10 @@ public class ServerRepository {
 		this.repositoryConfiguration = repositoryConfiguration;
 		this.localRepository = new File(localRepositoryHome, PREFIX_LOCAL_REPO_NAME + repositoryConfiguration.getProjectName());
 		
+		if (!localRepository.exists()) {
+			localRepository.mkdir();
+		}
+		
 		//checkout the project to workspace
 		String userName = Objects.toString(repositoryConfiguration.getFunctionalAccountName(), "");
 		String userPass = Objects.toString(repositoryConfiguration.getFunctionalAccountPassword(), "");
@@ -159,7 +163,10 @@ public class ServerRepository {
 				project.delete(true, true, progress);
 
 				Path localRepositoryPath = getLocalRepositoryPath().toPath();
-				Files.walk(localRepositoryPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+				// could already be removed by project delete
+				if (localRepositoryPath.toFile().exists()) {
+					Files.walk(localRepositoryPath).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+				}
 
 				project = null;
 				resourceSet = null;
@@ -236,6 +243,8 @@ public class ServerRepository {
 		
 		if (!project.exists()) {
 			checkoutRepository();
+		} else {
+			retrieveEdAndResurceSetFromConfiguration();
 		}
 		
 		syncRepository();

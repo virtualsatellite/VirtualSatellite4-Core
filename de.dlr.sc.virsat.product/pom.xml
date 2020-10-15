@@ -15,7 +15,7 @@
 		<relativePath>../maven/pom.xml</relativePath>
 		<groupId>de.dlr.sc.virsat</groupId>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
-		<version>4.12.0-SNAPSHOT</version>
+		<version>4.12.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.dlr.sc.virsat.product</artifactId>
@@ -49,9 +49,9 @@
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>../de.dlr.sc.virsat.target/virsat.target</file>
+											<file>../de.dlr.sc.virsat.target/virsat_windows.target</file>
 											<type>target</type>
-											<classifier>virsat</classifier>
+											<classifier>virsat_windows</classifier>
 										</artifact>
 									</artifacts>
 								</configuration>

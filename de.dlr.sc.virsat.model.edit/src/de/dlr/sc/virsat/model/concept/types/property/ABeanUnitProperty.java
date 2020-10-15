@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -55,6 +57,7 @@ public abstract class ABeanUnitProperty<V_TYPE> extends ABeanObject<UnitValuePro
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}

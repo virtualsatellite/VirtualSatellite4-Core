@@ -163,7 +163,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	protected void transactionalFullBuildUpdateProblemMarkers() {
 	}
 	
-	protected boolean saveAfterIncrementalBuild;
+	private boolean saveAfterIncrementalBuild;
 	
 	/**
 	 * Call this method during an incremental build to
@@ -171,7 +171,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	 * in case a SEI has been processed. It should not be called when other
 	 * files outside the dvlm mdoel have been processed by a builder.
 	 */
-	protected void setSaveAfterIncrementalBuild() {
+	protected void triggerSaveAfterIncrementalBuild() {
 		saveAfterIncrementalBuild = true;
 	}
 	

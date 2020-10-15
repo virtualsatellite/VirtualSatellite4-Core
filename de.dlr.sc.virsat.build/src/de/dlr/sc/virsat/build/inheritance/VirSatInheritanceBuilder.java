@@ -118,8 +118,6 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 
 	@Override
 	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
-		saveAfterIncrementalBuild = false;
-		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatInheritanceBuilder: Starting incremental build"));
 		final int MAX_TASKS = 3;
 		IInheritanceCopier inheritanceCopier = createInheritanceCopier();
@@ -163,7 +161,7 @@ public class VirSatInheritanceBuilder extends AVirSatTransactionalBuilder {
 								// This is referring to the ticket #714 which raised an issue with resource properties in
 								// a document CA. Adding a new file is triggering an incremental build but actually no DVLM
 								// file is touched or changed. Finally the editor was set into an incorrect state.
-								setSaveAfterIncrementalBuild();
+								triggerSaveAfterIncrementalBuild();
 								
 								// Now call the incremental inheritance processing on the affected SEI
 								final int SUB_TASKS = 100;

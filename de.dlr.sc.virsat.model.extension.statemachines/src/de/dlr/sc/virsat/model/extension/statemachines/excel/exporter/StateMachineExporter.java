@@ -39,14 +39,19 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
  */
 public class StateMachineExporter implements IExport {
 	
+	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
+	
+	protected LocalDateTime localDateTime;
+	protected ExcelExportHelper helper = new ExcelExportHelper();
+	private CategoryAssignment exportCa;
+	
+	public StateMachineExporter() {
+		this(LocalDateTime.now());
+	}
+	
 	public StateMachineExporter(LocalDateTime localDateTime) {
 		this.localDateTime = localDateTime;
 	}
-	
-	protected LocalDateTime localDateTime;
-	private static final String DEFAULT_TEMPLATE_PATH = "/resources/StateMachineExportTemplate.xlsx";
-	protected ExcelExportHelper helper = new ExcelExportHelper();
-	private CategoryAssignment exportCa;
 
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
@@ -112,13 +117,13 @@ public class StateMachineExporter implements IExport {
 		}
 		StateMachine stateMaschine = new StateMachine(exportCa);
 		IBeanList<State> states = stateMaschine.getStates();
-		helper.instantiateCells(sheet, states.size() + AExcelStatIO.COMMON_ROW_START_TABLE, AExcelStatIO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE + 1);
+		helper.instantiateCells(sheet, states.size() + AExcelStatIO.COMMON_ROW_START_TABLE, AExcelStatIO.TRANSITION_COLUMN_TRANSITION_FROM + 1);
 		// for each interface end, fill out a row
 		int i = AExcelStatIO.COMMON_ROW_START_TABLE;
 		for (State state : states) {
 			Row row = sheet.getRow(i);
 			row.getCell(AExcelStatIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(state.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelStatIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(helper.getCreationHelper().createRichTextString(state.getName()));
+			row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_NAME).setCellValue(helper.getCreationHelper().createRichTextString(state.getName()));
 			i++;
 		}
 	}
@@ -134,7 +139,7 @@ public class StateMachineExporter implements IExport {
 
 		StateMachine stateMaschine = new StateMachine(exportCa);
 		IBeanList<Transition> transitions = stateMaschine.getTransitions();
-		helper.instantiateCells(sheet, transitions.size() + AExcelStatIO.COMMON_ROW_START_TABLE, AExcelStatIO.INTERFACE_COLUMN_INTERFACE_TO + 1);
+		helper.instantiateCells(sheet, transitions.size() + AExcelStatIO.COMMON_ROW_START_TABLE, AExcelStatIO.TRANSITION_COLUMN_TRANSITION_TO + 1);
 		int i = AExcelStatIO.COMMON_ROW_START_TABLE;
 
 		for (Transition transition : transitions) {

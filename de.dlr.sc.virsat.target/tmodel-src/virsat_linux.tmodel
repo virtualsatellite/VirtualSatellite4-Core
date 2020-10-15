@@ -1,0 +1,9 @@
+Target virsat_linux {
+	Import virsat
+	
+	OperatingSystem linux
+	WindowingSystem gtk
+	Architecture x86_64
+	Locale de_DE
+	TargetJRE JavaSE-1.8
+}

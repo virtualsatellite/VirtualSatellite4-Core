@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -16,13 +19,11 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanTypeInstanceFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
@@ -63,6 +64,8 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
+	@XmlElement(nillable = true)
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		
@@ -70,18 +73,11 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		if (isSet()) {
 			ATypeInstance ref = ti.getReference();
 			
-			// Return the correct ca or property instance bean
-			if (ref instanceof CategoryAssignment) {
-				BeanCategoryAssignmentFactory beanCaFactory = new BeanCategoryAssignmentFactory();
-				try {
-					referencedBean = (BEAN_TYPE) beanCaFactory.getInstanceFor((CategoryAssignment) ref);
-				} catch (CoreException e) {
-					throw new RuntimeException(e);
-				}
-			} else if (ref instanceof APropertyInstance) {
-				BeanPropertyFactory beanPropFactory = new BeanPropertyFactory();
-				referencedBean = (BEAN_TYPE) beanPropFactory.getInstanceFor(ref);
-			} 
+			try {
+				return (BEAN_TYPE) new BeanTypeInstanceFactory().getInstanceFor(ref);
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		
 		return referencedBean;

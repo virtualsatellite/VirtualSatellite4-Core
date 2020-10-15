@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -22,6 +25,7 @@ import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.UriAdapter;
 
 /**
  * Class to wrap Resource Property Instance
@@ -68,6 +72,8 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 * this method returns the bean property string value
 	 * @return the bean property string value
 	 */
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(UriAdapter.class)
 	public URI getValue() {
 		return ti.getUri();
 	}

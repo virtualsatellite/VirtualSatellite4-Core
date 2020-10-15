@@ -60,6 +60,7 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 						return;
 					}
 					
+					updateContent();
 					diagramBehavior.refreshContent();
 					refreshDecorators();
 					break;
@@ -85,6 +86,13 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		});
 	}
 	
+	/**
+	 * Override this method to do some automatic update every time there is a resource change.
+	 */
+	protected void updateContent() {
+		//no update by default
+	}
+
 	/**
 	 * React to resources getting closed by either handling the change or closing the editor
 	 * @param affectedResources the affected resources of some change

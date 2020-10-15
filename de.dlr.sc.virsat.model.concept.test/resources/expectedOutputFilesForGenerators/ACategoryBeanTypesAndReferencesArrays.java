@@ -12,13 +12,16 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -41,6 +45,8 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
  * 
  * 
  */	
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryB extends ABeanCategoryAssignment implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "testConcept.TestCategoryB";
@@ -105,6 +111,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<TestCategoryA>> getTestSubCategoryArrayDynamicBean() {
 		safeAccessTestSubCategoryArrayDynamicBean();
 		return testSubCategoryArrayDynamicBean;
@@ -134,6 +141,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 		}
 	}
 	
+	@XmlElement
 	public IBeanList<BeanPropertyComposed<TestCategoryA>> getTestSubCategoryArrayStaticBean() {
 		safeAccessTestSubCategoryArrayStaticBean();
 		return testSubCategoryArrayStaticBean;
@@ -163,6 +171,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 			}
 		}
 		
+		@XmlElement
 		public IBeanList<BeanPropertyReference<TestCategoryA>> getTestRefCategoryArrayDynamicBean() {
 			safeAccessTestRefCategoryArrayDynamicBean();
 			return testRefCategoryArrayDynamicBean;
@@ -192,6 +201,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 			}
 		}
 		
+		@XmlElement
 		public IBeanList<BeanPropertyReference<TestCategoryA>> getTestRefCategoryArrayStaticBean() {
 			safeAccessTestRefCategoryArrayStaticBean();
 			return testRefCategoryArrayStaticBean;
@@ -221,6 +231,7 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 			}
 		}
 		
+		@XmlElement
 		public IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> getTestRefPropertyArrayDynamicBean() {
 			safeAccessTestRefPropertyArrayDynamicBean();
 			return testRefPropertyArrayDynamicBean;
@@ -250,10 +261,11 @@ public abstract class ATestCategoryB extends ABeanCategoryAssignment implements 
 			}
 		}
 		
+		@XmlElement
 		public IBeanList<BeanPropertyReference<de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString>> getTestRefPropertyArrayStaticBean() {
 			safeAccessTestRefPropertyArrayStaticBean();
 			return testRefPropertyArrayStaticBean;
 		}
 	
+	
 }
-

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Vtk Native Libraries for 64-Bit Linux
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.vtk.linux.x86_64;singleton:=true
-Bundle-Version: 4.12.0.qualifier
+Bundle-Version: 4.12.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8 
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) )

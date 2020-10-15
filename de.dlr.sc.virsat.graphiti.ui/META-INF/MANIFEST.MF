@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Graphiti Ui
 Bundle-SymbolicName: de.dlr.sc.virsat.graphiti.ui; singleton:=true
-Bundle-Version: 4.12.0.qualifier
+Bundle-Version: 4.12.1.qualifier
 Require-Bundle: de.dlr.sc.virsat.graphiti,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.uiengine.ui,
@@ -13,6 +13,7 @@ Require-Bundle: de.dlr.sc.virsat.graphiti,
  org.eclipse.ui.views.properties.tabbed;visibility:=reexport,
  org.eclipse.graphiti.ui;visibility:=reexport,
  org.eclipse.graphiti.mm,
+ org.eclipse.graphiti.pattern,
  org.eclipse.emf.workspace
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

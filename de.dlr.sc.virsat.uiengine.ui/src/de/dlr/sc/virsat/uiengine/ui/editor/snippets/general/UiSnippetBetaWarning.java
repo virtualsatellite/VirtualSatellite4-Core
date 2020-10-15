@@ -132,7 +132,7 @@ public class UiSnippetBetaWarning extends AUiSectionSnippet implements IUiSnippe
 			description.append(" ");
 		}
 
-		description.append("should not be used in productive envrionment!");
+		description.append("should not be used in productive environment!");
 
 		return description.toString();
 	}

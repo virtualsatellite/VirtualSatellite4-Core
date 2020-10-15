@@ -58,7 +58,7 @@ public abstract class ARequirementsSpecification extends GenericCategory impleme
 	// property name constants
 	public static final String PROPERTY_EXPORTFILE = "exportFile";
 	public static final String PROPERTY_REQUIREMENTS = "requirements";
-	public static final String PROPERTY_TYPEDEFINITIONS = "typeDefinitions";
+	public static final String PROPERTY_LINKS = "links";
 	
 	
 	
@@ -141,32 +141,32 @@ public abstract class ARequirementsSpecification extends GenericCategory impleme
 	}
 	
 	// *****************************************************************
-	// * Array Attribute: typeDefinitions
+	// * Array Attribute: links
 	// *****************************************************************
-	private IBeanList<RequirementType> typeDefinitions = new TypeSafeComposedPropertyInstanceList<>(RequirementType.class);
+	private IBeanList<RequirementLink> links = new TypeSafeComposedPropertyInstanceList<>(RequirementLink.class);
 	
-	private void safeAccessTypeDefinitions() {
-		if (typeDefinitions.getArrayInstance() == null) {
-			typeDefinitions.setArrayInstance((ArrayInstance) helper.getPropertyInstance("typeDefinitions"));
+	private void safeAccessLinks() {
+		if (links.getArrayInstance() == null) {
+			links.setArrayInstance((ArrayInstance) helper.getPropertyInstance("links"));
 		}
 	}
 	
-	public IBeanList<RequirementType> getTypeDefinitions() {
-		safeAccessTypeDefinitions();
-		return typeDefinitions;
+	public IBeanList<RequirementLink> getLinks() {
+		safeAccessLinks();
+		return links;
 	}
 	
-	private IBeanList<BeanPropertyComposed<RequirementType>> typeDefinitionsBean = new TypeSafeComposedPropertyBeanList<>();
+	private IBeanList<BeanPropertyComposed<RequirementLink>> linksBean = new TypeSafeComposedPropertyBeanList<>();
 	
-	private void safeAccessTypeDefinitionsBean() {
-		if (typeDefinitionsBean.getArrayInstance() == null) {
-			typeDefinitionsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("typeDefinitions"));
+	private void safeAccessLinksBean() {
+		if (linksBean.getArrayInstance() == null) {
+			linksBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("links"));
 		}
 	}
 	
-	public IBeanList<BeanPropertyComposed<RequirementType>> getTypeDefinitionsBean() {
-		safeAccessTypeDefinitionsBean();
-		return typeDefinitionsBean;
+	public IBeanList<BeanPropertyComposed<RequirementLink>> getLinksBean() {
+		safeAccessLinksBean();
+		return linksBean;
 	}
 	
 	

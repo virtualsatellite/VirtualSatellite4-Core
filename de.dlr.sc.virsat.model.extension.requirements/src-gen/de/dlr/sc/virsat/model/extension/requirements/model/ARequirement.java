@@ -29,7 +29,6 @@ import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 
 
 // *****************************************************************
@@ -60,7 +59,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public static final String PROPERTY_REQTYPE = "reqType";
 	public static final String PROPERTY_ELEMENTS = "elements";
 	public static final String PROPERTY_STATUS = "status";
-	public static final String PROPERTY_TRACE = "trace";
+	public static final String PROPERTY_VERIFICATION = "verification";
 	
 	// Status enumeration value names
 	public static final String STATUS_Open_NAME = "Open";
@@ -190,25 +189,32 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	}
 	
 	// *****************************************************************
-	// * Attribute: trace
+	// * Array Attribute: verification
 	// *****************************************************************
-	private BeanPropertyComposed<RequirementTrace> trace = new BeanPropertyComposed<>();
+	private IBeanList<IVerification> verification = new TypeSafeComposedPropertyInstanceList<>(IVerification.class);
 	
-	private void safeAccessTrace() {
-		if (trace.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("trace");
-			trace.setTypeInstance(propertyInstance);
+	private void safeAccessVerification() {
+		if (verification.getArrayInstance() == null) {
+			verification.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verification"));
 		}
 	}
 	
-	public RequirementTrace getTrace() {
-		safeAccessTrace();
-		return trace.getValue();
+	public IBeanList<IVerification> getVerification() {
+		safeAccessVerification();
+		return verification;
 	}
 	
-	public BeanPropertyComposed<RequirementTrace> getTraceBean() {
-		safeAccessTrace();
-		return trace;
+	private IBeanList<BeanPropertyComposed<IVerification>> verificationBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessVerificationBean() {
+		if (verificationBean.getArrayInstance() == null) {
+			verificationBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verification"));
+		}
+	}
+	
+	public IBeanList<BeanPropertyComposed<IVerification>> getVerificationBean() {
+		safeAccessVerificationBean();
+		return verificationBean;
 	}
 	
 	

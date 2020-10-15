@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -48,6 +50,7 @@ public class BeanPropertyString extends ABeanProperty<String> {
 	}
 	
 	@Override
+	@XmlElement(nillable = true)
 	public String getValue() {
 		return ti.getValue();
 	}
