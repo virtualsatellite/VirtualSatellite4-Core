@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.requirements"
-			version="0.2"
+			version="0.3"
 			xmi="concept/concept.xmi">
 		</concept>
 	</extension>
@@ -26,6 +26,10 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.VerificationConfiguration"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.VerificationConfiguration">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementGroup"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup">
 		</CategoryAssignmentBean>
@@ -34,8 +38,8 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.Requirement">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"
-			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementTrace">
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementLink"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.AttributeValue"
@@ -56,6 +60,18 @@
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.EnumerationLiteral"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.DefaultVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.VerificationType"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.VerificationType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.ExistenceVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification">
 		</CategoryAssignmentBean>
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
@@ -79,6 +95,14 @@
 		version="0.2"
 		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v2"
 		xmi="concept/concept_v0_2.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.requirements"
+		version="0.3"
+		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v3"
+		xmi="concept/concept_v0_3.xmi">
 	</migrator>
 </extension>
 	<!-- Plugin.XML Protected Region End -->

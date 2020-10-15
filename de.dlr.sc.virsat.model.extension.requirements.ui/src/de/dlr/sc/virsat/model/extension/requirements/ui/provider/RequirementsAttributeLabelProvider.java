@@ -23,9 +23,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
+import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
@@ -94,7 +94,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
 				redirectNotification(ti, object);
 				
-				return getTraceLabel(new Requirement(ca));
+				return getVerificationLabel(new Requirement(ca));
 				
 
 			} else if (columnIndex > STATUS_COLUMN) {
@@ -202,28 +202,22 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	}
 	
 	/**
-	 * Create a label for requirements traces customized to this table 
+	 * Create a label for requirements verification methods customized to this table 
 	 * 
-	 * @param req the requirement for which a trace label is created
-	 * @return the trace label
+	 * @param req the requirement for which a verification method label is created
+	 * @return the label
 	 */
-	protected String getTraceLabel(Requirement req) {
-		if (req.getTrace().getTarget() == null || req.getTrace().getTarget().isEmpty()) {
+	protected String getVerificationLabel(Requirement req) {
+		if (req.getVerification().isEmpty()) {
 			return EMPTY_TRACE_STRING;
 		} else {
-			List<String> traceStringArtifacts = new ArrayList<String>();
-
-			// Some heavy casting necessary because Bean GenericCategory is abstract
-			APropertyInstance targetProperty = req.getTrace().getTypeInstance().getPropertyInstances()
-					.get(REQUIREMENT_TRACE_TARGET_PROPERTY_NUMBER);
-			for (APropertyInstance targetRPI : ((ArrayInstance) targetProperty).getArrayInstances()) {
-				CategoryAssignment target = (CategoryAssignment) ((ReferencePropertyInstance) targetRPI)
-						.getReference();
-				if (target != null) {
-					traceStringArtifacts.add(target.getName());
-				}
+			List<String> verificationStringArtifacts = new ArrayList<String>();
+			
+			for (IVerification verification : req.getVerification()) {
+				verificationStringArtifacts.add(verification.getName());
 			}
-			return "{" + String.join(", ", traceStringArtifacts) + "}";
+
+			return "{" + String.join(", ", verificationStringArtifacts) + "}";
 		}
 	}
 
