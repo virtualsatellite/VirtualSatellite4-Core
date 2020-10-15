@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.requirements.ui.provider;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.swt.graphics.Image;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
@@ -64,6 +65,14 @@ public class RequirementsAttributeDefinitionTableLabelProvider extends VirSatTra
 			}
 		}
 		return ((IName) object).getName();
+	}
+	
+	@Override
+	public Image getColumnImage(final Object object, final int columnIndex) {
+		if (object instanceof ComposedPropertyInstance) {
+			return super.getColumnImage(((ComposedPropertyInstance) object).getType(), columnIndex);
+		}
+		return super.getColumnImage(object, columnIndex);
 	}
 	
 	/**
