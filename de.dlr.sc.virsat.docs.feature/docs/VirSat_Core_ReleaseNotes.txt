@@ -6,7 +6,7 @@ Release 4.12.1 (15th October 2020)
 
 New Features:
    Updated OverTarget version to 1.2.1 - #722 Feature
-   Updated default QUDV units to contain units for thermal domain - #729
+   Updated default QUDV units to contain units for thermal domain - #729 Feature
    Improved Functional Electrical Architecture Excel exporter to include the full qualified name of interface ends - #739 Feature
    Added support to also change the color of connection elements in diagrams - #750 Feature
    Expanded requirements concept for basic verification modeling - #783 Feature
