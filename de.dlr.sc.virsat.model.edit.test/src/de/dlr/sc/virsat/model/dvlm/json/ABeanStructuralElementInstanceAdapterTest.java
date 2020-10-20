@@ -71,17 +71,17 @@ public class ABeanStructuralElementInstanceAdapterTest extends AUuidAdapterTest 
 	
 	@Override
 	public void testUnmarshallNull() {
-		adapterNoRs = new ABeanStructuralElementInstanceAdapter();
+		adapterWithoutResourceSet = new ABeanStructuralElementInstanceAdapter();
 		super.testUnmarshallNull();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void testUnmarshallEmptyRs() {
-		adapterNoEmptyRs = new ABeanStructuralElementInstanceAdapter(new ResourceSetImpl());
+		adapterWithEmptyResourceSet = new ABeanStructuralElementInstanceAdapter(new ResourceSetImpl());
 		assertThrows("No mapping found",
 			IllegalArgumentException.class, () -> {
-				((XmlAdapter<String, ABeanStructuralElementInstance>) adapterNoEmptyRs).unmarshal(UUID.toString());
+				((XmlAdapter<String, ABeanStructuralElementInstance>) adapterWithEmptyResourceSet).unmarshal(UUID.toString());
 			}
 		);
 	}

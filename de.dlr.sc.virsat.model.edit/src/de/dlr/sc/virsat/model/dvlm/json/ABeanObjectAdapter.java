@@ -43,10 +43,6 @@ public class ABeanObjectAdapter extends XmlAdapter<String, ABeanObject> {
 	
 	@Override
 	public ABeanObject unmarshal(String uuid) throws Exception {
-		if (resourceSet == null) {
-			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
-		}
-		
 		// Get the type instance from the uuid
 		IUuidAdapter typeInstanceAdapter = new IUuidAdapter(resourceSet);
 		ATypeInstance object = (ATypeInstance) typeInstanceAdapter.unmarshal(uuid);

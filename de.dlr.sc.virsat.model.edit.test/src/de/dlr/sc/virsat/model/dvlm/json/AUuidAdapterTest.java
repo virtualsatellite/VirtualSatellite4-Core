@@ -28,8 +28,8 @@ public abstract class AUuidAdapterTest {
 	protected static final VirSatUuid UUID = new VirSatUuid();
 	protected Resource resourceImpl;
 	protected ResourceSet resourceSet;
-	protected XmlAdapter<?, ?> adapterNoRs;
-	protected XmlAdapter<?, ?> adapterNoEmptyRs;
+	protected XmlAdapter<?, ?> adapterWithoutResourceSet;
+	protected XmlAdapter<?, ?> adapterWithEmptyResourceSet;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -48,7 +48,7 @@ public abstract class AUuidAdapterTest {
 	public void testUnmarshallNull() {
 		assertThrows("A resource set should be set",
 			NullPointerException.class, () -> {
-				adapterNoRs.unmarshal(null);
+				adapterWithoutResourceSet.unmarshal(null);
 			}
 		);
 		

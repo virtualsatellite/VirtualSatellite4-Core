@@ -24,6 +24,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.Propertydefini
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 
+/**
+ * Tests that the ABeanObjectAdapter un-/marshalls
+ * a ABeanObject as expected
+ */
 public class ABeanObjectAdapterTest extends AUuidAdapterTest {
 
 	private ValuePropertyInstance vpi;
@@ -74,17 +78,17 @@ public class ABeanObjectAdapterTest extends AUuidAdapterTest {
 	
 	@Override
 	public void testUnmarshallNull() {
-		adapterNoRs = new ABeanObjectAdapter();
+		adapterWithoutResourceSet = new ABeanObjectAdapter();
 		super.testUnmarshallNull();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void testUnmarshallEmptyRs() {
-		adapterNoEmptyRs = new ABeanObjectAdapter(new ResourceSetImpl());
+		adapterWithEmptyResourceSet = new ABeanObjectAdapter(new ResourceSetImpl());
 		assertThrows("No mapping found",
 			IllegalArgumentException.class, () -> {
-				((XmlAdapter<String, ABeanObjectAdapter>) adapterNoEmptyRs).unmarshal(UUID.toString());
+				((XmlAdapter<String, ABeanObjectAdapter>) adapterWithEmptyResourceSet).unmarshal(UUID.toString());
 			}
 		);
 	}

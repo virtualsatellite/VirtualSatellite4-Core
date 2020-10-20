@@ -42,10 +42,6 @@ public class ABeanStructuralElementInstanceAdapter extends XmlAdapter<String, AB
 	
 	@Override
 	public ABeanStructuralElementInstance unmarshal(String uuid) throws Exception {
-		if (resourceSet == null) {
-			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
-		}
-		
 		// Get the sei from the uuid
 		IUuidAdapter typeInstanceAdapter = new IUuidAdapter(resourceSet);
 		StructuralElementInstance sei = (StructuralElementInstance) typeInstanceAdapter.unmarshal(uuid);
