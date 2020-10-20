@@ -110,17 +110,13 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException, WebApplicationException {
 		
-		AtomicExceptionReference<IOException> atomicIoException = new AtomicExceptionReference<>();
-		AtomicExceptionReference<WebApplicationException> atomicWebAppException = new AtomicExceptionReference<>();
-		
 		ReadFromArguments arguments = new ReadFromArguments(
 				type, genericType, annotations, mediaType, httpHeaders, entityStream);
 		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
 		
 		ed.getCommandStack().execute(readFromCommand);
 		
-		atomicIoException.throwIfSet();
-		atomicWebAppException.throwIfSet();
+		readFromCommand.throwExceptionsIfSet();
 		
 		return readFromCommand.getResult().iterator().next();
 	}
@@ -190,14 +186,17 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		private AtomicExceptionReference<IOException> atomicIoException;
 		
 		/**
-		 * Call ConfigurableMoxyJsonProvider.readFrom() over the
-		 * transactional editing domain
+		 * Create a command to call ConfigurableMoxyJsonProvider.readFrom()
+		 * over the transactional editing domain
 		 * @param domain the ed
 		 * @param arguments for the readFrom function 
 		 */
 		ReadFromCommand(TransactionalEditingDomain domain, ReadFromArguments arguments) {
 			super(domain);
 			this.arguments = arguments;
+			
+			atomicIoException = new AtomicExceptionReference<>();
+			atomicWebAppException = new AtomicExceptionReference<>();
 		}
 
 		@Override
@@ -224,6 +223,11 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		@Override
 		public Collection<?> getResult() {
 			return results;
+		}
+		
+		public void throwExceptionsIfSet() throws IOException, WebApplicationException {
+			atomicWebAppException.throwIfSet();
+			atomicIoException.throwIfSet();
 		}
 	}
 	
