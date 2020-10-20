@@ -124,7 +124,7 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 	/**
 	 * POJO to bundle the arguments for the readFrom function
 	 */
-	private class ReadFromArguments {
+	private static class ReadFromArguments {
 		
 		private Class<Object> type;
 		private Type genericType;
