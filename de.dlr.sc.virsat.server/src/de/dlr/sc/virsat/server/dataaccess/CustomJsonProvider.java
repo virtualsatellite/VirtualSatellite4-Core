@@ -113,15 +113,9 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		AtomicExceptionReference<IOException> atomicIoException = new AtomicExceptionReference<>();
 		AtomicExceptionReference<WebApplicationException> atomicWebAppException = new AtomicExceptionReference<>();
 		
-		ReadFromCommand readFromCommand = new ReadFromCommand(ed);
-		readFromCommand.setType(type);
-		readFromCommand.setGenericType(genericType);
-		readFromCommand.setAnnotations(annotations);
-		readFromCommand.setMediaType(mediaType);
-		readFromCommand.setHttpHeaders(httpHeaders);
-		readFromCommand.setEntityStream(entityStream);
-		readFromCommand.setAtomicWebAppException(atomicWebAppException);
-		readFromCommand.setAtomicIoException(atomicIoException);
+		ReadFromArguments arguments = new ReadFromArguments(
+				type, genericType, annotations, mediaType, httpHeaders, entityStream);
+		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
 		
 		ed.getCommandStack().execute(readFromCommand);
 		
@@ -131,9 +125,10 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		return readFromCommand.getResult().iterator().next();
 	}
 	
-	private class ReadFromCommand extends RecordingCommand {
-		
-		private Collection<Object> results = new ArrayList<>();
+	/**
+	 * POJO to bundle the arguments for the readFrom function
+	 */
+	private class ReadFromArguments {
 		
 		private Class<Object> type;
 		private Type genericType;
@@ -141,6 +136,55 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		private MediaType mediaType;
 		private MultivaluedMap<String, String> httpHeaders;
 		private InputStream entityStream;
+		
+		/**
+		 * Constructor with all required arguments
+		 * @param type
+		 * @param genericType
+		 * @param annotations
+		 * @param mediaType
+		 * @param httpHeaders
+		 * @param entityStream
+		 */
+		ReadFromArguments(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+				MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+			this.type = type;
+			this.genericType = type;
+			this.annotations = annotations;
+			this.mediaType = mediaType;
+			this.httpHeaders = httpHeaders;
+			this.entityStream = entityStream;
+		}
+		
+		public Class<Object> getType() {
+			return type;
+		}
+		
+		public Type getGenericType() {
+			return genericType;
+		}
+		
+		public Annotation[] getAnnotations() {
+			return annotations;
+		}
+		
+		public MediaType getMediaType() {
+			return mediaType;
+		}
+		
+		public MultivaluedMap<String, String> getHttpHeaders() {
+			return httpHeaders;
+		}
+		
+		public InputStream getEntityStream() {
+			return entityStream;
+		}
+	}
+	
+	private class ReadFromCommand extends RecordingCommand {
+		
+		private Collection<Object> results = new ArrayList<>();
+		private ReadFromArguments arguments;
 
 		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
 		private AtomicExceptionReference<IOException> atomicIoException;
@@ -149,24 +193,23 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		 * Call ConfigurableMoxyJsonProvider.readFrom() over the
 		 * transactional editing domain
 		 * @param domain the ed
-		 * @param atomicWebAppException 
-		 * @param atomicIoException 
-		 * @param atomicException 
-		 * @param type Class<Object>
-		 * @param genericType Type
-		 * @param annotations Annotation[]
-		 * @param mediaType MediaType
-		 * @param httpHeaders MultivaluedMap<String, String>
-		 * @param entityStream InputStream
+		 * @param arguments for the readFrom function 
 		 */
-		ReadFromCommand(TransactionalEditingDomain domain) {
+		ReadFromCommand(TransactionalEditingDomain domain, ReadFromArguments arguments) {
 			super(domain);
+			this.arguments = arguments;
 		}
 
 		@Override
 		protected void doExecute() {
 			try {
-				Object result = CustomJsonProvider.super.readFrom(type, genericType, annotations, mediaType, httpHeaders, entityStream);
+				Object result = CustomJsonProvider.super.readFrom(
+					arguments.getType(),
+					arguments.getGenericType(),
+					arguments.getAnnotations(),
+					arguments.getMediaType(),
+					arguments.getHttpHeaders(),
+					arguments.getEntityStream());
 				results.add(result);
 			} catch (WebApplicationException e) {
 				atomicWebAppException.set(e);
@@ -181,38 +224,6 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		@Override
 		public Collection<?> getResult() {
 			return results;
-		}
-
-		public void setType(Class<Object> type) {
-			this.type = type;
-		}
-
-		public void setGenericType(Type genericType) {
-			this.genericType = genericType;
-		}
-
-		public void setAnnotations(Annotation[] annotations) {
-			this.annotations = annotations;
-		}
-
-		public void setMediaType(MediaType mediaType) {
-			this.mediaType = mediaType;
-		}
-
-		public void setHttpHeaders(MultivaluedMap<String, String> httpHeaders) {
-			this.httpHeaders = httpHeaders;
-		}
-
-		public void setEntityStream(InputStream entityStream) {
-			this.entityStream = entityStream;
-		}
-		
-		public void setAtomicWebAppException(AtomicExceptionReference<WebApplicationException> atomicWebAppException) {
-			this.atomicWebAppException = atomicWebAppException;
-		}
-		
-		public void setAtomicIoException(AtomicExceptionReference<IOException> atomicIoException) {
-			this.atomicIoException = atomicIoException;
 		}
 	}
 	
