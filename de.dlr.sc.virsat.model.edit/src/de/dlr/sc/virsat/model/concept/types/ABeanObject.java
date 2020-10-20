@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.concept.types;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -54,7 +53,6 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = (CP_TYPE) ti;
 	}
 	
-	@XmlID
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override

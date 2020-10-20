@@ -14,6 +14,7 @@ import static org.junit.Assert.assertThrows;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
@@ -64,6 +65,23 @@ public class IUuidAdapterTest extends AUuidAdapterTest {
 	public void testUnmarhall() throws Exception {
 		IUuid unmarshalledTi = ((XmlAdapter<String, IUuid>) adapter).unmarshal(UUID.toString());
 		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);		
+	}
+	
+	@Override
+	public void testUnmarshallNull() {
+		adapterNoRs = new IUuidAdapter();
+		super.testUnmarshallNull();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testUnmarshallEmptyRs() {
+		adapterNoEmptyRs = new IUuidAdapter(new ResourceSetImpl());
+		assertThrows("No mapping found",
+			IllegalArgumentException.class, () -> {
+				((XmlAdapter<String, IUuid>) adapterNoEmptyRs).unmarshal(UUID.toString());
+			}
+		);
 	}
 
 }

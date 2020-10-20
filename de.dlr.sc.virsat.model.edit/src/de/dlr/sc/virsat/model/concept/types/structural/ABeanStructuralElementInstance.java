@@ -16,7 +16,6 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -55,7 +54,7 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
-@XmlType(propOrder = {"structuralElementInstance", "name", "parentSeiBean", "categoryAssignments", "children", "superSeis"})
+@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "categoryAssignments", "children", "superSeis"})
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
 
 	protected StructuralElementInstance sei;
@@ -97,7 +96,6 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		return sei;
 	}
 	
-	@XmlID
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override
@@ -285,7 +283,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	@Override
 	@XmlElement(name = "parent")
 	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
-	public BeanStructuralElementInstance getParentSeiBean() {
+	public BeanStructuralElementInstance getParent() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
 		if (parentSei != null) {
 			return new BeanStructuralElementInstance(parentSei);
@@ -295,7 +293,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@Override
-	public void setParentSeiBean(BeanStructuralElementInstance newParent) {
+	public void setParent(BeanStructuralElementInstance newParent) {
 		sei.setParent(newParent.getStructuralElementInstance());
 	}
 	
