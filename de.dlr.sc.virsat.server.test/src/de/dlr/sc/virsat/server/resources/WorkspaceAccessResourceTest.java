@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccess;
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
@@ -71,6 +72,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		// Clone to local repository 1
 		String result = target.
 			path("/rest").
+			path(VirSatModelAccessServlet.MODEL_API).
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_CLONE).
 			queryParam(WorkspaceAccessResource.PARAM_REMOTE, pathToTempUpstreamRepository).
@@ -85,6 +87,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		// Clone to local repository 2
 		String result2 = target.
 			path("/rest").
+			path(VirSatModelAccessServlet.MODEL_API).
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_CLONE).
 			queryParam(WorkspaceAccessResource.PARAM_REMOTE, pathToTempUpstreamRepository).
@@ -106,6 +109,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		// Commit new file of repository 1
 		String result3 = target.
 			path("/rest").
+			path(VirSatModelAccessServlet.MODEL_API).
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_COMMIT).
 			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).
@@ -120,6 +124,7 @@ public class WorkspaceAccessResourceTest extends AGitAndJettyServerTest {
 		// now update repository 2 and make3 sure the file has appeared
 		String result4 = target.
 			path("/rest").
+			path(VirSatModelAccessServlet.MODEL_API).
 			path(WorkspaceAccessResource.PATH_PERSISTENCE).
 			path(WorkspaceAccessResource.PATH_UPDATE).
 			queryParam(WorkspaceAccessResource.PARAM_USER, TEST_USER).

@@ -24,6 +24,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 
 public class AccessTestResourceTest extends AGitAndJettyServerTest {
@@ -38,6 +39,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 		
 		String serverResponse = target.
 			path("/rest").
+			path(VirSatModelAccessServlet.MODEL_API).
 			path("/atr").
 			path("/data").
 			request().
@@ -48,6 +50,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 		
 		String serverJson = target.
 				path("rest").
+				path(VirSatModelAccessServlet.MODEL_API).
 				path("atr").
 				path("data").
 				request().
@@ -55,7 +58,7 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 				accept(MediaType.APPLICATION_JSON).
 				get(String.class);
 		
-		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/atr/data, status=200, reason=OK}}";
+		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/model/v0.0.1/atr/data, status=200, reason=OK}}";
 		String expectedJson = "{\"UUID\":\"data\"}";
 		
 		assertEquals("Server response is correct", expectedResponse, serverResponse);
