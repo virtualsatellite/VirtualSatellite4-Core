@@ -81,5 +81,11 @@ public class TestCategoryIntrinsicArrayTest extends ATestCategoryIntrinsicArrayT
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryIntrinsicArray.class);
 		assertEquals("Element in static element changed", JsonTestHelper.TEST_STRING, tcIntrinsicArray.getTestStringArrayStaticBean().get(0).getValue());
 		assertEquals("Successfully added an element", 1, tcIntrinsicArray.getTestStringArrayDynamicBean().size());
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryIntrinsicArray.class);
+		assertEquals("Element in static is still the same", JsonTestHelper.TEST_STRING, tcIntrinsicArray.getTestStringArrayStaticBean().get(0).getValue());
+		assertEquals("Still only one element is present", 1, tcIntrinsicArray.getTestStringArrayDynamicBean().size());
 	}
 }

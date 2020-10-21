@@ -19,6 +19,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -58,7 +60,7 @@ public class ImportPage extends WizardPage {
 	private static final int ROWS = 3;
 
 	// Keys for the dialog settings
-	private static final String DESTINATION_FILE_KEY = "DESTINATION_FILE";
+	public static final String DESTINATION_FILE_KEY = "DESTINATION_FILE";
 	private static final String DESCRIPTION = "Import the selected xlsx file and integrate data.";
 	private static final String DESTINATION = "Select the import file:";
 
@@ -106,7 +108,7 @@ public class ImportPage extends WizardPage {
 	 * @return true iff the page is complete
 	 */
 	public boolean isComplete() {
-		return destination;
+		return selection != null && destination;
 	}
 
 	/**
@@ -179,11 +181,24 @@ public class ImportPage extends WizardPage {
         final int widthHint = 250;
         data.widthHint = widthHint;
         destinationField.setLayoutData(data);
+		destinationField.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String selectedDirectoryName = destinationField.getText();
+				if (selectedDirectoryName.equals("")) {
+					destination = false;
+				} else {
+					destination = true;
+					getDialogSettings().put(DESTINATION_FILE_KEY, selectedDirectoryName);
+				}
+				
+				setPageComplete(isComplete());
+			}
+		});
 
         String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
         if (defaultDestination != null) {
         	destinationField.setText(defaultDestination);
-        	destination = true;
         }
 
         // destination browse button
@@ -205,11 +220,8 @@ public class ImportPage extends WizardPage {
 		        String selectedDirectoryName = dialog.open();
 
 		        if (selectedDirectoryName != null) {
-		        	destination = true;
 		            setErrorMessage(null);
 		            destinationField.setText(selectedDirectoryName);
-		            wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
-		            setPageComplete(isComplete());
 		        }
 			}
         });

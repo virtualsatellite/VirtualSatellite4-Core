@@ -96,6 +96,11 @@ public class TestCategoryReferenceTest extends AConceptTestCase {
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReference.class);
 		
 		assertEquals("Referenced bean changed successfully", bpString2.getUuid(), tcReference.getTestRefProperty().getUuid());
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE_CHANGED_REFERENCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryReference.class);
+		assertEquals("Referenced is still the same", bpString2.getUuid(), tcReference.getTestRefProperty().getUuid());
 	}
 	
 	@Test

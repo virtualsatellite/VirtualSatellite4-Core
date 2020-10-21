@@ -19,6 +19,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -59,7 +61,7 @@ public class ExportPage extends WizardPage {
 	private static final int ROWS = 3;
 
 	// Keys for the dialog settings
-	private static final String DESTINATION_FILE_KEY = "DESTINATION_FILE";
+	public static final String DESTINATION_FILE_KEY = "DESTINATION_FILE";
 	private static final String USE_DEFAULT_TEMPLATE_KEY = "USE_DEFAULT_TEMPLATE";
 	private static final String DEFAULT_TEMPLATE_KEY = "DEFAULT_TEMPLATE";
 	private static final String DESCRIPTION = "Export the selected element to a folder";
@@ -129,7 +131,7 @@ public class ExportPage extends WizardPage {
 	 * @return true iff the page is complete
 	 */
 	public boolean isComplete() {
-		return destination && template;
+		return selection != null && destination && template;
 	}
 
 	/**
@@ -161,15 +163,11 @@ public class ExportPage extends WizardPage {
 		if (composite1.getVisible()) {
 			template = true;
 		} else {
-			if (templateField.getText().equals("")) {
-				template = false;
-			} else {
-				template = true;
-			}
+			template = !templateField.getText().equals("");
 		}
 
 		composite1.setVisible(!composite1.getVisible());
-		setPageComplete(selection != null && template && destination);
+		setPageComplete(isComplete());
 	}
 
 	/**
@@ -303,11 +301,24 @@ public class ExportPage extends WizardPage {
 		final int widthHint = 250;
 		data.widthHint = widthHint;
 		destinationField.setLayoutData(data);
-
+		destinationField.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String selectedDirectoryName = destinationField.getText();
+				if (selectedDirectoryName.equals("")) {
+					destination = false;
+				} else {
+					destination = true;
+					getDialogSettings().put(DESTINATION_FILE_KEY, selectedDirectoryName);
+				}
+				
+				setPageComplete(isComplete());
+			}
+		});
+		
 		String defaultDestination = wizardSettings.get(DESTINATION_FILE_KEY);
 		if (defaultDestination != null) {
 			destinationField.setText(defaultDestination);
-			destination = true;
 		}
 
 		// destination browse button
@@ -317,7 +328,6 @@ public class ExportPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-
 				DirectoryDialog dialog = new DirectoryDialog(getContainer().getShell(), SWT.SAVE | SWT.SHEET);
 				dialog.setText(DIALOG_TEXT);
 
@@ -326,9 +336,6 @@ public class ExportPage extends WizardPage {
 				if (selectedDirectoryName != null) {
 					setErrorMessage(null);
 					destinationField.setText(selectedDirectoryName);
-					destination = true;
-					wizardSettings.put(DESTINATION_FILE_KEY, selectedDirectoryName);
-					setPageComplete(isComplete());
 				}
 			}
 		});

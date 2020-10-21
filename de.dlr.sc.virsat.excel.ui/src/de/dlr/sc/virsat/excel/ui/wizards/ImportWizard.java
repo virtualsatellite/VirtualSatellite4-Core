@@ -92,6 +92,8 @@ public class ImportWizard extends Wizard implements INewWizard {
 
 		// Read the file
 		String path = page.getDestination();
+		getDialogSettings().put(ImportPage.DESTINATION_FILE_KEY, path);
+		
 		File file = new File(path);
 		XSSFWorkbook wb = null;
 		try {
