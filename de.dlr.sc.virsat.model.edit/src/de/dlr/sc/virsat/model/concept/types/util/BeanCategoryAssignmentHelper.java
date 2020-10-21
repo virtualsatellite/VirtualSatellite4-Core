@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -116,6 +117,23 @@ public class BeanCategoryAssignmentHelper {
 		}
 		
 		return Collections.unmodifiableList(caBeans);
+	}
+	
+	/**
+	 * Call this method to hand back the CategoryAssignment wrapped in a BeanCategoryAssignment
+	 * @param caContainer The container where the Category Assignments reside. Usually a StructuralElementInstance
+	 * @return a List of CategoryAssignments which are wrapped into the generic BeanCategoryAssignment
+	 */
+	public List<BeanCategoryAssignment> getAllBeanCategories(ICategoryAssignmentContainer caContainer) {
+		List<BeanCategoryAssignment> beans = new LinkedList<>();
+		
+		for (CategoryAssignment ca : caContainer.getCategoryAssignments()) {
+			BeanCategoryAssignment bean = new BeanCategoryAssignment();
+			bean.setTypeInstance(ca);
+			beans.add(bean);
+		}
+		
+		return Collections.unmodifiableList(beans);
 	}
 	
 	/**
