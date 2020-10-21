@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
@@ -38,6 +40,8 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 	private TestCategoryCompositionArray tcCompositionArray;
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
+	private TestCategoryAllProperty tcAllProperty;
+	private BeanPropertyComposed<TestCategoryAllProperty> composedBean;
 	private static final String RESOURCE = "/resources/json/TestCategoryCompositionArray_Marshaling.json";
 	private static final String RESOURCE_NULL_COMPOSITION = "/resources/json/TestCategoryCompositionArray_Marshaling_NullComposition.json";
 	private static final String RESOURCE_CHANGE_ELEMENT = "/resources/json/TestCategoryCompositionArray_Marshaling_ChangeElement.json";
@@ -64,12 +68,27 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 			JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, i);
 		}
 		
+		tcAllProperty = new TestCategoryAllProperty(concept);
+		// Prior numbers for UUIDs are already taken so we use the next free one here
+		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty, staticArray.size());
+		
+		// For composed / reference beans the wrapping beans
+		// have to exist because else adding a new element to
+		// the dynamic list in the unmarshalling fails
+		ComposedPropertyInstance cpi = PropertyinstancesFactory.eINSTANCE.createComposedPropertyInstance();
+		composedBean = new BeanPropertyComposed<TestCategoryAllProperty>(cpi);
+		cpi.setUuid(new VirSatUuid("25ed5be7-de0d-4672-95be-8ccce3a7e2e2"));
+		// Can't set this via the bean
+		cpi.setTypeInstance(tcAllProperty.getTypeInstance());
+		
 		JsonTestHelper.createRepositoryWithUnitManagement(concept);	
 	}
 	
 	@Test
 	public void testJsonMarshalling() throws JAXBException, IOException {
 		tcCompositionArray.getTestCompositionArrayStatic().get(0).getTestStringBean().setValue(JsonTestHelper.TEST_STRING);
+		// Use the bean list here to force the wanted bean (to reuse the same resource as for unmarshalling)
+		tcCompositionArray.getTestCompositionArrayDynamicBean().add(composedBean);
 		
 		JsonTestHelper.assertMarshall(jaxbUtility, RESOURCE, tcCompositionArray);
 	}
@@ -77,16 +96,25 @@ public class TestCategoryCompositionArrayTest extends AConceptTestCase {
 	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
 		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
-				tcCompositionArray.getATypeInstance()
+				tcCompositionArray.getATypeInstance(),
+				composedBean.getATypeInstance(),
+				tcAllProperty.getATypeInstance()
 		));
 		
 		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
 		
 		assertNull(tcCompositionArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
+		assertEquals("Initial no dynamic element", 0, tcCompositionArray.getTestCompositionArrayDynamic().size());
 		
 		jsonUnmarshaller.unmarshal(inputSource, TestCategoryCompositionArray.class);
 		
 		assertEquals(JsonTestHelper.TEST_STRING, tcCompositionArray.getTestCompositionArrayStatic().get(0).getTestStringBean().getValue());
+		assertEquals("Element added successfully", 1, tcCompositionArray.getTestCompositionArrayDynamic().size());
+		
+		// Unmarshall again to test idempotency
+		inputSource = JsonTestHelper.getResourceAsStreamSource(RESOURCE);
+		jsonUnmarshaller.unmarshal(inputSource, TestCategoryCompositionArray.class);
+		assertEquals("Same element not added again", 1, tcCompositionArray.getTestCompositionArrayDynamic().size());
 	}
 	
 	@Test

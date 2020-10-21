@@ -88,20 +88,21 @@ public class ASwtBotTestCase {
 	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
-	protected static final int MAX_TEST_CASE_TIMEOUT_MILLISECONDS = 1000 * MAX_TEST_CASE_TIMEOUT_SECONDS;
+	public static final int MAX_TEST_CASE_TIMEOUT_MILLISECONDS = 1000 * MAX_TEST_CASE_TIMEOUT_SECONDS;
 	protected static final int EDIT_UNDO_MENU_POSITION = 0;
 	protected static final int EDIT_REDO_MENU_POSITION = 1;
 	protected static final int SWTBOT_TRY_1_TIME = 1;
 	protected static final int SWTBOT_TRY_3_TIME = 3;
 	protected static final int SWTBOT_TRY_5_TIME = 5;
 	protected static final int SWTBOT_TRY_10_TIME = 10;
-	protected static final int SWTBOT_RETRY_WAIT_TIME = 500;
+	public static final int SWTBOT_RETRY_WAIT_TIME = 500;
 	
 	protected SWTWorkbenchBot bot;
 	protected IProject project;
 	protected Concept conceptPs;
 	protected Concept conceptTest;
 	protected Concept conceptFea;
+	protected Concept conceptMaturity;
 	protected int screenCaptureNumber = 1;
 	protected WorkspaceBuilderInterlockedExecution buildCounter;
 	protected enum DiagramType { interfaces, stateMachines }
@@ -134,6 +135,7 @@ public class ASwtBotTestCase {
 		conceptPs = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptTest =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId() + "/concept/concept.xmi");
 		conceptFea =  ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.funcelectrical.Activator.getPluginId() + "/concept/concept.xmi");
+		conceptMaturity = ConceptXmiLoader.loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.maturity.Activator.getPluginId() + "/concept/concept.xmi");
 		
 		closeWelcomeScreen();
 		
@@ -804,7 +806,15 @@ public class ASwtBotTestCase {
 	 * @return it returns the desired section name
 	 */
 	protected String getSectionName(Class<?> clazz) {
-		return "Section for: " + clazz.getSimpleName();
+		return getSectionName(clazz.getSimpleName());
+	}
+	
+	/**
+	 * @param sectionContent
+	 * @return section name for arbitrary content string
+	 */
+	protected String getSectionName(String sectionContent) {
+		return "Section for: " + sectionContent;
 	}
 	
 	/**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.12.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.12.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>

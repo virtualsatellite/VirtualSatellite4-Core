@@ -110,7 +110,7 @@ public class ElementLayoutFeature extends VirSatLayoutFeature {
 			}
 		}
         // reposition all the anchors 
-		DiagramUtils.repositionShapes(containerShape, getFeatureProvider());
+		DiagramUtils.repositionInterfaceEndShapes(containerShape, getFeatureProvider());
 		return anythingChanged;
 	}
 
