@@ -29,10 +29,8 @@ import org.eclipse.graphiti.features.impl.UpdateNoBoFeature;
 import org.eclipse.graphiti.mm.GraphicsAlgorithmContainer;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.styles.Color;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 
@@ -212,21 +210,21 @@ public class DiagramHelper {
 	}
 	
 	/**
-	 * Use this method to get a container shape containing the passed pictogram element
+	 * Use this method to get an element containing the passed pictogram element
 	 * that knows how its contents should be updated
 	 * @param fp the feature provider for associating diagram elements with update features
 	 * @param pe the pictogram element that we want to update and need the updateable container for
 	 * @return an updateable container that contains the passed pictogram element
 	 */
-	public static ContainerShape getUpdateableContainer(IFeatureProvider fp, PictogramElement pe) {
-		ContainerShape cs = ((Shape) pe).getContainer();
-		IUpdateFeature updateFeature = fp.getUpdateFeature(new UpdateContext(cs));
+	public static PictogramElement getUpdateableElement(IFeatureProvider fp, PictogramElement pe) {
+		IUpdateFeature updateFeature = fp.getUpdateFeature(new UpdateContext(pe));
 		// Crawl upwards until we have a valid update feature to update this element
-		while (updateFeature == null || updateFeature instanceof UpdateNoBoFeature) {
-			cs = cs.getContainer();
-			updateFeature = fp.getUpdateFeature(new UpdateContext(cs));
+		while ((updateFeature == null || updateFeature instanceof UpdateNoBoFeature) 
+				&& (pe.eContainer() instanceof PictogramElement)) {
+			pe = (PictogramElement) pe.eContainer();
+			updateFeature = fp.getUpdateFeature(new UpdateContext(pe));
 		}
 		
-		return cs;
+		return pe;
 	}
 }
