@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.parent</artifactId>
-	<version>4.12.0-SNAPSHOT</version>
+	<version>4.12.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -19,7 +19,7 @@
 		<maven-license-version>1.20</maven-license-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.12.0</build.version>
+		<build.version>4.12.1</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -280,7 +280,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.12.0-SNAPSHOT</version>
+							<version>4.12.1-SNAPSHOT</version>
 							<classifier>virsat_windows</classifier>
 						</artifact>
 					</target>

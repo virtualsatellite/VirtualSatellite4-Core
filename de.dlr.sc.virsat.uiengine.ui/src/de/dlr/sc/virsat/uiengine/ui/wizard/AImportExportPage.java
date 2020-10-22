@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.uiengine.ui.wizard;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -79,9 +81,6 @@ public abstract class AImportExportPage extends ATreeViewerPage {
 				if (selectedDirectoryName != null) {
 					setErrorMessage(null);
 					destinationField.setText(selectedDirectoryName);
-					isDestinationSelected = true;
-					getDialogSettings().put(DESTINATION_FILE_KEY, selectedDirectoryName);
-					setPageComplete(isComplete());
 				}
 			}
 		});
@@ -126,11 +125,24 @@ public abstract class AImportExportPage extends ATreeViewerPage {
 
 		data.widthHint = DESTINATION_WIDTH_HINT;
 		destinationField.setLayoutData(data);
+		destinationField.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				String selectedDirectoryName = destinationField.getText();
+				if (selectedDirectoryName.equals("")) {
+					isDestinationSelected = false;
+				} else {
+					isDestinationSelected = true;
+					getDialogSettings().put(DESTINATION_FILE_KEY, selectedDirectoryName);
+				}
+				
+				setPageComplete(isComplete());
+			}
+		});
+		
 		String defaultDestination = getDialogSettings().get(DESTINATION_FILE_KEY);
-
 		if (defaultDestination != null) {
 			destinationField.setText(defaultDestination);
-			isDestinationSelected = true;
 		}
 	}
 

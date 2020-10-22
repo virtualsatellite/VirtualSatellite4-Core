@@ -179,11 +179,17 @@ public abstract class AMigrator implements IMigrator {
 		final IMerger referenceMerger = new ReferenceChangeMerger() {
 			@Override
 			protected void removeFromTarget(ReferenceChange diff, boolean rightToLeft) {
-				Comparison comparison = diff.getMatch().getComparison();
+ 				Comparison comparison = diff.getMatch().getComparison();
 				Match valueMatch = comparison.getMatch(diff.getValue());
-				EObject right = valueMatch.getRight();
-				super.removeFromTarget(diff, rightToLeft);
-				valueMatch.setRight(right);
+				
+				// Add null check to prevent exceptions caused by test setup - loaded concepts are loaded isolated from each 
+				// other, so references to other concepts cannot be resolved
+				if (valueMatch != null) {
+					// Saving the match for later to be able to do custom migration and data model migration
+					EObject right = valueMatch.getRight();
+					super.removeFromTarget(diff, rightToLeft);
+					valueMatch.setRight(right);
+				}
 			}
 			
 			@Override

@@ -10,6 +10,10 @@
 package de.dlr.sc.virsat.model.extension.funcelectrical.ui.diagram.features;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.ICopyFeature;
@@ -53,6 +57,7 @@ import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatMoveConnectionDecorato
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatStructuralElementInstanceCopyFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatStructuralElementInstancePasteFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirsatCategoryAssignmentOpenEditorFeature;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -230,18 +235,23 @@ public class InterfaceDiagramFeatureProvider extends VirSatDiagramFeatureProvide
 	
 	@Override
 	public ICustomFeature[] getCustomFeatures(ICustomContext context) {
-	    
 	    PictogramElement[] pictogramElements = context.getPictogramElements();
 		Object object = getBusinessObjectForPictogramElement(pictogramElements[0]);
 		
-		if (object instanceof ABeanStructuralElementInstance) {
-			return new ICustomFeature[] {  new VirSatChangeColorFeature(this)};
-		}
+		List<ICustomFeature> customFeatures = new ArrayList<>();
 		
 		if (object instanceof InterfaceEnd) {
-			return new ICustomFeature[] { new VirsatCategoryAssignmentOpenEditorFeature(this), new InterfaceEndChangeColorFeature(this)};
+			customFeatures.add(new InterfaceEndChangeColorFeature(this));
+		} else {
+			customFeatures.add(new VirSatChangeColorFeature(this));
 		}
-		return super.getCustomFeatures(context);
+		
+		if (object instanceof IBeanCategoryAssignment) {
+			customFeatures.add(new VirsatCategoryAssignmentOpenEditorFeature(this));
+		}
+		
+		Collections.addAll(customFeatures, super.getCustomFeatures(context));
+		return customFeatures.toArray(new ICustomFeature[0]);
 	} 
 	
 	@Override

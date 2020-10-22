@@ -5,7 +5,7 @@
    "testCategoryReferenceArrayDynamicBean" : [ ],
    "testCategoryReferenceArrayStaticBean" : [ {
       "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a0",
-      "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
+      "value" : "134d30b0-80f5-4c96-864f-29ab4d3ae9f0"
    }, {
       "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a1",
       "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"

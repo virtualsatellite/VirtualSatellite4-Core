@@ -85,6 +85,8 @@ public class ExportWizard extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		// Grab the necessary context information
 		String path = page.getDestination();
+		getDialogSettings().put(ExportPage.DESTINATION_FILE_KEY, path);
+		
 		EObject eObject = (EObject) page.getSelection();
 
 		// Do the actual exporting

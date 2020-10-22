@@ -69,17 +69,17 @@ public class IUuidAdapterTest extends AUuidAdapterTest {
 	
 	@Override
 	public void testUnmarshallNull() {
-		adapterNoRs = new IUuidAdapter();
+		adapterWithoutResourceSet = new IUuidAdapter();
 		super.testUnmarshallNull();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void testUnmarshallEmptyRs() {
-		adapterNoEmptyRs = new IUuidAdapter(new ResourceSetImpl());
+		adapterWithEmptyResourceSet = new IUuidAdapter(new ResourceSetImpl());
 		assertThrows("No mapping found",
 			IllegalArgumentException.class, () -> {
-				((XmlAdapter<String, IUuid>) adapterNoEmptyRs).unmarshal(UUID.toString());
+				((XmlAdapter<String, IUuid>) adapterWithEmptyResourceSet).unmarshal(UUID.toString());
 			}
 		);
 	}

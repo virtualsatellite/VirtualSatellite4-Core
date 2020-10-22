@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.2 beta 
+Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.3 beta 
 {
 
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
@@ -19,13 +19,18 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		
 		Resource exportFile;
 		Type requirements [] of Category RequirementObject;
-		Type typeDefinitions [] of Category RequirementType;
+		Type links [] of Category RequirementLink;
 	}	
 	
 	Category RequirementsConfiguration {
 		Applicable For [ RequirementsConfigurationCollection];
 		StringProperty fileName;
 		Type typeDefinitions [] of Category RequirementType;
+	}
+	
+	Category VerificationConfiguration {
+		Applicable For [ RequirementsConfigurationCollection ];
+		Type verificationTypes [] of Category VerificationType;
 	}
 	
 	Category RequirementObject description "Interface for specification objects" {
@@ -40,12 +45,13 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Reference reqType of Type RequirementType;
 		Type elements [] of Category AttributeValue;
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
-		Type trace of Category RequirementTrace;
+		Type verification[] of Category IVerification;
 	}
 	
-	Category RequirementTrace {
-		Reference target[] of Type GenericCategory;
-		//Validation type
+	Category RequirementLink {
+		EnumProperty type values [DependsOn = 1, Parent = 2];
+		Reference subject of Type Requirement;
+		Reference targets[] of Type Requirement;
 	}
 	
 	Category AttributeValue {
@@ -62,10 +68,32 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type enumeration of Category EnumerationDefinition;
 	}
 	
+	
 	Category EnumerationDefinition {
 		Type literals [] of Category EnumerationLiteral;
 	}
 	
 	Category EnumerationLiteral {}
+	
+	Category IVerification {
+		IsAbstract;
+	}
+	
+	Category DefaultVerification extends IVerification {
+		Reference verificationType of Type VerificationType;
+	}
+	
+	Category VerificationType {
+		StringProperty verDescription;
+		EnumProperty verType values [NotApplicable = 0, Analysis = 1, Inspection = 2, Demonstration = 3, Test = 4];
+	}
+	
+	Category ModelVerification extends IVerification {
+		IsAbstract;
+	}
+	
+	Category ExistenceVerification extends ModelVerification {
+		Reference target[] of Type GenericCategory;
+	}
 }
 
