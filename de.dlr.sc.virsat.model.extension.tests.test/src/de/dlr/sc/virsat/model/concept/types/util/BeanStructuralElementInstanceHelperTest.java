@@ -126,9 +126,9 @@ public class BeanStructuralElementInstanceHelperTest extends AConceptTestCase {
 		rootElement.add(child);
 		child.add(grandChild);
 		
-		assertNull("The root has no parent", rootElement.getParentSeiBean());
-		assertEquals("The child has proper parent", rootElement.getStructuralElementInstance(), child.getParentSeiBean().getStructuralElementInstance());
-		assertEquals("The grandchild has proper parent", child.getStructuralElementInstance(), grandChild.getParentSeiBean().getStructuralElementInstance());
+		assertNull("The root has no parent", rootElement.getParent());
+		assertEquals("The child has proper parent", rootElement.getStructuralElementInstance(), child.getParent().getStructuralElementInstance());
+		assertEquals("The grandchild has proper parent", child.getStructuralElementInstance(), grandChild.getParent().getStructuralElementInstance());
 	}
 
 	@Test

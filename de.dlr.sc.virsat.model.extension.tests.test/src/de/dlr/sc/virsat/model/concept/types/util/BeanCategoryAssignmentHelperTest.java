@@ -20,6 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -134,6 +135,38 @@ public class BeanCategoryAssignmentHelperTest extends AConceptTestCase {
 			
 		assertThat("CatAbstract Assignemnts are well contained", catBeansAbstract, hasItems(testCaBeanConcrete));
 		//CHECKSTYLE:ON
+	}
+	
+	@Test
+	public void testGetAllBeanCategoriesGeneric() {
+		TestStructuralElement testSe = new TestStructuralElement(concept);
+		StructuralElementInstance sei = testSe.getStructuralElementInstance();
+		
+		TestCategoryBeanA testCaBeanA = new TestCategoryBeanA(concept);
+		TestCategoryBeanB testCaBeanB = new TestCategoryBeanB(concept);
+		TestCategoryBeanConcrete testCaBeanConcrete = new TestCategoryBeanConcrete(concept);
+		
+		testSe.add(testCaBeanA);
+		testSe.add(testCaBeanB);
+		testSe.add(testCaBeanConcrete);
+		
+		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
+		
+		List<BeanCategoryAssignment> catBeans = bCaHelper.getAllBeanCategories(sei);
+		
+		final int NUMBER_OF_CAS = 3;
+		assertEquals("Returned 3 cas", NUMBER_OF_CAS, catBeans.size());
+		
+		BeanCategoryAssignment testCaBeanAGeneric = new BeanCategoryAssignment();
+		BeanCategoryAssignment testCaBeanBGeneric = new BeanCategoryAssignment();
+		BeanCategoryAssignment testCaBeanConcreteGeneric = new BeanCategoryAssignment();
+		
+		testCaBeanAGeneric.setATypeInstance(testCaBeanA.getATypeInstance());
+		testCaBeanBGeneric.setATypeInstance(testCaBeanB.getATypeInstance());
+		testCaBeanConcreteGeneric.setATypeInstance(testCaBeanConcrete.getATypeInstance());
+		
+		assertThat("Cas are well contained", catBeans, hasItems(
+				testCaBeanAGeneric, testCaBeanBGeneric, testCaBeanConcreteGeneric));
 	}
 	
 	@Test

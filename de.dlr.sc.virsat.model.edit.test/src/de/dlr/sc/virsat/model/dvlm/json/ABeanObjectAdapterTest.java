@@ -13,32 +13,29 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
-import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
-public class ABeanObjectAdapterTest {
+/**
+ * Tests that the ABeanObjectAdapter un-/marshalls
+ * a ABeanObject as expected
+ */
+public class ABeanObjectAdapterTest extends AUuidAdapterTest {
 
-	private ABeanObjectAdapter adapter;
 	private ValuePropertyInstance vpi;
 	private BeanPropertyString bean;
-	private static final VirSatUuid UUID = new VirSatUuid();
 	
 	@Before
 	public void setUp() throws Exception {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resourceImpl = new ResourceImpl();
-		resourceSet.getResources().add(resourceImpl);
+		super.setUp();
 		
 		vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
 		vpi.setUuid(UUID);
@@ -47,43 +44,53 @@ public class ABeanObjectAdapterTest {
 		
 		bean = new BeanPropertyString(vpi);
 		
-		adapter = new ABeanObjectAdapter(resourceSet);
+		adapter = new ABeanObjectAdapter(resourceSet);		
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void testMarshallNull() throws Exception {
+		String uuid = ((XmlAdapter<String, ABeanObject>) adapter).marshal(null);
+		assertNull("No bean returns null", uuid);
 	}
 
-	@Test
-	public void testMarshalABeanObject() throws Exception {
-		String uuid = adapter.marshal(null);
-		assertNull("No bean returns null", uuid);
-		
-		uuid = adapter.marshal(bean);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void testMarhall() throws Exception {
+		String uuid = ((XmlAdapter<String, ABeanObject>) adapter).marshal(bean);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
 		vpi.setUuid(null);
 		assertThrows("The type instance should have a uuid",
 			NullPointerException.class, () -> {
-				adapter.marshal(bean);
+				((XmlAdapter<String, ABeanObject>) adapter).marshal(bean);
 			}
 		);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testUnmarhall() throws Exception {
+		@SuppressWarnings("rawtypes")
+		ABeanObject unmarshalledBean = ((XmlAdapter<String, ABeanObject>) adapter).unmarshal(UUID.toString());
+		assertEquals("The right bean was returned", bean, (BeanPropertyString) unmarshalledBean);
 	}
 	
-	@Test
-	public void testUnmarshalString() throws Exception {
-		TypeInstanceAdapter adapterNoRs = new TypeInstanceAdapter();
-		assertThrows("A resource set should be set",
-			NullPointerException.class, () -> {
-				adapterNoRs.unmarshal(null);
-			}
-		);
-		
+	@Override
+	public void testUnmarshallNull() {
+		adapterWithoutResourceSet = new ABeanObjectAdapter();
+		super.testUnmarshallNull();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void testUnmarshallEmptyRs() {
+		adapterWithEmptyResourceSet = new ABeanObjectAdapter(new ResourceSetImpl());
 		assertThrows("No mapping found",
 			IllegalArgumentException.class, () -> {
-				adapter.unmarshal(null);
+				((XmlAdapter<String, ABeanObjectAdapter>) adapterWithEmptyResourceSet).unmarshal(UUID.toString());
 			}
 		);
-		
-		@SuppressWarnings("rawtypes")
-		ABeanObject unmarshalledBean = adapter.unmarshal(UUID.toString());
-		assertEquals("The right bean was returned", bean, (BeanPropertyString) unmarshalledBean);
 	}
 
 }
