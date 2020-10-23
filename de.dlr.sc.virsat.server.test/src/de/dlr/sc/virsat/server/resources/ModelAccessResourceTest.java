@@ -285,7 +285,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		StringWriter sw = new StringWriter();
 		jaxbUtility.getJsonMarshaller().marshal(beanString, sw);
 		String jsonIn = sw.toString();
-		jsonIn = jsonIn.replace("null", "\"testString\"");
+		jsonIn = jsonIn.replace("null", "\"" + TEST_STRING + "\"");
 	
 		assertNull(beanString.getValue());
 		Response response = webTarget.path(ModelAccessResource.PATH)

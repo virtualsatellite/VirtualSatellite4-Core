@@ -35,7 +35,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.server.dataaccess.CustomJsonProvider;
+import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
@@ -47,7 +47,7 @@ import de.dlr.sc.virsat.server.repository.ServerRepository;
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
 
-	CustomJsonProvider provider;
+	TransactionalJsonProvider provider;
 	
 	public static final String PATH = "/repository";
 
@@ -69,7 +69,7 @@ public class ModelAccessResource {
 	public static final String COMPOSED = "composed";
 
 	@Inject
-	public ModelAccessResource(CustomJsonProvider provider) { 
+	public ModelAccessResource(TransactionalJsonProvider provider) { 
 		this.provider = provider;
 	}
 	

@@ -49,14 +49,14 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
+public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 	
 	private ValidationEventHandler eventHandler;
 
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
 
-	public CustomJsonProvider() {
+	public TransactionalJsonProvider() {
 		setFormattedOutput(true);
 		eventHandler = new DefaultValidationEventHandler();
 	}
@@ -202,7 +202,7 @@ public class CustomJsonProvider extends ConfigurableMoxyJsonProvider {
 		@Override
 		protected void doExecute() {
 			try {
-				Object result = CustomJsonProvider.super.readFrom(
+				Object result = TransactionalJsonProvider.super.readFrom(
 					arguments.getType(),
 					arguments.getGenericType(),
 					arguments.getAnnotations(),

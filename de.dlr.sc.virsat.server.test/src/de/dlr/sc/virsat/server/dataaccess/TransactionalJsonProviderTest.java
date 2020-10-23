@@ -47,9 +47,9 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
-public class CustomJsonProviderTest extends AProjectTestCase {
+public class TransactionalJsonProviderTest extends AProjectTestCase {
 
-	private CustomJsonProvider provider;
+	private TransactionalJsonProvider provider;
 	private BeanPropertyString testBean;
 	private Class<?> type;
 	private Set<Class<?>> beanClass = new HashSet<>();
@@ -61,7 +61,7 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 		super.setUp();
 		addEditingDomainAndRepository();
 		
-		provider = new CustomJsonProvider();
+		provider = new TransactionalJsonProvider();
 		provider.setEd(editingDomain);
 		
 		StructuralElement testSe = StructuralFactory.eINSTANCE.createStructuralElement();
@@ -97,7 +97,7 @@ public class CustomJsonProviderTest extends AProjectTestCase {
 	}
 
 	/**
-	 * Call writeTo and assert that the the output String is as expected
+	 * Call writeTo and assert that the the output String contains the test value
 	 * @return the output String
 	 * @throws WebApplicationException
 	 * @throws IOException
