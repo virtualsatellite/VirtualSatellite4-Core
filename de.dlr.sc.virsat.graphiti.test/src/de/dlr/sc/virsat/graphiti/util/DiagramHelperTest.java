@@ -18,7 +18,21 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.graphiti.features.ICopyFeature;
+import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.features.IPasteFeature;
+import org.eclipse.graphiti.features.IPrintFeature;
+import org.eclipse.graphiti.features.IReason;
+import org.eclipse.graphiti.features.ISaveImageFeature;
+import org.eclipse.graphiti.features.IUpdateFeature;
+import org.eclipse.graphiti.features.context.ICopyContext;
+import org.eclipse.graphiti.features.context.IPasteContext;
+import org.eclipse.graphiti.features.context.IUpdateContext;
+import org.eclipse.graphiti.features.impl.AbstractFeatureProvider;
+import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
+import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
+import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
 import org.junit.After;
 import org.junit.Before;
@@ -149,5 +163,60 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		assertEquals(ca, DiagramHelper.getEObject(beanCa));
 		
 		assertNull(DiagramHelper.getEObject("test"));
+	}
+	
+	@Test
+	public void testGetUpdateableElement() {
+		ContainerShape peUpdateableParent = Graphiti.getPeCreateService().createContainerShape(null, true);
+		PictogramElement peNoUpate = Graphiti.getPeCreateService().createShape(peUpdateableParent, true);
+		
+		// Create a dummy update feature that that will later only be applicable for the parent pe
+		IUpdateFeature mockUpdateFeature = new AbstractUpdateFeature(null) {
+			@Override
+			public boolean canUpdate(IUpdateContext context) { 
+				return false; 
+			}
+			@Override
+			public IReason updateNeeded(IUpdateContext context) { 
+				return null; 
+			}
+			@Override
+			public boolean update(IUpdateContext context) { 
+				return false; 
+			}	
+		};
+		
+		// Create a mock feature provider that returns null for the update feature for
+		// the child pe and returns the mock update feature for the parent pe
+		IFeatureProvider mockFP = new AbstractFeatureProvider(null) {
+			@Override
+			public ICopyFeature getCopyFeature(ICopyContext context) { 
+				return null; 
+			}
+			@Override
+			public IPasteFeature getPasteFeature(IPasteContext context) { 
+				return null; 
+			}
+			@Override
+			public IPrintFeature getPrintFeature() { 
+				return null; 
+			}
+			@Override
+			public ISaveImageFeature getSaveImageFeature() { 
+				return null; 
+			}
+			
+			@Override
+			public IUpdateFeature getUpdateFeature(IUpdateContext context) {
+				if (context.getPictogramElement() == peUpdateableParent) {
+					return mockUpdateFeature;
+				}
+				
+				return null;
+			};	
+		};
+		
+		PictogramElement peUpdatable = DiagramHelper.getUpdateableElement(mockFP, peNoUpate);
+		assertEquals("Got the updatable parent", peUpdateableParent, peUpdatable);
 	}
 }
