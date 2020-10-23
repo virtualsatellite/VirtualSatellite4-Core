@@ -30,6 +30,7 @@ import org.eclipse.graphiti.features.context.IPasteContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractFeatureProvider;
 import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
+import org.eclipse.graphiti.features.impl.UpdateNoBoFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -168,7 +169,8 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 	@Test
 	public void testGetUpdateableElement() {
 		ContainerShape peUpdateableParent = Graphiti.getPeCreateService().createContainerShape(null, true);
-		PictogramElement peNoUpate = Graphiti.getPeCreateService().createShape(peUpdateableParent, true);
+		ContainerShape peNoUpdateParent = Graphiti.getPeCreateService().createContainerShape(peUpdateableParent, true);
+		PictogramElement peNoUpate = Graphiti.getPeCreateService().createShape(peNoUpdateParent, true);
 		
 		// Create a dummy update feature that that will later only be applicable for the parent pe
 		IUpdateFeature mockUpdateFeature = new AbstractUpdateFeature(null) {
@@ -210,6 +212,10 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 			public IUpdateFeature getUpdateFeature(IUpdateContext context) {
 				if (context.getPictogramElement() == peUpdateableParent) {
 					return mockUpdateFeature;
+				}
+				
+				if (context.getPictogramElement() == peNoUpdateParent) {
+					return new UpdateNoBoFeature(this);
 				}
 				
 				return null;
