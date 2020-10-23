@@ -213,8 +213,8 @@ public class DiagramHelper {
 	 * Use this method to get an element containing the passed pictogram element
 	 * that knows how its contents should be updated
 	 * @param fp the feature provider for associating diagram elements with update features
-	 * @param pe the pictogram element that we want to update and need the updateable container for
-	 * @return an updateable container that contains the passed pictogram element
+	 * @param pe the pictogram element that we want to update and need the updateable element for
+	 * @return an updateable element that contains the passed pictogram element
 	 */
 	public static PictogramElement getUpdateableElement(IFeatureProvider fp, PictogramElement pe) {
 		IUpdateFeature updateFeature = fp.getUpdateFeature(new UpdateContext(pe));
