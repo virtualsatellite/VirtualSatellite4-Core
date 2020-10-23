@@ -42,7 +42,7 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
-import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
@@ -101,7 +101,7 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 			Unmarshaller unmarshaller) throws JAXBException {
 		
 		unmarshaller.setEventHandler(eventHandler);
-		unmarshaller.setAdapter(new TypeInstanceAdapter(resourceSet));
+		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
 	}
 	
