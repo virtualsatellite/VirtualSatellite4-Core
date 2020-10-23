@@ -119,7 +119,7 @@ public class JsonTestHelper {
 	 * @throws JAXBException
 	 * @throws IOException
 	 */
-	public static void assertMarshall(JAXBUtility jaxbUtility, String resource, IBeanObject<?> testObject) throws JAXBException, IOException {
+	public static void assertMarshall(JAXBUtility jaxbUtility, String resource, Object testObject) throws JAXBException, IOException {
 		Marshaller jsonMarshaller = jaxbUtility.getJsonMarshaller();
 		
 		StringWriter sw = new StringWriter();

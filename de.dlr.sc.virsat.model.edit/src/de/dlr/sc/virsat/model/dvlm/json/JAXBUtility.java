@@ -103,11 +103,14 @@ public class JAXBUtility {
 		
 		jsonUnmarshaller.setEventHandler(new DefaultValidationEventHandler());
 		
-		TypeInstanceAdapter typeInstanceAdapter = new TypeInstanceAdapter(resourceSet);
-		jsonUnmarshaller.setAdapter(typeInstanceAdapter);
+		IUuidAdapter uuidAdapter = new IUuidAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(uuidAdapter);
 		
-		ABeanObjectAdapter referenceAdapter = new ABeanObjectAdapter(resourceSet);
-		jsonUnmarshaller.setAdapter(referenceAdapter);
+		ABeanObjectAdapter aBeanObjectAdapter = new ABeanObjectAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanObjectAdapter);
+		
+		ABeanStructuralElementInstanceAdapter aBeanSeiAdapter = new ABeanStructuralElementInstanceAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanSeiAdapter);
 		
 		return jsonUnmarshaller;
 	}

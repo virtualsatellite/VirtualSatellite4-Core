@@ -18,6 +18,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
@@ -105,6 +106,22 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	<SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getChildren(Class<SEI_TYPE> beanSeiClazz);
 	
 	/**
+	 * This method hands back all child Bean wrapped StructuralElementInstances of the abstract type ABeanStructuralElementInstance.
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
+	 * @return all children which could be found in the current Bean SEI
+	 */
+	List<ABeanStructuralElementInstance> getChildren();
+	
+	/**
+	 * Set method to set all children via ABeanStructuralElementInstance.
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
+	 * @param newBeanSeis a List of ABeanStructuralElementInstance wrapping StructuralElementInstances
+	 */
+	void setChildren(List<ABeanStructuralElementInstance> newBeanSeis);
+	
+	/**
 	 * This method hands back all deep child Bean wrapped StructuralElementInstances of a given Type 
 	 * @param beanSeiClazz The Type to be filtered for as java class
 	 * @param <SEI_TYPE> the generic of the BeanStructuralElementInstance
@@ -136,6 +153,20 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	 * @return the given Category assignment bean or null if none is attached
 	 */
 	<BEAN_TYPE extends IBeanCategoryAssignment> BEAN_TYPE getFirst(Class<BEAN_TYPE> catBeanClazz);
+	
+	/**
+	 * Get method to get all CategoryAssignments of the generic type BeanCategoryAssignment
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
+	 * @return a List of the given Category assignment beans. Operations on that list will not reflect into the underlying StructuralElementInstance
+	 */
+	List<BeanCategoryAssignment> getCategoryAssignments();
+	
+	/**
+	 * Set method to set all CategoryAssignments via BeanCategoryAssignments.
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
+	 * @param newCaBeans a List of BeanCategoryAssignments wrapping CategoryAssignments
+	 */
+	void setCategoryAssignments(List<BeanCategoryAssignment> newCaBeans);
 	
 	/**
 	 * Call this method to create a command to add a Bean SEI into the list of inheritances
@@ -175,6 +206,23 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	<SEI_TYPE extends IBeanStructuralElementInstance> List<SEI_TYPE> getSuperSeis(Class<SEI_TYPE> beanSeiClazz);
 
 	/**
+	 * This method hands back all super Bean wrapped StructuralElementInstances of the abstract type ABeanStructuralElementInstance
+	 * the current one is inheriting from 
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
+	 * @return all super Bean Seis
+	 */
+	List<ABeanStructuralElementInstance> getSuperSeis();
+
+	/**
+	 * Set method to set all super seis via ABeanStructuralElementInstance
+	 * The abstract type is used, because un-/marshalling can't handle the multiple inheritance
+	 * in the interface.
+	 * @param newBeanSeis a List of ABeanStructuralElementInstance wrapping StructuralElementInstances
+	 */
+	void setSuperSeis(List<ABeanStructuralElementInstance> newBeanSeis);
+
+	/**
 	 * @param beanSeiClazz The Type of SuperSeis of interest
 	 * @param <SEI_TYPE> the generic of the BeanStructuralElementInstance
 	 * @return all Bean-wrapped StructuralElementInstances of a given Type which this one inherits directly or indirectly
@@ -191,9 +239,17 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	
 	/**
 	 * Call this method to get the parent SEI bean of this bean
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
 	 * @return parent SEI bean or null if it could not be found
 	 */
-	BeanStructuralElementInstance getParentSeiBean();
+	BeanStructuralElementInstance getParent();
+	
+	/**
+	 * Call this method to set the parent SEI bean of this bean.
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
+	 * @param newParent the new parent SEI bean
+	 */
+	void setParent(BeanStructuralElementInstance newParent);
 	
 	/**
 	 * Removes all CA beans in the given List from this SEI bean

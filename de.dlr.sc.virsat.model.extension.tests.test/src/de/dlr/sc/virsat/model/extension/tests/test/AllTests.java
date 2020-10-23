@@ -86,7 +86,8 @@ import junit.framework.JUnit4TestAdapter;
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryCompositionTest.class,
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryReferenceTest.class,
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryCompositionArrayTest.class,
-				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryReferenceArrayTest.class
+				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryReferenceArrayTest.class,
+				de.dlr.sc.virsat.model.extension.tests.model.json.TestStructuralElementInstanceTest.class
 				})
 
 /**
