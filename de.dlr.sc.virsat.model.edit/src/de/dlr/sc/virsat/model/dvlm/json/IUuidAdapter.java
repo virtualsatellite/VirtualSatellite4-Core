@@ -17,51 +17,54 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 
 /**
- * Adapter for a ATypeInstance from/to a UUID
+ * Adapter for a IUuid from/to a UUID
  */
-public class TypeInstanceAdapter extends XmlAdapter<String, ATypeInstance> {
+public class IUuidAdapter extends XmlAdapter<String, IUuid> {
 
 	private ResourceSet resourceSet;
-	private Map<String, ATypeInstance> objectMap = new HashMap<String, ATypeInstance>();
+	private Map<String, IUuid> objectMap = new HashMap<String, IUuid>();
 	
-	public TypeInstanceAdapter() {
+	public IUuidAdapter() {
 		
 	}
 	
-	public TypeInstanceAdapter(ResourceSet resourceSet) {
+	public IUuidAdapter(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
 	}
 	
 	@Override
-	public String marshal(ATypeInstance ti) throws Exception {
-		return ti.getUuid().toString();
+	public String marshal(IUuid iuuid) throws Exception {
+		return iuuid.getUuid().toString();
 	}
 
 	@Override
-	public ATypeInstance unmarshal(String uuid) throws Exception {
+	public IUuid unmarshal(String uuid) throws Exception {
 		if (resourceSet == null) {
 			throw new NullPointerException("No resource set for unmarshalling set in the adapter");
+		}
+		if (uuid == null) {
+			throw new NullPointerException("No uuid provided");
 		}
 		
 		// Search for the type instance with the same uuid
 		EcoreUtil.getAllContents(resourceSet, true).forEachRemaining(object -> {
-			if (object instanceof ATypeInstance) {
-				ATypeInstance ti = (ATypeInstance) object;
-				if (ti.getUuid().toString().equals(uuid)) {
-					objectMap.put(uuid, ti);
+			if (object instanceof IUuid) {
+				IUuid iuuid = (IUuid) object;
+				if (iuuid.getUuid().toString().equals(uuid)) {
+					objectMap.put(uuid, iuuid);
 				}
 			}
 		});
 		
-		ATypeInstance aTypeInstance = objectMap.get(uuid);
+		IUuid iuuid = objectMap.get(uuid);
 		
-		if (aTypeInstance == null) {
-			throw new IllegalArgumentException("ATypeInstance with uuid " + uuid + " not found");
+		if (iuuid == null) {
+			throw new IllegalArgumentException("IUuid with uuid " + uuid + " not found");
 		}
-		return aTypeInstance;
+		return iuuid;
 	}
 	
 }

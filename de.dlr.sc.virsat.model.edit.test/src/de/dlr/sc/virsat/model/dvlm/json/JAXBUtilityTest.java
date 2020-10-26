@@ -86,8 +86,9 @@ public class JAXBUtilityTest {
 		assertNotNull(unmarshaller);
 		assertNotNull(unmarshaller.getEventHandler());
 		
-		assertNotNull("Adapter is set", unmarshaller.getAdapter(TypeInstanceAdapter.class));
+		assertNotNull("Adapter is set", unmarshaller.getAdapter(IUuidAdapter.class));
 		assertNotNull("Adapter is set", unmarshaller.getAdapter(ABeanObjectAdapter.class));
+		assertNotNull("Adapter is set", unmarshaller.getAdapter(ABeanStructuralElementInstanceAdapter.class));
 	}
 
 }
