@@ -51,22 +51,22 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
-public class CustomJsonProviderTest extends AServerRepositoryTest {
+public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 
-	private CustomJsonProvider provider;
+	private TransactionalJsonProvider provider;
 	private BeanStructuralElementInstance testBean;
 	private Class<?> type;
 	private Set<Class<?>> beanClass = new HashSet<>();
 	private MediaType mediaType;
 	private String testString = "test";
-	
+
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		
 		UserRegistry.getInstance().setSuperUser(true);
 		
-		provider = new CustomJsonProvider();
+		provider = new TransactionalJsonProvider();
 		provider.setServerRepository(testServerRepository);
 		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
 		
@@ -100,16 +100,9 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 		git.commit().setAll(true).setMessage("Initial commit").call();
 		git.push().call();
 	}
-	
-	@Override
-	public void tearDown() throws Exception {
-		super.tearDown();
-		
-		UserRegistry.getInstance().setSuperUser(false);
-	}
 
 	/**
-	 * Call writeTo and assert that the the output String is as expected
+	 * Call writeTo and assert that the the output String contains the test value
 	 * @return the output String
 	 * @throws WebApplicationException
 	 * @throws IOException
@@ -153,8 +146,8 @@ public class CustomJsonProviderTest extends AServerRepositoryTest {
 	// Test the unmarshalling
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testReadFrom() throws Exception {
-		
+	public void testReadFrom() throws WebApplicationException, IOException, NoHeadException, GitAPIException, InterruptedException {
+
 		int initialCommits = countCommits();
 		
 		String output = writeToAndAssert();

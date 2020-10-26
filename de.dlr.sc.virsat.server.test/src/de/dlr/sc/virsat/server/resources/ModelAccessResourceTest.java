@@ -68,7 +68,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private TestCategoryCompositionArray tcCompositionArray;
 	private TestCategoryReferenceArray tcReferenceArray;
 	
-	private BeanPropertyString tString;
+	private BeanPropertyString beanString;
 	private BeanPropertyBoolean tBool;
 	private BeanPropertyEnum tEnum;
 	private BeanPropertyFloat tFloat;
@@ -109,7 +109,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 
 		StructuralElementInstance sei = tSei.getStructuralElementInstance();
 		
-		tString = tcAllProperty.getTestStringBean();
+		beanString = tcAllProperty.getTestStringBean();
 		tBool = tcAllProperty.getTestBoolBean();
 		tEnum = tcAllProperty.getTestEnumBean();
 		tFloat = tcAllProperty.getTestFloatBean();
@@ -119,7 +119,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		tReferenceCa = tcReference.getTestRefCategoryBean();
 		tComposed = tcComposition.getTestSubCategoryBean();
 		
-		tcReference.setTestRefProperty(tString);
+		tcReference.setTestRefProperty(beanString);
 		tcReference.setTestRefCategory(tcAllProperty);
 		IBeanList<BeanPropertyReference<TestCategoryAllProperty>> catArray = tcReferenceArray.getTestCategoryReferenceArrayStaticBean();
 		for (BeanPropertyReference<TestCategoryAllProperty> element : catArray) {
@@ -127,7 +127,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		}
 		IBeanList<BeanPropertyReference<BeanPropertyString>> propArray = tcReferenceArray.getTestPropertyReferenceArrayStaticBean();
 		for (BeanPropertyReference<BeanPropertyString> element : propArray) {
-			element.setValue(tString);
+			element.setValue(beanString);
 		}
 		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
@@ -223,7 +223,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyStringGet() throws JAXBException {
-		testGetProperty(tString);
+		testGetProperty(beanString);
 	}
 	
 	@Test
@@ -253,7 +253,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyReferenceGet() throws JAXBException {
-		testGetProperty(tReferenceProp, new Class[] {tReferenceProp.getClass(), tString.getClass()});
+		testGetProperty(tReferenceProp, new Class[] {tReferenceProp.getClass(), beanString.getClass()});
 		testGetProperty(tReferenceCa, new Class[] {tReferenceProp.getClass(), tcAllProperty.getClass()});
 	}
 	
@@ -336,13 +336,11 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		// Manually marshall the Class to edit the json
 		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {BeanPropertyString.class});
 		StringWriter sw = new StringWriter();
-		jaxbUtility.getJsonMarshaller().marshal(tString, sw);
+		jaxbUtility.getJsonMarshaller().marshal(beanString, sw);
 		String jsonIn = sw.toString();
-		System.out.println(jsonIn);
-		jsonIn = jsonIn.replace("null", "\"testString\"");
-		System.out.println(jsonIn);
+		jsonIn = jsonIn.replace("null", "\"" + TEST_STRING + "\"");
 	
-		assertNull(tString.getValue());
+		assertNull(beanString.getValue());
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
@@ -350,7 +348,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
-		assertEquals("Model changed as expected", TEST_STRING, tString.getValue());
+		assertEquals("Model changed as expected", TEST_STRING, beanString.getValue());
 	}
 	
 	/**
@@ -410,7 +408,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		StringWriter sw = new StringWriter();
 		jaxbUtility.getJsonMarshaller().marshal(tComposed, sw);
 		String jsonIn = sw.toString();
-		System.out.println(jsonIn);
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
@@ -468,7 +465,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		StringWriter sw = new StringWriter();
 		jaxbUtility.getJsonMarshaller().marshal(tcCompositionArray, sw);
 		String jsonIn = sw.toString();
-		System.out.println(jsonIn);
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)

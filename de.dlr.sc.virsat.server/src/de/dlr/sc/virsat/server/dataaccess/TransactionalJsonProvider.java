@@ -58,7 +58,7 @@ import de.dlr.sc.virsat.server.repository.ServerRepository;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CustomJsonProvider extends MOXyJsonProvider {
+public class TransactionalJsonProvider extends MOXyJsonProvider {
 	
 	private ValidationEventHandler eventHandler;
 	
@@ -71,8 +71,8 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 				IUuidAdapter.class,
 				ABeanStructuralElementInstanceAdapter.class
 	));
-
-	public CustomJsonProvider() {
+	
+	public TransactionalJsonProvider() {
 		setFormattedOutput(true);
 		eventHandler = new DefaultValidationEventHandler();
 	}
@@ -84,8 +84,7 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 	}
 
 	/**
-	 * Get all category assignment and structural element instance classes
-	 * that are present in the current concepts
+	 * Get all category assignment classes that are present in the current concepts
 	 * @return Set<Class<?>> the classes
 	 */
 	private Set<Class<?>> getClassesToRegister() {
@@ -124,20 +123,20 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 	}
 	
 	@Override
-	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-		// Useful for debugging
-		Boolean isWriteable = super.isWriteable(type, genericType, annotations, mediaType);
-		return isWriteable;
-	}
-	
-	@Override
 	public void writeTo(Object object, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
 		// Useful for debugging
 		super.writeTo(object, type, genericType, annotations, mediaType, httpHeaders, entityStream);
 	}
-
+	
+	@Override
+	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+		// Useful for debugging
+		Boolean isWriteable = super.isWriteable(type, genericType, annotations, mediaType);
+		return isWriteable;
+	}
+	
 	@Override
 	protected void preReadFrom(Class<Object> type, Type genericType, Annotation[] annotations,
 			MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
@@ -153,28 +152,21 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException, WebApplicationException {
 		
-		AtomicExceptionReference<IOException> atomicIoException = new AtomicExceptionReference<>();
-		AtomicExceptionReference<WebApplicationException> atomicWebAppException = new AtomicExceptionReference<>();
-		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
-		
-		RecordingCommand recordingCommand = new ReadFromCommand(ed, 
-				atomicIoException, atomicWebAppException, atomicException,
+		ReadFromArguments arguments = new ReadFromArguments(
 				type, genericType, annotations, mediaType, httpHeaders, entityStream);
-		ed.getCommandStack().execute(recordingCommand);
+		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
 		
-		atomicIoException.throwIfSet();
-		atomicWebAppException.throwIfSet();
-		// Has to be thrown as RuntimeException because
-		// we can't change the method signature in the parent class
-		atomicException.throwAsRuntimeExceptionIfSet();
+		ed.getCommandStack().execute(readFromCommand);
 		
-		return recordingCommand.getResult().iterator().next();
+		readFromCommand.throwExceptionsIfSet();
+		
+		return readFromCommand.getResult().iterator().next();
 	}
 	
-	private class ReadFromCommand extends RecordingCommand {
-
-		
-		private Collection<Object> results = new ArrayList<>();
+	/**
+	 * POJO to bundle the arguments for the readFrom function
+	 */
+	private static class ReadFromArguments {
 		
 		private Class<Object> type;
 		private Type genericType;
@@ -182,49 +174,85 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 		private MediaType mediaType;
 		private MultivaluedMap<String, String> httpHeaders;
 		private InputStream entityStream;
+		
+		/**
+		 * Constructor with all required arguments
+		 * @param type
+		 * @param genericType
+		 * @param annotations
+		 * @param mediaType
+		 * @param httpHeaders
+		 * @param entityStream
+		 */
+		ReadFromArguments(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+				MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+			this.type = type;
+			this.genericType = type;
+			this.annotations = annotations;
+			this.mediaType = mediaType;
+			this.httpHeaders = httpHeaders;
+			this.entityStream = entityStream;
+		}
+		
+		public Class<Object> getType() {
+			return type;
+		}
+		
+		public Type getGenericType() {
+			return genericType;
+		}
+		
+		public Annotation[] getAnnotations() {
+			return annotations;
+		}
+		
+		public MediaType getMediaType() {
+			return mediaType;
+		}
+		
+		public MultivaluedMap<String, String> getHttpHeaders() {
+			return httpHeaders;
+		}
+		
+		public InputStream getEntityStream() {
+			return entityStream;
+		}
+	}
+	
+	private class ReadFromCommand extends RecordingCommand {
+		
+		private Collection<Object> results = new ArrayList<>();
+		private ReadFromArguments arguments;
 
 		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
 		private AtomicExceptionReference<IOException> atomicIoException;
 		private AtomicExceptionReference<Exception> atomicException;
 		
 		/**
-		 * Call ConfigurableMoxyJsonProvider.readFrom() over the
-		 * transactional editing domain
+		 * Create a command to call ConfigurableMoxyJsonProvider.readFrom()
+		 * over the transactional editing domain
 		 * @param domain the ed
-		 * @param atomicWebAppException 
-		 * @param atomicIoException 
-		 * @param atomicException 
-		 * @param type Class<Object>
-		 * @param genericType Type
-		 * @param annotations Annotation[]
-		 * @param mediaType MediaType
-		 * @param httpHeaders MultivaluedMap<String, String>
-		 * @param entityStream InputStream
+		 * @param arguments for the readFrom function 
 		 */
-		ReadFromCommand(TransactionalEditingDomain domain,
-				AtomicExceptionReference<IOException> atomicIoException, 
-				AtomicExceptionReference<WebApplicationException> atomicWebAppException,
-				AtomicExceptionReference<Exception> atomicException,
-				Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType,
-				MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+		ReadFromCommand(TransactionalEditingDomain domain, ReadFromArguments arguments) {
 			super(domain);
+			this.arguments = arguments;
 			
-			this.atomicIoException = atomicIoException;
-			this.atomicWebAppException = atomicWebAppException;
-			this.atomicException = atomicException;
-			
-			this.type = type;
-			this.genericType = genericType;
-			this.annotations = annotations;
-			this.mediaType = mediaType;
-			this.httpHeaders = httpHeaders;
-			this.entityStream = entityStream;
+			atomicIoException = new AtomicExceptionReference<>();
+			atomicWebAppException = new AtomicExceptionReference<>();
+			atomicException = new AtomicExceptionReference<>();
 		}
 
 		@Override
 		protected void doExecute() {
 			try {
-				Object result = CustomJsonProvider.super.readFrom(type, genericType, annotations, mediaType, httpHeaders, entityStream);
+				Object result = TransactionalJsonProvider.super.readFrom(
+					arguments.getType(),
+					arguments.getGenericType(),
+					arguments.getAnnotations(),
+					arguments.getMediaType(),
+					arguments.getHttpHeaders(),
+					arguments.getEntityStream());
 				resourceSet.saveAllResources(new NullProgressMonitor(), ed);
 				repo.syncRepository();
 				results.add(result);
@@ -243,6 +271,14 @@ public class CustomJsonProvider extends MOXyJsonProvider {
 		@Override
 		public Collection<?> getResult() {
 			return results;
+		}
+		
+		public void throwExceptionsIfSet() throws IOException, WebApplicationException {
+			atomicWebAppException.throwIfSet();
+			atomicIoException.throwIfSet();
+			// Has to be thrown as RuntimeException because
+			// we can't change the method signature in the parent class
+			atomicException.throwAsRuntimeExceptionIfSet();
 		}
 	}
 	

@@ -18,7 +18,7 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
-import de.dlr.sc.virsat.server.dataaccess.CustomJsonProvider;
+import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.resources.AccessTestResource;
 import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
@@ -57,15 +57,15 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 			register(DynamicRepositoryFilterBinding.class);
 			
 			// Register a custom json provider that extends the default moxy provider
-			final CustomJsonProvider provider = new CustomJsonProvider();
+			final TransactionalJsonProvider provider = new TransactionalJsonProvider();
 			final AbstractBinder binder = new AbstractBinder() {
 				@Override
 				public void configure() {
-					bind(provider).to(CustomJsonProvider.class);
+					bind(provider).to(TransactionalJsonProvider.class);
 				}
 			};
 			register(binder);
-			register(CustomJsonProvider.class);
+			register(TransactionalJsonProvider.class);
 		}
 	}
 }

@@ -35,12 +35,7 @@ public class RepositoryUtility {
 	/**
 	 * Traverses a Repository and all Seis
 	 */
-	static class UuidTraverser implements ITreeTraverserMatcher<IUuid> {
-
-		@Override
-		public boolean isMatching(IUuid treeNode) {
-			return false;
-		}
+	abstract static class UuidTraverser implements ITreeTraverserMatcher<IUuid> {
 
 		@Override
 		public void processMatch(IUuid treeNode, IUuid matchingParent) {

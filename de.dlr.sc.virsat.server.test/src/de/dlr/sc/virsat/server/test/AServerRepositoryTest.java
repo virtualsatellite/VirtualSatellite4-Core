@@ -15,9 +15,8 @@ import java.nio.file.Path;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jgit.api.Git;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -27,15 +26,14 @@ import de.dlr.sc.virsat.team.VersionControlSystem;
 
 public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 
-	protected static ServerRepository testServerRepository;
-	protected static String projectName;
-	protected static Path pathRepoRemote = null;
-	protected static File localRepoHome = null;
+	protected ServerRepository testServerRepository;
+	protected String projectName;
+	protected Path pathRepoRemote; 
 
-	@BeforeClass
-	public static void addServerRepository() throws Exception {
+	@Before
+	public void addServerRepository() throws Exception {
 		pathRepoRemote = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteGitRemote_");
-		localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
+		File localRepoHome = VirSatFileUtils.createAutoDeleteTempDirectory("VirtualSatelliteLocalRepoHome_").toFile();
 		File fileGitRemoteRepo = pathRepoRemote.toFile();
 		Git.init().setDirectory(fileGitRemoteRepo).setBare(true).call();
 
@@ -54,16 +52,12 @@ public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
 			 testProjectConfiguration);
 
 		testServerRepository.checkoutRepository();
-	}
-
-	@Before
-	public void addRepoToRegistry() {
-		// AGitAndJettyServerTest clears the RepoRegistry in the @After method so we have to create the mapping every time
+		
 		RepoRegistry.getInstance().addRepository(projectName, testServerRepository);
 	}
 	
-	@AfterClass
-	public static void cleanUpServerRepository() throws CoreException, IOException {
+	@After
+	public void cleanUpServerRepository() throws CoreException, IOException {
 		testServerRepository.removeRepository();
 	}
 
