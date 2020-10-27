@@ -32,6 +32,7 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
+// TODO: use AProjectTest?
 public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 
 	private RepositoryConfiguration testProjectConfiguration;
