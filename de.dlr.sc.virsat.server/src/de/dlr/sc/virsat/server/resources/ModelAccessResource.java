@@ -25,7 +25,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.util.EList;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
@@ -40,11 +39,12 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
@@ -244,7 +244,7 @@ public class ModelAccessResource {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getRootSeis() {
 			try {
-				EList<StructuralElementInstance> rootSeis = repository.getRootEntities();
+				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 				List<ABeanStructuralElementInstance> beans = new ArrayList<ABeanStructuralElementInstance>();
 				
 				for (StructuralElementInstance sei : rootSeis) {
@@ -270,10 +270,9 @@ public class ModelAccessResource {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getSei(@PathParam("seiUuid") String seiUuid) {
 			try {
-				return Response.ok(
-						new BeanStructuralElementInstanceFactory().getInstanceFor(
-								RepositoryUtility.findSei(seiUuid, repository)
-						)).build();
+				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+				IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
+				return Response.ok(beanSei).build();
 			} catch (CoreException e) {
 				return createBadRequestResponse(e.getMessage());
 			}

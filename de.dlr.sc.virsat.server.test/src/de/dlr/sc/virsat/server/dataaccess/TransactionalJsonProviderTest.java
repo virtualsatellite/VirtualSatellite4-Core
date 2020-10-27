@@ -37,6 +37,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -100,6 +101,11 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		git.commit().setAll(true).setMessage("Initial commit").call();
 		git.push().call();
 	}
+	
+	@After
+	public void tearDown() {
+		UserRegistry.getInstance().setSuperUser(false);
+	}
 
 	/**
 	 * Call writeTo and assert that the the output String contains the test value
@@ -136,7 +142,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		Iterator<RevCommit> iterator = git.log().call().iterator();
 		int commits = 0;
 		while (iterator.hasNext()) {
-			System.out.println(iterator.next().getFullMessage());
+			iterator.next();
 			commits++;
 		}
 		git.close();
