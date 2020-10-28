@@ -10,6 +10,9 @@
 package de.dlr.sc.virsat.server.resources;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -17,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,6 +29,7 @@ import org.eclipse.core.runtime.CoreException;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
@@ -33,10 +38,13 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
@@ -83,7 +91,7 @@ public class ModelAccessResource {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			VirSatTransactionalEditingDomain ed = repo.getEd();
-			provider.setEd(ed);
+			provider.setServerRepository(repo);
 			return new RepoModelAccessResource(ed.getResourceSet().getRepository());
 		}
 
@@ -224,6 +232,56 @@ public class ModelAccessResource {
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response putCa(ABeanCategoryAssignment bean) {
+			return Response.status(Response.Status.OK).build();
+		}
+		
+		/**
+		 * Returns a response with a list of the root seis
+		 * @return a server response
+		 */
+		@GET
+		@Path(ROOT_SEIS)
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getRootSeis() {
+			try {
+				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
+				List<ABeanStructuralElementInstance> beans = new ArrayList<ABeanStructuralElementInstance>();
+				
+				for (StructuralElementInstance sei : rootSeis) {
+					beans.add((ABeanStructuralElementInstance) new BeanStructuralElementInstanceFactory().getInstanceFor(sei));
+				}
+				
+				GenericEntity<List<ABeanStructuralElementInstance>> genericEntityList =
+						new GenericEntity<List<ABeanStructuralElementInstance>>(beans) { };
+
+				return Response.ok(genericEntityList).build();
+			} catch (CoreException e) {
+				return createBadRequestResponse(e.getMessage());
+			}
+		}
+		
+		/**
+		 * Returns a response with the sei with the seiUuid
+		 * @param seiUuid uuid of the sei
+		 * @return a server response
+		 */
+		@GET
+		@Path(SEI + "/{seiUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public Response getSei(@PathParam("seiUuid") String seiUuid) {
+			try {
+				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+				IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
+				return Response.ok(beanSei).build();
+			} catch (CoreException e) {
+				return createBadRequestResponse(e.getMessage());
+			}
+		}
+		
+		@PUT
+		@Path(SEI)
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response putSei(ABeanStructuralElementInstance bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 	

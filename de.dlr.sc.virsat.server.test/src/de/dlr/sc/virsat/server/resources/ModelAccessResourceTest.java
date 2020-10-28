@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 
@@ -21,11 +22,13 @@ import javax.xml.bind.JAXBException;
 
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
+import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
@@ -35,6 +38,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -54,8 +58,10 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 
 	private Concept conceptTest;
 	private VirSatResourceSet resourceSet;
+	private VirSatTransactionalEditingDomain ed;
 	
 	private TestStructuralElement tSei;
+	private StructuralElementInstance sei;
 	
 	private TestCategoryAllProperty tcAllProperty;
 	private TestCategoryBeanA tcBeanA;
@@ -66,21 +72,21 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private TestCategoryReferenceArray tcReferenceArray;
 	
 	private BeanPropertyString beanString;
-	private BeanPropertyBoolean tBool;
-	private BeanPropertyEnum tEnum;
-	private BeanPropertyFloat tFloat;
-	private BeanPropertyInt tInt;
-	private BeanPropertyResource tResource;
-	private BeanPropertyReference<BeanPropertyString> tReferenceProp;
-	private BeanPropertyComposed<TestCategoryAllProperty> tComposed;
-	private BeanPropertyReference<TestCategoryAllProperty> tReferenceCa;
+	private BeanPropertyBoolean beanBool;
+	private BeanPropertyEnum beanEnum;
+	private BeanPropertyFloat beanFloat;
+	private BeanPropertyInt beanInt;
+	private BeanPropertyResource beanResource;
+	private BeanPropertyReference<BeanPropertyString> beanReferenceProp;
+	private BeanPropertyComposed<TestCategoryAllProperty> beanComposed;
+	private BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 
 	private static final String TEST_STRING = "testString";
 	
 	@Before
 	public void setUpModel() throws Exception {
 
-		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
+		ed = testServerRepository.getEd();
 		resourceSet = ed.getResourceSet();
 
 		conceptTest = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.tests");
@@ -104,17 +110,17 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		tSei.add(tcCompositionArray);
 		tSei.add(tcReferenceArray);
 
-		StructuralElementInstance sei = tSei.getStructuralElementInstance();
+		sei = tSei.getStructuralElementInstance();
 		
 		beanString = tcAllProperty.getTestStringBean();
-		tBool = tcAllProperty.getTestBoolBean();
-		tEnum = tcAllProperty.getTestEnumBean();
-		tFloat = tcAllProperty.getTestFloatBean();
-		tInt = tcAllProperty.getTestIntBean();
-		tResource = tcAllProperty.getTestResourceBean();
-		tReferenceProp = tcReference.getTestRefPropertyBean();
-		tReferenceCa = tcReference.getTestRefCategoryBean();
-		tComposed = tcComposition.getTestSubCategoryBean();
+		beanBool = tcAllProperty.getTestBoolBean();
+		beanEnum = tcAllProperty.getTestEnumBean();
+		beanFloat = tcAllProperty.getTestFloatBean();
+		beanInt = tcAllProperty.getTestIntBean();
+		beanResource = tcAllProperty.getTestResourceBean();
+		beanReferenceProp = tcReference.getTestRefPropertyBean();
+		beanReferenceCa = tcReference.getTestRefCategoryBean();
+		beanComposed = tcComposition.getTestSubCategoryBean();
 		
 		tcReference.setTestRefProperty(beanString);
 		tcReference.setTestRefCategory(tcAllProperty);
@@ -130,9 +136,22 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				ed.getResourceSet().getRepository().getActiveConcepts().add(conceptTest);
-				ed.getResourceSet().getRepository().getRootEntities().add(sei);
+				resourceSet.getRepository().getActiveConcepts().add(conceptTest);
+				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
+			}
+		};
+		ed.getCommandStack().execute(recordingCommand);
+	}
+	
+	@After
+	public void tearDownModel() throws Exception {		
+		RecordingCommand recordingCommand = new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				resourceSet.getRepository().getActiveConcepts().remove(conceptTest);
+				resourceSet.getRepository().getRootEntities().remove(sei);
+				resourceSet.removeStructuralElementInstanceResource(sei);
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
@@ -141,6 +160,27 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	/*
 	 * Test GET various elements
 	 */
+	@Test
+	public void testRootSeisGet() {
+		Response response = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.get();
+		
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		// This would return a List<ABeanStructuralElementInstance>
+		// but because of problems with unmarshalling the list of abstract objects,
+		// we just use a String here
+		String entity = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.get(String.class);
+		
+		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
+	}
 	
 	/**
 	 * Get a testSubject at a path from the server
@@ -152,7 +192,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 * @throws JAXBException
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testGet(IBeanObject testSubject, String path, Class[] classes) throws JAXBException {
+	private void testGet(IBeanUuid testSubject, String path, Class[] classes) throws JAXBException {
 		String uuid = testSubject.getUuid();
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
@@ -178,6 +218,15 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertEquals("Marshalled object as expected", expected, entity);
 	}
 	
+	private void testGetSei(IBeanUuid testSubject) throws JAXBException {
+		testGet(testSubject, ModelAccessResource.SEI, new Class[] {testSubject.getClass()});
+	}
+	
+	@Test
+	public void testSeiGet() throws JAXBException {
+		testGetSei(tSei);
+	}
+	
 	@SuppressWarnings("rawtypes")
 	private void testGetProperty(IBeanObject testSubject) throws JAXBException {
 		testGet(testSubject, ModelAccessResource.PROPERTY, new Class[] {testSubject.getClass()});
@@ -195,38 +244,38 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyBoolGet() throws JAXBException {
-		testGetProperty(tBool);
+		testGetProperty(beanBool);
 	}
 	
 	@Test
 	public void testPropertyEnumGet() throws JAXBException {
-		testGetProperty(tEnum);
+		testGetProperty(beanEnum);
 	}
 	
 	@Test
 	public void testPropertyFloatGet() throws JAXBException {
-		testGetProperty(tFloat);
+		testGetProperty(beanFloat);
 	}
 	
 	@Test
 	public void testPropertyIntGet() throws JAXBException {
-		testGetProperty(tInt);
+		testGetProperty(beanInt);
 	}
 	
 	@Test
 	public void testPropertyResourceGet() throws JAXBException {
-		testGetProperty(tResource);
+		testGetProperty(beanResource);
 	}
 	
 	@Test
 	public void testPropertyReferenceGet() throws JAXBException {
-		testGetProperty(tReferenceProp, new Class[] {tReferenceProp.getClass(), beanString.getClass()});
-		testGetProperty(tReferenceCa, new Class[] {tReferenceProp.getClass(), tcAllProperty.getClass()});
+		testGetProperty(beanReferenceProp, new Class[] {beanReferenceProp.getClass(), beanString.getClass()});
+		testGetProperty(beanReferenceCa, new Class[] {beanReferenceProp.getClass(), tcAllProperty.getClass()});
 	}
 	
 	@Test
 	public void testPropertyComposedGet() throws JAXBException {
-		testGetProperty(tComposed, new Class[] {tComposed.getClass(), tcAllProperty.getClass()});
+		testGetProperty(beanComposed, new Class[] {beanComposed.getClass(), tcAllProperty.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -277,6 +326,26 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	/*
 	 * Test PUT various elements
 	 */
+	
+	/**
+	 * PUT a sei and assert that the server returns OK
+	 * @param sei bean to PUT
+	 */
+	private void testPutSei(IBeanStructuralElementInstance sei) {
+		
+		Response response = webTarget.path(ModelAccessResource.PATH)
+				.path(projectName)
+				.path(ModelAccessResource.SEI)
+				.request()
+				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+	}
+	
+	@Test
+	public void testSeiPut() throws JAXBException {
+		testPutSei(tSei);
+	}
+	
 	@Test
 	public void testPropertyStringPutChangesModel() throws JAXBException {
 		
@@ -317,33 +386,38 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyBoolPut() throws JAXBException {
-		testPutProperty(tBool, ModelAccessResource.BOOLEAN);
+		testPutProperty(beanBool, ModelAccessResource.BOOLEAN);
+	}
+	
+	@Test
+	public void testPropertyStringPut() throws JAXBException {
+		testPutProperty(beanString, ModelAccessResource.STRING);
 	}
 	
 	@Test
 	public void testPropertyEnumPut() throws JAXBException {
-		testPutProperty(tEnum, ModelAccessResource.ENUM);
+		testPutProperty(beanEnum, ModelAccessResource.ENUM);
 	}
 	
 	@Test
 	public void testPropertyFloatPut() throws JAXBException {
-		testPutProperty(tFloat, ModelAccessResource.FLOAT);
+		testPutProperty(beanFloat, ModelAccessResource.FLOAT);
 	}
 	
 	@Test
 	public void testPropertyIntPut() throws JAXBException {
-		testPutProperty(tInt, ModelAccessResource.INT);
+		testPutProperty(beanInt, ModelAccessResource.INT);
 	}
 	
 	@Test
 	public void testPropertyResourcePut() throws JAXBException {
-		testPutProperty(tResource, ModelAccessResource.RESOURCE);
+		testPutProperty(beanResource, ModelAccessResource.RESOURCE);
 	}
 	
 	@Test
 	public void testPropertyReferencePut() throws JAXBException {
-		testPutProperty(tReferenceProp, ModelAccessResource.REFERENCE);
-		testPutProperty(tReferenceCa, ModelAccessResource.REFERENCE);
+		testPutProperty(beanReferenceProp, ModelAccessResource.REFERENCE);
+		testPutProperty(beanReferenceCa, ModelAccessResource.REFERENCE);
 	}
 	
 	@Test
@@ -353,7 +427,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		// the TestCategoryAllProperty right because of generics
 		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {BeanPropertyComposed.class, TestCategoryAllProperty.class});
 		StringWriter sw = new StringWriter();
-		jaxbUtility.getJsonMarshaller().marshal(tComposed, sw);
+		jaxbUtility.getJsonMarshaller().marshal(beanComposed, sw);
 		String jsonIn = sw.toString();
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)

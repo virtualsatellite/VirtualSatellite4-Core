@@ -37,4 +37,5 @@ Import-Package: de.dlr.sc.virsat.model.concept.types,
  de.dlr.sc.virsat.model.concept.types.category,
  de.dlr.sc.virsat.model.concept.types.factory,
  de.dlr.sc.virsat.model.concept.types.property,
+ de.dlr.sc.virsat.model.concept.types.structural,
  de.dlr.sc.virsat.model.dvlm.json
