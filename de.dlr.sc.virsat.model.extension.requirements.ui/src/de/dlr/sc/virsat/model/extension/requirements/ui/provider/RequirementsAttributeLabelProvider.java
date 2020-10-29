@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.swt.graphics.Image;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -27,8 +28,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyIns
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
+import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -49,6 +50,11 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	public static final int REQUIREMENT_TRACE_TARGET_PROPERTY_NUMBER = 0;
 
 	public static final String EMPTY_TRACE_STRING = "-";
+	
+	public static final String ICON_STATUS_OPEN_PATH = "resources/icons/Open.gif";
+	public static final String ICON_STATUS_COMPLIANT_PATH = "resources/icons/Compliant.gif";
+	public static final String ICON_STATUS_NON_COMPLIANT_PATH = "resources/icons/NonCompliant.gif";
+	public static final String ICON_STATUS_PARTLY_COMPLIANT_PATH = "resources/icons/PartlyCompliant.gif";
 
 	protected PropertyInstanceValueSwitch valueSwitch = PreferencedPropertyInstanceValueSwitchFactory.createInstance();
 
@@ -158,24 +164,41 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 			Requirement requirement = new Requirement((CategoryAssignment) object);
 
 			if (columnIndex == STATUS_COLUMN) {
-				return super.getColumnImage(requirement.getStatus(), columnIndex);
-			}
-
-			if (columnIndex > STATUS_COLUMN) {
-				int attIndex = columnIndex - 1; // Status Column
-				if (requirement.getReqType() == null || requirement.getReqType().getAttributes() == null
-						|| attIndex >= requirement.getReqType().getAttributes().size()) {
-					return null;
-				}
-				RequirementAttribute attDef = requirement.getReqType().getAttributes().get(attIndex);
-
-				return super.getColumnImage(attDef, columnIndex);
-
+				return getStatusIcon(requirement.getStatus());
 			}
 
 		}
 
-		return super.getColumnImage(object, columnIndex);
+		return null;
+	}
+	
+	/**
+	 * Get the icon for the requirement status
+	 * @param statusValue the current status value
+	 * @return the image
+	 */
+	protected Image getStatusIcon(String statusValue) {
+		if (statusValue == null) {
+			return null;
+		}
+		String imagePath = ICON_STATUS_OPEN_PATH;
+		switch (statusValue) {
+			case Requirement.STATUS_Open_NAME:
+				imagePath = ICON_STATUS_OPEN_PATH;
+				break;
+			case Requirement.STATUS_NonCompliant_NAME:
+				imagePath = ICON_STATUS_NON_COMPLIANT_PATH;
+				break;
+			case Requirement.STATUS_PartialCompliant_NAME:
+				imagePath = ICON_STATUS_PARTLY_COMPLIANT_PATH;
+				break;
+			case Requirement.STATUS_FullyCompliant_NAME:
+				imagePath = ICON_STATUS_COMPLIANT_PATH;
+				break;
+			default:
+				return null;
+		}
+		return ExtendedImageRegistry.INSTANCE.getImage(Activator.getImageDescriptor(imagePath));
 	}
 
 	/**
