@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
 /**
  * Class to wrap FloatPropertyInstances
- * @author fisc_ph
  *
  */
 public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
@@ -40,7 +39,7 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	 * @param uvpi the type instance to be used
 	 */
 	public BeanPropertyFloat(UnitValuePropertyInstance uvpi) {
-		setTypeInstance(uvpi);
+		super(uvpi);
 	}
 	
 	@Override

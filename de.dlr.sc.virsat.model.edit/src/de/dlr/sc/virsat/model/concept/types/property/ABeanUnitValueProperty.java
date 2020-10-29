@@ -15,29 +15,33 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 
-// TODO: update
 /**
  * Abstract implementation to the interface dealing with Attributes with QUDV unit
- * @author fisc_ph
  *
  * @param <V_TYPE> The value type of this bean
  */
-// TODO: can we extend ABeanValueProperty?
-public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanProperty<UnitValuePropertyInstance, V_TYPE> implements IBeanProperty<UnitValuePropertyInstance, V_TYPE>, IBeanUnitProperty {	
+public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<UnitValuePropertyInstance, V_TYPE> implements IBeanUnitProperty {	
+	
+	public ABeanUnitValueProperty() {
+		super();
+	}
+	
+	public ABeanUnitValueProperty(UnitValuePropertyInstance uvpi) {
+		super(uvpi);
+	}
 	
 	@Override
 	public boolean isSet() {
-		return ti.getValue() != null && !ti.getValue().equals("");
+		return super.isSet() && !ti.getValue().equals("");
 	}
 	
 	@Override
 	public void unset() {
-		ti.setValue(null);
+		super.unset();
 	}
 	
 	/**

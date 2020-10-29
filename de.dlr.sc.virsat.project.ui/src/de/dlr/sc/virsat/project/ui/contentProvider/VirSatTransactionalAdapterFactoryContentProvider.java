@@ -158,7 +158,7 @@ public class VirSatTransactionalAdapterFactoryContentProvider extends org.eclips
 	 * @param changedObject The object that will be changed for example the StringPropertyInstance
 	 * @param notifyObject The object that should also receive a notification such as the ReferencePropertyInstance so it can notify its content provider correctly
 	 */
-	protected void redirectNotification(ABeanValueProperty<?> changedObject, Object notifyObject) {
+	protected void redirectNotification(ABeanValueProperty<?, ?> changedObject, Object notifyObject) {
 		redirectNotification(changedObject.getTypeInstance(), notifyObject);
 	}
 	

@@ -20,10 +20,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 
 /**
  * Class to wrap BooleanPropertyInstances
- * @author fisc_ph
  *
  */
-public class BeanPropertyBoolean extends ABeanValueProperty<Boolean> {
+public class BeanPropertyBoolean extends ABeanValueProperty<ValuePropertyInstance, Boolean> {
 
 	/**
 	 * Standard Constructor
@@ -36,7 +35,7 @@ public class BeanPropertyBoolean extends ABeanValueProperty<Boolean> {
 	 * @param vpi the type instance to be used
 	 */
 	public BeanPropertyBoolean(ValuePropertyInstance vpi) {
-		setTypeInstance(vpi);
+		super(vpi);
 	}
 	
 	@Override

@@ -10,18 +10,21 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 
+/**
+ * Core functionality for a Property Bean and abstract implementation to the interface
+ *
+ * @param <P_TYPE> The property bean type
+ * @param <V_TYPE> The value type of the bean
+ */
 public abstract class ABeanProperty<P_TYPE extends APropertyInstance, V_TYPE> extends ABeanObject<P_TYPE> implements IBeanProperty<P_TYPE, V_TYPE> {
 
-	@SuppressWarnings("unchecked")
-	public ABeanProperty(ATypeInstance ti) {
-		this.ti = (P_TYPE) ti;
-	}
-	
 	public ABeanProperty() {
 		super();
 	}
 	
+	public ABeanProperty(APropertyInstance ti) {
+		super(ti);
+	}
 }
