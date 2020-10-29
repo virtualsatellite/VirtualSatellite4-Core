@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ * Copyright (c) 2020 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 
 //TODO: update
@@ -20,7 +19,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  * @param <V_TYPE> Value type of the Bean
  *
  */
-public abstract class ABeanValueProperty<V_TYPE> extends ABeanObject<ValuePropertyInstance> implements IBeanProperty<ValuePropertyInstance, V_TYPE> {
+public abstract class ABeanValueProperty<V_TYPE> extends ABeanProperty<ValuePropertyInstance, V_TYPE> implements IBeanProperty<ValuePropertyInstance, V_TYPE> {
 	
 	@Override
 	public boolean isSet() {

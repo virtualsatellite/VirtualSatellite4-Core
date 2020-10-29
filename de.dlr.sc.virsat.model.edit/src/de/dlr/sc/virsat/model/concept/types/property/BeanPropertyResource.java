@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.json.UriAdapter;
  * @author fisc_ph
  *
  */
-public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> implements IBeanProperty<ResourcePropertyInstance, URI> {
+public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance, URI> implements IBeanProperty<ResourcePropertyInstance, URI> {
 
 	/**
 	 * Default constructor

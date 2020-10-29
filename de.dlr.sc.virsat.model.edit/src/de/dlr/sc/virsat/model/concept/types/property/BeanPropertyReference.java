@@ -29,7 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
  * @param <BEAN_TYPE> type of the referenced bean
  */
-public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanObject<ReferencePropertyInstance> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
+public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanProperty<ReferencePropertyInstance, BEAN_TYPE> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyReference() { }
 

@@ -21,6 +21,7 @@ import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
 
@@ -28,7 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
  * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
  * @param <BEAN_TYPE> the reference type
  */
-public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanObject<ComposedPropertyInstance> implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
+public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanProperty<ComposedPropertyInstance, BEAN_TYPE>  implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyComposed() { }
 	

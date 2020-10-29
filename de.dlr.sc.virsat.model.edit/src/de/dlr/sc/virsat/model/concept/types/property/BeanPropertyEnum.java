@@ -30,7 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
  * @author fisc_ph
  *
  */
-public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> implements IBeanProperty<EnumUnitPropertyInstance, String>, IBeanUnitProperty {
+public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, String> implements IBeanProperty<EnumUnitPropertyInstance, String>, IBeanUnitProperty {
 
 	/**
 	 * standard Constructor

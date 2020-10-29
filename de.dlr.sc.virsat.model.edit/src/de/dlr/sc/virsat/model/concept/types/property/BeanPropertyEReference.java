@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
  * Bean class to warp EObject values of EReferencePropertyInstances. Supports getting and setting values via command.
  * @param <Type> the reference type
  */
-public class BeanPropertyEReference<Type extends EObject> extends ABeanObject<EReferencePropertyInstance> implements IBeanProperty<EReferencePropertyInstance, Type> {
+public class BeanPropertyEReference<Type extends EObject> extends ABeanProperty<EReferencePropertyInstance, Type> implements IBeanProperty<EReferencePropertyInstance, Type> {
 
 	/**
 	 * Standard Constructor
