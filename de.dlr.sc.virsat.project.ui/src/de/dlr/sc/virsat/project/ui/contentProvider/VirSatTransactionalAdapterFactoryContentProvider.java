@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
+import de.dlr.sc.virsat.model.concept.types.property.ABeanValueProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.util.VirSatTransactionalEditingDomainHelper;
@@ -158,7 +158,7 @@ public class VirSatTransactionalAdapterFactoryContentProvider extends org.eclips
 	 * @param changedObject The object that will be changed for example the StringPropertyInstance
 	 * @param notifyObject The object that should also receive a notification such as the ReferencePropertyInstance so it can notify its content provider correctly
 	 */
-	protected void redirectNotification(ABeanProperty<?> changedObject, Object notifyObject) {
+	protected void redirectNotification(ABeanValueProperty<?> changedObject, Object notifyObject) {
 		redirectNotification(changedObject.getTypeInstance(), notifyObject);
 	}
 	

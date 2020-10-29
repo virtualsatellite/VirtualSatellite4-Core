@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropert
  * @author fisc_ph
  *
  */
-public class BeanPropertyInt extends ABeanUnitProperty<Long> {
+public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 
 	/**
 	 * Standard Constructor

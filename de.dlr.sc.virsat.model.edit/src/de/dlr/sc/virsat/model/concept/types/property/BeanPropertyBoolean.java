@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  * @author fisc_ph
  *
  */
-public class BeanPropertyBoolean extends ABeanProperty<Boolean> {
+public class BeanPropertyBoolean extends ABeanValueProperty<Boolean> {
 
 	/**
 	 * Standard Constructor

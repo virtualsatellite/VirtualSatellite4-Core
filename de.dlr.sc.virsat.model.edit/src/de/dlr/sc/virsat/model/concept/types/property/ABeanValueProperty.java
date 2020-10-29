@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.concept.types.property;
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 
+//TODO: update
 /**
  * Abstract implementation to the interface dealing with Attributes without QUDV unit
  * @author fisc_ph
@@ -19,7 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  * @param <V_TYPE> Value type of the Bean
  *
  */
-public abstract class ABeanProperty<V_TYPE> extends ABeanObject<ValuePropertyInstance> implements IBeanProperty<ValuePropertyInstance, V_TYPE> {
+public abstract class ABeanValueProperty<V_TYPE> extends ABeanObject<ValuePropertyInstance> implements IBeanProperty<ValuePropertyInstance, V_TYPE> {
 	
 	@Override
 	public boolean isSet() {
