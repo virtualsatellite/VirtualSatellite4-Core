@@ -34,8 +34,7 @@ import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
-// TODO: rename after merge
-public abstract class AGitAndJettyServerTest extends AConceptTestCase {
+public abstract class AJettyServerTest extends AConceptTestCase {
 
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();

@@ -29,11 +29,10 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
-import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
+import de.dlr.sc.virsat.server.test.AJettyServerTest;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-// TODO: use AProjectTest?
-public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
+public class ProjectManagementResourceTest extends AJettyServerTest {
 
 	private RepositoryConfiguration testProjectConfiguration;
 

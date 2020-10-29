@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-public abstract class AServerRepositoryTest extends AGitAndJettyServerTest {
+public abstract class AServerRepositoryTest extends AJettyServerTest {
 
 	protected static ServerRepository testServerRepository;
 	protected static String projectName;
