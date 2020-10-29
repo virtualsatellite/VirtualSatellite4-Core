@@ -117,7 +117,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 		// Get the containing SEI bean
 		IBeanStructuralElementInstance beanSei = getParent();
 		if (beanSei != null) {
-			BeanStructuralElementInstance parent = beanSei.getParentSeiBean();
+			BeanStructuralElementInstance parent = beanSei.getParent();
 			
 			while (parent != null) {
 				// Get the next parent and check if there is CA of interest attached
@@ -126,7 +126,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 					return caBean;
 				}
 				// Nothing found. try the next parent
-				parent = parent.getParentSeiBean();
+				parent = parent.getParent();
 			}
 		}
 		

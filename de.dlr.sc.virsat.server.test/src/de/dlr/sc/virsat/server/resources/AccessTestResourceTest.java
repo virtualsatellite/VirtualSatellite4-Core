@@ -62,6 +62,6 @@ public class AccessTestResourceTest extends AGitAndJettyServerTest {
 		String expectedJson = "{\"UUID\":\"data\"}";
 		
 		assertEquals("Server response is correct", expectedResponse, serverResponse);
-		assertEquals("Server json paylaod is correct", expectedJson, serverJson);
+		assertEquals("Server json paylaod is correct", expectedJson, serverJson.replaceAll("\\s+", ""));
 	}
 }

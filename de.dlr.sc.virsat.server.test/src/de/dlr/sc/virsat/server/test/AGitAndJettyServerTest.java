@@ -32,13 +32,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
-public abstract class AGitAndJettyServerTest {
+public abstract class AGitAndJettyServerTest extends AConceptTestCase {
 
 	protected File pathToTempUpstreamRepository;
+	private Git gitInstance;
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 	
@@ -85,12 +87,13 @@ public abstract class AGitAndJettyServerTest {
 	public void setUp() throws Exception {
 		pathToTempUpstreamRepository = makeAbsolute(new File("VirSatUpstreamRepo"));
 		FileUtils.deleteQuietly(pathToTempUpstreamRepository);
-		Git.init().setDirectory(pathToTempUpstreamRepository).call();
+		gitInstance = Git.init().setDirectory(pathToTempUpstreamRepository).call();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		RepoRegistry.getInstance().getRepositories().clear();
+		gitInstance.getRepository().close();
 		FileUtils.forceDelete(pathToTempUpstreamRepository);
 	}
 	

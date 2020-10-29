@@ -1,0 +1,45 @@
+{
+   "type" : "testStructuralElement",
+   "uuid" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
+   "name" : "name",
+   "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2a",
+   "categoryAssignments" : [ {
+      "uuid" : "98197a0b-78ec-416c-a685-5d7416808585",
+      "name" : "TestCategoryBeanA"
+   }, {
+      "uuid" : "19e979e8-944b-4ae5-9906-0d4c5a634b9f",
+      "name" : "TestCategoryAllProperty"
+   } ],
+   "children" : [ {
+      "type" : "testStructuralElement",
+      "uuid" : "e8be1f69-86b1-45b2-9077-0d9b6b846cac",
+      "name" : null,
+      "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
+      "categoryAssignments" : [ ],
+      "children" : [ ],
+      "superSeis" : [ ]
+   }, {
+      "type" : "testStructuralElement",
+      "uuid" : "c280a34d-c6f7-4444-8a0a-4fad738ffef3",
+      "name" : null,
+      "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
+      "categoryAssignments" : [ ],
+      "children" : [ ],
+      "superSeis" : [ ]
+   } ],
+   "superSeis" : [ {
+      "type" : "testStructuralElement",
+      "uuid" : "3a9c9f8a-66e0-4f54-9052-f0d54bb18f92",
+      "name" : null,
+      "categoryAssignments" : [ ],
+      "children" : [ ],
+      "superSeis" : [ ]
+   }, {
+      "type" : "testStructuralElement",
+      "uuid" : "e04ef537-36fb-4b16-b776-579c7fdacc8b",
+      "name" : null,
+      "categoryAssignments" : [ ],
+      "children" : [ ],
+      "superSeis" : [ ]
+   } ]
+}

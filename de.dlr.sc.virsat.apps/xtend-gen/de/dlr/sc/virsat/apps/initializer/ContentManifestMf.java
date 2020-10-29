@@ -31,6 +31,9 @@ public class ContentManifestMf {
     _builder.newLine();
     _builder.append("Require-Bundle: de.dlr.sc.virsat.apps");
     _builder.newLine();
+    _builder.append("Automatic-Module-Name: ");
+    _builder.append(projectName);
+    _builder.newLineIfNotEmpty();
     return _builder;
   }
 }

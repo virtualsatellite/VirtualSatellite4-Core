@@ -11,8 +11,6 @@ package de.dlr.sc.virsat.apps.initializer;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.apps.test.util.GeneratorJunitAssert;
@@ -23,14 +21,6 @@ import de.dlr.sc.virsat.apps.test.util.GeneratorJunitAssert;
  *
  */
 public class ContentManifestMfTest {
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	public static final String TEST_PROJECT_NAME = "de.dlr.virsat.app.analysis";
 	
