@@ -12,24 +12,18 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import javax.xml.bind.annotation.XmlAccessType;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
-import javax.xml.bind.annotation.XmlElement;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
 
 // *****************************************************************
@@ -44,8 +38,6 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * 
  */	
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public abstract class ATestCategoryReference extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.tests.TestCategoryReference";
@@ -92,8 +84,6 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefCategory.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement(nillable = true)
-	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public TestCategoryAllProperty getTestRefCategory() {
 		safeAccessTestRefCategory();
 		return testRefCategory.getValue();
@@ -124,8 +114,6 @@ public abstract class ATestCategoryReference extends GenericCategory implements 
 		testRefProperty.setTypeInstance(propertyInstance);
 	}
 	
-	@XmlElement(nillable = true)
-	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	public BeanPropertyString getTestRefProperty() {
 		safeAccessTestRefProperty();
 		return testRefProperty.getValue();

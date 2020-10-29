@@ -12,21 +12,17 @@ package de.dlr.sc.virsat.model.extension.maturity.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
-import javax.xml.bind.annotation.XmlRootElement;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import javax.xml.bind.annotation.XmlAccessType;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
-import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -41,8 +37,6 @@ import javax.xml.bind.annotation.XmlElement;
  * Category to describe the maturity of a part or product
  * 
  */	
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AMaturity extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.maturity.Maturity";
@@ -138,7 +132,6 @@ public abstract class AMaturity extends GenericCategory implements IBeanCategory
 		return level.getEnumValue();
 	}
 	
-	@XmlElement
 	public BeanPropertyEnum getLevelBean() {
 		safeAccessLevel();
 		return level;
@@ -175,7 +168,6 @@ public abstract class AMaturity extends GenericCategory implements IBeanCategory
 		return trl.getEnumValue();
 	}
 	
-	@XmlElement
 	public BeanPropertyEnum getTrlBean() {
 		safeAccessTrl();
 		return trl;
