@@ -301,7 +301,7 @@ public class HierarchyLevelChecker {
 	 * @return the next parent with level
 	 */
 	private IBeanStructuralElementInstance getFirstParentWithLevel(IBeanStructuralElementInstance bean) {
-		IBeanStructuralElementInstance parent = bean.getParentSeiBean();
+		IBeanStructuralElementInstance parent = bean.getParent();
 
 		if (parent != null) {
 			IHierarchyLevel level = getLevelOfBean(parent);
@@ -356,7 +356,7 @@ public class HierarchyLevelChecker {
 	 */
 	private int getTreeDistance(IBeanStructuralElementInstance startElement, IBeanStructuralElementInstance target,
 			int startDistance) {
-		IBeanStructuralElementInstance parent = startElement.getParentSeiBean();
+		IBeanStructuralElementInstance parent = startElement.getParent();
 		if (parent == null) {
 			return -1;
 		}
@@ -386,8 +386,8 @@ public class HierarchyLevelChecker {
 	 * @return the distance
 	 */
 	private int getTreeDistanceToRootBean(IBeanStructuralElementInstance bean, int startDistance) {
-		if (bean.getParentSeiBean() != null) {
-			return getTreeDistanceToRootBean(bean.getParentSeiBean(), ++startDistance);
+		if (bean.getParent() != null) {
+			return getTreeDistanceToRootBean(bean.getParent(), ++startDistance);
 		} else {
 			return startDistance;
 		}

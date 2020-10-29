@@ -29,12 +29,13 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
 // TODO: rename after merge
-public abstract class AGitAndJettyServerTest {
+public abstract class AGitAndJettyServerTest extends AConceptTestCase {
 
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();

@@ -50,7 +50,8 @@ import java.util.jar.Manifest;
  */
 public class VirsatAppsInitializer {
 	
-	public static final String FOLDER_NAME_BIN = "bin";
+	public static final String FOLDER_NAME_TARGET = "target";
+	public static final String FOLDER_NAME_CLASSES = "classes";
 	public static final String FOLDER_NAME_APPS = "apps";
 	public static final String FOLDER_NAME_META_INF = "META-INF";
 	
@@ -60,7 +61,7 @@ public class VirsatAppsInitializer {
 	public static final String FILE_NAME_SCRIPT_EXAMPLE_PATTERN = "AppExample%d";
 	public static final String FILE_NAME_SCRIPT_EXAMPLE_EXTENSION = ".java";
 	
-	public static final int PROGRESS_WORK_TICKS = 7;
+	public static final int PROGRESS_WORK_TICKS = 8;
 	
 	private static final int MAX_NUMBER_TRIES = 100;
 	
@@ -89,6 +90,13 @@ public class VirsatAppsInitializer {
 		}
 	}
 	
+	private void initializeFolder(IFolder folder, IProgressMonitor pm) throws CoreException {
+		if (!folder.exists()) {
+			folder.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + folder.getName(), null));				
+		}
+	}
+	
 	/**
 	 * Call this method to add the needed files to the project to activate
 	 * it as a java/plugin project
@@ -111,22 +119,16 @@ public class VirsatAppsInitializer {
 					 * Create folders and files
 					 */
 					IFolder folderApps = project.getFolder(FOLDER_NAME_APPS);
-					if (!folderApps.exists()) {
-						folderApps.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_APPS, null));				
-					}
+					initializeFolder(folderApps, pm);
 			
-					IFolder folderBin = project.getFolder(FOLDER_NAME_BIN);
-					if (!folderBin.exists()) {
-						folderBin.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_BIN, null));				
-					}
+					IFolder folderTarget = project.getFolder(FOLDER_NAME_TARGET);
+					initializeFolder(folderTarget, pm);
+					
+					IFolder folderClasses = folderTarget.getFolder(FOLDER_NAME_CLASSES);
+					initializeFolder(folderClasses, pm);
 			
 					IFolder folderMetaInf = project.getFolder(FOLDER_NAME_META_INF);
-					if (!folderMetaInf.exists()) {
-						folderMetaInf.create(IResource.NONE, true, SubMonitor.convert(pm, 1));
-						Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created folder " + FOLDER_NAME_META_INF, null));				
-					}
+					initializeFolder(folderMetaInf, pm);
 			
 					IFile fileManifestMf = folderMetaInf.getFile(FILE_NAME_MANIFEST_MF);
 					if (!fileManifestMf.exists()) {
@@ -182,7 +184,7 @@ public class VirsatAppsInitializer {
 					
 					IJavaProject javaProject = JavaCore.create(project);
 					javaProject.setRawClasspath(classpathEntries.toArray(new IClasspathEntry[0]), SubMonitor.convert(pm, 1));
-					javaProject.setOutputLocation(folderBin.getFullPath(), SubMonitor.convert(pm, 1));
+					javaProject.setOutputLocation(folderClasses.getFullPath(), SubMonitor.convert(pm, 1));
 	
 					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirsatAppsInitializer: Successfully created ClassPath File", null));
 					
