@@ -21,6 +21,9 @@
       <builder
             id="de.dlr.sc.virsat.model.calculation.compute.builder">
       </builder>
+      <builder
+            id="de.dlr.sc.virsat.model.extension.requirements.build.verification">
+      </builder>
    </extension>
     <extension
           id="de.dlr.sc.virsat.problem.marker"
