@@ -53,6 +53,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationE
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtilityTest;
@@ -142,7 +143,8 @@ import junit.framework.JUnit4TestAdapter;
 				JAXBUtilityTest.class,
 				IUuidAdapterTest.class,
 				UriAdapterTest.class,
-				ABeanStructuralElementInstanceAdapterTest.class
+				ABeanStructuralElementInstanceAdapterTest.class,
+				BeanPropertyTypeAdapterTest.class
 				})
 
 /**
