@@ -68,24 +68,25 @@ public class RequirementsStatusUpdater implements IVerificationStep {
 		boolean inProgress = false;
 		boolean partlyNonCompliant = false;
 		boolean partlyCompliant = false;
+		boolean fullyCompliant = false;
 		
 		for (IVerification verification : requirement.getVerification()) {
 			if (verification.getStatus().equals(IVerification.STATUS_FullyCompliant_NAME)) {
-				partlyCompliant = true;
-			}
-			if (verification.getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
+				fullyCompliant = true;
+			} else if (verification.getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
 				partlyNonCompliant = true;
-			}
-			if (verification.getStatus().equals(IVerification.STATUS_Open_NAME)) {
+			} else if (verification.getStatus().equals(IVerification.STATUS_Open_NAME)) {
 				inProgress = true;
+			} else if (verification.getStatus().equals(IVerification.STATUS_PartialCompliant_NAME)) {
+				partlyCompliant = true;
 			}
 		}
 		
 		if (inProgress) {
 			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_Open_NAME));
-		} else if (partlyCompliant && partlyNonCompliant) {
+		} else if (fullyCompliant && partlyNonCompliant || partlyCompliant) {
 			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_PartialCompliant_NAME));
-		} else if (partlyCompliant) {
+		} else if (fullyCompliant) {
 			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_FullyCompliant_NAME));
 		} else if (partlyNonCompliant) {
 			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_NonCompliant_NAME));
