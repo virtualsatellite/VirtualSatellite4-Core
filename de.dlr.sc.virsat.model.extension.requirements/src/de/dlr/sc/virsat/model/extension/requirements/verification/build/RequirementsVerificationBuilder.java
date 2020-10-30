@@ -52,6 +52,10 @@ public class RequirementsVerificationBuilder extends AVirSatTransactionalBuilder
 	 */
 	public RequirementsVerificationBuilder() {
 		super("Requirements Verification Builder", new VirSatProblemMarkerHelper(), true, true);
+		initVerificationSteps();
+	}
+	
+	protected void initVerificationSteps() {
 		verificationSteps.add(new RequirementVerificationRunner());
 		verificationSteps.add(new RequirementsStatusUpdater());
 	}
