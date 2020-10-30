@@ -142,6 +142,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
+		
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 	}
 	
 	@After
@@ -360,7 +362,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
-				.path(ModelAccessResource.STRING)
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -368,17 +369,15 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	/**
-	 * PUT a property of a specified type and assert that the server returns OK
+	 * PUT a property and assert that the server returns OK
 	 * @param property bean property to PUT
-	 * @param type the type of the property
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testPutProperty(IBeanObject property, String type) {
+	private void testPutProperty(IBeanObject property) {
 		
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
-				.path(type)
 				.request()
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -386,38 +385,38 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyBoolPut() throws JAXBException {
-		testPutProperty(beanBool, ModelAccessResource.BOOLEAN);
+		testPutProperty(beanBool);
 	}
 	
 	@Test
 	public void testPropertyStringPut() throws JAXBException {
-		testPutProperty(beanString, ModelAccessResource.STRING);
+		testPutProperty(beanString);
 	}
 	
 	@Test
 	public void testPropertyEnumPut() throws JAXBException {
-		testPutProperty(beanEnum, ModelAccessResource.ENUM);
+		testPutProperty(beanEnum);
 	}
 	
 	@Test
 	public void testPropertyFloatPut() throws JAXBException {
-		testPutProperty(beanFloat, ModelAccessResource.FLOAT);
+		testPutProperty(beanFloat);
 	}
 	
 	@Test
 	public void testPropertyIntPut() throws JAXBException {
-		testPutProperty(beanInt, ModelAccessResource.INT);
+		testPutProperty(beanInt);
 	}
 	
 	@Test
 	public void testPropertyResourcePut() throws JAXBException {
-		testPutProperty(beanResource, ModelAccessResource.RESOURCE);
+		testPutProperty(beanResource);
 	}
 	
 	@Test
 	public void testPropertyReferencePut() throws JAXBException {
-		testPutProperty(beanReferenceProp, ModelAccessResource.REFERENCE);
-		testPutProperty(beanReferenceCa, ModelAccessResource.REFERENCE);
+		testPutProperty(beanReferenceProp);
+		testPutProperty(beanReferenceCa);
 	}
 	
 	@Test
@@ -433,7 +432,6 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget.path(ModelAccessResource.PATH)
 				.path(projectName)
 				.path(ModelAccessResource.PROPERTY)
-				.path(ModelAccessResource.COMPOSED)
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
