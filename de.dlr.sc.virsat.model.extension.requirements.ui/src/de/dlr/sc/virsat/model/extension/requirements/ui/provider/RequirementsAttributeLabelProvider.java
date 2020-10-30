@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyIns
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
@@ -166,10 +167,22 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 			if (columnIndex == STATUS_COLUMN) {
 				return getStatusIcon(requirement.getStatus());
 			}
+			
+			if (columnIndex > STATUS_COLUMN) {
+				int attIndex = columnIndex - 1; // Status Column
+				if (requirement.getReqType() == null || requirement.getReqType().getAttributes() == null
+						|| attIndex >= requirement.getReqType().getAttributes().size()) {
+					return null;
+				}
+				RequirementAttribute attDef = requirement.getReqType().getAttributes().get(attIndex);
+
+				return super.getColumnImage(attDef, columnIndex);
+
+			}
 
 		}
 
-		return null;
+		return super.getColumnImage(object, columnIndex);
 	}
 	
 	/**
