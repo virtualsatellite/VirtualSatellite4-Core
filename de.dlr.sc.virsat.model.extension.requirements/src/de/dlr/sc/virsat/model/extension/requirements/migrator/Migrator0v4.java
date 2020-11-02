@@ -23,6 +23,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
 import de.dlr.sc.virsat.model.extension.requirements.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
 
 
@@ -48,19 +49,22 @@ public class Migrator0v4 extends AMigrator0v4 implements IMigrator {
 		if (diff != null) {
 			Match match = diff.getMatch();
 			EObject affectedEObject = match.getRight();
-			IProject containingProject = VirSatEditingDomainRegistry.INSTANCE.getEd(affectedEObject).getResourceSet().getProject();
-			try {
-				IProjectNature nature = containingProject.getNature(VirSatProjectNature.NATURE_ID);
-				
-				// Make sure all necessary builders, such as the new verification builder, are active
-				if (nature != null) {
-					nature.configure();
+			VirSatTransactionalEditingDomain domain = VirSatEditingDomainRegistry.INSTANCE.getEd(affectedEObject);
+			if (domain != null) {
+				IProject containingProject = domain.getResourceSet().getProject();
+				try {
+					IProjectNature nature = containingProject.getNature(VirSatProjectNature.NATURE_ID);
+					
+					// Make sure all necessary builders, such as the new verification builder, are active
+					if (nature != null) {
+						nature.configure();
+					}
+					
+				} catch (CoreException e) {
+					Status status = new Status(Status.ERROR, Activator.getPluginId(),
+							"Requirements Migrator v0.4: Failed to perform data model migration (Builder configuration) !", e);
+					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 				}
-				
-			} catch (CoreException e) {
-				Status status = new Status(Status.ERROR, Activator.getPluginId(),
-						"Requirements Migrator v0.4: Failed to perform data model migration (Builder configuration) !", e);
-				StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 			}
 		}
 	}
