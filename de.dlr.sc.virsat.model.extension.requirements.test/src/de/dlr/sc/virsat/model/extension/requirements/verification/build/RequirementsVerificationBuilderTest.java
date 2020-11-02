@@ -10,10 +10,12 @@
 package de.dlr.sc.virsat.model.extension.requirements.verification.build;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.internal.events.ResourceDelta;
 import org.eclipse.core.resources.IProject;
@@ -29,6 +31,7 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.build.test.ABuilderTest;
 import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -90,18 +93,19 @@ public class RequirementsVerificationBuilderTest extends ABuilderTest {
 	
 	@Test
 	public void testFullBuild() {
-		final int NUMBER_OF_SPECS = 2;
 		seiEdSc.getCategoryAssignments().add(specification.getTypeInstance());
 		seiEdRw.getCategoryAssignments().add(specification2.getTypeInstance());
 		
 		assertEquals(0, testVerificationStep.verifiedSpecs.size());
 		builder.fullBuild(null);
+		
+		final int NUMBER_OF_SPECS = 2;
 		assertEquals(NUMBER_OF_SPECS, testVerificationStep.verifiedSpecs.size());
-		Iterator<RequirementsSpecification> iterator = testVerificationStep.verifiedSpecs.iterator();
-		assertEquals("Builder found correct spec in project's data model", specification.getTypeInstance(), 
-				iterator.next().getTypeInstance());
-		assertEquals("Builder found correct spec in project's data model", specification2.getTypeInstance(), 
-				iterator.next().getTypeInstance());
+		List<CategoryAssignment> specCAs =  testVerificationStep.verifiedSpecs.stream().
+				map((specBean) -> specBean.getTypeInstance()).
+				collect(Collectors.toList());
+		assertTrue("Builder found correct spec in project's data model", specCAs.contains(specification.getTypeInstance()));
+		assertTrue("Builder found correct spec in project's data model", specCAs.contains(specification2.getTypeInstance()));
 
 	}
 	
