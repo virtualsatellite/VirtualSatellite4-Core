@@ -53,7 +53,9 @@ public class Migrator0v4 extends AMigrator0v4 implements IMigrator {
 				IProjectNature nature = containingProject.getNature(VirSatProjectNature.NATURE_ID);
 				
 				// Make sure all necessary builders, such as the new verification builder, are active
-				nature.configure();
+				if (nature != null) {
+					nature.configure();
+				}
 				
 			} catch (CoreException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(),
