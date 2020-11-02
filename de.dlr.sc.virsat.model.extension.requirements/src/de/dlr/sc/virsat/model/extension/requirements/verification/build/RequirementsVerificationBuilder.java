@@ -31,7 +31,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
-import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
@@ -51,7 +50,7 @@ public class RequirementsVerificationBuilder extends AVirSatTransactionalBuilder
 	 * @param dvlmOnly
 	 */
 	public RequirementsVerificationBuilder() {
-		super("Requirements Verification Builder", new VirSatProblemMarkerHelper(), true, true);
+		super("Requirements Verification Builder", new VirSatVerificationMarkerHelper(), true, true);
 		initVerificationSteps();
 	}
 	
