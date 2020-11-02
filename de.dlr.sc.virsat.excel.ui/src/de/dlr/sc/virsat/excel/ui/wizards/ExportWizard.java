@@ -15,14 +15,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.DialogSettings;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.excel.exporter.ExcelExporter;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
@@ -99,8 +98,7 @@ public class ExportWizard extends Wizard implements INewWizard {
 					"Successfully exported to excel file to " + path));
 		} catch (Exception e) {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to perform an export operation! ", e);
-			DVLMEditPlugin.getPlugin().getLog().log(status);
-			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
+			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 			return false;
 		}
 		return true;
@@ -121,8 +119,7 @@ public class ExportWizard extends Wizard implements INewWizard {
 			canExport = ee.canExport(page.getSelection());
 		} catch (CoreException e) {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to perform an export operation! ", e);
-			DVLMEditPlugin.getPlugin().getLog().log(status);
-			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
+			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 		}
 		return (canExport && page.isComplete());
 	}
