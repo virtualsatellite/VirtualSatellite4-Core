@@ -9,9 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.verification.build;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.emf.ecore.EObject;
-
 import de.dlr.sc.virsat.project.markers.IMarkerHelper;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
 
@@ -34,25 +31,6 @@ public class VirSatVerificationMarkerHelper extends VirSatProblemMarkerHelper im
 	@Override
 	protected String getMarkerID() {
 		return ID_VERIFICATION_PROBLEM_MARKER;
-	}
-	
-	@Override
-	public boolean isAssociatedWith(IMarker marker, EObject eObject) {
-		// There are no changes for this marker
-		return super.isAssociatedWith(marker, eObject);
-	}
-
-	/**
-	 * Method to attach a DVLMValidationProblemMarker to the Resource of the given object
-	 * @param severity A Severity Level to be displayed with the Marker
-	 * @param message A Message to be displayed in the Problem View
-	 * @param eObject An eObject on which the Problem actually occurred.
-	 *  This information should be evaluated in out Editor to show the exact place of problem
-	 * @return The created Marker
-	 */
-	public IMarker createInheritanceMarker(int severity, String message, EObject eObject) {
-		IMarker marker = createMarker(ID_VERIFICATION_PROBLEM_MARKER, severity, message, eObject);
-		return marker;
 	}
 	
 }
