@@ -1001,5 +1001,16 @@
             name="Virtual Satellite">
       </category>
 	</extension>
+	   <extension point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.rmf.reqif10.pror.editor.presentation.Reqif10Editor"
+            contributorClass="org.eclipse.rmf.reqif10.pror.editor.presentation.Reqif10ActionBarContributor"
+            default="true"
+            icon="resources/icons/RequirementsIconReqIF16.gif"
+            extensions="reqif"
+            id="org.eclipse.rmf.reqif10.presentation.Reqif10EditorID"
+            name="ReqIF ProR Editor">
+      </editor>
+   </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
