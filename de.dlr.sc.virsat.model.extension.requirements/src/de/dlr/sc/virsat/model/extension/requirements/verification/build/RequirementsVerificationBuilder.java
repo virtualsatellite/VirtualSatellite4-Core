@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -107,31 +106,25 @@ public class RequirementsVerificationBuilder extends AVirSatTransactionalBuilder
 	@Override
 	protected void fullBuild(IProgressMonitor monitor) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VerificationBuilder: Starting full build!"));
-		try {
-
-			VirSatResourceSet resourceSet = getResourceSet();
-			if (resourceSet != null && !resourceSet.isOpen()) {
-				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VerificationBuilder: Exited since project is closed!"));
-				return;
-			}
-			
-			Set<StructuralElementInstance> seis = getResourceSet().getAllSeisInProject();
-			
-			SubMonitor subMonitor = SubMonitor.convert(monitor, seis.size());
-			subMonitor.beginTask("Executing Verification of SEIs", seis.size());
-			
-			for (StructuralElementInstance sei : seis) {
-				BeanStructuralElementInstance bean = new BeanStructuralElementInstance(sei);
-				buildSei(bean, subMonitor);
-				subMonitor.worked(1);
-			}
-			
-			
-			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VerificationBuilder: Finished full build!"));
-		
-		} catch (Exception e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), "VerificationBuilder: Error occured!", e));
+		VirSatResourceSet resourceSet = getResourceSet();
+		if (resourceSet != null && !resourceSet.isOpen()) {
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VerificationBuilder: Exited since project is closed!"));
+			return;
 		}
+		
+		Set<StructuralElementInstance> seis = getResourceSet().getAllSeisInProject();
+		
+		SubMonitor subMonitor = SubMonitor.convert(monitor, seis.size());
+		subMonitor.beginTask("Executing Verification of SEIs", seis.size());
+		
+		for (StructuralElementInstance sei : seis) {
+			BeanStructuralElementInstance bean = new BeanStructuralElementInstance(sei);
+			buildSei(bean, subMonitor);
+			subMonitor.worked(1);
+		}
+		
+		
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VerificationBuilder: Finished full build!"));
 		
 	}
 	
