@@ -71,14 +71,16 @@ public class RequirementsStatusUpdater implements IVerificationStep {
 		boolean fullyCompliant = false;
 		
 		for (IVerification verification : requirement.getVerification()) {
-			if (verification.getStatus().equals(IVerification.STATUS_FullyCompliant_NAME)) {
-				fullyCompliant = true;
-			} else if (verification.getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
-				partlyNonCompliant = true;
-			} else if (verification.getStatus().equals(IVerification.STATUS_Open_NAME)) {
-				inProgress = true;
-			} else if (verification.getStatus().equals(IVerification.STATUS_PartialCompliant_NAME)) {
-				partlyCompliant = true;
+			if (verification.getStatus() != null) {
+				if (verification.getStatus().equals(IVerification.STATUS_FullyCompliant_NAME)) {
+					fullyCompliant = true;
+				} else if (verification.getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
+					partlyNonCompliant = true;
+				} else if (verification.getStatus().equals(IVerification.STATUS_Open_NAME)) {
+					inProgress = true;
+				} else if (verification.getStatus().equals(IVerification.STATUS_PartialCompliant_NAME)) {
+					partlyCompliant = true;
+				}
 			}
 		}
 		

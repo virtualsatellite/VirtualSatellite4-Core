@@ -21,6 +21,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 
 /**
@@ -125,6 +126,22 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 		updater.execute(specification, editingDomain, new NullProgressMonitor());
 		
 		assertEquals(Requirement.STATUS_PartialCompliant_NAME, requirement.getStatus());
+	}
+	
+	@Test
+	public void testComputeStatusInGroup() {
+		RequirementGroup group = new RequirementGroup(requirementsConcept);
+		Requirement nestedRequirement = new Requirement(requirementsConcept);
+		IVerification nestedVerification = new DefaultVerification(requirementsConcept);
+		
+		nestedRequirement.getVerification().add(nestedVerification);
+		group.getChildren().add(nestedRequirement);
+		specification.getRequirements().add(group);
+		nestedVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);
+		
+		updater.execute(specification, editingDomain, new NullProgressMonitor());
+		
+		assertEquals(Requirement.STATUS_FullyCompliant_NAME, nestedRequirement.getStatus());
 	}
 
 }
