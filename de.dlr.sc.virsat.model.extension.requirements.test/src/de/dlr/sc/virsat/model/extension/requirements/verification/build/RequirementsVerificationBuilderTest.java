@@ -39,7 +39,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 @SuppressWarnings("restriction")
 public class RequirementsVerificationBuilderTest extends ABuilderTest {
 	
-	class TestVerificationStep implements IVerificationStep {
+	private static class TestVerificationStep implements IVerificationStep {
 
 		Set<RequirementsSpecification> verifiedSpecs = new HashSet<RequirementsSpecification>();
 		
