@@ -450,5 +450,48 @@
 	          id="de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.stateMachineDiagramImageProvider">
 	    </imageProvider>
 	 </extension>
+	 
+	<extension point="org.eclipse.ui.commands">
+		<command
+			id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.openStateMachineInDiagramEditor"
+			name="Open Diagram Editor">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.OpenStateMachineInDiagramEditorHandler"
+			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.openStateMachineInDiagramEditor">
+		</handler>
+	</extension>
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+			id="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.openStateMachineTester"
+			type="de.dlr.sc.virsat.model.dvlm.general.IInstance"
+			namespace="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester"
+			properties="openStateMachine"
+			class="de.dlr.sc.virsat.model.extension.statemachines.propertyTester.OpenStateMachineTester">
+		</propertyTester>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=structuralElements">
+			<command
+         commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.openStateMachineInDiagramEditor"
+         icon="resources/icons/StateMachine.gif"
+         style="push">
+				<visibleWhen>
+					<with variable="selection">
+						<iterate ifEmpty="false">
+							<test
+								property="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.openStateMachine"
+								forcePluginActivation="true">
+							</test>	
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	 
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
