@@ -20,10 +20,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropert
 
 /**
  * Class to wrap IntPropertyInstances
- * @author fisc_ph
  *
  */
-public class BeanPropertyInt extends ABeanUnitProperty<Long> {
+public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 
 	/**
 	 * Standard Constructor
@@ -36,7 +35,7 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	 * @param uvpi the type instance to be used
 	 */
 	public BeanPropertyInt(UnitValuePropertyInstance uvpi) {
-		setTypeInstance(uvpi);
+		super(uvpi);
 	}
 	
 	@Override
