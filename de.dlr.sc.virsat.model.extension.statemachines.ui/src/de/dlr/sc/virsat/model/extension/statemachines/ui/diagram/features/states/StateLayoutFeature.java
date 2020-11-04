@@ -18,8 +18,10 @@ import org.eclipse.graphiti.services.Graphiti;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatLayoutFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
+
 /**
- * resize feature for statemachines
+ * Layout feature for states. Adjusts the internal shapes to match
+ * changes such as size changes.
  *
  */
 public class StateLayoutFeature extends VirSatLayoutFeature  {
