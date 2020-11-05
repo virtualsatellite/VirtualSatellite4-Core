@@ -103,7 +103,9 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 	}
 	
 	@After
-	public void tearDown() {
+	public void tearDown() throws Exception {
+		super.tearDown();
+		
 		UserRegistry.getInstance().setSuperUser(false);
 	}
 

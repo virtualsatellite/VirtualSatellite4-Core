@@ -19,11 +19,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 
 /**
- * Class to wrap IntPropertyInstances
- * @author fisc_ph
+ * Class to wrap StringPropertyInstances
  *
  */
-public class BeanPropertyString extends ABeanProperty<String> {
+public class BeanPropertyString extends ABeanValueProperty<ValuePropertyInstance, String> {
 
 	/**
 	 * Standard Constructor
@@ -36,7 +35,7 @@ public class BeanPropertyString extends ABeanProperty<String> {
 	 * @param vpi the type instance to be used
 	 */
 	public BeanPropertyString(ValuePropertyInstance vpi) {
-		setTypeInstance(vpi);
+		super(vpi);
 	}
 	
 	@Override

@@ -64,13 +64,11 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			ContainerShape cs = (ContainerShape) pictogramElement;
 			// Look for the state machine Name
 			for (Shape shape : cs.getChildren()) {
-				if (shape.getGraphicsAlgorithm() instanceof Text) {
+				if (shape.getGraphicsAlgorithm() instanceof Text && getBusinessObjectForPictogramElement(shape) == stateMachine) {
 					Text text = (Text) shape.getGraphicsAlgorithm();
-					if (!text.getValue().contains("«")) {
-						pictogramName = text.getValue();
-						if (!pictogramName.equals(businessName)) {
-							return Reason.createTrueReason("StateMachine name is changed");
-						}
+					pictogramName = text.getValue();
+					if (!pictogramName.equals(businessName)) {
+						return Reason.createTrueReason("StateMachine name is changed");
 					}
 				}
 			}
@@ -327,12 +325,10 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 		if (pictogramElement instanceof ContainerShape) {
 			ContainerShape cs = (ContainerShape) pictogramElement;
 			for (Shape shape : cs.getChildren()) {
-				if (shape.getGraphicsAlgorithm() instanceof Text) {
+				if (shape.getGraphicsAlgorithm() instanceof Text && getBusinessObjectForPictogramElement(shape) == stateMachine) {
 					Text text = (Text) shape.getGraphicsAlgorithm();
-					if (!text.getValue().contains("«")) {
-						text.setValue(businessName);
-						changeDuringUpdate = true;
-					}
+					text.setValue(businessName);
+					changeDuringUpdate = true;
 				}
 			}
 

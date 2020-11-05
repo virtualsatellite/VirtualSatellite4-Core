@@ -14,7 +14,6 @@ import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.impl.AbstractDirectEditingFeature;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Text;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
@@ -67,8 +66,7 @@ public class BeanPropertyFloatDirectEditValueFeature extends AbstractDirectEditi
 		
 		bean.setValue(Double.parseDouble(value));	
 		
-		ContainerShape cs = DiagramHelper.getUpdateableContainer(getFeatureProvider(), pe);
-		
-		updatePictogramElement(cs);
+		PictogramElement updateablePe = DiagramHelper.getUpdateableElement(getFeatureProvider(), pe);
+		updatePictogramElement(updateablePe);
 	}
 }

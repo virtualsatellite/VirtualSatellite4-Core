@@ -15,7 +15,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
@@ -26,11 +25,10 @@ import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
 /**
- * Class to wrap FloatPropertyInstances
- * @author fisc_ph
+ * Class to wrap EnumPropertyInstances
  *
  */
-public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> implements IBeanProperty<EnumUnitPropertyInstance, String>, IBeanUnitProperty {
+public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, String> implements IBeanUnitProperty {
 
 	/**
 	 * standard Constructor
@@ -43,7 +41,7 @@ public class BeanPropertyEnum extends ABeanObject<EnumUnitPropertyInstance> impl
 	 * @param eupi the type instance to be used
 	 */
 	public BeanPropertyEnum(EnumUnitPropertyInstance eupi) {
-		setTypeInstance(eupi);
+		super(eupi);
 	}
 	
 	@Override

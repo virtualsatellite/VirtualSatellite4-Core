@@ -17,7 +17,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanTypeInstanceFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -29,7 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
  * @param <BEAN_TYPE> type of the referenced bean
  */
-public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanObject<ReferencePropertyInstance> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
+public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyReference() { }
 
@@ -38,7 +37,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	 * @param rpi the type instance to be used
 	 */
 	public BeanPropertyReference(ReferencePropertyInstance rpi) {
-		setTypeInstance(rpi);
+		super(rpi);
 	}
 	
 	private ATypeInstance safeGetTypeInstance(BEAN_TYPE value) {
