@@ -16,11 +16,11 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyType;
 public class BeanPropertyTypeAdapter extends XmlAdapter<String, BeanPropertyType> {
 
 	@Override
-	public BeanPropertyType unmarshal(String s) throws Exception {
-		if (s == null) {
+	public BeanPropertyType unmarshal(String typeName) throws Exception {
+		if (typeName == null) {
 			return null;
 		} else {
-			return BeanPropertyType.fromString(s);
+			return BeanPropertyType.fromString(typeName);
 		}
 	}
 

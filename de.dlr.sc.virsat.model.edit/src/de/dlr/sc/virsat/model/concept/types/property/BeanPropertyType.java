@@ -31,16 +31,16 @@ public enum BeanPropertyType {
 	}
 
 	/**
-	 * Get a BeanPropertyType from a String s
-	 * @param s String
+	 * Get a BeanPropertyType from a String typeName
+	 * @param typeName String
 	 * @return the BeanPropertyType
 	 */
-	public static BeanPropertyType fromString(String s) {
+	public static BeanPropertyType fromString(String typeName) {
 		for (BeanPropertyType v : BeanPropertyType.values()) {
-			if (v.getType().equals(s)) {
+			if (v.getType().equals(typeName)) {
 				return v;
 			}
 		}
-		throw new IllegalArgumentException(s);
+		throw new IllegalArgumentException(typeName);
 	}
 }
