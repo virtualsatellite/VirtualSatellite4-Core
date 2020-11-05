@@ -336,6 +336,52 @@
             </with>
          </activeWhen>
       </handler>
+      <handler 
+      		commandId="org.eclipse.ui.edit.rename"
+      		class="de.dlr.sc.virsat.project.ui.navigator.handler.RenameHandler">
+     	<activeWhen>
+	        <with
+	              variable="selection">
+	        	<with
+                	variable="activePartId">
+                	<equals
+	                    value="de.dlr.sc.virsat.project.ui.navigator.view">
+	              	</equals>
+	        	</with>
+	        	<count value="1"/>
+             	<iterate 
+             		ifEmpty="false"
+             		operator="and">
+	             	<instanceof
+	                    value="de.dlr.sc.virsat.model.dvlm.general.IName">
+	             	</instanceof>
+             	</iterate>
+	        </with>
+     	</activeWhen>
+     </handler>
+      <handler 
+      		commandId="org.eclipse.ui.edit.rename"
+      		class="de.dlr.sc.virsat.project.ui.navigator.handler.ChangeValueHandler">
+     	<activeWhen>
+	        <with
+	              variable="selection">
+	        	<with
+                	variable="activePartId">
+                	<equals
+	                    value="de.dlr.sc.virsat.project.ui.navigator.view">
+	              	</equals>
+	        	</with>
+	        	<count value="1"/>
+             	<iterate 
+             		ifEmpty="false"
+             		operator="and">
+	             	<instanceof
+	                    value="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance">
+	             	</instanceof>
+             	</iterate>
+	        </with>
+     	</activeWhen>
+     </handler>
       <handler
             class="de.dlr.sc.virsat.project.ui.wizard.handler.OpenNewProjectWizardHandler"
             commandId="de.dlr.sc.virsat.project.ui.command.newVirSatProject">
@@ -452,6 +498,52 @@
                commandId="org.eclipse.ui.edit.redo"
                style="push"
                tooltip="Redo">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.edit">
+         <command
+               commandId="org.eclipse.ui.edit.rename"
+               style="push"
+               label="Rename"
+               tooltip="Rename">
+               <visibleWhen
+                     checkEnabled="true">
+                     <with
+                     	variable="selection">
+		             	<iterate 
+		             		ifEmpty="false"
+		             		operator="and">
+			             	<instanceof
+			                    value="de.dlr.sc.virsat.model.dvlm.general.IName">
+			             	</instanceof>
+		             	</iterate>
+	       			 </with>
+              </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=group.edit">
+         <command
+               commandId="org.eclipse.ui.edit.rename"
+               style="push"
+               label="Change Value"
+               tooltip="Change Value">
+               <visibleWhen
+                     checkEnabled="true">
+                     <with
+                     	variable="selection">
+		             	<iterate 
+		             		ifEmpty="false"
+		             		operator="and">
+			             	<instanceof
+			                    value="de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance">
+			             	</instanceof>
+		             	</iterate>
+	       			 </with>
+              </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution

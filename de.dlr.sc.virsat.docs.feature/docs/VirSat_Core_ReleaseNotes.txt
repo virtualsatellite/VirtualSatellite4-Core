@@ -1,6 +1,28 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.12.1 (15th October 2020)
+----------------------------------
+
+New Features:
+   Updated OverTarget version to 1.2.1 - #722 Feature
+   Updated default QUDV units to contain units for thermal domain - #729 Feature
+   Improved Functional Electrical Architecture Excel exporter to include the full qualified name of interface ends - #739 Feature
+   Added support to also change the color of connection elements in diagrams - #750 Feature
+   Expanded requirements concept for basic verification modeling - #783 Feature
+
+Usability Updates:
+   Improved navigator to expand on drag and drop from concept palette - #31 Comfort/usability
+   Supporting F2 in the navigator for renaming and changing values - #775 Comfort/usability
+
+Fixed Bugs:
+   Fixed issue where editing references in tables showed wrong value - #86 Bug
+   Fixed issue where equations for integers saved the result as floating point values - #700 Bug
+   Fixed Excel exporter wizard throwing exceptions - #735 Bug
+   Fixed issue where the Functional Electrical Architecture diagram did not accept changes to the interface ordering - #749 Bug
+   Fixed Linux issue in Functional Electrical Architecture HTML exporter - #757 Bug
+   Fixed nullpointer exception when editing RequirementAttributes - #697 Bug
+
 Release 4.12.0 (31th July 2020)
 ----------------------------------
 

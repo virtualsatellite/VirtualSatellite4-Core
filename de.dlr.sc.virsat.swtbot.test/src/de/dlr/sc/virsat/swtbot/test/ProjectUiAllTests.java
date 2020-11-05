@@ -34,6 +34,8 @@ import de.dlr.sc.virsat.swtbot.test.versioningbackend.GitVersioningBackendTest;
 	CutCopyDeleteUndoTest.class,
 	InheritanceTest.class,
 	CalculationTest.class,
+	LicenseTest.class,
+	PowerSummaryTest.class,
 	ProductStructureTest.class,
 	RoleManagementTest.class,
 	GitVersioningBackendTest.class,

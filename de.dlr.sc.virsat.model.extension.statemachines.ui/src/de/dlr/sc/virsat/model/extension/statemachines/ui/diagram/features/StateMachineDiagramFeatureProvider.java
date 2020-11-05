@@ -37,12 +37,11 @@ import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 
-import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolver;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.BeanDirectEditNameFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatCategoryAssingmentCopyFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatChangeColorFeature;
+import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatDiagramFeatureProvider;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirsatCategoryAssignmentOpenEditorFeature;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
@@ -70,23 +69,15 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transi
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.TransitionReconnectionFeature;
 /**
  * The State Machine feature provider provides all features for State Machine diagrams.
- * @author bell_er
  *
  */
-public class StateMachineDiagramFeatureProvider extends DefaultFeatureProvider {
-	private BeanIndependenceSolver beanIndependenceSolver;
+public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProvider {
 
-	/**
-	 * Default constructor
-	 * @param dtp the diagram type provider
-	 */
-
+	
 	public StateMachineDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
-		beanIndependenceSolver = new BeanIndependenceSolver(dtp);
-		setIndependenceSolver(beanIndependenceSolver);
 	}
-	
+
 	@Override
 	public IAddFeature getAddFeature(IAddContext context) {
 		Object newObject = context.getNewObject();
@@ -158,14 +149,18 @@ public class StateMachineDiagramFeatureProvider extends DefaultFeatureProvider {
 	@Override
 	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
 		PictogramElement pictogramElement = context.getPictogramElement();
+		
+		// Updating the diagram should trigger the default update feature
+		// which triggers in return the update features of all elements in the diagram
 		if (pictogramElement instanceof Diagram) {
-			return null;
+			return super.getUpdateFeature(context);
 		}
 		
 		Object object = getBusinessObjectForPictogramElement(pictogramElement);
 		if ((object instanceof StateMachine || object == null) && pictogramElement instanceof ContainerShape) {
 			return new StateMachineUpdateFeature(this);
 		}
+		
 		return super.getUpdateFeature(context);
 	}
 	
