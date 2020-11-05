@@ -15,9 +15,9 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
+import de.dlr.sc.virsat.server.test.AJettyServerTest;
 
-public class AuthTestResourceTest extends AGitAndJettyServerTest {
+public class AuthTestResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testAuthentication() {
