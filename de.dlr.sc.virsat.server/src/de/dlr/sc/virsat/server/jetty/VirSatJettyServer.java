@@ -19,6 +19,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import de.dlr.sc.virsat.server.auth.LoginServiceFactory;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
+import de.dlr.sc.virsat.server.servlet.SwaggerDocumentationServlet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 
 /**
@@ -67,8 +68,9 @@ public class VirSatJettyServer {
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
 		servletContextHandler.setContextPath("/");
-		servletContextHandler.addServlet(VirSatModelAccessServlet.class, "/rest/*");
-		servletContextHandler.addServlet(RepoManagementServlet.class, "/rest/management/*");
+		servletContextHandler.addServlet(SwaggerDocumentationServlet.class, "/rest/*");
+//		servletContextHandler.addServlet(VirSatModelAccessServlet.class, "/rest/*");
+//		servletContextHandler.addServlet(RepoManagementServlet.class, "/rest/management/*");
 		
 		setupSecurity(server, servletContextHandler);
 	}
