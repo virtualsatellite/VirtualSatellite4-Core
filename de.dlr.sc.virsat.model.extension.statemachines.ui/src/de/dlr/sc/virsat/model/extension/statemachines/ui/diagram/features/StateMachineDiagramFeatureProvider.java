@@ -16,6 +16,7 @@ import org.eclipse.graphiti.features.ICreateConnectionFeature;
 import org.eclipse.graphiti.features.ICreateFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
+import org.eclipse.graphiti.features.ILayoutFeature;
 import org.eclipse.graphiti.features.IPasteFeature;
 import org.eclipse.graphiti.features.IReconnectionFeature;
 import org.eclipse.graphiti.features.IRemoveFeature;
@@ -26,6 +27,7 @@ import org.eclipse.graphiti.features.context.ICopyContext;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
+import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.features.context.IPasteContext;
 import org.eclipse.graphiti.features.context.IReconnectionContext;
 import org.eclipse.graphiti.features.context.IRemoveContext;
@@ -42,6 +44,7 @@ import de.dlr.sc.virsat.graphiti.ui.diagram.feature.BeanDirectEditNameFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatCategoryAssingmentCopyFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatChangeColorFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatDiagramFeatureProvider;
+import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatResizeShapeFeature;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirsatCategoryAssignmentOpenEditorFeature;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
@@ -61,6 +64,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateM
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateAddFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateChangeColorFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateCreateFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateLayoutFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StatePasteFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateSetAsInitialStateFeature;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateUnsetAsInitialStateFeature;
@@ -202,6 +206,11 @@ public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProv
 		if (object instanceof StateMachine) {
 			return new StateMachineResizeFeature(this);
 		}
+		
+		if (object instanceof State) {
+			return new VirSatResizeShapeFeature(this);
+		}
+		
 		return null;	
 	}
 	
@@ -213,6 +222,16 @@ public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProv
 		}
 		
 		return super.getRemoveFeature(context);
+	}
+	
+	@Override
+	public ILayoutFeature getLayoutFeature(ILayoutContext context) {
+		Object object = getBusinessObjectForPictogramElement(context.getPictogramElement());
+		if (object instanceof State) {
+			return new StateLayoutFeature(this);
+		}
+		
+		return super.getLayoutFeature(context);
 	}
 }
 
