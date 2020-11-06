@@ -9,15 +9,26 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.editor;
 
+import org.eclipse.graphiti.mm.pictograms.Diagram;
+
 import de.dlr.sc.virsat.graphiti.ui.diagram.editor.VirsatDiagramEditor;
+import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * Diagram editor for State Machine diagrams.
- * @author bell_Er
  *
  */
 public class StateMachineDiagramEditor extends VirsatDiagramEditor {
 	
+	@Override
+	public void refreshTitle() {
+		Diagram diagram = getDiagramTypeProvider().getDiagram();
+		StructuralElementInstance sei = DiagramHelper.getOwningStructuralElementInstance(diagram);
+		String partName = sei.getName() + " -> StateMachine Editor";
+		
+		setPartName(partName);
+	}
 }
 
 
