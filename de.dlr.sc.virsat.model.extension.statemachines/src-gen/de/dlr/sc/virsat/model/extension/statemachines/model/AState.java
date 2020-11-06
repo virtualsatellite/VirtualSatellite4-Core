@@ -12,16 +12,17 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
-import javax.xml.bind.annotation.XmlAccessType;
 
 
 // *****************************************************************
@@ -36,8 +37,6 @@ import javax.xml.bind.annotation.XmlAccessType;
  * State of the component at a given time
  * 
  */	
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public abstract class AState extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.State";
@@ -51,6 +50,7 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	}
 	
 	// property name constants
+	public static final String PROPERTY_DETAIL = "detail";
 	
 	
 	
@@ -71,6 +71,37 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 		setTypeInstance(categoryAssignement);
 	}
 	
+	
+	// *****************************************************************
+	// * Attribute: detail
+	// *****************************************************************
+	private BeanPropertyString detail = new BeanPropertyString();
+	
+	private void safeAccessDetail() {
+		if (detail.getTypeInstance() == null) {
+			detail.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("detail"));
+		}
+	}
+	
+	public Command setDetail(EditingDomain ed, String value) {
+		safeAccessDetail();
+		return this.detail.setValue(ed, value);
+	}
+	
+	public void setDetail(String value) {
+		safeAccessDetail();
+		this.detail.setValue(value);
+	}
+	
+	public String getDetail() {
+		safeAccessDetail();
+		return detail.getValue();
+	}
+	
+	public BeanPropertyString getDetailBean() {
+		safeAccessDetail();
+		return detail;
+	}
 	
 	
 }
