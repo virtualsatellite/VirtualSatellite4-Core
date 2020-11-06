@@ -194,6 +194,16 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 		if (statusValue == null) {
 			return null;
 		}
+		String imagePath = getStatusIconPath(statusValue);
+		return ExtendedImageRegistry.INSTANCE.getImage(Activator.getImageDescriptor(imagePath));
+	}
+
+	/**
+	 * Return the correct icon path depending on the current requirement status
+	 * @param statusValue the current requirement status
+	 * @return the path to the icon
+	 */
+	protected String getStatusIconPath(String statusValue) {
 		String imagePath = ICON_STATUS_OPEN_PATH;
 		switch (statusValue) {
 			case Requirement.STATUS_Open_NAME:
@@ -211,7 +221,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 			default:
 				return null;
 		}
-		return ExtendedImageRegistry.INSTANCE.getImage(Activator.getImageDescriptor(imagePath));
+		return imagePath;
 	}
 
 	/**

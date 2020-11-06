@@ -77,7 +77,7 @@ public class RequirementsVerificationBuilderTest extends ABuilderTest {
 	
 	private TestRequirementsVerificationBuilder builder;
 	private Concept requirementsConcept;
-	private RequirementsSpecification specification;
+	private RequirementsSpecification specification1;
 	private RequirementsSpecification specification2;
 	
 	@Before
@@ -87,13 +87,13 @@ public class RequirementsVerificationBuilderTest extends ABuilderTest {
 		builder = new TestRequirementsVerificationBuilder();
 		
 		requirementsConcept = ConceptXmiLoader.loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.requirements/concept/concept.xmi");
-		specification = new RequirementsSpecification(requirementsConcept);
+		specification1 = new RequirementsSpecification(requirementsConcept);
 		specification2 = new RequirementsSpecification(requirementsConcept);
 	}
 	
 	@Test
 	public void testFullBuild() {
-		seiEdSc.getCategoryAssignments().add(specification.getTypeInstance());
+		seiEdSc.getCategoryAssignments().add(specification1.getTypeInstance());
 		seiEdRw.getCategoryAssignments().add(specification2.getTypeInstance());
 		
 		assertEquals(0, testVerificationStep.verifiedSpecs.size());
@@ -104,14 +104,14 @@ public class RequirementsVerificationBuilderTest extends ABuilderTest {
 		List<CategoryAssignment> specCAs =  testVerificationStep.verifiedSpecs.stream().
 				map((specBean) -> specBean.getTypeInstance()).
 				collect(Collectors.toList());
-		assertTrue("Builder found correct spec in project's data model", specCAs.contains(specification.getTypeInstance()));
+		assertTrue("Builder found correct spec in project's data model", specCAs.contains(specification1.getTypeInstance()));
 		assertTrue("Builder found correct spec in project's data model", specCAs.contains(specification2.getTypeInstance()));
 
 	}
 	
 	@Test
 	public void testIncrementalBuild() {
-		seiEdSc.getCategoryAssignments().add(specification.getTypeInstance());
+		seiEdSc.getCategoryAssignments().add(specification1.getTypeInstance());
 		seiEdRw.getCategoryAssignments().add(specification2.getTypeInstance());
 		
 		// Create change event for only first spec file
@@ -136,7 +136,7 @@ public class RequirementsVerificationBuilderTest extends ABuilderTest {
 		assertEquals(0, testVerificationStep.verifiedSpecs.size());
 		builder.incrementalBuild(delta, null);
 		assertEquals("Only specification in changed file found", 1, testVerificationStep.verifiedSpecs.size());
-		assertEquals("Builder found correct spec in project's changed model file", specification.getTypeInstance(), 
+		assertEquals("Builder found correct spec in project's changed model file", specification1.getTypeInstance(), 
 				testVerificationStep.verifiedSpecs.iterator().next().getTypeInstance());
 	}
 
