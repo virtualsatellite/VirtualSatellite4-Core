@@ -128,7 +128,7 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 		
 		// add states
 		int counter = 0;
-		int xPadding = StateAddFeature.RADIUS + StateAddFeature.IMAGE_WIDTH;
+		int xPadding = StateAddFeature.RADIUS;
 		int yPadding = StateAddFeature.RADIUS;
 		for (State s : sm.getStates()) {
 			AddContext ieContext = new AddContext(context, s.getTypeInstance());			
@@ -142,7 +142,7 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 			if (counter >= horizontalStateCount) {
 				counter = 0;
 				yPadding = yPadding + StateAddFeature.RADIUS * 2;
-				xPadding = StateAddFeature.RADIUS + StateAddFeature.IMAGE_WIDTH;
+				xPadding = StateAddFeature.RADIUS;
 			}
 		}
 		
