@@ -34,7 +34,8 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.TransitionLabelProvider;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.ITransitionLabelProvider;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.LabelProviderInstantiator;
 /** 
  * Update feature for updating state machine
  * @author bell_er
@@ -182,7 +183,8 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 				for (Transition t : stateMachine.getTransitions()) {
 					if (t.getUuid().equals(diagramTransaction.getUuid())) {
 						Text text = (Text) c.getConnectionDecorators().get(0).getGraphicsAlgorithm();
-						text.setValue(new TransitionLabelProvider().getLabel(t));		
+						ITransitionLabelProvider labelProvider = new LabelProviderInstantiator().getLabelProvider();
+						text.setValue(labelProvider.getLabel(t));		
 					}
 				}
 			}

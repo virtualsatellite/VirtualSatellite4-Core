@@ -19,6 +19,9 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstra
 * Feature for adding transition in an state machine diagram. 
 * */
 public class TransitionAddFeature extends AbstractConnectionAddFeature {
+	
+	public static final String EXTENSION_POINT_ID_TRANSITION_LABEL_PROVIDER = "de.dlr.sc.virsat.model.extension.statemachines.transition.LabelProvider";
+	
 	/** 
 	 * Default constructor.
 	 * @param fp the feature provider.
@@ -37,6 +40,6 @@ public class TransitionAddFeature extends AbstractConnectionAddFeature {
 	@Override
 	protected String getTransitionLabel(CategoryAssignment ca) {
 		Transition transition = new Transition(ca);
-		return new TransitionLabelProvider().getLabel(transition);
+		return new LabelProviderInstantiator().getLabelProvider().getLabel(transition);
 	}
 }
