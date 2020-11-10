@@ -32,15 +32,9 @@ public class StateMachineDiagramTypeProvider extends AbstractDiagramTypeProvider
 		setFeatureProvider(new StateMachineDiagramFeatureProvider(this));
 	}
 	
-	private IToolBehaviorProvider[] toolBehaviorProviders;
-	
 	@Override
 	public IToolBehaviorProvider[] getAvailableToolBehaviorProviders() {
-		if (toolBehaviorProviders == null) {
-			toolBehaviorProviders =
-					new IToolBehaviorProvider[] { new StateMachineDiagramToolBehaviorProvider(this)};
-		}
-		return toolBehaviorProviders;
+		return new IToolBehaviorProvider[] { new StateMachineDiagramToolBehaviorProvider(this)};
 	}
 	
 	@Override
