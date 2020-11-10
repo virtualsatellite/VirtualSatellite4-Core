@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 
 import de.dlr.sc.virsat.server.dataaccess.Model;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * Simple test resource for debugging purposes
@@ -31,7 +30,6 @@ public class AccessTestResource {
 	@GET
 	@Path("/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(produces="application/json", value = "Fetch employee details")
 	public Model hello(@PathParam("uuid") String uuid) {
 		return new Model(uuid);
 	}
