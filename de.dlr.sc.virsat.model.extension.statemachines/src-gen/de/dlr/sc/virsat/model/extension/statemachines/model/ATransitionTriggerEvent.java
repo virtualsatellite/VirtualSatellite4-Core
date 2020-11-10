@@ -38,14 +38,14 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * Don't Manually modify this class
  * 
- * State of the component at a given time
+ * Some kind of event or action that triggers a transition
  * 
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AState extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class ATransitionTriggerEvent extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.State";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -64,16 +64,16 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	// * Class Constructors
 	// *****************************************************************
 	
-	public AState() {
+	public ATransitionTriggerEvent() {
 	}
 	
-	public AState(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "State");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "State");
+	public ATransitionTriggerEvent(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "TransitionTriggerEvent");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "TransitionTriggerEvent");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public AState(CategoryAssignment categoryAssignement) {
+	public ATransitionTriggerEvent(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	
