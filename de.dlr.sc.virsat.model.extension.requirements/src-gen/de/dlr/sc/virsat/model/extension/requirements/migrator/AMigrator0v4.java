@@ -7,28 +7,23 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.resources;
+package de.dlr.sc.virsat.model.extension.requirements.migrator;
+
+import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
 
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import de.dlr.sc.virsat.server.dataaccess.Model;
+// *****************************************************************
+// * Class Declaration
+// *****************************************************************
 
 /**
- * Simple test resource for debugging purposes
- *
- */
-@Path("/atr")
-public class AccessTestResource {
-	
-	@GET
-	@Path("/{uuid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Model hello(@PathParam("uuid") String uuid) {
-		return new Model(uuid);
-	}
+ * Auto Generated Abstract Generator Gap Class
+ * 
+ * Don't Manually modify this class
+ * 
+ * Extension for Requirement Specification
+ * 
+ */	
+public abstract class AMigrator0v4 extends AMigrator {
+
 }

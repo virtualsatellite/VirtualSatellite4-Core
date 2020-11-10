@@ -17,17 +17,13 @@ import de.dlr.sc.virsat.server.auth.LoginServiceFactoryTest;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfigurationTest;
 import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
 import de.dlr.sc.virsat.server.controller.RepoManagementControllerTest;
-import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProviderTest;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtilityTest;
-import de.dlr.sc.virsat.server.dataaccess.VirSatGitAccessTest;
+import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProviderTest;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
-import de.dlr.sc.virsat.server.resources.AccessTestResourceTest;
 import de.dlr.sc.virsat.server.resources.AuthTestResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResourceTest;
-import de.dlr.sc.virsat.server.resources.WorkspaceAccessResourceTest;
-import de.dlr.sc.virsat.server.resources.WorkspaceUserContextTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -38,11 +34,7 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({
 	ServerRepositoryTest.class,
-	VirSatGitAccessTest.class,
-	WorkspaceAccessResourceTest.class,
-	AccessTestResourceTest.class,
 	AuthTestResourceTest.class,
-	WorkspaceUserContextTest.class,
 	ServerConfigurationTest.class,
 	ServerRepoHelperTest.class,
 	RepoManagementControllerTest.class,

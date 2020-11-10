@@ -14,8 +14,12 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
@@ -46,7 +50,20 @@ public abstract class AIVerification extends GenericCategory implements IBeanCat
 	}
 	
 	// property name constants
+	public static final String PROPERTY_STATUS = "status";
 	
+	// Status enumeration value names
+	public static final String STATUS_Open_NAME = "Open";
+	public static final String STATUS_FullyCompliant_NAME = "FullyCompliant";
+	public static final String STATUS_PartialCompliant_NAME = "PartialCompliant";
+	public static final String STATUS_NonCompliant_NAME = "NonCompliant";
+	public static final String STATUS_NotApplicable_NAME = "NotApplicable";
+	// Status enumeration values
+	public static final String STATUS_Open_VALUE = "0";
+	public static final String STATUS_FullyCompliant_VALUE = "1";
+	public static final String STATUS_PartialCompliant_VALUE = "2";
+	public static final String STATUS_NonCompliant_VALUE = "3";
+	public static final String STATUS_NotApplicable_VALUE = "4";
 	
 	
 	// *****************************************************************
@@ -66,6 +83,42 @@ public abstract class AIVerification extends GenericCategory implements IBeanCat
 		setTypeInstance(categoryAssignement);
 	}
 	
+	
+	// *****************************************************************
+	// * Attribute: status
+	// *****************************************************************
+	private BeanPropertyEnum status = new BeanPropertyEnum();
+	
+	private void safeAccessStatus() {
+		if (status.getTypeInstance() == null) {
+			status.setTypeInstance((EnumUnitPropertyInstance) helper.getPropertyInstance("status"));
+		}
+	}
+	
+	public Command setStatus(EditingDomain ed, String value) {
+		safeAccessStatus();
+		return this.status.setValue(ed, value);
+	}
+	
+	public void setStatus(String value) {
+		safeAccessStatus();
+		this.status.setValue(value);
+	}
+	
+	public String getStatus() {
+		safeAccessStatus();
+		return status.getValue();
+	}
+	
+	public double getStatusEnum() {
+		safeAccessStatus();
+		return status.getEnumValue();
+	}
+	
+	public BeanPropertyEnum getStatusBean() {
+		safeAccessStatus();
+		return status;
+	}
 	
 	
 }
