@@ -551,7 +551,8 @@
        point="de.dlr.sc.virsat.model.extension.statemachines.transition.LabelProvider">
     <LabelProvider
           class="de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.TransitionLabelProvider"
-          id="de.dlr.sc.virsat.model.extension.statemachines.ui.transition.default">
+          id="de.dlr.sc.virsat.model.extension.statemachines.ui.transition.default"
+          level="0">
     </LabelProvider>
  </extension>
 	<!-- Plugin.XML Protected Region End -->

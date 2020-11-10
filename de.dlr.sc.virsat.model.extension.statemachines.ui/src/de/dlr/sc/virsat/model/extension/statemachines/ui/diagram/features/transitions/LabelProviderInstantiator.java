@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.Activator;
 public class LabelProviderInstantiator {
 	
 	public static final String EXTENSION_POINT_ID_TRANSITION_LABEL_PROVIDER = "de.dlr.sc.virsat.model.extension.statemachines.transition.LabelProvider";
+	public static final String LEVEL_ATTRIBUTE_NAME = "level";
 	
 	/**
 	 * Get most relevant label provider from the registry or use the default one
@@ -31,13 +32,23 @@ public class LabelProviderInstantiator {
 	public ITransitionLabelProvider getLabelProvider() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] configElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID_TRANSITION_LABEL_PROVIDER);
-		if (configElements.length > 0) {
-			// Get the last registered configuration element
-			IConfigurationElement extension = configElements[configElements.length - 1];
+		int highestHierarchyLevel = 0;
+		for (IConfigurationElement element : configElements) {
+			String levelString = element.getAttribute(LEVEL_ATTRIBUTE_NAME);
 			try {
-				return (ITransitionLabelProvider) extension.createExecutableExtension("class");
-			} catch (CoreException e) {
-				Activator.getDefault().getLog().error("Could not get label provider", e);
+				highestHierarchyLevel = Integer.max(Integer.parseInt(levelString), highestHierarchyLevel);
+			} catch (NumberFormatException e) {
+				Activator.getDefault().getLog().error("Can not cast level attribute of extension to integer!", e);
+			}
+		}
+		for (IConfigurationElement element : configElements) {
+			int level = Integer.parseInt(element.getAttribute(LEVEL_ATTRIBUTE_NAME));
+			if (level == highestHierarchyLevel) {
+				try {
+					return (ITransitionLabelProvider) element.createExecutableExtension("class");
+				} catch (CoreException e) {
+					Activator.getDefault().getLog().error("Could not get label provider", e);
+				}
 			}
 		}
 		return new TransitionLabelProvider();

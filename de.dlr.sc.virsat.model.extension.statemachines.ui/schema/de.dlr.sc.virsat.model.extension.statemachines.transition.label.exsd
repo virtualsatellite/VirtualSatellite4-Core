@@ -66,6 +66,13 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="level" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The derivation level - the label provider with the highst level is used. By default the level should be the hierarchy level of the implementation class.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
