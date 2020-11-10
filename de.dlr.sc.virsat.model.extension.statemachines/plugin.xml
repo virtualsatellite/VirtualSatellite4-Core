@@ -26,6 +26,10 @@
 			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.Transition">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"
+			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEvent">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.statemachines.AllowsConstraint"
 			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint">
 		</CategoryAssignmentBean>

@@ -17,7 +17,11 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	Category Transition description "Transitions among states" { 
 		Reference stateFrom of Type State description "The Transition starts in this state";
 		Reference stateTo of Type State description "The Transition ends in this state";
-		Reference trigger of Type GenericCategory description "The event that triggers the Transition";
+		Reference trigger of Type TransitionTriggerEvent description "The event that triggers the Transition";
+	}
+	
+	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
+		StringProperty detail description "Optional additional detail information about this trigger";
 	}
 	
 	Category AConstraint description "General constraint in statemachines "{
@@ -47,5 +51,6 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 		Type states[] of Category State description "A collection of states of this state machine";
 		Type transitions[] of Category Transition description "A collections of transitions of this state machine";
 		Type constraints[] of Category AConstraint description "A collection of constraints of this state machine";
+		Type triggerEvents[] of Category TransitionTriggerEvent description "List of explicit events that trigger a transition";
 	}
 }

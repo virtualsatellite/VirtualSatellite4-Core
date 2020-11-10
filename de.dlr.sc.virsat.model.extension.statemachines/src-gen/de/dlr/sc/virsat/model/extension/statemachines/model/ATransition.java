@@ -149,7 +149,7 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 	// *****************************************************************
 	// * Attribute: trigger
 	// *****************************************************************
-	private BeanPropertyReference<GenericCategory> trigger = new BeanPropertyReference<>();
+	private BeanPropertyReference<TransitionTriggerEvent> trigger = new BeanPropertyReference<>();
 	
 	private void safeAccessTrigger() {
 		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("trigger");
@@ -158,22 +158,22 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 	
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
-	public GenericCategory getTrigger() {
+	public TransitionTriggerEvent getTrigger() {
 		safeAccessTrigger();
 		return trigger.getValue();
 	}
 	
-	public Command setTrigger(EditingDomain ed, GenericCategory value) {
+	public Command setTrigger(EditingDomain ed, TransitionTriggerEvent value) {
 		safeAccessTrigger();
 		return trigger.setValue(ed, value);
 	}
 	
-	public void setTrigger(GenericCategory value) {
+	public void setTrigger(TransitionTriggerEvent value) {
 		safeAccessTrigger();
 		trigger.setValue(value);
 	}
 	
-	public BeanPropertyReference<GenericCategory> getTriggerBean() {
+	public BeanPropertyReference<TransitionTriggerEvent> getTriggerBean() {
 		safeAccessTrigger();
 		return trigger;
 	}
