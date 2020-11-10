@@ -70,6 +70,7 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 	public static final String PROPERTY_STATES = "states";
 	public static final String PROPERTY_TRANSITIONS = "transitions";
 	public static final String PROPERTY_CONSTRAINTS = "constraints";
+	public static final String PROPERTY_TRIGGEREVENTS = "triggerEvents";
 	
 	// Type enumeration value names
 	public static final String TYPE_SoftwareStateMachine_NAME = "SoftwareStateMachine";
@@ -254,6 +255,36 @@ public abstract class AStateMachine extends GenericCategory implements IBeanCate
 	public IBeanList<BeanPropertyComposed<AConstraint>> getConstraintsBean() {
 		safeAccessConstraintsBean();
 		return constraintsBean;
+	}
+	
+	// *****************************************************************
+	// * Array Attribute: triggerEvents
+	// *****************************************************************
+	private IBeanList<TransitionTriggerEvent> triggerEvents = new TypeSafeComposedPropertyInstanceList<>(TransitionTriggerEvent.class);
+	
+	private void safeAccessTriggerEvents() {
+		if (triggerEvents.getArrayInstance() == null) {
+			triggerEvents.setArrayInstance((ArrayInstance) helper.getPropertyInstance("triggerEvents"));
+		}
+	}
+	
+	public IBeanList<TransitionTriggerEvent> getTriggerEvents() {
+		safeAccessTriggerEvents();
+		return triggerEvents;
+	}
+	
+	private IBeanList<BeanPropertyComposed<TransitionTriggerEvent>> triggerEventsBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessTriggerEventsBean() {
+		if (triggerEventsBean.getArrayInstance() == null) {
+			triggerEventsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("triggerEvents"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<TransitionTriggerEvent>> getTriggerEventsBean() {
+		safeAccessTriggerEventsBean();
+		return triggerEventsBean;
 	}
 	
 	
