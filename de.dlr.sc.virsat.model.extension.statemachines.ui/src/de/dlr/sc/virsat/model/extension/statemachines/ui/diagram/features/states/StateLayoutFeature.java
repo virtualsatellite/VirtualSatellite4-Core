@@ -34,7 +34,8 @@ public class StateLayoutFeature extends VirSatLayoutFeature  {
 	@Override
 	public boolean layout(ILayoutContext context) {
 		ContainerShape cs = (ContainerShape) context.getPictogramElement();
-
+		
+		int csWidth = cs.getGraphicsAlgorithm().getWidth();
 		int csHeight = cs.getGraphicsAlgorithm().getHeight();
 		
 		Shape ellipseShape = cs.getChildren().get(StateAddFeature.INDEX_ELLIPSE);
@@ -43,28 +44,27 @@ public class StateLayoutFeature extends VirSatLayoutFeature  {
 		
 		// Offset of bounding box to enable adding initial state arrow to appear
 		int ellipseOffset = initialArrowShape.getGraphicsAlgorithm().getWidth();
-		int ellipsRadius = csHeight - ellipseOffset * 2;
+		int ellipsHeight = csHeight - ellipseOffset * 2;
+		int ellipsWidth = csWidth - ellipseOffset * 2;
 		
 		Graphiti.getGaService().setLocationAndSize(
 				ellipseShape.getGraphicsAlgorithm(), 
 				ellipseOffset, 
 				ellipseOffset,
-				ellipsRadius, 
-				ellipsRadius
+				ellipsWidth, 
+				ellipsHeight
 		);
 
 		initialArrowShape.getGraphicsAlgorithm().setY(
 				(csHeight - initialArrowShape.getGraphicsAlgorithm().getHeight()) / 2
 		);
 		
-		
-		
 		Graphiti.getGaService().setLocationAndSize(
 				textShape.getGraphicsAlgorithm(), 
 				ellipseOffset, 
 				ellipseOffset,
-				ellipsRadius, 
-				ellipsRadius
+				ellipsWidth, 
+				ellipsHeight
 		);
 		
 		return true;
