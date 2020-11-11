@@ -52,6 +52,7 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 	public static final int PADDING_X = 10;
 	public static final int PADDING_Y = 10;
 	public static final int STATEPADDING = 50;
+	public static final int ROUNDED_CORNERS = 10;
 	
 	public static final IColorConstant ELEMENT_TEXT_FOREGROUND = IColorConstant.BLACK;
 	public static final IColorConstant ELEMENT_FOREGROUND =	new ColorConstant(98, 131, 167);	
@@ -95,7 +96,9 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 		RoundedRectangle roundedRectangle = gaService.createRoundedRectangle(containerShape, CORNER_WIDTH, CORNER_HEIGHT);		
 		roundedRectangle.setLineWidth(LINE_WIDTH);		
 		roundedRectangle.setForeground(manageColor(ELEMENT_FOREGROUND));
-		roundedRectangle.setBackground(manageColor(ELEMENT_BACKGROUND));	
+		roundedRectangle.setBackground(manageColor(ELEMENT_BACKGROUND));
+		roundedRectangle.setCornerHeight(ROUNDED_CORNERS);
+		roundedRectangle.setCornerWidth(ROUNDED_CORNERS);
 		gaService.setLocationAndSize(roundedRectangle, context.getX(), context.getY(), width, height);		
 		link(containerShape, sm);
 		

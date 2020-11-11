@@ -16,8 +16,6 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatLayoutFeature;
-import de.dlr.sc.virsat.model.extension.statemachines.model.State;
-import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 
 /**
  * Layout feature for states. Adjusts the internal shapes to match
@@ -36,38 +34,37 @@ public class StateLayoutFeature extends VirSatLayoutFeature  {
 	@Override
 	public boolean layout(ILayoutContext context) {
 		ContainerShape cs = (ContainerShape) context.getPictogramElement();
-		
-		State state = (State) getBusinessObjectForPictogramElement(cs);
-		StateMachine sm = state.getParentCaBeanOfClass(StateMachine.class);
-		
-		int csWidth = cs.getGraphicsAlgorithm().getWidth();
+
 		int csHeight = cs.getGraphicsAlgorithm().getHeight();
 		
 		Shape ellipseShape = cs.getChildren().get(StateAddFeature.INDEX_ELLIPSE);
 		Shape initialArrowShape = cs.getChildren().get(StateAddFeature.INDEX_INITIAL_ARROW);
 		Shape textShape = cs.getChildren().get(StateAddFeature.INDEX_TEXT);
 		
-		int ellipseOffset = state.equals(sm.getInitialState()) ? initialArrowShape.getGraphicsAlgorithm().getWidth() : 0;
-		int ellipsWidth = csWidth - ellipseOffset;
+		// Offset of bounding box to enable adding initial state arrow to appear
+		int ellipseOffset = initialArrowShape.getGraphicsAlgorithm().getWidth();
+		int ellipsRadius = csHeight - ellipseOffset * 2;
 		
 		Graphiti.getGaService().setLocationAndSize(
 				ellipseShape.getGraphicsAlgorithm(), 
 				ellipseOffset, 
-				0,
-				ellipsWidth, 
-				csHeight
+				ellipseOffset,
+				ellipsRadius, 
+				ellipsRadius
 		);
 
 		initialArrowShape.getGraphicsAlgorithm().setY(
 				(csHeight - initialArrowShape.getGraphicsAlgorithm().getHeight()) / 2
 		);
 		
+		
+		
 		Graphiti.getGaService().setLocationAndSize(
 				textShape.getGraphicsAlgorithm(), 
 				ellipseOffset, 
-				0,
-				ellipsWidth, 
-				csHeight
+				ellipseOffset,
+				ellipsRadius, 
+				ellipsRadius
 		);
 		
 		return true;
