@@ -25,6 +25,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeCreateService;
+import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatAddShapeFeature;
@@ -38,13 +39,16 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
  */
 
 public class StateAddFeature extends VirSatAddShapeFeature {
-	public static  final int RADIUS = 50;
+	public static  final int RADIUS = 65;
 	
 	public static final int INDEX_ELLIPSE = 0;
 	public static final int INDEX_INITIAL_ARROW = 1;
 	public static final int INDEX_TEXT = 2;
 	
 	public static final int INITIAL_ARROW_SIZE = 15;
+	public static final int CONTAINER_SIZE = RADIUS + INITIAL_ARROW_SIZE * 2;
+	
+	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(232, 94, 74);
 	
 	/** 
 	 * Default constructor.
@@ -103,12 +107,12 @@ public class StateAddFeature extends VirSatAddShapeFeature {
         
         
         Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-		gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), RADIUS, RADIUS);
+		gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), CONTAINER_SIZE, CONTAINER_SIZE);
         
         ContainerShape ellipseShape = peCreateService.createContainerShape(containerShape, true);
         
         Ellipse ellipse = gaService.createEllipse(ellipseShape);
-        ellipse.setBackground(manageColor(IColorConstant.RED));
+        ellipse.setBackground(manageColor(ELEMENT_BACKGROUND));
         ellipse.setLineVisible(false);
         ellipseShape.setActive(false);
 

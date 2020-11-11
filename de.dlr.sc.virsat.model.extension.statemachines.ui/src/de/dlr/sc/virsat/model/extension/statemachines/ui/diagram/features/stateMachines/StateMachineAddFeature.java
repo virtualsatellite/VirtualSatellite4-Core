@@ -52,6 +52,7 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 	public static final int PADDING_X = 10;
 	public static final int PADDING_Y = 10;
 	public static final int STATEPADDING = 50;
+	public static final int ROUNDED_CORNERS = 10;
 	
 	public static final IColorConstant ELEMENT_TEXT_FOREGROUND = IColorConstant.BLACK;
 	public static final IColorConstant ELEMENT_FOREGROUND =	new ColorConstant(98, 131, 167);	
@@ -95,7 +96,9 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 		RoundedRectangle roundedRectangle = gaService.createRoundedRectangle(containerShape, CORNER_WIDTH, CORNER_HEIGHT);		
 		roundedRectangle.setLineWidth(LINE_WIDTH);		
 		roundedRectangle.setForeground(manageColor(ELEMENT_FOREGROUND));
-		roundedRectangle.setBackground(manageColor(ELEMENT_BACKGROUND));	
+		roundedRectangle.setBackground(manageColor(ELEMENT_BACKGROUND));
+		roundedRectangle.setCornerHeight(ROUNDED_CORNERS);
+		roundedRectangle.setCornerWidth(ROUNDED_CORNERS);
 		gaService.setLocationAndSize(roundedRectangle, context.getX(), context.getY(), width, height);		
 		link(containerShape, sm);
 		
@@ -103,11 +106,13 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 		Shape lineShape = peCreateService.createShape(containerShape, false);		
 		Polyline polyline = gaService.createPolyline(lineShape, new int[] { 0, linePosY + PADDING_Y, linePosX + PADDING_X + 2, linePosY + PADDING_Y });		
 		polyline.setLineWidth(LINE_WIDTH);
+		polyline.setForeground(manageColor(ELEMENT_FOREGROUND));
 		
 		// Create Shape with line2
 		Shape lineShape2 = peCreateService.createShape(containerShape, false);		
 		Polyline polyline2 = gaService.createPolyline(lineShape2, new int[] { linePosX + PADDING_X, 0, linePosX + PADDING_X,  linePosY + PADDING_Y + 2 });		
 		polyline2.setLineWidth(LINE_WIDTH);
+		polyline2.setForeground(manageColor(ELEMENT_FOREGROUND));
 		
 		// Create Shape with Type Label
 		Shape typeShape = peCreateService.createShape(containerShape, false);		
