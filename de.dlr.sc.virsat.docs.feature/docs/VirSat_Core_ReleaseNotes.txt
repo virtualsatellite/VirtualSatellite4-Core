@@ -1,6 +1,25 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.12.2 (11th November 2020)
+----------------------------------
+
+New Features:
+   Added trigger to transitions in state machines
+   Added fields for detailed description in state machines states and triggers
+   Add a verification builder to check the status of requirements
+
+Usability Updates:
+   Improved layout of state machine diagrams
+   Improved bean API
+   Added double click options to state machine diagram
+
+Fixed Bugs:
+   Fixed an issue when opening a state machine diagram after creating a new connection
+   Fixed a bug in the excel export of state machines
+   Fixed update of diagrams
+
+
 Release 4.12.1 (15th October 2020)
 ----------------------------------
 
