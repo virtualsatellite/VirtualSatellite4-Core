@@ -106,11 +106,13 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 		Shape lineShape = peCreateService.createShape(containerShape, false);		
 		Polyline polyline = gaService.createPolyline(lineShape, new int[] { 0, linePosY + PADDING_Y, linePosX + PADDING_X + 2, linePosY + PADDING_Y });		
 		polyline.setLineWidth(LINE_WIDTH);
+		polyline.setForeground(manageColor(ELEMENT_FOREGROUND));
 		
 		// Create Shape with line2
 		Shape lineShape2 = peCreateService.createShape(containerShape, false);		
 		Polyline polyline2 = gaService.createPolyline(lineShape2, new int[] { linePosX + PADDING_X, 0, linePosX + PADDING_X,  linePosY + PADDING_Y + 2 });		
 		polyline2.setLineWidth(LINE_WIDTH);
+		polyline2.setForeground(manageColor(ELEMENT_FOREGROUND));
 		
 		// Create Shape with Type Label
 		Shape typeShape = peCreateService.createShape(containerShape, false);		
