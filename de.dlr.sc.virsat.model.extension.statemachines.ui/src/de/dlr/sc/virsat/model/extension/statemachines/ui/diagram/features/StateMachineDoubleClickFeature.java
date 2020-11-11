@@ -82,8 +82,15 @@ public class StateMachineDoubleClickFeature extends VirsatCategoryAssignmentOpen
 				ed.getCommandStack().execute(command);
 				
 				//Update diagram label
-				Connection connection = (Connection) context.getPictogramElements()[0];
-				Text text = (Text) connection.getConnectionDecorators().get(0).getGraphicsAlgorithm();
+				PictogramElement subject = context.getPictogramElements()[0];
+				Connection connection = null;
+				Text text = null;
+				if (subject instanceof Connection) {
+					connection = (Connection) subject;
+					text = (Text) connection.getConnectionDecorators().get(0).getGraphicsAlgorithm();
+				} else {
+					text = (Text) subject.getGraphicsAlgorithm();
+				}
 				ITransitionLabelProvider labelProvider = new LabelProviderInstantiator().getLabelProvider();
 				text.setValue(labelProvider.getLabel(transition));	
 			}
