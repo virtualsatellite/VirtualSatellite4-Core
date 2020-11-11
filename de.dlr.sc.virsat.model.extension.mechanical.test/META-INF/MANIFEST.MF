@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Model Extension Mechanical Engineering Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.mechanical.test;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.12.2.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.extension.mechanical;bundle-version="0.0.1"
 Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
