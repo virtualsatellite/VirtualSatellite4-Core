@@ -105,7 +105,7 @@ public class UiSnippetSectionVisualisation extends AUiSnippetSectionVisualisatio
 	 */
 	private void createColorPropertyWidgets(FormToolkit toolkit, Composite sectionBody, AProperty property) { 
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_4;
 		Text textPropertyValue = toolkit.createText(sectionBody, "");
 		textPropertyValue.setLayoutData(gridData);
 		textPropertyValue.setEditable(false);
@@ -136,7 +136,7 @@ public class UiSnippetSectionVisualisation extends AUiSnippetSectionVisualisatio
 	private void createTransparencyPropertyWidgets(FormToolkit toolkit, Composite sectionBody, AProperty property) {
 		final double ONEHUNDERED = 100f;
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_4;
 		
 		Text textPropertyValue = toolkit.createText(sectionBody, "");
 		textPropertyValue.setLayoutData(gridData);
