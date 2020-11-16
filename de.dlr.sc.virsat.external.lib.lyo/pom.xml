@@ -19,7 +19,35 @@
 	<name>de.dlr.sc.virsat.external.lib.lyo</name>
 	<packaging>eclipse-plugin</packaging>
 
+	<repositories>
+		<repository>
+			<id>lyo-releases</id>
+			<name>Eclipse Lyo Releases</name>
+			<url>https://repo.eclipse.org/content/repositories/lyo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>lyo-snapshots</id>
+			<name>Eclipse Lyo Snapshots</name>
+			<url>https://repo.eclipse.org/content/repositories/lyo-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.clients/oslc-java-client -->
+		<dependency>
+			<groupId>org.eclipse.lyo.clients</groupId>
+			<artifactId>oslc-java-client</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-core -->
 		<dependency>
 			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
