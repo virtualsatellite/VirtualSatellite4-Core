@@ -12,107 +12,57 @@ package de.dlr.sc.virsat.server.resources;
 import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AJettyServerTest;
 
 public class AuthTestResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testAuthentication() {
+		Response serverResponse = getRequest("/denied");
+		assertEquals("Server response is correct", HttpStatus.FORBIDDEN_403, serverResponse.getStatus());
 		
-		String serverResponse = webTarget.path(AuthTestResource.AUTH).path("/denied")
-				.request()
-				.get()
-				.toString();
-		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/denied, status=403, reason=Forbidden}}";
-		assertEquals("Server response is correct", expectedResponse, serverResponse);
-		
-		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path("/permitted")
-				.request()
-				.get()
-				.toString();
-		String expectedResponse2 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/permitted, status=200, reason=OK}}";
-		assertEquals("Server response is correct", expectedResponse2, serverResponse2);
+		Response serverResponse2 = getRequest("/permitted");
+		assertEquals("Server response is correct", HttpStatus.OK_200, serverResponse2.getStatus());
 	}
 	
 	@Test
 	public void testHttpAuthorization() {
-		
-		String serverResponse = webTarget.path(AuthTestResource.AUTH).path("/all_users")
-				.request()
-				.get()
-				.toString();
-		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/all_users, status=403, reason=Forbidden}}";
-		assertEquals("Unauthorized response because of missing header", expectedResponse, serverResponse);
+		Response serverResponse = getRequest("/all_users");
+		assertEquals("Unauthorized response because of missing header", HttpStatus.FORBIDDEN_403, serverResponse.getStatus());
 	
-		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, "")
-				.get()
-				.toString();
-		assertEquals("Unauthorized response because of empty header", expectedResponse, serverResponse2);
+		Response serverResponse2 = getRequest("/all_users", "");
+		assertEquals("Unauthorized response because of empty header", HttpStatus.FORBIDDEN_403, serverResponse2.getStatus());
 		
-		String serverResponse3 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, "username:password")
-				.get()
-				.toString();
-		assertEquals("Unauthorized response because of not encoded header", expectedResponse, serverResponse3);
+		Response serverResponse3 = getRequest("/all_users", "username:password");
+		assertEquals("Unauthorized response because of not encoded header", HttpStatus.FORBIDDEN_403, serverResponse3.getStatus());
 		
-		String encoded = getAuthHeader("unknown:password");
-		String serverResponse4 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encoded)
-				.get()
-				.toString();
-		assertEquals("Unauthorized response because of unknown user", expectedResponse, serverResponse4);
+		Response serverResponse4 = getRequest("/all_users", getAuthHeader("unknown:password"));
+		assertEquals("Unauthorized response because of unknown user", HttpStatus.FORBIDDEN_403, serverResponse4.getStatus());
 		
-		String serverResponse5 = webTarget.path(AuthTestResource.AUTH).path("/all_users")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO))
-				.get()
-				.toString();
-		String expectedResponse5 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/all_users, status=200, reason=OK}}";
-		assertEquals("Correct server response: user correctly authenticated and authorized", expectedResponse5, serverResponse5);
+		Response serverResponse5 = getRequest("/all_users", getAuthHeader(USER_NO_REPO));
+		assertEquals("Correct server response: user correctly authenticated and authorized", HttpStatus.OK_200, serverResponse5.getStatus());
 	}
 
 	@Test
 	public void testServerRoles() {
-
-		String serverResponse = webTarget.path(AuthTestResource.AUTH).path("/user_only")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO))
-				.get()
-				.toString();
-		String expectedResponse = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/user_only, status=200, reason=OK}}";
-		assertEquals("User can access user only ressource", expectedResponse, serverResponse);
+		Response serverResponse = getRequest("/user_only", getAuthHeader(USER_NO_REPO));
+		assertEquals("User can access user only ressource", HttpStatus.OK_200, serverResponse.getStatus());
 		
-		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path("/admin_only")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, getAuthHeader(USER_NO_REPO))
-				.get()
-				.toString();
-		String expectedResponse2 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/admin_only, status=403, reason=Forbidden}}";
-		assertEquals("User can't access admin only ressource", expectedResponse2, serverResponse2);
+		Response serverResponse2 = getRequest("/admin_only", getAuthHeader(USER_NO_REPO));
+		assertEquals("User can't access admin only ressource", HttpStatus.FORBIDDEN_403, serverResponse2.getStatus());
 		
 		String encodedAdmin = getAuthHeader(ADMIN);
-		String serverResponse3 = webTarget.path(AuthTestResource.AUTH).path("/admin_only")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encodedAdmin)
-				.get()
-				.toString();
-		String expectedResponse3 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/admin_only, status=200, reason=OK}}";
-		assertEquals("Admin can access admin only ressource", expectedResponse3, serverResponse3);
+		Response serverResponse3 = getRequest("/admin_only", encodedAdmin);
+		assertEquals("Admin can access admin only ressource", HttpStatus.OK_200, serverResponse3.getStatus());
 		
-		String serverResponse4 = webTarget.path(AuthTestResource.AUTH).path("/user_only")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encodedAdmin)
-				.get()
-				.toString();
-		String expectedResponse4 = "InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/user_only, status=403, reason=Forbidden}}";
-		assertEquals("Admin can't access user only ressource", expectedResponse4, serverResponse4);
+		Response serverResponse4 = getRequest("/user_only", encodedAdmin);
+		assertEquals("Admin can't access user only ressource", HttpStatus.FORBIDDEN_403, serverResponse4.getStatus());
 	}
 	
 	@Test
@@ -120,41 +70,22 @@ public class AuthTestResourceTest extends AJettyServerTest {
 	 * Ignore repositories for now
 	 */
 	public void testRepositoryAuthorization() {
+		final String REPO_PATH = AuthTestResource.REPOSITORY + "/testRepo";
 		
 		String encodedUserNoRepo = getAuthHeader(USER_NO_REPO);
-		String serverResponse = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encodedUserNoRepo)
-				.get()
-				.toString();
-		String expectedResponse = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=403, reason=Forbidden}}");
-		assertEquals("This user can't access the repository", expectedResponse, serverResponse);
+		Response serverResponse = getRequest(REPO_PATH, encodedUserNoRepo);
+		assertEquals("This user can't access the repository", HttpStatus.FORBIDDEN_403, serverResponse.getStatus());
 		
 		String encodedUserWithRepo = getAuthHeader(USER_WITH_REPO);
-		String serverResponse2 = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encodedUserWithRepo)
-				.get()
-				.toString();			
-		String expectedResponse2 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=200, reason=OK}}");
-		assertEquals("This user can access the repository", expectedResponse2, serverResponse2);
+		Response serverResponse2 = getRequest(REPO_PATH, encodedUserWithRepo);
+		assertEquals("This user can access the repository", HttpStatus.OK_200, serverResponse2.getStatus());
 		
 		String encodedAdmin = getAuthHeader(ADMIN);
-		String serverResponse3 = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encodedAdmin)
-				.get()
-				.toString();			
-		String expectedResponse3 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo, status=200, reason=OK}}");
-		assertEquals("Admins can access all repositories", expectedResponse3, serverResponse3);
+		Response serverResponse3 = getRequest(REPO_PATH, encodedAdmin);
+		assertEquals("Admins can access all repositories", HttpStatus.OK_200, serverResponse3.getStatus());
 		
-		String serverResponse4 = webTarget.path(AuthTestResource.AUTH).path(AuthTestResource.REPOSITORY).path("/testRepo").path("/property")
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, encodedUserWithRepo)
-				.get()
-				.toString();			
-		String expectedResponse4 = ("InboundJaxrsResponse{context=ClientResponse{method=GET, uri=http://localhost:8000/rest/auth/repository/testRepo/property, status=200, reason=OK}}");
-		assertEquals("This user can access the repository property", expectedResponse4, serverResponse4);
+		Response serverResponse4 = getRequest(REPO_PATH, encodedUserWithRepo);
+		assertEquals("This user can access the repository property", HttpStatus.OK_200, serverResponse4.getStatus());
 	}
 	
 	@Test
@@ -168,5 +99,35 @@ public class AuthTestResourceTest extends AJettyServerTest {
 			.header(HttpHeaders.AUTHORIZATION, encoded)
 			.get();
 		
+	}
+	
+	/**
+	 * Sends a get request
+	 * @param path concrete resource path
+	 * @return server Response
+	 */
+	private Response getRequest(String path) {
+		return webTarget
+				.path(VirSatModelAccessServlet.MODEL_API)
+				.path(AuthTestResource.AUTH)
+				.path(path)
+				.request()
+				.get();
+	}
+	
+	/**
+	 * Sends a get request
+	 * @param path concrete resource path
+	 * @param user to be put into the header
+	 * @return server Response
+	 */
+	private Response getRequest(String path, String user) {
+		return webTarget
+			.path(VirSatModelAccessServlet.MODEL_API)
+			.path(AuthTestResource.AUTH)
+			.path(path)
+			.request()
+			.header(HttpHeaders.AUTHORIZATION, user)
+			.get();
 	}
 }
