@@ -85,5 +85,4 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.COMPOSED;
 	}
-
 }
