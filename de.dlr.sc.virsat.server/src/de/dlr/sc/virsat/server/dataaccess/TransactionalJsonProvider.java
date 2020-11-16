@@ -11,11 +11,14 @@ package de.dlr.sc.virsat.server.dataaccess;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -32,38 +35,52 @@ import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.glassfish.jersey.moxy.json.internal.ConfigurableMoxyJsonProvider;
+import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
 
 import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
+public class TransactionalJsonProvider extends MOXyJsonProvider {
 	
 	private ValidationEventHandler eventHandler;
-
+	
+	private ServerRepository repo;
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
-
+	
+	private static final Set<Class<?>> LIST_CLASSES = new HashSet<Class<?>>(
+			Arrays.asList(
+				IUuidAdapter.class,
+				ABeanStructuralElementInstanceAdapter.class
+	));
+	
 	public TransactionalJsonProvider() {
 		setFormattedOutput(true);
 		eventHandler = new DefaultValidationEventHandler();
 	}
 	
-	public void setEd(VirSatTransactionalEditingDomain ed) {
-		this.ed = ed;
-		this.resourceSet = ed.getResourceSet();
+	public void setServerRepository(ServerRepository repo) {
+		this.repo = repo;
+		this.ed = repo.getEd();
+		this.resourceSet = repo.getResourceSet();
 	}
 
 	/**
@@ -73,11 +90,20 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 	private Set<Class<?>> getClassesToRegister() {
 		Set<Class<?>> allCaClasses = new HashSet<>();
 		BeanCategoryAssignmentFactory beanCaFactory = new BeanCategoryAssignmentFactory();
+		BeanStructuralElementInstanceFactory beanSeiFactory = new BeanStructuralElementInstanceFactory();
 		
 		for (Concept concept : resourceSet.getRepository().getActiveConcepts()) {
 			for (Category category : concept.getNonAbstractCategories()) {
 				try {
 					IBeanCategoryAssignment bean = beanCaFactory.getInstanceFor(category);
+					allCaClasses.add(bean.getClass());
+				} catch (CoreException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			for (StructuralElement se : concept.getStructuralElements()) {
+				try {
+					IBeanStructuralElementInstance bean = beanSeiFactory.getInstanceFor(se);
 					allCaClasses.add(bean.getClass());
 				} catch (CoreException e) {
 					throw new RuntimeException(e);
@@ -92,14 +118,30 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 	protected void preWriteTo(Object object, Class<?> type, Type genericType,
 			Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> httpHeaders, Marshaller marshaller) throws JAXBException {
+		super.preWriteTo(object, type, genericType, annotations, mediaType, httpHeaders, marshaller);
 		marshaller.setEventHandler(eventHandler);
 	}
-
+	
+	@Override
+	public void writeTo(Object object, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
+			throws IOException, WebApplicationException {
+		// Useful for debugging
+		super.writeTo(object, type, genericType, annotations, mediaType, httpHeaders, entityStream);
+	}
+	
+	@Override
+	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+		// Useful for debugging
+		Boolean isWriteable = super.isWriteable(type, genericType, annotations, mediaType);
+		return isWriteable;
+	}
+	
 	@Override
 	protected void preReadFrom(Class<Object> type, Type genericType, Annotation[] annotations,
 			MediaType mediaType, MultivaluedMap<String, String> httpHeaders,
 			Unmarshaller unmarshaller) throws JAXBException {
-		
+		super.preReadFrom(type, genericType, annotations, mediaType, httpHeaders, unmarshaller);
 		unmarshaller.setEventHandler(eventHandler);
 		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
@@ -184,6 +226,7 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 
 		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
 		private AtomicExceptionReference<IOException> atomicIoException;
+		private AtomicExceptionReference<Exception> atomicException;
 		
 		/**
 		 * Create a command to call ConfigurableMoxyJsonProvider.readFrom()
@@ -197,6 +240,7 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 			
 			atomicIoException = new AtomicExceptionReference<>();
 			atomicWebAppException = new AtomicExceptionReference<>();
+			atomicException = new AtomicExceptionReference<>();
 		}
 
 		@Override
@@ -209,11 +253,15 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 					arguments.getMediaType(),
 					arguments.getHttpHeaders(),
 					arguments.getEntityStream());
+				resourceSet.saveAllResources(new NullProgressMonitor(), ed);
+				repo.syncRepository();
 				results.add(result);
 			} catch (WebApplicationException e) {
 				atomicWebAppException.set(e);
 			} catch (IOException e) {
 				atomicIoException.set(e);
+			} catch (Exception e) {
+				atomicException.set(e);
 			}
 		}
 		
@@ -228,6 +276,9 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 		public void throwExceptionsIfSet() throws IOException, WebApplicationException {
 			atomicWebAppException.throwIfSet();
 			atomicIoException.throwIfSet();
+			// Has to be thrown as RuntimeException because
+			// we can't change the method signature in the parent class
+			atomicException.throwAsRuntimeExceptionIfSet();
 		}
 	}
 	
@@ -235,10 +286,21 @@ public class TransactionalJsonProvider extends ConfigurableMoxyJsonProvider {
 	protected JAXBContext getJAXBContext(Set<Class<?>> domainClasses, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, ?> httpHeaders) throws JAXBException {
 		
-		// We assume that the registered classes in the concept can change any time
-		// so no cashing is possible and we have to get the current ones on each request
-		if (ed != null) {
-			domainClasses.addAll(getClassesToRegister());
+		// If the root element is a List we have to wrap it in a GenericEntity.
+		// This causes JAXB to not register the classes (in this case the adapters)
+		// so we have to register them manually, else an exception is thrown when creating the context.
+		// And we don't want to register the CA because their depending classes
+		// (e.g. the property beans) won't be resolved either and result in errors.
+		if (domainClasses.contains(List.class)) {
+			// Currently this is only the case for the RootSeis,
+			// so we only register those missing classes here.
+			domainClasses.addAll(LIST_CLASSES);
+		} else {
+			// We assume that the registered classes in the concept can change any time
+			// so no cashing is possible and we have to get the current ones on each request
+			if (ed != null) {
+				domainClasses.addAll(getClassesToRegister());
+			}
 		}
 		
 		// But the contexts are being cashed on domainClasses

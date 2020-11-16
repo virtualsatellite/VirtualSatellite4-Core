@@ -7,24 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.server.dataaccess;
+package de.dlr.sc.virsat.model.extension.statemachines.ui.command;
 
-public class Model {
 
-    private String uuid;
-
-    Model() {
-    }
-
-    public Model(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getUUID() {
-        return uuid;
-    }
-
-    public void setUUID(String uuid) {
-        this.uuid = uuid;
-    }
+/**
+ * Auto Generated Class inheriting from Generator Gap Class
+ * 
+ * This class is generated once, do your changes here
+ * 
+ * Some kind of event or action that triggers a transition
+ * 
+ */
+public class CreateAddTransitionTriggerEventCommand extends ACreateAddTransitionTriggerEventCommand {
 }

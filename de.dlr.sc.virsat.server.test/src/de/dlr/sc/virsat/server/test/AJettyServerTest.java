@@ -20,16 +20,13 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jetty.security.HashLoginService;
-import org.eclipse.jgit.api.Git;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptTestCase;
@@ -37,9 +34,8 @@ import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 
-public abstract class AGitAndJettyServerTest extends AConceptTestCase {
+public abstract class AJettyServerTest extends AConceptTestCase {
 
-	protected File pathToTempUpstreamRepository;
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 	
@@ -82,17 +78,9 @@ public abstract class AGitAndJettyServerTest extends AConceptTestCase {
 		loginService.setConfig(realmProps.toString());
 	}
 	
-	@Before
-	public void setUp() throws Exception {
-		pathToTempUpstreamRepository = makeAbsolute(new File("VirSatUpstreamRepo"));
-		FileUtils.deleteQuietly(pathToTempUpstreamRepository);
-		Git.init().setDirectory(pathToTempUpstreamRepository).call();
-	}
-
 	@After
 	public void tearDown() throws Exception {
 		RepoRegistry.getInstance().getRepositories().clear();
-		FileUtils.forceDelete(pathToTempUpstreamRepository);
 	}
 	
 	@AfterClass

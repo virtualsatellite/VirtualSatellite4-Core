@@ -13,13 +13,13 @@ package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.state
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.IRemoveFeature;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
 import org.eclipse.graphiti.features.impl.Reason;
-import org.eclipse.graphiti.mm.algorithms.Ellipse;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
@@ -27,13 +27,15 @@ import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatUpdateFeature;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states.StateAddFeature;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.ITransitionLabelProvider;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.LabelProviderInstantiator;
 /** 
  * Update feature for updating state machine
  * @author bell_er
@@ -64,13 +66,11 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			ContainerShape cs = (ContainerShape) pictogramElement;
 			// Look for the state machine Name
 			for (Shape shape : cs.getChildren()) {
-				if (shape.getGraphicsAlgorithm() instanceof Text) {
+				if (shape.getGraphicsAlgorithm() instanceof Text && getBusinessObjectForPictogramElement(shape) == stateMachine) {
 					Text text = (Text) shape.getGraphicsAlgorithm();
-					if (!text.getValue().contains("«")) {
-						pictogramName = text.getValue();
-						if (!pictogramName.equals(businessName)) {
-							return Reason.createTrueReason("StateMachine name is changed");
-						}
+					pictogramName = text.getValue();
+					if (!pictogramName.equals(businessName)) {
+						return Reason.createTrueReason("StateMachine name is changed");
 					}
 				}
 			}
@@ -183,7 +183,8 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 				for (Transition t : stateMachine.getTransitions()) {
 					if (t.getUuid().equals(diagramTransaction.getUuid())) {
 						Text text = (Text) c.getConnectionDecorators().get(0).getGraphicsAlgorithm();
-						text.setValue(t.getName());		
+						ITransitionLabelProvider labelProvider = new LabelProviderInstantiator().getLabelProvider();
+						text.setValue(labelProvider.getLabel(t));		
 					}
 				}
 			}
@@ -327,12 +328,10 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 		if (pictogramElement instanceof ContainerShape) {
 			ContainerShape cs = (ContainerShape) pictogramElement;
 			for (Shape shape : cs.getChildren()) {
-				if (shape.getGraphicsAlgorithm() instanceof Text) {
+				if (shape.getGraphicsAlgorithm() instanceof Text && getBusinessObjectForPictogramElement(shape) == stateMachine) {
 					Text text = (Text) shape.getGraphicsAlgorithm();
-					if (!text.getValue().contains("«")) {
-						text.setValue(businessName);
-						changeDuringUpdate = true;
-					}
+					text.setValue(businessName);
+					changeDuringUpdate = true;
 				}
 			}
 
@@ -366,6 +365,8 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 							}
 						}
 					}
+					
+					layoutPictogramElement(shape);
 					changeDuringUpdate = true;
 				}
 			}
@@ -390,16 +391,9 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 	 */
 	private void setInitialState(ContainerShape aStateShape) {
 		for (Shape stateNameShape : aStateShape.getChildren()) {
-			if (stateNameShape.getGraphicsAlgorithm() instanceof Ellipse) {
-				stateNameShape.getGraphicsAlgorithm().setX(StateAddFeature.IMAGE_WIDTH);
-			}
 			if (stateNameShape.getGraphicsAlgorithm() instanceof Image) {
 				stateNameShape.setVisible(true);
 			}
-			if (stateNameShape.getGraphicsAlgorithm() instanceof Text) {
-				stateNameShape.getGraphicsAlgorithm().setX(StateAddFeature.IMAGE_WIDTH);
-			}
-			aStateShape.getGraphicsAlgorithm().setWidth(StateAddFeature.DEFAULT_WIDTH);
 		}
 	}
 
@@ -411,16 +405,9 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 	 */
 	private void setNormalState(ContainerShape aStateShape) {
 		for (Shape stateNameShape : aStateShape.getChildren()) {
-			if (stateNameShape.getGraphicsAlgorithm() instanceof Ellipse) {
-				stateNameShape.getGraphicsAlgorithm().setX(0);
-			}
 			if (stateNameShape.getGraphicsAlgorithm() instanceof Image) {
 				stateNameShape.setVisible(false);
 			}
-			if (stateNameShape.getGraphicsAlgorithm() instanceof Text) {
-				stateNameShape.getGraphicsAlgorithm().setX(0);
-			}
-			aStateShape.getGraphicsAlgorithm().setWidth(StateAddFeature.DEFAULT_WIDTH - StateAddFeature.IMAGE_WIDTH);
 		}
 	}
 

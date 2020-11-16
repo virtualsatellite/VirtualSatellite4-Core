@@ -17,7 +17,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -28,7 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
  * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
  * @param <BEAN_TYPE> the reference type
  */
-public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanObject<ComposedPropertyInstance> implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
+public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyComposed() { }
 	
@@ -37,7 +36,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	 * @param cpi the type instance to be used
 	 */
 	public BeanPropertyComposed(ComposedPropertyInstance cpi) {
-		setTypeInstance(cpi);
+		super(cpi);
 	}
 	
 	@Override

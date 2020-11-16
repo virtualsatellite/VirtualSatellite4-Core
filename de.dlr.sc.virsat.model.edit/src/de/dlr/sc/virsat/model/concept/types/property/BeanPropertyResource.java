@@ -29,10 +29,9 @@ import de.dlr.sc.virsat.model.dvlm.json.UriAdapter;
 
 /**
  * Class to wrap Resource Property Instance
- * @author fisc_ph
  *
  */
-public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> implements IBeanProperty<ResourcePropertyInstance, URI> {
+public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance, URI> {
 
 	/**
 	 * Default constructor
@@ -46,7 +45,7 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 * @param rpi the resource property instance
 	 */
 	public BeanPropertyResource(ResourcePropertyInstance rpi) {
-		this.ti = rpi;
+		super(rpi);
 	}
 	
 	/**

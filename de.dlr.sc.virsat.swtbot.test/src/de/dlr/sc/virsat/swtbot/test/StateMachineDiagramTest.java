@@ -60,7 +60,7 @@ public class StateMachineDiagramTest extends ASwtBotTestCase {
 		elementConfiguration = addElement(ElementConfiguration.class, conceptPs, configurationTree);
 
 		createNewDiagramForTreeItem(configurationTree, DiagramType.stateMachines);
-		diagramEditor = getOpenedDiagramEditorbyTitle("newDiagram");
+		diagramEditor = getOpenedDiagramEditorbyTitle("ConfigurationTree -> StateMachine Editor");
 	}
 
 
