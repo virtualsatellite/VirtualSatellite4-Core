@@ -69,7 +69,7 @@ public class UiSnippetSectionRequirement extends AUiSnippetSectionRequirement im
 
 		Button buttonDrillDown = toolkit.createButton(sectionBody, BUTTON_EDIT_TRACE_TEXT, SWT.PUSH);
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_2;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
 		buttonDrillDown.setLayoutData(gridData);
 
 		String propertyFqn = property.getFullQualifiedName();
