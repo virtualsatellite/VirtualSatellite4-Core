@@ -37,6 +37,7 @@ import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.ui.action.LoadResourceAction;
@@ -155,12 +156,13 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	private static final String BUTTON_LOAD_RESOURCE_TEXT = "Load Resource";
 	private static final String BUTTON_OPEN_EDITOR_TEXT = "Open Editor";
 	private static final String BUTTON_CHECK_OVERRIDE_TEXT = "Override";
+	private static final String BUTTON_CLEAR_TEXT = "Clear";
 	protected static final int STYLE_NONE = 0b00000000;
 	protected static final int STYLE_NO_ENUM_UNIT_COMBO_BOX = 0b00000001;
 
-	protected static final int UI_LAYOUT_NR_COLUMNS = 6;
-	protected static final int UI_LAYOUT_SPAN_COLUMNS_2 = 2;
+	protected static final int UI_LAYOUT_NR_COLUMNS = 7;
 	protected static final int UI_LAYOUT_SPAN_COLUMNS_3 = 3;
+	protected static final int UI_LAYOUT_SPAN_COLUMNS_4 = 4;
 
 	protected Map<String, Label> mapPropertyToLabelPropertyName = new HashMap<>();
 	protected Map<String, Label> mapPropertyToLabelPropertyIcon = new HashMap<>();
@@ -340,7 +342,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		ComboViewer comboViewerEnum = new ComboViewer(sectionBody, SWT.NONE);
 		Combo comboEnum = comboViewerEnum.getCombo();
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan =  (style & STYLE_NO_ENUM_UNIT_COMBO_BOX) == 0 ? UI_LAYOUT_SPAN_COLUMNS_2 : UI_LAYOUT_SPAN_COLUMNS_3;
+		gridData.horizontalSpan =  (style & STYLE_NO_ENUM_UNIT_COMBO_BOX) == 0 ? UI_LAYOUT_SPAN_COLUMNS_3 : UI_LAYOUT_SPAN_COLUMNS_4;
 		comboEnum.setLayoutData(gridData);
 
 		String propertyFqn = property.getFullQualifiedName();
@@ -411,7 +413,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	private void createUnitValuePropertyWidgets(FormToolkit toolkit, Composite sectionBody,	AQudvTypeProperty property) {
 		Text textPropertyValue = toolkit.createText(sectionBody, "");
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_2;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
 		textPropertyValue.setLayoutData(gridData);
 
 		String propertyFqn = property.getFullQualifiedName();
@@ -513,7 +515,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 		ComboViewer comboViewerValue = new ComboViewer(sectionBody, SWT.RIGHT);
 		Combo comboValue = comboViewerValue.getCombo();
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_4;
 		comboValue.setLayoutData(gridData);
 		comboViewerValue.setContentProvider(new ArrayContentProvider());
 		comboViewerValue.setInput(BooleanPropertyCellEditingSupport.BOOL_LITERALS);
@@ -535,7 +537,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	protected void createStringPropertyWidgets(FormToolkit toolkit, Composite sectionBody, StringProperty property) {
 		Text textPropertyValue = toolkit.createText(sectionBody, "");
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_4;
 		textPropertyValue.setLayoutData(gridData);
 
 		String propertyFqn = property.getFullQualifiedName();
@@ -581,6 +583,8 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 		Button buttonDrillDown = toolkit.createButton(sectionBody, BUTTON_DRILL_DOWN_TEXT, SWT.PUSH);
 		buttonDrillDown.setLayoutData(createDefaultGridData());
+		
+		createClearButton(toolkit, editingDomain, sectionBody, property, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE);
 
 		mapPropertyToTextReferenceName.put(propertyFqn, textPropertyReferenceName);
 		mapPropertyToButtonSelectReference.put(propertyFqn, buttonSelectReference);
@@ -667,6 +671,8 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 				resourceDialog.open();
 			}
 		});
+		
+		createClearButton(toolkit, editingDomain, sectionBody, property, PropertyinstancesPackage.Literals.REFERENCE_PROPERTY_INSTANCE__REFERENCE);
 
 		mapPropertyToTextReferenceName.put(propertyFqn, textPropertyReferenceName);
 		mapPropertyToButtonSelectReference.put(propertyFqn, buttonSelectReference);
@@ -729,6 +735,8 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 		Button buttonOpenEditor = toolkit.createButton(sectionBody, BUTTON_OPEN_EDITOR_TEXT, SWT.PUSH);
 		buttonOpenEditor.setLayoutData(createDefaultGridData());
+		
+		createClearButton(toolkit, editingDomain, sectionBody, property, PropertyinstancesPackage.Literals.RESOURCE_PROPERTY_INSTANCE__RESOURCE_URI);
 
 		String propertyFqn = property.getFullQualifiedName();
 
@@ -815,7 +823,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 
 		Button buttonDrillDown = toolkit.createButton(sectionBody, BUTTON_DRILL_DOWN_TEXT, SWT.PUSH);
 		GridData gridData = createDefaultGridData();
-		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_2;
+		gridData.horizontalSpan = UI_LAYOUT_SPAN_COLUMNS_3;
 		buttonDrillDown.setLayoutData(gridData);
 
 		String propertyFqn = property.getFullQualifiedName();
@@ -836,6 +844,37 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 				if (referencedTypeInstance != null) {
 					VirSatUriEditorInput.openDrillDownEditor(referencedTypeInstance);
 				}
+			}
+		});
+	}
+	
+	/**
+	 * Create a button that clears the value of the given property
+	 * 
+	 * @param toolkit they form toolkit
+	 * @param editingDomain the editing domain for reseting the value
+	 * @param sectionBody the section body in which the button should be added
+	 * @param property the property to be cleared
+	 * @param featureToBeCleared the model feature of the properties value attribute
+	 */
+	protected void createClearButton(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody, AProperty property, EStructuralFeature featureToBeCleared) {
+		
+		APropertyInstance propertyInstance = caHelper.getPropertyInstance(property.getFullQualifiedName());
+		
+		Button buttonClear = toolkit.createButton(sectionBody, BUTTON_CLEAR_TEXT, SWT.PUSH);
+		buttonClear.setLayoutData(createDefaultGridData());
+
+		buttonClear.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				widgetDefaultSelected(e);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				Command cmd = SetCommand.create(editingDomain, propertyInstance, featureToBeCleared, null);
+				editingDomain.getCommandStack().execute(cmd);
 			}
 		});
 	}
