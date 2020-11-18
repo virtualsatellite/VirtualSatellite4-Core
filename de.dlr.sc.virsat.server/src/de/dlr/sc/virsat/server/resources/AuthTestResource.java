@@ -16,7 +16,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import de.dlr.sc.virsat.server.auth.ServerRoles;
+import io.swagger.v3.oas.annotations.Hidden;
 
+@Hidden
 @Path(AuthTestResource.AUTH)
 public class AuthTestResource {
 	

@@ -17,14 +17,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import de.dlr.sc.virsat.server.dataaccess.Model;
-import io.swagger.annotations.Api;
 
 /**
  * Simple test resource for debugging purposes
  *
  */
 @Path("/atr")
-@Api
 public class AccessTestResource {
 	
 	@GET

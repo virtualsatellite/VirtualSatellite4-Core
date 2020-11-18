@@ -25,10 +25,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -49,43 +47,25 @@ import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Info;
-import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 /**
  * The resource to access the VirSat data model of a server repository
  * Provides an endpoint to access a repository
  */
 @Path(ModelAccessResource.PATH)
-@Api(tags = {"Model"})
-@SwaggerDefinition(
-	info = @Info(
-//		description = "Gets the weather",
-		version = "V",
-		title = "The Model API"//,
-//		termsOfService = "http://theweatherapi.io/terms.html",
-//		contact = @Contact(
-//				name = "Rain Moore", 
-//				email = "rain.moore@theweatherapi.io", 
-//				url = "http://theweatherapi.io"
-//		),
-//		license = @License(
-//				name = "Apache 2.0", 
-//				url = "http://www.apache.org/licenses/LICENSE-2.0"
-//				)
-	),
-	consumes = {"application/json"}, //, "application/xml"},
-	produces = {"application/json"}, //, "application/xml"},
-	schemes = {SwaggerDefinition.Scheme.HTTP}//, SwaggerDefinition.Scheme.HTTPS}//,
-//	tags = {
-//			@Tag(name = "Private", description = "Tag used to denote operations as private")
-//	}, 
-//externalDocs = @ExternalDocs(value = "Meteorology", url = "http://theweatherapi.io/meteorology.html")
-)
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Model API",
+				version = "0.0"
+				)
+		)
 public class ModelAccessResource {
 
 	@Inject
@@ -140,7 +120,6 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
-	@Api(hidden = true)
 	public static class RepoModelAccessResource {
 	
 		private Repository repository;
@@ -154,6 +133,7 @@ public class ModelAccessResource {
 		}
 	
 		@Path(PROPERTY)
+		@Hidden
 		public PropertyResource accessProperty() {
 			return new PropertyResource(repository);
 		}
@@ -249,20 +229,24 @@ public class ModelAccessResource {
 		@GET
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				produces = "application/json",
-				value = "Fetch ca",
-				httpMethod = "GET",
-				notes = "<br>This service fetches cas",
-				response = ABeanCategoryAssignment.class)
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = IBeanCategoryAssignment.class,
-						message = "Successful operation"),
-				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Bad Request")})
+
+		@Operation(
+				summary = "Fetch ca",
+				responses = {
+					@ApiResponse(
+						responseCode = "200",
+						description = "Success",
+						content = {
+								@Content(
+										schema = @Schema(implementation = ABeanCategoryAssignment.class)
+										)
+						}),
+					@ApiResponse(
+						responseCode = "400",
+						description = "Bad request"
+						)
+				}
+		)
 		public Response getCa(@PathParam("caUuid") String caUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(
@@ -274,14 +258,15 @@ public class ModelAccessResource {
 			}
 		}
 		
-		@ApiOperation(
-				produces = "application/json",
-				value = "Put ca",
-				httpMethod = "PUT",
-				notes = "<br>This service puts cas")
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				message = "Successful operation")
+		@Operation(
+				summary = "Put",
+				responses = {
+					@ApiResponse(
+						responseCode = "200",
+						description = "Success"
+					)
+				}
+		)
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -293,7 +278,7 @@ public class ModelAccessResource {
 		 * Returns a response with a list of the root seis
 		 * @return a server response
 		 */
-		@ApiOperation(hidden = true, value = "")
+		@Hidden
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -320,7 +305,7 @@ public class ModelAccessResource {
 		 * @param seiUuid uuid of the sei
 		 * @return a server response
 		 */
-		@ApiOperation(hidden = true, value = "")
+		@Hidden
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -335,7 +320,7 @@ public class ModelAccessResource {
 		}
 		
 		@PUT
-		@ApiOperation(hidden = true, value = "")
+		@Hidden
 		@Path(SEI)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response putSei(ABeanStructuralElementInstance bean) {
