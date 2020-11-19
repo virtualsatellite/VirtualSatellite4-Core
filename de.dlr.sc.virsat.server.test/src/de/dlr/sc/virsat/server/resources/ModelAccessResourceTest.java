@@ -24,6 +24,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
@@ -52,6 +53,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
 public class ModelAccessResourceTest extends AServerRepositoryTest {
@@ -82,6 +84,14 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 
 	private static final String TEST_STRING = "testString";
+	
+	@BeforeClass
+	public static void setUpTarget() {
+		webTarget = webTarget
+			.path(VirSatModelAccessServlet.MODEL_API)
+			.path(ModelAccessResource.PATH)
+			.path(projectName);
+	}
 	
 	@Before
 	public void setUpModel() throws Exception {
@@ -142,6 +152,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
+		
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 	}
 	
 	@After
@@ -162,8 +174,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	@Test
 	public void testRootSeisGet() {
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
 				.get();
@@ -173,8 +184,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		// This would return a List<ABeanStructuralElementInstance>
 		// but because of problems with unmarshalling the list of abstract objects,
 		// we just use a String here
-		String entity = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		String entity = webTarget
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
 				.get(String.class);
@@ -194,8 +204,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	@SuppressWarnings("rawtypes")
 	private void testGet(IBeanUuid testSubject, String path, Class[] classes) throws JAXBException {
 		String uuid = testSubject.getUuid();
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(path)
 				.path(uuid)
 				.request()
@@ -203,8 +212,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
-		String entity = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		String entity = webTarget
 				.path(path)
 				.path(uuid)
 				.request()
@@ -333,8 +341,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	private void testPutSei(IBeanStructuralElementInstance sei) {
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.SEI)
 				.request()
 				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
@@ -357,10 +364,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jsonIn = jsonIn.replace("null", "\"" + TEST_STRING + "\"");
 	
 		assertNull(beanString.getValue());
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
-				.path(ModelAccessResource.STRING)
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -368,17 +373,14 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	/**
-	 * PUT a property of a specified type and assert that the server returns OK
+	 * PUT a property and assert that the server returns OK
 	 * @param property bean property to PUT
-	 * @param type the type of the property
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testPutProperty(IBeanObject property, String type) {
+	private void testPutProperty(IBeanObject property) {
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
-				.path(type)
 				.request()
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -386,38 +388,38 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	
 	@Test
 	public void testPropertyBoolPut() throws JAXBException {
-		testPutProperty(beanBool, ModelAccessResource.BOOLEAN);
+		testPutProperty(beanBool);
 	}
 	
 	@Test
 	public void testPropertyStringPut() throws JAXBException {
-		testPutProperty(beanString, ModelAccessResource.STRING);
+		testPutProperty(beanString);
 	}
 	
 	@Test
 	public void testPropertyEnumPut() throws JAXBException {
-		testPutProperty(beanEnum, ModelAccessResource.ENUM);
+		testPutProperty(beanEnum);
 	}
 	
 	@Test
 	public void testPropertyFloatPut() throws JAXBException {
-		testPutProperty(beanFloat, ModelAccessResource.FLOAT);
+		testPutProperty(beanFloat);
 	}
 	
 	@Test
 	public void testPropertyIntPut() throws JAXBException {
-		testPutProperty(beanInt, ModelAccessResource.INT);
+		testPutProperty(beanInt);
 	}
 	
 	@Test
 	public void testPropertyResourcePut() throws JAXBException {
-		testPutProperty(beanResource, ModelAccessResource.RESOURCE);
+		testPutProperty(beanResource);
 	}
 	
 	@Test
 	public void testPropertyReferencePut() throws JAXBException {
-		testPutProperty(beanReferenceProp, ModelAccessResource.REFERENCE);
-		testPutProperty(beanReferenceCa, ModelAccessResource.REFERENCE);
+		testPutProperty(beanReferenceProp);
+		testPutProperty(beanReferenceCa);
 	}
 	
 	@Test
@@ -430,10 +432,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jaxbUtility.getJsonMarshaller().marshal(beanComposed, sw);
 		String jsonIn = sw.toString();
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
-				.path(ModelAccessResource.COMPOSED)
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -445,8 +445,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	private void testPutCa(IBeanCategoryAssignment ca) {
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
@@ -487,8 +486,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jaxbUtility.getJsonMarshaller().marshal(tcCompositionArray, sw);
 		String jsonIn = sw.toString();
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
 				.put(Entity.json(jsonIn));

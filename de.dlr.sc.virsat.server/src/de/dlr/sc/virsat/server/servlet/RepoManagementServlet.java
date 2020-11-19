@@ -20,6 +20,10 @@ import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
 public class RepoManagementServlet extends ApplicationServletContainer implements Servlet {
 	
+	public static final String MANAGEMENT_API_ID = "/management";
+	public static final String MANAGEMENT_API_VERSION = "/v0.0.1";
+	public static final String MANAGEMENT_API = MANAGEMENT_API_ID + MANAGEMENT_API_VERSION;
+	
 	@Override
 	protected Servlet onCreateServlet() {
 		RepoManagementRestApplication resourceConfig = new RepoManagementRestApplication();

@@ -29,10 +29,11 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
-import de.dlr.sc.virsat.server.test.AGitAndJettyServerTest;
+import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
+import de.dlr.sc.virsat.server.test.AJettyServerTest;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
+public class ProjectManagementResourceTest extends AJettyServerTest {
 
 	private RepositoryConfiguration testProjectConfiguration;
 
@@ -108,7 +109,9 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 	@Test
 	public void testGetNonExistingProject() {
 		Response response = webTarget
-				.path("/management").path(ProjectManagementResource.PATH).path("/nonExistingProject")
+				.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
+				.path("/nonExistingProject")
 				.request()
 				.accept(MediaType.APPLICATION_JSON)
 				.get();
@@ -119,7 +122,9 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 	@Test
 	public void testAddInvalidProject() {
 		Response response = webTarget
-				.path("/management").path(ProjectManagementResource.PATH).path("/someProject")
+				.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
+				.path("/someProject")
 				.request()
 				.put(Entity.json("{\"name\":\"raspberry\"}"));
 		
@@ -135,30 +140,32 @@ public class ProjectManagementResourceTest extends AGitAndJettyServerTest {
 	}
 
 	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
-		return webTarget
-				.path("/management").path(ProjectManagementResource.PATH).path("/" + projectName)
+		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
+				.path("/" + projectName)
 				.request()
 				.put(Entity.entity(configuration, MediaType.APPLICATION_JSON));
 	}
 
 	private RepositoryConfiguration getRequest(String projectName) {
-		return webTarget
-				.path("/management").path(ProjectManagementResource.PATH).path("/" + projectName)
+		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH).path("/" + projectName)
 				.request()
 				.accept(MediaType.APPLICATION_JSON)
 				.get(RepositoryConfiguration.class);
 	}
 
 	private Response deleteRequest(String projectName) {
-		return webTarget
-				.path("/management").path(ProjectManagementResource.PATH).path("/" + projectName)
+		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
+				.path("/" + projectName)
 				.request()
 				.delete();
 	}
 
 	private List<String> getAllProjectsRequest() {
-		return webTarget
-				.path("/management").path(ProjectManagementResource.PATH)
+		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
 				.request()
 				.accept(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<String>>() { });

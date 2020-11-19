@@ -50,7 +50,10 @@ public class ExcelExporter {
 		for (IConfigurationElement iConfElement : config) {
 			Object object = iConfElement.createExecutableExtension("class");
 			if (object instanceof IExport) {
-				((IExport) object).export(eObject, path, useDefaultTemplate, templatePath);
+				IExport exporter = (IExport) object;
+				if (exporter.canExport(eObject)) {
+					exporter.export(eObject, path, useDefaultTemplate, templatePath);
+				}
 			}
 		}
 	}
@@ -62,17 +65,16 @@ public class ExcelExporter {
 	 * @throws CoreException
 	 */
 	public boolean canExport(Object object) throws CoreException {
-		boolean canBeExported = false;
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IEXPORT_ID);
 		for (IConfigurationElement iConfElement : config) {
 			Object obj = iConfElement.createExecutableExtension("class");
 			if (obj instanceof IExport) {
-				canBeExported = ((IExport) obj).canExport(object);
+				boolean canBeExported = ((IExport) obj).canExport(object);
 				if (canBeExported) {
-					break;
+					return true;
 				}
 			}
 		}
-		return canBeExported;
+		return false;
 	}
 }

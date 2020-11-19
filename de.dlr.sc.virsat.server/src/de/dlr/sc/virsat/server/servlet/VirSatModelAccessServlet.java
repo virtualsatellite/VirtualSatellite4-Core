@@ -30,6 +30,10 @@ import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
  */
 public class VirSatModelAccessServlet extends ApplicationServletContainer implements Servlet {
 	
+	public static final String MODEL_API_ID = "/model";
+	public static final String MODEL_API_VERSION = "/v0.0.1";
+	public static final String MODEL_API = MODEL_API_ID + MODEL_API_VERSION;
+	
 	@Override
 	protected Servlet onCreateServlet() {
 		ModelAccessRestApplication resourceConfig = new ModelAccessRestApplication();

@@ -29,6 +29,7 @@ public class VirSatProjectNature implements IProjectNature {
 	public static final String BUILDER_VALIDATOR_ID = "de.dlr.sc.virsat.build.validator";
 	public static final String BUILDER_INHERITANCE_ID = "de.dlr.sc.virsat.build.inheritance";
 	public static final String BUILDER_CALCULATION_ID = "de.dlr.sc.virsat.model.calculation.compute.builder";
+	public static final String BUILDER_VERIFICATION_ID = "de.dlr.sc.virsat.model.extension.requirements.build.verification";
 	
 	private IProject project;
 	
@@ -41,6 +42,7 @@ public class VirSatProjectNature implements IProjectNature {
 		boolean hasValidatorBuilder = false;
 		boolean hasInheritanceBuilder = false;
 		boolean hasCalculationBuilder = false;
+		boolean hasVerificationBuilder = false;
 		
 		// Check which builders are attached to the project
 		IProjectDescription desc = project.getDescription();
@@ -54,6 +56,8 @@ public class VirSatProjectNature implements IProjectNature {
 				hasInheritanceBuilder = true;
 			} else if (commands[i].getBuilderName().equals(BUILDER_CALCULATION_ID)) {
 				hasCalculationBuilder = true;
+			} else if (commands[i].getBuilderName().equals(BUILDER_VERIFICATION_ID)) {
+				hasVerificationBuilder = true;
 			}
 		}
 
@@ -75,6 +79,12 @@ public class VirSatProjectNature implements IProjectNature {
 		// At the end the validator can be called 
 		if (!hasValidatorBuilder) {
 			addBuilder(desc, BUILDER_VALIDATOR_ID);
+		}
+		
+		// Add the Validation Builder if needed
+		// At the end the validator can be called 
+		if (!hasVerificationBuilder) {
+			addBuilder(desc, BUILDER_VERIFICATION_ID);
 		}
 
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.OK, "VirSatProjectNature: Successfully configured project nature", null));
