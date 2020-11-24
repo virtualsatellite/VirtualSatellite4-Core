@@ -3,6 +3,7 @@
       id="de.dlr.sc.virsat.model.extension.budget.cost.feature"
       label="Feature"
       version="4.12.1.qualifier"
+      provider-name="German Aerospace Center (DLR)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 
