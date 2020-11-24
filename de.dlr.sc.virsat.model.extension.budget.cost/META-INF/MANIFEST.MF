@@ -15,3 +15,4 @@ Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.budget.cost.model,
  de.dlr.sc.virsat.model.extension.budget.cost.validator
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost
