@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-media-multipart.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/mimepull.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/aopalliance-repackaged.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-locator.jar"/>
