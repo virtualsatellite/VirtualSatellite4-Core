@@ -23,20 +23,24 @@
 		to update all libs and licenses from maven -->
 
 	<properties>
-		<swagger.version>2.1.2</swagger.version>
 		<swagger.jersey.version>1.5.0</swagger.jersey.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-jaxrs2</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-jaxrs2-servlet-initializer-v2</artifactId>
-			<version>${swagger.version}</version>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jersey2-jaxrs</artifactId>
+			<version>${swagger.jersey.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.glassfish.jersey.containers</groupId>
+					<artifactId>jersey-container-servlet-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.glassfish.jersey.media</groupId>
+					<artifactId>jersey-media-multipart</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/classgraph.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/annotations.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-lang3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/guava.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-annotations.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-core.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-databind.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-dataformat-xml.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-dataformat-yaml.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-datatype-jsr310.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-datatype-joda.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-jaxrs-base.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-jaxrs-json-provider.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-module-jaxb-annotations.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.activation-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.validation-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.xml.bind-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/javassist.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/joda-time.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/reflections.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/snakeyaml.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/stax2-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-annotations.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-integration.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-jaxrs2.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-jaxrs2-servlet-initializer-v2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-jaxrs.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-jersey2-jaxrs.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-models.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/validation-api.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src/"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

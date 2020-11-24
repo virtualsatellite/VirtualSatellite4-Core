@@ -22,7 +22,10 @@ import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
-import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.config.ScannerFactory;
+import io.swagger.jaxrs.config.DefaultJaxrsScanner;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 
 /**
  * This servlet registers the classes that should be provided as REST resources.
@@ -68,8 +71,11 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 			register(binder);
 			register(TransactionalJsonProvider.class);
 			
-			// Resource to serve swagger documentation for this servlet
-			register(OpenApiResource.class);
+			register(ApiListingResource.class);
+			register(SwaggerSerializers.class);
+
+			// Set a scanner for swagger
+			ScannerFactory.setScanner(new DefaultJaxrsScanner());
 		}
 	}
 }

@@ -25,12 +25,21 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
-import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -40,25 +49,43 @@ import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
-import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
 
 /**
  * The resource to access the VirSat data model of a server repository
  * Provides an endpoint to access a repository
  */
 @Path(ModelAccessResource.PATH)
-@OpenAPIDefinition(
-		info = @Info(
-				title = "Model API",
-				version = "0.0"
-				)
-		)
+@Api(tags = {"Model"})
+@SwaggerDefinition(
+	info = @Info(
+//		description = "Gets the weather",
+		version = "V",
+		title = "The Model API"//,
+//		termsOfService = "http://theweatherapi.io/terms.html",
+//		contact = @Contact(
+//				name = "Rain Moore", 
+//				email = "rain.moore@theweatherapi.io", 
+//				url = "http://theweatherapi.io"
+//		),
+//		license = @License(
+//				name = "Apache 2.0", 
+//				url = "http://www.apache.org/licenses/LICENSE-2.0"
+//				)
+	),
+	consumes = {"application/json"}, //, "application/xml"},
+	produces = {"application/json"}, //, "application/xml"},
+	schemes = {SwaggerDefinition.Scheme.HTTP}//, SwaggerDefinition.Scheme.HTTPS}//,
+//	tags = {
+//			@Tag(name = "Private", description = "Tag used to denote operations as private")
+//	}, 
+//externalDocs = @ExternalDocs(value = "Meteorology", url = "http://theweatherapi.io/meteorology.html")
+)
 public class ModelAccessResource {
 
 	@Inject
@@ -73,6 +100,15 @@ public class ModelAccessResource {
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
+	
+	public static final String BOOLEAN = "boolean";
+	public static final String STRING = "string";
+	public static final String INT = "int";
+	public static final String FLOAT = "float";
+	public static final String ENUM = "enum";
+	public static final String RESOURCE = "resource";
+	public static final String REFERENCE = "reference";
+	public static final String COMPOSED = "composed";
 
 	public ModelAccessResource() { }
 	
@@ -104,6 +140,7 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
+	@Api(hidden = true)
 	public static class RepoModelAccessResource {
 	
 		private Repository repository;
@@ -116,23 +153,92 @@ public class ModelAccessResource {
 			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
 		}
 	
-		@Hidden
-		@GET
-		@Path(PROPERTY + "/{propertyUuid}")
-		@Produces(MediaType.APPLICATION_JSON)
-		public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
-			return Response.status(Response.Status.OK).entity(
-					new BeanPropertyFactory().getInstanceFor(
-							RepositoryUtility.findProperty(propertyUuid, repository)
-					)).build();
+		@Path(PROPERTY)
+		public PropertyResource accessProperty() {
+			return new PropertyResource(repository);
 		}
 		
-		@Hidden
-		@PUT
-		@Path(PROPERTY)
-		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putProperty(ABeanProperty<?, ?> bean) {
-			return Response.status(Response.Status.OK).build();
+		/*
+		 * A function for each property bean because 
+		 * the generic definition with wildcards
+		 * of a bean property (ABeanObject<? extends APropertyInstance)
+		 * is not supported
+		 * 
+		 * If a new property should be supported 
+		 * it has to be added here
+		 */
+		public static class PropertyResource {
+			private Repository repository;
+			
+			public PropertyResource(Repository repository) {
+				this.repository = repository;
+			}
+			
+			@GET
+			@Path("/{propertyUuid}")
+			@Produces(MediaType.APPLICATION_JSON)
+			public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
+				return Response.status(Response.Status.OK).entity(
+						new BeanPropertyFactory().getInstanceFor(
+								RepositoryUtility.findProperty(propertyUuid, repository)
+						)).build();
+			}
+			
+			@PUT
+			@Path(STRING)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyString bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(INT)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyInt bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(FLOAT)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyFloat bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(ENUM)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyEnum bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(RESOURCE)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyResource bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(BOOLEAN)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(BeanPropertyBoolean bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(REFERENCE)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(@SuppressWarnings("rawtypes") BeanPropertyReference bean) {
+				return Response.status(Response.Status.OK).build();
+			}
+			
+			@PUT
+			@Path(COMPOSED)
+			@Consumes(MediaType.APPLICATION_JSON)
+			public Response putProperty(@SuppressWarnings("rawtypes") BeanPropertyComposed bean) {
+				return Response.status(Response.Status.OK).build();
+			}
 		}
 		
 		/**
@@ -143,24 +249,20 @@ public class ModelAccessResource {
 		@GET
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-
-		@Operation(
-				summary = "Fetch ca",
-				responses = {
-					@ApiResponse(
-						responseCode = "200",
-						description = "Success",
-						content = {
-								@Content(
-										schema = @Schema(implementation = ABeanCategoryAssignment.class)
-										)
-						}),
-					@ApiResponse(
-						responseCode = "400",
-						description = "Bad request"
-						)
-				}
-		)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch ca",
+				httpMethod = "GET",
+				notes = "<br>This service fetches cas",
+				response = ABeanCategoryAssignment.class)
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = IBeanCategoryAssignment.class,
+						message = "Successful operation"),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Bad Request")})
 		public Response getCa(@PathParam("caUuid") String caUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(
@@ -172,15 +274,14 @@ public class ModelAccessResource {
 			}
 		}
 		
-		@Operation(
-				summary = "Put",
-				responses = {
-					@ApiResponse(
-						responseCode = "200",
-						description = "Success"
-					)
-				}
-		)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Put ca",
+				httpMethod = "PUT",
+				notes = "<br>This service puts cas")
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = "Successful operation")
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -192,7 +293,7 @@ public class ModelAccessResource {
 		 * Returns a response with a list of the root seis
 		 * @return a server response
 		 */
-		@Hidden
+		@ApiOperation(hidden = true, value = "")
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -219,7 +320,7 @@ public class ModelAccessResource {
 		 * @param seiUuid uuid of the sei
 		 * @return a server response
 		 */
-		@Hidden
+		@ApiOperation(hidden = true, value = "")
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -234,7 +335,7 @@ public class ModelAccessResource {
 		}
 		
 		@PUT
-		@Hidden
+		@ApiOperation(hidden = true, value = "")
 		@Path(SEI)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response putSei(ABeanStructuralElementInstance bean) {
