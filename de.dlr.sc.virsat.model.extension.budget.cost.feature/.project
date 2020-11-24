@@ -12,6 +12,7 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.pde.FeatureNature</nature>
 	</natures>
 </projectDescription>
