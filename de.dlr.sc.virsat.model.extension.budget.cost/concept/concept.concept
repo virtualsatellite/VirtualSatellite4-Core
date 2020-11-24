@@ -1,0 +1,12 @@
+Concept de.dlr.sc.virsat.model.extension.budget.cost description "Example Concept for Interface Architecture" 
+{
+	
+	Category InterfaceEnd {
+	}	
+	
+	Category Interface {
+		Reference ifEndFrom of Type InterfaceEnd;
+		Reference ifEndTo of Type InterfaceEnd;
+	}
+}
+

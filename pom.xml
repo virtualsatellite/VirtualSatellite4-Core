@@ -157,6 +157,11 @@
 				<module>de.dlr.sc.virsat.model.extension.requirements.test</module>
 				<module>de.dlr.sc.virsat.model.extension.requirements.ui</module>
 				
+				<!-- Extension for Costs -->
+				<module>de.dlr.sc.virsat.model.extension.budget.cost</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.cost.test</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.cost.ui</module>
+				
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->
 				<module>de.dlr.sc.virsat.model.extension.tests</module>

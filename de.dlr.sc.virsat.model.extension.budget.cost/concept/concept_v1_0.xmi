@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.cost" description="Example Concept for Interface Architecture">
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <categories name="InterfaceEnd">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="Interface">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="ifEndFrom" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.InterfaceEnd"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="ifEndTo" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.InterfaceEnd"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+</dvlm_c:Concept>

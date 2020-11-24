@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	 <propertyTester
+	    id="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabledTester"
+	    type="org.eclipse.emf.ecore.EObject"
+	    namespace="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester"
+	    properties="conceptEnabled"
+	    class="de.dlr.sc.virsat.model.extension.budget.cost.propertyTester.ConceptEnabledTester">
+	  </propertyTester>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptImageContribution">
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost"
+		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.budget.cost.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.InterfaceEnd"
+		pathToImage="resources/icons/InterfaceEnd.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.Interface"
+		pathToImage="resources/icons/Interface.gif">
+	</conceptImage>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterfaceEnd"
+		name="Add InterfaceEnd">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterface"
+		name="Add Interface">
+	</command>
+	</extension>
+	<extension point="org.eclipse.ui.commandImages">
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterfaceEnd"
+	      disabledIcon="resources/icons/InterfaceEnd_disabled.gif"
+	      icon="resources/icons/InterfaceEnd.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterface"
+	      disabledIcon="resources/icons/Interface_disabled.gif"
+	      icon="resources/icons/Interface.gif">
+	</image>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddInterfaceEndHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterfaceEnd">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddInterfaceHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterface">
+	</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+		     allPopups="false"
+		     locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=concepts">
+		     <menu
+		        id="de.dlr.sc.virsat.model.extension.budget.cost.menu" 
+		        label="de.dlr.sc.virsat.model.extension.budget.cost"
+		        icon="resources/icons/de.dlr.sc.virsat.model.extension.budget.cost.gif"
+		        tooltip="Example Concept for Interface Architecture">
+		        <separator
+		            name="categories"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="structuralElements"
+		            visible="true">
+			    </separator>
+		        <separator
+			        name="tools"
+		            visible="true">
+			    </separator>
+		        <separator
+		        	name="additions"
+		            visible="true">
+		    	</separator>
+		    	<visibleWhen
+					checkEnabled="true">
+					<with
+						variable="selection">
+						<iterate
+							ifEmpty="false"
+							operator="and">
+							<test 
+								property="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabled"
+								value="true" 
+								forcePluginActivation="true">
+							</test>		
+						</iterate>
+					</with>
+				</visibleWhen>
+			</menu>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.cost.menu?after=categories">
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterfaceEnd"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddInterface"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		</menuContribution>
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.cost.menu?after=structuralElements">
+		</menuContribution>
+	</extension>
+	<extension
+	       point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
+	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+	          topRanking="1000">
+	    </editorSection>
+	 </extension>	
+	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.table.uiSnippetInterfaceEnd"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetTableInterfaceEnd">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.section.uiSnippetInterfaceEnd"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetSectionInterfaceEnd">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.table.uiSnippetInterface"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetTableInterface">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.section.uiSnippetInterface"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetSectionInterface">
+		</uiSnippet>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

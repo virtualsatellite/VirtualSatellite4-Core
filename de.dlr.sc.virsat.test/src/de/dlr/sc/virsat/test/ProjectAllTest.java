@@ -49,6 +49,8 @@ import org.junit.runners.Suite;
 				de.dlr.sc.virsat.model.extension.budget.mass.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.budget.power.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.budget.power.test.AllTestsGen.class,
+				de.dlr.sc.virsat.model.extension.budget.cost.test.AllTests.class,
+				de.dlr.sc.virsat.model.extension.budget.cost.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.visualisation.test.AllTests.class,
 				de.dlr.sc.virsat.model.extension.visualisation.test.AllTestsGen.class,
 				de.dlr.sc.virsat.model.extension.requirements.test.AllTests.class,
