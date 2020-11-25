@@ -49,7 +49,7 @@ jobs:
         
       - name: Build and Test - SpotBugs - Release
         run: ./bash/maven_build.sh -j spotbugs -p release
-        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')  }}
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
         
   surefire:
     # Name the Job
