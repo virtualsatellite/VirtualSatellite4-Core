@@ -9,9 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.validator;
 
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-
-
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
@@ -26,9 +23,4 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  */
 public class CostValidator extends ACostValidator {
 
-	@Override
-	public boolean validate(StructuralElementInstance sei) {
-		//TODO: Implement custom validation for concept
-		return super.validate(sei);
-	}
 }
