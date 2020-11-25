@@ -53,6 +53,7 @@ jobs:
       - name: Setup
         run: ./bash/setup.sh
         
+      # SWTBot Tests  
       - name: Start xvb Server
         run: Xvfb :1 -screen 0 800x600x16 &
         
