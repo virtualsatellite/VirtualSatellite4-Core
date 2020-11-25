@@ -19,4 +19,4 @@ jobs:
 
       # Runs the Super-Linter action
       - name: Verify - Authors Sanity Check
-        rus: ./bash/verify_commit_authors.sh known_authors.txt
+        run: ./bash/verify_commit_authors.sh known_authors.txt
