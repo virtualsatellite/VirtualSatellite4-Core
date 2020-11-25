@@ -58,11 +58,8 @@ echo "Current LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
 
 # Fin out where java is
 JAVA_INSTALL_BIN=$(readlink -f $(which java))
-echo "1"
 JAVA_INSTALL=${JAVA_INSTALL_BIN%"/bin/java"}
-echo "2"
 JAVA_LIB_AWT=$(find $JAVA_INSTALL -name libawt.so)
-echo "3"
 JAVA_LIB_JVM=$(find $JAVA_INSTALL -name libjvm.so)
 
 echo "Found Java Bin in the following location: ${JAVA_INSTALL_BIN}"
