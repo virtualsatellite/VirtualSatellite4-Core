@@ -47,6 +47,10 @@ jobs:
         run: ./bash/maven_build.sh -j spotbugs -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
         
+      - name: Build and Test - SpotBugs - Release
+        run: ./bash/maven_build.sh -j spotbugs -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')  }}
+        
   surefire:
     # Name the Job
     name: Surefire
