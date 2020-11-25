@@ -22,5 +22,5 @@ package de.dlr.sc.virsat.model.extension.budget.cost.validator;
  * 
  */
 public class CostValidator extends ACostValidator {
-
+	
 }
