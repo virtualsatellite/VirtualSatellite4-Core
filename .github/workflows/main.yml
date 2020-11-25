@@ -37,7 +37,7 @@ jobs:
       
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
-        if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
+        if: ${{ branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/) }}
         
       - name: Build and Test - SpotBugs - Integration
         run: ./bash/maven_build.sh -j spotbugs -p integration
