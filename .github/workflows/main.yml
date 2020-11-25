@@ -45,7 +45,7 @@ jobs:
         
       - name: Build and Test - SpotBugs - Integration
         run: ./bash/maven_build.sh -j spotbugs -p integration
-        if: branch = integration
+        if: ${{ github.ref == 'integration'  }}
         
   surefire:
     # Name the Job
