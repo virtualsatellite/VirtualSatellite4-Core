@@ -68,6 +68,7 @@ checkforMavenProblems() {
 	| grep -v "An error occurred while transferring artifact packed:" \
 	| grep -v "Retry another mirror:" \
 	| grep -v "Artifact not found:" \
+	| grep -v "An error occurred while transferring artifact canonical:" \
 	|| exit 0 && exit 1;)
 }
 
