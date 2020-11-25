@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Model Extension Concept
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.budget.cost;singleton:=true
 Bundle-Version: 4.12.1.qualifier
-Bundle-Vendor: German Aerospace Center (DLR)
+Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.dlr.sc.virsat.model,
