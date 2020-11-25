@@ -71,13 +71,13 @@ augmentLdLibraryPath $(dirname $JAVA_LIB_JVM)
 # -------------------------------------
 # Start setting up vtk and zmq so dirs
 # ------------------------------------
-ls -l /usr/lib/x86_64-linux-gnu/jni/
+# ls -l /usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_JNI_SO_DIR=/usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 
 
 # Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
-# ls -l /usr/share/java/
+ls -l /usr/share/java/
 #export VS_JAR_VTK=/usr/share/java/vtk7.jar
 export VS_JAR_VTK=$(find /usr/share/java/vtk6.jar)
 export VS_JAR_ZMQ=$(find /usr/share/java/jzmq.jar)
