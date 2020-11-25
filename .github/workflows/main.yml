@@ -34,9 +34,6 @@ jobs:
         
       - name: Setup
         run: ./bash/setup.sh
-        
-      - name: Setup Environment
-        run: source ./bash/setup_environment.sh
       
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
@@ -55,9 +52,6 @@ jobs:
         
       - name: Setup
         run: ./bash/setup.sh
-        
-      - name: Setup Environment
-        run: source ./bash/setup_environment.sh
         
       # SWTBot Tests  
       - name: Start xvb Server
@@ -80,9 +74,6 @@ jobs:
         
       - name: Setup
         run: ./bash/setup.sh
-        
-      - name: Setup Environment
-        run: source ./bash/setup_environment.sh
         
       - name: Build and Test - Checkstyle - Development and Features
         run: ./bash/maven_build.sh -j checkstyle -p development
