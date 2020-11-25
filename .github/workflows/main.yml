@@ -118,7 +118,6 @@ jobs:
     name: Deploy
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
-    needs: [spotbugs, surefire, checkstyle]
     
     steps:
        # Checks out a copy of the repository
