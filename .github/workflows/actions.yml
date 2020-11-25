@@ -13,14 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Setup
         run: ./bash/setup.sh
  
-      # Checks out a copy of your repository on the ubuntu-latest machine
+      # Checks out a copy of your repository
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Runs the Super-Linter action
+      
+      # --------------------------------------------
+      # Run a quicksanity check if all commits are
+      # handed in by known users
+      #---------------------------------------------
       - name: Verify - Authors Sanity Check
         run: ./bash/verify_commit_authors.sh known_authors.txt
+      
+      - name: Build and Test - SpotBugs - Development and Features
+        run: ./bash/maven_build.sh -j spotbugs -p development
