@@ -29,3 +29,9 @@ jobs:
       
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
+
+      - name: Build and Test - Surefire - Development and Features
+        run: ./bash/maven_build.sh -j surecoverage -p development
+        
+      - name: Build and Test - Checkstyle - Development and Features
+        run: ./bash/maven_build.sh -j checkstyle -p development
