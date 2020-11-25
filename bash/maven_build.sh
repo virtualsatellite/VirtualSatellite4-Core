@@ -133,7 +133,6 @@ callMavenAssemble() {
 	(grep -n "\[INFO\] asciidoctor: \(WARN\|ERROR\|ERR\)" maven.log || exit 0  && exit 1;)
 }
 
-
 # process all command line arguments
 while [ "$1" != "" ]; do
     case $1 in
@@ -160,6 +159,8 @@ case $MAVEN_PROFILE in
     * )                 printUsage
                         exit 1
 esac
+
+source ./bash/setup_environment.sh
 
 # Decide which job to run
 case $TRAVIS_JOB in
