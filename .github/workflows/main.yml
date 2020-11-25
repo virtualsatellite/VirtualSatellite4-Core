@@ -50,12 +50,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Setup
-        run: ./bash/setup.sh
-        
       # SWTBot Tests  
       - name: Start xvb Server
         run: Xvfb :1 -screen 0 800x600x16 &
+        
+      - name: Setup
+        run: ./bash/setup.sh
         
       - name: Build and Test - Surefire - Development and Features
         run: ./bash/maven_build.sh -j surecoverage -p development
