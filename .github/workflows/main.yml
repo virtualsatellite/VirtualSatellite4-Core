@@ -53,12 +53,18 @@ jobs:
       # SWTBot Tests  
       - name: Start xvb Server
         run: sh -e /etc/init.d/xvfb start
+        env:
+          DISPLAY: :99.0
         
       - name: Setup
         run: ./bash/setup.sh
+        env:
+          DISPLAY: :99.0
         
       - name: Build and Test - Surefire - Development and Features
         run: ./bash/maven_build.sh -j surecoverage -p development
+        env:
+          DISPLAY: :99.0
       
   checkstyle:
     # Name the Job
