@@ -43,6 +43,9 @@ eval "$(ssh-agent -s)"
 
 echo "Adding sourceforge as known SSH host"
 SSH_DIR="$HOME/.ssh"
+mkdir -p "${SSH_DIR}"
+touch "${SSH_DIR}/known_hosts"
+chmod 600 "${SSH_DIR}/known_hosts"
 ssh-keyscan "frs.sourceforge.net" >> "${SSH_DIR}/known_hosts"
 
 echo "Connecting to sourceforge"
