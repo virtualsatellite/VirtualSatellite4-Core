@@ -52,8 +52,9 @@ jobs:
         
       - name: Setup
         run: ./bash/setup.sh
+        
       - name: Start xvb Server
-        run: xvfb
+        run: Xvfb :1 -screen 0 800x600x16
         
       - name: Build and Test - Surefire - Development and Features
         run: ./bash/maven_build.sh -j surecoverage -p development

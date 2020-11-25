@@ -6,7 +6,7 @@
 # ---------
 
 echo "Installing tools"
-sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect
+sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect xvfb
 
 # -----------------------------------
 # Startup the metacity window manager
