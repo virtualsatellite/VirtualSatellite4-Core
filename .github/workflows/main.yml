@@ -44,6 +44,8 @@ jobs:
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
+    env:
+      DISPLAY: :99.0
 
     steps:
        # Checks out a copy of your repository
@@ -53,18 +55,12 @@ jobs:
       # SWTBot Tests  
       - name: Start xvb Server
         run: sh -e /etc/init.d/xvfb start
-        env:
-          DISPLAY: :99.0
         
       - name: Setup
         run: ./bash/setup.sh
-        env:
-          DISPLAY: :99.0
         
       - name: Build and Test - Surefire - Development and Features
         run: ./bash/maven_build.sh -j surecoverage -p development
-        env:
-          DISPLAY: :99.0
       
   checkstyle:
     # Name the Job
