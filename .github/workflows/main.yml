@@ -53,8 +53,10 @@ jobs:
       # SWTBot Tests  
       - name: Start xvb Server
         run: |
+         sudo apt-get install xvfb
          export DISPLAY=:99.0
          Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
+         metacity --sm-disable --replace 2> metacity.err &
         
       - name: Setup
         run: ./bash/setup.sh
