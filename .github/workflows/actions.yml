@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Setup
-        run: ./bash/setup.sh
+        run: source ./bash/setup.sh
       
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
