@@ -59,15 +59,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      # SWTBot Tests  
-      - name: Start xvfb Server
-        run: |
-         sudo apt-get update
-         sudo apt-get install xvfb metacity
-         export DISPLAY=:99.0
-         Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
-         metacity --sm-disable --replace 2> metacity.err &
-        
       - name: Setup
         run: ./bash/setup.sh
         
