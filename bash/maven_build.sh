@@ -14,6 +14,9 @@
 # This script handles the different calls to maven
 # --------------------------------------------------------------------------
 
+echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
+echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
+
 # fail the script if a call fails
 set -e
 
