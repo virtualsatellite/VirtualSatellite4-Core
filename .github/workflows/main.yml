@@ -44,8 +44,6 @@ jobs:
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
-    env:
-      DISPLAY: :99.0
 
     steps:
        # Checks out a copy of your repository
@@ -54,7 +52,9 @@ jobs:
         
       # SWTBot Tests  
       - name: Start xvb Server
-        run: sh -e /etc/init.d/xvfb start
+        run: |
+         export DISPLAY=:99.0
+         Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
         
       - name: Setup
         run: ./bash/setup.sh
