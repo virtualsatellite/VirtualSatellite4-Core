@@ -32,11 +32,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install
-        run: sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect xvfb
-        
       - name: Setup
-        run: source ./bash/setup.sh
+        run: ./bash/setup.sh
+        
+      - name: Setup Environment
+        run: source ./bash/setup_environment.sh
       
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
@@ -53,11 +53,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install
-        run: sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect xvfb
-        
       - name: Setup
-        run: source ./bash/setup.sh
+        run: ./bash/setup.sh
+        
+      - name: Setup Environment
+        run: source ./bash/setup_environment.sh
         
       # SWTBot Tests  
       - name: Start xvb Server
@@ -78,11 +78,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Install
-        run: sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect xvfb
-        
       - name: Setup
-        run: source ./bash/setup.sh
+        run: ./bash/setup.sh
+        
+      - name: Setup Environment
+        run: source ./bash/setup_environment.sh
         
       - name: Build and Test - Checkstyle - Development and Features
         run: ./bash/maven_build.sh -j checkstyle -p development
