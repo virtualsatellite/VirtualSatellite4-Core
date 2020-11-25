@@ -49,7 +49,7 @@ chmod 600 "${SSH_DIR}/known_hosts"
 ssh-keyscan "frs.sourceforge.net" >> "${SSH_DIR}/known_hosts"
 
 echo "Connecting to sourceforge"
-mkdir -p -m 700 /tmp/.sourceforge_ssh
-openssl aes-256-cbc -K $encrypted_abcf28ac24e1_key -iv $encrypted_abcf28ac24e1_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
-chmod 600 /tmp/.sourceforge_ssh/id_ed25519
-./bash/ssh-add-password.sh -k /tmp/.sourceforge_ssh/id_ed25519 -p ${ssh_password} 2>/dev/null
+mkdir -p -m 700 ./tmp/.sourceforge_ssh
+openssl aes-256-cbc -K $encrypted_abcf28ac24e1_key -iv $encrypted_abcf28ac24e1_iv -in ./id_ed25519.enc -out ./tmp/.sourceforge_ssh/id_ed25519 -d
+chmod 600 ./tmp/.sourceforge_ssh/id_ed25519
+./bash/ssh-add-password.sh -k ./tmp/.sourceforge_ssh/id_ed25519 -p ${ssh_password} 2>/dev/null
