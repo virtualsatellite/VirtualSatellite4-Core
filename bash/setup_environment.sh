@@ -77,7 +77,7 @@ EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 
 
 # Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
-# ls -l /usr/share/java/
+ls -l /usr/share/java/
 #export VS_JAR_VTK=/usr/share/java/vtk7.jar
 export VS_JAR_VTK=/usr/share/java/vtk6.jar
 export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
