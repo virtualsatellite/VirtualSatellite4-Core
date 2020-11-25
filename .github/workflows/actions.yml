@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup
-        run: ./bash/setup.sh
- 
-      # Checks out a copy of your repository
+       # Checks out a copy of your repository
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Setup
+        run: ./bash/setup.sh
       
       # --------------------------------------------
       # Run a quicksanity check if all commits are
