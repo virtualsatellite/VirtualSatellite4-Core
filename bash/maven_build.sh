@@ -74,6 +74,12 @@ checkforMavenProblems() {
 }
 
 callMavenSurefire() {
+        sudo apt-get update
+        sudo apt-get install xvfb metacity
+        export DISPLAY=:99.0
+        Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
+        metacity --sm-disable --replace 2> metacity.err &
+	
 	echo "Setting VS_JAR_VTK to: $VS_JAR_VTK"
 	echo "Setting VS_JAR_ZMQ to: $VS_JAR_ZMQ"
 
