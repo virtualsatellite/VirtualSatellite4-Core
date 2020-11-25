@@ -14,6 +14,10 @@ jobs:
 
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Setup
+        run: ./bash/setup.sh
+ 
+      # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v2
 
