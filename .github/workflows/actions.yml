@@ -28,7 +28,7 @@ jobs:
     needs: [verify]
 
     steps:
-       # Checks out a copy of your repository
+       # Checks out a copy of the repository
       - name: Checkout code
         uses: actions/checkout@v2
         
