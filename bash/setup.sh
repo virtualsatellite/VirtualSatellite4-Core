@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+# ---------- 
+# Install
+# ---------
+    
+sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect
+
 # -----------------------------------
 # Startup the metacity window manager
 # -----------------------------------
