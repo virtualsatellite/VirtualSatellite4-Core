@@ -64,6 +64,7 @@ checkforMavenProblems() {
 	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log \
 	| grep -v "\[WARNING\] Checksum validation failed" \
 	| grep -v "\[WARNING\] Could not validate integrity of download" \
+	| grep -v "\[WARNING\] Some attempts to read artifact" \
 	|| exit 0 && exit 1;)
 }
 
@@ -109,7 +110,7 @@ callMavenCheckstyle() {
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn clean install -P ${MAVEN_PROFILE},checkstyle,product -B -V | tee maven.log
 	checkforMavenProblems
-	}
+}
 
 callMavenAssemble() {
 	if [ "$MAVEN_PROFILE" == "release" ] ; then
