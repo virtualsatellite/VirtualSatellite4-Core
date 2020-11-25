@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -44,6 +43,7 @@ import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Info;
@@ -168,12 +168,11 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Fetch ca",
 				httpMethod = "GET",
-				notes = "<br>This service fetches cas",
-				response = ABeanCategoryAssignment.class)
+				notes = "This service fetches cas")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
-						response = IBeanCategoryAssignment.class,
+						response = ABeanCategoryAssignment.class,
 						message = "Successful operation"),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
@@ -193,14 +192,14 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Put ca",
 				httpMethod = "PUT",
-				notes = "<br>This service puts cas")
+				notes = "This service puts cas")
 		@ApiResponse(
 				code = HttpStatus.OK_200,
 				message = "Successful operation")
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putCa(ABeanCategoryAssignment bean) {
+		public Response putCa(@ApiParam(value = "Ca to put", required = true) ABeanCategoryAssignment bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
