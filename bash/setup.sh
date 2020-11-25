@@ -41,6 +41,10 @@ eval "$(ssh-agent -s)"
 # deployment store and add it to ssh-agent
 # ----------------------------------------
 
+echo "Adding sourceforge as known SSH host"
+SSH_DIR="$HOME/.ssh"
+ssh-keyscan "frs.sourceforge.net" >> "${SSH_DIR}/known_hosts"
+
 echo "Connecting to sourceforge"
 mkdir -p -m 700 /tmp/.sourceforge_ssh
 openssl aes-256-cbc -K $encrypted_abcf28ac24e1_key -iv $encrypted_abcf28ac24e1_iv -in id_ed25519.enc -out /tmp/.sourceforge_ssh/id_ed25519 -d
