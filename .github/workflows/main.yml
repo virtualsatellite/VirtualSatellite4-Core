@@ -133,7 +133,7 @@ jobs:
       - name: Create Tag
         run: |
          git tag -f development_snapshot
-         git remote add github-mtd  https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
          
