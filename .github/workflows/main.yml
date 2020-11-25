@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v2
         
       # SWTBot Tests  
-      - name: Start xvb Server
+      - name: Start xvfb Server
         run: |
          sudo apt-get install xvfb metacity
          export DISPLAY=:99.0
