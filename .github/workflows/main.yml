@@ -77,6 +77,10 @@ jobs:
       - name: Build and Test - Surefire - Integration
         run: ./bash/maven_build.sh -j surecoverage -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
+        
+      - name: Build and Test - Surefire - Release
+        run: ./bash/maven_build.sh -j surecoverage -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
       
   checkstyle:
     # Name the Job
@@ -104,3 +108,7 @@ jobs:
       - name: Build and Test - Checkstyle - Integration
         run: ./bash/maven_build.sh -j checkstyle -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
+        
+      - name: Build and Test - Checkstyle - Release
+        run: ./bash/maven_build.sh -j checkstyle -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
