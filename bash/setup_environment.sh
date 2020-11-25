@@ -80,8 +80,8 @@ EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 echo "Trying to find vtk and zmq libraries"
 ls -l /usr/share/java/
 #export VS_JAR_VTK=/usr/share/java/vtk7.jar
-export VS_JAR_VTK=$(find /usr/share/java/vtk6.jar)
-export VS_JAR_ZMQ=$(find /usr/share/java/jzmq.jar)
+export VS_JAR_VTK=/usr/share/java/vtk6.jar
+export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
 
 echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
 echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
