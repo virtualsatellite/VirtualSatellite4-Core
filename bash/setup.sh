@@ -6,7 +6,7 @@
 # ---------
 
 echo "Installing tools"
-
+sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni metacity ant expect xvfb
 
 # -----------------------------------
 # Startup the metacity window manager
@@ -21,13 +21,6 @@ metacity --sm-disable --replace 2> metacity.err &
 
 echo "Installing and running OverTarget"
 ./bash/maven_build.sh -j dependencies -p dependencies
-
-# --------------------------------------------------------------
-# Setup environment variables for correct linking of vtk and zmq
-# --------------------------------------------------------------
-
-echo "Setting up environment for dependencies"
-source ./bash/setup_environment.sh
 
 # --------------------------------------
 # Start the ssh agent
