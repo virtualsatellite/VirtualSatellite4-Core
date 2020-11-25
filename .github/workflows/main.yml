@@ -37,6 +37,11 @@ jobs:
       
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
+        if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
+        
+      - name: Build and Test - SpotBugs - Integration
+        run: ./bash/maven_build.sh -j spotbugs -p integration
+        if: branch = integration
         
   surefire:
     # Name the Job
@@ -64,6 +69,11 @@ jobs:
         
       - name: Build and Test - Surefire - Development and Features
         run: ./bash/maven_build.sh -j surecoverage -p development
+        if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
+      
+      - name: Build and Test - Surefire - Integration
+        run: ./bash/maven_build.sh -j surecoverage -p integration
+        if: branch = integration
       
   checkstyle:
     # Name the Job
@@ -82,3 +92,8 @@ jobs:
         
       - name: Build and Test - Checkstyle - Development and Features
         run: ./bash/maven_build.sh -j checkstyle -p development
+        if: branch NOT IN (integration, integration_snapshot, development_snapshot) AND NOT (branch =~ /^master/) AND NOT (tag =~ /^Release/)
+        
+      - name: Build and Test - Checkstyle - Integration
+        run: ./bash/maven_build.sh -j checkstyle -p integration
+        if: branch = integration
