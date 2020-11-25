@@ -112,3 +112,37 @@ jobs:
       - name: Build and Test - Checkstyle - Release
         run: ./bash/maven_build.sh -j checkstyle -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
+        
+  deploy:
+    # Name the Job
+    name: Deploy
+    # Set the type of machine to run on
+    runs-on: ubuntu-16.04
+    needs: [spotbugs, surefire, checkstyle]
+    
+    steps:
+       # Checks out a copy of the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup
+        run: ./bash/setup.sh
+        
+      - name: Build
+        run: ./bash/maven_build.sh -j assemble -p development
+        
+      - name: Create Tag
+        run: |
+         git tag -f development_snapshot
+         git remote add github-mtd  https://${GITHUB_API_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
+         git push -f github-mtd development_snapshot
+         git remote remove github-mtd
+         
+      - name: Deploy
+        uses: svenstaro/upload-release-action@v2
+        with:
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         file: deploy/unsecured/bin/**/*.zip
+         tag: development_snapshot
+         overwrite: true
+         body: "This is my release text"
