@@ -178,6 +178,8 @@ jobs:
       - name: Build-Assemble - Release
         run: ./bash/maven_build.sh -j assemble -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
+        env:
+          github.sha:  ${{ github.sha }}
         
       - name: Create Development Tag
         run: |
