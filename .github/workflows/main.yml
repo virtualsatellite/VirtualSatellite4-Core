@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-16.04
     
     steps:
-      # Checks out a copy of your repository
+      # Checks out a copy of the repository
       - name: Checkout code
         uses: actions/checkout@v2
         
