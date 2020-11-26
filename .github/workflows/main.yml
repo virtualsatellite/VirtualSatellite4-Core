@@ -31,6 +31,14 @@ jobs:
        # Checks out a copy of the repository
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-local-maven-spotbugs-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-
         
       - name: Setup
         run: ./bash/setup.sh
@@ -62,7 +70,15 @@ jobs:
        # Checks out a copy of your repository
       - name: Checkout code
         uses: actions/checkout@v2
-        
+      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-local-maven-surefire-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-
+      
       - name: Setup
         run: ./bash/setup.sh
         
@@ -93,7 +109,15 @@ jobs:
        # Checks out a copy of your repository
       - name: Checkout code
         uses: actions/checkout@v2
-        
+      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-local-maven-checkstyle-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-
+      
       - name: Setup
         run: ./bash/setup.sh
         
@@ -123,6 +147,14 @@ jobs:
        # Checks out a copy of the repository
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-local-maven-deploy-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-
         
       - name: Setup
         run: ./bash/setup.sh
