@@ -173,7 +173,8 @@ jobs:
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
        
-      - name: Deploy - Binaries
+      - name: Deploy - Development - Binaries
+        if: ${{ github.ref == 'refs/heads/development'  }}
         uses: svenstaro/upload-release-action@v2
         with:
          repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -184,10 +185,53 @@ jobs:
          file_glob: true    
          body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
          
-      - name: Deploy - Add Manuals
+      - name: Deploy - Development - Manuals
+        if: ${{ github.ref == 'refs/heads/development'  }}
         uses: svenstaro/upload-release-action@v2
         with:
          repo_token: ${{ secrets.GITHUB_TOKEN }}
          file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
          tag: development_snapshot
+         file_glob: true  
+         
+      - name: Deploy - Integration - Binaries
+        if: ${{ github.ref == 'refs/heads/integration'  }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         file: deploy/unsecured/bin/**/*
+         tag: integration_snapshot
+         release_name: Virtual Satellite 4 Core Integration Build  
+         overwrite: true
+         file_glob: true    
+         body: "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
+         
+      - name: Deploy - Integration - Manuals
+        if: ${{ github.ref == 'refs/heads/integration'  }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
+         tag: integration_snapshot
+         file_glob: true  
+       
+      - name: Deploy - Release - Binaries
+        if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         file: deploy/unsecured/bin/**/*
+         tag: ${{ github.ref }}
+         release_name: Virtual Satellite 4 Core Release Build  
+         overwrite: true
+         file_glob: true    
+         body: "Release build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."
+         
+      - name: Deploy - Release - Manuals
+        if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
+         tag: ${{ github.ref }}
          file_glob: true  
