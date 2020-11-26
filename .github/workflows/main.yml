@@ -177,17 +177,9 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
          repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: deploy/unsecured/bin/**/*
+         file: (deploy/unsecured/bin/**/* | de.dlr.sc.virsat.docs.feature/docs/*.pdf)
          tag: development_snapshot
          release_name: Virtual Satellite 4 Core Development Build  
          overwrite: true
          file_glob: true    
          body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
-         
-      - name: Add Manuals
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
-         tag: development_snapshot
-         file_glob: true
