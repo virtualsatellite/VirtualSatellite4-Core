@@ -37,7 +37,7 @@ printUsage() {
 }
 
 GITHUB_TOKEN=""
-GITHUB_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GITHUB_COMMIT=$(git rev-parse HEAD)
 GITHUB_REPO_FULL_NAME=$(git config --get remote.origin.url | sed 's/.*:\/\/github.com\///;s/.git$//')
 RELEASE_DESCRIPTION="No Description"
 
@@ -50,7 +50,7 @@ printGitHubAccessInfos() {
   echo "GitHub Release Name:        $RELEASE_NAME"
   echo "GitHub Release Description: $RELEASE_DESCRIPTION
   echo "GitHub Repo Name:           $GITHUB_REPO_FULL_NAME"
-  echo "GitHub Branch:              $GITHUB_BRANCH"
+  echo "GitHub Commit:              $GITHUB_COMMIT"
   echo "GitHub Release Command:     $RELEASE_COMMAND"
   echo ""
 }
@@ -60,7 +60,7 @@ generatePostDataCreateRelease()
   cat <<EOF
 {
   "tag_name": "$RELEASE_NAME",
-  "target_commitish": "$GITHUB_BRANCH",
+  "target_commitish": "$GITHUB_COMMIT",
   "name": "$RELEASE_NAME",
   "body": "$RELEASE_DESCRIPTION",
   "draft": false,
