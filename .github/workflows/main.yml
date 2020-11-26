@@ -197,66 +197,31 @@ jobs:
          git remote remove github-mtd
         if: ${{ github.ref == 'refs/heads/integration'  }}
        
-      - name: Deploy - Development - Binaries
+      - name: Deploy - Development
         if: ${{ github.ref == 'refs/heads/development'  }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: deploy/unsecured/bin/**/*
-         tag: development_snapshot
-         release_name: Virtual Satellite 4 Core Development Build  
-         overwrite: true
-         file_glob: true
-         
-      - name: Deploy - Development - Manuals
-        if: ${{ github.ref == 'refs/heads/development'  }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
-         tag: development_snapshot
-         overwrite: true
-         file_glob: true
-         body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
-         
-      - name: Deploy - Integration - Binaries
+        run: |
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r development_snapshot
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r development_snapshot -d "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.zip" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
+
+      - name: Deploy - Integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: deploy/unsecured/bin/**/*
-         tag: integration_snapshot
-         release_name: Virtual Satellite 4 Core Integration Build  
-         overwrite: true
-         file_glob: true
-         
-      - name: Deploy - Integration - Manuals
-        if: ${{ github.ref == 'refs/heads/integration'  }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
-         tag: integration_snapshot
-         overwrite: true
-         file_glob: true
-         body: "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
-         
-      - name: Deploy - Release - Binaries
+        run: |
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r integration_snapshot
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r integration_snapshot -d "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change." 
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.zip" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.tar.gz" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs   
+     
+      - name: Deploy - Release
         if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: deploy/secured/bin/**/*
-         tag: ${{ github.ref }}
-         release_name: Virtual Satellite 4 Core Release Build  
-         file_glob: true
-         
-      - name: Deploy - Release - Manuals
-        if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-         repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: de.dlr.sc.virsat.docs.feature/docs/*.pdf
-         tag: ${{ github.ref }}
-         file_glob: true
-         body: "Release build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."  
+        env:
+          github.sha: ${{ github.sha }}
+        run: |
+           TAG_NAME=${GITHUB_REF#refs/*/}
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c patch -r $TAG_NAME -d "Release build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."  
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.zip" -dir deploy/secured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.tar.gz" -dir deploy/secured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
