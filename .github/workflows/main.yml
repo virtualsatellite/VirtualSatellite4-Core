@@ -173,7 +173,7 @@ jobs:
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
        
-      - name: Deploy
+      - name: Deploy - Binaries
         uses: svenstaro/upload-release-action@v2
         with:
          repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -184,7 +184,7 @@ jobs:
          file_glob: true    
          body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
          
-      - name: Add Manuals
+      - name: Deploy - Add Manuals
         uses: svenstaro/upload-release-action@v2
         with:
          repo_token: ${{ secrets.GITHUB_TOKEN }}
