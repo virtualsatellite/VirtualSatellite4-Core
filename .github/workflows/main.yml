@@ -183,10 +183,9 @@ jobs:
           release_name: Virtual Satellite 4 Core Development Build  
           body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
           draft: false
-          prerelease: false
+          prerelease: true
               
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Upload Release Application Windows
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -195,3 +194,13 @@ jobs:
           asset_path: ./deploy/unsecured/bin/VirSat4_Core_Application/development/VirSat_Core_Development_Win32.zip
           asset_name: VirSat_Core_Development_Win32.zip
           asset_content_type: application/zip
+          
+      - name: Upload Release Application Windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./deploy/unsecured/bin/VirSat4_Core_Application/development/VirSat_Core_Development_Linux.zip
+          asset_name: VirSat_Core_Development_Linux.zip
+          asset_content_type: application/zip  
