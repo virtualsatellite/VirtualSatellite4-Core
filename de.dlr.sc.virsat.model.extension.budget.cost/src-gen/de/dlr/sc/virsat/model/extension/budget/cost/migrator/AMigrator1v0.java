@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
  * 
  * Don't Manually modify this class
  * 
- * Example Concept for Interface Architecture
+ * Cost Budget Concept
  * 
  */	
 public abstract class AMigrator1v0 extends AMigrator {

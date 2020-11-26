@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator
  * 
  * Don't Manually modify this class
  * 
- * Example Concept for Interface Architecture
+ * Cost Budget Concept
  * 
  */	
 public abstract class ACostValidator implements IStructuralElementInstanceValidator {

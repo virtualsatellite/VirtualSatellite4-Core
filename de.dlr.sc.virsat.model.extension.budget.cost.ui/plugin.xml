@@ -62,9 +62,9 @@
 		     locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=concepts">
 		     <menu
 		        id="de.dlr.sc.virsat.model.extension.budget.cost.menu" 
-		        label="de.dlr.sc.virsat.model.extension.budget.cost"
+		        label="Cost Budget"
 		        icon="resources/icons/de.dlr.sc.virsat.model.extension.budget.cost.gif"
-		        tooltip="Example Concept for Interface Architecture">
+		        tooltip="Cost Budget Concept">
 		        <separator
 		            name="categories"
 		            visible="true">
