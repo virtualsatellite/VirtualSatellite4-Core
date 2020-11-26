@@ -195,7 +195,7 @@ jobs:
           asset_name: VirSat_Core_Development_Win32.zip
           asset_content_type: application/zip
           
-      - name: Upload Release Application Windows
+      - name: Upload Release Application Linux
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
