@@ -25,7 +25,7 @@ jobs:
   # -----------------------------------------------------
   spotbugs:
     # Name the Job
-    name: Spotbugs
+    name: Build and Test - Spotbugs
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
