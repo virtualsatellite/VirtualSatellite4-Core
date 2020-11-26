@@ -1,6 +1,6 @@
 name: Build
 
-# Run this workflow every time a new commit pushed to your repository
+# Run this workflow every time a new commit pushed to the repository
 on: push
 
 jobs:
