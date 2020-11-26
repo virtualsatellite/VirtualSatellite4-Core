@@ -78,6 +78,7 @@ import io.swagger.annotations.SwaggerDefinition;
 //	}, 
 //externalDocs = @ExternalDocs(value = "Meteorology", url = "http://theweatherapi.io/meteorology.html")
 )
+@Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
 
 	@Inject
