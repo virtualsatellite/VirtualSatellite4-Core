@@ -184,6 +184,7 @@ jobs:
           body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
           draft: false
           prerelease: true
+          overwrite: true  
               
       - name: Upload Release Application Windows
         uses: actions/upload-release-asset@v1
