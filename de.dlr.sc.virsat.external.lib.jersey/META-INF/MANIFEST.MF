@@ -289,9 +289,6 @@ Export-Package: .,
  org.glassfish.jersey.jaxb,
  org.glassfish.jersey.jaxb.internal,
  org.glassfish.jersey.logging,
- org.glassfish.jersey.media.multipart,
- org.glassfish.jersey.media.multipart.file,
- org.glassfish.jersey.media.multipart.internal,
  org.glassfish.jersey.message,
  org.glassfish.jersey.message.filtering,
  org.glassfish.jersey.message.filtering.internal,
@@ -347,8 +344,7 @@ Export-Package: .,
  org.jvnet.hk2.component,
  org.jvnet.hk2.external.generator,
  org.jvnet.hk2.external.runtime,
- org.jvnet.hk2.internal,
- org.jvnet.mimepull
+ org.jvnet.hk2.internal
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
  javax.servlet;visibility:=reexport
@@ -379,6 +375,4 @@ Bundle-ClassPath: externalLib/maven/aopalliance-repackaged.jar,
  externalLib/maven/org.eclipse.persistence.moxy.jar,
  externalLib/maven/osgi-resource-locator.jar,
  src/,
- .,
- externalLib/maven/jersey-media-multipart.jar,
- externalLib/maven/mimepull.jar
+ .
