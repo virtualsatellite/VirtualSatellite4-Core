@@ -66,7 +66,7 @@ jobs:
         
   surefire:
     # Name the Job
-    name: Surefire
+    name: Build and Test - Surefire
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
@@ -106,7 +106,7 @@ jobs:
       
   checkstyle:
     # Name the Job
-    name: Checkstyle
+    name: Build and Test - Checkstyle
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
@@ -146,7 +146,7 @@ jobs:
         
   deploy:
     # Name the Job
-    name: Deploy
+    name: Build and Deploy
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [spotbugs, surefire, checkstyle]
