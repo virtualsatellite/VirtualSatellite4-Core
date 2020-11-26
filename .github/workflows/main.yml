@@ -181,6 +181,7 @@ jobs:
         with:
           tag_name: development_snapshot
           release_name: Virtual Satellite 4 Core Development Build  
+          body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
           draft: false
           prerelease: false
               
