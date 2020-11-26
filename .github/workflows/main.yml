@@ -173,35 +173,13 @@ jobs:
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
        
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy
+        uses: svenstaro/upload-release-action@v2
         with:
-          tag_name: development_snapshot
-          release_name: Virtual Satellite 4 Core Development Build  
-          body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
-          draft: false
-          prerelease: true
-          overwrite: true  
-              
-      - name: Upload Release Application Windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./deploy/unsecured/bin/VirSat4_Core_Application/development/VirSat_Core_Development_Win32.zip
-          asset_name: VirSat_Core_Development_Win32.zip
-          asset_content_type: application/zip
-          
-      - name: Upload Release Application Linux
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./deploy/unsecured/bin/VirSat4_Core_Application/development/VirSat_Core_Development_Linux.zip
-          asset_name: VirSat_Core_Development_Linux.zip
-          asset_content_type: application/zip  
+         repo_token: ${{ secrets.GITHUB_TOKEN }}
+         file: deploy/unsecured/bin/VirSat4_Core_Application/development/*.zip
+         tag: development_snapshot
+         release_name: Virtual Satellite 4 Core Development Build  
+         overwrite: true
+         file_glob: true    
+         body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
