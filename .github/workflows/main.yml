@@ -141,7 +141,9 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
          repo_token: ${{ secrets.GITHUB_TOKEN }}
-         file: deploy/unsecured/bin/VirSat4_Core_Application/development/VirSat_Core_Development_Win32.zip
+         file: deploy/unsecured/bin/VirSat4_Core_Application/development/*.zip
          tag: development_snapshot
+         release_name: Virtual Satellite 4 Core Development Build  
          overwrite: true
-         body: "This is my release text"
+         file_glob: true    
+         body: "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."
