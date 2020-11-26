@@ -39,8 +39,10 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
+import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -56,27 +58,10 @@ import io.swagger.annotations.SwaggerDefinition;
 @Api(tags = {"Model"})
 @SwaggerDefinition(
 	info = @Info(
-//		description = "Gets the weather",
-		version = "V",
-		title = "The Model API"//,
-//		termsOfService = "http://theweatherapi.io/terms.html",
-//		contact = @Contact(
-//				name = "Rain Moore", 
-//				email = "rain.moore@theweatherapi.io", 
-//				url = "http://theweatherapi.io"
-//		),
-//		license = @License(
-//				name = "Apache 2.0", 
-//				url = "http://www.apache.org/licenses/LICENSE-2.0"
-//				)
+		version = VirSatModelAccessServlet.MODEL_API_VERSION,
+		title = "The Model API"
 	),
-	consumes = {"application/json"}, //, "application/xml"},
-	produces = {"application/json"}, //, "application/xml"},
-	schemes = {SwaggerDefinition.Scheme.HTTP}//, SwaggerDefinition.Scheme.HTTPS}//,
-//	tags = {
-//			@Tag(name = "Private", description = "Tag used to denote operations as private")
-//	}, 
-//externalDocs = @ExternalDocs(value = "Meteorology", url = "http://theweatherapi.io/meteorology.html")
+	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API
 )
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {

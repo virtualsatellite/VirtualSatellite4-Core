@@ -1,0 +1,83 @@
+
+[[_paths]]
+== Resources
+
+[[_model_resource]]
+=== Model
+
+[[_putca]]
+==== Put ca
+....
+PUT /repository/{repoName}/ca
+....
+
+
+===== Description
+This service puts cas
+
+
+===== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__||string
+|**Body**|**body** +
+__required__|Ca to put|<<_abeancategoryassignment,ABeanCategoryAssignment>>
+|===
+
+
+===== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**default**|successful operation|No Content
+|===
+
+
+===== Consumes
+
+* `application/json`
+
+
+[[_getca]]
+==== Fetch ca
+....
+GET /repository/{repoName}/ca/{caUuid}
+....
+
+
+===== Description
+This service fetches cas
+
+
+===== Parameters
+
+[options="header", cols=".^2,.^3,.^4"]
+|===
+|Type|Name|Schema
+|**Path**|**caUuid** +
+__required__|string
+|**Path**|**repoName** +
+__required__|string
+|===
+
+
+===== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|<<_abeancategoryassignment,ABeanCategoryAssignment>>
+|**400**|Bad Request|No Content
+|===
+
+
+===== Produces
+
+* `application/json`
+
+
+
