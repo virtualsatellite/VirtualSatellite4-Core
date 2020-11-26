@@ -6,7 +6,8 @@
 # ---------
 
 echo "Installing tools"
-sudo apt-get install libvtk6-java libzmq5 libzmq-java libzmq-jni ant expect
+sudo apt-get update
+sudo apt-get install xvfb metacity libvtk6-java libzmq5 libzmq-java libzmq-jni ant expect
   
 # -------------------------------------------------------------------
 # create adirectory for Overtarget and try to receive language plugin

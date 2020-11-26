@@ -85,7 +85,7 @@ jobs:
         run: ./bash/setup.sh
         
       - name: Build and Test - Surefire - Development and Features
-        run: ./bash/maven_build.sh -j surecoverage -p development
+        run: ./bash/maven_build.sh -j sureheadless -p development
         if: ${{ !contains(github.ref, 'integration') 
              && !contains(github.ref, 'integration_snapshot') 
              && !contains(github.ref, 'development_snapshot') 
@@ -93,11 +93,11 @@ jobs:
              && !contains(github.ref, 'Release') }}
       
       - name: Build and Test - Surefire - Integration
-        run: ./bash/maven_build.sh -j surecoverage -p integration
+        run: ./bash/maven_build.sh -j sureheadless -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
         
       - name: Build and Test - Surefire - Release
-        run: ./bash/maven_build.sh -j surecoverage -p release
+        run: ./bash/maven_build.sh -j sureheadless -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
       
   checkstyle:
