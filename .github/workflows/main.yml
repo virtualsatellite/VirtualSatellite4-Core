@@ -20,6 +20,9 @@ jobs:
       - name: Verify - Authors Sanity Check
         run: ./bash/verify_commit_authors.sh known_authors.txt
 
+  # -----------------------------------------------------
+  # Build and Test - SpotBugs Jobs
+  # -----------------------------------------------------
   spotbugs:
     # Name the Job
     name: Spotbugs
