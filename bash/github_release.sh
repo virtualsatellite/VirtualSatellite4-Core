@@ -94,6 +94,27 @@ callGitHubDeleteRelease() {
   curl -X DELETE "https://api.github.com/repos/$GITHUB_REPO_FULL_NAME/releases/$RELEASE_ID?access_token=$GITHUB_TOKEN"
 }
 
+callGitHubUploadAsset() {
+  callGitHubGetReleaseId
+  printGitHubAccessInfos
+  
+  curl \
+    -H "Authorization: token $GITHUB_TOKEN" \
+    -H "Content-Type: $(file -b --mime-type $RELEASE_ASSET_FILE)" \
+    --data-binary @$RELEASE_ASSET_FILE \
+    "https://uploads.github.com/repos/$GITHUB_REPO_FULL_NAME/releases/$RELEASE_ID/assets?name=$(basename $RELEASE_ASSET_FILE)"
+}
+
+callGitHubUploadMultipleAssets() {
+  RELEASE_ASSET_FILES=$(find $(pwd -P)/$RELEASE_ASSET_ROOT -name "$RELEASE_ASSET_PATTERN")
+
+  echo "About to uplaod files $RELEASE_ASSET_FILES"
+  for FILE in $RELEASE_ASSET_FILES; do
+    RELEASE_ASSET_FILE=$FILE
+    echo "uplaoding file $RELEASE_ASSET_FILE"
+    callGitHubUploadAsset
+  done
+}
 
 # process all command line arguments
 while [ "$1" != "" ]; do
@@ -109,6 +130,15 @@ while [ "$1" != "" ]; do
                                 ;;
         -c | --command )        shift
                                 RELEASE_COMMAND=$1
+                                ;;
+        -f | --file)            shift
+                                RELEASE_ASSET_FILE=$1
+                                ;;
+        -p | --pattern)         shift
+                                RELEASE_ASSET_PATTERN=$1
+                                ;;
+        -dir | --rootDir)         shift
+                                RELEASE_ASSET_ROOT=$1
                                 ;;
         -h | --help )           printUsage
                                 exit
@@ -130,6 +160,8 @@ case $RELEASE_COMMAND in
     create )            callGitHubCreateRelease;;
     delete )            callGitHubDeleteRelease;;
     patch )             callGitHubPatchRelease;;
+    upload )            callGitHubUploadAsset;;
+    multi )             callGitHubUploadMultipleAssets;; 
     * )                 printUsage
                         exit 1
 esac
