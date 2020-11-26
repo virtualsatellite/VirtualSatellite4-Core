@@ -35,9 +35,10 @@ jobs:
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-local-maven-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-spotbugs-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
+            ${{ runner.os }}-local-maven-spotbugs-
             ${{ runner.os }}-local-maven-
         
       - name: Setup
@@ -74,9 +75,10 @@ jobs:
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-local-maven-{{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-surefire-{{ hashFiles('**/pom.xml') }}
           restore-keys: |
+            ${{ runner.os }}-local-maven-surefire-
             ${{ runner.os }}-local-maven-
       
       - name: Setup
@@ -113,9 +115,10 @@ jobs:
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-local-maven-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-checkstyle-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
+            ${{ runner.os }}-local-maven-checkstyle-
             ${{ runner.os }}-local-maven-
       
       - name: Setup
@@ -151,9 +154,10 @@ jobs:
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-local-maven-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-deploy-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
+            ${{ runner.os }}-local-maven-deploy-
             ${{ runner.os }}-local-maven-
         
       - name: Setup
