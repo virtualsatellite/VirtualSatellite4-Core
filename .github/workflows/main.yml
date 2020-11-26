@@ -163,8 +163,21 @@ jobs:
       - name: Setup
         run: ./bash/setup.sh
         
-      - name: Build
+      - name: Build-Assemble - Development
         run: ./bash/maven_build.sh -j assemble -p development
+        if: ${{ !contains(github.ref, 'integration') 
+             && !contains(github.ref, 'integration_snapshot') 
+             && !contains(github.ref, 'development_snapshot') 
+             && !contains(github.ref, 'master') 
+             && !contains(github.ref, 'Release') }}  
+        
+      - name: Build-Assemble - Integration
+        run: ./bash/maven_build.sh -j assemble -p integration
+        if: ${{ github.ref == 'refs/heads/integration'  }}
+        
+      - name: Build-Assemble - Release
+        run: ./bash/maven_build.sh -j assemble -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
         
       - name: Create Tag
         run: |
