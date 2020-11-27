@@ -98,11 +98,12 @@ jobs:
       - name: Build and Test - SpotBugs - Release
         run: ./bash/maven_build.sh -j spotbugs -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-        
+
+  # -----------------------------------------------------
+  # Build and Test - Surefire Jobs
+  # -----------------------------------------------------
   surefire:
-    # Name the Job
     name: Build and Test - Surefire
-    # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
 
@@ -112,7 +113,10 @@ jobs:
       # --------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -121,7 +125,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-local-maven-surefire-
             ${{ runner.os }}-local-maven-
-      
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
         
@@ -147,10 +154,15 @@ jobs:
     needs: [verify]
 
     steps:
-       # Checks out a copy of your repository
+      # --------------------------------------------
+      # Checks out a copy of your repository
+      # --------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v2
       
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------      
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -159,7 +171,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-local-maven-checkstyle-
             ${{ runner.os }}-local-maven-
-      
+            
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------      
       - name: Setup
         run: ./bash/setup.sh
         
@@ -181,16 +196,21 @@ jobs:
         
   deploy:
     # Name the Job
-    name: Build and Deploy
+    name: Build, Assemble and Deploy
     # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [spotbugs, surefire, checkstyle]
     
     steps:
-       # Checks out a copy of the repository
+      # --------------------------------------------
+      # Checks out a copy of your repository
+      # --------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -199,7 +219,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-local-maven-deploy-
             ${{ runner.os }}-local-maven-
-        
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
         
