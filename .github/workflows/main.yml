@@ -331,7 +331,7 @@ jobs:
          git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
-        if: ${{ github.ref == 'refs/heads/development'  }}
+        #if: ${{ github.ref == 'refs/heads/development'  }}
 
       # --------------------------------------------
       # Create a tag on the Integration branch
@@ -348,7 +348,7 @@ jobs:
       # Create a new development release and delete the old one
       # --------------------------------------------
       - name: Deploy - Development
-        if: ${{ github.ref == 'refs/heads/development'  }}
+        #if: ${{ github.ref == 'refs/heads/development'  }}
         run: |
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r development_snapshot
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r development_snapshot -d "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
