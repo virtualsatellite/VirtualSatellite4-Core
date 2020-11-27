@@ -131,7 +131,10 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-        
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
       - name: Build and Test - Surefire - Development and Features
         run: ./bash/maven_build.sh -j sureheadless -p development
         if: ${{ !contains(github.ref, 'integration') 
@@ -139,7 +142,10 @@ jobs:
              && !contains(github.ref, 'development_snapshot') 
              && !contains(github.ref, 'master') 
              && !contains(github.ref, 'Release') }}
-      
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
       - name: Build and Test - Surefire - Integration
         run: ./bash/maven_build.sh -j sureheadless -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
@@ -177,7 +183,10 @@ jobs:
       # --------------------------------------------      
       - name: Setup
         run: ./bash/setup.sh
-        
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
       - name: Build and Test - Checkstyle - Development and Features
         run: ./bash/maven_build.sh -j checkstyle -p development
         if: ${{ !contains(github.ref, 'integration') 
@@ -185,11 +194,17 @@ jobs:
              && !contains(github.ref, 'development_snapshot') 
              && !contains(github.ref, 'master') 
              && !contains(github.ref, 'Release') }}
-        
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
       - name: Build and Test - Checkstyle - Integration
         run: ./bash/maven_build.sh -j checkstyle -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
-        
+       
+      # --------------------------------------------
+      # Master branch or Release tag
+      # -------------------------------------------- 
       - name: Build and Test - Checkstyle - Release
         run: ./bash/maven_build.sh -j checkstyle -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
@@ -225,7 +240,10 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-        
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
       - name: Build-Assemble - Development
         run: ./bash/maven_build.sh -j assemble -p development
         if: ${{ !contains(github.ref, 'integration') 
@@ -233,17 +251,26 @@ jobs:
              && !contains(github.ref, 'development_snapshot') 
              && !contains(github.ref, 'master') 
              && !contains(github.ref, 'Release') }}  
-        
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
       - name: Build-Assemble - Integration
         run: ./bash/maven_build.sh -j assemble -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
-        
+
+      # --------------------------------------------
+      # Master branch or Release tag
+      # --------------------------------------------
       - name: Build-Assemble - Release
         run: ./bash/maven_build.sh -j assemble -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
         env:
           github.sha:  ${{ github.sha }}
-        
+
+      # --------------------------------------------
+      # Create a tag on the Development branch
+      # --------------------------------------------
       - name: Create Development Tag
         run: |
          git tag -f development_snapshot
@@ -251,7 +278,10 @@ jobs:
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
         if: ${{ github.ref == 'refs/heads/development'  }}
-       
+
+      # --------------------------------------------
+      # Create a tag on the Integration branch
+      # --------------------------------------------
       - name: Create Integration Tag
         run: |
          git tag -f integration_snapshot
@@ -259,7 +289,10 @@ jobs:
          git push -f github-mtd integration_snapshot
          git remote remove github-mtd
         if: ${{ github.ref == 'refs/heads/integration'  }}
-       
+
+      # --------------------------------------------
+      # Create a new development release and delete the old one
+      # --------------------------------------------
       - name: Deploy - Development
         if: ${{ github.ref == 'refs/heads/development'  }}
         run: |
@@ -269,6 +302,9 @@ jobs:
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
 
+      # --------------------------------------------
+      # Create a new integration release and delete the old one
+      # --------------------------------------------
       - name: Deploy - Integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
         run: |
@@ -277,7 +313,10 @@ jobs:
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.zip" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.tar.gz" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs   
-     
+
+      # --------------------------------------------
+      # Fill a manually created Release with the build artifacts and description info
+      # --------------------------------------------
       - name: Deploy - Release
         if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
         env:
