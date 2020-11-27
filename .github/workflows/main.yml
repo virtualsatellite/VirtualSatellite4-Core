@@ -81,9 +81,6 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }} 
 
       # --------------------------------------------
       # Development and Feature branches
@@ -146,9 +143,6 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }} 
       
       # --------------------------------------------
       # Development and Feature branches
@@ -222,9 +216,6 @@ jobs:
       # --------------------------------------------      
       - name: Setup
         run: ./bash/setup.sh
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }} 
       
       # --------------------------------------------
       # Development and Feature branches
@@ -362,6 +353,9 @@ jobs:
       # --------------------------------------------
       - name: Deploy - Integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
+        env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}   
         run: |
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r integration_snapshot
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r integration_snapshot -d "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change." 
@@ -376,6 +370,8 @@ jobs:
       - name: Deploy - Release
         if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
         env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
           github.sha: ${{ github.sha }}
         run: |
            TAG_NAME=${GITHUB_REF#refs/*/}
