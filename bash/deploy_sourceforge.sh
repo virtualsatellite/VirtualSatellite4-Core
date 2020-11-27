@@ -79,7 +79,6 @@ while [ "$1" != "" ]; do
                                 exit
                                 ;;
         -s | --setup )          setupSourceforgeSecrets
-                                exit
                                 ;;
         * )                     printUsage
                                 exit 1
