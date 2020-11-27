@@ -15,6 +15,7 @@ cd openssl-1.1.1g
 ./config
 make
 sudo make install
+cd ..
   
 # -------------------------------------------------------------------
 # create adirectory for Overtarget and try to receive language plugin
