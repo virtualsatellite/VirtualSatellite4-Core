@@ -1,28 +1,41 @@
+# --------------------------------------------
 # This is a basic workflow to help you get started with Actions
+# --------------------------------------------
 name: Build
 
 on:
-  
+  # --------------------------------------------
   # Controls when the automatic build job will be run.
   # By default uses the default branch. Runs at 03:00 UTC.
+  # --------------------------------------------
   schedule:
     - cron: '0 3 * * *'
-
+      
+  # --------------------------------------------
   # Run this workflow every time a new commit pushed to the repository
+  # --------------------------------------------
   push:
 
+# --------------------------------------------
+# Defines the list of jobs
+# --------------------------------------------
 jobs:
+  # --------------------------------------------
+  # Verify Job
+  #---------------------------------------------
   verify:
     name: Verify
     runs-on: ubuntu-16.04
     
     steps:
+      # --------------------------------------------
       # Checks out a copy of the repository
+      # --------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v2
         
       # --------------------------------------------
-      # Run a quicksanity check if all commits are
+      # Run a quick sanity check if all commits are
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
@@ -32,18 +45,20 @@ jobs:
   # Build and Test - SpotBugs Jobs
   # -----------------------------------------------------
   spotbugs:
-    # Name the Job
     name: Build and Test - Spotbugs
-    # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
 
     steps:
-       # Checks out a copy of the repository
+      # --------------------------------------------
+      # Checks out a copy of the repository
+      # --------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v2
       
+      # --------------------------------------------
       # Setup caching for m2 repository
+      # --------------------------------------------
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -52,10 +67,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-local-maven-spotbugs-
             ${{ runner.os }}-local-maven-
-        
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-        
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
       - name: Build and Test - SpotBugs - Development and Features
         run: ./bash/maven_build.sh -j spotbugs -p development
         if: ${{ !contains(github.ref, 'integration') 
@@ -63,11 +84,17 @@ jobs:
              && !contains(github.ref, 'development_snapshot') 
              && !contains(github.ref, 'master') 
              && !contains(github.ref, 'Release') }}
-        
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
       - name: Build and Test - SpotBugs - Integration
         run: ./bash/maven_build.sh -j spotbugs -p integration
         if: ${{ github.ref == 'refs/heads/integration'  }}
-        
+
+      # --------------------------------------------
+      # Master branch or Release tag
+      # --------------------------------------------
       - name: Build and Test - SpotBugs - Release
         run: ./bash/maven_build.sh -j spotbugs -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
@@ -80,7 +107,9 @@ jobs:
     needs: [verify]
 
     steps:
-       # Checks out a copy of your repository
+      # --------------------------------------------
+      # Checks out a copy of your repository
+      # --------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v2
       
@@ -113,9 +142,7 @@ jobs:
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
       
   checkstyle:
-    # Name the Job
     name: Build and Test - Checkstyle
-    # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [verify]
 
