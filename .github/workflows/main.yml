@@ -1,0 +1,371 @@
+# --------------------------------------------
+# This is a basic workflow to help you get started with Actions
+# --------------------------------------------
+name: Build
+
+on:
+  # --------------------------------------------
+  # Controls when the automatic build job will be run.
+  # By default uses the default branch. Runs at 03:00 UTC.
+  # --------------------------------------------
+  schedule:
+    - cron: '0 3 * * *'
+      
+  # --------------------------------------------
+  # Run this workflow every time a new commit pushed to the repository
+  # --------------------------------------------
+  push:
+  
+  # --------------------------------------------
+  # Run this workflow every time a pull request is created or commited to it
+  # --------------------------------------------
+  pull_request:
+    branches:
+      - '**'
+
+
+# --------------------------------------------
+# Defines the list of jobs
+# --------------------------------------------
+jobs:
+  # --------------------------------------------
+  # Verify Job
+  #---------------------------------------------
+  verify:
+    name: Verify
+    runs-on: ubuntu-16.04
+    
+    steps:
+      # --------------------------------------------
+      # Checks out a copy of the repository
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      # --------------------------------------------
+      # Run a quick sanity check if all commits are
+      # handed in by known users
+      #---------------------------------------------
+      - name: Verify - Authors Sanity Check
+        run: ./bash/verify_commit_authors.sh known_authors.txt
+
+  # -----------------------------------------------------
+  # Build and Test - SpotBugs Job
+  # -----------------------------------------------------
+  spotbugs:
+    name: Build and Test - Spotbugs
+    runs-on: ubuntu-16.04
+    needs: [verify]
+
+    steps:
+      # --------------------------------------------
+      # Checks out a copy of the repository
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-spotbugs-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-spotbugs-
+            ${{ runner.os }}-local-maven-
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
+      - name: Setup
+        run: ./bash/setup.sh
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build and Test - SpotBugs - Development and Features
+        run: ./bash/maven_build.sh -j spotbugs -p development
+        if: ${{ !contains(github.ref, 'integration') 
+             && !contains(github.base_ref, 'integration') 
+             && !contains(github.ref, 'integration_snapshot') 
+             && !contains(github.ref, 'development_snapshot') 
+             && !contains(github.ref, 'master') 
+             && !contains(github.base_ref, 'master')
+             && !contains(github.ref, 'Release') }}
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
+      - name: Build and Test - SpotBugs - Integration
+        run: ./bash/maven_build.sh -j spotbugs -p integration
+        if: ${{ github.ref == 'refs/heads/integration' 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
+
+      # --------------------------------------------
+      # Master branch or Release tag
+      # --------------------------------------------
+      - name: Build and Test - SpotBugs - Release
+        run: ./bash/maven_build.sh -j spotbugs -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+
+  # -----------------------------------------------------
+  # Build and Test - Surefire Job
+  # -----------------------------------------------------
+  surefire:
+    name: Build and Test - Surefire
+    runs-on: ubuntu-16.04
+    needs: [verify]
+
+    steps:
+      # --------------------------------------------
+      # Checks out a copy of your repository
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-surefire-{{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-surefire-
+            ${{ runner.os }}-local-maven-
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
+      - name: Setup
+        run: ./bash/setup.sh
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build and Test - Surefire - Development and Features
+        run: ./bash/maven_build.sh -j sureheadless -p development
+        if: ${{ !contains(github.ref, 'integration') 
+             && !contains(github.base_ref, 'integration') 
+             && !contains(github.ref, 'integration_snapshot') 
+             && !contains(github.ref, 'development_snapshot') 
+             && !contains(github.ref, 'master') 
+             && !contains(github.base_ref, 'master')
+             && !contains(github.ref, 'Release') }}
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
+      - name: Build and Test - Surefire - Integration
+        run: ./bash/maven_build.sh -j sureheadless -p integration
+        if: ${{ github.ref == 'refs/heads/integration' 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
+             
+      # --------------------------------------------
+      # Master branch or Release tag
+      # --------------------------------------------
+      - name: Build and Test - Surefire - Release
+        run: ./bash/maven_build.sh -j sureheadless -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+       
+      # --------------------------------------------
+      # Upload SWTBout screenshots to github artifacts
+      # --------------------------------------------
+      - name: Upload SWTBot Screenshots on Failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: SWTBot Screenshots
+          path: 
+            swtbot/*
+
+  # -----------------------------------------------------
+  # Build and Test - Checkstyle Job
+  # -----------------------------------------------------
+  checkstyle:
+    name: Build and Test - Checkstyle
+    runs-on: ubuntu-16.04
+    needs: [verify]
+
+    steps:
+      # --------------------------------------------
+      # Checks out a copy of your repository
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------      
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-checkstyle-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-checkstyle-
+            ${{ runner.os }}-local-maven-
+            
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------      
+      - name: Setup
+        run: ./bash/setup.sh
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build and Test - Checkstyle - Development and Features
+        run: ./bash/maven_build.sh -j checkstyle -p development
+        if: ${{ !contains(github.ref, 'integration') 
+             && !contains(github.base_ref, 'integration') 
+             && !contains(github.ref, 'integration_snapshot') 
+             && !contains(github.ref, 'development_snapshot') 
+             && !contains(github.ref, 'master') 
+             && !contains(github.base_ref, 'master')
+             && !contains(github.ref, 'Release') }}
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
+      - name: Build and Test - Checkstyle - Integration
+        run: ./bash/maven_build.sh -j checkstyle -p integration
+        if: ${{ github.ref == 'refs/heads/integration' 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
+       
+      # --------------------------------------------
+      # Master branch or Release tag
+      # -------------------------------------------- 
+      - name: Build and Test - Checkstyle - Release
+        run: ./bash/maven_build.sh -j checkstyle -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+
+  # -----------------------------------------------------
+  # Build, Assemble and Deploy Job
+  # -----------------------------------------------------
+  deploy:
+    name: Build, Assemble and Deploy
+    runs-on: ubuntu-16.04
+    needs: [spotbugs, surefire, checkstyle]
+    
+    steps:
+      # --------------------------------------------
+      # Checks out a copy of your repository
+      # --------------------------------------------
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # --------------------------------------------
+      # Setup caching for m2 repository
+      # --------------------------------------------
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository/
+          key: ${{ runner.os }}-local-maven-deploy-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-local-maven-deploy-
+            ${{ runner.os }}-local-maven-
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
+      - name: Setup
+        run: ./bash/setup.sh
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build-Assemble - Development
+        run: ./bash/maven_build.sh -j assemble -p development
+        if: ${{ !contains(github.ref, 'integration') 
+             && !contains(github.base_ref, 'integration') 
+             && !contains(github.ref, 'integration_snapshot') 
+             && !contains(github.ref, 'development_snapshot') 
+             && !contains(github.ref, 'master') 
+             && !contains(github.base_ref, 'master')
+             && !contains(github.ref, 'Release') }}
+
+      # --------------------------------------------
+      # Integration branch
+      # --------------------------------------------
+      - name: Build-Assemble - Integration
+        run: ./bash/maven_build.sh -j assemble -p integration
+        if: ${{ github.ref == 'refs/heads/integration' 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
+
+      # --------------------------------------------
+      # Master branch or Release tag
+      # --------------------------------------------
+      - name: Build-Assemble - Release
+        run: ./bash/maven_build.sh -j assemble -p release
+        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
+             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+        env:
+          github.sha:  ${{ github.sha }}
+
+      # --------------------------------------------
+      # Create a tag on the Development branch
+      # --------------------------------------------
+      - name: Create Development Tag
+        run: |
+         git tag -f development_snapshot
+         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+         git push -f github-mtd development_snapshot
+         git remote remove github-mtd
+        if: ${{ github.ref == 'refs/heads/development'  }}
+
+      # --------------------------------------------
+      # Create a tag on the Integration branch
+      # --------------------------------------------
+      - name: Create Integration Tag
+        run: |
+         git tag -f integration_snapshot
+         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+         git push -f github-mtd integration_snapshot
+         git remote remove github-mtd
+        if: ${{ github.ref == 'refs/heads/integration'  }}
+
+      # --------------------------------------------
+      # Create a new development release and delete the old one
+      # --------------------------------------------
+      - name: Deploy - Development
+        if: ${{ github.ref == 'refs/heads/development'  }}
+        run: |
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r development_snapshot
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r development_snapshot -d "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.zip" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
+
+      # --------------------------------------------
+      # Create a new integration release and delete the old one
+      # --------------------------------------------
+      - name: Deploy - Integration
+        if: ${{ github.ref == 'refs/heads/integration'  }}
+        run: |
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r integration_snapshot
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r integration_snapshot -d "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change." 
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.zip" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.tar.gz" -dir deploy/unsecured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs   
+
+      # --------------------------------------------
+      # Fill a manually created Release with the build artifacts and description info
+      # --------------------------------------------
+      - name: Deploy - Release
+        if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
+        env:
+          github.sha: ${{ github.sha }}
+        run: |
+           TAG_NAME=${GITHUB_REF#refs/*/}
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c patch -r $TAG_NAME -d "Release build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."  
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.zip" -dir deploy/secured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.tar.gz" -dir deploy/secured
+           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
