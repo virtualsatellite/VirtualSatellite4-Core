@@ -48,6 +48,9 @@ prepareSourceforgeSecrets() {
 	chmod 600 tmp/.sourceforge_ssh/id_ed25519_dec
 	echo "Adding passwords"
 	bash/ssh-add-password.sh -k tmp/.sourceforge_ssh/id_ed25519_dec -p ${ssh_key_pass} 2>/dev/null
+	
+	# Setup ssh with sourceforge secrets
+	sourceforgeDecryptSecret
 }
 
 uploadDevelopment() {
@@ -86,9 +89,6 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-
-# Setup ssh with sourceforge secrets
-sourceforgeDecryptSecret
 
 # Decide what to upload
 case $UPLOAD in
