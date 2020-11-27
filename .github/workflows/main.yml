@@ -163,11 +163,25 @@ jobs:
         run: ./bash/maven_build.sh -j sureheadless -p integration
         if: ${{ github.ref == 'refs/heads/integration' 
              || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
-        
+             
+      # --------------------------------------------
+      # Master branch or Release tag
+      # --------------------------------------------
       - name: Build and Test - Surefire - Release
         run: ./bash/maven_build.sh -j sureheadless -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
              || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+       
+      # --------------------------------------------
+      # Upload SWTBout screenshots to github artifacts
+      # --------------------------------------------
+      - name: Upload SWTBot Screenshots on Failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: SWTBot Screenshots
+          path: 
+            swtbot/*
 
   # -----------------------------------------------------
   # Build and Test - Checkstyle Job
