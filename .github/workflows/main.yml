@@ -252,7 +252,7 @@ jobs:
   deploy:
     name: Build, Assemble and Deploy
     runs-on: ubuntu-16.04
-    #needs: [spotbugs, surefire, checkstyle]
+    needs: [spotbugs, surefire, checkstyle]
     
     steps:
       # --------------------------------------------
@@ -319,7 +319,7 @@ jobs:
          git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
          git push -f github-mtd development_snapshot
          git remote remove github-mtd
-        #if: ${{ github.ref == 'refs/heads/development'  }}
+        if: ${{ github.ref == 'refs/heads/development'  }}
 
       # --------------------------------------------
       # Create a tag on the Integration branch
@@ -336,7 +336,7 @@ jobs:
       # Create a new development release and delete the old one
       # --------------------------------------------
       - name: Deploy - Development
-        #if: ${{ github.ref == 'refs/heads/development'  }}
+        if: ${{ github.ref == 'refs/heads/development'  }}
         env:
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
           ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}         
