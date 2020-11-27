@@ -64,7 +64,7 @@ generatePostDataCreateRelease()
   "name": "$RELEASE_NAME",
   "body": "$RELEASE_DESCRIPTION",
   "draft": false,
-  "prerelease": false
+  "prerelease": true
 }
 EOF
 }
