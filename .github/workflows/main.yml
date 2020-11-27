@@ -81,6 +81,8 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
+        env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
 
       # --------------------------------------------
       # Development and Feature branches
@@ -143,7 +145,9 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-
+        env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+      
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
@@ -216,7 +220,9 @@ jobs:
       # --------------------------------------------      
       - name: Setup
         run: ./bash/setup.sh
-
+        env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+      
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
@@ -278,7 +284,9 @@ jobs:
       # --------------------------------------------
       - name: Setup
         run: ./bash/setup.sh
-
+        env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+      
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
