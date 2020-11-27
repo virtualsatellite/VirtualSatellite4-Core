@@ -346,22 +346,15 @@ jobs:
       # --------------------------------------------
       - name: Deploy - Development
         #if: ${{ github.ref == 'refs/heads/development'  }}
+        env:
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}         
         run: |
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r development_snapshot
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r development_snapshot -d "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.zip" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
-           echo "Connecting to sourceforge"
-           mkdir -p -m 700 tmp/.sourceforge_ssh
-           echo "OpenSSL is version"
-           openssl version
-           echo "Executing openssl"
-           openssl aes-256-cbc -d -a -pbkdf2 -in id_ed25519.enc -out tmp/.sourceforge_ssh/id_ed25519_dec -pass pass:${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-           echo "Adjusting rights"
-           chmod 600 tmp/.sourceforge_ssh/id_ed25519_dec
-           echo "Adding passwords"
-           bash/ssh-add-password.sh -k tmp/.sourceforge_ssh/id_ed25519_dec -p ${{ secrets.SF_SSH_KEY_PASS }} } 2>/dev/null
            ./bash/deploy_sourceforge.sh -u development
 
       # --------------------------------------------
