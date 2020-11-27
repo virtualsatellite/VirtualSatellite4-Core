@@ -42,7 +42,7 @@ jobs:
         run: ./bash/verify_commit_authors.sh known_authors.txt
 
   # -----------------------------------------------------
-  # Build and Test - SpotBugs Jobs
+  # Build and Test - SpotBugs Job
   # -----------------------------------------------------
   spotbugs:
     name: Build and Test - Spotbugs
@@ -100,7 +100,7 @@ jobs:
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
 
   # -----------------------------------------------------
-  # Build and Test - Surefire Jobs
+  # Build and Test - Surefire Job
   # -----------------------------------------------------
   surefire:
     name: Build and Test - Surefire
@@ -153,7 +153,10 @@ jobs:
       - name: Build and Test - Surefire - Release
         run: ./bash/maven_build.sh -j sureheadless -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-      
+
+  # -----------------------------------------------------
+  # Build and Test - Checkstyle Job
+  # -----------------------------------------------------
   checkstyle:
     name: Build and Test - Checkstyle
     runs-on: ubuntu-16.04
@@ -208,11 +211,12 @@ jobs:
       - name: Build and Test - Checkstyle - Release
         run: ./bash/maven_build.sh -j checkstyle -p release
         if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-        
+
+  # -----------------------------------------------------
+  # Build, Assemble and Deploy Job
+  # -----------------------------------------------------
   deploy:
-    # Name the Job
     name: Build, Assemble and Deploy
-    # Set the type of machine to run on
     runs-on: ubuntu-16.04
     needs: [spotbugs, surefire, checkstyle]
     
