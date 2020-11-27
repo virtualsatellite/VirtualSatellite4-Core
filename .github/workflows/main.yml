@@ -343,6 +343,7 @@ jobs:
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.zip" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
+           ./bash/deploy_sourceforge.sh -u development
 
       # --------------------------------------------
       # Create a new integration release and delete the old one
@@ -355,6 +356,7 @@ jobs:
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.zip" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.tar.gz" -dir deploy/unsecured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs   
+           ./bash/deploy_sourceforge.sh -u integration
 
       # --------------------------------------------
       # Fill a manually created Release with the build artifacts and description info
@@ -369,3 +371,4 @@ jobs:
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.zip" -dir deploy/secured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.tar.gz" -dir deploy/secured
            ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
+           ./bash/deploy_sourceforge.sh -u release
