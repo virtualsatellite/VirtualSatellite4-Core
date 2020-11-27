@@ -38,8 +38,8 @@ ssh-keyscan "frs.sourceforge.net" >> "${SSH_DIR}/known_hosts"
 echo "Connecting to sourceforge"
 mkdir -p -m 700 ./tmp/.sourceforge_ssh
 echo "Executing openssl"
-openssl aes-256-cbc -K $encrypted_abcf28ac24e1_key -iv $encrypted_abcf28ac24e1_iv -in ./id_ed25519.enc -out ./tmp/.sourceforge_ssh/id_ed25519 -d
+openssl aes-256-cbc -d -a -pbkdf2 -in ./id_ed25519.enc -out ./tmp/.sourceforge_ssh/id_ed25519_dec -pass pass:t${{ secrets.SF_SSH_KEY_OPENSSL_PASS}}
 echo "Adjusting rights"
-chmod 600 ./tmp/.sourceforge_ssh/id_ed25519
+chmod 600 ./tmp/.sourceforge_ssh/id_ed25519_dec
 echo "Adding passwords"
-#./bash/ssh-add-password.sh -k ./tmp/.sourceforge_ssh/id_ed25519 -p ${ssh_password} 2>/dev/null
+./bash/ssh-add-password.sh -k ./tmp/.sourceforge_ssh/id_ed25519_dec -p ${{ SF_SSH_KEY_PASS }} 2>/dev/null
