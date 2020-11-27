@@ -126,7 +126,11 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	public void writeTo(Object object, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
-		// Useful for debugging
+		try {
+			repo.syncRepository();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		super.writeTo(object, type, genericType, annotations, mediaType, httpHeaders, entityStream);
 	}
 	

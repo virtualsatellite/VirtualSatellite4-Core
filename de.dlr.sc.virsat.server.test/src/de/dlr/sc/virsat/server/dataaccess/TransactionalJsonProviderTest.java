@@ -17,9 +17,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -41,6 +43,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
@@ -127,20 +130,44 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 
 	// Test the marshalling
 	@Test
-	public void testWriteTo() throws WebApplicationException, IOException {
+	public void testWriteTo() throws WebApplicationException, IOException, NoHeadException, GitAPIException, InterruptedException {
+		
+		// No changes don't create a commit
+		int initialCommits = countCommits(testServerRepository.getLocalRepositoryPath());
 		writeToAndAssert();
+		assertEquals("No new commit", initialCommits, countCommits(pathRepoRemote.toFile()));
+		
+		// Checkout the remote again and create a change that has to be 
+		// resolved in the writeTo method
+		Path localRepo = VirSatFileUtils.createAutoDeleteTempDirectory("localRepo");
+		Git git = Git.cloneRepository()
+				.setDirectory(localRepo.toFile())
+				.setURI(testServerRepository.getRepositoryConfiguration().getRemoteUri())
+				.call();
+		
+		File newFile = localRepo.resolve("test.file").toFile();
+		assertTrue("File got created", newFile.createNewFile());
+		
+		git.add().addFilepattern(".").call();
+		git.commit().setAll(true).setMessage("Added file").call();
+		git.push().call();
+		
+		initialCommits = countCommits(testServerRepository.getLocalRepositoryPath());
+		writeToAndAssert();
+		assertEquals("One new commit", initialCommits + 1, countCommits(pathRepoRemote.toFile()));
 	}
 	
 	/**
-	 * Open the remote repository and count the commits
+	 * Open a repository and count the commits
+	 * @param repoFile the repository to open
 	 * @return number of commits in remote
 	 * @throws IOException
 	 * @throws NoHeadException
 	 * @throws GitAPIException
 	 * @throws InterruptedException
 	 */
-	private int countCommits() throws IOException, NoHeadException, GitAPIException, InterruptedException {
-		Git git = Git.open(pathRepoRemote.toFile());
+	private int countCommits(File repoFile) throws IOException, NoHeadException, GitAPIException, InterruptedException {
+		Git git = Git.open(repoFile);
 		Iterator<RevCommit> iterator = git.log().call().iterator();
 		int commits = 0;
 		while (iterator.hasNext()) {
@@ -156,7 +183,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 	@Test
 	public void testReadFrom() throws WebApplicationException, IOException, NoHeadException, GitAPIException, InterruptedException {
 
-		int initialCommits = countCommits();
+		int initialCommits = countCommits(pathRepoRemote.toFile());
 		
 		String output = writeToAndAssert();
 		
@@ -166,7 +193,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		
 		assertEquals(testString, testBean.getName());
-		assertEquals("No new commit", initialCommits, countCommits());
+		assertEquals("No new commit", initialCommits, countCommits(pathRepoRemote.toFile()));
 		
 		// Changes result in a commit
 		String newValue = "new";
@@ -176,7 +203,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		
 		assertEquals(newValue, testBean.getName());
-		assertEquals("One new commit", initialCommits + 1, countCommits());
+		assertEquals("One new commit", initialCommits + 1, countCommits(pathRepoRemote.toFile()));
 	}
 
 	@Test
