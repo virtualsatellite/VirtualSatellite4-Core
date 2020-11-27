@@ -21,7 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -62,7 +65,8 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 	private Class<?> type;
 	private Set<Class<?>> beanClass = new HashSet<>();
 	private MediaType mediaType;
-	private String testString = "test";
+	private String testString = "testString";
+	private StructuralElementInstance testSei;
 
 	@Before
 	public void setUp() throws Exception {
@@ -78,7 +82,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		testSe.setIsRootStructuralElement(true);
 		testSe.setName("testSe");
 
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		testSei.setType(testSe);
 		testSei.setName(testString);
 		
@@ -118,7 +122,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 	 * @throws WebApplicationException
 	 * @throws IOException
 	 */
-	private String writeToAndAssert() throws WebApplicationException, IOException {
+	private String writeToAndAssert(String testString) throws WebApplicationException, IOException {
 		OutputStream entityStream = new ByteArrayOutputStream();
 		provider.writeTo(testBean, type, type, null, mediaType, (MultivaluedMap<String, Object>) null, entityStream);
 		
@@ -134,7 +138,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		
 		// No changes don't create a commit
 		int initialCommits = countCommits(testServerRepository.getLocalRepositoryPath());
-		writeToAndAssert();
+		writeToAndAssert(testString);
 		assertEquals("No new commit", initialCommits, countCommits(pathRepoRemote.toFile()));
 		
 		// Checkout the remote again and create a change that has to be 
@@ -145,15 +149,19 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 				.setURI(testServerRepository.getRepositoryConfiguration().getRemoteUri())
 				.call();
 		
-		File newFile = localRepo.resolve("test.file").toFile();
-		assertTrue("File got created", newFile.createNewFile());
+		String newString = "new";
+		Path seiPathInLocal = Paths.get(localRepo.toString(), testSei.eResource().getURI().toPlatformString(false));
+		
+		String content = new String(Files.readAllBytes(seiPathInLocal), StandardCharsets.UTF_8);
+		content = content.replaceAll(testString, newString);
+		Files.write(seiPathInLocal, content.getBytes(StandardCharsets.UTF_8));
 		
 		git.add().addFilepattern(".").call();
 		git.commit().setAll(true).setMessage("Added file").call();
 		git.push().call();
 		
 		initialCommits = countCommits(testServerRepository.getLocalRepositoryPath());
-		writeToAndAssert();
+		writeToAndAssert(newString);
 		assertEquals("One new commit", initialCommits + 1, countCommits(pathRepoRemote.toFile()));
 	}
 	
@@ -185,7 +193,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 
 		int initialCommits = countCommits(pathRepoRemote.toFile());
 		
-		String output = writeToAndAssert();
+		String output = writeToAndAssert(testString);
 		
 		// No changes don't create a commit
 		StringBuffer buf = new StringBuffer(output);

@@ -127,6 +127,8 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
 		try {
+			// TODO: this pulls the changes as expected,
+			// but because of some builders they get reverted
 			repo.syncRepository();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
