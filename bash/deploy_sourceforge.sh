@@ -23,7 +23,7 @@ printUsage() {
     echo "usage: ${COMMAND} -u [development|integration|release]"
 }
 
-prepareSourceforgeSecrets() {
+setupSourceforgeSecrets() {
 	# Start the ssh agent
 	echo "Starting ssh-agent"
 	eval "$(ssh-agent -s)"
@@ -54,21 +54,18 @@ prepareSourceforgeSecrets() {
 }
 
 uploadDevelopment() {
-	prepareSourceforgeSecrets();
 	rsync -e ssh -avP --delete deploy/unsecured/p2/VirSat4_Core_Application/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/development/
 	rsync -e ssh -avP --delete deploy/unsecured/p2/VirSat4_Dvlm_ConceptIDE/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/development/
 	rsync -e ssh -avP --delete deploy/unsecured/bin/VirSat4_Core_Application/development/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/bin/development/
 }
 
 uploadIntegration() {
-	prepareSourceforgeSecrets();
 	rsync -e ssh -avP deploy/unsecured/p2/VirSat4_Core_Application/integration/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/integration/
 	rsync -e ssh -avP deploy/unsecured/p2/VirSat4_Dvlm_ConceptIDE/integration/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/integration/
 	rsync -e ssh -avP deploy/unsecured/bin/VirSat4_Core_Application/integration/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/bin/integration/
 }
 
 uploadRelease() {
-	prepareSourceforgeSecrets();
 	rsync -e ssh -avP deploy/secured/p2/VirSat4_Core_Application/release/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/release/
 	rsync -e ssh -avP deploy/secured/p2/VirSat4_Dvlm_ConceptIDE/release/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-DVLM/release/
 	rsync -e ssh -avP deploy/secured/bin/VirSat4_Core_Application/release/  dlrscmns@frs.sourceforge.net:/home/frs/project/virtualsatellite/VirtualSatellite4-Core/bin/release/
@@ -82,6 +79,9 @@ while [ "$1" != "" ]; do
                                 UPLOAD=$1
                                 ;;
         -h | --help )           printUsage
+                                exit
+                                ;;
+        -s | --setup )          setupSourceforgeSecrets
                                 exit
                                 ;;
         * )                     printUsage
