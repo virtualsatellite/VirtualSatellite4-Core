@@ -77,6 +77,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 public class DmfResourceTest extends AConceptTestCase {
 
 	public static final int TEST_CASE_TIMEOUT = 5000;
+	
 	@ClassRule
 	public static Timeout timeout = Timeout.millis(TEST_CASE_TIMEOUT);
 	
