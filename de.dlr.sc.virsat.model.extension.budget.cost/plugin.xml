@@ -18,12 +18,12 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.budget.cost.InterfaceEnd"
-			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.InterfaceEnd">
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostEquipment"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.budget.cost.Interface"
-			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.Interface">
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostSummary"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary">
 		</CategoryAssignmentBean>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

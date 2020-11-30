@@ -19,10 +19,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummaryTest;
 import de.dlr.sc.virsat.model.extension.budget.cost.migrator.Migrator1v0Test;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipmentTest;
 import de.dlr.sc.virsat.model.extension.budget.cost.validator.CostValidatorTest;
-import de.dlr.sc.virsat.model.extension.budget.cost.model.InterfaceEndTest;
-import de.dlr.sc.virsat.model.extension.budget.cost.model.InterfaceTest;
 
 /**
  * 
@@ -30,8 +30,8 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.InterfaceTest;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	InterfaceEndTest.class,
-	InterfaceTest.class,
+	CostEquipmentTest.class,
+	CostSummaryTest.class,
 	Migrator1v0Test.class,
 	CostValidatorTest.class,
 				})

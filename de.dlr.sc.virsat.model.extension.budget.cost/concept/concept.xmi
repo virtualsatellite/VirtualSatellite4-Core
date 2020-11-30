@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.cost" description="Cost Budget Concept" displayName="Cost Budget">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" name="de.dlr.sc.virsat.model.extension.budget.cost" description="Cost Budget Concept" displayName="Cost Budget">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
-  <categories name="InterfaceEnd">
+  <categories name="ACostParameters" description="Definition of the equipment cost" isAbstract="true">
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="Interface">
-    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="ifEndFrom" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.InterfaceEnd"/>
-    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="ifEndTo" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.InterfaceEnd"/>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
+  <categories name="CostEquipment" description=" Definition of the equipment cost" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters"/>
+  <categories name="CostSummary" description=" Summary of all nested equipment costs" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters"/>
 </dvlm_c:Concept>
