@@ -1134,6 +1134,14 @@ TIP: You can also use *drag & drop* again to set the inheritance links.
 
 You finalized the tutorial for the extended product structures. 
 
+==== Requirements concept
+
+===== Configure Requirements Modeling
+
+===== Modeling of Requirements
+
+===== Import / Export of Requirements 
+
 
 ==== Equipment mass and mass summaries concept
 
