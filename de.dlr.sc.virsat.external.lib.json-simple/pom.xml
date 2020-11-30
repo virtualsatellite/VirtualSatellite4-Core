@@ -21,13 +21,19 @@ SPDX-License-Identifier: EPL-2.0
 	<name>de.dlr.sc.virsat.external.lib.json-simple</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/com.github.cliftonlabs/json-simple -->
-		<dependency>
-			<groupId>com.github.cliftonlabs</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>3.1.0</version>
-		</dependency>
-	</dependencies>
+	<profiles>
+		<profile>
+			<id>downloadLibs</id>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/com.github.cliftonlabs/json-simple -->
+				<dependency>
+					<groupId>com.github.cliftonlabs</groupId>
+					<artifactId>json-simple</artifactId>
+					<version>3.1.0</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
 
 </project>
