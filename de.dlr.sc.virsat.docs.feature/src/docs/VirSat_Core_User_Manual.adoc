@@ -1135,10 +1135,89 @@ TIP: You can also use *drag & drop* again to set the inheritance links.
 You finalized the tutorial for the extended product structures. 
 
 ==== Requirements concept
+===== First Steps
+•	Open Virtual Satellite 
+•	Create a new Virtual Satellite Project
+•	Activate your required concepts, such as PS or CEF and requirements 
+
+image:chapterModeling/subsectionRequirements/ActivateConcepts.png[Activate required concepts]
+
 
 ===== Configure Requirements Modeling
 
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Create a RequirementsConfigurationCollection element directly in the Virtual Satellite Repository. 
+
+* This collection is a place where all requirements configuration elements should be stored
+* User rights can be customized to prevent other users from editing this collection 
+
+Add a RequirementsConfiguration under the collection
+
+* This class is used to create requirement types: these types specify the attributes each of its requirements has
+
+Double-click the new configuration element to open its editor. 
+
+Add a new requirement type.
+|image:chapterModeling/subsectionRequirements/AddRequirementType.png[Add requirement type]
+
+|{counter:step}.
+|In the dialog box specify a name for the new requirement type and add attributes.
+|image:chapterModeling/subsectionRequirements/SpecifyRequirementTypeNameAndAttributes.png[Specify requirement type name and attributes]
+
+|===
+
 ===== Modeling of Requirements
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Go to the model location where you want to add requirements (requirements can also be split to several elements within a model). 
+
+At the desired location create a RequirementSpecification.
+|image:chapterModeling/subsectionRequirements/CreateRequirementSpec.png[Create requirement specification]
+
+|{counter:step}.
+|Double-click the specification element to open its editor. 
+
+Add requirements by using the button in the requirements section.
+|image:chapterModeling/subsectionRequirements/AddRequirement.png[Add requirements]
+
+|{counter:step}.
+|When a new requirement should be added, the editor asks of which type it should be: 
+
+* You can now choose between the types you create in the configuration element of your project. 
+The left section of the dialog allows to customize the container location of the configuration 
+element, the right side show all applicable types in the currently selected tree element.
+|image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
+
+|{counter:step}.
+|After a requirement of the selected type is added, its values can be added.
+|image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
+
+|{counter:step}.
+|It is also possible to create hierarchies of requirements. To do that, create a requirement group.
+|image:chapterModeling/subsectionRequirements/CreateRequirementGroup.png[Create requirement group]
+
+|{counter:step}.
+|To create requirements within a group click on the Button “Drill-Down” to go to the group.
+|image:chapterModeling/subsectionRequirements/DrillDownReqGroup.png[Drill-Down to requirement group]
+
+|===
+
 
 ===== Import / Export of Requirements 
 
