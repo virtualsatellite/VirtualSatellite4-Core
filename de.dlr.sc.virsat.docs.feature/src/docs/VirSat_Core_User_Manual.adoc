@@ -1136,12 +1136,23 @@ You finalized the tutorial for the extended product structures.
 
 ==== Requirements concept
 ===== First Steps
-•	Open Virtual Satellite 
-•	Create a new Virtual Satellite Project
-•	Activate your required concepts, such as PS or CEF and requirements 
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
 
-image:chapterModeling/subsectionRequirements/ActivateConcepts.png[Activate required concepts]
+|Step
+|Task
+|Image
 
+|{counter:step}.
+|* Open Virtual Satellite 
+
+* Create a new Virtual Satellite Project
+
+* Activate your required concepts, such as PS or CEF and requirements 
+|image:chapterModeling/subsectionRequirements/ActivateConcepts.png[Activate required concepts]
+
+|===
 
 ===== Configure Requirements Modeling
 
