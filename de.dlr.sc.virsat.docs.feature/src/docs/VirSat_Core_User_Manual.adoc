@@ -1135,7 +1135,13 @@ TIP: You can also use *drag & drop* again to set the inheritance links.
 You finalized the tutorial for the extended product structures. 
 
 ==== Requirements concept
+
+To support model based requirements management and to verify requirements by using the system model, Virtual Satellite provides a concept to model requirements. Requirements can be either imported from other tools or created directly within Virtual Satellite.
+
 ===== First Steps
+
+Before you can start: 
+
 :step: 0
 [%header,cols=">8,62a,40a"] 
 |===
@@ -1154,6 +1160,8 @@ You finalized the tutorial for the extended product structures.
 
 |===
 
+For more information check <<Modeling with Virtual Satellite>>.
+
 ===== Configure Requirements Modeling
 
 :step: 0
@@ -1168,11 +1176,12 @@ You finalized the tutorial for the extended product structures.
 |Create a RequirementsConfigurationCollection element directly in the Virtual Satellite Repository. 
 
 * This collection is a place where all requirements configuration elements should be stored
-* User rights can be customized to prevent other users from editing this collection 
+
+TIP: User rights can be customized to prevent other users from editing this collection 
 
 Add a RequirementsConfiguration under the collection
 
-* This class is used to create requirement types: these types specify the attributes each of its requirements has
+NOTE: This element is used to create requirement types: types specify attributes of each requirement
 
 Double-click the new configuration element to open its editor. 
 
@@ -1196,7 +1205,9 @@ Add a new requirement type.
 |Image
 
 |{counter:step}.
-|Go to the model location where you want to add requirements (requirements can also be split to several elements within a model). 
+|Go to the model location where you want to add requirements 
+
+NOTE: requirements can also be split to several elements within a model. 
 
 At the desired location create a RequirementSpecification.
 |image:chapterModeling/subsectionRequirements/CreateRequirementSpec.png[Create requirement specification]
@@ -1208,11 +1219,10 @@ Add requirements by using the button in the requirements section.
 |image:chapterModeling/subsectionRequirements/AddRequirement.png[Add requirements]
 
 |{counter:step}.
-|When a new requirement should be added, the editor asks of which type it should be: 
+|When a new requirement is added, the editor asks of which type it needs to be: 
 
 * You can now choose between the types you create in the configuration element of your project. 
-The left section of the dialog allows to customize the container location of the configuration 
-element, the right side show all applicable types in the currently selected tree element.
+The left part of the dialog allows to filter by the container element of the configuration, the right side show all applicable types in the currently selected tree element.
 |image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
 
 |{counter:step}.
