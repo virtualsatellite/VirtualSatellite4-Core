@@ -1142,6 +1142,80 @@ You finalized the tutorial for the extended product structures.
 
 ===== Import / Export of Requirements 
 
+To integrate requirements management into the model-based systems engineering process, Virtual Satellite supports import of requirements from external tools.
+
+====== Import from CSV-Files
+It is possible to import requirements form CSV files. CSV files can be exported from e.g. Excel. To import
+requirements from CSV files follow the next steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select [Import] from the file menu in Virtual Satellite
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select [CSV Requirements Import] form the [Virtual Satellite] category.
+|image:chapterModeling/subsectionRequirements/ImportWizard.png[Select the correct import wizard]
+
+|{counter:step}.
+|Select a CSV file to import from, check if the column separator is correct (from a default Excel
+export it is “;”) and set the line number of the heading and the first data line. Then select a
+RequirementsConfiguration which should be container for the new requirement type. It is also
+possible to select an existing requirement type for the import. For more information got to the
+next section <<Map CSV requirements column to existing type>>.
+|image:chapterModeling/subsectionRequirements/CsvImportStartPage.png[Import start page]
+
+|{counter:step}.
+|On the next page of the import wizard, select a type for each column found in the file. If the type
+is not clear yet it can be left as string. It is always possible to import types later. The type is used
+only for editing support; values are not validated when importing requirement values.
+Unselected columns are not imported.
+|image:chapterModeling/subsectionRequirements/CsvImportTypeCustomizationPage.png[Configure the imported type]
+
+|{counter:step}.
+|Then select the RequirementSpecification in which the requirements should be imported to.
+|image:chapterModeling/subsectionRequirements/CsvImportTargetPage.png[Selection of import target element]
+
+|===
+
+After the import, the targeted specification element should contain the requirements. For
+columns with the type “Enumeration”, the editor shows all values which were already contained
+in this column from the moment of import. Additional values can be added to the enumeration
+when re-selecting Enumeration as type of the attribute in the editor of the requirement type.
+
+image:chapterModeling/subsectionRequirements/CsvImportEnumeration.png[Imported enumerations]
+
+====== Map CSV requirements columns to existing type 
+
+It is also possible to import requirements by using an existing type. This does not create a new
+requirement type and can help to have consistent requirement types for all modeled requirements.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Instead of selecting the container for the new requirement type, select the existing type on the
+first page of the import wizard.
+|image:chapterModeling/subsectionRequirements/CsvImportStartPageExisitingType.png[Select an existing type]
+
+|{counter:step}.
+|On the next page, map the columns of the CSV-File to the attributes of the existing requirement
+type.
+|image:chapterModeling/subsectionRequirements/CsvImportTypeMappingPage.png[Map requirement attributes to CSV columns]
+
+|===
 
 ==== Equipment mass and mass summaries concept
 
