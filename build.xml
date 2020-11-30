@@ -104,7 +104,7 @@ SPDX-License-Identifier: EPL-2.0
 		        	<limit counter="LINE" value="COVEREDRATIO" minimum="65%"/>
 		        	<limit counter="BRANCH" value="COVEREDRATIO" minimum="55%"/>
 		        	<limit counter="METHOD" value="COVEREDRATIO" minimum="65%"/>
-		            <limit counter="CLASS" value="COVEREDRATIO" minimum="80%"/>
+		                <limit counter="CLASS" value="COVEREDRATIO" minimum="80%"/>
 		        </rule>
 		        <rule element="METHOD">
 		        	<limit counter="COMPLEXITY" value="TOTALCOUNT" maximum="20"/>
