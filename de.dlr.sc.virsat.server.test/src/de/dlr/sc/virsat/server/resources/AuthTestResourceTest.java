@@ -110,8 +110,11 @@ public class AuthTestResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testCorsHeaders() {
+		String sysProp = "sun.net.http.allowRestrictedHeaders";
+		
 		// Set this system property to enable this test case
-		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+		// Or else the origin header can't be sent
+		System.setProperty(sysProp, "true");
 		
 		Map<String, String> headers = new HashMap<String, String>();
 		
@@ -143,6 +146,9 @@ public class AuthTestResourceTest extends AJettyServerTest {
 		assertEquals(CorsFilter.AC_ALLOWED_HEADERS, response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
 		// The preflight request will have the status code ok instead of forbidden
 		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		// Reset the system property
+		System.setProperty(sysProp, "false");
 	}
 	
 	/**
