@@ -32,7 +32,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
@@ -74,6 +76,10 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 public class DmfResourceTest extends AConceptTestCase {
 
+	public static final int TEST_CASE_TIMEOUT = 5000;
+	@ClassRule
+	public static Timeout timeout = Timeout.millis(TEST_CASE_TIMEOUT);
+	
 	private IProject project;
 	private VirSatResourceSet resSet;
 	private VirSatTransactionalEditingDomain ed;
