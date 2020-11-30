@@ -18,7 +18,7 @@ public class BeanPropertyTypeTest {
 	
 	@Test
 	public void testFromString() {
-		BeanPropertyType testType = BeanPropertyType.fromString(BeanPropertyType.BOOLEAN.getType());
+		BeanPropertyType testType = BeanPropertyType.fromString(BeanPropertyType.BOOLEAN.toString());
 		assertEquals("Returned the right type", BeanPropertyType.BOOLEAN, testType);
 		
 		assertThrows("Empty string throws exception", IllegalArgumentException.class, () -> {

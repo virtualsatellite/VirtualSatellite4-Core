@@ -32,7 +32,7 @@ public class BeanPropertyTypeAdapterTest {
 		BeanPropertyType unmarshalledType = adapter.unmarshal(null);
 		assertNull(unmarshalledType);
 		
-		unmarshalledType = adapter.unmarshal(BeanPropertyType.BOOLEAN.getType());
+		unmarshalledType = adapter.unmarshal(BeanPropertyType.BOOLEAN.toString());
 		assertEquals(BeanPropertyType.BOOLEAN, unmarshalledType);
 		
 		assertThrows("The string should be valid",
@@ -48,7 +48,7 @@ public class BeanPropertyTypeAdapterTest {
 		assertNull(marshalledString);
 		
 		marshalledString = adapter.marshal(BeanPropertyType.BOOLEAN);
-		assertEquals(BeanPropertyType.BOOLEAN.getType(), marshalledString);
+		assertEquals(BeanPropertyType.BOOLEAN.toString(), marshalledString);
 	}
 
 }

@@ -29,7 +29,7 @@ public class BeanPropertyTypeAdapter extends XmlAdapter<String, BeanPropertyType
 		if (bpt == null) {
 			return null;
 		} else {
-			return bpt.getType();
+			return bpt.toString();
 		}
 	}
 

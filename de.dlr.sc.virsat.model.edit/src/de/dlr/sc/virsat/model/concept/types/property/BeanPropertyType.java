@@ -10,24 +10,19 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 public enum BeanPropertyType {
-	BOOLEAN("boolean"),
-	STRING("string"),
-	INT("int"),
-	FLOAT("float"),
-	ENUM("enum"),
-	RESOURCE("resource"),
-	REFERENCE("reference"),
-	EREFERENCE("ereference"),
-	COMPOSED("composed");
-
-	private final String type;
-
-	BeanPropertyType(String type) {
-		this.type = type;
-	}
-
-	public String getType() {
-		return type;
+	BOOLEAN,
+	STRING,
+	INT,
+	FLOAT,
+	ENUM,
+	RESOURCE,
+	REFERENCE,
+	EREFERENCE,
+	COMPOSED;
+	
+	@Override
+	public String toString() {
+		return super.toString().toLowerCase();
 	}
 
 	/**
@@ -37,7 +32,7 @@ public enum BeanPropertyType {
 	 */
 	public static BeanPropertyType fromString(String typeName) {
 		for (BeanPropertyType v : BeanPropertyType.values()) {
-			if (v.getType().equals(typeName)) {
+			if (v.toString().equals(typeName)) {
 				return v;
 			}
 		}
