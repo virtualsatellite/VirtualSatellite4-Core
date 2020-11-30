@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.project.ui.editingDomain.propertyTester.EditingDomainPro
  * 
  * Don't Manually modify this class
  * 
- * Example Concept for Interface Architecture
+ * Cost Budget Concept
  * 
  */	
 public abstract class AConceptEnabledTester extends EditingDomainPropertyTester {

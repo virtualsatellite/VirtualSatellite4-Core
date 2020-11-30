@@ -29,7 +29,7 @@ import org.junit.Before;
  * 
  * Don't Manually modify this class
  * 
- * Example Concept for Interface Architecture
+ * Cost Budget Concept
  * 
  */	
 public abstract class ACostValidatorTest {
