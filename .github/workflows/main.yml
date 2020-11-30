@@ -48,7 +48,11 @@ jobs:
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
         run: ./bash/verify_commit_authors.sh known_authors.txt
-
+        env:
+          base_ref:  ${{ github.base_ref }}
+          to_repository: ${{ github.repository }}
+          from_repository: ${{ github.event.pull_request.head.repo.full_name }}
+          
   # -----------------------------------------------------
   # Build and Test - SpotBugs Job
   # -----------------------------------------------------
