@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlAccessType;
  * 
  * Don't Manually modify this class
  * 
- *  Definition of the equipment cost
+ * Definition of the equipment cost
  * 
  */	
 @XmlRootElement

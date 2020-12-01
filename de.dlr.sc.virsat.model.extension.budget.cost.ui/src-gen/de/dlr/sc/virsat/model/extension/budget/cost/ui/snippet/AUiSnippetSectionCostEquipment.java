@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyIns
  * 
  * Don't Manually modify this class
  * 
- *  Definition of the equipment cost
+ * Definition of the equipment cost
  * 
  */	
 public abstract class AUiSnippetSectionCostEquipment extends AUiSnippetGenericPropertyInstances implements IUiSnippet {

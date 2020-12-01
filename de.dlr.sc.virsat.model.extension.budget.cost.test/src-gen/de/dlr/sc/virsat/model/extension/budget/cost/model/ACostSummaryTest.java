@@ -37,7 +37,7 @@ import org.junit.Test;
  * 
  * Don't Manually modify this class
  * 
- *  Summary of all nested equipment costs
+ * Summary of all nested equipment masses
  * 
  */	
 public abstract class ACostSummaryTest {
