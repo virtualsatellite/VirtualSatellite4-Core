@@ -1,26 +1,20 @@
 = Virtual Satellite 4 Core: Server Manual
+#TODO: title logo image#
 :imagesdir: images
 :title-logo-image: 
 :toc:
 :toclevels: 3
 :experimental: 
 
-Virtual Satellite provides a headless REST Server, that enables clients to access the modeled data without using the Virtual Satellite application / UI.
+== Introduction
 
 Virtual Satellite can be run headless as a server that provides a REST API. 
 The REST API can be used to access and manipulate the Virtual Satellite model without the user interface.
 It also functions as an interface to connect Virtual Satellite to your own application.
 The API supports the standard HTTP commands GET, PUT, POST and DELETE.
 
-[WARNING]
-.Connection is UNSECURED by default
-====
-By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
-====
-
-TIP: Configure the server to use the secure HTTPS connection.
-
 == Overview
+#TODO: xcheck and update#
 
 The Figure "<<RestServerOverview>>" gives an overview of the Server and its environment.
 
@@ -42,6 +36,7 @@ So the server needs to resolve these conflicts and also handle simultaneous chan
 The SVN/git repository is supposed to be the single source of truth in those cases.
 
 == Components
+#TODO: xcheck and update#
 
 Figure "<<RestServerComponents>>" gives a more detailed view on the REST Server components.
 
@@ -52,8 +47,8 @@ image::chapterServerComponents/REST_server_components.png[Server Components]
 The server is divided into three main layers: the REST API (View), Controllers and Persistence (Model).
 Between the API and the controller also is an access check layer.
 
-A REST Client can send a request to the provided REST API that is partitioned into multiple Resources: +
-An Admin Resource, in which an administrator can manipulate the server configuration, e.g. if the server should use HTTP or HTTPS. +
+A REST Client can send a request to the provided REST API that is partitioned into multiple Resources:
+An Admin Resource, in which an administrator can manipulate the server configuration, e.g. if the server should use HTTP or HTTPS.
 Each Server Repository provided has its own Resource.
 
 In the access check layer the credentials are obtained from the HTTP Header and it is checked if the requested Resources can be accessed.
@@ -65,15 +60,47 @@ In it's Server Configuration the server settings are stored.
 The Repository Controllers access the data model of the corresponding server repositories.
 
 The persistence level is composed of Server Repositories, each with a Repository Configuration and a data model. 
-The data model is connected to a SVN or git backend.
+The data model is connected to a SVN or GIT backend.
 
 == The REST API
 
-The REST API can be accessed via the {server adress}:8000 and currently supports the following requests:
+The REST API can be accessed via the 
+[subs=+quotes]
+....
+{*server adress*}:8000/rest
+....
+and currently supports multiple APIs for different purposes.
+Each API can be accessed via it's *name* and *version number*:
+[subs=+quotes]
+....
+{*server adress*}:8000/rest/{*name*}/{*version number*}
+....
+
+Currently the following APIs are provided:
+
+* The Model API to access Virtual Satellite Models ({*name*} = *model*)
+* The Management API for administrative tasks ({*name*} = *management*)
+
+The following documentation of the REST endpoints is automatically generated using Swagger.
+For each API the swagger documentation also is provided via the REST API at:
+[subs=+quotes]
+....
+{*server adress*}:8000/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
+....
+
+It can help you, if you wan't to connect Virtual Satellite to your own application.
+E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
+
+#TODO: insert generated swagger documentation for the APIs here#
+
+== Advanced topics for administrators
+
+#TODO: xcheck and update#
 
 === How to run your own Headless Virtual Satellite Server
 
 :step: 0
+#TODO: Format and more images#
 [%header,cols=">8,62a,40a"] 
 |===
 
@@ -96,7 +123,17 @@ The REST API can be accessed via the {server adress}:8000 and currently supports
 |===
 
 The Server will start and try to load the repositories.
-Instead of using the REST API you can also add repositories manually (see <<Additionally add a Repository manually>>).
+Instead of using the REST API you can also add repositories manually 
+(see <<How to add a Repository manually instead of using the REST API>>).
+
+
+[WARNING]
+.Connection is UNSECURED by default
+====
+By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
+====
+
+TIP: Configure the server to use the secure HTTPS connection.
 
 ==== The Configuration File
 
@@ -104,37 +141,38 @@ By convention this file is named "server.properties".
 
 .server.properties
 [[server-properties]]
+[subs=+quotes]
 ....
 # Default properties for Virtual Satellite Server configuration
-repository.configurations.dir = ...
+*repository.configurations.dir* = ...
  
 # Directory into which all projects will be checked out from their repositories. NOT the workspace
-project.repositories.dir = ...
+*project.repositories.dir* = ...
  
 # Class of the login service
-login.service.class = org.eclipse.jetty.security.HashLoginService
+*login.service.class* = *org.eclipse.jetty.security.HashLoginService*
  
-# Location of the .properties file for authentication (WARNING: will only be used if the HashLoginService is used)
-auth.propierties.file = ...
+# Location of the .properties file for authentication (*WARNING*: will only be used if the HashLoginService is used)
+*auth.propierties.file* = ...
 ....
 
-==== Additionally add a Repository manually
+==== How to add a Repository manually instead of using the REST API
 
-Create a {repository}.properties file located in *repository.configurations.dir* (see <<server-properties>>):
+Create a {*repository*}.properties file located in *repository.configurations.dir* (see <<server-properties>>):
 
-.{repository}.properties
+.{*repository*}.properties
+[subs=+quotes]
 ....
 # The name used in the REST API
-project.name=...
- 
-repository.backend={GIT or SVN}
-repository.remoteURI={uri}
-repository.localPath={localPath}
-repository.credentials.username=...
-repository.credentials.password=...
+*project.name* = ...
+*repository.backend* = {*GIT* or *SVN*}
+*repository.remoteURI* = {*uri*}
+*repository.localPath* = {*localPath*}
+*repository.credentials.username* = ...
+*repository.credentials.password* = ...
 ....
 
-This will checkout the repository at {uri} into *project.repositories.dir*/repo_{localPath} at the next Server start.
+This will checkout the repository at {*uri*} into *project.repositories.dir*/repo_{localPath} at the next Server start.
 
 [colophone]
 == Legal - License & Copyright
