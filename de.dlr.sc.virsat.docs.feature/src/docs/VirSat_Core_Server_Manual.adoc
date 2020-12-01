@@ -100,7 +100,6 @@ E.g. it can be used to automatically generate your client, using Swaggers Codege
 === How to run your own Headless Virtual Satellite Server
 
 :step: 0
-#TODO: Format and more images#
 [%header,cols=">8,62a,40a"] 
 |===
 
@@ -113,19 +112,61 @@ E.g. it can be used to automatically generate your client, using Swaggers Codege
 |image:chapterInstallation/DownloadGitHubRelease.png[Download]
 
 |{counter:step}.
-|Create a configuration file that contains all required configuration (see <<The Configuration File>>).
-|
+|Create a new folder structure in an empty directory.
+|....
+├───repositories
+└───repository_configurations
+....
+
 
 |{counter:step}.
-|Start the Server executable with *"-configFile {path}"* (defaults to "resources/server.properties")
+|Create a server configuration file that contains all required configuration. See <<The Configuration File>>.
+[TIP]
+The paths of *repositories* and *repository_configurations* are defined in the 
+*server.properties*. So you could locate them anywhere in the file system.
+|....
+│   server.properties
+├───repositories
+└───repository_configurations
+....
+
+|{counter:step}.
 |
+NOTE: Optional:
+
+Now you can add repositories manually, e.g. *demo1* and *demo2*.
+See <<How to add a Repository manually instead of using the REST API>>.
+
+TIP: Instead you can also use the Management API of the running Server.
+|....
+│   server.properties
+├───repositories
+└───repository_configurations
+        demo1.repository
+        demo2.repository
+....
+
+|{counter:step}.
+|Start the Server executable with:
+[subs=+quotes]
+....
+*"-configFile {path to server.properties}"*
+....
+
+The Server will start and try to load the repositories defined in 
+*repository_configurations* into the *repositories* folder.
+|Results in:
+....
+│   server.properties
+├───repositories
+│   ├───repo_demo1
+│   └───repo_demo2
+└───repository_configurations
+        demo1.repository
+        demo2.repository
+....
 
 |===
-
-The Server will start and try to load the repositories.
-Instead of using the REST API you can also add repositories manually 
-(see <<How to add a Repository manually instead of using the REST API>>).
-
 
 [WARNING]
 .Connection is UNSECURED by default
