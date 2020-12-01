@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
  * 
  * Don't Manually modify this class
  * 
- *  Definition of the equipment cost
+ * Definition of the equipment cost
  * 
  */	
 public abstract class ACreateAddCostEquipmentCommand {
