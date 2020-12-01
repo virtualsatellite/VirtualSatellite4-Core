@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlAccessType;
  * 
  * Don't Manually modify this class
  * 
- *  Summary of all nested equipment costs
+ * Summary of all nested equipment masses
  * 
  */	
 @XmlRootElement

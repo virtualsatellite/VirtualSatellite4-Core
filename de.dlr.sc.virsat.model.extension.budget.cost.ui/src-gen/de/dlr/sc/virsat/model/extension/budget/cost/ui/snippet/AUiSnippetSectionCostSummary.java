@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyIns
  * 
  * Don't Manually modify this class
  * 
- *  Summary of all nested equipment costs
+ * Summary of all nested equipment masses
  * 
  */	
 public abstract class AUiSnippetSectionCostSummary extends AUiSnippetGenericPropertyInstances implements IUiSnippet {
