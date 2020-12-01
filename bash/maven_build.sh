@@ -79,9 +79,9 @@ callMavenSurefire() {
 	echo "Setting VS_JAR_ZMQ to: $VS_JAR_ZMQ"
 
 	echo "Maven - Surefire - ${MAVEN_PROFILE}"
-	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
-	echo "Check for Maven Problems on Overtarget:"
-	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
+	# mvn compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
+	# echo "Check for Maven Problems on Overtarget:"
+	# (grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn clean install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
 	# Always try too upload coverage reports as soon as possible
 	checkforMavenProblems

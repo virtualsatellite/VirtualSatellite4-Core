@@ -74,19 +74,29 @@ augmentLdLibraryPath $(dirname $JAVA_LIB_JVM)
 EXPECTED_JNI_SO_DIR=/usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
 
+augmentLdLibraryPath $EXPECTED_SO_DIR
+augmentLdLibraryPath $EXPECTED_JNI_SO_DIR
+
 
 # Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
 echo "Trying to find vtk and zmq libraries"
 
-export VS_JAR_VTK=/usr/share/java/vtk6.jar
-export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
+export VS_JAR_VTK=$(which vtk.jar)
+export VS_JAR_ZMQ=$(which zmq.jar)
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Failed to detect VTK"
+	exit 1
+fi 
+
+if [ "$VS_JAR_ZMQ" == "" ]; then
+	echo "Failed to detect ZMQ"
+	exit 1
+fi 
 
 echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
 echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
 
-
-augmentLdLibraryPath $EXPECTED_SO_DIR
-augmentLdLibraryPath $EXPECTED_JNI_SO_DIR
 
 export LD_LIBRARY_PATH
 echo "Current LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
