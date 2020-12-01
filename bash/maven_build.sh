@@ -40,6 +40,7 @@ printUsage() {
 	echo " dependencies  Downloads and installs maven dependencies, e.g. overtarget."
 	echo " surefire      To run all surefire tests including junit and swtbot."
 	echo " surecoverage  To run all surefire tests including junit and swtbot and finally upload reports to codecov."
+	echo " sureheadless  To run all surefire tests including junit and swtbot and finally upload reports to codecov. Alos starts xvfb and metacity."
 	echo " spotbugs      To run spotbugs static code analysis."
 	echo " checkstyle    To run checkstyle for testing style guidelines."
 	echo " assemble      To run full assemble including the java docs build."
@@ -64,6 +65,13 @@ checkforMavenProblems() {
 	(grep -n "\[\(WARN\|WARNING\|ERROR\)\]" maven.log \
 	| grep -v "\[WARNING\] Checksum validation failed" \
 	| grep -v "\[WARNING\] Could not validate integrity of download" \
+	| grep -v "\[WARNING\] Some attempts to read artifact" \
+	| grep -v "An error occurred while transferring artifact packed:" \
+	| grep -v "Retry another mirror:" \
+	| grep -v "Artifact not found:" \
+	| grep -v "An error occurred while transferring artifact canonical:" \
+	| grep -v "Unable to read repository at" \
+	| grep -v "Unknown Host:" \
 	|| exit 0 && exit 1;)
 }
 
@@ -84,6 +92,15 @@ callMavenSurefire() {
 	ant jacocoPrepareDependencies
 	ant jacocoReport 2>&1 | tee ant.log
 	(grep -n "\(Rule violated\|BUILD FAILED\)" ant.log || exit 0 && exit 1;)
+}
+
+callMavenSurefireAndCoverageHeadless() {
+        sudo apt-get update
+        sudo apt-get install xvfb metacity
+        export DISPLAY=:99.0
+        Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
+        metacity --sm-disable --replace 2> metacity.err &
+        callMavenSurefireAndCoverage
 }
 
 callMavenSurefireAndCoverage() {
@@ -109,7 +126,7 @@ callMavenCheckstyle() {
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn clean install -P ${MAVEN_PROFILE},checkstyle,product -B -V | tee maven.log
 	checkforMavenProblems
-	}
+}
 
 callMavenAssemble() {
 	if [ "$MAVEN_PROFILE" == "release" ] ; then
@@ -126,7 +143,6 @@ callMavenAssemble() {
 	echo "Check for AsciiDoc Problems on Product:"
 	(grep -n "\[INFO\] asciidoctor: \(WARN\|ERROR\|ERR\)" maven.log || exit 0  && exit 1;)
 }
-
 
 # process all command line arguments
 while [ "$1" != "" ]; do
@@ -155,6 +171,8 @@ case $MAVEN_PROFILE in
                         exit 1
 esac
 
+source ./bash/setup_environment.sh
+
 # Decide which job to run
 case $TRAVIS_JOB in
     dependencies )      callMavenDependencies
@@ -164,6 +182,9 @@ case $TRAVIS_JOB in
                         exit
                         ;;
     surecoverage )      callMavenSurefireAndCoverage
+                        exit
+                        ;;
+    sureheadless )      callMavenSurefireAndCoverageHeadless
                         exit
                         ;;
     spotbugs )      	callMavenSpotbugs
