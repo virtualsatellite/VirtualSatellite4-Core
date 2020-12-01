@@ -1,0 +1,152 @@
+= Virtual Satellite 4 Core: Server Manual
+:imagesdir: images
+:title-logo-image: 
+:toc:
+:toclevels: 3
+:experimental: 
+
+Virtual Satellite provides a headless REST Server, that enables clients to access the modeled data without using the Virtual Satellite application / UI.
+
+Virtual Satellite can be run headless as a server that provides a REST API. 
+The REST API can be used to access and manipulate the Virtual Satellite model without the user interface.
+It also functions as an interface to connect Virtual Satellite to your own application.
+The API supports the standard HTTP commands GET, PUT, POST and DELETE.
+
+[WARNING]
+.Connection is UNSECURED by default
+====
+By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
+====
+
+TIP: Configure the server to use the secure HTTPS connection.
+
+== Overview
+
+The Figure "<<RestServerOverview>>" gives an overview of the Server and its environment.
+
+.Overview of the Headless REST Server in the Virtual Satellite environment
+[#RestServerOverview]
+image::chapterServerOverview/REST_server_overview.png[Server Overview]
+
+A Server instance can maintain multiple Server Repositories, with each repository connected to a git or SVN server.
+REST Clients can access the server using the HTTP commands GET, PUT, DELETE and POST. 
+So a client can read or write into the Virtual Satellite model. 
+The server has to provide functionality for administrators, that can manipulate the server configuration, and users.
+For that purpose it needs authentication and authorization.
+For authentication purposes an LDAP server can be connected to the REST server.
+The connection can be secured via HTTPS.
+Because every user can only access certain provided Server Repositories, there has to be a second authorization layer.
+
+The connected SVN/git repositories can also be directly changed from Clients using Virtual Satellite UI.
+So the server needs to resolve these conflicts and also handle simultaneous changes from multiple REST clients.
+The SVN/git repository is supposed to be the single source of truth in those cases.
+
+== Components
+
+Figure "<<RestServerComponents>>" gives a more detailed view on the REST Server components.
+
+.Components of the Headless REST Server.
+[#RestServerComponents]
+image::chapterServerComponents/REST_server_components.png[Server Components]
+
+The server is divided into three main layers: the REST API (View), Controllers and Persistence (Model).
+Between the API and the controller also is an access check layer.
+
+A REST Client can send a request to the provided REST API that is partitioned into multiple Resources: +
+An Admin Resource, in which an administrator can manipulate the server configuration, e.g. if the server should use HTTP or HTTPS. +
+Each Server Repository provided has its own Resource.
+
+In the access check layer the credentials are obtained from the HTTP Header and it is checked if the requested Resources can be accessed.
+The credentials are handed over to be used for user role handling in the Virtual Satellite model.
+
+Each Resource has an Controller.
+The main controller is the Server Controller handling the Admin Resource.
+In it's Server Configuration the server settings are stored.
+The Repository Controllers access the data model of the corresponding server repositories.
+
+The persistence level is composed of Server Repositories, each with a Repository Configuration and a data model. 
+The data model is connected to a SVN or git backend.
+
+== The REST API
+
+The REST API can be accessed via the {server adress}:8000 and currently supports the following requests:
+
+=== How to run your own Headless Virtual Satellite Server
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Download the Virtual Satellite Server zip-file from the GitHub releases section.
+|image:chapterInstallation/DownloadGitHubRelease.png[Download]
+
+|{counter:step}.
+|Create a configuration file that contains all required configuration (see <<The Configuration File>>).
+|
+
+|{counter:step}.
+|Start the Server executable with *"-configFile {path}"* (defaults to "resources/server.properties")
+|
+
+|===
+
+The Server will start and try to load the repositories.
+Instead of using the REST API you can also add repositories manually (see <<Additionally add a Repository manually>>).
+
+==== The Configuration File
+
+By convention this file is named "server.properties".
+
+.server.properties
+[[server-properties]]
+....
+# Default properties for Virtual Satellite Server configuration
+repository.configurations.dir = ...
+ 
+# Directory into which all projects will be checked out from their repositories. NOT the workspace
+project.repositories.dir = ...
+ 
+# Class of the login service
+login.service.class = org.eclipse.jetty.security.HashLoginService
+ 
+# Location of the .properties file for authentication (WARNING: will only be used if the HashLoginService is used)
+auth.propierties.file = ...
+....
+
+==== Additionally add a Repository manually
+
+Create a {repository}.properties file located in *repository.configurations.dir* (see <<server-properties>>):
+
+.{repository}.properties
+....
+# The name used in the REST API
+project.name=...
+ 
+repository.backend={GIT or SVN}
+repository.remoteURI={uri}
+repository.localPath={localPath}
+repository.credentials.username=...
+repository.credentials.password=...
+....
+
+This will checkout the repository at {uri} into *project.repositories.dir*/repo_{localPath} at the next Server start.
+
+[colophone]
+== Legal - License & Copyright
+
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| CI Job Number:        | {buildnr}
+|=== 
+
+Copyright (c) 2008-2020 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.
