@@ -81,18 +81,40 @@ augmentLdLibraryPath $EXPECTED_JNI_SO_DIR
 # Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
 echo "Trying to find vtk and zmq libraries"
 
-export VS_JAR_VTK=$(which vtk.jar)
-export VS_JAR_ZMQ=$(which zmq.jar)
+echo "Trying to find general vtk installation vtk.jar"
+VS_JAR_VTK=$(which vtk.jar)
 
 if [ "$VS_JAR_VTK" == "" ]; then
-	echo "Failed to detect VTK"
+	echo "Trying to find vtk7 installation vtk7.jar"
+	VS_JAR_VTK=$(which vtk7.jar)
+fi 
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Trying to find vtk6 installation vtk7.jar"
+	VS_JAR_VTK=$(which vtk6.jar)
+fi 
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Failed to detect a vtk"
 	exit 1
 fi 
+
+echo "Trying to find general zmq installation as zmq.jar"
+VS_JAR_ZMQ=$(which zmq.jar)
+
+if [ "$VS_JAR_ZMQ" == "" ]; then
+	VS_JAR_ZMQ=$(which jzmq.jar)
+	echo "Trying to find general zmq installation as jzmq.jar"
+fi 
+
 
 if [ "$VS_JAR_ZMQ" == "" ]; then
 	echo "Failed to detect ZMQ"
 	exit 1
 fi 
+
+export VS_JAR_VTK=$(which vtk.jar)
+export VS_JAR_ZMQ=$(which zmq.jar)
 
 echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
 echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
