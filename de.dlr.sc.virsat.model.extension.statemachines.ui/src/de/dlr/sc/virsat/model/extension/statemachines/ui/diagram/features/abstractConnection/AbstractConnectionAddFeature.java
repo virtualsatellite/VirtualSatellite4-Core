@@ -136,6 +136,10 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 	protected boolean setTextDecorator() {
 		return true;
 	}
+	
+	protected String getTransitionLabel(CategoryAssignment ca) {
+		return ca.getName();
+	}
 
 	/**
 	 * the line color for constraints
