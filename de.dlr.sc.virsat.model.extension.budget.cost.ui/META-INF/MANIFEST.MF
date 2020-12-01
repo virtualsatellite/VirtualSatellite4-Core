@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Model Extension Concept UI
+Bundle-Name: VirSat Core Model Extension Cost Budgets UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.budget.cost.ui;singleton:=true
 Bundle-Version: 4.12.1.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.budget.cost,
@@ -17,3 +17,4 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.budget.cost,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost.ui
+Bundle-Vendor: DLR (German Aerospace Center)
