@@ -1246,11 +1246,11 @@ requirements from CSV files follow the next steps:
 |Image
 
 |{counter:step}.
-|Select [Import] from the file menu in Virtual Satellite
+|Select `Import` from the file menu in Virtual Satellite
 |image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
 
 |{counter:step}.
-|Select [CSV Requirements Import] form the [Virtual Satellite] category.
+|Select `CSV Requirements Import` form the `Virtual Satellite` category.
 |image:chapterModeling/subsectionRequirements/ImportWizard.png[Select the correct import wizard]
 
 |{counter:step}.
@@ -1325,11 +1325,11 @@ To configure these basic verification methods follow these steps:
 |Image
 
 |{counter:step}.
-|Add a [VerificationConfiguration] to your [RequirementsConfigurationCollection].
+|Add a `VerificationConfiguration` to your `RequirementsConfigurationCollection`.
 |image:chapterModeling/subsectionRequirements/AddVerificationConfiguration.png[Add verification configuration]
 
 |{counter:step}.
-|Open the [VerificationConfiguration] by double-clicking it in the navigator and use the [Add VerificationType] button to add a new verification method.
+|Open the `VerificationConfiguration` by double-clicking it in the navigator and use the `Add VerificationType` button to add a new verification method.
 |image:chapterModeling/subsectionRequirements/AddVerificationType.png[Add a verification type]
 
 |{counter:step}.
@@ -1351,13 +1351,13 @@ Besides these basic verification methods, Virtual Satellite supports verificatio
 |Image
 
 |{counter:step}.
-|To add verification a method to a requirement open it in the VirSat Editor. Easiest way to do so is to press the [Drill-Down] button in the RequirementSpecification or by double-clicking the element in the VirSat Navigator.
+|To add verification a method to a requirement open it in the VirSat Editor. Easiest way to do so is to press the `Drill-Down` button in the RequirementSpecification or by double-clicking the element in the VirSat Navigator.
 |image:chapterModeling/subsectionRequirements/OpenRequirementEditor.png[Open requirement in editor]
 
 |{counter:step}.
 |Add verification methods in the dedicated editor sections of the requirement. One requirement can also have multiple verification methods. 
 
-NOTE: Basic verification types are created in the [VerificationConfiguration]
+NOTE: Basic verification types are created in the `VerificationConfiguration`
 
 NOTE: System model-based verification methods can be added via dedicated editor sections. Depending on the used concepts in the project there might be different of these model-based verification methods. 
 
@@ -1365,7 +1365,7 @@ NOTE: System model-based verification methods can be added via dedicated editor 
 
 |===
 
-The verification methods have a [status] attribute which also has influence on the requirement status which is shown in the specification table.
+The verification methods have a `status` attribute which also has influence on the requirement status which is shown in the specification table.
 
 NOTE: Depending on the verification status, the requirement status might change automatically.
 
