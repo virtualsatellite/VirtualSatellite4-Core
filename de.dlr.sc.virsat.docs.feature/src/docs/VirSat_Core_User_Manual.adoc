@@ -1142,23 +1142,12 @@ To support model based requirements management and to verify requirements by usi
 
 Before you can start: 
 
-:step: 0
-[%header,cols=">8,62a,40a"] 
-|===
-
-|Step
-|Task
-|Image
-
-|{counter:step}.
-|* Open Virtual Satellite 
+* Open Virtual Satellite 
 
 * Create a new Virtual Satellite Project
 
-* Activate your required concepts, such as PS or CEF and requirements 
-|image:chapterModeling/subsectionRequirements/ActivateConcepts.png[Activate required concepts]
+* Activate your required concepts, such as PS and requirements 
 
-|===
 
 For more information check <<Modeling with Virtual Satellite>>.
 
@@ -1292,7 +1281,7 @@ when re-selecting Enumeration as type of the attribute in the editor of the requ
 
 image:chapterModeling/subsectionRequirements/CsvImportEnumeration.png[Imported enumerations]
 
-====== Map CSV requirements columns to existing type 
+====== Map CSV requirement columns to existing type 
 
 It is also possible to import requirements by using an existing type. This does not create a new
 requirement type and can help to have consistent requirement types for all modeled requirements.
@@ -1316,6 +1305,72 @@ type.
 |image:chapterModeling/subsectionRequirements/CsvImportTypeMappingPage.png[Map requirement attributes to CSV columns]
 
 |===
+
+===== Requirements Verification
+
+Managing requirements within Virtual Satellite allows to verify the requirements with the system model. This section explains how these model based verification methods can be used and how custom project-specific verification methods can be integrated into the project.
+
+====== Configuration of basic verification methods
+
+Basic verification methods do not use the system model but are simple model representations to reflect external verification processes.
+
+To configure these basic verification methods follow these steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Add a [VerificationConfiguration] to your [RequirementsConfigurationCollection].
+|image:chapterModeling/subsectionRequirements/AddVerificationConfiguration.png[Add verification configuration]
+
+|{counter:step}.
+|Open the [VerificationConfiguration] by double-clicking it in the navigator and use the [Add VerificationType] button to add a new verification method.
+|image:chapterModeling/subsectionRequirements/AddVerificationType.png[Add a verification type]
+
+|{counter:step}.
+|Configure the new verification type by specifying a name, description and what kind of verification it is.
+|image:chapterModeling/subsectionRequirements/ConfigureVerificationType.png[Configure the verification type]
+
+|===
+
+Besides these basic verification methods, Virtual Satellite supports verification methods that use and link to the system model. System model-based verification methods are provided via the different domain concepts. For more information how concepts are developed check out our https://github.com/virtualsatellite/VirtualSatellite4-Core/releases/download/Release_4.12.1/VirSat_Core_Developer_Manual.pdf[developer manual]. 
+
+====== Add verification methods to requirements
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|To add verification a method to a requirement open it in the VirSat Editor. Easiest way to do so is to press the [Drill-Down] button in the RequirementSpecification or by double-clicking the element in the VirSat Navigator.
+|image:chapterModeling/subsectionRequirements/OpenRequirementEditor.png[Open requirement in editor]
+
+|{counter:step}.
+|Add verification methods in the dedicated editor sections of the requirement. One requirement can also have multiple verification methods. 
+
+NOTE: Basic verification types are created in the [VerificationConfiguration]
+
+NOTE: System model-based verification methods can be added via dedicated editor sections. Depending on the used concepts in the project there might be different of these model-based verification methods. 
+
+|image:chapterModeling/subsectionRequirements/AddVerification.png[Add a verification methods to requirement]
+
+|===
+
+The verification methods have a [status] attribute which also has influence on the requirement status which is shown in the specification table.
+
+NOTE: Depending on the verification status, the requirement status might change automatically.
+
+image:chapterModeling/subsectionRequirements/RequirementStatus.png[Requirement status]
+
 
 ==== Equipment mass and mass summaries concept
 
