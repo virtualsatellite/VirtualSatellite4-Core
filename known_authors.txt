@@ -8,3 +8,5 @@ dianapeters-dlr
 ALEhmerDLR
 christoph-pietsch-DLR
 watollah-dlr
+maurpa
+kempra
