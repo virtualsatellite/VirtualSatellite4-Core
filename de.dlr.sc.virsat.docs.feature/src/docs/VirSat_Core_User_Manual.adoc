@@ -1196,6 +1196,10 @@ Here you can find a budget breakdown.
 
 |===
 
+==== Functional architecture
+|===
+
+
 ==== Product maturity concept
 
 Virtual Satellite provides means to add element maturities to the system model. Maturities can be used to evaluate the technical development level of the different components of a system. The concept is based on the https://www.nasa.gov/directorates/heo/scan/engineering/technology/txt_accordion1.html[Technical Readiness Level]. Its assessment can be done following NASA's guide: https://www.gao.gov/assets/680/679006.pdf[TRL Assessment Guide].
