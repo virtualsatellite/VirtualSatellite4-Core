@@ -12,7 +12,7 @@ echo "[Info] ------------------------------------"
 echo "[Info] "
 
 # Test if it is a shallow repository as usually checked out
-# on travis ci build nodes
+# on github actions ci build nodes
 
 if [ -f $(git rev-parse --git-dir)/shallow ]; then
 	echo "[Info] Current repository is shallow"
@@ -58,19 +58,19 @@ echo "[Info] ------------------------------------"
 # Now checking if we are on normal PR or on a forked PR
 # we usually assume we are on a fork
 STRICT_RULES="true"
-if [ ! -v $TRAVIS_PULL_REQUEST ]; then 
-	echo "[Info] Running on Travis CI"
-	echo "[Info] Repo Slug: ${TRAVIS_REPO_SLUG}"
-	echo "[Info] PR   Slug: ${TRAVIS_PULL_REQUEST_SLUG}"
+if [ ! -v $base_ref ]; then 
+	echo "[Info] Running on Github Actions CI"
+	echo "[Info] Repo Slug: ${from_repository}"
+	echo "[Info] PR   Slug: ${to_repository}"
 
-	if [ "$TRAVIS_REPO_SLUG" ==  "$TRAVIS_PULL_REQUEST_SLUG" ]; then
+	if [ "$from_repository" ==  "$to_repository" ]; then
 		echo "[Info] Building a local PR, RELAXED rules apply!"
 		STRICT_RULES="false"
 	else
 		echo "[Info] Building either a fork PR or a branch, STRICT rules apply!"
 	fi
 else
-	echo "[Info] Not running on Travis CI"
+	echo "[Info] Not running on Github Actions CI"
 fi
 
 echo "[Info] ------------------------------------"
