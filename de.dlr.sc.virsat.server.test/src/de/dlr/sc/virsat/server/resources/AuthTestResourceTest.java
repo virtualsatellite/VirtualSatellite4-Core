@@ -119,8 +119,8 @@ public class AuthTestResourceTest extends AJettyServerTest {
 		Map<String, String> headers = new HashMap<String, String>();
 		
 		// Not a CORS request has no additional headers
-		Response response = getBuildWithHeaders(headers).get();
-		
+		// and status code of the underlying resource
+		Response response = getBuilderWithHeaders(headers).get();
 		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
 		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
 		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
@@ -129,8 +129,8 @@ public class AuthTestResourceTest extends AJettyServerTest {
 		
 		// CORS simple request only has allow origin header
 		headers.put(CorsFilter.ORIGIN, "test");
-		response = getBuildWithHeaders(headers).get();
 		
+		response = getBuilderWithHeaders(headers).get();
 		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
 		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
 		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
@@ -138,8 +138,7 @@ public class AuthTestResourceTest extends AJettyServerTest {
 		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
 		
 		// A preflight request has all headers
-		response = getBuildWithHeaders(headers).options();
-		
+		response = getBuilderWithHeaders(headers).options();
 		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
 		assertEquals(CorsFilter.AC_ALLOWED_CREDENTIALS, response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
 		assertEquals(CorsFilter.AC_ALLOWED_METHODS, response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
@@ -156,7 +155,7 @@ public class AuthTestResourceTest extends AJettyServerTest {
 	 * @param headers the CORS headers
 	 * @return request builder
 	 */
-	private Builder getBuildWithHeaders(Map<String, String> headers) {
+	private Builder getBuilderWithHeaders(Map<String, String> headers) {
 		return webTarget
 				.path(VirSatModelAccessServlet.MODEL_API)
 				.path(AuthTestResource.AUTH)

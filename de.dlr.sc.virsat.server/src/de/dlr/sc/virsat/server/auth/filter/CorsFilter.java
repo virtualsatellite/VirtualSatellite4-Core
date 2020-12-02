@@ -72,7 +72,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 			response.getHeaders().add(AC_ALLOW_HEADERS, AC_ALLOWED_HEADERS);
 		}
 
-		// All CORS requests need this response
+		// All CORS requests need this header
 		response.getHeaders().add(AC_ALLOW_ORIGIN, AC_ALLOWED_ORIGINS);
 	}
 }
