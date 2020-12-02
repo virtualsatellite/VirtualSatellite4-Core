@@ -1195,9 +1195,21 @@ Here you can find a budget breakdown.
 
 |===
 ==== Functional Electrical Architecture
+Virtual Satellite enables the user to add interfaces to the system model.
+An interface can be added to a configuration tree by using the right mouse and navigating to Functional Electrical Architecture/Add Interface.
+The interface end and start point can be set as properties of the interface
+image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[InterfaceEnd]
 
+Additional to the Interface end the interface is supposed to be assigned to a interface type.
+A type can be selected by clicking on Drill-Down.
+The types need to be defined as child elements of an InterfaceTypeCollection.
+The InterfaceTypeCollection is created by clicking with the right mouse on the Repository and select Functional Electrical Architecture\Add InterfaceTypeCollection.
+|image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceTypeCollection]
+A type can be created by clicking with the right mouse on the InterfaceTypeCollection and selecting Functional\Electrical Architecture\ Add InterfaceType
+image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
 
-
+The Interface can be used in the system diagram to connect system components.
+image:chapterModeling/subsectionFEA/InterfaceInTheDiagram.PNG[InterfaceType]
 
 ==== Product maturity concept
 
