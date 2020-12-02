@@ -1205,7 +1205,7 @@ Additional to the Interface end the interface is supposed to be assigned to an i
 A type can be selected by clicking on Drill-Down.
 The types need to be defined as child elements of an InterfaceTypeCollection.
 The InterfaceTypeCollection is created by clicking with the right mouse on the Repository and select Functional Electrical Architecture\Add InterfaceTypeCollection.
-|image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceTypeCollection]
+image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceTypeCollection]
 A type can be created by clicking with the right mouse on the InterfaceTypeCollection and selecting Functional\Electrical Architecture\Add InterfaceType
 image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
 
