@@ -79,6 +79,8 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 		// Do some external changes
 		doExternalModelChange();
 		editingDomain.saveAll();
+		
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 
 		// Check reload of changes
 		assertTrue("Oudated model element should be set to proxy state", containerVirsatContext.eIsProxy());
