@@ -13,54 +13,58 @@ The REST API can be used to access and manipulate the Virtual Satellite model wi
 It also functions as an interface to connect Virtual Satellite to your own application.
 The API supports the standard HTTP commands GET, PUT, POST and DELETE.
 
-== Overview
-#TODO: xcheck and update#
+You will learn about the Servers Architecture in the next chapter.
+If you are interested in connecting the Server to your own application refer to <<The REST API>>.
+If you are an administrator and want to set up your own Server then refer to <<How to run your own Headless Virtual Satellite Server>>
 
-The Figure "<<RestServerOverview>>" gives an overview of the Server and its environment.
+== Architecture of the Virtual Satellite Server
+
+In this chapter an overview and a more in depth description of the Servers Functionality and Components is given.
+
+=== Overview
+
+The Figure <<RestServerOverview>> gives an overview of the Server and its environment.
 
 .Overview of the Headless REST Server in the Virtual Satellite environment
 [#RestServerOverview]
 image::chapterServerOverview/REST_server_overview.png[Server Overview]
 
-A Server instance can maintain multiple Server Repositories, with each repository connected to a git or SVN server.
-REST Clients can access the server using the HTTP commands GET, PUT, DELETE and POST. 
-So a client can read or write into the Virtual Satellite model. 
-The server has to provide functionality for administrators, that can manipulate the server configuration, and users.
-For that purpose it needs authentication and authorization.
-For authentication purposes an LDAP server can be connected to the REST server.
-The connection can be secured via HTTPS.
-Because every user can only access certain provided Server Repositories, there has to be a second authorization layer.
+A Server instance can maintain multiple _Server Repositories_, with each repository connected to a _git_ or _SVN repository_.
+_REST Clients_ can access the Server using the HTTP commands GET, PUT, DELETE and POST. 
+So a Client can read or write into the Virtual Satellite model. 
+The server provides functionality for administrators, that can manipulate the server configuration, and users.
+For that purpose it uses authentication and authorization.
+// For authentication purposes it is planned to an LDAP server can be connected to the REST server.
+// The connection can be secured via HTTPS.
+Every user can only access certain provided Server Repositories.
 
-The connected SVN/git repositories can also be directly changed from Clients using Virtual Satellite UI.
-So the server needs to resolve these conflicts and also handle simultaneous changes from multiple REST clients.
+The connected SVN/git repositories can also be directly changed from _Clients using the Virtual Satellite UI_.
+The server resolves these conflicts and also handles simultaneous changes from multiple REST clients.
 The SVN/git repository is supposed to be the single source of truth in those cases.
 
-== Components
-#TODO: xcheck and update#
+=== Components
 
-Figure "<<RestServerComponents>>" gives a more detailed view on the REST Server components.
+Figure <<RestServerComponents>> gives a more detailed view on the REST Server components.
 
 .Components of the Headless REST Server.
 [#RestServerComponents]
 image::chapterServerComponents/REST_server_components.png[Server Components]
 
-The server is divided into three main layers: the REST API (View), Controllers and Persistence (Model).
-Between the API and the controller also is an access check layer.
+The server is divided into three main layers: the _REST API_ (View), _Server Controller_ and _Persistence_ (Model).
+Between the API and the controller also is an _Access check_ layer.
 
-A REST Client can send a request to the provided REST API that is partitioned into multiple Resources:
-An Admin Resource, in which an administrator can manipulate the server configuration, e.g. if the server should use HTTP or HTTPS.
-Each Server Repository provided has its own Resource.
+A REST Client can send a request to the provided _REST API_ that is partitioned into multiple Resources:
+An _Admin Resource_, in which an administrator can manipulate the Server Configuration (_ServerConf_), e.g. add Repository Configurations (_RepoConf_),
+and a _Repository Resource_. Each _Server Repository_ provided has its own _Subresource_.
 
-In the access check layer the credentials are obtained from the HTTP Header and it is checked if the requested Resources can be accessed.
-The credentials are handed over to be used for user role handling in the Virtual Satellite model.
+In the _Access check_ layer the credentials are obtained from the HTTP Header and it is checked if the requested Resources can be accessed.
+The credentials are handed over to be used for user role handling in the Virtual Satellite _Data Model_.
 
-Each Resource has an Controller.
-The main controller is the Server Controller handling the Admin Resource.
-In it's Server Configuration the server settings are stored.
-The Repository Controllers access the data model of the corresponding server repositories.
+The _Server Controller_ handles requests to the _Admin Resource_. In it's _ServerConf_ the server settings are stored.
+Requests to a specific _Repository Subresource_ via the _Repository Resource_ directly change the underlying _Data Model_.
 
-The persistence level is composed of Server Repositories, each with a Repository Configuration and a data model. 
-The data model is connected to a SVN or GIT backend.
+The persistence level is composed of _Server Repositories_, each with a _Repository Configuration_ and a _Data Model_. 
+The _Data Model_ is connected to a _SVN_ or _git_ backend.
 
 == The REST API
 
@@ -93,11 +97,9 @@ E.g. it can be used to automatically generate your client, using Swaggers Codege
 
 #TODO: insert generated swagger documentation for the APIs here#
 
-== Advanced topics for administrators
+== How to run your own Headless Virtual Satellite Server
 
-#TODO: xcheck and update#
-
-=== How to run your own Headless Virtual Satellite Server
+In this chapter you will learn how to setup and configure your own Virtual Satellite Server.
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -115,7 +117,7 @@ E.g. it can be used to automatically generate your client, using Swaggers Codege
 |Create a new folder structure in an empty directory.
 |....
 ├───repositories
-└───repository_configurations
+└───repository_configs
 ....
 
 
@@ -127,7 +129,7 @@ The paths of *repositories* and *repository_configurations* are defined in the
 |....
 │   server.properties
 ├───repositories
-└───repository_configurations
+└───repository_configs
 ....
 
 |{counter:step}.
@@ -141,7 +143,7 @@ TIP: Instead you can also use the Management API of the running Server.
 |....
 │   server.properties
 ├───repositories
-└───repository_configurations
+└───repository_configs
         demo1.repository
         demo2.repository
 ....
@@ -161,12 +163,14 @@ The Server will start and try to load the repositories defined in
 ├───repositories
 │   ├───repo_demo1
 │   └───repo_demo2
-└───repository_configurations
+└───repository_configs
         demo1.repository
         demo2.repository
 ....
 
 |===
+
+=== The Configuration File
 
 [WARNING]
 .Connection is UNSECURED by default
@@ -174,30 +178,30 @@ The Server will start and try to load the repositories defined in
 By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
 ====
 
-TIP: Configure the server to use the secure HTTPS connection.
+// TIP: Configure the server to use the secure HTTPS connection.
 
-==== The Configuration File
-
-By convention this file is named "server.properties".
+By convention this file is named *server.properties*:
 
 .server.properties
 [[server-properties]]
 [subs=+quotes]
 ....
-# Default properties for Virtual Satellite Server configuration
+# Directory in which repository configurations are stored
 *repository.configurations.dir* = ...
  
-# Directory into which all projects will be checked out from their repositories. NOT the workspace
+# Directory into which all projects will be checked out from their repositories
+# *NOT* the workspace
 *project.repositories.dir* = ...
  
 # Class of the login service
 *login.service.class* = *org.eclipse.jetty.security.HashLoginService*
  
-# Location of the .properties file for authentication (*WARNING*: will only be used if the HashLoginService is used)
+# Location of the .properties file for authentication 
+# *WARNING*: will only be used if the HashLoginService is used
 *auth.propierties.file* = ...
 ....
 
-==== How to add a Repository manually instead of using the REST API
+=== How to add a Repository manually instead of using the REST API
 
 Create a {*repository*}.properties file located in *repository.configurations.dir* (see <<server-properties>>):
 
@@ -213,7 +217,7 @@ Create a {*repository*}.properties file located in *repository.configurations.di
 *repository.credentials.password* = ...
 ....
 
-This will checkout the repository at {*uri*} into *project.repositories.dir*/repo_{localPath} at the next Server start.
+This will checkout the repository at {*uri*} into *project.repositories.dir*/repo_{*localPath*} at the next Server start.
 
 [colophone]
 == Legal - License & Copyright
