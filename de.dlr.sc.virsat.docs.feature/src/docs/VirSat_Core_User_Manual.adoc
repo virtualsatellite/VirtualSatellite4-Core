@@ -1201,7 +1201,7 @@ An interface can be added to a configuration tree by using the right mouse and n
 The interface end and start point can be set as properties of the interface
 image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[InterfaceEnd]
 
-Additional to the Interface end the interface is supposed to be assigned to a interface type.
+Additional to the Interface end the interface is supposed to be assigned to an interface type.
 A type can be selected by clicking on Drill-Down.
 The types need to be defined as child elements of an InterfaceTypeCollection.
 The InterfaceTypeCollection is created by clicking with the right mouse on the Repository and select Functional Electrical Architecture\Add InterfaceTypeCollection.
