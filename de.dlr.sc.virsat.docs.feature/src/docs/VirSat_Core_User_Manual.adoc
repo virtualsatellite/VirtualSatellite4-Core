@@ -1196,6 +1196,7 @@ Here you can find a budget breakdown.
 |===
 ==== Functional Electrical Architecture
 Virtual Satellite enables the user to add interfaces to the system model.
+The functional electrical architecture is added to the register by opening it with the right mouse and click on Add register in the table chose functional electrical architecture.S
 An interface can be added to a configuration tree by using the right mouse and navigating to Functional Electrical Architecture/Add Interface.
 The interface end and start point can be set as properties of the interface
 image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[InterfaceEnd]
