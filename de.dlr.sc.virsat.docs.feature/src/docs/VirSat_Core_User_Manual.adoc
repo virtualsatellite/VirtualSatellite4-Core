@@ -1297,6 +1297,53 @@ In this case you can add a NONE shape to the root of the component to position t
 
 |===
 
+==== Geometric shapes
+
+Every Visualisation node has a _shape_ property defining how the node is rendered.
+Below is the description of all shape types and their relevant properties.
+
+[%header,cols="1,1,4"]
+|===
+|Shape
+|Size properties
+|Notes
+
+|None
+|-
+|_None_ shape is not rendered, but can be used for logical grouping of elements.
+Example: an equipment contains several parts that have individual _Visualisations_ attached.
+_None_ visualisation can be added on the equipment level to control the positioning of the whole equipment (by setting _positions_ and _rotations_ of the _None_ node).
+
+|Box
+|_sizeX_ +
+_sizeY_ +
+_sizeZ_
+|-
+
+|Sphere
+|_radius_
+|-
+
+|Cylinder
+|_radius_ +
+_sizeY_
+|-
+
+|Cone
+|_radius_ +
+_sizeY_
+|-
+
+|Geometry
+|_geometryFile_
+|Renders an external STL 3d model. An STL file should be uploaded via _geometryFile_ property. For other shapes this property has no effect.
+The size of the STL model is taken from the file and cannot be changed in Virtual Satellite.
+|===
+
+All shapes can be translated using properties _positionX_, _positionY_, _positionZ_ and rotated using properties _rotationX_, _rotationY_, _rotationZ_ (relative to the parent _Visualisation_ node or the origin).
+
+Properties _color_ and _transparency_ can be set for all shapes except _None_.
+
 ==== CAD Export/Import
 
 The 3D Visualisation can be exported from Virtual Satellite and imported into CAD (computer-aided design)-tools using JSON (JavaScript Object Notation) format.

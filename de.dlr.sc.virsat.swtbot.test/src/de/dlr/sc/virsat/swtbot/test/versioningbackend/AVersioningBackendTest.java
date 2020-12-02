@@ -34,6 +34,9 @@ public abstract class AVersioningBackendTest extends ASwtBotTestCase {
 		
 		// Switch back to virtual Satellite perspective
 		openCorePerspective();
+		
+		// Make sure project repo is ready to be shared
+		waitForEditingDomainAndUiThread();
 
 		// Share the test project with the backend
 		shareTestProjectWithVersioningBackend();
