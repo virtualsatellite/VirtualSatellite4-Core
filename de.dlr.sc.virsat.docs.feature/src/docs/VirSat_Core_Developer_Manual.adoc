@@ -165,9 +165,22 @@ The following gives a break-down on the key words and functionalities provided b
 
 === Concepts
 
-A Concept is always the root of a concept.concept file.
+A  `Concept` is always the root of a concept.concept file.
 It serves as the main container of the concept.
 It also fulfills the task of carrying global meta-information.
+
+A Concept may also have the following attributes:
+* `displayname`: This name will be shown to the user when interacting with the concept in the UI.
+For example when activating a concept, the displayname is shown.
+* `description`: The description of the concept.
+* `version`: The version number of the concept. 
+Must be given in the form of `.` separated numbers.
+For each version number, the IDE tools generate a corresponding `concept_vVERSION.xmi` in the concept folder.
+This file is used to automtically migrate old repositories based on an older concept version to the newest version.
+WARNING: When editing a concept, the version number should be increased before making any changes to the concept!
+Otherwise the changes will be considered to be part of the old version!
+This will cause automatic migration to fail!
+
 
 === Structural Elements
 
