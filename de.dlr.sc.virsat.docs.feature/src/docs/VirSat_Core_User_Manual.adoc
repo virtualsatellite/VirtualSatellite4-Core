@@ -1193,11 +1193,10 @@ Now, in the _Navigator_ double click on ConfigurationTree and scroll to the Mass
 Here you can find a budget breakdown.
 |image:chapterModeling/MassConceptBudget.png[Insepcting the mass budegt breakdown]
 
-
 |===
-
 ==== Functional Electrical Architecture
-|===
+
+
 
 
 ==== Product maturity concept
