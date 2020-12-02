@@ -160,9 +160,20 @@ Congratulations. You have successfully set up your Git integration!
 
 == Generic Systems Engineering (Concept) Language 
 
-=== Categories and Properties
+Concepts are described using the Generic Systems Engineering Language (GSEL).
+The following gives a break-down on the key words and functionalities provided by the GSEL.
+
+=== Concepts
+
+A Concept is always the root of a concept.concept file.
+It serves as the main container of the concept.
+It also fulfills the task of carrying global meta-information.
 
 === Structural Elements
+
+=== Categories
+
+=== Properties
 
 === Calculations
 
