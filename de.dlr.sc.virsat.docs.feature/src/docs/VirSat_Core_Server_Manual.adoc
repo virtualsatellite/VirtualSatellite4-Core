@@ -1,7 +1,6 @@
 = Virtual Satellite 4 Core: Server Manual
-#TODO: title logo image#
 :imagesdir: images
-:title-logo-image: 
+:title-logo-image: images/title/VirtualSatellite_Server.jpg
 :toc:
 :toclevels: 3
 :experimental: 
@@ -14,8 +13,8 @@ It also functions as an interface to connect Virtual Satellite to your own appli
 The API supports the standard HTTP commands GET, PUT, POST and DELETE.
 
 You will learn about the Servers Architecture in the next chapter.
-If you are interested in connecting the Server to your own application refer to <<The REST API>>.
-If you are an administrator and want to set up your own Server then refer to <<How to run your own Headless Virtual Satellite Server>>
+If you are interested in connecting the Server to your own application, refer to <<The REST API>>.
+Or if you want to set up your own Server, then refer to <<How to run your own Headless Virtual Satellite Server>>.
 
 == Architecture of the Virtual Satellite Server
 
@@ -208,7 +207,7 @@ Create a {*repository*}.properties file located in *repository.configurations.di
 .{*repository*}.properties
 [subs=+quotes]
 ....
-# The name used in the REST API
+# The name of the project in the repository
 *project.name* = ...
 *repository.backend* = {*GIT* or *SVN*}
 *repository.remoteURI* = {*uri*}
@@ -217,7 +216,7 @@ Create a {*repository*}.properties file located in *repository.configurations.di
 *repository.credentials.password* = ...
 ....
 
-This will checkout the repository at {*uri*} into *project.repositories.dir*/repo_{*localPath*} at the next Server start.
+This will checkout the project located in the folder {*localPath*} in the repository at {*uri*} into *project.repositories.dir*/repo_{*name*} at the next Server start.
 
 [colophone]
 == Legal - License & Copyright
