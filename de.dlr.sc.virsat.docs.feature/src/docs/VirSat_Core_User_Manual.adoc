@@ -1286,8 +1286,11 @@ In this case you can add a NONE shape to the root of the component to position t
 Every Visualisation node has a _shape_ property defining how the node is rendered.
 Below is the description of all shape types and their relevant properties.
 
+[%header,cols="1,1,4"]
 |===
-|Shape |Size properties |Notes
+|Shape
+|Size properties
+|Notes
 
 |None
 |-
