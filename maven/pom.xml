@@ -184,6 +184,7 @@
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
 							<showEclipseLog>false</showEclipseLog>
 							<testFailureIgnore>false</testFailureIgnore>
+							<failIfNoTests>false</failIfNoTests>
 							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
