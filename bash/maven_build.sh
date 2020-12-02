@@ -170,7 +170,11 @@ case $MAVEN_PROFILE in
                         exit 1
 esac
 
+# Call the script to setup the build environment
+# which contains the variables linking to the vtk or zmq jars
+set +e
 source ./bash/setup_environment.sh
+set -e
 
 # Decide which job to run
 case $TRAVIS_JOB in

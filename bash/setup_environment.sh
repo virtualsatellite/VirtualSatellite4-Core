@@ -13,6 +13,7 @@
 # --------------------------------------------------------------------------------------------
 # This script tries to setup the environment variables for native librarie sucha s vtk and zmq
 # --------------------------------------------------------------------------------------------
+set +e
 
 
 # Store the name of the command calling from commandline to be properly
@@ -81,17 +82,22 @@ augmentLdLibraryPath $EXPECTED_JNI_SO_DIR
 # Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
 echo "Trying to find vtk and zmq libraries"
 
-echo "Trying to find general vtk installation vtk.jar"
+echo "Trying to find general vtk installation with which vtk.jar"
 VS_JAR_VTK=$(which vtk.jar)
 
 if [ "$VS_JAR_VTK" == "" ]; then
-	echo "Trying to find vtk7 installation vtk7.jar"
+	echo "Trying to find vtk7 installation with which vtk7.jar"
 	VS_JAR_VTK=$(which vtk7.jar)
 fi 
 
 if [ "$VS_JAR_VTK" == "" ]; then
-	echo "Trying to find vtk6 installation vtk6.jar"
+	echo "Trying to find vtk6 installation with which vtk6.jar"
 	VS_JAR_VTK=$(which vtk6.jar)
+fi 
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Trying to find vtk6 installation with find vtk6.jar"
+	VS_JAR_VTK=$(find /usr -name vtk6.jar)
 fi 
 
 if [ "$VS_JAR_VTK" == "" ]; then
@@ -99,26 +105,30 @@ if [ "$VS_JAR_VTK" == "" ]; then
 	exit 1
 fi 
 
-echo "Trying to find general zmq installation as zmq.jar"
+echo "Trying to find general zmq installation with which zmq.jar"
 VS_JAR_ZMQ=$(which zmq.jar)
 
 if [ "$VS_JAR_ZMQ" == "" ]; then
+	echo "Trying to find general zmq installation with which jzmq.jar"
 	VS_JAR_ZMQ=$(which jzmq.jar)
-	echo "Trying to find general zmq installation as jzmq.jar"
 fi 
 
+if [ "$VS_JAR_ZMQ" == "" ]; then
+	echo "Trying to find general zmq installation with find jzmq.jar"
+	VS_JAR_ZMQ=$(find /usr -name jzmq.jar)
+fi 
 
 if [ "$VS_JAR_ZMQ" == "" ]; then
 	echo "Failed to detect ZMQ"
 	exit 1
 fi 
 
-export VS_JAR_VTK=$(which vtk.jar)
-export VS_JAR_ZMQ=$(which zmq.jar)
+export VS_JAR_VTK
+export VS_JAR_ZMQ
 
 echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
 echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
 
-
-export LD_LIBRARY_PATH
 echo "Current LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH
+
