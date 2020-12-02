@@ -1196,7 +1196,7 @@ Here you can find a budget breakdown.
 
 |===
 
-==== Functional architecture
+==== Functional Electrical Architecture
 |===
 
 
