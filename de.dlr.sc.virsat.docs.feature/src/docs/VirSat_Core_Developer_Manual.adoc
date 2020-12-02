@@ -177,12 +177,20 @@ For example when activating a concept, the displayname is shown.
 Must be given in the form of `.` separated numbers.
 For each version number, the IDE tools generate a corresponding `concept_vVERSION.xmi` in the concept folder.
 This file is used to automtically migrate old repositories based on an older concept version to the newest version.
-WARNING: When editing a concept, the version number should be increased before making any changes to the concept!
-Otherwise the changes will be considered to be part of the old version!
-This will cause automatic migration to fail!
 
+WARNING: When editing a concept, the version number should be increased before making any changes to the concept.
+Otherwise the changes will be considered to be part of the old version.
+Not doing this will cause automatic migration to fail!
 
 === Structural Elements
+
+`Structural Elements` decompose a system into smaller components.
+For example, in the _CEF_ concept, a system is structurally decomposed into _System_ -> _SubSystem_ -> _Equipment_.
+Structural Elements are also the containers for data information (Categories and Properties).
+To support configuration management and to bundle common data, Structural Elements can also inherit data from one another.
+
+A Structural Element can have the following additional attributes:
+* ``
 
 === Categories
 
