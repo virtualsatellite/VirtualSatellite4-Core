@@ -1195,6 +1195,7 @@ Here you can find a budget breakdown.
 
 |===
 ==== Functional Electrical Architecture
+===== Add interface end to the model
 Virtual Satellite enables the user to add interfaces to the system model.
 The functional electrical architecture is added to the register by opening it with the right mouse and click on Add register in the table chose functional electrical architecture.S
 An interface can be added to a configuration tree by using the right mouse and navigating to Functional Electrical Architecture/Add Interface.
@@ -1205,12 +1206,48 @@ Additional to the Interface end the interface is supposed to be assigned to an i
 A type can be selected by clicking on Drill-Down.
 The types need to be defined as child elements of an InterfaceTypeCollection.
 The InterfaceTypeCollection is created by clicking with the right mouse on the Repository and select Functional Electrical Architecture\Add InterfaceTypeCollection.
-|image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceTypeCollection]
+image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceTypeCollection]
 A type can be created by clicking with the right mouse on the InterfaceTypeCollection and selecting Functional\Electrical Architecture\Add InterfaceType
 image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
 
-The Interface can be used in the system diagram to connect system components.
-image:chapterModeling/subsectionFEA/InterfaceInTheDiagram.PNG[InterfaceType]
+===== Add a new diagram
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+|{counter:s}.
+|Add the concept Mechanical Engineering to the repository.
+|image:chapterModeling/subsectionFEA/AddMechanicalEngineering.PNG[ME]
+
+|{counter:s}.
+|Click on the documents folder in the ConfigurationTree.
+|image:chapterModeling/subsectionFEA/DocumentsElement.PNG[DE]
+
+|{counter:s}.
+|Click on the new elements symbol.
+|image:chapterModeling/subsectionFEA/NewElement.PNG[NE]
+
+|{counter:s}.
+|Choose VirSat/Virsat Diagram.
+|image:chapterModeling/subsectionFEA/Diagram.PNG[NE]
+
+|{counter:s}.
+|Choose interfaces in the Drop Down menu.
+|
+
+|{counter:s}.
+|Drag and Drop the Element Configuration in the Window
+|
+
+|{counter:s}.
+|The Interface can be used in the system diagram to connect element configurations by drag and dropping the interface to their interface end.
+|image:chapterModeling/subsectionFEA/InterfaceInTheDiagram.PNG[InterfaceIn]
+|===
+
+
 
 ==== Product maturity concept
 
