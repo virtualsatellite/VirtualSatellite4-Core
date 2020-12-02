@@ -20,8 +20,9 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({	
-				})
+@SuiteClasses({
+	TemplateTest.class
+})
 
 /**
  * 
