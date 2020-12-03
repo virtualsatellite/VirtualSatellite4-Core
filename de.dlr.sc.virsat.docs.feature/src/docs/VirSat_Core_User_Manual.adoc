@@ -1235,7 +1235,7 @@ Elements can be collapsed or expanded and the values can be exported to Excel.
 
 ==== State machine concept
 
-Virtual Satellite provides means to add State machines to your system but also of its single components. State Machines describe the behavior of the system. It consists of a finite number of states and is therefore also called finite-state machine (FSM). Based on the current state and a given input the machine performs state transitions and produces outputs. 
+Virtual Satellite provides means to add state machines to your system but also of its single components. State machines describe the behavior of the system. It consists of a finite number of states and is therefore also called finite-state machine (FSM). Based on the current state and a given input the machine performs state transitions and produces outputs. 
 
 The basic building blocks of a state machine are:
 
@@ -1271,11 +1271,11 @@ according to <<Activating a Concept>>.
 |{counter:step1}.
 |Now the `AOCS` shall for example contain components like a Camera as payload, as well as the Thrusters and Reaction Wheels for attitude control purposes. 
 
-For this add three _ElementConfiguration_, and give them the following names: `CAM`, `THR`, `RW`.
+For this, add three _ElementConfiguration_ elements and give them the following names: `CAM`, `THR`, `RW`.
 |image:chapterStateMachines/3.png[CreateSubcomponentsOfSystem]
 
 |{counter:step1}.
-|Now create _State Machine_ for any of the system components. In the following a _State Machine_ is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
+|Now create a _State Machine_ element for any of the system components. In the following a _State Machine_ is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
 
 Now you can add a state machine to the component `CAM` in the _Navigator_ with `Context` › `State Machines` › `Add StateMachine`.
 
@@ -1290,13 +1290,13 @@ Now you can add a state machine to the component `CAM` in the _Navigator_ with `
 |image:chapterStateMachines/DiagramEditor.png[DiagramEditor]
 
 |{counter:step1}.
-|Now to add a _State_ (same for other objects in the _Diagram Palette_, i.e. `state`, `transition`, `ForbidsConstraint`, ...), left click on the object in the Palette once and then left click again on the position in the diagram where you want to add it.
+|Now to add a _State_ (same for other objects in the _Diagram Palette_, i.e. `State`, `Transition`, `ForbidsConstraint`, ...), left click on the object in the Palette once and then left click again on the position in the diagram where you want to add it.
 
 The state machine diagram for the `CAM` object shall look as shown in the image.
 |image:chapterStateMachines/AddState.png[AddState] 
 
 |{counter:step1}.
-|After creating a `transition` connection in the `Diagram Editor`, you want to create a _TransitionTriggerEvent_ and assign it to the `transition` previously created. 
+|After creating a transition connection in the Diagram Editor, you want to create a _TransitionTriggerEvent_ and assign it to the previously created transition. 
 
 Go in the _Editor_ using _SM_ instance in the _Navigator_: `Context` › `Open Editor` or simply by double clicking on the _SM_ instance in the _Navigator_.
 
