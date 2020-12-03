@@ -13,6 +13,7 @@
 # --------------------------------------------------------------------------------------------
 # This script tries to setup the environment variables for native librarie sucha s vtk and zmq
 # --------------------------------------------------------------------------------------------
+set +e
 
 
 # Store the name of the command calling from commandline to be properly
@@ -71,23 +72,63 @@ augmentLdLibraryPath $(dirname $JAVA_LIB_JVM)
 # -------------------------------------
 # Start setting up vtk and zmq so dirs
 # ------------------------------------
-
 EXPECTED_JNI_SO_DIR=/usr/lib/x86_64-linux-gnu/jni/
 EXPECTED_SO_DIR=/usr/lib/x86_64-linux-gnu/
-
-
-# Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
-# ls -l /usr/share/java/
-#export VS_JAR_VTK=/usr/share/java/vtk7.jar
-export VS_JAR_VTK=/usr/share/java/vtk6.jar
-export VS_JAR_ZMQ=/usr/share/java/jzmq.jar
-
-echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
-echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
-
 
 augmentLdLibraryPath $EXPECTED_SO_DIR
 augmentLdLibraryPath $EXPECTED_JNI_SO_DIR
 
-export LD_LIBRARY_PATH
+
+# Some debug - list what is in the java dir, try to find vtk.jar on travis-ci
+echo "Trying to find vtk and zmq libraries"
+
+echo "Trying to find general vtk installation with which vtk.jar"
+VS_JAR_VTK=$(which vtk.jar)
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Trying to find vtk7 installation with which vtk7.jar"
+	VS_JAR_VTK=$(which vtk7.jar)
+fi 
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Trying to find vtk6 installation with which vtk6.jar"
+	VS_JAR_VTK=$(which vtk6.jar)
+fi 
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Trying to find vtk6 installation with find vtk6.jar"
+	VS_JAR_VTK=$(find /usr -name vtk6.jar)
+fi 
+
+if [ "$VS_JAR_VTK" == "" ]; then
+	echo "Failed to detect a vtk"
+	exit 1
+fi 
+
+echo "Trying to find general zmq installation with which zmq.jar"
+VS_JAR_ZMQ=$(which zmq.jar)
+
+if [ "$VS_JAR_ZMQ" == "" ]; then
+	echo "Trying to find general zmq installation with which jzmq.jar"
+	VS_JAR_ZMQ=$(which jzmq.jar)
+fi 
+
+if [ "$VS_JAR_ZMQ" == "" ]; then
+	echo "Trying to find general zmq installation with find jzmq.jar"
+	VS_JAR_ZMQ=$(find /usr -name jzmq.jar)
+fi 
+
+if [ "$VS_JAR_ZMQ" == "" ]; then
+	echo "Failed to detect ZMQ"
+	exit 1
+fi 
+
+export VS_JAR_VTK
+export VS_JAR_ZMQ
+
+echo "Setting VS_JAR_VTK to: ${VS_JAR_VTK}"
+echo "Setting VS_JAR_ZMQ to: ${VS_JAR_ZMQ}"
+
 echo "Current LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH
+

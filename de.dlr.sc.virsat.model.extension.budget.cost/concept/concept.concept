@@ -1,0 +1,38 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
+ Concept de.dlr.sc.virsat.model.extension.budget.cost displayname "Cost Budget" description "Cost Budget Concept" version 1.0 {
+	
+	Category ACostParameters description "Definition of the equipment cost" {
+		IsAbstract;
+		FloatProperty cost description "The Equipment costs" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty costWithMargin description "The equipment cost plus the safety margin" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty costMargin description "The actual amount of margin cost" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
+	}
+	
+	Category CostEquipment extends ACostParameters description "Definition of the equipment cost" {
+		Applicable For All;
+		Cardinality 1;   
+		
+		Ref:ACostParameters.costWithMargin = ACostParameters.cost * (1 + ACostParameters.margin);
+		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
+	} 
+	
+	Category CostSummary extends ACostParameters description "Summary of all nested equipment masses" {
+		Applicable For All;
+		Cardinality 1;
+		
+		Ref:ACostParameters.cost = summary{ACostParameters.cost};
+		Ref:ACostParameters.costWithMargin = summary{ACostParameters.costWithMargin};
+		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
+		Ref:ACostParameters.margin = ACostParameters.costMargin / ACostParameters.cost;
+	} 
+}
+

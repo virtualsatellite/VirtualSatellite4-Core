@@ -98,7 +98,7 @@ public class DmfResource extends XMIResourceImpl {
 		// Use NoUndo to suppress notification of this infrastructure-related
 		// operation
 		virSatEd.getVirSatCommandStack().executeNoUndo(dmfResourceSaveCommand);
-		virSatDvlmResource.save(options);
+		virSatEd.saveAll();
 	}
 
 	//If the element to be referenced is of type Iuuid, then use the uuid as ID
