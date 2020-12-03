@@ -58,6 +58,8 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("SubSystem", "other_user");
 		save();
 		
+		generateScreenshot();
+		
 		// Check for the warnings
 		SWTBotView problemView = bot.viewByTitle("Problems");
 		problemView.show();
