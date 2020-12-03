@@ -26,11 +26,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.rules.DisableOnDebug;
-import org.junit.rules.TestRule;
-import org.junit.rules.Timeout;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
@@ -69,9 +65,6 @@ import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
 public class DmfResourceTest extends AConceptProjectTestCase {
 
 	public static final int TEST_CASE_TIMEOUT = 10000;
-	
-	@ClassRule
-	public static TestRule timeout = new DisableOnDebug(Timeout.millis(TEST_CASE_TIMEOUT));
 
 	private Concept concept;
 	

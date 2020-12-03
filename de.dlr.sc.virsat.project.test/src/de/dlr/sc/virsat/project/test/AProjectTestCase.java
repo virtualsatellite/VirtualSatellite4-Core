@@ -25,6 +25,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestName;
@@ -49,8 +50,8 @@ public abstract class AProjectTestCase {
 	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 30;
 	protected static final int MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS = 1000;
 	
-	@Rule
-	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
+	@ClassRule
+	public static TestRule timeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
