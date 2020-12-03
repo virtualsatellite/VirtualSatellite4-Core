@@ -1218,7 +1218,7 @@ The left part of the dialog allows to filter by the container element of the con
 
 |{counter:step}.
 |After a requirement of the selected type is added, its values can be added.
-|image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
+|image:chapterModeling/subsectionRequirements/AddValues.png[Add values]
 
 |{counter:step}.
 |It is also possible to create hierarchies of requirements.
