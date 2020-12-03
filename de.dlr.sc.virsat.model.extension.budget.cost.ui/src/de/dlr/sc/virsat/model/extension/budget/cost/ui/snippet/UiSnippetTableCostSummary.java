@@ -9,9 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 
-import java.util.List;
-
-import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -20,12 +17,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
-import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
-import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
-import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvModelCommandFactory;
-import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
-import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.extension.budget.cost.unit.EuroUnitCreator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
