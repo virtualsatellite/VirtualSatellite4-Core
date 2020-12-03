@@ -32,11 +32,10 @@ public class EuroUnitCreator {
 	 * The addEuro Method create the Unit (Euro) and put the Unit in the Unit-Management 
 	 */
 	public void addEuro() {
-		
 		UnitManagement unitManagement = virSatEd.getResourceSet().getUnitManagement();
 		List<SystemOfQuantities> systemOfQuantities = unitManagement.getSystemOfUnit().getSystemOfQuantities();
 		AQuantityKind dimensionless = QudvUnitHelper.getInstance().getQuantityKindByName(systemOfQuantities.get(0), "Dimensionless");
-		SimpleUnit euro = QudvUnitHelper.getInstance().createSimpleUnit("Euro", "€", "European Economic and Monetary Union", " ", dimensionless);
+		SimpleUnit euro = QudvUnitHelper.getInstance().createSimpleUnit("Euro", "U+20AC", "European Economic and Monetary Union", " ", dimensionless);
 		QudvModelCommandFactory qudvController = new QudvModelCommandFactory(virSatEd);
 		Command addEuroCommand = qudvController.addSimpleUnit(unitManagement, euro);
 		virSatEd.getCommandStack().execute(addEuroCommand);
