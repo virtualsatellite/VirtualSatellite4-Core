@@ -1199,10 +1199,10 @@ Here you can find a budget breakdown.
 Virtual Satellite enables the user to add _Interfaces_ to the system model. Add the concept *Functional Electrical Architecture* as described in section in <<Activating a Concept>>
 Elements of the functional electrical architecture can be added to the system model by opening the context menu with the right mouse and click. 
 
-There are _InterfaceEnds_ that are of a specific _InterfaceType_  and have the potential to connect _Interfaces_.
+There are _InterfaceEnds_ that are of a specific _InterfaceType_ and have the potential to connect _Interfaces_.
 
-_InterfaceTypes_  need to be defined as child elements of an _InterfaceTypeCollection_ .
-The _InterfaceTypeCollection_  is created by clicking with the right mouse on the repository and select menu:Context[Functional Electrical Architecture>Add InterfaceTypeCollection].
+_InterfaceTypes_ need to be defined as child elements of an _InterfaceTypeCollection_ .
+The _InterfaceTypeCollection_ is created by clicking with the right mouse on the repository and select menu:Context[Functional Electrical Architecture>Add InterfaceTypeCollection].
 image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceType_Collection]
 A type can be created by clicking with the right mouse on the _InterfaceTypeCollection_ and selecting menu:Context[Functional>Electrical Architecture>Add InterfaceType]
 image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
@@ -1217,7 +1217,7 @@ _InterfaceEnds_ should be defined as part of an ElementDefinition in a product 
 This definition enables elements of the configuration tree to inherit properties defined in the product tree.
 It is added to the product tree by clicking with the right mouse on the menu:Context[product tree >Functional Electrical Architecture>Add _Interface_End].
 
-An _Interface_ can be added  manual to a configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
+An _Interface_ can be added manual to an *Element Configuration* in the configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
 The end and start point of the _Interface_ can be set as properties of the _Interface_ as shown in the following image:
 image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[_Interface_End]
 
