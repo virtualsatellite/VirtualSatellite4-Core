@@ -7,10 +7,12 @@
 
 == Introduction
 
-Virtual Satellite can be run headless as a server that provides a REST API. 
-The REST API can be used to access and manipulate the Virtual Satellite model without the user interface.
-It also functions as an interface to connect Virtual Satellite to your own application.
-The API supports the standard HTTP commands GET, PUT, POST and DELETE.
+Virtual Satellite can be run headless as a server that allows you to connect Virtual Satellite to a network, e.g. the Internet.
+The REST API can be used to access and manipulate the Virtual Satellite model remotely and without the desktop interface.
+It provides the Model in form of Resources that can be manipulated via the standard HTTP commands GET, PUT, POST and DELETE.
+
+The Server functions as a general-purpose interface to connect Virtual Satellite to your own application.
+For example the API could be called via JavaScript, that runs inside your Browser, from within a Python program or directly from the command line.
 
 You will learn about the Servers Architecture in the next chapter.
 If you are interested in connecting the Server to your own application, refer to <<The REST API>>.
@@ -59,7 +61,7 @@ and a _Repository Resource_. Each _Server Repository_ provided has its own _Subr
 In the _Access check_ layer the credentials are obtained from the HTTP Header and it is checked if the requested Resources can be accessed.
 The credentials are handed over to be used for user role handling in the Virtual Satellite _Data Model_.
 
-The _Server Controller_ handles requests to the _Admin Resource_. In it's _ServerConf_ the server settings are stored.
+The _Server Controller_ handles requests to the _Admin Resource_. In its _ServerConf_ the server settings are stored.
 Requests to a specific _Repository Subresource_ via the _Repository Resource_ directly change the underlying _Data Model_.
 
 The persistence level is composed of _Server Repositories_, each with a _Repository Configuration_ and a _Data Model_. 
@@ -91,7 +93,7 @@ For each API the swagger documentation also is provided via the REST API at:
 {*server adress*}:8000/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
 ....
 
-It can help you, if you wan't to connect Virtual Satellite to your own application.
+It can help you, if you want to connect Virtual Satellite to your own application.
 E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
 
 #TODO: insert generated swagger documentation for the APIs here#
