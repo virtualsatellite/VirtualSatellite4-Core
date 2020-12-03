@@ -51,11 +51,7 @@ jobs:
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
-        run: ./bash/verify_commit_authors.sh known_authors.txt
-        env:
-          base_ref:  ${{ github.base_ref || github.ref }}
-          to_repository: ${{ github.repository }}
-          from_repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+        uses: virtualsatellite/ci-actions/ci-verify-authors-action@master
           
   # -----------------------------------------------------
   # Build and Test - SpotBugs Job
