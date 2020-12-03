@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.unit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -27,17 +28,28 @@ public class EuroUnitCreatorTest extends AProjectTestCase {
 		super.setUp();
 		addEditingDomainAndRepository();
 	}
-	
+
 	@Test
 	public void testAddEuro() {
+
 		SystemOfUnits systemOfUnits = editingDomain.getResourceSet().getUnitManagement().getSystemOfUnit();
+		// Check is the Unit (Euro) in the Unit-Management
 		AUnit euro = QudvUnitHelper.getInstance().getUnitByName(systemOfUnits, "Euro");
+		// assertNull because the Unit is NOT in the Unit-Management
 		assertNull("Euro initially dosent exist", euro);
-		
+
+		// Creates the Euro with all Specifications
 		EuroUnitCreator euroCreator = new EuroUnitCreator(editingDomain);
 		euroCreator.addEuro();
+
+		// Update the Variable (euro)
 		euro = QudvUnitHelper.getInstance().getUnitByName(systemOfUnits, "Euro");
-		assertNotNull(euro);
+
+		// assertNotNull because the Unit is in the Unit-Management
+		assertNotNull("Euro  is exist", euro);
+		assertEquals("\u20AC", euro.getSymbol());
+		assertEquals("Dimensionless", euro.getQuantityKind().getName());
+		assertEquals("European Economic and Monetary Union", euro.getDescription());
 	}
 
 }
