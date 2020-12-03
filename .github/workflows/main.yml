@@ -23,7 +23,11 @@ on:
     branches:
       - '**'
 
-
+env:
+  # -------------------------------------------------------------
+  # Setting up locale to have correct keyboard mapping for swtbot
+  # -------------------------------------------------------------
+  LANG: "en_US.UTF-8"
 # --------------------------------------------
 # Defines the list of jobs
 # --------------------------------------------
@@ -33,7 +37,7 @@ jobs:
   #---------------------------------------------
   verify:
     name: Verify
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     
     steps:
       # --------------------------------------------
@@ -48,13 +52,17 @@ jobs:
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
         run: ./bash/verify_commit_authors.sh known_authors.txt
-
+        env:
+          base_ref:  ${{ github.base_ref || github.ref }}
+          to_repository: ${{ github.repository }}
+          from_repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          
   # -----------------------------------------------------
   # Build and Test - SpotBugs Job
   # -----------------------------------------------------
   spotbugs:
     name: Build and Test - Spotbugs
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: [verify]
 
     steps:
@@ -116,7 +124,7 @@ jobs:
   # -----------------------------------------------------
   surefire:
     name: Build and Test - Surefire
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: [verify]
 
     steps:
@@ -189,7 +197,7 @@ jobs:
   # -----------------------------------------------------
   checkstyle:
     name: Build and Test - Checkstyle
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: [verify]
 
     steps:
@@ -251,7 +259,7 @@ jobs:
   # -----------------------------------------------------
   deploy:
     name: Build, Assemble and Deploy
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     needs: [spotbugs, surefire, checkstyle]
     
     steps:
