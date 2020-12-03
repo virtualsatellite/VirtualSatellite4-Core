@@ -184,6 +184,7 @@ NOTE: Most of the built-in concepts in Virtual Satellite have names starting wit
 ==== Generated plugins
 
 The main generated plugin has the same name as the concept, and has the following contents.
+
 image::chapterConceptCreation/generated_plugins.png[Generated Plugins]
 
 The file *concept.concept* contains the description of the domain elements that can be modeled using this concept.
@@ -191,8 +192,7 @@ See section <<Generic Systems Engineering (Concept) Language>> for the details o
 
 Most of the other code in this and other concept plugins is generated based on the contents of the *condept.concept* file.
 The code in directory `src` is generated once, and can be modified and extended as needed, the code in `src-gen` is regenerated every time the concept file is changed.
-This automatic generation can be toggled with a toolbar button.
-image::chapterConceptCreation/button_toggle_generation.png[Toggle Generation]
+This automatic generation can be toggled with a toolbar button image:chapterConceptCreation/button_toggle_generation.png[Toggle Generation].
 
 
 == Generic Systems Engineering (Concept) Language 
