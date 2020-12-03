@@ -18,6 +18,14 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostType"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.MaterialCost"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.MaterialCost">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.budget.cost.CostEquipment"
 			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment">
 		</CategoryAssignmentBean>
@@ -25,6 +33,12 @@
 			id="de.dlr.sc.virsat.model.extension.budget.cost.CostSummary"
 			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary">
 		</CategoryAssignmentBean>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostTypesCollection"
+			seiBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection">
+		</StructuralElementInstanceBean>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">

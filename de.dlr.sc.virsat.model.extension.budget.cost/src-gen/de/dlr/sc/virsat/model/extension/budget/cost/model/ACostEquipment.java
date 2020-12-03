@@ -13,14 +13,21 @@ package de.dlr.sc.virsat.model.extension.budget.cost.model;
 // * Import Statements
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -50,6 +57,7 @@ public abstract class ACostEquipment extends ACostParameters implements IBeanCat
 	}
 	
 	// property name constants
+	public static final String PROPERTY_TYPE = "type";
 	
 	
 	
@@ -70,6 +78,38 @@ public abstract class ACostEquipment extends ACostParameters implements IBeanCat
 		setTypeInstance(categoryAssignement);
 	}
 	
+	
+	// *****************************************************************
+	// * Attribute: type
+	// *****************************************************************
+	private BeanPropertyReference<CostType> type = new BeanPropertyReference<>();
+	
+	private void safeAccessType() {
+		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("type");
+		type.setTypeInstance(propertyInstance);
+	}
+	
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
+	public CostType getType() {
+		safeAccessType();
+		return type.getValue();
+	}
+	
+	public Command setType(EditingDomain ed, CostType value) {
+		safeAccessType();
+		return type.setValue(ed, value);
+	}
+	
+	public void setType(CostType value) {
+		safeAccessType();
+		type.setValue(value);
+	}
+	
+	public BeanPropertyReference<CostType> getTypeBean() {
+		safeAccessType();
+		return type;
+	}
 	
 	
 }
