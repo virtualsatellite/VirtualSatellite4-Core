@@ -83,7 +83,7 @@ jobs:
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------
-      - name: Setup
+      - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
       # --------------------------------------------
@@ -124,13 +124,13 @@ jobs:
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------
-      - name: Setup
+      - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - SpotBugs
+      - name: Build and Test - Surefire
         uses: virtualsatellite/ci-actions/ci-maven-build-action@master
         with:
           job: sureheadless
@@ -176,13 +176,13 @@ jobs:
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------      
-      - name: Setup
+      - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - SpotBugs
+      - name: Build and Test - Checkstyle
         uses: virtualsatellite/ci-actions/ci-maven-build-action@master
         with:
           job: checkstyle
@@ -217,13 +217,13 @@ jobs:
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------
-      - name: Setup
+      - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - SpotBugs
+      - name: Build - Assemble
         uses: virtualsatellite/ci-actions/ci-maven-build-action@master
         with:
           job: assemble
