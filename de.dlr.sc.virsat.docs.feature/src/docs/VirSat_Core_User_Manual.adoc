@@ -1332,7 +1332,7 @@ To configure these basic verification methods follow these steps:
 |image:chapterModeling/subsectionRequirements/AddVerificationConfiguration.png[Add verification configuration]
 
 |{counter:step}.
-|Open the _VerificationConfiguration` by double-clicking it in the navigator and use the `Add VerificationType` button to add a new verification method.
+|Open the _VerificationConfiguration_ by double-clicking it in the navigator and use the `Add VerificationType` button to add a new verification method.
 |image:chapterModeling/subsectionRequirements/AddVerificationType.png[Add a verification type]
 
 |{counter:step}.
