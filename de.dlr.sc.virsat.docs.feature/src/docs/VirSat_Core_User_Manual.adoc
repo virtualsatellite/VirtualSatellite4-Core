@@ -1202,7 +1202,7 @@ Elements of the functional electrical architecture can be added to the system mo
 There are _InterfaceEnds_ that are of a specific _InterfaceType_  and have the potential to connect _Interfaces_.
 
 _InterfaceTypes_  need to be defined as child elements of an _InterfaceTypeCollection_ .
-The _InterfaceTypeCollection_  is created by clicking with the right mouse on the system model and select menu:Context[Functional Electrical Architecture>Add InterfaceTypeCollection].
+The _InterfaceTypeCollection_  is created by clicking with the right mouse on the repository and select menu:Context[Functional Electrical Architecture>Add InterfaceTypeCollection].
 image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceType_Collection]
 A type can be created by clicking with the right mouse on the _InterfaceTypeCollection_ and selecting menu:Context[Functional>Electrical Architecture>Add InterfaceType]
 image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
@@ -1213,7 +1213,9 @@ By adding a _RangedVoltageDefinition_ or a _FixedVoltageDefinition_ to the _Po
 
 image:chapterModeling/subsectionFEA/VoltageSpecificationPowerInterfaceType.png[Specify the voltage of a power Interface]
 
-_InterfaceEnds_  should be defined in a product tree as this definition enables elements of the configuration tree to inherit the properties defined inside the product tree. It is added to the product tree by clicking with the right mouse on the menu:Context[product tree >Functional Electrical Architecture>Add _Interface_End].
+_InterfaceEnds_ should be defined as part of an ElementDefinition in a product tree.
+This definition enables elements of the configuration tree to inherit properties defined in the product tree.
+It is added to the product tree by clicking with the right mouse on the menu:Context[product tree >Functional Electrical Architecture>Add _Interface_End].
 
 An _Interface_ can be added  manual to a configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
 The end and start point of the _Interface_ can be set as properties of the _Interface_ as shown in the following image:
