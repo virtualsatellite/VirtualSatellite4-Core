@@ -19,23 +19,4 @@ public enum BeanPropertyType {
 	REFERENCE,
 	EREFERENCE,
 	COMPOSED;
-	
-	@Override
-	public String toString() {
-		return super.toString().toLowerCase();
-	}
-
-	/**
-	 * Get a BeanPropertyType from a String typeName
-	 * @param typeName String
-	 * @return the BeanPropertyType
-	 */
-	public static BeanPropertyType fromString(String typeName) {
-		for (BeanPropertyType v : BeanPropertyType.values()) {
-			if (v.toString().equals(typeName)) {
-				return v;
-			}
-		}
-		throw new IllegalArgumentException(typeName);
-	}
 }

@@ -13,6 +13,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyType;
 
+/**
+ * Adapter for the BeanPropertyType enum
+ * Marshalles the enums to a lower case representation
+ * Unmarshalling is case insensitive
+ */
 public class BeanPropertyTypeAdapter extends XmlAdapter<String, BeanPropertyType> {
 
 	@Override
@@ -20,7 +25,7 @@ public class BeanPropertyTypeAdapter extends XmlAdapter<String, BeanPropertyType
 		if (typeName == null) {
 			return null;
 		} else {
-			return BeanPropertyType.fromString(typeName);
+			return BeanPropertyType.valueOf(typeName.toUpperCase());
 		}
 	}
 
@@ -29,7 +34,7 @@ public class BeanPropertyTypeAdapter extends XmlAdapter<String, BeanPropertyType
 		if (bpt == null) {
 			return null;
 		} else {
-			return bpt.toString();
+			return bpt.toString().toLowerCase();
 		}
 	}
 

@@ -48,7 +48,7 @@ public class BeanPropertyTypeAdapterTest {
 		assertNull(marshalledString);
 		
 		marshalledString = adapter.marshal(BeanPropertyType.BOOLEAN);
-		assertEquals(BeanPropertyType.BOOLEAN.toString(), marshalledString);
+		assertEquals(BeanPropertyType.BOOLEAN.toString().toLowerCase(), marshalledString);
 	}
 
 }
