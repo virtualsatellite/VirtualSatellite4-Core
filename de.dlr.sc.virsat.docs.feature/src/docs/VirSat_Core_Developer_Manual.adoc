@@ -213,7 +213,7 @@ All additional new validators have to be registered in `plugin.xml` in the prote
 
 As soon as you increase the concept version in `concept.concept`, a new migrator from the previous to the new version will be generated automatically.
 The purpose of the migrator is to migrate data modeled with the older concept version to the new version.
-For most simple changes the auto-generated migrator is sufficient, however if some custom migration logic is required, it can be added to the migrator class.
+For most changes the auto-generated migrator is sufficient, however if some custom migration logic is required, it can be added to the migrator class.
 
 ==== UI plugin
 
@@ -223,6 +223,10 @@ Auto-generated UI plugin contains UI snippets, commands and handlers that extend
 
 Test plugin contains some auto-generated unit tests. You can add more unit tests as you develop your concept.
 
+==== Concept feature
+
+The generated concept feature bundles the main and the UI concept plugins.
+It can be used to add the new concept to a custom Virtual Satellite-based RCP product.
 
 == Generic Systems Engineering (Concept) Language 
 
