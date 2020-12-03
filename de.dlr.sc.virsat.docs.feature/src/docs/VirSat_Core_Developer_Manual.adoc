@@ -158,6 +158,43 @@ Congratulations. You have successfully set up your Git integration!
 
 === Virtual Satellite for Concept Developer
 
+Following steps describe creation of a new concept.
+
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step-concept}.
+|Start with clicking menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat Model Extension Concept[VirSat Model Extension Concept Wizard] and press btn:[Next>].
+|image::chapterConceptCreation/concept_wizard_selection.png[Select Concept Wizard]
+
+|{counter:step-concept}.
+|In the concept creation wizard input the future concept name and press btn:[Finish].
+NOTE: Most of the built-in concepts in Virtual Satellite have names starting with `de.dlr.sc.virsat.model.extension`, but external concepts can have a different naming convention.
+|image::chapterConceptCreation/concept_creation.png[Concept Creation]
+
+|{counter:step-concept}.
+|After everything is generated and built, you should have four new plugins in the workspace.
+|image::chapterConceptCreation/generated_plugins.png[Generated Plugins]
+|=== 
+
+==== Generated plugins
+
+The main generated plugin has the same name as the concept, and has the following contents.
+image::chapterConceptCreation/generated_plugins.png[Generated Plugins]
+
+The file *concept.concept* contains the description of the domain elements that can be modeled using this concept.
+See section <<Generic Systems Engineering (Concept) Language>> for the details on how to write this file.
+
+Most of the other code in this and other concept plugins is generated based on the contents of the *condept.concept* file.
+The code in directory `src` is generated once, and can be modified and extended as needed, the code in `src-gen` is regenerated every time the concept file is changed.
+This automatic generation can be toggled with a toolbar button.
+image::chapterConceptCreation/button_toggle_generation.png[Toggle Generation]
+
+
 == Generic Systems Engineering (Concept) Language 
 
 === Categories and Properties
