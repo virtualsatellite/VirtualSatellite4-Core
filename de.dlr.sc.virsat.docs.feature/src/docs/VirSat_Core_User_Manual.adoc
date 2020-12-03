@@ -1143,11 +1143,11 @@ Requirements can be either imported from other tools or created directly within 
 
 Before you can start: 
 
-* Open Virtual Satellite .
+* Open Virtual Satellite.
 
 * Create a new Virtual Satellite Project.
 
-* Activate your required concepts, such as _product structures_ and _requirements_. 
+* Activate your required concepts, such as _Product structure_ and _Requirements_. 
 
 
 For more information check <<Modeling with Virtual Satellite>>.
@@ -1171,7 +1171,7 @@ TIP: User rights can be customized to prevent other users from editing this coll
 
 Add a _RequirementsConfiguration_ under the collection.
 
-NOTE: This the _RequirementsConfiguration_ element is used to define requirement types.
+NOTE: The _RequirementsConfiguration_ element is used to define requirement types.
 These types specify attributes of each requirement.
 
 Double-click the new configuration element to open its editor. 
@@ -1180,7 +1180,7 @@ Add a new requirement type.
 |image:chapterModeling/subsectionRequirements/AddRequirementType.png[Add requirement type]
 
 |{counter:step}.
-|Specify a name for the new requirement type and add attributes in the dialog box
+|Specify a name for the new requirement type and add attributes in the dialog box.
 |image:chapterModeling/subsectionRequirements/SpecifyRequirementTypeNameAndAttributes.png[Specify requirement type name and attributes]
 
 |===
@@ -1206,7 +1206,7 @@ At the desired location create a _RequirementSpecification_.
 |{counter:step}.
 |Double-click the specification element to open its editor. 
 
-Add requirements by using the button in the requirements section.
+Add requirements by using the button `Add Requirement` in the requirements section.
 |image:chapterModeling/subsectionRequirements/AddRequirement.png[Add requirements]
 
 |{counter:step}.
@@ -1222,11 +1222,11 @@ The left part of the dialog allows to filter by the container element of the con
 
 |{counter:step}.
 |It is also possible to create hierarchies of requirements.
-To do that, create a requirement group.
+To do that, create a requirement group by clicking the button `Add RequirementGroup`.
 |image:chapterModeling/subsectionRequirements/CreateRequirementGroup.png[Create requirement group]
 
 |{counter:step}.
-|To create requirements within a group click on the Button btn:[Drill-Down] to go to the group.
+|To create requirements within a group click on the button `Drill-Down` to go to the group.
 |image:chapterModeling/subsectionRequirements/DrillDownReqGroup.png[Drill-Down to requirement group]
 
 |===
@@ -1332,7 +1332,7 @@ To configure these basic verification methods follow these steps:
 |image:chapterModeling/subsectionRequirements/AddVerificationConfiguration.png[Add verification configuration]
 
 |{counter:step}.
-|Open the _VerificationConfiguration` by double-clicking it in the navigator and use the btn:[Add VerificationType] button to add a new verification method.
+|Open the _VerificationConfiguration` by double-clicking it in the navigator and use the `Add VerificationType` button to add a new verification method.
 |image:chapterModeling/subsectionRequirements/AddVerificationType.png[Add a verification type]
 
 |{counter:step}.
@@ -1357,7 +1357,7 @@ For more information how concepts are developed check out our https://github.com
 
 |{counter:step}.
 |To add verification a method to a requirement open it in the VirSat Editor.
-Easiest way to do so is to press the btn:[Drill-Down] button in the RequirementSpecification or by double-clicking the element in the VirSat Navigator.
+Easiest way to do so is to press the `Drill-Down` button in the _RequirementSpecification_ or by double-clicking the element in the VirSat Navigator.
 |image:chapterModeling/subsectionRequirements/OpenRequirementEditor.png[Open requirement in editor]
 
 |{counter:step}.
