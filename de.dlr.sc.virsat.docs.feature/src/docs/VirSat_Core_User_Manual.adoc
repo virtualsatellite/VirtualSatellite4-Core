@@ -1252,7 +1252,7 @@ In the following we will create a mass budget. Create a project - in the followi
 
 according to <<Activating a Concept>>.
 
-:step: 0
+:step1: 0
 [%header,cols=">8,62a,40a"] 
 |===
 
@@ -1260,82 +1260,82 @@ according to <<Activating a Concept>>.
 |Task
 |Image
 
-|{counter:step}.
+|{counter:step1}.
 |First of all, the concepts _State Machines_ and _Product Structure_ need to be activated in the _Repository_.
-|image:chapterStateMachines/1.png[Add State Machine Concept]
+|image:chapterStateMachines/1.png[AddStateMachineConcept]
 
-|{counter:step}.
+|{counter:step1}.
 |For the system, create a _ConfigurationTree_ with a _ElementConfiguration_, and give it the name `AOCS` (Attitude and Orbit Control System). This shall serve only as an example.
-|image:chapterStateMachines/2.png[Create AOCS EC]
+|image:chapterStateMachines/2.png[CreatingAOCSElementConfiguration]
 
-|{counter:step}.
+|{counter:step1}.
 |Now the `AOCS` shall for example contain components like a Camera as payload, as well as the Thrusters and Reaction Wheels for attitude control purposes. 
 
 For this add three _ElementConfiguration_, and give them the following names: `CAM`, `THR`, `RW`.
-|image:chapterStateMachines/3.png[Create Subcomponents of the System]
+|image:chapterStateMachines/3.png[CreateSubcomponentsOfSystem]
 
-|{counter:step}.
-|Now create the state machines for any of the system components. In the following a state machine is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
+|{counter:step1}.
+|Now create _State Machine_ for any of the system components. In the following a _State Machine_ is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
 
-Now you can add a state machine to the component `CAM` in the Navigator with `Context` › `State Machines` › `Add StateMachine`.
+Now you can add a state machine to the component `CAM` in the _Navigator_ with `Context` › `State Machines` › `Add StateMachine`.
 
-|image:chapterStateMachines/4.png[Open Diagram Editor]
+|image:chapterStateMachines/4.png[OpenDiagramEditor]
 
-|{counter:step}.
-|Having created a state machine for the camera, now open the state machine Diagram Editor in the Navigator with `Context` › `Open Diagram Editor`.
-|image:chapterStateMachines/5.png[Add State Machine Concept]
+|{counter:step1}.
+|Having created a _State Machine_ for the camera, now open the _State Machine Diagram Editor_ in the _Navigator_ with `Context` › `Open Diagram Editor`.
+|image:chapterStateMachines/5.png[AddStateMachine]
 
-|{counter:step}.
-|The Diagram Editor shall look as shown in the image. 
-|image:chapterStateMachines/6.png[Diagram Editor]
+|{counter:step1}.
+|The _Diagram Editor_ shall look as shown in the image. 
+|image:chapterStateMachines/DiagramEditor.png[DiagramEditor]
 
-|{counter:step}.
-|Now to add a state (same for other objects in the Diagram `Palette`, i.e. `state`, `transition`, `ForbidsConstraint`, ...), left click on the object in the Palette once and then left click again on the position in the diagram where you want to add it.
+|{counter:step1}.
+|Now to add a _State_ (same for other objects in the _Diagram Palette_, i.e. `state`, `transition`, `ForbidsConstraint`, ...), left click on the object in the Palette once and then left click again on the position in the diagram where you want to add it.
 
 The state machine diagram for the `CAM` object shall look as shown in the image.
-|image:chapterStateMachines/7.png[Add State] 
+|image:chapterStateMachines/AddState.png[AddState] 
 
-|{counter:step}.
-|After creating a `transition` connection in the `Diagram Editor`, you want to create a TransitionTriggerEvent and assign it to the `transition` previously created. 
+|{counter:step1}.
+|After creating a `transition` connection in the `Diagram Editor`, you want to create a _TransitionTriggerEvent_ and assign it to the `transition` previously created. 
 
-Go in the Editor in the Navigator with `Context` › `Open Editor` or simply by double clicking on the state machine object in the Navigator.
+Go in the _Editor_ using _SM_ instance in the _Navigator_: `Context` › `Open Editor` or simply by double clicking on the _SM_ instance in the _Navigator_.
 
-In the Editor if you press [Add TransitionTriggerEvent] button, a new trigger event is created. 
+In the _Editor_ if you press [Add TransitionTriggerEvent] button, a new trigger event is created. 
 
 Name it under the column `Name`, and give it a description under the `detail`.
 
-|image:chapterStateMachines/8.png[Open Editor] image:chapterStateMachines/9.png[Add TransitionTriggerEvent]
+|image:chapterStateMachines/Open Editor.png[Open Editor] image:chapterStateMachines/AddTransitionTriggerEvent.png[AddTransitionTriggerEvent]
 
-|{counter:step}.
+|{counter:step1}.
 |Now assign the created trigger event to the `Transition` you created in the diagram. Under `trigger` column in the `transitions` section, you can choose a trigger action from the list as shown in the image.
 
-NOTE: Transitions can be created or removed in the Diagram, but also manually in the normal Editor.
+NOTE: Transitions can be created or removed in the _Diagram Editor_, but also manually in the normal _Editor_.
 
-|image:chapterStateMachines/10.png[Add State Machine Concept]
+|image:chapterStateMachines/AssigningTriggers.png[AssigningTriggers] image:chapterStateMachines/OpenedWizardForTriggerActions.png[OpenedWizardForTriggerActions]
 
-|{counter:step}.
-|First of all, the concepts State Machines and Product Structure need to be activated in the repository.
-|image:chapterStateMachines/11.png[Add State Machine Concept]
+|{counter:step1}.
+|After assigning, go back to the _Diagram Editor_ and update the state machine diagram using the yellow button up right the _State Machine_ block, then you will be able to see the new transition.
+|image:chapterStateMachines/UpdateStateMachine.png[UpdateStateMachine]
 
-|{counter:step}.
-|First of all, the concepts State Machines and Product Structure need to be activated in the repository.
-|image:chapterStateMachines/12.png[Add State Machine Concept]
+|{counter:step1}.
+|Now having created the various components of the system and described their behavior using state machines, the _State Machine_ for the `AOCS` system can be created in a newly created _ElementConfiguration_ namely `CONOPS` (standing for concept operations). This state machine shall describe the behavior of the whole system.
 
-|{counter:step}.
-|First of all, the concepts State Machines and Product Structure need to be activated in the repository.
-|image:chapterStateMachines/13.png[Add State Machine Concept]
+See Task No.4 “Creating a State Machine”
 
-|{counter:step}.
-|First of all, the concepts State Machines and Product Structure need to be activated in the repository.
-|image:chapterStateMachines/14.png[Add State Machine Concept]
+|image:chapterStateMachines/AddingSystemStateMachine.png[AddingSystemStateMachine]
 
-|{counter:step}.
-|First of all, the concepts State Machines and Product Structure need to be activated in the repository.
-|image:chapterStateMachines/15.png[Add State Machine Concept]
+|{counter:step1}.
+|Open the _Diagram Editor_ and add the following _States_ and _Transitions_ as shown in the image. This shall serve as an example to represent the behavior of the `AOCS` system.
 
-|{counter:step}.
-|First of all, the concepts State Machines and Product Structure need to be activated in the repository.
-|image:chapterStateMachines/16.png[Add State Machine Concept]
+NOTE: The green and red arrows shown in the state machine shall represent the _AllowsConstraints_ and _ForbidsConstraints_ respectively.  For instance, the thrusters are on when the safe mode of the satellite is active to perform coarse pointing control.
+
+TIP: To use the _State Machine_ of other system components, e.g. the Camera, Reaction Wheels in Main system _State Machine_, one can just drag and drop them from the _Navigator_. 
+
+|image:chapterStateMachines/AOCSSystemStateMachine.png[AOCSSystemStateMachine] image:chapterStateMachines/AOCSTransitionsAndTriggerEvents.png[AOCSTransitionsAndTriggerEvents]
+
+|{counter:step1}.
+|For each section in _State Machine_ concept found in the Editor an excel table with the section instances can be created. This shown in the following image.
+|image:chapterStateMachines/ExtractingExcelTables.png[ExtractingExcelTables]
 |===
 
 === 3D Visualisation
