@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvModelCommandFactory;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.model.extension.budget.cost.unit.EuroUnitCreator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
@@ -42,6 +43,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
  * 
  */
 public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
+	
 	@Override
 	protected void createButtons(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody) {
 		
@@ -52,15 +54,9 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
 				VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(model);
-				UnitManagement unitManagment = virSatEd.getResourceSet().getUnitManagement();
-				List<SystemOfQuantities> systemOfQuantities = unitManagment.getSystemOfUnit().getSystemOfQuantities();
-				AQuantityKind dimensionless = QudvUnitHelper.getInstance().getQuantityKindByName(systemOfQuantities.get(0), "Dimensionless");
-				SimpleUnit euro = QudvUnitHelper.getInstance().createSimpleUnit("Euro", "€", "European Economic and Monetary Union", " ", dimensionless);
-				QudvModelCommandFactory qudvController = new QudvModelCommandFactory(virSatEd);
-				Command addEuroCommand = qudvController.addSimpleUnit(unitManagment, euro);
-				virSatEd.getCommandStack().execute(addEuroCommand);
+				EuroUnitCreator euroCreater = new EuroUnitCreator(virSatEd);
+				euroCreater.addEuro();
 			}
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
