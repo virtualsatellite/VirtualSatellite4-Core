@@ -204,7 +204,7 @@ In return, new concepts can be added to a system model later on and it becomes p
 === Structural Elements
 
 _Structural Elements_ decompose a system into smaller components.
-For example, in the _CEF_ concept, a system is structurally decomposed into _System_ -> _SubSystem_ -> _Equipment_.
+For example in the _Product Structure_ concept, a system could be structurally decomposed into _System_ -> _SubSystem_ -> _Equipment_ using the _ConfigurationTree_ and _ElementConfiguration_.
 Structural Elements are also the containers for data information (Categories and Properties).
 To support configuration management and to bundle common data, Structural Elements can also inherit data from one another.
 The instance of a Structural Element is called a _Structural Element Instance_.
