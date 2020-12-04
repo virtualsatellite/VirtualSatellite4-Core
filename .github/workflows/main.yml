@@ -201,7 +201,7 @@ jobs:
         with:
           name: Surefire Reports
           path: 
-            /home/runner/work/VirtualSatellite4-Core/VirtualSatellite4-Core/de.dlr.sc.virsat.server.test/target/surefire-reports/*
+            /home/runner/work/VirtualSatellite4-Core/VirtualSatellite4-Core/de.dlr.sc.virsat.test/target/surefire-reports/*
 
 
   # -----------------------------------------------------
