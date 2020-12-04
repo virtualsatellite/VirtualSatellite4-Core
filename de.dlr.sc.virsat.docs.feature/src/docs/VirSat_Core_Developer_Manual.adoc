@@ -171,9 +171,14 @@ It also fulfills the task of carrying global meta-information.
 
 A Concept may also have the following attributes:
 
+name::
+The name of the Concept.
+It has to match the name of the plugin in which the concept.concept file resides in.
+
 displayname::
-This name will be shown to the user when interacting with the concept in the UI.
+A name that will be shown to the user when interacting with the concept in the UI.
 For example when activating a concept, the displayname is shown.
+If no displayname is defined, the concept name is shown instead.
 
 description::
 The description of the concept.
@@ -197,6 +202,14 @@ To support configuration management and to bundle common data, Structural Elemen
 The instance of a Structural Element is called a _Structural Element Instance_.
 
 A Structural Element can have the following additional attributes:
+
+name::
+The name of the Structural Element.
+
+shortname::
+An abbreviated name of the Structural Element.
+Used in the UI, for example the Navigator, to compactely indicate the Structural Element of a Structural Element Instance.
+If no shortname is defined, a default shortname will be generated using the capital letters of the Structural Element name.
 
 description:: 
 The description of the Structural Element.
@@ -246,6 +259,14 @@ The instance of a Category is called a _CategoryAssignment_.
 
 A Category may contain properties - described in the next section - and
 also supports the following attributes:
+
+name::
+The name of the Category.
+
+shortname::
+An abbreviated name of the Category.
+Used in the UI, for example the Navigator, to compactely indicate the Category of a Category Assignment.
+If no shortname is defined, a default shortname will be generated using the capital letters of the Category name.
 
 extends:: 
 A Category may extend another Category.
@@ -336,7 +357,7 @@ The _Category_ or _Property_ that can be referenced.
 * _description_: 
 A description of the property.
 
-ERference:
+EReference:
 Contains a reference to an EMF object outside of the model.
 Can be equipped further with the following attributes:
 * _of Type_: 
