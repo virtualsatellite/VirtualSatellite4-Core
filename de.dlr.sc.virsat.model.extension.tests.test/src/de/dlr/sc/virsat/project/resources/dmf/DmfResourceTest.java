@@ -18,13 +18,19 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.RecordingCommand;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -32,7 +38,6 @@ import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 
-import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -48,7 +53,9 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
 import de.dlr.sc.virsat.model.dvlm.dmf.DObject;
 import de.dlr.sc.virsat.model.dvlm.dmf.DObjectContainer;
 import de.dlr.sc.virsat.model.dvlm.dmf.UnresolveableDObject;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
@@ -59,6 +66,9 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.tests.EnumTestEnum;
 import de.dlr.sc.virsat.model.extension.tests.tests.TestsFactory;
 import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
  * This class tests the methods of DmfResource
@@ -66,38 +76,64 @@ import de.dlr.sc.virsat.model.external.tests.ExternalTestType;
  *
  */
 
-public class DmfResourceTest extends AConceptProjectTestCase {
+public class DmfResourceTest extends AConceptTestCase {
 
-	public static final int TEST_CASE_TIMEOUT = 10000;
+	public static final int TEST_CASE_TIMEOUT = 5000;
 	
 	@ClassRule
 	public static TestRule timeout = new DisableOnDebug(Timeout.millis(TEST_CASE_TIMEOUT));
-
+	
+	private IProject project;
+	private VirSatResourceSet resSet;
+	private VirSatTransactionalEditingDomain ed;
 	private Concept concept;
 	
 	protected EPackage testExternalPackage;
 	private static final String PLATFORM_MODEL_PATH = "/de.dlr.sc.virsat.model.external.tests/model/ExternalModel.ecore";
 	
 	@Before
-	public void setUp() throws CoreException  {
-		super.setUp();
+	public void setUp() throws Exception {
+		concept = loadConceptFromPlugin();
 		
-		addEditingDomainAndRepository();
+		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
+		IWorkspaceDescription wsd = ResourcesPlugin.getWorkspace().getDescription();
+		wsd.setAutoBuilding(false);
+		ResourcesPlugin.getWorkspace().setDescription(wsd);
+		wsRoot.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		
-		concept = loadConceptFromPlugin(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId());
+		project = wsRoot.getProject("dmfResourceTests");
+		if (project.exists()) {
+			project.delete(true, null);
+		}
 		
-		editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+		project.create(null);
+		project.open(null);
+
+		UserRegistry.getInstance().setSuperUser(true);
+		
+		resSet = VirSatResourceSet.getResourceSet(project, false);
+		ed = VirSatEditingDomainRegistry.INSTANCE.getEd(resSet);
+		ed.getCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getResources().clear();
-				rs.initializeModelsAndResourceSet();
-				rs.getRepository().getActiveConcepts().add(concept);
+				resSet.getResources().clear();
+				resSet.initializeModelsAndResourceSet();
+				resSet.getRepository().getActiveConcepts().add(concept);
 			}
 		});
 		
 		URI metamodelURI = URI.createPlatformPluginURI(PLATFORM_MODEL_PATH, true);
-		Resource metamodelResource = rs.getResource(metamodelURI, true);
+		Resource metamodelResource = resSet.getResource(metamodelURI, true);
 		testExternalPackage = (EPackage) metamodelResource.getContents().get(0);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		if (project.exists()) {
+			project.delete(true, null);
+		}
+		UserRegistry.getInstance().setSuperUser(false);
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 	
 	@Test
@@ -122,16 +158,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		
 		beanTestStructuralElement.add(beanTestCategoryAssignment);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -193,16 +229,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		
 		beanTestStructuralElement.add(beanTestCategoryAssignment);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -242,16 +278,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		beanTestStructuralElement.add(beanTestCategoryAssignmentArray);
 		beanTestStructuralElement.add(beanTestCategoryAssignmentReferenced);
 		
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -289,16 +325,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		
 		beanTestStructuralElement.add(beanTestCategoryAssignment);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -335,16 +371,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		beanTestStructuralElement.add(beanTestCategoryAssignmentReference);
 		beanTestStructuralElement.add(beanTestCategoryAssignment);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -384,17 +420,17 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		final int TEST_VALUE_INT = 10;
 		beanTestCategoryAssignment.setTestInt(TEST_VALUE_INT);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -430,16 +466,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		beanTestCategoryAssignmentComposed.getTestSubCategory().setTestInt(TEST_VALUE_INT);
 		beanTestStructuralElement.add(beanTestCategoryAssignmentComposed);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -478,16 +514,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		
 		beanTestStructuralElement.getStructuralElementInstance().getCategoryAssignments().add(noDmfCa);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -516,16 +552,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 	public void testSaveSingleDObject() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 		
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -582,16 +618,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 	public void testSaveDObjectWithEReference() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 		
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -609,8 +645,8 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		
 		final ExternalTestType TEST_EREFERENCE_VALUE = de.dlr.sc.virsat.model.external.tests.TestsFactory.eINSTANCE.createExternalTestType();
 		URI testExternalModelInstanceURI = originalSeiUri.trimFileExtension().appendFileExtension("etests");
-		Resource testExternalModelInstanceResource = rs.createResource(testExternalModelInstanceURI);
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		Resource testExternalModelInstanceResource = resSet.createResource(testExternalModelInstanceURI);
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
 				testExternalModelInstanceResource.getContents().add(TEST_EREFERENCE_VALUE);
@@ -641,16 +677,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 	public void testSaveReferencedDObjectSameContainment() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -691,16 +727,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 		TestStructuralElement beanTestStructuralElementOther = new TestStructuralElement(concept);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
 			}
 		});
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
-		Resource resSeiOther = rs.getStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSeiOther = resSet.getStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -716,7 +752,7 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		Resource dmfResourceOther = dmfResourceSet.getResource(dmfSeiUriOther, true);
 		Resource dmfResource = dmfResourceSet.getResource(dmfSeiUri, true);
 		
-		editingDomain.saveAll();
+		ed.saveAll();
 		
 		DObjectContainer dObjectContainerOther = (DObjectContainer) dmfResourceOther.getContents().get(0);
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference dmfCategoryAssignmentReference = TestsFactory.eINSTANCE.createTestCategoryReference();
@@ -757,16 +793,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 		TestStructuralElement beanTestStructuralElementOther = new TestStructuralElement(concept);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
 			}
 		});
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
-		Resource resSeiOther = rs.getStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSeiOther = resSet.getStructuralElementInstanceResource(beanTestStructuralElementOther.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -782,7 +818,7 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		Resource dmfResourceOther = dmfResourceSet.getResource(dmfSeiUriOther, true);
 		Resource dmfResource = dmfResourceSet.getResource(dmfSeiUri, true);
 		
-		editingDomain.saveAll();
+		ed.saveAll();
 		
 		DObjectContainer dObjectContainerOther = (DObjectContainer) dmfResourceOther.getContents().get(0);
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReference dmfCategoryAssignmentReference = TestsFactory.eINSTANCE.createTestCategoryReference();
@@ -834,16 +870,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 	public void testSaveContainedDObject() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -883,16 +919,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 	public void testSaveDObjectWithArray() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -935,16 +971,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 	public void testSaveDObjectWithReferenceArray() throws IOException {
 		TestStructuralElement beanTestStructuralElement = new TestStructuralElement(concept);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -996,17 +1032,17 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		
 		beanTestStructuralElement.getStructuralElementInstance().getCategoryAssignments().add(noDmfCa);
 		
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				editingDomain.getResourceSet().getRepository().getActiveConcepts().add(concept);
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				ed.getResourceSet().getRepository().getActiveConcepts().add(concept);
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
@@ -1038,16 +1074,16 @@ public class DmfResourceTest extends AConceptProjectTestCase {
 		TestCategoryAllProperty beanTestCategoryAssignment = new TestCategoryAllProperty(concept);
 		beanTestStructuralElement.add(beanTestCategoryAssignment);
 
-		editingDomain.getVirSatCommandStack().execute(new RecordingCommand(editingDomain) {
+		ed.getVirSatCommandStack().execute(new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
-				rs.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+				resSet.getAndAddStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 			}
 		});
 
-		editingDomain.saveAll();
+		ed.saveAll();
 
-		Resource resSei = rs.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
+		Resource resSei = resSet.getStructuralElementInstanceResource(beanTestStructuralElement.getStructuralElementInstance());
 		
 		Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 		Map<String, Object> m = resourceRegistry.getExtensionToFactoryMap();
