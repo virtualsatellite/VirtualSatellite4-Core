@@ -191,6 +191,15 @@ jobs:
           name: SWTBot Screenshots
           path: 
             swtbot/*
+            
+      - name: Upload Surefire Reports on Failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Surefire Reports
+          path: 
+            de.dlr.sc.virsat.test/target/surefire-reports/*
+
 
   # -----------------------------------------------------
   # Build and Test - Checkstyle Job
