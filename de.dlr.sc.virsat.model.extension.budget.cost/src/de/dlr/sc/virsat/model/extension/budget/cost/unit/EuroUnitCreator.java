@@ -24,7 +24,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 public class EuroUnitCreator {
 	
 	private VirSatTransactionalEditingDomain virSatEd;
-	private static final String EUROSYMBOL = "\u20AC";
+	public static final String EUROSYMBOL = "\u20AC";
 	
 	public EuroUnitCreator(VirSatTransactionalEditingDomain virSatEd) {
 		this.virSatEd = virSatEd;
