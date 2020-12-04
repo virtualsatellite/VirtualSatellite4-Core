@@ -1245,7 +1245,7 @@ is a situation of a system depending on previous inputs and causes a reaction on
 * `AllowsConstraint:` should specify the states that are allowed to be activated while the parent state is active.
 * `ForbidsConstraint:` should specify the states that are forbidden while the parent state is active.
 
-In the following we will create a mass budget. Create a project - in the following called `MySatellite` - and activate the following concepts
+In the following we will create a state machine. Create a project - in the following called `MySatellite` - and activate the following concepts
 
 * `de.dlr.sc.virsat.model.extension.statemachines`
 * `de.dlr.sc.virsat.model.extension.ps`
@@ -1265,7 +1265,8 @@ according to <<Activating a Concept>>.
 |image:chapterStateMachines/1.png[AddStateMachineConcept]
 
 |{counter:step1}.
-|For the system, create a _ConfigurationTree_ with a _ElementConfiguration_, and give it the name `AOCS` (Attitude and Orbit Control System). This shall serve only as an example.
+|For the system, create a _ConfigurationTree_ with a _ElementConfiguration_, and give it the name `AOCS` (Attitude and Orbit Control System). 
+This shall serve only as an example.
 |image:chapterStateMachines/2.png[CreatingAOCSElementConfiguration]
 
 |{counter:step1}.
@@ -1275,14 +1276,15 @@ For this, add three _ElementConfiguration_ elements and give them the following 
 |image:chapterStateMachines/3.png[CreateSubcomponentsOfSystem]
 
 |{counter:step1}.
-|Now create a _State Machine_ element for any of the system components. In the following a _State Machine_ is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
+|Now create a _State Machine_ element for any of the system components. 
+In the following a _State Machine_ is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
 
 Now you can add a state machine to the component `CAM` in the _Navigator_ with `Context` › `State Machines` › `Add StateMachine`.
 
 |image:chapterStateMachines/4.png[OpenDiagramEditor]
 
 |{counter:step1}.
-|Having created a _State Machine_ for the camera, now open the _State Machine Diagram Editor_ in the _Navigator_ with `Context` › `Open Diagram Editor`.
+|Having created a _State Machine_ for the camera. Now open the _State Machine Diagram Editor_ in the _Navigator_ with `Context` › `Open Diagram Editor`.
 |image:chapterStateMachines/5.png[AddStateMachine]
 
 |{counter:step1}.
@@ -1307,7 +1309,8 @@ Name it under the column `Name`, and give it a description under the `detail`.
 |image:chapterStateMachines/Open Editor.png[Open Editor] image:chapterStateMachines/AddTransitionTriggerEvent.png[AddTransitionTriggerEvent]
 
 |{counter:step1}.
-|Now assign the created trigger event to the `Transition` you created in the diagram. Under `trigger` column in the `transitions` section, you can choose a trigger action from the list as shown in the image.
+|Now assign the created trigger event to the `Transition` you created in the diagram. 
+Under `trigger` column in the `transitions` section, you can choose a trigger action from the list as shown in the image.
 
 NOTE: Transitions can be created or removed in the _Diagram Editor_, but also manually in the normal _Editor_.
 
@@ -1318,23 +1321,27 @@ NOTE: Transitions can be created or removed in the _Diagram Editor_, but also ma
 |image:chapterStateMachines/UpdateStateMachine.png[UpdateStateMachine]
 
 |{counter:step1}.
-|Now having created the various components of the system and described their behavior using state machines, the _State Machine_ for the `AOCS` system can be created in a newly created _ElementConfiguration_ namely `CONOPS` (standing for concept operations). This state machine shall describe the behavior of the whole system.
+|Now having created the various components of the system and described their behavior using state machines, the _State Machine_ for the `AOCS` system can be created in a newly created _ElementConfiguration_ namely `SystemOperation` (standing for concept operations). 
+This state machine shall describe the behavior of the whole system.
 
 See Task No.4 “Creating a State Machine”
 
 |image:chapterStateMachines/AddingSystemStateMachine.png[AddingSystemStateMachine]
 
 |{counter:step1}.
-|Open the _Diagram Editor_ and add the following _States_ and _Transitions_ as shown in the image. This shall serve as an example to represent the behavior of the `AOCS` system.
+|Open the _Diagram Editor_ and add the following _States_ and _Transitions_ as shown in the image. 
+This shall serve as an example to represent the behavior of the `AOCS` system.
 
-NOTE: The green and red arrows shown in the state machine shall represent the _AllowsConstraints_ and _ForbidsConstraints_ respectively.  For instance, the thrusters are on when the safe mode of the satellite is active to perform coarse pointing control.
+NOTE: The green and red arrows shown in the state machine shall represent the _AllowsConstraints_ and _ForbidsConstraints_ respectively.  
+For instance, the thrusters are on when the safe mode of the satellite is active to perform coarse pointing control.
 
 TIP: To use the _State Machine_ of other system components, e.g. the Camera, Reaction Wheels in Main system _State Machine_, one can just drag and drop them from the _Navigator_. 
 
 |image:chapterStateMachines/AOCSSystemStateMachine.png[AOCSSystemStateMachine] image:chapterStateMachines/AOCSTransitionsAndTriggerEvents.png[AOCSTransitionsAndTriggerEvents]
 
 |{counter:step1}.
-|For each section in _State Machine_ concept found in the Editor an excel table with the section instances can be created. This shown in the following image.
+|For each section in _State Machine_ concept found in the Editor an excel table with the section instances can be created. 
+This is shown in the following image on the down right part with a button named [Export to Excel].
 |image:chapterStateMachines/ExtractingExcelTables.png[ExtractingExcelTables]
 |===
 
