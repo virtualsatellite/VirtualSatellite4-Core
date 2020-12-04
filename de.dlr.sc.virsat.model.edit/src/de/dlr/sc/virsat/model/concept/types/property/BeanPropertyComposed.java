@@ -80,5 +80,9 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	public void unset() {
 		// Can't unset the composed ca on the bean level
 	}
-
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.COMPOSED;
+	}
 }

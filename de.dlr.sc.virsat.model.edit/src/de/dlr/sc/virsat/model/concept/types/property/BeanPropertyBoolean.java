@@ -53,4 +53,9 @@ public class BeanPropertyBoolean extends ABeanValueProperty<ValuePropertyInstanc
 	public Boolean getValue() {
 		return Boolean.parseBoolean(ti.getValue());
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.BOOLEAN;
+	}
 }

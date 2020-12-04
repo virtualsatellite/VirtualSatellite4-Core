@@ -60,4 +60,9 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 		}
 		return null;
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.INT;
+	}
 }
