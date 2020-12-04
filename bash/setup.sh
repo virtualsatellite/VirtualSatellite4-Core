@@ -22,7 +22,7 @@ sudo apt-get install openjdk-8-jdk xvfb metacity libvtk6-java libzmq5 libzmq-jav
 # cd ..
   
 # -------------------------------------
-# Installing OverTarget
+# Installing Overtarget
 # -------------------------------------
 
 echo "Installing and running Overtarget"
