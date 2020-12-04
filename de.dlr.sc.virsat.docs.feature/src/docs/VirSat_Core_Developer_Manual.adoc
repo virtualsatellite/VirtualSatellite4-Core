@@ -168,12 +168,13 @@ Following steps describe creation of a new concept.
 |Image
 
 |{counter:step-concept}.
-|Start with clicking menu:File[New > Other...] or kbd:[CTRL+N]. Then from the _new_ dialog select menu:VirSat Model Extension Concept[VirSat Model Extension Concept Wizard] and press btn:[Next>].
+|Start with clicking menu:File[New > Other...] or kbd:[CTRL+N].
+Then from the _new_ dialog select menu:VirSat Model Extension Concept[VirSat Model Extension Concept Wizard] and press btn:[Next>].
 |image::chapterConceptCreation/concept_wizard_selection.png[Select Concept Wizard]
 
 |{counter:step-concept}.
 |In the concept creation wizard input the future concept name and press btn:[Finish].
-NOTE: Most of the built-in concepts in Virtual Satellite have names starting with `de.dlr.sc.virsat.model.extension`, but external concepts can have a different naming convention.
+NOTE: Most of the built-in concepts in Virtual Satellite have names starting with `de.dlr.sc.virsat.model.extension`, but external concepts can follow a different naming convention.
 |image::chapterConceptCreation/concept_creation.png[Concept Creation]
 
 |{counter:step-concept}.
@@ -192,7 +193,8 @@ See section <<Generic Systems Engineering (Concept) Language>> for the details o
 The default concept file only contains categories _Interface_ and _InterfaceEnd_.
 
 Most of the other code in this and other concept plugins is generated based on the contents of the *condept.concept* file.
-The code in directory `src` is generated once, and can be modified and extended as needed, the code in `src-gen` is regenerated every time the concept file is changed.
+The code in directory `src` is generated once, and can be modified and extended as needed.
+The code in `src-gen` is regenerated every time the concept file is changed.
 This automatic generation can be toggled with a toolbar button.
 
 image::chapterConceptCreation/button_toggle_generation.png[Toggle Generation]
@@ -221,7 +223,8 @@ Auto-generated UI plugin contains UI snippets, commands and handlers that extend
 
 ==== Test plugin
 
-Test plugin contains some auto-generated unit tests. You can add more unit tests as you develop your concept.
+Test plugin contains some auto-generated unit tests.
+You can add more unit tests as you develop your concept.
 
 ==== Concept feature
 
