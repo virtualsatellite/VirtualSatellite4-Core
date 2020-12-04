@@ -116,4 +116,9 @@ public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance
 		
 		return null;
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.RESOURCE;
+	}
 }
