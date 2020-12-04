@@ -1213,7 +1213,7 @@ Add requirements by using the button `Add Requirement` in the requirements secti
 |When a new requirement is added, the editor asks of which type it needs to be: 
 
 * You can now choose between the types you create in the configuration element of your project. 
-The left part of the dialog allows to filter by the container element of the configuration, the right side show all applicable types in the currently selected tree element.
+The left part of the dialog allows to filter by the container element of the configuration, the right side shows all applicable types in the currently selected tree element.
 |image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
 
 |{counter:step}.
@@ -1234,7 +1234,7 @@ To do that, create a requirement group by clicking the button `Add RequirementGr
 
 ===== Import / export of requirements 
 
-To integrate requirements management into the model-based systems engineering process, Virtual Satellite supports import of requirements from external tools.
+To integrate requirements management into the model-based systems engineering process, Virtual Satellite supports importing requirements from external tools.
 
 ====== Import from CSV-files
 It is possible to import requirements form CSV files.
@@ -1367,7 +1367,7 @@ One requirement can also have multiple verification methods.
 NOTE: Basic verification types are created in the _VerificationConfiguration_.
 
 NOTE: System model-based verification methods can be added via dedicated editor sections.
-Depending on the used concepts in the project there might be different of these model-based verification methods. 
+Depending on the used concepts in the project there might be different model-based verification methods. 
 
 |image:chapterModeling/subsectionRequirements/AddVerification.png[Add a verification methods to requirement]
 
