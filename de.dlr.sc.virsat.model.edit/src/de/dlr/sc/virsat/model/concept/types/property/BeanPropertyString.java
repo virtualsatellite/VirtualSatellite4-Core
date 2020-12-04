@@ -53,4 +53,9 @@ public class BeanPropertyString extends ABeanValueProperty<ValuePropertyInstance
 	public String getValue() {
 		return ti.getValue();
 	}
+
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.STRING;
+	}
 }

@@ -115,4 +115,9 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	public Command setUnit(EditingDomain ed, String unitName) {
 		return new PropertyInstanceHelper().setUnit(ed, ti, unitName);
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.ENUM;
+	}
 }

@@ -91,4 +91,9 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	public void unset() {
 		ti.setReference(null);
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.REFERENCE;
+	}
 }
