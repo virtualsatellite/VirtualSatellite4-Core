@@ -56,27 +56,12 @@ import io.swagger.annotations.SwaggerDefinition;
 @Api(tags = {"Model"})
 @SwaggerDefinition(
 	info = @Info(
-//		description = "Gets the weather",
-		version = "V",
-		title = "The Model API"//,
-//		termsOfService = "http://theweatherapi.io/terms.html",
-//		contact = @Contact(
-//				name = "Rain Moore", 
-//				email = "rain.moore@theweatherapi.io", 
-//				url = "http://theweatherapi.io"
-//		),
-//		license = @License(
-//				name = "Apache 2.0", 
-//				url = "http://www.apache.org/licenses/LICENSE-2.0"
-//				)
+		version = "v0.0.1",
+		title = "The Model API"
 	),
-	consumes = {"application/json"}, //, "application/xml"},
-	produces = {"application/json"}, //, "application/xml"},
-	schemes = {SwaggerDefinition.Scheme.HTTP}//, SwaggerDefinition.Scheme.HTTPS}//,
-//	tags = {
-//			@Tag(name = "Private", description = "Tag used to denote operations as private")
-//	}, 
-//externalDocs = @ExternalDocs(value = "Meteorology", url = "http://theweatherapi.io/meteorology.html")
+	consumes = {"application/json"},
+	produces = {"application/json"},
+	schemes = {SwaggerDefinition.Scheme.HTTP}
 )
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
@@ -167,9 +152,9 @@ public class ModelAccessResource {
 
 		@ApiOperation(
 				produces = "application/json",
-				value = "Fetch ca",
+				value = "Fetch CA",
 				httpMethod = "GET",
-				notes = "<br>This service fetches cas",
+				notes = "<br>This service fetches CAs",
 				response = ABeanCategoryAssignment.class)
 		@ApiResponses(value = { 
 				@ApiResponse(
@@ -192,9 +177,9 @@ public class ModelAccessResource {
 		
 		@ApiOperation(
 				produces = "application/json",
-				value = "Put ca",
+				value = "Put CA",
 				httpMethod = "PUT",
-				notes = "<br>This service puts cas")
+				notes = "<br>This service puts CAs")
 		@ApiResponse(
 				code = HttpStatus.OK_200,
 				message = "Successful operation")
