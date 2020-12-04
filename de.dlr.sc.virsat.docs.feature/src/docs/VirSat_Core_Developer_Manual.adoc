@@ -158,6 +158,79 @@ Congratulations. You have successfully set up your Git integration!
 
 === Virtual Satellite for Concept Developer
 
+Following steps describe creation of a new concept.
+
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step-concept}.
+|Start with clicking menu:File[New > Other...] or kbd:[CTRL+N].
+Then from the _new_ dialog select menu:VirSat Model Extension Concept[VirSat Model Extension Concept Wizard] and press btn:[Next>].
+|image::chapterConceptCreation/concept_wizard_selection.png[Select Concept Wizard]
+
+|{counter:step-concept}.
+|In the concept creation wizard input the future concept name and press btn:[Finish].
+NOTE: Most of the built-in concepts in Virtual Satellite have names starting with `de.dlr.sc.virsat.model.extension`, but external concepts can follow a different naming convention.
+|image::chapterConceptCreation/concept_creation.png[Concept Creation]
+
+|{counter:step-concept}.
+|After everything is generated and built, you should have four new plugins in the workspace.
+|image::chapterConceptCreation/generated_plugins.png[Generated Plugins]
+|=== 
+
+==== Main concept plugin
+
+The main generated plugin has the same name as the concept, and has the following contents.
+
+image::chapterConceptCreation/main_plugin.png[Main Plugin]
+
+The file *concept.concept* contains the description of the domain elements that can be modeled using this concept.
+See section <<Generic Systems Engineering (Concept) Language>> for the details on how to write this file.
+The default concept file only contains categories _Interface_ and _InterfaceEnd_.
+
+Most of the other code in this and other concept plugins is generated based on the contents of the *condept.concept* file.
+The code in directory `src` is generated once, and can be modified and extended as needed.
+The code in `src-gen` is regenerated every time the concept file is changed.
+This automatic generation can be toggled with a toolbar button.
+
+image::chapterConceptCreation/button_toggle_generation.png[Toggle Generation]
+
+===== Beans
+
+For every Category and Structural Element in the concept file there is a class with the same name in the package `model`.
+These "bean" classes provide a convenient way to programmatically access and manipulate model objects.
+
+===== Validators
+
+Virtual Satellite has a validation builder that runs generic and custom validators against the model data.
+Validators normally check the validity and consistency of the model.
+There is one generated validator as a starting point, but you can add more validators.
+All additional new validators have to be registered in `plugin.xml` in the protected region in the end (this region does not get regenerated).
+
+===== Migrators
+
+As soon as you increase the concept version in `concept.concept`, a new migrator from the previous to the new version will be generated automatically.
+The purpose of the migrator is to migrate data modeled with the older concept version to the new version.
+For most changes the auto-generated migrator is sufficient, however if some custom migration logic is required, it can be added to the migrator class.
+
+==== UI plugin
+
+Auto-generated UI plugin contains UI snippets, commands and handlers that extend Virtual Satellite UI for this concept.
+
+==== Test plugin
+
+Test plugin contains some auto-generated unit tests.
+You can add more unit tests as you develop your concept.
+
+==== Concept feature
+
+The generated concept feature bundles the main and the UI concept plugins.
+It can be used to add the new concept to a custom Virtual Satellite-based RCP product.
+
 == Generic Systems Engineering (Concept) Language 
 
 Concepts are described using the Generic Systems Engineering Language (GSEL), or also short just _concept language_.
