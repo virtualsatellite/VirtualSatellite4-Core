@@ -1195,20 +1195,33 @@ Here you can find a budget breakdown.
 
 |===
 ==== Functional Electrical Architecture
-===== Add interface end to the model
-Virtual Satellite enables the user to add interfaces to the system model.
-The functional electrical architecture is added to the register by opening it with the right mouse and click on Add register in the table chose functional electrical architecture.S
-An interface can be added to a configuration tree by using the right mouse and navigating to Functional Electrical Architecture/Add Interface.
-The interface end and start point can be set as properties of the interface
-image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[InterfaceEnd]
+===== Add Interface to the model
+Virtual Satellite enables the user to add _Interfaces_ to the system model. Add the concept *Functional Electrical Architecture* as described in section in <<Activating a Concept>>
+Elements of the functional electrical architecture can be added to the system model by opening the context menu with the right mouse and click. 
 
-Additional to the Interface end the interface is supposed to be assigned to an interface type.
-A type can be selected by clicking on Drill-Down.
-The types need to be defined as child elements of an InterfaceTypeCollection.
-The InterfaceTypeCollection is created by clicking with the right mouse on the Repository and select Functional Electrical Architecture\Add InterfaceTypeCollection.
-image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceTypeCollection]
-A type can be created by clicking with the right mouse on the InterfaceTypeCollection and selecting Functional\Electrical Architecture\Add InterfaceType
+There are _InterfaceEnds_ that are of a specific _InterfaceType_ and have the potential to connect _Interfaces_.
+
+_InterfaceTypes_ need to be defined as child elements of an _InterfaceTypeCollection_ .
+The _InterfaceTypeCollection_ is created by clicking with the right mouse on the repository and select menu:Context[Functional Electrical Architecture>Add InterfaceTypeCollection].
+image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceType_Collection]
+A type can be created by clicking with the right mouse on the _InterfaceTypeCollection_ and selecting menu:Context[Functional>Electrical Architecture>Add InterfaceType]
 image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
+
+An _InterfaceType_ can be a _DataInterfaceType_ , a _ThermalReferencePoint_ or a _PowerInterfaceType_.
+
+By adding a _RangedVoltageDefinition_ or a _FixedVoltageDefinition_ to the _PowerInterfaceType_ a minimum and maximum voltage  can be specified.
+
+image:chapterModeling/subsectionFEA/VoltageSpecificationPowerInterfaceType.png[Specify the voltage of a power Interface]
+
+_InterfaceEnds_ should be defined as part of an ElementDefinition in a product tree.
+This definition enables elements of the configuration tree to inherit properties defined in the product tree.
+It is added to the product tree by clicking with the right mouse on the menu:Context[product tree >Functional Electrical Architecture>Add _Interface_End].
+
+An _Interface_ can be added manual to an *Element Configuration* in the configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
+The end and start point of the _Interface_ can be set as properties of the _Interface_ as shown in the following image:
+image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[_Interface_End]
+
+Additionally it is possible to add an _Interface_ as described in the following subsection.
 
 ===== Add a new diagram
 :step: 0
@@ -1218,12 +1231,9 @@ image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
 |Step
 |Task
 |Image
-|{counter:s}.
-|Add the concept Mechanical Engineering to the repository.
-|image:chapterModeling/subsectionFEA/AddMechanicalEngineering.PNG[ME]
 
 |{counter:s}.
-|Click on the documents folder in the ConfigurationTree.
+|Click on the documents folder in the *ConfigurationTree*.
 |image:chapterModeling/subsectionFEA/DocumentsElement.PNG[DE]
 
 |{counter:s}.
@@ -1231,23 +1241,23 @@ image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
 |image:chapterModeling/subsectionFEA/NewElement.PNG[NE]
 
 |{counter:s}.
-|Choose VirSat/Virsat Diagram.
+|Choose menu:Context[VirSat>Virsat Diagram].
 |image:chapterModeling/subsectionFEA/Diagram.PNG[NE]
 
 |{counter:s}.
-|Choose interfaces in the Drop Down menu.
+|Choose _Interface_ in the btn:[Drop Down] menu.
 |
 
 |{counter:s}.
-|Drag and Drop the Element Configuration in the Window
+|Drag and Drop the *Element Configurations* from the satellite navigator to the diagram editor .
 |
 
 |{counter:s}.
-|The Interface can be used in the system diagram to connect element configurations by drag and dropping the interface to their interface end.
+|The _Interface_ can be used in the system diagram to connect system elements with a power supply by drag and dropping the _Interface_ to their _Interface_End.
 |image:chapterModeling/subsectionFEA/InterfaceInTheDiagram.PNG[InterfaceIn]
 |===
 
-
+The properties of the _Interface_ and the _InterfaceType_ can be imported and exported from an excel spreadsheet.
 
 ==== Product maturity concept
 
@@ -1612,7 +1622,7 @@ By selecting a project in the _Navigator_, the view will then show a proposed up
 
 In MBSE it is very important not just to model a system, but to also make use of the modeled data.
 In most cases reasonable Input and Output from and to other sources is required, same as some on-the-fly analysis of the current data.
-Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
+Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App _Interface_ based on the Java programming language.
 The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
 
 NOTE: Create an example project (see <<First Steps>>) before you continue with this tutorial.
@@ -1643,7 +1653,7 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |{counter:step}.
 |Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. This example App accesses the repository and prints all units stored in the unit management. 
 
-NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
+NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user _Interface_s as you are used to in an eclipse environment.
 
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
