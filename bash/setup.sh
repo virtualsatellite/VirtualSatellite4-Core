@@ -21,6 +21,13 @@ sudo apt-get install openjdk-8-jdk xvfb metacity libvtk6-java libzmq5 libzmq-jav
 # sudo make install
 # cd ..
   
+# -------------------------------------
+# Installing Overtarget
+# -------------------------------------
+
+echo "Installing and running Overtarget"
+./bash/maven_build.sh -j dependencies -p dependencies
+  
 # -------------------------------------------------------------------
 # generating and setting locale for en_US needed by swtbot
 # -------------------------------------------------------------------
