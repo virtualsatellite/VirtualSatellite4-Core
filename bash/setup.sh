@@ -25,7 +25,7 @@ sudo apt-get install openjdk-8-jdk xvfb metacity libvtk6-java libzmq5 libzmq-jav
 # Installing OverTarget
 # -------------------------------------
 
-echo "Installing and running OverTarget"
+echo "Installing and running Overtarget"
 ./bash/maven_build.sh -j dependencies -p dependencies
   
 # -------------------------------------------------------------------
