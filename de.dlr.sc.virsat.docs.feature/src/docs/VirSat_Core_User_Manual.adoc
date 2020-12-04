@@ -1215,7 +1215,8 @@ image:chapterModeling/subsectionFEA/VoltageSpecificationPowerInterfaceType.png[S
 
 _InterfaceEnds_ should be defined as part of an ElementDefinition in a product tree.
 This definition enables elements of the configuration tree to inherit properties defined in the product tree.
-It can be added to elements in the product tree by right-clicking the selected element definitions and using the context menu: menu:Context[product tree >Functional Electrical Architecture>Add _Interface_End].
+It can be added to elements in the product tree by right-clicking the selected element definitions and using the context menu: menu:Context[Functional Electrical Architecture>Add _Interface_End].
+
 
 An _Interface_ can be added manual to an *Element Configuration* in the configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
 The end and start point of the _Interface_ can be set as properties of the _Interface_ as shown in the following image:
