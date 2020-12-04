@@ -38,9 +38,9 @@ The server provides functionality for administrators, that can manipulate the se
 For that purpose it uses authentication and authorization.
 // For authentication purposes it is planned to an LDAP server can be connected to the REST server.
 // The connection can be secured via HTTPS.
-Every user can only access certain provided Server Repositories.
+Each user can only access the _Server Repositories_ to which he has been granted access.
 
-The connected SVN/git repositories can also be directly changed from _Clients using the Virtual Satellite UI_.
+The connected SVN/git repositories can also be manipulated from _Clients using the Virtual Satellite UI_.
 The server resolves these conflicts and also handles simultaneous changes from multiple REST clients.
 The SVN/git repository is supposed to be the single source of truth in those cases.
 
