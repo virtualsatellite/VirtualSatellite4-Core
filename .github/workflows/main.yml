@@ -191,14 +191,17 @@ jobs:
           name: SWTBot Screenshots
           path: 
             swtbot/*
-            
+
+      # --------------------------------------------
+      # Upload Surefire Reports to github artifacts
+      # --------------------------------------------            
       - name: Upload Surefire Reports on Failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: Surefire Reports
           path: 
-            de.dlr.sc.virsat.test/target/surefire-reports/*
+            /home/runner/work/VirtualSatellite4-Core/VirtualSatellite4-Core/de.dlr.sc.virsat.server.test/target/surefire-reports/*
 
 
   # -----------------------------------------------------
