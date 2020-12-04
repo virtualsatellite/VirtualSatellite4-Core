@@ -255,7 +255,8 @@ It can be nested and inherit data from a selected _ComponentType_.
 
 === Categories
 
-Categories are the main way of assigning data to a Structural Element.
+Categories are the main way of assigning domain data to a Structural Element.
+
 The instance of a Category is called a _CategoryAssignment_.
 
 A Category may contain properties - described in the next section - and
