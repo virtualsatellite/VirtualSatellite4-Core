@@ -31,7 +31,6 @@ public class EuroUnitCreatorTest extends AProjectTestCase {
 
 	@Test
 	public void testAddEuro() {
-
 		SystemOfUnits systemOfUnits = editingDomain.getResourceSet().getUnitManagement().getSystemOfUnit();
 		// Check is the Unit (Euro) in the Unit-Management
 		AUnit euro = QudvUnitHelper.getInstance().getUnitByName(systemOfUnits, "Euro");
