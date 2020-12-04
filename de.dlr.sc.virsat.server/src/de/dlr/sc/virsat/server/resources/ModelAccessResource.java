@@ -152,9 +152,9 @@ public class ModelAccessResource {
 
 		@ApiOperation(
 				produces = "application/json",
-				value = "Fetch ca",
+				value = "Fetch CA",
 				httpMethod = "GET",
-				notes = "This service fetches cas")
+				notes = "This service fetches CAs")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
@@ -176,9 +176,9 @@ public class ModelAccessResource {
 		
 		@ApiOperation(
 				produces = "application/json",
-				value = "Put ca",
+				value = "Put CA",
 				httpMethod = "PUT",
-				notes = "This service puts cas")
+				notes = "This service puts CAs")
 		@ApiResponse(
 				code = HttpStatus.OK_200,
 				message = "Successful operation")
