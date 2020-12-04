@@ -342,13 +342,13 @@ A description of the property.
 * _default_: 
 The default value after instantiation.
 
-Resource:
+Resource::
 Contains a link to a resource on the file system.
 Can be equipped further with the following attributes:
 * _description_: 
 A description of the property.
 
-Reference:
+Reference::
 Contains a reference to a Category Assignment or  in the model.
 Can be equipped further with the following attributes:
 * _of Type_: 
@@ -356,7 +356,7 @@ The _Category_ or _Property_ that can be referenced.
 * _description_: 
 A description of the property.
 
-EReference:
+EReference::
 Contains a reference to an EMF object outside of the model.
 Can be equipped further with the following attributes:
 * _of Type_: 
