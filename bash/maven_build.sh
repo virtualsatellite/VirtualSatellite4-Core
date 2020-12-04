@@ -71,6 +71,7 @@ checkforMavenProblems() {
 	| grep -v "Artifact not found:" \
 	| grep -v "An error occurred while transferring artifact canonical:" \
 	| grep -v "Unable to read repository at" \
+	| grep -v "Unknown Host:" \
 	|| exit 0 && exit 1;)
 }
 
@@ -79,7 +80,7 @@ callMavenSurefire() {
 	echo "Setting VS_JAR_ZMQ to: $VS_JAR_ZMQ"
 
 	echo "Maven - Surefire - ${MAVEN_PROFILE}"
-	mvn clean compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
+	mvn compile -P ${MAVEN_PROFILE},target -B -V | tee maven.log
 	echo "Check for Maven Problems on Overtarget:"
 	(grep -n "\[\(WARN\|ERROR\)\]" maven.log || exit 0  && exit 1;)
 	mvn clean install -P ${MAVEN_PROFILE},surefire,product -B -V | tee maven.log
@@ -170,7 +171,11 @@ case $MAVEN_PROFILE in
                         exit 1
 esac
 
+# Call the script to setup the build environment
+# which contains the variables linking to the vtk or zmq jars
+set +e
 source ./bash/setup_environment.sh
+set -e
 
 # Decide which job to run
 case $TRAVIS_JOB in
