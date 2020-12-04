@@ -289,7 +289,6 @@ The Applicable For can have the following values:
 Cardinality::
 Defines how many Category Assignments of this Category can be assigned to one Structural Element Instance.
 If no Cardinality is defined, then the number is unlimited.
-By defining the Cardinality with some integer number, the number Category Assignments can be limited appropriately.
 
 === Properties
 
