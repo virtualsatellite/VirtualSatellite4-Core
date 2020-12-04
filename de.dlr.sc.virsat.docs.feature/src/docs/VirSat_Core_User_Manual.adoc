@@ -1134,6 +1134,251 @@ TIP: You can also use *drag & drop* again to set the inheritance links.
 
 You finalized the tutorial for the extended product structures. 
 
+==== Requirements modeling concept
+
+To support model based requirements management and to verify requirements by using the system model, Virtual Satellite provides a concept to model requirements.
+Requirements can be either imported from other tools or created directly within Virtual Satellite.
+
+===== First steps
+
+Before you can start: 
+
+* Open Virtual Satellite.
+
+* Create a new Virtual Satellite Project.
+
+* Activate your required concepts, such as _Product structure_ and _Requirements_. 
+
+
+For more information check <<Modeling with Virtual Satellite>>.
+
+===== Configure requirements modeling
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Create a _RequirementsConfigurationCollection_ element directly in the Virtual Satellite Repository. 
+
+* This collection is a place where all requirements configuration elements should be stored.
+
+TIP: User rights can be customized to prevent other users from editing this collection.
+
+Add a _RequirementsConfiguration_ under the collection.
+
+NOTE: The _RequirementsConfiguration_ element is used to define requirement types.
+These types specify attributes of each requirement.
+
+Double-click the new configuration element to open its editor. 
+
+Add a new requirement type.
+|image:chapterModeling/subsectionRequirements/AddRequirementType.png[Add requirement type]
+
+|{counter:step}.
+|Specify a name for the new requirement type and add attributes in the dialog box.
+|image:chapterModeling/subsectionRequirements/SpecifyRequirementTypeNameAndAttributes.png[Specify requirement type name and attributes]
+
+|===
+
+===== Modeling of requirements
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Go to the model location where you want to add requirements. 
+
+NOTE: Requirements can also be split to several elements within a model. 
+
+At the desired location create a _RequirementSpecification_.
+|image:chapterModeling/subsectionRequirements/CreateRequirementSpec.png[Create requirement specification]
+
+|{counter:step}.
+|Double-click the specification element to open its editor. 
+
+Add requirements by using the button `Add Requirement` in the requirements section.
+|image:chapterModeling/subsectionRequirements/AddRequirement.png[Add requirements]
+
+|{counter:step}.
+|When a new requirement is added, the editor asks of which type it needs to be: 
+
+* You can now choose between the types you create in the configuration element of your project. 
+The left part of the dialog allows to filter by the container element of the configuration, the right side shows all applicable types in the currently selected tree element.
+|image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
+
+|{counter:step}.
+|After a requirement of the selected type is added, its values can be added.
+|image:chapterModeling/subsectionRequirements/AddValues.png[Add values]
+
+|{counter:step}.
+|It is also possible to create hierarchies of requirements.
+To do that, create a requirement group by clicking the button `Add RequirementGroup`.
+|image:chapterModeling/subsectionRequirements/CreateRequirementGroup.png[Create requirement group]
+
+|{counter:step}.
+|To create requirements within a group click on the button `Drill-Down` to go to the group.
+|image:chapterModeling/subsectionRequirements/DrillDownReqGroup.png[Drill-Down to requirement group]
+
+|===
+
+
+===== Import / export of requirements 
+
+To integrate requirements management into the model-based systems engineering process, Virtual Satellite supports importing requirements from external tools.
+
+====== Import from CSV-files
+It is possible to import requirements form CSV files.
+CSV files can be exported from e.g. Excel.
+To import requirements from CSV files follow the next steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select `Import` from the file menu in Virtual Satellite
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select `CSV Requirements Import` form the `Virtual Satellite` category.
+|image:chapterModeling/subsectionRequirements/ImportWizard.png[Select the correct import wizard]
+
+|{counter:step}.
+|Select a CSV file to import from, check if the column separator is correct (from a default Excel export it is “;”) and set the line number of the heading and the first data line.
+Then select a _RequirementsConfiguration_ which should be container for the new requirement type.
+It is also possible to select an existing _requirement_ type for the import.
+For more information got to the next section <<Map CSV requirements column to existing type>>.
+|image:chapterModeling/subsectionRequirements/CsvImportStartPage.png[Import start page]
+
+|{counter:step}.
+|On the next page of the import wizard, select a type for each column found in the file.
+If the type is not clear yet it can be left as string.
+It is always possible to import types later.
+
+NOTE: The type is used only for editing support; values are not validated when importing requirement values.
+Unselected columns are not imported.
+|image:chapterModeling/subsectionRequirements/CsvImportTypeCustomizationPage.png[Configure the imported type]
+
+|{counter:step}.
+|Then select the _RequirementSpecification_ in which the requirements should be imported to.
+|image:chapterModeling/subsectionRequirements/CsvImportTargetPage.png[Selection of import target element]
+
+|===
+
+After the import, the targeted specification element should contain the requirements.
+For columns with the type _Enumeration_, the editor shows all values which were already contained in this column from the moment of import.
+Additional values can be added to the enumeration when re-selecting _Enumeration_ as type of the attribute in the editor of the requirement type.
+
+image:chapterModeling/subsectionRequirements/CsvImportEnumeration.png[Imported enumerations]
+
+====== Map CSV requirement columns to existing type 
+
+It is also possible to import requirements by using an existing type.
+This does not create a new requirement type and can help to have consistent requirement types for all modeled requirements.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Instead of selecting the container for the new requirement type, select the existing type on the first page of the import wizard.
+|image:chapterModeling/subsectionRequirements/CsvImportStartPageExisitingType.png[Select an existing type]
+
+|{counter:step}.
+|On the next page, map the columns of the CSV-File to the attributes of the existing requirement type.
+|image:chapterModeling/subsectionRequirements/CsvImportTypeMappingPage.png[Map requirement attributes to CSV columns]
+
+|===
+
+===== Requirements verification
+
+Managing requirements within Virtual Satellite allows to verify the requirements with the system model.
+This section explains how these model based verification methods can be used and how custom project-specific verification methods can be integrated into the project.
+
+====== Configuration of basic verification methods
+
+Basic verification methods do not use the system model but are simple model representations to reflect external verification processes.
+
+To configure these basic verification methods follow these steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Add a _VerificationConfiguration_ to your _RequirementsConfigurationCollection_.
+|image:chapterModeling/subsectionRequirements/AddVerificationConfiguration.png[Add verification configuration]
+
+|{counter:step}.
+|Open the _VerificationConfiguration_ by double-clicking it in the navigator and use the `Add VerificationType` button to add a new verification method.
+|image:chapterModeling/subsectionRequirements/AddVerificationType.png[Add a verification type]
+
+|{counter:step}.
+|Configure the new verification type by specifying a name, description and what kind of verification it is.
+|image:chapterModeling/subsectionRequirements/ConfigureVerificationType.png[Configure the verification type]
+
+|===
+
+Besides these basic verification methods, Virtual Satellite supports verification methods that use and link to the system model.
+System model-based verification methods are provided via the different domain concepts.
+For more information how concepts are developed check out our https://github.com/virtualsatellite/VirtualSatellite4-Core/releases/download/Release_4.12.1/VirSat_Core_Developer_Manual.pdf[developer manual]. 
+
+====== Add verification methods to requirements
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|To add verification a method to a requirement open it in the VirSat Editor.
+Easiest way to do so is to press the `Drill-Down` button in the _RequirementSpecification_ or by double-clicking the element in the VirSat Navigator.
+|image:chapterModeling/subsectionRequirements/OpenRequirementEditor.png[Open requirement in editor]
+
+|{counter:step}.
+|Add verification methods in the dedicated editor sections of the requirement.
+One requirement can also have multiple verification methods. 
+
+NOTE: Basic verification types are created in the _VerificationConfiguration_.
+
+NOTE: System model-based verification methods can be added via dedicated editor sections.
+Depending on the used concepts in the project there might be different model-based verification methods. 
+
+|image:chapterModeling/subsectionRequirements/AddVerification.png[Add a verification methods to requirement]
+
+|===
+
+The verification methods have a *status* attribute which also has influence on the requirement status which is shown in the specification table.
+
+NOTE: Depending on the verification status, the requirement status might change automatically.
+
+image:chapterModeling/subsectionRequirements/RequirementStatus.png[Requirement status]
+
 
 ==== Equipment mass and mass summaries concept
 
