@@ -13,8 +13,8 @@
     "/repository/{repoName}/ca" : {
       "put" : {
         "tags" : [ "Model" ],
-        "summary" : "Put ca",
-        "description" : "This service puts cas",
+        "summary" : "Put CA",
+        "description" : "This service puts CAs",
         "operationId" : "putCa",
         "consumes" : [ "application/json" ],
         "parameters" : [ {
@@ -41,8 +41,8 @@
     "/repository/{repoName}/ca/{caUuid}" : {
       "get" : {
         "tags" : [ "Model" ],
-        "summary" : "Fetch ca",
-        "description" : "This service fetches cas",
+        "summary" : "Fetch CA",
+        "description" : "This service fetches CAs",
         "operationId" : "getCa",
         "produces" : [ "application/json" ],
         "parameters" : [ {
