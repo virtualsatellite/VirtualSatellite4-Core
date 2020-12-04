@@ -24,6 +24,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 public class EuroUnitCreator {
 	
 	private VirSatTransactionalEditingDomain virSatEd;
+	private static final String EUROSYMBOL = "\u20AC";
 	
 	public EuroUnitCreator(VirSatTransactionalEditingDomain virSatEd) {
 		this.virSatEd = virSatEd;
@@ -36,7 +37,7 @@ public class EuroUnitCreator {
 		List<SystemOfQuantities> systemOfQuantities = unitManagement.getSystemOfUnit().getSystemOfQuantities();
 		AQuantityKind dimensionless = QudvUnitHelper.getInstance().getQuantityKindByName(systemOfQuantities.get(0), "Dimensionless");
 		SimpleUnit euro = QudvUnitHelper.getInstance().createSimpleUnit("Euro",
-				"\u20AC", "European Economic and Monetary Union", " ", dimensionless);
+				EUROSYMBOL, "European Economic and Monetary Union", " ", dimensionless);
 		QudvModelCommandFactory qudvController = new QudvModelCommandFactory(virSatEd);
 		Command addEuroCommand = qudvController.addSimpleUnit(unitManagement, euro);
 		virSatEd.getCommandStack().execute(addEuroCommand);
