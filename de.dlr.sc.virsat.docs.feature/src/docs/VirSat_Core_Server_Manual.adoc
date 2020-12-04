@@ -7,7 +7,8 @@
 
 == Introduction
 
-Virtual Satellite can be run headless as a server that allows you to connect Virtual Satellite to a network, e.g. the Internet.
+Virtual Satellite can be run headless as a server.
+That allows you to connect Virtual Satellite to a network, e.g. the Internet.
 The REST API can be used to access and manipulate the Virtual Satellite model remotely and without the desktop interface.
 It provides the Model in form of Resources that can be manipulated via the standard HTTP commands GET, PUT, POST and DELETE.
 
