@@ -160,7 +160,7 @@ Congratulations. You have successfully set up your Git integration!
 
 == Generic Systems Engineering (Concept) Language 
 
-Concepts are described using the Generic Systems Engineering Language (GSEL).
+Concepts are described using the Generic Systems Engineering Language (GSEL), or also short just _concept language_.
 The following gives a break-down on the key words and functionalities provided by the GSEL.
 
 === Concepts
@@ -192,6 +192,11 @@ This file is used to automtically migrate old repositories based on an older con
 WARNING: When editing a concept, the version number should be increased before making any changes to the concept.
 Otherwise the changes will be considered to be part of the old version.
 Not doing this will cause automatic migration to fail!
+
+A concept can be filled with _<<Structural Elements>>_ and _<<Categories>>_.
+Structural Elements decompose the system into its basic structure, Categories contain the actual engiering data. 
+By decoupling the engineering domain data from the system model's structure, it is possible to add new concepts to a system model later and to also open system models without all concepts loaded in Virtual Satellite.
+
 
 === Structural Elements
 
