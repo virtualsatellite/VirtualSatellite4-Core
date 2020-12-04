@@ -421,7 +421,7 @@ Category Parameter {
 	FloatProperty value;
 	FloatProperty valueWithMargin;
 	
-	Ref: valueWithMargin = value * Config.margin;
+	Ref: valueWithMargin = value * (1 + Config.margin);
 }
 ----
 
