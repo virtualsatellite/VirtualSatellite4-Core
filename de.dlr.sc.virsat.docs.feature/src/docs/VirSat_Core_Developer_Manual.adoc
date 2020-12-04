@@ -219,7 +219,7 @@ IsRootStructuralElement::
 Makes it possible to create instances directly in the _Repository_.
 
 Applicable For::
-Describes which Structural Elements may have instances of this Structural Element as a child.
+Describes in which structural element this element's instances can be added into.
 The Applicable For can have the following values:
 * A list of the form _[StructuralElement1, StructuralElement2,...]_.
 * _All_. Instances can be then attached to any type of Structural Element.
