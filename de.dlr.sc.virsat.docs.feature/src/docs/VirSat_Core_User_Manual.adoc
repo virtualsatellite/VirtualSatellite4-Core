@@ -1259,7 +1259,7 @@ according to <<Activating a Concept>>.
 |Step
 |Task
 |Image
-
+ 
 |{counter:step1}.
 |First of all, the concepts _State Machines_ and _Product Structure_ need to be activated in the _Repository_.
 |image:chapterStateMachines/AddStateMachineConcept.png[AddStateMachineConcept]
