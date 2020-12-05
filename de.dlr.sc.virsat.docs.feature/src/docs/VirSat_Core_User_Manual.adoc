@@ -1262,18 +1262,18 @@ according to <<Activating a Concept>>.
 
 |{counter:step1}.
 |First of all, the concepts _State Machines_ and _Product Structure_ need to be activated in the _Repository_.
-|image:chapterStateMachines/1.png[AddStateMachineConcept]
+|image:chapterStateMachines/AddStateMachineConcept.png[AddStateMachineConcept]
 
 |{counter:step1}.
 |For the system, create a _ConfigurationTree_ with a _ElementConfiguration_, and give it the name `AOCS` (Attitude and Orbit Control System). 
 This shall serve only as an example.
-|image:chapterStateMachines/2.png[CreatingAOCSElementConfiguration]
+|image:chapterStateMachines/CreatingAOCSElementConfiguration.png[CreatingAOCSElementConfiguration]
 
 |{counter:step1}.
 |Now the `AOCS` shall for example contain components like a Camera as payload, as well as the Thrusters and Reaction Wheels for attitude control purposes. 
 
 For this, add three _ElementConfiguration_ elements and give them the following names: `CAM`, `THR`, `RW`.
-|image:chapterStateMachines/3.png[CreateSubcomponentsOfSystem]
+|image:chapterStateMachines/CreateSubcomponentsOfSystem.png[CreateSubcomponentsOfSystem]
 
 |{counter:step1}.
 |Now create a _State Machine_ element for any of the system components. 
@@ -1281,11 +1281,11 @@ In the following a _State Machine_ is created for the Camera that shall be used 
 
 Now you can add a state machine to the component `CAM` in the _Navigator_ with `Context` › `State Machines` › `Add StateMachine`.
 
-|image:chapterStateMachines/4.png[OpenDiagramEditor]
+|image:chapterStateMachines/CreateCamStateMachine.png[CreateCamStateMachine]
 
 |{counter:step1}.
 |Having created a _State Machine_ for the camera. Now open the _State Machine Diagram Editor_ in the _Navigator_ with `Context` › `Open Diagram Editor`.
-|image:chapterStateMachines/5.png[AddStateMachine]
+|image:chapterStateMachines/OpenDiagramEditor.png[OpenDiagramEditor]
 
 |{counter:step1}.
 |The _Diagram Editor_ shall look as shown in the image. 
