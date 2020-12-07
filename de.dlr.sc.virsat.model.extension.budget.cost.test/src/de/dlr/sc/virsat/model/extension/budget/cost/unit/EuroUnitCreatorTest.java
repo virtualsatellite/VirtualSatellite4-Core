@@ -46,7 +46,7 @@ public class EuroUnitCreatorTest extends AProjectTestCase {
 
 		// assertNotNull because the Unit is in the Unit-Management
 		assertNotNull("Euro  is exist", euro);
-		assertEquals("\u20AC", euro.getSymbol());
+		assertEquals(EuroUnitCreator.EUROSYMBOL, euro.getSymbol());
 		assertEquals("Dimensionless", euro.getQuantityKind().getName());
 		assertEquals("European Economic and Monetary Union", euro.getDescription());
 	}
