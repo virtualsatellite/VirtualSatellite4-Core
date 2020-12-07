@@ -186,7 +186,7 @@ jobs:
         id: build_decision
         uses: virtualsatellite/ci-actions/ci-build-decision-action@master
         with:
-          github_ref: {{ github.ref}}
+          github_ref: {{ github.ref }}
           github_base_ref: {{ github.base_ref }}
           github_event_name: {{ github.event_name }}
 
