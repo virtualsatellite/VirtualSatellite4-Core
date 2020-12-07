@@ -10,10 +10,12 @@ Require-Bundle: de.dlr.sc.virsat.model.edit,
  org.eclipse.graphiti;visibility:=reexport,
  org.eclipse.core.resources,
  org.eclipse.equinox.registry,
- org.eclipse.ui.workbench
-Export-Package: de.dlr.sc.virsat.graphiti.diagram,
- de.dlr.sc.virsat.graphiti.util,
- de.dlr.sc.virsat.graphiti
+ org.eclipse.ui.workbench,
+ org.apache.commons.lang
+Export-Package: de.dlr.sc.virsat.graphiti,
+ de.dlr.sc.virsat.graphiti.diagram,
+ de.dlr.sc.virsat.graphiti.label,
+ de.dlr.sc.virsat.graphiti.util
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Bundle-Activator: de.dlr.sc.virsat.graphiti.Activator
