@@ -9,13 +9,45 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes;
 
-import de.dlr.sc.virsat.model.extension.budget.cost.model.ACostTypesCollection;
-import de.dlr.sc.virsat.model.extension.budget.cost.model.MaterialCost;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class SummaryTypes extends ACostTypesCollection {
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 
-	public void summaryTyp() {
+public class SummaryTypes {
+
+	public Map<CostType, Double> summaryTyp(CostSummary costSummary) {
+		Map<CostType, Double> map = new HashMap<>();
 		
-		MaterialCost[] materialCosts = 
+		StructuralElementInstance sei = (StructuralElementInstance) costSummary
+				.getTypeInstance().getCategoryAssignmentContainer();
+		
+		if (sei == null) {
+			return map;
+		}
+		
+		IBeanStructuralElementInstance beanParent = new BeanStructuralElementInstance(sei);
+		
+		List<IBeanStructuralElementInstance> beanSeis = new ArrayList<>(beanParent.getDeepChildren(IBeanStructuralElementInstance.class));
+		beanSeis.add(beanParent);
+		
+		for (IBeanStructuralElementInstance beanSei : beanSeis) {
+			List<CostEquipment> costEquipments = beanSei.getAll(CostEquipment.class);
+			for (CostEquipment costEquipment : costEquipments) {
+				Double costs = costEquipment.getCost();
+				CostType type = costEquipment.getType();
+				Double oldCosts = map.getOrDefault(type, 0d);
+				map.put(type, oldCosts + costs);
+			}
+		}
+		
+		return map;
 	}
 }
