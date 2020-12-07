@@ -26,7 +26,7 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({		EuroUnitCreatorTest.class
+@SuiteClasses({		 EuroUnitCreatorTest.class
 				})
 
 /**
