@@ -182,6 +182,23 @@ jobs:
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@master
+        with:
+          github_ref: {{ github.ref}}
+          github_base_ref: {{ github.base_ref }}
+          github_event_name: {{ github.event_name }}
+
+      - name: Build - Report build Decision
+        run: |
+          echo Build-Type: ${{ steps.build_decision.outputs.build_type }}
+          echo Deploy Type: ${{ steps.build_decision.outputs.deploy_type }}
+         
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
       - name: Build and Test - Checkstyle
         uses: virtualsatellite/ci-actions/ci-maven-build-action@master
         with:
