@@ -12,10 +12,10 @@ package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.state
 import org.eclipse.graphiti.features.IDirectEditingInfo;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.algorithms.Ellipse;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
-import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.ChopboxAnchor;
@@ -32,6 +32,7 @@ import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatAddShapeFeature;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.MultilineLabelFormatter;
 /**
  * Feature for adding states to the state machine diagram.
  * @author bell_er
@@ -127,7 +128,8 @@ public class StateAddFeature extends VirSatAddShapeFeature {
     	link(imageShape, state);
     	
     	Shape nameShape = peCreateService.createShape(containerShape, false);	
-    	Text nameText = gaService.createText(nameShape, state.getName());		
+    	String formattedText = new MultilineLabelFormatter().getLabel(state.getName());
+    	AbstractText nameText = gaService.createMultiText(nameShape, formattedText);		
     	nameText.setForeground(manageColor(IColorConstant.BLACK));	
     	nameText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);	
     	nameText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
