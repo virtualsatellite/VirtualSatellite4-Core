@@ -34,9 +34,9 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.ITransitionLabelProvider;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.LabelProviderInstantiator;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.MultilineLabelFormatter;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.ITransitionLabelProvider;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.LabelProviderInstantiator;
 /** 
  * Update feature for updating state machine
  * @author bell_er
