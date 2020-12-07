@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions;
+package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

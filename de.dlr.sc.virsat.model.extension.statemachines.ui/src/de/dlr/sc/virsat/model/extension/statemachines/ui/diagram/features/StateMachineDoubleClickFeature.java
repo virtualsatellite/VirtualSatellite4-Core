@@ -30,8 +30,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.ITransitionLabelProvider;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.LabelProviderInstantiator;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.ITransitionLabelProvider;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.LabelProviderInstantiator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
