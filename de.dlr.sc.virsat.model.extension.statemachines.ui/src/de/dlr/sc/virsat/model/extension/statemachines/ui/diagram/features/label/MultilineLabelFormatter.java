@@ -17,6 +17,8 @@ import org.apache.commons.lang.WordUtils;
  */
 public class MultilineLabelFormatter {
 	
+	public static final int WRAP_COLUMN_NUMBER = 1;
+	
 	
 	/**
 	 * Formating a multi line label so that it wraps if following the camel case convention
@@ -27,13 +29,13 @@ public class MultilineLabelFormatter {
 		StringBuilder builder = new StringBuilder();
 		originalLabel = originalLabel.replace('_', ' ');
 		char[] charArray = originalLabel.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-        	if (Character.isUpperCase(charArray[i]) && i > 0 && !Character.isUpperCase(charArray[i - 1])) {
+        for (int i = 1; i < charArray.length; i++) {
+        	if (Character.isUpperCase(charArray[i]) && !Character.isUpperCase(charArray[i - 1])) {
             	builder.append(' ');
             }
             builder.append(charArray[i]);
         }
-		return WordUtils.wrap(builder.toString(), 1);
+        return WordUtils.wrap(builder.toString(), WRAP_COLUMN_NUMBER);
 	}
 
 }
