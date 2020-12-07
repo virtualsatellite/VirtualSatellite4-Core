@@ -19,7 +19,6 @@
 	}
 	
 	Category MaterialCost extends CostType description " "{
-		
 	}
 	
 	Category ACostParameters description "Definition of the equipment cost" {

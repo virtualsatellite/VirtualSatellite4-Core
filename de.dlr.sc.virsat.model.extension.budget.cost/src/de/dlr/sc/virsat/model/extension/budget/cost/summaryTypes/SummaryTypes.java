@@ -23,8 +23,13 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 
 public class SummaryTypes {
 
-	public Map<CostType, Double> summaryTyp(CostSummary costSummary) {
-		Map<CostType, Double> map = new HashMap<>();
+	/**
+	 * 
+	 * @param costSummary 
+	 * @return the CostType with the Value of the cost.
+	 */
+	public Map<CostType, Double[]> summaryTyp(CostSummary costSummary) {
+		Map<CostType, Double[]> map = new HashMap<>();
 		
 		StructuralElementInstance sei = (StructuralElementInstance) costSummary
 				.getTypeInstance().getCategoryAssignmentContainer();
@@ -35,19 +40,20 @@ public class SummaryTypes {
 		
 		IBeanStructuralElementInstance beanParent = new BeanStructuralElementInstance(sei);
 		
-		List<IBeanStructuralElementInstance> beanSeis = new ArrayList<>(beanParent.getDeepChildren(IBeanStructuralElementInstance.class));
+		List<IBeanStructuralElementInstance> beanSeis = new ArrayList<>(beanParent.
+				getDeepChildren(IBeanStructuralElementInstance.class));
 		beanSeis.add(beanParent);
 		
 		for (IBeanStructuralElementInstance beanSei : beanSeis) {
 			List<CostEquipment> costEquipments = beanSei.getAll(CostEquipment.class);
 			for (CostEquipment costEquipment : costEquipments) {
 				Double costs = costEquipment.getCost();
+				Double margin = costEquipment.getMargin();
 				CostType type = costEquipment.getType();
-				Double oldCosts = map.getOrDefault(type, 0d);
-				map.put(type, oldCosts + costs);
-			}
-		}
-		
+				Double[] oldValues = map.getOrDefault(type, new Double[] { 0d, 0d });
+				map.put(type, new Double[] {oldValues[0] + costs, oldValues[1] + margin}); 
+			} 
+		} 
 		return map;
 	}
 }
