@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label;
+package de.dlr.sc.virsat.graphiti.label;
 
 import org.apache.commons.lang.WordUtils;
 

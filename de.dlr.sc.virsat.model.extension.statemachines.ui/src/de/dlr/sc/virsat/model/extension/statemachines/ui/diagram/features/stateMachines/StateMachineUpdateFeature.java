@@ -28,13 +28,13 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
+import de.dlr.sc.virsat.graphiti.label.MultilineLabelFormatter;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatUpdateFeature;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.MultilineLabelFormatter;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.ITransitionLabelProvider;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.LabelProviderInstantiator;
 /** 

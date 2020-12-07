@@ -28,11 +28,11 @@ import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 
+import de.dlr.sc.virsat.graphiti.label.MultilineLabelFormatter;
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatAddShapeFeature;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
-import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.label.MultilineLabelFormatter;
 /**
  * Feature for adding states to the state machine diagram.
  * @author bell_er
