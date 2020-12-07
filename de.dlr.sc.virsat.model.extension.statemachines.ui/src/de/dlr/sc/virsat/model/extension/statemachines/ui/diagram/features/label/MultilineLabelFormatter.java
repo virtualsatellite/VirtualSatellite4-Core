@@ -29,6 +29,7 @@ public class MultilineLabelFormatter {
 		StringBuilder builder = new StringBuilder();
 		originalLabel = originalLabel.replace('_', ' ');
 		char[] charArray = originalLabel.toCharArray();
+		builder.append(charArray[0]);
         for (int i = 1; i < charArray.length; i++) {
         	if (Character.isUpperCase(charArray[i]) && !Character.isUpperCase(charArray[i - 1])) {
             	builder.append(' ');
