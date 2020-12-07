@@ -86,13 +86,7 @@ jobs:
       - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
-      # --------------------------------------------
-      # Development and Feature branches
-      # --------------------------------------------
-      - name: Build and Test - SpotBugs
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@master
-        with:
-          job: spotbugs
+     
 
   # -----------------------------------------------------
   # Build and Test - Surefire Job
@@ -127,14 +121,6 @@ jobs:
       - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
-      # --------------------------------------------
-      # Development and Feature branches
-      # --------------------------------------------
-      - name: Build and Test - Surefire
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@master
-        with:
-          job: sureheadless
-       
       # --------------------------------------------
       # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
@@ -198,7 +184,8 @@ jobs:
       - name: Build and Test - Checkstyle
         uses: virtualsatellite/ci-actions/ci-maven-build-action@master
         with:
-          job: checkstyle
+          build_job: checkstyle
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
   # -----------------------------------------------------
   # Build, Assemble and Deploy Job
@@ -233,13 +220,7 @@ jobs:
       - name: Build - Setup
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
-      # --------------------------------------------
-      # Development and Feature branches
-      # --------------------------------------------
-      - name: Build - Assemble
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@master
-        with:
-          job: assemble
+     
 
       # --------------------------------------------
       # Create a tag on the Development branch
