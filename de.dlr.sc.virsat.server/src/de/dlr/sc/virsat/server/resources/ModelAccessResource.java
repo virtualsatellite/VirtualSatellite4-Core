@@ -25,8 +25,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -40,14 +42,31 @@ import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
 
 /**
  * The resource to access the VirSat data model of a server repository
  * Provides an endpoint to access a repository
  */
+@Api(tags = {"Model"})
+@SwaggerDefinition(
+	info = @Info(
+		version = "v0.0.1",
+		title = "The Model API"
+	),
+	consumes = {"application/json"},
+	produces = {"application/json"},
+	schemes = {SwaggerDefinition.Scheme.HTTP}
+)
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
 
+	@Inject
 	TransactionalJsonProvider provider;
 	
 	public static final String PATH = "/repository";
@@ -60,10 +79,7 @@ public class ModelAccessResource {
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
 
-	@Inject
-	public ModelAccessResource(TransactionalJsonProvider provider) { 
-		this.provider = provider;
-	}
+	public ModelAccessResource() { }
 	
 	/**
 	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
@@ -81,7 +97,7 @@ public class ModelAccessResource {
 
 		return null;
 	}
-
+	
 	/**
 	 * The resource to access the VirSat data model of a specific server repository
 	 * Provides the following endpoints:
@@ -93,6 +109,7 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
+	@Api(hidden = true)
 	public static class RepoModelAccessResource {
 	
 		private Repository repository;
@@ -104,7 +121,8 @@ public class ModelAccessResource {
 		private Response createBadRequestResponse(String msg) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
 		}
-		
+	
+		@ApiOperation(hidden = true, value = "")
 		@GET
 		@Path(PROPERTY + "/{propertyUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -115,6 +133,7 @@ public class ModelAccessResource {
 					)).build();
 		}
 		
+		@ApiOperation(hidden = true, value = "")
 		@PUT
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -130,6 +149,21 @@ public class ModelAccessResource {
 		@GET
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
+
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch CA",
+				httpMethod = "GET",
+				notes = "<br>This service fetches CAs",
+				response = ABeanCategoryAssignment.class)
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = IBeanCategoryAssignment.class,
+						message = "Successful operation"),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Bad Request")})
 		public Response getCa(@PathParam("caUuid") String caUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(
@@ -141,6 +175,14 @@ public class ModelAccessResource {
 			}
 		}
 		
+		@ApiOperation(
+				produces = "application/json",
+				value = "Put CA",
+				httpMethod = "PUT",
+				notes = "<br>This service puts CAs")
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = "Successful operation")
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -152,6 +194,7 @@ public class ModelAccessResource {
 		 * Returns a response with a list of the root seis
 		 * @return a server response
 		 */
+		@ApiOperation(hidden = true, value = "")
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -178,6 +221,7 @@ public class ModelAccessResource {
 		 * @param seiUuid uuid of the sei
 		 * @return a server response
 		 */
+		@ApiOperation(hidden = true, value = "")
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -192,6 +236,7 @@ public class ModelAccessResource {
 		}
 		
 		@PUT
+		@ApiOperation(hidden = true, value = "")
 		@Path(SEI)
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response putSei(ABeanStructuralElementInstance bean) {
