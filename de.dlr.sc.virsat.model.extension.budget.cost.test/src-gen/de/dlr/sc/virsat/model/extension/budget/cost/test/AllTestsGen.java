@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummaryTest;
-import de.dlr.sc.virsat.model.extension.budget.cost.model.MaterialCostTest;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntryTest;
 import de.dlr.sc.virsat.model.extension.budget.cost.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipmentTest;
 import de.dlr.sc.virsat.model.extension.budget.cost.validator.CostValidatorTest;
@@ -34,7 +34,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypeTest;
 
 @SuiteClasses({
 	CostTypeTest.class,
-	MaterialCostTest.class,
+	CostTableEntryTest.class,
 	CostEquipmentTest.class,
 	CostSummaryTest.class,
 	CostTypesCollectionTest.class,

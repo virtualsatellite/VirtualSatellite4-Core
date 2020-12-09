@@ -10,7 +10,7 @@
 package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.budget.cost.ui.command.CreateAddMaterialCostCommand;
+import de.dlr.sc.virsat.model.extension.budget.cost.ui.command.CreateAddCostTableEntryCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -23,19 +23,19 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAss
  * 
  * Don't Manually modify this class
  * 
- *  
+ * Definition of the equipment cost
  * 
  */	
-public abstract class AUiSnippetTableMaterialCost extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
-	public AUiSnippetTableMaterialCost() {
+public abstract class AUiSnippetTableCostTableEntry extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
+	public AUiSnippetTableCostTableEntry() {
 		super("de.dlr.sc.virsat.model.extension.budget.cost",
-			"MaterialCost",
-			"de.dlr.sc.virsat.model.extension.budget.cost.MaterialCost",
+			"CostTableEntry",
+			"de.dlr.sc.virsat.model.extension.budget.cost.CostTableEntry",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
 
 	@Override
 	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddMaterialCostCommand().create(editingDomain, model, activeConcept);
+		return new CreateAddCostTableEntryCommand().create(editingDomain, model, activeConcept);
 	}
 }

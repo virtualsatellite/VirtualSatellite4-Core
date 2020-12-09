@@ -17,15 +17,16 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.bind.annotation.XmlElement;
 
 
@@ -38,14 +39,14 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * Don't Manually modify this class
  * 
- * Summary of all nested equipment masses
+ * Definition of the equipment cost
  * 
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class ACostSummary extends ACostParameters implements IBeanCategoryAssignment {
+public abstract class ACosts extends ACostParameters implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.budget.cost.CostSummary";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.budget.cost.Costs";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -56,7 +57,7 @@ public abstract class ACostSummary extends ACostParameters implements IBeanCateg
 	}
 	
 	// property name constants
-	public static final String PROPERTY_COSTTABLE = "costTable";
+	public static final String PROPERTY_TYPE = "type";
 	
 	
 	
@@ -64,48 +65,50 @@ public abstract class ACostSummary extends ACostParameters implements IBeanCateg
 	// * Class Constructors
 	// *****************************************************************
 	
-	public ACostSummary() {
+	public ACosts() {
 	}
 	
-	public ACostSummary(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "CostSummary");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "CostSummary");
+	public ACosts(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "Costs");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "Costs");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public ACostSummary(CategoryAssignment categoryAssignement) {
+	public ACosts(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	
 	
 	// *****************************************************************
-	// * Array Attribute: costTable
+	// * Attribute: type
 	// *****************************************************************
-	private IBeanList<CostTableEntry> costTable = new TypeSafeComposedPropertyInstanceList<>(CostTableEntry.class);
+	private BeanPropertyReference<CostType> type = new BeanPropertyReference<>();
 	
-	private void safeAccessCostTable() {
-		if (costTable.getArrayInstance() == null) {
-			costTable.setArrayInstance((ArrayInstance) helper.getPropertyInstance("costTable"));
-		}
+	private void safeAccessType() {
+		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("type");
+		type.setTypeInstance(propertyInstance);
 	}
 	
-	public IBeanList<CostTableEntry> getCostTable() {
-		safeAccessCostTable();
-		return costTable;
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
+	public CostType getType() {
+		safeAccessType();
+		return type.getValue();
 	}
 	
-	private IBeanList<BeanPropertyComposed<CostTableEntry>> costTableBean = new TypeSafeComposedPropertyBeanList<>();
-	
-	private void safeAccessCostTableBean() {
-		if (costTableBean.getArrayInstance() == null) {
-			costTableBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("costTable"));
-		}
+	public Command setType(EditingDomain ed, CostType value) {
+		safeAccessType();
+		return type.setValue(ed, value);
 	}
 	
-	@XmlElement
-	public IBeanList<BeanPropertyComposed<CostTableEntry>> getCostTableBean() {
-		safeAccessCostTableBean();
-		return costTableBean;
+	public void setType(CostType value) {
+		safeAccessType();
+		type.setValue(value);
+	}
+	
+	public BeanPropertyReference<CostType> getTypeBean() {
+		safeAccessType();
+		return type;
 	}
 	
 	

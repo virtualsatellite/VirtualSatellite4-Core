@@ -9,29 +9,28 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.ui.command;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import org.eclipse.emf.ecore.EObject;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 
-
-import de.dlr.sc.virsat.model.extension.budget.cost.model.MaterialCost;
 
 /**
  * Auto Generated Abstract Generator Gap Class
  * 
  * Don't Manually modify this class
  * 
- *  
+ * 
  * 
  */	
-public abstract class ACreateAddMaterialCostCommand {
-	public Command create(EditingDomain editingDomain, EObject owner, Concept activeConcept) {
-		MaterialCost conceptObject = new MaterialCost(activeConcept);
-		CategoryAssignment ca = conceptObject.getTypeInstance();
-		return AddCommand.create(editingDomain, owner, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, ca);
+public abstract class ACreateAddArrayElementCostTableCommand {
+	
+	public Command create(EditingDomain editingDomain, ArrayInstance arrayInstance, Category type) {
+		ATypeInstance ati = new CategoryInstantiator().generateInstance(arrayInstance, type);
+		return AddCommand.create(editingDomain, arrayInstance, PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES, ati);
 	}
 }

@@ -15,8 +15,8 @@ package de.dlr.sc.virsat.model.extension.budget.cost.ui.command;
  * 
  * This class is generated once, do your changes here
  * 
- *  
+ * Definition of the equipment cost
  * 
  */
-public class CreateAddMaterialCostCommand extends ACreateAddMaterialCostCommand {
+public class CreateAddCostTableEntryCommand extends ACreateAddCostTableEntryCommand {
 }

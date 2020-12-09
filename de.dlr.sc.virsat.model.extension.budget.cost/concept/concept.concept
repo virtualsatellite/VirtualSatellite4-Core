@@ -17,10 +17,7 @@
 	Category CostType shortname CT description "InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" {
 		Applicable For [CostTypesCollection];
 	}
-	
-	Category MaterialCost extends CostType description " "{
-	}
-	
+
 	Category ACostParameters description "Definition of the equipment cost" {
 		IsAbstract;
 		FloatProperty cost description "The Equipment costs" default 0.0 quantityKind "Dimensionless" unit "Euro";
@@ -29,14 +26,27 @@
 		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
 	}
 	
+	Category CostTableEntry extends ACostParameters description "Definition of the equipment cost" {
+		Reference type of Type CostType;
+		
+		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
+		Ref:ACostParameters.margin = ACostParameters.costMargin / ACostParameters.cost;		
+	} 
+
 	Category CostEquipment extends ACostParameters description "Definition of the equipment cost" {
 		Applicable For All; 
+		
 		Reference type of Type CostType;
-		} 
+		
+		Ref:ACostParameters.costWithMargin = ACostParameters.cost * (1 + ACostParameters.margin);
+		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
+	} 
 	
 	Category CostSummary extends ACostParameters description "Summary of all nested equipment masses" {
 		Applicable For All;
 		Cardinality 1;
+		
+		Type costTable[] of Category CostTableEntry;
 		
 		Ref:ACostParameters.cost = summary{ACostParameters.cost};
 		Ref:ACostParameters.costWithMargin = summary{ACostParameters.costWithMargin};

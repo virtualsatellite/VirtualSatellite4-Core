@@ -22,8 +22,8 @@
 			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostType">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.budget.cost.MaterialCost"
-			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.MaterialCost">
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostTableEntry"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.budget.cost.CostEquipment"

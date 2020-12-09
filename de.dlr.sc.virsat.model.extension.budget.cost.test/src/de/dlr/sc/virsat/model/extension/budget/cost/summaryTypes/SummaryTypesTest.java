@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 
 public class SummaryTypesTest {
@@ -32,6 +33,14 @@ public class SummaryTypesTest {
 	protected Concept concept;
 	protected StructuralInstantiator structInstantiator;
 	protected StructuralElement se;
+	
+	private static final int COSTVALUE_ELEVEN = 11;
+	private static final int COSTVALUE_TEN = 10;
+	private static final int COSTVALUE_FIVE = 5;
+	private static final double COSTVALUE_FIVE_POINT_FIVE = 5.5d;
+	private static final double COSTVALUE_FIVE_POINT_ZERO = 5.0d;
+	private static final double ROUNDING_VALUE = 0.0001;
+	
 	
 	@Before
 	public void setUp() throws Exception {
@@ -46,7 +55,7 @@ public class SummaryTypesTest {
 	public void testEmpty() {
 		CostSummary costSummary = new CostSummary(concept);
 		SummaryTypes summaryTyp = new SummaryTypes();
-		Map<CostType, Double> summary = summaryTyp.summaryTyp(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
 		
 		assertTrue(summary.isEmpty());
 	}
@@ -63,26 +72,23 @@ public class SummaryTypesTest {
 		
 		CostType materialCost = new CostType(concept);
 		
-		//CHECKSTYLE:OFF
 		CostEquipment costEquipment1 = new CostEquipment(concept);
 		costEquipment1.setType(materialCost);
-		costEquipment1.setCost(10);
+		costEquipment1.setCost(COSTVALUE_TEN);
 		parent.add(costEquipment1);
 		
 		CostEquipment costEquipment2 = new CostEquipment(concept);
 		costEquipment2.setType(materialCost);
-		costEquipment2.setCost(5);
+		costEquipment2.setCost(COSTVALUE_FIVE);
 		parent.add(costEquipment2);
-		//CHECKSTYLE:ON
 		
 		SummaryTypes summaryTyp = new SummaryTypes();
 		
-		Map<CostType, Double> summary = summaryTyp.summaryTyp(costSummary);
-		//CHECKSTYLE:OFF
+		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+
 		assertEquals(1, summary.size());
-		double totalValue = summary.get(materialCost);
-		assertEquals(15, totalValue, 0.0001);
-		//CHECKSTYLE:ON
+		CostTableEntry entry = summary.get(materialCost);
+		assertEquals(COSTVALUE_TEN + COSTVALUE_FIVE, entry.getCost(), ROUNDING_VALUE);
 	}
 
 	@Test
@@ -97,25 +103,27 @@ public class SummaryTypesTest {
 		
 		CostType materialCost = new CostType(concept);
 		CostType testCosts = new CostType(concept);
-		//CHECKSTYLE:OFF
+
 		CostEquipment costEquipment1 = new CostEquipment(concept);
 		costEquipment1.setType(materialCost);
-		costEquipment1.setCost(10);
+		costEquipment1.setCost(COSTVALUE_TEN);
 		parent.add(costEquipment1);
 		
 		CostEquipment costEquipment2 = new CostEquipment(concept);
 		costEquipment2.setType(testCosts);
-		costEquipment2.setCost(5);
+		costEquipment2.setCost(COSTVALUE_FIVE);
 		parent.add(costEquipment2);
-		//CHECKSTYLE:ON
+
 		SummaryTypes summaryTyp = new SummaryTypes();
 		
-		Map<CostType, Double> summary = summaryTyp.summaryTyp(costSummary);
-		//CHECKSTYLE:OFF
+		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+		
 		assertEquals(2, summary.size());
-		assertEquals(10, summary.get(materialCost), 0.0001);
-		assertEquals(5, summary.get(testCosts), 0.0001);
-		//CHECKSTYLE:ON
+		CostTableEntry totalMaterial = summary.get(materialCost);
+		CostTableEntry totalTest = summary.get(testCosts);
+		assertEquals(COSTVALUE_TEN, totalMaterial.getCost(), ROUNDING_VALUE);
+		assertEquals(COSTVALUE_FIVE, totalTest.getCost(), ROUNDING_VALUE);
+
 	}	@Test
 	public void testSameTypesWithMargin() {
 		// Build a simple test model
@@ -127,67 +135,36 @@ public class SummaryTypesTest {
 		parent.add(costSummary);
 		
 		CostType materialCost = new CostType(concept);
-		
-		//CHECKSTYLE:OFF
+
 		CostEquipment costEquipment1 = new CostEquipment(concept);
 		costEquipment1.setType(materialCost);
-		costEquipment1.setCost(10);
-		costEquipment1.setMargin(10);
+		costEquipment1.setCost(COSTVALUE_FIVE);
+		costEquipment1.setCostWithMargin(COSTVALUE_FIVE_POINT_FIVE);
+		costEquipment1.setCostMargin(COSTVALUE_FIVE_POINT_ZERO);
+		costEquipment1.setMargin(COSTVALUE_TEN);
 		parent.add(costEquipment1);
 		
 		CostEquipment costEquipment2 = new CostEquipment(concept);
 		costEquipment2.setType(materialCost);
-		costEquipment2.setCost(5);
-		costEquipment2.setMargin(20);
+		costEquipment2.setCost(COSTVALUE_FIVE);
+		costEquipment2.setCostWithMargin(COSTVALUE_FIVE_POINT_FIVE);
+		costEquipment2.setCostMargin(COSTVALUE_FIVE_POINT_ZERO);
+		costEquipment2.setMargin(COSTVALUE_TEN);
 		parent.add(costEquipment2);
-		//CHECKSTYLE:ON
-		
+
 		SummaryTypes summaryTyp = new SummaryTypes();
 		
-		Map<CostType, Double> summary = summaryTyp.summaryTyp(costSummary);
-		//CHECKSTYLE:OFF
+		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+
 		assertEquals(1, summary.size());
-		double totalValue = summary.get(materialCost);
-		double margin = costEquipment1.getCostMargin();
-		double costWithMargin = totalValue + margin;
+		CostTableEntry cost = summary.get(materialCost);
+		CostTableEntry costWithMargin = summary.get(materialCost);
+		CostTableEntry costMargin = summary.get(materialCost);
+		CostTableEntry margin = summary.get(materialCost);
 		
-		assertEquals(15, totalValue, 0.0001);
-		assertEquals(17, costWithMargin, 0.0001);
-		assertEquals(2, margin, 0.0001);
-		//CHECKSTYLE:ON
-	}
-	
-	@Test
-	public void testDifferentTypesWithMargin() {
-		// Build a simple test model
-		// ...
-		StructuralElementInstance parentSei = structInstantiator.generateInstance(se, "parent");
-		BeanStructuralElementInstance parent = new BeanStructuralElementInstance(parentSei);
-		
-		CostSummary costSummary = new CostSummary(concept);
-		parent.add(costSummary);
-		
-		CostType materialCost = new CostType(concept);
-		CostType testCosts = new CostType(concept);
-		//CHECKSTYLE:OFF
-		CostEquipment costEquipment1 = new CostEquipment(concept);
-		costEquipment1.setType(materialCost);
-		costEquipment1.setCost(10);
-		costEquipment1.setCostMargin(10);
-		parent.add(costEquipment1);
-		
-		CostEquipment costEquipment2 = new CostEquipment(concept);
-		costEquipment2.setType(testCosts);
-		costEquipment2.setCost(5);
-		parent.add(costEquipment2);
-		//CHECKSTYLE:ON
-		SummaryTypes summaryTyp = new SummaryTypes();
-		
-		Map<CostType, Double> summary = summaryTyp.summaryTyp(costSummary);
-		//CHECKSTYLE:OFF
-		assertEquals(2, summary.size());
-		assertEquals(10, summary.get(materialCost), 0.0001);
-		assertEquals(5, summary.get(testCosts), 0.0001);
-		//CHECKSTYLE:ON
+		assertEquals(COSTVALUE_TEN, cost.getCost(), ROUNDING_VALUE);
+		assertEquals(COSTVALUE_ELEVEN, costWithMargin.getCostWithMargin(), ROUNDING_VALUE);
+		assertEquals(1, costMargin.getCostMargin(), ROUNDING_VALUE);
+		assertEquals(COSTVALUE_TEN, margin.getMargin(), ROUNDING_VALUE);
 	}
 }

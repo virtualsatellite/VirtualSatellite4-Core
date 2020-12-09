@@ -7,7 +7,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
+package de.dlr.sc.virsat.model.extension.budget.cost.model;
+
+// *****************************************************************
+// * Import Statements
+// *****************************************************************
+
 
 
 // *****************************************************************
@@ -19,8 +24,9 @@ package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
  * 
  * This class is generated once, do your changes here
  * 
- *  
+ * Definition of the equipment cost
  * 
  */
-public class UiSnippetTableMaterialCost extends AUiSnippetTableMaterialCost {
+public class CostTabelleTest extends ACostTabelleTest {
+
 }

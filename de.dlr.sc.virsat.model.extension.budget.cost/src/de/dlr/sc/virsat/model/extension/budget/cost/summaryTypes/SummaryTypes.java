@@ -16,44 +16,54 @@ import java.util.Map;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 
 public class SummaryTypes {
+	
+	private static final int FACTORHUNDRED = 100;
 
 	/**
 	 * 
-	 * @param costSummary 
+	 * @param costSummary
 	 * @return the CostType with the Value of the cost.
 	 */
-	public Map<CostType, Double[]> summaryTyp(CostSummary costSummary) {
-		Map<CostType, Double[]> map = new HashMap<>();
-		
-		StructuralElementInstance sei = (StructuralElementInstance) costSummary
-				.getTypeInstance().getCategoryAssignmentContainer();
-		
+	public Map<CostType, CostTableEntry> summaryTyp(CostSummary costSummary) {
+		Map<CostType, CostTableEntry> map = new HashMap<>();
+
+		StructuralElementInstance sei = (StructuralElementInstance) costSummary.getTypeInstance()
+				.getCategoryAssignmentContainer();
+
 		if (sei == null) {
 			return map;
 		}
-		
 		IBeanStructuralElementInstance beanParent = new BeanStructuralElementInstance(sei);
-		
-		List<IBeanStructuralElementInstance> beanSeis = new ArrayList<>(beanParent.
-				getDeepChildren(IBeanStructuralElementInstance.class));
+
+		List<IBeanStructuralElementInstance> beanSeis = new ArrayList<>(
+				beanParent.getDeepChildren(IBeanStructuralElementInstance.class));
 		beanSeis.add(beanParent);
-		
+
+		Concept concept = costSummary.getConcept();
+
 		for (IBeanStructuralElementInstance beanSei : beanSeis) {
 			List<CostEquipment> costEquipments = beanSei.getAll(CostEquipment.class);
 			for (CostEquipment costEquipment : costEquipments) {
 				Double costs = costEquipment.getCost();
-				Double margin = costEquipment.getMargin();
+				Double costWithMargin = costEquipment.getCostWithMargin();
 				CostType type = costEquipment.getType();
-				Double[] oldValues = map.getOrDefault(type, new Double[] { 0d, 0d });
-				map.put(type, new Double[] {oldValues[0] + costs, oldValues[1] + margin}); 
-			} 
-		} 
+				CostTableEntry entry = map.computeIfAbsent(type, key -> new CostTableEntry(concept));
+				entry.setCost(costs + entry.getCost());
+				entry.setCostWithMargin(costWithMargin + entry.getCostWithMargin());
+			}
+		}
+		for (CostTableEntry entry : map.values()) {
+			entry.setCostMargin(entry.getCostWithMargin() - entry.getCost());
+			entry.setMargin(FACTORHUNDRED * entry.getCostMargin() / entry.getCost());
+		}
 		return map;
 	}
 }

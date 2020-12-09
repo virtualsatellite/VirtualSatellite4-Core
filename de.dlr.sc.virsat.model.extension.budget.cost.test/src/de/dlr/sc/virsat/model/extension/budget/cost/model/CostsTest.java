@@ -7,16 +7,26 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.budget.cost.ui.handler;
+package de.dlr.sc.virsat.model.extension.budget.cost.model;
 
+// *****************************************************************
+// * Import Statements
+// *****************************************************************
+
+
+
+// *****************************************************************
+// * Class Declaration
+// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * A Container to summarize all InterfaceTypes
+ * Definition of the equipment cost
  * 
  */
-public class AddStructuralElementInstanceCostTypeCollectionHandler extends AAddStructuralElementInstanceCostTypeCollectionHandler {
+public class CostsTest extends ACostsTest {
+
 }

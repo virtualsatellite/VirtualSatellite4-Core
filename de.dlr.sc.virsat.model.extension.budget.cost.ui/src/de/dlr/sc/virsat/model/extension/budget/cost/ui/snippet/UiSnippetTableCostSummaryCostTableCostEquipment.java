@@ -10,19 +10,15 @@
 package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyInstances;
 
 
 /**
- * Auto Generated Abstract Generator Gap Class
+ * Auto Generated Class inheriting from Generator Gap Class
  * 
- * Don't Manually modify this class
+ * This class is generated once, do your changes here
  * 
- *  
  * 
- */	
-public abstract class AUiSnippetSectionMaterialCost extends AUiSnippetGenericPropertyInstances implements IUiSnippet {
-	public AUiSnippetSectionMaterialCost() {
-		super("de.dlr.sc.virsat.model.extension.budget.cost", "MaterialCost");
-	}
+ * 
+ */
+public class UiSnippetTableCostSummaryCostTableCostEquipment extends AUiSnippetTableCostSummaryCostTableCostEquipment implements IUiSnippet {
 }
