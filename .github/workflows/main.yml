@@ -43,7 +43,7 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of the repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
         
       # --------------------------------------------
@@ -65,13 +65,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of the repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
       
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -79,14 +79,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-local-maven-spotbugs-
             ${{ runner.os }}-local-maven-
-
+     
       # --------------------------------------------
       # Perform various setup operations
-      # --------------------------------------------
-      - name: Build - Setup
+      # --------------------------------------------      
+      - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
-     
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@master
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build and Test - Spotbugs
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@master
+        with:
+          build_job: spotbugs
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
   # -----------------------------------------------------
   # Build and Test - Surefire Job
@@ -100,13 +114,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of your repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
 
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -117,14 +131,30 @@ jobs:
 
       # --------------------------------------------
       # Perform various setup operations
-      # --------------------------------------------
-      - name: Build - Setup
+      # --------------------------------------------      
+      - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@master
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@master
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build and Test - Surefire
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@master
+        with:
+          build_job: surecoverage
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
       # --------------------------------------------
       # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
-      - name: Upload SWTBot Screenshots on Failure
+      - name: Build and Test - Upload SWTBot Screenshots on Failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
@@ -144,13 +174,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of your repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
       
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------      
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -159,10 +189,11 @@ jobs:
             ${{ runner.os }}-local-maven-checkstyle-
             ${{ runner.os }}-local-maven-
             
+    
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------      
-      - name: Build - Setup
+      - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
       # --------------------------------------------
@@ -171,12 +202,6 @@ jobs:
       - name: Build - Build and Deploy Decision
         id: build_decision
         uses: virtualsatellite/ci-actions/ci-build-decision-action@master
-        
-      - name: Build - Report build Decision
-        run: |
-          echo Build-Type: ${{ steps.build_decision.outputs.build_type }}
-          echo Deploy Type: ${{ steps.build_decision.outputs.deploy_type }}
-         
 
       # --------------------------------------------
       # Development and Feature branches
@@ -199,13 +224,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of your repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
 
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -217,78 +242,36 @@ jobs:
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------
-      - name: Build - Setup
+      - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@master
 
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@master
+
+      # --------------------------------------------
+      # Development and Feature branches
+      # --------------------------------------------
+      - name: Build - Assemble
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@master
+        with:
+          build_job: assemble
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
      
-
+      # ---------------------------------------------
+      # Deploying to github releases
       # --------------------------------------------
-      # Create a tag on the Development branch
-      # --------------------------------------------
-      - name: Create Development Tag
-        run: |
-         git tag -f development_snapshot
-         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-         git push -f github-mtd development_snapshot
-         git remote remove github-mtd
-        if: ${{ github.ref == 'refs/heads/development'  }}
-
-      # --------------------------------------------
-      # Create a tag on the Integration branch
-      # --------------------------------------------
-      - name: Create Integration Tag
-        run: |
-         git tag -f integration_snapshot
-         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-         git push -f github-mtd integration_snapshot
-         git remote remove github-mtd
-        if: ${{ github.ref == 'refs/heads/integration'  }}
-
-      # --------------------------------------------
-      # Create a new development release and delete the old one
-      # --------------------------------------------
-      - name: Deploy - Development
-        if: ${{ github.ref == 'refs/heads/development'  }}
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}         
-        run: |
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r development_snapshot
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r development_snapshot -d "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.zip" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
-           ./bash/deploy_sourceforge.sh -s -u development
-
-      # --------------------------------------------
-      # Create a new integration release and delete the old one
-      # --------------------------------------------
-      - name: Deploy - Integration
-        if: ${{ github.ref == 'refs/heads/integration'  }}
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}   
-        run: |
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r integration_snapshot
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r integration_snapshot -d "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change." 
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.zip" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.tar.gz" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs   
-           ./bash/deploy_sourceforge.sh -s -u integration
-
-      # --------------------------------------------
-      # Fill a manually created Release with the build artifacts and description info
-      # --------------------------------------------
-      - name: Deploy - Release
-        if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
-          github.sha: ${{ github.sha }}
-        run: |
-           TAG_NAME=${GITHUB_REF#refs/*/}
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c patch -r $TAG_NAME -d "Release build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."  
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.zip" -dir deploy/secured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.tar.gz" -dir deploy/secured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
-           ./bash/deploy_sourceforge.sh -s -u release
+      - name: Build - Deploy
+        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@master
+        with:
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
+        
+      # ----------------------------------------------
+      # SF Deploy still to be done
+      # ----------------------------------------------
+      
