@@ -151,7 +151,7 @@ jobs:
       - name: Build and Test - Surefire
         uses: virtualsatellite/ci-actions/ci-maven-build-action@master
         with:
-          build_job: surecoverage
+          build_job: sureheadless
           build_profile: ${{ steps.build_decision.outputs.build_type }}
 
       # --------------------------------------------
