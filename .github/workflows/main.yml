@@ -136,6 +136,7 @@ jobs:
         uses: virtualsatellite/ci-actions/ci-setup-action@master
         with:
            xvfb: -x
+           pkgs_file: apt_vtk_zmq_packages
 
       # --------------------------------------------
       # Development and Feature branches
