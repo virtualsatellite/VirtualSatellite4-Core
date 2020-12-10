@@ -50,7 +50,7 @@
     </equationDefinitions>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.CostType"/>
   </categories>
-  <categories name="CostSummary" description="Summary of all nested equipment masses" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters">
+  <categories name="CostSummary" description="Summary of all nested equipment costs" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters">
     <equationDefinitions>
       <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
       <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>

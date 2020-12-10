@@ -31,18 +31,17 @@
 		
 		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
 		Ref:ACostParameters.margin = ACostParameters.costMargin / ACostParameters.cost;		
-	} 
-
+	}
+	
 	Category CostEquipment extends ACostParameters description "Definition of the equipment cost" {
 		Applicable For All; 
-		
 		Reference type of Type CostType;
 		
 		Ref:ACostParameters.costWithMargin = ACostParameters.cost * (1 + ACostParameters.margin);
 		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
 	} 
 	
-	Category CostSummary extends ACostParameters description "Summary of all nested equipment masses" {
+	Category CostSummary extends ACostParameters description "Summary of all nested equipment costs" {
 		Applicable For All;
 		Cardinality 1;
 		
@@ -52,6 +51,6 @@
 		Ref:ACostParameters.costWithMargin = summary{ACostParameters.costWithMargin};
 		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
 		Ref:ACostParameters.margin = ACostParameters.costMargin / ACostParameters.cost;
-	} 
+	}
 }
 

@@ -24,8 +24,8 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 
 public class SummaryTypes {
-	
-	private static final int FACTORHUNDRED = 100;
+
+	private static final int FACTOR_HUNDRED = 100;
 
 	/**
 	 * 
@@ -62,7 +62,7 @@ public class SummaryTypes {
 		}
 		for (CostTableEntry entry : map.values()) {
 			entry.setCostMargin(entry.getCostWithMargin() - entry.getCost());
-			entry.setMargin(FACTORHUNDRED * entry.getCostMargin() / entry.getCost());
+			entry.setMargin(FACTOR_HUNDRED * entry.getCostMargin() / entry.getCost());
 		}
 		return map;
 	}

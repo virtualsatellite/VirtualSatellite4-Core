@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.ui.command.CreateAddCostSumm
  * 
  * Don't Manually modify this class
  * 
- * Summary of all nested equipment masses
+ * Summary of all nested equipment costs
  * 
  */	
 public abstract class AAddCostSummaryHandler extends ATransactionalAddCategoryHandler {

@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * Don't Manually modify this class
  * 
- * Summary of all nested equipment masses
+ * Summary of all nested equipment costs
  * 
  */	
 @XmlRootElement
