@@ -292,8 +292,8 @@ jobs:
         uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@master
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
-          openssh_pass: ${{ secrets.openssh_pass }}
-          ssh_key_pass: ${{ secrets.ssh_key_pass }}
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
           local_dir: VirSat4_Core_Application
           remote_dir: virtualsatellite/VirtualSatellite4-Core
         if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
@@ -302,8 +302,8 @@ jobs:
         uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@master
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
-          openssh_pass: ${{ secrets.openssh_pass }}
-          ssh_key_pass: ${{ secrets.ssh_key_pass }}
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
           local_dir: VirSat4_Dvlm_ConceptIDE
           remote_dir: virtualsatellite/VirtualSatellite4-DVLM
         if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
