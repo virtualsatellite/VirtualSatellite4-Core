@@ -8,23 +8,15 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-Activator: de.dlr.virsat.external.lib.lyo.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.lyo
+Bundle-ClassPath: .,
+ externalLib/maven/oslc-java-client.jar,
+ externalLib/maven/oslc4j-core.jar
 Export-Package: de.dlr.virsat.external.lib.lyo,
  org.eclipse.lyo.client.exception,
  org.eclipse.lyo.client.oslc,
  org.eclipse.lyo.client.oslc.jazz,
  org.eclipse.lyo.client.oslc.resources,
- org.eclipse.lyo.oslc4j.client,
- org.eclipse.lyo.oslc4j.client.exception,
- org.eclipse.lyo.oslc4j.client.resources,
  org.eclipse.lyo.oslc4j.core,
  org.eclipse.lyo.oslc4j.core.annotation,
  org.eclipse.lyo.oslc4j.core.exception,
- org.eclipse.lyo.oslc4j.core.model,
- org.eclipse.lyo.oslc4j.provider.jena,
- org.eclipse.lyo.oslc4j.provider.json4j
-Bundle-ClassPath: .,
- externalLib/maven/oslc4j-client.jar,
- externalLib/maven/oslc4j-core.jar,
- externalLib/maven/oslc4j-jena-provider.jar,
- externalLib/maven/oslc4j-json4j-provider.jar,
- externalLib/maven/oslc-java-client.jar
+ org.eclipse.lyo.oslc4j.core.model

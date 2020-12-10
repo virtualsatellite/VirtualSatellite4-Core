@@ -40,26 +40,18 @@
 
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.clients/oslc-java-client -->
-		<dependency>
-			<groupId>org.eclipse.lyo.clients</groupId>
-			<artifactId>oslc-java-client</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-core -->
 		<dependency>
 			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
 			<artifactId>oslc4j-core</artifactId>
-			<version>4.0.0.M1</version>
+			<version>4.0.0.M2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.clients/oslc4j-client -->
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.clients/oslc-java-client -->
 		<dependency>
 			<groupId>org.eclipse.lyo.clients</groupId>
-			<artifactId>oslc4j-client</artifactId>
-			<version>4.0.0.M1</version>
+			<artifactId>oslc-java-client</artifactId>
+			<version>4.0.0.M2</version>
 		</dependency>
 	</dependencies>
 </project>
