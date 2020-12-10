@@ -25,5 +25,4 @@ Export-Package: de.dlr.sc.virsat.model.extension.requirements,
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.Activator
 Import-Package: javax.ws.rs.core,
- org.apache.http;version="4.4.12",
- org.eclipse.lyo.oslc4j.client.resources
+ org.apache.http;version="4.4.12"
