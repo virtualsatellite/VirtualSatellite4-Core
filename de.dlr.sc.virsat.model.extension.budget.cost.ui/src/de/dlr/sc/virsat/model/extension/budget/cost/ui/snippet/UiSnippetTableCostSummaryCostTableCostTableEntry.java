@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes.SummaryTypes;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -43,6 +44,7 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 			public void widgetSelected(SelectionEvent e) {
 
 				VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(model);
+				SummaryTypes summarytypes = new SummaryTypes(virSatEd);
 			}
 
 			@Override

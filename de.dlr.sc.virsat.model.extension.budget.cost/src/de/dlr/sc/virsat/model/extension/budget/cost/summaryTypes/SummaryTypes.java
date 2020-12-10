@@ -22,10 +22,15 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 public class SummaryTypes {
 
 	private static final int FACTOR_HUNDRED = 100;
+
+	public SummaryTypes(VirSatTransactionalEditingDomain virSatEd) {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * 
