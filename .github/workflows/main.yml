@@ -134,6 +134,8 @@ jobs:
       # --------------------------------------------      
       - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@master
+        with:
+           xvfb: -x
 
       # --------------------------------------------
       # Development and Feature branches
