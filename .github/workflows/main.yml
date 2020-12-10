@@ -267,7 +267,7 @@ jobs:
       # ---------------------------------------------
       # Deploying to github releases
       # --------------------------------------------
-      - name: Build - Deploy
+      - name: Build - Deploy GH
         uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@master
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -277,4 +277,22 @@ jobs:
       # ----------------------------------------------
       # SF Deploy still to be done
       # ----------------------------------------------
+      - name: Build - Deploy SF (Core)
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@master
+        with:
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+          openssh_pass: ${{ secrets.openssh_pass }}
+          ssh_key_pass: ${{ secrets.ssh_key_pass }}
+          local_dir: VirSat4_Core_Application
+          remote_dir: virtualsatellite/VirtualSatellite4-Core
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
       
+      - name: Build - Deploy SF (IDE Tools)
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@master
+        with:
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+          openssh_pass: ${{ secrets.openssh_pass }}
+          ssh_key_pass: ${{ secrets.ssh_key_pass }}
+          local_dir: VirSat4_Dvlm_ConceptIDE
+          remote_dir: virtualsatellite/VirtualSatellite4-DVLM
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
