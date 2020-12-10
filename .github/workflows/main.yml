@@ -165,6 +165,17 @@ jobs:
           path: 
             swtbot/*
 
+      # --------------------------------------------
+      # Upload Surefire Reports to github artifacts
+      # --------------------------------------------            
+      - name: Upload Surefire Reports on Failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Surefire Reports
+          path: 
+            ./**/target/surefire-reports/*
+
   # -----------------------------------------------------
   # Build and Test - Checkstyle Job
   # -----------------------------------------------------

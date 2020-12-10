@@ -60,7 +60,8 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.emf.compare;visibility:=reexport,
  com.google.guava,
  de.dlr.sc.virsat.commons,
- de.dlr.sc.virsat.external.lib.matlabfile
+ de.dlr.sc.virsat.external.lib.matlabfile,
+ de.dlr.sc.virsat.external.lib.swagger
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.edit
 Import-Package: org.eclipse.persistence.jaxb
