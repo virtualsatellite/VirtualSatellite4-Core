@@ -23,6 +23,8 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
@@ -30,6 +32,26 @@ import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AJettyServerTest;
 
 public class AuthTestResourceTest extends AJettyServerTest {
+	
+	private static final String ALLOW_HEADERS = "sun.net.http.allowRestrictedHeaders";
+	
+	@BeforeClass
+	public static void setUpClass() throws InterruptedException, Exception {
+		// Set the system property before the Server is created
+		// So that it doesn't get cashed
+		// And the the origin header can be sent
+		System.setProperty(ALLOW_HEADERS, "true");
+		
+		AJettyServerTest.setUpClass();
+	}
+	
+	@AfterClass
+	public static void tearDownClass() throws Exception { 
+		AJettyServerTest.tearDownClass();
+		
+		// Reset the system property
+		System.setProperty(ALLOW_HEADERS, "false");
+	}
 	
 	@Test
 	public void testAuthentication() {
@@ -112,11 +134,6 @@ public class AuthTestResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testCorsHeaders() {
-		String sysProp = "sun.net.http.allowRestrictedHeaders";
-		
-		// Set this system property to enable this test case
-		// Or else the origin header can't be sent
-		System.setProperty(sysProp, "true");
 		
 		Properties properties = System.getProperties();
 		Enumeration<?> keys = properties.keys();
@@ -155,9 +172,6 @@ public class AuthTestResourceTest extends AJettyServerTest {
 		assertEquals(CorsFilter.AC_ALLOWED_HEADERS, response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
 		// The preflight request will have the status code ok instead of forbidden
 		assertEquals(HttpStatus.OK_200, response.getStatus());
-		
-		// Reset the system property
-		System.setProperty(sysProp, "false");
 	}
 	
 	/**
