@@ -114,6 +114,10 @@ public class AuthTestResourceTest extends AJettyServerTest {
 	public void testCorsHeaders() {
 		String sysProp = "sun.net.http.allowRestrictedHeaders";
 		
+		// Set this system property to enable this test case
+		// Or else the origin header can't be sent
+		System.setProperty(sysProp, "true");
+		
 		Properties properties = System.getProperties();
 		Enumeration<?> keys = properties.keys();
 		while (keys.hasMoreElements()) {
@@ -121,10 +125,6 @@ public class AuthTestResourceTest extends AJettyServerTest {
 			String value = (String) properties.get(key);
 			System.out.println(key + ": " + value);
 		}
-		
-		// Set this system property to enable this test case
-		// Or else the origin header can't be sent
-		System.setProperty(sysProp, "true");
 		
 		Map<String, String> headers = new HashMap<String, String>();
 		
