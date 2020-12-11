@@ -12,8 +12,10 @@ package de.dlr.sc.virsat.server.resources;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.HttpHeaders;
@@ -111,6 +113,14 @@ public class AuthTestResourceTest extends AJettyServerTest {
 	@Test
 	public void testCorsHeaders() {
 		String sysProp = "sun.net.http.allowRestrictedHeaders";
+		
+		Properties properties = System.getProperties();
+		Enumeration<?> keys = properties.keys();
+		while (keys.hasMoreElements()) {
+			String key = (String) keys.nextElement();
+			String value = (String) properties.get(key);
+			System.out.println(key + ": " + value);
+		}
 		
 		// Set this system property to enable this test case
 		// Or else the origin header can't be sent
