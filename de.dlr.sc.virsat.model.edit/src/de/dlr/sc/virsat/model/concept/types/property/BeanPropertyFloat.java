@@ -100,4 +100,9 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 		}
 		return setValue(ed, inputValue);		
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.FLOAT;
+	}
 }

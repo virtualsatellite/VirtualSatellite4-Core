@@ -9,8 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapter;
 
 /**
  * Core functionality for a Property Bean and abstract implementation to the interface
@@ -27,4 +31,9 @@ public abstract class ABeanProperty<P_TYPE extends APropertyInstance, V_TYPE> ex
 	public ABeanProperty(APropertyInstance ti) {
 		super(ti);
 	}
+	
+	// Read only
+	@XmlElement
+	@XmlJavaTypeAdapter(BeanPropertyTypeAdapter.class)
+	public abstract BeanPropertyType getPropertyType();
 }
