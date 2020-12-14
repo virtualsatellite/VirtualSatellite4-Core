@@ -115,7 +115,9 @@ public class VirSatSelectionHelper {
 		}
 		
 		Object firstObject = structuredSelection.getFirstElement();
-		if (firstObject instanceof VirSatProjectResource) {
+		if (firstObject instanceof IProject) {
+			return (IProject) firstObject;
+		} else if (firstObject instanceof VirSatProjectResource) {
 			VirSatProjectResource virsatProjectResource = (VirSatProjectResource) firstObject;
 			return virsatProjectResource.getWrappedProject();
 		} else if (firstObject instanceof EObject) {
@@ -124,7 +126,7 @@ public class VirSatSelectionHelper {
 				IProject fileProjectResource = fileResource.getProject();
 				return fileProjectResource;
 			}
-		}  
+		}
 		
 		return null;
 	}
