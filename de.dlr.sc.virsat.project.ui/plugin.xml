@@ -668,4 +668,24 @@
             name="DVLMMigrator">
       </resourceMigrator>
    </extension>
+   
+   <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            class="de.dlr.sc.virsat.project.ui.properties.page.VirSatProjectPropertyPage"
+            id="de.dlr.sc.virsat.project.ui.properties.page.VirSatProjectProperty"
+            name="VirSat Project Settings">
+            <keywordReference id="de.dlr.sc.virsat.project.ui.properties.page.keyword_VirSatProjectProperty"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="de.dlr.sc.virsat.project.nature"/>
+        </page>
+   </extension>
+   <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="de.dlr.sc.virsat.project.ui.properties.page.keyword_VirSatProjectProperty"
+            label="VirSatProject"/>
+    </extension>
 </plugin>
