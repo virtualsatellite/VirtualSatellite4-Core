@@ -185,7 +185,7 @@ public class ModelAccessResource {
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putCa(@ApiParam(value = "Ca to put", required = true) ABeanCategoryAssignment bean) {
+		public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
