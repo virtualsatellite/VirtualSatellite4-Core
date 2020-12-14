@@ -9,6 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 
+import java.util.Collection;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,6 +21,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvModelCommandFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes.SummaryTypes;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -32,8 +43,10 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  */
 public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippetTableCostSummaryCostTableCostTableEntry implements IUiSnippet {
+	protected StructuralElementInstance sei;
+
 	@Override
-	protected void createButtons(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody) {
+	public void createButtons(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody) {
 
 		super.createButtons(toolkit, editingDomain, sectionBody);
 		Button addCurrencyButton = toolkit.createButton(sectionBody, "Update CostEquipments", SWT.PUSH);
@@ -42,16 +55,20 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
 				VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(model);
-				SummaryTypes summarytypes = new SummaryTypes(virSatEd);
+				
+				if (model instanceof CategoryAssignment) {
+					CostSummary costSummary = new CostSummary((CategoryAssignment) model);
+					SummaryTypes summarytypes = new SummaryTypes();
+					Map<CostType, CostTableEntry> summaryMap = summarytypes.summaryTyp(costSummary);
+					Collection<CostTableEntry> mapValues = summaryMap.values();
+					costSummary.getCostTable().addAll(mapValues);
+				}	
 			}
-
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 		});
 	}
-
 }
