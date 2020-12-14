@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.types;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * interface of a Concept Bean
@@ -24,7 +23,6 @@ public interface IBeanObject<CP_TYPE extends ATypeInstance> extends IBeanUuid {
 	 * this method returns the type instance of a bean object
 	 * @return CP_TYPE
 	 */
-	@ApiModelProperty(hidden = true)
 	CP_TYPE getTypeInstance();
 	
 	/**
@@ -37,7 +35,6 @@ public interface IBeanObject<CP_TYPE extends ATypeInstance> extends IBeanUuid {
 	 * this method get the abstract type instance of a bean object
 	 * @return the abstract type instance 
 	 */
-	@ApiModelProperty(name = "uuid", dataType = "string")
 	ATypeInstance getATypeInstance();
 	
 	/**

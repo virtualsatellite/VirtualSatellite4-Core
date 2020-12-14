@@ -13,7 +13,6 @@ import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Interface to a Bean that will represent a Category
@@ -28,7 +27,6 @@ public interface IBeanCategoryAssignment extends IBeanObject<CategoryAssignment>
 	 * Call this method to get the full qualified name of the underlying category
 	 * @return The FQN of the category as String
 	 */
-	@ApiModelProperty(hidden = true)
 	String getFullQualifiedCategoryName();
 
 }

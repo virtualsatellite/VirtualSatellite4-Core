@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -40,10 +39,13 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
+import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Info;
@@ -56,12 +58,10 @@ import io.swagger.annotations.SwaggerDefinition;
 @Api(tags = {"Model"})
 @SwaggerDefinition(
 	info = @Info(
-		version = "v0.0.1",
+		version = VirSatModelAccessServlet.MODEL_API_VERSION,
 		title = "The Model API"
 	),
-	consumes = {"application/json"},
-	produces = {"application/json"},
-	schemes = {SwaggerDefinition.Scheme.HTTP}
+	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API
 )
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
@@ -154,12 +154,11 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Fetch CA",
 				httpMethod = "GET",
-				notes = "<br>This service fetches CAs",
-				response = ABeanCategoryAssignment.class)
+				notes = "This service fetches CAs")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
-						response = IBeanCategoryAssignment.class,
+						response = ABeanCategoryAssignment.class,
 						message = "Successful operation"),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
@@ -179,14 +178,14 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Put CA",
 				httpMethod = "PUT",
-				notes = "<br>This service puts CAs")
+				notes = "This service puts CAs")
 		@ApiResponse(
 				code = HttpStatus.OK_200,
 				message = "Successful operation")
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putCa(ABeanCategoryAssignment bean) {
+		public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
