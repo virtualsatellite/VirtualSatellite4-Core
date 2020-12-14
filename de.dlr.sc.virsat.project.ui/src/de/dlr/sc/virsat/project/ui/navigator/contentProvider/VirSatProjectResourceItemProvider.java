@@ -19,6 +19,7 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.project.ui.properties.PropertyRoleManagement;
 
 /**
  * This class acts as a non-EMF intermediary object representing a virsat project containing
@@ -45,8 +46,10 @@ public class VirSatProjectResourceItemProvider extends ItemProviderAdapter
 	protected Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
+			if (PropertyRoleManagement.isManagingRoles()) {
+				childrenFeatures.add(DVLMPackage.Literals.REPOSITORY__ROLE_MANAGEMENT);
+			}			
 			childrenFeatures.add(DVLMPackage.Literals.REPOSITORY__UNIT_MANAGEMENT);
-			childrenFeatures.add(DVLMPackage.Literals.REPOSITORY__ROLE_MANAGEMENT);
 		}
 		return childrenFeatures;
 	}
