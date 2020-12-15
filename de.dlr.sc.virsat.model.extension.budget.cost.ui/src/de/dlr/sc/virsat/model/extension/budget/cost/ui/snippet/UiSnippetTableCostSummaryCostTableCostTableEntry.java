@@ -30,7 +30,6 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
-
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
@@ -39,7 +38,8 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  * 
  */
-public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippetTableCostSummaryCostTableCostTableEntry implements IUiSnippet {
+public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippetTableCostSummaryCostTableCostTableEntry
+		implements IUiSnippet {
 	protected StructuralElementInstance sei;
 
 	@Override
@@ -53,19 +53,32 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(model);
-				
+
 				if (model instanceof CategoryAssignment) {
 					CostSummary costSummary = new CostSummary((CategoryAssignment) model);
 					SummaryTypes summarytypes = new SummaryTypes();
 					Map<CostType, CostTableEntry> summaryMap = summarytypes.summaryTyp(costSummary);
 					Collection<CostTableEntry> mapValues = summaryMap.values();
-					
-					for (CostTableEntry values : mapValues) {
-						org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable().add(virSatEd, values);
-						virSatEd.getCommandStack().execute(valuesCommand);
+
+					if (!costSummary.getCostTable().isEmpty()) {
+
+						costSummary.getCostTable().clear();
+
+						for (CostTableEntry values : mapValues) {
+							org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable()
+									.add(virSatEd, values);
+							virSatEd.getCommandStack().execute(valuesCommand);
+						}
+					} else {
+						for (CostTableEntry values : mapValues) {
+							org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable()
+									.add(virSatEd, values);
+							virSatEd.getCommandStack().execute(valuesCommand);
+						}
 					}
-				}	
+				}
 			}
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
