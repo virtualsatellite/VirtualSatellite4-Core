@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 import java.util.Collection;
 import java.util.Map;
 
-import org.eclipse.core.commands.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,8 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvModelCommandFactory;
-import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
@@ -62,7 +59,11 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 					SummaryTypes summarytypes = new SummaryTypes();
 					Map<CostType, CostTableEntry> summaryMap = summarytypes.summaryTyp(costSummary);
 					Collection<CostTableEntry> mapValues = summaryMap.values();
-					costSummary.getCostTable().addAll(mapValues);
+					
+					for (CostTableEntry values : mapValues) {
+						org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable().add(virSatEd, values);
+						virSatEd.getCommandStack().execute(valuesCommand);
+					}
 				}	
 			}
 			@Override
