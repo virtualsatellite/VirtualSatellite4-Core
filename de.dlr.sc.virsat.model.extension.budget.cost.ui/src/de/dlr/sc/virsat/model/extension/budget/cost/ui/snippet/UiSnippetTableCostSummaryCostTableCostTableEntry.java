@@ -42,35 +42,51 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 		implements IUiSnippet {
 	protected StructuralElementInstance sei;
 
+	
 	@Override
+	// created a Button in CostSummary (Update CostEquipment)
 	public void createButtons(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody) {
 
 		super.createButtons(toolkit, editingDomain, sectionBody);
 		Button addCurrencyButton = toolkit.createButton(sectionBody, "Update CostEquipments", SWT.PUSH);
 
+		// add the Button Function
 		addCurrencyButton.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				// created a VisSatEditingDomain in the Variable (virSatEd)
 				VirSatTransactionalEditingDomain virSatEd = VirSatEditingDomainRegistry.INSTANCE.getEd(model);
 
 				if (model instanceof CategoryAssignment) {
+					// created a CostSummary in the Variable (costSummary)
 					CostSummary costSummary = new CostSummary((CategoryAssignment) model);
-					SummaryTypes summarytypes = new SummaryTypes();
-					Map<CostType, CostTableEntry> summaryMap = summarytypes.summaryTyp(costSummary);
+					// created a SummaryTypes in the Variable (summaryTypes)
+					SummaryTypes summaryTypes = new SummaryTypes();
+					// called the SummaryTypes.class with the costSummary and returned the Values of the costSummary
+					// in the Map and splited the Values to the different CostTypes
+					Map<CostType, CostTableEntry> summaryMap = summaryTypes.summaryTyp(costSummary);
+					// put the Values of the Map in a Collection (mapValues)
 					Collection<CostTableEntry> mapValues = summaryMap.values();
 
+					// Check is the CostTable empty...
 					if (!costSummary.getCostTable().isEmpty()) {
-
+						
+						// ... is the CostTable NOT empty, clear the CostTable
 						costSummary.getCostTable().clear();
 
+						// created a loop and put every Value of the (mapValues) in (values)
 						for (CostTableEntry values : mapValues) {
+							// every one Value become a Command to put the Value to the CostTableEntry
 							org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable()
 									.add(virSatEd, values);
 							virSatEd.getCommandStack().execute(valuesCommand);
 						}
+						// else... the CostTable is empty! put the Values of the Map (mapValues) in the CostTableEntry
 					} else {
+						// created a loop and put every one Value of the (mapValues) in (values)
 						for (CostTableEntry values : mapValues) {
+							// every one Value become a Command to put the Value to the CostTableEntry
 							org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable()
 									.add(virSatEd, values);
 							virSatEd.getCommandStack().execute(valuesCommand);
@@ -78,7 +94,7 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 					}
 				}
 			}
-
+			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
