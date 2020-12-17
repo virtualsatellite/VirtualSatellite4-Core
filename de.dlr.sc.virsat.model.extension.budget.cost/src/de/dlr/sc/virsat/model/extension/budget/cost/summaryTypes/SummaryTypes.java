@@ -56,9 +56,9 @@ public class SummaryTypes {
 			List<CostEquipment> costEquipments = beanSei.getAll(CostEquipment.class);
 			for (CostEquipment costEquipment : costEquipments) {
 				Double costs = costEquipment.getCost();
-				String typeName = costEquipment.getTypeInstance().getName();
 				Double costWithMargin = costEquipment.getCostWithMargin();
 				CostType type = costEquipment.getType();
+				String typeName = type.getName();
 				CostTableEntry entry = map.computeIfAbsent(type, key -> new CostTableEntry(concept));
 				entry.setCost(costs + entry.getCost());
 				entry.setCostWithMargin(costWithMargin + entry.getCostWithMargin());
