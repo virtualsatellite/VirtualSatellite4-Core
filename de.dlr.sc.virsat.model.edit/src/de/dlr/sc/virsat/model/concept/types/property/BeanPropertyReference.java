@@ -23,6 +23,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
@@ -65,6 +67,9 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	@Override
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	@XmlElement(nillable = true)
+	@ApiModelProperty(
+		reference = "ABeanObject",
+		value = "Uuid of the referenced bean object")
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		
@@ -92,6 +97,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		ti.setReference(null);
 	}
 	
+	@ApiModelProperty(value = "Always returns constant: \"REFERENCE\"", accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.REFERENCE;

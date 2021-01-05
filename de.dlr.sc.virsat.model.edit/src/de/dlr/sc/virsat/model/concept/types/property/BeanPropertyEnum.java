@@ -23,6 +23,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap EnumPropertyInstances
@@ -61,6 +63,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Name of an enum")
 	public String getValue() {
 		if (isSet()) {
 			return getTypeInstance().getValue().getName();
@@ -107,6 +110,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 	
 	@Override
+	@ApiModelProperty(value = "Unit of the enum")
 	public boolean setUnit(String unitName) {
 		return new PropertyInstanceHelper().setUnit(ti, unitName);
 	}
@@ -116,6 +120,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 		return new PropertyInstanceHelper().setUnit(ed, ti, unitName);
 	}
 	
+	@ApiModelProperty(value = "Always returns constant: \"ENUM\"", accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.ENUM;

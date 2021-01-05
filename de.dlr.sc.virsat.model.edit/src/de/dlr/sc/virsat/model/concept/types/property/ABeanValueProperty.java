@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import io.swagger.annotations.ApiModel;
 
 /**
  * Abstract implementation to the interface dealing with Attributes without QUDV unit
@@ -18,6 +19,12 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
  * @param <V_TYPE> Value type of the Bean
  *
  */
+@ApiModel(
+	subTypes = {
+		ABeanUnitValueProperty.class,
+		BeanPropertyBoolean.class,
+		BeanPropertyString.class
+	})
 public abstract class ABeanValueProperty<P_TYPE extends ValuePropertyInstance, V_TYPE> extends ABeanProperty<P_TYPE, V_TYPE> {
 	
 	public ABeanValueProperty() {

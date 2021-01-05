@@ -74,7 +74,7 @@ SPDX-License-Identifier: EPL-2.0
 						</configuration>
 						<executions>
 							<execution>
-								<phase>process-resources</phase>
+								<phase>process-classes</phase>
 								<goals>
 									<goal>generate</goal>
 								</goals>
@@ -107,7 +107,7 @@ SPDX-License-Identifier: EPL-2.0
 						</configuration>
 						<executions>
 							<execution>
-								<phase>process-resources</phase>
+								<phase>process-classes</phase>
 								<goals>
 									<goal>convertSwagger2markup</goal>
 								</goals>

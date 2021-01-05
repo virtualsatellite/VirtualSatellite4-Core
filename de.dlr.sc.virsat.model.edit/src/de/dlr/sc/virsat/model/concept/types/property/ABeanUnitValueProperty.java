@@ -18,12 +18,19 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Abstract implementation to the interface dealing with Attributes with QUDV unit
  *
  * @param <V_TYPE> The value type of this bean
  */
+@ApiModel(
+	subTypes = {
+		BeanPropertyFloat.class,
+		BeanPropertyInt.class
+	})
 public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<UnitValuePropertyInstance, V_TYPE> implements IBeanUnitProperty {	
 	
 	public ABeanUnitValueProperty() {
@@ -64,6 +71,7 @@ public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<
 	
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Unit of the bean")
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}

@@ -32,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -39,6 +40,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author fisc_ph
  *
  */
+@ApiModel(parent = ABeanObject.class)
 public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssignment> implements IBeanCategoryAssignment {
 
 	protected CategoryAssignmentHelper helper = new CategoryAssignmentHelper(null);

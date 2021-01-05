@@ -21,6 +21,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropert
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap FloatPropertyInstances
@@ -58,6 +60,7 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	
 	@XmlJavaTypeAdapter(DoubleAdapter.class)
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Double")
 	@Override
 	public Double getValue() {
 		try {
@@ -101,6 +104,7 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 		return setValue(ed, inputValue);		
 	}
 	
+	@ApiModelProperty(value = "Always returns constant: \"FLOAT\"", accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.FLOAT;
