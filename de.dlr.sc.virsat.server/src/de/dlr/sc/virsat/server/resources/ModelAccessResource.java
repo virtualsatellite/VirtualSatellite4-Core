@@ -59,7 +59,8 @@ import io.swagger.annotations.SwaggerDefinition;
 @SwaggerDefinition(
 	info = @Info(
 		version = VirSatModelAccessServlet.MODEL_API_VERSION,
-		title = "The Model API"
+		title = "The Model API",
+		description = "API to access the Virtual Satellite data model"
 	),
 	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API
 )
@@ -204,11 +205,21 @@ public class ModelAccessResource {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		/**
-		 * Returns a response with a list of the root seis
-		 * @return a server response
-		 */
-		@ApiOperation(hidden = true, value = "") // TODO
+		/** **/
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of root SEIs",
+				httpMethod = "GET",
+				notes = "This service fetches a the root StructuralElementInstance")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanStructuralElementInstance.class,
+						responseContainer = "List",
+						message = "Successful operation"),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Bad Request")})
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -234,20 +245,19 @@ public class ModelAccessResource {
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-		@ApiOperation(hidden = true, value = "")
-//		@ApiOperation(
-//				produces = "application/json",
-//				value = "Fetch SEI",
-//				httpMethod = "GET",
-//				notes = "This service fetches a StructuralElementInstance")
-//		@ApiResponses(value = { 
-//				@ApiResponse(
-//						code = HttpStatus.OK_200,
-//						response = ABeanStructuralElementInstance.class,
-//						message = "Successful operation"),
-//				@ApiResponse(
-//						code = HttpStatus.BAD_REQUEST_400, 
-//						message = "Bad Request")})
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch SEI",
+				httpMethod = "GET",
+				notes = "This service fetches a StructuralElementInstance")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanStructuralElementInstance.class,
+						message = "Successful operation"),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Bad Request")})
 		public Response getSei(@PathParam("seiUuid") String seiUuid) {
 			try {
 				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
@@ -261,15 +271,14 @@ public class ModelAccessResource {
 		@PUT
 		@Path(SEI)
 		@Consumes(MediaType.APPLICATION_JSON)
-		@ApiOperation(hidden = true, value = "")
-//		@ApiOperation(
-//				consumes = "application/json",
-//				value = "Put SEI",
-//				httpMethod = "PUT",
-//				notes = "This service updates an existing StructuralElementInstance")
-//		@ApiResponse(
-//				code = HttpStatus.OK_200,
-//				message = "Successful operation")
+		@ApiOperation(
+				consumes = "application/json",
+				value = "Put SEI",
+				httpMethod = "PUT",
+				notes = "This service updates an existing StructuralElementInstances")
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = "Successful operation")
 		public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
 			return Response.status(Response.Status.OK).build();
 		}

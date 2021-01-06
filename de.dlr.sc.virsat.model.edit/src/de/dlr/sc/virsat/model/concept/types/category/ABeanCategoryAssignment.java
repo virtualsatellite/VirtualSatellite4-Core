@@ -40,7 +40,9 @@ import io.swagger.annotations.ApiModelProperty;
  * @author fisc_ph
  *
  */
-@ApiModel(parent = ABeanObject.class)
+@ApiModel(description = "Abstract model class with properties that every bean CA has."
+		+ " Resources that return this will instead return concrete bean CA."
+		+ " A concrete bean CA can additionally have properties (see ABeanProperty).")
 public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssignment> implements IBeanCategoryAssignment {
 
 	protected CategoryAssignmentHelper helper = new CategoryAssignmentHelper(null);

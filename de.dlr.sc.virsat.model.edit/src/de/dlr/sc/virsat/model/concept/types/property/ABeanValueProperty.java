@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiModel;
  *
  */
 @ApiModel(
+	description = "Abstract model class for bean value properties.",
 	subTypes = {
 		ABeanUnitValueProperty.class,
 		BeanPropertyBoolean.class,

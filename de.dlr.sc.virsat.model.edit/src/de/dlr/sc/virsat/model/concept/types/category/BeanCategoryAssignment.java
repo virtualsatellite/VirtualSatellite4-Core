@@ -9,12 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.category;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * Convenience class to access CAs and Properties of a Sei more easily
  * @author muel_s8
  *
  */
-
+@ApiModel(description = "Convenience bean CA that can be used for every concrete CA."
+		+ " Instances of this only contain the fields of ABeanCategoryAssignment"
+		+ " and no additional properties of the concrete CA.")
 public class BeanCategoryAssignment extends ABeanCategoryAssignment {
 
 	@Override

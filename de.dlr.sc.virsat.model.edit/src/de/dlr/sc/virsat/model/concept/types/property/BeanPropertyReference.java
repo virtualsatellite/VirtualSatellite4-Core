@@ -68,8 +68,10 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	@XmlElement(nillable = true)
 	@ApiModelProperty(
+		// Currently this API reference does not work
+		// because ABeanObject is not part of the API documentation
 		reference = "ABeanObject",
-		value = "Uuid of the referenced bean object")
+		value = "Uuid of the referenced bean object, that is either ABeanProperty or ABeanCategoryAssignment")
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		

@@ -27,6 +27,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @param <V_TYPE> The value type of this bean
  */
 @ApiModel(
+	description = "Abstract model class for bean unit value properties."
+		+ "Those properties have an additional unit field.",
 	subTypes = {
 		BeanPropertyFloat.class,
 		BeanPropertyInt.class

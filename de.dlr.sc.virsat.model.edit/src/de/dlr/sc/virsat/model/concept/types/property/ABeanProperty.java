@@ -26,8 +26,8 @@ import io.swagger.annotations.ApiModelProperty.AccessMode;
  * @param <V_TYPE> The value type of the bean
  */
 @ApiModel(discriminator = "propertyType",
-// TODO
-	parent = ABeanObject.class,
+	description = "Abstract model class for bean properties."
+		+ " Resources that return this will instead return concrete bean properties.",
 	subTypes = {
 		ABeanValueProperty.class,
 		BeanPropertyComposed.class,

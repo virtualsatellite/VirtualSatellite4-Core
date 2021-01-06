@@ -29,7 +29,8 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-// TODO: not displayed in the documentation
+// This class does not appear in the API documentation
+// because there is no concrete resource using it
 @ApiModel
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
