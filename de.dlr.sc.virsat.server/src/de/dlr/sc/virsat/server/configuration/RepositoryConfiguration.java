@@ -18,7 +18,7 @@ import java.util.Properties;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
-
+// TODO: API doc
 public class RepositoryConfiguration {
 
 	// Infrastructure

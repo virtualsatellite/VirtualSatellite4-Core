@@ -135,7 +135,8 @@
 									<outputDir>${swagger.model.output}</outputDir>
 									<config>
 										<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-										<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
+										<swagger2markup.anchorPrefix>model_</swagger2markup.anchorPrefix>
+										<swagger2markup.generatedExamplesEnabled>true</swagger2markup.generatedExamplesEnabled>
 									</config>
 								</configuration>
 								<phase>process-classes</phase>
@@ -151,7 +152,8 @@
 									<outputDir>${swagger.management.output}</outputDir>
 									<config>
 										<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-										<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
+										<swagger2markup.anchorPrefix>management_</swagger2markup.anchorPrefix>
+										<swagger2markup.generatedExamplesEnabled>true</swagger2markup.generatedExamplesEnabled>
 									</config>
 								</configuration>
 								<phase>process-classes</phase>

@@ -55,7 +55,7 @@ import io.swagger.annotations.SwaggerDefinition;
  * The resource to access the VirSat data model of a server repository
  * Provides an endpoint to access a repository
  */
-@Api(tags = {"Model"})
+@Api
 @SwaggerDefinition(
 	info = @Info(
 		version = VirSatModelAccessServlet.MODEL_API_VERSION,
@@ -254,6 +254,7 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.OK_200,
 						response = ABeanStructuralElementInstance.class,
+						// TODO: string const
 						message = "Successful operation"),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 

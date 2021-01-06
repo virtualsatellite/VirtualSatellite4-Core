@@ -97,7 +97,19 @@ For each API the swagger documentation also is provided via the REST API at:
 It can help you, if you want to connect Virtual Satellite to your own application.
 E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
 
-#TODO: insert generated swagger documentation for the APIs here#
+:serverdocdir: ../../../de.dlr.sc.virsat.server/doc-gen
+:modeldocdir: {serverdocdir}/model
+:managementdocdir: {serverdocdir}/management
+
+include::{modeldocdir}/overview.adoc[leveloffset=2]
+include::{modeldocdir}/paths.adoc[leveloffset=2]
+include::{modeldocdir}/definitions.adoc[leveloffset=2]
+include::{modeldocdir}/security.adoc[leveloffset=2]
+
+include::{managementdocdir}/overview.adoc[leveloffset=2]
+include::{managementdocdir}/paths.adoc[leveloffset=2]
+include::{managementdocdir}/definitions.adoc[leveloffset=2]
+include::{managementdocdir}/security.adoc[leveloffset=2]
 
 == How to run your own Headless Virtual Satellite Server
 

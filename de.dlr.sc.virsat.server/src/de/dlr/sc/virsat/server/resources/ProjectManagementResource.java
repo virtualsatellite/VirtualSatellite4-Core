@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
-@Api(tags = {"Management"})
+@Api
 @SwaggerDefinition(
 	info = @Info(
 		version = RepoManagementServlet.MANAGEMENT_API_VERSION,
