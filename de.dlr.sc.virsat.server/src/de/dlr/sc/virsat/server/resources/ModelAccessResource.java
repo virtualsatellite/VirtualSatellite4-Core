@@ -139,7 +139,7 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
 						message = "Bad Request")})
-		public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
+		public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 			return Response.status(Response.Status.OK).entity(
 					new BeanPropertyFactory().getInstanceFor(
 							RepositoryUtility.findProperty(propertyUuid, repository)
@@ -179,7 +179,7 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
 						message = "Bad Request")})
-		public Response getCa(@PathParam("caUuid") String caUuid) {
+		public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(
 						new BeanCategoryAssignmentFactory().getInstanceFor(
@@ -206,11 +206,14 @@ public class ModelAccessResource {
 		}
 		
 		/** **/
+		@GET
+		@Path(ROOT_SEIS)
+		@Produces(MediaType.APPLICATION_JSON)
 		@ApiOperation(
 				produces = "application/json",
 				value = "Fetch a list of root SEIs",
 				httpMethod = "GET",
-				notes = "This service fetches a the root StructuralElementInstance")
+				notes = "This service fetches the root StructuralElementInstances")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
@@ -220,9 +223,6 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
 						message = "Bad Request")})
-		@GET
-		@Path(ROOT_SEIS)
-		@Produces(MediaType.APPLICATION_JSON)
 		public Response getRootSeis() {
 			try {
 				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
@@ -258,7 +258,7 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
 						message = "Bad Request")})
-		public Response getSei(@PathParam("seiUuid") String seiUuid) {
+		public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
 			try {
 				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
 				IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
@@ -275,7 +275,7 @@ public class ModelAccessResource {
 				consumes = "application/json",
 				value = "Put SEI",
 				httpMethod = "PUT",
-				notes = "This service updates an existing StructuralElementInstances")
+				notes = "This service updates an existing StructuralElementInstance")
 		@ApiResponse(
 				code = HttpStatus.OK_200,
 				message = "Successful operation")

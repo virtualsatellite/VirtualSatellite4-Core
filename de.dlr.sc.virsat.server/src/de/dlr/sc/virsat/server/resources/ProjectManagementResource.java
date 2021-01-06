@@ -24,10 +24,30 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.jetty.http.HttpStatus;
+
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.controller.RepoManagementController;
+import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
+import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
 
+@Api(tags = {"Management"})
+@SwaggerDefinition(
+	info = @Info(
+		version = RepoManagementServlet.MANAGEMENT_API_VERSION,
+		title = "The Management API",
+		description = "API to manage the Server Configuration"
+	),
+	basePath = VirSatJettyServer.PATH + RepoManagementServlet.MANAGEMENT_API
+)
 @Path(ProjectManagementResource.PATH)
 public class ProjectManagementResource {
 
@@ -38,24 +58,45 @@ public class ProjectManagementResource {
 	public ProjectManagementResource() {
 		controller = new RepoManagementController();
 	}
+	
+	private static final String PROJECT_NAME = "Name of the project";
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(
+			produces = "application/json",
+			value = "Fetch a list of Project names",
+			httpMethod = "GET",
+			notes = "This service fetches all Project names")
+	@ApiResponse(
+			code = HttpStatus.OK_200,
+			response = String.class,
+			responseContainer = "List",
+			message = "Successful operation")
 	public Response getAllProjects() {
 		List<String> projects = new ArrayList<>(controller.getAllProjectNames());
 		GenericEntity<List<String>> entity = new GenericEntity<List<String>>(projects) { };
 		return Response.status(Response.Status.OK).entity(entity).build();
 	}
 
-	
-	/**
-	 * Gets the configuration for the given project name.
-	 * If project does not exist returns status NOT_FOUND
-	 */
+	/** **/
 	@GET
 	@Path("/{projectName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getProject(@PathParam("projectName") String projectName) {
+	@ApiOperation(
+			produces = "application/json",
+			value = "Fetch Project",
+			httpMethod = "GET",
+			notes = "This service fetches the configuration for the given project name")
+	@ApiResponses(value = { 
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = RepositoryConfiguration.class,
+					message = "Successful operation"),
+			@ApiResponse(
+					code = HttpStatus.NOT_FOUND_404,
+					message = "Project not found")})
+	public Response getProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String projectName) {
 		ServerRepository serverRepository = controller.getRepository(projectName);
 		if (serverRepository != null) {
 			RepositoryConfiguration configuration = serverRepository.getRepositoryConfiguration();
@@ -65,13 +106,22 @@ public class ProjectManagementResource {
 		}
 	}
 
-	/**
-	 * Deletes a project
-	 * @param repoName name of the project to delete
-	 */
+	/** **/
 	@DELETE
 	@Path("/{projectName}")
-	public Response deleteProject(@PathParam("projectName") String repoName) {
+	@ApiOperation(
+			produces = "application/json",
+			value = "Delete Project",
+			httpMethod = "DELETE",
+			notes = "This service fetches deletes the configuration for the given project name")
+	@ApiResponses(value = { 
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					message = "Successful operation"),
+			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400,
+					message = "Project could not be deleted")})
+	public Response deleteProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String repoName) {
 		try {
 			controller.deleteRepository(repoName);
 		} catch (IOException e) {
@@ -80,18 +130,29 @@ public class ProjectManagementResource {
 		return Response.status(Response.Status.OK).build();
 	}
 
-	/**
-	 * Creates or updates a project configuration on the project specified by the URL.
-	 * URL project overrides project name in the passed configuration if they are different.
-	 * @param configuration should contain URL and backend
-	 */
+	/** **/
 	@PUT
 	@Path("/{projectName}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createOrUpdateProject(@PathParam("projectName") String projectName, RepositoryConfiguration configuration) {
+	@ApiOperation(
+			produces = "application/json",
+			value = "PUT Project",
+			httpMethod = "PUT",
+			notes = "This service fetches creates or updates a project configuration on the project specified by the URL."
+					+ " URL project overrides project name in the passed configuration if they are different.")
+	@ApiResponses(value = { 
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					message = "Successful operation"),
+			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400,
+					message = "An error occured, returns error message",
+					response = String.class)})
+	public Response createOrUpdateProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String projectName,
+			@ApiParam(value = "New Configuration", required = true) RepositoryConfiguration configuration) {
 		configuration.setProjectName(projectName);
 		if (!configuration.isValid()) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity("Invalid configuration").build();
 		}
 		try {
 			controller.addOrUpdateRepository(configuration);
