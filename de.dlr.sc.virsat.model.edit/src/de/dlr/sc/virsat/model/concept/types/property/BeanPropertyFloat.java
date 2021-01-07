@@ -104,7 +104,10 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 		return setValue(ed, inputValue);		
 	}
 	
-	@ApiModelProperty(value = "Always returns constant: \"FLOAT\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"float\"", 
+			example = "float",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.FLOAT;

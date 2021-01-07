@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(description = "Abstract model class with properties that every bean CA has."
-		+ " Resources that return this will instead return concrete bean CA."
+		+ " Instead return a concrete bean CA that is identified by a type field."
 		+ " A concrete bean CA can additionally have properties (see ABeanProperty).")
 public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssignment> implements IBeanCategoryAssignment {
 
@@ -159,6 +159,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	}
 	
 	@Override
+	@ApiModelProperty(required = true)
 	@XmlElement(nillable = true)
 	public String getName() {
 		return ti.getName();

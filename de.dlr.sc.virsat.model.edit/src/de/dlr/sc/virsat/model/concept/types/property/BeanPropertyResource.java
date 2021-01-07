@@ -122,7 +122,10 @@ public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance
 		return null;
 	}
 	
-	@ApiModelProperty(value = "Always returns constant: \"RESOURCE\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"resource\"", 
+			example = "resource",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.RESOURCE;

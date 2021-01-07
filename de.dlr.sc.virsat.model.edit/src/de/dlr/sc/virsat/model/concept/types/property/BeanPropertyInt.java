@@ -64,7 +64,10 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 		return null;
 	}
 	
-	@ApiModelProperty(value = "Always returns constant: \"INT\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"int\"", 
+			example = "int",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.INT;

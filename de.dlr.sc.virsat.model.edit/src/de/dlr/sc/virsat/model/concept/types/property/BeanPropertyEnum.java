@@ -54,7 +54,6 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public void setValue(String value) {
 		EnumProperty ep = (EnumProperty) getTypeInstance().getType();
 		EnumValueDefinition evd = new EnumPropertyHelper().getEvdForName(ep, value);
@@ -120,7 +119,10 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 		return new PropertyInstanceHelper().setUnit(ed, ti, unitName);
 	}
 	
-	@ApiModelProperty(value = "Always returns constant: \"ENUM\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"enum\"", 
+			example = "enum",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.ENUM;

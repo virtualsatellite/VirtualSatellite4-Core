@@ -56,8 +56,9 @@ import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
 @XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis"})
-@ApiModel(description = "Abstract model class for bean SEIS."
-		+ " Resources that return this will instead return concrete bean SEI.")
+@ApiModel(description = "Abstract model class for bean SEIs."
+		+ " Instead return a concrete bean SEI that is identified by a type field."
+		+ " Currently concrete SEIs have no additional fields.")
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
 
 	protected StructuralElementInstance sei;
@@ -84,6 +85,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(nillable = true)
+	@ApiModelProperty(required = true)
 	@Override
 	public void setName(String seiName) {
 		sei.setName(seiName);

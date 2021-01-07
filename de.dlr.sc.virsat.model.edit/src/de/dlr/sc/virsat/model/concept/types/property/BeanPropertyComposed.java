@@ -88,7 +88,11 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 		// Can't unset the composed ca on the bean level
 	}
 	
-	@ApiModelProperty(value = "Always returns constant: \"COMPOSED\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"composed\"", 
+			example = "composed",
+			accessMode = AccessMode.READ_ONLY,
+			required = true)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.COMPOSED;

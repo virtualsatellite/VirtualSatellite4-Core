@@ -57,7 +57,10 @@ public class BeanPropertyBoolean extends ABeanValueProperty<ValuePropertyInstanc
 		return Boolean.parseBoolean(ti.getValue());
 	}
 	
-	@ApiModelProperty(value = "Always returns constant: \"BOOLEAN\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"boolean\"", 
+			example = "boolean",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.BOOLEAN;

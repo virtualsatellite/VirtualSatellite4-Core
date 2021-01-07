@@ -57,7 +57,10 @@ public class BeanPropertyString extends ABeanValueProperty<ValuePropertyInstance
 		return ti.getValue();
 	}
 
-	@ApiModelProperty(value = "Always returns constant: \"STRING\"", accessMode = AccessMode.READ_ONLY)
+	@ApiModelProperty(
+			value = "Always returns constant: \"string\"", 
+			example = "string",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.STRING;

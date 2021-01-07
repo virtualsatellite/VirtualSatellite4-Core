@@ -49,6 +49,7 @@ public abstract class ABeanProperty<P_TYPE extends APropertyInstance, V_TYPE> ex
 	@XmlJavaTypeAdapter(BeanPropertyTypeAdapter.class)
 	@ApiModelProperty(
 		accessMode = AccessMode.READ_ONLY,
-		value = "Enum to idenify a property by it's type")
+		value = "Enum to idenify a property by it's type",
+		required = true)
 	public abstract BeanPropertyType getPropertyType();
 }
