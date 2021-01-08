@@ -51,6 +51,8 @@ import io.swagger.annotations.SwaggerDefinition;
 @Path(ProjectManagementResource.PATH)
 public class ProjectManagementResource {
 
+	private static final String SUCCESSFUL_OPERATION = "Successful operation";
+
 	public static final String PATH = "/project";
 
 	private RepoManagementController controller;
@@ -72,7 +74,7 @@ public class ProjectManagementResource {
 			code = HttpStatus.OK_200,
 			response = String.class,
 			responseContainer = "List",
-			message = "Successful operation")
+			message = SUCCESSFUL_OPERATION)
 	public Response getAllProjects() {
 		List<String> projects = new ArrayList<>(controller.getAllProjectNames());
 		GenericEntity<List<String>> entity = new GenericEntity<List<String>>(projects) { };
@@ -92,7 +94,7 @@ public class ProjectManagementResource {
 			@ApiResponse(
 					code = HttpStatus.OK_200,
 					response = RepositoryConfiguration.class,
-					message = "Successful operation"),
+					message = SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.NOT_FOUND_404,
 					message = "Project not found")})
@@ -117,7 +119,7 @@ public class ProjectManagementResource {
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
-					message = "Successful operation"),
+					message = SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = "Project could not be deleted")})
@@ -143,7 +145,7 @@ public class ProjectManagementResource {
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
-					message = "Successful operation"),
+					message = SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = "An error occured, returns error message",

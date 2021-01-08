@@ -91,8 +91,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	@ApiModelProperty(
 			value = "Always returns constant: \"composed\"", 
 			example = "composed",
-			accessMode = AccessMode.READ_ONLY,
-			required = true)
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.COMPOSED;

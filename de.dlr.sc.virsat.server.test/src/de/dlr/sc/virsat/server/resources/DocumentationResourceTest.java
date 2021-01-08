@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,16 +31,16 @@ public class DocumentationResourceTest extends AJettyServerTest {
 	 * Gets the file at apiPath from the server and assert that the right content got returned
 	 */
 	private void testDocumentation(String apiPath, String directory, String filename) throws IOException {
-		String entity = webTarget
+		String docFileContent = webTarget
 				.path(apiPath)
 				.path(filename)
 				.request()
 				.get(String.class);
 
 		String realmResourceName = "doc-gen" + File.separator + directory + File.separator + filename;
-		String json =  IOUtils.toString(FileLocator.openStream(Activator.getDefault().getBundle(), 
+		String expectedFileContent =  IOUtils.toString(FileLocator.openStream(Activator.getDefault().getBundle(), 
 				new Path(realmResourceName), false), StandardCharsets.UTF_8);
-		assertTrue("Right file content", entity.contains(json));
+		assertEquals("Right file content", expectedFileContent, docFileContent);
 	}
 	
 	@Test

@@ -97,6 +97,28 @@ For each API the swagger documentation also is provided via the REST API at:
 It can help you, if you want to connect Virtual Satellite to your own application.
 E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
 
+WARNING: Important concept: Inheritance
+
+Some resources in the following documentation return abstract model classes (e.g. AClass).
+Here the server will instead return the concrete model class (e.g. ConcreteClass) inheriting from AClass.
+So the JSON will contain all fields from AClass, but may contain additional fields.
+Furthermore, a *type* field will be inserted, identifying the concrete class. 
+So the JSON for ConcreteClass will look like this:
+....
+{
+  "type" : "concreteClass",
+  // fields from AClass e.g. uuid
+  "uuid" : ...,
+  ...
+  // fields from ConcreteClass
+  ...
+}
+....
+This concept is most relevant for CategoryAssignments, which can additionally have
+fields in the form of Properties.
+
+NOTE: Now follows the generated documentation
+
 :serverdocdir: ../../../de.dlr.sc.virsat.server/doc-gen
 :modeldocdir: {serverdocdir}/model
 :managementdocdir: {serverdocdir}/management
