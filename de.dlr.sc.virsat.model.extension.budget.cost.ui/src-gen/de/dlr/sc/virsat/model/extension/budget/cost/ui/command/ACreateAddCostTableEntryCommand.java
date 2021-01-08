@@ -25,7 +25,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
  * 
  * Don't Manually modify this class
  * 
- * Definition of the equipment cost
+ * Definition the equipment cost of the type
  * 
  */	
 public abstract class ACreateAddCostTableEntryCommand {

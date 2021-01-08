@@ -11,22 +11,13 @@
     <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="CostTableEntry" description="Definition of the equipment cost" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters">
-    <equationDefinitions>
-      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
-        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costWithMargin"/>
-        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
-      </expression>
-      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costMargin"/>
-    </equationDefinitions>
-    <equationDefinitions>
-      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="/">
-        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costMargin"/>
-        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
-      </expression>
-      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.margin"/>
-    </equationDefinitions>
+  <categories name="CostTableEntry" description="Definition the equipment cost of the type">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.CostType"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="cost" description="The Equipment costs" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="costWithMargin" description="The equipment cost plus the safety margin" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="costMargin" description="The actual amount of margin cost" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="CostEquipment" description="Definition of the equipment cost" isApplicableForAll="true" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters">
     <equationDefinitions>

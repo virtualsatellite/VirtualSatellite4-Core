@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAss
  * 
  * Don't Manually modify this class
  * 
- * Definition of the equipment cost
+ * Definition the equipment cost of the type
  * 
  */	
 public abstract class AUiSnippetTableCostTableEntry extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {

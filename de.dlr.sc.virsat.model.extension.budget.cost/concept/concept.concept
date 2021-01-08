@@ -8,8 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
  Concept de.dlr.sc.virsat.model.extension.budget.cost displayname "Cost Budget" description "Cost Budget Concept" version 1.0 {
-	
-	// 
+
 	StructuralElement CostTypesCollection description "A Container to summarize all CostTypes" {
 		IsRootStructuralElement;
 	}	 
@@ -24,13 +23,16 @@
 		FloatProperty costWithMargin description "The equipment cost plus the safety margin" default 0.0 quantityKind "Dimensionless" unit "Euro";
 		FloatProperty costMargin description "The actual amount of margin cost" default 0.0 quantityKind "Dimensionless" unit "Euro";
 		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
+				
 	}
 	
-	Category CostTableEntry extends ACostParameters description "Definition of the equipment cost" {
+	Category CostTableEntry description "Definition the equipment cost of the type" {
 		Reference type of Type CostType;
 		
-		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
-		Ref:ACostParameters.margin = ACostParameters.costMargin / ACostParameters.cost;		
+		FloatProperty cost description "The Equipment costs" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty costWithMargin description "The equipment cost plus the safety margin" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty costMargin description "The actual amount of margin cost" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
 	}
 	
 	Category CostEquipment extends ACostParameters description "Definition of the equipment cost" {

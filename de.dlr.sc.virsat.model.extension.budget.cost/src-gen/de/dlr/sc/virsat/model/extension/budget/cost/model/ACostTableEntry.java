@@ -24,9 +24,12 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
 
@@ -39,12 +42,12 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * Don't Manually modify this class
  * 
- * Definition of the equipment cost
+ * Definition the equipment cost of the type
  * 
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class ACostTableEntry extends ACostParameters implements IBeanCategoryAssignment {
+public abstract class ACostTableEntry extends GenericCategory implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.budget.cost.CostTableEntry";
 	
@@ -58,6 +61,10 @@ public abstract class ACostTableEntry extends ACostParameters implements IBeanCa
 	
 	// property name constants
 	public static final String PROPERTY_TYPE = "type";
+	public static final String PROPERTY_COST = "cost";
+	public static final String PROPERTY_COSTWITHMARGIN = "costWithMargin";
+	public static final String PROPERTY_COSTMARGIN = "costMargin";
+	public static final String PROPERTY_MARGIN = "margin";
 	
 	
 	
@@ -109,6 +116,154 @@ public abstract class ACostTableEntry extends ACostParameters implements IBeanCa
 	public BeanPropertyReference<CostType> getTypeBean() {
 		safeAccessType();
 		return type;
+	}
+	
+	// *****************************************************************
+	// * Attribute: cost
+	// *****************************************************************
+	private BeanPropertyFloat cost = new BeanPropertyFloat();
+	
+	private void safeAccessCost() {
+		if (cost.getTypeInstance() == null) {
+			cost.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("cost"));
+		}
+	}
+	
+	public Command setCost(EditingDomain ed, double value) {
+		safeAccessCost();
+		return this.cost.setValue(ed, value);
+	}
+	
+	public void setCost(double value) {
+		safeAccessCost();
+		this.cost.setValue(value);
+	}
+	
+	public double getCost() {
+		safeAccessCost();
+		return cost.getValue();
+	}
+	
+	public boolean isSetCost() {
+		safeAccessCost();
+		return cost.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getCostBean() {
+		safeAccessCost();
+		return cost;
+	}
+	
+	// *****************************************************************
+	// * Attribute: costWithMargin
+	// *****************************************************************
+	private BeanPropertyFloat costWithMargin = new BeanPropertyFloat();
+	
+	private void safeAccessCostWithMargin() {
+		if (costWithMargin.getTypeInstance() == null) {
+			costWithMargin.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("costWithMargin"));
+		}
+	}
+	
+	public Command setCostWithMargin(EditingDomain ed, double value) {
+		safeAccessCostWithMargin();
+		return this.costWithMargin.setValue(ed, value);
+	}
+	
+	public void setCostWithMargin(double value) {
+		safeAccessCostWithMargin();
+		this.costWithMargin.setValue(value);
+	}
+	
+	public double getCostWithMargin() {
+		safeAccessCostWithMargin();
+		return costWithMargin.getValue();
+	}
+	
+	public boolean isSetCostWithMargin() {
+		safeAccessCostWithMargin();
+		return costWithMargin.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getCostWithMarginBean() {
+		safeAccessCostWithMargin();
+		return costWithMargin;
+	}
+	
+	// *****************************************************************
+	// * Attribute: costMargin
+	// *****************************************************************
+	private BeanPropertyFloat costMargin = new BeanPropertyFloat();
+	
+	private void safeAccessCostMargin() {
+		if (costMargin.getTypeInstance() == null) {
+			costMargin.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("costMargin"));
+		}
+	}
+	
+	public Command setCostMargin(EditingDomain ed, double value) {
+		safeAccessCostMargin();
+		return this.costMargin.setValue(ed, value);
+	}
+	
+	public void setCostMargin(double value) {
+		safeAccessCostMargin();
+		this.costMargin.setValue(value);
+	}
+	
+	public double getCostMargin() {
+		safeAccessCostMargin();
+		return costMargin.getValue();
+	}
+	
+	public boolean isSetCostMargin() {
+		safeAccessCostMargin();
+		return costMargin.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getCostMarginBean() {
+		safeAccessCostMargin();
+		return costMargin;
+	}
+	
+	// *****************************************************************
+	// * Attribute: margin
+	// *****************************************************************
+	private BeanPropertyFloat margin = new BeanPropertyFloat();
+	
+	private void safeAccessMargin() {
+		if (margin.getTypeInstance() == null) {
+			margin.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("margin"));
+		}
+	}
+	
+	public Command setMargin(EditingDomain ed, double value) {
+		safeAccessMargin();
+		return this.margin.setValue(ed, value);
+	}
+	
+	public void setMargin(double value) {
+		safeAccessMargin();
+		this.margin.setValue(value);
+	}
+	
+	public double getMargin() {
+		safeAccessMargin();
+		return margin.getValue();
+	}
+	
+	public boolean isSetMargin() {
+		safeAccessMargin();
+		return margin.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getMarginBean() {
+		safeAccessMargin();
+		return margin;
 	}
 	
 	

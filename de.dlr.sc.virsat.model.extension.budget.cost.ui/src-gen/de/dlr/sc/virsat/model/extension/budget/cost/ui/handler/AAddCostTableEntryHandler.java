@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.ui.command.CreateAddCostTabl
  * 
  * Don't Manually modify this class
  * 
- * Definition of the equipment cost
+ * Definition the equipment cost of the type
  * 
  */	
 public abstract class AAddCostTableEntryHandler extends ATransactionalAddCategoryHandler {
