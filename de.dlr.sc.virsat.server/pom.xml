@@ -48,7 +48,7 @@
 
 	<profiles>
 		<profile>
-			<id>swagger</id>
+			<id>doc</id>
 			<build>
 				<plugins>
 					<plugin>
