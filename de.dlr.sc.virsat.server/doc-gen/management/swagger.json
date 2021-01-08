@@ -1,0 +1,135 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "API to manage the Server Configuration",
+    "version" : "v0.0.1",
+    "title" : "The Management API"
+  },
+  "basePath" : "/rest/management/v0.0.1",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/project" : {
+      "get" : {
+        "summary" : "Fetch a list of Project names",
+        "description" : "This service fetches all Project names",
+        "operationId" : "getAllProjects",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/project/{projectName}" : {
+      "get" : {
+        "summary" : "Fetch Project",
+        "description" : "This service fetches the configuration for the given project name",
+        "operationId" : "getProject",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "projectName",
+          "in" : "path",
+          "description" : "Name of the project",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/RepositoryConfiguration"
+            }
+          },
+          "404" : {
+            "description" : "Project not found"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "PUT Project",
+        "description" : "This service fetches creates or updates a project configuration on the project specified by the URL. URL project overrides project name in the passed configuration if they are different.",
+        "operationId" : "createOrUpdateProject",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "projectName",
+          "in" : "path",
+          "description" : "Name of the project",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "New Configuration",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/RepositoryConfiguration"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "An error occured, returns error message"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete Project",
+        "description" : "This service fetches deletes the configuration for the given project name",
+        "operationId" : "deleteProject",
+        "parameters" : [ {
+          "name" : "projectName",
+          "in" : "path",
+          "description" : "Name of the project",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Project could not be deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "RepositoryConfiguration" : {
+      "type" : "object",
+      "properties" : {
+        "functionalAccountName" : {
+          "type" : "string",
+          "description" : "Name used for the functional account, that the server uses to access the project backend."
+        },
+        "functionalAccountPassword" : {
+          "type" : "string",
+          "description" : "Password used for the functional account"
+        },
+        "remoteUri" : {
+          "type" : "string",
+          "example" : "some/path.git",
+          "description" : "URI to the remote (can also be local on your machine)"
+        },
+        "projectName" : {
+          "type" : "string",
+          "description" : "The name used via the API. Should be unique!"
+        },
+        "localPath" : {
+          "type" : "string",
+          "example" : "projectName",
+          "description" : "Local path of the project folder in the repository. This allows to have multiple projects in one repository."
+        },
+        "backend" : {
+          "type" : "string",
+          "example" : "GIT",
+          "description" : "Backend kind",
+          "enum" : [ "GIT", "SVN" ]
+        }
+      }
+    }
+  }
+}
