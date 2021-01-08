@@ -43,7 +43,6 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 	private Container containerVirsatContext;
 	private IFile modelFile;
 	
-	
 	@Before
 	public void setUpModel() throws CoreException, IOException {
 		super.setUp();
@@ -99,7 +98,6 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 			}
 		};
 		
-		
 		// Now do the model change in an external domain and directly save it
 		// from the local domain, the save from the local domain should never overwrite
 		// the changes done externally. The changes are done interlocked with the listener
@@ -153,5 +151,4 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 		
 		return newContainerHandle;
 	}
-
 }
