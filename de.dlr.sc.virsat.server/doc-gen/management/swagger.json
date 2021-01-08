@@ -48,7 +48,7 @@
       },
       "put" : {
         "summary" : "PUT Project",
-        "description" : "This service fetches creates or updates a project configuration on the project specified by the URL. URL project overrides project name in the passed configuration if they are different.",
+        "description" : "This service creates or updates a project configuration on the project specified by the URL. URL project overrides project name in the passed configuration if they are different.",
         "operationId" : "createOrUpdateProject",
         "consumes" : [ "application/json" ],
         "parameters" : [ {
@@ -77,7 +77,7 @@
       },
       "delete" : {
         "summary" : "Delete Project",
-        "description" : "This service fetches deletes the configuration for the given project name",
+        "description" : "This service deletes the configuration for the given project name",
         "operationId" : "deleteProject",
         "parameters" : [ {
           "name" : "projectName",
@@ -101,33 +101,38 @@
     "RepositoryConfiguration" : {
       "type" : "object",
       "properties" : {
-        "functionalAccountName" : {
-          "type" : "string",
-          "description" : "Name used for the functional account, that the server uses to access the project backend."
-        },
-        "functionalAccountPassword" : {
-          "type" : "string",
-          "description" : "Password used for the functional account"
-        },
         "remoteUri" : {
           "type" : "string",
           "example" : "some/path.git",
           "description" : "URI to the remote (can also be local on your machine)"
         },
+        "backend" : {
+          "type" : "string",
+          "example" : "GIT",
+          "position" : 1,
+          "description" : "Backend kind",
+          "enum" : [ "GIT", "SVN" ]
+        },
+        "functionalAccountName" : {
+          "type" : "string",
+          "position" : 2,
+          "description" : "Name used for the functional account, that the server uses to access the project backend."
+        },
+        "functionalAccountPassword" : {
+          "type" : "string",
+          "position" : 3,
+          "description" : "Password used for the functional account"
+        },
         "projectName" : {
           "type" : "string",
+          "position" : 4,
           "description" : "The name used via the API. Should be unique!"
         },
         "localPath" : {
           "type" : "string",
           "example" : "projectName",
+          "position" : 5,
           "description" : "Local path of the project folder in the repository. This allows to have multiple projects in one repository."
-        },
-        "backend" : {
-          "type" : "string",
-          "example" : "GIT",
-          "description" : "Backend kind",
-          "enum" : [ "GIT", "SVN" ]
         }
       }
     }

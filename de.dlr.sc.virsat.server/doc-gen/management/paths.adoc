@@ -85,12 +85,12 @@ __required__|Name of the project|string
 [source,json]
 ----
 {
+  "remoteUri" : "some/path.git",
+  "backend" : "GIT",
   "functionalAccountName" : "string",
   "functionalAccountPassword" : "string",
-  "remoteUri" : "some/path.git",
   "projectName" : "string",
-  "localPath" : "projectName",
-  "backend" : "GIT"
+  "localPath" : "projectName"
 }
 ----
 
@@ -103,7 +103,7 @@ PUT /project/{projectName}
 
 
 ==== Description
-This service fetches creates or updates a project configuration on the project specified by the URL. URL project overrides project name in the passed configuration if they are different.
+This service creates or updates a project configuration on the project specified by the URL. URL project overrides project name in the passed configuration if they are different.
 
 
 ==== Parameters
@@ -145,12 +145,12 @@ __required__|New Configuration|<<_management_repositoryconfiguration,RepositoryC
 [source,json]
 ----
 {
+  "remoteUri" : "some/path.git",
+  "backend" : "GIT",
   "functionalAccountName" : "string",
   "functionalAccountPassword" : "string",
-  "remoteUri" : "some/path.git",
   "projectName" : "string",
-  "localPath" : "projectName",
-  "backend" : "GIT"
+  "localPath" : "projectName"
 }
 ----
 
@@ -163,7 +163,7 @@ DELETE /project/{projectName}
 
 
 ==== Description
-This service fetches deletes the configuration for the given project name
+This service deletes the configuration for the given project name
 
 
 ==== Parameters

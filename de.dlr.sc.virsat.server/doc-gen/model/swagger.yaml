@@ -226,15 +226,14 @@ definitions:
     properties:
       name:
         type: "string"
-      parent:
-        description: "Bean of the parent sei or null"
-        $ref: "#/definitions/BeanStructuralElementInstance"
       uuid:
         type: "string"
         example: "b168b0df-84b6-4b7f-bede-69298b215f40"
+        position: 1
         description: "Unique identifier for a bean"
       categoryAssignments:
         type: "array"
+        position: 2
         description: "List of the CA beans"
         items:
           xml:
@@ -242,6 +241,7 @@ definitions:
           $ref: "#/definitions/BeanCategoryAssignment"
       children:
         type: "array"
+        position: 3
         description: "List of the child beans"
         items:
           xml:
@@ -249,11 +249,16 @@ definitions:
           $ref: "#/definitions/ABeanStructuralElementInstance"
       superSeis:
         type: "array"
+        position: 4
         description: "List of the super SEI beans"
         items:
           xml:
             name: "superSeis"
           $ref: "#/definitions/ABeanStructuralElementInstance"
+      parent:
+        position: 5
+        description: "Bean of the parent sei or null"
+        $ref: "#/definitions/BeanStructuralElementInstance"
     description: "Abstract model class for bean SEIs. Instead return a concrete bean\
       \ SEI that is identified by a type field. Currently concrete SEIs have no additional\
       \ fields."
@@ -506,15 +511,14 @@ definitions:
     properties:
       name:
         type: "string"
-      parent:
-        description: "Bean of the parent sei or null"
-        $ref: "#/definitions/BeanStructuralElementInstance"
       uuid:
         type: "string"
         example: "b168b0df-84b6-4b7f-bede-69298b215f40"
+        position: 1
         description: "Unique identifier for a bean"
       categoryAssignments:
         type: "array"
+        position: 2
         description: "List of the CA beans"
         items:
           xml:
@@ -522,6 +526,7 @@ definitions:
           $ref: "#/definitions/BeanCategoryAssignment"
       children:
         type: "array"
+        position: 3
         description: "List of the child beans"
         items:
           xml:
@@ -529,10 +534,15 @@ definitions:
           $ref: "#/definitions/ABeanStructuralElementInstance"
       superSeis:
         type: "array"
+        position: 4
         description: "List of the super SEI beans"
         items:
           xml:
             name: "superSeis"
           $ref: "#/definitions/ABeanStructuralElementInstance"
+      parent:
+        position: 5
+        description: "Bean of the parent sei or null"
+        $ref: "#/definitions/BeanStructuralElementInstance"
     description: "Convenience bean SEI that can be used for every concrete SEI. Instances\
       \ of this only contain the fields of ABeanStructuralElement."

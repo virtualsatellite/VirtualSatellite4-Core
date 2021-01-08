@@ -93,7 +93,8 @@ public class RepositoryConfiguration {
 	}
 
 	@ApiModelProperty(value = "URI to the remote (can also be local on your machine)",
-			example = "some/path.git")
+			example = "some/path.git",
+			position = 0)
 	public String getRemoteUri() {
 		return properties.getProperty(REMOTE_URL_KEY);
 	}
@@ -103,7 +104,8 @@ public class RepositoryConfiguration {
 	}
 
 	@ApiModelProperty(value = "Backend kind",
-			example = "GIT")
+			example = "GIT",
+			position = 1)
 	public VersionControlSystem getBackend() {
 		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
 	}
@@ -113,7 +115,8 @@ public class RepositoryConfiguration {
 	}
 
 	@ApiModelProperty(value = "Name used for the functional account,"
-			+ " that the server uses to access the project backend.")
+			+ " that the server uses to access the project backend.",
+			position = 2)
 	public String getFunctionalAccountName() {
 		return properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 	}
@@ -122,7 +125,9 @@ public class RepositoryConfiguration {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
 	}
 
-	@ApiModelProperty(value = "Password used for the functional account")
+	//CHECKSTYLE:OFF: MagicNumber
+	@ApiModelProperty(value = "Password used for the functional account",
+			position = 3)
 	public String getFunctionalAccountPassword() {
 		return properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 	}
@@ -131,7 +136,8 @@ public class RepositoryConfiguration {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
 	}
 
-	@ApiModelProperty(value = "The name used via the API. Should be unique!")
+	@ApiModelProperty(value = "The name used via the API. Should be unique!",
+			position = 4)
 	public String getProjectName() {
 		return properties.getProperty(PROJECT_NAME_KEY);
 	}
@@ -142,7 +148,8 @@ public class RepositoryConfiguration {
 
 	@ApiModelProperty(value = "Local path of the project folder in the repository."
 			+ " This allows to have multiple projects in one repository.",
-			example = "projectName")
+			example = "projectName",
+			position = 5)
 	public String getLocalPath() {
 		return properties.getProperty(LOCAL_PATH_KEY);
 	}
@@ -150,6 +157,7 @@ public class RepositoryConfiguration {
 	public void setLocalPath(String localPath) {
 		properties.setProperty(LOCAL_PATH_KEY, localPath);
 	}
+	//CHECKSTYLE:ON: MagicNumber
 
 	@Override
 	public int hashCode() {
