@@ -115,7 +115,7 @@ public class ProjectManagementResource {
 			produces = "application/json",
 			value = "Delete Project",
 			httpMethod = "DELETE",
-			notes = "This service fetches deletes the configuration for the given project name")
+			notes = "This service deletes the configuration for the given project name")
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
@@ -140,7 +140,7 @@ public class ProjectManagementResource {
 			produces = "application/json",
 			value = "PUT Project",
 			httpMethod = "PUT",
-			notes = "This service fetches creates or updates a project configuration on the project specified by the URL."
+			notes = "This service creates or updates a project configuration on the project specified by the URL."
 					+ " URL project overrides project name in the passed configuration if they are different.")
 	@ApiResponses(value = { 
 			@ApiResponse(

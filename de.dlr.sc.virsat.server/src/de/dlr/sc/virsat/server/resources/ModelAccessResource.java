@@ -59,7 +59,7 @@ import io.swagger.annotations.SwaggerDefinition;
 @SwaggerDefinition(
 	info = @Info(
 		version = VirSatModelAccessServlet.MODEL_API_VERSION,
-		title = "The Model API",
+		title = "The Model API test",
 		description = "API to access the Virtual Satellite data model"
 	),
 	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API

@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.server.Activator;
 @Path("/")
 public class DocumentationResource {
 
+	public static final String FILE_NOT_FOUND = "File not found";
 	public static final String SWAGGER_JSON = "swagger.json";
 	public static final String SWAGGER_YAML = "swagger.yaml";
 	
@@ -60,7 +61,7 @@ public class DocumentationResource {
      */
     private String getFileContent(String fileName) {
 		
-    	String content = "File not found";
+    	String content = FILE_NOT_FOUND;
     	String realmResourceName = "doc-gen" + File.separator + directory + File.separator + fileName;
     	
 		try {
