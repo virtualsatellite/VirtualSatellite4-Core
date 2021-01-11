@@ -32,7 +32,7 @@ public class VirSatJettyServer {
 	public VirSatJettyServer() { }
 	
 	private static final int VIRSAT_JETTY_PORT = 8000; 
-	private static final String PATH = "/rest";
+	public static final String PATH = "/rest";
 	private static final String SUFFIX = "/*";
 	
 	private LoginService loginService = null;

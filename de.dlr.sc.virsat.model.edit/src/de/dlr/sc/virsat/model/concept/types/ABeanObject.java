@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Core functionality for a Concept Bean and abstract implementation to the interface
@@ -66,11 +67,13 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 	}
 
 	@Override
+	@ApiModelProperty(hidden = true)
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}
 
 	@Override
+	@ApiModelProperty(hidden = true)
 	public String getUuid() {
 		return ti.getUuid().toString();
 	}
