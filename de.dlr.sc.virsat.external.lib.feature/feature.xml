@@ -25,10 +25,11 @@ by German Aerospace Center (DLR e.V.)
 
    <requires>
       <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.draw2d"/>
-      <import plugin="org.eclipse.ui"/>
+      <import plugin="javax.servlet"/>
    </requires>
 
    <plugin

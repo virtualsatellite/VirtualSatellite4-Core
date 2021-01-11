@@ -1,0 +1,69 @@
+---
+swagger: "2.0"
+info:
+  version: "v0.0.1"
+  title: "The Model API"
+basePath: "/rest/model/v0.0.1"
+tags:
+- name: "Model"
+schemes:
+- "http"
+paths:
+  /repository/{repoName}/ca:
+    put:
+      tags:
+      - "Model"
+      summary: "Put CA"
+      description: "This service puts CAs"
+      operationId: "putCa"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Ca to put"
+        required: true
+        schema:
+          $ref: "#/definitions/ABeanCategoryAssignment"
+      - name: "repoName"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+  /repository/{repoName}/ca/{caUuid}:
+    get:
+      tags:
+      - "Model"
+      summary: "Fetch CA"
+      description: "This service fetches CAs"
+      operationId: "getCa"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "caUuid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "repoName"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/ABeanCategoryAssignment"
+        400:
+          description: "Bad Request"
+definitions:
+  ABeanCategoryAssignment:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      atypeInstance:
+        type: "string"
+        xml:
+          name: "uuid"

@@ -67,6 +67,7 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 	}
 
 	@Override
+	@ApiModelProperty(hidden = true)
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}

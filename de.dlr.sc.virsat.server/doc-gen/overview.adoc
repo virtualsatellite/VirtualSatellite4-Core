@@ -1,0 +1,23 @@
+= The Model API
+
+
+[[_overview]]
+== Overview
+
+=== Version information
+[%hardbreaks]
+__Version__ : v0.0.1
+
+
+=== URI scheme
+[%hardbreaks]
+__BasePath__ : /rest/model/v0.0.1
+__Schemes__ : HTTP
+
+
+=== Tags
+
+* Model
+
+
+
