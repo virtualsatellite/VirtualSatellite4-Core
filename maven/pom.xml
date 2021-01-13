@@ -85,11 +85,11 @@
 				<build.deploy.release>true</build.deploy.release>
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'r'yyyyMMddHHmm</maven.build.timestamp.format>
-				<build.folder.type>release/${build.version}/${env.github_sha}</build.folder.type>
-				<build.file.core.win32>VirSat_Core_Release_${build.version}_${env.github_sha}_Win32.zip</build.file.core.win32>
-				<build.file.core.linux>VirSat_Core_Release_${build.version}_${env.github_sha}_Linux.tar.gz</build.file.core.linux>
-				<build.file.server.win32>VirSat_Server_Release_${build.version}_${env.github_sha}_Win32.zip</build.file.server.win32>
-				<build.file.server.linux>VirSat_Server_Release_${build.version}_${env.github_sha}_Linux.tar.gz</build.file.server.linux>
+				<build.folder.type>release/${build.version}/${env.GITHUB_SHA}</build.folder.type>
+				<build.file.core.win32>VirSat_Core_Release_${build.version}_${env.GITHUB_SHA}_Win32.zip</build.file.core.win32>
+				<build.file.core.linux>VirSat_Core_Release_${build.version}_${env.GITHUB_SHA}_Linux.tar.gz</build.file.core.linux>
+				<build.file.server.win32>VirSat_Server_Release_${build.version}_${env.GITHUB_SHA}_Win32.zip</build.file.server.win32>
+				<build.file.server.linux>VirSat_Server_Release_${build.version}_${env.GITHUB_SHA}_Linux.tar.gz</build.file.server.linux>
 			</properties>
 		</profile>
 		<profile>
