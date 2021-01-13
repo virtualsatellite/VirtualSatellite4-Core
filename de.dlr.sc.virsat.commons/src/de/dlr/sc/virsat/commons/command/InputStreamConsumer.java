@@ -20,6 +20,7 @@ public class InputStreamConsumer extends Thread {
 
     public InputStreamConsumer(InputStream is, BufferedWriter bw) {
         this.is = is;
+        this.bw = bw;
     }
 
     @Override

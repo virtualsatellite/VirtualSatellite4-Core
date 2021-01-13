@@ -33,8 +33,6 @@ public class CommandRunner {
 		try {
 			
 			ProcessBuilder pb = new ProcessBuilder(applicationpath + initcommand);
-			
-			pb.redirectError();
 			p = pb.start();
 			
 			OutputStream stdin = p.getOutputStream();
