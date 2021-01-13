@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.commons.command;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-
 import java.io.OutputStream;
 
 public class CommandRunner {
@@ -80,7 +79,7 @@ public class CommandRunner {
 		if (isRunning) {
 			try {
 				writer.flush();
-	            writer.close();
+				writer.close();
 				int exitCode = p.waitFor();
 			
 				try {

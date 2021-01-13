@@ -35,7 +35,7 @@ public class CommandRunnerTest {
 		out = new ByteArrayOutputStream();
 		err = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
-	    System.setErr(new PrintStream(err));
+		System.setErr(new PrintStream(err));
 	}
 
 	@Test
