@@ -27,8 +27,8 @@ public class CommandRunner {
 	private boolean isRunning;
 	private CommandRunnerType type;
 	
-	private final String outputfile = "output.txt";
-	private final String errorfile = "error.txt";
+	private static final String DEFAULT_OUTPUT_FILE = "output.txt";
+	private static final String DEFAULT_ERROR_FILE = "error.txt";
 	
 	/**
 	 * 
@@ -57,8 +57,8 @@ public class CommandRunner {
 	    	        
 	        		break;
 	        	case STANDARD:
-	        		File out = new File(outputfile);
-	        		File err = new File(errorfile);
+	        		File out = new File(DEFAULT_OUTPUT_FILE);
+	        		File err = new File(DEFAULT_ERROR_FILE);
 	        		pb.redirectError(err);
 	        		pb.redirectOutput(out);
 	        		break;
