@@ -29,6 +29,8 @@ public class CommandRunnerTest {
 	private ByteArrayOutputStream out;
 	private ByteArrayOutputStream err;
 	
+	
+	
 	@Before
 	public void setUp() throws Exception {
 		cr = new CommandRunner();
@@ -39,21 +41,35 @@ public class CommandRunnerTest {
 	}
 
 	@Test
-	public void testStartCommandRunner() {
-		cr.startCommandRunner("", "eclipse");
-		assertEquals(cr.runCommand("exit"), true);
+	public void testStandardCommandRunner() {
+		cr.startCommandRunner("", "eclipse", CommandRunnerType.STANDARD);
+		assertEquals(cr.runCommand("exit"), false);
 	}
 	
 	@Test
-	public void testExitCommandRunner() {
-		cr.startCommandRunner("", "eclipse");
+	public void testInteractiveCommandRunner() {
+		cr.startCommandRunner("", "eclipse", CommandRunnerType.INTERACTIVE);
+		assertEquals(cr.runCommand("exit"), true);
+	}
+	
+	
+	@Test
+	public void testExitStandardCommandRunner() {
+		cr.startCommandRunner("", "eclipse", CommandRunnerType.STANDARD);
+		cr.exitCommand();
+		assertEquals(cr.runCommand("exit"), false);
+	}
+	
+	@Test
+	public void testExitInteractiveCommandRunner() {
+		cr.startCommandRunner("", "eclipse", CommandRunnerType.INTERACTIVE);
 		cr.exitCommand();
 		assertEquals(cr.runCommand("exit"), false);
 	}
 	
 	@Test
 	public void testInputStreamConsumer() {
-		cr.startCommandRunner("", "eclipse");
+		cr.startCommandRunner("", "eclipse", CommandRunnerType.INTERACTIVE);
 		cr.exitCommand();
 		assertEquals(cr.runCommand("exit"), false);
 		assertEquals(out.toString(), "Process terminated with 0\r\n");
