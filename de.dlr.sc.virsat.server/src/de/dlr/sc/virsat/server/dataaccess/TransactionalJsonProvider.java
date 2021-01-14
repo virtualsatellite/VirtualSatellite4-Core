@@ -260,8 +260,8 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 					arguments.getHttpHeaders(),
 					arguments.getEntityStream());
 				resourceSet.saveAllResources(new NullProgressMonitor(), ed);
-				repo.syncRepository();
-				results.add(result);
+//				repo.syncRepository();
+//				results.add(result);
 			} catch (WebApplicationException e) {
 				atomicWebAppException.set(e);
 			} catch (IOException e) {
