@@ -11,9 +11,6 @@ package de.dlr.sc.virsat.commons.command;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,53 +23,18 @@ import org.junit.Test;
 public class CommandRunnerTest {
 	
 	private CommandRunner cr;
-	private ByteArrayOutputStream out;
-	private ByteArrayOutputStream err;
 	
 	
 	
 	@Before
 	public void setUp() throws Exception {
 		cr = new CommandRunner();
-		out = new ByteArrayOutputStream();
-		err = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(out));
-		System.setErr(new PrintStream(err));
 	}
 
 	@Test
 	public void testStandardCommandRunner() {
-		cr.startCommandRunner("", "eclipse", CommandRunnerType.STANDARD);
-		assertEquals(cr.runCommand("exit"), false);
-	}
-	
-	@Test
-	public void testInteractiveCommandRunner() {
-		cr.startCommandRunner("", "eclipse", CommandRunnerType.INTERACTIVE);
-		assertEquals(cr.runCommand("exit"), true);
-	}
-	
-	
-	@Test
-	public void testExitStandardCommandRunner() {
-		cr.startCommandRunner("", "eclipse", CommandRunnerType.STANDARD);
-		cr.exitCommand();
-		assertEquals(cr.runCommand("exit"), false);
-	}
-	
-	@Test
-	public void testExitInteractiveCommandRunner() {
-		cr.startCommandRunner("", "eclipse", CommandRunnerType.INTERACTIVE);
-		cr.exitCommand();
-		assertEquals(cr.runCommand("exit"), false);
-	}
-	
-	@Test
-	public void testInputStreamConsumer() {
-		cr.startCommandRunner("", "eclipse", CommandRunnerType.INTERACTIVE);
-		cr.exitCommand();
-		assertEquals(cr.runCommand("exit"), false);
-		assertEquals(out.toString(), "Process terminated with 0\r\n");
+		assertEquals(cr.startCommandRunner("", "eclipse"), true);
+		assertEquals(cr.startCommandRunner("", "run"), false);
 	}
 	
 }

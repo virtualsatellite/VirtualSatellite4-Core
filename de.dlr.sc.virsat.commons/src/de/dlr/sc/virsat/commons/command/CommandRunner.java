@@ -9,117 +9,37 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.commons.command;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.OutputStream;
 
 public class CommandRunner {
 	
 	
-	private static BufferedWriter writer;
 	
-	private InputStreamConsumer isc;
-	private InputStreamConsumer iscerr;
-	
-	private Process p;
-	private boolean isRunning;
-	private CommandRunnerType type;
 	
 	private static final String DEFAULT_OUTPUT_FILE = "output.txt";
 	private static final String DEFAULT_ERROR_FILE = "error.txt";
 	
 	/**
 	 * 
-	 * @param applicationpath path to the application to run
-	 * @param initcommand command to initialize the application
+	 * @param applicationpath path to the .exe file
+	 * @param command command to run 
+	 * @return returns true if the process could be started
 	 */
-	public void startCommandRunner(String applicationpath, String initcommand, CommandRunnerType type) {
-		this.type = type;
-		
+	public boolean startCommandRunner(String applicationpath, String command) {
+
+		ProcessBuilder pb = new ProcessBuilder(applicationpath + command);
+		File out = new File(DEFAULT_OUTPUT_FILE);
+		File err = new File(DEFAULT_ERROR_FILE);
+		pb.redirectError(err);
+		pb.redirectOutput(out);
 		try {
-		
-			ProcessBuilder pb = new ProcessBuilder(applicationpath + initcommand);
+			pb.start();
+			return true;
 			
-	        
-	        switch (this.type) {
-	        
-	        	case INTERACTIVE:
-	        		p = pb.start();
-	    			OutputStream stdin = p.getOutputStream();
-	    	        writer = new BufferedWriter(new OutputStreamWriter(stdin));
-	    	        
-	        		isc = new InputStreamConsumer(p.getInputStream(), writer);
-	    			iscerr = new InputStreamConsumer(p.getErrorStream(), writer);
-	    	        isc.start();
-	    	        iscerr.start();
-	    	        
-	        		break;
-	        	case STANDARD:
-	        		File out = new File(DEFAULT_OUTPUT_FILE);
-	        		File err = new File(DEFAULT_ERROR_FILE);
-	        		pb.redirectError(err);
-	        		pb.redirectOutput(out);
-	        		break;
-	        	default:
-	        		break;
-	        	
-	        }
-	        
-	        this.isRunning = true;
-	        
-	        
 		} catch (IOException e) {
 			e.printStackTrace();
-			
-		} 
-	}
-	
-	/**
-	 * Run a command for the initialized application
-	 * @param command command to run
-	 */
-	public boolean runCommand(String command) {
-		if (isRunning && type == CommandRunnerType.INTERACTIVE) {
-			try {
-				writer.write(command);
-				writer.newLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return true;
 		}
-		
 		return false;
-	}
-	
-	/***
-	 * Closes the running application 
-	 */
-	public void exitCommand() {
-		if (isRunning && type == CommandRunnerType.INTERACTIVE) {
-			
-			try {
-				
-				try {
-					writer.flush();
-					writer.close();
-					int exitCode = p.waitFor();
-		        	isc.join();
-		        	iscerr.join();
-		        		
-		        	
-					
-		        	System.out.println("Process terminated with " + exitCode);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} 
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-		
-		this.isRunning = false;
 	}
 }
