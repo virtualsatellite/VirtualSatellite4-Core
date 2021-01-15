@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -189,6 +190,7 @@ public class ServerRepository {
 	 */
 	public void syncRepository() throws Exception {
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
+		String projectName = repositoryConfiguration.getProjectName();
 		
 		// I think it is a good question when and from where we run this function
 		// Currently it is run from the TransactionalJsonProvider in the readFrom method
@@ -214,7 +216,6 @@ public class ServerRepository {
 		//   This could be triggered automatically or by the user. But comes with an overhead in the clients
 		runInWorkspace((progress) -> {
 			try {
-				String projectName = repositoryConfiguration.getProjectName();
 				Activator.getDefault().getLog().info("Server synchronizing project with backend: " + projectName);
 				Activator.getDefault().getLog().info("Server synchronization: " + "Saving all resources");
 
@@ -231,9 +232,14 @@ public class ServerRepository {
 				// 1. Reload changed resources
 				// The Workspace Listener should trigger a full reload by itself
 				// if the FS got changes by the pull
+				// With this we could wait for the Workspace Change Listener
+				// but only if we dont run in workspace which will mess up the execution order
+//				VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+				
 				// Wouldn't it be more cost efficient to only reload the changed
 				// resources there instead of always triggering a full reload?
 				ed.reloadAll();
+				
 				
 				// 2. Run builders
 				// The builders always run after this function is executed somehow
@@ -241,19 +247,21 @@ public class ServerRepository {
 				// we don't need the commit step below
 				// As long as this is in runInWorkspace there are no builders running
 				// But running the builders here still reverts changes for some reason
+				// TODO: what kind of build?
+				project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
 				
 				// Commit and push the new state to the repository
 				// If we don't have changes between the update step and this (e.g. by builders)
 				// We will never have a new commit and just push the commits from the update step
 				Activator.getDefault().getLog().info("Server synchronization: " + "Push changes");
 				versionControlBackEnd.commit(project, SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE + projectName, new NullProgressMonitor());
-			
 				
 			} catch (Exception e) {
 				atomicException.set(e);
 			}
 		});
 		atomicException.throwIfSet();
+	
 	}
 	
 	public void retrieveProjectFromConfiguration() {
