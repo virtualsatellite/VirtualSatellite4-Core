@@ -21,7 +21,7 @@
 			</properties>
 			<modules>
 				<module>de.dlr.sc.virsat.target</module>
-			</modules>
+			</modules> 
 		</profile>
 
 		<profile>
