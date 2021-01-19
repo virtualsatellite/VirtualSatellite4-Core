@@ -20,7 +20,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestParameterTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestMassParametersTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementTest;
@@ -48,7 +47,6 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBaseTest;
 @SuiteClasses({
 	TestCategoryAllPropertyTest.class,
 	TestCategoryCompositionTest.class,
-	TestCategoryReferenceTest.class,
 	TestCategoryIntrinsicArrayTest.class,
 	TestCategoryCompositionArrayTest.class,
 	TestCategoryReferenceArrayTest.class,
