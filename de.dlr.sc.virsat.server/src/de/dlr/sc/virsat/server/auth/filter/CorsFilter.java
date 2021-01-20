@@ -33,7 +33,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 	
 	public static final String AC_ALLOWED_CREDENTIALS = "true";
 	public static final String AC_ALLOWED_METHODS = "GET, POST, PUT, DELETE, OPTIONS, HEAD";
-	public static final String AC_ALLOWED_HEADERS = ""; //"X-Requested-With, Authorization, Accept-Version, Content-MD5, CSRF-Token, Content-Type";
+	public static final String AC_ALLOWED_HEADERS = "";
 	public static final String AC_ALLOWED_ORIGINS = "*";
 	
 	public static final String ORIGIN = "Origin";
