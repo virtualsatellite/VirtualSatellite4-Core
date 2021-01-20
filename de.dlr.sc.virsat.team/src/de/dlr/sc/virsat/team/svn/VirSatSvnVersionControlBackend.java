@@ -25,6 +25,7 @@ import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNConnector;
+import org.eclipse.team.svn.core.connector.SVNChangeStatus;
 import org.eclipse.team.svn.core.connector.SVNConflictResolution.Choice;
 import org.eclipse.team.svn.core.connector.SVNDepth;
 import org.eclipse.team.svn.core.connector.SVNRevision;
@@ -47,6 +48,8 @@ import org.eclipse.team.svn.core.utility.SVNUtility;
 
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
+import de.dlr.sc.virsat.team.VersionControlChange;
+import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBackend {
 
@@ -123,15 +126,17 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void update(IProject project, IProgressMonitor monitor) throws Exception {
+	public VersionControlUpdateResult update(IProject project, IProgressMonitor monitor) throws Exception {
 		SubMonitor updateMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn update", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
-		
+
 		updateMonitor.split(1).subTask("Updating files");
 		UpdateProjectOperation updateProjectOperation = new UpdateProjectOperation(project);
 		
 		updateProjectOperation.run(updateMonitor);
+		VersionControlUpdateResult result = updateProjectOperation.getResult();
 		
 		checkStatus(updateProjectOperation);
+		return result;
 	}
 	
 	// The default UpdateOperation provided by SubVersive was unstable and sometimes failed.
@@ -139,6 +144,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	private static class UpdateProjectOperation extends AbstractActionOperation {
 		
 		private IProject project;
+		private VersionControlUpdateResult result;
 		
 		UpdateProjectOperation(IProject project) {
 			super("Operation_UpdateProject", SVNMessages.class);
@@ -158,9 +164,25 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 				
 				// Then resolve potential conflicts by taking the remote versions
 				proxy.resolve(paths[0], Choice.CHOOSE_REMOTE, SVNDepth.INFINITY, new SVNProgressMonitor(this, monitor, null));
+				
+				SVNChangeStatus[] statuses = SVNUtility.status(proxy, paths[0], SVNDepth.INFINITY, ISVNConnector.Options.NONE, new SVNProgressMonitor(this, monitor, null));
+				
+				result = new VersionControlUpdateResult();
+				
+				System.out.println("-----------After------------");
+				for (SVNChangeStatus svnChangeStatus : statuses) {
+					System.out.println(svnChangeStatus.path);
+					System.out.println(svnChangeStatus.textStatus);
+					result.addChange(new VersionControlChange(svnChangeStatus.path, svnChangeStatus.textStatus.toString()));
+				}
+				
 			} finally {
 				location.releaseSVNProxy(proxy);
 			}
+		}
+		
+		public VersionControlUpdateResult getResult() {
+			return result;
 		}
 	}
 	

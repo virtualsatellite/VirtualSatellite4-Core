@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.team.git;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.internal.resources.Resource;
@@ -26,14 +27,22 @@ import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CheckoutCommand.Stage;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.team.svn.core.connector.SVNChangeStatus;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
+import de.dlr.sc.virsat.team.VersionControlChange;
+import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 /**
  * This class implements the basic Virtual Satellite functionality of
@@ -120,14 +129,14 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void update(IProject project,  IProgressMonitor monitor) throws Exception {
+	public VersionControlUpdateResult update(IProject project,  IProgressMonitor monitor) throws Exception {
 		SubMonitor commitAndPullMonitor = SubMonitor.convert(monitor, "Virtual Satellite git commit and pull", PROGRESS_INDEX_UPDATE_STEPS);
 		
 		// Get the repository mapped to the project
 		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
 		// Stage and commit all changes
 		doCommit(gitRepository, BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE  + project.getName(), commitAndPullMonitor.split(1));
-
+		
 		commitAndPullMonitor.split(1).subTask("Check if remotes exist");
 		
 		// Get the remotes for the repository
@@ -136,8 +145,14 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.setRemote(remoteUrl)
 			.call();
 		
+		VersionControlUpdateResult result = new VersionControlUpdateResult();
 		// Only perform a pull of the remote exists
 		if (!refs.isEmpty()) {
+			String HEAD_TREE = "HEAD^{tree}";
+			
+			// Get the current head
+//			ObjectId headBeforePull = gitRepository.resolve(Constants.HEAD);
+			ObjectId headBeforePull = gitRepository.resolve(HEAD_TREE);
 			
 			// Pull from origin and apply the Recursive Merge Strategy. It is the git standard merge strategy.
 			// In case there has been another commit on the remote in between, the pull will try to resolve it
@@ -150,12 +165,40 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 				.setStrategy(MergeStrategy.RECURSIVE)
 				.call();
 			
+//			ObjectId headAfterPull = gitRepository.resolve(Constants.HEAD);
+			ObjectId headAfterPull = gitRepository.resolve(HEAD_TREE);
+			ObjectReader reader = gitRepository.newObjectReader();
+			CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+    		oldTreeIter.reset(reader, headBeforePull);
+    		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+    		newTreeIter.reset(reader, headAfterPull);
+    		
+    		List<DiffEntry> diffs = Git.wrap(gitRepository).diff()
+                    .setNewTree(newTreeIter)
+                    .setOldTree(oldTreeIter)
+                    .call();
+
+			for (DiffEntry entry : diffs) {
+			    System.out.println("old: " + entry.getOldPath() +
+			            ", new: " + entry.getNewPath() +
+			            ", score: " + entry.getScore() +
+			            ", change type: " + entry.getChangeType() +
+			            ", attribute: " + entry.getDiffAttribute());
+			    result.addChange(new VersionControlChange(entry.getNewPath(), entry.getChangeType().toString()));
+			}
+			
+//			Git.wrap(gitRepository).status().call();
+//			Git.wrap(gitRepository).describe();
+//			Git.wrap(gitRepository).diff();
+//			Git.wrap(gitRepository).lsRemote();
+			
 			checkAndResolveConflicts(gitRepository, commitAndPullMonitor);
 		} 
 		 
 		Git.wrap(gitRepository).close();
 		
 		project.refreshLocal(Resource.DEPTH_INFINITE, commitAndPullMonitor.split(1));
+		return result;
 	}
 	
 	/**
