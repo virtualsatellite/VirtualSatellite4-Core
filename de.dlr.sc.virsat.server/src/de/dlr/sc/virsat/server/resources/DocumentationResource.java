@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Status;
 
 import de.dlr.sc.virsat.server.Activator;
 
@@ -69,7 +70,8 @@ public class DocumentationResource {
 					new org.eclipse.core.runtime.Path(realmResourceName), false);
 			content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Activator.getDefault().getLog().log(
+					new Status(Status.ERROR, Activator.getPluginId(), "Error reading documentation file: " + realmResourceName, e));
 		}
 		
 		return content;
