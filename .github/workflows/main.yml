@@ -6,10 +6,12 @@ name: Build
 on:
   # --------------------------------------------
   # Controls when the automatic build job will be run.
-  # By default uses the default branch. Runs at 03:00 UTC.
+  # By default uses the default branch. Runs at 20:37 UTC.
+  # Virtual Satellite Core should always run quite early,
+  # so all artifacts are deployed for other builds such as CEF
   # --------------------------------------------
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '37 20 * * *'
       
   # --------------------------------------------
   # Run this workflow every time a new commit pushed to the repository
