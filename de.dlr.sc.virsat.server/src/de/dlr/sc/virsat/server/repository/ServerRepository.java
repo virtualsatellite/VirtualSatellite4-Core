@@ -39,6 +39,7 @@ import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlBackendProvider;
+import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 /**
  * Entry point to the eclipse project.
@@ -147,8 +148,7 @@ public class ServerRepository {
 	protected void createVirSatProjectIfNeeded() throws CoreException {
 		boolean hasVirSatNature = Arrays.asList(project.getDescription().getNatureIds()).contains(VirSatProjectNature.NATURE_ID);
 		if (!hasVirSatNature) {
-			VirSatProjectCommons.createNewProjectRunnable(project).run(new NullProgressMonitor());
-//			VirSatProjectCommons.createNewProjectRunnable(project, false).run(new NullProgressMonitor());
+			VirSatProjectCommons.createNewProjectRunnable(project, false).run(new NullProgressMonitor());
 		}
 	}
 	
@@ -189,31 +189,12 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void syncRepository() throws Exception {
+		// TODO: call this function in the resources
+		
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		String projectName = repositoryConfiguration.getProjectName();
 		
-		// I think it is a good question when and from where we run this function
-		// Currently it is run from the TransactionalJsonProvider in the readFrom method
-		// so that after a model element is written via the REST API, the changes are committed
-		//
-		// We currently completely ignore having changes on the repository e.g. from virsat clients
-		// So for that we would have to pull before every get / writeTo call in the provider
-		// The problem is that the writeTo methods gets called with an object (bean) it should marshall
-		// But on a reload this beans typeinstance loses its resource and still holds old data
-		// So the reload has to happen outside of the provider before the writeTo method gets called
-		// e.g. in the GET Request method
-		//
-		// So I came to the conclusion that we shouldn't handle the synchronization in the provider at all
-		// Because maybe even in the model resource there are some endpoints were we don't want to sync the repo
-		// So I think it's most convenient to handle it in the methods them self and the provider
-		// only marshalles and unmarshalles the object from / into the model.
-		// So there should be some synchronization testing in the ServerRepositoryTest and in the ModelAccessResourceTest
-		//
-		// One major question is if this behavior is too slow, e.g. reloading all resources every time
-		// Two different approaches come to mind here:
-		// 1. Automatically sync with the repo after a certain period of time
-		// 2. Let the clients notify the server that it should sync via a HTTP request?
-		//   This could be triggered automatically or by the user. But comes with an overhead in the clients
+		
 		runInWorkspace((progress) -> {
 			try {
 				Activator.getDefault().getLog().info("Server synchronizing project with backend: " + projectName);
@@ -226,33 +207,18 @@ public class ServerRepository {
 				
 				// Get remote changes
 				Activator.getDefault().getLog().info("Server synchronization: " + "Update from remote");
-				versionControlBackEnd.update(project, new NullProgressMonitor());
+				VersionControlUpdateResult result = versionControlBackEnd.update(project, new NullProgressMonitor());
 				
-				// If there are changes:
-				// 1. Reload changed resources
-				// The Workspace Listener should trigger a full reload by itself
-				// if the FS got changes by the pull
-				// With this we could wait for the Workspace Change Listener
-				// but only if we dont run in workspace which will mess up the execution order
-//				VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+				// Only reload if we detected changes in the update step
+				if (result.hasChanges()) {
+					// Maybe we could reload only the changed resources here
+					ed.reloadAll();					
+				}
 				
-				// Wouldn't it be more cost efficient to only reload the changed
-				// resources there instead of always triggering a full reload?
-				ed.reloadAll();
-				
-				
-				// 2. Run builders
-				// The builders always run after this function is executed somehow
-				// But I think it would make more sense here, because else
-				// we don't need the commit step below
-				// As long as this is in runInWorkspace there are no builders running
-				// But running the builders here still reverts changes for some reason
-				// TODO: what kind of build?
+				// Run the builders
 				project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
 				
 				// Commit and push the new state to the repository
-				// If we don't have changes between the update step and this (e.g. by builders)
-				// We will never have a new commit and just push the commits from the update step
 				Activator.getDefault().getLog().info("Server synchronization: " + "Push changes");
 				versionControlBackEnd.commit(project, SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE + projectName, new NullProgressMonitor());
 				
@@ -272,7 +238,7 @@ public class ServerRepository {
 	public void retrieveEdAndResurceSetFromConfiguration() {
 		retrieveProjectFromConfiguration();
 		
-		resourceSet = VirSatResourceSet.getResourceSet(project); //, false);
+		resourceSet = VirSatResourceSet.getResourceSet(project, false);
 		ed = VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
 	}
 	

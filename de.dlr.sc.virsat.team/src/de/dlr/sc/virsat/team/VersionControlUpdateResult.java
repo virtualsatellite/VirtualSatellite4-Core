@@ -12,6 +12,9 @@ package de.dlr.sc.virsat.team;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Result of a version control update that holds the discovered changes
+ */
 public class VersionControlUpdateResult {
 	
 	private List<VersionControlChange> changes = new ArrayList<VersionControlChange>();

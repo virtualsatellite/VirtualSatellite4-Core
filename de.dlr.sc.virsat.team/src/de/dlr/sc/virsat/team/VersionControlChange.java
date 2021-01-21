@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team;
 
+/**
+ * POJO for a change in the version control
+ */
 public class VersionControlChange {
 	
 	private String pathOld;

@@ -258,12 +258,17 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		git.add().addFilepattern(".").call();
 		git.commit().setAll(true).setMessage("Added file").call();
 		git.push().call();
+
+		// Assert state before sync
+		assertEquals(testString, testSei.getName());
+		assertEquals(testSe, testSei.getType());
 		
+		// Sync with remote
 		testServerRepository.syncRepository();
-		assertEquals("One new commit", initialCommits + 1, countCommits(pathRepoRemote.toFile()));
-//		RepositoryUtility.findSei(testSei.getUuid().toString(), ed.getResourceSet().getRepository());
+		assertEquals("Two new commits", initialCommits + 2, countCommits(pathRepoRemote.toFile()));
 		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
-		assertEquals(newString, sei.getName());
+		assertEquals("Name changed", newString, sei.getName());
+		assertNull("Dangling reference removed by builders", sei.getType());
 	}
 	
 	/**
