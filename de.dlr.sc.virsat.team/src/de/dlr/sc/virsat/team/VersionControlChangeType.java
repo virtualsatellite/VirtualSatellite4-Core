@@ -9,27 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team;
 
-public class VersionControlChange {
-	
-	private String pathOld;
-	private String pathNew;
-	private VersionControlChangeType changeType;
-	
-	public VersionControlChange(String pathOld, String pathNew, VersionControlChangeType changeType) {
-		this.pathOld = pathOld;
-		this.pathNew = pathNew;
-		this.changeType = changeType;
-	}
-
-	public VersionControlChangeType getChangeType() {
-		return changeType;
-	}
-
-	public String getPathOld() {
-		return pathOld;
-	}
-
-	public String getPathNew() {
-		return pathNew;
-	}	
+public enum VersionControlChangeType {
+	UNKNOWN,
+	// SVN and GIT
+	ADDED,
+	DELETED,
+	MODIFIED,
+	// GIT only
+	COPIED,
+	RENAMED,
+	// SVN only
+	REPLACED,
+	UNVERSIONED
 }

@@ -28,7 +28,7 @@ import org.eclipse.jgit.api.CheckoutCommand.Stage;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.diff.DiffEntry;
-import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -38,10 +38,10 @@ import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import org.eclipse.team.svn.core.connector.SVNChangeStatus;
 
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlChange;
+import de.dlr.sc.virsat.team.VersionControlChangeType;
 import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 /**
@@ -146,12 +146,11 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			.call();
 		
 		VersionControlUpdateResult result = new VersionControlUpdateResult();
-		// Only perform a pull of the remote exists
+		// Only perform a pull if the remote exists
 		if (!refs.isEmpty()) {
-			String HEAD_TREE = "HEAD^{tree}";
+			final String HEAD_TREE = "HEAD^{tree}";
 			
 			// Get the current head
-//			ObjectId headBeforePull = gitRepository.resolve(Constants.HEAD);
 			ObjectId headBeforePull = gitRepository.resolve(HEAD_TREE);
 			
 			// Pull from origin and apply the Recursive Merge Strategy. It is the git standard merge strategy.
@@ -165,34 +164,28 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 				.setStrategy(MergeStrategy.RECURSIVE)
 				.call();
 			
-//			ObjectId headAfterPull = gitRepository.resolve(Constants.HEAD);
+			checkAndResolveConflicts(gitRepository, commitAndPullMonitor);
+			
+			// Get the new head
 			ObjectId headAfterPull = gitRepository.resolve(HEAD_TREE);
+			
+			// Create trees to compare them
 			ObjectReader reader = gitRepository.newObjectReader();
 			CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
     		oldTreeIter.reset(reader, headBeforePull);
     		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
     		newTreeIter.reset(reader, headAfterPull);
     		
+    		// Get the diffs
     		List<DiffEntry> diffs = Git.wrap(gitRepository).diff()
                     .setNewTree(newTreeIter)
                     .setOldTree(oldTreeIter)
                     .call();
 
 			for (DiffEntry entry : diffs) {
-			    System.out.println("old: " + entry.getOldPath() +
-			            ", new: " + entry.getNewPath() +
-			            ", score: " + entry.getScore() +
-			            ", change type: " + entry.getChangeType() +
-			            ", attribute: " + entry.getDiffAttribute());
-			    result.addChange(new VersionControlChange(entry.getNewPath(), entry.getChangeType().toString()));
+			    VersionControlChangeType changeType = getChangeType(entry.getChangeType());
+			    result.addChange(new VersionControlChange(entry.getOldPath(), entry.getNewPath(), changeType));
 			}
-			
-//			Git.wrap(gitRepository).status().call();
-//			Git.wrap(gitRepository).describe();
-//			Git.wrap(gitRepository).diff();
-//			Git.wrap(gitRepository).lsRemote();
-			
-			checkAndResolveConflicts(gitRepository, commitAndPullMonitor);
 		} 
 		 
 		Git.wrap(gitRepository).close();
@@ -201,6 +194,28 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		return result;
 	}
 	
+	/**
+	 * Gets the VersionControlChangeType for a given git ChangeType
+	 * @param changeType
+	 * @return VersionControlChangeType
+	 */
+	private VersionControlChangeType getChangeType(ChangeType changeType) {
+		switch (changeType) {
+			case ADD:
+				return VersionControlChangeType.ADDED;
+			case DELETE:
+				return VersionControlChangeType.DELETED;
+			case COPY:
+				return VersionControlChangeType.COPIED;
+			case MODIFY:
+				return VersionControlChangeType.MODIFIED;
+			case RENAME:
+				return VersionControlChangeType.RENAMED;
+			default:
+				return VersionControlChangeType.UNKNOWN;
+		}
+	}
+
 	/**
 	 * In case not all files could be merged they need to be fixed.
 	 * Conflicting files are fixed by replacing them with the version from the remote git repository.

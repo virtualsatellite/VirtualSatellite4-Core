@@ -157,9 +157,8 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		IProject projectRepoLocal2 = createTestProject(PROJECT_LOCAL_NAME, pathRepoLocal2, true);
 
 		// Checkout to local2 and see if SEI file has been transferred
-		VersionControlUpdateResult result = backend.update(projectRepoLocal2, new NullProgressMonitor());
+		backend.update(projectRepoLocal2, new NullProgressMonitor());
 
-		assertFalse("No changes from the remote pull", result.hasChanges());
 		File seiInLocal2 = new File(pathRepoLocal2.toFile(), seiFile.getFullPath().toOSString());
 		assertRetry(
 			ASSERT_RETRY_COUNT,
@@ -302,8 +301,7 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		projectRepoLocal1 = createTestProject(PROJECT_CHECKIN_NAME, pathRepoLocal1, true);
 		
 		// Now update the project as Repo Local1
-		VersionControlUpdateResult result = backend.update(projectRepoLocal1, new NullProgressMonitor());
-		assertFalse("No changes from the remote pull", result.hasChanges());
+		backend.update(projectRepoLocal1, new NullProgressMonitor());
 
 		// And check if the file is present
 		File seiInLocalRepo1 = new File(pathRepoLocal1.toFile(),

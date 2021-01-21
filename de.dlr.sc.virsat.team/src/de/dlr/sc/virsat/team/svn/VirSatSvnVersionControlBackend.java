@@ -28,6 +28,7 @@ import org.eclipse.team.svn.core.connector.ISVNConnector;
 import org.eclipse.team.svn.core.connector.SVNChangeStatus;
 import org.eclipse.team.svn.core.connector.SVNConflictResolution.Choice;
 import org.eclipse.team.svn.core.connector.SVNDepth;
+import org.eclipse.team.svn.core.connector.SVNEntryStatus.Kind;
 import org.eclipse.team.svn.core.connector.SVNRevision;
 import org.eclipse.team.svn.core.operation.AbstractActionOperation;
 import org.eclipse.team.svn.core.operation.CompositeOperation;
@@ -49,6 +50,7 @@ import org.eclipse.team.svn.core.utility.SVNUtility;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlChange;
+import de.dlr.sc.virsat.team.VersionControlChangeType;
 import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBackend {
@@ -161,21 +163,20 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 			try {
 				// First update the local copy
 				proxy.update(paths, SVNRevision.HEAD, SVNDepth.INFINITY, ISVNConnector.Options.ALLOW_UNVERSIONED_OBSTRUCTIONS, new SVNProgressMonitor(this, monitor, null));
-				
+			
 				// Then resolve potential conflicts by taking the remote versions
 				proxy.resolve(paths[0], Choice.CHOOSE_REMOTE, SVNDepth.INFINITY, new SVNProgressMonitor(this, monitor, null));
+			
+				result = new VersionControlUpdateResult();
 				
+				// Get the changes
 				SVNChangeStatus[] statuses = SVNUtility.status(proxy, paths[0], SVNDepth.INFINITY, ISVNConnector.Options.NONE, new SVNProgressMonitor(this, monitor, null));
 				
 				result = new VersionControlUpdateResult();
-				
-				System.out.println("-----------After------------");
 				for (SVNChangeStatus svnChangeStatus : statuses) {
-					System.out.println(svnChangeStatus.path);
-					System.out.println(svnChangeStatus.textStatus);
-					result.addChange(new VersionControlChange(svnChangeStatus.path, svnChangeStatus.textStatus.toString()));
+					result.addChange(new VersionControlChange(
+							workingCopy.toURI().relativize(new File(svnChangeStatus.path).toURI()).getPath(), null, getChangeType(svnChangeStatus.textStatus)));
 				}
-				
 			} finally {
 				location.releaseSVNProxy(proxy);
 			}
@@ -183,6 +184,29 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		
 		public VersionControlUpdateResult getResult() {
 			return result;
+		}
+	}
+	
+	/**
+	 * Gets the VersionControlChangeType for a given svn Kind
+	 * @param kind
+	 * @return VersionControlChangeType
+	 */
+	private static VersionControlChangeType getChangeType(Kind kind) {
+		// There exists many more kinds that maybe have to be handled in the future
+		switch (kind) {
+			case ADDED:
+				return VersionControlChangeType.ADDED;
+			case DELETED:
+				return VersionControlChangeType.DELETED;
+			case REPLACED:
+				return VersionControlChangeType.REPLACED;
+			case MODIFIED:
+				return VersionControlChangeType.MODIFIED;
+			case UNVERSIONED:
+				return VersionControlChangeType.UNVERSIONED;
+			default:
+				return VersionControlChangeType.UNKNOWN;
 		}
 	}
 	
