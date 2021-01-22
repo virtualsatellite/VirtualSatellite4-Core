@@ -55,7 +55,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testGetAllProjectsEmptyInitially() throws IOException {
-		List<String> projects = getAllProjectsRequest(ADMIN_HEADER);
+		List<String> projects = getAllProjectsRequest();
 		assertTrue(projects.isEmpty());
 	}
 	
@@ -71,7 +71,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		RepositoryConfiguration receivedConfiguration = getRequest(projectName);
 		assertEquals(testProjectConfiguration, receivedConfiguration);
 		
-		List<String> projects = getAllProjectsRequest(ADMIN_HEADER);
+		List<String> projects = getAllProjectsRequest();
 		assertEquals(1, projects.size());
 		assertTrue(projects.contains(projectName));
 	}
@@ -95,7 +95,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		putRequest(projectName, testProjectConfiguration);
 		Response response = deleteRequest(projectName);
 		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
-		assertTrue(getAllProjectsRequest(ADMIN_HEADER).isEmpty());
+		assertTrue(getAllProjectsRequest().isEmpty());
 	}
 	
 	@Test
@@ -152,6 +152,12 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		assertEquals(HttpStatus.OK_200, getAllProjectsRequestResponse(ADMIN_HEADER).getStatus());
 	}
 
+	/**
+	 * Put request to update the configuration of a project identified by its name
+	 * @param projectName to identify the project
+	 * @param configuration new configuration
+	 * @return Response
+	 */
 	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
@@ -161,15 +167,26 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.put(Entity.entity(configuration, MediaType.APPLICATION_JSON));
 	}
 
+	/**
+	 * Get request to access the configuration of a project identified by its name
+	 * @param projectName to identify the project
+	 * @return RepositoryConfiguration
+	 */
 	private RepositoryConfiguration getRequest(String projectName) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
-				.path(ProjectManagementResource.PATH).path("/" + projectName)
+				.path(ProjectManagementResource.PATH)
+				.path("/" + projectName)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get(RepositoryConfiguration.class);
 	}
 
+	/**
+	 * Delete request to delete the configuration of a project identified by its name
+	 * @param projectName to identify the project
+	 * @return Response
+	 */
 	private Response deleteRequest(String projectName) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
@@ -179,15 +196,24 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.delete();
 	}
 
-	private List<String> getAllProjectsRequest(String header) {
+	/**
+	 * Get request to get the names of all projects
+	 * @return List<String> containing the names
+	 */
+	private List<String> getAllProjectsRequest() {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.request()
-				.header(HttpHeaders.AUTHORIZATION, header)
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<String>>() { });
 	}
 	
+	/**
+	 * Get request to get the names of all projects with custom header
+	 * @param header the authorization header
+	 * @return Response
+	 */
 	private Response getAllProjectsRequestResponse(String header) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)

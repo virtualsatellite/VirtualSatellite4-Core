@@ -177,8 +177,13 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertEquals(HttpStatus.OK_200, getRootSeisRequest(USER_WITH_REPO_HEADER).getStatus());
 		
 		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(USER_NO_REPO_HEADER).getStatus());
+
+		// The RepositoryFilter won't be called if the request got denied by jersey before
+		// so this won't produce an Exception in RepositoryFilter"
+		String encoded = getAuthHeader("unknown:password");
+		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(encoded).getStatus());
 	}
-	
+
 	/*
 	 * Test GET various elements
 	 */

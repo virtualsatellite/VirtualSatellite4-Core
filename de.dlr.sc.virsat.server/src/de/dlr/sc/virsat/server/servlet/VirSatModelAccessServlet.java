@@ -19,7 +19,6 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
-import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
@@ -47,7 +46,6 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		 */
 		private ModelAccessRestApplication() {
 			// Resources
-			register(AuthTestResource.class);
 			register(ModelAccessResource.class);
 
 			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
