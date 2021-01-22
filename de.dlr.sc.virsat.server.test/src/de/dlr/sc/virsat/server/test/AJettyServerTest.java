@@ -43,6 +43,10 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 	public static final String ADMIN = "admin:password";
 	public static final String USER_NO_REPO = "user:password";
 	public static final String USER_WITH_REPO = "user2:password";
+	// Test user headers
+	public static final String ADMIN_HEADER = getAuthHeader(ADMIN);
+	public static final String USER_NO_REPO_HEADER = getAuthHeader(USER_NO_REPO);
+	public static final String USER_WITH_REPO_HEADER = getAuthHeader(USER_WITH_REPO);
 	
 	protected static WebTarget webTarget;
 	

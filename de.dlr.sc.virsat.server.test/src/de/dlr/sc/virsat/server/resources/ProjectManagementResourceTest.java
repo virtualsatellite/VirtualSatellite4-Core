@@ -19,9 +19,11 @@ import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +55,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testGetAllProjectsEmptyInitially() throws IOException {
-		List<String> projects = getAllProjectsRequest();
+		List<String> projects = getAllProjectsRequest(ADMIN_HEADER);
 		assertTrue(projects.isEmpty());
 	}
 	
@@ -69,7 +71,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		RepositoryConfiguration receivedConfiguration = getRequest(projectName);
 		assertEquals(testProjectConfiguration, receivedConfiguration);
 		
-		List<String> projects = getAllProjectsRequest();
+		List<String> projects = getAllProjectsRequest(ADMIN_HEADER);
 		assertEquals(1, projects.size());
 		assertTrue(projects.contains(projectName));
 	}
@@ -93,7 +95,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		putRequest(projectName, testProjectConfiguration);
 		Response response = deleteRequest(projectName);
 		assertEquals(Response.Status.OK, response.getStatusInfo().toEnum());
-		assertTrue(getAllProjectsRequest().isEmpty());
+		assertTrue(getAllProjectsRequest(ADMIN_HEADER).isEmpty());
 	}
 	
 	@Test
@@ -113,6 +115,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.path(ProjectManagementResource.PATH)
 				.path("/nonExistingProject")
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get();
 		
@@ -126,6 +129,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.path(ProjectManagementResource.PATH)
 				.path("/someProject")
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.put(Entity.json("{\"name\":\"raspberry\"}"));
 		
 		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
@@ -138,12 +142,22 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		
 		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
 	}
+	
+	@Test
+	public void testAuthentication() {
+		assertEquals(HttpStatus.FORBIDDEN_403, getAllProjectsRequestResponse(USER_NO_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.FORBIDDEN_403, getAllProjectsRequestResponse(USER_WITH_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.OK_200, getAllProjectsRequestResponse(ADMIN_HEADER).getStatus());
+	}
 
 	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.put(Entity.entity(configuration, MediaType.APPLICATION_JSON));
 	}
 
@@ -151,6 +165,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH).path("/" + projectName)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get(RepositoryConfiguration.class);
 	}
@@ -160,14 +175,25 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.delete();
 	}
 
-	private List<String> getAllProjectsRequest() {
+	private List<String> getAllProjectsRequest(String header) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, header)
 				.accept(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<String>>() { });
+	}
+	
+	private Response getAllProjectsRequestResponse(String header) {
+		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, header)
+				.accept(MediaType.APPLICATION_JSON)
+				.get();
 	}
 }

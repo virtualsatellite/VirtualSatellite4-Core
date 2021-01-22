@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.StringWriter;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
@@ -169,15 +170,21 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		ed.getCommandStack().execute(recordingCommand);
 	}
 	
+	@Test
+	public void testAuthentication() {
+		assertEquals(HttpStatus.OK_200, getRootSeisRequest(ADMIN_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.OK_200, getRootSeisRequest(USER_WITH_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(USER_NO_REPO_HEADER).getStatus());
+	}
+	
 	/*
 	 * Test GET various elements
 	 */
 	@Test
 	public void testRootSeisGet() {
-		Response response = webTarget
-				.path(ModelAccessResource.ROOT_SEIS)
-				.request()
-				.get();
+		Response response = getRootSeisRequest(USER_WITH_REPO_HEADER);
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
@@ -187,9 +194,18 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		String entity = webTarget
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
 		
 		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
+	}
+	
+	private Response getRootSeisRequest(String header) {
+		return webTarget
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, header)
+				.get();
 	}
 	
 	/**
@@ -208,6 +224,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.path(path)
 				.path(uuid)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -216,6 +233,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.path(path)
 				.path(uuid)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
 		
 		// Compare with the expected
@@ -344,6 +362,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.SEI)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -367,6 +386,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("Model changed as expected", TEST_STRING, beanString.getValue());
@@ -382,6 +402,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -435,6 +456,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -448,6 +470,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -489,6 +512,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}

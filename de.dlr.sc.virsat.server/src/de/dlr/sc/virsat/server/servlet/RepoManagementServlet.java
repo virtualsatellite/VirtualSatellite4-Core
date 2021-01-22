@@ -13,6 +13,7 @@ package de.dlr.sc.virsat.server.servlet;
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.resources.ProjectManagementResource;
@@ -33,6 +34,9 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 	private static class RepoManagementRestApplication extends ResourceConfig {
 		private RepoManagementRestApplication() {
 			register(ProjectManagementResource.class);
+			
+			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
+			register(RolesAllowedDynamicFeature.class);
 		}
 	}
 

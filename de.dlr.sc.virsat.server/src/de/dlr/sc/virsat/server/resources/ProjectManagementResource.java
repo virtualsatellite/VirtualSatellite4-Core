@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,11 +25,13 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.controller.RepoManagementController;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 
 @Path(ProjectManagementResource.PATH)
+@RolesAllowed(ServerRoles.ADMIN)
 public class ProjectManagementResource {
 
 	public static final String PATH = "/project";

@@ -13,6 +13,7 @@ package de.dlr.sc.virsat.server.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -37,6 +38,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -110,6 +112,7 @@ public class ModelAccessResource {
 	 *   - Get and update properties by uuid
 	 */
 	@Api(hidden = true)
+	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
 	
 		private Repository repository;
@@ -121,7 +124,7 @@ public class ModelAccessResource {
 		private Response createBadRequestResponse(String msg) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
 		}
-	
+
 		@ApiOperation(hidden = true, value = "")
 		@GET
 		@Path(PROPERTY + "/{propertyUuid}")
