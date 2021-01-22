@@ -204,18 +204,41 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		currentChildren.addAll(newChildren);
 	}
 	
+	private List<BeanStructuralElementInstanceReference> getReferenceList(List<StructuralElementInstance> seis) {
+		ArrayList<BeanStructuralElementInstanceReference> children = new ArrayList<BeanStructuralElementInstanceReference>();
+		
+		for (StructuralElementInstance sei : seis) {
+			children.add(new BeanStructuralElementInstanceReference(sei));
+		}
+		
+		return children;
+	}
+	
+	private void setReferenceList(List<StructuralElementInstance> currentSeis, List<BeanStructuralElementInstanceReference> newBeanSeis) {
+		List<StructuralElementInstance> newChildren = new ArrayList<StructuralElementInstance>();
+		
+		for (BeanStructuralElementInstanceReference beanSei : newBeanSeis) {
+			StructuralElementInstance sei = beanSei.getStructuralElementInstance();
+			newChildren.add(sei);
+		}
+		
+		currentSeis.clear();
+		currentSeis.addAll(newChildren);
+	}
+	
+	// TODO
 	/**
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
 	 */
 	@SuppressWarnings("unused")
-	private List<ABeanStructuralElementInstance> getJaxbChildren() {
-		return new ArrayList<ABeanStructuralElementInstance>(getChildren());
+	private List<BeanStructuralElementInstanceReference> getJaxbChildren() {
+		return getReferenceList(sei.getChildren());
 	}
 	
 	@XmlElement(name = "children")
-	public void setJaxbChildren(List<ABeanStructuralElementInstance> newBeanSeis) {
-		setChildren(newBeanSeis);
+	public void setJaxbChildren(List<BeanStructuralElementInstanceReference> newBeanSeis) {
+		setReferenceList(sei.getChildren(), newBeanSeis);
 	}
 	
 	@Override
@@ -280,18 +303,19 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		currentSuperSeis.addAll(newSuperSeis);
 	}
 	
+	// TODO:
 	/**
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
 	 */
 	@SuppressWarnings("unused")
-	private List<ABeanStructuralElementInstance> getJaxbSuperSeis() {
-		return new ArrayList<ABeanStructuralElementInstance>(getSuperSeis());
+	private List<BeanStructuralElementInstanceReference> getJaxbSuperSeis() {
+		return getReferenceList(sei.getSuperSeis());
 	}
 	
 	@XmlElement(name = "superSeis")
-	public void setJaxbSuperSeis(List<ABeanStructuralElementInstance> newBeanSeis) {
-		setSuperSeis(newBeanSeis);
+	public void setJaxbSuperSeis(List<BeanStructuralElementInstanceReference> newBeanSeis) {
+		setReferenceList(sei.getSuperSeis(), newBeanSeis);
 	}
 	
 	@Override
