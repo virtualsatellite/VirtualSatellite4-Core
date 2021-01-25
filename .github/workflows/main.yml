@@ -171,7 +171,7 @@ jobs:
       # --------------------------------------------
       # Upload Surefire Reports to github artifacts
       # --------------------------------------------            
-      - name: Upload Surefire Reports on Failure
+      - name: Build and Test - Upload Surefire Reports on Failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
@@ -277,6 +277,17 @@ jobs:
         with:
           build_job: assemble
           build_profile: ${{ steps.build_decision.outputs.build_type }}
+     
+      # --------------------------------------------
+      # Upload SWTBout screenshots to github artifacts
+      # --------------------------------------------
+      - name: Build - Upload Build Artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build Artifacts
+          path: 
+            build/*
      
       # ---------------------------------------------
       # Deploying to github releases
