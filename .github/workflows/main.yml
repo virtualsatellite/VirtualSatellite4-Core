@@ -288,6 +288,7 @@ jobs:
           path: |
             deploy/**/*.zip
             deploy/**/*.tar.gz
+          retention-days: 3
      
       # ---------------------------------------------
       # Deploying to github releases
