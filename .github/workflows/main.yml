@@ -282,7 +282,6 @@ jobs:
       # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
       - name: Build - Upload Build Artifacts
-        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: Build Artifacts
