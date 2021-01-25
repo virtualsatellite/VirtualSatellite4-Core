@@ -15,11 +15,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Lightweight POJO class that represents a reference to a SEI on the bean level
  * used to avoid deep nested element
  */
+@ApiModel(description = "Reference to a bean SEI that can be used for every concrete SEI."
+		+ " Instances of this only contain the fields uuid and name.")
 @XmlType(propOrder = { "structuralElementInstance", "name" })
 public class BeanStructuralElementInstanceReference {
 
@@ -45,6 +49,8 @@ public class BeanStructuralElementInstanceReference {
 	}
 
 	@XmlElement(nillable = true)
+	@ApiModelProperty(required = true,
+			position = 0)
 	public void setName(String seiName) {
 		sei.setName(seiName);
 	}
@@ -54,6 +60,10 @@ public class BeanStructuralElementInstanceReference {
 	}
 
 	@XmlElement(name = "uuid")
+	@ApiModelProperty(name = "uuid", required = true,
+		value = "Unique identifier for a bean",
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
+		position = 1)
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	public void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;

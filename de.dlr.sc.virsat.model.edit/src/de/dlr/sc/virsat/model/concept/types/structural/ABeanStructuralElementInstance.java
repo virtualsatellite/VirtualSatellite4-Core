@@ -218,6 +218,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		currentChildren.addAll(newChildren);
 	}
 	
+	/**
+	 * Create a list of BeanStructuralElementInstanceReference from a list of seis
+	 * @param seis list of seis
+	 * @return list of BeanStructuralElementInstanceReference
+	 */
 	private List<BeanStructuralElementInstanceReference> getReferenceList(List<StructuralElementInstance> seis) {
 		ArrayList<BeanStructuralElementInstanceReference> children = new ArrayList<BeanStructuralElementInstanceReference>();
 		
@@ -228,6 +233,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		return children;
 	}
 	
+	/**
+	 * Update list of seis from a list of BeanStructuralElementInstanceReference
+	 * @param currentSeis list of seis
+	 * @param newBeanSeis list of BeanStructuralElementInstanceReference
+	 */
 	private void setReferenceList(List<StructuralElementInstance> currentSeis, List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		List<StructuralElementInstance> newChildren = new ArrayList<StructuralElementInstance>();
 		
@@ -240,21 +250,16 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		currentSeis.addAll(newChildren);
 	}
 	
-	// TODO
-	/**
-	 * Shadows the original function, but makes the list modifiable
-	 * so it can be used by JAXB
-	 */
-	@SuppressWarnings("unused")
 	public List<BeanStructuralElementInstanceReference> getJaxbChildren() {
 		return getReferenceList(sei.getChildren());
 	}
 	
-	//CHECKSTYLE:OFF: MagicNumber
 	@XmlElement(name = "children")
+	//CHECKSTYLE:OFF: MagicNumber
 	@ApiModelProperty(name = "children", required = true,
 		value = "List of the child beans",
 		position = 3)
+	//CHECKSTYLE:ON: MagicNumber
 	public void setJaxbChildren(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getChildren(), newBeanSeis);
 	}
@@ -321,19 +326,16 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		currentSuperSeis.addAll(newSuperSeis);
 	}
 	
-	// TODO:
-	/**
-	 * Shadows the original function, but makes the list modifiable
-	 * so it can be used by JAXB
-	 */
 	public List<BeanStructuralElementInstanceReference> getJaxbSuperSeis() {
 		return getReferenceList(sei.getSuperSeis());
 	}
-	
+
 	@XmlElement(name = "superSeis")
+	//CHECKSTYLE:OFF: MagicNumber
 	@ApiModelProperty(name = "superSeis", required = true,
 		value = "List of the super SEI beans",
 		position = 4)
+	//CHECKSTYLE:ON: MagicNumber
 	public void setJaxbSuperSeis(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getSuperSeis(), newBeanSeis);
 	}
@@ -354,13 +356,16 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
 		return bseiHelper.getParentOfClass(sei, beanSeiClazz);
 	}
-	
+
 	@Override
 	@XmlElement(name = "parent")
+	//CHECKSTYLE:OFF: MagicNumber
 	@ApiModelProperty(required = true,
-		value = "Bean of the parent sei or null",
+		value = "Unique identifier for the parent bean",
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
 		position = 5)
 	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
+	//CHECKSTYLE:ON: MagicNumber
 	public BeanStructuralElementInstance getParent() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
 		if (parentSei != null) {
@@ -369,7 +374,6 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 			return null;
 		}
 	}
-	//CHECKSTYLE:ON: MagicNumber
 	
 	@Override
 	public void setParent(BeanStructuralElementInstance newParent) {
