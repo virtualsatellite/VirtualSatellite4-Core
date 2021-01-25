@@ -17,6 +17,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.resources.DocumentationResource;
@@ -65,6 +66,9 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 			
 			// Register our RepositoryFilter via a dynamic binding
 			register(DynamicRepositoryFilterBinding.class);
+			
+			// Register the Cross origin resource sharing filter
+			register(CorsFilter.class);
 			
 			// Register a custom json provider that extends the default moxy provider
 			final TransactionalJsonProvider provider = new TransactionalJsonProvider();

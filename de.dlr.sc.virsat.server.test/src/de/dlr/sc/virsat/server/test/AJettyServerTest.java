@@ -38,6 +38,8 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+
+	private static final String ALLOW_HEADERS = "sun.net.http.allowRestrictedHeaders";
 	
 	// Test users
 	public static final String ADMIN = "admin:password";
@@ -60,6 +62,9 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 	
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException, Exception {
+		// System property to set headers
+		System.setProperty(ALLOW_HEADERS, "true");
+		
 		server = new VirSatJettyServer();
 		server.init();
 		
@@ -91,5 +96,7 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 	public static void tearDownClass() throws Exception { 
 		server.stop();
 		server.join();
+
+		System.setProperty(ALLOW_HEADERS, "false");
 	}
 }
