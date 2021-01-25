@@ -17,6 +17,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap IntPropertyInstances
@@ -54,10 +56,20 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 	
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Long")
 	public Long getValue() throws NumberFormatException {
 		if (isSet()) {
 			return Long.parseLong(ti.getValue());
 		}
 		return null;
+	}
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"int\"", 
+			example = "int",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.INT;
 	}
 }

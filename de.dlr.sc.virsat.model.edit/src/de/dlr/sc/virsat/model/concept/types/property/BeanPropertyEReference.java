@@ -58,4 +58,9 @@ public class BeanPropertyEReference<Type extends EObject> extends ABeanProperty<
 	public Type getValue() {
 		return (Type) ti.getReference();
 	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.EREFERENCE;
+	}
 }

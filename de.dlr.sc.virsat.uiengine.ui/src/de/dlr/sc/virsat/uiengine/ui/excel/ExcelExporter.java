@@ -47,7 +47,6 @@ import de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin;
 
 /**
  * Class for exporting excel
- * @author bell_er
  *
  */
 public class ExcelExporter {
@@ -56,6 +55,7 @@ public class ExcelExporter {
 	private static final int ADDZEROIFLESS = 10;
 	private static final int FONTSIZE = 12;
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/TableViewTemplate.xlsx";
+	
 	/**
 	 * Default constructor
 	 */
@@ -84,6 +84,7 @@ public class ExcelExporter {
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 		} 
 	}
+	
 	/**
 	 * creates the workbook
 	 * @param columnViewer tableViewer to be exported

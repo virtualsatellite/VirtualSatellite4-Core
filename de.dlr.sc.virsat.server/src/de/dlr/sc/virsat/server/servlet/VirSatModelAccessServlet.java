@@ -17,9 +17,11 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.resources.AuthTestResource;
+import de.dlr.sc.virsat.server.resources.DocumentationResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
@@ -30,8 +32,8 @@ import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 public class VirSatModelAccessServlet extends ApplicationServletContainer implements Servlet {
 	
 	public static final String MODEL_API_ID = "/model";
-	public static final String MODEL_API_VERSION = "/v0.0.1";
-	public static final String MODEL_API = MODEL_API_ID + MODEL_API_VERSION;
+	public static final String MODEL_API_VERSION = "v0.0.1";
+	public static final String MODEL_API = MODEL_API_ID + "/" + MODEL_API_VERSION;
 	
 	@Override
 	protected Servlet onCreateServlet() {
@@ -49,12 +51,26 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 			// Resources
 			register(AuthTestResource.class);
 			register(ModelAccessResource.class);
+			
+			// Register documentation resource via binder
+			final DocumentationResource docProvider = new DocumentationResource("model");
+			final AbstractBinder docBinder = new AbstractBinder() {
+				@Override
+				public void configure() {
+					bind(docProvider).to(DocumentationResource.class);
+				}
+			};
+			register(docBinder);
+			register(DocumentationResource.class);
 
 			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
 			register(RolesAllowedDynamicFeature.class);
 			
 			// Register our RepositoryFilter via a dynamic binding
 			register(DynamicRepositoryFilterBinding.class);
+			
+			// Register the Cross origin resource sharing filter
+			register(CorsFilter.class);
 			
 			// Register a custom json provider that extends the default moxy provider
 			final TransactionalJsonProvider provider = new TransactionalJsonProvider();
