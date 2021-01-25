@@ -10,13 +10,20 @@
 package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AJettyServerTest;
 
@@ -99,6 +106,53 @@ public class AuthTestResourceTest extends AJettyServerTest {
 			.header(HttpHeaders.AUTHORIZATION, encoded)
 			.get();
 		
+	}
+	
+	@Test
+	public void testCorsHeaders() {
+		Map<String, String> headers = new HashMap<String, String>();
+		
+		// Not a CORS request has no additional headers
+		// and status code of the underlying resource
+		Response response = getBuilderWithHeaders(headers).get();
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
+		
+		// CORS simple request only has allow origin header
+		headers.put(CorsFilter.ORIGIN, "test");
+		
+		response = getBuilderWithHeaders(headers).get();
+		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
+		
+		// A preflight request has all headers
+		response = getBuilderWithHeaders(headers).options();
+		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertEquals(CorsFilter.AC_ALLOWED_CREDENTIALS, response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertEquals(CorsFilter.AC_ALLOWED_METHODS, response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertEquals(CorsFilter.AC_ALLOWED_HEADERS, response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		// The preflight request will have the status code ok instead of forbidden
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+	}
+	
+	/**
+	 * Returns the builder for a request with CORS headers
+	 * @param headers the CORS headers
+	 * @return request builder
+	 */
+	private Builder getBuilderWithHeaders(Map<String, String> headers) {
+		return webTarget
+				.path(VirSatModelAccessServlet.MODEL_API)
+				.path(AuthTestResource.AUTH)
+				.path("/denied")
+				.request()
+				.headers(new MultivaluedHashMap<>(headers));
 	}
 	
 	/**

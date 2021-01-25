@@ -55,11 +55,12 @@ import io.swagger.annotations.SwaggerDefinition;
  * The resource to access the VirSat data model of a server repository
  * Provides an endpoint to access a repository
  */
-@Api(tags = {"Model"})
+@Api
 @SwaggerDefinition(
 	info = @Info(
 		version = VirSatModelAccessServlet.MODEL_API_VERSION,
-		title = "The Model API"
+		title = "The Model API",
+		description = "API to access the Virtual Satellite data model"
 	),
 	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API
 )
@@ -87,7 +88,7 @@ public class ModelAccessResource {
 	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
-	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") String repoName) {
+	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			VirSatTransactionalEditingDomain ed = repo.getEd();
@@ -112,6 +113,7 @@ public class ModelAccessResource {
 	@Api(hidden = true)
 	public static class RepoModelAccessResource {
 	
+		private static final String SUCCESSFUL_OPERATION = "Successful operation";
 		private Repository repository;
 		
 		public RepoModelAccessResource(Repository repository) {
@@ -121,49 +123,64 @@ public class ModelAccessResource {
 		private Response createBadRequestResponse(String msg) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
 		}
-	
-		@ApiOperation(hidden = true, value = "")
+
 		@GET
 		@Path(PROPERTY + "/{propertyUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getProperty(@PathParam("propertyUuid") String propertyUuid) {
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch Property",
+				httpMethod = "GET",
+				notes = "This service fetches a Property")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanProperty.class,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Could not find requested Property")})
+		public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 			return Response.status(Response.Status.OK).entity(
 					new BeanPropertyFactory().getInstanceFor(
 							RepositoryUtility.findProperty(propertyUuid, repository)
 					)).build();
 		}
 		
-		@ApiOperation(hidden = true, value = "")
 		@PUT
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putProperty(ABeanProperty<?, ?> bean) {
+		@ApiOperation(
+				consumes = "application/json",
+				value = "Put Property",
+				httpMethod = "PUT",
+				notes = "This service updates an existing Property")
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = SUCCESSFUL_OPERATION)
+		public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		/**
-		 * Returns a response with the category assignment with the caUuid
-		 * @param caUuid uuid of the category assignment
-		 * @return a server response
-		 */
+
+		/** **/
 		@GET
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-
 		@ApiOperation(
 				produces = "application/json",
 				value = "Fetch CA",
 				httpMethod = "GET",
-				notes = "This service fetches CAs")
+				notes = "This service fetches a CategoryAssignment")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
 						response = ABeanCategoryAssignment.class,
-						message = "Successful operation"),
+						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Bad Request")})
-		public Response getCa(@PathParam("caUuid") String caUuid) {
+						message = "Could not find requested CA")})
+		public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 			try {
 				return Response.status(Response.Status.OK).entity(
 						new BeanCategoryAssignmentFactory().getInstanceFor(
@@ -173,30 +190,40 @@ public class ModelAccessResource {
 				return createBadRequestResponse(e.getMessage());
 			}
 		}
-		
+
+		@PUT
+		@Path(CA)
+		@Consumes(MediaType.APPLICATION_JSON)
 		@ApiOperation(
 				produces = "application/json",
 				value = "Put CA",
 				httpMethod = "PUT",
-				notes = "This service puts CAs")
+				notes = "This service updates an existing CategoryAssignment")
 		@ApiResponse(
 				code = HttpStatus.OK_200,
-				message = "Successful operation")
-		@PUT
-		@Path(CA)
-		@Consumes(MediaType.APPLICATION_JSON)
+				message = SUCCESSFUL_OPERATION)
 		public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		/**
-		 * Returns a response with a list of the root seis
-		 * @return a server response
-		 */
-		@ApiOperation(hidden = true, value = "")
+		/** **/
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of root SEIs",
+				httpMethod = "GET",
+				notes = "This service fetches the root StructuralElementInstances")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanStructuralElementInstance.class,
+						responseContainer = "List",
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Could not create bean for a root SEI")})
 		public Response getRootSeis() {
 			try {
 				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
@@ -215,16 +242,25 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/**
-		 * Returns a response with the sei with the seiUuid
-		 * @param seiUuid uuid of the sei
-		 * @return a server response
-		 */
-		@ApiOperation(hidden = true, value = "")
+		/** **/
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getSei(@PathParam("seiUuid") String seiUuid) {
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch SEI",
+				httpMethod = "GET",
+				notes = "This service fetches a StructuralElementInstance."
+						+ "It can be used as an entry point into the data model.")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanStructuralElementInstance.class,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400, 
+						message = "Could not find requested SEI")})
+		public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
 			try {
 				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
 				IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
@@ -235,10 +271,17 @@ public class ModelAccessResource {
 		}
 		
 		@PUT
-		@ApiOperation(hidden = true, value = "")
 		@Path(SEI)
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response putSei(ABeanStructuralElementInstance bean) {
+		@ApiOperation(
+				consumes = "application/json",
+				value = "Put SEI",
+				httpMethod = "PUT",
+				notes = "This service updates an existing StructuralElementInstance")
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = SUCCESSFUL_OPERATION)
+		public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
 			return Response.status(Response.Status.OK).build();
 		}
 	
