@@ -286,8 +286,8 @@ jobs:
         with:
           name: Build Artifacts
           path: |
-            build/**/*.zip
-            build/**/*.tar.gz
+            deploy/**/*.zip
+            deploy/**/*.tar.gz
      
       # ---------------------------------------------
       # Deploying to github releases
