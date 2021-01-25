@@ -32,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -39,6 +40,9 @@ import io.swagger.annotations.ApiModelProperty;
  * @author fisc_ph
  *
  */
+@ApiModel(description = "Abstract model class with properties that every bean CA has."
+		+ " Instead return a concrete bean CA that is identified by a type field."
+		+ " A concrete bean CA can additionally have properties (see ABeanProperty).")
 public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssignment> implements IBeanCategoryAssignment {
 
 	protected CategoryAssignmentHelper helper = new CategoryAssignmentHelper(null);
@@ -155,6 +159,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	}
 	
 	@Override
+	@ApiModelProperty(required = true)
 	@XmlElement(nillable = true)
 	public String getName() {
 		return ti.getName();

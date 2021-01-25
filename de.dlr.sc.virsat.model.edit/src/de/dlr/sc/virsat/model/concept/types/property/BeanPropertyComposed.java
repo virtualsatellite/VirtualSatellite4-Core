@@ -22,6 +22,8 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
@@ -52,6 +54,11 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
+	@ApiModelProperty(
+		reference = "ABeanCategoryAssignment",
+		value = "Returns the bean of the composed Category Assignment\n"
+				+ "This can't be via the API.",
+		accessMode = AccessMode.READ_ONLY)
 	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE getValue() {
@@ -81,6 +88,10 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 		// Can't unset the composed ca on the bean level
 	}
 	
+	@ApiModelProperty(
+			value = "Always returns constant: \"composed\"", 
+			example = "composed",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.COMPOSED;

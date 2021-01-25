@@ -17,6 +17,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap BooleanPropertyInstances
@@ -50,10 +52,15 @@ public class BeanPropertyBoolean extends ABeanValueProperty<ValuePropertyInstanc
 	
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Boolean")
 	public Boolean getValue() {
 		return Boolean.parseBoolean(ti.getValue());
 	}
 	
+	@ApiModelProperty(
+			value = "Always returns constant: \"boolean\"", 
+			example = "boolean",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.BOOLEAN;
