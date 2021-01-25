@@ -99,11 +99,11 @@ jobs:
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-#      - name: Build and Test - Spotbugs
-#        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
-#        with:
-#          build_job: spotbugs
-#          build_profile: ${{ steps.build_decision.outputs.build_type }}
+      - name: Build and Test - Spotbugs
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        with:
+          build_job: spotbugs
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
   # -----------------------------------------------------
   # Build and Test - Surefire Job
@@ -151,11 +151,11 @@ jobs:
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-#      - name: Build and Test - Surefire
-#        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
-#        with:
-#          build_job: sureheadless
-#          build_profile: ${{ steps.build_decision.outputs.build_type }}
+      - name: Build and Test - Surefire
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        with:
+          build_job: sureheadless
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
       # --------------------------------------------
       # Upload SWTBout screenshots to github artifacts
@@ -223,11 +223,11 @@ jobs:
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-#      - name: Build and Test - Checkstyle
-#        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
-#        with:
-#          build_job: checkstyle
-#          build_profile: ${{ steps.build_decision.outputs.build_type }}
+      - name: Build and Test - Checkstyle
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        with:
+          build_job: checkstyle
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
   # -----------------------------------------------------
   # Build, Assemble and Deploy Job
@@ -284,7 +284,7 @@ jobs:
       - name: Build - Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Build Artifacts
+          name: Deployable Applications
           path: |
             deploy/**/*.zip
             deploy/**/*.tar.gz
